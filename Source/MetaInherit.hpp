@@ -9,9 +9,9 @@ namespace Reflection
                       public ListItem_t<MetaInherit>
   {
   public:
-    MetaInherits* m_p_MetaInherits; // which inherits set
+    MetaInherits* m_p_MetaInherits; // which inherits set this inherit is in
    
-    s32           m_sMetaType;      // structure that is inherited
+    s32           m_sMetaType;      // type that is inherited
     EnameSet*     m_pTplArgs;       // opt. with these template arguments
 
     // must be last

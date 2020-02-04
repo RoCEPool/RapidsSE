@@ -9,24 +9,25 @@ namespace Reflection
                      public ListItem_t<MetaMember>
   {
   public:
-    MetaType* m_p_MetaType; // which meta structure
+    MetaType* m_p_WithinType; // which meta type this type is within
   
     // member name
-    s32  m_sMemberNm;   // name of the member variable
-    eMM  m_eMetaMember; // kind of meta member
-    i8   m_nSize;       // size of this member
+    s32  m_sMemberNm;      // name of the member 
+    eMM  m_eMetaMember;    // kind of meta member
+    i8   m_nSize;          // size of this member
 
-    // MM_VAR: simple var
-    s32       m_sTypeNm;     // type name (such as i8, Footer, List_t<..>)
-    EnameSet* m_pTplArgs;    // opt. with these template arguments
-    i8        m_nPointers;   // number of asterisks after the type name
-    bool      m_bFunPtr;     // is this member a function pointer?
-    i8        m_nBits;       // no of bits if bit field;
-    
-    // MM_SET: nested set
+    // type specifier
+    s32       m_sTypeNm;   // type name (such as i8, Footer, List_t<..>)
+    MetaType* m_pType;     // the type of this member
+    EnameSet* m_pTplArgs;  // opt. with these template arguments
+    i8        m_nPointers; // number of asterisks after the type name
+    bool      m_bFunPtr;   // is this member a function pointer?
+      
+    // nested complex type
     MetaType* m_p_NestedStructure; // nested structure
 
-    // arrays
+    // fields and arrays
+    i8   m_nBits;     // no of bits if bit field;
     i8   m_nElements; // how many array elements (0 means not an array)
   
     // must be last
@@ -53,7 +54,7 @@ namespace Reflection
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   
-    MetaType* p_MetaType(void);
+    MetaType* p_WithinType(void);
   
     eMM  eMetaMember(void);
   

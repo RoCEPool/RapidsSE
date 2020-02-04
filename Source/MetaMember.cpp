@@ -17,29 +17,30 @@ __aFooterFunction(MetaMember)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaMember::MetaMember(Stz* szMemberNm, MetaType* p_MetaType)
+MetaMember::MetaMember(Stz* szMemberNm, MetaType* p_WithinType)
 : Object(CN_METAMEMBER)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
-  m_p_MetaType = p_MetaType;
+  m_p_WithinType = p_WithinType;
   
-  // var name
+  // member name
   m_sMemberNm   = szMemberNm;
   m_eMetaMember = MM_SIMPLE;
   m_nSize       = 0;
 
-  // MM_SIMPLE: simple var
+  // type specifier
   m_sTypeNm   = C_NO_NAME;
+  m_pType     = nullptr;
   m_pTplArgs  = nullptr;
   m_nPointers = 0;
   m_bFunPtr   = false;
-  m_nBits     = 0;
   
-  // MM_STRUCTURE: nested structure
+  // nested complex type
   m_p_NestedStructure = nullptr;
   
-  // arrays
+  // fields and arrays
+  m_nBits     = 0;
   m_nElements = 0;
   
   _checkInitialised_(CN_METAMEMBER);
@@ -249,13 +250,13 @@ void MetaMember::vFunPtr(bool bFunPtr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which member set this member var is within                             */
+/* get which meta type this member is within                                  */
 /*----------------------------------------------------------------------------*/
-MetaType* MetaMember::p_MetaType(void)
+MetaType* MetaMember::p_WithinType(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_p_MetaType;
+  return m_p_WithinType;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaInherit.cpp - Meta Inheritance of another MetaType                */
+/* MetaInherit.cpp - Inheritance of another Meta Type                         */
 /*============================================================================*/
 
 #include "Reflection.h"
@@ -24,8 +24,7 @@ MetaInherit::MetaInherit(Stz* szStructure, MetaInherits* p_MetaInherits)
   
   m_p_MetaInherits = p_MetaInherits;
   
-  m_sMetaType = szStructure;
-  
+  m_sMetaType      = szStructure;
   m_pTplArgs       = nullptr;
   
   _checkInitialised_(CN_METAINHERIT);
@@ -60,7 +59,7 @@ Stz* MetaInherit::sMetaType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the structure that is inherited                                        */
+/* get the optional template arguments                                        */
 /*----------------------------------------------------------------------------*/
 EnameSet* MetaInherit::pTplArgs(void)
 {
@@ -81,8 +80,6 @@ void MetaInherit::vTplArgs(EnameSet* pTplArgs)
   
   m_pTplArgs->vCopy(pTplArgs);
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
