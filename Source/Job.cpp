@@ -475,15 +475,6 @@ void Job::vAddError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a local error                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vAddLocalError(eEC eError)
-{
-  m_xResponse.m_iNode = AM::pGrid()->iThisNode();
-  m_xResponse.m_eErrorCode = eError;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add rows processed                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vAddRowsProcessed(i8 iRowsProcessed)
@@ -1727,11 +1718,8 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   if (CN_JOB_UNIVERSAL == eClass) {
     
     EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
-    if (! pJobInfoEnameSet) {
-      ASSERT(pJob->bHasError());
-      pJob->vPrintLocalErrors();
+    if (! pJobInfoEnameSet)
       return;
-    }
     eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     //eResponse = pJob->m_aJobClass->m_eResponse;
