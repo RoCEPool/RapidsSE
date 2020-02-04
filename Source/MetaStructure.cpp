@@ -20,13 +20,11 @@ __aFooterFunction(MetaStructure)
 MetaStructure::MetaStructure(Stz* szStructureNm,
                              eMS eStructure,
                              eCP eCppPart,
-                             MetaGraph* p_MetaGraph,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
   
-  m_p_MetaGraph       = p_MetaGraph;
   m_p_ParentStructure = p_ParentStructure;
 
   m_sStructureNm  = szStructureNm;
@@ -81,7 +79,7 @@ MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
   
   if (! m_pMetaInherits)
-    m_pMetaInherits = new MetaInherits(m_p_MetaGraph,this);
+    m_pMetaInherits = new MetaInherits(this);
 
   MetaInherit* pMetaInherit = m_pMetaInherits->pAddInherit(szBaseClassNm);
   

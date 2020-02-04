@@ -1236,8 +1236,7 @@ void Vortex::vStructureNew_class(Stz* szClassNm)
     m_p_MetaStructure = new MetaStructure(szClassNm,
                                           MS_TEMPLATE,
                                           CP_TEMPLATE_CLASS,
-                                          m_pMetaGraph,
-                                          m_p_MetaStructure);
+                                           m_p_MetaStructure);
     
     m_p_MetaStructure->vTplParams(&m_oTplTerms);
   }
@@ -1245,7 +1244,6 @@ void Vortex::vStructureNew_class(Stz* szClassNm)
     m_p_MetaStructure = new MetaStructure(szClassNm,
                                           MS_LINEAR,
                                           CP_CLASS,
-                                          m_pMetaGraph,
                                           m_p_MetaStructure);
   }
 }
@@ -1260,7 +1258,6 @@ void Vortex::vStructureNew_struct(Stz* szStructNm)
   m_p_MetaStructure = new MetaStructure(szStructNm,
                                         MS_LINEAR,
                                         CP_STRUCT,
-                                        m_pMetaGraph,
                                         m_p_MetaStructure);
 }
 
@@ -1274,7 +1271,6 @@ void Vortex::vStructureNew_union(Stz* szUnionNm)
   m_p_MetaStructure = new MetaStructure(szUnionNm,
                                         MS_UNION,
                                         CP_UNION,
-                                        m_pMetaGraph,
                                         m_p_MetaStructure);
 }
 
@@ -1303,15 +1299,14 @@ void Vortex::vStructurePush(Stz* szBlockNm, eMS eStructure, eCP eCppPart)
     m_p_MetaStructure = new MetaStructure(szBlockNm,
                                           eStructure,
                                           eCppPart,
-                                          m_pMetaGraph,
                                           m_p_MetaStructure);
   }
   else {
     m_p_MetaStructure = new MetaStructure(szBlockNm,
                                           eStructure,
                                           eCppPart,
-                                          m_pMetaGraph,
                                           nullptr);
+    
     m_pMetaGraph->vAppendStructure(m_p_MetaStructure);
   }
 }

@@ -11,7 +11,6 @@ namespace Reflection
   {
   public:
  
-    MetaGraph*     m_p_MetaGraph;        // the _p_ sequence means not owned by
     MetaStructure* m_p_ParentStructure;  // parent structure
 
     s32            m_sStructureNm;  // name of this structure
@@ -32,7 +31,7 @@ namespace Reflection
     void  operator delete(void*);
   
     MetaStructure(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
-                  MetaGraph* p_MetaGraph, MetaStructure* p_ParentStructure);
+                  MetaStructure* p_ParentStructure);
    ~MetaStructure(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
