@@ -35,7 +35,7 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
   }
   
   if (! pSyntax) {
-    vTrace("Unable to match job syntax\n"_Stz);
+    //vTrace("Unable to match job syntax\n"_Stz);
     return false;
   }
   
