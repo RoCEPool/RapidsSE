@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaType.hpp - Meta Structure (definition of class, struct, union)         */
+/* MetaType.hpp - Meta Type (definition of class, struct, union)              */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace Reflection
   {
   public:
  
-    MetaType*     m_p_ParentStructure;  // parent structure
+    MetaType*     m_p_ParentType;  // parent structure
 
     s32           m_sStructureNm;  // name of this structure
     eMS           m_eStructure;    // kind of structure
@@ -21,7 +21,7 @@ namespace Reflection
   
     MetaInherits* m_pMetaInherits;
 
-    i8  m_nSize;         // rolled up size of this structure
+    i8            m_nSize;         // rolled up size of this structure
 
     // must be last
     Footer m_xFooter;
@@ -31,7 +31,7 @@ namespace Reflection
     void  operator delete(void*);
   
     MetaType(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
-                  MetaType* p_ParentStructure);
+             MetaType* p_ParentType);
    ~MetaType(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
@@ -43,7 +43,7 @@ namespace Reflection
     eMS  eStructure(void);
     void vStructure(eMS eStructure);
 
-    MetaType* p_ParentStructure(void);
+    MetaType* p_ParentType(void);
   
     void vPrint(i8 i_Tab);
     void vRecursivePrint(i8 i_Depth);

@@ -1283,7 +1283,7 @@ void Vortex::vStructurePop(void)
 
   RASSERT(m_p_MetaType);
   
-  m_p_MetaType = m_p_MetaType->p_ParentStructure();
+  m_p_MetaType = m_p_MetaType->p_ParentType();
 }
 
 /*----------------------------------------------------------------------------*/
