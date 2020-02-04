@@ -358,6 +358,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
 //  vTrace("-----------------------------------\n"_Stz);
 //  vTrace("INDEXTREE DUMP AFTER PURGING...\n"_Stz);
 //  m_pIndexTree->vDump(false);
+  m_pIndexTree->bVerify();
 #endif
   
   // cross-verify that the no of entries in the H0 buffers equals not deleted count
