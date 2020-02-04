@@ -243,6 +243,12 @@ void Vortex::vParseBase(Stz* szSawTerm)
      
      vGetNextToken(xTkn);
 
+     // temp discard of <...>
+     if (szTerm->bSame("<"_Stz)) {
+       vDiscardBalancedAngles("<"_Stz);
+       vGetNextToken(xTkn);
+     }
+     
      // class base is terminated by {
      if (szTerm->bSame("{"_Stz))
        break;
