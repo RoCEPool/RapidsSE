@@ -248,6 +248,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
        
        vCollectTplArgs("<"_Stz);
        pInherit->vTplArgs(&m_oTplTerms);
+       m_oTplTerms.vReset();
        
        vGetNextToken(xTkn);
      }
@@ -330,6 +331,10 @@ void Vortex::vParseClass(Stz* szSawTerm)
   
   vStructurePush(sClassNm,MS_LINEAR,CP_CLASS);
   vClassDescend(sClassNm);
+  
+  if (m_oTplTerms.nItems()) {
+    m_p_MetaStructure->vTplParams(& m_oTplTerms);
+  }
 
   if (xTkn.bSame(":"_Stz)) {
     vParseBase(xTkn.szTerm());
@@ -840,10 +845,12 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   
   if (xTkn.bSame("class"_Stz)) {
     vParseClass(xTkn.szTerm());
+    m_oTplTerms.vReset();
     return;
   }
   
   vParseOther(xTkn.szTerm());
+  m_oTplTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
