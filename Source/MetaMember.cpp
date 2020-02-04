@@ -17,12 +17,12 @@ __aFooterFunction(MetaMember)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaMember::MetaMember(Stz* szMemberNm, MetaStructure* p_MetaStructure)
+MetaMember::MetaMember(Stz* szMemberNm, MetaType* p_MetaType)
 : Object(CN_METAMEMBER)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
-  m_p_MetaStructure = p_MetaStructure;
+  m_p_MetaType = p_MetaType;
   
   // var name
   m_sMemberNm   = szMemberNm;
@@ -250,11 +250,11 @@ void MetaMember::vFunPtr(bool bFunPtr)
 /*----------------------------------------------------------------------------*/
 /* get which member set this member var is within                             */
 /*----------------------------------------------------------------------------*/
-MetaStructure* MetaMember::p_MetaStructure(void)
+MetaType* MetaMember::p_MetaType(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_p_MetaStructure;
+  return m_p_MetaType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +270,7 @@ eMM MetaMember::eMetaMember(void)
 /*----------------------------------------------------------------------------*/
 /* get the nested structure                                                   */
 /*----------------------------------------------------------------------------*/
-MetaStructure* MetaMember::p_NestedStructure(void)
+MetaType* MetaMember::p_NestedStructure(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
@@ -280,7 +280,7 @@ MetaStructure* MetaMember::p_NestedStructure(void)
 /*----------------------------------------------------------------------------*/
 /* set the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaMember::vNestedStructure(MetaStructure* p_NestedStructure)
+void MetaMember::vNestedStructure(MetaType* p_NestedStructure)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     

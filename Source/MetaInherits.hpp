@@ -9,7 +9,7 @@ namespace Reflection
                        public List_t<MetaInherit>
   {
   public:
-    MetaStructure* m_p_MetaStructure;  // parent member set
+    MetaType* m_p_MetaType;  // parent member set
 
     // must be last
     Footer m_xFooter;
@@ -18,7 +18,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaInherits(MetaStructure* p_MetaStructure);
+    MetaInherits(MetaType* p_MetaType);
    ~MetaInherits(void) noexcept(false);
 
     MetaInherit* pAddInherit(Stz* szBaseClassNm);

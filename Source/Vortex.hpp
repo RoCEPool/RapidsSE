@@ -54,7 +54,7 @@ namespace Utilities
     i8          m_iNextStruct;   // next anonymous struct
     i8          m_iNextUnion;    // next anonymous union
 
-    MetaStructure* m_p_MetaStructure;  // current working meta block
+    MetaType* m_p_MetaType;  // current working meta block
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's
 

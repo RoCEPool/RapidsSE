@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* MetaStructure.hpp - Meta Structure (definition of class, struct, union)    */
+/* MetaType.hpp - Meta Structure (definition of class, struct, union)         */
 /*============================================================================*/
 #pragma once
 
 namespace Reflection
 {
-  class MetaStructure : public Object,
-                        public ListItem_t<MetaStructure>,
-                        public List_t<MetaMember>
+  class MetaType : public Object,
+                   public ListItem_t<MetaType>,
+                   public List_t<MetaMember>
   {
   public:
  
-    MetaStructure* m_p_ParentStructure;  // parent structure
+    MetaType*     m_p_ParentStructure;  // parent structure
 
-    s32            m_sStructureNm;  // name of this structure
-    eMS            m_eStructure;    // kind of structure
-    eCP            m_eCppPart;      // c++ part
+    s32           m_sStructureNm;  // name of this structure
+    eMS           m_eStructure;    // kind of structure
+    eCP           m_eCppPart;      // c++ part
   
-    EnameSet*      m_pTplParams;    // set of template parameters for this structure
+    EnameSet*     m_pTplParams;    // set of template parameters for this structure
   
-    MetaInherits*  m_pMetaInherits;
+    MetaInherits* m_pMetaInherits;
 
     i8  m_nSize;         // rolled up size of this structure
 
@@ -30,9 +30,9 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaStructure(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
-                  MetaStructure* p_ParentStructure);
-   ~MetaStructure(void) noexcept(false);
+    MetaType(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
+                  MetaType* p_ParentStructure);
+   ~MetaType(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
 
@@ -43,7 +43,7 @@ namespace Reflection
     eMS  eStructure(void);
     void vStructure(eMS eStructure);
 
-    MetaStructure* p_ParentStructure(void);
+    MetaType* p_ParentStructure(void);
   
     void vPrint(i8 i_Tab);
     void vRecursivePrint(i8 i_Depth);
@@ -59,7 +59,7 @@ namespace Reflection
     Footer* aFooter(void);
   };
 
-  MetaStructure* _pMetaStructure(void* aAddr);
+  MetaType* _pMetaType(void* aAddr);
 }
 
 /*============================================================================*/

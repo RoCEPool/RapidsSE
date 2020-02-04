@@ -9,9 +9,9 @@ namespace Reflection
                      public ListItem_t<MetaMember>
   {
   public:
-    MetaStructure* m_p_MetaStructure; // which meta structure
+    MetaType* m_p_MetaType; // which meta structure
   
-    // var name
+    // member name
     s32  m_sMemberNm;   // name of the member variable
     eMM  m_eMetaMember; // kind of meta member
     i8   m_nSize;       // size of this member
@@ -23,7 +23,7 @@ namespace Reflection
     i8   m_nBits;       // no of bits if bit field;
     
     // MM_SET: nested set
-    MetaStructure* m_p_NestedStructure; // nested structure
+    MetaType* m_p_NestedStructure; // nested structure
 
     // arrays
     i8   m_nElements; // how many array elements (0 means not an array)
@@ -35,7 +35,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaMember(Stz* szMemberNm, MetaStructure* p_MetaStructure);
+    MetaMember(Stz* szMemberNm, MetaType* p_MetaType);
    ~MetaMember(void) noexcept(false);
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
@@ -52,12 +52,12 @@ namespace Reflection
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   
-    MetaStructure* p_MetaStructure(void);
+    MetaType* p_MetaType(void);
   
     eMM  eMetaMember(void);
   
-    MetaStructure* p_NestedStructure(void);
-    void vNestedStructure(MetaStructure* p_NestedStructure);
+    MetaType* p_NestedStructure(void);
+    void vNestedStructure(MetaType* p_NestedStructure);
 
     i8   nPointers(void);
     void vPointers(i8 nPointers);

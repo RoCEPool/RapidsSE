@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaInherit.hpp - Meta Inheritance of another MetaStructure                */
+/* MetaInherit.hpp - Meta Inheritance of another MetaType                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,10 +9,10 @@ namespace Reflection
                       public ListItem_t<MetaInherit>
   {
   public:
-    MetaInherits* m_p_MetaInherits;  // which inherits set
+    MetaInherits* m_p_MetaInherits; // which inherits set
    
-    s32           m_sMetaStructure;  // structure that is inherited
-    EnameSet*     m_pTplArgs;        // opt. with these template arguments
+    s32           m_sMetaType;      // structure that is inherited
+    EnameSet*     m_pTplArgs;       // opt. with these template arguments
 
     // must be last
     Footer m_xFooter;
@@ -24,7 +24,7 @@ namespace Reflection
     MetaInherit(Stz* szStructure, MetaInherits* m_p_MetaInherits);
    ~MetaInherit(void) noexcept(false);
   
-    Stz* sMetaStructure(void);
+    Stz* sMetaType(void);
   
     EnameSet* pTplArgs(void);
     void vTplArgs(EnameSet* pTplArgs);

@@ -69,7 +69,7 @@ namespace Records       {                                                     }
 namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaBlock; class MetaCell; class MetaGraph;
                           class MetaInherit; class MetaInherits;
-                          class MetaMember; class MetaStructure;              }
+                          class MetaMember; class MetaType;              }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }

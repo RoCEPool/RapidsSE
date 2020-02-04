@@ -17,12 +17,12 @@ __aFooterFunction(MetaInherits)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaInherits::MetaInherits(MetaStructure* p_MetaStructure)
+MetaInherits::MetaInherits(MetaType* p_MetaType)
 : Object(CN_METAINHERITS)
 {
   _precondition_(_MAGIC_,CN_METAINHERITS,_FOOTER_);
   
-  m_p_MetaStructure = p_MetaStructure;
+  m_p_MetaType = p_MetaType;
 
   _checkInitialised_(CN_METAINHERITS);
   

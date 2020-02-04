@@ -17,13 +17,11 @@ __aFooterFunction(MetaBlock)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaBlock::MetaBlock(Stz* szBlockNm, eMS eBlock, MetaBlock* p_ParentBlock)
+MetaBlock::MetaBlock(Stz* szBlockNm, eMS eBlock)
 : Object(CN_METABLOCK)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
-  m_p_ParentBlock = p_ParentBlock;
-
   m_sBlockNm = szBlockNm;
   m_nSize    = 0;
   m_eBlock   = eBlock;
@@ -60,16 +58,6 @@ eMS MetaBlock::eBlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get parent member set                                                      */
-/*----------------------------------------------------------------------------*/
-MetaBlock* MetaBlock::p_ParentBlock(void)
-{
-  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
-  
-  return m_p_ParentBlock;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set member set kind                                                        */
 /*----------------------------------------------------------------------------*/
 void MetaBlock::vBlock(eMS eBlock)
@@ -93,19 +81,10 @@ void MetaBlock::vPrint(i8 i_Tab)
          aMS[m_eBlock]->azChar(),
          m_nSize
          );
-}
+  
+  for (MetaCell* pCell = pHead(); pCell; pCell = pCell->pNextItem())
+    pCell->vPrint(i_Tab + 1);
 
-/*----------------------------------------------------------------------------*/
-/* recursive print                                                            */
-/*----------------------------------------------------------------------------*/
-void MetaBlock::vRecursivePrint(i8 i_Depth)
-{
-  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
-  
-  vPrint(i_Depth);
-  
-  for (MetaMember* pMember = pHead(); pMember; pMember = pMember->pNextItem())
-    pMember->vRecursivePrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -521,7 +521,7 @@ i8 giClassSize[]
   /* */ sizeof(MetaInherit),        // CN_METAINHERIT
   /* */ sizeof(MetaInherits),       // CN_METAINHERITS
   /* */ sizeof(MetaMember),         // CN_METAMEMBER
-  /* */ sizeof(MetaStructure),      // CN_METATYPE
+  /* */ sizeof(MetaType),      // CN_METATYPE
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N' - ('A' - 1),            // CN__N__

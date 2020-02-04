@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaInherit.cpp - Meta Inheritance of another MetaStructure                */
+/* MetaInherit.cpp - Meta Inheritance of another MetaType                */
 /*============================================================================*/
 
 #include "Reflection.h"
@@ -24,7 +24,7 @@ MetaInherit::MetaInherit(Stz* szStructure, MetaInherits* p_MetaInherits)
   
   m_p_MetaInherits = p_MetaInherits;
   
-  m_sMetaStructure = szStructure;
+  m_sMetaType = szStructure;
   
   m_pTplArgs       = nullptr;
   
@@ -52,11 +52,11 @@ MetaInherit::~MetaInherit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the structure that is inherited                                        */
 /*----------------------------------------------------------------------------*/
-Stz* MetaInherit::sMetaStructure(void)
+Stz* MetaInherit::sMetaType(void)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
-  return m_sMetaStructure;
+  return m_sMetaType;
 }
 
 /*----------------------------------------------------------------------------*/

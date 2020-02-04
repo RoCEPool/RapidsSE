@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaStructure.cpp - Meta Structure (definition of class, struct, union)    */
+/* MetaType.cpp - Meta Structure (definition of class, struct, union)    */
 /*============================================================================*/
 
 #include "Reflection.h"
@@ -8,19 +8,19 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Reflection,MetaStructure,CN_METATYPE)
-__aNewFunction(MetaStructure,CN_METATYPE)
-__vDeleteFunction(MetaStructure,CN_METATYPE)
-__aFooterFunction(MetaStructure)
+__pCastFunction(Reflection,MetaType,CN_METATYPE)
+__aNewFunction(MetaType,CN_METATYPE)
+__vDeleteFunction(MetaType,CN_METATYPE)
+__aFooterFunction(MetaType)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStructure::MetaStructure(Stz* szStructureNm,
+MetaType::MetaType(Stz* szStructureNm,
                              eMS eStructure,
                              eCP eCppPart,
-                             MetaStructure* p_ParentStructure)
+                             MetaType* p_ParentStructure)
 : Object(CN_METATYPE)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
@@ -44,7 +44,7 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaStructure::~MetaStructure(void) noexcept(false)
+MetaType::~MetaType(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
 }
@@ -60,7 +60,7 @@ MetaStructure::~MetaStructure(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member with given name                                           */
 /*----------------------------------------------------------------------------*/
-MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
+MetaMember* MetaType::pAddMember(Stz* szMemberNm)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
@@ -74,7 +74,7 @@ MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
 /*----------------------------------------------------------------------------*/
 /* add a new member with given name                                           */
 /*----------------------------------------------------------------------------*/
-MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
+MetaInherit* MetaType::pAddInherit(Stz* szBaseClassNm)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
@@ -89,7 +89,7 @@ MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
 /*----------------------------------------------------------------------------*/
 /* get meta inheritance list                                                  */
 /*----------------------------------------------------------------------------*/
-MetaInherits* MetaStructure::pInherits(void)
+MetaInherits* MetaType::pInherits(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
@@ -99,7 +99,7 @@ MetaInherits* MetaStructure::pInherits(void)
 /*----------------------------------------------------------------------------*/
 /* get parent structure                                                       */
 /*----------------------------------------------------------------------------*/
-MetaStructure* MetaStructure::p_ParentStructure(void)
+MetaType* MetaType::p_ParentStructure(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
@@ -109,7 +109,7 @@ MetaStructure* MetaStructure::p_ParentStructure(void)
 /*----------------------------------------------------------------------------*/
 /* get structure kind                                                         */
 /*----------------------------------------------------------------------------*/
-eMS MetaStructure::eStructure(void)
+eMS MetaType::eStructure(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -119,7 +119,7 @@ eMS MetaStructure::eStructure(void)
 /*----------------------------------------------------------------------------*/
 /* set structure kind                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vStructure(eMS eStructure)
+void MetaType::vStructure(eMS eStructure)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -129,12 +129,12 @@ void MetaStructure::vStructure(eMS eStructure)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vPrint(i8 i_Tab)
+void MetaType::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   // -- -- -- -- -- --
-  vTrace("%sMetaStructure %6s %6s %lldB %16s "_Stz,
+  vTrace("%sMetaType %6s %6s %lldB %16s "_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
           aMS[m_eStructure]->azChar(),
@@ -168,7 +168,7 @@ void MetaStructure::vPrint(i8 i_Tab)
       if (pInherit != m_pMetaInherits->pHead())
           vTrace(", "_Stz);
 
-      vTrace("%s"_Stz,pInherit->sMetaStructure()->azChar());
+      vTrace("%s"_Stz,pInherit->sMetaType()->azChar());
       
       EnameSet* pTplArgs = pInherit->pTplArgs();
       if (pTplArgs) {
@@ -188,7 +188,7 @@ void MetaStructure::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* recursive print                                                            */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vRecursivePrint(i8 i_Depth)
+void MetaType::vRecursivePrint(i8 i_Depth)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
@@ -201,7 +201,7 @@ void MetaStructure::vRecursivePrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* get rolled up size of this structure                                       */
 /*----------------------------------------------------------------------------*/
-i8 MetaStructure::nSize(void)
+i8 MetaType::nSize(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -211,7 +211,7 @@ i8 MetaStructure::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get structure name                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* MetaStructure::szStructureNm(void)
+Stz* MetaType::szStructureNm(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -221,7 +221,7 @@ Stz* MetaStructure::szStructureNm(void)
 /*----------------------------------------------------------------------------*/
 /* set structure name                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vStructureNm(Stz* szStructureNm)
+void MetaType::vStructureNm(Stz* szStructureNm)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -231,7 +231,7 @@ void MetaStructure::vStructureNm(Stz* szStructureNm)
 /*----------------------------------------------------------------------------*/
 /* get template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-EnameSet* MetaStructure::pTplParams(void)
+EnameSet* MetaType::pTplParams(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -241,7 +241,7 @@ EnameSet* MetaStructure::pTplParams(void)
 /*----------------------------------------------------------------------------*/
 /* set template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vTplParams(EnameSet* pTplParams)
+void MetaType::vTplParams(EnameSet* pTplParams)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   

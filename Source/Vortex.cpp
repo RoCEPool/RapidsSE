@@ -47,8 +47,8 @@ Vortex::Vortex(void)
   m_iNextStruct  = 0;
   m_iNextUnion   = 0;
 
-  m_p_MetaStructure  = nullptr;
-  m_p_MetaStructure  = nullptr;
+  m_p_MetaType  = nullptr;
+  m_p_MetaType  = nullptr;
   m_p_MetaMember = nullptr;
   m_p_ConstSet   = m_pMetaGraph->pConstSet();
 
@@ -239,7 +239,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
      Stz* szBaseClassNm = xTkn.szTerm();
      
      // add
-     MetaInherit* pInherit = m_p_MetaStructure->pAddInherit(szBaseClassNm);
+     MetaInherit* pInherit = m_p_MetaType->pAddInherit(szBaseClassNm);
      
      vGetNextToken(xTkn);
 
@@ -305,7 +305,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("class"_Stz));
-  RASSERT(! m_p_MetaStructure);
+  RASSERT(! m_p_MetaType);
     
   Token xTkn;
   Token xClassNm;
@@ -333,7 +333,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
   vClassDescend(sClassNm);
   
   if (m_oTplTerms.nItems()) {
-    m_p_MetaStructure->vTplParams(& m_oTplTerms);
+    m_p_MetaType->vTplParams(& m_oTplTerms);
   }
 
   if (xTkn.bSame(":"_Stz)) {
@@ -673,7 +673,7 @@ void Vortex::vParseOther(Stz* szSawTerm)
   szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
                                    nPointers,bFunPtr,nElements,nBits);
   
-  m_p_MetaMember = m_p_MetaStructure->pAddMember(szVarNm);
+  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
   
   m_p_MetaMember->vTypeNm(szTypeNm);
   m_p_MetaMember->vPointers(nPointers);
@@ -1233,18 +1233,18 @@ void Vortex::vStructureNew_class(Stz* szClassNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (m_oTplTerms.nItems()) {
-    m_p_MetaStructure = new MetaStructure(szClassNm,
+    m_p_MetaType = new MetaType(szClassNm,
                                           MS_TEMPLATE,
                                           CP_TEMPLATE_CLASS,
-                                           m_p_MetaStructure);
+                                           m_p_MetaType);
     
-    m_p_MetaStructure->vTplParams(&m_oTplTerms);
+    m_p_MetaType->vTplParams(&m_oTplTerms);
   }
   else {
-    m_p_MetaStructure = new MetaStructure(szClassNm,
+    m_p_MetaType = new MetaType(szClassNm,
                                           MS_LINEAR,
                                           CP_CLASS,
-                                          m_p_MetaStructure);
+                                          m_p_MetaType);
   }
 }
 
@@ -1255,10 +1255,10 @@ void Vortex::vStructureNew_struct(Stz* szStructNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_p_MetaStructure = new MetaStructure(szStructNm,
+  m_p_MetaType = new MetaType(szStructNm,
                                         MS_LINEAR,
                                         CP_STRUCT,
-                                        m_p_MetaStructure);
+                                        m_p_MetaType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1268,10 +1268,10 @@ void Vortex::vStructureNew_union(Stz* szUnionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_p_MetaStructure = new MetaStructure(szUnionNm,
+  m_p_MetaType = new MetaType(szUnionNm,
                                         MS_UNION,
                                         CP_UNION,
-                                        m_p_MetaStructure);
+                                        m_p_MetaType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1281,9 +1281,9 @@ void Vortex::vStructurePop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(m_p_MetaStructure);
+  RASSERT(m_p_MetaType);
   
-  m_p_MetaStructure = m_p_MetaStructure->p_ParentStructure();
+  m_p_MetaType = m_p_MetaType->p_ParentStructure();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1295,19 +1295,19 @@ void Vortex::vStructurePush(Stz* szBlockNm, eMS eStructure, eCP eCppPart)
 
   RASSERT(m_pMetaGraph);
   
-  if (m_p_MetaStructure) {
-    m_p_MetaStructure = new MetaStructure(szBlockNm,
+  if (m_p_MetaType) {
+    m_p_MetaType = new MetaType(szBlockNm,
                                           eStructure,
                                           eCppPart,
-                                          m_p_MetaStructure);
+                                          m_p_MetaType);
   }
   else {
-    m_p_MetaStructure = new MetaStructure(szBlockNm,
+    m_p_MetaType = new MetaType(szBlockNm,
                                           eStructure,
                                           eCppPart,
                                           nullptr);
     
-    m_pMetaGraph->vAppendStructure(m_p_MetaStructure);
+    m_pMetaGraph->vAddMetaType(m_p_MetaType);
   }
 }
 
@@ -1496,7 +1496,7 @@ void Vortex::vClassAscend(void)
   m_bInClass = false;
   m_sClassNm = ""_Stz;
 
-  m_p_MetaStructure  = nullptr;
+  m_p_MetaType  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
