@@ -14,12 +14,12 @@ namespace Reflection
     MetaType*     m_p_OuterType;   // outer/containing type
 
     s32           m_sTypeNm;       // name of this type
-    eMS           m_eStructure;    // kind of structure
+    eMT           m_eMetaType;     // kind of type
     eCP           m_eCppPart;      // c++ part
   
     EnameSet*     m_pTplParams;    // set of template parameters for this type
   
-    MetaInherits* m_pMetaInherits;
+    MetaInherits* m_pMetaInherits; // set of inherited base types
 
     i8            m_nSize;         // rolled up size of this structure
 
@@ -30,7 +30,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaType(Stz* szTypeNm, eMS eStructure, eCP eCppPart,
+    MetaType(Stz* szTypeNm, eMT eMetaType, eCP eCppPart,
              MetaType* p_OuterType);
    ~MetaType(void) noexcept(false);
 
@@ -40,8 +40,7 @@ namespace Reflection
 
     MetaInherits* pInherits(void);
 
-    eMS  eStructure(void);
-    void vStructure(eMS eStructure);
+    eMT eMetaType(void);
 
     MetaType* p_OuterType(void);
   

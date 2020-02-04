@@ -11,7 +11,7 @@ namespace Reflection
   {
   public:
     s32 m_sBlockNm;  // name of this meta block
-    eMS m_eBlock;    // kind of meta block
+    eMT m_eBlock;    // kind of meta block
 
     i8  m_nSize;     // rolled up size of this block
 
@@ -22,11 +22,11 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaBlock(Stz* szBlockNm, eMS eBlock);
+    MetaBlock(Stz* szBlockNm, eMT eBlock);
    ~MetaBlock(void) noexcept(false);
   
-    eMS  eBlock(void);
-    void vBlock(eMS eBlock);
+    eMT  eBlock(void);
+    void vBlock(eMT eBlock);
   
     void vPrint(i8 i_Tab);
   

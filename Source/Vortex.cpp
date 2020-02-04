@@ -329,7 +329,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vMetaTypePush(sClassNm,MS_LINEAR,CP_CLASS);
+  vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS);
   vClassDescend(sClassNm);
   
   if (m_oTplTerms.nItems()) {
@@ -766,7 +766,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
-    vMetaTypePush(sStructNm,MS_LINEAR,CP_STRUCT);
+    vMetaTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
     vParseBraces("{"_Stz,false);
     vMetaTypePop();
 
@@ -807,7 +807,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   // 5) struct <blockNm> { ... } ;
   if (xTkn.bSame("{"_Stz)) {
     
-    vMetaTypePush(xTkn.szTerm(),MS_LINEAR,CP_STRUCT);
+    vMetaTypePush(xTkn.szTerm(),MT_LINEAR,CP_STRUCT);
     vParseBraces(xTkn.szTerm(),true);
     vMetaTypePop();
     
@@ -902,7 +902,7 @@ void Vortex::vParseUnion(Stz* szSawTerm)
     vGetExpectedToken(xTkn,"{"_Stz);
   }
   
-  vMetaTypePush(sUnionNm,MS_UNION,CP_UNION);
+  vMetaTypePush(sUnionNm,MT_UNION,CP_UNION);
   vParseBraces("{"_Stz,true);
   vMetaTypePop();
 }
@@ -1229,7 +1229,7 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
   
   if (m_oTplTerms.nItems()) {
     m_p_MetaType = new MetaType(szClassNm,
-                                MS_TEMPLATE,
+                                MT_TEMPLATE,
                                 CP_TEMPLATE_CLASS,
                                 m_p_MetaType);
     
@@ -1237,7 +1237,7 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
   }
   else {
     m_p_MetaType = new MetaType(szClassNm,
-                                MS_LINEAR,
+                                MT_LINEAR,
                                 CP_CLASS,
                                 m_p_MetaType);
   }
@@ -1251,7 +1251,7 @@ void Vortex::vMetaTypeNew_struct(Stz* szStructNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_p_MetaType = new MetaType(szStructNm,
-                              MS_LINEAR,
+                              MT_LINEAR,
                               CP_STRUCT,
                               m_p_MetaType);
 }
@@ -1264,7 +1264,7 @@ void Vortex::vMetaTypeNew_union(Stz* szUnionNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_p_MetaType = new MetaType(szUnionNm,
-                              MS_UNION,
+                              MT_UNION,
                               CP_UNION,
                               m_p_MetaType);
 }
@@ -1284,7 +1284,7 @@ void Vortex::vMetaTypePop(void)
 /*----------------------------------------------------------------------------*/
 /* create and push new type                                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaTypePush(Stz* szTypeNm, eMS eStructure, eCP eCppPart)
+void Vortex::vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 

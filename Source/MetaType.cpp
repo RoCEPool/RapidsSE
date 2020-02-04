@@ -18,7 +18,7 @@ __aFooterFunction(MetaType)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaType::MetaType(Stz* szTypeNm,
-                   eMS eStructure,
+                   eMT eMetaType,
                    eCP eCppPart,
                    MetaType* p_OuterType)
 : Object(CN_METATYPE)
@@ -28,7 +28,7 @@ MetaType::MetaType(Stz* szTypeNm,
   m_p_OuterType   = p_OuterType;
 
   m_sTypeNm       = szTypeNm;
-  m_eStructure    = eStructure;
+  m_eMetaType     = eMetaType;
   m_eCppPart      = eCppPart;
   
   m_pTplParams    = nullptr;
@@ -107,23 +107,13 @@ MetaType* MetaType::p_OuterType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get structure kind                                                         */
+/* get meta type kind                                                         */
 /*----------------------------------------------------------------------------*/
-eMS MetaType::eStructure(void)
+eMT MetaType::eMetaType(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
-  return m_eStructure;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set structure kind                                                         */
-/*----------------------------------------------------------------------------*/
-void MetaType::vStructure(eMS eStructure)
-{
-  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
-    
-  m_eStructure = eStructure;
+  return m_eMetaType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +127,7 @@ void MetaType::vPrint(i8 i_Tab)
   vTrace("%sMetaType %6s %6s %lldB %16s "_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-          aMS[m_eStructure]->azChar(),
+         aMT[m_eMetaType]->azChar(),
          aCP[m_eCppPart]->azChar(),
          m_nSize,
          

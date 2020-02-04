@@ -10,7 +10,7 @@ enum eNE // next entry
   /*  2 */ NE_NEXT_LEFT_RIGHT,
   /*  3 */ NE_NEXT_NONE,
   /*  4 */ NE_NEXT_EXIT,
-  /*  5 */ NE_ENUMS_
+  /*  5 */ NE_ENUMT_
 };
 
 static Stz* aNE[]
@@ -20,7 +20,7 @@ static Stz* aNE[]
   /*  2 */ "NEXT_LEFT_RIGHT"_Stz,
   /*  3 */ "NEXT_NONE"_Stz,
   /*  4 */ "NEXT_EXIT"_Stz,
-  /*  5 */ "ENUMS_"_Stz
+  /*  5 */ "ENUMT_"_Stz
 };
 
 /*============================================================================*/

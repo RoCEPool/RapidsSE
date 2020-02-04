@@ -133,7 +133,7 @@ namespace Utilities
     void vMetaTypeNew_struct(Stz* szStructNm);
     void vMetaTypeNew_union(Stz* szUnionNm);
     void vMetaTypePop(void);
-    void vMetaTypePush(Stz* szTypeNm, eMS eStructure, eCP eCppPart);
+    void vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms

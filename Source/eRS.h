@@ -17,7 +17,7 @@ enum eRS // response kind
   /*  8 */ RS_NODE_ZERO,
   /*  9 */ RS_QUEUE_ROWS,
   
-  /* 10 */ RS_ENUMS_
+  /* 10 */ RS_ENUMT_
 };
 
 static Stz* aRS[]
@@ -34,7 +34,7 @@ static Stz* aRS[]
   /*  8 */ "NODE_ZERO"_Stz,
   /*  9 */ "QUEUE_ROWS"_Stz,
   
-  /* 10 */ "ENUMS_"_Stz
+  /* 10 */ "ENUMT_"_Stz
 };
 
 /*============================================================================*/

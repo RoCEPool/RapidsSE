@@ -17,7 +17,7 @@ __aFooterFunction(MetaBlock)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaBlock::MetaBlock(Stz* szBlockNm, eMS eBlock)
+MetaBlock::MetaBlock(Stz* szBlockNm, eMT eBlock)
 : Object(CN_METABLOCK)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
@@ -50,7 +50,7 @@ MetaBlock::~MetaBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-eMS MetaBlock::eBlock(void)
+eMT MetaBlock::eBlock(void)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
@@ -60,7 +60,7 @@ eMS MetaBlock::eBlock(void)
 /*----------------------------------------------------------------------------*/
 /* set member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-void MetaBlock::vBlock(eMS eBlock)
+void MetaBlock::vBlock(eMT eBlock)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
@@ -78,7 +78,7 @@ void MetaBlock::vPrint(i8 i_Tab)
          
          Stz::szTab(i_Tab)->azChar(),
          m_sBlockNm.azChar(),
-         aMS[m_eBlock]->azChar(),
+         aMT[m_eBlock]->azChar(),
          m_nSize
          );
   
