@@ -223,11 +223,47 @@ void Vortex::vParseBase(Stz* szSawTerm)
   
   vParseInherit(szSawTerm);
   
-  vStructurePush(m_sClassNm,MS_LINEAR,CP_CLASS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse                                                                      */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseInherit(Stz* szSawTerm)
+{
+  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+
+  vDebugPoint();
+  
+  while (bGetNextToken(xTkn)) {
+    
+    Stz* szTerm = xTkn.szTerm();
+    
+    TRACE("   %s\n"_Stz,szTerm);
+
+    if (szTerm->bOneOf("private"_Stz,"protected"_Stz,"public"_Stz,nullptr)) {
+      vGetNextToken(xTkn);
+      TRACE("   %s\n"_Stz,szTerm);
+    }
+
+    Stz* szBaseClassNm = xTkn.szTerm();
+    
+    // add
+    //MetaInherit* pInherit = m_p_MetaStructure->pAddInherit(szBaseClassNm);
+    
+    vGetNextToken(xTkn);
+
+    // class base is terminated by {
+    if (szTerm->bSame("{"_Stz))
+      break;
+
+    CHECKED(szTerm->bSame(","_Stz));
+  }
 
   MetaStructure* p_Structure = pParseBraces("{"_Stz,true);
 
-  vStructurePop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,28 +298,25 @@ void Vortex::vParseClass(Stz* szSawTerm)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // detect class base clause ?
-  if (xTkn.bSame(":"_Stz)) {
-    vClassDescend(xClassNm.szTerm());
-    vParseBase(xTkn.szTerm());
-    vClassAscend();
-    return;
-  }
   
-  // detect class block ?
+  vStructurePush(xClassNm.szTerm(),MS_LINEAR,CP_CLASS);
+  vClassDescend(xClassNm.szTerm());
+
+  if (xTkn.bSame(":"_Stz)) {
+    // detect class base clause ?
+    vParseBase(xTkn.szTerm());
+  }
+  else
   if (xTkn.bSame("{"_Stz)) {
-    vClassDescend(xClassNm.szTerm());
-
-    vStructurePush(xClassNm.szTerm(),MS_LINEAR,CP_CLASS);
-
+    // detect class block ?
     MetaStructure* p_Structure = pParseBraces(xTkn.szTerm(),true);
-    vStructurePop();
-    vClassAscend();
-    return;
+  }
+  else {
+    vThrowProblem(__LINE__);
   }
 
-  vThrowProblem(__LINE__);
+  vStructurePop();
+  vClassAscend();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,47 +541,6 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse                                                                      */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseInherit(Stz* szSawTerm)
-{
-  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xTkn;
-
-  vDebugPoint();
-  
-  while (bGetNextToken(xTkn)) {
-    
-    Stz* szTerm = xTkn.szTerm();
-    
-    TRACE("   %s\n"_Stz,szTerm);
-
-    if (szTerm->bOneOf("private"_Stz,"protected"_Stz,"public"_Stz,nullptr)) {
-      vGetNextToken(xTkn);
-      TRACE("   %s\n"_Stz,szTerm);
-    }
-
-    Stz* szBaseClassNm = xTkn.szTerm();
-    
-    // add
-    //MetaInherit* pInherit = m_p_MetaStructure->pAddInherit(szBaseClassNm);
-    
-    vGetNextToken(xTkn);
-
-    // class base is terminated by {
-    if (szTerm->bSame("{"_Stz))
-      return;
-
-    CHECKED(szTerm->bSame(","_Stz));
-  }
-
-  vThrowProblem(__LINE__);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,8 +911,6 @@ MetaStructure* Vortex::pParseBraces(Stz* szSawTerm, bool bSemiTerminated)
   
   RASSERT(szSawTerm->bSame("{"_Stz));
   
-  //vStructurePush(szBlockNm,eStructure,eCppPart);
-  
   Token xTkn;
 
   while (bGetNextToken(xTkn)) {
@@ -932,7 +922,6 @@ MetaStructure* Vortex::pParseBraces(Stz* szSawTerm, bool bSemiTerminated)
       if (bSemiTerminated)
         vGetExpectedToken(xTkn,";"_Stz);
       vPartRecognised(CP_BLOCK);
-      //vStructurePop();
       return m_p_MetaStructure;;
     }
     
@@ -1498,8 +1487,6 @@ void Vortex::vClassDescend(Stz* szClassNm)
   
   RASSERT(! m_bInClass);
   
-  RASSERT(! m_p_MetaStructure);
-
   m_sClassNm = szClassNm;
   m_bInClass = true;
 }
