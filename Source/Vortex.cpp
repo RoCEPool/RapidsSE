@@ -245,7 +245,10 @@ void Vortex::vParseBase(Stz* szSawTerm)
 
      // temp discard of <...>
      if (szTerm->bSame("<"_Stz)) {
-       vDiscardBalancedAngles("<"_Stz);
+       
+       vCollectTplTerms("<"_Stz);
+       pInherit->vTplArgs(&m_oTplTerms);
+       
        vGetNextToken(xTkn);
      }
      

@@ -14,7 +14,7 @@ namespace Reflection
    
     s32           m_sMetaStructure;  // structure that is inherited
   
-    EnameSet      m_oTplArgs;        // with these template arguments
+    EnameSet*     m_pTplArgs;        // with these template arguments
 
     // must be last
     Footer m_xFooter;
@@ -27,7 +27,9 @@ namespace Reflection
    ~MetaInherit(void) noexcept(false);
   
     Stz* sMetaStructure(void);
+  
     EnameSet* pTplArgs(void);
+    void vTplArgs(EnameSet* pTplArgs);
   
     Footer* aFooter(void);
   };
