@@ -16,7 +16,7 @@ namespace Reflection
 
     s32            m_sStructureNm;  // name of this structure
     eMS            m_eStructure;    // kind of structure
-    eCP            m_ePart;         // c++ part
+    eCP            m_eCppPart;      // c++ part
   
     EnameSet*      m_pTplParams;    // set of template parameters for this structure
   
@@ -31,7 +31,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaStructure(Stz* szStructureNm, eMS eStructure, eCP ePart,
+    MetaStructure(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
                   MetaGraph* p_MetaGraph, MetaStructure* p_ParentStructure);
    ~MetaStructure(void) noexcept(false);
 

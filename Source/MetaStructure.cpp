@@ -19,7 +19,7 @@ __aFooterFunction(MetaStructure)
 /*----------------------------------------------------------------------------*/
 MetaStructure::MetaStructure(Stz* szStructureNm,
                              eMS eStructure,
-                             eCP ePart,
+                             eCP eCppPart,
                              MetaGraph* p_MetaGraph,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
@@ -31,7 +31,7 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
 
   m_sStructureNm  = szStructureNm;
   m_eStructure    = eStructure;
-  m_ePart         = ePart;
+  m_eCppPart      = eCppPart;
   
   m_pTplParams    = nullptr;
   m_pMetaInherits = nullptr;
@@ -140,7 +140,7 @@ void MetaStructure::vPrint(i8 i_Tab)
          
          Stz::szTab(i_Tab)->azChar(),
           aMS[m_eStructure]->azChar(),
-         aCP[m_ePart]->azChar(),
+         aCP[m_eCppPart]->azChar(),
          m_nSize,
          
          m_sStructureNm.azChar()
