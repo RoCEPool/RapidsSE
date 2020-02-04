@@ -181,7 +181,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_METAINHERIT
   /*    */ &Finalize::vUndefined,         // CN_METAINHERITS
   /*    */ &Finalize::vUndefined,         // CN_METAMEMBER
-  /*    */ &Finalize::vUndefined,         // CN_METASTRUCTURE
+  /*    */ &Finalize::vUndefined,         // CN_METATYPE
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   
   /*    */ &Finalize::vUndefined,         // CN__N__

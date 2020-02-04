@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Reflection,MetaStructure,CN_METASTRUCTURE)
-__aNewFunction(MetaStructure,CN_METASTRUCTURE)
-__vDeleteFunction(MetaStructure,CN_METASTRUCTURE)
+__pCastFunction(Reflection,MetaStructure,CN_METATYPE)
+__aNewFunction(MetaStructure,CN_METATYPE)
+__vDeleteFunction(MetaStructure,CN_METATYPE)
 __aFooterFunction(MetaStructure)
 
 
@@ -21,9 +21,9 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
                              eMS eStructure,
                              eCP eCppPart,
                              MetaStructure* p_ParentStructure)
-: Object(CN_METASTRUCTURE)
+: Object(CN_METATYPE)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   m_p_ParentStructure = p_ParentStructure;
 
@@ -36,9 +36,9 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
   
   m_nSize         = 0;
 
-  _checkInitialised_(CN_METASTRUCTURE);
+  _checkInitialised_(CN_METATYPE);
   
-  _postcondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
 /*----------------------------------------------------------------------------*/
 MetaStructure::~MetaStructure(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ MetaStructure::~MetaStructure(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   MetaMember* pMember = nullptr; //new MetaMember(szMemberNm,this);
     
@@ -76,7 +76,7 @@ MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
 /*----------------------------------------------------------------------------*/
 MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   if (! m_pMetaInherits)
     m_pMetaInherits = new MetaInherits(this);
@@ -91,7 +91,7 @@ MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
 /*----------------------------------------------------------------------------*/
 MetaInherits* MetaStructure::pInherits(void)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   return m_pMetaInherits;
 }
@@ -101,7 +101,7 @@ MetaInherits* MetaStructure::pInherits(void)
 /*----------------------------------------------------------------------------*/
 MetaStructure* MetaStructure::p_ParentStructure(void)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   return m_p_ParentStructure;
 }
@@ -111,7 +111,7 @@ MetaStructure* MetaStructure::p_ParentStructure(void)
 /*----------------------------------------------------------------------------*/
 eMS MetaStructure::eStructure(void)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   return m_eStructure;
 }
@@ -121,7 +121,7 @@ eMS MetaStructure::eStructure(void)
 /*----------------------------------------------------------------------------*/
 void MetaStructure::vStructure(eMS eStructure)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   m_eStructure = eStructure;
 }
@@ -131,7 +131,7 @@ void MetaStructure::vStructure(eMS eStructure)
 /*----------------------------------------------------------------------------*/
 void MetaStructure::vPrint(i8 i_Tab)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   // -- -- -- -- -- --
   vTrace("%sMetaStructure %6s %6s %lldB %16s "_Stz,
@@ -190,7 +190,7 @@ void MetaStructure::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 void MetaStructure::vRecursivePrint(i8 i_Depth)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   vPrint(i_Depth);
   
@@ -203,7 +203,7 @@ void MetaStructure::vRecursivePrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 i8 MetaStructure::nSize(void)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   return m_nSize;
 }
@@ -213,7 +213,7 @@ i8 MetaStructure::nSize(void)
 /*----------------------------------------------------------------------------*/
 Stz* MetaStructure::szStructureNm(void)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   return m_sStructureNm.szStz();
 }
@@ -223,7 +223,7 @@ Stz* MetaStructure::szStructureNm(void)
 /*----------------------------------------------------------------------------*/
 void MetaStructure::vStructureNm(Stz* szStructureNm)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   m_sStructureNm = szStructureNm;
 }
@@ -233,7 +233,7 @@ void MetaStructure::vStructureNm(Stz* szStructureNm)
 /*----------------------------------------------------------------------------*/
 EnameSet* MetaStructure::pTplParams(void)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
   return m_pTplParams;
 }
@@ -243,7 +243,7 @@ EnameSet* MetaStructure::pTplParams(void)
 /*----------------------------------------------------------------------------*/
 void MetaStructure::vTplParams(EnameSet* pTplParams)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   if (! m_pTplParams)
     m_pTplParams = new EnameSet;
