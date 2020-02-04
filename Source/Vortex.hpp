@@ -62,9 +62,10 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
   
-    bool bParseCppParts(void);
+    bool bParseAllCppParts(void);
     void vKeywordDescend(Stz* szKeyWord);
     void vParseBase(Stz* szSawTerm);
+    void vParseBraces(Stz* szSawTerm, bool bSemiTerminated);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
@@ -75,7 +76,6 @@ namespace Utilities
     void vParseHashIfdef(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
-    void vParseInherit(Stz* szSawTerm);
     bool bParseLabel(Stz* szSawTerm);
     void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm);
@@ -87,10 +87,6 @@ namespace Utilities
     void vParseUnion(Stz* szSawTerm);
     void vParseUsing(Stz* szSawTerm);
 
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // parsing of class | struct | union { ... }
-  
-    MetaStructure* pParseBraces(Stz* szSawTerm, bool bSemiTerminated);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
