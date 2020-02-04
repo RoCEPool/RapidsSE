@@ -17,13 +17,11 @@ __aFooterFunction(MetaBlock)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaBlock::MetaBlock(Stz* szBlockNm, eMS eBlock,
-                     MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock)
+MetaBlock::MetaBlock(Stz* szBlockNm, eMS eBlock, MetaBlock* p_ParentBlock)
 : Object(CN_METABLOCK)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
-  m_p_MetaGraph   = p_MetaGraph;
   m_p_ParentBlock = p_ParentBlock;
 
   m_sBlockNm = szBlockNm;

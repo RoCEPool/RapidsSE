@@ -19,24 +19,22 @@ __aFooterFunction(MetaStructure)
 /*----------------------------------------------------------------------------*/
 MetaStructure::MetaStructure(Stz* szStructureNm,
                              eMS eStructure,
-                             eCP ePart,
-                             MetaGraph* p_MetaGraph,
+                             eCP eCppPart,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
   
-  m_p_MetaGraph       = p_MetaGraph;
   m_p_ParentStructure = p_ParentStructure;
 
-  m_sStructureNm = szStructureNm;
-  m_eStructure   = eStructure;
-  m_ePart        = ePart;
+  m_sStructureNm  = szStructureNm;
+  m_eStructure    = eStructure;
+  m_eCppPart      = eCppPart;
   
-  //m_oTplArgs
+  m_pTplParams    = nullptr;
   m_pMetaInherits = nullptr;
   
-  m_nSize        = 0;
+  m_nSize         = 0;
 
   _checkInitialised_(CN_METASTRUCTURE);
   
@@ -81,7 +79,7 @@ MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
   
   if (! m_pMetaInherits)
-    m_pMetaInherits = new MetaInherits(m_p_MetaGraph,this);
+    m_pMetaInherits = new MetaInherits(this);
 
   MetaInherit* pMetaInherit = m_pMetaInherits->pAddInherit(szBaseClassNm);
   
@@ -135,14 +133,56 @@ void MetaStructure::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  vTrace("%sMetaStructure %16s %s %s %lldB\n"_Stz,
+  // -- -- -- -- -- --
+  vTrace("%sMetaStructure %6s %6s %lldB %16s "_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-         m_sStructureNm.azChar(),
-         aMS[m_eStructure]->azChar(),
-         aCP[m_ePart]->azChar(),
-         m_nSize
+          aMS[m_eStructure]->azChar(),
+         aCP[m_eCppPart]->azChar(),
+         m_nSize,
+         
+         m_sStructureNm.azChar()
          );
+  
+  // -- -- -- -- -- --
+  if (m_pTplParams) {
+    vTrace(" < "_Stz);
+          
+    i8 nArgs = m_pTplParams->nItems();
+    for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
+      if (i_Arg)
+        vTrace(" "_Stz);
+      vTrace("%s"_Stz,m_pTplParams->szName(i_Arg));
+    }
+    
+    vTrace(" >"_Stz);
+  }
+  
+  // -- -- -- -- -- --
+  if (m_pMetaInherits) {
+    vTrace(" : "_Stz);
+    for (MetaInherit* pInherit = m_pMetaInherits->pHead();
+         pInherit;
+         pInherit = pInherit->pNextItem()) {
+     
+      if (pInherit != m_pMetaInherits->pHead())
+          vTrace(", "_Stz);
+
+      vTrace("%s"_Stz,pInherit->sMetaStructure()->azChar());
+      
+      EnameSet* pTplArgs = pInherit->pTplArgs();
+      if (pTplArgs) {
+        vTrace("<"_Stz);
+        i8 nArgs = pTplArgs->nItems();
+        for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++)
+          vTrace("%s"_Stz,pTplArgs->szName(i_Arg));
+        vTrace(">"_Stz);
+      }
+    }
+  }
+  
+  // -- -- -- -- -- --
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,21 +231,24 @@ void MetaStructure::vStructureNm(Stz* szStructureNm)
 /*----------------------------------------------------------------------------*/
 /* get template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-EnameSet* MetaStructure::pTplArgs(void)
+EnameSet* MetaStructure::pTplParams(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  return & m_oTplArgs;
+  return m_pTplParams;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vTplArgs(EnameSet* pTplArgs)
+void MetaStructure::vTplParams(EnameSet* pTplParams)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  
+  if (! m_pTplParams)
+    m_pTplParams = new EnameSet;
     
-  m_oTplArgs.vCopy(pTplArgs);
+  m_pTplParams->vCopy(pTplParams);
 }
 
 /*============================================================================*/

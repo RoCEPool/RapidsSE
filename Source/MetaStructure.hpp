@@ -11,14 +11,13 @@ namespace Reflection
   {
   public:
  
-    MetaGraph*     m_p_MetaGraph;        // the _p_ sequence means not owned by
     MetaStructure* m_p_ParentStructure;  // parent structure
 
     s32            m_sStructureNm;  // name of this structure
     eMS            m_eStructure;    // kind of structure
-    eCP            m_ePart;         // c++ part
+    eCP            m_eCppPart;      // c++ part
   
-    EnameSet       m_oTplArgs;      // set of template arguments
+    EnameSet*      m_pTplParams;    // set of template parameters for this structure
   
     MetaInherits*  m_pMetaInherits;
 
@@ -31,8 +30,8 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaStructure(Stz* szStructureNm, eMS eStructure, eCP ePart,
-                  MetaGraph* p_MetaGraph, MetaStructure* p_ParentStructure);
+    MetaStructure(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
+                  MetaStructure* p_ParentStructure);
    ~MetaStructure(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
@@ -54,8 +53,8 @@ namespace Reflection
     Stz* szStructureNm(void);
     void vStructureNm(Stz* szStructureNm);
 
-    EnameSet* pTplArgs(void);
-    void vTplArgs(EnameSet* pTplArgs);
+    EnameSet* pTplParams(void);
+    void vTplParams(EnameSet* pTplParams);
   
     Footer* aFooter(void);
   };

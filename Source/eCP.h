@@ -29,6 +29,7 @@ enum eCP // c++ part
   /*    */ CP_OTHER,               // other  (to be refined)
   /*    */ CP_STATIC,              // static
   /*    */ CP_STRUCT,              // struct
+  /*    */ CP_TEMPLATE_CLASS,      // template class
   /*    */ CP_TYPEDEF,             // typedef
   /*    */ CP_UNION,               // union
   /*    */ CP_USING,               // using namespace
@@ -63,6 +64,7 @@ static Stz* aCP[]
   /*    */ "CP_OTHER"_Stz,
   /*    */ "CP_STATIC"_Stz,
   /*    */ "CP_STRUCT"_Stz,
+  /*    */ "CP_TEMPLATE_CLASS"_Stz,
   /*    */ "CP_TYPEDEF"_Stz,
   /*    */ "CP_UNION"_Stz,
   /*    */ "CP_USING"_Stz,

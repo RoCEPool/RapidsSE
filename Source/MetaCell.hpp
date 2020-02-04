@@ -10,7 +10,7 @@ namespace Reflection
   {
   public:
     MetaBlock*  m_p_MetaBlock;   // which meta block
-    MetaMember* m_p_MetaMember;  // which member
+    MetaMember* m_p_MetaMember;  // which member (in meta structure)
 
     s32         m_sCellNm;       // name of the cell
     i8          m_i_Cell;        // cell in block

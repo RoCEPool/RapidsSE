@@ -26,7 +26,7 @@ MetaInherit::MetaInherit(Stz* szStructure, MetaInherits* p_MetaInherits)
   
   m_sMetaStructure = szStructure;
   
-  // m_oTplArgs
+  m_pTplArgs       = nullptr;
   
   _checkInitialised_(CN_METAINHERIT);
   
@@ -66,8 +66,22 @@ EnameSet* MetaInherit::pTplArgs(void)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
-  return & m_oTplArgs;
+  return m_pTplArgs;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set template arguments                                                     */
+/*----------------------------------------------------------------------------*/
+void MetaInherit::vTplArgs(EnameSet* pTplArgs)
+{
+  _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
+  
+  if (!m_pTplArgs)
+    m_pTplArgs = new EnameSet;
+  
+  m_pTplArgs->vCopy(pTplArgs);
+}
+
 
 
 /*============================================================================*/

@@ -87,7 +87,6 @@ namespace Utilities
     void vParseUnion(Stz* szSawTerm);
     void vParseUsing(Stz* szSawTerm);
 
-  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
@@ -96,7 +95,8 @@ namespace Utilities
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
-    void vCollectTplTerms(Stz* szSawTerm);
+    void vCollectTplArgs(Stz* szSawTerm);
+    void vCollectTplParams(Stz* szSawTerm);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
