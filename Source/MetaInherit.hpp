@@ -9,12 +9,10 @@ namespace Reflection
                       public ListItem_t<MetaInherit>
   {
   public:
- 
-    MetaInherits* m_p_MetaInherits;  // parent member set
+    MetaInherits* m_p_MetaInherits;  // which inherits set
    
     s32           m_sMetaStructure;  // structure that is inherited
-  
-    EnameSet*     m_pTplArgs;        // with these template arguments
+    EnameSet*     m_pTplArgs;        // opt. with these template arguments
 
     // must be last
     Footer m_xFooter;

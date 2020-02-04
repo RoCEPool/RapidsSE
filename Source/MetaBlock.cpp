@@ -50,20 +50,6 @@ MetaBlock::~MetaBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a new member set with given name                                       */
-/*----------------------------------------------------------------------------*/
-MetaMember* MetaBlock::pAddMember(Stz* szMemberNm)
-{
-  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
-  
-  MetaMember* pMember = new MetaMember(szMemberNm,this);
-    
-  vAppend(pMember);
-  
-  return pMember;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get member set kind                                                        */
 /*----------------------------------------------------------------------------*/
 eMS MetaBlock::eBlock(void)

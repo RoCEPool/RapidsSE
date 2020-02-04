@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaMember.hpp - Meta Block Member                                         */
+/* MetaMember.hpp - Member Variable of a Meta Structure                       */
 /*============================================================================*/
 #pragma once
 
@@ -9,12 +9,12 @@ namespace Reflection
                      public ListItem_t<MetaMember>
   {
   public:
-    MetaBlock* m_p_ParentBlock; // tparent meta block
+    MetaStructure* m_p_MetaStructure; // which meta structure
   
     // var name
-    s32  m_sMemberNm; // name of the member variable
-    eMV  m_eVar;      // kind of var
-    i8   m_nSize;     // size of this member
+    s32  m_sMemberNm;   // name of the member variable
+    eMV  m_eMetaMember; // kind of meta var
+    i8   m_nSize;       // size of this member
 
     // MV_VAR: simple var
     s32  m_sTypeNm;   // type name (such as Footer)
@@ -23,7 +23,7 @@ namespace Reflection
     i8   m_nBits;     // no of bits if bit field;
     
     // MV_SET: nested set
-    MetaBlock* m_pNestedBlock; // nested set
+    MetaStructure* m_p_NestedStructure; // nested structure
 
     // arrays
     i8   m_nElements; // how many array elements (0 means not an array)
@@ -35,7 +35,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaMember(Stz* szMemberNm, MetaBlock* p_ParentBlock);
+    MetaMember(Stz* szMemberNm, MetaStructure* p_MetaStructure);
    ~MetaMember(void) noexcept(false);
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
@@ -52,10 +52,12 @@ namespace Reflection
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   
-    MetaBlock* p_ParentBlock(void);
+    MetaStructure* p_MetaStructure(void);
+  
     eMV  eMetaMember(void);
-    MetaBlock* pNestedBlock(void);
-    void vNestedBlock(MetaBlock* pNestedBlock);
+  
+    MetaStructure* p_NestedStructure(void);
+    void vNestedStructure(MetaStructure* p_NestedStructure);
 
     i8   nPointers(void);
     void vPointers(i8 nPointers);

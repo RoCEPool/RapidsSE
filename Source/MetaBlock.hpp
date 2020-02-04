@@ -26,8 +26,6 @@ namespace Reflection
   
     MetaBlock(Stz* szBlockNm, eMS eBlock, MetaBlock* p_ParentBlock);
    ~MetaBlock(void) noexcept(false);
-
-    MetaMember* pAddMember(Stz* szMemberNm);
   
     eMS  eBlock(void);
     void vBlock(eMS eBlock);

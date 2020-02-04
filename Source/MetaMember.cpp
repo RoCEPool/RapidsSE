@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaMember.cpp - Member Variable                                            */
+/* MetaMember.cpp - Member Variable of a Meta Structure                       */
 /*============================================================================*/
 
 #include "Reflection.h"
@@ -17,16 +17,16 @@ __aFooterFunction(MetaMember)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaMember::MetaMember(Stz* szMemberNm, MetaBlock* p_ParentBlock)
+MetaMember::MetaMember(Stz* szMemberNm, MetaStructure* p_MetaStructure)
 : Object(CN_METAMEMBER)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
-  m_p_ParentBlock = p_ParentBlock;
+  m_p_MetaStructure = p_MetaStructure;
   
   // var name
   m_sMemberNm = szMemberNm;
-  m_eVar      = MV_CELL;
+  m_eMetaMember  = MV_CELL;
   m_nSize     = 0;
 
   // MV_CELL: simple var
@@ -36,7 +36,7 @@ MetaMember::MetaMember(Stz* szMemberNm, MetaBlock* p_ParentBlock)
   m_nBits     = 0;
   
   // MV_BLOCK: nested set
-  m_pNestedBlock = nullptr;
+  m_p_NestedStructure = nullptr;
   
   // arrays
   m_nElements = 0;
@@ -52,8 +52,6 @@ MetaMember::MetaMember(Stz* szMemberNm, MetaBlock* p_ParentBlock)
 MetaMember::~MetaMember(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
-  
-  delete m_pNestedBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,11 +250,11 @@ void MetaMember::vFunPtr(bool bFunPtr)
 /*----------------------------------------------------------------------------*/
 /* get which member set this member var is within                             */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaMember::p_ParentBlock(void)
+MetaStructure* MetaMember::p_MetaStructure(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_p_ParentBlock;
+  return m_p_MetaStructure;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,27 +264,27 @@ eMV MetaMember::eMetaMember(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_eVar;
+  return m_eMetaMember;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaMember::pNestedBlock(void)
+MetaStructure* MetaMember::p_NestedStructure(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_pNestedBlock;
+  return m_p_NestedStructure;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaMember::vNestedBlock(MetaBlock* pNestedBlock)
+void MetaMember::vNestedStructure(MetaStructure* p_NestedStructure)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  m_pNestedBlock = pNestedBlock;
+  m_p_NestedStructure = p_NestedStructure;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,7 +314,7 @@ void MetaMember::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
      
-  if (MV_CELL == m_eVar)
+  if (MV_CELL == m_eMetaMember)
     vTrace("%sMember %-16s %lldB\n"_Stz,
            
            Stz::szTab(i_Tab)->azChar(),
@@ -349,8 +347,8 @@ void MetaMember::vRecursivePrint(i8 i_Depth)
   
   vPrint(i_Depth);
   
-  if (MV_BLOCK == m_eVar)
-    m_pNestedBlock->vRecursivePrint(i_Depth + 1);
+  if (MV_BLOCK == m_eMetaMember)
+    m_p_NestedStructure->vRecursivePrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
