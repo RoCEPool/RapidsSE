@@ -47,13 +47,13 @@ Vortex::Vortex(void)
   m_iNextStruct  = 0;
   m_iNextUnion   = 0;
 
-  m_p_MetaType  = nullptr;
-  m_p_MetaType  = nullptr;
+  m_p_MetaType   = nullptr;
   m_p_MetaMember = nullptr;
   m_p_ConstSet   = m_pMetaGraph->pConstSet();
 
   //m_oOtherTerms
-  
+  //m_oTplTerms
+
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -211,7 +211,7 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* parse within:                                                              */
+/* parse: CLASS <classNm> : _^_ ...                                           */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseBase(Stz* szSawTerm)
 {
@@ -264,7 +264,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse:  { ... _^_ ... } [ ; ]                                              */
+/* parse:  { _^_ ... } [ ; ]                                                  */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseBraces(Stz* szSawTerm, bool bSemiTerminated)
 {
@@ -297,7 +297,7 @@ void Vortex::vParseBraces(Stz* szSawTerm, bool bSemiTerminated)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse  CLASS _^_ <name> : ...  | { ...                        */
+/* parse: CLASS _^_ <name> : ...  | { ...                                     */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClass(Stz* szSawTerm)
 {
@@ -329,7 +329,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vStructurePush(sClassNm,MS_LINEAR,CP_CLASS);
+  vMetaTypePush(sClassNm,MS_LINEAR,CP_CLASS);
   vClassDescend(sClassNm);
   
   if (m_oTplTerms.nItems()) {
@@ -347,12 +347,12 @@ void Vortex::vParseClass(Stz* szSawTerm)
     vThrowProblem(__LINE__);
   }
 
-  vStructurePop();
+  vMetaTypePop();
   vClassAscend();
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse [STATIC] CONST _^_ ... ;                                             */
+/* parse: [STATIC] CONST _^_ ... ;                                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseConst(Stz* szSawTerm)
 {
@@ -395,7 +395,7 @@ void Vortex::vParseConst(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse ENUM _^_ ... ;                                                       */
+/* parse: ENUM _^_ ... ;                                                      */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseEnum(Stz* szSawTerm)
 {
@@ -410,7 +410,7 @@ void Vortex::vParseEnum(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse FRIEND _^_ ... ;                                                     */
+/* parse: FRIEND _^_ ... ;                                                    */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFriend(Stz* szSawTerm)
 {
@@ -427,7 +427,7 @@ void Vortex::vParseFriend(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                 */
+/* parse: # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(Stz* szSawTerm)
 {
@@ -468,7 +468,7 @@ void Vortex::vParseHash(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within #, parse DEFINE _^_ ... ENDDEFINE                                   */
+/* parse: # DEFINE _^_ ... ENDDEFINE                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashDefine(Stz* szSawTerm)
 {
@@ -488,7 +488,7 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within #, parse IF _^_ ... #ENDIF                                          */
+/* parse: # IF _^_ ... #ENDIF                                                 */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIf(Stz* szSawTerm)
 {
@@ -508,7 +508,7 @@ void Vortex::vParseHashIf(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within #, parse IF _^_ ... #ENDIF                                          */
+/* parse: # IF _^_ ... #ENDIF                                                 */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIfdef(Stz* szSawTerm)
 {
@@ -528,7 +528,7 @@ void Vortex::vParseHashIfdef(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within #, parse INCLUDE _^_ <filePath>                                     */
+/* parse: # INCLUDE _^_ <filePath>                                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashInclude(Stz* szSawTerm)
 {
@@ -548,7 +548,7 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within #, parse # PRAGMA _^_ ONCE                                          */
+/* parse: # PRAGMA _^_ ONCE                                                   */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashPragma(Stz* szSawTerm)
 {
@@ -576,7 +576,7 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within block, skip a label i.e. private|protected|public :                 */
+/* skip a label i.e. private|protected|public :                               */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseLabel(Stz* szSawTerm)
 {
@@ -610,7 +610,7 @@ bool Vortex::bParseLabel(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse NAMESPACE _^_ <name> { <parts> }                                     */
+/* parse: NAMESPACE _^_ <name> { <parts> }                                    */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespace(Stz* szSawTerm)
 {
@@ -650,7 +650,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse <other> _^_ <term> ...                                  */
+/* parse: <other> _^_ <term> ...                                              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseOther(Stz* szSawTerm)
 {
@@ -691,7 +691,7 @@ void Vortex::vParseOther(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse ;                                                                    */
+/* parse: ; _^_                                                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseSemicolon(Stz* szSawTerm)
 {
@@ -704,7 +704,7 @@ void Vortex::vParseSemicolon(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse STATIC CONST ... | ...                                               */
+/* parse: STATIC _^_ CONST ... | ...                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStatic(Stz* szSawTerm)
 {
@@ -731,7 +731,7 @@ void Vortex::vParseStatic(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse STRUCT { ...                                                         */
+/* parse: STRUCT _^_ { ...                                                    */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStruct(Stz* szSawTerm)
 {
@@ -766,9 +766,9 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
-    vStructurePush(sStructNm,MS_LINEAR,CP_STRUCT);
+    vMetaTypePush(sStructNm,MS_LINEAR,CP_STRUCT);
     vParseBraces("{"_Stz,false);
-    vStructurePop();
+    vMetaTypePop();
 
     // 1) struct { ... } ;
     vGetNextToken(xTkn);
@@ -807,9 +807,9 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   // 5) struct <blockNm> { ... } ;
   if (xTkn.bSame("{"_Stz)) {
     
-    vStructurePush(xTkn.szTerm(),MS_LINEAR,CP_STRUCT);
+    vMetaTypePush(xTkn.szTerm(),MS_LINEAR,CP_STRUCT);
     vParseBraces(xTkn.szTerm(),true);
-    vStructurePop();
+    vMetaTypePop();
     
     return;
   }
@@ -823,7 +823,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse TEMPLATE _^_ < ... > CLASS ...  | <other> ...                        */
+/* parse: TEMPLATE _^_ < ... > CLASS ...  | <other> ...                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTemplate(Stz* szSawTerm)
 {
@@ -854,7 +854,7 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse TYPEDEF _^_ ... ;                                                    */
+/* parse: TYPEDEF _^_ ... ;                                                   */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTypedef(Stz* szSawTerm)
 {
@@ -871,7 +871,7 @@ void Vortex::vParseTypedef(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse UNION  { ...                                                         */
+/* parse: UNION _^_ { ...                                                     */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUnion(Stz* szSawTerm)
 {
@@ -902,13 +902,13 @@ void Vortex::vParseUnion(Stz* szSawTerm)
     vGetExpectedToken(xTkn,"{"_Stz);
   }
   
-  vStructurePush(sUnionNm,MS_UNION,CP_UNION);
+  vMetaTypePush(sUnionNm,MS_UNION,CP_UNION);
   vParseBraces("{"_Stz,true);
-  vStructurePop();
+  vMetaTypePop();
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse USING _^_ NAMESPACE <name> ;                                         */
+/* parse: USING _^_ NAMESPACE <name> ;                                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUsing(Stz* szSawTerm)
 {
@@ -1191,13 +1191,8 @@ void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
 
 }
 
-
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                              term skipping                                 */
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-
 /*----------------------------------------------------------------------------*/
-/* skip till given term                                                       */
+/* discard terms till given term                                              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 {
@@ -1222,13 +1217,13 @@ void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                               meta structure                               */
+/*                                meta type                                   */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* create new meta structure for c++ class                                    */
+/* create new meta type for a c++ class                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vStructureNew_class(Stz* szClassNm)
+void Vortex::vMetaTypeNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1249,9 +1244,9 @@ void Vortex::vStructureNew_class(Stz* szClassNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create new meta structure for c++ struct                                   */
+/* create new meta type for a c++ struct                                      */
 /*----------------------------------------------------------------------------*/
-void Vortex::vStructureNew_struct(Stz* szStructNm)
+void Vortex::vMetaTypeNew_struct(Stz* szStructNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1262,9 +1257,9 @@ void Vortex::vStructureNew_struct(Stz* szStructNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create new meta structure for c++ union                                    */
+/* create new meta type for a c++ union                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vStructureNew_union(Stz* szUnionNm)
+void Vortex::vMetaTypeNew_union(Stz* szUnionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1275,9 +1270,9 @@ void Vortex::vStructureNew_union(Stz* szUnionNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop at structure end                                                       */
+/* pop to outer type                                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vStructurePop(void)
+void Vortex::vMetaTypePop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -1287,22 +1282,24 @@ void Vortex::vStructurePop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push new structure                                                         */
+/* create and push new type                                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vStructurePush(Stz* szBlockNm, eMS eStructure, eCP eCppPart)
+void Vortex::vMetaTypePush(Stz* szTypeNm, eMS eStructure, eCP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_pMetaGraph);
   
   if (m_p_MetaType) {
-    m_p_MetaType = new MetaType(szBlockNm,
+    // creating a new nested type (created inside current type)
+    m_p_MetaType = new MetaType(szTypeNm,
                                 eStructure,
                                 eCppPart,
                                 m_p_MetaType);
   }
   else {
-    m_p_MetaType = new MetaType(szBlockNm,
+    // creating a new top-level type (not nested)
+    m_p_MetaType = new MetaType(szTypeNm,
                                 eStructure,
                                 eCppPart,
                                 nullptr);

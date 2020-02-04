@@ -34,29 +34,29 @@ namespace Utilities
     s256        m_sSourcePath;   // .h/hpp source path
     i8          m_nSources;      // sources so far
     Input*      m_pInput;        // input token stream of source file
-    bool        m_bPrint;        // print
+    bool        m_bPrint;        // print activity
     bool        m_bTrace;        // trace activity
  
     // output section
   
     File*       m_pOutputFile;   // output file
-    MetaGraph*  m_pMetaGraph;    // the metagraph that is created
+    MetaGraph*  m_pMetaGraph;    // the metagraph that is being created
   
     // working section
   
-    s48K        m_sFragment;     // top-down fragment of tokens
+    s48K        m_sFragment;     // top-down fragment of source tokens
 
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
   
-    i8          m_iNextStruct;   // next anonymous struct
-    i8          m_iNextUnion;    // next anonymous union
+    i8          m_iNextStruct;   // next anonymous c++ struct
+    i8          m_iNextUnion;    // next anonymous c++ union
 
-    MetaType* m_p_MetaType;  // current working meta block
+    MetaType*   m_p_MetaType;    // current working meta type
     MetaMember* m_p_MetaMember;  // current working meta member
-    ConstSet*   m_p_ConstSet;    // set of static const i8's
+    ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oOtherTerms;   // working set of collected other terms
     EnameSet    m_oTplTerms;     // working set of collected template terms
@@ -127,13 +127,13 @@ namespace Utilities
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // meta structure
+    // meta type
     
-    void vStructureNew_class(Stz* szClassNm);
-    void vStructureNew_struct(Stz* szStructNm);
-    void vStructureNew_union(Stz* szUnionNm);
-    void vStructurePop(void);
-    void vStructurePush(Stz* szBlockNm, eMS eStructure, eCP eCppPart);
+    void vMetaTypeNew_class(Stz* szClassNm);
+    void vMetaTypeNew_struct(Stz* szStructNm);
+    void vMetaTypeNew_union(Stz* szUnionNm);
+    void vMetaTypePop(void);
+    void vMetaTypePush(Stz* szTypeNm, eMS eStructure, eCP eCppPart);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
