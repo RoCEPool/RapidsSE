@@ -239,7 +239,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
      Stz* szBaseClassNm = xTkn.szTerm();
      
      // add
-     //MetaInherit* pInherit = m_p_MetaStructure->pAddInherit(szBaseClassNm);
+     MetaInherit* pInherit = m_p_MetaStructure->pAddInherit(szBaseClassNm);
      
      vGetNextToken(xTkn);
 

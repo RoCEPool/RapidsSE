@@ -51,7 +51,7 @@ MetaInherits::~MetaInherits(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 MetaInherit* MetaInherits::pAddInherit(Stz* szBaseClassNm)
 {
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAINHERITS,_FOOTER_);
   
   MetaInherit* pMetaInherit = new MetaInherit(szBaseClassNm,this);
 
@@ -59,7 +59,6 @@ MetaInherit* MetaInherits::pAddInherit(Stz* szBaseClassNm)
   
   return pMetaInherit;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
