@@ -13,16 +13,16 @@ namespace Reflection
   
     // var name
     s32  m_sMemberNm;   // name of the member variable
-    eMV  m_eMetaMember; // kind of meta var
+    eMM  m_eMetaMember; // kind of meta member
     i8   m_nSize;       // size of this member
 
-    // MV_VAR: simple var
-    s32  m_sTypeNm;   // type name (such as Footer)
-    i8   m_nPointers; // number of asterisks after the type name
-    bool m_bFunPtr;   // is this variable a function pointer?
-    i8   m_nBits;     // no of bits if bit field;
+    // MM_VAR: simple var
+    s32  m_sTypeNm;     // type name (such as i8, Footer, List_t<..>)
+    i8   m_nPointers;   // number of asterisks after the type name
+    bool m_bFunPtr;     // is this member a function pointer?
+    i8   m_nBits;       // no of bits if bit field;
     
-    // MV_SET: nested set
+    // MM_SET: nested set
     MetaStructure* m_p_NestedStructure; // nested structure
 
     // arrays
@@ -54,7 +54,7 @@ namespace Reflection
   
     MetaStructure* p_MetaStructure(void);
   
-    eMV  eMetaMember(void);
+    eMM  eMetaMember(void);
   
     MetaStructure* p_NestedStructure(void);
     void vNestedStructure(MetaStructure* p_NestedStructure);

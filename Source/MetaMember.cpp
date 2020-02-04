@@ -25,17 +25,17 @@ MetaMember::MetaMember(Stz* szMemberNm, MetaStructure* p_MetaStructure)
   m_p_MetaStructure = p_MetaStructure;
   
   // var name
-  m_sMemberNm = szMemberNm;
-  m_eMetaMember  = MV_CELL;
-  m_nSize     = 0;
+  m_sMemberNm   = szMemberNm;
+  m_eMetaMember = MM_SIMPLE;
+  m_nSize       = 0;
 
-  // MV_CELL: simple var
+  // MM_SIMPLE: simple var
   m_sTypeNm   = C_NO_NAME;
   m_nPointers = 0;
   m_bFunPtr   = false;
   m_nBits     = 0;
   
-  // MV_BLOCK: nested set
+  // MM_STRUCTURE: nested structure
   m_p_NestedStructure = nullptr;
   
   // arrays
@@ -258,9 +258,9 @@ MetaStructure* MetaMember::p_MetaStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get var kind                                                               */
+/* get member kind                                                            */
 /*----------------------------------------------------------------------------*/
-eMV MetaMember::eMetaMember(void)
+eMM MetaMember::eMetaMember(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
@@ -268,7 +268,7 @@ eMV MetaMember::eMetaMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the nested set                                                         */
+/* get the nested structure                                                   */
 /*----------------------------------------------------------------------------*/
 MetaStructure* MetaMember::p_NestedStructure(void)
 {
@@ -314,7 +314,7 @@ void MetaMember::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
      
-  if (MV_CELL == m_eMetaMember)
+  if (MM_SIMPLE == m_eMetaMember)
     vTrace("%sMember %-16s %lldB\n"_Stz,
            
            Stz::szTab(i_Tab)->azChar(),
@@ -347,7 +347,7 @@ void MetaMember::vRecursivePrint(i8 i_Depth)
   
   vPrint(i_Depth);
   
-  if (MV_BLOCK == m_eMetaMember)
+  if (MM_STRUCTURE == m_eMetaMember)
     m_p_NestedStructure->vRecursivePrint(i_Depth + 1);
 }
 
