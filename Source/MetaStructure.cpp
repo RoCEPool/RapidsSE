@@ -29,14 +29,14 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
   m_p_MetaGraph       = p_MetaGraph;
   m_p_ParentStructure = p_ParentStructure;
 
-  m_sStructureNm = szStructureNm;
-  m_eStructure   = eStructure;
-  m_ePart        = ePart;
+  m_sStructureNm  = szStructureNm;
+  m_eStructure    = eStructure;
+  m_ePart         = ePart;
   
-  //m_oTplArgs
+  m_pTplParams    = nullptr;
   m_pMetaInherits = nullptr;
   
-  m_nSize        = 0;
+  m_nSize         = 0;
 
   _checkInitialised_(CN_METASTRUCTURE);
   
@@ -215,21 +215,24 @@ void MetaStructure::vStructureNm(Stz* szStructureNm)
 /*----------------------------------------------------------------------------*/
 /* get template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-EnameSet* MetaStructure::pTplArgs(void)
+EnameSet* MetaStructure::pTplParams(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  return & m_oTplArgs;
+  return m_pTplParams;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vTplArgs(EnameSet* pTplArgs)
+void MetaStructure::vTplParams(EnameSet* pTplParams)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  
+  if (! m_pTplParams)
+    m_pTplParams = new EnameSet;
     
-  m_oTplArgs.vCopy(pTplArgs);
+  m_pTplParams->vCopy(pTplParams);
 }
 
 /*============================================================================*/

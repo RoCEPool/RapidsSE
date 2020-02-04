@@ -18,7 +18,7 @@ namespace Reflection
     eMS            m_eStructure;    // kind of structure
     eCP            m_ePart;         // c++ part
   
-    EnameSet       m_oTplArgs;      // set of template arguments
+    EnameSet*      m_pTplParams;    // set of template parameters for this structure
   
     MetaInherits*  m_pMetaInherits;
 
@@ -54,8 +54,8 @@ namespace Reflection
     Stz* szStructureNm(void);
     void vStructureNm(Stz* szStructureNm);
 
-    EnameSet* pTplArgs(void);
-    void vTplArgs(EnameSet* pTplArgs);
+    EnameSet* pTplParams(void);
+    void vTplParams(EnameSet* pTplParams);
   
     Footer* aFooter(void);
   };
