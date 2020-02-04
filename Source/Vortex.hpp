@@ -90,11 +90,7 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // parsing of class | struct | union { ... }
   
-    MetaStructure* pParseBraces(Stz* szSawTerm,
-                                Stz* szStructureNm,
-                                eMS  eStructure,
-                                eCP  eCppPart,
-                                bool bSemiTerminated);
+    MetaStructure* pParseBraces(Stz* szSawTerm, bool bSemiTerminated);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection

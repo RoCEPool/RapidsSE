@@ -225,11 +225,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
   
   vStructurePush(m_sClassNm,MS_LINEAR,CP_CLASS);
 
-  MetaStructure* p_Structure = pParseBraces("{"_Stz,
-                                               m_sClassNm,
-                                               MS_LINEAR,
-                                               CP_CLASS,
-                                               true);
+  MetaStructure* p_Structure = pParseBraces("{"_Stz,true);
 
   vStructurePop();
 }
@@ -281,11 +277,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
     vStructurePush(xClassNm.szTerm(),MS_LINEAR,CP_CLASS);
 
-    MetaStructure* p_Structure = pParseBraces(xTkn.szTerm(),
-                                                 xClassNm.szTerm(),
-                                                 MS_LINEAR,
-                                                 CP_CLASS,
-                                                 true);
+    MetaStructure* p_Structure = pParseBraces(xTkn.szTerm(),true);
     vStructurePop();
     vClassAscend();
     return;
@@ -751,12 +743,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
     vStructurePush(sStructNm,MS_LINEAR,CP_STRUCT);
-
-    MetaStructure* p_Structure = pParseBraces("{"_Stz,
-                                                 sStructNm,
-                                                 MS_LINEAR,
-                                                 CP_STRUCT,
-                                                 false);
+    MetaStructure* p_Structure = pParseBraces("{"_Stz,false);
     vStructurePop();
 
     // 1) struct { ... } ;
@@ -797,12 +784,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   if (xTkn.bSame("{"_Stz)) {
     
     vStructurePush(xTkn.szTerm(),MS_LINEAR,CP_STRUCT);
-
-    MetaStructure* p_Structure = pParseBraces(xTkn.szTerm(),
-                                                 sStructNm,
-                                                 MS_LINEAR,
-                                                 CP_STRUCT,
-                                                 true);
+    MetaStructure* p_Structure = pParseBraces(xTkn.szTerm(),true);
     vStructurePop();
     
     return;
@@ -895,13 +877,7 @@ void Vortex::vParseUnion(Stz* szSawTerm)
   }
   
   vStructurePush(sUnionNm,MS_UNION,CP_UNION);
-
-  MetaStructure* p_Structure = pParseBraces("{"_Stz,
-                                               sUnionNm,
-                                               MS_UNION,
-                                               CP_UNION,
-                                               true);
-  
+  MetaStructure* p_Structure = pParseBraces("{"_Stz,true);
   vStructurePop();
 }
 
@@ -936,11 +912,7 @@ void Vortex::vParseUsing(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse:  { ... _^_ ... } [ ; ]                                              */
 /*----------------------------------------------------------------------------*/
-MetaStructure* Vortex::pParseBraces(Stz* szSawTerm,
-                                       Stz* szBlockNm,
-                                       eMS  eStructure,
-                                       eCP  eCppPart,
-                                       bool bSemiTerminated)
+MetaStructure* Vortex::pParseBraces(Stz* szSawTerm, bool bSemiTerminated)
 {
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -949,8 +921,6 @@ MetaStructure* Vortex::pParseBraces(Stz* szSawTerm,
   
   //vStructurePush(szBlockNm,eStructure,eCppPart);
   
-  MetaStructure* p_Structure = m_p_MetaStructure;
-
   Token xTkn;
 
   while (bGetNextToken(xTkn)) {
@@ -963,7 +933,7 @@ MetaStructure* Vortex::pParseBraces(Stz* szSawTerm,
         vGetExpectedToken(xTkn,";"_Stz);
       vPartRecognised(CP_BLOCK);
       //vStructurePop();
-      return p_Structure;
+      return m_p_MetaStructure;;
     }
     
     if (bParseLabel(xTkn.szTerm()))
