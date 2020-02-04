@@ -17,7 +17,7 @@ __aFooterFunction(MetaType)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaType::MetaType(Stz* szStructureNm,
+MetaType::MetaType(Stz* szTypeNm,
                    eMS eStructure,
                    eCP eCppPart,
                    MetaType* p_ParentType)
@@ -27,7 +27,7 @@ MetaType::MetaType(Stz* szStructureNm,
   
   m_p_ParentType  = p_ParentType;
 
-  m_sStructureNm  = szStructureNm;
+  m_sTypeNm       = szTypeNm;
   m_eStructure    = eStructure;
   m_eCppPart      = eCppPart;
   
@@ -141,7 +141,7 @@ void MetaType::vPrint(i8 i_Tab)
          aCP[m_eCppPart]->azChar(),
          m_nSize,
          
-         m_sStructureNm.azChar()
+         m_sTypeNm.azChar()
          );
   
   // -- -- -- -- -- --
@@ -209,23 +209,13 @@ i8 MetaType::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get structure name                                                         */
+/* get type name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* MetaType::szStructureNm(void)
+Stz* MetaType::szTypeNm(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
-  return m_sStructureNm.szStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set structure name                                                         */
-/*----------------------------------------------------------------------------*/
-void MetaType::vStructureNm(Stz* szStructureNm)
-{
-  _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
-    
-  m_sStructureNm = szStructureNm;
+  return m_sTypeNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,11 +13,11 @@ namespace Reflection
  
     MetaType*     m_p_ParentType;  // parent structure
 
-    s32           m_sStructureNm;  // name of this structure
+    s32           m_sTypeNm;       // name of this type
     eMS           m_eStructure;    // kind of structure
     eCP           m_eCppPart;      // c++ part
   
-    EnameSet*     m_pTplParams;    // set of template parameters for this structure
+    EnameSet*     m_pTplParams;    // set of template parameters for this type
   
     MetaInherits* m_pMetaInherits;
 
@@ -30,7 +30,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaType(Stz* szStructureNm, eMS eStructure, eCP eCppPart,
+    MetaType(Stz* szTypeNm, eMS eStructure, eCP eCppPart,
              MetaType* p_ParentType);
    ~MetaType(void) noexcept(false);
 
@@ -50,11 +50,10 @@ namespace Reflection
   
     i8   nSize(void);
   
-    Stz* szStructureNm(void);
-    void vStructureNm(Stz* szStructureNm);
-
     EnameSet* pTplParams(void);
     void vTplParams(EnameSet* pTplParams);
+  
+    Stz* szTypeNm(void);
   
     Footer* aFooter(void);
   };
