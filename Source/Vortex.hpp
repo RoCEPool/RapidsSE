@@ -62,7 +62,7 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
   
-    bool bParseParts(void);
+    bool bParseCppParts(void);
     void vKeywordDescend(Stz* szKeyWord);
     void vParseBase(Stz* szSawTerm);
     void vParseClass(Stz* szSawTerm);
@@ -90,11 +90,11 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // parsing of class | struct | union { ... }
   
-    MetaStructure* pParseStructure(Stz* szSawTerm,
-                                   Stz* szStructureNm,
-                                   eMS  eStructure,
-                                   eCP  ePart,
-                                   bool bSemiTerminated);
+    MetaStructure* pParseBraces(Stz* szSawTerm,
+                                Stz* szStructureNm,
+                                eMS  eStructure,
+                                eCP  eCppPart,
+                                bool bSemiTerminated);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
@@ -121,7 +121,7 @@ namespace Utilities
     void vStructureNew_struct(Stz* szStructNm);
     void vStructureNew_union(Stz* szUnionNm);
     void vStructurePop(void);
-    void vStructurePush(Stz* szBlockNm, eMS eStructure, eCP ePart);
+    void vStructurePush(Stz* szBlockNm, eMS eStructure, eCP eCppPart);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
@@ -150,7 +150,7 @@ namespace Utilities
      void vNamepaceAscend(void);
      void vNamepaceDescend(Stz* szNamespaceNm);
      void vOtherTermsReset(void);
-     void vPartRecognised(eCP ePart);
+     void vPartRecognised(eCP eCppPart);
      void vThrowProblem(i8 i_Problem);
      void vTplTermsReset(void);
 
