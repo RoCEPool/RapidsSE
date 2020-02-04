@@ -135,7 +135,7 @@ void MetaStructure::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  vTrace("%sMetaStructure %16s %s %s %lldB\n"_Stz,
+  vTrace("%sMetaStructure %16s %s %s %lldB"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
          m_sStructureNm.azChar(),
@@ -143,6 +143,21 @@ void MetaStructure::vPrint(i8 i_Tab)
          aCP[m_ePart]->azChar(),
          m_nSize
          );
+  
+  if (m_pMetaInherits) {
+    vTrace(" : "_Stz);
+    for (MetaInherit* pInherit = m_pMetaInherits->pHead();
+         pInherit;
+         pInherit = pInherit->pNextItem()) {
+     
+      if (pInherit != m_pMetaInherits->pHead())
+          vTrace(", "_Stz);
+
+      vTrace("%s"_Stz,pInherit->sMetaStructure()->azChar());
+    }
+  }
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
