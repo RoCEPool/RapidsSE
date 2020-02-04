@@ -9,7 +9,7 @@ namespace Reflection
                    public ListItem_t<MetaCell>
   {
   public:
-    MetaBlock*  m_p_MetaBlock;   // which meta block
+    MetaBlock*  m_p_WithinBlock; // this cell is within which meta block
     MetaMember* m_p_MetaMember;  // which member (in meta structure)
 
     s32         m_sCellNm;       // name of the cell
@@ -25,11 +25,11 @@ namespace Reflection
     void  operator delete(void*);
   
     MetaCell(Stz* szCellNm, i8 i_Cell, i8 i_Offset, i8 nSize,
-             MetaBlock* p_MetaBlock, MetaMember* p_MetaMember);
+             MetaBlock* p_WithinBlock, MetaMember* p_MetaMember);
    ~MetaCell(void) noexcept(false);
   
     Stz*         szCellNm(void);
-    MetaBlock*   p_MetaBlock(void);
+    MetaBlock*   p_WithinBlock(void);
     MetaMember*  p_MetaMember(void);
     void         vPrint(i8 i_Tab);
     i8           nSize(void);

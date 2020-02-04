@@ -11,15 +11,15 @@ namespace Reflection
   {
   public:
  
-    MetaType*     m_p_OuterType;   // outer/containing type
+    MetaType*     m_p_OuterType;   // (opt) this type is within outer/containing type
 
     s32           m_sTypeNm;       // name of this type
     eMT           m_eMetaType;     // kind of type
     eCP           m_eCppPart;      // c++ part
   
-    EnameSet*     m_pTplParams;    // set of template parameters for this type
+    EnameSet*     m_pTplParams;    // template parameters of this type
   
-    MetaInherits* m_pMetaInherits; // set of inherited base types
+    MetaInherits* m_pMetaInherits; // set of inherited types
 
     i8            m_nSize;         // rolled up size of this structure
 

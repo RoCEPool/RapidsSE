@@ -9,8 +9,8 @@ namespace Reflection
                       public ListItem_t<MetaInherit>
   {
   public:
-    MetaInherits* m_p_MetaInherits; // which inherits set this inherit is in
-   
+    MetaInherits* m_p_WithinInherits; // this inherit is within which interits set
+  
     s32           m_sInheritedType; // type that is inherited
     EnameSet*     m_pTplArgs;       // opt. with these template arguments
 
@@ -21,7 +21,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaInherit(Stz* szInheritedType, MetaInherits* m_p_MetaInherits);
+    MetaInherit(Stz* szInheritedType, MetaInherits* p_WithinInherits);
    ~MetaInherit(void) noexcept(false);
   
     Stz* sInheritedType(void);

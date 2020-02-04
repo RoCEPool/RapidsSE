@@ -18,13 +18,13 @@ __aFooterFunction(MetaCell)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaCell::MetaCell(Stz* szCellNm, i8 i_Cell, i8 i_Offset, i8 nSize,
-                   MetaBlock* p_MetaBlock, MetaMember* p_MetaMember)
+                   MetaBlock* p_WithinBlock, MetaMember* p_MetaMember)
 : Object(CN_METACELL)
 {
   _precondition_(_MAGIC_,CN_METACELL,_FOOTER_);
   
-  m_p_MetaBlock  = p_MetaBlock;
-  m_p_MetaMember = p_MetaMember;
+  m_p_WithinBlock  = p_WithinBlock;
+  m_p_MetaMember   = p_MetaMember;
 
   m_sCellNm  = szCellNm;
   m_i_Cell   = i_Cell;
@@ -65,11 +65,11 @@ MetaCell::~MetaCell(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get which member set this member var is within                             */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaCell::p_MetaBlock(void)
+MetaBlock* MetaCell::p_WithinBlock(void)
 {
   _precondition_(_MAGIC_,CN_METACELL,_FOOTER_);
     
-  return m_p_MetaBlock;
+  return m_p_WithinBlock;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -8,7 +8,7 @@ enum eMM // meta member
   /*  0 */ MM_NONE=0,
   
   /*    */ MM_SIMPLE,    // simple variable
-  /*    */ MM_STRUCTURE, // structure of variables
+  /*    */ MM_COMPLEX, // structure of variables
   
   /*    */ MM_ENUMS
 };
@@ -18,7 +18,7 @@ static Stz* aMVM[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "MM_SIMPLE"_Stz,
-  /*    */ "MM_STRUCTURE"_Stz,
+  /*    */ "MM_COMPLEX"_Stz,
   
   /*    */ "ENUMS"_Stz
 };

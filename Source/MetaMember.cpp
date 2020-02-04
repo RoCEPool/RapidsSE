@@ -30,18 +30,15 @@ MetaMember::MetaMember(Stz* szMemberNm, MetaType* p_WithinType)
   m_nSize       = 0;
 
   // type specifier
-  m_sTypeNm   = C_NO_NAME;
-  m_pType     = nullptr;
-  m_pTplArgs  = nullptr;
-  m_nPointers = 0;
-  m_bFunPtr   = false;
-  
-  // nested complex type
-  m_p_NestedStructure = nullptr;
-  
+  m_sTypeNm     = C_NO_NAME;
+  m_p_MetaType  = nullptr;
+  m_pTplArgs    = nullptr;
+  m_nPointers   = 0;
+  m_bFunPtr     = false;
+    
   // fields and arrays
-  m_nBits     = 0;
-  m_nElements = 0;
+  m_nBits       = 0;
+  m_nElements   = 0;
   
   _checkInitialised_(CN_METAMEMBER);
   
@@ -250,16 +247,6 @@ void MetaMember::vFunPtr(bool bFunPtr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which meta type this member is within                                  */
-/*----------------------------------------------------------------------------*/
-MetaType* MetaMember::p_WithinType(void)
-{
-  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
-    
-  return m_p_WithinType;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get member kind                                                            */
 /*----------------------------------------------------------------------------*/
 eMM MetaMember::eMetaMember(void)
@@ -270,23 +257,23 @@ eMM MetaMember::eMetaMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the nested structure                                                   */
+/* get the type of this member                                                */
 /*----------------------------------------------------------------------------*/
-MetaType* MetaMember::p_NestedStructure(void)
+MetaType* MetaMember::p_MetaType(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_p_NestedStructure;
+  return m_p_MetaType;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the nested set                                                         */
+/* set the type of this member                                                */
 /*----------------------------------------------------------------------------*/
-void MetaMember::vNestedStructure(MetaType* p_NestedStructure)
+void MetaMember::vMetaType(MetaType* p_MetaType)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  m_p_NestedStructure = p_NestedStructure;
+  m_p_MetaType = p_MetaType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,8 +336,8 @@ void MetaMember::vRecursivePrint(i8 i_Depth)
   
   vPrint(i_Depth);
   
-  if (MM_STRUCTURE == m_eMetaMember)
-    m_p_NestedStructure->vRecursivePrint(i_Depth + 1);
+  if (MM_COMPLEX == m_eMetaMember)
+    m_p_MetaType->vRecursivePrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,6 +402,18 @@ Stz* MetaMember::szMemberNm(void)
     
   return m_sMemberNm.szStz();
 }
+
+/*----------------------------------------------------------------------------*/
+/* get which meta type this member is within                                  */
+/*----------------------------------------------------------------------------*/
+MetaType* MetaMember::p_WithinType(void)
+{
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
+    
+  return m_p_WithinType;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
