@@ -17,10 +17,11 @@ namespace Reflection
     i8   m_nSize;       // size of this member
 
     // MM_VAR: simple var
-    s32  m_sTypeNm;     // type name (such as i8, Footer, List_t<..>)
-    i8   m_nPointers;   // number of asterisks after the type name
-    bool m_bFunPtr;     // is this member a function pointer?
-    i8   m_nBits;       // no of bits if bit field;
+    s32       m_sTypeNm;     // type name (such as i8, Footer, List_t<..>)
+    EnameSet* m_pTplArgs;    // opt. with these template arguments
+    i8        m_nPointers;   // number of asterisks after the type name
+    bool      m_bFunPtr;     // is this member a function pointer?
+    i8        m_nBits;       // no of bits if bit field;
     
     // MM_SET: nested set
     MetaType* m_p_NestedStructure; // nested structure
@@ -67,6 +68,9 @@ namespace Reflection
   
     i8   nSize(void);
   
+    EnameSet* pTplArgs(void);
+    void vTplArgs(EnameSet* pTplArgs);
+
     Stz* szTypeNm(void);
     void vTypeNm(Stz* szTypeNm);
   

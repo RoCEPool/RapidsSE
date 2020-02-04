@@ -31,6 +31,7 @@ MetaMember::MetaMember(Stz* szMemberNm, MetaType* p_MetaType)
 
   // MM_SIMPLE: simple var
   m_sTypeNm   = C_NO_NAME;
+  m_pTplArgs  = nullptr;
   m_nPointers = 0;
   m_bFunPtr   = false;
   m_nBits     = 0;
@@ -359,6 +360,29 @@ i8 MetaMember::nSize(void)
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the optional template arguments                                        */
+/*----------------------------------------------------------------------------*/
+EnameSet* MetaMember::pTplArgs(void)
+{
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
+  
+  return m_pTplArgs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set template arguments                                                     */
+/*----------------------------------------------------------------------------*/
+void MetaMember::vTplArgs(EnameSet* pTplArgs)
+{
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
+  
+  if (!m_pTplArgs)
+    m_pTplArgs = new EnameSet;
+  
+  m_pTplArgs->vCopy(pTplArgs);
 }
 
 /*----------------------------------------------------------------------------*/
