@@ -57,7 +57,7 @@ rows:
 
 // drop the index
 drop index T1 Idx;
-succes 
+success
 
 // check existence of index
 lsidx T1;
