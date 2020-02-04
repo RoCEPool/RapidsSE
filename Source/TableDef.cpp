@@ -199,6 +199,12 @@ eEC TableDef::eParse(Stz* szCmd)
     pTkn = pTknVec->pCurrToken(); dPT();
   }
   
+  // did we get any columns ?
+  if (i_Col == 0) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
   // mark the last column
   pLastCol = m_pStreamDef->pGetColumn(i_Col-1);
   pLastCol->vIsLastColumn(true);
@@ -244,7 +250,7 @@ eEC TableDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   // check for duplicate column name
   // -- -- -- -- -- -- -- -- -- -- --
   
-  for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
+  for (i8 i_Search = 0; i_Search < i_Col; i_Search++) {
     Column* pCol_search = m_pStreamDef->pGetColumn(i_Search++);
     if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
       eError = EC_DUPLICATE_COLUMN;
