@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaInherit.hpp - Meta Inheritance of another MetaType                     */
+/* MetaInherit.hpp - Inheritance of another Meta Type                         */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace Reflection
   public:
     MetaInherits* m_p_MetaInherits; // which inherits set this inherit is in
    
-    s32           m_sMetaType;      // type that is inherited
+    s32           m_sInheritedType; // type that is inherited
     EnameSet*     m_pTplArgs;       // opt. with these template arguments
 
     // must be last
@@ -21,10 +21,10 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaInherit(Stz* szStructure, MetaInherits* m_p_MetaInherits);
+    MetaInherit(Stz* szInheritedType, MetaInherits* m_p_MetaInherits);
    ~MetaInherit(void) noexcept(false);
   
-    Stz* sMetaType(void);
+    Stz* sInheritedType(void);
   
     EnameSet* pTplArgs(void);
     void vTplArgs(EnameSet* pTplArgs);

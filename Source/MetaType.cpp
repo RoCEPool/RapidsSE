@@ -158,7 +158,7 @@ void MetaType::vPrint(i8 i_Tab)
       if (pInherit != m_pMetaInherits->pHead())
           vTrace(", "_Stz);
 
-      vTrace("%s"_Stz,pInherit->sMetaType()->azChar());
+      vTrace("%s"_Stz,pInherit->sInheritedType()->azChar());
       
       EnameSet* pTplArgs = pInherit->pTplArgs();
       if (pTplArgs) {

@@ -17,14 +17,14 @@ __aFooterFunction(MetaInherit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaInherit::MetaInherit(Stz* szStructure, MetaInherits* p_MetaInherits)
+MetaInherit::MetaInherit(Stz* szInheritedType, MetaInherits* p_MetaInherits)
 : Object(CN_METAINHERIT)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
   m_p_MetaInherits = p_MetaInherits;
   
-  m_sMetaType      = szStructure;
+  m_sInheritedType = szInheritedType;
   m_pTplArgs       = nullptr;
   
   _checkInitialised_(CN_METAINHERIT);
@@ -41,21 +41,17 @@ MetaInherit::~MetaInherit(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the structure that is inherited                                        */
+/* get the meta type that is inherited                                        */
 /*----------------------------------------------------------------------------*/
-Stz* MetaInherit::sMetaType(void)
+Stz* MetaInherit::sInheritedType(void)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
-  return m_sMetaType;
+  return m_sInheritedType;
 }
 
 /*----------------------------------------------------------------------------*/
