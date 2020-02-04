@@ -33,6 +33,8 @@ namespace MetaData
     IndexDef(void);
    ~IndexDef(void) noexcept(false);
   
+    static eEC eSyntax(Stz* szCmd);
+    
     Index* pIndex(void);
     void   vIndex(Index* pIndex);
     Stz*   szIndexNm(void);

@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_IndexDef(void)
 {
-  vAddStep("indexDef::parse"_Stz, &Step::vIndexDefParse);
+  vAddStep("indexDef::parse"_Stz,  &Step::vIndexDefParse);
+  vAddStep("indexDef::syntax"_Stz, &Step::vIndexDefSyntax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,6 +49,23 @@ void Step::vIndexDefParse(void)
   
   m_pDataStack->vPushPtr(pIndexDef);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexDef::syntax -- parse Create Index statement and check sytax           */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefSyntax(void)
+{
+  ENTRY(); // ENTRY("vIndexDefSyntax"_Stz);
+  
+  s4K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+  
+  eEC eResult = IndexDef::eSyntax(sCmd);
+  
+  m_pDataStack->vPushInt(eResult);
+  
   EXIT();
 }
 

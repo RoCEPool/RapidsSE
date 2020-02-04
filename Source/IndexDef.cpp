@@ -223,7 +223,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- -- --
     bool bResult = bAddIdxCol(pTable,pTkn->szTerm());
     if ( ! bResult ) {
-      eError = EC_INVALID_COMMAND;
+      eError = EC_INVALID_INDEX_COLUMN;
       goto L_RETURN;
     }
     // -- -- -- --
@@ -307,6 +307,141 @@ i8 IndexDef::iSortKeyDatum(void)
   }
   
   return nKeyDatumSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check the syntax of the Create Index command                               */
+/*----------------------------------------------------------------------------*/
+eEC IndexDef::eSyntax(Stz* szCmd)
+{
+  eEC eError = EC_NONE;
+  i8 iIndexColumns;
+  
+  // tokenise the command
+  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Index <indexNm>
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  
+  if (pTkn->bSame("unique"_Stz)) {
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
+  
+  // -- -- -- --
+  // index name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // ON
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn || ! pTkn->bSame("on"_Stz) ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <colNm> ,... )
+  
+  // -- -- -- -- --
+  // open parenth (
+  // -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn || ! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  iIndexColumns = 0;
+  for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subsequent column names, skipping over comma
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    iIndexColumns++;
+    
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken(); dPT();
+        if ( ! pTkn ) {
+          eError = EC_INVALID_COMMAND;
+          goto L_RETURN;
+        }
+      }
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+    }
+    
+    // -- -- -- --
+    // next token
+    // -- -- -- --
+    pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn ) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+  }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  if ( ! pTkn->bSame(";"_Stz) ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  if ( iIndexColumns == 0 ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+L_RETURN:
+  
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  
+  delete pTknVec;
+  
+  return eError;
 }
 
 #undef dPT

@@ -391,6 +391,7 @@ public:
 
   // index definition
   void vIndexDefParse(void);
+  void vIndexDefSyntax(void);
 
   // input
   void vInputClose(void);

@@ -178,6 +178,14 @@
   DdlLock[].grabRead
 
   //----------------------------------------------------------------------------
+  // check create index syntax
+  <cmd> IndexDef::syntax dup EC_NONE != if
+     pJob_CreateIndex <ERROR_JOB> !!logError exit
+  else
+     drop
+  then
+
+  //----------------------------------------------------------------------------
   // check if we have enough buffers
   node::checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!logError exit then
 
