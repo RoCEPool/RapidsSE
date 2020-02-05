@@ -436,9 +436,26 @@ void Vortex::vParseFunVar(Stz* szSawTerm)
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  i8 nAsterisks;
+  i8   nAsterisks;
+  i8   nElements;
+  s32  sFunVarNm;
+  bool bIsFun;
+  bool bIsFunPtr;
   
-  Stz* szEndTerm = szCollectTypeSpec(szSawTerm,nAsterisks);
+  Stz* szEndTerm = szSawTerm;
+  
+  szEndTerm = szCollectTypeSpec(szEndTerm,nAsterisks);
+  
+  szEndTerm = szCollectFunVarNm(szEndTerm,sFunVarNm,bIsFunPtr);
+  
+  if (szEndTerm->bSame(";"_Stz))
+    return;
+  
+  szEndTerm = szCollectArraySpec(szEndTerm,nElements);
+  if (nElements)
+    return;
+  
+  szEndTerm = szCollectFunSpec(szEndTerm,bIsFun);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1035,6 +1052,21 @@ Stz* Vortex::szCollectFunBody(Stz* szSawTerm)
 Stz* Vortex::szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  rbFunPtr = false;
+
+  return szSawTerm;
+  //vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect function spec: ????                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Vortex::szCollectFunSpec(Stz* szSawTerm, bool& rbIsFun)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  rbIsFun = false;
     
   return szSawTerm;
   //vThrowProblem(__LINE__);

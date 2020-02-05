@@ -118,7 +118,9 @@ namespace Utilities
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
     Stz* szCollectFunBody(Stz* szSawTerm);
-    Stz* szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr);
+    Stz* szCollectFunParams(Stz* szSawTerm);
+    Stz* szCollectFunSpec(Stz* szSawTerm, bool& rbIsFun);
+    Stz* szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbIsFunPtr);
     Stz* szCollectNoExceptSpec(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
     void vCollectTplArgs(Stz* szSawTerm);
