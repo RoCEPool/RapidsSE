@@ -472,9 +472,7 @@ void Step::vJobCreateResponseVec(void)
   ENTRY(); // ENTRY("vJobCreateResponseVec"_Stz);
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  RASSERT( ! pJob->m_xResult.m_pResponseVec );
-  pJob->m_xResult.m_pResponseVec = new ResponseVec;
+  pJob->vResponseVec(new ResponseVec);
   
   EXIT();
 }

@@ -1102,11 +1102,20 @@ Stz* Job::szResponse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get response string                                                        */
+/* set response string                                                        */
 /*----------------------------------------------------------------------------*/
 void Job::vResponse(Stz* sResponse)
 {
   m_xResult.m_xResponse.m_sResponse = sResponse;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set response vector                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vResponseVec(ResponseVec* pResonseVec)
+{
+  RASSERT( ! m_xResult.m_pResponseVec );
+  m_xResult.m_pResponseVec = pResonseVec;
 }
 
 /*----------------------------------------------------------------------------*/
