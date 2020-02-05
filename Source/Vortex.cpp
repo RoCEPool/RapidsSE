@@ -52,7 +52,7 @@ Vortex::Vortex(void)
   m_p_ConstSet   = m_pMetaGraph->pConstSet();
 
   //m_oOtherTerms
-  //m_oTplTerms
+  //m_oTplParamTerms
 
   _checkInitialised_(CN_VORTEX);
 
@@ -203,9 +203,7 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
   if (szKeyWord->bSame("typedef"_Stz))   vParseTypedef(szKeyWord);   else
   if (szKeyWord->bSame("union"_Stz))     vParseUnion(szKeyWord);     else
   if (szKeyWord->bSame("using"_Stz))     vParseUsing(szKeyWord);
-  else
-    //vParseOther(szKeyWord);
-    vParseFunVar(szKeyWord);
+  else                                   vParseOther(szKeyWord,false);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -249,8 +247,8 @@ void Vortex::vParseBase(Stz* szSawTerm)
      if (szTerm->bSame("<"_Stz)) {
        
        vCollectTplArgs("<"_Stz);
-       pInherit->vTplArgs(&m_oTplTerms);
-       m_oTplTerms.vReset();
+       pInherit->vTplArgs(&m_oTplParamTerms);
+       m_oTplParamTerms.vReset();
        
        vGetNextToken(xTkn);
      }
@@ -334,8 +332,8 @@ void Vortex::vParseClass(Stz* szSawTerm)
   vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS);
   vClassDescend(sClassNm);
   
-  if (m_oTplTerms.nItems()) {
-    m_p_MetaType->vTplParams(& m_oTplTerms);
+  if (m_oTplParamTerms.nItems()) {
+    m_p_MetaType->vTplParams(& m_oTplParamTerms);
   }
 
   if (xTkn.bSame(":"_Stz)) {
@@ -431,12 +429,14 @@ void Vortex::vParseFriend(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse: <other> _^_ <term> ...                                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFunVar(Stz* szSawTerm)
+void Vortex::vParseFunVar(Stz* szSawTerm, bool bTemplated)
 {
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vGatherFunVar(szSawTerm);
+  vGatherFunVar(szSawTerm,bTemplated);
+  
+  vPartRecognised(CP_OTHER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -665,10 +665,13 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse: <other> _^_ <term> ...                                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseOther(Stz* szSawTerm)
+void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
 {
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vParseFunVar(szSawTerm,bTemplated);
+  return;
   
   vCollectOtherTerms(szSawTerm);
   
@@ -858,12 +861,12 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   
   if (xTkn.bSame("class"_Stz)) {
     vParseClass(xTkn.szTerm());
-    m_oTplTerms.vReset();
+    m_oTplParamTerms.vReset();
     return;
   }
   
-  vParseOther(xTkn.szTerm());
-  m_oTplTerms.vReset();
+  vParseOther(xTkn.szTerm(),true);
+  m_oTplParamTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -945,13 +948,13 @@ void Vortex::vParseUsing(Stz* szSawTerm)
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                            term collection                                 */
+/*                         function / variable gathering                      */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
 /* parse: <other> _^_ <term> ...                                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVar(Stz* szSawTerm)
+void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
 {
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -967,6 +970,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm)
   roCurTkn.vCopy(szSawTerm);
   
   vGatherTypeSpec(roCurTkn,nAsterisks);
+  vTraceTypeSpecTerms();
   
   vGatherFunVarNm(roCurTkn,sFunVarNm,bIsFunPtr);
   
@@ -1030,9 +1034,15 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
   if (roCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(roCurTkn);
   }
+  else if (roCurTkn.bSame("~"_Stz)) {
+    vGetNextToken(roCurTkn);
 
+  }
+  
   // we have a <name>
-  m_oSpecTerms.vAdd(roCurTkn.szTerm());
+  rsFunVarNm = roCurTkn.szTerm();
+  
+  m_oTypeSpecTerms.vAdd(roCurTkn.szTerm());
   vGetNextToken(roCurTkn);
 }
 
@@ -1051,7 +1061,29 @@ void Vortex::vGatherFunSpec(Token& roCurTkn, bool& rbIsFun)
   rbIsFun = true;
  
   vCollectBalancedParenthesis("("_Stz);
+  
+  vGetNextToken(roCurTkn);
+
+  vGatherNoExceptSpec(roCurTkn);
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect noexcept terms: ????                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherNoExceptSpec(Token& roCurTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (! roCurTkn.bSame("("_Stz))
+    return;
+
+  vGetNextToken(roCurTkn);
+
+  vGetExpectedToken(roCurTkn,")"_Stz);
+  
+  vGetNextToken(roCurTkn);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
@@ -1060,8 +1092,8 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oSpecTerms.vReset();
-  m_oTplTerms.vReset();
+  m_oTypeSpecTerms.vReset();
+  m_oTplParamTerms.vReset();
   rnAsterisks = 0;
 
   // special case of no specifier (constructor / destructor)
@@ -1072,10 +1104,13 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
     // 2) destructor (no specifier)
     if (roCurTkn.bSame("~"_Stz))
       return;
+    // 3) typeless operator (no specifier)
+    if (roCurTkn.bSame("operator"_Stz))
+      return;
   }
   
   // we have a <name>
-  m_oSpecTerms.vAdd(roCurTkn.szTerm());
+  m_oTypeSpecTerms.vAdd(roCurTkn.szTerm());
   vGetNextToken(roCurTkn);
   
   // do we have template arguments?
@@ -1092,7 +1127,7 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
       return;
 
     // we have an asterisk
-    m_oSpecTerms.vAdd(roCurTkn.szTerm());
+    m_oTypeSpecTerms.vAdd(roCurTkn.szTerm());
     rnAsterisks++;
 
   }  while (bGetNextToken(roCurTkn));
@@ -1101,15 +1136,6 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
   
   NEVER_REACH;
 }
-
-/*----------------------------------------------------------------------------*/
-/* collect noexcept terms: ????                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vGatherNoExceptSpec(Token& roCurTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-}
-
 
 
 
@@ -1207,7 +1233,7 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplTerms.vReset();
+  m_oTplParamTerms.vReset();
   
   vFragmentMarker("@"_Stz);
   
@@ -1217,13 +1243,13 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplTerms.vAdd(xTkn.szTerm());
+    m_oTplParamTerms.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplTerms.vNamesString(sTerms);
+  m_oTplParamTerms.vNamesString(sTerms);
   
   TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
@@ -1238,7 +1264,7 @@ void Vortex::vCollectTplParams(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplTerms.vReset();
+  m_oTplParamTerms.vReset();
   
   vFragmentMarker("@"_Stz);
   
@@ -1248,13 +1274,13 @@ void Vortex::vCollectTplParams(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplTerms.vAdd(xTkn.szTerm());
+    m_oTplParamTerms.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplTerms.vNamesString(sTerms);
+  m_oTplParamTerms.vNamesString(sTerms);
   
   TRACE("  TplParams: %s\n"_Stz,sTerms.azChar());
 }
@@ -1405,13 +1431,13 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_oTplTerms.nItems()) {
+  if (m_oTplParamTerms.nItems()) {
     m_p_MetaType = new MetaType(szClassNm,
                                 MT_TEMPLATE,
                                 CP_TEMPLATE_CLASS,
                                 m_p_MetaType);
     
-    m_p_MetaType->vTplParams(&m_oTplTerms);
+    m_p_MetaType->vTplParams(&m_oTplParamTerms);
   }
   else {
     m_p_MetaType = new MetaType(szClassNm,
@@ -1770,7 +1796,7 @@ void Vortex::vGetTplArg(Token& roTerm)
   
   CHECKED(bGetNextToken(roTerm))
   
-  m_oTplTerms.vAdd(roTerm.szTerm());
+  m_oTplParamTerms.vAdd(roTerm.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1883,7 +1909,36 @@ void Vortex::vTplTermsReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTplTerms.vReset();
+  m_oTplParamTerms.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace template terms                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceTplTerms(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  s48K sTerms;
+  m_oTplParamTerms.vNamesString(sTerms);
+  
+  TRACE("  TplTerms: %s\n"_Stz,sTerms.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace type specification terms                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceTypeSpecTerms(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (!m_bTrace)
+    return;
+  
+  s48K sTerms;
+  m_oTypeSpecTerms.vNamesString(sTerms);
+  
+  TRACE("  TypeSpecTerms: %s\n"_Stz,sTerms.azChar());
 }
 
 
