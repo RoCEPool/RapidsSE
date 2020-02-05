@@ -51,7 +51,7 @@ namespace Utilities
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
     bool        m_bInTemplate;   // currently in a namespace?
-    s4K         m_sTemplate;     // current template
+    s4K         m_sTplSpec;      // current template specification
   
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
@@ -134,7 +134,7 @@ namespace Utilities
     void vCollectBalancedParenthesis(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
     void vCollectTplArgs(Stz* szSawTerm);
-    void vCollectTplParams(Stz* szSawTerm);
+    void vCollectTplSpec(Stz* szSawTerm);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
@@ -181,6 +181,8 @@ namespace Utilities
      void vNamepaceDescend(Stz* szNamespaceNm);
      void vOtherTermsReset(void);
      void vPartRecognised(eCP eCppPart);
+     void vTemplateAscend(void);
+     void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
      void vTplTermsReset(void);
      void vTraceTplTerms(void);

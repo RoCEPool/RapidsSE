@@ -21,7 +21,7 @@
     m_bInClass     ? m_sClassNm.azChar() : "", \
     m_bInClass     ? ") " : "", \
     \
-    m_bInTemplate  ? m_sTemplate.azChar() : "", \
+    m_bInTemplate  ? m_sTplSpec.azChar() : "", \
     \
     szSawTerm->azChar());
 
@@ -64,7 +64,7 @@ Vortex::Vortex(void)
   m_bInNamespace = false;
   m_sNamespaceNm = C_NO_NAME;
   m_bInTemplate  = false;
-  m_sTemplate    = C_NO_NAME;
+  m_sTplSpec     = C_NO_NAME;
 
   
   m_iNextStruct  = 0;
@@ -879,7 +879,8 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   
   vGetExpectedToken(xTkn,"<"_Stz);
   
-  vCollectTplParams("<"_Stz);
+  vCollectTplSpec("<"_Stz);
+  vTemplateDescend();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // class or other
@@ -888,12 +889,12 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   
   if (xTkn.bSame("class"_Stz)) {
     vParseClass(xTkn.szTerm());
-    m_oTplParamTerms.vReset();
+    vTemplateAscend();
     return;
   }
   
   vParseOther(xTkn.szTerm(),true);
-  m_oTplParamTerms.vReset();
+  vTemplateAscend();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1284,7 +1285,7 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all template parameters : TEMPLATE  < _^_ ... >                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplParams(Stz* szSawTerm)
+void Vortex::vCollectTplSpec(Stz* szSawTerm)
 {
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1309,7 +1310,9 @@ void Vortex::vCollectTplParams(Stz* szSawTerm)
   s48K sTerms;
   m_oTplParamTerms.vNamesString(sTerms);
   
-  TRACE("  TplParams: %s\n"_Stz,sTerms.azChar());
+  m_sTplSpec = "<"_Stz;
+  m_sTplSpec.vConcat(sTerms);
+  m_sTplSpec.vConcat("> "_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1917,6 +1920,31 @@ void Vortex::vPartRecognised(eCP eCppPart)
     TRACE("Recognised :: %s\n\n"_Stz,aCP[eCppPart]);
 
   vFragmentReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from a template                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTemplateAscend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInTemplate);
+
+  m_bInTemplate = false;
+  m_sTplSpec    = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into template                                                      */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTemplateDescend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInTemplate);
+  
+  m_bInTemplate = true;
 }
 
 /*----------------------------------------------------------------------------*/
