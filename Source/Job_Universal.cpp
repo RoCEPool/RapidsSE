@@ -253,27 +253,6 @@ Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
 }
 
 /*----------------------------------------------------------------------------*/
-/* print success                                                              */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Universal_post(Job* pJob)
-{
-  vTrace("I logNote here\n"_Stz);
-  
-  i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
-  
-  if (pJob->bHasError()) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
-  
-  RASSERT(iResponses == AM::nDefinedNodes());
-  
-  vTrace("success: 0 rows affected\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple)
