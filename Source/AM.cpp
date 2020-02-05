@@ -1397,10 +1397,6 @@ DicStack* AM::pTaskDicStack(void) {
   return pThisTLSTask()->pForth()->pDicStack();;
 }
 
-bool AM::bJobHasError(Job* pJob) {
-  return pJob->bHasError();
-}
-
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
   pJob->pEnameSet()->vAdd("<tableNm>"_Stz,szObjectName);
 }

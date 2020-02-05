@@ -184,7 +184,6 @@ namespace Oblique
     static eJT  eJobType(Job* pJob);
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
-    static bool bJobHasError(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
