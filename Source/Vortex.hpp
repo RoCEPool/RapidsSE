@@ -110,15 +110,20 @@ namespace Utilities
     void vParseUsing(Stz* szSawTerm);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
+    // function variable gather
+
+    void vGatherFunVar(Stz* szSawTerm);
+
+    void vGatherArraySpec(Token& roCurTkn, i8& nElements);
+    void vGatherFunBody(Token& roCurTkn);
+    void vGatherFunParams(Token& roCurTkn);
+    void vGatherFunSpec(Token& roCurTkn, bool& rbIsFun);
+    void vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbIsFunPtr);
+    void vGatherNoExceptSpec(Token& roCurTkn);
+    void vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
-  
-    void vGatherArraySpec(Token& roSawTkn, i8& nElements);
-    void vGatherFunBody(Token& roSawTkn);
-    void vGatherFunParams(Token& roSawTkn);
-    void vGatherFunSpec(Token& roSawTkn, bool& rbIsFun);
-    void vGatherFunVarNm(Token& roSawTkn, s32& rsFunVarNm, bool& rbIsFunPtr);
-    void vGatherNoExceptSpec(Token& roSawTkn);
-    void vGatherTypeSpec(Token& roSawTkn, i8& rnAsterisks);
 
     void vCollectBalanced(Stz* szOpen, Stz* szClose);
     void vCollectBalancedAngles(Stz* szSawTerm);
