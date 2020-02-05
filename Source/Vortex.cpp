@@ -1019,7 +1019,6 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   i8   nAsterisks;
-  i8   nElements;
   s32  sFunVarNm;
   bool bIsFun;
   
@@ -1046,9 +1045,9 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
     return;
   }
   
-  vGatherArraySpec(roCurTkn,nElements);
-  if (nElements) {
-    vPartRecognised(CP__CRUDELY__);
+  vGatherArraySpec(roCurTkn);
+  if (m_bIsArray) {
+    vPartRecognised(CP_MEMBER_VARIABLE);
     
     m_oTypeSpec.vReset();
     m_oFunVarNm.vReset();
@@ -1066,13 +1065,25 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
 /*----------------------------------------------------------------------------*/
 /* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherArraySpec(Token& roCurTkn, i8& nElements)
+void Vortex::vGatherArraySpec(Token& roCurTkn)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  nElements = 0;
+  m_bIsArray = false;
+  
+  if (! roCurTkn.bSame("["_Stz))
+    return;
+  
+  m_bIsArray = true;
+  
+  vGetNextToken(roCurTkn);
 
+  m_oArraySpec.vAdd(roCurTkn.szTerm());
+  
+  vGetExpectedToken(roCurTkn,"]"_Stz);
+
+  vPartRecognised(CP_ARRAY_SPEC);
 }
 
 /*----------------------------------------------------------------------------*/

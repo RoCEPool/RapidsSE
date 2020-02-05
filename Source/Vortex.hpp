@@ -67,7 +67,9 @@ namespace Utilities
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
     EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
     bool        m_bIsFunPtr;     //
-  
+    bool        m_bIsArray;      //
+    EnameSet    m_oArraySpec;    // working set of collected array spec terms
+
     EnameSet    m_oOtherTerms;   // working set of collected other terms
     EnameSet    m_oTplSpec;      // working set of collected template terms
     EnameSet    m_oTplArgTerms;  // working set of collected template terms
@@ -123,7 +125,7 @@ namespace Utilities
 
     void vGatherFunVar(Stz* szSawTerm, bool bTemplated);
 
-    void vGatherArraySpec(Token& roCurTkn, i8& nElements);
+    void vGatherArraySpec(Token& roCurTkn);
     void vGatherFunBody(Token& roCurTkn);
     void vGatherFunParams(Token& roCurTkn);
     void vGatherFunSpec(Token& roCurTkn, bool& rbIsFun);

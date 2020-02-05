@@ -7,6 +7,7 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
+  /*    */ CP_ARRAY_SPEC,          // array spec
   /*    */ CP_BASE_LIST,           // base list
   /*    */ CP_BASE_LIST_END,       // base list end
   /*    */ CP_CLASS,               // class
@@ -53,6 +54,7 @@ static Stz* aCP[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "CP_ARRAY_SPEC"_Stz,
   /*    */ "CP_BASE_LIST"_Stz,
   /*    */ "CP_BASE_LIST_END"_Stz,
   /*    */ "CP_CLASS"_Stz,
