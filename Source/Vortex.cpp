@@ -76,7 +76,9 @@ Vortex::Vortex(void)
   m_pInput       = nullptr;
   m_bPrint       = true;
   m_bTrace       = true;
-  m_bInput       = true;
+  m_bInputMember = true;
+  m_bInputPart   = true;
+  m_bInputType   = true;
 
   // output
   
@@ -101,6 +103,10 @@ Vortex::Vortex(void)
   m_p_MetaType   = nullptr;
   m_p_MetaMember = nullptr;
   m_p_ConstSet   = m_pMetaGraph->pConstSet();
+  
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+  m_bIsFunPtr = false;
 
   //m_oOtherTerms
   //m_oTplParamTerms
@@ -1016,7 +1022,6 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   i8   nElements;
   s32  sFunVarNm;
   bool bIsFun;
-  bool bIsFunPtr;
   
   Token roCurTkn;
   
@@ -1024,16 +1029,19 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   
   vGatherTypeSpec(roCurTkn,nAsterisks);
 
-  
-  vGatherFunVarNm(roCurTkn,sFunVarNm,bIsFunPtr);
+  vGatherFunVarNm(roCurTkn,sFunVarNm);
   
   if (roCurTkn.bSame(";"_Stz)) {
-    if (m_bInClass)
+    if (m_bInClass) {
+      vTraceTypeSpec();
+      vTraceFunVarNm();
       vPartRecognised(CP_MEMBER_VARIABLE);
+    }
     else
       vPartRecognised(CP__CRUDELY__);
 
     m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
 
     return;
   }
@@ -1043,6 +1051,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
     vPartRecognised(CP__CRUDELY__);
     
     m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
     return;
   }
   
@@ -1051,7 +1060,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   vPartRecognised(CP__CRUDELY__);
   
   m_oTypeSpec.vReset();
-
+  m_oFunVarNm.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1079,21 +1088,24 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 /* collect function/variable name: ????                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
+void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  rbFunPtr = false;
+  m_bIsFunPtr = false;
+
+  m_oFunVarNm.vReset();
 
   // do we have ( * <name> ) ( ...) ?
   if (roCurTkn.bSame("("_Stz)) {
     
-    rbFunPtr = true;
+    m_bIsFunPtr = true;
     
     vGetExpectedToken(roCurTkn,"*"_Stz);
     vGetNextToken(roCurTkn);
     rsFunVarNm = roCurTkn.szTerm();
+    m_oFunVarNm.vAdd(roCurTkn.szTerm());
     vGetExpectedToken(roCurTkn,")"_Stz);
     
     vGetExpectedToken(roCurTkn,"("_Stz);
@@ -1109,6 +1121,7 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
   if (roCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(roCurTkn);
     rsFunVarNm = roCurTkn.szTerm();
+    m_oFunVarNm.vAdd(roCurTkn.szTerm());
     vPartRecognised(CP_OPERATOR);
     vGetNextToken(roCurTkn);
     return;
@@ -1116,6 +1129,7 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
   else if (roCurTkn.bSame("~"_Stz)) {
     vGetNextToken(roCurTkn);
     rsFunVarNm = roCurTkn.szTerm();
+    m_oFunVarNm.vAdd(roCurTkn.szTerm());
     vPartRecognised(CP_DESTRUCTOR);
     vGetNextToken(roCurTkn);
     return;
@@ -1123,6 +1137,8 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
   
   // we have a <name>
   rsFunVarNm = roCurTkn.szTerm();
+  m_oFunVarNm.vAdd(roCurTkn.szTerm());
+  vTraceFunVarNm();
   vPartRecognised(CP_FUNVAR_NAME);
 
   vGetNextToken(roCurTkn);
@@ -1509,6 +1525,15 @@ void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 /*                                meta type                                   */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
+
+/*----------------------------------------------------------------------------*/
+/* create new meta type for a c++ class                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vMetaMemberNew(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+}
+
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ class                                       */
 /*----------------------------------------------------------------------------*/
@@ -1530,6 +1555,9 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
                                 CP_CLASS,
                                 m_p_MetaType);
   }
+  
+  //if (m_bInputType)
+  //  getc(stdin);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1543,6 +1571,9 @@ void Vortex::vMetaTypeNew_struct(Stz* szStructNm)
                               MT_LINEAR,
                               CP_STRUCT,
                               m_p_MetaType);
+  
+//if (m_bInputType)
+//  getc(stdin);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1556,6 +1587,8 @@ void Vortex::vMetaTypeNew_union(Stz* szUnionNm)
                               MT_UNION,
                               CP_UNION,
                               m_p_MetaType);
+//if (m_bInputType)
+//  getc(stdin);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1963,6 +1996,21 @@ void Vortex::vFragmentReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* recognised c++ part                                                        */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bInputAgain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  char c = getc(stdin);
+  
+  if ('.' == c)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* ascend from parsing a namespace                                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vNamepaceAscend(void)
@@ -2009,8 +2057,8 @@ void Vortex::vPartRecognised(eCP eCppPart)
   if (m_bTrace)
     TRACE("Recognised %s\n\n"_Stz,aCP[eCppPart]);
   
-  if (m_bInput)
-    getc(stdin);
+  if (m_bInputPart)
+    m_bInputPart = bInputAgain();
 
   vFragmentReset();
 }
@@ -2048,6 +2096,22 @@ void Vortex::vThrowProblem(i8 i_Problem)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   throw i_Problem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace function/variable name terms                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceFunVarNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (!m_bTrace)
+    return;
+  
+  s48K sTerms;
+  m_oFunVarNm.vNamesString(sTerms);
+  
+  TRACE("  FunVarNm: %s\n"_Stz,sTerms.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -36,8 +36,11 @@ namespace Utilities
     Input*      m_pInput;        // input token stream of source file
     bool        m_bPrint;        // print activity
     bool        m_bTrace;        // trace activity
-    bool        m_bInput;        // get input for recognized;
   
+    bool        m_bInputMember;  // get input for new member
+    bool        m_bInputPart;    // get input for part recognition
+    bool        m_bInputType;    // get input for new type
+
     // output section
   
     File*       m_pOutputFile;   // output file
@@ -62,7 +65,9 @@ namespace Utilities
     ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
-
+    EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
+    bool        m_bIsFunPtr;     //
+  
     EnameSet    m_oOtherTerms;   // working set of collected other terms
     EnameSet    m_oTplSpec;      // working set of collected template terms
     EnameSet    m_oTplArgTerms;  // working set of collected template terms
@@ -122,7 +127,7 @@ namespace Utilities
     void vGatherFunBody(Token& roCurTkn);
     void vGatherFunParams(Token& roCurTkn);
     void vGatherFunSpec(Token& roCurTkn, bool& rbIsFun);
-    void vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbIsFunPtr);
+    void vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm);
     void vGatherNoExceptSpec(Token& roCurTkn);
     void vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks);
 
@@ -146,11 +151,14 @@ namespace Utilities
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // meta type
+    // meta members and type
     
+    void vMetaMemberNew(void);
+  
     void vMetaTypeNew_class(Stz* szClassNm);
     void vMetaTypeNew_struct(Stz* szStructNm);
     void vMetaTypeNew_union(Stz* szUnionNm);
+  
     void vMetaTypePop(void);
     void vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
@@ -180,6 +188,7 @@ namespace Utilities
      void vFragmentAppend(Stz* szTerm);
      void vFragmentMarker(Stz* szTerm);
      void vFragmentReset(void);
+     bool bInputAgain(void);
      void vNamepaceAscend(void);
      void vNamepaceDescend(Stz* szNamespaceNm);
      void vOtherTermsReset(void);
@@ -187,6 +196,7 @@ namespace Utilities
      void vTemplateAscend(void);
      void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
+     void vTraceFunVarNm(void);
      void vTraceTypeSpec(void);
 
    private:
