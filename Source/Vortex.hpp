@@ -59,9 +59,10 @@ namespace Utilities
     ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oOtherTerms;   // working set of collected other terms
-    EnameSet    m_oSpecTerms;    // working set of collected specifier terms
-    EnameSet    m_oTplTerms;     // working set of collected template terms
-    
+    EnameSet    m_oTypeSpecTerms;// working set of collected specifier terms
+    EnameSet    m_oTplParamTerms;// working set of collected template terms
+    EnameSet    m_oTplArgTerms;  // working set of collected template terms
+
     // correctness section
   
     Footer m_xFooter;            // must be last
@@ -91,7 +92,7 @@ namespace Utilities
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
     void vParseFriend(Stz* szSawTerm);
-    void vParseFunVar(Stz* szSawTerm);
+    void vParseFunVar(Stz* szSawTerm, bool bTemplated);
     void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
     void vParseHashIf(Stz* szSawTerm);
@@ -100,7 +101,7 @@ namespace Utilities
     void vParseHashPragma(Stz* szSawTerm);
     bool bParseLabel(Stz* szSawTerm);
     void vParseNamespace(Stz* szSawTerm);
-    void vParseOther(Stz* szSawTerm);
+    void vParseOther(Stz* szSawTerm, bool bTemplated);
     void vParseSemicolon(Stz* szSawTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
@@ -112,7 +113,7 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
-    void vGatherFunVar(Stz* szSawTerm);
+    void vGatherFunVar(Stz* szSawTerm, bool bTemplated);
 
     void vGatherArraySpec(Token& roCurTkn, i8& nElements);
     void vGatherFunBody(Token& roCurTkn);
@@ -180,6 +181,8 @@ namespace Utilities
      void vPartRecognised(eCP eCppPart);
      void vThrowProblem(i8 i_Problem);
      void vTplTermsReset(void);
+     void vTraceTplTerms(void);
+     void vTraceTypeSpecTerms(void);
 
    private:
     Footer* aFooter(void);
