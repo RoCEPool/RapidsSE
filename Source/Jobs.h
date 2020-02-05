@@ -17,6 +17,7 @@ namespace Jobs
 #include "FetchBuffer.hpp"
 
 #include "Response.hpp"
+#include "Result.hpp"
 
 #include "JobExtractRow.hpp"
 #include "JobFilePath.hpp"

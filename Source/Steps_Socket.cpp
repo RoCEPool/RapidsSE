@@ -334,7 +334,7 @@ void Step::vSocketRecvObject(void)
     //ActLog::vAdd(pJob,AN_RECV_JOB,m_pTask->pJob(),nObjectSize);
 
     pJob->m_i_Focal = C_UNKNOWN;
-    pJob->m_pResponseVec = nullptr;
+    pJob->m_xResult.m_pResponseVec = nullptr;
     pJob->m_pBufferQueue = nullptr;
     
     m_pDataStack->vPushPtr(pJob);
@@ -620,7 +620,7 @@ void Step::vSocketRecvObject_LowMem(void)
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     pJob->m_i_Focal = C_UNKNOWN;
-    pJob->m_pResponseVec = nullptr;
+    pJob->m_xResult.m_pResponseVec = nullptr;
     pJob->m_pBufferQueue = nullptr;
     
     m_pDataStack->vPushPtr(pJob);

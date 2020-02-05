@@ -52,11 +52,10 @@ namespace Jobs
     // job result
     s4K          m_sMetadata;    // meta data of job
     bool         m_bHasError;    // has an error from one or more nodes
-    Response     m_xResponse;    // response of this job
     
   public:
+    Result       m_xResult;      // result of this job
     Queue*       m_pBufferQueue; // buffer queue to receive the buffers of the result
-    ResponseVec* m_pResponseVec; // vector of responses from all the nodes
   
   public:
 
