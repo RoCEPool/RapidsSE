@@ -50,6 +50,8 @@ namespace Utilities
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
+    bool        m_bInTemplate;   // currently in a namespace?
+    s4K         m_sTemplate;     // current template
   
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
