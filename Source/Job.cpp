@@ -490,6 +490,26 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the buffer queue in the result                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vBufferQueue(Queue* pBufferQueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_xResult.m_pBufferQueue = pBufferQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer queue in the result                                         */
+/*----------------------------------------------------------------------------*/
+Queue* Job::pBufferQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_xResult.m_pBufferQueue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* content dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vContentDump(void)

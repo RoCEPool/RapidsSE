@@ -31,7 +31,7 @@ void Step::vJob_PipelineBegin(void)
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  RASSERT( ! pJob_Pipeline->m_xResult.m_pBufferQueue );
+  RASSERT( ! pJob_Pipeline->pBufferQueue() );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // popluate the op vector of the pipeline

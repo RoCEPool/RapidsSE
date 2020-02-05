@@ -104,6 +104,8 @@ namespace Jobs
     void vAddRowsInvalid(i8 iRowsInvalid);
     void vAddRowsSkipped(i8 iRowsSkipped);
     bool bByPromptTag(void);
+    void vBufferQueue(Queue* pBufferQueue);
+    Queue* pBufferQueue(void);
     void vContentDump(void);
     EnameSet* pEnameSet(void);
     void vErrorCode(eEC eErrorCode);
