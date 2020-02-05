@@ -49,13 +49,9 @@ namespace Jobs
     eJP       m_eJobPhase;    // which job phase the job is currently in
     eJS       m_eJobState;    // current state of the job
     
-    // job result
-    s4K          m_sMetadata;    // meta data of job
-    bool         m_bHasError;    // has an error from one or more nodes
-    
   public:
     Result       m_xResult;      // result of this job
-    Queue*       m_pBufferQueue; // buffer queue to receive the buffers of the result
+    
   
   public:
 
@@ -140,14 +136,6 @@ namespace Jobs
     void vMetaData(Stz* sMetaData);
     bool bNoWaitTag(void);
     void vPrintResult(eRS eResponse);
-    void vPrintLoadRows(void);
-    void vPrintLocalErrors(void);
-    void vPrintLocalRows(void);
-    void vPrintLocalZero(void);
-    void vPrintNodeErrors(void);
-    void vPrintNodeRows(void);
-    void vPrintNodeZero(void);
-    void vPrintQueueRows(void);
     Response* pResponse(void);
     Stz* szResponse(void);
     void vResponse(Stz* sResponse);

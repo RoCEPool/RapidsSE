@@ -98,12 +98,7 @@ Job::Job(eCN eClassNo)
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
   
-  m_sMetadata = ""_Stz;
-  m_bHasError = false;
-  
-  //m_xResponse
-  m_pBufferQueue = nullptr;
-  
+  //m_xResult
   // -- -- -- -- -- --
   
   SP_Gid spId;
@@ -157,11 +152,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
   
-  m_sMetadata = ""_Stz;
-  m_bHasError = false;
-  
   //m_xResult
-  m_pBufferQueue = nullptr;
   // -- -- -- -- -- --
   
   SP_Gid spId;
@@ -215,12 +206,7 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
   
-  m_sMetadata = ""_Stz;
-  m_bHasError = false;
-  
   //m_xResult
-  m_pBufferQueue = nullptr;
-  
   // -- -- -- -- -- --
   
   SP_Gid spId;
@@ -274,8 +260,6 @@ Job::~Job(void) noexcept(false)
   
   if (m_pPipeline)
     delete m_pPipeline;
-  
-  delete m_pBufferQueue;
   
   //if (m_pTaskJ)
   //  vDebugPoint();
@@ -459,7 +443,7 @@ void Job::vAddError(eEC eError)
   // create a new response
   Response* pResponse = new Response;
   
-  m_bHasError = true;
+  m_xResult.m_bHasError = true;
   
   // set node and error in the response
   pResponse->m_iNode           = iNode;
@@ -543,7 +527,7 @@ void Job::vContentDump(void)
          m_iOriginatingId,
          
          nReferences(),
-         m_pBufferQueue,
+         m_xResult.m_pBufferQueue,
          m_pPipeline,
          C_ENDARGS
          );
@@ -587,7 +571,7 @@ bool Job::bHasError(eEC eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_bHasError) {
+  if (m_xResult.m_bHasError) {
     
     i8 iResponses = m_xResult.m_pResponseVec->nItems();
     
@@ -640,7 +624,7 @@ bool Job::bHasError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_bHasError;
+  return m_xResult.m_bHasError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -650,7 +634,7 @@ void Job::vHasError(bool bHasError)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_bHasError = bHasError;
+  m_xResult.m_bHasError = bHasError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -820,7 +804,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
   // did we get a job name ?
   if ( szJobNm->bEqual(""_Stz) ) {
     // would have been a startup problem (unable to match job syntax !!!)
-    ASSERT(m_bHasError);
+    ASSERT(m_xResult.m_bHasError);
     return nullptr;
   }
   
@@ -887,7 +871,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 Stz* Job::szMetaData(void)
 {
-  return m_sMetadata;
+  return m_xResult.m_sMetadata;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -895,7 +879,7 @@ Stz* Job::szMetaData(void)
 /*----------------------------------------------------------------------------*/
 void Job::vMetaData(Stz* sMetaData)
 {
-  m_sMetadata = sMetaData;
+  m_xResult.m_sMetadata = sMetaData;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1076,348 +1060,7 @@ void Job::vPrint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Job::vPrintResult(eRS eResponse)
 {
-  switch (eResponse) {
-      
-    case RS_NONE         : /* do nothing */            break;
-    case RS_DATA_ROWS    : RASSERT(0);                 break;
-    case RS_LOAD_ROWS    : vPrintLoadRows();     break;
-    case RS_LOCAL_ERRORS : vPrintLocalErrors();  break;
-    case RS_LOCAL_ROWS   : vPrintLocalRows();    break;
-    case RS_LOCAL_ZERO   : vPrintLocalZero();    break;
-    case RS_NODE_ERRORS  : vPrintNodeErrors();   break;
-    case RS_NODE_ROWS    : vPrintNodeRows();     break;
-    case RS_NODE_ZERO    : vPrintNodeZero();     break;
-    case RS_QUEUE_ROWS   : vPrintQueueRows();    break;
-      
-    default:
-      vTrace("Invalid response in job %s : %s\n"_Stz,
-             aCN[aJobClass()->m_eClass],
-             aRS[aJobClass()->m_eResponse]);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print load rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintLoadRows(void)
-{
-  i8 iResponses = m_xResult.m_pResponseVec->nItems();
-  
-  if ( m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    return;
-  }
-  
-  RASSERT(iResponses == AM::nDefinedNodes());
-  
-  i8 iRowsProcessed = 0;
-  i8 iRowsInvalid   = 0;
-  i8 iRowsSkipped   = 0;
-  
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    
-    Response* pResponse = m_xResult.m_pResponseVec->pGet(i_Node);
-    iRowsProcessed += *pResponse->m_ixRowsProcessed;
-    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
-    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
-  }
-  if (iRowsInvalid || iRowsSkipped)
-    vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  else
-    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* print local errors                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintLocalErrors(void)
-{
-  if (m_bHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xResult.m_xResponse.m_eErrorCode]);
-    return;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print local rows                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintLocalRows(void)
-{
-  if (m_bHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xResult.m_xResponse.m_eErrorCode]);
-    return;
-  }
-  
-  if (AM::bMetadata())
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
-  
-  if (*m_xResult.m_xResponse.m_ixRowsProcessed)
-    vTrace("%s"_Stz,m_xResult. m_xResponse.m_sResponse.azChar());
-  
-  vTrace("success: %lld rows affected\n"_Stz, *m_xResult.m_xResponse.m_ixRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print errors                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintNodeErrors(void)
-{
-  i8 iResponses = m_xResult.m_pResponseVec->nItems();
-  RASSERT(iResponses == AM::nDefinedNodes());
-  
-  if (m_bHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-  }
-  
-}
-/*----------------------------------------------------------------------------*/
-/* print node rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintNodeRows(void)
-{
-  i8 iResponses = m_xResult.m_pResponseVec->nItems();
-  
-  if (m_bHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
-  
-  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
-  
-  if (AM::bMetadata()) {
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
-  }
-  
-  i8 iRowsProcessed = 0;
-  
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("%s\n"_Stz, m_xResult.m_pResponseVec->pGet(i_Node)->m_sResponse.azChar());
-    iRowsProcessed += *m_xResult.m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
-  }
-  vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print zero rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintNodeZero(void)
-{
-  //! RAY HACK 5 NOV 2109 re universal job cf
-  if (! m_xResult.m_pResponseVec) {
-    vTrace("success: 0 rows affected\n"_Stz);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 iResponses = m_xResult.m_pResponseVec->nItems();
-  
-  if (m_bHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
-  
-  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
-  
-  vTrace("success: 0 rows affected\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print local zero rows                                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintLocalZero(void)
-{
-  if (m_bHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz,
-           AM::iThisNodeNo(),
-           aEC[m_xResult.m_xResponse.m_eErrorCode]);
-    return;
-  }
-  
-  vTrace("success: 0 rows affected\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print queue rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintQueueRows(void)
-{
-//  if ( m_bHasError ) {
-//    i8 iResponses = m_pResponseVec->nItems();
-//    RASSERT(iResponses == AM::nDefinedNodes());
-//    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-//      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-//    }
-//    return;
-//  }
-  
-  StreamDef* pStreamDef = nullptr;
-  bool bHasError = false;
-    
-  for (;;) {
-    
-    Operand* pOperand = _pOperand(m_pBufferQueue->pPop());
-    
-    if (! pOperand) {
-      // invalid command ? exit early
-      if (this->bHasError(EC_INVALID_COMMAND)) {
-        break;
-      }
-      AM::vNapUsec(250,CN_NONE);
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    switch (pOperand->eClass()) {
-        
-      // -- -- -- -- -- --
-        
-      case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        m_xResult.m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
-        pCrwBuffer->vPrintRows(pStreamDef);
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_CSVBUFFER: {
-        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        m_xResult.m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
-        pCsvBuffer->vPrintRecords();
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        m_xResult.m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
-        pEntBuffer->vPrintRows();
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        m_xResult.m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
-        pIrwBuffer->vPrintRows(pStreamDef);
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-      case CN_MARKER: {
-        Marker* pMarker = _pMarker(pOperand);
-        
-        switch (pMarker->eOpMarker()) {
-            
-          case OM_CANCELMARKER: {
-            vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
-                   *m_xResult.m_xResponse.m_ixRowsProcessed);
-            AM::vDeleteOperand(pOperand);
-            goto L_EXIT;
-            break;
-          }
-            
-          case OM_EOSMARKER: {
-            //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
-            AM::vDeleteOperand(pOperand);
-            break;
-          }
-            
-          case OM_ERRORMARKER: {
-            AM::vDeleteOperand(pOperand);
-            bHasError = true;
-            break;
-          }
-            
-          case OM_PULSEMARKER: {
-            //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
-            AM::vDeleteOperand(pOperand);
-            break;
-          }
-            
-          case OM_STARTMARKER: {
-            //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
-            AM::vDeleteOperand(pOperand);
-            break;
-          }
-            
-          case OM_STOPMARKER: {
-            //vTrace("Pipeline Job: STOPMARKER\n"_Stz);
-            if ( ! bHasError )
-              vTrace("success: %lld rows fetched\n"_Stz, *m_xResult.m_xResponse.m_ixRowsProcessed);
-            AM::vDeleteOperand(pOperand);
-            goto L_EXIT;
-            break;
-          }
-            
-          default:
-            ASSERT(0);
-        }
-        break;
-      }
-      
-      // -- -- -- -- -- --
-        
-      case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        m_xResult.m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
-        pSrtBuffer->vPrintRows(pStreamDef);
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-       
-      // -- -- -- -- -- --
-        
-      case CN_STREAMDEF: {
-        //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
-        if ( ! pStreamDef ) {
-          pStreamDef = _pStreamDef(pOperand);
-          
-          // print the metadata
-          if (AM::bMetadata()) {
-            pStreamDef->vToMetadata(m_sMetadata.szStz());
-            vTrace("%s\n"_Stz, m_sMetadata.szStz());
-          }
-        }
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      default:
-        RASSERT(0);
-        break;
-    }
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EXIT:
-  
-  if (pStreamDef)
-    AM::vDeleteOperand(pStreamDef);
-  return;
-  
+  m_xResult.vPrint(eResponse);
 }
 
 /*----------------------------------------------------------------------------*/

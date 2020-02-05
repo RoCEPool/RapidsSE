@@ -222,7 +222,7 @@ void SePrompt::vPromptLoop(void)
     if (m_pJob->m_eJobType == JT_PIPELINE) {
       
       // wait till the job has a buffer queue
-      while ( m_pJob->m_pBufferQueue == nullptr ) {
+      while ( m_pJob->m_xResult.m_pBufferQueue == nullptr ) {
         // do something else release version optimizes this out
         //if (AM::bVerbose())
         //  vTrace("Waiting for buffer queue\n"_Stz);
@@ -239,7 +239,7 @@ void SePrompt::vPromptLoop(void)
       
       // handle errors
       if (m_pJob->bHasError())
-        m_pJob->vPrintNodeErrors();
+        m_pJob->m_xResult.vPrintNodeErrors();
       
     }
     else {

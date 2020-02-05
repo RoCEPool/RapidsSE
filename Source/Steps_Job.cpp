@@ -442,8 +442,8 @@ void Step::vJobCreateBufferQueue(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  RASSERT( ! pJob->m_pBufferQueue );
-  pJob->m_pBufferQueue = new Queue;
+  RASSERT( ! pJob->m_xResult.m_pBufferQueue );
+  pJob->m_xResult.m_pBufferQueue = new Queue;
   
   EXIT();
 }
