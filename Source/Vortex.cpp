@@ -1052,11 +1052,34 @@ Stz* Vortex::szCollectFunBody(Stz* szSawTerm)
 Stz* Vortex::szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
+
+  Token xNextTkn;
+
   rbFunPtr = false;
 
+  
+  // do we have ( * <name> ) ( ...) ?
+  if (szSawTerm->bSame("("_Stz)) {
+    
+    rbFunPtr = true;
+    
+    vGetExpectedToken(xNextTkn,"*"_Stz);
+    vGetNextToken(xNextTkn);
+    rsFunVarNm = xNextTkn.szTerm();
+    vGetExpectedToken(xNextTkn,")"_Stz);
+    
+    vGetExpectedToken(xNextTkn,"("_Stz);
+    vCollectBalancedParenthesis("("_Stz);
+
+    vGetNextToken(xNextTkn);
+    return xNextTkn.szTerm();
+  }
+
+  // we have a <name>
+  m_oSpecTerms.vAdd(szSawTerm);
+  vGetNextToken(xNextTkn);
+  
   return szSawTerm;
-  //vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
