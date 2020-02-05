@@ -28,7 +28,7 @@ Vortex::Vortex(void)
   m_nSources     = 0;
   m_pInput       = nullptr;
   m_bPrint       = true;
-  m_bTrace       = false;
+  m_bTrace       = true;
 
   // output
   
@@ -203,7 +203,9 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
   if (szKeyWord->bSame("typedef"_Stz))   vParseTypedef(szKeyWord);   else
   if (szKeyWord->bSame("union"_Stz))     vParseUnion(szKeyWord);     else
   if (szKeyWord->bSame("using"_Stz))     vParseUsing(szKeyWord);
-  else                                   vParseOther(szKeyWord);
+  else
+    //vParseOther(szKeyWord);
+    vParseFunVar(szKeyWord);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -433,8 +435,6 @@ void Vortex::vParseFunVar(Stz* szSawTerm)
 {
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vDebugPoint();
   
   i8 nAsterisks;
   
