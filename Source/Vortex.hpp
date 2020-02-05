@@ -36,7 +36,8 @@ namespace Utilities
     Input*      m_pInput;        // input token stream of source file
     bool        m_bPrint;        // print activity
     bool        m_bTrace;        // trace activity
- 
+    bool        m_bInput;        // get input for recognized;
+  
     // output section
   
     File*       m_pOutputFile;   // output file

@@ -53,6 +53,7 @@ Vortex::Vortex(void)
   m_pInput       = nullptr;
   m_bPrint       = true;
   m_bTrace       = true;
+  m_bInput       = true;
 
   // output
   
@@ -457,6 +458,8 @@ void Vortex::vParseFunVar(Stz* szSawTerm, bool bTemplated)
   vGatherFunVar(szSawTerm,bTemplated);
   
   vPartRecognised(CP__CRUDELY__);
+  
+  m_oTypeSpecTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -730,6 +733,8 @@ void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
 
   vPartRecognised(CP__CRUDELY__);
   
+  m_oTypeSpecTerms.vReset();
+
   vOtherTermsReset();
 }
 
@@ -1948,6 +1953,10 @@ void Vortex::vPartRecognised(eCP eCppPart)
   
   if (m_bTrace)
     TRACE("Recognised %s\n\n"_Stz,aCP[eCppPart]);
+  
+  
+  if (m_bInput)
+    getc(stdin);
 
   vFragmentReset();
 }
