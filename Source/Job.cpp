@@ -915,6 +915,16 @@ void Job::vSignalJobMutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the sytax error                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vSyntaxError(eEC eErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_xResult.m_eSyntaxError = eErrorCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* unlock the job mutex                                                       */
 /*----------------------------------------------------------------------------*/
 void Job::vUnlockJobMutex(void)

@@ -149,6 +149,7 @@ namespace Jobs
     void vRowsInvalid(i8 iRowsInvalid);
     Stz* szSide(void);
     void vSignalJobMutex(void);
+    void vSyntaxError(eEC eErrorCode);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
     Stz* szNodeNm(void);

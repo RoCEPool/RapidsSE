@@ -48,8 +48,10 @@ Result::Result(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT);
   
-  //m_xSyntax
+  m_eSyntaxError = EC_NONE;
+  
   //m_xResponse
+  
   m_bHasError    = false;
   m_sMetadata    = ""_Stz;
   m_pResponseVec = nullptr;

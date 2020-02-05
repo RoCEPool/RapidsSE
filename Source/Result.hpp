@@ -10,7 +10,7 @@ namespace Jobs
 
   public:
     s4K          m_sMetadata;    // meta data of result
-    Response     m_xSyntax;      // syntax errors
+    eEC          m_eSyntaxError; // syntax errors
     Response     m_xResponse;    // response of this job
     bool         m_bHasError;    // has an error from one or more nodes
     ResponseVec* m_pResponseVec; // vector of responses from all the nodes

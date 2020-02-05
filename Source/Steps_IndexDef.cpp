@@ -37,7 +37,9 @@ void Step::vIndexDefParse(void)
   
   if (eResult != EC_NONE) {
     
-    // set the error code in the job
+    // set the syntax error in the job
+    pJob_CreateIndex->vSyntaxError(eResult);
+    
     pJob_CreateIndex->vHasError(true);
     pJob_CreateIndex->vErrorCode(eResult);
     

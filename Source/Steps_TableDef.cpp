@@ -34,7 +34,9 @@ void Step::vTableDefParse(void)
   
   if (eResult != EC_NONE) {
     
-    // set the error code in the job
+    // set the syntax error in the job
+    pJob_CreateTable->vSyntaxError(eResult);
+    
     pJob_CreateTable->vHasError(true);
     pJob_CreateTable->vErrorCode(eResult);
     
