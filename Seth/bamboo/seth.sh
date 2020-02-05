@@ -87,7 +87,7 @@ do
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
     kill -9 "${SETH_PID}" &>/dev/null
-    kill -9 "${SE_PROMPT_PID}"
+    echo ${SE_PROMPT_PID} | xargs -r kill -9 
     exit 1
   fi
 
