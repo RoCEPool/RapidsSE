@@ -86,7 +86,7 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
   
-    bool bParseAllCppParts(void);
+    bool bParseAllParts(void);
     void vKeywordDescend(Stz* szKeyWord);
     void vParseBase(Stz* szSawTerm);
     void vParseBraces(Stz* szSawTerm, bool bSemiTerminated);

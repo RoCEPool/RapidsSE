@@ -7,14 +7,22 @@
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define FNENTRY \
-  TRACE("/%s/ >%s %s%s%sSAW(%s)\n"_Stz, \
+  TRACE("/%s/ >%16s %s%s%s%s%s%s%sSAW(%s)\n"_Stz, \
     \
     m_sSourcePath.szStz(), \
+    \
     __func__, \
     \
-    m_bInNamespace ? "NAMESPACE " : "", \
-    m_bInClass     ? "CLASS "     : "", \
+    m_bInNamespace ? "NAMESPACE(" : "", \
+    m_bInNamespace ? m_sNamespaceNm.azChar() : "", \
+    m_bInNamespace ? ") " : "", \
+    \
+    m_bInClass     ? "CLASS(" : "", \
+    m_bInClass     ? m_sClassNm.azChar() : "", \
+    m_bInClass     ? ") " : "", \
+    \
     m_bInTemplate  ? m_sTemplate.azChar() : "", \
+    \
     szSawTerm->azChar());
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +150,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  bool b = bParseAllCppParts();
+  bool b = bParseAllParts();
   
   if (b) {
     TRACE("Parsed file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
@@ -174,7 +182,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 /* parse all parts in the current source file (.h or .hpp)                    */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseAllCppParts(void)
+bool Vortex::bParseAllParts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_bInNamespace);
@@ -183,8 +191,9 @@ bool Vortex::bParseAllCppParts(void)
   Token xTkn;
   while (bGetNextToken(xTkn)) {
   
-    TRACE("/%s/ >%s KeyWord: %s\n"_Stz,
-           m_sSourcePath.szStz(),__func__,xTkn.azTerm());
+    Stz* szSawTerm = xTkn.szTerm();
+    
+    FNENTRY
     
     try {
       vKeywordDescend(xTkn.szTerm());
@@ -306,6 +315,7 @@ void Vortex::vParseBraces(Stz* szSawTerm, bool bSemiTerminated)
       continue;
     
     vKeywordDescend(xTkn.szTerm());
+    FNENTRY
   }
 
   vThrowProblem(__LINE__);
@@ -671,6 +681,8 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     Stz* szKeyWord = xTkn.szTerm();
     
     vKeywordDescend(szKeyWord);
+    
+    FNENTRY
     
   } // while more tokens
   
@@ -1827,7 +1839,7 @@ void Vortex::vFragmentAppend(Stz* szString)
   m_sFragment.vConcat(szString);
   
   if (m_bTrace)
-    TRACE("Fragment: %s\n"_Stz,m_sFragment.azChar());
+    TRACE("  Fragment: %s\n"_Stz,m_sFragment.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1844,7 +1856,7 @@ void Vortex::vFragmentMarker(Stz* szString)
   m_sFragment.vConcat(szString);
 
   if (m_bTrace)
-    TRACE("Fragment: %s\n"_Stz,m_sFragment.azChar());
+    TRACE("  Fragment: %s\n"_Stz,m_sFragment.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1902,7 +1914,7 @@ void Vortex::vPartRecognised(eCP eCppPart)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (m_bTrace)
-    TRACE("Recognised: %s\n\n"_Stz,aCP[eCppPart]);
+    TRACE("Recognised :: %s\n\n"_Stz,aCP[eCppPart]);
 
   vFragmentReset();
 }
