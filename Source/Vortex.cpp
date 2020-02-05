@@ -1175,40 +1175,46 @@ void Vortex::vCollectTplParams(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect specifier terms: ????                                              */
+/* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
 /*----------------------------------------------------------------------------*/
 Stz* Vortex::szCollectTypeSpec(Stz* szSawTerm, i8& rnAsterisks)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  Token xNextTkn;
+
   m_oSpecTerms.vReset();
   m_oTplTerms.vReset();
   rnAsterisks = 0;
 
+  // special case of no specifier (constructor / destructor)
   if (m_bInClass) {
-    // constructor (no specifier)
+    // 1) constructor (no specifier)
     if (szSawTerm->bSame(m_sClassNm))
       return szSawTerm;
-    // destructor (no specifier)
+    // 2) destructor (no specifier)
     if (szSawTerm->bSame("~"_Stz))
       return szSawTerm;
   }
   
+  // we have a <name>
   m_oSpecTerms.vAdd(szSawTerm);
-  
-  Token xNextTkn;
-
   vGetNextToken(xNextTkn);
+  
+  // do we have template arguments?
   if (xNextTkn.bSame("<"_Stz)) {
     vCollectTplArgs("<"_Stz);
     vGetNextToken(xNextTkn);
   }
     
+  // zero or more asterisks
   do {
     
+    // collected when we have no more asterisks
     if (! xNextTkn.bSame("*"_Stz))
       return xNextTkn.szTerm();
 
+    // we have an asterisk
     m_oSpecTerms.vAdd(xNextTkn.szTerm());
     rnAsterisks++;
 
