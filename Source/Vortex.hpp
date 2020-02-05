@@ -112,15 +112,18 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
+    Stz* szCollectArraySpec(Stz* szSawTerm, i8& nElements);
     void vCollectBalanced(Stz* szOpen, Stz* szClose);
     void vCollectBalancedAngles(Stz* szSawTerm);
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
-    Stz* szCollectFunVarNm(Stz* szSawTerm, bool& rbFunPtr);
+    Stz* szCollectFunBody(Stz* szSawTerm);
+    Stz* szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr);
+    Stz* szCollectNoExceptSpec(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
-    Stz* szCollectSpecTerms(Stz* szSawTerm, i8& rnAsterisks);
     void vCollectTplArgs(Stz* szSawTerm);
     void vCollectTplParams(Stz* szSawTerm);
+    Stz* szCollectTypeSpec(Stz* szSawTerm, i8& rnAsterisks);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
