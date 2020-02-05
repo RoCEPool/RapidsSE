@@ -1072,6 +1072,31 @@ void Job::vPrint(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print result                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vPrintResult(eRS eResponse)
+{
+  switch (eResponse) {
+      
+    case RS_NONE         : /* do nothing */            break;
+    case RS_DATA_ROWS    : RASSERT(0);                 break;
+    case RS_LOAD_ROWS    : vPrintLoadRows();     break;
+    case RS_LOCAL_ERRORS : vPrintLocalErrors();  break;
+    case RS_LOCAL_ROWS   : vPrintLocalRows();    break;
+    case RS_LOCAL_ZERO   : vPrintLocalZero();    break;
+    case RS_NODE_ERRORS  : vPrintNodeErrors();   break;
+    case RS_NODE_ROWS    : vPrintNodeRows();     break;
+    case RS_NODE_ZERO    : vPrintNodeZero();     break;
+    case RS_QUEUE_ROWS   : vPrintQueueRows();    break;
+      
+    default:
+      vTrace("Invalid response in job %s : %s\n"_Stz,
+             aCN[aJobClass()->m_eClass],
+             aRS[aJobClass()->m_eResponse]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* print load rows                                                            */
 /*----------------------------------------------------------------------------*/
 void Job::vPrintLoadRows(void)
@@ -1725,24 +1750,7 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  switch (eResponse) {
-      
-    case RS_NONE         : /* do nothing */            break;
-    case RS_DATA_ROWS    : RASSERT(0);                 break;
-    case RS_LOAD_ROWS    : pJob->vPrintLoadRows();     break;
-    case RS_LOCAL_ERRORS : pJob->vPrintLocalErrors();  break;
-    case RS_LOCAL_ROWS   : pJob->vPrintLocalRows();    break;
-    case RS_LOCAL_ZERO   : pJob->vPrintLocalZero();    break;
-    case RS_NODE_ERRORS  : pJob->vPrintNodeErrors();   break;
-    case RS_NODE_ROWS    : pJob->vPrintNodeRows();     break;
-    case RS_NODE_ZERO    : pJob->vPrintNodeZero();     break;
-    case RS_QUEUE_ROWS   : pJob->vPrintQueueRows();    break;
-      
-    default:
-      vTrace("Invalid response in job %s : %s\n"_Stz,
-             aCN[pJob->aJobClass()->m_eClass],
-             aRS[pJob->aJobClass()->m_eResponse]);
-  }
+  pJob->vPrintResult(eResponse);
 }
 
 /*----------------------------------------------------------------------------*/

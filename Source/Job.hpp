@@ -139,6 +139,7 @@ namespace Jobs
     Stz* szMetaData(void);
     void vMetaData(Stz* sMetaData);
     bool bNoWaitTag(void);
+    void vPrintResult(eRS eResponse);
     void vPrintLoadRows(void);
     void vPrintLocalErrors(void);
     void vPrintLocalRows(void);
