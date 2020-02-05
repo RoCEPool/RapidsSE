@@ -20,6 +20,7 @@ enum eCP // c++ part
   /*    */ CP_FORWARD,             // forward class
   /*    */ CP_FRIEND,              // friend
   /*    */ CP_FUNCTION,            // function
+  /*    */ CP_FUNCTION_BODY,       // function
   /*    */ CP_FUNCTION_POINTER,    // function
   /*    */ CP_FUNVAR_NAME,         // function/variable name
   /*    */ CP_HASH_DEFINE,         // # define
@@ -67,6 +68,7 @@ static Stz* aCP[]
   /*    */ "CP_FORWARD"_Stz,
   /*    */ "CP_FRIEND"_Stz,
   /*    */ "CP_FUNCTION"_Stz,
+  /*    */ "CP_FUNCTION_BODY"_Stz,
   /*    */ "CP_FUNCTION_POINTER"_Stz,
   /*    */ "CP_FUNVAR_NAME"_Stz,
   /*    */ "CP_HASH_DEFINE"_Stz,

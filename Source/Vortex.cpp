@@ -1094,6 +1094,12 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
+  CHECKED(roCurTkn.bSame("{"_Stz));
+  
+  vDiscardBalancedBraces("{"_Stz);
+  
+  vPartRecognised(CP_FUNCTION_BODY);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1251,7 +1257,8 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
   NEVER_REACH;
 }
 
-
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* collect delimited tokens (potentially nested)                              */
