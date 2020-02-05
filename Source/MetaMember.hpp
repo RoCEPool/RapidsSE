@@ -20,11 +20,11 @@ namespace Reflection
     s32       m_sTypeNm;    // name of specified type (such as i8, Footer, List_t<..>)
     MetaType* m_p_MetaType; // the type of this member
     EnameSet* m_pTplArgs;   //   opt. specified with these template arguments
-    i8        m_nPointers;  // number of asterisks after the specified type
+    i8        m_nAsterisks; // number of asterisks after the specified type
     bool      m_bFunPtr;    // is this member a function pointer?
 
     // fields and arrays
-    i8   m_nBits;     // no of bits if bit field;
+    i8   m_nBits;     // no of bits (if bit field)
     i8   m_nElements; // how many array elements (0 means not an array)
   
     // must be last
@@ -39,9 +39,12 @@ namespace Reflection
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
     static Stz* szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
-                           i8& rnPtrs, bool& rbFunPtr,
+                           i8& rnAsterisks, bool& rbFunPtr,
                            i8& rnElements, i8& rnBits);
 
+    i8   nAsterisks(void);
+    void vAsterisks(i8 nAsterisks);
+  
     i8   nBits(void);
     void vBits(i8 nBits);
     
@@ -58,8 +61,6 @@ namespace Reflection
     MetaType* p_MetaType(void);
     void vMetaType(MetaType* p_MetaType);
 
-    i8   nPointers(void);
-    void vPointers(i8 nPointers);
   
     void vPrint(i8 i_Tab);
   

@@ -427,6 +427,21 @@ void Vortex::vParseFriend(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse: <other> _^_ <term> ...                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFunVar(Stz* szSawTerm)
+{
+  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vDebugPoint();
+  
+  i8 nAsterisks;
+  
+  Stz* szEndTerm = szCollectSpecTerms(szSawTerm,nAsterisks);
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse: # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(Stz* szSawTerm)
@@ -991,6 +1006,17 @@ void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect function/variable name: ????                                       */
+/*----------------------------------------------------------------------------*/
+Stz* Vortex::szCollectFunVarNm(Stz* szSawTerm, bool& rbFunPtr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  return szSawTerm;
+  //vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect other terms: <other> ... | ; | { ... }                             */
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectOtherTerms(Stz* szSawTerm)
@@ -1017,6 +1043,51 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
     // ignore any other token
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect specifier terms: ????                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Vortex::szCollectSpecTerms(Stz* szSawTerm, i8& rnAsterisks)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oSpecTerms.vReset();
+  m_oTplTerms.vReset();
+  rnAsterisks = 0;
+
+  if (m_bInClass) {
+    // constructor (no specifier)
+    if (szSawTerm->bSame(m_sClassNm))
+      return szSawTerm;
+    // destructor (no specifier)
+    if (szSawTerm->bSame("~"_Stz))
+      return szSawTerm;
+  }
+  
+  m_oSpecTerms.vAdd(szSawTerm);
+  
+  Token xNextTkn;
+
+  vGetNextToken(xNextTkn);
+  if (xNextTkn.bSame("<"_Stz)) {
+    vCollectTplArgs("<"_Stz);
+    vGetNextToken(xNextTkn);
+  }
+    
+  do {
+    
+    if (! xNextTkn.bSame("*"_Stz))
+      return xNextTkn.szTerm();
+
+    m_oSpecTerms.vAdd(xNextTkn.szTerm());
+    rnAsterisks++;
+
+  }  while (bGetNextToken(xNextTkn));
+  
+  vThrowProblem(__LINE__);
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

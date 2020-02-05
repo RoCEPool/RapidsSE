@@ -59,6 +59,7 @@ namespace Utilities
     ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oOtherTerms;   // working set of collected other terms
+    EnameSet    m_oSpecTerms;    // working set of collected specifier terms
     EnameSet    m_oTplTerms;     // working set of collected template terms
     
     // correctness section
@@ -90,6 +91,7 @@ namespace Utilities
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
     void vParseFriend(Stz* szSawTerm);
+    void vParseFunVar(Stz* szSawTerm);
     void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
     void vParseHashIf(Stz* szSawTerm);
@@ -114,7 +116,9 @@ namespace Utilities
     void vCollectBalancedAngles(Stz* szSawTerm);
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
+    Stz* szCollectFunVarNm(Stz* szSawTerm, bool& rbFunPtr);
     void vCollectOtherTerms(Stz* szSawTerm);
+    Stz* szCollectSpecTerms(Stz* szSawTerm, i8& rnAsterisks);
     void vCollectTplArgs(Stz* szSawTerm);
     void vCollectTplParams(Stz* szSawTerm);
 

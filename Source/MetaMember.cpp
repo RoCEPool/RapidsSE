@@ -33,7 +33,7 @@ MetaMember::MetaMember(Stz* szMemberNm, MetaType* p_WithinType)
   m_sTypeNm     = C_NO_NAME;
   m_p_MetaType  = nullptr;
   m_pTplArgs    = nullptr;
-  m_nPointers   = 0;
+  m_nAsterisks  = 0;
   m_bFunPtr     = false;
     
   // fields and arrays
@@ -128,15 +128,16 @@ bool MetaMember::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /* get member name from given terms                                           */
 /*----------------------------------------------------------------------------*/
 Stz* MetaMember::szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
-                            i8& rnPtrs, bool& rbFunPtr,
+                            i8& rnAsterisks, bool& rbFunPtr,
                             i8& rnElements, i8& rnBits)
 {
   _static_
   
-  rnPtrs     = 0;
-  rbFunPtr   = false;
-  rnElements = 0;
-  rnBits     = 0;
+  rnAsterisks = 0;
+  rbFunPtr    = false;
+  rnElements  = 0;
+  rnBits      = 0;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Stz* szTerm;
   Stz* szName = "*UNKNOWN*"_Stz;
@@ -155,7 +156,7 @@ Stz* MetaMember::szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
     }
     
     if (szTerm->bSame("*"_Stz))
-      rnPtrs++;
+      rnAsterisks++;
     else
     if (szTerm->bSame("("_Stz))
       rbFunPtr = true;
@@ -172,9 +173,9 @@ Stz* MetaMember::szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
     rnElements = 1; //!more
   }
   
-  vTrace("VarNm %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
+  vTrace("VarNm %s Asterisks=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          szTerm->azChar(),
-         rnPtrs,
+         rnAsterisks,
          (i8)rbFunPtr,
          rnElements,
          rnBits);
@@ -185,6 +186,26 @@ Stz* MetaMember::szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of type asterisks                                               */
+/*----------------------------------------------------------------------------*/
+i8 MetaMember::nAsterisks(void)
+{
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
+    
+  return m_nAsterisks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of type asterisks                                                */
+/*----------------------------------------------------------------------------*/
+void MetaMember::vAsterisks(i8 nAsterisks)
+{
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
+    
+  m_nAsterisks = nAsterisks;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get number of bits for a bit field                                         */
@@ -277,26 +298,6 @@ void MetaMember::vMetaType(MetaType* p_MetaType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of type pointers                                                */
-/*----------------------------------------------------------------------------*/
-i8 MetaMember::nPointers(void)
-{
-  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
-    
-  return m_nPointers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of type pointers                                                */
-/*----------------------------------------------------------------------------*/
-void MetaMember::vPointers(i8 nPointers)
-{
-  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
-    
-  m_nPointers = nPointers;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void MetaMember::vPrint(i8 i_Tab)
@@ -312,14 +313,14 @@ void MetaMember::vPrint(i8 i_Tab)
            
            C_ENDARGS);
   else
-    vTrace("%sMember %-16s %lldB : Type=%s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
+    vTrace("%sMember %-16s %lldB : Type=%s Asters=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          
            Stz::szTab(i_Tab)->azChar(),
            m_sMemberNm.azChar(),
            m_nSize,
            
            m_sTypeNm.azChar(),
-           m_nPointers,
+           m_nAsterisks,
            (i8)m_bFunPtr,
            m_nElements,
            m_nBits,
