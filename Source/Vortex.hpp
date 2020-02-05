@@ -88,8 +88,7 @@ namespace Utilities
   
     bool bParseAllParts(void);
     void vKeywordDescend(Stz* szKeyWord);
-    void vParseBase(Stz* szSawTerm);
-    void vParseBraces(Stz* szSawTerm, bool bSemiTerminated);
+    void vParseBaseList(Stz* szSawTerm);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
@@ -101,7 +100,7 @@ namespace Utilities
     void vParseHashIfdef(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
-    bool bParseLabel(Stz* szSawTerm);
+    void vParseMembers(Stz* szSawTerm, bool bSemiTerminated);
     void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm, bool bTemplated);
     void vParseSemicolon(Stz* szSawTerm);
@@ -153,6 +152,8 @@ namespace Utilities
     void vMetaTypePop(void);
     void vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
+    bool bIgnoreOptLabel(Stz* szSawTerm);
+  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   

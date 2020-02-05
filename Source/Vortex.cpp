@@ -7,7 +7,7 @@
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define FNENTRY \
-  TRACE("/%s/%16s: SAW `%s` %s%s%s %s%s%s %s%s%s\n"_Stz \
+  TRACE("/%s/%16s: SAW `%s` [[ %s%s%s %s%s%s %s%s%s]]\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
@@ -188,7 +188,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseAllParts(void)
 {
-  TRACE("/%s/%16s: %s%s%s %s%s%s %s%s%s\n"_Stz
+  TRACE("/%s/%16s: [[%s%s%s %s%s%s %s%s%s]]\n"_Stz
         ,  m_sSourcePath.szStz()
         , __func__ \
         
@@ -258,7 +258,7 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
 /*----------------------------------------------------------------------------*/
 /* parse: CLASS <classNm> : _^_ ...                                           */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseBase(Stz* szSawTerm)
+void Vortex::vParseBaseList(Stz* szSawTerm)
 {
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -268,80 +268,47 @@ void Vortex::vParseBase(Stz* szSawTerm)
   
   Token xTkn;
 
-   vDebugPoint();
+  vDebugPoint();
    
-   while (bGetNextToken(xTkn)) {
-     
-     Stz* szTerm = xTkn.szTerm();
-     
-     TRACE("   %s\n"_Stz,szTerm);
-
-     if (szTerm->bOneOf("private"_Stz,"protected"_Stz,"public"_Stz,nullptr)) {
-       vGetNextToken(xTkn);
-       TRACE("   %s\n"_Stz,szTerm);
-     }
-
-     Stz* szBaseClassNm = xTkn.szTerm();
-     
-     // add
-     MetaInherit* pInherit = m_p_MetaType->pAddInherit(szBaseClassNm);
-     
-     vGetNextToken(xTkn);
-
-     // temp discard of <...>
-     if (szTerm->bSame("<"_Stz)) {
-       
-       vCollectTplArgs("<"_Stz);
-       pInherit->vTplArgs(&m_oTplArgTerms);
-       m_oTplArgTerms.vReset();
-       
-       vGetNextToken(xTkn);
-     }
-     
-     // class base is terminated by {
-     if (szTerm->bSame("{"_Stz)) {
-       vPartRecognised(CP_BASE);
-       break;
-     }
-
-     CHECKED(szTerm->bSame(","_Stz));
-   }
-
-   vParseBraces("{"_Stz,true);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse:  { _^_ ... } [ ; ]                                                  */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseBraces(Stz* szSawTerm, bool bSemiTerminated)
-{
-  FNENTRY
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("{"_Stz));
-  
-  Token xTkn;
-
   while (bGetNextToken(xTkn)) {
-
+     
     Stz* szTerm = xTkn.szTerm();
+     
+    // ignore optional visibility
+    if (szTerm->bOneOf("private"_Stz,"protected"_Stz,"public"_Stz,nullptr))
+      vGetNextToken(xTkn);
 
-    // block is terminated by } ;
-    if (szTerm->bSame("}"_Stz)) {
-      if (bSemiTerminated)
-        vGetExpectedToken(xTkn,";"_Stz);
-      vPartRecognised(CP_BLOCK);
-      return;
+    // record the name of the inherited class
+    Stz* szInheritedClassNm = xTkn.szTerm();
+
+    // add inherited type to current type
+    MetaInherit* pInherit = m_p_MetaType->pAddInherit(szInheritedClassNm);
+    vPartRecognised(CP_INHERITED_CLASS);
+
+    vGetNextToken(xTkn);
+
+    // collect optional template arguments <...>
+    if (szTerm->bSame("<"_Stz)) {
+     
+      vCollectTplArgs("<"_Stz);
+      pInherit->vTplArgs(&m_oTplArgTerms);
+      m_oTplArgTerms.vReset();
+     
+      vGetNextToken(xTkn);
     }
-    
-    if (bParseLabel(xTkn.szTerm()))
-      continue;
-    
-    vKeywordDescend(xTkn.szTerm());
-    FNENTRY
+
+    // base list is terminated by open brace, being the beginning of members
+    if (szTerm->bSame("{"_Stz)) {
+      vPartRecognised(CP_BASE_LIST_END);
+      break;
+    }
+
+    // base list is continued by a comma
+    CHECKED(szTerm->bSame(","_Stz));
   }
 
-  vThrowProblem(__LINE__);
+  // parse class members
+  vParseMembers("{"_Stz,true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,12 +354,14 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   if (xTkn.bSame(":"_Stz)) {
     vPartRecognised(CP_CLASS);
-    vParseBase(xTkn.szTerm());
+    vPartRecognised(CP_BASE_LIST);
+    vParseBaseList(xTkn.szTerm());
   }
   else
   if (xTkn.bSame("{"_Stz)) {
     vPartRecognised(CP_CLASS);
-    vParseBraces(xTkn.szTerm(),true);
+    vPartRecognised(CP_MEMBERS);
+    vParseMembers(xTkn.szTerm(),true);
   }
   else {
     vThrowProblem(__LINE__);
@@ -487,7 +456,7 @@ void Vortex::vParseFunVar(Stz* szSawTerm, bool bTemplated)
     
   vGatherFunVar(szSawTerm,bTemplated);
   
-  vPartRecognised(CP_OTHER);
+  vPartRecognised(CP__CRUDELY__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,37 +609,39 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip a label i.e. private|protected|public :                               */
+/* parse:  ... CLASS ... { _^_ ... } [ ; ]                                    */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseLabel(Stz* szSawTerm)
+void Vortex::vParseMembers(Stz* szSawTerm, bool bSemiTerminated)
 {
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  RASSERT(szSawTerm->bSame("{"_Stz));
+  
   Token xTkn;
-  
-  if (szSawTerm->bSame("private"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
-    return true;
+
+  while (bGetNextToken(xTkn)) {
+
+    Stz* szTerm = xTkn.szTerm();
+
+    // block is terminated by } ;
+    if (szTerm->bSame("}"_Stz)) {
+      if (bSemiTerminated)
+        vGetExpectedToken(xTkn,";"_Stz);
+      vPartRecognised(CP_MEMBERS_END);
+      return;
+    }
+    
+    if (bIgnoreOptLabel(xTkn.szTerm())) {
+      FNENTRY
+      continue;
+    }
+    
+    vKeywordDescend(xTkn.szTerm());
+    FNENTRY
   }
-  
-  if (szSawTerm->bSame("protected"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
-    return true;
-  }
-  
-  if (szSawTerm->bSame("public"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
-    return true;
-  }
-  
-  return false;
+
+  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,7 +728,7 @@ void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vPartRecognised(CP_OTHER);
+  vPartRecognised(CP__CRUDELY__);
   
   vOtherTermsReset();
 }
@@ -839,7 +810,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
     vMetaTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
-    vParseBraces("{"_Stz,false);
+    vParseMembers("{"_Stz,false);
     vMetaTypePop();
 
     // 1) struct { ... } ;
@@ -880,7 +851,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   if (xTkn.bSame("{"_Stz)) {
     
     vMetaTypePush(xTkn.szTerm(),MT_LINEAR,CP_STRUCT);
-    vParseBraces(xTkn.szTerm(),true);
+    vParseMembers(xTkn.szTerm(),true);
     vMetaTypePop();
     
     return;
@@ -976,7 +947,7 @@ void Vortex::vParseUnion(Stz* szSawTerm)
   }
   
   vMetaTypePush(sUnionNm,MT_UNION,CP_UNION);
-  vParseBraces("{"_Stz,true);
+  vParseMembers("{"_Stz,true);
   vMetaTypePop();
 }
 
@@ -1565,6 +1536,41 @@ void Vortex::vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
     m_pMetaGraph->vAddMetaType(m_p_MetaType);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* skip a label i.e. private|protected|public :                               */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
+{
+  FNENTRY
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szSawTerm->bSame("private"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vPartRecognised(CP_LABEL);
+    return true;
+  }
+  
+  if (szSawTerm->bSame("protected"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vPartRecognised(CP_LABEL);
+    return true;
+  }
+  
+  if (szSawTerm->bSame("public"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vPartRecognised(CP_LABEL);
+    return true;
+  }
+  
+  return false;
+}
+
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */

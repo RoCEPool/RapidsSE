@@ -7,8 +7,8 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
-  /*    */ CP_BASE,                // base
-  /*    */ CP_BLOCK,               // class
+  /*    */ CP_BASE_LIST,           // base list
+  /*    */ CP_BASE_LIST_END,       // base list end
   /*    */ CP_CLASS,               // class
   /*    */ CP_CLASS_END,           // class end
   /*    */ CP_CONST,               // const
@@ -25,11 +25,13 @@ enum eCP // c++ part
   /*    */ CP_HASH_INCLUDE,        // # include
   /*    */ CP_HASH_PRAGMA_ONCE,    // # pragma once
   /*    */ CP_HASH_PRAGMA_PACK,    // # pragma pack
+  /*    */ CP_INHERITED_CLASS,     // inherited class
   /*    */ CP_LABEL,               // class member label
   /*    */ CP_MEMBER,              // member
+  /*    */ CP_MEMBERS,             // members
+  /*    */ CP_MEMBERS_END,         // members end
   /*    */ CP_NAMESPACE,           // namespace
   /*    */ CP_NAMESPACE_END,       // end of namespace
-  /*    */ CP_OTHER,               // other  (to be refined)
   /*    */ CP_STATIC,              // static
   /*    */ CP_STRUCT,              // struct
   /*    */ CP_TEMPLATE_CLASS,      // template class
@@ -37,6 +39,8 @@ enum eCP // c++ part
   /*    */ CP_UNION,               // union
   /*    */ CP_USING,               // using namespace
   /*    */ CP_VARIABLE,            // variable
+  
+  /*    */ CP__CRUDELY__,          // other  (to be refined)
 
   /*    */ CP_ENUMS
 };
@@ -45,8 +49,8 @@ static Stz* aCP[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "CP_BASE"_Stz,
-  /*    */ "CP_BLOCK"_Stz,
+  /*    */ "CP_BASE_LIST"_Stz,
+  /*    */ "CP_BASE_LIST_END"_Stz,
   /*    */ "CP_CLASS"_Stz,
   /*    */ "CP_CLASS_END"_Stz,
   /*    */ "CP_CONST"_Stz,
@@ -63,11 +67,13 @@ static Stz* aCP[]
   /*    */ "CP_HASH_INCLUDE"_Stz,
   /*    */ "CP_HASH_PRAGMA_ONCE"_Stz,
   /*    */ "CP_HASH_PRAGMA_PACK"_Stz,
+  /*    */ "CP_INHERITED_CLASS"_Stz,
   /*    */ "CP_LABEL"_Stz,
   /*    */ "CP_MEMBER"_Stz,
+  /*    */ "CP_MEMBERS"_Stz,
+  /*    */ "CP_MEMBERS_END"_Stz,
   /*    */ "CP_NAMESPACE"_Stz,
   /*    */ "CP_NAMESPACE_END"_Stz,
-  /*    */ "CP_OTHER"_Stz,
   /*    */ "CP_STATIC"_Stz,
   /*    */ "CP_STRUCT"_Stz,
   /*    */ "CP_TEMPLATE_CLASS"_Stz,
@@ -75,6 +81,8 @@ static Stz* aCP[]
   /*    */ "CP_UNION"_Stz,
   /*    */ "CP_USING"_Stz,
   /*    */ "CP_VARIABLE"_Stz,
+  
+  /*    */ "CP__CRUDELY__"_Stz,
 
   /*    */ "ENUMS"_Stz
 };
