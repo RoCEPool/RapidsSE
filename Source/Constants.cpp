@@ -302,6 +302,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
   /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);
   /*    */ vAddConstant("CN_RESPONSEVEC"_Stz,  CN_RESPONSEVEC);
+  /*    */ vAddConstant("CN_RESULT"_Stz,       CN_RESULT);
 
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /*    */ vAddConstant("CN_SESSIONARRAY"_Stz, CN_SESSIONARRAY);

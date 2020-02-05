@@ -259,11 +259,11 @@ void Jobs::vJob_Universal_post(Job* pJob)
 {
   vTrace("I logNote here\n"_Stz);
   
-  i8 iResponses = pJob->m_pResponseVec->nItems();
+  i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
   
   if (pJob->bHasError()) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
     return;
   }

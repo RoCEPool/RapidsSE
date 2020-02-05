@@ -234,6 +234,7 @@ pDUMPFUN *gpDump[]
   /* */ &LocalChain::vDump,      // CN_RESOURCETRACKER
   /* */ &Dump::vUndefined,       // CN_RESPONSE
   /* */ &Dump::vUndefined,       // CN_RESPONSEVEC
+  /* */ &Dump::vUndefined,       // CN_RESULT
   /* */ &Dump::vUndefined,       // CN_RN_RAND
   /* */ &Dump::vUndefined,       // CN_ROW
   /* */ &Dump::vUndefined,       // CN_ROWAGG
@@ -570,6 +571,7 @@ i8 giClassSize[]
   /* */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /* */ sizeof(Response),           // CN_RESPONSE
   /* */ sizeof(ResponseVec),        // CN_RESPONSEVEC
+  /* */ sizeof(Result),             // CN_RESULT
   /* */ sizeof(Rand),               // CN_RN_RAND
   /* */ sizeof(Row),                // CN_ROW
   /* */ sizeof(Row),  //correct     // CN_ROWAGG
@@ -906,6 +908,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSEVEC
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_RESULT
   /* */ HT_INVALID,           // CN_RN_RAND
   /* */ HT_TRANSIENT_LARGE,   // CN_ROW
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
