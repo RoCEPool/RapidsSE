@@ -7,8 +7,10 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
+  /*    */ CP_BASE,                // base
   /*    */ CP_BLOCK,               // class
   /*    */ CP_CLASS,               // class
+  /*    */ CP_CLASS_END,           // class end
   /*    */ CP_CONST,               // const
   /*    */ CP_CONSTRUCTOR,         // constructor
   /*    */ CP_DESTRUCTOR,          // destructor
@@ -26,6 +28,7 @@ enum eCP // c++ part
   /*    */ CP_LABEL,               // class member label
   /*    */ CP_MEMBER,              // member
   /*    */ CP_NAMESPACE,           // namespace
+  /*    */ CP_NAMESPACE_END,       // end of namespace
   /*    */ CP_OTHER,               // other  (to be refined)
   /*    */ CP_STATIC,              // static
   /*    */ CP_STRUCT,              // struct
@@ -42,8 +45,10 @@ static Stz* aCP[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "CP_BASE"_Stz,
   /*    */ "CP_BLOCK"_Stz,
   /*    */ "CP_CLASS"_Stz,
+  /*    */ "CP_CLASS_END"_Stz,
   /*    */ "CP_CONST"_Stz,
   /*    */ "CP_CONSTRUCTOR"_Stz,
   /*    */ "CP_DESTRUCTOR"_Stz,
@@ -61,6 +66,7 @@ static Stz* aCP[]
   /*    */ "CP_LABEL"_Stz,
   /*    */ "CP_MEMBER"_Stz,
   /*    */ "CP_NAMESPACE"_Stz,
+  /*    */ "CP_NAMESPACE_END"_Stz,
   /*    */ "CP_OTHER"_Stz,
   /*    */ "CP_STATIC"_Stz,
   /*    */ "CP_STRUCT"_Stz,

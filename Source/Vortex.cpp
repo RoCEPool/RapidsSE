@@ -7,23 +7,27 @@
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define FNENTRY \
-  TRACE("/%s/ >%16s %s%s%s%s%s%s%sSAW(%s)\n"_Stz, \
+  TRACE("/%s/%16s: SAW `%s` %s%s%s %s%s%s %s%s%s\n"_Stz \
     \
-    m_sSourcePath.szStz(), \
+    ,  m_sSourcePath.szStz() \
     \
-    __func__, \
+    , __func__ \
     \
-    m_bInNamespace ? "NAMESPACE(" : "", \
-    m_bInNamespace ? m_sNamespaceNm.azChar() : "", \
-    m_bInNamespace ? ") " : "", \
+    , szSawTerm->azChar() \
     \
-    m_bInClass     ? "CLASS(" : "", \
-    m_bInClass     ? m_sClassNm.azChar() : "", \
-    m_bInClass     ? ") " : "", \
+    , m_bInNamespace ? "NAMESPACE `" : "" \
+    , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
+    , m_bInNamespace ? "` " : "" \
     \
-    m_bInTemplate  ? m_sTplSpec.azChar() : "", \
+    , m_bInClass     ? "CLASS `" : "" \
+    , m_bInClass     ? m_sClassNm.azChar() : "" \
+    , m_bInClass     ? "` " : "" \
     \
-    szSawTerm->azChar());
+    , m_bInTemplate  ? "TPLSPEC `" : "" \
+    , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
+    , m_bInTemplate  ? "` " : "" \
+    \
+    );
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -184,19 +188,36 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseAllParts(void)
 {
+  TRACE("/%s/%16s: %s%s%s %s%s%s %s%s%s\n"_Stz
+        ,  m_sSourcePath.szStz()
+        , __func__ \
+        
+        , m_bInNamespace ? "NAMESPACE`" : ""
+        , m_bInNamespace ? m_sNamespaceNm.azChar() : ""
+        , m_bInNamespace ? "` " : ""
+        
+        , m_bInClass     ? "CLASS`" : ""
+        , m_bInClass     ? m_sClassNm.azChar() : ""
+        , m_bInClass     ? "` " : ""
+        
+        , m_bInTemplate  ? "TPLSPEC`" : ""
+        , m_bInTemplate  ? m_sTplSpec.azChar() : ""
+        , m_bInTemplate  ? "` " : ""
+        );
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_bInNamespace);
   
   // -- parse till EOF --
   Token xTkn;
   while (bGetNextToken(xTkn)) {
-  
+
     Stz* szSawTerm = xTkn.szTerm();
-    
-    FNENTRY
     
     try {
       vKeywordDescend(xTkn.szTerm());
+      
+      FNENTRY
     }
     catch (i8 i_Problem) {
       return false;
@@ -271,15 +292,17 @@ void Vortex::vParseBase(Stz* szSawTerm)
      if (szTerm->bSame("<"_Stz)) {
        
        vCollectTplArgs("<"_Stz);
-       pInherit->vTplArgs(&m_oTplParamTerms);
-       m_oTplParamTerms.vReset();
+       pInherit->vTplArgs(&m_oTplArgTerms);
+       m_oTplArgTerms.vReset();
        
        vGetNextToken(xTkn);
      }
      
      // class base is terminated by {
-     if (szTerm->bSame("{"_Stz))
+     if (szTerm->bSame("{"_Stz)) {
+       vPartRecognised(CP_BASE);
        break;
+     }
 
      CHECKED(szTerm->bSame(","_Stz));
    }
@@ -353,19 +376,22 @@ void Vortex::vParseClass(Stz* szSawTerm)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS);
   vClassDescend(sClassNm);
   
-  if (m_oTplParamTerms.nItems()) {
-    m_p_MetaType->vTplParams(& m_oTplParamTerms);
+  if (m_oTplSpecTerms.nItems()) {
+    m_p_MetaType->vTplParams(& m_oTplSpecTerms);
+    m_oTplSpecTerms.vReset();
   }
 
   if (xTkn.bSame(":"_Stz)) {
+    vPartRecognised(CP_CLASS);
     vParseBase(xTkn.szTerm());
   }
   else
   if (xTkn.bSame("{"_Stz)) {
+    vPartRecognised(CP_CLASS);
     vParseBraces(xTkn.szTerm(),true);
   }
   else {
@@ -666,12 +692,15 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   // get {
   vGetExpectedToken(xTkn,"{"_Stz);
 
+  vPartRecognised(CP_NAMESPACE);
+  FNENTRY
+
   // parse ... }
   while (bGetNextToken(xTkn)) {
   
     // test for } being end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
-      vPartRecognised(CP_NAMESPACE);
+      vPartRecognised(CP_NAMESPACE_END);
       vNamepaceAscend();
       return;
     }
@@ -1120,8 +1149,7 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTypeSpecTerms.vReset();
-  m_oTplParamTerms.vReset();
+  m_oTplArgTerms.vReset();
   rnAsterisks = 0;
 
   // special case of no specifier (constructor / destructor)
@@ -1261,23 +1289,21 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplParamTerms.vReset();
-  
-  vFragmentMarker("@"_Stz);
-  
+  m_oTplArgTerms.vReset();
+    
   Token xTkn;
   
   // collect ... >
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplParamTerms.vAdd(xTkn.szTerm());
+    m_oTplArgTerms.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplParamTerms.vNamesString(sTerms);
+  m_oTplArgTerms.vNamesString(sTerms);
   
   TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
@@ -1292,23 +1318,21 @@ void Vortex::vCollectTplSpec(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplParamTerms.vReset();
-  
-  vFragmentMarker("@"_Stz);
-  
+  m_oTplSpecTerms.vReset();
+    
   Token xTkn;
   
   // collect ... >
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplParamTerms.vAdd(xTkn.szTerm());
+    m_oTplSpecTerms.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplParamTerms.vNamesString(sTerms);
+  m_oTplSpecTerms.vNamesString(sTerms);
   
   m_sTplSpec = "<"_Stz;
   m_sTplSpec.vConcat(sTerms);
@@ -1461,13 +1485,13 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_oTplParamTerms.nItems()) {
+  if (m_oTplSpecTerms.nItems()) {
     m_p_MetaType = new MetaType(szClassNm,
                                 MT_TEMPLATE,
                                 CP_TEMPLATE_CLASS,
                                 m_p_MetaType);
     
-    m_p_MetaType->vTplParams(&m_oTplParamTerms);
+    m_p_MetaType->vTplParams(&m_oTplSpecTerms);
   }
   else {
     m_p_MetaType = new MetaType(szClassNm,
@@ -1826,7 +1850,7 @@ void Vortex::vGetTplArg(Token& roTerm)
   
   CHECKED(bGetNextToken(roTerm))
   
-  m_oTplParamTerms.vAdd(roTerm.szTerm());
+  m_oTplArgTerms.vAdd(roTerm.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1842,7 +1866,7 @@ void Vortex::vFragmentAppend(Stz* szString)
   m_sFragment.vConcat(szString);
   
   if (m_bTrace)
-    TRACE("  Fragment: %s\n"_Stz,m_sFragment.azChar());
+    TRACE("  Got `%s`\n"_Stz,m_sFragment.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1917,7 +1941,7 @@ void Vortex::vPartRecognised(eCP eCppPart)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (m_bTrace)
-    TRACE("Recognised :: %s\n\n"_Stz,aCP[eCppPart]);
+    TRACE("Recognised %s\n\n"_Stz,aCP[eCppPart]);
 
   vFragmentReset();
 }
@@ -1955,29 +1979,6 @@ void Vortex::vThrowProblem(i8 i_Problem)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   throw i_Problem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset template argument terms                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTplTermsReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oTplParamTerms.vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace template terms                                                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTraceTplTerms(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  s48K sTerms;
-  m_oTplParamTerms.vNamesString(sTerms);
-  
-  TRACE("  TplTerms: %s\n"_Stz,sTerms.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
