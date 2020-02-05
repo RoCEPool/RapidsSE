@@ -29,6 +29,29 @@
     \
     );
 
+#define GATHER \
+  TRACE("/%s/%16s: SAW `%s` [[ %s%s%s %s%s%s %s%s%s]]\n"_Stz \
+    \
+    ,  m_sSourcePath.szStz() \
+    \
+    , __func__ \
+    \
+    , roCurTkn.szTerm() \
+    \
+    , m_bInNamespace ? "NAMESPACE `" : "" \
+    , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
+    , m_bInNamespace ? "` " : "" \
+    \
+    , m_bInClass     ? "CLASS `" : "" \
+    , m_bInClass     ? m_sClassNm.azChar() : "" \
+    , m_bInClass     ? "` " : "" \
+    \
+    , m_bInTemplate  ? "TPLSPEC `" : "" \
+    , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
+    , m_bInTemplate  ? "` " : "" \
+    \
+    );
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -348,9 +371,9 @@ void Vortex::vParseClass(Stz* szSawTerm)
   vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS);
   vClassDescend(sClassNm);
   
-  if (m_oTplSpecTerms.nItems()) {
-    m_p_MetaType->vTplParams(& m_oTplSpecTerms);
-    m_oTplSpecTerms.vReset();
+  if (m_oTplSpec.nItems()) {
+    m_p_MetaType->vTplParams(& m_oTplSpec);
+    m_oTplSpec.vReset();
   }
 
   if (xTkn.bSame(":"_Stz)) {
@@ -457,9 +480,6 @@ void Vortex::vParseFunVar(Stz* szSawTerm, bool bTemplated)
     
   vGatherFunVar(szSawTerm,bTemplated);
   
-  vPartRecognised(CP__CRUDELY__);
-  
-  m_oTypeSpecTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -733,7 +753,7 @@ void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
 
   vPartRecognised(CP__CRUDELY__);
   
-  m_oTypeSpecTerms.vReset();
+  m_oTypeSpec.vReset();
 
   vOtherTermsReset();
 }
@@ -1003,18 +1023,35 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   roCurTkn.vCopy(szSawTerm);
   
   vGatherTypeSpec(roCurTkn,nAsterisks);
-  vTraceTypeSpecTerms();
+
   
   vGatherFunVarNm(roCurTkn,sFunVarNm,bIsFunPtr);
   
-  if (roCurTkn.bSame(";"_Stz))
+  if (roCurTkn.bSame(";"_Stz)) {
+    if (m_bInClass)
+      vPartRecognised(CP_MEMBER_VARIABLE);
+    else
+      vPartRecognised(CP__CRUDELY__);
+
+    m_oTypeSpec.vReset();
+
     return;
+  }
   
   vGatherArraySpec(roCurTkn,nElements);
-  if (nElements)
+  if (nElements) {
+    vPartRecognised(CP__CRUDELY__);
+    
+    m_oTypeSpec.vReset();
     return;
+  }
   
   vGatherFunSpec(roCurTkn,bIsFun);
+  
+  vPartRecognised(CP__CRUDELY__);
+  
+  m_oTypeSpec.vReset();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1022,6 +1059,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherArraySpec(Token& roCurTkn, i8& nElements)
 {
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   nElements = 0;
@@ -1033,6 +1071,7 @@ void Vortex::vGatherArraySpec(Token& roCurTkn, i8& nElements)
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherFunBody(Token& roCurTkn)
 {
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
 }
@@ -1042,6 +1081,7 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
 {
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   rbFunPtr = false;
@@ -1059,6 +1099,8 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
     vGetExpectedToken(roCurTkn,"("_Stz);
     vCollectBalancedParenthesis("("_Stz);
 
+    vPartRecognised(CP_FUNCTION_POINTER);
+    
     vGetNextToken(roCurTkn);
     return;
   }
@@ -1066,16 +1108,23 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
   // do we have operator <name>
   if (roCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(roCurTkn);
+    rsFunVarNm = roCurTkn.szTerm();
+    vPartRecognised(CP_OPERATOR);
+    vGetNextToken(roCurTkn);
+    return;
   }
   else if (roCurTkn.bSame("~"_Stz)) {
     vGetNextToken(roCurTkn);
-
+    rsFunVarNm = roCurTkn.szTerm();
+    vPartRecognised(CP_DESTRUCTOR);
+    vGetNextToken(roCurTkn);
+    return;
   }
   
   // we have a <name>
   rsFunVarNm = roCurTkn.szTerm();
-  
-  m_oTypeSpecTerms.vAdd(roCurTkn.szTerm());
+  vPartRecognised(CP_FUNVAR_NAME);
+
   vGetNextToken(roCurTkn);
 }
 
@@ -1084,6 +1133,7 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbFunPtr)
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherFunSpec(Token& roCurTkn, bool& rbIsFun)
 {
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   rbIsFun = false;
@@ -1105,6 +1155,7 @@ void Vortex::vGatherFunSpec(Token& roCurTkn, bool& rbIsFun)
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherNoExceptSpec(Token& roCurTkn)
 {
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (! roCurTkn.bSame("("_Stz))
@@ -1123,6 +1174,7 @@ void Vortex::vGatherNoExceptSpec(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
 {
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_oTplArgTerms.vReset();
@@ -1142,7 +1194,7 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
   }
   
   // we have a <name>
-  m_oTypeSpecTerms.vAdd(roCurTkn.szTerm());
+  m_oTypeSpec.vAdd(roCurTkn.szTerm());
   vGetNextToken(roCurTkn);
   
   // do we have template arguments?
@@ -1155,11 +1207,14 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
   do {
     
     // collected when we have no more asterisks
-    if (! roCurTkn.bSame("*"_Stz))
+    if (! roCurTkn.bSame("*"_Stz)) {
+      vTraceTypeSpec();
+      vPartRecognised(CP_TYPE_SPECIFICATION);
       return;
-
+  }
+  
     // we have an asterisk
-    m_oTypeSpecTerms.vAdd(roCurTkn.szTerm());
+    m_oTypeSpec.vAdd(roCurTkn.szTerm());
     rnAsterisks++;
 
   }  while (bGetNextToken(roCurTkn));
@@ -1294,7 +1349,7 @@ void Vortex::vCollectTplSpec(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplSpecTerms.vReset();
+  m_oTplSpec.vReset();
     
   Token xTkn;
   
@@ -1302,13 +1357,13 @@ void Vortex::vCollectTplSpec(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplSpecTerms.vAdd(xTkn.szTerm());
+    m_oTplSpec.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplSpecTerms.vNamesString(sTerms);
+  m_oTplSpec.vNamesString(sTerms);
   
   m_sTplSpec = "<"_Stz;
   m_sTplSpec.vConcat(sTerms);
@@ -1461,13 +1516,13 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_oTplSpecTerms.nItems()) {
+  if (m_oTplSpec.nItems()) {
     m_p_MetaType = new MetaType(szClassNm,
                                 MT_TEMPLATE,
                                 CP_TEMPLATE_CLASS,
                                 m_p_MetaType);
     
-    m_p_MetaType->vTplParams(&m_oTplSpecTerms);
+    m_p_MetaType->vTplParams(&m_oTplSpec);
   }
   else {
     m_p_MetaType = new MetaType(szClassNm,
@@ -1954,7 +2009,6 @@ void Vortex::vPartRecognised(eCP eCppPart)
   if (m_bTrace)
     TRACE("Recognised %s\n\n"_Stz,aCP[eCppPart]);
   
-  
   if (m_bInput)
     getc(stdin);
 
@@ -1999,7 +2053,7 @@ void Vortex::vThrowProblem(i8 i_Problem)
 /*----------------------------------------------------------------------------*/
 /* trace type specification terms                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vTraceTypeSpecTerms(void)
+void Vortex::vTraceTypeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -2007,9 +2061,9 @@ void Vortex::vTraceTypeSpecTerms(void)
     return;
   
   s48K sTerms;
-  m_oTypeSpecTerms.vNamesString(sTerms);
+  m_oTypeSpec.vNamesString(sTerms);
   
-  TRACE("  TypeSpecTerms: %s\n"_Stz,sTerms.azChar());
+  TRACE("  TypeSpec: %s\n"_Stz,sTerms.azChar());
 }
 
 

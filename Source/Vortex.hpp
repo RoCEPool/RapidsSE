@@ -61,9 +61,10 @@ namespace Utilities
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
+    EnameSet    m_oTypeSpec;     // working set of collected specifier terms
+
     EnameSet    m_oOtherTerms;   // working set of collected other terms
-    EnameSet    m_oTypeSpecTerms;// working set of collected specifier terms
-    EnameSet    m_oTplSpecTerms; // working set of collected template terms
+    EnameSet    m_oTplSpec;      // working set of collected template terms
     EnameSet    m_oTplArgTerms;  // working set of collected template terms
 
     // correctness section
@@ -186,7 +187,7 @@ namespace Utilities
      void vTemplateAscend(void);
      void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
-     void vTraceTypeSpecTerms(void);
+     void vTraceTypeSpec(void);
 
    private:
     Footer* aFooter(void);

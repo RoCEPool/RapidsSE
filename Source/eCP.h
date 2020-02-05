@@ -19,6 +19,8 @@ enum eCP // c++ part
   /*    */ CP_FORWARD,             // forward class
   /*    */ CP_FRIEND,              // friend
   /*    */ CP_FUNCTION,            // function
+  /*    */ CP_FUNCTION_POINTER,    // function
+  /*    */ CP_FUNVAR_NAME,         // function/variable name
   /*    */ CP_HASH_DEFINE,         // # define
   /*    */ CP_HASH_IF,             // # if
   /*    */ CP_HASH_IFDEF,          // # ifdef
@@ -27,15 +29,17 @@ enum eCP // c++ part
   /*    */ CP_HASH_PRAGMA_PACK,    // # pragma pack
   /*    */ CP_INHERITED_CLASS,     // inherited class
   /*    */ CP_LABEL,               // class member label
-  /*    */ CP_MEMBER,              // member
+  /*    */ CP_MEMBER_VARIABLE,     // member variable
   /*    */ CP_MEMBERS,             // members
   /*    */ CP_MEMBERS_END,         // members end
   /*    */ CP_NAMESPACE,           // namespace
   /*    */ CP_NAMESPACE_END,       // end of namespace
+  /*    */ CP_OPERATOR,            // function
   /*    */ CP_STATIC,              // static
   /*    */ CP_STRUCT,              // struct
   /*    */ CP_TEMPLATE_CLASS,      // template class
   /*    */ CP_TYPEDEF,             // typedef
+  /*    */ CP_TYPE_SPECIFICATION,  // type specification
   /*    */ CP_UNION,               // union
   /*    */ CP_USING,               // using namespace
   /*    */ CP_VARIABLE,            // variable
@@ -61,6 +65,8 @@ static Stz* aCP[]
   /*    */ "CP_FORWARD"_Stz,
   /*    */ "CP_FRIEND"_Stz,
   /*    */ "CP_FUNCTION"_Stz,
+  /*    */ "CP_FUNCTION_POINTER"_Stz,
+  /*    */ "CP_FUNVAR_NAME"_Stz,
   /*    */ "CP_HASH_DEFINE"_Stz,
   /*    */ "CP_HASH_IF"_Stz,
   /*    */ "CP_HASH_IFDEF"_Stz,
@@ -69,15 +75,17 @@ static Stz* aCP[]
   /*    */ "CP_HASH_PRAGMA_PACK"_Stz,
   /*    */ "CP_INHERITED_CLASS"_Stz,
   /*    */ "CP_LABEL"_Stz,
-  /*    */ "CP_MEMBER"_Stz,
+  /*    */ "CP_MEMBER_VARIABLE"_Stz,
   /*    */ "CP_MEMBERS"_Stz,
   /*    */ "CP_MEMBERS_END"_Stz,
   /*    */ "CP_NAMESPACE"_Stz,
   /*    */ "CP_NAMESPACE_END"_Stz,
+  /*    */ "CP_OPERATOR"_Stz,
   /*    */ "CP_STATIC"_Stz,
   /*    */ "CP_STRUCT"_Stz,
   /*    */ "CP_TEMPLATE_CLASS"_Stz,
   /*    */ "CP_TYPEDEF"_Stz,
+  /*    */ "CP_TYPE_SPECIFICATION"_Stz,
   /*    */ "CP_UNION"_Stz,
   /*    */ "CP_USING"_Stz,
   /*    */ "CP_VARIABLE"_Stz,
