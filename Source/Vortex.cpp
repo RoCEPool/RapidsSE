@@ -1057,7 +1057,6 @@ Stz* Vortex::szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr)
 
   rbFunPtr = false;
 
-  
   // do we have ( * <name> ) ( ...) ?
   if (szSawTerm->bSame("("_Stz)) {
     
@@ -1073,6 +1072,11 @@ Stz* Vortex::szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr)
 
     vGetNextToken(xNextTkn);
     return xNextTkn.szTerm();
+  }
+  
+  // do we have operator <name>
+  if (szSawTerm->bSame("operator"_Stz)) {
+    vGetNextToken(xNextTkn);
   }
 
   // we have a <name>
