@@ -585,26 +585,6 @@ eEC Job::eErrorCode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* has error code ?                                                           */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasError(eEC eErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (m_xResult.m_bHasError) {
-    
-    i8 iResponses = m_xResult.m_pResponseVec->nItems();
-    
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      if (m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode == eErrorCode)
-      return true;
-    }
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set error code                                                             */
 /*----------------------------------------------------------------------------*/
 void Job::vErrorCode(eEC eErrorCode)
