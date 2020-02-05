@@ -112,20 +112,21 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
-    Stz* szCollectArraySpec(Stz* szSawTerm, i8& nElements);
+    void vGatherArraySpec(Token& roSawTkn, i8& nElements);
+    void vGatherFunBody(Token& roSawTkn);
+    void vGatherFunParams(Token& roSawTkn);
+    void vGatherFunSpec(Token& roSawTkn, bool& rbIsFun);
+    void vGatherFunVarNm(Token& roSawTkn, s32& rsFunVarNm, bool& rbIsFunPtr);
+    void vGatherNoExceptSpec(Token& roSawTkn);
+    void vGatherTypeSpec(Token& roSawTkn, i8& rnAsterisks);
+
     void vCollectBalanced(Stz* szOpen, Stz* szClose);
     void vCollectBalancedAngles(Stz* szSawTerm);
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
-    Stz* szCollectFunBody(Stz* szSawTerm);
-    Stz* szCollectFunParams(Stz* szSawTerm);
-    Stz* szCollectFunSpec(Stz* szSawTerm, bool& rbIsFun);
-    Stz* szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbIsFunPtr);
-    Stz* szCollectNoExceptSpec(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
     void vCollectTplArgs(Stz* szSawTerm);
     void vCollectTplParams(Stz* szSawTerm);
-    Stz* szCollectTypeSpec(Stz* szSawTerm, i8& rnAsterisks);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);

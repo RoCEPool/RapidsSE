@@ -442,20 +442,22 @@ void Vortex::vParseFunVar(Stz* szSawTerm)
   bool bIsFun;
   bool bIsFunPtr;
   
-  Stz* szEndTerm = szSawTerm;
+  Token oSawTkn;
   
-  szEndTerm = szCollectTypeSpec(szEndTerm,nAsterisks);
+  oSawTkn.vCopy(szSawTerm);
   
-  szEndTerm = szCollectFunVarNm(szEndTerm,sFunVarNm,bIsFunPtr);
+  vGatherTypeSpec(oSawTkn,nAsterisks);
   
-  if (szEndTerm->bSame(";"_Stz))
+  vGatherFunVarNm(oSawTkn,sFunVarNm,bIsFunPtr);
+  
+  if (oSawTkn.bSame(";"_Stz))
     return;
   
-  szEndTerm = szCollectArraySpec(szEndTerm,nElements);
+  vGatherArraySpec(oSawTkn,nElements);
   if (nElements)
     return;
   
-  szEndTerm = szCollectFunSpec(szEndTerm,bIsFun);
+  vGatherFunSpec(oSawTkn,bIsFun);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -968,17 +970,131 @@ void Vortex::vParseUsing(Stz* szSawTerm)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* collect noexcept terms: ????                                               */
+/* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
-Stz* Vortex::szCollectArraySpec(Stz* szSawTerm, i8& nElements)
+void Vortex::vGatherArraySpec(Token& roSawTkn, i8& nElements)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   nElements = 0;
-  
-  return szSawTerm;
-  //vThrowProblem(__LINE__);
+
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect function body: ????                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherFunBody(Token& roSawTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect function/variable name: ????                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherFunVarNm(Token& roSawTkn, s32& rsFunVarNm, bool& rbFunPtr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  rbFunPtr = false;
+
+  // do we have ( * <name> ) ( ...) ?
+  if (roSawTkn.bSame("("_Stz)) {
+    
+    rbFunPtr = true;
+    
+    vGetExpectedToken(roSawTkn,"*"_Stz);
+    vGetNextToken(roSawTkn);
+    rsFunVarNm = roSawTkn.szTerm();
+    vGetExpectedToken(roSawTkn,")"_Stz);
+    
+    vGetExpectedToken(roSawTkn,"("_Stz);
+    vCollectBalancedParenthesis("("_Stz);
+
+    vGetNextToken(roSawTkn);
+    return;
+  }
+  
+  // do we have operator <name>
+  if (roSawTkn.bSame("operator"_Stz)) {
+    vGetNextToken(roSawTkn);
+  }
+
+  // we have a <name>
+  m_oSpecTerms.vAdd(roSawTkn.szTerm());
+  vGetNextToken(roSawTkn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect function spec: ????                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherFunSpec(Token& roSawTkn, bool& rbIsFun)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  rbIsFun = false;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherTypeSpec(Token& roSawTkn, i8& rnAsterisks)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oSpecTerms.vReset();
+  m_oTplTerms.vReset();
+  rnAsterisks = 0;
+
+  // special case of no specifier (constructor / destructor)
+  if (m_bInClass) {
+    // 1) constructor (no specifier)
+    if (roSawTkn.bSame(m_sClassNm))
+      return;
+    // 2) destructor (no specifier)
+    if (roSawTkn.bSame("~"_Stz))
+      return;
+  }
+  
+  // we have a <name>
+  m_oSpecTerms.vAdd(roSawTkn.szTerm());
+  vGetNextToken(roSawTkn);
+  
+  // do we have template arguments?
+  if (roSawTkn.bSame("<"_Stz)) {
+    vCollectTplArgs("<"_Stz);
+    vGetNextToken(roSawTkn);
+  }
+    
+  // zero or more asterisks
+  do {
+    
+    // collected when we have no more asterisks
+    if (! roSawTkn.bSame("*"_Stz))
+      return;
+
+    // we have an asterisk
+    m_oSpecTerms.vAdd(roSawTkn.szTerm());
+    rnAsterisks++;
+
+  }  while (bGetNextToken(roSawTkn));
+  
+  vThrowProblem(__LINE__);
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect noexcept terms: ????                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherNoExceptSpec(Token& roSawTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+}
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* collect delimited tokens (potentially nested)                              */
@@ -1033,81 +1149,6 @@ void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced("("_Stz,")"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect function body: ????                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szCollectFunBody(Stz* szSawTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  return szSawTerm;
-  //vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect function/variable name: ????                                       */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szCollectFunVarNm(Stz* szSawTerm, s32& rsFunVarNm, bool& rbFunPtr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  Token xNextTkn;
-
-  rbFunPtr = false;
-
-  // do we have ( * <name> ) ( ...) ?
-  if (szSawTerm->bSame("("_Stz)) {
-    
-    rbFunPtr = true;
-    
-    vGetExpectedToken(xNextTkn,"*"_Stz);
-    vGetNextToken(xNextTkn);
-    rsFunVarNm = xNextTkn.szTerm();
-    vGetExpectedToken(xNextTkn,")"_Stz);
-    
-    vGetExpectedToken(xNextTkn,"("_Stz);
-    vCollectBalancedParenthesis("("_Stz);
-
-    vGetNextToken(xNextTkn);
-    return xNextTkn.szTerm();
-  }
-  
-  // do we have operator <name>
-  if (szSawTerm->bSame("operator"_Stz)) {
-    vGetNextToken(xNextTkn);
-  }
-
-  // we have a <name>
-  m_oSpecTerms.vAdd(szSawTerm);
-  vGetNextToken(xNextTkn);
-  
-  return szSawTerm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect function spec: ????                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szCollectFunSpec(Stz* szSawTerm, bool& rbIsFun)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  rbIsFun = false;
-    
-  return szSawTerm;
-  //vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect noexcept terms: ????                                               */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szCollectNoExceptSpec(Stz* szSawTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  return szSawTerm;
-  //vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1199,57 +1240,6 @@ void Vortex::vCollectTplParams(Stz* szSawTerm)
   m_oTplTerms.vNamesString(sTerms);
   
   TRACE("  TplParams: %s\n"_Stz,sTerms.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szCollectTypeSpec(Stz* szSawTerm, i8& rnAsterisks)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xNextTkn;
-
-  m_oSpecTerms.vReset();
-  m_oTplTerms.vReset();
-  rnAsterisks = 0;
-
-  // special case of no specifier (constructor / destructor)
-  if (m_bInClass) {
-    // 1) constructor (no specifier)
-    if (szSawTerm->bSame(m_sClassNm))
-      return szSawTerm;
-    // 2) destructor (no specifier)
-    if (szSawTerm->bSame("~"_Stz))
-      return szSawTerm;
-  }
-  
-  // we have a <name>
-  m_oSpecTerms.vAdd(szSawTerm);
-  vGetNextToken(xNextTkn);
-  
-  // do we have template arguments?
-  if (xNextTkn.bSame("<"_Stz)) {
-    vCollectTplArgs("<"_Stz);
-    vGetNextToken(xNextTkn);
-  }
-    
-  // zero or more asterisks
-  do {
-    
-    // collected when we have no more asterisks
-    if (! xNextTkn.bSame("*"_Stz))
-      return xNextTkn.szTerm();
-
-    // we have an asterisk
-    m_oSpecTerms.vAdd(xNextTkn.szTerm());
-    rnAsterisks++;
-
-  }  while (bGetNextToken(xNextTkn));
-  
-  vThrowProblem(__LINE__);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
