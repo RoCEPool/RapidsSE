@@ -36,7 +36,7 @@
     \
     , __func__ \
     \
-    , roCurTkn.szTerm() \
+    , m_oCurTkn.szTerm() \
     \
     , m_bInNamespace ? "NAMESPACE `" : "" \
     , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
@@ -1014,22 +1014,20 @@ void Vortex::vParseUsing(Stz* szSawTerm)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* parse: <other> _^_ <term> ...                                              */
+/* gather information about a function or a variable declaration              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
 {
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  Token roCurTkn;
+      
+  m_oCurTkn.vCopy(szSawTerm);
   
-  roCurTkn.vCopy(szSawTerm);
-  
-  vGatherTypeSpec(roCurTkn);
+  vGatherTypeSpec();
 
-  vGatherFunVarNm(roCurTkn);
+  vGatherFunVarNm();
   
-  if (roCurTkn.bSame(";"_Stz)) {
+  if (m_oCurTkn.bSame(";"_Stz)) {
     if (m_bInClass) {
       vTraceTypeSpec();
       vTraceFunVarNm();
@@ -1044,7 +1042,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
     return;
   }
   
-  vGatherArraySpec(roCurTkn);
+  vGatherArraySpec();
   if (m_bIsArray) {
     vPartRecognised(CP_MEMBER_VARIABLE);
     
@@ -1053,8 +1051,8 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
     return;
   }
   
-  vGatherFunSpec(roCurTkn);
-  vGatherFunBody(roCurTkn);
+  vGatherFunSpec();
+  vGatherFunBody();
 
   vPartRecognised(CP__CRUDELY__);
   
@@ -1065,23 +1063,23 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
 /*----------------------------------------------------------------------------*/
 /* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherArraySpec(Token& roCurTkn)
+void Vortex::vGatherArraySpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   m_bIsArray = false;
   
-  if (! roCurTkn.bSame("["_Stz))
+  if (! m_oCurTkn.bSame("["_Stz))
     return;
   
   m_bIsArray = true;
   
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
 
-  m_oArraySpec.vAdd(roCurTkn.szTerm());
+  m_oArraySpec.vAdd(m_oCurTkn.szTerm());
   
-  vGetExpectedToken(roCurTkn,"]"_Stz);
+  vGetExpectedToken(m_oCurTkn,"]"_Stz);
 
   vPartRecognised(CP_ARRAY_SPEC);
 }
@@ -1089,12 +1087,12 @@ void Vortex::vGatherArraySpec(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 /* collect function body: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunBody(Token& roCurTkn)
+void Vortex::vGatherFunBody(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  if (! roCurTkn.bSame("{"_Stz))
+  if (! m_oCurTkn.bSame("{"_Stz))
     return;
 
   vDiscardBalancedBraces("{"_Stz);
@@ -1105,7 +1103,7 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 /* collect function/variable name: ????                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVarNm(Token& roCurTkn)
+void Vortex::vGatherFunVarNm(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1115,21 +1113,21 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn)
   m_oFunVarNm.vReset();
 
   // do we have ( * <name> ) ( ...) ?
-  if (roCurTkn.bSame("("_Stz)) {
+  if (m_oCurTkn.bSame("("_Stz)) {
     
     m_bIsFunPtr = true;
     
-    vGetExpectedToken(roCurTkn,"*"_Stz);
-    vGetNextToken(roCurTkn);
-    m_oFunVarNm.vAdd(roCurTkn.szTerm());
-    vGetExpectedToken(roCurTkn,")"_Stz);
+    vGetExpectedToken(m_oCurTkn,"*"_Stz);
+    vGetNextToken(m_oCurTkn);
+    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
+    vGetExpectedToken(m_oCurTkn,")"_Stz);
     
-    vGetExpectedToken(roCurTkn,"("_Stz);
+    vGetExpectedToken(m_oCurTkn,"("_Stz);
     vCollectBalancedParenthesis("("_Stz);
 
     vPartRecognised(CP_FUNCTION_POINTER);
     
-    vGetNextToken(roCurTkn);
+    vGetNextToken(m_oCurTkn);
     return;
   }
   
@@ -1138,47 +1136,47 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn)
   L_Parse_Function_Name:
   
   // do we have operator <name>
-  if (roCurTkn.bSame("operator"_Stz)) {
-    vGetNextToken(roCurTkn);
-    m_oFunVarNm.vAdd(roCurTkn.szTerm());
+  if (m_oCurTkn.bSame("operator"_Stz)) {
+    vGetNextToken(m_oCurTkn);
+    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
     vPartRecognised(CP_OPERATOR);
-    vGetNextToken(roCurTkn);
+    vGetNextToken(m_oCurTkn);
     return;
   }
-  else if (roCurTkn.bSame("~"_Stz)) {
-    vGetNextToken(roCurTkn);
-    m_oFunVarNm.vAdd(roCurTkn.szTerm());
+  else if (m_oCurTkn.bSame("~"_Stz)) {
+    vGetNextToken(m_oCurTkn);
+    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
     vPartRecognised(CP_DESTRUCTOR);
-    vGetNextToken(roCurTkn);
+    vGetNextToken(m_oCurTkn);
     return;
   }
   
   // we have a <name>
-  m_oFunVarNm.vAdd(roCurTkn.szTerm());
+  m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
   vTraceFunVarNm();
   vPartRecognised(CP_FUNVAR_NAME);
 
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
   
   // do we have type qualifier args?
-  if (! roCurTkn.bSame("<"_Stz))
+  if (! m_oCurTkn.bSame("<"_Stz))
     return;
   
   vCollectTplArgs("<"_Stz);
   vPartRecognised(CP_TYPE_ARGS);
   
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! roCurTkn.bSame(":"_Stz))
+  if (! m_oCurTkn.bSame(":"_Stz))
     return;
 
-  vGetExpectedToken(roCurTkn,":"_Stz);
+  vGetExpectedToken(m_oCurTkn,":"_Stz);
   
   vShiftClassNm();
   
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
   
   GATHER
 
@@ -1188,7 +1186,7 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 /* collect function spec: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunSpec(Token& roCurTkn)
+void Vortex::vGatherFunSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1196,51 +1194,51 @@ void Vortex::vGatherFunSpec(Token& roCurTkn)
   m_bIsFun = true;
   m_oFunSpec.vReset();
   
-  if (! roCurTkn.bSame("("_Stz))
+  if (! m_oCurTkn.bSame("("_Stz))
     return;
   
   m_bIsFun = true;
   
   for (;;) {
      
-    vGetNextToken(roCurTkn);
+    vGetNextToken(m_oCurTkn);
      
      // test for close
-     if (roCurTkn.bSame(")"_Stz))
+     if (m_oCurTkn.bSame(")"_Stz))
        break;
      
-    m_oFunSpec.vAdd(roCurTkn.szTerm());
+    m_oFunSpec.vAdd(m_oCurTkn.szTerm());
   }
 
   
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
 
-  vGatherNoExceptSpec(roCurTkn);
+  vGatherNoExceptSpec();
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect noexcept terms: ????                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherNoExceptSpec(Token& roCurTkn)
+void Vortex::vGatherNoExceptSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (! roCurTkn.bSame("("_Stz))
+  if (! m_oCurTkn.bSame("("_Stz))
     return;
 
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
 
-  vGetExpectedToken(roCurTkn,")"_Stz);
+  vGetExpectedToken(m_oCurTkn,")"_Stz);
   
-  vGetNextToken(roCurTkn);
+  vGetNextToken(m_oCurTkn);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherTypeSpec(Token& roCurTkn)
+void Vortex::vGatherTypeSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1252,41 +1250,41 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn)
   // special case of no specifier (constructor / destructor)
   if (m_bInClass) {
     // 1) constructor (no specifier)
-    if (roCurTkn.bSame(m_sClassNm))
+    if (m_oCurTkn.bSame(m_sClassNm))
       return;
     // 2) destructor (no specifier)
-    if (roCurTkn.bSame("~"_Stz))
+    if (m_oCurTkn.bSame("~"_Stz))
       return;
     // 3) typeless operator (no specifier)
-    if (roCurTkn.bSame("operator"_Stz))
+    if (m_oCurTkn.bSame("operator"_Stz))
       return;
   }
   
   // we have a <name>
-  m_oTypeSpec.vAdd(roCurTkn.szTerm());
-  vGetNextToken(roCurTkn);
+  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+  vGetNextToken(m_oCurTkn);
   
   // do we have template arguments?
-  if (roCurTkn.bSame("<"_Stz)) {
+  if (m_oCurTkn.bSame("<"_Stz)) {
     vCollectTplArgs("<"_Stz);
-    vGetNextToken(roCurTkn);
+    vGetNextToken(m_oCurTkn);
   }
     
   // zero or more asterisks
   do {
     
     // collected when we have no more asterisks
-    if (! roCurTkn.bSame("*"_Stz)) {
+    if (! m_oCurTkn.bSame("*"_Stz)) {
       vTraceTypeSpec();
       vPartRecognised(CP_TYPE_SPECIFICATION);
       return;
   }
   
     // we have an asterisk
-    m_oTypeSpec.vAdd(roCurTkn.szTerm());
+    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
     m_nAsterisks++;
 
-  }  while (bGetNextToken(roCurTkn));
+  }  while (bGetNextToken(m_oCurTkn));
   
   vThrowProblem(__LINE__);
   

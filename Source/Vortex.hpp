@@ -48,6 +48,9 @@ namespace Utilities
   
     // working section
   
+    Token       m_oCurTkn;      // current token
+
+  
     s48K        m_sFragment;     // top-down fragment of source tokens
 
     bool        m_bInClass;      // currently in a class?
@@ -128,13 +131,13 @@ namespace Utilities
 
     void vGatherFunVar(Stz* szSawTerm, bool bTemplated);
 
-    void vGatherArraySpec(Token& roCurTkn);
-    void vGatherFunBody(Token& roCurTkn);
-    void vGatherFunParams(Token& roCurTkn);
-    void vGatherFunSpec(Token& roCurTkn);
-    void vGatherFunVarNm(Token& roCurTkn);
-    void vGatherNoExceptSpec(Token& roCurTkn);
-    void vGatherTypeSpec(Token& roCurTkn);
+    void vGatherArraySpec(void);
+    void vGatherFunBody(void);
+    void vGatherFunParams(void);
+    void vGatherFunSpec(void);
+    void vGatherFunVarNm(void);
+    void vGatherNoExceptSpec(void);
+    void vGatherTypeSpec(void);
 
     void vShiftClassNm(void);
 
