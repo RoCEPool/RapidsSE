@@ -37,9 +37,9 @@ namespace Utilities
     bool        m_bPrint;        // print activity
     bool        m_bTrace;        // trace activity
   
-    bool        m_bInputMember;  // get input for new member
-    bool        m_bInputPart;    // get input for part recognition
-    bool        m_bInputType;    // get input for new type
+    bool        m_bContMember;   // get keystroke for new member
+    bool        m_bContPart;     // get keystroke for part recognition
+    bool        m_bContType;     // get keystroke for new type
 
     // output section
   
@@ -182,6 +182,7 @@ namespace Utilities
    
      void vClassAscend(void);
      void vClassDescend(Stz* szClassNm);
+     bool bContinueAgain(void);
      void vDiscardNextToken(void);
      void vGetExpectedToken(Token& roToken, Stz* szExpect);
      bool bGetNextToken(Token& roToken);
@@ -191,7 +192,6 @@ namespace Utilities
      void vFragmentAppend(Stz* szTerm);
      void vFragmentMarker(Stz* szTerm);
      void vFragmentReset(void);
-     bool bInputAgain(void);
      void vNamepaceAscend(void);
      void vNamepaceDescend(Stz* szNamespaceNm);
      void vOtherTermsReset(void);
