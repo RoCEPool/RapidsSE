@@ -294,7 +294,7 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
   if (szKeyWord->bSame("typedef"_Stz))   vParseTypedef(szKeyWord);   else
   if (szKeyWord->bSame("union"_Stz))     vParseUnion(szKeyWord);     else
   if (szKeyWord->bSame("using"_Stz))     vParseUsing(szKeyWord);
-  else                                   vParseOther(szKeyWord,false);
+  else                                   vParseFunVar(szKeyWord,false);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -507,6 +507,32 @@ void Vortex::vParseFunVar(Stz* szSawTerm, bool bTemplated)
     
   vGatherFunVar(szSawTerm,bTemplated);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#if 0
+  i8   nPointers;
+  bool bFunPtr;
+  i8   nElements;
+  i8   nBits;
+
+  
+  Stz* szVarNm;
+  Stz* szTypeNm;
+  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
+                                   nPointers,bFunPtr,nElements,nBits);
+  
+  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
+  
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
+
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -742,43 +768,6 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: <other> _^_ <term> ...                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
-{
-  FNENTRY
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vParseFunVar(szSawTerm,bTemplated);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#if 0
-  i8   nPointers;
-  bool bFunPtr;
-  i8   nElements;
-  i8   nBits;
-
-  
-  Stz* szVarNm;
-  Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
-                                   nPointers,bFunPtr,nElements,nBits);
-  
-  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
-  
-  m_p_MetaMember->vTypeNm(szTypeNm);
-  m_p_MetaMember->vPointers(nPointers);
-  m_p_MetaMember->vFunPtr(bFunPtr);
-  m_p_MetaMember->vElements(nElements);
-  m_p_MetaMember->vBits(nBits);
-
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse: ; _^_                                                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseSemicolon(Stz* szSawTerm)
@@ -938,7 +927,7 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
     return;
   }
   
-  vParseOther(xTkn.szTerm(),true);
+  vParseFunVar(xTkn.szTerm(),true);
   vTemplateAscend();
 }
 

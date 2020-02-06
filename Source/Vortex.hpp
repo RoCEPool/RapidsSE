@@ -115,7 +115,6 @@ namespace Utilities
     void vParseHashPragma(Stz* szSawTerm);
     void vParseMembers(Stz* szSawTerm, bool bSemiTerminated);
     void vParseNamespace(Stz* szSawTerm);
-    void vParseOther(Stz* szSawTerm, bool bTemplated);
     void vParseSemicolon(Stz* szSawTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
