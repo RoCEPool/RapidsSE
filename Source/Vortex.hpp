@@ -69,6 +69,8 @@ namespace Utilities
     bool        m_bIsFunPtr;     //
     bool        m_bIsArray;      //
     EnameSet    m_oArraySpec;    // working set of collected array spec terms
+    bool        m_bIsFun;        //
+    EnameSet    m_oFunSpec;      // working set of collected function spec terms
 
     EnameSet    m_oOtherTerms;   // working set of collected other terms
     EnameSet    m_oTplSpec;      // working set of collected template terms
@@ -128,7 +130,7 @@ namespace Utilities
     void vGatherArraySpec(Token& roCurTkn);
     void vGatherFunBody(Token& roCurTkn);
     void vGatherFunParams(Token& roCurTkn);
-    void vGatherFunSpec(Token& roCurTkn, bool& rbIsFun);
+    void vGatherFunSpec(Token& roCurTkn);
     void vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm);
     void vGatherNoExceptSpec(Token& roCurTkn);
     void vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks);

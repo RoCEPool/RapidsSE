@@ -107,7 +107,11 @@ Vortex::Vortex(void)
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
   m_bIsFunPtr = false;
-
+  m_bIsArray  = false;
+  m_oArraySpec.vReset();
+  m_bIsFun    = false;
+  m_oFunSpec.vReset();
+  
   //m_oOtherTerms
   //m_oTplParamTerms
 
@@ -1020,7 +1024,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   
   i8   nAsterisks;
   s32  sFunVarNm;
-  bool bIsFun;
+
   
   Token roCurTkn;
   
@@ -1054,7 +1058,7 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
     return;
   }
   
-  vGatherFunSpec(roCurTkn,bIsFun);
+  vGatherFunSpec(roCurTkn);
   
   vPartRecognised(CP__CRUDELY__);
   
@@ -1099,7 +1103,6 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
   vDiscardBalancedBraces("{"_Stz);
   
   vPartRecognised(CP_FUNCTION_BODY);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1164,19 +1167,30 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
 /*----------------------------------------------------------------------------*/
 /* collect function spec: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunSpec(Token& roCurTkn, bool& rbIsFun)
+void Vortex::vGatherFunSpec(Token& roCurTkn)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  rbIsFun = false;
+  m_bIsFun = true;
+  m_oFunSpec.vReset();
   
   if (! roCurTkn.bSame("("_Stz))
     return;
   
-  rbIsFun = true;
- 
-  vCollectBalancedParenthesis("("_Stz);
+  m_bIsFun = true;
+  
+  for (;;) {
+     
+    vGetNextToken(roCurTkn);
+     
+     // test for close
+     if (roCurTkn.bSame(")"_Stz))
+       break;
+     
+    m_oFunSpec.vAdd(roCurTkn.szTerm());
+  }
+
   
   vGetNextToken(roCurTkn);
 
