@@ -1070,7 +1070,7 @@ void Vortex::vGatherFunBody(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect function/variable name: ????                                       */
+/* gather information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherFunVarNm(void)
 {
@@ -1205,7 +1205,7 @@ void Vortex::vGatherNoExceptSpec(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
+/* gather information about type spec for a function or variable              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherTypeSpec(void)
 {
@@ -1216,7 +1216,8 @@ void Vortex::vGatherTypeSpec(void)
   
   m_nAsterisks = 0;
 
-  // special case of no specifier (constructor / destructor)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // detect the case of no specifier (constructor / destructor)
   if (m_bInClass) {
     // 1) constructor (no specifier)
     if (m_oCurTkn.bSame(m_sClassNm))
@@ -1238,7 +1239,28 @@ void Vortex::vGatherTypeSpec(void)
     vCollectTplArgs("<"_Stz);
     vGetNextToken(m_oCurTkn);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
+  
+  if (m_oCurTkn.bSame(":"_Stz)) {
+    vGetExpectedToken(m_oCurTkn,":"_Stz);
+    vGetNextToken(m_oCurTkn);
+
+    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0)))
+      return;
+ 
+    if (m_oCurTkn.bSame("~"_Stz))
+      return;
     
+    if (m_oCurTkn.bSame("operator"_Stz))
+      return;
+    
+    NEVER_REACH
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // zero or more asterisks
   do {
     
