@@ -52,6 +52,15 @@
     \
     );
 
+#define FN \
+  TRACE("/%s/%16s\n"_Stz \
+    \
+    ,  m_sSourcePath.szStz() \
+    \
+    , __func__ \
+    \
+    );
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -113,7 +122,7 @@ Vortex::Vortex(void)
   m_oArraySpec.vReset();
   m_bIsFun     = false;
   m_oFunSpec.vReset();
-  m_oTplArgs.vReset();
+  m_oTypeArgs.vReset();
 
   //m_oOtherTerms
   //m_oTplParamTerms
@@ -328,8 +337,8 @@ void Vortex::vParseBaseList(Stz* szSawTerm)
     if (szTerm->bSame("<"_Stz)) {
      
       vCollectTplArgs("<"_Stz);
-      pInherit->vTplArgs(&m_oTplArgs);
-      m_oTplArgs.vReset();
+      pInherit->vTplArgs(&m_oTypeArgs);
+      m_oTypeArgs.vReset();
      
       vGetNextToken(xTkn);
     }
@@ -381,7 +390,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
+  vTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
   vClassDescend(sClassNm);
   
   if (m_oTplSpec.nItems()) {
@@ -406,7 +415,10 @@ void Vortex::vParseClass(Stz* szSawTerm)
     vThrowProblem(__LINE__);
   }
 
-  vMetaTypePop();
+  vTraceClassNm();
+  vPartRecognised(CP_CLASS_END);
+  
+  vTypePop();
   vClassAscend();
 }
 
@@ -710,6 +722,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   
     // test for } being end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
+      vTraceNamespaceNm();
       vPartRecognised(CP_NAMESPACE_END);
       vNamepaceAscend();
       return;
@@ -841,9 +854,9 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
-    vMetaTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
+    vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
     vParseMembers("{"_Stz,false);
-    vMetaTypePop();
+    vTypePop();
 
     // 1) struct { ... } ;
     vGetNextToken(xTkn);
@@ -882,9 +895,9 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   // 5) struct <blockNm> { ... } ;
   if (xTkn.bSame("{"_Stz)) {
     
-    vMetaTypePush(xTkn.szTerm(),MT_LINEAR,CP_STRUCT);
+    vTypePush(xTkn.szTerm(),MT_LINEAR,CP_STRUCT);
     vParseMembers(xTkn.szTerm(),true);
-    vMetaTypePop();
+    vTypePop();
     
     return;
   }
@@ -978,9 +991,9 @@ void Vortex::vParseUnion(Stz* szSawTerm)
     vGetExpectedToken(xTkn,"{"_Stz);
   }
   
-  vMetaTypePush(sUnionNm,MT_UNION,CP_UNION);
+  vTypePush(sUnionNm,MT_UNION,CP_UNION);
   vParseMembers("{"_Stz,true);
-  vMetaTypePop();
+  vTypePop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1052,7 +1065,8 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
   }
   
   vGatherFunSpec(roCurTkn);
-  
+  vGatherFunBody(roCurTkn);
+
   vPartRecognised(CP__CRUDELY__);
   
   m_oTypeSpec.vReset();
@@ -1091,8 +1105,9 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  CHECKED(roCurTkn.bSame("{"_Stz));
-  
+  if (! roCurTkn.bSame("{"_Stz))
+    return;
+
   vDiscardBalancedBraces("{"_Stz);
   
   vPartRecognised(CP_FUNCTION_BODY);
@@ -1129,6 +1144,10 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_Parse_Function_Name:
+  
   // do we have operator <name>
   if (roCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(roCurTkn);
@@ -1152,12 +1171,29 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn)
 
   vGetNextToken(roCurTkn);
   
-  // do we have template qualifier args?
-  if (!roCurTkn.bSame("<"_Stz))
+  // do we have type qualifier args?
+  if (! roCurTkn.bSame("<"_Stz))
     return;
   
   vCollectTplArgs("<"_Stz);
+  vPartRecognised(CP_TYPE_ARGS);
+  
   vGetNextToken(roCurTkn);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! roCurTkn.bSame(":"_Stz))
+    return;
+
+  vGetExpectedToken(roCurTkn,":"_Stz);
+  
+  vShiftClassNm();
+  
+  vGetNextToken(roCurTkn);
+  
+  GATHER
+
+  goto L_Parse_Function_Name;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1220,7 +1256,7 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn)
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTplArgs.vReset();
+  m_oTypeArgs.vReset();
   
   m_nAsterisks = 0;
 
@@ -1266,6 +1302,22 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn)
   vThrowProblem(__LINE__);
   
   NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* shift funvar name etc to be class                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vShiftClassNm(void)
+{
+  FN
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_sClassNm = m_oFunVarNm.szName(0);
+  
+  m_oClassArgs.vCopy(&m_oTypeArgs);
+  
+  m_oFunVarNm.vReset();
+  m_oTypeArgs.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1365,7 +1417,7 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplArgs.vReset();
+  m_oTypeArgs.vReset();
     
   Token xTkn;
   
@@ -1373,13 +1425,13 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplArgs.vAdd(xTkn.szTerm());
+    m_oTypeArgs.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplArgs.vNamesString(sTerms);
+  m_oTypeArgs.vNamesString(sTerms);
   
   TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
@@ -1556,9 +1608,9 @@ void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 
 
 /*----------------------------------------------------------------------------*/
-/* create new meta type for a c++ class                                       */
+/* create new member of a c++ class                                           */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaMemberNew(void)
+void Vortex::vMemberNew(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 }
@@ -1566,7 +1618,7 @@ void Vortex::vMetaMemberNew(void)
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ class                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaTypeNew_class(Stz* szClassNm)
+void Vortex::vTypeNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1592,7 +1644,7 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ struct                                      */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaTypeNew_struct(Stz* szStructNm)
+void Vortex::vTypeNew_struct(Stz* szStructNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1608,7 +1660,7 @@ void Vortex::vMetaTypeNew_struct(Stz* szStructNm)
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ union                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaTypeNew_union(Stz* szUnionNm)
+void Vortex::vTypeNew_union(Stz* szUnionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1623,7 +1675,7 @@ void Vortex::vMetaTypeNew_union(Stz* szUnionNm)
 /*----------------------------------------------------------------------------*/
 /* pop to outer type                                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaTypePop(void)
+void Vortex::vTypePop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -1635,7 +1687,7 @@ void Vortex::vMetaTypePop(void)
 /*----------------------------------------------------------------------------*/
 /* create and push new type                                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
+void Vortex::vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -1865,18 +1917,6 @@ void Vortex::vGetOtherTerm(Token& roTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next token as per normal but also and put it into m_oTplArgs           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vGetTplArg(Token& roTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  CHECKED(bGetNextToken(roTerm))
-  
-  m_oTplArgs.vAdd(roTerm.szTerm());
-}
-
-/*----------------------------------------------------------------------------*/
 /* append sub-string to fragment string                                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vFragmentAppend(Stz* szString)
@@ -2050,6 +2090,22 @@ void Vortex::vTraceNamespaceNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace type args                                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceTypeArgs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (!m_bTrace)
+    return;
+  
+  s48K sTerms;
+  m_oTypeArgs.vNamesString(sTerms);
+  
+  TRACE("  TypeArgs: %s\n"_Stz,sTerms.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace type specification terms                                             */
 /*----------------------------------------------------------------------------*/
 void Vortex::vTraceTypeSpec(void)
@@ -2064,7 +2120,6 @@ void Vortex::vTraceTypeSpec(void)
   
   TRACE("  TypeSpec: %s\n"_Stz,sTerms.azChar());
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

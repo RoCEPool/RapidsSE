@@ -73,7 +73,8 @@ namespace Utilities
     EnameSet    m_oArraySpec;    // working set of collected array spec terms
     bool        m_bIsFun;        //
     EnameSet    m_oFunSpec;      // working set of collected function spec terms
-    EnameSet    m_oTplArgs;      // working set of collected template args terms
+    EnameSet    m_oTypeArgs;     // working set of collected template args terms
+    EnameSet    m_oClassArgs;    // working set of collected template args terms
 
     EnameSet    m_oOtherTerms;   // working set of collected other terms
  
@@ -136,6 +137,8 @@ namespace Utilities
     void vGatherNoExceptSpec(Token& roCurTkn);
     void vGatherTypeSpec(Token& roCurTkn);
 
+    void vShiftClassNm(void);
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
 
@@ -158,14 +161,14 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // meta members and type
     
-    void vMetaMemberNew(void);
+    void vMemberNew(void);
+    
+    void vTypeNew_class(Stz* szClassNm);
+    void vTypeNew_struct(Stz* szStructNm);
+    void vTypeNew_union(Stz* szUnionNm);
   
-    void vMetaTypeNew_class(Stz* szClassNm);
-    void vMetaTypeNew_struct(Stz* szStructNm);
-    void vMetaTypeNew_union(Stz* szUnionNm);
-  
-    void vMetaTypePop(void);
-    void vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
+    void vTypePop(void);
+    void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
     bool bIgnoreOptLabel(Stz* szSawTerm);
   
@@ -188,7 +191,6 @@ namespace Utilities
      bool bGetNextToken(Token& roToken);
      void vGetNextToken(Token& roToken);
      void vGetOtherTerm(Token& roTerm);
-     void vGetTplArg(Token& roTerm);
      void vFragmentAppend(Stz* szTerm);
      void vFragmentMarker(Stz* szTerm);
      void vFragmentReset(void);
@@ -202,6 +204,7 @@ namespace Utilities
      void vTraceClassNm(void);
      void vTraceFunVarNm(void);
      void vTraceNamespaceNm(void);
+     void vTraceTypeArgs(void);
      void vTraceTypeSpec(void);
 
    private:

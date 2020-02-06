@@ -41,6 +41,7 @@ enum eCP // c++ part
   /*    */ CP_STRUCT,              // struct
   /*    */ CP_TEMPLATE_CLASS,      // template class
   /*    */ CP_TYPEDEF,             // typedef
+  /*    */ CP_TYPE_ARGS,           // typetemplate args
   /*    */ CP_TYPE_SPECIFICATION,  // type specification
   /*    */ CP_UNION,               // union
   /*    */ CP_USING,               // using namespace
@@ -89,6 +90,7 @@ static Stz* aCP[]
   /*    */ "CP_STRUCT"_Stz,
   /*    */ "CP_TEMPLATE_CLASS"_Stz,
   /*    */ "CP_TYPEDEF"_Stz,
+  /*    */ "CP_TYPE_ARGS"_Stz,
   /*    */ "CP_TYPE_SPECIFICATION"_Stz,
   /*    */ "CP_UNION"_Stz,
   /*    */ "CP_USING"_Stz,
