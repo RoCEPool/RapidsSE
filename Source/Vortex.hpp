@@ -175,8 +175,6 @@ namespace Utilities
     Stz* szTerm(i8 i_Term);
     void vTermAdd(Stz* szTerm);
     i8   nTerms(void);
-    bool bTermsAreFunction(void);
-    bool bTermsAreVariable(void);
     void vTermsReset(void);
   
      // - + - + - + - + - + - + - + - + - + - + - + - +
