@@ -36,7 +36,11 @@ namespace Utilities
     Input*      m_pInput;        // input token stream of source file
     bool        m_bPrint;        // print activity
     bool        m_bTrace;        // trace activity
- 
+  
+    bool        m_bInputMember;  // get input for new member
+    bool        m_bInputPart;    // get input for part recognition
+    bool        m_bInputType;    // get input for new type
+
     // output section
   
     File*       m_pOutputFile;   // output file
@@ -50,6 +54,9 @@ namespace Utilities
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
+    bool        m_bInTemplate;   // currently in a namespace?
+    EnameSet    m_oTplSpec;      // working set of collected template terms
+    s4K         m_sTplSpec;      // current template specification
   
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
@@ -58,11 +65,18 @@ namespace Utilities
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
-    EnameSet    m_oOtherTerms;   // working set of collected other terms
-    EnameSet    m_oTypeSpecTerms;// working set of collected specifier terms
-    EnameSet    m_oTplParamTerms;// working set of collected template terms
-    EnameSet    m_oTplArgTerms;  // working set of collected template terms
+    EnameSet    m_oTypeSpec;     // working set of collected specifier terms
+    i8          m_nAsterisks;
+    EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
+    bool        m_bIsFunPtr;     //
+    bool        m_bIsArray;      //
+    EnameSet    m_oArraySpec;    // working set of collected array spec terms
+    bool        m_bIsFun;        //
+    EnameSet    m_oFunSpec;      // working set of collected function spec terms
+    EnameSet    m_oTplArgs;      // working set of collected template args terms
 
+    EnameSet    m_oOtherTerms;   // working set of collected other terms
+ 
     // correctness section
   
     Footer m_xFooter;            // must be last
@@ -84,10 +98,9 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
   
-    bool bParseAllCppParts(void);
+    bool bParseAllParts(void);
     void vKeywordDescend(Stz* szKeyWord);
-    void vParseBase(Stz* szSawTerm);
-    void vParseBraces(Stz* szSawTerm, bool bSemiTerminated);
+    void vParseBaseList(Stz* szSawTerm);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
@@ -99,7 +112,7 @@ namespace Utilities
     void vParseHashIfdef(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
-    bool bParseLabel(Stz* szSawTerm);
+    void vParseMembers(Stz* szSawTerm, bool bSemiTerminated);
     void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm, bool bTemplated);
     void vParseSemicolon(Stz* szSawTerm);
@@ -115,13 +128,13 @@ namespace Utilities
 
     void vGatherFunVar(Stz* szSawTerm, bool bTemplated);
 
-    void vGatherArraySpec(Token& roCurTkn, i8& nElements);
+    void vGatherArraySpec(Token& roCurTkn);
     void vGatherFunBody(Token& roCurTkn);
     void vGatherFunParams(Token& roCurTkn);
-    void vGatherFunSpec(Token& roCurTkn, bool& rbIsFun);
-    void vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm, bool& rbIsFunPtr);
+    void vGatherFunSpec(Token& roCurTkn);
+    void vGatherFunVarNm(Token& roCurTkn);
     void vGatherNoExceptSpec(Token& roCurTkn);
-    void vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks);
+    void vGatherTypeSpec(Token& roCurTkn);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
@@ -132,7 +145,7 @@ namespace Utilities
     void vCollectBalancedParenthesis(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
     void vCollectTplArgs(Stz* szSawTerm);
-    void vCollectTplParams(Stz* szSawTerm);
+    void vCollectTplSpec(Stz* szSawTerm);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
@@ -143,22 +156,25 @@ namespace Utilities
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // meta type
+    // meta members and type
     
+    void vMetaMemberNew(void);
+  
     void vMetaTypeNew_class(Stz* szClassNm);
     void vMetaTypeNew_struct(Stz* szStructNm);
     void vMetaTypeNew_union(Stz* szUnionNm);
+  
     void vMetaTypePop(void);
     void vMetaTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
+    bool bIgnoreOptLabel(Stz* szSawTerm);
+  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   
     Stz* szTerm(i8 i_Term);
     void vTermAdd(Stz* szTerm);
     i8   nTerms(void);
-    bool bTermsAreFunction(void);
-    bool bTermsAreVariable(void);
     void vTermsReset(void);
   
      // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -175,14 +191,16 @@ namespace Utilities
      void vFragmentAppend(Stz* szTerm);
      void vFragmentMarker(Stz* szTerm);
      void vFragmentReset(void);
+     bool bInputAgain(void);
      void vNamepaceAscend(void);
      void vNamepaceDescend(Stz* szNamespaceNm);
      void vOtherTermsReset(void);
      void vPartRecognised(eCP eCppPart);
+     void vTemplateAscend(void);
+     void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
-     void vTplTermsReset(void);
-     void vTraceTplTerms(void);
-     void vTraceTypeSpecTerms(void);
+     void vTraceFunVarNm(void);
+     void vTraceTypeSpec(void);
 
    private:
     Footer* aFooter(void);
