@@ -638,6 +638,16 @@ void Job::vHasError(bool bHasError)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job has a syntax error                                        */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasSyntaxError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_xResult.m_eSyntaxError == EC_NONE ? false : true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc rows processed                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vIncRowsProcessed(void)
@@ -804,7 +814,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
   // did we get a job name ?
   if ( szJobNm->bEqual(""_Stz) ) {
     // would have been a startup problem (unable to match job syntax !!!)
-    ASSERT(m_xResult.m_bHasError);
+    ASSERT(m_xResult.m_eSyntaxError != EC_NONE);
     return nullptr;
   }
   
@@ -1400,9 +1410,8 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   if (CN_JOB_UNIVERSAL == eClass) {
     
     EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
-    if (! pJobInfoEnameSet)
-      return;
-    eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+    if (pJobInfoEnameSet)
+      eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     //eResponse = pJob->m_aJobClass->m_eResponse;
   }

@@ -626,7 +626,7 @@ Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    pJob_FetchRows->vAddError(EC_INVALID_COMMAND);
+    pJob_FetchRows->vSyntaxError(EC_INVALID_COMMAND);
   }
   
   return pJob_FetchRows;

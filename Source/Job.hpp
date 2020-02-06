@@ -114,6 +114,7 @@ namespace Jobs
     bool bHasEnameTag(Stz* szEnameTag);
     bool bHasError(void);
     void vHasError(bool bHasError);
+    bool bHasSyntaxError(void);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);

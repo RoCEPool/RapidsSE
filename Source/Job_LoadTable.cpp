@@ -633,7 +633,7 @@ Job* Jobs::pJob_LoadTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    pJob_LoadTable->vAddError(EC_INVALID_COMMAND);
+    pJob_LoadTable->vSyntaxError(EC_INVALID_COMMAND);
   }
   
   return pJob_LoadTable;

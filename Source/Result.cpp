@@ -83,10 +83,16 @@ void Result::vPrint(eRS eResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
+  // check for syntax errors
+  if (m_eSyntaxError != EC_NONE) {
+    vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
+    return;
+  }
+  
   switch (eResponse) {
       
-    case RS_NONE         : /* do nothing */            break;
-    case RS_DATA_ROWS    : RASSERT(0);                 break;
+    case RS_NONE         : /* do nothing */      break;
+    case RS_DATA_ROWS    : RASSERT(0);           break;
     case RS_LOAD_ROWS    : vPrintLoadRows();     break;
     case RS_LOCAL_ERRORS : vPrintLocalErrors();  break;
     case RS_LOCAL_ROWS   : vPrintLocalRows();    break;

@@ -203,7 +203,7 @@ Job* Jobs::pJob_Sanity_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pS
   bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    pJob_Sanity->vAddError(EC_INVALID_COMMAND);
+    pJob_Sanity->vSyntaxError(EC_INVALID_COMMAND);
   }
   
   return pJob_Sanity;

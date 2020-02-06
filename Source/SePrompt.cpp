@@ -197,7 +197,7 @@ void SePrompt::vPromptLoop(void)
     
     vPreJob();
     
-    if (m_pJob->bHasError()) {
+    if (m_pJob->bHasSyntaxError()) {
       vPostJob();
       vDumpTokenVec();
       vCompletedTask();
@@ -245,20 +245,10 @@ void SePrompt::vPromptLoop(void)
     else {
       
       vJobWaitCond();
-
-  //    sleep(10);
-  //    sleep(10);
-  //    sleep(10);
-  //    sleep(10);
-      
       vJobUnlockMutex();
-   
       m_oTimer.vUpdate();
       
       vPostJob();
-    }
-    if (m_pJob->bHasError()) {
-      vDumpTokenVec();
     }
     
     vReportTime();
