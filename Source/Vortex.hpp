@@ -55,6 +55,7 @@ namespace Utilities
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
     bool        m_bInTemplate;   // currently in a namespace?
+    EnameSet    m_oTplSpec;      // working set of collected template terms
     s4K         m_sTplSpec;      // current template specification
   
     i8          m_iNextStruct;   // next anonymous c++ struct
@@ -65,17 +66,17 @@ namespace Utilities
     ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
+    i8          m_nAsterisks;
     EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
     bool        m_bIsFunPtr;     //
     bool        m_bIsArray;      //
     EnameSet    m_oArraySpec;    // working set of collected array spec terms
     bool        m_bIsFun;        //
     EnameSet    m_oFunSpec;      // working set of collected function spec terms
+    EnameSet    m_oTplArgs;      // working set of collected template args terms
 
     EnameSet    m_oOtherTerms;   // working set of collected other terms
-    EnameSet    m_oTplSpec;      // working set of collected template terms
-    EnameSet    m_oTplArgTerms;  // working set of collected template terms
-
+ 
     // correctness section
   
     Footer m_xFooter;            // must be last
@@ -131,9 +132,9 @@ namespace Utilities
     void vGatherFunBody(Token& roCurTkn);
     void vGatherFunParams(Token& roCurTkn);
     void vGatherFunSpec(Token& roCurTkn);
-    void vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm);
+    void vGatherFunVarNm(Token& roCurTkn);
     void vGatherNoExceptSpec(Token& roCurTkn);
-    void vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks);
+    void vGatherTypeSpec(Token& roCurTkn);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection

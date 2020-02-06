@@ -94,6 +94,7 @@ Vortex::Vortex(void)
   m_bInNamespace = false;
   m_sNamespaceNm = C_NO_NAME;
   m_bInTemplate  = false;
+  m_oTplSpec.vReset();
   m_sTplSpec     = C_NO_NAME;
 
   
@@ -105,13 +106,15 @@ Vortex::Vortex(void)
   m_p_ConstSet   = m_pMetaGraph->pConstSet();
   
   m_oTypeSpec.vReset();
+  m_nAsterisks = 0;
   m_oFunVarNm.vReset();
-  m_bIsFunPtr = false;
-  m_bIsArray  = false;
+  m_bIsFunPtr  = false;
+  m_bIsArray   = false;
   m_oArraySpec.vReset();
-  m_bIsFun    = false;
+  m_bIsFun     = false;
   m_oFunSpec.vReset();
-  
+  m_oTplArgs.vReset();
+
   //m_oOtherTerms
   //m_oTplParamTerms
 
@@ -325,8 +328,8 @@ void Vortex::vParseBaseList(Stz* szSawTerm)
     if (szTerm->bSame("<"_Stz)) {
      
       vCollectTplArgs("<"_Stz);
-      pInherit->vTplArgs(&m_oTplArgTerms);
-      m_oTplArgTerms.vReset();
+      pInherit->vTplArgs(&m_oTplArgs);
+      m_oTplArgs.vReset();
      
       vGetNextToken(xTkn);
     }
@@ -1021,18 +1024,14 @@ void Vortex::vGatherFunVar(Stz* szSawTerm, bool bTemplated)
 {
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  i8   nAsterisks;
-  s32  sFunVarNm;
-
-  
+    
   Token roCurTkn;
   
   roCurTkn.vCopy(szSawTerm);
   
-  vGatherTypeSpec(roCurTkn,nAsterisks);
+  vGatherTypeSpec(roCurTkn);
 
-  vGatherFunVarNm(roCurTkn,sFunVarNm);
+  vGatherFunVarNm(roCurTkn);
   
   if (roCurTkn.bSame(";"_Stz)) {
     if (m_bInClass) {
@@ -1108,7 +1107,7 @@ void Vortex::vGatherFunBody(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 /* collect function/variable name: ????                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
+void Vortex::vGatherFunVarNm(Token& roCurTkn)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1124,7 +1123,6 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
     
     vGetExpectedToken(roCurTkn,"*"_Stz);
     vGetNextToken(roCurTkn);
-    rsFunVarNm = roCurTkn.szTerm();
     m_oFunVarNm.vAdd(roCurTkn.szTerm());
     vGetExpectedToken(roCurTkn,")"_Stz);
     
@@ -1140,7 +1138,6 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
   // do we have operator <name>
   if (roCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(roCurTkn);
-    rsFunVarNm = roCurTkn.szTerm();
     m_oFunVarNm.vAdd(roCurTkn.szTerm());
     vPartRecognised(CP_OPERATOR);
     vGetNextToken(roCurTkn);
@@ -1148,7 +1145,6 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
   }
   else if (roCurTkn.bSame("~"_Stz)) {
     vGetNextToken(roCurTkn);
-    rsFunVarNm = roCurTkn.szTerm();
     m_oFunVarNm.vAdd(roCurTkn.szTerm());
     vPartRecognised(CP_DESTRUCTOR);
     vGetNextToken(roCurTkn);
@@ -1156,7 +1152,6 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn, s32& rsFunVarNm)
   }
   
   // we have a <name>
-  rsFunVarNm = roCurTkn.szTerm();
   m_oFunVarNm.vAdd(roCurTkn.szTerm());
   vTraceFunVarNm();
   vPartRecognised(CP_FUNVAR_NAME);
@@ -1219,13 +1214,14 @@ void Vortex::vGatherNoExceptSpec(Token& roCurTkn)
 /*----------------------------------------------------------------------------*/
 /* collect type specifier: <name> [ < ... > ] [ *.. ]                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
+void Vortex::vGatherTypeSpec(Token& roCurTkn)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTplArgTerms.vReset();
-  rnAsterisks = 0;
+  m_oTplArgs.vReset();
+  
+  m_nAsterisks = 0;
 
   // special case of no specifier (constructor / destructor)
   if (m_bInClass) {
@@ -1262,7 +1258,7 @@ void Vortex::vGatherTypeSpec(Token& roCurTkn, i8& rnAsterisks)
   
     // we have an asterisk
     m_oTypeSpec.vAdd(roCurTkn.szTerm());
-    rnAsterisks++;
+    m_nAsterisks++;
 
   }  while (bGetNextToken(roCurTkn));
   
@@ -1368,7 +1364,7 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oTplArgTerms.vReset();
+  m_oTplArgs.vReset();
     
   Token xTkn;
   
@@ -1376,13 +1372,13 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplArgTerms.vAdd(xTkn.szTerm());
+    m_oTplArgs.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplArgTerms.vNamesString(sTerms);
+  m_oTplArgs.vNamesString(sTerms);
   
   TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
@@ -1973,7 +1969,7 @@ void Vortex::vGetOtherTerm(Token& roTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next token as per normal but also and put it into m_oTplArgTerms       */
+/* get next token as per normal but also and put it into m_oTplArgs           */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGetTplArg(Token& roTerm)
 {
@@ -1981,7 +1977,7 @@ void Vortex::vGetTplArg(Token& roTerm)
   
   CHECKED(bGetNextToken(roTerm))
   
-  m_oTplArgTerms.vAdd(roTerm.szTerm());
+  m_oTplArgs.vAdd(roTerm.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
