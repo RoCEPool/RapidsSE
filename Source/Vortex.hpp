@@ -61,6 +61,8 @@ namespace Utilities
     EnameSet    m_oTplSpec;      // working set of collected template terms
     s4K         m_sTplSpec;      // current template specification
   
+    s32         m_sConstNm;      // current class name
+
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
 
@@ -103,33 +105,33 @@ namespace Utilities
     // top-down parsing of C++ parts
   
     bool bParseAllParts(void);
-    void vKeywordDescend(Stz* szKeyWord);
-    void vParseBaseList(Stz* szSawTerm);
-    void vParseClass(Stz* szSawTerm);
-    void vParseConst(Stz* szSawTerm);
-    void vParseEnum(Stz* szSawTerm);
-    void vParseFriend(Stz* szSawTerm);
-    void vParseFunVar(Stz* szSawTerm, bool bTemplated);
-    void vParseHash(Stz* szSawTerm);
-    void vParseHashDefine(Stz* szSawTerm);
-    void vParseHashIf(Stz* szSawTerm);
-    void vParseHashIfdef(Stz* szSawTerm);
-    void vParseHashInclude(Stz* szSawTerm);
-    void vParseHashPragma(Stz* szSawTerm);
-    void vParseMembers(Stz* szSawTerm, bool bSemiTerminated);
-    void vParseNamespace(Stz* szSawTerm);
-    void vParseSemicolon(Stz* szSawTerm);
-    void vParseStatic(Stz* szSawTerm);
-    void vParseStruct(Stz* szSawTerm);
-    void vParseTemplate(Stz* szSawTerm);
-    void vParseTypedef(Stz* szSawTerm);
-    void vParseUnion(Stz* szSawTerm);
-    void vParseUsing(Stz* szSawTerm);
+    void vKeywordDescend(void);
+    void vParseBaseList(void);
+    void vParseClass(void);
+    void vParseConst(void);
+    void vParseEnum(void);
+    void vParseFriend(void);
+    void vParseFunVar(bool bTemplated);
+    void vParseHash(void);
+    void vParseHashDefine(void);
+    void vParseHashIf(void);
+    void vParseHashIfdef(void);
+    void vParseHashInclude(void);
+    void vParseHashPragma(void);
+    void vParseMembers(bool bSemiTerminated);
+    void vParseNamespace(void);
+    void vParseSemicolon(void);
+    void vParseStatic(void);
+    void vParseStruct(void);
+    void vParseTemplate(void);
+    void vParseTypedef(void);
+    void vParseUnion(void);
+    void vParseUsing(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
-    void vGatherFunVar(Stz* szSawTerm, bool bTemplated);
+    void vGatherFunVar(bool bTemplated);
 
     void vGatherArraySpec(void);
     void vGatherFunBody(void);
