@@ -1151,6 +1151,13 @@ void Vortex::vGatherFunVarNm(Token& roCurTkn)
   vPartRecognised(CP_FUNVAR_NAME);
 
   vGetNextToken(roCurTkn);
+  
+  // do we have template qualifier args?
+  if (!roCurTkn.bSame("<"_Stz))
+    return;
+  
+  vCollectTplArgs("<"_Stz);
+  vGetNextToken(roCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
