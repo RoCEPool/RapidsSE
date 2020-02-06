@@ -1417,9 +1417,14 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   if (CN_JOB_UNIVERSAL == eClass) {
     
     EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
-    if (pJobInfoEnameSet)
-      eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+    //if (pJobInfoEnameSet)
+    //  eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
+    if ( ! pJobInfoEnameSet )
+      return;
+    
+    eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+    
     //eResponse = pJob->m_aJobClass->m_eResponse;
   }
   else {
