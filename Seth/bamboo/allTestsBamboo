@@ -3,15 +3,15 @@
 # This is a recursive testList file.
 
 ../tests/Queries/testList
-../tests/Datums/testList
-../tests/Examples/testList
-../tests/Misc/testList
-../tests/Operators/testList
-../tests/PartitionKey/testList
+//../tests/Datums/testList
+//../tests/Examples/testList
+//../tests/Misc/testList
+//../tests/Operators/testList
+//../tests/PartitionKey/testList
 //../tests/Insert/testList
-../tests/Retrieve/testList
-../tests/Select/testList
-../tests/Table/testList
-../tests/Load/testList
-../tests/Index/testList
-../tests/Tpch/testList
+//../tests/Retrieve/testList
+//../tests/Select/testList
+//../tests/Table/testList
+//../tests/Load/testList
+//../tests/Index/testList
+//../tests/Tpch/testList

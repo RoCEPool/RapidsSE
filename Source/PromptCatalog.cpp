@@ -13,7 +13,7 @@ PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
 {
   for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
     
-    //vTrace("Find: %s v %s\n"_Stz,m_xPromptFun[i_Fun].m_aCommand1->azChar(),
+    //vTrace("Find: %s v %s\n"_Stz, m_aaFun[i_Fun]->m_aCommand1->azChar(),
     //       aCommand1->azChar());
     
     if (! m_aaFun[i_Fun]->m_aCommand1->bSame(aCommand1))

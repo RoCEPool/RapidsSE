@@ -508,6 +508,8 @@ bool SePrompt::bExecuteFunction(void)
   if (! pPromptDesc)
     return false;
   
+  vTrace("Executing function %s\n"_Stz,pTkn(0)->szTerm());
+  
   (pPromptDesc->m_fPrompt)(this);
   
   return true;
