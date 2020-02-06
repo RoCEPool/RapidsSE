@@ -336,7 +336,7 @@ void Vortex::vParseBaseList(Stz* szSawTerm)
 
     // base list is terminated by open brace, being the beginning of members
     if (szTerm->bSame("{"_Stz)) {
-      vPartRecognised(CP_BASE_LIST_END);
+      vPartRecognised(CP_BASE_END);
       break;
     }
 
@@ -381,7 +381,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS);
+  vMetaTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
   vClassDescend(sClassNm);
   
   if (m_oTplSpec.nItems()) {
@@ -390,14 +390,16 @@ void Vortex::vParseClass(Stz* szSawTerm)
   }
 
   if (xTkn.bSame(":"_Stz)) {
-    vPartRecognised(CP_CLASS);
-    vPartRecognised(CP_BASE_LIST);
+    vTraceClassNm();
+    vPartRecognised(CP_CLASS_BEGIN);
+    vPartRecognised(CP_BASE_BEGIN);
     vParseBaseList(xTkn.szTerm());
   }
   else
   if (xTkn.bSame("{"_Stz)) {
-    vPartRecognised(CP_CLASS);
-    vPartRecognised(CP_MEMBERS);
+    vTraceClassNm();
+    vPartRecognised(CP_CLASS_BEGIN);
+    vPartRecognised(CP_MEMBERS_BEGIN);
     vParseMembers(xTkn.szTerm(),true);
   }
   else {
@@ -699,7 +701,8 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   // get {
   vGetExpectedToken(xTkn,"{"_Stz);
 
-  vPartRecognised(CP_NAMESPACE);
+  vTraceNamespaceNm();
+  vPartRecognised(CP_NAMESPACE_BEGIN);
   FNENTRY
 
   // parse ... }
@@ -1571,7 +1574,7 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
   else {
     m_p_MetaType = new MetaType(szClassNm,
                                 MT_LINEAR,
-                                CP_CLASS,
+                                CP_CLASS_BEGIN,
                                 m_p_MetaType);
   }
   
@@ -1998,6 +2001,19 @@ void Vortex::vThrowProblem(i8 i_Problem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace class name                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceClassNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (!m_bTrace)
+    return;
+  
+  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace function/variable name terms                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vTraceFunVarNm(void)
@@ -2011,6 +2027,19 @@ void Vortex::vTraceFunVarNm(void)
   m_oFunVarNm.vNamesString(sTerms);
   
   TRACE("  FunVarNm: %s\n"_Stz,sTerms.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace namespace name                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceNamespaceNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (!m_bTrace)
+    return;
+  
+  TRACE("  NamespaceNm: %s\n"_Stz,m_sNamespaceNm.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

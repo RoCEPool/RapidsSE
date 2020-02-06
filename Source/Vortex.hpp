@@ -199,7 +199,9 @@ namespace Utilities
      void vTemplateAscend(void);
      void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
+     void vTraceClassNm(void);
      void vTraceFunVarNm(void);
+     void vTraceNamespaceNm(void);
      void vTraceTypeSpec(void);
 
    private:

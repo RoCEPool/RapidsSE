@@ -8,9 +8,9 @@ enum eCP // c++ part
   /*  0 */ CP_NONE=0,
   
   /*    */ CP_ARRAY_SPEC,          // array spec
-  /*    */ CP_BASE_LIST,           // base list
-  /*    */ CP_BASE_LIST_END,       // base list end
-  /*    */ CP_CLASS,               // class
+  /*    */ CP_BASE_BEGIN,          // base list
+  /*    */ CP_BASE_END,            // base list end
+  /*    */ CP_CLASS_BEGIN,         // class
   /*    */ CP_CLASS_END,           // class end
   /*    */ CP_CONST,               // const
   /*    */ CP_CONSTRUCTOR,         // constructor
@@ -32,9 +32,9 @@ enum eCP // c++ part
   /*    */ CP_INHERITED_CLASS,     // inherited class
   /*    */ CP_LABEL,               // class member label
   /*    */ CP_MEMBER_VARIABLE,     // member variable
-  /*    */ CP_MEMBERS,             // members
+  /*    */ CP_MEMBERS_BEGIN,       // members
   /*    */ CP_MEMBERS_END,         // members end
-  /*    */ CP_NAMESPACE,           // namespace
+  /*    */ CP_NAMESPACE_BEGIN,     // namespace
   /*    */ CP_NAMESPACE_END,       // end of namespace
   /*    */ CP_OPERATOR,            // function
   /*    */ CP_STATIC,              // static
@@ -56,9 +56,9 @@ static Stz* aCP[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "CP_ARRAY_SPEC"_Stz,
-  /*    */ "CP_BASE_LIST"_Stz,
-  /*    */ "CP_BASE_LIST_END"_Stz,
-  /*    */ "CP_CLASS"_Stz,
+  /*    */ "CP_BASE_BEGIN"_Stz,
+  /*    */ "CP_BASE_END"_Stz,
+  /*    */ "CP_CLASS_BEGIN"_Stz,
   /*    */ "CP_CLASS_END"_Stz,
   /*    */ "CP_CONST"_Stz,
   /*    */ "CP_CONSTRUCTOR"_Stz,
@@ -80,9 +80,9 @@ static Stz* aCP[]
   /*    */ "CP_INHERITED_CLASS"_Stz,
   /*    */ "CP_LABEL"_Stz,
   /*    */ "CP_MEMBER_VARIABLE"_Stz,
-  /*    */ "CP_MEMBERS"_Stz,
+  /*    */ "CP_MEMBERS_BEGIN"_Stz,
   /*    */ "CP_MEMBERS_END"_Stz,
-  /*    */ "CP_NAMESPACE"_Stz,
+  /*    */ "CP_NAMESPACE_BEGIN"_Stz,
   /*    */ "CP_NAMESPACE_END"_Stz,
   /*    */ "CP_OPERATOR"_Stz,
   /*    */ "CP_STATIC"_Stz,
