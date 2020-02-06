@@ -48,7 +48,7 @@ void Api::vDeleteJobs(Session* pSession)
         
         FetchBuffer* pFetchBuffer;
         for (;;) {
-          pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_xResult.m_pBufferQueue->pPop());
+          pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_xResult.m_pOriginBufferQueue->pPop());
           if (pFetchBuffer)
             break;
           AM::vNapMsec(1,CN_JOB_FETCHROWS);

@@ -129,7 +129,7 @@ void AM::vAttachMap(Header* aHeader) {
 }
 Queue* AM::pBufferQueue(Job* pJob) {
   Job* pJob_Originating = pJob->m_pOriginatingTask->pJob();
-  return pJob_Originating->m_xResult.m_pBufferQueue;
+  return pJob_Originating->m_xResult.m_pOriginBufferQueue;
 }
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;

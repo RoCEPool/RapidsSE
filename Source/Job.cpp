@@ -438,19 +438,19 @@ void Job::vAddError(eEC eError)
   i8 iNode = AM::iThisNodeNo();
   
   // create a response vector
-  m_xResult.m_pResponseVec = new ResponseVec();
+  m_xResult.m_pOriginResponseVec = new ResponseVec();
   
   // create a new response
   Response* pResponse = new Response;
   
-  m_xResult.m_bHasError = true;
+  m_xResult.m_bPartHasError = true;
   
   // set node and error in the response
   pResponse->m_iNode           = iNode;
   pResponse->m_eErrorCode      = EC_INVALID_COMMAND;
   
   // add the response to the response vector
-  m_xResult.m_pResponseVec->vAdd(pResponse);
+  m_xResult.m_pOriginResponseVec->vAdd(pResponse);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +458,7 @@ void Job::vAddError(eEC eError)
 /*----------------------------------------------------------------------------*/
 void Job::vAddRowsProcessed(i8 iRowsProcessed)
 {
-  m_xResult.m_xResponse.m_ixRowsProcessed += iRowsProcessed;
+  m_xResult.m_xJobResponse.m_ixRowsProcessed += iRowsProcessed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,7 +466,7 @@ void Job::vAddRowsProcessed(i8 iRowsProcessed)
 /*----------------------------------------------------------------------------*/
 void Job::vAddRowsInvalid(i8 iRowsInvalid)
 {
-  m_xResult.m_xResponse.m_ixRowsInvalid += iRowsInvalid;
+  m_xResult.m_xJobResponse.m_ixRowsInvalid += iRowsInvalid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +474,7 @@ void Job::vAddRowsInvalid(i8 iRowsInvalid)
 /*----------------------------------------------------------------------------*/
 void Job::vAddRowsSkipped(i8 iRowsISkipped)
 {
-  m_xResult.m_xResponse.m_ixRowsSkipped += iRowsISkipped;
+  m_xResult.m_xJobResponse.m_ixRowsSkipped += iRowsISkipped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -496,7 +496,7 @@ void Job::vBufferQueue(Queue* pBufferQueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_xResult.m_pBufferQueue = pBufferQueue;
+  m_xResult.m_pOriginBufferQueue = pBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,7 +506,7 @@ Queue* Job::pBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_xResult.m_pBufferQueue;
+  return m_xResult.m_pOriginBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -547,7 +547,7 @@ void Job::vContentDump(void)
          m_iOriginatingId,
          
          nReferences(),
-         m_xResult.m_pBufferQueue,
+         m_xResult.m_pOriginBufferQueue,
          m_pPipeline,
          C_ENDARGS
          );
@@ -581,7 +581,7 @@ eEC Job::eErrorCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_xResult.m_xResponse.m_eErrorCode;
+  return m_xResult.m_xJobResponse.m_eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,7 +591,7 @@ void Job::vErrorCode(eEC eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_xResult.m_xResponse.m_eErrorCode = eErrorCode;
+  m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -624,7 +624,7 @@ bool Job::bHasError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_xResult.m_bHasError;
+  return m_xResult.m_bPartHasError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,7 +634,7 @@ void Job::vHasError(bool bHasError)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_xResult.m_bHasError = bHasError;
+  m_xResult.m_bPartHasError = bHasError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -652,7 +652,7 @@ bool Job::bHasSyntaxError(void)
 /*----------------------------------------------------------------------------*/
 void Job::vIncRowsProcessed(void)
 {
-  m_xResult.m_xResponse.m_ixRowsProcessed.iInc();
+  m_xResult.m_xJobResponse.m_ixRowsProcessed.iInc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -660,7 +660,7 @@ void Job::vIncRowsProcessed(void)
 /*----------------------------------------------------------------------------*/
 void Job::vIncRowsInvalid(void)
 {
-  m_xResult.m_xResponse.m_ixRowsInvalid.iInc();
+  m_xResult.m_xJobResponse.m_ixRowsInvalid.iInc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1088,7 +1088,7 @@ void Job::vPrintResult(eRS eResponse)
 /*----------------------------------------------------------------------------*/
 Response* Job::pResponse(void)
 {
-  return &m_xResult.m_xResponse;
+  return &m_xResult.m_xJobResponse;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1096,7 +1096,7 @@ Response* Job::pResponse(void)
 /*----------------------------------------------------------------------------*/
 Stz* Job::szResponse(void)
 {
-  Stz* szResponse = m_xResult.m_xResponse.m_sResponse;
+  Stz* szResponse = m_xResult.m_xJobResponse.m_sResponse;
   
   return szResponse;
 }
@@ -1106,16 +1106,23 @@ Stz* Job::szResponse(void)
 /*----------------------------------------------------------------------------*/
 void Job::vResponse(Stz* sResponse)
 {
-  m_xResult.m_xResponse.m_sResponse = sResponse;
+  m_xResult.m_xJobResponse.m_sResponse = sResponse;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set response vector                                                        */
+/* set origin response vector                                                 */
 /*----------------------------------------------------------------------------*/
-void Job::vResponseVec(ResponseVec* pResonseVec)
+void Job::vOriginResponseVec(ResponseVec* pResonseVec)
 {
-  RASSERT( ! m_xResult.m_pResponseVec );
-  m_xResult.m_pResponseVec = pResonseVec;
+  m_xResult.m_pOriginResponseVec = pResonseVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set origin response vector                                                 */
+/*----------------------------------------------------------------------------*/
+ResponseVec* Job::pOriginResponseVec(void)
+{
+  return m_xResult.m_pOriginResponseVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1123,7 +1130,7 @@ void Job::vResponseVec(ResponseVec* pResonseVec)
 /*----------------------------------------------------------------------------*/
 i8 Job::iRowsProcessed(void)
 {
-  return *m_xResult.m_xResponse.m_ixRowsProcessed;
+  return *m_xResult.m_xJobResponse.m_ixRowsProcessed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1131,7 +1138,7 @@ i8 Job::iRowsProcessed(void)
 /*----------------------------------------------------------------------------*/
 void Job::vRowsProcessed(i8 iRowsProcessed)
 {
-  m_xResult.m_xResponse.m_ixRowsProcessed = iRowsProcessed;
+  m_xResult.m_xJobResponse.m_ixRowsProcessed = iRowsProcessed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1139,7 +1146,7 @@ void Job::vRowsProcessed(i8 iRowsProcessed)
 /*----------------------------------------------------------------------------*/
 i8 Job::iRowsSkipped(void)
 {
-  return *m_xResult.m_xResponse.m_ixRowsSkipped;
+  return *m_xResult.m_xJobResponse.m_ixRowsSkipped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1147,7 +1154,7 @@ i8 Job::iRowsSkipped(void)
 /*----------------------------------------------------------------------------*/
 void Job::vRowsSkipped(i8 iRowsSkipped)
 {
-  m_xResult.m_xResponse.m_ixRowsSkipped = iRowsSkipped;
+  m_xResult.m_xJobResponse.m_ixRowsSkipped = iRowsSkipped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1155,7 +1162,7 @@ void Job::vRowsSkipped(i8 iRowsSkipped)
 /*----------------------------------------------------------------------------*/
 i8 Job::iRowsInvalid(void)
 {
-  return *m_xResult.m_xResponse.m_ixRowsInvalid;
+  return *m_xResult.m_xJobResponse.m_ixRowsInvalid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1163,7 +1170,7 @@ i8 Job::iRowsInvalid(void)
 /*----------------------------------------------------------------------------*/
 void Job::vRowsInvalid(i8 iRowsInvalid)
 {
-  m_xResult.m_xResponse.m_ixRowsInvalid = iRowsInvalid;
+  m_xResult.m_xJobResponse.m_ixRowsInvalid = iRowsInvalid;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -301,10 +301,10 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 
     // check if job had an error
     if (pJob->bHasError()) {
-      i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-        eEC eError = pJob->m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode;
+        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE) {
           pSession->m_pJobStack->vPushPtr(pJob);
           API_RETURN_ERROR(eError);
@@ -384,10 +384,10 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     // check if job had an error
     if (pJob_InsertRow->bHasError()) {
       
-      i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-        eEC eError = pJob->m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode;
+        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
         
         if (eError != EC_NONE)
           API_RETURN_ERROR(eError);
@@ -577,10 +577,10 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 
     // check if job had an error
     if (pJob_InsertTable->bHasError()) {
-      i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-        eEC eError = pJob->m_xResult.m_pResponseVec->pGet(i_Node)->m_eErrorCode;
+        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE)
           API_RETURN_ERROR(eError);
       }
@@ -790,10 +790,10 @@ eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
     i8 iRowsProcessed = 0;
     i8 iRowsInvalid   = 0;
     i8 iRowsSkipped   = 0;
-    i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+    i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
     
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      Response* pResponse = pJob->m_xResult.m_pResponseVec->pGet(i_Node);
+      Response* pResponse = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node);
       iRowsProcessed += *pResponse->m_ixRowsProcessed;
       iRowsInvalid   += *pResponse->m_ixRowsInvalid;
       iRowsSkipped   += *pResponse->m_ixRowsSkipped;
@@ -860,10 +860,10 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   else {
     RASSERT(eResponseKind == RS_NODE_ROWS);
   
-    i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+    i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
     
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      pResponse = pJob->m_xResult.m_pResponseVec->pGet(i_Node);
+      pResponse = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node);
       iMaxRowNo = *pResponse->m_ixRowsProcessed;
       if (iRow < iMaxRowNo)
         break;
@@ -940,10 +940,10 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   else {
     RASSERT(eResponseKind == RS_NODE_ROWS);
     
-    i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+    i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
     
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      iRowsProcessed += *pJob->m_xResult.m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+      iRowsProcessed += *pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
     }
   }
   

@@ -9,12 +9,12 @@ namespace Jobs
   {
 
   public:
-    s4K          m_sMetadata;    // meta data of result
-    eEC          m_eSyntaxError; // syntax errors
-    Response     m_xResponse;    // response of this job
-    bool         m_bHasError;    // has an error from one or more nodes
-    ResponseVec* m_pResponseVec; // vector of responses from all the nodes
-    Queue*       m_pBufferQueue; // buffer queue to receive the buffers of the result
+    s4K          m_sMetadata;          // meta data of result
+    eEC          m_eSyntaxError;       // syntax errors
+    Response     m_xJobResponse;       // response of this job
+    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
+    ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
+    bool         m_bPartHasError;      // participant has an error
     
     // must be last
     Footer m_xFooter;

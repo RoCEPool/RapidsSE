@@ -141,7 +141,8 @@ namespace Jobs
     Response* pResponse(void);
     Stz* szResponse(void);
     void vResponse(Stz* sResponse);
-    void vResponseVec(ResponseVec* pResponseVec);
+    void vOriginResponseVec(ResponseVec* pResponseVec);
+    ResponseVec* pOriginResponseVec(void);
     i8   iRowsProcessed(void);
     void vRowsProcessed(i8 iRowsProcessed);
     i8   iRowsSkipped(void);

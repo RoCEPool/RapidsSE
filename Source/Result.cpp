@@ -48,14 +48,12 @@ Result::Result(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT);
   
-  m_eSyntaxError = EC_NONE;
-  
-  //m_xResponse
-  
-  m_bHasError    = false;
-  m_sMetadata    = ""_Stz;
-  m_pResponseVec = nullptr;
-  m_pBufferQueue = nullptr;
+  m_sMetadata          = ""_Stz;
+  m_eSyntaxError       = EC_NONE;
+  //m_xJobResponse
+  m_pOriginBufferQueue = nullptr;
+  m_pOriginResponseVec = nullptr;
+  m_bPartHasError      = false;
   
   _checkInitialised_(CN_RESULT);
   
@@ -69,11 +67,11 @@ Result::~Result(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
-  if ( m_pResponseVec)
-    delete m_pResponseVec;
+  if ( m_pOriginResponseVec)
+    delete m_pOriginResponseVec;
   
-  if (m_pBufferQueue)
-    delete m_pBufferQueue;
+  if (m_pOriginBufferQueue)
+    delete m_pOriginBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,11 +110,11 @@ void Result::vPrint(eRS eResponse)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLoadRows(void)
 {
-  i8 iResponses = m_pResponseVec->nItems();
+  i8 iResponses = m_pOriginResponseVec->nItems();
   
-  if ( m_bHasError ) {
+  if ( m_bPartHasError ) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     return;
   }
   
@@ -128,7 +126,7 @@ void Result::vPrintLoadRows(void)
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
     
-    Response* pResponse = m_pResponseVec->pGet(i_Node);
+    Response* pResponse = m_pOriginResponseVec->pGet(i_Node);
     iRowsProcessed += *pResponse->m_ixRowsProcessed;
     iRowsInvalid   += *pResponse->m_ixRowsInvalid;
     iRowsSkipped   += *pResponse->m_ixRowsSkipped;
@@ -147,9 +145,9 @@ void Result::vPrintLoadRows(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLocalErrors(void)
 {
-  if (m_bHasError) {
+  if (m_bPartHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xResponse.m_eErrorCode]);
+           aEC[m_xJobResponse.m_eErrorCode]);
     return;
   }
 }
@@ -159,19 +157,19 @@ void Result::vPrintLocalErrors(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLocalRows(void)
 {
-  if (m_bHasError) {
+  if (m_bPartHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xResponse.m_eErrorCode]);
+           aEC[m_xJobResponse.m_eErrorCode]);
     return;
   }
   
   if (AM::bMetadata())
     vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   
-  if (*m_xResponse.m_ixRowsProcessed)
-    vTrace("%s"_Stz, m_xResponse.m_sResponse.azChar());
+  if (*m_xJobResponse.m_ixRowsProcessed)
+    vTrace("%s"_Stz, m_xJobResponse.m_sResponse.azChar());
   
-  vTrace("success: %lld rows affected\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+  vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,12 +177,12 @@ void Result::vPrintLocalRows(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintNodeErrors(void)
 {
-  i8 iResponses = m_pResponseVec->nItems();
+  i8 iResponses = m_pOriginResponseVec->nItems();
   RASSERT(iResponses == AM::nDefinedNodes());
   
-  if (m_bHasError) {
+  if (m_bPartHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
   }
   
@@ -194,11 +192,11 @@ void Result::vPrintNodeErrors(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintNodeRows(void)
 {
-  i8 iResponses = m_pResponseVec->nItems();
+  i8 iResponses = m_pOriginResponseVec->nItems();
   
-  if (m_bHasError) {
+  if (m_bPartHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
     return;
   }
@@ -212,8 +210,8 @@ void Result::vPrintNodeRows(void)
   i8 iRowsProcessed = 0;
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("%s\n"_Stz, m_pResponseVec->pGet(i_Node)->m_sResponse.azChar());
-    iRowsProcessed += *m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+    vTrace("%s\n"_Stz, m_pOriginResponseVec->pGet(i_Node)->m_sResponse.azChar());
+    iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
   }
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
 }
@@ -224,18 +222,18 @@ void Result::vPrintNodeRows(void)
 void Result::vPrintNodeZero(void)
 {
   //! RAY HACK 5 NOV 2109 re universal job cf
-  if (! m_pResponseVec) {
+  if (! m_pOriginResponseVec) {
     vTrace("success: 0 rows affected\n"_Stz);
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iResponses = m_pResponseVec->nItems();
+  i8 iResponses = m_pOriginResponseVec->nItems();
   
-  if (m_bHasError) {
+  if (m_bPartHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
     return;
   }
@@ -250,10 +248,10 @@ void Result::vPrintNodeZero(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLocalZero(void)
 {
-  if (m_bHasError) {
+  if (m_bPartHasError) {
     vTrace("error: (node%lld) %s\n"_Stz,
            AM::iThisNodeNo(),
-           aEC[m_xResponse.m_eErrorCode]);
+           aEC[m_xJobResponse.m_eErrorCode]);
     return;
   }
   
@@ -266,10 +264,10 @@ void Result::vPrintLocalZero(void)
 void Result::vPrintQueueRows(void)
 {
   //  if ( m_bHasError ) {
-  //    i8 iResponses = m_pResponseVec->nItems();
+  //    i8 iResponses = m_pOriginResponseVec->nItems();
   //    RASSERT(iResponses == AM::nDefinedNodes());
   //    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-  //      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+  //      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
   //    }
   //    return;
   //  }
@@ -279,16 +277,16 @@ void Result::vPrintQueueRows(void)
   
   for (;;) {
     
-    Operand* pOperand = _pOperand(m_pBufferQueue->pPop());
+    Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());
     
     if (! pOperand) {
       // invalid command ? exit early
       bool bInvalidCommand = false;
-      if (m_bHasError) {
-        i8 iResponses = m_pResponseVec->nItems();
+      if (m_bPartHasError) {
+        i8 iResponses = m_pOriginResponseVec->nItems();
         
         for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-          if (m_pResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
+          if (m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
             bInvalidCommand = true;
             break;
           }
@@ -309,7 +307,7 @@ void Result::vPrintQueueRows(void)
         
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
+        m_xJobResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
         pCrwBuffer->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;
@@ -319,7 +317,7 @@ void Result::vPrintQueueRows(void)
         
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
+        m_xJobResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
         pCsvBuffer->vPrintRecords();
         AM::vDeleteOperand(pOperand);
         break;
@@ -329,7 +327,7 @@ void Result::vPrintQueueRows(void)
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
+        m_xJobResponse.m_ixRowsProcessed += pEntBuffer->nItems();
         pEntBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
         break;
@@ -339,7 +337,7 @@ void Result::vPrintQueueRows(void)
         
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
+        m_xJobResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
         pIrwBuffer->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;
@@ -353,7 +351,7 @@ void Result::vPrintQueueRows(void)
             
           case OM_CANCELMARKER: {
             vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
-                   *m_xResponse.m_ixRowsProcessed);
+                   *m_xJobResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);
             goto L_EXIT;
             break;
@@ -386,7 +384,7 @@ void Result::vPrintQueueRows(void)
           case OM_STOPMARKER: {
             //vTrace("Pipeline Job: STOPMARKER\n"_Stz);
             if ( ! bHasError )
-              vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+              vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);
             goto L_EXIT;
             break;
@@ -402,7 +400,7 @@ void Result::vPrintQueueRows(void)
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
+        m_xJobResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
         pSrtBuffer->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;

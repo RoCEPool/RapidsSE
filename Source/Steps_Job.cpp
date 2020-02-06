@@ -472,7 +472,7 @@ void Step::vJobCreateResponseVec(void)
   ENTRY(); // ENTRY("vJobCreateResponseVec"_Stz);
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  pJob->vResponseVec(new ResponseVec);
+  pJob->vOriginResponseVec(new ResponseVec);
   
   EXIT();
 }
@@ -950,10 +950,10 @@ void Step::vJobParticipantHasError(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 bHasError = false;
-  i8 iResponses = pJob->m_xResult.m_pResponseVec->nItems();
+  i8 iResponses = pJob->pOriginResponseVec()->nItems();
   
   for (i8 i_Response = 0; i_Response < iResponses; i_Response++) {
-    if (pJob->m_xResult.m_pResponseVec->pGet(i_Response)->m_eErrorCode != EC_NONE) {
+    if (pJob->pOriginResponseVec()->pGet(i_Response)->m_eErrorCode != EC_NONE) {
       bHasError = true;
       break;
     }
@@ -977,7 +977,7 @@ void Step::vJobParticipantResponseStore(void)
   Job* pParticipantJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // there should be a response vector
-  RASSERT( pJob->m_xResult.m_pResponseVec );
+  RASSERT( pJob->pOriginResponseVec() );
   
   // create a new response
   Response* pResponse = new Response;
@@ -995,7 +995,7 @@ void Step::vJobParticipantResponseStore(void)
     pJob->vHasError(true);
   
   // add the response to the vector of responses
-  pJob->m_xResult.m_pResponseVec->vAdd(pResponse);
+  pJob->pOriginResponseVec()->vAdd(pResponse);
   
   //if (pResponse->m_eErrorCode != EC_NONE)
     //ActLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
