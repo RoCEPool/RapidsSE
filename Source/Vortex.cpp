@@ -76,9 +76,9 @@ Vortex::Vortex(void)
   m_pInput       = nullptr;
   m_bPrint       = true;
   m_bTrace       = true;
-  m_bInputMember = true;
-  m_bInputPart   = true;
-  m_bInputType   = true;
+  m_bContMember = true;
+  m_bContPart   = true;
+  m_bContType   = true;
 
   // output
   
@@ -734,9 +734,6 @@ void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vParseFunVar(szSawTerm,bTemplated);
-  return;
-  
-  vCollectOtherTerms(szSawTerm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -763,12 +760,6 @@ void Vortex::vParseOther(Stz* szSawTerm, bool bTemplated)
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vPartRecognised(CP__CRUDELY__);
-  
-  m_oTypeSpec.vReset();
-
-  vOtherTermsReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1584,7 +1575,7 @@ void Vortex::vMetaTypeNew_class(Stz* szClassNm)
                                 m_p_MetaType);
   }
   
-  //if (m_bInputType)
+  //if (m_bContType)
   //  getc(stdin);
 }
 
@@ -1600,7 +1591,7 @@ void Vortex::vMetaTypeNew_struct(Stz* szStructNm)
                               CP_STRUCT,
                               m_p_MetaType);
   
-//if (m_bInputType)
+//if (m_bContType)
 //  getc(stdin);
 }
 
@@ -1615,7 +1606,7 @@ void Vortex::vMetaTypeNew_union(Stz* szUnionNm)
                               MT_UNION,
                               CP_UNION,
                               m_p_MetaType);
-//if (m_bInputType)
+//if (m_bContType)
 //  getc(stdin);
 }
 
@@ -1775,6 +1766,21 @@ void Vortex::vClassDescend(Stz* szClassNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get keystroke to continue again                                            */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bContinueAgain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  char c = getc(stdin);
+  
+  if ('.' == c)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next token                                                             */
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardNextToken(void)
@@ -1904,21 +1910,6 @@ void Vortex::vFragmentReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognised c++ part                                                        */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bInputAgain(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  char c = getc(stdin);
-  
-  if ('.' == c)
-    return false;
-  else
-    return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* ascend from parsing a namespace                                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vNamepaceAscend(void)
@@ -1965,8 +1956,8 @@ void Vortex::vPartRecognised(eCP eCppPart)
   if (m_bTrace)
     TRACE("Recognised %s\n\n"_Stz,aCP[eCppPart]);
   
-  if (m_bInputPart)
-    m_bInputPart = bInputAgain();
+  if (m_bContPart)
+    m_bContPart = bContinueAgain();
 
   vFragmentReset();
 }
