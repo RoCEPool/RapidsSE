@@ -85,6 +85,11 @@ Vortex::Vortex(void)
   m_sSourcePath  = ""_Stz;
   m_nSources     = 0;
   m_pInput       = nullptr;
+  m_oCurTkn.vReset();
+  m_bEOF         = false;
+  
+  // tracing and debugging
+
   m_bPrint       = true;
   m_bTrace       = true;
   m_bContMember  = true;
@@ -98,7 +103,6 @@ Vortex::Vortex(void)
   
   // working
   
-  m_oCurTkn.vReset();
   
   m_sFragment    = ""_Stz;
   
@@ -1998,12 +2002,12 @@ bool Vortex::bGetNextToken(Token& roToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  bool b = m_pInput->bGetToken(&roToken);
+  m_bEOF = ! m_pInput->bGetToken(&roToken);
   
-  if (b)
+  if (! m_bEOF)
     vFragmentAppend(roToken.szTerm());
   
-  return b;
+  return ! m_bEOF;
 }
 
 /*----------------------------------------------------------------------------*/

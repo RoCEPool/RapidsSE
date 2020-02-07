@@ -34,9 +34,13 @@ namespace Utilities
     s256        m_sSourcePath;   // .h/hpp source path
     i8          m_nSources;      // sources so far
     Input*      m_pInput;        // input token stream of source file
+    bool        m_bEOF;          // end-of-file reached?
+    Token       m_oCurTkn;       // current token
+
+    // tracing and debugging
+  
     bool        m_bPrint;        // print activity
     bool        m_bTrace;        // trace activity
-  
     bool        m_bContMember;   // get keystroke for new member
     bool        m_bContPart;     // get keystroke for part recognition
     bool        m_bContType;     // get keystroke for new type
@@ -47,9 +51,6 @@ namespace Utilities
     MetaGraph*  m_pMetaGraph;    // the metagraph that is being created
   
     // working section
-  
-    Token       m_oCurTkn;      // current token
-
   
     s48K        m_sFragment;     // top-down fragment of source tokens
 
