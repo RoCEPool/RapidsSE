@@ -726,7 +726,7 @@ void Vortex::vParseSemicolon(void)
   
   vPartRecognised(CP_EMPTY);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
