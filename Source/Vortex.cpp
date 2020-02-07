@@ -7,9 +7,11 @@
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define FNENTRY \
-  TRACE("/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
+  TRACE("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
     \
-    ,  m_sSourcePath.szStz() \
+    , m_nSources \
+    \
+    , m_sSourcePath.szStz() \
     \
     , __func__ \
     \
@@ -30,9 +32,11 @@
     );
 
 #define GATHER \
-  TRACE("/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
+  TRACE("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
     \
-    ,  m_sSourcePath.szStz() \
+    , m_nSources \
+    \
+    , m_sSourcePath.szStz() \
     \
     , __func__ \
     \
@@ -53,9 +57,11 @@
     );
 
 #define FN \
-  TRACE("/%s/%16s/  `%s`\n"_Stz \
+  TRACE("%lld/%s/%16s/  `%s`\n"_Stz \
     \
-    ,  m_sSourcePath.szStz() \
+    , m_nSources \
+    \
+    , m_sSourcePath.szStz() \
     \
     , __func__ \
     \
@@ -474,7 +480,7 @@ void Vortex::vParseEnum(void)
   
   vPartRecognised(CP_ENUM);
 
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,7 +497,7 @@ void Vortex::vParseExtern(void)
   
   vPartRecognised(CP_ENUM);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,7 +515,7 @@ void Vortex::vParseFriend(void)
   
   vPartRecognised(CP_FRIEND);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
