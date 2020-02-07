@@ -62,7 +62,7 @@
   "../Source" dir::changeCurrent
   //"../Vortex" dir::changeCurrent
   dir::getCurrent "Current working directory now: %v" fmt.print
-  "HeapBuffer.hpp" vortex::new vortex.processHpp
+  "FltVal.hpp" vortex::new vortex.processHpp
 
   // open directory accessor
   "." pSeSourceDir dir.open assert

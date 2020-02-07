@@ -853,12 +853,18 @@ void Vortex::vParseTemplate(void)
   vTemplateDescend();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // class or other
+  // class, friend or <funVar<
   
   vGetNextToken(m_oCurTkn);
   
   if (m_oCurTkn.bSame("class"_Stz)) {
     vParseClass();
+    vTemplateAscend();
+    return;
+  }
+  
+  if (m_oCurTkn.bSame("friend"_Stz)) {
+    vParseFriend();
     vTemplateAscend();
     return;
   }
