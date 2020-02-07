@@ -5,7 +5,7 @@
 // begin tracking memory
 trackMemory;
 success
-
+/*
 IndexEntries 5;
 success
 
@@ -150,14 +150,14 @@ mute;
 // get memory leaks
 memoryLeaks;
 rows: 0
-
+*/
 CLEANUP {
 
-  drop table Q1;
-  mute
+  //drop table Q1;
+  //mute
 
-  indexEntries 0;
-  mute;
+  //indexEntries 0;
+  //mute;
 
   bye;
   mute
