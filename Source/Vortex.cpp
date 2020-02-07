@@ -1070,9 +1070,21 @@ void Vortex::vParseFV_Type(void)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       vGetNextToken(m_oCurTkn);
       vParseFV_FunBody();
+      return;
     }
     
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // not in class
+  
+  // auto conversion operator
+  if (m_oCurTkn.bSame("operator"_Stz)) {
+    vGetNextToken(m_oCurTkn);
+    vParseFV_FunBody();
+    return;
+  }
+
   
   // we have a <name>
   m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
