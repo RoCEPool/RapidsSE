@@ -296,7 +296,7 @@ void Step::vOperandInvokePythonShell(void)
   
   i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
   
-  RASSERT(iExitStatus);
+  RASSERT(oSysCall.m_eStatus == SC_SUCCESS);
   
   EXIT();
 }
