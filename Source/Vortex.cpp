@@ -7,7 +7,7 @@
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define FNENTRY \
-  TRACE("/%s/%16s: `%s` [[%s%s%s%s%s%s%s%s%s ]]\n"_Stz \
+  TRACE("/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
@@ -15,22 +15,22 @@
     \
     , m_oCurTkn.szTerm() \
     \
-    , m_bInNamespace ? " NAMESPACE `" : "" \
+    , m_bInNamespace ? " --NAMESPACE `" : "" \
     , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
     , m_bInNamespace ? "`" : "" \
     \
-    , m_bInClass     ? " CLASS `" : "" \
+    , m_bInClass     ? " --CLASS `" : "" \
     , m_bInClass     ? m_sClassNm.azChar() : "" \
     , m_bInClass     ? "`" : "" \
     \
-    , m_bInTemplate  ? " TPLSPEC `" : "" \
+    , m_bInTemplate  ? " --TPLSPEC `" : "" \
     , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
     , m_bInTemplate  ? "`" : "" \
     \
     );
 
 #define GATHER \
-  TRACE("/%s/%16s: `%s` [[%s%s%s%s%s%s%s%s%s ]]\n"_Stz \
+  TRACE("/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
@@ -38,22 +38,22 @@
     \
     , m_oCurTkn.szTerm() \
     \
-    , m_bInNamespace ? " NAMESPACE `" : "" \
+    , m_bInNamespace ? " --NAMESPACE `" : "" \
     , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
     , m_bInNamespace ? "`" : "" \
     \
-    , m_bInClass     ? " CLASS `" : "" \
+    , m_bInClass     ? " --CLASS `" : "" \
     , m_bInClass     ? m_sClassNm.azChar() : "" \
     , m_bInClass     ? "`" : "" \
     \
-    , m_bInTemplate  ? " TPLSPEC `" : "" \
+    , m_bInTemplate  ? " --TPLSPEC `" : "" \
     , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
     , m_bInTemplate  ? "`" : "" \
     \
     );
 
 #define FN \
-  TRACE("/%s/%16s: `%s`\n"_Stz \
+  TRACE("/%s/%16s/  `%s`\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
@@ -1020,6 +1020,14 @@ void Vortex::vParseFV_Type(void)
     if (m_oCurTkn.bSame(m_sClassNm)) {
       
       vGetNextToken(m_oCurTkn);
+      
+      
+      // do we have template arguments?
+      if (m_oCurTkn.bSame("<"_Stz)) {
+        vCollectTplArgs("<"_Stz);
+        vGetNextToken(m_oCurTkn);
+      }
+      
 
       if (m_oCurTkn.bSame("("_Stz)) {
         
@@ -1302,26 +1310,26 @@ void Vortex::vParseFV_Function(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bIsFun = true;
-   m_oFunSpec.vReset();
-   
-   if (! m_oCurTkn.bSame("("_Stz))
-     return;
-   
-   m_bIsFun = true;
-   
-   for (;;) {
-      
-     vGetNextToken(m_oCurTkn);
-      
-      // test for close
-      if (m_oCurTkn.bSame(")"_Stz))
-        break;
-      
-     m_oFunSpec.vAdd(m_oCurTkn.szTerm());
-   }
+  m_oFunSpec.vReset();
 
-   
-   vGetNextToken(m_oCurTkn);
+  if (! m_oCurTkn.bSame("("_Stz))
+    return;
+
+  m_bIsFun = true;
+
+  for (;;) {
+    
+    vGetNextToken(m_oCurTkn);
+    
+    // test for close
+    if (m_oCurTkn.bSame(")"_Stz))
+      break;
+    
+    m_oFunSpec.vAdd(m_oCurTkn.szTerm());
+  }
+
+
+  vGetNextToken(m_oCurTkn);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1370,6 +1378,9 @@ void Vortex::vParseFV_Function(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vPartRecognised(CP__CRUDELY__);
+  
+  vGetNextToken(m_oCurTkn);
+
 
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
