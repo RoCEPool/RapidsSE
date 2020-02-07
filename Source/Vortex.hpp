@@ -111,7 +111,6 @@ namespace Utilities
     void vParseConst(void);
     void vParseEnum(void);
     void vParseFriend(void);
-    void vParseFunVar(bool bTemplated);
     void vParseHash(void);
     void vParseHashDefine(void);
     void vParseHashIf(void);
@@ -131,12 +130,12 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
-    void vDescendFunVar(void);
-    void vDescendTypeSpec(void);
-    void vDescendFunVarNm(void);
+    void vParseFunVar(bool bTemplated);
 
-    void vDescendRework(void);
-  
+    void vDescendType(void);
+    void vDescendName(void);
+
+    void vDescendAryFunVar(void);
     void vDescendArray(void);
     void vDescendFunction(void);
     void vDescendVariable(void);
