@@ -489,18 +489,6 @@ void Vortex::vParseFriend(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: <other> _^_ <term> ...                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFunVar(bool bTemplated)
-{
-  FNENTRY
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  vDescendFunVar();
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse: # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(void)
@@ -959,58 +947,14 @@ void Vortex::vParseUsing(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* descent parsing of function / variable                                     */
+/* parse: <other> _^_ <term> ...                                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunVar(void)
+void Vortex::vParseFunVar(bool bTemplated)
 {
-  GATHER
+  FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vDescendTypeSpec();
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* reworking...                                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendRework(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vDescendFunVarNm();
-  
-  if (m_oCurTkn.bSame(";"_Stz)) {
-    if (m_bInClass) {
-      vTraceTypeSpec();
-      vTraceFunVarNm();
-      vPartRecognised(CP_MEMBER_VARIABLE);
-    }
-    else
-      vPartRecognised(CP__CRUDELY__);
-
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-
-    return;
-  }
-  
-  vDescendArraySpec();
-  if (m_bIsArray) {
-    vPartRecognised(CP_MEMBER_VARIABLE);
     
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-    return;
-  }
-  
-  vDescendFunSpec();
-  vDescendFunBody();
-
-  vPartRecognised(CP__CRUDELY__);
-  
-  m_oTypeSpec.vReset();
-  m_oFunVarNm.vReset();
+  vParseFV_Type();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1037,55 +981,107 @@ void Vortex::vDescendRework(void)
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 }
 
 
-
 /*----------------------------------------------------------------------------*/
-/* collect array specification: ????                                          */
+/* parse information about type spec for a function or variable               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendArraySpec(void)
+void Vortex::vParseFV_Type(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  m_bIsArray = false;
   
-  if (! m_oCurTkn.bSame("["_Stz))
-    return;
+  m_oTypeArgs.vReset();
   
-  m_bIsArray = true;
+  m_nAsterisks = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // detect the case of no specifier (constructor / destructor)
+  if (m_bInClass) {
+    // 1) constructor (no specifier)
+    if (m_oCurTkn.bSame(m_sClassNm)) {
+      TRACE("  (typeless) constructor\n"_Stz);
+      vParseFV_Name();
+      return;
+    }
+    // 2) destructor (no specifier)
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      TRACE("  (typeless) destructor\n"_Stz);
+      vParseFV_Name();
+      return;
+    }
+    // 3) typeless operator (no specifier)
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      TRACE("  (typeless) operator\n"_Stz);
+      vParseFV_Name();
+      return;
+    }
+  }
   
+  // we have a <name>
+  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
   vGetNextToken(m_oCurTkn);
-
-  m_oArraySpec.vAdd(m_oCurTkn.szTerm());
   
-  vGetExpectedToken(m_oCurTkn,"]"_Stz);
+  // do we have template arguments?
+  if (m_oCurTkn.bSame("<"_Stz)) {
+    vCollectTplArgs("<"_Stz);
+    vGetNextToken(m_oCurTkn);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
+  
+  if (m_oCurTkn.bSame(":"_Stz)) {
+    vGetExpectedToken(m_oCurTkn,":"_Stz);
+    vGetNextToken(m_oCurTkn);
 
-  vPartRecognised(CP_ARRAY_SPEC);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect function body: ????                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunBody(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
+      vParseFV_Name();
+      return;
+    }
     
-  if (! m_oCurTkn.bSame("{"_Stz))
-    return;
-
-  vDiscardBalancedBraces("{"_Stz);
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      vParseFV_Name();
+      return;
+    }
+    
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      vParseFV_Name();
+      return;
+    }
+    
+    NEVER_REACH
+  }
   
-  vPartRecognised(CP_FUNCTION_BODY);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // zero or more asterisks
+  do {
+    
+    // collected when we have no more asterisks
+    if (! m_oCurTkn.bSame("*"_Stz)) {
+      vTraceTypeSpec();
+      vPartRecognised(CP_TYPE_SPECIFICATION);
+      vParseFV_AryFunVar();
+      return;
+  }
+  
+    // we have an asterisk
+    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+    m_nAsterisks++;
+
+  }  while (bGetNextToken(m_oCurTkn));
+  
+  vThrowProblem(__LINE__);
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
 /* gather information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunVarNm(void)
+void Vortex::vParseFV_Name(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1110,6 +1106,8 @@ void Vortex::vDescendFunVarNm(void)
     vPartRecognised(CP_FUNCTION_POINTER);
     
     vGetNextToken(m_oCurTkn);
+    
+    vParseFV_AryFunVar();
     return;
   }
   
@@ -1123,6 +1121,8 @@ void Vortex::vDescendFunVarNm(void)
     m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
     vPartRecognised(CP_OPERATOR);
     vGetNextToken(m_oCurTkn);
+    
+    vParseFV_AryFunVar();
     return;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
@@ -1130,6 +1130,8 @@ void Vortex::vDescendFunVarNm(void)
     m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
     vPartRecognised(CP_DESTRUCTOR);
     vGetNextToken(m_oCurTkn);
+    
+    vParseFV_AryFunVar();
     return;
   }
   
@@ -1141,8 +1143,10 @@ void Vortex::vDescendFunVarNm(void)
   vGetNextToken(m_oCurTkn);
   
   // do we have type qualifier args?
-  if (! m_oCurTkn.bSame("<"_Stz))
+  if (! m_oCurTkn.bSame("<"_Stz)) {
+    vParseFV_AryFunVar();
     return;
+  }
   
   vCollectTplArgs("<"_Stz);
   vPartRecognised(CP_TYPE_ARGS);
@@ -1151,9 +1155,11 @@ void Vortex::vDescendFunVarNm(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! m_oCurTkn.bSame(":"_Stz))
+  if (! m_oCurTkn.bSame(":"_Stz)) {
+    vParseFV_AryFunVar();
     return;
-
+  }
+  
   vGetExpectedToken(m_oCurTkn,":"_Stz);
   
   vShiftClassNm();
@@ -1165,151 +1171,148 @@ void Vortex::vDescendFunVarNm(void)
   goto L_Parse_Function_Name;
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* collect function spec: ????                                                */
+/* detect parse next for array, function or variable                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunSpec(void)
+void Vortex::vParseFV_AryFunVar(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_bIsFun = true;
-  m_oFunSpec.vReset();
-  
-  if (! m_oCurTkn.bSame("("_Stz))
+  if (m_oCurTkn.bSame("["_Stz)) {
+    vParseFV_Array();
     return;
-  
-  m_bIsFun = true;
-  
-  for (;;) {
-     
-    vGetNextToken(m_oCurTkn);
-     
-     // test for close
-     if (m_oCurTkn.bSame(")"_Stz))
-       break;
-     
-    m_oFunSpec.vAdd(m_oCurTkn.szTerm());
   }
-
   
-  vGetNextToken(m_oCurTkn);
-
-  vDescendNoExceptSpec();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect noexcept terms: ????                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendNoExceptSpec(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (! m_oCurTkn.bSame("("_Stz))
+  if (m_oCurTkn.bSame(";"_Stz)) {
+    vParseFV_Variable();
     return;
-
-  vGetNextToken(m_oCurTkn);
-
-  vGetExpectedToken(m_oCurTkn,")"_Stz);
+  }
   
-  vGetNextToken(m_oCurTkn);
+  if (m_oCurTkn.bSame("("_Stz)) {
+    vParseFV_Function();
+    return;
+  }
+  
+  NEVER_REACH
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* gather information about type spec for a function or variable              */
+/* parse array                                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendTypeSpec(void)
+void Vortex::vParseFV_Array(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTypeArgs.vReset();
+  m_bIsArray = false;
   
-  m_nAsterisks = 0;
+  if (! m_oCurTkn.bSame("["_Stz))
+    return;
+  
+  m_bIsArray = true;
+  
+  vGetNextToken(m_oCurTkn);
+
+  m_oArraySpec.vAdd(m_oCurTkn.szTerm());
+  
+  vGetExpectedToken(m_oCurTkn,"]"_Stz);
+
+  vPartRecognised(CP_ARRAY_SPEC);
+
+  vPartRecognised(CP_MEMBER_VARIABLE);
+  
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse function                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFV_Function(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_bIsFun = true;
+   m_oFunSpec.vReset();
+   
+   if (! m_oCurTkn.bSame("("_Stz))
+     return;
+   
+   m_bIsFun = true;
+   
+   for (;;) {
+      
+     vGetNextToken(m_oCurTkn);
+      
+      // test for close
+      if (m_oCurTkn.bSame(")"_Stz))
+        break;
+      
+     m_oFunSpec.vAdd(m_oCurTkn.szTerm());
+   }
+
+   
+   vGetNextToken(m_oCurTkn);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (m_oCurTkn.bSame("noexcept"_Stz)) {
+
+   vGetExpectedToken(m_oCurTkn,"("_Stz);
+    
+   vGetNextToken(m_oCurTkn);
+
+   vGetExpectedToken(m_oCurTkn,")"_Stz);
+   
+   vGetNextToken(m_oCurTkn);
+
+  }
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //vParseFV_FunBody();
+  
+  if (m_oCurTkn.bSame("{"_Stz)) {
+
+    vDiscardBalancedBraces("{"_Stz);
+  
+    vPartRecognised(CP_FUNCTION_BODY);
+  }
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // detect the case of no specifier (constructor / destructor)
+
+  vPartRecognised(CP__CRUDELY__);
+
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse variable                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFV_Variable(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   if (m_bInClass) {
-    // 1) constructor (no specifier)
-    if (m_oCurTkn.bSame(m_sClassNm)) {
-      TRACE("  (typeless) constructor\n"_Stz);
-      vDescendRework();
-      return;
-    }
-    // 2) destructor (no specifier)
-    if (m_oCurTkn.bSame("~"_Stz)) {
-      TRACE("  (typeless) destructor\n"_Stz);
-      vDescendRework();
-      return;
-    }
-    // 3) typeless operator (no specifier)
-    if (m_oCurTkn.bSame("operator"_Stz)) {
-      TRACE("  (typeless) operator\n"_Stz);
-      vDescendRework();
-      return;
-    }
+    vTraceTypeSpec();
+    vTraceFunVarNm();
+    vPartRecognised(CP_MEMBER_VARIABLE);
   }
-  
-  // we have a <name>
-  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-  vGetNextToken(m_oCurTkn);
-  
-  // do we have template arguments?
-  if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTplArgs("<"_Stz);
-    vGetNextToken(m_oCurTkn);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
-  
-  if (m_oCurTkn.bSame(":"_Stz)) {
-    vGetExpectedToken(m_oCurTkn,":"_Stz);
-    vGetNextToken(m_oCurTkn);
+  else
+    vPartRecognised(CP__CRUDELY__);
 
-    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
-      vDescendRework();
-      return;
-    }
-    
-    if (m_oCurTkn.bSame("~"_Stz)) {
-      vDescendRework();
-      return;
-    }
-    
-    if (m_oCurTkn.bSame("operator"_Stz)) {
-      vDescendRework();
-      return;
-    }
-    
-    NEVER_REACH
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // zero or more asterisks
-  do {
-    
-    // collected when we have no more asterisks
-    if (! m_oCurTkn.bSame("*"_Stz)) {
-      vTraceTypeSpec();
-      vPartRecognised(CP_TYPE_SPECIFICATION);
-      vDescendRework();
-      return;
-  }
-  
-    // we have an asterisk
-    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-    m_nAsterisks++;
-
-  }  while (bGetNextToken(m_oCurTkn));
-  
-  vThrowProblem(__LINE__);
-  
-  NEVER_REACH;
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* shift funvar name etc to be class                                          */
