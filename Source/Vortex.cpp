@@ -1000,9 +1000,20 @@ void Vortex::vParseFV_Type(void)
   
   m_nAsterisks = 0;
 
-  
-  if (m_oCurTkn.bSame("inline"_Stz))
-    vGetNextToken(m_oCurTkn);
+  for (;;) {
+    
+    if (m_oCurTkn.bSame("inline"_Stz)) {
+      vGetNextToken(m_oCurTkn);
+      continue;
+    }
+    
+    if (m_oCurTkn.bSame("static"_Stz)) {
+      vGetNextToken(m_oCurTkn);
+      continue;
+    }
+    
+    break;
+  }
   
   if (m_oCurTkn.bSame("["_Stz)) {
     vGetExpectedToken(m_oCurTkn,"["_Stz);
