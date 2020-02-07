@@ -1002,6 +1002,11 @@ void Vortex::vParseFV_Type(void)
   
   m_nAsterisks = 0;
 
+  
+  if (m_oCurTkn.bSame("inline"_Stz))
+      vGetNextToken(m_oCurTkn);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // detect the case of no specifier (constructor / destructor)
   if (m_bInClass) {
