@@ -132,15 +132,16 @@ namespace Utilities
     // function variable gather
 
     void vDescendFunVar(void);
+    void vDescendTypeSpec(void);
+    void vDescendFunVarNm(void);
+
     void vDescendRework();
   
     void vDescendArraySpec(void);
     void vDescendFunBody(void);
     void vDescendFunParams(void);
     void vDescendFunSpec(void);
-    void vDescendFunVarNm(void);
     void vDescendNoExceptSpec(void);
-    void vDescendTypeSpec(void);
 
     void vShiftClassNm(void);
 

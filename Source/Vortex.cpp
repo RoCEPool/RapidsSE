@@ -971,113 +971,97 @@ void Vortex::vDescendFunVar(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reworking...                                                               */
+/* gather information about type spec for a function or variable              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendRework(void)
+void Vortex::vDescendTypeSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_oCurTkn.bSame(";"_Stz)) {
-    if (m_bInClass) {
-      vTraceTypeSpec();
-      vTraceFunVarNm();
-      vPartRecognised(CP_MEMBER_VARIABLE);
+  m_oTypeArgs.vReset();
+  
+  m_nAsterisks = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // detect the case of no specifier (constructor / destructor)
+  if (m_bInClass) {
+    // 1) constructor (no specifier)
+    if (m_oCurTkn.bSame(m_sClassNm)) {
+      TRACE("  (typeless) constructor\n"_Stz);
+      vDescendFunVarNm();
+      return;
     }
-    else
-      vPartRecognised(CP__CRUDELY__);
-
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-
-    return;
+    // 2) destructor (no specifier)
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      TRACE("  (typeless) destructor\n"_Stz);
+      vDescendFunVarNm();
+      return;
+    }
+    // 3) typeless operator (no specifier)
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      TRACE("  (typeless) operator\n"_Stz);
+      vDescendFunVarNm();
+      return;
+    }
   }
   
-  vDescendArraySpec();
-  if (m_bIsArray) {
-    vPartRecognised(CP_MEMBER_VARIABLE);
-    
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-    return;
-  }
-  
-  vDescendFunSpec();
-  vDescendFunBody();
-
-  vPartRecognised(CP__CRUDELY__);
-  
-  m_oTypeSpec.vReset();
-  m_oFunVarNm.vReset();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#if 0
-  i8   nPointers;
-  bool bFunPtr;
-  i8   nElements;
-  i8   nBits;
-
-  
-  Stz* szVarNm;
-  Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
-                                   nPointers,bFunPtr,nElements,nBits);
-  
-  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
-  
-  m_p_MetaMember->vTypeNm(szTypeNm);
-  m_p_MetaMember->vPointers(nPointers);
-  m_p_MetaMember->vFunPtr(bFunPtr);
-  m_p_MetaMember->vElements(nElements);
-  m_p_MetaMember->vBits(nBits);
-
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* collect array specification: ????                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendArraySpec(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  m_bIsArray = false;
-  
-  if (! m_oCurTkn.bSame("["_Stz))
-    return;
-  
-  m_bIsArray = true;
-  
+  // we have a <name>
+  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
   vGetNextToken(m_oCurTkn);
-
-  m_oArraySpec.vAdd(m_oCurTkn.szTerm());
   
-  vGetExpectedToken(m_oCurTkn,"]"_Stz);
+  // do we have template arguments?
+  if (m_oCurTkn.bSame("<"_Stz)) {
+    vCollectTplArgs("<"_Stz);
+    vGetNextToken(m_oCurTkn);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
+  
+  if (m_oCurTkn.bSame(":"_Stz)) {
+    vGetExpectedToken(m_oCurTkn,":"_Stz);
+    vGetNextToken(m_oCurTkn);
 
-  vPartRecognised(CP_ARRAY_SPEC);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect function body: ????                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunBody(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
+      vDescendFunVarNm();
+      return;
+    }
     
-  if (! m_oCurTkn.bSame("{"_Stz))
-    return;
-
-  vDiscardBalancedBraces("{"_Stz);
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      vDescendFunVarNm();
+      return;
+    }
+    
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      vDescendFunVarNm();
+      return;
+    }
+    
+    NEVER_REACH
+  }
   
-  vPartRecognised(CP_FUNCTION_BODY);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // zero or more asterisks
+  do {
+    
+    // collected when we have no more asterisks
+    if (! m_oCurTkn.bSame("*"_Stz)) {
+      vTraceTypeSpec();
+      vPartRecognised(CP_TYPE_SPECIFICATION);
+      vDescendRework();
+      return;
+  }
+  
+    // we have an asterisk
+    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+    m_nAsterisks++;
+
+  }  while (bGetNextToken(m_oCurTkn));
+  
+  vThrowProblem(__LINE__);
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1173,6 +1157,117 @@ void Vortex::vDescendFunVarNm(void)
   goto L_Parse_Function_Name;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* reworking...                                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendRework(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (m_oCurTkn.bSame(";"_Stz)) {
+    if (m_bInClass) {
+      vTraceTypeSpec();
+      vTraceFunVarNm();
+      vPartRecognised(CP_MEMBER_VARIABLE);
+    }
+    else
+      vPartRecognised(CP__CRUDELY__);
+
+    m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
+
+    return;
+  }
+  
+  if (m_oCurTkn.bSame("["_Stz)) {
+    vDescendArraySpec();
+    vPartRecognised(CP_MEMBER_VARIABLE);
+    
+    m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
+    return;
+  }
+  
+  vDescendFunSpec();
+  vDescendFunBody();
+
+  vPartRecognised(CP__CRUDELY__);
+  
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#if 0
+  i8   nPointers;
+  bool bFunPtr;
+  i8   nElements;
+  i8   nBits;
+
+  
+  Stz* szVarNm;
+  Stz* szTypeNm;
+  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
+                                   nPointers,bFunPtr,nElements,nBits);
+  
+  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
+  
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
+
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* collect array specification: ????                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendArraySpec(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  m_bIsArray = false;
+  
+  if (! m_oCurTkn.bSame("["_Stz))
+    return;
+  
+  m_bIsArray = true;
+  
+  vGetNextToken(m_oCurTkn);
+
+  m_oArraySpec.vAdd(m_oCurTkn.szTerm());
+  
+  vGetExpectedToken(m_oCurTkn,"]"_Stz);
+
+  vPartRecognised(CP_ARRAY_SPEC);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect function body: ????                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendFunBody(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  if (! m_oCurTkn.bSame("{"_Stz))
+    return;
+
+  vDiscardBalancedBraces("{"_Stz);
+  
+  vPartRecognised(CP_FUNCTION_BODY);
+}
+
 /*----------------------------------------------------------------------------*/
 /* collect function spec: ????                                                */
 /*----------------------------------------------------------------------------*/
@@ -1224,100 +1319,6 @@ void Vortex::vDescendNoExceptSpec(void)
   vGetNextToken(m_oCurTkn);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* gather information about type spec for a function or variable              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendTypeSpec(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oTypeArgs.vReset();
-  
-  m_nAsterisks = 0;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // detect the case of no specifier (constructor / destructor)
-  if (m_bInClass) {
-    // 1) constructor (no specifier)
-    if (m_oCurTkn.bSame(m_sClassNm)) {
-      TRACE("  (typeless) constructor\n"_Stz);
-      vDescendFunVarNm();
-      return;
-    }
-    // 2) destructor (no specifier)
-    if (m_oCurTkn.bSame("~"_Stz)) {
-      TRACE("  (typeless) destructor\n"_Stz);
-      vDescendFunVarNm();
-      return;
-    }
-    // 3) typeless operator (no specifier)
-    if (m_oCurTkn.bSame("operator"_Stz)) {
-      TRACE("  (typeless) operator\n"_Stz);
-      vDescendFunVarNm();
-      return;
-    }
-  }
-  
-  // we have a <name>
-  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-  vGetNextToken(m_oCurTkn);
-  
-  // do we have template arguments?
-  if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTplArgs("<"_Stz);
-    vGetNextToken(m_oCurTkn);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
-  
-  if (m_oCurTkn.bSame(":"_Stz)) {
-    vGetExpectedToken(m_oCurTkn,":"_Stz);
-    vGetNextToken(m_oCurTkn);
-
-    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
-      vDescendFunVarNm();
-      return;
-    }
-    
-    if (m_oCurTkn.bSame("~"_Stz)) {
-      vDescendFunVarNm();
-      return;
-    }
-    
-    if (m_oCurTkn.bSame("operator"_Stz)) {
-      vDescendFunVarNm();
-      return;
-    }
-    
-    NEVER_REACH
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // zero or more asterisks
-  do {
-    
-    // collected when we have no more asterisks
-    if (! m_oCurTkn.bSame("*"_Stz)) {
-      vTraceTypeSpec();
-      vPartRecognised(CP_TYPE_SPECIFICATION);
-      vDescendRework();
-      return;
-  }
-  
-    // we have an asterisk
-    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-    m_nAsterisks++;
-
-  }  while (bGetNextToken(m_oCurTkn));
-  
-  vThrowProblem(__LINE__);
-  
-  NEVER_REACH;
-}
 
 /*----------------------------------------------------------------------------*/
 /* shift funvar name etc to be class                                          */
