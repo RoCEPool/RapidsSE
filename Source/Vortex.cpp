@@ -978,8 +978,6 @@ void Vortex::vDescendRework(void)
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vDescendFunVarNm();
-  
   if (m_oCurTkn.bSame(";"_Stz)) {
     if (m_bInClass) {
       vTraceTypeSpec();
@@ -1110,6 +1108,8 @@ void Vortex::vDescendFunVarNm(void)
     vPartRecognised(CP_FUNCTION_POINTER);
     
     vGetNextToken(m_oCurTkn);
+    
+    vDescendRework();
     return;
   }
   
@@ -1123,6 +1123,8 @@ void Vortex::vDescendFunVarNm(void)
     m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
     vPartRecognised(CP_OPERATOR);
     vGetNextToken(m_oCurTkn);
+    
+    vDescendRework();
     return;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
@@ -1130,6 +1132,8 @@ void Vortex::vDescendFunVarNm(void)
     m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
     vPartRecognised(CP_DESTRUCTOR);
     vGetNextToken(m_oCurTkn);
+    
+    vDescendRework();
     return;
   }
   
@@ -1141,8 +1145,10 @@ void Vortex::vDescendFunVarNm(void)
   vGetNextToken(m_oCurTkn);
   
   // do we have type qualifier args?
-  if (! m_oCurTkn.bSame("<"_Stz))
+  if (! m_oCurTkn.bSame("<"_Stz)) {
+    vDescendRework();
     return;
+  }
   
   vCollectTplArgs("<"_Stz);
   vPartRecognised(CP_TYPE_ARGS);
@@ -1151,9 +1157,11 @@ void Vortex::vDescendFunVarNm(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! m_oCurTkn.bSame(":"_Stz))
+  if (! m_oCurTkn.bSame(":"_Stz)) {
+    vDescendRework();
     return;
-
+  }
+  
   vGetExpectedToken(m_oCurTkn,":"_Stz);
   
   vShiftClassNm();
@@ -1235,19 +1243,19 @@ void Vortex::vDescendTypeSpec(void)
     // 1) constructor (no specifier)
     if (m_oCurTkn.bSame(m_sClassNm)) {
       TRACE("  (typeless) constructor\n"_Stz);
-      vDescendRework();
+      vDescendFunVarNm();
       return;
     }
     // 2) destructor (no specifier)
     if (m_oCurTkn.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
-      vDescendRework();
+      vDescendFunVarNm();
       return;
     }
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
-      vDescendRework();
+      vDescendFunVarNm();
       return;
     }
   }
@@ -1270,17 +1278,17 @@ void Vortex::vDescendTypeSpec(void)
     vGetNextToken(m_oCurTkn);
 
     if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
-      vDescendRework();
+      vDescendFunVarNm();
       return;
     }
     
     if (m_oCurTkn.bSame("~"_Stz)) {
-      vDescendRework();
+      vDescendFunVarNm();
       return;
     }
     
     if (m_oCurTkn.bSame("operator"_Stz)) {
-      vDescendRework();
+      vDescendFunVarNm();
       return;
     }
     
