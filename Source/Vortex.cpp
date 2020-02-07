@@ -999,29 +999,48 @@ void Vortex::vParseFV_Type(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // detect the case of no specifier (constructor / destructor)
   if (m_bInClass) {
-    // 1) constructor (no specifier)
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // 1)
     if (m_oCurTkn.bSame(m_sClassNm)) {
-      TRACE("  (typeless) constructor\n"_Stz);
-      vParseFV_Name();
-      return;
+      
+      vGetNextToken(m_oCurTkn);
+
+      if (m_oCurTkn.bSame("("_Stz)) {
+        
+        // 1a) constructor (no specifier)
+        TRACE("  (typeless) constructor\n"_Stz);
+        vParseFV_Constructor();
+        return;
+      }
+            
+      // 1b)
+      goto L_Template_Args;
     }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
     // 2) destructor (no specifier)
     if (m_oCurTkn.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
       vParseFV_Name();
       return;
     }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
       vParseFV_Name();
       return;
     }
+    
   }
   
   // we have a <name>
   m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
   vGetNextToken(m_oCurTkn);
+  
+  L_Template_Args:
   
   // do we have template arguments?
   if (m_oCurTkn.bSame("<"_Stz)) {
@@ -1063,9 +1082,9 @@ void Vortex::vParseFV_Type(void)
     if (! m_oCurTkn.bSame("*"_Stz)) {
       vTraceTypeSpec();
       vPartRecognised(CP_TYPE_SPECIFICATION);
-      vParseFV_AryFunVar();
+      vParseFV_Name();
       return;
-  }
+    }
   
     // we have an asterisk
     m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
@@ -1076,6 +1095,23 @@ void Vortex::vParseFV_Type(void)
   vThrowProblem(__LINE__);
   
   NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* gather information about a function or variable name                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFV_Constructor(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_oCurTkn.bSame("("_Stz));
+  
+  m_bIsFunPtr = false;
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vParseFV_Function();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1338,6 +1374,7 @@ void Vortex::vShiftClassNm(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
          
   Token xTkn;
@@ -1363,6 +1400,7 @@ void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalancedAngles(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced("<"_Stz,">"_Stz);
@@ -1373,6 +1411,7 @@ void Vortex::vCollectBalancedAngles(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalancedBraces(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced("{"_Stz,"}"_Stz);
@@ -1383,6 +1422,7 @@ void Vortex::vCollectBalancedBraces(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced("("_Stz,")"_Stz);
@@ -1393,6 +1433,7 @@ void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(0 == m_oOtherTerms.nItems());
@@ -1422,7 +1463,7 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectTplArgs(Stz* szSawTerm)
 {
-  FNENTRY
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
@@ -1451,7 +1492,7 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectTplSpec(Stz* szSawTerm)
 {
-  FNENTRY
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
@@ -1482,6 +1523,7 @@ void Vortex::vCollectTplSpec(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalanced(Stz* szOpen, Stz* szClose)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
          
   Token xTkn;
@@ -1507,6 +1549,7 @@ void Vortex::vDiscardBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalancedAngles(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDiscardBalanced("<"_Stz,">"_Stz);
@@ -1517,6 +1560,7 @@ void Vortex::vDiscardBalancedAngles(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalancedBraces(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDiscardBalanced("{"_Stz,"}"_Stz);
@@ -1527,6 +1571,7 @@ void Vortex::vDiscardBalancedBraces(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDiscardBalanced("("_Stz,")"_Stz);
@@ -1537,6 +1582,7 @@ void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
@@ -1564,6 +1610,7 @@ void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
@@ -1592,6 +1639,7 @@ void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 {
+  FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;

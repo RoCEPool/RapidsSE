@@ -133,6 +133,7 @@ namespace Utilities
     void vParseFunVar(bool bTemplated);
 
     void vParseFV_Type(void);
+    void vParseFV_Constructor(void);
     void vParseFV_Name(void);
 
     void vParseFV_AryFunVar(void);
