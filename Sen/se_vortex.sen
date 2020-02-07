@@ -59,10 +59,10 @@
   dir::getCurrent locals| pOrigDir |
 
   // change to source director
-  //"../Source" dir::changeCurrent
-  "../Vortex" dir::changeCurrent
+  "../Source" dir::changeCurrent
+  //"../Vortex" dir::changeCurrent
   dir::getCurrent "Current working directory now: %v" fmt.print
-  "ListItem_t.hpp" vortex::new vortex.processHpp
+  "HeapBuffer.hpp" vortex::new vortex.processHpp
 
   // open directory accessor
   "." pSeSourceDir dir.open assert

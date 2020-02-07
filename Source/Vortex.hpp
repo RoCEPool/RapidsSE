@@ -131,8 +131,6 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
-    void vGatherFunVar(bool bTemplated);
-
     void vGatherArraySpec(void);
     void vGatherFunBody(void);
     void vGatherFunParams(void);

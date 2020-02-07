@@ -496,8 +496,42 @@ void Vortex::vParseFunVar(bool bTemplated)
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vGatherFunVar(bTemplated);
+  vGatherTypeSpec();
+
+  vGatherFunVarNm();
   
+  if (m_oCurTkn.bSame(";"_Stz)) {
+    if (m_bInClass) {
+      vTraceTypeSpec();
+      vTraceFunVarNm();
+      vPartRecognised(CP_MEMBER_VARIABLE);
+    }
+    else
+      vPartRecognised(CP__CRUDELY__);
+
+    m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
+
+    return;
+  }
+  
+  vGatherArraySpec();
+  if (m_bIsArray) {
+    vPartRecognised(CP_MEMBER_VARIABLE);
+    
+    m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
+    return;
+  }
+  
+  vGatherFunSpec();
+  vGatherFunBody();
+
+  vPartRecognised(CP__CRUDELY__);
+  
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #if 0
@@ -985,51 +1019,6 @@ void Vortex::vParseUsing(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* gather information about a function or a variable declaration              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVar(bool bTemplated)
-{
-  FNENTRY
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-        
-  vGatherTypeSpec();
-
-  vGatherFunVarNm();
-  
-  if (m_oCurTkn.bSame(";"_Stz)) {
-    if (m_bInClass) {
-      vTraceTypeSpec();
-      vTraceFunVarNm();
-      vPartRecognised(CP_MEMBER_VARIABLE);
-    }
-    else
-      vPartRecognised(CP__CRUDELY__);
-
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-
-    return;
-  }
-  
-  vGatherArraySpec();
-  if (m_bIsArray) {
-    vPartRecognised(CP_MEMBER_VARIABLE);
-    
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-    return;
-  }
-  
-  vGatherFunSpec();
-  vGatherFunBody();
-
-  vPartRecognised(CP__CRUDELY__);
-  
-  m_oTypeSpec.vReset();
-  m_oFunVarNm.vReset();
-}
-
-/*----------------------------------------------------------------------------*/
 /* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherArraySpec(void)
@@ -1220,14 +1209,20 @@ void Vortex::vGatherTypeSpec(void)
   // detect the case of no specifier (constructor / destructor)
   if (m_bInClass) {
     // 1) constructor (no specifier)
-    if (m_oCurTkn.bSame(m_sClassNm))
+    if (m_oCurTkn.bSame(m_sClassNm)) {
+      TRACE("  (typeless) constructor\n"_Stz);
       return;
+    }
     // 2) destructor (no specifier)
-    if (m_oCurTkn.bSame("~"_Stz))
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      TRACE("  (typeless) destructor\n"_Stz);
       return;
+    }
     // 3) typeless operator (no specifier)
-    if (m_oCurTkn.bSame("operator"_Stz))
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      TRACE("  (typeless) operator\n"_Stz);
       return;
+    }
   }
   
   // we have a <name>
