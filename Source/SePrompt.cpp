@@ -74,7 +74,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pJob = nullptr;
   // m_oTimer
 
-  m_pSession->m_sToDo = ""_Stz; //_shortcuts"_Stz;
+  m_pSession->m_sToDo = "_shortcuts"_Stz;
   
   m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
