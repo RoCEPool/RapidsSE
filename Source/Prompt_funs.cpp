@@ -27,6 +27,10 @@ PromptFun __Prompt_funs (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_funs(SePrompt* pPrompt)
 {
+  if (AM::bMetadata()) {
+    vTrace("metadata: (function VARCHAR)\n"_Stz);
+  }
+  
   gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_SSNSTATE);
   gxPromptCatalog.vFuns(PF_ARGS);
@@ -104,6 +108,8 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_VERSION);
   gxPromptCatalog.vFuns(PF_WAITING);
 
+  vTrace("success: %lld rows affected\n"_Stz, gxPromptCatalog.m_nFunctions);
+  
   return true;
 }
 
