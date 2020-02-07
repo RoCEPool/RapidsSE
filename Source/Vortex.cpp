@@ -92,9 +92,9 @@ Vortex::Vortex(void)
 
   m_bPrint       = true;
   m_bTrace       = true;
-  m_bContMember  = true;
-  m_bContPart    = true;
-  m_bContType    = true;
+  m_bContMember  = false;
+  m_bContPart    = false;
+  m_bContType    = false;
 
   // output
   
@@ -285,6 +285,7 @@ void Vortex::vKeywordDescend(void)
   if (m_oCurTkn.bSame("class"_Stz))     vParseClass();     else
   if (m_oCurTkn.bSame("const"_Stz))     vParseConst();     else
   if (m_oCurTkn.bSame("enum"_Stz))      vParseEnum();      else
+  if (m_oCurTkn.bSame("extern"_Stz))    vParseExtern();    else
   if (m_oCurTkn.bSame("friend"_Stz))    vParseFriend();    else
   if (m_oCurTkn.bSame("#"_Stz))         vParseHash();      else
   if (m_oCurTkn.bSame("namespace"_Stz)) vParseNamespace(); else
@@ -472,6 +473,25 @@ void Vortex::vParseEnum(void)
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
   vPartRecognised(CP_ENUM);
+
+  vGetNextToken(m_oCurTkn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse: EXTERN _^_ ... ;                                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseExtern(void)
+{
+  FNENTRY
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_oCurTkn.bSame("extern"_Stz));
+    
+  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  
+  vPartRecognised(CP_ENUM);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -734,7 +754,7 @@ void Vortex::vParseStatic(void)
   vDiscardStaticTokens(m_oCurTkn.szTerm());
   vPartRecognised(CP_STATIC);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -773,11 +793,12 @@ void Vortex::vParseStruct(void)
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
     vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
+    vGetNextToken(m_oCurTkn);
     vParseMembers(false);
     vTypePop();
 
     // 1) struct { ... } ;
-    vGetNextToken(m_oCurTkn);
+    //vGetNextToken(m_oCurTkn);
     if (m_oCurTkn.bSame(";"_Stz))
       return;
     

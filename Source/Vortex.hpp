@@ -111,6 +111,7 @@ namespace Utilities
     void vParseClass(void);
     void vParseConst(void);
     void vParseEnum(void);
+    void vParseExtern(void);
     void vParseFriend(void);
     void vParseHash(void);
     void vParseHashDefine(void);
