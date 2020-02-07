@@ -68,6 +68,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_LVL);
   gxPromptCatalog.vFuns(PF_MASKS);
   gxPromptCatalog.vFuns(PF_MEMORY);
+  gxPromptCatalog.vFuns(PF_MEMORYLEAKS);
   gxPromptCatalog.vFuns(PF_MEMTEST);
   gxPromptCatalog.vFuns(PF_MKFIFO);
   gxPromptCatalog.vFuns(PF_MON);
@@ -104,6 +105,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_THREADS);
   gxPromptCatalog.vFuns(PF_TIMEREND);
   gxPromptCatalog.vFuns(PF_TIMERSTART);
+  gxPromptCatalog.vFuns(PF_TRACKMEMORY);
   gxPromptCatalog.vFuns(PF_UPTIME);
   gxPromptCatalog.vFuns(PF_VERSION);
   gxPromptCatalog.vFuns(PF_WAITING);

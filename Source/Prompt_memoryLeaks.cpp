@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptFun __Prompt_memoryLeaks (
-  PF_ENUMS,                    // prompt function
+  PF_MEMORYLEAKS,              // prompt function
   "Prompt_memoryLeaks"_Stz,    // name of the prompt function
   "memory leaks"_Stz,          // comment about the function
   "memoryLeaks"_Stz,           // the prompt command

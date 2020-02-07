@@ -689,7 +689,7 @@ void Engine::vOpenTrace(void)
 {
   gpTraceFile = new File(nullptr);
   
-  bool bOpened = gpTraceFile->bOpenWrite(C_SE_TRACE);
+  bool bOpened = gpTraceFile->bOpenAppend(C_SE_TRACE);
   RASSERT(bOpened);
   
   if (gxArgs.m_bVerbose)

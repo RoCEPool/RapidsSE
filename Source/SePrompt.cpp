@@ -74,7 +74,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pJob = nullptr;
   // m_oTimer
 
-  m_pSession->m_sToDo = "_shortcuts"_Stz;
+  m_pSession->m_sToDo = ""_Stz; //_shortcuts"_Stz;
   
   m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
@@ -126,6 +126,17 @@ void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  vTrace("gxPromptCatalog: %p\n"_Stz, gxPromptCatalog);
+  PromptFun* pPromptDesc = gxPromptCatalog.pFindFun("funs"_Stz, ""_Stz);
+  
+  if (pPromptDesc)
+    vTrace("Found function funs\n"_Stz);
+  
+  pPromptDesc = gxPromptCatalog.pFindFun("trackMemory"_Stz, ""_Stz);
+  
+  if (pPromptDesc)
+    vTrace("Found function trackMemory\n"_Stz);
+  
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
@@ -163,8 +174,13 @@ void SePrompt::vPromptLoop(void)
     
     vReformatCommand();
     
+    vTrace("Command: %s\n"_Stz, pTkn(0)->szTerm());
+    vTrace("bExecuteFile\n"_Stz);
+    
     if (bExecuteFile())
       continue;
+    
+    vTrace("bExecuteFunction\n"_Stz);
     
     if (bExecuteFunction())
       continue;
@@ -181,6 +197,8 @@ void SePrompt::vPromptLoop(void)
 //      }
 //    }
 
+    vTrace("bFindMatch\n"_Stz);
+    
     if (! bFindMatch()) {
       vUnknownCommand();
       vDumpTokenVec();
@@ -193,11 +211,15 @@ void SePrompt::vPromptLoop(void)
     if (! bPassesCheck())
       continue;
     
+    vTrace("vBeginRequest\n"_Stz);
     vBeginRequest();
     
+    vTrace("vPreJob\n"_Stz);
     vPreJob();
     
+    vTrace("bHasSyntaxError\n"_Stz);
     if (m_pJob->bHasSyntaxError()) {
+      vTrace("vPostJob\n"_Stz);
       vPostJob();
       vDumpTokenVec();
       vCompletedTask();
@@ -206,6 +228,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+    vTrace("vSetJob\n"_Stz);
     vSetJob();
         
     vJobLockMutex();
