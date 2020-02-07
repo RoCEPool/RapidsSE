@@ -453,6 +453,8 @@ void Vortex::vParseConst(void)
   vPartRecognised(CP_CONST);
   
   vOtherTermsReset();
+  
+  bool bMayBe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1392,7 +1394,7 @@ void Vortex::vParseFV_FunBody(void)
 
   vPartRecognised(CP__CRUDELY__);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMayBe = bGetNextToken(m_oCurTkn);
 
 
   m_oTypeSpec.vReset();
