@@ -132,13 +132,13 @@ namespace Utilities
 
     void vParseFunVar(bool bTemplated);
 
-    void vDescendType(void);
-    void vDescendName(void);
+    void vParseFV_Type(void);
+    void vParseFV_Name(void);
 
-    void vDescendAryFunVar(void);
-    void vDescendArray(void);
-    void vDescendFunction(void);
-    void vDescendVariable(void);
+    void vParseFV_AryFunVar(void);
+    void vParseFV_Array(void);
+    void vParseFV_Function(void);
+    void vParseFV_Variable(void);
 
     void vShiftClassNm(void);
 

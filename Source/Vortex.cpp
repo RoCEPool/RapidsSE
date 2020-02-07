@@ -954,7 +954,7 @@ void Vortex::vParseFunVar(bool bTemplated)
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vDescendType();
+  vParseFV_Type();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -985,9 +985,9 @@ void Vortex::vParseFunVar(bool bTemplated)
 
 
 /*----------------------------------------------------------------------------*/
-/* gather information about type spec for a function or variable              */
+/* parse information about type spec for a function or variable               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendType(void)
+void Vortex::vParseFV_Type(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1002,19 +1002,19 @@ void Vortex::vDescendType(void)
     // 1) constructor (no specifier)
     if (m_oCurTkn.bSame(m_sClassNm)) {
       TRACE("  (typeless) constructor\n"_Stz);
-      vDescendName();
+      vParseFV_Name();
       return;
     }
     // 2) destructor (no specifier)
     if (m_oCurTkn.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
-      vDescendName();
+      vParseFV_Name();
       return;
     }
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
-      vDescendName();
+      vParseFV_Name();
       return;
     }
   }
@@ -1037,17 +1037,17 @@ void Vortex::vDescendType(void)
     vGetNextToken(m_oCurTkn);
 
     if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
-      vDescendName();
+      vParseFV_Name();
       return;
     }
     
     if (m_oCurTkn.bSame("~"_Stz)) {
-      vDescendName();
+      vParseFV_Name();
       return;
     }
     
     if (m_oCurTkn.bSame("operator"_Stz)) {
-      vDescendName();
+      vParseFV_Name();
       return;
     }
     
@@ -1063,7 +1063,7 @@ void Vortex::vDescendType(void)
     if (! m_oCurTkn.bSame("*"_Stz)) {
       vTraceTypeSpec();
       vPartRecognised(CP_TYPE_SPECIFICATION);
-      vDescendAryFunVar();
+      vParseFV_AryFunVar();
       return;
   }
   
@@ -1081,7 +1081,7 @@ void Vortex::vDescendType(void)
 /*----------------------------------------------------------------------------*/
 /* gather information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendName(void)
+void Vortex::vParseFV_Name(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1107,7 +1107,7 @@ void Vortex::vDescendName(void)
     
     vGetNextToken(m_oCurTkn);
     
-    vDescendAryFunVar();
+    vParseFV_AryFunVar();
     return;
   }
   
@@ -1122,7 +1122,7 @@ void Vortex::vDescendName(void)
     vPartRecognised(CP_OPERATOR);
     vGetNextToken(m_oCurTkn);
     
-    vDescendAryFunVar();
+    vParseFV_AryFunVar();
     return;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
@@ -1131,7 +1131,7 @@ void Vortex::vDescendName(void)
     vPartRecognised(CP_DESTRUCTOR);
     vGetNextToken(m_oCurTkn);
     
-    vDescendAryFunVar();
+    vParseFV_AryFunVar();
     return;
   }
   
@@ -1144,7 +1144,7 @@ void Vortex::vDescendName(void)
   
   // do we have type qualifier args?
   if (! m_oCurTkn.bSame("<"_Stz)) {
-    vDescendAryFunVar();
+    vParseFV_AryFunVar();
     return;
   }
   
@@ -1156,7 +1156,7 @@ void Vortex::vDescendName(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! m_oCurTkn.bSame(":"_Stz)) {
-    vDescendAryFunVar();
+    vParseFV_AryFunVar();
     return;
   }
   
@@ -1173,25 +1173,25 @@ void Vortex::vDescendName(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* reworking...                                                               */
+/* detect parse next for array, function or variable                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendAryFunVar(void)
+void Vortex::vParseFV_AryFunVar(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (m_oCurTkn.bSame("["_Stz)) {
-    vDescendArray();
+    vParseFV_Array();
     return;
   }
   
   if (m_oCurTkn.bSame(";"_Stz)) {
-    vDescendVariable();
+    vParseFV_Variable();
     return;
   }
   
   if (m_oCurTkn.bSame("("_Stz)) {
-    vDescendFunction();
+    vParseFV_Function();
     return;
   }
   
@@ -1199,9 +1199,9 @@ void Vortex::vDescendAryFunVar(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reworking...                                                               */
+/* parse array                                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendArray(void)
+void Vortex::vParseFV_Array(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1228,9 +1228,9 @@ void Vortex::vDescendArray(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reworking...                                                               */
+/* parse function                                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunction(void)
+void Vortex::vParseFV_Function(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1275,7 +1275,7 @@ void Vortex::vDescendFunction(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //vDescendFunBody();
+  //vParseFV_FunBody();
   
   if (m_oCurTkn.bSame("{"_Stz)) {
 
@@ -1294,9 +1294,9 @@ void Vortex::vDescendFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reworking...                                                               */
+/* parse variable                                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendVariable(void)
+void Vortex::vParseFV_Variable(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1312,8 +1312,6 @@ void Vortex::vDescendVariable(void)
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
 }
-
-
 
 
 /*----------------------------------------------------------------------------*/
