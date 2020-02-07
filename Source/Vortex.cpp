@@ -252,23 +252,6 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseAllParts(void)
 {
-//  TRACE("/%s/%16s: [[%s%s%s %s%s%s %s%s%s]]\n"_Stz
-//        ,  m_sSourcePath.szStz()
-//        , __func__ \
-//
-//        , m_bInNamespace ? "NAMESPACE`" : ""
-//        , m_bInNamespace ? m_sNamespaceNm.azChar() : ""
-//        , m_bInNamespace ? "` " : ""
-//
-//        , m_bInClass     ? "CLASS`" : ""
-//        , m_bInClass     ? m_sClassNm.azChar() : ""
-//        , m_bInClass     ? "` " : ""
-//
-//        , m_bInTemplate  ? "TPLSPEC`" : ""
-//        , m_bInTemplate  ? m_sTplSpec.azChar() : ""
-//        , m_bInTemplate  ? "` " : ""
-//        );
-  
   FNENTRY
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -327,7 +310,6 @@ void Vortex::vParseBaseList(void)
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(m_oCurTkn.bSame(":"_Stz));
   RASSERT(m_bInClass);
   
   vDebugPoint();
@@ -362,6 +344,7 @@ void Vortex::vParseBaseList(void)
     // base list is terminated by open brace, being the beginning of members
     if (szTerm->bSame("{"_Stz)) {
       vPartRecognised(CP_BASE_END);
+      vGetNextToken(m_oCurTkn);
       break;
     }
 
@@ -496,12 +479,13 @@ void Vortex::vParseFriend(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("friend"_Stz));
+  RASSERT(m_bInClass);
   
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
   vPartRecognised(CP_FRIEND);
   
-  vDebugPoint();
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,7 +545,7 @@ void Vortex::vParseHashDefine(void)
       
   vPartRecognised(CP_HASH_DEFINE);
  
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -581,7 +565,7 @@ void Vortex::vParseHashIf(void)
       
   vPartRecognised(CP_HASH_IF);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,7 +585,7 @@ void Vortex::vParseHashIfdef(void)
       
   vPartRecognised(CP_HASH_IF);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -621,7 +605,7 @@ void Vortex::vParseHashInclude(void)
     
   vPartRecognised(CP_HASH_INCLUDE);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -639,7 +623,7 @@ void Vortex::vParseHashPragma(void)
   if (m_oCurTkn.bSame("once"_Stz)) {
     vPartRecognised(CP_HASH_PRAGMA_ONCE);
     
-    vGetNextToken(m_oCurTkn);
+    bool bMaybe = bGetNextToken(m_oCurTkn);
     return;
   }
 
@@ -648,7 +632,7 @@ void Vortex::vParseHashPragma(void)
     vDiscardBalancedParenthesis("("_Stz);
     vPartRecognised(CP_HASH_PRAGMA_PACK);
     
-    vGetNextToken(m_oCurTkn);
+    bool bMaybe = bGetNextToken(m_oCurTkn);
     return;
   }
 
