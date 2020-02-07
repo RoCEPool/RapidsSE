@@ -496,7 +496,7 @@ void Vortex::vParseFunVar(bool bTemplated)
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vGatherFunVar();
+  vDescendFunVar();
   
 }
 
@@ -961,24 +961,24 @@ void Vortex::vParseUsing(void)
 /*----------------------------------------------------------------------------*/
 /* descent parsing of function / variable                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVar(void)
+void Vortex::vDescendFunVar(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vGatherTypeSpec();
+  vDescendTypeSpec();
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* reworking...                                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherRework(void)
+void Vortex::vDescendRework(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vGatherFunVarNm();
+  vDescendFunVarNm();
   
   if (m_oCurTkn.bSame(";"_Stz)) {
     if (m_bInClass) {
@@ -995,7 +995,7 @@ void Vortex::vGatherRework(void)
     return;
   }
   
-  vGatherArraySpec();
+  vDescendArraySpec();
   if (m_bIsArray) {
     vPartRecognised(CP_MEMBER_VARIABLE);
     
@@ -1004,8 +1004,8 @@ void Vortex::vGatherRework(void)
     return;
   }
   
-  vGatherFunSpec();
-  vGatherFunBody();
+  vDescendFunSpec();
+  vDescendFunBody();
 
   vPartRecognised(CP__CRUDELY__);
   
@@ -1045,7 +1045,7 @@ void Vortex::vGatherRework(void)
 /*----------------------------------------------------------------------------*/
 /* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherArraySpec(void)
+void Vortex::vDescendArraySpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1069,7 +1069,7 @@ void Vortex::vGatherArraySpec(void)
 /*----------------------------------------------------------------------------*/
 /* collect function body: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunBody(void)
+void Vortex::vDescendFunBody(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1085,7 +1085,7 @@ void Vortex::vGatherFunBody(void)
 /*----------------------------------------------------------------------------*/
 /* gather information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVarNm(void)
+void Vortex::vDescendFunVarNm(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1168,7 +1168,7 @@ void Vortex::vGatherFunVarNm(void)
 /*----------------------------------------------------------------------------*/
 /* collect function spec: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunSpec(void)
+void Vortex::vDescendFunSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1195,13 +1195,13 @@ void Vortex::vGatherFunSpec(void)
   
   vGetNextToken(m_oCurTkn);
 
-  vGatherNoExceptSpec();
+  vDescendNoExceptSpec();
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect noexcept terms: ????                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherNoExceptSpec(void)
+void Vortex::vDescendNoExceptSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1220,7 +1220,7 @@ void Vortex::vGatherNoExceptSpec(void)
 /*----------------------------------------------------------------------------*/
 /* gather information about type spec for a function or variable              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherTypeSpec(void)
+void Vortex::vDescendTypeSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1235,19 +1235,19 @@ void Vortex::vGatherTypeSpec(void)
     // 1) constructor (no specifier)
     if (m_oCurTkn.bSame(m_sClassNm)) {
       TRACE("  (typeless) constructor\n"_Stz);
-      vGatherRework();
+      vDescendRework();
       return;
     }
     // 2) destructor (no specifier)
     if (m_oCurTkn.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
-      vGatherRework();
+      vDescendRework();
       return;
     }
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
-      vGatherRework();
+      vDescendRework();
       return;
     }
   }
@@ -1270,17 +1270,17 @@ void Vortex::vGatherTypeSpec(void)
     vGetNextToken(m_oCurTkn);
 
     if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
-      vGatherRework();
+      vDescendRework();
       return;
     }
     
     if (m_oCurTkn.bSame("~"_Stz)) {
-      vGatherRework();
+      vDescendRework();
       return;
     }
     
     if (m_oCurTkn.bSame("operator"_Stz)) {
-      vGatherRework();
+      vDescendRework();
       return;
     }
     
@@ -1296,7 +1296,7 @@ void Vortex::vGatherTypeSpec(void)
     if (! m_oCurTkn.bSame("*"_Stz)) {
       vTraceTypeSpec();
       vPartRecognised(CP_TYPE_SPECIFICATION);
-      vGatherRework();
+      vDescendRework();
       return;
   }
   
