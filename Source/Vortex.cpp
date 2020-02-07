@@ -7,7 +7,7 @@
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define FNENTRY \
-  TRACE("/%s/%16s: TERM `%s` [[ %s%s%s %s%s%s %s%s%s]]\n"_Stz \
+  TRACE("/%s/%16s: `%s` [[%s%s%s%s%s%s%s%s%s ]]\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
@@ -15,22 +15,22 @@
     \
     , m_oCurTkn.szTerm() \
     \
-    , m_bInNamespace ? "NAMESPACE `" : "" \
+    , m_bInNamespace ? " NAMESPACE `" : "" \
     , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
-    , m_bInNamespace ? "` " : "" \
+    , m_bInNamespace ? "`" : "" \
     \
-    , m_bInClass     ? "CLASS `" : "" \
+    , m_bInClass     ? " CLASS `" : "" \
     , m_bInClass     ? m_sClassNm.azChar() : "" \
-    , m_bInClass     ? "` " : "" \
+    , m_bInClass     ? "`" : "" \
     \
-    , m_bInTemplate  ? "TPLSPEC `" : "" \
+    , m_bInTemplate  ? " TPLSPEC `" : "" \
     , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
-    , m_bInTemplate  ? "` " : "" \
+    , m_bInTemplate  ? "`" : "" \
     \
     );
 
 #define GATHER \
-  TRACE("/%s/%16s: TERM `%s` [[ %s%s%s %s%s%s %s%s%s]]\n"_Stz \
+  TRACE("/%s/%16s: `%s` [[%s%s%s%s%s%s%s%s%s ]]\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
@@ -38,26 +38,28 @@
     \
     , m_oCurTkn.szTerm() \
     \
-    , m_bInNamespace ? "NAMESPACE `" : "" \
+    , m_bInNamespace ? " NAMESPACE `" : "" \
     , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
-    , m_bInNamespace ? "` " : "" \
+    , m_bInNamespace ? "`" : "" \
     \
-    , m_bInClass     ? "CLASS `" : "" \
+    , m_bInClass     ? " CLASS `" : "" \
     , m_bInClass     ? m_sClassNm.azChar() : "" \
-    , m_bInClass     ? "` " : "" \
+    , m_bInClass     ? "`" : "" \
     \
-    , m_bInTemplate  ? "TPLSPEC `" : "" \
+    , m_bInTemplate  ? " TPLSPEC `" : "" \
     , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
-    , m_bInTemplate  ? "` " : "" \
+    , m_bInTemplate  ? "`" : "" \
     \
     );
 
 #define FN \
-  TRACE("/%s/%16s\n"_Stz \
+  TRACE("/%s/%16s: `%s`\n"_Stz \
     \
     ,  m_sSourcePath.szStz() \
     \
     , __func__ \
+    \
+    , m_oCurTkn.szTerm() \
     \
     );
 
@@ -871,6 +873,8 @@ void Vortex::vParseTemplate(void)
   
   vParseFunVar(true);
   vTemplateAscend();
+  
+  m_oClassArgs.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1004,7 +1008,7 @@ void Vortex::vParseFV_Type(void)
 
   
   if (m_oCurTkn.bSame("inline"_Stz))
-      vGetNextToken(m_oCurTkn);
+    vGetNextToken(m_oCurTkn);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1242,6 +1246,14 @@ void Vortex::vParseFV_AryFunVar(void)
     return;
   }
   
+  if (m_oCurTkn.bSame(":"_Stz)) {
+    vGetExpectedToken(m_oCurTkn,":"_Stz);
+    vGetNextToken(m_oCurTkn);
+    vParseFV_Name();
+    return;
+  }
+
+  
   NEVER_REACH
 }
 
@@ -1260,12 +1272,19 @@ void Vortex::vParseFV_Array(void)
   
   m_bIsArray = true;
   
-  vGetNextToken(m_oCurTkn);
-
-  m_oArraySpec.vAdd(m_oCurTkn.szTerm());
   
-  vGetExpectedToken(m_oCurTkn,"]"_Stz);
+  for (;;) {
+     
+    vGetNextToken(m_oCurTkn);
+     
+     if (m_oCurTkn.bSame("]"_Stz))
+       break;
+     
+    m_oArraySpec.vAdd(m_oCurTkn.szTerm());
+  }
 
+  vGetExpectedToken(m_oCurTkn,";"_Stz);
+  
   vPartRecognised(CP_ARRAY_SPEC);
 
   vPartRecognised(CP_MEMBER_VARIABLE);
@@ -1319,6 +1338,22 @@ void Vortex::vParseFV_Function(void)
   }
   
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (m_oCurTkn.bSame(":"_Stz)) {
+
+    for (;;) {
+       
+      vGetNextToken(m_oCurTkn);
+       
+       // test for close
+       if (m_oCurTkn.bSame("{"_Stz))
+         break;
+       
+      // ignore term
+    }
+
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
