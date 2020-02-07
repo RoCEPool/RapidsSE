@@ -496,34 +496,8 @@ void Vortex::vParseFunVar(bool bTemplated)
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vGatherFunVar(bTemplated);
+  vDescendFunVar();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#if 0
-  i8   nPointers;
-  bool bFunPtr;
-  i8   nElements;
-  i8   nBits;
-
-  
-  Stz* szVarNm;
-  Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
-                                   nPointers,bFunPtr,nElements,nBits);
-  
-  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
-  
-  m_p_MetaMember->vTypeNm(szTypeNm);
-  m_p_MetaMember->vPointers(nPointers);
-  m_p_MetaMember->vFunPtr(bFunPtr);
-  m_p_MetaMember->vElements(nElements);
-  m_p_MetaMember->vBits(nBits);
-
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -985,16 +959,26 @@ void Vortex::vParseUsing(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* gather information about a function or a variable declaration              */
+/* descent parsing of function / variable                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVar(bool bTemplated)
+void Vortex::vDescendFunVar(void)
 {
-  FNENTRY
+  GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-        
-  vGatherTypeSpec();
+  
+  vDescendTypeSpec();
 
-  vGatherFunVarNm();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reworking...                                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendRework(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vDescendFunVarNm();
   
   if (m_oCurTkn.bSame(";"_Stz)) {
     if (m_bInClass) {
@@ -1011,7 +995,7 @@ void Vortex::vGatherFunVar(bool bTemplated)
     return;
   }
   
-  vGatherArraySpec();
+  vDescendArraySpec();
   if (m_bIsArray) {
     vPartRecognised(CP_MEMBER_VARIABLE);
     
@@ -1020,19 +1004,48 @@ void Vortex::vGatherFunVar(bool bTemplated)
     return;
   }
   
-  vGatherFunSpec();
-  vGatherFunBody();
+  vDescendFunSpec();
+  vDescendFunBody();
 
   vPartRecognised(CP__CRUDELY__);
   
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#if 0
+  i8   nPointers;
+  bool bFunPtr;
+  i8   nElements;
+  i8   nBits;
+
+  
+  Stz* szVarNm;
+  Stz* szTypeNm;
+  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
+                                   nPointers,bFunPtr,nElements,nBits);
+  
+  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
+  
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
+
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherArraySpec(void)
+void Vortex::vDescendArraySpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1056,7 +1069,7 @@ void Vortex::vGatherArraySpec(void)
 /*----------------------------------------------------------------------------*/
 /* collect function body: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunBody(void)
+void Vortex::vDescendFunBody(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1072,7 +1085,7 @@ void Vortex::vGatherFunBody(void)
 /*----------------------------------------------------------------------------*/
 /* gather information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunVarNm(void)
+void Vortex::vDescendFunVarNm(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1155,7 +1168,7 @@ void Vortex::vGatherFunVarNm(void)
 /*----------------------------------------------------------------------------*/
 /* collect function spec: ????                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherFunSpec(void)
+void Vortex::vDescendFunSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1182,13 +1195,13 @@ void Vortex::vGatherFunSpec(void)
   
   vGetNextToken(m_oCurTkn);
 
-  vGatherNoExceptSpec();
+  vDescendNoExceptSpec();
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect noexcept terms: ????                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherNoExceptSpec(void)
+void Vortex::vDescendNoExceptSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1207,7 +1220,7 @@ void Vortex::vGatherNoExceptSpec(void)
 /*----------------------------------------------------------------------------*/
 /* gather information about type spec for a function or variable              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGatherTypeSpec(void)
+void Vortex::vDescendTypeSpec(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1220,14 +1233,23 @@ void Vortex::vGatherTypeSpec(void)
   // detect the case of no specifier (constructor / destructor)
   if (m_bInClass) {
     // 1) constructor (no specifier)
-    if (m_oCurTkn.bSame(m_sClassNm))
+    if (m_oCurTkn.bSame(m_sClassNm)) {
+      TRACE("  (typeless) constructor\n"_Stz);
+      vDescendRework();
       return;
+    }
     // 2) destructor (no specifier)
-    if (m_oCurTkn.bSame("~"_Stz))
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      TRACE("  (typeless) destructor\n"_Stz);
+      vDescendRework();
       return;
+    }
     // 3) typeless operator (no specifier)
-    if (m_oCurTkn.bSame("operator"_Stz))
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      TRACE("  (typeless) operator\n"_Stz);
+      vDescendRework();
       return;
+    }
   }
   
   // we have a <name>
@@ -1247,14 +1269,20 @@ void Vortex::vGatherTypeSpec(void)
     vGetExpectedToken(m_oCurTkn,":"_Stz);
     vGetNextToken(m_oCurTkn);
 
-    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0)))
+    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
+      vDescendRework();
       return;
- 
-    if (m_oCurTkn.bSame("~"_Stz))
-      return;
+    }
     
-    if (m_oCurTkn.bSame("operator"_Stz))
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      vDescendRework();
       return;
+    }
+    
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      vDescendRework();
+      return;
+    }
     
     NEVER_REACH
   }
@@ -1268,6 +1296,7 @@ void Vortex::vGatherTypeSpec(void)
     if (! m_oCurTkn.bSame("*"_Stz)) {
       vTraceTypeSpec();
       vPartRecognised(CP_TYPE_SPECIFICATION);
+      vDescendRework();
       return;
   }
   

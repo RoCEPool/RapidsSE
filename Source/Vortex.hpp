@@ -131,15 +131,16 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
-    void vGatherFunVar(bool bTemplated);
-
-    void vGatherArraySpec(void);
-    void vGatherFunBody(void);
-    void vGatherFunParams(void);
-    void vGatherFunSpec(void);
-    void vGatherFunVarNm(void);
-    void vGatherNoExceptSpec(void);
-    void vGatherTypeSpec(void);
+    void vDescendFunVar(void);
+    void vDescendRework();
+  
+    void vDescendArraySpec(void);
+    void vDescendFunBody(void);
+    void vDescendFunParams(void);
+    void vDescendFunSpec(void);
+    void vDescendFunVarNm(void);
+    void vDescendNoExceptSpec(void);
+    void vDescendTypeSpec(void);
 
     void vShiftClassNm(void);
 
