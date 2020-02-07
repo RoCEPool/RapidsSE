@@ -29,7 +29,7 @@ namespace Jobs
     i8 iConnNo(void);
     void vConnNo(i8 iConnNo);
 
-    Grids::Node* pNode(void);
+    Node* pNode(void);
     void vNode(Grids::Node* pNode);
   
     void vShow(void);

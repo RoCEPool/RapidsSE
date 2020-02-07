@@ -413,6 +413,8 @@ void Vortex::vParseClass(void)
     vThrowProblem(__LINE__);
   }
 
+  vPartRecognised(CP_CLASS_END);
+  vClassAscend();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -639,36 +641,6 @@ void Vortex::vParseHashPragma(void)
   }
 
   vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse:  ... CLASS ... { _^_ ... } [ ; ]                                    */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseMembers(bool bSemiTerminated)
-{
-  FNENTRY
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  for (;;) {
-
-    // block is terminated by } ;
-    if (m_oCurTkn.bSame("}"_Stz)) {
-      if (bSemiTerminated)
-        vGetExpectedToken(m_oCurTkn,";"_Stz);
-      vPartRecognised(CP_CLASS_END);
-      vClassAscend();
-      vGetNextToken(m_oCurTkn);
-      return;
-    }
-    
-    if (bIgnoreOptLabel(m_oCurTkn.szTerm())) {
-      FNENTRY
-      continue;
-    }
-    
-    vKeywordDescend();
-    FNENTRY
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -943,10 +915,12 @@ void Vortex::vParseUnion(void)
     sUnionNm = m_oCurTkn.szTerm();
     vGetExpectedToken(m_oCurTkn,"{"_Stz);
   }
-  
+
+  vGetNextToken(m_oCurTkn);
+
   vTypePush(sUnionNm,MT_UNION,CP_UNION);
   vParseMembers(true);
-  vTypePop();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1029,6 +1003,15 @@ void Vortex::vParseFV_Type(void)
   
   if (m_oCurTkn.bSame("inline"_Stz))
     vGetNextToken(m_oCurTkn);
+  
+  if (m_oCurTkn.bSame("["_Stz)) {
+    vGetExpectedToken(m_oCurTkn,"["_Stz);
+    vGetNextToken(m_oCurTkn);
+    vGetExpectedToken(m_oCurTkn,"]"_Stz);
+    vGetExpectedToken(m_oCurTkn,"]"_Stz);
+    vGetNextToken(m_oCurTkn);
+  }
+
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1141,6 +1124,35 @@ void Vortex::vParseFV_Type(void)
   
   NEVER_REACH;
 }
+
+/*----------------------------------------------------------------------------*/
+/* parse:  ... CLASS | STRUCT | UNION  ... { _^_ ... } [ ; ]                  */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseMembers(bool bSemiTerminated)
+{
+  FNENTRY
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  for (;;) {
+
+    // block is terminated by } ;
+    if (m_oCurTkn.bSame("}"_Stz)) {
+      if (bSemiTerminated)
+        vGetExpectedToken(m_oCurTkn,";"_Stz);
+      vGetNextToken(m_oCurTkn);
+      return;
+    }
+    
+    if (bIgnoreOptLabel(m_oCurTkn.szTerm())) {
+      FNENTRY
+      continue;
+    }
+    
+    vKeywordDescend();
+    FNENTRY
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* gather information about a function or variable name                       */
@@ -1437,6 +1449,8 @@ void Vortex::vParseFV_Variable(void)
 
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 

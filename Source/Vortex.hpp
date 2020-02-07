@@ -118,7 +118,6 @@ namespace Utilities
     void vParseHashIfdef(void);
     void vParseHashInclude(void);
     void vParseHashPragma(void);
-    void vParseMembers(bool bSemiTerminated);
     void vParseNamespace(void);
     void vParseSemicolon(void);
     void vParseStatic(void);
@@ -131,6 +130,8 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
+    void vParseMembers(bool bSemiTerminated);
+  
     void vParseFunVar(bool bTemplated);
 
     void vParseFV_Type(void);
