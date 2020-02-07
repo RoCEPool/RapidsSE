@@ -1271,15 +1271,33 @@ void Vortex::vDescendFunction(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   vDescendNoExceptSpec();
+  if (m_oCurTkn.bSame("noexcept"_Stz)) {
+
+   vGetExpectedToken(m_oCurTkn,"("_Stz);
+    
+   vGetNextToken(m_oCurTkn);
+
+   vGetExpectedToken(m_oCurTkn,")"_Stz);
+   
+   vGetNextToken(m_oCurTkn);
+
+  }
   
   
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //vDescendFunBody();
   
+  if (m_oCurTkn.bSame("{"_Stz)) {
+
+    vDiscardBalancedBraces("{"_Stz);
   
+    vPartRecognised(CP_FUNCTION_BODY);
+  }
   
-  
-  vDescendFunBody();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vPartRecognised(CP__CRUDELY__);
 
@@ -1308,42 +1326,6 @@ void Vortex::vDescendVariable(void)
 }
 
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/* collect function body: ????                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendFunBody(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  if (! m_oCurTkn.bSame("{"_Stz))
-    return;
-
-  vDiscardBalancedBraces("{"_Stz);
-  
-  vPartRecognised(CP_FUNCTION_BODY);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect noexcept terms: ????                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendNoExceptSpec(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (! m_oCurTkn.bSame("("_Stz))
-    return;
-
-  vGetNextToken(m_oCurTkn);
-
-  vGetExpectedToken(m_oCurTkn,")"_Stz);
-  
-  vGetNextToken(m_oCurTkn);
-}
 
 
 /*----------------------------------------------------------------------------*/

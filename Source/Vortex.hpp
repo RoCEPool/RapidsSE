@@ -141,10 +141,6 @@ namespace Utilities
     void vDescendFunction(void);
     void vDescendVariable(void);
 
-    void vDescendFunBody(void);
-    void vDescendFunParams(void);
-    void vDescendNoExceptSpec(void);
-
     void vShiftClassNm(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
