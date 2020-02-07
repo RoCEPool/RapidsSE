@@ -1419,16 +1419,16 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
     EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
     
     
-   // if (pJobInfoEnameSet)
-   //   eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+    if (pJobInfoEnameSet)
+      eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     
     
     
-    if ( ! pJobInfoEnameSet )
-      return;
-    
-    eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+//    if ( ! pJobInfoEnameSet )
+//      return;
+//
+//    eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
     
     
     
