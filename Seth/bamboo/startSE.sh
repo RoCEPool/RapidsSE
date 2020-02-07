@@ -82,18 +82,21 @@ then
 fi
 
 # Run the start cluster command
-echo "Starting the SE cluster"
-OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS} 2>&1)
+if [ 1 -eq 0 ]; then
 
-if [ $? -ne 0 ]
-then
-  >&2 echo "ERROR: Could not run the startcluster command on RapidsSE. Here is the output of the startcluster command:" 1>&2
-  cat "${OUTPUT}"
+  echo "Starting the SE cluster"
+  OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS} 2>&1)
 
-  >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2
-  cat "${NOHUP_FILE}"
-  
-  exit 1
+  if [ $? -ne 0 ]
+  then
+    >&2 echo "ERROR: Could not run the startcluster command on RapidsSE. Here is the output of the startcluster command:" 1>&2
+    cat "${OUTPUT}"
+
+    >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2
+    cat "${NOHUP_FILE}"
+
+    exit 1
+  fi
 fi
 
 echo "SE started successfully (pid ${PID})."
