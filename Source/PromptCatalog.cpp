@@ -40,16 +40,17 @@ PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 void PromptCatalog::vFuns(ePF ePromptFun)
 {
+  
   for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
     
     if (m_aaFun[i_Fun]->m_ePromptFun != ePromptFun)
       continue;
-
+    
     if (m_aaFun[i_Fun]->m_aHelp)
-      vTrace("%s %s\n"_Stz,
-             m_aaFun[i_Fun]->m_aHelp,
-             m_aaFun[i_Fun]->m_aDesc);
+      vTrace("row: ('%s')\n"_Stz,
+             m_aaFun[i_Fun]->m_aHelp);
   }
+  
 }
 
 /*============================================================================*/

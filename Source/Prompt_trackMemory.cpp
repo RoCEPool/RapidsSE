@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptFun __Prompt_trackMemory (
-  PF_ENUMS,                   // prompt function
+  PF_TRACKMEMORY,             // prompt function
   "Prompt_trackMemory"_Stz,   // name of the prompt function
   "track memory"_Stz,         // comment about the function
   "trackMemory"_Stz,          // the prompt command

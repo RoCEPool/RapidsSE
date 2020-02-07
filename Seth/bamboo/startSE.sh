@@ -82,6 +82,7 @@ then
 fi
 
 # Run the start cluster command
+
 echo "Starting the SE cluster"
 OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS} 2>&1)
 
@@ -92,7 +93,7 @@ then
 
   >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2
   cat "${NOHUP_FILE}"
-  
+
   exit 1
 fi
 

@@ -27,6 +27,10 @@ PromptFun __Prompt_funs (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_funs(SePrompt* pPrompt)
 {
+  if (AM::bMetadata()) {
+    vTrace("metadata: (function VARCHAR)\n"_Stz);
+  }
+  
   gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_SSNSTATE);
   gxPromptCatalog.vFuns(PF_ARGS);
@@ -64,6 +68,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_LVL);
   gxPromptCatalog.vFuns(PF_MASKS);
   gxPromptCatalog.vFuns(PF_MEMORY);
+  gxPromptCatalog.vFuns(PF_MEMORYLEAKS);
   gxPromptCatalog.vFuns(PF_MEMTEST);
   gxPromptCatalog.vFuns(PF_MKFIFO);
   gxPromptCatalog.vFuns(PF_MON);
@@ -100,10 +105,13 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_THREADS);
   gxPromptCatalog.vFuns(PF_TIMEREND);
   gxPromptCatalog.vFuns(PF_TIMERSTART);
+  gxPromptCatalog.vFuns(PF_TRACKMEMORY);
   gxPromptCatalog.vFuns(PF_UPTIME);
   gxPromptCatalog.vFuns(PF_VERSION);
   gxPromptCatalog.vFuns(PF_WAITING);
 
+  vTrace("success: %lld rows affected\n"_Stz, gxPromptCatalog.m_nFunctions);
+  
   return true;
 }
 

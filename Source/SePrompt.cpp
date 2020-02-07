@@ -49,7 +49,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SePrompt::SePrompt(bool bOneCommand)
+SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 : Focal(CN_SEPROMPT,AM::iNextPromptId(),C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -74,7 +74,10 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pJob = nullptr;
   // m_oTimer
 
-  m_pSession->m_sToDo = "_shortcuts"_Stz;
+  if (bSethScript)
+    m_pSession->m_sToDo = ""_Stz;
+  else
+    m_pSession->m_sToDo = "_shortcuts"_Stz;
   
   m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
@@ -125,7 +128,7 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
+  
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
@@ -180,7 +183,7 @@ void SePrompt::vPromptLoop(void)
 //        continue;
 //      }
 //    }
-
+    
     if (! bFindMatch()) {
       vUnknownCommand();
       vDumpTokenVec();
