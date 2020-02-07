@@ -135,9 +135,12 @@ namespace Utilities
     void vDescendTypeSpec(void);
     void vDescendFunVarNm(void);
 
-    void vDescendRework();
+    void vDescendRework(void);
   
-    void vDescendArraySpec(void);
+    void vDescendArray(void);
+    void vDescendFunction(void);
+    void vDescendVariable(void);
+
     void vDescendFunBody(void);
     void vDescendFunParams(void);
     void vDescendFunSpec(void);

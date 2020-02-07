@@ -1166,38 +1166,22 @@ void Vortex::vDescendRework(void)
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_oCurTkn.bSame(";"_Stz)) {
-    if (m_bInClass) {
-      vTraceTypeSpec();
-      vTraceFunVarNm();
-      vPartRecognised(CP_MEMBER_VARIABLE);
-    }
-    else
-      vPartRecognised(CP__CRUDELY__);
-
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-
-    return;
-  }
-  
   if (m_oCurTkn.bSame("["_Stz)) {
-    vDescendArraySpec();
-    vPartRecognised(CP_MEMBER_VARIABLE);
-    
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
+    vDescendArray();
     return;
   }
   
-  vDescendFunSpec();
-  vDescendFunBody();
-
-  vPartRecognised(CP__CRUDELY__);
+  if (m_oCurTkn.bSame(";"_Stz)) {
+    vDescendVariable();
+    return;
+  }
   
-  m_oTypeSpec.vReset();
-  m_oFunVarNm.vReset();
-
+  if (m_oCurTkn.bSame("("_Stz)) {
+    vDescendFunction();
+    return;
+  }
+  
+  NEVER_REACH
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #if 0
@@ -1226,16 +1210,14 @@ void Vortex::vDescendRework(void)
 
 }
 
-
-
 /*----------------------------------------------------------------------------*/
-/* collect array specification: ????                                          */
+/* reworking...                                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendArraySpec(void)
+void Vortex::vDescendArray(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
+  
   m_bIsArray = false;
   
   if (! m_oCurTkn.bSame("["_Stz))
@@ -1250,7 +1232,61 @@ void Vortex::vDescendArraySpec(void)
   vGetExpectedToken(m_oCurTkn,"]"_Stz);
 
   vPartRecognised(CP_ARRAY_SPEC);
+
+  vPartRecognised(CP_MEMBER_VARIABLE);
+  
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
 }
+
+/*----------------------------------------------------------------------------*/
+/* reworking...                                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendFunction(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vDescendFunSpec();
+  
+  
+  
+  
+  
+  
+  
+  
+  vDescendFunBody();
+
+  vPartRecognised(CP__CRUDELY__);
+
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reworking...                                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendVariable(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (m_bInClass) {
+    vTraceTypeSpec();
+    vTraceFunVarNm();
+    vPartRecognised(CP_MEMBER_VARIABLE);
+  }
+  else
+    vPartRecognised(CP__CRUDELY__);
+
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* collect function body: ????                                                */
