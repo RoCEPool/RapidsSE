@@ -41,7 +41,7 @@ namespace Prompt
     void* operator new(size_t);
     void  operator delete(void*);
 
-    SePrompt(bool bOneCommand);
+    SePrompt(bool bOneCommand, bool bSethScript);
    ~SePrompt(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

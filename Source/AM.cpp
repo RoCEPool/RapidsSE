@@ -1364,7 +1364,7 @@ void AM::vPrintGlobals(void)
 }
 void AM::vPromptCall(void)
 {
-  SePrompt* pSePrompt = new SePrompt(gxArgs.m_bCommand);
+  SePrompt* pSePrompt = new SePrompt(gxArgs.m_bCommand, gxArgs.m_bSethScript);
   
   pSePrompt->vPromptLoop();
   
