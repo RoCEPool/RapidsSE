@@ -134,16 +134,20 @@ namespace Utilities
     void vParseFunVar(bool bTemplated);
 
     void vParseFV_Type(void);
-    void vParseFV_Constructor(void);
     void vParseFV_Name(void);
 
     void vParseFV_AryFunVar(void);
     void vParseFV_Array(void);
-    void vParseFV_Function(void);
+    void vParseFV_Constructor(void);
+    void vParseFV_FunBody(void);
+    void vParseFV_Operator(void);
     void vParseFV_Variable(void);
 
-    void vShiftClassNm(void);
+    void vClassAscend(void);
+    void vClassDescend(Stz* szClassNm);
 
+    void vShiftClassNm(void);
+  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
 
@@ -188,8 +192,6 @@ namespace Utilities
      // - + - + - + - + - + - + - + - + - + - + - + - +
      // machinary
    
-     void vClassAscend(void);
-     void vClassDescend(Stz* szClassNm);
      bool bContinueAgain(void);
      void vDiscardNextToken(void);
      void vGetExpectedToken(Token& roToken, Stz* szExpect);

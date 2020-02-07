@@ -208,20 +208,30 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  bool b = bParseAllParts();
+  bool b = bGetNextToken(m_oCurTkn);
   
   if (b) {
-    TRACE("Parsed file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
-    TRACE("=============================================================\n"_Stz);
+    
+    b = bParseAllParts();
+    
+    if (b) {
+      TRACE("Parsed file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
+      TRACE("=============================================================\n"_Stz);
+    }
+    else {
+      TRACE("\n\n"_Stz);
+      TRACE("** Unable to fully process %s\n"_Stz,szSourcePath->azChar());
+      TRACE("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
+      TRACE("\n\n"_Stz);
+      NEVER_REACH;
+    }
+    
   }
   else {
-    TRACE("\n\n"_Stz);
-    TRACE("** Unable to fully process %s\n"_Stz,szSourcePath->azChar());
-    TRACE("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
-    TRACE("\n\n"_Stz);
-    NEVER_REACH;
+    TRACE("Parsed empty file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
+    TRACE("=============================================================\n"_Stz);
   }
-  
+
   m_nSources++;
   
   delete m_pInput;
@@ -242,28 +252,30 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseAllParts(void)
 {
-  TRACE("/%s/%16s: [[%s%s%s %s%s%s %s%s%s]]\n"_Stz
-        ,  m_sSourcePath.szStz()
-        , __func__ \
-        
-        , m_bInNamespace ? "NAMESPACE`" : ""
-        , m_bInNamespace ? m_sNamespaceNm.azChar() : ""
-        , m_bInNamespace ? "` " : ""
-        
-        , m_bInClass     ? "CLASS`" : ""
-        , m_bInClass     ? m_sClassNm.azChar() : ""
-        , m_bInClass     ? "` " : ""
-        
-        , m_bInTemplate  ? "TPLSPEC`" : ""
-        , m_bInTemplate  ? m_sTplSpec.azChar() : ""
-        , m_bInTemplate  ? "` " : ""
-        );
+//  TRACE("/%s/%16s: [[%s%s%s %s%s%s %s%s%s]]\n"_Stz
+//        ,  m_sSourcePath.szStz()
+//        , __func__ \
+//
+//        , m_bInNamespace ? "NAMESPACE`" : ""
+//        , m_bInNamespace ? m_sNamespaceNm.azChar() : ""
+//        , m_bInNamespace ? "` " : ""
+//
+//        , m_bInClass     ? "CLASS`" : ""
+//        , m_bInClass     ? m_sClassNm.azChar() : ""
+//        , m_bInClass     ? "` " : ""
+//
+//        , m_bInTemplate  ? "TPLSPEC`" : ""
+//        , m_bInTemplate  ? m_sTplSpec.azChar() : ""
+//        , m_bInTemplate  ? "` " : ""
+//        );
+  
+  FNENTRY
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_bInNamespace);
   
   // -- parse till EOF --
-  while (bGetNextToken(m_oCurTkn)) {
+  while (! m_bEOF) {
     
     try {
       vKeywordDescend();
@@ -284,6 +296,7 @@ bool Vortex::bParseAllParts(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vKeywordDescend(void)
 {
+  FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   if (m_oCurTkn.bSame("class"_Stz))     vParseClass();     else
@@ -402,6 +415,7 @@ void Vortex::vParseClass(void)
     vTraceClassNm();
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_BASE_BEGIN);
+    vGetNextToken(m_oCurTkn);
     vParseBaseList();
   }
   else
@@ -409,17 +423,13 @@ void Vortex::vParseClass(void)
     vTraceClassNm();
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_MEMBERS_BEGIN);
+    vGetNextToken(m_oCurTkn);
     vParseMembers(true);
   }
   else {
     vThrowProblem(__LINE__);
   }
 
-  vTraceClassNm();
-  vPartRecognised(CP_CLASS_END);
-  
-  vTypePop();
-  vClassAscend();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,6 +560,8 @@ void Vortex::vParseHashDefine(void)
   }
       
   vPartRecognised(CP_HASH_DEFINE);
+ 
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -568,6 +580,8 @@ void Vortex::vParseHashIf(void)
   }
       
   vPartRecognised(CP_HASH_IF);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -586,6 +600,8 @@ void Vortex::vParseHashIfdef(void)
   }
       
   vPartRecognised(CP_HASH_IF);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,6 +620,8 @@ void Vortex::vParseHashInclude(void)
     vDiscardBalancedAngles("<"_Stz);
     
   vPartRecognised(CP_HASH_INCLUDE);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -620,6 +638,8 @@ void Vortex::vParseHashPragma(void)
   
   if (m_oCurTkn.bSame("once"_Stz)) {
     vPartRecognised(CP_HASH_PRAGMA_ONCE);
+    
+    vGetNextToken(m_oCurTkn);
     return;
   }
 
@@ -627,6 +647,8 @@ void Vortex::vParseHashPragma(void)
     vGetExpectedToken(m_oCurTkn,"("_Stz);
     vDiscardBalancedParenthesis("("_Stz);
     vPartRecognised(CP_HASH_PRAGMA_PACK);
+    
+    vGetNextToken(m_oCurTkn);
     return;
   }
 
@@ -640,18 +662,16 @@ void Vortex::vParseMembers(bool bSemiTerminated)
 {
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_oCurTkn.bSame("{"_Stz));
-  
-  while (bGetNextToken(m_oCurTkn)) {
-
-    Stz* szTerm = m_oCurTkn.szTerm();
+    
+  for (;;) {
 
     // block is terminated by } ;
-    if (szTerm->bSame("}"_Stz)) {
+    if (m_oCurTkn.bSame("}"_Stz)) {
       if (bSemiTerminated)
         vGetExpectedToken(m_oCurTkn,";"_Stz);
-      vPartRecognised(CP_MEMBERS_END);
+      vPartRecognised(CP_CLASS_END);
+      vClassAscend();
+      vGetNextToken(m_oCurTkn);
       return;
     }
     
@@ -663,8 +683,6 @@ void Vortex::vParseMembers(bool bSemiTerminated)
     vKeywordDescend();
     FNENTRY
   }
-
-  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -685,18 +703,24 @@ void Vortex::vParseNamespace(void)
   // get {
   vGetExpectedToken(m_oCurTkn,"{"_Stz);
 
+
   vTraceNamespaceNm();
   vPartRecognised(CP_NAMESPACE_BEGIN);
+  
+  vGetNextToken(m_oCurTkn);
+
   FNENTRY
 
   // parse ... }
-  while (bGetNextToken(m_oCurTkn)) {
+  for (;;) {
   
     // test for } being end-of-namespace
     if (m_oCurTkn.bSame("}"_Stz))  {
       vTraceNamespaceNm();
       vPartRecognised(CP_NAMESPACE_END);
       vNamepaceAscend();
+      
+      bool bMaybe = bGetNextToken(m_oCurTkn);
       return;
     }
     
@@ -710,7 +734,6 @@ void Vortex::vParseNamespace(void)
     
   } // while more tokens
   
-  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -724,6 +747,8 @@ void Vortex::vParseSemicolon(void)
   RASSERT(m_oCurTkn.bSame(";"_Stz));
   
   vPartRecognised(CP_EMPTY);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -750,6 +775,8 @@ void Vortex::vParseStatic(void)
   
   vDiscardStaticTokens(m_oCurTkn.szTerm());
   vPartRecognised(CP_STATIC);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -896,6 +923,8 @@ void Vortex::vParseTypedef(void)
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
   vPartRecognised(CP_TYPEDEF);
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -954,6 +983,7 @@ void Vortex::vParseUsing(void)
   vGetExpectedToken(m_oCurTkn,";"_Stz);
   
   vPartRecognised(CP_USING);
+  vGetNextToken(m_oCurTkn);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -1037,6 +1067,7 @@ void Vortex::vParseFV_Type(void)
         
         // 1a) constructor (no specifier)
         TRACE("  (typeless) constructor\n"_Stz);
+        vGetNextToken(m_oCurTkn);
         vParseFV_Constructor();
         return;
       }
@@ -1049,6 +1080,7 @@ void Vortex::vParseFV_Type(void)
     // 2) destructor (no specifier)
     if (m_oCurTkn.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
+      vGetNextToken(m_oCurTkn);
       vParseFV_Name();
       return;
     }
@@ -1056,9 +1088,8 @@ void Vortex::vParseFV_Type(void)
     // -- -- -- -- -- -- -- -- -- -- -- --
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
-      TRACE("  (typeless) operator\n"_Stz);
-      vParseFV_Name();
-      return;
+      vGetNextToken(m_oCurTkn);
+      vParseFV_FunBody();
     }
     
   }
@@ -1093,7 +1124,8 @@ void Vortex::vParseFV_Type(void)
     }
     
     if (m_oCurTkn.bSame("operator"_Stz)) {
-      vParseFV_Name();
+      vGetNextToken(m_oCurTkn);
+      vParseFV_Operator();
       return;
     }
     
@@ -1122,23 +1154,6 @@ void Vortex::vParseFV_Type(void)
   vThrowProblem(__LINE__);
   
   NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* gather information about a function or variable name                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFV_Constructor(void)
-{
-  GATHER
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_oCurTkn.bSame("("_Stz));
-  
-  m_bIsFunPtr = false;
-
-  m_oFunVarNm.vAdd(m_sClassNm);
-
-  vParseFV_Function();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1181,11 +1196,7 @@ void Vortex::vParseFV_Name(void)
   // do we have operator <name>
   if (m_oCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(m_oCurTkn);
-    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
-    vPartRecognised(CP_OPERATOR);
-    vGetNextToken(m_oCurTkn);
-    
-    vParseFV_AryFunVar();
+    vParseFV_Operator();
     return;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
@@ -1254,7 +1265,7 @@ void Vortex::vParseFV_AryFunVar(void)
   }
   
   if (m_oCurTkn.bSame("("_Stz)) {
-    vParseFV_Function();
+    vParseFV_FunBody();
     return;
   }
   
@@ -1303,21 +1314,35 @@ void Vortex::vParseFV_Array(void)
   
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
+  
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse function                                                             */
+/* gather information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFV_Function(void)
+void Vortex::vParseFV_Constructor(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_bIsFunPtr = false;
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vParseFV_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse function body                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFV_FunBody(void)
 {
   GATHER
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bIsFun = true;
   m_oFunSpec.vReset();
-
-  if (! m_oCurTkn.bSame("("_Stz))
-    return;
 
   m_bIsFun = true;
 
@@ -1388,6 +1413,24 @@ void Vortex::vParseFV_Function(void)
 
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse function operator                                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFV_Operator(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  for (;;) {
+    vGetNextToken(m_oCurTkn);
+    
+    if (m_oCurTkn.bSame("("_Stz))
+      break;
+  }
+  
+  vParseFV_FunBody();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1844,6 +1887,7 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
     CHECKED(bGetNextToken(xTkn));
     CHECKED(xTkn.bSame(":"_Stz));
     vPartRecognised(CP_LABEL);
+    vGetNextToken(m_oCurTkn);
     return true;
   }
   
@@ -1851,6 +1895,7 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
     CHECKED(bGetNextToken(xTkn));
     CHECKED(xTkn.bSame(":"_Stz));
     vPartRecognised(CP_LABEL);
+    vGetNextToken(m_oCurTkn);
     return true;
   }
   
@@ -1858,6 +1903,7 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
     CHECKED(bGetNextToken(xTkn));
     CHECKED(xTkn.bSame(":"_Stz));
     vPartRecognised(CP_LABEL);
+    vGetNextToken(m_oCurTkn);
     return true;
   }
   
@@ -1927,10 +1973,14 @@ void Vortex::vClassAscend(void)
   
   RASSERT(m_bInClass);
 
+  vTraceClassNm();
+  vTypePop();
+
   m_bInClass = false;
   m_sClassNm = ""_Stz;
 
   m_p_MetaType  = nullptr;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2048,7 +2098,11 @@ void Vortex::vFragmentAppend(Stz* szString)
   m_sFragment.vConcat(szString);
   
   if (m_bTrace)
-    TRACE("  Got `%s`\n"_Stz,m_sFragment.azChar());
+    TRACE("  Got `%s`\n"_Stz,
+          szString);
+//    TRACE("  Got `%s`  --FRAG %s\n"_Stz,
+//          szString,
+//          m_sFragment.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
