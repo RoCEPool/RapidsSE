@@ -496,68 +496,8 @@ void Vortex::vParseFunVar(bool bTemplated)
   FNENTRY
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vGatherTypeSpec();
-
-  vGatherFunVarNm();
+  vGatherFunVar();
   
-  if (m_oCurTkn.bSame(";"_Stz)) {
-    if (m_bInClass) {
-      vTraceTypeSpec();
-      vTraceFunVarNm();
-      vPartRecognised(CP_MEMBER_VARIABLE);
-    }
-    else
-      vPartRecognised(CP__CRUDELY__);
-
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-
-    return;
-  }
-  
-  vGatherArraySpec();
-  if (m_bIsArray) {
-    vPartRecognised(CP_MEMBER_VARIABLE);
-    
-    m_oTypeSpec.vReset();
-    m_oFunVarNm.vReset();
-    return;
-  }
-  
-  vGatherFunSpec();
-  vGatherFunBody();
-
-  vPartRecognised(CP__CRUDELY__);
-  
-  m_oTypeSpec.vReset();
-  m_oFunVarNm.vReset();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#if 0
-  i8   nPointers;
-  bool bFunPtr;
-  i8   nElements;
-  i8   nBits;
-
-  
-  Stz* szVarNm;
-  Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
-                                   nPointers,bFunPtr,nElements,nBits);
-  
-  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
-  
-  m_p_MetaMember->vTypeNm(szTypeNm);
-  m_p_MetaMember->vPointers(nPointers);
-  m_p_MetaMember->vFunPtr(bFunPtr);
-  m_p_MetaMember->vElements(nElements);
-  m_p_MetaMember->vBits(nBits);
-
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1019,6 +959,90 @@ void Vortex::vParseUsing(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
+/* descent parsing of function / variable                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherFunVar(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vGatherTypeSpec();
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* reworking...                                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGatherRework(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vGatherFunVarNm();
+  
+  if (m_oCurTkn.bSame(";"_Stz)) {
+    if (m_bInClass) {
+      vTraceTypeSpec();
+      vTraceFunVarNm();
+      vPartRecognised(CP_MEMBER_VARIABLE);
+    }
+    else
+      vPartRecognised(CP__CRUDELY__);
+
+    m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
+
+    return;
+  }
+  
+  vGatherArraySpec();
+  if (m_bIsArray) {
+    vPartRecognised(CP_MEMBER_VARIABLE);
+    
+    m_oTypeSpec.vReset();
+    m_oFunVarNm.vReset();
+    return;
+  }
+  
+  vGatherFunSpec();
+  vGatherFunBody();
+
+  vPartRecognised(CP__CRUDELY__);
+  
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#if 0
+  i8   nPointers;
+  bool bFunPtr;
+  i8   nElements;
+  i8   nBits;
+
+  
+  Stz* szVarNm;
+  Stz* szTypeNm;
+  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
+                                   nPointers,bFunPtr,nElements,nBits);
+  
+  m_p_MetaMember = m_p_MetaType->pAddMember(szVarNm);
+  
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
+
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* collect array specification: ????                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGatherArraySpec(void)
@@ -1211,16 +1235,19 @@ void Vortex::vGatherTypeSpec(void)
     // 1) constructor (no specifier)
     if (m_oCurTkn.bSame(m_sClassNm)) {
       TRACE("  (typeless) constructor\n"_Stz);
+      vGatherRework();
       return;
     }
     // 2) destructor (no specifier)
     if (m_oCurTkn.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
+      vGatherRework();
       return;
     }
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
+      vGatherRework();
       return;
     }
   }
@@ -1242,14 +1269,20 @@ void Vortex::vGatherTypeSpec(void)
     vGetExpectedToken(m_oCurTkn,":"_Stz);
     vGetNextToken(m_oCurTkn);
 
-    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0)))
+    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
+      vGatherRework();
       return;
- 
-    if (m_oCurTkn.bSame("~"_Stz))
-      return;
+    }
     
-    if (m_oCurTkn.bSame("operator"_Stz))
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      vGatherRework();
       return;
+    }
+    
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      vGatherRework();
+      return;
+    }
     
     NEVER_REACH
   }
@@ -1263,6 +1296,7 @@ void Vortex::vGatherTypeSpec(void)
     if (! m_oCurTkn.bSame("*"_Stz)) {
       vTraceTypeSpec();
       vPartRecognised(CP_TYPE_SPECIFICATION);
+      vGatherRework();
       return;
   }
   

@@ -131,6 +131,9 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
+    void vGatherFunVar(void);
+    void vGatherRework();
+  
     void vGatherArraySpec(void);
     void vGatherFunBody(void);
     void vGatherFunParams(void);
