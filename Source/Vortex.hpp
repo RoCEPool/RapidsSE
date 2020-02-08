@@ -128,7 +128,7 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
-    void vParseMembers(bool bSemiTerminated);
+    void vParseMembers(void);
   
     void vParseFunVar(bool bTemplated);
 

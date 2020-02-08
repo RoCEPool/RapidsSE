@@ -398,7 +398,10 @@ void Vortex::vParseBaseList(void)
   }
 
   // parse class members
-  vParseMembers(true);
+  vParseMembers();
+  CHECKED(m_oCurTkn.bSame(";"_Stz));
+
+  bool bMaybe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +453,10 @@ void Vortex::vParseClass(void)
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_MEMBERS_BEGIN);
     vGetNextToken();
-    vParseMembers(true);
+    vParseMembers();
+    CHECKED(m_oCurTkn.bSame(";"_Stz));
+    
+    bool bMaybe = bGetNextToken();
   }
   else {
     vThrowProblem(__LINE__);
@@ -848,7 +854,7 @@ void Vortex::vParseStruct(void)
 
     vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
     vGetNextToken();
-    vParseMembers(false);
+    vParseMembers();
     vTypePop();
 
     // 1) struct { ... } ;
@@ -890,7 +896,8 @@ void Vortex::vParseStruct(void)
     
     vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
     vGetNextToken();
-    vParseMembers(true);
+    vParseMembers();
+    CHECKED(m_oCurTkn.bSame(";"_Stz));
     vTypePop();
     
     return;
@@ -993,8 +1000,11 @@ void Vortex::vParseUnion(void)
   vGetNextToken();
 
   vTypePush(sUnionNm,MT_UNION,CP_UNION);
-  vParseMembers(true);
+  vParseMembers();
   vTypePop();
+  
+  CHECKED(m_oCurTkn.bSame(";"_Stz));
+  bool bMaybe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1324,7 +1334,7 @@ void Vortex::vParseFV_Type(void)
 /*----------------------------------------------------------------------------*/
 /* parse:  ... CLASS | STRUCT | UNION  ... { _^_ ... } [ ; ]                  */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseMembers(bool bSemiTerminated)
+void Vortex::vParseMembers(void)
 {
   vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1333,8 +1343,6 @@ void Vortex::vParseMembers(bool bSemiTerminated)
 
     // block is terminated by } ;
     if (m_oCurTkn.bSame("}"_Stz)) {
-      if (bSemiTerminated)
-        vGetExpectedToken(";"_Stz);
       bool bMaybe = bGetNextToken();
       return;
     }
