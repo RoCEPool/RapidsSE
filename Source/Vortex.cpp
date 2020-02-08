@@ -341,7 +341,7 @@ void Vortex::vParseBaseList(void)
     // collect optional template arguments <...>
     if (szTerm->bSame("<"_Stz)) {
      
-      vCollectTplArgs();
+      vCollectTemplateArgs(m_oTypeArgs);
       pInherit->vTplArgs(&m_oTypeArgs);
       m_oTypeArgs.vReset();
      
@@ -451,7 +451,7 @@ void Vortex::vParseConst(void)
   vGetExpectedToken(m_oCurTkn,"="_Stz);
   
   // get ... ;
-  vCollectOtherTerms();
+  vCollectRemainingTerms(m_oOtherTerms);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -885,7 +885,7 @@ void Vortex::vParseTemplate(void)
         
   vGetExpectedToken(m_oCurTkn,"<"_Stz);
   
-  vCollectTplSpec();
+  vCollectTemplateSpec(m_oTplSpec);
   vTemplateBegin();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1180,7 +1180,7 @@ void Vortex::vParseFV_Type(void)
       
       // do we have template arguments?
       if (m_oCurTkn.bSame("<"_Stz)) {
-        vCollectTplArgs();
+        vCollectTemplateArgs(m_oTypeArgs);
         vGetNextToken(m_oCurTkn);
       }
       
@@ -1236,7 +1236,7 @@ void Vortex::vParseFV_Type(void)
   
   // do we have template arguments?
   if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTplArgs();
+    vCollectTemplateArgs(m_oTypeArgs);
     vGetNextToken(m_oCurTkn);
   }
   
@@ -1344,7 +1344,7 @@ void Vortex::vParseFV_Name(void)
     vGetExpectedToken(m_oCurTkn,")"_Stz);
     
     vGetExpectedToken(m_oCurTkn,"("_Stz);
-    vCollectBalancedParenthesis();
+    vCollectBalancedParenthesis(m_oOtherTerms);
 
     vPartRecognised(CP_FUNCTION_POINTER);
     
@@ -1387,7 +1387,7 @@ void Vortex::vParseFV_Name(void)
     return;
   }
   
-  vCollectTplArgs();
+  vCollectTemplateArgs(m_oTypeArgs);
   vPartRecognised(CP_TYPE_ARGS);
   
   vGetNextToken(m_oCurTkn);
@@ -1679,7 +1679,7 @@ void Vortex::vShiftClassNm(void)
 /*----------------------------------------------------------------------------*/
 /* collect delimited tokens (potentially nested)                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
+void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1695,7 +1695,7 @@ void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
     
     // test for nested open
     if (xTkn.bSame(szOpen))
-      vCollectBalanced(szOpen,szClose);
+      vCollectBalanced(roTerms,szOpen,szClose);
       
     // ignore any other token
   }
@@ -1705,40 +1705,40 @@ void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 /* collect balanced angle brackets pair: < ... >                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedAngles(void)
+void Vortex::vCollectBalancedAngles(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vCollectBalanced("<"_Stz,">"_Stz);
+  vCollectBalanced(roTerms,"<"_Stz,">"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect balanced curly braces pair: { ... }                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedBraces(void)
+void Vortex::vCollectBalancedBraces(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vCollectBalanced("{"_Stz,"}"_Stz);
+  vCollectBalanced(roTerms,"{"_Stz,"}"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect balanced parenthesis pair: ( ... )                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedParenthesis(void)
+void Vortex::vCollectBalancedParenthesis(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vCollectBalanced("("_Stz,")"_Stz);
+  vCollectBalanced(roTerms,"("_Stz,")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect other terms: <other> ... | ; | { ... }                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectOtherTerms(void)
+void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1758,7 +1758,7 @@ void Vortex::vCollectOtherTerms(void)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vCollectBalancedBraces();
+      vCollectBalancedBraces(m_oOtherTerms);
       return;
     }
     
@@ -1770,14 +1770,14 @@ void Vortex::vCollectOtherTerms(void)
 /*----------------------------------------------------------------------------*/
 /* collect all template arguments : < _^_ ... >                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplArgs(void)
+void Vortex::vCollectTemplateArgs(EnameSet& roTplArgs)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
 
-  m_oTypeArgs.vReset();
+  roTplArgs.vReset();
     
   Token xTkn;
   
@@ -1785,13 +1785,13 @@ void Vortex::vCollectTplArgs(void)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTypeArgs.vAdd(xTkn.szTerm());
+    roTplArgs.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTypeArgs.vNamesString(sTerms);
+  roTplArgs.vNamesString(sTerms);
   
   TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
@@ -1799,14 +1799,14 @@ void Vortex::vCollectTplArgs(void)
 /*----------------------------------------------------------------------------*/
 /* collect all template parameters : TEMPLATE  < _^_ ... >                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplSpec(void)
+void Vortex::vCollectTemplateSpec(EnameSet& roTplSpec)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
 
-  m_oTplSpec.vReset();
+  roTplSpec.vReset();
     
   Token xTkn;
   
@@ -1814,13 +1814,13 @@ void Vortex::vCollectTplSpec(void)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplSpec.vAdd(xTkn.szTerm());
+    roTplSpec.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplSpec.vNamesString(sTerms);
+  roTplSpec.vNamesString(sTerms);
   
   m_sTplSpec = "<"_Stz;
   m_sTplSpec.vConcat(sTerms);

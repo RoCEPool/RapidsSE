@@ -162,13 +162,13 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
 
-    void vCollectBalanced(Stz* szOpen, Stz* szClose);
-    void vCollectBalancedAngles(void);
-    void vCollectBalancedBraces(void);
-    void vCollectBalancedParenthesis(void);
-    void vCollectOtherTerms(void);
-    void vCollectTplArgs(void);
-    void vCollectTplSpec(void);
+    void vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose);
+    void vCollectBalancedAngles(EnameSet& roTerms);
+    void vCollectBalancedBraces(EnameSet& roTerms);
+    void vCollectBalancedParenthesis(EnameSet& roTerms);
+    void vCollectRemainingTerms(EnameSet& roTerms);
+    void vCollectTemplateArgs(EnameSet& roTerms);
+    void vCollectTemplateSpec(EnameSet& roTerms);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(void);
