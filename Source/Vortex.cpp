@@ -332,22 +332,23 @@ void Vortex::vKeywordDescend(void)
   vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  if (m_oCurTkn.bSame("class"_Stz))     vParseClass();     else
-  if (m_oCurTkn.bSame("const"_Stz))     vParseConst();     else
-  if (m_oCurTkn.bSame("enum"_Stz))      vParseEnum();      else
-  if (m_oCurTkn.bSame("extern"_Stz))    vParseExtern();    else
-  if (m_oCurTkn.bSame("friend"_Stz))    vParseFriend();    else
-  if (m_oCurTkn.bSame("#"_Stz))         vParseHash();      else
-  if (m_oCurTkn.bSame("inline"_Stz))    vParseInline();    else
-  if (m_oCurTkn.bSame("namespace"_Stz)) vParseNamespace(); else
-  if (m_oCurTkn.bSame("public"_Stz))    vParsePublic();    else
-  if (m_oCurTkn.bSame(";"_Stz))         vParseSemicolon(); else
-  if (m_oCurTkn.bSame("static"_Stz))    vParseStatic();    else
-  if (m_oCurTkn.bSame("struct"_Stz))    vParseStruct();    else
-  if (m_oCurTkn.bSame("template"_Stz))  vParseTemplate();  else
-  if (m_oCurTkn.bSame("typedef"_Stz))   vParseTypedef();   else
-  if (m_oCurTkn.bSame("union"_Stz))     vParseUnion();     else
-  if (m_oCurTkn.bSame("unsigned"_Stz))  vParseUnsigned();  else
+  if (m_oCurTkn.bSame("class"_Stz))     vParseClass();      else
+  if (m_oCurTkn.bSame("const"_Stz))     vParseConst();      else
+  if (m_oCurTkn.bSame("enum"_Stz))      vParseEnum();       else
+  if (m_oCurTkn.bSame("extern"_Stz))    vParseExtern();     else
+  if (m_oCurTkn.bSame("friend"_Stz))    vParseFriend();     else
+  if (m_oCurTkn.bSame("#"_Stz))         vParseHash();       else
+  if (m_oCurTkn.bSame("inline"_Stz))    vParseInline();     else
+  if (m_oCurTkn.bSame("namespace"_Stz)) vParseNamespace();  else
+  if (m_oCurTkn.bSame("["_Stz))         vParseOpenSquare(); else
+  if (m_oCurTkn.bSame("public"_Stz))    vParsePublic();     else
+  if (m_oCurTkn.bSame(";"_Stz))         vParseSemicolon();  else
+  if (m_oCurTkn.bSame("static"_Stz))    vParseStatic();     else
+  if (m_oCurTkn.bSame("struct"_Stz))    vParseStruct();     else
+  if (m_oCurTkn.bSame("template"_Stz))  vParseTemplate();   else
+  if (m_oCurTkn.bSame("typedef"_Stz))   vParseTypedef();    else
+  if (m_oCurTkn.bSame("union"_Stz))     vParseUnion();      else
+  if (m_oCurTkn.bSame("unsigned"_Stz))  vParseUnsigned();   else
   if (m_oCurTkn.bSame("using"_Stz))     vParseUsing();
   else                                  vParseFunVar();
 }
@@ -780,6 +781,25 @@ void Vortex::vParseNamespace(void)
     
   } // while more tokens
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse: [_^_[ noreturn ]] ...                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseOpenSquare(void)
+{
+  vEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_oCurTkn.bSame("["_Stz));
+    
+  vGetExpectedToken("["_Stz);
+  vGetExpectedToken("noreturn"_Stz);
+  vGetExpectedToken("]"_Stz);
+  vGetExpectedToken("]"_Stz);
+  vGetNextToken();
+
+  vKeywordDescend();
 }
 
 /*----------------------------------------------------------------------------*/

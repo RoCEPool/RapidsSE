@@ -107,6 +107,7 @@ namespace Utilities
     void vParseHashPragma(void);
     void vParseInline(void);
     void vParseNamespace(void);
+    void vParseOpenSquare(void);
     void vParsePublic(void);
     void vParseSemicolon(void);
     void vParseStatic(void);
