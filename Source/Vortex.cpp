@@ -394,7 +394,7 @@ void Vortex::vParseClass(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
-  vClassDescend(sClassNm);
+  vClassBegin(sClassNm);
   
   if (m_oTplSpec.nItems()) {
     m_p_MetaType->vTplParams(& m_oTplSpec);
@@ -419,7 +419,7 @@ void Vortex::vParseClass(void)
   }
 
   vPartRecognised(CP_CLASS_END);
-  vClassAscend();
+  vClassEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -681,7 +681,7 @@ void Vortex::vParseNamespace(void)
   // get <name> of namespace
   vGetNextToken(m_oCurTkn);
   
-  vNamepaceDescend(m_oCurTkn.szTerm());
+  vNamepaceBegin(m_oCurTkn.szTerm());
   
   // get {
   vGetExpectedToken(m_oCurTkn,"{"_Stz);
@@ -701,7 +701,7 @@ void Vortex::vParseNamespace(void)
     if (m_oCurTkn.bSame("}"_Stz))  {
       vTraceNamespaceNm();
       vPartRecognised(CP_NAMESPACE_END);
-      vNamepaceAscend();
+      vNamepaceEnd();
       
       bool bMaybe = bGetNextToken(m_oCurTkn);
       return;
@@ -886,7 +886,7 @@ void Vortex::vParseTemplate(void)
   vGetExpectedToken(m_oCurTkn,"<"_Stz);
   
   vCollectTplSpec("<"_Stz);
-  vTemplateDescend();
+  vTemplateBegin();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // class, friend or <funVar<
@@ -895,18 +895,18 @@ void Vortex::vParseTemplate(void)
   
   if (m_oCurTkn.bSame("class"_Stz)) {
     vParseClass();
-    vTemplateAscend();
+    vTemplateEnd();
     return;
   }
   
   if (m_oCurTkn.bSame("friend"_Stz)) {
     vParseFriend();
-    vTemplateAscend();
+    vTemplateEnd();
     return;
   }
   
   vParseFunVar(true);
-  vTemplateAscend();
+  vTemplateEnd();
   
   m_oClassArgs.vReset();
 }
@@ -991,6 +991,97 @@ void Vortex::vParseUsing(void)
   
   bool bMaybe = bGetNextToken(m_oCurTkn);
 }
+
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                                begin and end                               */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a class                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClassBegin(Stz* szClassNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInClass);
+  
+  m_sClassNm = szClassNm;
+  m_bInClass = true;
+  
+  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a class                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClassEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInClass);
+
+  vTypePop();
+
+  m_bInClass = false;
+  m_sClassNm = ""_Stz;
+
+  m_p_MetaType  = nullptr;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a namespace                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNamepaceBegin(Stz* szNamespaceNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInNamespace);
+  RASSERT(! m_bInClass);
+
+  m_sNamespaceNm = szNamespaceNm;
+  m_bInNamespace = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a namespace                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNamepaceEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+
+  m_bInNamespace = false;
+  m_sNamespaceNm = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into template                                                      */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTemplateBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInTemplate);
+  
+  m_bInTemplate = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from a template                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTemplateEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInTemplate);
+
+  m_bInTemplate = false;
+  m_sTplSpec    = ""_Stz;
+}
+
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                         function / variable gathering                      */
@@ -2032,39 +2123,6 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* ascend from parsing a class                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vClassAscend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInClass);
-
-  vTypePop();
-
-  m_bInClass = false;
-  m_sClassNm = ""_Stz;
-
-  m_p_MetaType  = nullptr;
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a class                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vClassDescend(Stz* szClassNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInClass);
-  
-  m_sClassNm = szClassNm;
-  m_bInClass = true;
-  
-  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get keystroke to continue again                                            */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bContinueAgain(void)
@@ -2135,33 +2193,6 @@ void Vortex::vGetOtherTerm(Token& roTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ascend from parsing a namespace                                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNamepaceAscend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-
-  m_bInNamespace = false;
-  m_sNamespaceNm = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a namespace                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNamepaceDescend(Stz* szNamespaceNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInNamespace);
-  RASSERT(! m_bInClass);
-
-  m_sNamespaceNm = szNamespaceNm;
-  m_bInNamespace = true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* recognised c++ part                                                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vPartRecognised(eCP eCppPart)
@@ -2173,31 +2204,6 @@ void Vortex::vPartRecognised(eCP eCppPart)
   
   if (m_bContPart)
     m_bContPart = bContinueAgain();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ascend from a template                                                     */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTemplateAscend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInTemplate);
-
-  m_bInTemplate = false;
-  m_sTplSpec    = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into template                                                      */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTemplateDescend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInTemplate);
-  
-  m_bInTemplate = true;
 }
 
 /*----------------------------------------------------------------------------*/

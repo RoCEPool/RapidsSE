@@ -105,6 +105,7 @@ namespace Utilities
   
     bool bParseAllParts(void);
     void vKeywordDescend(void);
+  
     void vParseBaseList(void);
     void vParseClass(void);
     void vParseConst(void);
@@ -128,6 +129,16 @@ namespace Utilities
     void vParseUsing(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
+    // begin and end
+  
+    void vClassBegin(Stz* szClassNm);
+    void vClassEnd(void);
+    void vNamepaceBegin(Stz* szNamespaceNm);
+    void vNamepaceEnd(void);
+    void vTemplateBegin(void);
+    void vTemplateEnd(void);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
     void vParseMembers(bool bSemiTerminated);
@@ -145,12 +156,6 @@ namespace Utilities
     void vParseFV_Operator(void);
     void vParseFV_Variable(void);
 
-    void vClassAscend(void);
-    void vClassDescend(Stz* szClassNm);
-    void vNamepaceAscend(void);
-    void vNamepaceDescend(Stz* szNamespaceNm);
-    void vTemplateAscend(void);
-    void vTemplateDescend(void);
 
     void vShiftClassNm(void);
   
