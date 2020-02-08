@@ -773,6 +773,8 @@ void Vortex::vParseStatic(void)
   
   if (m_oCurTkn.bSame("inline"_Stz)) {
     vDiscardInlineTokens(m_oCurTkn.szTerm());
+    vPartRecognised(CP_STATIC);
+    bool bMaybe = bGetNextToken(m_oCurTkn);
     return;
   }
   
