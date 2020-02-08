@@ -859,7 +859,8 @@ void Vortex::vParseStruct(void)
   // 5) struct <blockNm> { ... } ;
   if (m_oCurTkn.bSame("{"_Stz)) {
     
-    vTypePush(m_oCurTkn.szTerm(),MT_LINEAR,CP_STRUCT);
+    vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
+    vGetNextToken(m_oCurTkn);
     vParseMembers(true);
     vTypePop();
     
