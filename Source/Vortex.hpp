@@ -171,11 +171,11 @@ namespace Utilities
     void vCollectTplSpec(void);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
-    void vDiscardBalancedAngles(Stz* szSawTerm);
-    void vDiscardBalancedBraces(Stz* szSawTerm);
-    void vDiscardBalancedParenthesis(Stz* szSawTerm);
-    void vDiscardInlineTokens(Stz* szSawTerm);
-    void vDiscardStaticTokens(Stz* szSawTerm);
+    void vDiscardBalancedAngles(void);
+    void vDiscardBalancedBraces(void);
+    void vDiscardBalancedParenthesis(void);
+    void vDiscardInlineTokens(void);
+    void vDiscardStaticTokens(void);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +

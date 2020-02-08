@@ -630,7 +630,7 @@ void Vortex::vParseHashInclude(void)
   vGetNextToken(m_oCurTkn);
   
   if (m_oCurTkn.bSame("<"_Stz))
-    vDiscardBalancedAngles("<"_Stz);
+    vDiscardBalancedAngles();
     
   vPartRecognised(CP_HASH_INCLUDE);
   
@@ -658,7 +658,7 @@ void Vortex::vParseHashPragma(void)
 
   if (m_oCurTkn.bSame("pack"_Stz)) {
     vGetExpectedToken(m_oCurTkn,"("_Stz);
-    vDiscardBalancedParenthesis("("_Stz);
+    vDiscardBalancedParenthesis();
     vPartRecognised(CP_HASH_PRAGMA_PACK);
     
     bool bMaybe = bGetNextToken(m_oCurTkn);
@@ -769,13 +769,13 @@ void Vortex::vParseStatic(void)
   }
   
   if (m_oCurTkn.bSame("inline"_Stz)) {
-    vDiscardInlineTokens(m_oCurTkn.szTerm());
+    vDiscardInlineTokens();
     vPartRecognised(CP_STATIC);
     bool bMaybe = bGetNextToken(m_oCurTkn);
     return;
   }
   
-  vDiscardStaticTokens(m_oCurTkn.szTerm());
+  vDiscardStaticTokens();
   vPartRecognised(CP_STATIC);
   bool bMaybe = bGetNextToken(m_oCurTkn);
 }
@@ -1599,7 +1599,7 @@ void Vortex::vParseFV_FunBody(void)
   
   if (m_oCurTkn.bSame("{"_Stz)) {
 
-    vDiscardBalancedBraces("{"_Stz);
+    vDiscardBalancedBraces();
   
     vPartRecognised(CP_FUNCTION_BODY);
   }
@@ -1856,7 +1856,7 @@ void Vortex::vDiscardBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 /* discard balanced angle brackets pair: < ... >                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardBalancedAngles(Stz* szSawTerm)
+void Vortex::vDiscardBalancedAngles(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1867,7 +1867,7 @@ void Vortex::vDiscardBalancedAngles(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard balanced curly braces pair: { ... }                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardBalancedBraces(Stz* szSawTerm)
+void Vortex::vDiscardBalancedBraces(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1878,7 +1878,7 @@ void Vortex::vDiscardBalancedBraces(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard balanced parenthesis pair: ( ... )                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
+void Vortex::vDiscardBalancedParenthesis(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1889,7 +1889,7 @@ void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard inline tokens: ... INLINE { ... }                                  */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
+void Vortex::vDiscardInlineTokens(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1905,7 +1905,7 @@ void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vDiscardBalancedBraces("{"_Stz);
+      vDiscardBalancedBraces();
       return;
     }
     
@@ -1917,7 +1917,7 @@ void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard static tokens: ... STATIC ... | ; | { ... } ;                      */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
+void Vortex::vDiscardStaticTokens(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1933,7 +1933,7 @@ void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vDiscardBalancedBraces("{"_Stz);
+      vDiscardBalancedBraces();
       vGetExpectedToken(xTkn,";"_Stz);
       return;
     }
