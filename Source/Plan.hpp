@@ -36,8 +36,8 @@ namespace Plans
     
     i8   iPlanId(void);
     
-    Tasks::Task* pExecutingTask(void);
-    void vExecutingTask(Tasks::Task* pTask);
+    Task* pExecutingTask(void);
+    void vExecutingTask(Task* pTask);
     
     s32& sName(void);
     void vName(s32& sName);
