@@ -340,7 +340,7 @@ void Vortex::vKeywordDescend(void)
   if (m_oCurTkn.bSame("typedef"_Stz))   vParseTypedef();   else
   if (m_oCurTkn.bSame("union"_Stz))     vParseUnion();     else
   if (m_oCurTkn.bSame("using"_Stz))     vParseUsing();
-  else                                  vParseFunVar(false);
+  else                                  vParseFunVar();
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -945,7 +945,8 @@ void Vortex::vParseTemplate(void)
     return;
   }
   else {
-    vParseFunVar(true);
+    vParseFunVar();
+    //vKeywordDescend();
     vTemplateEnd();
     m_oClassArgs.vReset();
   }
@@ -1131,7 +1132,7 @@ void Vortex::vTemplateEnd(void)
 /*----------------------------------------------------------------------------*/
 /* parse: <other> _^_ <term> ...                                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFunVar(bool bTemplated)
+void Vortex::vParseFunVar(void)
 {
   vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);

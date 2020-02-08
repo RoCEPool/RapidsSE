@@ -130,7 +130,7 @@ namespace Utilities
 
     void vParseMembers(void);
   
-    void vParseFunVar(bool bTemplated);
+    void vParseFunVar(void);
 
     void vParseFV_Type(void);
     void vParseFV_Name(void);
