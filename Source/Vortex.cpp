@@ -109,9 +109,6 @@ Vortex::Vortex(void)
   
   // working
   
-  
-  m_sFragment    = ""_Stz;
-  
   m_bInClass     = false;
   m_sClassNm     = C_NO_NAME;
   m_bInNamespace = false;
@@ -227,7 +224,6 @@ void Vortex::vProcessSource(Stz* szSourcePath)
     else {
       TRACE("\n\n"_Stz);
       TRACE("** Unable to fully process %s\n"_Stz,szSourcePath->azChar());
-      TRACE("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
       TRACE("\n\n"_Stz);
       NEVER_REACH;
     }
@@ -345,7 +341,7 @@ void Vortex::vParseBaseList(void)
     // collect optional template arguments <...>
     if (szTerm->bSame("<"_Stz)) {
      
-      vCollectTplArgs("<"_Stz);
+      vCollectTemplateArgs(m_oTypeArgs);
       pInherit->vTplArgs(&m_oTypeArgs);
       m_oTypeArgs.vReset();
      
@@ -398,7 +394,7 @@ void Vortex::vParseClass(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
-  vClassDescend(sClassNm);
+  vClassBegin(sClassNm);
   
   if (m_oTplSpec.nItems()) {
     m_p_MetaType->vTplParams(& m_oTplSpec);
@@ -406,7 +402,6 @@ void Vortex::vParseClass(void)
   }
 
   if (m_oCurTkn.bSame(":"_Stz)) {
-    vTraceClassNm();
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_BASE_BEGIN);
     vGetNextToken(m_oCurTkn);
@@ -414,7 +409,6 @@ void Vortex::vParseClass(void)
   }
   else
   if (m_oCurTkn.bSame("{"_Stz)) {
-    vTraceClassNm();
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_MEMBERS_BEGIN);
     vGetNextToken(m_oCurTkn);
@@ -425,7 +419,7 @@ void Vortex::vParseClass(void)
   }
 
   vPartRecognised(CP_CLASS_END);
-  vClassAscend();
+  vClassEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -457,7 +451,7 @@ void Vortex::vParseConst(void)
   vGetExpectedToken(m_oCurTkn,"="_Stz);
   
   // get ... ;
-  vCollectOtherTerms("="_Stz);
+  vCollectRemainingTerms(m_oOtherTerms);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -466,7 +460,7 @@ void Vortex::vParseConst(void)
 
   vPartRecognised(CP_CONST);
   
-  vOtherTermsReset();
+  m_oOtherTerms.vReset();
   
   bool bMayBe = bGetNextToken(m_oCurTkn);
 }
@@ -636,7 +630,7 @@ void Vortex::vParseHashInclude(void)
   vGetNextToken(m_oCurTkn);
   
   if (m_oCurTkn.bSame("<"_Stz))
-    vDiscardBalancedAngles("<"_Stz);
+    vDiscardBalancedAngles();
     
   vPartRecognised(CP_HASH_INCLUDE);
   
@@ -664,7 +658,7 @@ void Vortex::vParseHashPragma(void)
 
   if (m_oCurTkn.bSame("pack"_Stz)) {
     vGetExpectedToken(m_oCurTkn,"("_Stz);
-    vDiscardBalancedParenthesis("("_Stz);
+    vDiscardBalancedParenthesis();
     vPartRecognised(CP_HASH_PRAGMA_PACK);
     
     bool bMaybe = bGetNextToken(m_oCurTkn);
@@ -687,7 +681,7 @@ void Vortex::vParseNamespace(void)
   // get <name> of namespace
   vGetNextToken(m_oCurTkn);
   
-  vNamepaceDescend(m_oCurTkn.szTerm());
+  vNamepaceBegin(m_oCurTkn.szTerm());
   
   // get {
   vGetExpectedToken(m_oCurTkn,"{"_Stz);
@@ -707,7 +701,7 @@ void Vortex::vParseNamespace(void)
     if (m_oCurTkn.bSame("}"_Stz))  {
       vTraceNamespaceNm();
       vPartRecognised(CP_NAMESPACE_END);
-      vNamepaceAscend();
+      vNamepaceEnd();
       
       bool bMaybe = bGetNextToken(m_oCurTkn);
       return;
@@ -775,15 +769,14 @@ void Vortex::vParseStatic(void)
   }
   
   if (m_oCurTkn.bSame("inline"_Stz)) {
-    vDiscardInlineTokens(m_oCurTkn.szTerm());
+    vDiscardInlineTokens();
     vPartRecognised(CP_STATIC);
     bool bMaybe = bGetNextToken(m_oCurTkn);
     return;
   }
   
-  vDiscardStaticTokens(m_oCurTkn.szTerm());
+  vDiscardStaticTokens();
   vPartRecognised(CP_STATIC);
-  
   bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
@@ -892,8 +885,8 @@ void Vortex::vParseTemplate(void)
         
   vGetExpectedToken(m_oCurTkn,"<"_Stz);
   
-  vCollectTplSpec("<"_Stz);
-  vTemplateDescend();
+  vCollectTemplateSpec(m_oTplSpec);
+  vTemplateBegin();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // class, friend or <funVar<
@@ -902,18 +895,18 @@ void Vortex::vParseTemplate(void)
   
   if (m_oCurTkn.bSame("class"_Stz)) {
     vParseClass();
-    vTemplateAscend();
+    vTemplateEnd();
     return;
   }
   
   if (m_oCurTkn.bSame("friend"_Stz)) {
     vParseFriend();
-    vTemplateAscend();
+    vTemplateEnd();
     return;
   }
   
   vParseFunVar(true);
-  vTemplateAscend();
+  vTemplateEnd();
   
   m_oClassArgs.vReset();
 }
@@ -999,6 +992,97 @@ void Vortex::vParseUsing(void)
   bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                                begin and end                               */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a class                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClassBegin(Stz* szClassNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInClass);
+  
+  m_sClassNm = szClassNm;
+  m_bInClass = true;
+  
+  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a class                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClassEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInClass);
+
+  vTypePop();
+
+  m_bInClass = false;
+  m_sClassNm = ""_Stz;
+
+  m_p_MetaType  = nullptr;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a namespace                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNamepaceBegin(Stz* szNamespaceNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInNamespace);
+  RASSERT(! m_bInClass);
+
+  m_sNamespaceNm = szNamespaceNm;
+  m_bInNamespace = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a namespace                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNamepaceEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+
+  m_bInNamespace = false;
+  m_sNamespaceNm = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into template                                                      */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTemplateBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInTemplate);
+  
+  m_bInTemplate = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from a template                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTemplateEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInTemplate);
+
+  m_bInTemplate = false;
+  m_sTplSpec    = ""_Stz;
+}
+
+
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                         function / variable gathering                      */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -1070,18 +1154,18 @@ void Vortex::vParseFV_Type(void)
       continue;
     }
 
+    if (m_oCurTkn.bSame("["_Stz)) {
+      vGetExpectedToken(m_oCurTkn,"["_Stz);
+      vGetNextToken(m_oCurTkn);
+      vGetExpectedToken(m_oCurTkn,"]"_Stz);
+      vGetExpectedToken(m_oCurTkn,"]"_Stz);
+      vGetNextToken(m_oCurTkn);
+      continue;
+    }
+
     break;
   }
   
-  if (m_oCurTkn.bSame("["_Stz)) {
-    vGetExpectedToken(m_oCurTkn,"["_Stz);
-    vGetNextToken(m_oCurTkn);
-    vGetExpectedToken(m_oCurTkn,"]"_Stz);
-    vGetExpectedToken(m_oCurTkn,"]"_Stz);
-    vGetNextToken(m_oCurTkn);
-  }
-
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // detect the case of no specifier (constructor / destructor)
@@ -1096,7 +1180,7 @@ void Vortex::vParseFV_Type(void)
       
       // do we have template arguments?
       if (m_oCurTkn.bSame("<"_Stz)) {
-        vCollectTplArgs("<"_Stz);
+        vCollectTemplateArgs(m_oTypeArgs);
         vGetNextToken(m_oCurTkn);
       }
       
@@ -1152,7 +1236,7 @@ void Vortex::vParseFV_Type(void)
   
   // do we have template arguments?
   if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTplArgs("<"_Stz);
+    vCollectTemplateArgs(m_oTypeArgs);
     vGetNextToken(m_oCurTkn);
   }
   
@@ -1260,7 +1344,7 @@ void Vortex::vParseFV_Name(void)
     vGetExpectedToken(m_oCurTkn,")"_Stz);
     
     vGetExpectedToken(m_oCurTkn,"("_Stz);
-    vCollectBalancedParenthesis("("_Stz);
+    vCollectBalancedParenthesis(m_oOtherTerms);
 
     vPartRecognised(CP_FUNCTION_POINTER);
     
@@ -1303,7 +1387,7 @@ void Vortex::vParseFV_Name(void)
     return;
   }
   
-  vCollectTplArgs("<"_Stz);
+  vCollectTemplateArgs(m_oTypeArgs);
   vPartRecognised(CP_TYPE_ARGS);
   
   vGetNextToken(m_oCurTkn);
@@ -1515,7 +1599,7 @@ void Vortex::vParseFV_FunBody(void)
   
   if (m_oCurTkn.bSame("{"_Stz)) {
 
-    vDiscardBalancedBraces("{"_Stz);
+    vDiscardBalancedBraces();
   
     vPartRecognised(CP_FUNCTION_BODY);
   }
@@ -1595,7 +1679,7 @@ void Vortex::vShiftClassNm(void)
 /*----------------------------------------------------------------------------*/
 /* collect delimited tokens (potentially nested)                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
+void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1611,7 +1695,7 @@ void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
     
     // test for nested open
     if (xTkn.bSame(szOpen))
-      vCollectBalanced(szOpen,szClose);
+      vCollectBalanced(roTerms,szOpen,szClose);
       
     // ignore any other token
   }
@@ -1621,40 +1705,40 @@ void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 /* collect balanced angle brackets pair: < ... >                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedAngles(Stz* szSawTerm)
+void Vortex::vCollectBalancedAngles(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vCollectBalanced("<"_Stz,">"_Stz);
+  vCollectBalanced(roTerms,"<"_Stz,">"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect balanced curly braces pair: { ... }                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedBraces(Stz* szSawTerm)
+void Vortex::vCollectBalancedBraces(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vCollectBalanced("{"_Stz,"}"_Stz);
+  vCollectBalanced(roTerms,"{"_Stz,"}"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect balanced parenthesis pair: ( ... )                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
+void Vortex::vCollectBalancedParenthesis(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vCollectBalanced("("_Stz,")"_Stz);
+  vCollectBalanced(roTerms,"("_Stz,")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect other terms: <other> ... | ; | { ... }                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectOtherTerms(Stz* szSawTerm)
+void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1674,7 +1758,7 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vCollectBalancedBraces("{"_Stz);
+      vCollectBalancedBraces(m_oOtherTerms);
       return;
     }
     
@@ -1686,14 +1770,14 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all template arguments : < _^_ ... >                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplArgs(Stz* szSawTerm)
+void Vortex::vCollectTemplateArgs(EnameSet& roTplArgs)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
 
-  m_oTypeArgs.vReset();
+  roTplArgs.vReset();
     
   Token xTkn;
   
@@ -1701,13 +1785,13 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTypeArgs.vAdd(xTkn.szTerm());
+    roTplArgs.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTypeArgs.vNamesString(sTerms);
+  roTplArgs.vNamesString(sTerms);
   
   TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
@@ -1715,14 +1799,14 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all template parameters : TEMPLATE  < _^_ ... >                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplSpec(Stz* szSawTerm)
+void Vortex::vCollectTemplateSpec(EnameSet& roTplSpec)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
 
-  m_oTplSpec.vReset();
+  roTplSpec.vReset();
     
   Token xTkn;
   
@@ -1730,13 +1814,13 @@ void Vortex::vCollectTplSpec(Stz* szSawTerm)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    m_oTplSpec.vAdd(xTkn.szTerm());
+    roTplSpec.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  m_oTplSpec.vNamesString(sTerms);
+  roTplSpec.vNamesString(sTerms);
   
   m_sTplSpec = "<"_Stz;
   m_sTplSpec.vConcat(sTerms);
@@ -1772,7 +1856,7 @@ void Vortex::vDiscardBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 /* discard balanced angle brackets pair: < ... >                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardBalancedAngles(Stz* szSawTerm)
+void Vortex::vDiscardBalancedAngles(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1783,7 +1867,7 @@ void Vortex::vDiscardBalancedAngles(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard balanced curly braces pair: { ... }                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardBalancedBraces(Stz* szSawTerm)
+void Vortex::vDiscardBalancedBraces(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1794,7 +1878,7 @@ void Vortex::vDiscardBalancedBraces(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard balanced parenthesis pair: ( ... )                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
+void Vortex::vDiscardBalancedParenthesis(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1805,7 +1889,7 @@ void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard inline tokens: ... INLINE { ... }                                  */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
+void Vortex::vDiscardInlineTokens(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1821,7 +1905,7 @@ void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vDiscardBalancedBraces("{"_Stz);
+      vDiscardBalancedBraces();
       return;
     }
     
@@ -1833,7 +1917,7 @@ void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* discard static tokens: ... STATIC ... | ; | { ... } ;                      */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
+void Vortex::vDiscardStaticTokens(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1849,7 +1933,7 @@ void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vDiscardBalancedBraces("{"_Stz);
+      vDiscardBalancedBraces();
       vGetExpectedToken(xTkn,";"_Stz);
       return;
     }
@@ -2033,89 +2117,10 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
 
 
 
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                                   terms                                    */
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-
-/*----------------------------------------------------------------------------*/
-/* get term                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szTerm(i8 i_Term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Stz* sz = m_oOtherTerms.szName(i_Term);
-  
-  return sz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add term                                                                   */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTermAdd(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oOtherTerms.vAdd(szTerm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of terms                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Vortex::nTerms(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  i8 nTerms = m_oOtherTerms.nItems();
-  
-  return nTerms;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset terms                                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTermsReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oOtherTerms.vReset();
-}
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                                 machinary                                  */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-
-/*----------------------------------------------------------------------------*/
-/* ascend from parsing a class                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vClassAscend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInClass);
-
-  vTraceClassNm();
-  vTypePop();
-
-  m_bInClass = false;
-  m_sClassNm = ""_Stz;
-
-  m_p_MetaType  = nullptr;
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a class                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vClassDescend(Stz* szClassNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInClass);
-  
-  m_sClassNm = szClassNm;
-  m_bInClass = true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get keystroke to continue again                                            */
@@ -2130,21 +2135,6 @@ bool Vortex::bContinueAgain(void)
     return false;
   else
     return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDiscardNextToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xTkn;
-  
-  CHECKED(m_pInput->bGetToken(&xTkn))
-  
-  if (m_bTrace)
-    TRACE("Discarding: %s\n"_Stz,xTkn.azTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2163,7 +2153,6 @@ void Vortex::vGetExpectedToken(Token& roToken, Stz* szExpect)
     vThrowProblem(__LINE__);
   }
   
-  vFragmentAppend(roToken.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2174,10 +2163,7 @@ bool Vortex::bGetNextToken(Token& roToken)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bEOF = ! m_pInput->bGetToken(&roToken);
-  
-  if (! m_bEOF)
-    vFragmentAppend(roToken.szTerm());
-  
+    
   return ! m_bEOF;
 }
 
@@ -2207,90 +2193,6 @@ void Vortex::vGetOtherTerm(Token& roTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append sub-string to fragment string                                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vFragmentAppend(Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (m_sFragment.nLength())
-    m_sFragment.vAppend(' ');
-  
-  m_sFragment.vConcat(szString);
-  
-  if (m_bTrace)
-    TRACE("  Got `%s`\n"_Stz,
-          szString);
-//    TRACE("  Got `%s`  --FRAG %s\n"_Stz,
-//          szString,
-//          m_sFragment.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append sub-string to fragment string with marker                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vFragmentMarker(Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (m_sFragment.nLength())
-    m_sFragment.vAppend(' ');
-
-  m_sFragment.vConcat("❗️"_Stz);
-  m_sFragment.vConcat(szString);
-
-  if (m_bTrace)
-    TRACE("  Fragment: %s\n"_Stz,m_sFragment.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset fragment string                                                      */
-/*----------------------------------------------------------------------------*/
-void Vortex::vFragmentReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_sFragment = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ascend from parsing a namespace                                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNamepaceAscend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-
-  m_bInNamespace = false;
-  m_sNamespaceNm = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a namespace                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNamepaceDescend(Stz* szNamespaceNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInNamespace);
-  RASSERT(! m_bInClass);
-
-  m_sNamespaceNm = szNamespaceNm;
-  m_bInNamespace = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset other terms                                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vOtherTermsReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oOtherTerms.vReset();
-}
-
-/*----------------------------------------------------------------------------*/
 /* recognised c++ part                                                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vPartRecognised(eCP eCppPart)
@@ -2302,33 +2204,6 @@ void Vortex::vPartRecognised(eCP eCppPart)
   
   if (m_bContPart)
     m_bContPart = bContinueAgain();
-
-  vFragmentReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ascend from a template                                                     */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTemplateAscend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInTemplate);
-
-  m_bInTemplate = false;
-  m_sTplSpec    = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into template                                                      */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTemplateDescend(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInTemplate);
-  
-  m_bInTemplate = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2339,19 +2214,6 @@ void Vortex::vThrowProblem(i8 i_Problem)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   throw i_Problem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace class name                                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTraceClassNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (!m_bTrace)
-    return;
-  
-  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,8 +52,6 @@ namespace Utilities
   
     // working section
   
-    s48K        m_sFragment;     // top-down fragment of source tokens
-
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
@@ -107,6 +105,7 @@ namespace Utilities
   
     bool bParseAllParts(void);
     void vKeywordDescend(void);
+  
     void vParseBaseList(void);
     void vParseClass(void);
     void vParseConst(void);
@@ -130,6 +129,16 @@ namespace Utilities
     void vParseUsing(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
+    // begin and end
+  
+    void vClassBegin(Stz* szClassNm);
+    void vClassEnd(void);
+    void vNamepaceBegin(Stz* szNamespaceNm);
+    void vNamepaceEnd(void);
+    void vTemplateBegin(void);
+    void vTemplateEnd(void);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
     // function variable gather
 
     void vParseMembers(bool bSemiTerminated);
@@ -147,28 +156,26 @@ namespace Utilities
     void vParseFV_Operator(void);
     void vParseFV_Variable(void);
 
-    void vClassAscend(void);
-    void vClassDescend(Stz* szClassNm);
 
     void vShiftClassNm(void);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
 
-    void vCollectBalanced(Stz* szOpen, Stz* szClose);
-    void vCollectBalancedAngles(Stz* szSawTerm);
-    void vCollectBalancedBraces(Stz* szSawTerm);
-    void vCollectBalancedParenthesis(Stz* szSawTerm);
-    void vCollectOtherTerms(Stz* szSawTerm);
-    void vCollectTplArgs(Stz* szSawTerm);
-    void vCollectTplSpec(Stz* szSawTerm);
+    void vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose);
+    void vCollectBalancedAngles(EnameSet& roTerms);
+    void vCollectBalancedBraces(EnameSet& roTerms);
+    void vCollectBalancedParenthesis(EnameSet& roTerms);
+    void vCollectRemainingTerms(EnameSet& roTerms);
+    void vCollectTemplateArgs(EnameSet& roTerms);
+    void vCollectTemplateSpec(EnameSet& roTerms);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
-    void vDiscardBalancedAngles(Stz* szSawTerm);
-    void vDiscardBalancedBraces(Stz* szSawTerm);
-    void vDiscardBalancedParenthesis(Stz* szSawTerm);
-    void vDiscardInlineTokens(Stz* szSawTerm);
-    void vDiscardStaticTokens(Stz* szSawTerm);
+    void vDiscardBalancedAngles(void);
+    void vDiscardBalancedBraces(void);
+    void vDiscardBalancedParenthesis(void);
+    void vDiscardInlineTokens(void);
+    void vDiscardStaticTokens(void);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -184,35 +191,17 @@ namespace Utilities
     void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
     bool bIgnoreOptLabel(Stz* szSawTerm);
-  
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // terms
-  
-    Stz* szTerm(i8 i_Term);
-    void vTermAdd(Stz* szTerm);
-    i8   nTerms(void);
-    void vTermsReset(void);
-  
+    
      // - + - + - + - + - + - + - + - + - + - + - + - +
      // machinary
    
      bool bContinueAgain(void);
-     void vDiscardNextToken(void);
      void vGetExpectedToken(Token& roToken, Stz* szExpect);
      bool bGetNextToken(Token& roToken);
      void vGetNextToken(Token& roToken);
      void vGetOtherTerm(Token& roTerm);
-     void vFragmentAppend(Stz* szTerm);
-     void vFragmentMarker(Stz* szTerm);
-     void vFragmentReset(void);
-     void vNamepaceAscend(void);
-     void vNamepaceDescend(Stz* szNamespaceNm);
-     void vOtherTermsReset(void);
      void vPartRecognised(eCP eCppPart);
-     void vTemplateAscend(void);
-     void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
-     void vTraceClassNm(void);
      void vTraceFunVarNm(void);
      void vTraceNamespaceNm(void);
      void vTraceTypeArgs(void);
