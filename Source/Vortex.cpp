@@ -249,6 +249,62 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* trace function entry                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vEnter(char* azFunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  if (! m_bTrace)
+    return;
+  
+  vTrace("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz,
+    
+    m_nSources,
+    m_sSourcePath.szStz(),
+    azFunc,
+  
+    m_oCurTkn.szTerm(),
+    
+    m_bInNamespace ? " --NAMESPACE `" : "",
+    m_bInNamespace ? m_sNamespaceNm.azChar() : "",
+    m_bInNamespace ? "`" : "",
+    
+    m_bInClass     ? " --CLASS `" : "",
+    m_bInClass     ? m_sClassNm.azChar() : "",
+    m_bInClass     ? "`" : "",
+    
+    m_bInTemplate  ? " --TPLSPEC `" : "",
+    m_bInTemplate  ? m_sTplSpec.azChar() : "",
+    m_bInTemplate  ? "`" : "",
+  
+    C_ENDARGS
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace function entry                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vEnter_short(char* azFunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  if (! m_bTrace)
+    return;
+  
+  vTrace("%lld/%s/%16s/  `%s`\n"_Stz,
+    
+    m_nSources,
+    m_sSourcePath.szStz(),
+    __func__,
+    
+    m_oCurTkn.szTerm(),
+
+    C_ENDARGS
+  );
+}
+
+/*----------------------------------------------------------------------------*/
 /* get expected token                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGetExpectedToken(Stz* szExpect)

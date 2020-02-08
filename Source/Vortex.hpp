@@ -80,6 +80,9 @@ namespace Utilities
 
   private:
   
+    void vEnter(char* azFunc);
+    void vEnter_short(char* azFunc);
+
     void vGetExpectedToken(Stz* szExpect);
     bool bGetNextToken(void);
     void vGetNextToken(void);
