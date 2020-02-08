@@ -1379,6 +1379,8 @@ void Vortex::vParseFV_Array(void)
   m_bIsArray = true;
   
   
+  L_Dimension:
+  
   for (;;) {
      
     vGetNextToken(m_oCurTkn);
@@ -1389,7 +1391,11 @@ void Vortex::vParseFV_Array(void)
     m_oArraySpec.vAdd(m_oCurTkn.szTerm());
   }
 
-  vGetExpectedToken(m_oCurTkn,";"_Stz);
+  vGetNextToken(m_oCurTkn);
+  if (m_oCurTkn.bSame("["_Stz))
+    goto L_Dimension;
+  
+  CHECKED(m_oCurTkn.bSame(";"_Stz));
   
   vPartRecognised(CP_ARRAY_SPEC);
 
