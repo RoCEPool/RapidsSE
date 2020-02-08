@@ -246,7 +246,6 @@ Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   eEC eError = pJob_Universal->ePopulateJob(pTokenVec);
   
   if ( eError != EC_NONE ) {
-    pJob_Universal->vAddError(eError);
     pJob_Universal->vSyntaxError(eError);
   }
   
