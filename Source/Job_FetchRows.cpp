@@ -639,7 +639,7 @@ void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
-  if ( pJob_FetchRows->bHasError() ) {
+  if ( pJob_FetchRows->bParticipantHasError() ) {
     
     vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
              aEC[pJob_FetchRows->eErrorCode()]);

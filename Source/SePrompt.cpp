@@ -227,7 +227,7 @@ void SePrompt::vPromptLoop(void)
       m_oTimer.vUpdate();
       
       // handle errors
-      if (m_pJob->bHasError())
+      if (m_pJob->bParticipantHasError())
         m_pJob->m_xResult.vPrintNodeErrors();
       
     }
@@ -239,9 +239,6 @@ void SePrompt::vPromptLoop(void)
       
       vPostJob();
     }
-//    if (m_pJob->bHasError()) {
-//      vDumpTokenVec();
-//    }
 
     vReportTime();
     

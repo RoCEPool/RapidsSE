@@ -558,7 +558,7 @@ void Step::vJobErrorStore(void)
   i8 iJobError = m_pDataStack->iPopAsInt(__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
-  pJob->vHasError(true);
+  pJob->vParticipantHasError(true);
   pJob->vErrorCode((eEC)iJobError);
   
   //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
@@ -643,7 +643,7 @@ void Step::vJobHasError(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->bHasError());
+  m_pDataStack->vPushInt(pJob->bParticipantHasError());
   
   EXIT();
 }
@@ -993,7 +993,7 @@ void Step::vJobParticipantResponseStore(void)
   pResponse->m_eErrorCode      = pParticipantJob->eErrorCode();
   
   if (pResponse->m_eErrorCode != EC_NONE)
-    pJob->vHasError(true);
+    pJob->vParticipantHasError(true);
   
   // add the response to the vector of responses
   pJob->pOriginResponseVec()->vAdd(pResponse);

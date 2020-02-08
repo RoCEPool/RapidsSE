@@ -111,8 +111,6 @@ namespace Jobs
     eEC  eErrorCode(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
-    bool bHasError(void);
-    void vHasError(bool bHasError);
     bool bHasSyntaxError(void);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
@@ -136,6 +134,8 @@ namespace Jobs
     Stz* szMetaData(void);
     void vMetaData(Stz* sMetaData);
     bool bNoWaitTag(void);
+    bool bParticipantHasError(void);
+    void vParticipantHasError(bool bHasError);
     void vPrintResult(eRS eResponse);
     Response* pResponse(void);
     Stz* szResponse(void);

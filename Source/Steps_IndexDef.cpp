@@ -40,7 +40,7 @@ void Step::vIndexDefParse(void)
     // set the syntax error in the job
     pJob_CreateIndex->vSyntaxError(eResult);
     
-    pJob_CreateIndex->vHasError(true);
+    pJob_CreateIndex->vParticipantHasError(true);
     pJob_CreateIndex->vErrorCode(eResult);
     
     // delete IndexDef

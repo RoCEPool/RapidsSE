@@ -114,7 +114,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
     return nullptr;
   }
   
-  if (pJob->bHasError()) {
+  if (pJob->bParticipantHasError()) {
     //vTrace("job has error (maybe syntax error)\n"_Stz);
     //pJobClass->vPostJob();
     return pJob;

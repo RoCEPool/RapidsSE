@@ -594,26 +594,6 @@ bool Job::bHasEnameTag(Stz* szEnameTag)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has an error                                              */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_bPartHasError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job has an error                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vHasError(bool bHasError)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_bPartHasError = bHasError;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this job has a syntax error                                        */
 /*----------------------------------------------------------------------------*/
 bool Job::bHasSyntaxError(void)
@@ -1049,6 +1029,26 @@ void Job::vPrint(Stz* szFormat, ...)
          C_ENDARGS);
 
   va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has an error                                              */
+/*----------------------------------------------------------------------------*/
+bool Job::bParticipantHasError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_xResult.m_bPartHasError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job has an error                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vParticipantHasError(bool bHasError)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_xResult.m_bPartHasError = bHasError;
 }
 
 /*----------------------------------------------------------------------------*/

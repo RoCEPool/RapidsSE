@@ -37,7 +37,7 @@ void Step::vTableDefParse(void)
     // set the syntax error in the job
     pJob_CreateTable->vSyntaxError(eResult);
     
-    pJob_CreateTable->vHasError(true);
+    pJob_CreateTable->vParticipantHasError(true);
     pJob_CreateTable->vErrorCode(eResult);
     
     // delete tabledef

@@ -300,7 +300,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(330);
 
     // check if job had an error
-    if (pJob->bHasError()) {
+    if (pJob->bParticipantHasError()) {
       i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
@@ -382,7 +382,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(380);
     
     // check if job had an error
-    if (pJob_InsertRow->bHasError()) {
+    if (pJob_InsertRow->bParticipantHasError()) {
       
       i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
       
@@ -576,7 +576,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
     API_LOC(320);
 
     // check if job had an error
-    if (pJob_InsertTable->bHasError()) {
+    if (pJob_InsertTable->bParticipantHasError()) {
       i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
