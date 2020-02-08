@@ -147,6 +147,10 @@ namespace Utilities
 
     void vClassAscend(void);
     void vClassDescend(Stz* szClassNm);
+    void vNamepaceAscend(void);
+    void vNamepaceDescend(Stz* szNamespaceNm);
+    void vTemplateAscend(void);
+    void vTemplateDescend(void);
 
     void vShiftClassNm(void);
   
@@ -191,12 +195,7 @@ namespace Utilities
      bool bGetNextToken(Token& roToken);
      void vGetNextToken(Token& roToken);
      void vGetOtherTerm(Token& roTerm);
-     void vNamepaceAscend(void);
-     void vNamepaceDescend(Stz* szNamespaceNm);
-     void vOtherTermsReset(void);
      void vPartRecognised(eCP eCppPart);
-     void vTemplateAscend(void);
-     void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
      void vTraceFunVarNm(void);
      void vTraceNamespaceNm(void);

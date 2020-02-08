@@ -460,7 +460,7 @@ void Vortex::vParseConst(void)
 
   vPartRecognised(CP_CONST);
   
-  vOtherTermsReset();
+  m_oOtherTerms.vReset();
   
   bool bMayBe = bGetNextToken(m_oCurTkn);
 }
@@ -777,7 +777,6 @@ void Vortex::vParseStatic(void)
   
   vDiscardStaticTokens(m_oCurTkn.szTerm());
   vPartRecognised(CP_STATIC);
-  
   bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
@@ -2160,16 +2159,6 @@ void Vortex::vNamepaceDescend(Stz* szNamespaceNm)
 
   m_sNamespaceNm = szNamespaceNm;
   m_bInNamespace = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset other terms                                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vOtherTermsReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oOtherTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
