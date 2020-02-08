@@ -341,7 +341,7 @@ void Vortex::vParseBaseList(void)
     // collect optional template arguments <...>
     if (szTerm->bSame("<"_Stz)) {
      
-      vCollectTplArgs("<"_Stz);
+      vCollectTplArgs();
       pInherit->vTplArgs(&m_oTypeArgs);
       m_oTypeArgs.vReset();
      
@@ -451,7 +451,7 @@ void Vortex::vParseConst(void)
   vGetExpectedToken(m_oCurTkn,"="_Stz);
   
   // get ... ;
-  vCollectOtherTerms("="_Stz);
+  vCollectOtherTerms();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -885,7 +885,7 @@ void Vortex::vParseTemplate(void)
         
   vGetExpectedToken(m_oCurTkn,"<"_Stz);
   
-  vCollectTplSpec("<"_Stz);
+  vCollectTplSpec();
   vTemplateBegin();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1180,7 +1180,7 @@ void Vortex::vParseFV_Type(void)
       
       // do we have template arguments?
       if (m_oCurTkn.bSame("<"_Stz)) {
-        vCollectTplArgs("<"_Stz);
+        vCollectTplArgs();
         vGetNextToken(m_oCurTkn);
       }
       
@@ -1236,7 +1236,7 @@ void Vortex::vParseFV_Type(void)
   
   // do we have template arguments?
   if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTplArgs("<"_Stz);
+    vCollectTplArgs();
     vGetNextToken(m_oCurTkn);
   }
   
@@ -1344,7 +1344,7 @@ void Vortex::vParseFV_Name(void)
     vGetExpectedToken(m_oCurTkn,")"_Stz);
     
     vGetExpectedToken(m_oCurTkn,"("_Stz);
-    vCollectBalancedParenthesis("("_Stz);
+    vCollectBalancedParenthesis();
 
     vPartRecognised(CP_FUNCTION_POINTER);
     
@@ -1387,7 +1387,7 @@ void Vortex::vParseFV_Name(void)
     return;
   }
   
-  vCollectTplArgs("<"_Stz);
+  vCollectTplArgs();
   vPartRecognised(CP_TYPE_ARGS);
   
   vGetNextToken(m_oCurTkn);
@@ -1705,7 +1705,7 @@ void Vortex::vCollectBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 /* collect balanced angle brackets pair: < ... >                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedAngles(Stz* szSawTerm)
+void Vortex::vCollectBalancedAngles(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1716,7 +1716,7 @@ void Vortex::vCollectBalancedAngles(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect balanced curly braces pair: { ... }                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedBraces(Stz* szSawTerm)
+void Vortex::vCollectBalancedBraces(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1727,7 +1727,7 @@ void Vortex::vCollectBalancedBraces(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect balanced parenthesis pair: ( ... )                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
+void Vortex::vCollectBalancedParenthesis(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1738,7 +1738,7 @@ void Vortex::vCollectBalancedParenthesis(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect other terms: <other> ... | ; | { ... }                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectOtherTerms(Stz* szSawTerm)
+void Vortex::vCollectOtherTerms(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1758,7 +1758,7 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
     
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
-      vCollectBalancedBraces("{"_Stz);
+      vCollectBalancedBraces();
       return;
     }
     
@@ -1770,7 +1770,7 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all template arguments : < _^_ ... >                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplArgs(Stz* szSawTerm)
+void Vortex::vCollectTplArgs(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1799,7 +1799,7 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all template parameters : TEMPLATE  < _^_ ... >                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplSpec(Stz* szSawTerm)
+void Vortex::vCollectTplSpec(void)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);

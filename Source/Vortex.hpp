@@ -163,12 +163,12 @@ namespace Utilities
     // term collection
 
     void vCollectBalanced(Stz* szOpen, Stz* szClose);
-    void vCollectBalancedAngles(Stz* szSawTerm);
-    void vCollectBalancedBraces(Stz* szSawTerm);
-    void vCollectBalancedParenthesis(Stz* szSawTerm);
-    void vCollectOtherTerms(Stz* szSawTerm);
-    void vCollectTplArgs(Stz* szSawTerm);
-    void vCollectTplSpec(Stz* szSawTerm);
+    void vCollectBalancedAngles(void);
+    void vCollectBalancedBraces(void);
+    void vCollectBalancedParenthesis(void);
+    void vCollectOtherTerms(void);
+    void vCollectTplArgs(void);
+    void vCollectTplSpec(void);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
