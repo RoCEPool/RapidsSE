@@ -249,7 +249,7 @@ void Vortex::vGetExpectedToken(Stz* szExpect)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  CHECKED(m_pInput->bGetToken(&m_oCurTkn));
+  CHECKED(bGetNextToken());
   
   if (! m_oCurTkn.bSame(szExpect)) {
     TRACE("Expecting token: %s got: %s\n"_Stz,
@@ -268,6 +268,13 @@ bool Vortex::bGetNextToken(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bEOF = ! m_pInput->bGetToken(&m_oCurTkn);
+  
+  if (m_bTrace) {
+    if (m_bEOF)
+      vTrace("  got: EOF\n"_Stz);
+    else
+      vTrace("  got: `%s`\n"_Stz,m_oCurTkn.szTerm());
+  }
     
   return ! m_bEOF;
 }
@@ -801,20 +808,23 @@ void Vortex::vParseStatic(void)
   vGetNextToken();
 
   if (m_oCurTkn.bSame("const"_Stz)) {
-    vParseConst();
+    //vParseConst();
+    vKeywordDescend();
     return;
   }
   
   if (m_oCurTkn.bSame("inline"_Stz)) {
-    vDiscardInlineTokens();
-    vPartRecognised(CP_STATIC);
-    bool bMaybe = bGetNextToken();
+//    vDiscardInlineTokens();
+//    vPartRecognised(CP_STATIC);
+//    bool bMaybe = bGetNextToken();
+    vKeywordDescend();
     return;
   }
   
   vDiscardStaticTokens();
   vPartRecognised(CP_STATIC);
   bool bMaybe = bGetNextToken();
+  //vKeywordDescend();
 }
 
 /*----------------------------------------------------------------------------*/
