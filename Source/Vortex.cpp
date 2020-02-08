@@ -1154,25 +1154,27 @@ void Vortex::vParseFV_Type(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // zero or more asterisks
-  do {
+  for (;;) {
     
     // collected when we have no more asterisks
-    if (! m_oCurTkn.bSame("*"_Stz)) {
-      vTraceTypeSpec();
-      vPartRecognised(CP_TYPE_SPECIFICATION);
-      vParseFV_Name();
-      return;
-    }
-  
+    if (! m_oCurTkn.bSame("*"_Stz))
+      break;
+    
     // we have an asterisk
     m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
     m_nAsterisks++;
+  
 
-  }  while (bGetNextToken(m_oCurTkn));
-  
-  vThrowProblem(__LINE__);
-  
-  NEVER_REACH;
+    vGetNextToken(m_oCurTkn);
+  };
+
+  // a possible &
+  if (m_oCurTkn.bSame("&"_Stz))
+    vGetNextToken(m_oCurTkn);
+
+  vTraceTypeSpec();
+  vPartRecognised(CP_TYPE_SPECIFICATION);
+  vParseFV_Name();
 }
 
 /*----------------------------------------------------------------------------*/
