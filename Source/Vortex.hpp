@@ -186,10 +186,6 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   
-    Stz* szTerm(i8 i_Term);
-    void vTermAdd(Stz* szTerm);
-    i8   nTerms(void);
-    void vTermsReset(void);
   
      // - + - + - + - + - + - + - + - + - + - + - + - +
      // machinary

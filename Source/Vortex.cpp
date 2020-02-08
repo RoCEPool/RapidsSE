@@ -2029,53 +2029,6 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
 
 
 
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                                   terms                                    */
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-
-/*----------------------------------------------------------------------------*/
-/* get term                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Vortex::szTerm(i8 i_Term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Stz* sz = m_oOtherTerms.szName(i_Term);
-  
-  return sz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add term                                                                   */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTermAdd(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oOtherTerms.vAdd(szTerm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of terms                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Vortex::nTerms(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  i8 nTerms = m_oOtherTerms.nItems();
-  
-  return nTerms;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset terms                                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTermsReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oOtherTerms.vReset();
-}
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                                 machinary                                  */
