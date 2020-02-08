@@ -1070,18 +1070,18 @@ void Vortex::vParseFV_Type(void)
       continue;
     }
 
+    if (m_oCurTkn.bSame("["_Stz)) {
+      vGetExpectedToken(m_oCurTkn,"["_Stz);
+      vGetNextToken(m_oCurTkn);
+      vGetExpectedToken(m_oCurTkn,"]"_Stz);
+      vGetExpectedToken(m_oCurTkn,"]"_Stz);
+      vGetNextToken(m_oCurTkn);
+      continue;
+    }
+
     break;
   }
   
-  if (m_oCurTkn.bSame("["_Stz)) {
-    vGetExpectedToken(m_oCurTkn,"["_Stz);
-    vGetNextToken(m_oCurTkn);
-    vGetExpectedToken(m_oCurTkn,"]"_Stz);
-    vGetExpectedToken(m_oCurTkn,"]"_Stz);
-    vGetNextToken(m_oCurTkn);
-  }
-
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // detect the case of no specifier (constructor / destructor)
