@@ -160,6 +160,8 @@ namespace Utilities
     void vParseFV_Operator(void);
     void vParseFV_Variable(void);
 
+    bool bParseLabel_Opt(void);
+
     void vShiftClassNm(void);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -180,7 +182,7 @@ namespace Utilities
     void vDiscardInlineTokens(void);
     void vDiscardStaticTokens(void);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
-  
+ 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // meta members and type
     
@@ -193,13 +195,11 @@ namespace Utilities
     void vTypePop(void);
     void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
-    bool bIgnoreOptLabel(Stz* szSawTerm);
     
      // - + - + - + - + - + - + - + - + - + - + - + - +
      // machinary
    
      bool bContinueAgain(void);
-
      void vPartRecognised(eCP eCppPart);
      void vThrowProblem(i8 i_Problem);
      void vTraceFunVarNm(void);

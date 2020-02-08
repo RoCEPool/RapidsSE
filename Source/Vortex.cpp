@@ -1354,7 +1354,7 @@ void Vortex::vParseMembers(bool bSemiTerminated)
       return;
     }
     
-    if (bIgnoreOptLabel(m_oCurTkn.szTerm())) {
+    if (bParseLabel_Opt()) {
       FNENTRY
       continue;
     }
@@ -1699,6 +1699,42 @@ void Vortex::vParseFV_Variable(void)
   
   vGetNextToken();
 }
+
+/*----------------------------------------------------------------------------*/
+/* skip a label i.e. private|protected|public :                               */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bParseLabel_Opt(void)
+{
+  FNENTRY
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  if (m_oCurTkn.bSame("private"_Stz)) {
+    CHECKED(bGetNextToken());
+    CHECKED(m_oCurTkn.bSame(":"_Stz));
+    vPartRecognised(CP_LABEL);
+    vGetNextToken();
+    return true;
+  }
+  
+  if (m_oCurTkn.bSame("protected"_Stz)) {
+    CHECKED(bGetNextToken());
+    CHECKED(m_oCurTkn.bSame(":"_Stz));
+    vPartRecognised(CP_LABEL);
+    vGetNextToken();
+    return true;
+  }
+  
+  if (m_oCurTkn.bSame("public"_Stz)) {
+    CHECKED(bGetNextToken());
+    CHECKED(m_oCurTkn.bSame(":"_Stz));
+    vPartRecognised(CP_LABEL);
+    vGetNextToken();
+    return true;
+  }
+  
+  return false;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -2113,41 +2149,6 @@ void Vortex::vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* skip a label i.e. private|protected|public :                               */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
-{
-  FNENTRY
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  if (szSawTerm->bSame("private"_Stz)) {
-    CHECKED(bGetNextToken());
-    CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
-    vGetNextToken();
-    return true;
-  }
-  
-  if (szSawTerm->bSame("protected"_Stz)) {
-    CHECKED(bGetNextToken());
-    CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
-    vGetNextToken();
-    return true;
-  }
-  
-  if (szSawTerm->bSame("public"_Stz)) {
-    CHECKED(bGetNextToken());
-    CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
-    vGetNextToken();
-    return true;
-  }
-  
-  return false;
-}
-
 
 
 
@@ -2161,6 +2162,9 @@ bool Vortex::bIgnoreOptLabel(Stz* szSawTerm)
 bool Vortex::bContinueAgain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vInfo(">> "_Stz);
+  //fflush(stdin);
   
   char c = getc(stdin);
   
