@@ -17,9 +17,9 @@ namespace MetaData
   class Slots : public Object
   {
   private:
-    Table* m_pTable;   // table this slots belongs to
-    StreamDef*    m_pPtnStreamDef;   // partition stream def
-    TablePtnVec*  m_pTablePtnVec;    // table partition vector
+    Table*        m_pTable;        // table this slots belongs to
+    StreamDef*    m_pPtnStreamDef; // partition stream def
+    TablePtnVec*  m_pTablePtnVec;  // table partition vector
   
     // must be last
     Footer m_xFooter;
@@ -35,7 +35,7 @@ namespace MetaData
     ~Slots(void) noexcept(false);
     
     void       vCreateStreamDef(void);
-    Partitioning::TablePtn*  pPartition(i8 iSlot);
+    TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     StreamDef* pPtnStreamDef(void);
     void       vPublishTable(i8 iPartitionNo);
