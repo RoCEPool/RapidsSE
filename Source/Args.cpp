@@ -51,6 +51,7 @@ Args::Args(void)
   
   // commands
   m_bAddNode    = false;
+  m_bAppendTrace = false;
   m_bCommand    = false;
   m_bHelp       = false;
   m_bPrompt     = false;
@@ -185,6 +186,12 @@ bool Args::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--address"_Stz)) {
       m_aRegionAddr = (void*)argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--appendTrace"_Stz)) {
+      m_bAppendTrace = true;
       continue;
     }
     
@@ -754,15 +761,16 @@ void Args::vPrintStartupInfo(void)
   vTrace("Args:\n"_Stz);
   
 #ifdef WITH_DEBUG_VERSION
-  if (m_bCommand)    vTrace("  --command\n"_Stz);
-  if (m_bHelp)       vTrace("  --help\n"_Stz);
-  if (m_bProgress)   vTrace("  --progress\n"_Stz);
-  if (m_bPrompt)     vTrace("  --seprompt\n"_Stz);
-  if (m_bSethScript) vTrace("  --script\n"_Stz);
-  if (m_bStart)      vTrace("  --start\n"_Stz);
-  if (m_bStatus)     vTrace("  --status\n"_Stz);
-  if (m_bStop)       vTrace("  --stop\n"_Stz);
-  if (m_bVerbose)    vTrace("  --verbose\n"_Stz);
+  if (m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);
+  if (m_bCommand)     vTrace("  --command\n"_Stz);
+  if (m_bHelp)        vTrace("  --help\n"_Stz);
+  if (m_bProgress)    vTrace("  --progress\n"_Stz);
+  if (m_bPrompt)      vTrace("  --seprompt\n"_Stz);
+  if (m_bSethScript)  vTrace("  --script\n"_Stz);
+  if (m_bStart)       vTrace("  --start\n"_Stz);
+  if (m_bStatus)      vTrace("  --status\n"_Stz);
+  if (m_bStop)        vTrace("  --stop\n"_Stz);
+  if (m_bVerbose)     vTrace("  --verbose\n"_Stz);
 #endif
   
   vTrace("  --name %s\n"_Stz,m_sNodeName.azChar());
