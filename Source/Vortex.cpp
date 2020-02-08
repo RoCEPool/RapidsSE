@@ -1154,7 +1154,7 @@ void Vortex::vTemplateEnd(void)
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                         function / variable vEnter((char*)__func__);ing                      */
+/*                         function / variable                                */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
@@ -1207,36 +1207,6 @@ void Vortex::vParseFV_Type(void)
   
   m_nAsterisks = 0;
 
-  for (;;) {
-    
-    if (m_oCurTkn.bSame("inline"_Stz)) {
-      vGetNextToken();
-      continue;
-    }
-    
-    if (m_oCurTkn.bSame("static"_Stz)) {
-      vGetNextToken();
-      continue;
-    }
-    
-    if (m_oCurTkn.bSame("unsigned"_Stz)) {
-      vGetNextToken();
-      continue;
-    }
-
-    if (m_oCurTkn.bSame("["_Stz)) {
-      vGetExpectedToken("["_Stz);
-      vGetNextToken();
-      vGetExpectedToken("]"_Stz);
-      vGetExpectedToken("]"_Stz);
-      vGetNextToken();
-      continue;
-    }
-
-    break;
-  }
-  
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // detect the case of no specifier (constructor / destructor)
   if (m_bInClass) {
