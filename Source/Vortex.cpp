@@ -109,9 +109,6 @@ Vortex::Vortex(void)
   
   // working
   
-  
-  m_sFragment    = ""_Stz;
-  
   m_bInClass     = false;
   m_sClassNm     = C_NO_NAME;
   m_bInNamespace = false;
@@ -227,7 +224,6 @@ void Vortex::vProcessSource(Stz* szSourcePath)
     else {
       TRACE("\n\n"_Stz);
       TRACE("** Unable to fully process %s\n"_Stz,szSourcePath->azChar());
-      TRACE("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
       TRACE("\n\n"_Stz);
       NEVER_REACH;
     }
@@ -2163,7 +2159,6 @@ void Vortex::vGetExpectedToken(Token& roToken, Stz* szExpect)
     vThrowProblem(__LINE__);
   }
   
-  vFragmentAppend(roToken.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2174,10 +2169,7 @@ bool Vortex::bGetNextToken(Token& roToken)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bEOF = ! m_pInput->bGetToken(&roToken);
-  
-  if (! m_bEOF)
-    vFragmentAppend(roToken.szTerm());
-  
+    
   return ! m_bEOF;
 }
 
@@ -2204,53 +2196,6 @@ void Vortex::vGetOtherTerm(Token& roTerm)
   CHECKED(bGetNextToken(roTerm))
   
   m_oOtherTerms.vAdd(roTerm.szTerm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append sub-string to fragment string                                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vFragmentAppend(Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (m_sFragment.nLength())
-    m_sFragment.vAppend(' ');
-  
-  m_sFragment.vConcat(szString);
-  
-  if (m_bTrace)
-    TRACE("  Got `%s`\n"_Stz,
-          szString);
-//    TRACE("  Got `%s`  --FRAG %s\n"_Stz,
-//          szString,
-//          m_sFragment.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append sub-string to fragment string with marker                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vFragmentMarker(Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (m_sFragment.nLength())
-    m_sFragment.vAppend(' ');
-
-  m_sFragment.vConcat("❗️"_Stz);
-  m_sFragment.vConcat(szString);
-
-  if (m_bTrace)
-    TRACE("  Fragment: %s\n"_Stz,m_sFragment.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset fragment string                                                      */
-/*----------------------------------------------------------------------------*/
-void Vortex::vFragmentReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_sFragment = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2302,8 +2247,6 @@ void Vortex::vPartRecognised(eCP eCppPart)
   
   if (m_bContPart)
     m_bContPart = bContinueAgain();
-
-  vFragmentReset();
 }
 
 /*----------------------------------------------------------------------------*/

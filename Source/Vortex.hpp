@@ -52,8 +52,6 @@ namespace Utilities
   
     // working section
   
-    s48K        m_sFragment;     // top-down fragment of source tokens
-
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
@@ -202,9 +200,6 @@ namespace Utilities
      bool bGetNextToken(Token& roToken);
      void vGetNextToken(Token& roToken);
      void vGetOtherTerm(Token& roTerm);
-     void vFragmentAppend(Stz* szTerm);
-     void vFragmentMarker(Stz* szTerm);
-     void vFragmentReset(void);
      void vNamepaceAscend(void);
      void vNamepaceDescend(Stz* szNamespaceNm);
      void vOtherTermsReset(void);
