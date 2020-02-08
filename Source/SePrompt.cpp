@@ -172,18 +172,6 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    if (bExecutePipeline())
-      continue;
-    
-//    if (! bFindJobClass()) {
-//
-//      if (! bIsPromptWord() ) {
-//        vUnknownCommand();
-//        vDumpTokenVec();
-//        continue;
-//      }
-//    }
-    
     if (! bFindMatch()) {
       vUnknownCommand();
       vDumpTokenVec();
@@ -222,7 +210,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
-    if (m_pJob->m_eJobType == JT_PIPELINE) {
+    if (bExecutePipeline()) {
       
       // wait till the job has a buffer queue
       while ( m_pJob->m_xResult.m_pOriginBufferQueue == nullptr ) {
@@ -481,7 +469,10 @@ bool SePrompt::bExecutePipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return false;
+  if (m_pJob->m_eJobType == JT_PIPELINE)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
