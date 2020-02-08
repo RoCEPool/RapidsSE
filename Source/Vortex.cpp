@@ -6,68 +6,8 @@
 
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
-#define FNENTRY \
-  TRACE("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
-    \
-    , m_nSources \
-    \
-    , m_sSourcePath.szStz() \
-    \
-    , __func__ \
-    \
-    , m_oCurTkn.szTerm() \
-    \
-    , m_bInNamespace ? " --NAMESPACE `" : "" \
-    , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
-    , m_bInNamespace ? "`" : "" \
-    \
-    , m_bInClass     ? " --CLASS `" : "" \
-    , m_bInClass     ? m_sClassNm.azChar() : "" \
-    , m_bInClass     ? "`" : "" \
-    \
-    , m_bInTemplate  ? " --TPLSPEC `" : "" \
-    , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
-    , m_bInTemplate  ? "`" : "" \
-    \
-    );
+#define CHECKED(fun)    if (! fun) vThrowProblem(__LINE__);
 
-#define GATHER \
-  TRACE("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz \
-    \
-    , m_nSources \
-    \
-    , m_sSourcePath.szStz() \
-    \
-    , __func__ \
-    \
-    , m_oCurTkn.szTerm() \
-    \
-    , m_bInNamespace ? " --NAMESPACE `" : "" \
-    , m_bInNamespace ? m_sNamespaceNm.azChar() : "" \
-    , m_bInNamespace ? "`" : "" \
-    \
-    , m_bInClass     ? " --CLASS `" : "" \
-    , m_bInClass     ? m_sClassNm.azChar() : "" \
-    , m_bInClass     ? "`" : "" \
-    \
-    , m_bInTemplate  ? " --TPLSPEC `" : "" \
-    , m_bInTemplate  ? m_sTplSpec.azChar() : "" \
-    , m_bInTemplate  ? "`" : "" \
-    \
-    );
-
-#define FN \
-  TRACE("%lld/%s/%16s/  `%s`\n"_Stz \
-    \
-    , m_nSources \
-    \
-    , m_sSourcePath.szStz() \
-    \
-    , __func__ \
-    \
-    , m_oCurTkn.szTerm() \
-    \
-    );
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -99,7 +39,7 @@ Vortex::Vortex(void)
   m_bPrint       = true;
   m_bTrace       = true;
   m_bContMember  = false;
-  m_bContPart    = false;
+  m_bContPart    = true;
   m_bContType    = false;
 
   // output
@@ -159,8 +99,6 @@ Vortex::~Vortex(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-#define CHECKED(fun) if (! fun) vThrowProblem(__LINE__);
 
 /*----------------------------------------------------------------------------*/
 /* close the vortex                                                           */
@@ -357,7 +295,7 @@ void Vortex::vGetNextToken(void)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseAllParts(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_bInNamespace);
@@ -368,7 +306,7 @@ bool Vortex::bParseAllParts(void)
     try {
       vKeywordDescend();
       
-      FNENTRY
+      vEnter((char*)__func__);
     }
     catch (i8 i_Problem) {
       return false;
@@ -384,7 +322,7 @@ bool Vortex::bParseAllParts(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vKeywordDescend(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   if (m_oCurTkn.bSame("class"_Stz))     vParseClass();     else
@@ -414,7 +352,7 @@ void Vortex::vKeywordDescend(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseBaseList(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_bInClass);
@@ -468,7 +406,7 @@ void Vortex::vParseBaseList(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClass(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("class"_Stz));
@@ -527,7 +465,7 @@ void Vortex::vParseClass(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseConst(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("const"_Stz));
@@ -570,7 +508,7 @@ void Vortex::vParseConst(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseEnum(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("enum"_Stz));
@@ -587,7 +525,7 @@ void Vortex::vParseEnum(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseExtern(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("extern"_Stz));
@@ -604,7 +542,7 @@ void Vortex::vParseExtern(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFriend(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("friend"_Stz));
@@ -622,7 +560,7 @@ void Vortex::vParseFriend(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("#"_Stz));
@@ -662,7 +600,7 @@ void Vortex::vParseHash(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashDefine(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("define"_Stz));
@@ -682,7 +620,7 @@ void Vortex::vParseHashDefine(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIf(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("if"_Stz));
@@ -702,7 +640,7 @@ void Vortex::vParseHashIf(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIfdef(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("ifdef"_Stz));
@@ -722,7 +660,7 @@ void Vortex::vParseHashIfdef(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashInclude(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("include"_Stz));
@@ -742,7 +680,7 @@ void Vortex::vParseHashInclude(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashPragma(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("pragma"_Stz));
@@ -773,7 +711,7 @@ void Vortex::vParseHashPragma(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespace(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("namespace"_Stz));
@@ -792,7 +730,7 @@ void Vortex::vParseNamespace(void)
   
   vGetNextToken();
 
-  FNENTRY
+  vEnter((char*)__func__);
 
   // parse ... }
   for (;;) {
@@ -813,7 +751,7 @@ void Vortex::vParseNamespace(void)
     
     vKeywordDescend();
     
-    FNENTRY
+    vEnter((char*)__func__);
     
   } // while more tokens
   
@@ -824,7 +762,7 @@ void Vortex::vParseNamespace(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParsePublic(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("public"_Stz));
@@ -841,7 +779,7 @@ void Vortex::vParsePublic(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseSemicolon(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame(";"_Stz));
@@ -856,7 +794,7 @@ void Vortex::vParseSemicolon(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStatic(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("static"_Stz));
@@ -885,7 +823,7 @@ void Vortex::vParseStatic(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStruct(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("struct"_Stz));
@@ -978,7 +916,7 @@ void Vortex::vParseStruct(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTemplate(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("template"_Stz));
@@ -1016,7 +954,7 @@ void Vortex::vParseTemplate(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTypedef(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("typedef"_Stz));
@@ -1035,7 +973,7 @@ void Vortex::vParseTypedef(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUnion(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("union"_Stz));
@@ -1073,7 +1011,7 @@ void Vortex::vParseUnion(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUsing(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("using"_Stz));
@@ -1184,7 +1122,7 @@ void Vortex::vTemplateEnd(void)
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                         function / variable gathering                      */
+/*                         function / variable vEnter((char*)__func__);ing                      */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
@@ -1192,7 +1130,7 @@ void Vortex::vTemplateEnd(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFunVar(bool bTemplated)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   vParseFV_Type();
@@ -1230,7 +1168,7 @@ void Vortex::vParseFunVar(bool bTemplated)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Type(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_oTypeArgs.vReset();
@@ -1397,7 +1335,7 @@ void Vortex::vParseFV_Type(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseMembers(bool bSemiTerminated)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   for (;;) {
@@ -1411,22 +1349,22 @@ void Vortex::vParseMembers(bool bSemiTerminated)
     }
     
     if (bParseLabel_Opt()) {
-      FNENTRY
+      vEnter((char*)__func__);
       continue;
     }
     
     vKeywordDescend();
-    FNENTRY
+    vEnter((char*)__func__);
   }
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* gather information about a function or variable name                       */
+/* vEnter((char*)__func__); information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Name(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   m_bIsFunPtr = false;
@@ -1505,7 +1443,7 @@ void Vortex::vParseFV_Name(void)
   
   vGetNextToken();
   
-  GATHER
+  vEnter((char*)__func__);
 
   goto L_Parse_Function_Name;
 }
@@ -1516,7 +1454,7 @@ void Vortex::vParseFV_Name(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_AryFunVar(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (m_oCurTkn.bSame("["_Stz)) {
@@ -1558,7 +1496,7 @@ void Vortex::vParseFV_AryFunVar(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Array(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bIsArray = false;
@@ -1598,11 +1536,11 @@ void Vortex::vParseFV_Array(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* gather information about a function or variable name                       */
+/* vEnter((char*)__func__); information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Constructor(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   m_bIsFunPtr = false;
@@ -1613,11 +1551,11 @@ void Vortex::vParseFV_Constructor(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* gather information about a function or variable name                       */
+/* vEnter((char*)__func__); information about a function or variable name                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Field(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   vGetExpectedToken(";"_Stz);
@@ -1632,7 +1570,7 @@ void Vortex::vParseFV_Field(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_FunBody(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_bIsFun = true;
@@ -1721,7 +1659,7 @@ void Vortex::vParseFV_FunBody(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Operator(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   for (;;) {
@@ -1739,7 +1677,7 @@ void Vortex::vParseFV_Operator(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFV_Variable(void)
 {
-  GATHER
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   if (m_bInClass) {
@@ -1761,7 +1699,7 @@ void Vortex::vParseFV_Variable(void)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseLabel_Opt(void)
 {
-  FNENTRY
+  vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   if (m_oCurTkn.bSame("private"_Stz)) {
@@ -1798,7 +1736,7 @@ bool Vortex::bParseLabel_Opt(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vShiftClassNm(void)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_sClassNm = m_oFunVarNm.szName(0);
@@ -1817,7 +1755,7 @@ void Vortex::vShiftClassNm(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
          
   for (;;) {
@@ -1843,7 +1781,7 @@ void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalancedAngles(EnameSet& roTerms)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced(roTerms,"<"_Stz,">"_Stz);
@@ -1854,7 +1792,7 @@ void Vortex::vCollectBalancedAngles(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalancedBraces(EnameSet& roTerms)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced(roTerms,"{"_Stz,"}"_Stz);
@@ -1865,7 +1803,7 @@ void Vortex::vCollectBalancedBraces(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectBalancedParenthesis(EnameSet& roTerms)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectBalanced(roTerms,"("_Stz,")"_Stz);
@@ -1876,7 +1814,7 @@ void Vortex::vCollectBalancedParenthesis(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   //RASSERT(0 == m_oOtherTerms.nItems());
@@ -1908,7 +1846,7 @@ void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
@@ -1937,7 +1875,7 @@ void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectTypeArgs(EnameSet& roTypeArgs)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
@@ -1964,7 +1902,7 @@ void Vortex::vCollectTypeArgs(EnameSet& roTypeArgs)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalanced(Stz* szOpen, Stz* szClose)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
          
   for (;;) {
@@ -1989,7 +1927,7 @@ void Vortex::vDiscardBalanced(Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalancedAngles(void)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDiscardBalanced("<"_Stz,">"_Stz);
@@ -2000,7 +1938,7 @@ void Vortex::vDiscardBalancedAngles(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalancedBraces(void)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDiscardBalanced("{"_Stz,"}"_Stz);
@@ -2011,7 +1949,7 @@ void Vortex::vDiscardBalancedBraces(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardBalancedParenthesis(void)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDiscardBalanced("("_Stz,")"_Stz);
@@ -2022,7 +1960,7 @@ void Vortex::vDiscardBalancedParenthesis(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardInlineTokens(void)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   for (;;) {
@@ -2049,7 +1987,7 @@ void Vortex::vDiscardInlineTokens(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardStaticTokens(void)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   for (;;) {
@@ -2077,7 +2015,7 @@ void Vortex::vDiscardStaticTokens(void)
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 {
-  FN
+  vEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
   TRACE("Skipping: %s "_Stz,szTerm->azChar());
@@ -2219,7 +2157,7 @@ bool Vortex::bContinueAgain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vInfo(">> "_Stz);
+  vInfo("[ continue > "_Stz);
   //fflush(stdin);
   
   char c = getc(stdin);
