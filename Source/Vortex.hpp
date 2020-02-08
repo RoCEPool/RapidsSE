@@ -100,6 +100,10 @@ namespace Utilities
 
   private:
   
+    void vGetExpectedToken(Stz* szExpect);
+    bool bGetNextToken(void);
+    void vGetNextToken(void);
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
   
@@ -195,9 +199,6 @@ namespace Utilities
      // machinary
    
      bool bContinueAgain(void);
-     void vGetExpectedToken(Token& roToken, Stz* szExpect);
-     bool bGetNextToken(Token& roToken);
-     void vGetNextToken(Token& roToken);
 
      void vPartRecognised(eCP eCppPart);
      void vThrowProblem(i8 i_Problem);
