@@ -546,7 +546,7 @@ void Vortex::vParseExtern(void)
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
   vPartRecognised(CP_ENUM);
-  
+
   bool bMaybe = bGetNextToken();
 }
 
@@ -821,10 +821,10 @@ void Vortex::vParseStatic(void)
     return;
   }
   
-  vDiscardStaticTokens();
-  vPartRecognised(CP_STATIC);
-  bool bMaybe = bGetNextToken();
-  //vKeywordDescend();
+//  vDiscardStaticTokens();
+//  vPartRecognised(CP_STATIC);
+//  bool bMaybe = bGetNextToken();
+  vKeywordDescend();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1499,6 +1499,13 @@ void Vortex::vParseFV_AryFunVar(void)
     return;
   }
 
+  if (m_oCurTkn.bSame("="_Stz)) {
+    vCollectRemainingTerms(m_oOtherTerms);
+    m_oOtherTerms.vReset();
+    bool bMayBe = bGetNextToken();
+    return;
+  }
+
   
   NEVER_REACH
 }
@@ -1534,6 +1541,14 @@ void Vortex::vParseFV_Array(void)
   vGetNextToken();
   if (m_oCurTkn.bSame("["_Stz))
     goto L_Dimension;
+ 
+  if (m_oCurTkn.bSame("="_Stz))
+    vGetNextToken();
+
+  if (m_oCurTkn.bSame("{"_Stz)) {
+    vDiscardBalancedBraces();
+    vGetNextToken();
+  }
   
   CHECKED(m_oCurTkn.bSame(";"_Stz));
   
@@ -1544,7 +1559,7 @@ void Vortex::vParseFV_Array(void)
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
   
-  vGetNextToken();
+  bool bMayBe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
