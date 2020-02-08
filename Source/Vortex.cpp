@@ -338,6 +338,7 @@ void Vortex::vKeywordDescend(void)
   if (m_oCurTkn.bSame("extern"_Stz))    vParseExtern();    else
   if (m_oCurTkn.bSame("friend"_Stz))    vParseFriend();    else
   if (m_oCurTkn.bSame("#"_Stz))         vParseHash();      else
+  if (m_oCurTkn.bSame("inline"_Stz))    vParseInline();    else
   if (m_oCurTkn.bSame("namespace"_Stz)) vParseNamespace(); else
   if (m_oCurTkn.bSame("public"_Stz))    vParsePublic();    else
   if (m_oCurTkn.bSame(";"_Stz))         vParseSemicolon(); else
@@ -346,6 +347,7 @@ void Vortex::vKeywordDescend(void)
   if (m_oCurTkn.bSame("template"_Stz))  vParseTemplate();  else
   if (m_oCurTkn.bSame("typedef"_Stz))   vParseTypedef();   else
   if (m_oCurTkn.bSame("union"_Stz))     vParseUnion();     else
+  if (m_oCurTkn.bSame("unsigned"_Stz))  vParseUnsigned();  else
   if (m_oCurTkn.bSame("using"_Stz))     vParseUsing();
   else                                  vParseFunVar();
 }
@@ -713,6 +715,21 @@ void Vortex::vParseHashPragma(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse: INLINE ...                                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseInline(void)
+{
+  vEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_oCurTkn.bSame("inline"_Stz));
+    
+  vGetNextToken();
+  
+  vKeywordDescend();
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse: NAMESPACE _^_ <name> { <parts> }                                    */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespace(void)
@@ -796,7 +813,7 @@ void Vortex::vParseSemicolon(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: STATIC _^_ CONST ... | ...                                          */
+/* parse: STATIC _^_ ...                                                      */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStatic(void)
 {
@@ -806,24 +823,7 @@ void Vortex::vParseStatic(void)
   RASSERT(m_oCurTkn.bSame("static"_Stz));
     
   vGetNextToken();
-
-  if (m_oCurTkn.bSame("const"_Stz)) {
-    //vParseConst();
-    vKeywordDescend();
-    return;
-  }
   
-  if (m_oCurTkn.bSame("inline"_Stz)) {
-//    vDiscardInlineTokens();
-//    vPartRecognised(CP_STATIC);
-//    bool bMaybe = bGetNextToken();
-    vKeywordDescend();
-    return;
-  }
-  
-//  vDiscardStaticTokens();
-//  vPartRecognised(CP_STATIC);
-//  bool bMaybe = bGetNextToken();
   vKeywordDescend();
 }
 
@@ -1018,6 +1018,21 @@ void Vortex::vParseUnion(void)
   
   CHECKED(m_oCurTkn.bSame(";"_Stz));
   bool bMaybe = bGetNextToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse: UNSIGNED _^_ ...                                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseUnsigned(void)
+{
+  vEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_oCurTkn.bSame("unsigned"_Stz));
+    
+  vGetNextToken();
+  
+  vKeywordDescend();
 }
 
 /*----------------------------------------------------------------------------*/

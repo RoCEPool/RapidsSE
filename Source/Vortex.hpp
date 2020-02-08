@@ -105,6 +105,7 @@ namespace Utilities
     void vParseHashIfdef(void);
     void vParseHashInclude(void);
     void vParseHashPragma(void);
+    void vParseInline(void);
     void vParseNamespace(void);
     void vParsePublic(void);
     void vParseSemicolon(void);
@@ -113,6 +114,7 @@ namespace Utilities
     void vParseTemplate(void);
     void vParseTypedef(void);
     void vParseUnion(void);
+    void vParseUnsigned(void);
     void vParseUsing(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
