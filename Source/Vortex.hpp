@@ -156,7 +156,6 @@ namespace Utilities
     void vParseFV_Operator(void);
     void vParseFV_Variable(void);
 
-
     void vShiftClassNm(void);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -167,8 +166,8 @@ namespace Utilities
     void vCollectBalancedBraces(EnameSet& roTerms);
     void vCollectBalancedParenthesis(EnameSet& roTerms);
     void vCollectRemainingTerms(EnameSet& roTerms);
-    void vCollectTemplateArgs(EnameSet& roTerms);
-    void vCollectTemplateSpec(EnameSet& roTerms);
+    void vCollectTemplateSpec(EnameSet& roTplSepc);
+    void vCollectTypeArgs(EnameSet& roTypeArgs);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(void);
@@ -199,7 +198,7 @@ namespace Utilities
      void vGetExpectedToken(Token& roToken, Stz* szExpect);
      bool bGetNextToken(Token& roToken);
      void vGetNextToken(Token& roToken);
-     void vGetOtherTerm(Token& roTerm);
+
      void vPartRecognised(eCP eCppPart);
      void vThrowProblem(i8 i_Problem);
      void vTraceFunVarNm(void);
