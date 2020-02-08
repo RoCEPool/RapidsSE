@@ -234,7 +234,7 @@ void Vortex::vEnter_short(char* azFunc)
     
     m_nSources,
     m_sSourcePath.szStz(),
-    __func__,
+    azFunc,
     
     m_oCurTkn.szTerm(),
 
@@ -932,21 +932,23 @@ void Vortex::vParseTemplate(void)
   vGetNextToken();
   
   if (m_oCurTkn.bSame("class"_Stz)) {
-    vParseClass();
+    //vParseClass();
+    vKeywordDescend();
     vTemplateEnd();
     return;
   }
-  
+  else
   if (m_oCurTkn.bSame("friend"_Stz)) {
-    vParseFriend();
+    //vParseFriend();
+    vKeywordDescend();
     vTemplateEnd();
     return;
   }
-  
-  vParseFunVar(true);
-  vTemplateEnd();
-  
-  m_oClassArgs.vReset();
+  else {
+    vParseFunVar(true);
+    vTemplateEnd();
+    m_oClassArgs.vReset();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
