@@ -94,8 +94,8 @@ namespace Tasks
     void vReseed(void);
     bool bSeeded(void);
     void vSeedTask(void);
-    Grids::Node* pSendNode(void);
-    void vSendNode(Grids::Node* pSendNode);
+    Node* pSendNode(void);
+    void vSendNode(Node* pSendNode);
     void vSleepUsec(i8 iMicroSeconds);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);
@@ -103,8 +103,8 @@ namespace Tasks
     void vState(eTS eState);
     i8   iTaskId(void);
     void vTaskLoop(void);
-    Threads::Thread* pThread(void);
-    void vThread(Threads::Thread* pThread);
+    Thread* pThread(void);
+    void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
     eSA  eSchedulerAct(void);

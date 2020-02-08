@@ -142,6 +142,7 @@ namespace Utilities
     void vParseFV_AryFunVar(void);
     void vParseFV_Array(void);
     void vParseFV_Constructor(void);
+    void vParseFV_Field(void);
     void vParseFV_FunBody(void);
     void vParseFV_Operator(void);
     void vParseFV_Variable(void);

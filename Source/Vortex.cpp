@@ -1339,9 +1339,17 @@ void Vortex::vParseFV_AryFunVar(void)
   }
   
   if (m_oCurTkn.bSame(":"_Stz)) {
-    vGetExpectedToken(m_oCurTkn,":"_Stz);
+    
     vGetNextToken(m_oCurTkn);
-    vParseFV_Name();
+    if (m_oCurTkn.bSame(":"_Stz)) {
+      vGetNextToken(m_oCurTkn);
+      vParseFV_Name();
+      return;
+    }
+    
+    // detected a field
+    
+    vParseFV_Field();
     return;
   }
 
@@ -1400,6 +1408,21 @@ void Vortex::vParseFV_Constructor(void)
   m_oFunVarNm.vAdd(m_sClassNm);
 
   vParseFV_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* gather information about a function or variable name                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFV_Field(void)
+{
+  GATHER
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vGetExpectedToken(m_oCurTkn,";"_Stz);
+  
+  vPartRecognised(CP_MEMBER_VARIABLE);
+
+  vGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
