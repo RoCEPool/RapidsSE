@@ -1059,6 +1059,11 @@ void Vortex::vParseFV_Type(void)
       continue;
     }
     
+    if (m_oCurTkn.bSame("unsigned"_Stz)) {
+      vGetNextToken(m_oCurTkn);
+      continue;
+    }
+
     break;
   }
   
