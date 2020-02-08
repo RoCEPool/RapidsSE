@@ -152,8 +152,6 @@ void SePrompt::vPromptLoop(void)
     if (bShortCut())
       continue;
     
-    vDumpTokenVec();
-    
     while (bSubLet())
       {;}
 
@@ -241,9 +239,9 @@ void SePrompt::vPromptLoop(void)
       
       vPostJob();
     }
-    if (m_pJob->bHasError()) {
-      vDumpTokenVec();
-    }
+//    if (m_pJob->bHasError()) {
+//      vDumpTokenVec();
+//    }
 
     vReportTime();
     
@@ -445,11 +443,13 @@ void SePrompt::vDumpTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-//  s48K sCommand;
-//  TokenVec* pTknVec = this->pTokenVec();
-//
-//  pTknVec->vToString(sCommand);
-//  vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.szStz());
+#ifdef WITH_TRACE_TOKENS
+  s48K sCommand;
+  TokenVec* pTknVec = this->pTokenVec();
+
+  pTknVec->vToString(sCommand);
+  vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.szStz());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

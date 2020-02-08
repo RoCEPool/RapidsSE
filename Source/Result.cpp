@@ -285,7 +285,7 @@ void Result::vPrintQueueRows(void)
       bool bInvalidCommand = false;
       if (m_bPartHasError) {
         i8 iResponses = m_pOriginResponseVec->nItems();
-        
+
         for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
           if (m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
             bInvalidCommand = true;
@@ -293,7 +293,7 @@ void Result::vPrintQueueRows(void)
           }
         }
       }
-      
+
       if (bInvalidCommand)
         break;
       AM::vNapUsec(250,CN_NONE);

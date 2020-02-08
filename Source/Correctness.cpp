@@ -147,6 +147,10 @@ void Correctness::vTraceWith(void)
 #ifdef WITH_TRACE_PURGING
   vTrace("  WITH_TRACE_PURGING\n"_Stz);
 #endif
+  
+#ifdef WITH_TRACE_TOKENS
+  vTrace("  WITH_TRACE_TOKENS\n"_Stz);
+#endif
 }
 
 

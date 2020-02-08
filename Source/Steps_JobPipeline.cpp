@@ -77,6 +77,35 @@ void Step::vJob_PipelineCancel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Job_Pipeline::compile -- compile the command                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineCompile(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineCompile"_Stz);
+  
+  s4K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+  
+  m_pRegSet->m_xpDynamo = new Dynamo(sCmd);
+  
+  bool bResult = m_pRegSet->m_xpDynamo->bCompile(m_pTask->m_pJob);
+  
+  if ( ! bResult) {
+    delete *m_pRegSet->m_xpDynamo;
+    m_pRegSet->m_xpDynamo = nullptr;
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+  }
+  else {
+    m_pDataStack->vPushInt(EC_NONE);
+    if (AM::bVerbose()) {
+      m_pRegSet->m_xpDynamo->vShow();
+    }
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job_Pipeline.execute -- execute                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineExecute(void)
@@ -105,34 +134,6 @@ void Step::vJob_PipelineExecute(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* Job_Pipeline::compile -- compile the command                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineCompile(void)
-{
-  ENTRY(); // ENTRY("vJob_PipelineCompile"_Stz);
-  
-  s4K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-
-  m_pRegSet->m_xpDynamo = new Dynamo(sCmd);
-  
-  bool bResult = m_pRegSet->m_xpDynamo->bCompile(m_pTask->m_pJob);
-  
-  if ( ! bResult) {
-    delete *m_pRegSet->m_xpDynamo;
-    m_pRegSet->m_xpDynamo = nullptr;
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-  }
-  else {
-    m_pDataStack->vPushInt(EC_NONE);
-    if (AM::bVerbose()) {
-      m_pRegSet->m_xpDynamo->vShow();
-    }
-  }
-  
-  EXIT();
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
