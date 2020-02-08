@@ -242,6 +242,9 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   
   delete m_pInput;
   m_pInput = nullptr;
+  
+  RASSERT(! m_bInClass);
+  RASSERT(! m_bInNamespace);
 }
 
 
@@ -1455,22 +1458,23 @@ void Vortex::vParseFV_FunBody(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 nParenthesis = 1;
-  for (;;) {
-    
-    vGetNextToken(m_oCurTkn);
-    
-    // test for close
-    if (m_oCurTkn.bSame(")"_Stz) && 0 == --nParenthesis)
-      break;
-    
-    if (m_oCurTkn.bSame("("_Stz))
-      nParenthesis++;
-    
-    m_oFunSpec.vAdd(m_oCurTkn.szTerm());
+  if (! m_oCurTkn.bSame(")"_Stz)) {
+    i8 nParenthesis = 1;
+    for (;;) {
+      
+      vGetNextToken(m_oCurTkn);
+      
+      // test for close
+      if (m_oCurTkn.bSame(")"_Stz) && 0 == --nParenthesis)
+        break;
+      
+      if (m_oCurTkn.bSame("("_Stz))
+        nParenthesis++;
+      
+      m_oFunSpec.vAdd(m_oCurTkn.szTerm());
+    }
   }
-
-
+  
   vGetNextToken(m_oCurTkn);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
