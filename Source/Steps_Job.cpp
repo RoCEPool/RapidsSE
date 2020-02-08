@@ -103,7 +103,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
-  vAddStep("job,syntaxError!"_Stz,     &Step::vJobSyntaxErrorStore);
+  vAddStep("job.syntaxError!"_Stz,     &Step::vJobSyntaxErrorStore);
   
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
