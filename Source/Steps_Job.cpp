@@ -103,7 +103,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
-
+  vAddStep("job,syntaxError!"_Stz,     &Step::vJobSyntaxErrorStore);
+  
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
  
@@ -1662,6 +1663,24 @@ void Step::vJobStateDiagram(void)
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
   m_pDataStack->vPushStr(sDiagram);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.syntaxError! -- store the job syntax error                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSyntaxErrorStore(void)
+{
+  ENTRY(); // ENTRY("vJobSyntaxErrorStore"_Stz);
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iJobError = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->vSyntaxError((eEC)iJobError);
+  
+  //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
   EXIT();
 }
