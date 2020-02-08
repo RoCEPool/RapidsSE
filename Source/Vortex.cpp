@@ -569,30 +569,26 @@ void Vortex::vParseHash(void)
   
   if (m_oCurTkn.bSame("define"_Stz)) {
     vParseHashDefine();
-    return;
   }
-
+  else
   if (m_oCurTkn.bSame("if"_Stz)) {
     vParseHashIf();
-    return;
   }
-
+  else
   if (m_oCurTkn.bSame("ifdef"_Stz)) {
     vParseHashIfdef();
-    return;
   }
-
+  else
   if (m_oCurTkn.bSame("include"_Stz)) {
     vParseHashInclude();
-    return;
   }
-
+  else
   if (m_oCurTkn.bSame("pragma"_Stz)) {
     vParseHashPragma();
-    return;
   }
-
-  vThrowProblem(__LINE__);
+  else {
+    vThrowProblem(__LINE__);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -689,21 +685,18 @@ void Vortex::vParseHashPragma(void)
   
   if (m_oCurTkn.bSame("once"_Stz)) {
     vPartRecognised(CP_HASH_PRAGMA_ONCE);
-    
-    bool bMaybe = bGetNextToken();
-    return;
   }
-
+  else
   if (m_oCurTkn.bSame("pack"_Stz)) {
     vGetExpectedToken("("_Stz);
     vDiscardBalancedParenthesis();
     vPartRecognised(CP_HASH_PRAGMA_PACK);
-    
-    bool bMaybe = bGetNextToken();
-    return;
   }
-
-  vThrowProblem(__LINE__);
+  else {
+    vThrowProblem(__LINE__);
+  }
+  
+  bool bMaybe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -958,9 +951,7 @@ void Vortex::vParseTypedef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("typedef"_Stz));
-  
-  vDebugPoint();
-  
+    
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
   vPartRecognised(CP_TYPEDEF);
