@@ -924,7 +924,7 @@ void Vortex::vParseStruct(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: TEMPLATE _^_ < ... > CLASS ...  | <other> ...                       */
+/* parse: TEMPLATE _^_ < params > ...                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTemplate(void)
 {
@@ -934,34 +934,15 @@ void Vortex::vParseTemplate(void)
   RASSERT(m_oCurTkn.bSame("template"_Stz));
         
   vGetExpectedToken("<"_Stz);
-  
   vCollectTemplateSpec(m_oTplSpec);
+  
   vTemplateBegin();
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // class, friend or <funVar<
-  
   vGetNextToken();
+
+  vKeywordDescend();
   
-  if (m_oCurTkn.bSame("class"_Stz)) {
-    //vParseClass();
-    vKeywordDescend();
-    vTemplateEnd();
-    return;
-  }
-  else
-  if (m_oCurTkn.bSame("friend"_Stz)) {
-    //vParseFriend();
-    vKeywordDescend();
-    vTemplateEnd();
-    return;
-  }
-  else {
-    //vParseFunVar();
-    vKeywordDescend();
-    vTemplateEnd();
-    //m_oClassArgs.vReset();
-  }
+  vTemplateEnd();
 }
 
 /*----------------------------------------------------------------------------*/
