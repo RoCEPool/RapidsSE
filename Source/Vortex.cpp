@@ -927,7 +927,7 @@ void Vortex::vParseTypedef(void)
   
   vPartRecognised(CP_TYPEDEF);
   
-  vGetNextToken(m_oCurTkn);
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/
