@@ -95,7 +95,6 @@ namespace Jobs
   
     static EnameSet* pJobInfo_enameSet(Stz* szJobNm);
 
-    void vAddError(eEC eError);
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);

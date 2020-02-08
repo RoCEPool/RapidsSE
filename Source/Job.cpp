@@ -430,30 +430,6 @@ bool Job::bAcksRmgDec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add an error                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vAddError(eEC eError)
-{
-  // get the node id
-  i8 iNode = AM::iThisNodeNo();
-  
-  // create a response vector
-  m_xResult.m_pOriginResponseVec = new ResponseVec();
-  
-  // create a new response
-  Response* pResponse = new Response;
-  
-  m_xResult.m_bPartHasError = true;
-  
-  // set node and error in the response
-  pResponse->m_iNode           = iNode;
-  pResponse->m_eErrorCode      = EC_INVALID_COMMAND;
-  
-  // add the response to the response vector
-  m_xResult.m_pOriginResponseVec->vAdd(pResponse);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add rows processed                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vAddRowsProcessed(i8 iRowsProcessed)
