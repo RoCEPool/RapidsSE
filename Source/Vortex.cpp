@@ -1096,7 +1096,7 @@ void Vortex::vParseFV_Type(void)
     // 3) typeless operator (no specifier)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       vGetNextToken(m_oCurTkn);
-      vParseFV_FunBody();
+      vParseFV_Operator();
       return;
     }
     
@@ -1108,7 +1108,7 @@ void Vortex::vParseFV_Type(void)
   // auto conversion operator
   if (m_oCurTkn.bSame("operator"_Stz)) {
     vGetNextToken(m_oCurTkn);
-    vParseFV_FunBody();
+    vParseFV_Operator();
     return;
   }
 
@@ -1394,13 +1394,19 @@ void Vortex::vParseFV_FunBody(void)
 
   m_bIsFun = true;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nParenthesis = 1;
   for (;;) {
     
     vGetNextToken(m_oCurTkn);
     
     // test for close
-    if (m_oCurTkn.bSame(")"_Stz))
+    if (m_oCurTkn.bSame(")"_Stz) && 0 == --nParenthesis)
       break;
+    
+    if (m_oCurTkn.bSame("("_Stz))
+      nParenthesis++;
     
     m_oFunSpec.vAdd(m_oCurTkn.szTerm());
   }
