@@ -438,6 +438,7 @@ void Vortex::vParseClass(void)
   // forward declaration of a class?
   if (m_oCurTkn.bSame(";"_Stz)) {
     vPartRecognised(CP_FORWARD);
+    m_oClassArgs.vReset();
     return;
   }
 
@@ -473,6 +474,7 @@ void Vortex::vParseClass(void)
 
   vPartRecognised(CP_CLASS_END);
   vClassEnd();
+  m_oClassArgs.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -955,10 +957,10 @@ void Vortex::vParseTemplate(void)
     return;
   }
   else {
-    vParseFunVar();
-    //vKeywordDescend();
+    //vParseFunVar();
+    vKeywordDescend();
     vTemplateEnd();
-    m_oClassArgs.vReset();
+    //m_oClassArgs.vReset();
   }
 }
 
@@ -1783,6 +1785,7 @@ void Vortex::vShiftClassNm(void)
   
   m_sClassNm = m_oFunVarNm.szName(0);
   
+  m_oClassArgs.vReset();
   m_oClassArgs.vCopy(&m_oTypeArgs);
   
   m_oFunVarNm.vReset();
