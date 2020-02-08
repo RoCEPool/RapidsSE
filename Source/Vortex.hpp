@@ -178,17 +178,16 @@ namespace Utilities
     void vTypePop(void);
     void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
-    
-     // - + - + - + - + - + - + - + - + - + - + - + - +
-     // machinary
-   
-     bool bContinueAgain(void);
-     void vPartRecognised(eCP eCppPart);
-     void vThrowProblem(i8 i_Problem);
-     void vTraceFunVarNm(void);
-     void vTraceNamespaceNm(void);
-     void vTraceTypeArgs(void);
-     void vTraceTypeSpec(void);
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // machinary
+
+    bool bContinueAgain(void);
+    void vPartRecognised(eCP eCppPart);
+    void vThrowProblem(i8 i_Problem);
+    void vTraceFunVarNm(void);
+    void vTraceNamespaceNm(void);
+    void vTraceTypeArgs(void);
+    void vTraceTypeSpec(void);
 
    private:
     Footer* aFooter(void);
