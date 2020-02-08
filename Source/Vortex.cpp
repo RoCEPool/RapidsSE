@@ -1210,7 +1210,7 @@ void Vortex::vParseMembers(bool bSemiTerminated)
     if (m_oCurTkn.bSame("}"_Stz)) {
       if (bSemiTerminated)
         vGetExpectedToken(m_oCurTkn,";"_Stz);
-      vGetNextToken(m_oCurTkn);
+      bool bMaybe = bGetNextToken(m_oCurTkn);
       return;
     }
     
