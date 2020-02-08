@@ -295,6 +295,7 @@ void Vortex::vKeywordDescend(void)
   if (m_oCurTkn.bSame("friend"_Stz))    vParseFriend();    else
   if (m_oCurTkn.bSame("#"_Stz))         vParseHash();      else
   if (m_oCurTkn.bSame("namespace"_Stz)) vParseNamespace(); else
+  if (m_oCurTkn.bSame("public"_Stz))    vParsePublic();    else
   if (m_oCurTkn.bSame(";"_Stz))         vParseSemicolon(); else
   if (m_oCurTkn.bSame("static"_Stz))    vParseStatic();    else
   if (m_oCurTkn.bSame("struct"_Stz))    vParseStruct();    else
@@ -718,6 +719,23 @@ void Vortex::vParseNamespace(void)
     
   } // while more tokens
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse: ; _^_                                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParsePublic(void)
+{
+  FNENTRY
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_oCurTkn.bSame("public"_Stz));
+
+  vGetExpectedToken(m_oCurTkn,":"_Stz);
+
+  vPartRecognised(CP_LABEL);
+  
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*----------------------------------------------------------------------------*/

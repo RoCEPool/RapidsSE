@@ -120,6 +120,7 @@ namespace Utilities
     void vParseHashInclude(void);
     void vParseHashPragma(void);
     void vParseNamespace(void);
+    void vParsePublic(void);
     void vParseSemicolon(void);
     void vParseStatic(void);
     void vParseStruct(void);
