@@ -402,7 +402,6 @@ void Vortex::vParseClass(void)
   }
 
   if (m_oCurTkn.bSame(":"_Stz)) {
-    vTraceClassNm();
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_BASE_BEGIN);
     vGetNextToken(m_oCurTkn);
@@ -410,7 +409,6 @@ void Vortex::vParseClass(void)
   }
   else
   if (m_oCurTkn.bSame("{"_Stz)) {
-    vTraceClassNm();
     vPartRecognised(CP_CLASS_BEGIN);
     vPartRecognised(CP_MEMBERS_BEGIN);
     vGetNextToken(m_oCurTkn);
@@ -2043,7 +2041,6 @@ void Vortex::vClassAscend(void)
   
   RASSERT(m_bInClass);
 
-  vTraceClassNm();
   vTypePop();
 
   m_bInClass = false;
@@ -2064,6 +2061,8 @@ void Vortex::vClassDescend(Stz* szClassNm)
   
   m_sClassNm = szClassNm;
   m_bInClass = true;
+  
+  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2079,21 +2078,6 @@ bool Vortex::bContinueAgain(void)
     return false;
   else
     return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDiscardNextToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xTkn;
-  
-  CHECKED(m_pInput->bGetToken(&xTkn))
-  
-  if (m_bTrace)
-    TRACE("Discarding: %s\n"_Stz,xTkn.azTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2235,19 +2219,6 @@ void Vortex::vThrowProblem(i8 i_Problem)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   throw i_Problem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace class name                                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTraceClassNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (!m_bTrace)
-    return;
-  
-  TRACE("  ClassNm: %s\n"_Stz,m_sClassNm.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

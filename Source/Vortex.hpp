@@ -182,16 +182,11 @@ namespace Utilities
     void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
     bool bIgnoreOptLabel(Stz* szSawTerm);
-  
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // terms
-  
-  
+    
      // - + - + - + - + - + - + - + - + - + - + - + - +
      // machinary
    
      bool bContinueAgain(void);
-     void vDiscardNextToken(void);
      void vGetExpectedToken(Token& roToken, Stz* szExpect);
      bool bGetNextToken(Token& roToken);
      void vGetNextToken(Token& roToken);
@@ -203,7 +198,6 @@ namespace Utilities
      void vTemplateAscend(void);
      void vTemplateDescend(void);
      void vThrowProblem(i8 i_Problem);
-     void vTraceClassNm(void);
      void vTraceFunVarNm(void);
      void vTraceNamespaceNm(void);
      void vTraceTypeArgs(void);
