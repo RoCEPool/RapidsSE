@@ -66,7 +66,8 @@ namespace Prompt
     bool bExecutePipeline(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
-    void vFindJobClass(void);
+    bool bFindJobClass(void);
+    bool bFindMatch(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
     Input* pInput(void);

@@ -170,7 +170,11 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    vFindJobClass();
+    if (! bFindMatch()) {
+      vUnknownCommand();
+      vDumpTokenVec();
+      continue;
+    }
 
     if (! bPassesLowMem())
       continue;
@@ -506,29 +510,42 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a request which matches the command tokens                            */
+/* find job class                                                             */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vFindJobClass(void)
+bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  // attempt to find a job class which matches the command tokens
+  
   Stz* aCommand1 = pTkn(0)->szTerm();
   Stz* aCommand2 = pTkn(1)->szTerm();
   
   m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
+
+  if (! m_aJobClass)
+    return false;
   
-  if (m_aJobClass)
-    return;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find a request which matches the command tokens                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bFindMatch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  // attempt to find a job class which matches the command tokens
+  if (bFindJobClass())
+    return true;
   
   // is the command token a forth-word marked as prompt?
   if (bIsPromptWord())
-    return;
+    return true;
   
   // give command to the universal job
   m_aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
   
-  return;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -609,6 +626,9 @@ bool SePrompt::bIsPromptWord(void)
   pTknVec->vAddToken("docol"_Stz);
   pTknVec->vAddToken(sWordNm);
   pTknVec->vSetTokens();
+  
+  if (! bFindJobClass())
+    return false;
 
   return true;
 }
