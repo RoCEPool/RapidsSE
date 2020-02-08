@@ -434,8 +434,9 @@ void Vortex::vParseConst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("const"_Stz));
-  RASSERT(0 == m_oOtherTerms.nItems());
+  //RASSERT(0 == m_oOtherTerms.nItems());
 
+  m_oOtherTerms.vReset();
 
   // get <type>
   vGetNextToken(m_oCurTkn);
@@ -1616,7 +1617,9 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  RASSERT(0 == m_oOtherTerms.nItems());
+  //RASSERT(0 == m_oOtherTerms.nItems());
+  
+  m_oOtherTerms.vReset();
   
   Token xTkn;
   for (;;) {
