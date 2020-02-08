@@ -341,7 +341,7 @@ void Vortex::vParseBaseList(void)
     // collect optional template arguments <...>
     if (szTerm->bSame("<"_Stz)) {
      
-      vCollectTemplateArgs(m_oTypeArgs);
+      vCollectTypeArgs(m_oTypeArgs);
       pInherit->vTplArgs(&m_oTypeArgs);
       m_oTypeArgs.vReset();
      
@@ -1180,7 +1180,7 @@ void Vortex::vParseFV_Type(void)
       
       // do we have template arguments?
       if (m_oCurTkn.bSame("<"_Stz)) {
-        vCollectTemplateArgs(m_oTypeArgs);
+        vCollectTypeArgs(m_oTypeArgs);
         vGetNextToken(m_oCurTkn);
       }
       
@@ -1236,7 +1236,7 @@ void Vortex::vParseFV_Type(void)
   
   // do we have template arguments?
   if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTemplateArgs(m_oTypeArgs);
+    vCollectTypeArgs(m_oTypeArgs);
     vGetNextToken(m_oCurTkn);
   }
   
@@ -1387,7 +1387,7 @@ void Vortex::vParseFV_Name(void)
     return;
   }
   
-  vCollectTemplateArgs(m_oTypeArgs);
+  vCollectTypeArgs(m_oTypeArgs);
   vPartRecognised(CP_TYPE_ARGS);
   
   vGetNextToken(m_oCurTkn);
@@ -1687,7 +1687,8 @@ void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
   Token xTkn;
   for (;;) {
     
-    vGetOtherTerm(xTkn);
+    vGetNextToken(xTkn);
+    roTerms.vAdd(xTkn.szTerm());
     
     // test for close
     if (xTkn.bSame(szClose))
@@ -1745,13 +1746,14 @@ void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
   
   //RASSERT(0 == m_oOtherTerms.nItems());
   
-  m_oOtherTerms.vReset();
+  roTerms.vReset();
   
   Token xTkn;
   for (;;) {
     
-    vGetOtherTerm(xTkn);
-    
+    vGetNextToken(xTkn);
+    roTerms.vAdd(xTkn.szTerm());
+
     // test for terminating ;
     if (xTkn.bSame(";"_Stz))
       return;
@@ -1768,45 +1770,16 @@ void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect all template arguments : < _^_ ... >                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vCollectTemplateArgs(EnameSet& roTplArgs)
-{
-  FN
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_oCurTkn.bSame("<"_Stz));
-
-  roTplArgs.vReset();
-    
-  Token xTkn;
-  
-  // collect ... >
-  while (bGetNextToken(xTkn)) {
-    if (xTkn.bSame(">"_Stz))
-      break;
-    roTplArgs.vAdd(xTkn.szTerm());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  s48K sTerms;
-  roTplArgs.vNamesString(sTerms);
-  
-  TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* collect all template parameters : TEMPLATE  < _^_ ... >                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTemplateSpec(EnameSet& roTplSpec)
+void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
 {
   FN
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("<"_Stz));
 
-  roTplSpec.vReset();
+  roTplSepc.vReset();
     
   Token xTkn;
   
@@ -1814,17 +1787,46 @@ void Vortex::vCollectTemplateSpec(EnameSet& roTplSpec)
   while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
-    roTplSpec.vAdd(xTkn.szTerm());
+    roTplSepc.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTerms;
-  roTplSpec.vNamesString(sTerms);
+  roTplSepc.vNamesString(sTerms);
   
   m_sTplSpec = "<"_Stz;
   m_sTplSpec.vConcat(sTerms);
   m_sTplSpec.vConcat("> "_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect all template arguments : < _^_ ... >                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vCollectTypeArgs(EnameSet& roTypeArgs)
+{
+  FN
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_oCurTkn.bSame("<"_Stz));
+
+  roTypeArgs.vReset();
+    
+  Token xTkn;
+  
+  // collect ... >
+  while (bGetNextToken(xTkn)) {
+    if (xTkn.bSame(">"_Stz))
+      break;
+    roTypeArgs.vAdd(xTkn.szTerm());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  s48K sTerms;
+  roTypeArgs.vNamesString(sTerms);
+  
+  TRACE("  TplArgs: %s\n"_Stz,sTerms.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2178,18 +2180,6 @@ void Vortex::vGetNextToken(Token& roToken)
   
   if (! b)
     vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next token as per normal but also and put it into m_oOtherTerms        */
-/*----------------------------------------------------------------------------*/
-void Vortex::vGetOtherTerm(Token& roTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  CHECKED(bGetNextToken(roTerm))
-  
-  m_oOtherTerms.vAdd(roTerm.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
