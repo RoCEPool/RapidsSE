@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForwardClasses.h -- Forward Class declarations                             */
+/* Namespaces.h -- Namespaces and Forward Class declarations                  */
 /*============================================================================*/
 #pragma once
 

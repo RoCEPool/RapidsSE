@@ -990,7 +990,8 @@ void Vortex::vParseUsing(void)
   vGetExpectedToken(m_oCurTkn,";"_Stz);
   
   vPartRecognised(CP_USING);
-  vGetNextToken(m_oCurTkn);
+  
+  bool bMaybe = bGetNextToken(m_oCurTkn);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
