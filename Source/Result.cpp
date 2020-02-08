@@ -49,11 +49,15 @@ Result::Result(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT);
   
   m_sMetadata          = ""_Stz;
+  
   m_eSyntaxError       = EC_NONE;
   //m_xJobResponse
-  m_pOriginBufferQueue = nullptr;
+  m_bJobHasError       = false;
+  
   m_pOriginResponseVec = nullptr;
   m_bPartHasError      = false;
+  
+  m_pOriginBufferQueue = nullptr;
   
   _checkInitialised_(CN_RESULT);
   

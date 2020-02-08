@@ -10,11 +10,17 @@ namespace Jobs
 
   public:
     s4K          m_sMetadata;          // meta data of result
+    
+    // this job
     eEC          m_eSyntaxError;       // syntax errors
+    bool         m_bJobHasError;       // this job has an error
     Response     m_xJobResponse;       // response of this job
-    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
-    ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
+    
+    // participant responses
     bool         m_bPartHasError;      // participant has an error
+    ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
+    
+    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
     // must be last
     Footer m_xFooter;
