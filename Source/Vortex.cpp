@@ -967,7 +967,7 @@ void Vortex::vParseUnion(void)
 
   vTypePush(sUnionNm,MT_UNION,CP_UNION);
   vParseMembers(true);
-
+  vTypePop();
 }
 
 /*----------------------------------------------------------------------------*/
