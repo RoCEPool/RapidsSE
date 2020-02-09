@@ -80,31 +80,18 @@ namespace Utilities
 
   private:
   
-    void vEnter(char* azFunc);
-    void vEnter_short(char* azFunc);
-
-    void vGetExpectedToken(Stz* szExpect);
-    bool bGetNextToken(void);
-    void vGetNextToken(void);
-
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
   
     bool bParseAllParts(void);
     void vKeywordDescend(void);
   
-    void vParseBaseList(void);
     void vParseClass(void);
     void vParseConst(void);
     void vParseEnum(void);
     void vParseExtern(void);
     void vParseFriend(void);
     void vParseHash(void);
-    void vParseHashDefine(void);
-    void vParseHashIf(void);
-    void vParseHashIfdef(void);
-    void vParseHashInclude(void);
-    void vParseHashPragma(void);
     void vParseInline(void);
     void vParseNamespace(void);
     void vParseOpenSquare(void);
@@ -117,10 +104,36 @@ namespace Utilities
     void vParseUnion(void);
     void vParseUnsigned(void);
     void vParseUsing(void);
+    void vParseVarFun(void);
 
+    void vParse_ClassBase(void);
+    void vParse_MemberSet(void);
+  
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // function / variable processing
+
+    void vHash_Define(void);
+    void vHash_If(void);
+    void vHash_Ifdef(void);
+    void vHash_Include(void);
+    void vHash_Pragma(void);
+  
+    bool bLabel_Opt(void);
+
+    void vVarFun_Type(void);
+    void vVarFun_Name(void);
+
+    void vVarFun_AryFunVar(void);
+    void vVarFun_Array(void);
+    void vVarFun_Constructor(void);
+    void vVarFun_Field(void);
+    void vVarFun_FunBody(void);
+    void vVarFun_Operator(void);
+    void vVarFun_Variable(void);
+  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // begin and end
-  
+
     void vClassBegin(Stz* szClassNm);
     void vClassEnd(void);
     void vNamepaceBegin(Stz* szNamespaceNm);
@@ -129,27 +142,17 @@ namespace Utilities
     void vTemplateEnd(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // function variable gather
+    // meta members and type
+    
+    void vMemberNew(void);
+    
+    void vTypeNew_class(Stz* szClassNm);
+    void vTypeNew_struct(Stz* szStructNm);
+    void vTypeNew_union(Stz* szUnionNm);
+    
+    void vTypePop(void);
+    void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
 
-    void vParseMembers(void);
-  
-    void vParseFunVar(void);
-
-    void vParseFV_Type(void);
-    void vParseFV_Name(void);
-
-    void vParseFV_AryFunVar(void);
-    void vParseFV_Array(void);
-    void vParseFV_Constructor(void);
-    void vParseFV_Field(void);
-    void vParseFV_FunBody(void);
-    void vParseFV_Operator(void);
-    void vParseFV_Variable(void);
-
-    bool bParseLabel_Opt(void);
-
-    void vShiftClassNm(void);
-  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
 
@@ -169,17 +172,14 @@ namespace Utilities
     void vDiscardStaticTokens(void);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
  
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // meta members and type
-    
-    void vMemberNew(void);
-    
-    void vTypeNew_class(Stz* szClassNm);
-    void vTypeNew_struct(Stz* szStructNm);
-    void vTypeNew_union(Stz* szUnionNm);
-  
-    void vTypePop(void);
-    void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
+    void vEnter(char* azFunc);
+    void vEnter_short(char* azFunc);
+
+    void vGetExpectedToken(Stz* szExpect);
+    bool bGetNextToken(void);
+    void vGetNextToken(void);
+
+    void vShiftClassNm(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
