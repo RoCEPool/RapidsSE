@@ -107,7 +107,7 @@ namespace Utilities
     void vParseVarFun(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // 
+    //
 
     void vBase_List(void);
     void vMembers_List(void);
@@ -188,7 +188,7 @@ namespace Utilities
     // machinary
 
     bool bContinueAgain(void);
-    void vPartRecognised(eCP eCppPart);
+    void vRecognisedPart(eCP eCppPart);
     void vThrowProblem(i8 i_Problem);
     void vTraceFunVarNm(void);
     void vTraceNamespaceNm(void);

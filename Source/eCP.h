@@ -31,6 +31,7 @@ enum eCP // c++ part
   /*    */ CP_HASH_PRAGMA_PACK,    // # pragma pack
   /*    */ CP_INHERITED_CLASS,     // inherited class
   /*    */ CP_LABEL,               // class member label
+  /*    */ CP_MEMBER_FUNCTION,     // member function
   /*    */ CP_MEMBER_VARIABLE,     // member variable
   /*    */ CP_MEMBERS_BEGIN,       // members
   /*    */ CP_MEMBERS_END,         // members end
@@ -47,8 +48,6 @@ enum eCP // c++ part
   /*    */ CP_USING,               // using namespace
   /*    */ CP_VARIABLE,            // variable
   
-  /*    */ CP__CRUDELY__,          // other  (to be refined)
-
   /*    */ CP_ENUMS
 };
 
@@ -80,6 +79,7 @@ static Stz* aCP[]
   /*    */ "CP_HASH_PRAGMA_PACK"_Stz,
   /*    */ "CP_INHERITED_CLASS"_Stz,
   /*    */ "CP_LABEL"_Stz,
+  /*    */ "CP_MEMBER_FUNCTION"_Stz,
   /*    */ "CP_MEMBER_VARIABLE"_Stz,
   /*    */ "CP_MEMBERS_BEGIN"_Stz,
   /*    */ "CP_MEMBERS_END"_Stz,
@@ -96,8 +96,6 @@ static Stz* aCP[]
   /*    */ "CP_USING"_Stz,
   /*    */ "CP_VARIABLE"_Stz,
   
-  /*    */ "CP__CRUDELY__"_Stz,
-
   /*    */ "ENUMS"_Stz
 };
 

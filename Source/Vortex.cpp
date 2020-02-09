@@ -474,7 +474,7 @@ void Vortex::vParseClass(void)
   
   // forward declaration of a class?
   if (m_oCurTkn.bSame(";"_Stz)) {
-    vPartRecognised(CP_FORWARD);
+    vRecognisedPart(CP_FORWARD);
     m_oClassArgs.vReset();
     return;
   }
@@ -488,15 +488,15 @@ void Vortex::vParseClass(void)
   }
 
   if (m_oCurTkn.bSame(":"_Stz)) {
-    vPartRecognised(CP_CLASS_BEGIN);
-    vPartRecognised(CP_BASE_BEGIN);
+    vRecognisedPart(CP_CLASS_BEGIN);
+    vRecognisedPart(CP_BASE_BEGIN);
     vGetNextToken();
     vBase_List();
   }
   else
   if (m_oCurTkn.bSame("{"_Stz)) {
-    vPartRecognised(CP_CLASS_BEGIN);
-    vPartRecognised(CP_MEMBERS_BEGIN);
+    vRecognisedPart(CP_CLASS_BEGIN);
+    vRecognisedPart(CP_MEMBERS_BEGIN);
     vGetNextToken();
     vMembers_List();
     CHECKED(m_oCurTkn.bSame(";"_Stz));
@@ -507,7 +507,7 @@ void Vortex::vParseClass(void)
     vThrowProblem(__LINE__);
   }
 
-  vPartRecognised(CP_CLASS_END);
+  vRecognisedPart(CP_CLASS_END);
   vClassEnd();
   m_oClassArgs.vReset();
 }
@@ -548,7 +548,7 @@ void Vortex::vParseConst(void)
   ConstDef* pConstDef = m_p_ConstSet->pAddConstDef(m_sConstNm);
   pConstDef->vTerms(m_oOtherTerms);
 
-  vPartRecognised(CP_CONST);
+  vRecognisedPart(CP_CONST);
   
   m_oOtherTerms.vReset();
   
@@ -567,7 +567,7 @@ void Vortex::vParseEnum(void)
     
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vPartRecognised(CP_ENUM);
+  vRecognisedPart(CP_ENUM);
 
   bool bMaybe = bGetNextToken();
 }
@@ -584,7 +584,7 @@ void Vortex::vParseExtern(void)
     
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vPartRecognised(CP_ENUM);
+  vRecognisedPart(CP_ENUM);
 
   bool bMaybe = bGetNextToken();
 }
@@ -602,7 +602,7 @@ void Vortex::vParseFriend(void)
   
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vPartRecognised(CP_FRIEND);
+  vRecognisedPart(CP_FRIEND);
   
   bool bMaybe = bGetNextToken();
 }
@@ -663,7 +663,7 @@ void Vortex::vParseNamespace(void)
   vGetExpectedToken("{"_Stz);
 
   vTraceNamespaceNm();
-  vPartRecognised(CP_NAMESPACE_BEGIN);
+  vRecognisedPart(CP_NAMESPACE_BEGIN);
   
   vGetNextToken();
 
@@ -675,7 +675,7 @@ void Vortex::vParseNamespace(void)
     // test for } being end-of-namespace
     if (m_oCurTkn.bSame("}"_Stz))  {
       vTraceNamespaceNm();
-      vPartRecognised(CP_NAMESPACE_END);
+      vRecognisedPart(CP_NAMESPACE_END);
       vNamepaceEnd();
       
       bool bMaybe = bGetNextToken();
@@ -725,7 +725,7 @@ void Vortex::vParsePublic(void)
 
   vGetExpectedToken(":"_Stz);
 
-  vPartRecognised(CP_LABEL);
+  vRecognisedPart(CP_LABEL);
   
   bool bMaybe = bGetNextToken();
 }
@@ -740,7 +740,7 @@ void Vortex::vParseSemicolon(void)
 
   RASSERT(m_oCurTkn.bSame(";"_Stz));
   
-  vPartRecognised(CP_EMPTY);
+  vRecognisedPart(CP_EMPTY);
   
   bool bMaybe = bGetNextToken();
 }
@@ -851,7 +851,7 @@ void Vortex::vParseStruct(void)
 
   // <#> handle member name
   
-  vPartRecognised(CP_STRUCT);
+  vRecognisedPart(CP_STRUCT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -888,7 +888,7 @@ void Vortex::vParseTypedef(void)                           // MORE WORK REQUIRED
     
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vPartRecognised(CP_TYPEDEF);
+  vRecognisedPart(CP_TYPEDEF);
   
   bool bMaybe = bGetNextToken();
 }
@@ -968,7 +968,7 @@ void Vortex::vParseUsing(void)
   // get ;
   vGetExpectedToken(";"_Stz);
   
-  vPartRecognised(CP_USING);
+  vRecognisedPart(CP_USING);
   
   bool bMaybe = bGetNextToken();
 }
@@ -1038,7 +1038,7 @@ void Vortex::vBase_List(void)
 
     // add inherited type to current type
     MetaInherit* pInherit = m_p_MetaType->pAddInherit(szInheritedClassNm);
-    vPartRecognised(CP_INHERITED_CLASS);
+    vRecognisedPart(CP_INHERITED_CLASS);
 
     vGetNextToken();
 
@@ -1054,7 +1054,7 @@ void Vortex::vBase_List(void)
 
     // base list is terminated by open brace, being the beginning of members
     if (szTerm->bSame("{"_Stz)) {
-      vPartRecognised(CP_BASE_END);
+      vRecognisedPart(CP_BASE_END);
       vGetNextToken();
       break;
     }
@@ -1112,7 +1112,7 @@ void Vortex::vHash_Define(void)
     vGetNextToken();
   }
       
-  vPartRecognised(CP_HASH_DEFINE);
+  vRecognisedPart(CP_HASH_DEFINE);
  
   bool bMaybe = bGetNextToken();
 }
@@ -1132,7 +1132,7 @@ void Vortex::vHash_If(void)
     vGetNextToken();
   }
       
-  vPartRecognised(CP_HASH_IF);
+  vRecognisedPart(CP_HASH_IF);
   
   bool bMaybe = bGetNextToken();
 }
@@ -1152,7 +1152,7 @@ void Vortex::vHash_Ifdef(void)
     vGetNextToken();
   }
       
-  vPartRecognised(CP_HASH_IF);
+  vRecognisedPart(CP_HASH_IF);
   
   bool bMaybe = bGetNextToken();
 }
@@ -1172,7 +1172,7 @@ void Vortex::vHash_Include(void)
   if (m_oCurTkn.bSame("<"_Stz))
     vDiscardBalancedAngles();
     
-  vPartRecognised(CP_HASH_INCLUDE);
+  vRecognisedPart(CP_HASH_INCLUDE);
   
   bool bMaybe = bGetNextToken();
 }
@@ -1190,13 +1190,13 @@ void Vortex::vHash_Pragma(void)
   vGetNextToken();
   
   if (m_oCurTkn.bSame("once"_Stz)) {
-    vPartRecognised(CP_HASH_PRAGMA_ONCE);
+    vRecognisedPart(CP_HASH_PRAGMA_ONCE);
   }
   else
   if (m_oCurTkn.bSame("pack"_Stz)) {
     vGetExpectedToken("("_Stz);
     vDiscardBalancedParenthesis();
-    vPartRecognised(CP_HASH_PRAGMA_PACK);
+    vRecognisedPart(CP_HASH_PRAGMA_PACK);
   }
   else {
     vThrowProblem(__LINE__);
@@ -1331,7 +1331,7 @@ void Vortex::vVarFun_Type(void)
     vGetNextToken();
 
   vTraceTypeSpec();
-  vPartRecognised(CP_TYPE_SPECIFICATION);
+  vRecognisedPart(CP_TYPE_SPECIFICATION);
   vVarFun_Name();
 }
 
@@ -1360,7 +1360,7 @@ void Vortex::vVarFun_Name(void)
     vGetExpectedToken("("_Stz);
     vCollectBalancedParenthesis(m_oOtherTerms);
 
-    vPartRecognised(CP_FUNCTION_POINTER);
+    vRecognisedPart(CP_FUNCTION_POINTER);
     
     vGetNextToken();
     
@@ -1381,7 +1381,7 @@ void Vortex::vVarFun_Name(void)
   else if (m_oCurTkn.bSame("~"_Stz)) {
     vGetNextToken();
     m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
-    vPartRecognised(CP_DESTRUCTOR);
+    vRecognisedPart(CP_DESTRUCTOR);
     vGetNextToken();
     
     vVarFun_AryFunVar();
@@ -1391,7 +1391,7 @@ void Vortex::vVarFun_Name(void)
   // we have a <name>
   m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
   vTraceFunVarNm();
-  vPartRecognised(CP_FUNVAR_NAME);
+  vRecognisedPart(CP_FUNVAR_NAME);
 
   vGetNextToken();
   
@@ -1402,7 +1402,7 @@ void Vortex::vVarFun_Name(void)
   }
   
   vCollectTypeArgs(m_oTypeArgs);
-  vPartRecognised(CP_TYPE_ARGS);
+  vRecognisedPart(CP_TYPE_ARGS);
   
   vGetNextToken();
   
@@ -1516,9 +1516,9 @@ void Vortex::vVarFun_Array(void)
   
   CHECKED(m_oCurTkn.bSame(";"_Stz));
   
-  vPartRecognised(CP_ARRAY_SPEC);
+  vRecognisedPart(CP_ARRAY_SPEC);
 
-  vPartRecognised(CP_MEMBER_VARIABLE);
+  vRecognisedPart(CP_MEMBER_VARIABLE);
   
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
@@ -1551,7 +1551,7 @@ void Vortex::vVarFun_Field(void)
 
   vGetExpectedToken(";"_Stz);
   
-  vPartRecognised(CP_MEMBER_VARIABLE);
+  vRecognisedPart(CP_MEMBER_VARIABLE);
 
   vGetNextToken();
 }
@@ -1630,13 +1630,20 @@ void Vortex::vVarFun_FunBody(void)
 
     vDiscardBalancedBraces();
   
-    vPartRecognised(CP_FUNCTION_BODY);
+    vRecognisedPart(CP_FUNCTION_BODY);
   }
-  
+  else {
+    vDebugPoint();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vPartRecognised(CP__CRUDELY__);
+  if (m_bInClass) {
+    vRecognisedPart(CP_MEMBER_FUNCTION);
+  }
+  else {
+    vRecognisedPart(CP_FUNCTION);
+  }
   
   bool bMayBe = bGetNextToken();
 
@@ -1674,11 +1681,12 @@ void Vortex::vVarFun_Variable(void)
   if (m_bInClass) {
     vTraceTypeSpec();
     vTraceFunVarNm();
-    vPartRecognised(CP_MEMBER_VARIABLE);
+    vRecognisedPart(CP_MEMBER_VARIABLE);
   }
-  else
-    vPartRecognised(CP__CRUDELY__);
-
+  else {
+    vRecognisedPart(CP_VARIABLE);
+  }
+  
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
   
@@ -1696,7 +1704,7 @@ bool Vortex::bLabel_Opt(void)
   if (m_oCurTkn.bSame("private"_Stz)) {
     CHECKED(bGetNextToken());
     CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
+    vRecognisedPart(CP_LABEL);
     vGetNextToken();
     return true;
   }
@@ -1704,7 +1712,7 @@ bool Vortex::bLabel_Opt(void)
   if (m_oCurTkn.bSame("protected"_Stz)) {
     CHECKED(bGetNextToken());
     CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
+    vRecognisedPart(CP_LABEL);
     vGetNextToken();
     return true;
   }
@@ -1712,7 +1720,7 @@ bool Vortex::bLabel_Opt(void)
   if (m_oCurTkn.bSame("public"_Stz)) {
     CHECKED(bGetNextToken());
     CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vPartRecognised(CP_LABEL);
+    vRecognisedPart(CP_LABEL);
     vGetNextToken();
     return true;
   }
@@ -2160,7 +2168,7 @@ bool Vortex::bContinueAgain(void)
 /*----------------------------------------------------------------------------*/
 /* recognised c++ part                                                        */
 /*----------------------------------------------------------------------------*/
-void Vortex::vPartRecognised(eCP eCppPart)
+void Vortex::vRecognisedPart(eCP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
