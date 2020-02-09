@@ -106,12 +106,12 @@ namespace Utilities
     void vParseUsing(void);
     void vParseVarFun(void);
 
-    void vParse_ClassBase(void);
-    void vParse_MemberSet(void);
-  
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // function / variable processing
+    // 
 
+    void vBase_List(void);
+    void vMembers_List(void);
+  
     void vHash_Define(void);
     void vHash_If(void);
     void vHash_Ifdef(void);
@@ -119,6 +119,9 @@ namespace Utilities
     void vHash_Pragma(void);
   
     bool bLabel_Opt(void);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // function / variable processing
 
     void vVarFun_Type(void);
     void vVarFun_Name(void);
