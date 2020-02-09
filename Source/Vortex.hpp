@@ -189,8 +189,11 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
 
+    bool bIsActive(eVP eSyntaxElement);
+    void vClearElement(eVP eSyntaxElement);
     bool bContinueAgain(void);
     void vRecognisedPart(eCP eCppPart);
+    void vSawElement(eVP eSyntaxElement);
     void vThrowProblem(i8 i_Problem);
     void vTraceFunVarNm(void);
     void vTraceNamespaceNm(void);

@@ -2151,6 +2151,28 @@ void Vortex::vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
+/* is syntax element active?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bIsActive(eVP eSyntaxElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  bool bActive = m_baSaw[eSyntaxElement];
+
+  return bActive;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear given syntax element                                                  */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClearElement(eVP eSyntaxElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_baSaw[eSyntaxElement] = false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get keystroke to continue again                                            */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bContinueAgain(void)
@@ -2180,6 +2202,16 @@ void Vortex::vRecognisedPart(eCP eCppPart)
   
   if (m_bContPart)
     m_bContPart = bContinueAgain();
+}
+
+/*----------------------------------------------------------------------------*/
+/* saw given syntax element                                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vSawElement(eVP eSyntaxElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_baSaw[eSyntaxElement] = true;
 }
 
 /*----------------------------------------------------------------------------*/
