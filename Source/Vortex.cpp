@@ -448,7 +448,7 @@ void Vortex::vKeywordDescend(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* parse: CLASS _^_ <name> : ...  | { ...                                     */
+/* CLASS _^_ <name> ; | : ... | { ...                                  branch */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClass(void)
 {
@@ -465,18 +465,19 @@ void Vortex::vParseClass(void)
   s32 sClassNm = m_oCurTkn.szTerm();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get ; or : or {
+  // get `;` or `:` or `{`
   
   vGetNextToken();
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // branch
+  
   // forward declaration of a class?
   if (m_oCurTkn.bSame(";"_Stz)) {
     vPartRecognised(CP_FORWARD);
     m_oClassArgs.vReset();
     return;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
   vClassBegin(sClassNm);
@@ -512,7 +513,7 @@ void Vortex::vParseClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: [STATIC] CONST _^_ ... ;                                            */
+/* CONST _^_ <type> <name> = <terms>                                     leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseConst(void)
 {
@@ -555,7 +556,7 @@ void Vortex::vParseConst(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: ENUM _^_ ... ;                                                      */
+/* parse: ENUM _^_ ... ;                                       discard till ; */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseEnum(void)
 {
@@ -572,7 +573,7 @@ void Vortex::vParseEnum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: EXTERN _^_ ... ;                                                    */
+/* EXTERN _^_ ... ;                                            discard till ; */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseExtern(void)
 {
@@ -589,7 +590,7 @@ void Vortex::vParseExtern(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: FRIEND _^_ ... ;                                                    */
+/* FRIEND _^_ ... ;                                            discard till ; */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFriend(void)
 {
@@ -607,7 +608,7 @@ void Vortex::vParseFriend(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                */
+/* # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                branch */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(void)
 {
@@ -618,11 +619,11 @@ void Vortex::vParseHash(void)
     
   CHECKED(bGetNextToken());
   
-  if (m_oCurTkn.bSame("define"_Stz))  { vHash_Define();  }   else
-  if (m_oCurTkn.bSame("if"_Stz))      { vHash_If();      }   else
-  if (m_oCurTkn.bSame("ifdef"_Stz))   { vHash_Ifdef();   }   else
-  if (m_oCurTkn.bSame("include"_Stz)) { vHash_Include(); }   else
-  if (m_oCurTkn.bSame("pragma"_Stz))  { vHash_Pragma();  }   else
+  if (m_oCurTkn.bSame("define"_Stz))  vHash_Define();    else
+  if (m_oCurTkn.bSame("if"_Stz))      vHash_If();        else
+  if (m_oCurTkn.bSame("ifdef"_Stz))   vHash_Ifdef();     else
+  if (m_oCurTkn.bSame("include"_Stz)) vHash_Include();   else
+  if (m_oCurTkn.bSame("pragma"_Stz))  vHash_Pragma();    else
   {
     vThrowProblem(__LINE__);
   }
