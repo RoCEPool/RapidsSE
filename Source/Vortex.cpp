@@ -49,6 +49,9 @@ Vortex::Vortex(void)
   
   // working
   
+  for (i8 i_Saw = 0; i_Saw < VP_ENUMS; i_Saw++)
+    m_baSaw[i_Saw] = false;
+  
   m_bInClass     = false;
   m_sClassNm     = C_NO_NAME;
   m_bInNamespace = false;

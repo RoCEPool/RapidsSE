@@ -32,6 +32,8 @@ namespace Utilities
   
     // working section
   
+    bool        m_baSaw[VP_ENUMS]; // which syntax elements are active?
+  
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
