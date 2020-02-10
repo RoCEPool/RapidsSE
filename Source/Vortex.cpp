@@ -1038,7 +1038,7 @@ void Vortex::vParseVarFun(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vVarFun_Type();
+  vVarFun_SequenceBegin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1325,6 +1325,18 @@ void Vortex::vMembers_List(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                      variable / function sequence                          */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* beginning of var/fun sequence                                sequence leaf */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_SequenceBegin(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vVarFun_Type();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* collect type spec for variable or function -> vVarFun_Name()      sequence */
@@ -1815,14 +1827,15 @@ void Vortex::vVarFun_FunCode(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
+
+  RASSERT(m_oCurTkn.bSame("{"_Stz));
+
   m_bIsFun = true;
   m_oFunSpec.vReset();
 
   m_bIsFun = true;
 
-  
-  RASSERT(m_oCurTkn.bSame("{"_Stz));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDiscardBalancedBraces();
   
@@ -1830,19 +1843,6 @@ void Vortex::vVarFun_FunCode(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (m_bInClass) {
-//    vCppPartSaw(VP_MEMBER_FUNCTION);
-//  }
-//  else {
-//    vCppPartSaw(VP_FUNCTION);
-//  }
-//
-//  bool bMayBe = bGetNextToken();
-//
-//
-//  m_oTypeSpec.vReset();
-//  m_oFunVarNm.vReset();
-  
   vVarFun_SequenceEnd();
 }
 
