@@ -1334,6 +1334,10 @@ void Vortex::vVarFun_SequenceBegin(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  m_oTypeArgs.vReset();
+  
+  m_nAsterisks = 0;
+
   vVarFun_Type();
 }
 
@@ -1346,10 +1350,6 @@ void Vortex::vVarFun_Type(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTypeArgs.vReset();
-  
-  m_nAsterisks = 0;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // constructor / destructor / auto-conversion operator (i.e. no specifier)
   if (m_bInClass) {
@@ -1404,7 +1404,7 @@ void Vortex::vVarFun_Type(void)
   // do not expect the keyword `operator` at this point
   CHECKED(! m_oCurTkn.bSame("operator"_Stz));
 
-  // we have a <name>
+  // we have a <typeNm>
   m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
   vGetNextToken();
   
@@ -1458,7 +1458,24 @@ void Vortex::vVarFun_Type(void)
 
     vGetNextToken();
   };
+  
+  vVarFun_Ref();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_Return:
+  
+  return;
+}
 
+/*----------------------------------------------------------------------------*/
+/* collect reference                                                 sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Ref(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   // a possible &
   if (m_oCurTkn.bSame("&"_Stz))
     vGetNextToken();
@@ -1466,13 +1483,9 @@ void Vortex::vVarFun_Type(void)
   vTraceTypeSpec();
   vCppPartSaw(VP_TYPE_SPECIFICATION);
   
-  vVarFun_Name();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  L_Return:
-  
-  return;
+  vVarFun_Name();
 }
 
 /*----------------------------------------------------------------------------*/
