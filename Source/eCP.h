@@ -17,6 +17,7 @@ enum eCP // c++ part
   /*    */ CP_DESTRUCTOR,          // destructor
   /*    */ CP_EMPTY,               // ;
   /*    */ CP_ENUM,                // enum
+  /*    */ CP_EXTERN,              // extern
   /*    */ CP_FORWARD,             // forward class
   /*    */ CP_FRIEND,              // friend
   /*    */ CP_FUNCTION,            // function
@@ -65,6 +66,7 @@ static Stz* aCP[]
   /*    */ "CP_DESTRUCTOR"_Stz,
   /*    */ "CP_EMPTY"_Stz,
   /*    */ "CP_ENUM"_Stz,
+  /*    */ "CP_EXTERN"_Stz,
   /*    */ "CP_FORWARD"_Stz,
   /*    */ "CP_FRIEND"_Stz,
   /*    */ "CP_FUNCTION"_Stz,

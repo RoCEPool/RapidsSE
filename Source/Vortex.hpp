@@ -29,32 +29,36 @@ namespace Utilities
   
     File*       m_pOutputFile;   // output file
     MetaGraph*  m_pMetaGraph;    // the metagraph that is being created
-  
+
+    ConstSet*   m_p_ConstSet;    // set of const i8's etc
+    MetaType*   m_p_MetaType;    // meta type
+    MetaMember* m_p_MetaMember;  // meta member
+ 
     // working section
   
-    bool        m_baSaw[VP_ENUMS]; // which syntax elements are active?
+    bool        m_baPart[VP_ENUMS]; // which cpp syntax parts are active?
+  
+    s32         m_sConstNm;      // const name
+    EnameSet    m_oConstTerms;   // collected terms of const
+
+    bool        m_bInNamespace;  // currently in a namespace?
+    s32         m_sNamespaceNm;  // current namespace name
   
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name
-    bool        m_bInNamespace;  // currently in a namespace?
-    s32         m_sNamespaceNm;  // current namespace name
+  
     bool        m_bInTemplate;   // currently in a namespace?
     EnameSet    m_oTplSpec;      // working set of collected template terms
     s4K         m_sTplSpec;      // current template specification
   
-    s32         m_sConstNm;      // current class name
-
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
-
-    MetaType*   m_p_MetaType;    // current working meta type
-    MetaMember* m_p_MetaMember;  // current working meta member
-    ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
     i8          m_nAsterisks;
     EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
     bool        m_bIsFunPtr;     //
+    i8          m_nFieldBits;   
     bool        m_bIsArray;      //
     EnameSet    m_oArraySpec;    // working set of collected array spec terms
     bool        m_bIsFun;        //
@@ -81,6 +85,11 @@ namespace Utilities
     void vProcessSource(Stz* szSourcePath);
 
   private:
+  
+    void vRecogniseConst(void);
+    void vRecogniseFunction(void);
+    void vRecogniseStructure(void);
+    void vRecogniseVariable(void);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
@@ -132,8 +141,8 @@ namespace Utilities
     void vVarFun_Field(void);
     void vVarFun_FunBody(void);
     void vVarFun_Operator(void);
-    void vVarFun_Variable(void);
-  
+
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // begin and end
 
@@ -175,9 +184,6 @@ namespace Utilities
     void vDiscardStaticTokens(void);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
  
-    void vEnter(char* azFunc);
-    void vEnter_short(char* azFunc);
-
     void vGetExpectedToken(Stz* szExpect);
     bool bGetNextToken(void);
     void vGetNextToken(void);
@@ -187,16 +193,24 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
 
-    void vClearElement(eVP eSyntaxElement);
-    bool bContinueAgain(void);
-    bool bElementIsActive(eVP eSyntaxElement);
-    void vRecognisedPart(eCP eCppPart);
-    void vSawElement(eVP eSyntaxElement);
+    bool bCppPartActive(eVP eCppPart);
+    void vCppPartClear(eVP eCppPart);
+    void vCppPartSaw(eVP eCppPart);
+  
     void vThrowProblem(i8 i_Problem);
+  
+    bool bTraceAgain(void);
+    void vTraceConstant(void);
+    void vTraceEnter(char* azFunc);
+    void vTraceEnter_short(char* azFunc);
+    void vTraceFunction(void);
     void vTraceFunVarNm(void);
     void vTraceNamespaceNm(void);
+    void vTraceParts(void);
+    void vTraceStructure(void);
     void vTraceTypeArgs(void);
     void vTraceTypeSpec(void);
+    void vTraceVariable(void);
 
    private:
     Footer* aFooter(void);
