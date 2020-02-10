@@ -32,7 +32,7 @@ namespace Utilities
   
     // working section
   
-    bool        m_baSaw[VP_ENUMS]; // which syntax elements are active?
+    bool        m_baPart[VP_ENUMS]; // which cpp syntax parts are active?
   
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name
@@ -189,19 +189,19 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
 
-    bool bCppPartActive(eVP eSyntaxElement);
-    void vCppPartClear(eVP eSyntaxElement);
-    void vCppPartSaw(eVP eSyntaxElement);
+    bool bCppPartActive(eVP eCppPart);
+    void vCppPartClear(eVP eCppPart);
+    void vCppPartSaw(eVP eCppPart);
   
     void vThrowProblem(i8 i_Problem);
   
     bool bTraceAgain(void);
-    void vTraceElements(void);
     void vTraceEnter(char* azFunc);
     void vTraceEnter_short(char* azFunc);
     void vTraceFunction(void);
     void vTraceFunVarNm(void);
     void vTraceNamespaceNm(void);
+    void vTraceParts(void);
     void vTraceStructure(void);
     void vTraceTypeArgs(void);
     void vTraceTypeSpec(void);

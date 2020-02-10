@@ -50,7 +50,7 @@ Vortex::Vortex(void)
   // working
   
   for (i8 i_Saw = 0; i_Saw < VP_ENUMS; i_Saw++)
-    m_baSaw[i_Saw] = false;
+    m_baPart[i_Saw] = false;
   
   m_bInClass     = false;
   m_sClassNm     = C_NO_NAME;
@@ -1178,12 +1178,14 @@ void Vortex::vHash_Pragma(void)
   
   if (m_oCurTkn.bSame("once"_Stz)) {
     vCppPartSaw(VP_HASH_PRAGMA_ONCE);
+    vCppPartClear(VP_HASH_PRAGMA_ONCE);
   }
   else
   if (m_oCurTkn.bSame("pack"_Stz)) {
     vGetExpectedToken("("_Stz);
     vDiscardBalancedParenthesis();
     vCppPartSaw(VP_HASH_PRAGMA_PACK);
+    vCppPartClear(VP_HASH_PRAGMA_PACK);
   }
   else {
     vThrowProblem(__LINE__);
@@ -2355,11 +2357,11 @@ void Vortex::vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
 /*----------------------------------------------------------------------------*/
 /* is syntax element active?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCppPartActive(eVP eSyntaxElement)
+bool Vortex::bCppPartActive(eVP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  bool bActive = m_baSaw[eSyntaxElement];
+  bool bActive = m_baPart[eCppPart];
 
   return bActive;
 }
@@ -2367,24 +2369,24 @@ bool Vortex::bCppPartActive(eVP eSyntaxElement)
 /*----------------------------------------------------------------------------*/
 /* clear given syntax element                                                  */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCppPartClear(eVP eSyntaxElement)
+void Vortex::vCppPartClear(eVP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  m_baSaw[eSyntaxElement] = false;
+  m_baPart[eCppPart] = false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* saw given syntax element                                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCppPartSaw(eVP eSyntaxElement)
+void Vortex::vCppPartSaw(eVP eCppPart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  m_baSaw[eSyntaxElement] = true;
+  m_baPart[eCppPart] = true;
 
   if (m_bTrace)
-    TRACE("  Saw: %s\n\n"_Stz,aVP[eSyntaxElement]);
+    TRACE("  Saw: %s\n\n"_Stz,aVP[eCppPart]);
   
   if (m_bContPart)
     m_bContPart = bTraceAgain();
@@ -2407,6 +2409,8 @@ bool Vortex::bTraceAgain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  vTraceParts();
+  
   vInfo("[ trace >> "_Stz);
   //fflush(stdin);
   
@@ -2416,32 +2420,6 @@ bool Vortex::bTraceAgain(void)
     return false;
   else
     return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace elements                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTraceElements(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (! m_bTrace)
-    return;
-  
-  s48K sTrace;
-  
-  for (i8 i_Saw = 0; i_Saw < VP_ENUMS; i_Saw++) {
-    
-    if (! m_baSaw[i_Saw])
-      continue;
-    
-    if (i_Saw)
-      sTrace.vAppend(' ');
-
-    sTrace.vConcat(aVP[i_Saw]);
-  }
-
-  TRACE("  Structure: %s\n"_Stz,sTrace.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2486,6 +2464,32 @@ void Vortex::vTraceNamespaceNm(void)
     return;
   
   TRACE("  NamespaceNm: %s\n"_Stz,m_sNamespaceNm.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace cpp parts seen                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceParts(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (! m_bTrace)
+    return;
+  
+  s48K sTrace;
+  
+  for (i8 i_Saw = 0; i_Saw < VP_ENUMS; i_Saw++) {
+    
+    if (! m_baPart[i_Saw])
+      continue;
+    
+    if (i_Saw)
+      sTrace.vAppend(' ');
+
+    sTrace.vConcat(aVP[i_Saw]);
+  }
+
+  TRACE("  Parts: %s\n"_Stz,sTrace.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
