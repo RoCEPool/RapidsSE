@@ -1071,7 +1071,7 @@ void Vortex::vParseVarFun(void)
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                         function / variable                                */
+/*                          second-level parsing                              */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
@@ -1122,9 +1122,12 @@ void Vortex::vBase_List(void)
     CHECKED(szTerm->bSame(","_Stz));
   }
 
-  // parse class members
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vMembers_List();
   CHECKED(m_oCurTkn.bSame(";"_Stz));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bMaybe = bGetNextToken();
 }
@@ -1140,9 +1143,8 @@ void Vortex::vHash_Define(void)
   RASSERT(m_oCurTkn.bSame("define"_Stz));
       
   vGetNextToken();
-  while (! m_oCurTkn.bSame("enddefine"_Stz)) {
+  while (! m_oCurTkn.bSame("enddefine"_Stz))
     vGetNextToken();
-  }
       
   vCppPartSaw(VP_HASH_DEFINE);
    
@@ -1164,9 +1166,8 @@ void Vortex::vHash_If(void)
   RASSERT(m_oCurTkn.bSame("if"_Stz));
     
   vGetNextToken();
-  while (! m_oCurTkn.bSame("endif"_Stz)) {
+  while (! m_oCurTkn.bSame("endif"_Stz))
     vGetNextToken();
-  }
       
   vCppPartSaw(VP_HASH_IF);
     
@@ -1188,9 +1189,8 @@ void Vortex::vHash_Ifdef(void)
   RASSERT(m_oCurTkn.bSame("ifdef"_Stz));
     
   vGetNextToken();
-  while (! m_oCurTkn.bSame("endif"_Stz)) {
+  while (! m_oCurTkn.bSame("endif"_Stz))
     vGetNextToken();
-  }
       
   vCppPartSaw(VP_HASH_IF);
     
@@ -1305,11 +1305,8 @@ void Vortex::vMembers_List(void)
   for (;;) {
 
     // block is terminated by } ;
-    if (m_oCurTkn.bSame("}"_Stz)) {
-      vCppPartSaw(VP_MEMBERS_END);
-      bool bMaybe = bGetNextToken();
-      return;
-    }
+    if (m_oCurTkn.bSame("}"_Stz))
+      break;
     
     if (bLabel_Opt()) {
       vTraceEnter((char*)__func__);
@@ -1320,7 +1317,16 @@ void Vortex::vMembers_List(void)
     
     vTraceEnter((char*)__func__);
   }
+  
+  vCppPartSaw(VP_MEMBERS_END);
+  
+  bool bMaybe = bGetNextToken();
 }
+
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                      variable / function sequence                          */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
 /* collect type spec for variable or function -> vVarFun_Name()      sequence */
@@ -1344,7 +1350,7 @@ void Vortex::vVarFun_Type(void)
       
       vGetNextToken();
       
-      // do we have template arguments?
+      // do we have type arguments?
       if (m_oCurTkn.bSame("<"_Stz)) {
         vCollectTypeArgs(m_oTypeArgs);
         vGetNextToken();
@@ -1356,7 +1362,7 @@ void Vortex::vVarFun_Type(void)
         TRACE("  (typeless) constructor\n"_Stz);
         vGetNextToken();
         vVarFun_Constructor();
-        return;
+        goto L_Return;
       }
             
       // 1b)
@@ -1369,7 +1375,7 @@ void Vortex::vVarFun_Type(void)
       TRACE("  (typeless) destructor\n"_Stz);
       vGetNextToken();
       vVarFun_Name();
-      return;
+      goto L_Return;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- --
@@ -1377,7 +1383,7 @@ void Vortex::vVarFun_Type(void)
     if (m_oCurTkn.bSame("operator"_Stz)) {
       vGetNextToken();
       vVarFun_Operator();
-      return;
+      goto L_Return;
     }
     
   }
@@ -1409,18 +1415,18 @@ void Vortex::vVarFun_Type(void)
 
     if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
       vVarFun_Name();
-      return;
+      goto L_Return;
     }
     
     if (m_oCurTkn.bSame("~"_Stz)) {
       vVarFun_Name();
-      return;
+      goto L_Return;
     }
     
     if (m_oCurTkn.bSame("operator"_Stz)) {
       vGetNextToken();
       vVarFun_Operator();
-      return;
+      goto L_Return;
     }
     
     NEVER_REACH
@@ -1449,7 +1455,14 @@ void Vortex::vVarFun_Type(void)
 
   vTraceTypeSpec();
   vCppPartSaw(VP_TYPE_SPECIFICATION);
+  
   vVarFun_Name();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_Return:
+  
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
