@@ -135,16 +135,23 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // variable / function sequence
 
+    void vVarFun_SequenceBegin(void);
+  
     void vVarFun_Type(void);
+    void vVarFun_Asterisks(void);
+    void vVarFun_Ref(void);
     void vVarFun_Name(void);
+    void vVarFun_Constructor(void);
+    void vVarFun_Operator(void);
 
     void vVarFun_AryFunVar(void);
     void vVarFun_Array(void);
-    void vVarFun_Constructor(void);
     void vVarFun_Field(void);
     void vVarFun_FunBody(void);
-    void vVarFun_Operator(void);
+  
+    void vVarFun_FunCode(void);
 
+    void vVarFun_SequenceEnd(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // begin and end

@@ -226,8 +226,6 @@ void Vortex::vRecogniseFunction(void)
     vTraceFunction();
   // not recording functions
   }
-
-  vGetNextToken();
 }
 
 
@@ -1040,7 +1038,7 @@ void Vortex::vParseVarFun(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  vVarFun_Type();
+  vVarFun_SequenceBegin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1329,9 +1327,9 @@ void Vortex::vMembers_List(void)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* collect type spec for variable or function -> vVarFun_Name()      sequence */
+/* beginning of var/fun sequence                                sequence leaf */
 /*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Type(void)
+void Vortex::vVarFun_SequenceBegin(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1340,6 +1338,18 @@ void Vortex::vVarFun_Type(void)
   
   m_nAsterisks = 0;
 
+  vVarFun_Type();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* collect type spec for variable or function -> vVarFun_Name()      sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Type(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // constructor / destructor / auto-conversion operator (i.e. no specifier)
   if (m_bInClass) {
@@ -1394,7 +1404,7 @@ void Vortex::vVarFun_Type(void)
   // do not expect the keyword `operator` at this point
   CHECKED(! m_oCurTkn.bSame("operator"_Stz));
 
-  // we have a <name>
+  // we have a <typeNm>
   m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
   vGetNextToken();
   
@@ -1434,6 +1444,23 @@ void Vortex::vVarFun_Type(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vVarFun_Asterisks();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_Return:
+  
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect asterisks                                                 sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Asterisks(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   // zero or more asterisks
   for (;;) {
     
@@ -1445,10 +1472,22 @@ void Vortex::vVarFun_Type(void)
     m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
     m_nAsterisks++;
   
-
     vGetNextToken();
-  };
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vVarFun_Ref();
+}
 
+/*----------------------------------------------------------------------------*/
+/* collect reference                                                 sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Ref(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   // a possible &
   if (m_oCurTkn.bSame("&"_Stz))
     vGetNextToken();
@@ -1456,13 +1495,9 @@ void Vortex::vVarFun_Type(void)
   vTraceTypeSpec();
   vCppPartSaw(VP_TYPE_SPECIFICATION);
   
-  vVarFun_Name();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  L_Return:
-  
-  return;
+  vVarFun_Name();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1554,6 +1589,43 @@ void Vortex::vVarFun_Name(void)
   goto L_Parse_Function_Name;
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect information about a constructor -> vVarFun_FunBody        sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Constructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_bIsFunPtr = false;
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect information about operator function -> vVarFun_FunBody()  sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Operator(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  for (;;) {
+    vGetNextToken();
+    
+    if (m_oCurTkn.bSame("("_Stz))
+      break;
+  }
+  
+  vCppPartSaw(VP_OPERATOR);
+
+  vVarFun_FunBody();
+  
+  vCppPartClear(VP_OPERATOR);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* detect next is array, function or variable                        sequence */
@@ -1596,7 +1668,9 @@ void Vortex::vVarFun_AryFunVar(void)
   }
 
   if (m_oCurTkn.bSame("="_Stz)) {
+    RASSERT(! m_bInClass);
     vCollectRemainingTerms(m_oOtherTerms);
+    vRecogniseVariable();
     m_oOtherTerms.vReset();
     bool bMayBe = bGetNextToken();
     return;
@@ -1659,21 +1733,6 @@ void Vortex::vVarFun_Array(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect information about a constructor -> vVarFun_FunBody        sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Constructor(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  m_bIsFunPtr = false;
-
-  m_oFunVarNm.vAdd(m_sClassNm);
-
-  vVarFun_FunBody();
-}
-
-/*----------------------------------------------------------------------------*/
 /* collect information about a field                            sequence leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vVarFun_Field(void)
@@ -1688,7 +1747,6 @@ void Vortex::vVarFun_Field(void)
   vGetExpectedToken(";"_Stz);
   
   vCppPartSaw(VP_FIELD_BITS);
-  
   
   vCppPartClear(VP_FIELD_BITS);
 
@@ -1762,14 +1820,10 @@ void Vortex::vVarFun_FunBody(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //vVarFun_FunBody();
   
   if (m_oCurTkn.bSame("{"_Stz)) {
-
-    vDiscardBalancedBraces();
-  
-    vCppPartSaw(VP_FUNCTION_BODY);
+    vVarFun_FunCode();
+    return;
   }
   else {
     vDebugPoint();
@@ -1792,25 +1846,52 @@ void Vortex::vVarFun_FunBody(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect information about operator function -> vVarFun_FunBody()  sequence */
+/* collect function code                                        sequence leaf */
 /*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Operator(void)
+void Vortex::vVarFun_FunCode(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_oCurTkn.bSame("{"_Stz));
+
+  m_bIsFun = true;
+  m_oFunSpec.vReset();
+
+  m_bIsFun = true;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vDiscardBalancedBraces();
+  
+  vCppPartSaw(VP_FUNCTION_BODY);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vVarFun_SequenceEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end of var/fun sequence                                      sequence leaf */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_SequenceEnd(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  for (;;) {
-    vGetNextToken();
-    
-    if (m_oCurTkn.bSame("("_Stz))
-      break;
+  if (m_bInClass) {
+    vCppPartSaw(VP_MEMBER_FUNCTION);
+  }
+  else {
+    vCppPartSaw(VP_FUNCTION);
   }
   
-  vCppPartSaw(VP_OPERATOR);
+  vRecogniseFunction();
 
-  vVarFun_FunBody();
-  
-  vCppPartClear(VP_OPERATOR);
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+
+  bool bMayBe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
