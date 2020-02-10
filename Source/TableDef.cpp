@@ -1038,13 +1038,16 @@ eEC TableDef::eSyntaxColumn(TokenVec* pTknVec)
     case CT_TIME:     break;
     case CT_TIMESTAMP: break;
     case CT_VARCHAR:
-      eSyntaxColumnVarchar(pTknVec);
+      eError = eSyntaxColumnVarchar(pTknVec);
       break;
       
     default:
-      if ( ! pTkn->bSame("char"_Stz) &&
-           ! pTkn->bSame("varbinary"_Stz))
-        eError = EC_INVALID_COMMAND;
+      if (pTkn->bSame("char"_Stz))
+         eError = eSyntaxColumnVarchar(pTknVec);
+      else {
+        if (! pTkn->bSame("varbinary"_Stz))
+          eError = EC_INVALID_COMMAND;
+      }
       break;
   }
   
