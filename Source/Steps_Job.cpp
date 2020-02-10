@@ -559,7 +559,7 @@ void Step::vJobErrorStore(void)
   i8 iJobError = m_pDataStack->iPopAsInt(__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
-  pJob->vParticipantHasError(true);
+  pJob->vJobHasError(true);
   pJob->vErrorCode((eEC)iJobError);
   
   //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
@@ -644,7 +644,7 @@ void Step::vJobHasError(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->bParticipantHasError());
+  m_pDataStack->vPushInt(pJob->bJobHasError());
   
   EXIT();
 }

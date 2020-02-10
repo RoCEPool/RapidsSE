@@ -38,10 +38,7 @@ void Step::vTableDefParse(void)
     // at this stage shouldn't be a syntax error
     ASSERT(eResult != EC_INVALID_COMMAND);
     
-    // set the syntax error in the job
-    pJob_CreateTable->vSyntaxError(eResult);
-    
-    pJob_CreateTable->vParticipantHasError(true);
+    pJob_CreateTable->vJobHasError(true);
     pJob_CreateTable->vErrorCode(eResult);
     
     // delete tabledef

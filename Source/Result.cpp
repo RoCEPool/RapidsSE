@@ -148,7 +148,7 @@ void Result::vPrintLoadRows(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLocalErrors(void)
 {
-  if (m_bPartHasError) {
+  if (m_bJobHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
            aEC[m_xJobResponse.m_eErrorCode]);
     return;
@@ -160,7 +160,7 @@ void Result::vPrintLocalErrors(void)
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLocalRows(void)
 {
-  if (m_bPartHasError) {
+  if (m_bJobHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
            aEC[m_xJobResponse.m_eErrorCode]);
     return;
@@ -196,7 +196,7 @@ void Result::vPrintNodeErrors(void)
 void Result::vPrintNodeRows(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
-  
+
   if (m_bPartHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
