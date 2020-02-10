@@ -1444,6 +1444,23 @@ void Vortex::vVarFun_Type(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vVarFun_Asterisks();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_Return:
+  
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect asterisks                                                 sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Asterisks(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   // zero or more asterisks
   for (;;) {
     
@@ -1455,17 +1472,12 @@ void Vortex::vVarFun_Type(void)
     m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
     m_nAsterisks++;
   
-
     vGetNextToken();
-  };
-  
-  vVarFun_Ref();
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  L_Return:
-  
-  return;
+  vVarFun_Ref();
 }
 
 /*----------------------------------------------------------------------------*/
