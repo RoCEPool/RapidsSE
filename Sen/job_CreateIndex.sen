@@ -101,7 +101,7 @@
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   //----------------------------------------------------------------------------
-  // check for error while creating tabledef
+  // check for error while creating indexdef
   grid::thisNode@ pJob_CreateIndex job.hasError if
     pJob_CreateIndex DdlLock[].testDrop !!logError
     sIndexNm :forget popIndexes popTable exit
@@ -144,20 +144,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create index request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: createIndex::request _eeh ( -- <R> )
+
+  job::this locals| pJob_CreateIndex |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check create index syntax
+  <cmd> IndexDef::syntax dup EC_NONE != if
+    pJob_CreateIndex <SYNTAXERROR_JOB> !!logError
+  else
+    drop
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_CreateIndex job on each node                                   */
 /*----------------------------------------------------------------------------*/
 : createIndex::execute _eeh ( -- )
 
   job::this locals| pJob_CreateIndex |
 
-  //0 0 locals| pTable sTableNm sIndexNm |
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
   pJob_CreateIndex makeIndex
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
   assertInTables
 
@@ -176,14 +189,6 @@
   //----------------------------------------------------------------------------
   // grab a ddl lock
   DdlLock[].grabRead
-
-  //----------------------------------------------------------------------------
-  // check create index syntax
-  <cmd> IndexDef::syntax dup EC_NONE != if
-     pJob_CreateIndex <ERROR_JOB> !!logError exit
-  else
-     drop
-  then
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

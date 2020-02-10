@@ -35,11 +35,13 @@ void Step::vIndexDefParse(void)
   
   eEC eResult = pIndexDef->eParse(pTable,sCmd);
   
+  
   if (eResult != EC_NONE) {
     
-    // set the syntax error in the job
-    pJob_CreateIndex->vSyntaxError(eResult);
+    // at this stage shouldn't be a syntax error
+    ASSERT(eResult != EC_INVALID_COMMAND);
     
+    // set the error in the job
     pJob_CreateIndex->vParticipantHasError(true);
     pJob_CreateIndex->vErrorCode(eResult);
     

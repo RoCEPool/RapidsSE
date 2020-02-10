@@ -87,7 +87,6 @@ void Result::vPrint(eRS eResponse)
   
   // check for syntax errors
   if (m_eSyntaxError != EC_NONE) {
-    vTrace("Returning syntax error\n"_Stz);
     vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
     return;
   }

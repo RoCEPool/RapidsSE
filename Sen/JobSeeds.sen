@@ -68,12 +68,16 @@
     drop
   then
 
-  job::distributeConnected
+  job::this job.hasError not if
 
-  // wait for the signal from deciding job__ended/cancelled
-  task::wait
+    // distribute the job
+    job::distributeConnected
+
+    // wait for the signal from deciding job__ended/cancelled
+    task::wait
 
   //job::this job.removeOriginator  // this is currently being done by job_ended
+  then
 
   task::doneFinally
 
