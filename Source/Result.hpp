@@ -37,7 +37,6 @@ namespace Jobs
     //! ALKA : private
   public:
     void vPrintLoadRows(void);
-    void vPrintLocalErrors(void);
     void vPrintLocalRows(void);
     void vPrintLocalZero(void);
     void vPrintNodeRows(void);

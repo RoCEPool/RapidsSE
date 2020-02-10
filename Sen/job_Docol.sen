@@ -44,7 +44,7 @@ jobInfo: docol
   
   <?jobType?>  = JT_DOCOL
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_LOCAL_ERRORS
+  <?rspKind?>  = RS_LOCAL_ROWS
   <?ddlLock?>  = DL_NONE
 }
 ;

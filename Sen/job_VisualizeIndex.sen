@@ -102,7 +102,7 @@ jobInfo: visualizeIndex
   
   <?jobType?>  = JT_VISUALIZEINDEX
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_LOCAL_ERRORS
+  <?rspKind?>  = RS_LOCAL_ROWS
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

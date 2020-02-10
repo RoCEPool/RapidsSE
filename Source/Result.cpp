@@ -96,7 +96,6 @@ void Result::vPrint(eRS eResponse)
     case RS_NONE         : /* do nothing */      break;
     case RS_DATA_ROWS    : RASSERT(0);           break;
     case RS_LOAD_ROWS    : vPrintLoadRows();     break;
-    case RS_LOCAL_ERRORS : vPrintLocalErrors();  break;
     case RS_LOCAL_ROWS   : vPrintLocalRows();    break;
     case RS_LOCAL_ZERO   : vPrintLocalZero();    break;
     case RS_NODE_ROWS    : vPrintNodeRows();     break;
@@ -143,18 +142,6 @@ void Result::vPrintLoadRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print local errors                                                         */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintLocalErrors(void)
-{
-  if (m_bJobHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xJobResponse.m_eErrorCode]);
-    return;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* print local rows                                                           */
 /*----------------------------------------------------------------------------*/
 void Result::vPrintLocalRows(void)
@@ -165,7 +152,7 @@ void Result::vPrintLocalRows(void)
     return;
   }
   
-  if (AM::bMetadata())
+  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz))
     vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   
   if (*m_xJobResponse.m_ixRowsProcessed)
