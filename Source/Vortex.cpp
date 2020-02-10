@@ -1463,60 +1463,13 @@ void Vortex::vVarFun_Type(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vVarFun_Asterisks();
+  vVarFun_Name();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   L_Return:
   
   return;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect asterisks                                                 sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Asterisks(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  // zero or more asterisks
-  for (;;) {
-    
-    // collected when we have no more asterisks
-    if (! m_oCurTkn.bSame("*"_Stz))
-      break;
-    
-    // we have an asterisk
-    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-    m_nAsterisks++;
-  
-    vGetNextToken();
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vVarFun_Ref();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect reference                                                 sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Ref(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  // a possible &
-  if (m_oCurTkn.bSame("&"_Stz))
-    vGetNextToken();
-
-  vTraceTypeSpec();
-  vCppPartSaw(VP_TYPE_SPECIFICATION);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vVarFun_Name();
 }
 
 /*----------------------------------------------------------------------------*/
