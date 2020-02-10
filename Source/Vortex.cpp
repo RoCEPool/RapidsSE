@@ -1352,6 +1352,13 @@ void Vortex::vVarFun_Type(void)
 
   s32 sFirstToken = m_oCurTkn.szTerm();
 
+  vGetNextToken();
+  
+  if (m_oCurTkn.bSame("<"_Stz)) {
+    vCollectTypeArgs(m_oTypeArgs);
+    vGetNextToken();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // typeless constructor / destructor / auto-conversion operator
   if (m_bInClass) {
@@ -1360,14 +1367,6 @@ void Vortex::vVarFun_Type(void)
     // 1) typeless constructor
     if (sFirstToken.bSame(m_sClassNm)) {
       
-      vGetNextToken();
-      
-      // 1a) do we have type arguments?
-      //        e.g. myClass <i8> * m_pParent;
-      if (m_oCurTkn.bSame("<"_Stz)) {
-        vCollectTypeArgs(m_oTypeArgs);
-        vGetNextToken();
-      }
       
       // 1b) do we have a constructor?
       //        e.g. myClass <i8> (void);
@@ -1389,7 +1388,6 @@ void Vortex::vVarFun_Type(void)
     // 2) typeless destructor
     if (sFirstToken.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
-      vGetNextToken();
       vVarFun_Name();
       goto L_Return;
     }
@@ -1398,7 +1396,6 @@ void Vortex::vVarFun_Type(void)
     // 3) typeless operator
     if (sFirstToken.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
-      vGetNextToken();
       vVarFun_Operator();
       goto L_Return;
     }
@@ -1409,19 +1406,6 @@ void Vortex::vVarFun_Type(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initial type has been detected
   
-  // do not expect the keyword `operator` at this point
-  CHECKED(! m_oCurTkn.bSame("operator"_Stz));
-
-  // we have a <typeNm>
-  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-  vGetNextToken();
-  
-  
-  // do we have template arguments?
-  if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTypeArgs(m_oTypeArgs);
-    vGetNextToken();
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
@@ -1431,6 +1415,7 @@ void Vortex::vVarFun_Type(void)
   // do we see the scope resolution opeator (::)
   //   indicating templated function in a _t.hpp file?
   if (m_oCurTkn.bSame(":"_Stz)) {
+    
     vGetExpectedToken(":"_Stz);
     vGetNextToken();
 
@@ -1450,7 +1435,7 @@ void Vortex::vVarFun_Type(void)
       goto L_Return;
     }
     
-    NEVER_REACH
+    //NEVER_REACH
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
