@@ -913,6 +913,7 @@ void Vortex::vParseUnion(void)
   s32 sUnionNm;
   
   vGetNextToken();
+  
   if (m_oCurTkn.bSame("{"_Stz)) {
     // 1) union { ... } ;
     sUnionNm.vSprint("_UNION_%lld"_Stz,++m_iNextUnion);
@@ -923,21 +924,20 @@ void Vortex::vParseUnion(void)
     vGetExpectedToken("{"_Stz);
   }
 
-  vCppPartSaw(VP_UNION);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   vTypePush(sUnionNm,MT_UNION,CP_UNION);
   
+  vCppPartSaw(VP_UNION);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
   vGetNextToken();
 
   vMembers_List();
   CHECKED(m_oCurTkn.bSame(";"_Stz));
 
-  vTypePop();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTypePop();
 
   vCppPartClear(VP_UNION);
 
