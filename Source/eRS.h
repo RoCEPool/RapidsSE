@@ -12,11 +12,10 @@ enum eRS // response kind
   /*  3 */ RS_LOCAL_ERRORS,
   /*  4 */ RS_LOCAL_ROWS,
   /*  5 */ RS_LOCAL_ZERO,
-  /*  6 */ RS_NODE_ERRORS,
-  /*  7 */ RS_NODE_ROWS,
-  /*  8 */ RS_QUEUE_ROWS,
+  /*  6 */ RS_NODE_ROWS,
+  /*  7 */ RS_QUEUE_ROWS,
   
-  /* 10 */ RS_ENUMT_
+  /* 8  */ RS_ENUMT_
 };
 
 static Stz* aRS[]
@@ -28,11 +27,10 @@ static Stz* aRS[]
   /*  3 */ "LOCAL_ERRORS"_Stz,
   /*  4 */ "LOCAL_ROWS"_Stz,
   /*  5 */ "LOCAL_ZERO"_Stz,
-  /*  6 */ "NODE_ERRORS"_Stz,
-  /*  7 */ "NODE_ROWS"_Stz,
-  /*  8 */ "QUEUE_ROWS"_Stz,
+  /*  6 */ "NODE_ROWS"_Stz,
+  /*  7 */ "QUEUE_ROWS"_Stz,
   
-  /* 10 */ "ENUMT_"_Stz
+  /*  8 */ "ENUMT_"_Stz
 };
 
 /*============================================================================*/

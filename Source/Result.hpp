@@ -40,7 +40,6 @@ namespace Jobs
     void vPrintLocalErrors(void);
     void vPrintLocalRows(void);
     void vPrintLocalZero(void);
-    void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
     void vPrintQueueRows(void);
     

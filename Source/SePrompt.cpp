@@ -228,7 +228,7 @@ void SePrompt::vPromptLoop(void)
       
       // handle errors
       if (m_pJob->bParticipantHasError())
-        m_pJob->m_xResult.vPrintNodeErrors();
+        m_pJob->m_xResult.vPrintNodeRows();
       
     }
     else {
