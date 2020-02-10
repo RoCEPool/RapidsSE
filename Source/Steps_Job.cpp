@@ -41,6 +41,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
+  vAddStep("job.hasSyntaxError"_Stz,   &Step::vJobHasSyntaxError);
   vAddStep("job.hasOperand"_Stz,       &Step::vJobHasOperand);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
@@ -644,6 +645,20 @@ void Step::vJobHasError(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->bParticipantHasError());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.hasSyntaxError -- return true if job has a syntax error                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobHasSyntaxError(void)
+{
+  ENTRY(); // ENTRY("vJobErrorFetch"_Stz);
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushInt(pJob->bHasSyntaxError());
   
   EXIT();
 }

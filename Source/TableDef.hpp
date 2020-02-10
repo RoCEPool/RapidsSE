@@ -28,7 +28,8 @@ namespace MetaData
    ~TableDef(void) noexcept(false);
   
     static eCT eColumn(Stz* szType);
-  
+    static eEC eSyntax(Stz* szCmd);
+    
     eEC eParse(Stz* szCmd);
     
   private:
@@ -57,6 +58,14 @@ namespace MetaData
     eEC eParseTableClauses(TokenVec* pTknVec);
     eEC eParsePartitionBy(TokenVec* pTknVec);
     eEC eParseRowSize(TokenVec* pTknVec);
+    
+    static eEC eSyntaxColumn(TokenVec* pTknVec);
+    static eEC eSyntaxColumnClauses  (TokenVec* pTknVec);
+    static eEC eSyntaxColumnDecimal(TokenVec* pTknVec);
+    static eEC eSyntaxColumnFloat(TokenVec* pTknVec);
+    static eEC eSyntaxColumnVarchar(TokenVec* pTknVec);
+    static eEC eSyntaxPartitionBy(TokenVec* pTknVec);
+    static eEC eSyntaxTableClauses(TokenVec* pTknVec);
     
     Footer* aFooter(void);
   };

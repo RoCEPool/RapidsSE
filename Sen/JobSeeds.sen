@@ -68,7 +68,7 @@
     drop
   then
 
-  job::this job.hasError not if
+  job::this job.hasSyntaxError not if
 
     // distribute the job
     job::distributeConnected
@@ -76,7 +76,8 @@
     // wait for the signal from deciding job__ended/cancelled
     task::wait
 
-  //job::this job.removeOriginator  // this is currently being done by job_ended
+  else
+    job::this job.removeOriginator  // this is currently being done by job_ended
   then
 
   task::doneFinally

@@ -221,6 +221,118 @@ L_RETURN:
 }
 
 /*----------------------------------------------------------------------------*/
+/* check the syntax of the Create Table command                               */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntax(Stz* szCmd)
+{
+  eEC eError = EC_NONE;
+  i8 i_Col = C_UNKNOWN;
+  
+  // tokenise the command
+  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Table <tableNm>
+  
+  // -- -- -- -- -- -- -- -- -- --
+  // assert we got a create table
+  // -- -- -- -- -- -- -- -- -- --
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("table"_Stz));
+  
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <columnDef> ,... )
+  
+  // -- -- -- -- --
+  // open parenth (
+  // -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  for (i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+    
+    // -- -- -- -- -- -- -- --
+    // exceeded column limit?
+    // -- -- -- -- -- -- -- --
+    if (i_Col >= C_MAX_COLUMNS) {
+      eError = EC_MAX_COLUMNS;
+      goto L_RETURN;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subsequent column names, skipping over comma
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken(); dPT();
+        if ( ! pTkn ) {
+          eError = EC_INVALID_COMMAND;
+          goto L_RETURN;
+        }
+      }
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+    }
+    
+    // -- -- -- -- --
+    // parse column
+    // -- -- -- -- --
+    eError = eSyntaxColumn(pTknVec);
+    if (EC_NONE != eError) {
+      goto L_RETURN;
+    }
+    pTkn = pTknVec->pCurrToken(); dPT();
+  }
+  
+  // did we get any columns ?
+  if (i_Col == 0) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // mark the last column
+  eError = eSyntaxTableClauses(pTknVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+L_RETURN:
+  
+  delete pTknVec;
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -879,6 +991,419 @@ eEC TableDef::eParseRowSize(TokenVec* pTknVec)
   i8 nRowSize = pTkn->iToI8();
 
   m_pStreamDef->m_nFixedSized = nRowSize;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check column syntax                                                        */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxColumn(TokenVec* pTknVec)
+{
+   eEC eError = EC_NONE;
+  
+  // -- -- -- --
+  // column name
+  // -- -- -- --
+  Token* pTkn = pTknVec->pCurrToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    return eError;
+  }
+  
+  // -- -- -- --
+  // column type
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    return eError;
+  }
+  
+  eCT eColumn = TableDef::eColumn(pTkn->szTerm());
+  
+  switch (eColumn) {
+      
+    case CT_BOOLEAN: break;
+    case CT_DATE:    break;
+    case CT_DECIMAL:
+      eError = eSyntaxColumnDecimal(pTknVec);
+      break;
+    case CT_FLOAT:
+      eError = eSyntaxColumnFloat(pTknVec);
+      break;
+    case CT_INTEGER:  break;
+    case CT_INTERVAL: break;
+    case CT_TIME:     break;
+    case CT_TIMESTAMP: break;
+    case CT_VARCHAR:
+      eSyntaxColumnVarchar(pTknVec);
+      break;
+      
+    default:
+      if ( ! pTkn->bSame("char"_Stz) &&
+           ! pTkn->bSame("varbinary"_Stz))
+        eError = EC_INVALID_COMMAND;
+      break;
+  }
+  
+  if (EC_NONE != eError)
+    return eError;
+  
+  eError = eSyntaxColumnClauses(pTknVec);
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check syntax of column clause                                              */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxColumnClauses(TokenVec* pTknVec)
+{
+  eEC eError = EC_NONE;
+  
+  for (;;) {
+    
+    Token* pTkn = pTknVec->pNextToken(); dPT();
+    
+    if (pTkn->bSame("asc"_Stz)) {
+      continue;
+    }
+    
+    if (pTkn->bSame("desc"_Stz)) {
+      continue;
+    }
+    
+    if (pTkn->bSame("fixed"_Stz)) {
+      continue;
+    }
+    
+    if (pTkn->bSame("max"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if ( ! pTkn ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      continue;
+    }
+    
+    if (pTkn->bSame("min"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if ( ! pTkn ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      continue;
+    }
+    
+    if (pTkn->bSame("not"_Stz)) {
+      pTkn = pTknVec->pNextToken(); dPT();
+      if ( ! pTkn ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      
+      if (! pTkn->bSame("null"_Stz)){
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      
+      continue;
+    }
+    
+    if (pTkn->bSame("random"_Stz)) {
+      continue;
+    }
+    
+    break;
+  }
+  
+  
+  //!
+  //! ??? discuss with Alka
+  //!
+  
+  // check for PRIMARY KEY
+  //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
+  //
+  //      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
+  //
+  //      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
+  //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
+  //        return false;
+  //      }
+  //    }
+  
+  // check for UNIQUE
+  //    if (pTkn->bSame("unique"_Stz)) {
+  //      pCol->vIsUnique(true);
+  //
+  //      pTkn = pTknVec->pNextToken(); dPT();
+  //    }
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check syntax of decimal column                                             */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxColumnDecimal(TokenVec* pTknVec)
+{
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // extract scale and precison if specified
+  if (! pTkn->bSame("("_Stz)) {
+    IGNORE_RETURN(pTknVec->pPrevToken());
+    return EC_NONE;
+  }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() )
+    return EC_INVALID_COMMAND;
+  
+  i8 iPrecision = pTkn->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if (!pTkn->bSame(","_Stz))
+    return EC_INVALID_COMMAND;
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() )
+    return EC_INVALID_COMMAND;
+  
+  // get the scale
+  i8 iScale = pTkn->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if (! pTkn->bSame(")"_Stz))
+    return EC_INVALID_COMMAND;
+  
+  if (! Column::bValidBcd(iPrecision, iScale))
+    return EC_INVALID_COMMAND;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check syntax of float column                                               */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxColumnFloat(TokenVec* pTknVec)
+{
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // extract size if specified
+  if (! pTkn->bSame("("_Stz)) {
+    IGNORE_RETURN(pTknVec->pPrevToken());
+    return EC_NONE;
+  }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // get size
+  i8 iSize = pTknVec->pNextToken()->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if (!pTkn->bSame(")"_Stz)) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if (! Column::bValidFlt(iSize)) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check syntax of a varchar column                                           */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxColumnVarchar(TokenVec* pTknVec)
+{
+  
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // is size specified ?
+  if (! pTkn->bSame("("_Stz)) {
+    IGNORE_RETURN(pTknVec->pPrevToken());
+    return EC_NONE;
+  }
+  
+  //pCol->vColumnLength(pTknVec->pNextToken()->iToI8());
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // check if it was numeric
+  if (! pTkn->bIsNumeric())
+    return EC_INVALID_COMMAND;
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // get size
+  i8 iSize = pTkn->iToI8();
+  
+  if (! pTkn->bSame(")"_Stz))
+    return EC_INVALID_COMMAND;
+  
+  // valid the size
+  if (! Column::bValidVch(iSize))
+    return EC_INVALID_COMMAND;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check sytax of partition clause                                            */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxPartitionBy(TokenVec* pTknVec)
+{
+  // next token should be 'by'
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  if ( ! pTkn->bSame("by"_Stz) ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // next token should be '('
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  if ( ! pTkn->bSame("("_Stz)) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the partition columns
+  
+  i8 iPartKeys = 0;
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  while ( ! pTkn->bSame(")"_Stz) ) {
+    
+    iPartKeys++;
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn ) {
+      return EC_INVALID_COMMAND;
+    }
+    if ( ! pTkn->bSame(","_Stz)) {
+      continue;
+    }
+    pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn ) {
+      return EC_INVALID_COMMAND;
+    }
+  }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if ( ! pTkn->bSame(";"_Stz) ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if ( ! iPartKeys ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  IGNORE_RETURN(pTknVec->pPrevToken());
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check syntax of table clauses                                              */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eSyntaxTableClauses(TokenVec* pTknVec)
+{
+  
+  bool bSawPartition = false;
+  
+  eEC eError = EC_NONE;
+  
+  for (;;) {
+    
+    Token* pTkn = pTknVec->pNextToken(); dPT();
+    
+    if ( pTkn->bSame("rowsize"_Stz)) {
+      
+      // next token should be integer
+      Token* pTkn = pTknVec->pNextToken(); dPT();
+      if ( ! pTkn ) {
+        return EC_INVALID_COMMAND;
+      }
+      if ( ! pTkn->bIsNumeric() ) {
+        return EC_INVALID_COMMAND;
+      }
+      
+      continue;
+    }
+    
+    if ( pTkn->bSame("partition"_Stz)) {
+      
+      eError = eSyntaxPartitionBy(pTknVec);
+      if (EC_NONE != eError)
+        return eError;
+      
+      bSawPartition = true;
+      
+      continue;
+    }
+    
+    break;
+  }
   
   return EC_NONE;
 }

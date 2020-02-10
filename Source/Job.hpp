@@ -117,6 +117,9 @@ namespace Jobs
     i8   iJobId(void);
     JobClass* aJobClass(void);
     void vJobClass(JobClass* aJobClass, char* azCaller);
+    bool bJobHasError(void);
+    void vJobHasError(bool bHasError);
+    bool bJobHasSyntaxError(void);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);

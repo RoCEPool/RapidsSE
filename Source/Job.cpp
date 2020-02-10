@@ -649,6 +649,34 @@ void Job::vJobClass(JobClass* aJobClass, char* azCaller)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job has error                                                          */
+/*----------------------------------------------------------------------------*/
+bool Job::bJobHasError(void)
+{
+  return m_xResult.m_bJobHasError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job has an error                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vJobHasError(bool bHasError)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_xResult.m_bJobHasError = bHasError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job has syntax error                                                   */
+/*----------------------------------------------------------------------------*/
+bool Job::bJobHasSyntaxError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_xResult.m_eSyntaxError == EC_NONE ? false : true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobId(void)

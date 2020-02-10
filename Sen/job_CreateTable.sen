@@ -55,6 +55,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create table request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: createTable::request _eeh ( -- <R> )
+
+  job::this locals| pJob_CreateTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check create index syntax
+  <cmd> TableDef::syntax dup EC_NONE != if
+    pJob_CreateTable <SYNTAXERROR_JOB> !!logError
+  else
+    drop
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job on each node                                   */
 /*----------------------------------------------------------------------------*/
 : createTable::execute _eeh ( -- )
@@ -62,7 +78,6 @@
   job::this locals| pJob_CreateTable |
 
   0 locals| pTable |
-
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pJob_CreateTable tableDef::parse locals| pTableDef |

@@ -10,6 +10,7 @@
 void Step::vAddSteps_TableDef(void)
 {
   vAddStep("tableDef::parse"_Stz, &Step::vTableDefParse);
+  vAddStep("tableDef::syntax"_Stz, &Step::vTableDefSyntax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,6 +35,9 @@ void Step::vTableDefParse(void)
   
   if (eResult != EC_NONE) {
     
+    // at this stage shouldn't be a syntax error
+    //ASSERT(eResult != EC_INVALID_COMMAND);
+    
     // set the syntax error in the job
     pJob_CreateTable->vSyntaxError(eResult);
     
@@ -48,6 +52,23 @@ void Step::vTableDefParse(void)
   
   m_pDataStack->vPushPtr(pTableDef);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tableDef::syntax -- parse Create Table statement and check sytax           */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDefSyntax(void)
+{
+  ENTRY(); // ENTRY("vTableDefSyntax"_Stz);
+  
+  s4K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+  
+  eEC eResult = TableDef::eSyntax(sCmd);
+  
+  m_pDataStack->vPushInt(eResult);
+  
   EXIT();
 }
 

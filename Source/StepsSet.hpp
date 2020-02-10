@@ -467,6 +467,7 @@ public:
   void vJobFindParticipant(void);
 
   void vJobHasError(void);
+  void vJobHasSyntaxError(void);
   void vJobHasOperand(void);
 
   void vJobIdFetch(void);
@@ -1169,6 +1170,7 @@ public:
 
   // table definition
   void vTableDefParse(void);
+  void vTableDefSyntax(void);
 
   // table partition
   void vTablePtnAttemptGrabRead(void);
