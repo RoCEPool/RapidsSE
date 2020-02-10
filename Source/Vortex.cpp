@@ -72,7 +72,8 @@ Vortex::Vortex(void)
   m_iNextStruct  = 0;
   m_iNextUnion   = 0;
 
-  
+  m_sTypeNm      = C_NO_NAME;
+
   m_oTypeSpec.vReset();
   m_nAsterisks = 0;
   m_oFunVarNm.vReset();
@@ -1350,7 +1351,7 @@ void Vortex::vVarFun_Type(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  s32 sFirstToken = m_oCurTkn.szTerm();
+  m_sTypeNm = m_oCurTkn.szTerm();
 
   vGetNextToken();
 
@@ -1388,7 +1389,7 @@ void Vortex::vVarFun_Type(void)
     
     // -- -- -- -- -- -- -- -- -- -- -- --
     // 1) typeless constructor
-    if (sFirstToken.bSame(m_sClassNm)) {
+    if (m_sTypeNm.bSame(m_sClassNm)) {
       
       
       // 1b) do we have a constructor?
@@ -1409,7 +1410,7 @@ void Vortex::vVarFun_Type(void)
     
     // -- -- -- -- -- -- -- -- -- -- -- --
     // 2) typeless destructor
-    if (sFirstToken.bSame("~"_Stz)) {
+    if (m_sTypeNm.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
       vVarFun_Name();
       goto L_Return;
@@ -1417,7 +1418,7 @@ void Vortex::vVarFun_Type(void)
     
     // -- -- -- -- -- -- -- -- -- -- -- --
     // 3) typeless operator
-    if (sFirstToken.bSame("operator"_Stz)) {
+    if (m_sTypeNm.bSame("operator"_Stz)) {
       TRACE("  (typeless) operator\n"_Stz);
       vVarFun_Operator();
       goto L_Return;

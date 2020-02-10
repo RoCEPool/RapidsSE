@@ -54,6 +54,7 @@ namespace Utilities
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
 
+    s32         m_sTypeNm;       // current type name
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
     i8          m_nAsterisks;
     EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
