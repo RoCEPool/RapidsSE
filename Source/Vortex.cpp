@@ -339,39 +339,41 @@ void Vortex::vParseClass(void)
   RASSERT(m_oCurTkn.bSame("class"_Stz));
   RASSERT(! m_p_MetaType);
       
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get <name>
-  
   vGetNextToken();
   s32 sClassNm = m_oCurTkn.szTerm();
-  vCppPartSaw(VP_CLASS);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // get `;` or `:` or `{`
-  
   vGetNextToken();
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // branch
-  
+
   // forward declaration of a class?
   if (m_oCurTkn.bSame(";"_Stz)) {
+    // leaf
     vCppPartSaw(VP_FORWARD_CLASS);
     vCppPartClear(VP_FORWARD_CLASS);
     m_oClassArgs.vReset();
     return;
   }
 
+  // actual class
   vTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
-  vClassBegin(sClassNm);
-  vRecogniseStructure();
-
   if (m_oTplSpec.nItems()) {
     m_p_MetaType->vTplParams(& m_oTplSpec);
     m_oTplSpec.vReset();
   }
 
+  vClassBegin(sClassNm);
+
+  vCppPartSaw(VP_CLASS);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vRecogniseStructure();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (m_oCurTkn.bSame(":"_Stz)) {
+    
     vCppPartSaw(VP_BASE);
     vGetNextToken();
     vBase_List();
@@ -380,6 +382,7 @@ void Vortex::vParseClass(void)
   }
   else
   if (m_oCurTkn.bSame("{"_Stz)) {
+    
     vCppPartSaw(VP_MEMBERS);
             
     vGetNextToken();
@@ -394,16 +397,18 @@ void Vortex::vParseClass(void)
     vThrowProblem(__LINE__);
   }
 
-  vCppPartSaw(VP_CLASS_END);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  vCppPartSaw(VP_CLASS_END);
   
   vCppPartClear(VP_CLASS);
   vCppPartClear(VP_BASE);
   vCppPartClear(VP_MEMBERS);
   vCppPartClear(VP_MEMBERS_END);
 
-  vClassEnd();
   m_oClassArgs.vReset();
+  
+  vClassEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2383,7 +2388,7 @@ bool Vortex::bTraceAgain(void)
   
   vTraceParts();
   
-  vInfo("[ trace >> "_Stz);
+  vInfo("[ vortex >> "_Stz);
   //fflush(stdin);
   
   char c = getc(stdin);
