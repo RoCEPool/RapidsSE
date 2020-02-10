@@ -112,7 +112,6 @@ namespace Utilities
     //
 
     void vBase_List(void);
-    void vMembers_List(void);
   
     void vHash_Define(void);
     void vHash_If(void);
@@ -122,9 +121,8 @@ namespace Utilities
   
     bool bLabel_Opt(void);
 
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // function / variable processing
-
+    void vMembers_List(void);
+  
     void vVarFun_Type(void);
     void vVarFun_Name(void);
 
@@ -151,9 +149,9 @@ namespace Utilities
     
     void vMemberNew(void);
     
-    void vTypeNew_class(Stz* szClassNm);
-    void vTypeNew_struct(Stz* szStructNm);
-    void vTypeNew_union(Stz* szUnionNm);
+    void vTypeNewClass(Stz* szClassNm);
+    void vTypeNewStruct(Stz* szStructNm);
+    void vTypeNewUnion(Stz* szUnionNm);
     
     void vTypePop(void);
     void vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart);
@@ -189,9 +187,9 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
 
-    bool bIsActive(eVP eSyntaxElement);
     void vClearElement(eVP eSyntaxElement);
     bool bContinueAgain(void);
+    bool bElementIsActive(eVP eSyntaxElement);
     void vRecognisedPart(eCP eCppPart);
     void vSawElement(eVP eSyntaxElement);
     void vThrowProblem(i8 i_Problem);
