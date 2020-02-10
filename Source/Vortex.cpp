@@ -1787,14 +1787,48 @@ void Vortex::vVarFun_FunBody(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_oCurTkn.bSame("{"_Stz)) {
-
-    vDiscardBalancedBraces();
-  
-    vCppPartSaw(VP_FUNCTION_BODY);
+    vVarFun_FunCode();
+    return;
   }
   else {
     vDebugPoint();
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (m_bInClass) {
+    vCppPartSaw(VP_MEMBER_FUNCTION);
+  }
+  else {
+    vCppPartSaw(VP_FUNCTION);
+  }
+  
+  bool bMayBe = bGetNextToken();
+
+
+  m_oTypeSpec.vReset();
+  m_oFunVarNm.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect function code                                        sequence leaf */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_FunCode(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_bIsFun = true;
+  m_oFunSpec.vReset();
+
+  m_bIsFun = true;
+
+  
+  RASSERT(m_oCurTkn.bSame("{"_Stz));
+
+  vDiscardBalancedBraces();
+  
+  vCppPartSaw(VP_FUNCTION_BODY);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

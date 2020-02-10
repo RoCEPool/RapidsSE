@@ -144,6 +144,7 @@ namespace Utilities
     void vVarFun_Array(void);
     void vVarFun_Field(void);
     void vVarFun_FunBody(void);
+    void vVarFun_FunCode(void);
 
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
