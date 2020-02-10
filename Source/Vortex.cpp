@@ -1353,11 +1353,34 @@ void Vortex::vVarFun_Type(void)
   s32 sFirstToken = m_oCurTkn.szTerm();
 
   vGetNextToken();
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // possible < classArgs >
   if (m_oCurTkn.bSame("<"_Stz)) {
     vCollectTypeArgs(m_oTypeArgs);
     vGetNextToken();
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // zero or more * asterisks
+  for (;;) {
+    
+    // collected when we have no more asterisks
+    if (! m_oCurTkn.bSame("*"_Stz))
+      break;
+    
+    // we have an asterisk
+    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+    m_nAsterisks++;
+  
+    vGetNextToken();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // a possible & reference
+  if (m_oCurTkn.bSame("&"_Stz))
+    vGetNextToken();
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // typeless constructor / destructor / auto-conversion operator
