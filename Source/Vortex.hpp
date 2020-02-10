@@ -139,6 +139,8 @@ namespace Utilities
     void vVarFun_SequenceBegin(void);
   
     void vVarFun_Type(void);
+    void vVarFun_Scope(void);
+
     void vVarFun_Name(void);
     void vVarFun_Constructor(void);
     void vVarFun_Operator(void);

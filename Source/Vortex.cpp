@@ -1391,19 +1391,18 @@ void Vortex::vVarFun_Type(void)
     // 1) typeless constructor
     if (m_sTypeNm.bSame(m_sClassNm)) {
       
-      
-      // 1b) do we have a constructor?
+      // 1a) do we have a constructor?
       //        e.g. myClass <i8> (void);
       if (m_oCurTkn.bSame("("_Stz)) {
         
-        // 1a) constructor (no specifier)
+        // constructor (no specifier)
         TRACE("  (typeless) constructor\n"_Stz);
         vGetNextToken();
         vVarFun_Constructor();
         goto L_Return;
       }
             
-      // 1c) at this point we have type which is the class
+      // 1b) at this point we have type which is the class
       //       e.g.  myClass<i8>* pGetParent(void);
       goto L_Scope_Test;
     }
@@ -1436,6 +1435,23 @@ void Vortex::vVarFun_Type(void)
   
   L_Scope_Test:
 
+  vVarFun_Scope();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_Return:
+  
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scope test                                                                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Scope(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   // do we see the scope resolution opeator (::)
   //   indicating templated function in a _t.hpp file?
   if (m_oCurTkn.bSame(":"_Stz)) {
@@ -1465,11 +1481,9 @@ void Vortex::vVarFun_Type(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vVarFun_Name();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   L_Return:
-  
+
   return;
 }
 
