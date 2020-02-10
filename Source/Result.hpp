@@ -38,7 +38,6 @@ namespace Jobs
   public:
     void vPrintLoadRows(void);
     void vPrintLocalRows(void);
-    void vPrintLocalZero(void);
     void vPrintNodeRows(void);
     void vPrintQueueRows(void);
     

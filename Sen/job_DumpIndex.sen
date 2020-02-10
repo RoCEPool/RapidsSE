@@ -105,7 +105,7 @@ jobInfo: dumpIndex
   
   <?jobType?>  = JT_DUMPINDEX
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_LOCAL_ZERO
+  <?rspKind?>  = RS_LOCAL_ROWS
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

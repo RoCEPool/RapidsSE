@@ -96,7 +96,6 @@ void Result::vPrint(eRS eResponse)
     case RS_NONE         : /* do nothing */      break;
     case RS_LOAD_ROWS    : vPrintLoadRows();     break;
     case RS_LOCAL_ROWS   : vPrintLocalRows();    break;
-    case RS_LOCAL_ZERO   : vPrintLocalZero();    break;
     case RS_NODE_ROWS    : vPrintNodeRows();     break;
     case RS_QUEUE_ROWS   : vPrintQueueRows();    break;
       
@@ -187,21 +186,6 @@ void Result::vPrintNodeRows(void)
     iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
   }
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print local zero rows                                                      */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintLocalZero(void)
-{
-  if (m_bPartHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz,
-           AM::iThisNodeNo(),
-           aEC[m_xJobResponse.m_eErrorCode]);
-    return;
-  }
-  
-  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

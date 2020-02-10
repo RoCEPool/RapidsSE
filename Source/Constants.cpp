@@ -584,7 +584,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("RS_NONE"_Stz,         RS_NONE);
   /*  0 */ vAddConstant("RS_LOAD_ROWS"_Stz,    RS_LOAD_ROWS);
   /*  0 */ vAddConstant("RS_LOCAL_ROWS"_Stz,   RS_LOCAL_ROWS);
-  /*  0 */ vAddConstant("RS_LOCAL_ZERO"_Stz,   RS_LOCAL_ZERO);
   /*  0 */ vAddConstant("RS_NODE_ROWS"_Stz,    RS_NODE_ROWS);
   /*  0 */ vAddConstant("RS_QUEUE_ROWS"_Stz,   RS_QUEUE_ROWS);
 
