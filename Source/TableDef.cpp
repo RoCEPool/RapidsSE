@@ -955,7 +955,7 @@ eEC TableDef::eParsePartitionBy(TokenVec* pTknVec)
       }
     }
     if ( ! bFound) {
-      return EC_INVALID_COMMAND;
+      return EC_INVALID_PARTITION_KEY;
     }
     pTkn = pTknVec->pNextToken(); dPT();
     if ( ! pTkn->bSame(","_Stz)) {

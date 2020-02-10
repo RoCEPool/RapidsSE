@@ -74,7 +74,7 @@ create table createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (xyz);
-failure contains: 'invalid command'
+failure contains: 'invalid partition key'
 
 create table createT1 (
 key   INTEGER NOT NULL,

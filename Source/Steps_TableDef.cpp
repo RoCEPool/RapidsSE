@@ -36,7 +36,7 @@ void Step::vTableDefParse(void)
   if (eResult != EC_NONE) {
     
     // at this stage shouldn't be a syntax error
-    //ASSERT(eResult != EC_INVALID_COMMAND);
+    ASSERT(eResult != EC_INVALID_COMMAND);
     
     // set the syntax error in the job
     pJob_CreateTable->vSyntaxError(eResult);

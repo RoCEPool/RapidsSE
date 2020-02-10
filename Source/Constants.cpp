@@ -403,6 +403,7 @@ void Constants::vAddConstantsCpp(void)
   /* 18 */ vAddConstant("EC_INVALID_PARAMETER"_Stz,  EC_INVALID_PARAMETER);
   /* 19 */ vAddConstant("EC_INVALID_PARAMETERS"_Stz, EC_INVALID_PARAMETERS);
   /* 19 */ vAddConstant("EC_INVALID_PARTITION"_Stz,  EC_INVALID_PARTITION);
+  /* 19 */ vAddConstant("EC_INVALID_PARTITION_KEY"_Stz,  EC_INVALID_PARTITION_KEY);
   /*    */ vAddConstant("EC_INVALID_INDEX_COLUMN"_Stz, EC_INVALID_INDEX_COLUMN);
   /* 20 */ vAddConstant("EC_INVALID_INSTANCE"_Stz,   EC_INVALID_INSTANCE);
   /*    */ vAddConstant("EC_INVALID_SIZE"_Stz,       EC_INVALID_SIZE);
