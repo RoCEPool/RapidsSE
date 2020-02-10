@@ -189,12 +189,13 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
 
-    void vClearElement(eVP eSyntaxElement);
-    bool bContinueAgain(void);
-    bool bElementIsActive(eVP eSyntaxElement);
-    void vSawElement(eVP eSyntaxElement);
+    bool bCppPartActive(eVP eSyntaxElement);
+    void vCppPartClear(eVP eSyntaxElement);
+    void vCppPartSaw(eVP eSyntaxElement);
+  
     void vThrowProblem(i8 i_Problem);
   
+    bool bTraceAgain(void);
     void vTraceElements(void);
     void vTraceEnter(char* azFunc);
     void vTraceEnter_short(char* azFunc);
