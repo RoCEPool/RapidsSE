@@ -1351,21 +1351,26 @@ void Vortex::vVarFun_Type(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // constructor / destructor / auto-conversion operator (i.e. no specifier)
+  // typeless constructor / destructor / auto-conversion operator
   if (m_bInClass) {
+
+    s32 sFirstToken = m_oCurTkn.szTerm();
     
     // -- -- -- -- -- -- -- -- -- -- -- --
-    // 1)
-    if (m_oCurTkn.bSame(m_sClassNm)) {
+    // 1) typeless constructor
+    if (sFirstToken.bSame(m_sClassNm)) {
       
       vGetNextToken();
       
-      // do we have type arguments?
+      // 1a) do we have type arguments?
+      //        e.g. myClass <i8> * m_pParent;
       if (m_oCurTkn.bSame("<"_Stz)) {
         vCollectTypeArgs(m_oTypeArgs);
         vGetNextToken();
       }
       
+      // 1b) do we have a constructor?
+      //        e.g. myClass <i8> (void);
       if (m_oCurTkn.bSame("("_Stz)) {
         
         // 1a) constructor (no specifier)
@@ -1375,13 +1380,14 @@ void Vortex::vVarFun_Type(void)
         goto L_Return;
       }
             
-      // 1b)
-      goto L_Template_Args;
+      // 1c) at this point we have type which is the class
+      //       e.g.  myClass<i8>* pGetParent(void);
+      goto L_Scope_Test;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- --
-    // 2) destructor (no specifier)
-    if (m_oCurTkn.bSame("~"_Stz)) {
+    // 2) typeless destructor
+    if (sFirstToken.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
       vGetNextToken();
       vVarFun_Name();
@@ -1389,17 +1395,19 @@ void Vortex::vVarFun_Type(void)
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- --
-    // 3) typeless operator (no specifier)
-    if (m_oCurTkn.bSame("operator"_Stz)) {
+    // 3) typeless operator
+    if (sFirstToken.bSame("operator"_Stz)) {
+      TRACE("  (typeless) operator\n"_Stz);
       vGetNextToken();
       vVarFun_Operator();
       goto L_Return;
     }
     
+    // no typeless constructor/destructor/operator found
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
+  // initial type has been detected
   
   // do not expect the keyword `operator` at this point
   CHECKED(! m_oCurTkn.bSame("operator"_Stz));
@@ -1408,7 +1416,6 @@ void Vortex::vVarFun_Type(void)
   m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
   vGetNextToken();
   
-  L_Template_Args:
   
   // do we have template arguments?
   if (m_oCurTkn.bSame("<"_Stz)) {
@@ -1419,6 +1426,10 @@ void Vortex::vVarFun_Type(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
   
+  L_Scope_Test:
+
+  // do we see the scope resolution opeator (::)
+  //   indicating templated function in a _t.hpp file?
   if (m_oCurTkn.bSame(":"_Stz)) {
     vGetExpectedToken(":"_Stz);
     vGetNextToken();
