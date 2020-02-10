@@ -180,9 +180,6 @@ namespace Utilities
     void vDiscardStaticTokens(void);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
  
-    void vEnter(char* azFunc);
-    void vEnter_short(char* azFunc);
-
     void vGetExpectedToken(Stz* szExpect);
     bool bGetNextToken(void);
     void vGetNextToken(void);
@@ -195,10 +192,13 @@ namespace Utilities
     void vClearElement(eVP eSyntaxElement);
     bool bContinueAgain(void);
     bool bElementIsActive(eVP eSyntaxElement);
-    void vRecognisedPart(eCP eCppPart);
     void vSawElement(eVP eSyntaxElement);
+    void vSawPart(eCP eCppPart);
     void vThrowProblem(i8 i_Problem);
+  
     void vTraceElements(void);
+    void vTraceEnter(char* azFunc);
+    void vTraceEnter_short(char* azFunc);
     void vTraceFunction(void);
     void vTraceFunVarNm(void);
     void vTraceNamespaceNm(void);
