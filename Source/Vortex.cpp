@@ -466,6 +466,7 @@ void Vortex::vParseClass(void)
   
   vGetNextToken();
   s32 sClassNm = m_oCurTkn.szTerm();
+  vSawElement(VP_CLASS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get `;` or `:` or `{`
@@ -479,6 +480,8 @@ void Vortex::vParseClass(void)
   if (m_oCurTkn.bSame(";"_Stz)) {
     vSawElement(VP_FORWARD);
     vRecognisedPart(CP_FORWARD);
+    vClearElement(VP_CLASS);
+    vClearElement(VP_FORWARD);
     m_oClassArgs.vReset();
     return;
   }
@@ -492,21 +495,22 @@ void Vortex::vParseClass(void)
   }
 
   if (m_oCurTkn.bSame(":"_Stz)) {
-    vSawElement(VP_CLASS_BEGIN);
-    vRecognisedPart(CP_CLASS_BEGIN);
-    vSawElement(VP_BASE_BEGIN);
-    vRecognisedPart(CP_BASE_BEGIN);
+    vSawElement(VP_BASE);
     vGetNextToken();
     vBase_List();
+    
+    RASSERT(bElementIsActive(VP_MEMBERS_END));
   }
   else
   if (m_oCurTkn.bSame("{"_Stz)) {
-    vSawElement(VP_CLASS_BEGIN);
-    vRecognisedPart(CP_CLASS_BEGIN);
     vSawElement(VP_MEMBERS_BEGIN);
+    vRecognisedPart(CP_CLASS_BEGIN);
     vRecognisedPart(CP_MEMBERS_BEGIN);
+    
     vGetNextToken();
     vMembers_List();
+    
+    RASSERT(bElementIsActive(VP_MEMBERS_END));
     CHECKED(m_oCurTkn.bSame(";"_Stz));
     
     bool bMaybe = bGetNextToken();
@@ -516,7 +520,14 @@ void Vortex::vParseClass(void)
   }
 
   vSawElement(VP_CLASS_END);
+  
   vRecognisedPart(CP_CLASS_END);
+
+  vClearElement(VP_CLASS);
+  vClearElement(VP_BASE);
+  vClearElement(VP_MEMBERS_BEGIN);
+  vClearElement(VP_MEMBERS_END);
+
   vClassEnd();
   m_oClassArgs.vReset();
 }
@@ -531,6 +542,8 @@ void Vortex::vParseConst(void)
 
   RASSERT(m_oCurTkn.bSame("const"_Stz));
   //RASSERT(0 == m_oOtherTerms.nItems());
+
+  vSawElement(VP_CONST);
 
   m_oOtherTerms.vReset();
 
@@ -557,8 +570,11 @@ void Vortex::vParseConst(void)
   ConstDef* pConstDef = m_p_ConstSet->pAddConstDef(m_sConstNm);
   pConstDef->vTerms(m_oOtherTerms);
 
-  vSawElement(VP_CONST);
   vRecognisedPart(CP_CONST);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_CONST);
   
   m_oOtherTerms.vReset();
   
@@ -574,11 +590,16 @@ void Vortex::vParseEnum(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("enum"_Stz));
-    
+
+  vSawElement(VP_ENUM);
+
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vSawElement(VP_ENUM);
   vRecognisedPart(CP_ENUM);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_ENUM);
 
   bool bMaybe = bGetNextToken();
 }
@@ -592,11 +613,16 @@ void Vortex::vParseExtern(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("extern"_Stz));
-    
+
+  vSawElement(VP_ENUM);
+
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vSawElement(VP_ENUM);
   vRecognisedPart(CP_ENUM);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_ENUM);
 
   bool bMaybe = bGetNextToken();
 }
@@ -611,12 +637,17 @@ void Vortex::vParseFriend(void)
 
   RASSERT(m_oCurTkn.bSame("friend"_Stz));
   RASSERT(m_bInClass);
-  
+
+  vSawElement(VP_FRIEND);
+
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
-  vSawElement(VP_FRIEND);
   vRecognisedPart(CP_FRIEND);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_FRIEND);
+
   bool bMaybe = bGetNextToken();
 }
 
@@ -630,6 +661,8 @@ void Vortex::vParseHash(void)
 
   RASSERT(m_oCurTkn.bSame("#"_Stz));
     
+  vSawElement(VP_HASH);
+
   CHECKED(bGetNextToken());
   
   if (m_oCurTkn.bSame("define"_Stz))  vHash_Define();    else
@@ -640,6 +673,10 @@ void Vortex::vParseHash(void)
   {
     vThrowProblem(__LINE__);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_HASH);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -651,10 +688,16 @@ void Vortex::vParseInline(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_oCurTkn.bSame("inline"_Stz));
-    
+ 
+  vSawElement(VP_INLINE);
+
   vGetNextToken();
   
   vKeywordDescend();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_INLINE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -667,6 +710,8 @@ void Vortex::vParseNamespace(void)
   
   RASSERT(m_oCurTkn.bSame("namespace"_Stz));
   
+  vSawElement(VP_NAMESPACE);
+
   // get <name> of namespace
   vGetNextToken();
   
@@ -676,7 +721,6 @@ void Vortex::vParseNamespace(void)
   vGetExpectedToken("{"_Stz);
 
   vTraceNamespaceNm();
-  vSawElement(VP_NAMESPACE_BEGIN);
   vRecognisedPart(CP_NAMESPACE_BEGIN);
   
   vGetNextToken();
@@ -693,6 +737,8 @@ void Vortex::vParseNamespace(void)
       vRecognisedPart(CP_NAMESPACE_END);
       vNamepaceEnd();
       
+      vClearElement(VP_NAMESPACE);
+
       bool bMaybe = bGetNextToken();
       return;
     }
@@ -717,6 +763,8 @@ void Vortex::vParseOpenSquare(void)
   vEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  vSawElement(VP_NORETURN);
+  
   RASSERT(m_oCurTkn.bSame("["_Stz));
     
   vGetExpectedToken("["_Stz);
@@ -726,6 +774,10 @@ void Vortex::vParseOpenSquare(void)
   vGetNextToken();
 
   vKeywordDescend();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_NORETURN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -738,10 +790,16 @@ void Vortex::vParsePublic(void)
 
   RASSERT(m_oCurTkn.bSame("public"_Stz));
 
+  vSawElement(VP_PUBLIC);
+  
   vGetExpectedToken(":"_Stz);
 
   vSawElement(VP_LABEL);
   vRecognisedPart(CP_LABEL);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_PUBLIC);
   
   bool bMaybe = bGetNextToken();
 }
@@ -757,7 +815,12 @@ void Vortex::vParseSemicolon(void)
   RASSERT(m_oCurTkn.bSame(";"_Stz));
   
   vSawElement(VP_EMPTY);
+  
   vRecognisedPart(CP_EMPTY);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_PUBLIC);
   
   bool bMaybe = bGetNextToken();
 }
@@ -772,9 +835,15 @@ void Vortex::vParseStatic(void)
   
   RASSERT(m_oCurTkn.bSame("static"_Stz));
     
+  vSawElement(VP_STATIC);
+  
   vGetNextToken();
   
   vKeywordDescend();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_STATIC);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -787,6 +856,8 @@ void Vortex::vParseStruct(void)
   
   RASSERT(m_oCurTkn.bSame("struct"_Stz));
 
+  vSawElement(VP_STRUCT);
+  
   /*
     
    1) struct { ... } ;
@@ -870,6 +941,10 @@ void Vortex::vParseStruct(void)
   
   vSawElement(VP_STRUCT);
   vRecognisedPart(CP_STRUCT);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_STRUCT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -882,6 +957,8 @@ void Vortex::vParseTemplate(void)
   
   RASSERT(m_oCurTkn.bSame("template"_Stz));
         
+  vSawElement(VP_TEMPLATE);
+
   vGetExpectedToken("<"_Stz);
   vCollectTemplateSpec(m_oTplSpec);
   
@@ -892,6 +969,10 @@ void Vortex::vParseTemplate(void)
   vKeywordDescend();
   
   vTemplateEnd();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_TEMPLATE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -904,10 +985,16 @@ void Vortex::vParseTypedef(void)                           // MORE WORK REQUIRED
 
   RASSERT(m_oCurTkn.bSame("typedef"_Stz));
     
+  vSawElement(VP_TYPEDEF);
+  
   vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
   
   vSawElement(VP_TYPEDEF);
   vRecognisedPart(CP_TYPEDEF);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_TYPEDEF);
   
   bool bMaybe = bGetNextToken();
 }
@@ -921,6 +1008,8 @@ void Vortex::vParseUnion(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(m_oCurTkn.bSame("union"_Stz));
+  
+  vSawElement(VP_UNION);
   
   /*
     
@@ -963,9 +1052,15 @@ void Vortex::vParseUnsigned(void)
 
   RASSERT(m_oCurTkn.bSame("unsigned"_Stz));
     
+  vSawElement(VP_UNSIGNED);
+  
   vGetNextToken();
   
   vKeywordDescend();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_UNSIGNED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -978,6 +1073,8 @@ void Vortex::vParseUsing(void)
   
   RASSERT(m_oCurTkn.bSame("using"_Stz));
     
+  vSawElement(VP_USING);
+  
   // get NAMESPACE
   vGetExpectedToken("namespace"_Stz);
 
@@ -989,6 +1086,10 @@ void Vortex::vParseUsing(void)
   
   vSawElement(VP_USING);
   vRecognisedPart(CP_USING);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_USING);
   
   bool bMaybe = bGetNextToken();
 }
@@ -1093,33 +1194,6 @@ void Vortex::vBase_List(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse:  ... CLASS | STRUCT | UNION  ... { _^_ ... } ...            descend */
-/*----------------------------------------------------------------------------*/
-void Vortex::vMembers_List(void)
-{
-  vEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  for (;;) {
-
-    // block is terminated by } ;
-    if (m_oCurTkn.bSame("}"_Stz)) {
-      bool bMaybe = bGetNextToken();
-      return;
-    }
-    
-    if (bLabel_Opt()) {
-      vEnter((char*)__func__);
-      continue;
-    }
-    
-    vKeywordDescend();
-    
-    vEnter((char*)__func__);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse: # DEFINE _^_ ... ENDDEFINE                                     leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vHash_Define(void)
@@ -1137,6 +1211,10 @@ void Vortex::vHash_Define(void)
   vSawElement(VP_HASH_DEFINE);
   vRecognisedPart(CP_HASH_DEFINE);
  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_HASH_DEFINE);
+
   bool bMaybe = bGetNextToken();
 }
 
@@ -1158,6 +1236,10 @@ void Vortex::vHash_If(void)
   vSawElement(VP_HASH_IF);
   vRecognisedPart(CP_HASH_IF);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_HASH_IF);
+
   bool bMaybe = bGetNextToken();
 }
 
@@ -1179,6 +1261,10 @@ void Vortex::vHash_Ifdef(void)
   vSawElement(VP_HASH_IF);
   vRecognisedPart(CP_HASH_IF);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_HASH_IF);
+
   bool bMaybe = bGetNextToken();
 }
 
@@ -1200,6 +1286,10 @@ void Vortex::vHash_Include(void)
   vSawElement(VP_HASH_INCLUDE);
   vRecognisedPart(CP_HASH_INCLUDE);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vClearElement(VP_HASH_INCLUDE);
+
   bool bMaybe = bGetNextToken();
 }
 
@@ -1231,6 +1321,76 @@ void Vortex::vHash_Pragma(void)
   }
   
   bool bMaybe = bGetNextToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip a label i.e. private|protected|public :                               */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bLabel_Opt(void)
+{
+  vEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  if (m_oCurTkn.bSame("private"_Stz)) {
+    CHECKED(bGetNextToken());
+    CHECKED(m_oCurTkn.bSame(":"_Stz));
+    vSawElement(VP_LABEL);
+    vRecognisedPart(CP_LABEL);
+    vClearElement(VP_LABEL);
+    vGetNextToken();
+    return true;
+  }
+  else
+  if (m_oCurTkn.bSame("protected"_Stz)) {
+    CHECKED(bGetNextToken());
+    CHECKED(m_oCurTkn.bSame(":"_Stz));
+    vSawElement(VP_LABEL);
+    vRecognisedPart(CP_LABEL);
+    vClearElement(VP_LABEL);
+    vGetNextToken();
+    return true;
+  }
+  else
+  if (m_oCurTkn.bSame("public"_Stz)) {
+    CHECKED(bGetNextToken());
+    CHECKED(m_oCurTkn.bSame(":"_Stz));
+    vSawElement(VP_LABEL);
+    vRecognisedPart(CP_LABEL);
+    vClearElement(VP_LABEL);
+    vGetNextToken();
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse:  ... CLASS | STRUCT | UNION  ... { _^_ ... } ...            descend */
+/*----------------------------------------------------------------------------*/
+void Vortex::vMembers_List(void)
+{
+  vEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  for (;;) {
+
+    // block is terminated by } ;
+    if (m_oCurTkn.bSame("}"_Stz)) {
+      vSawElement(VP_MEMBERS_END);
+      bool bMaybe = bGetNextToken();
+      return;
+    }
+    
+    if (bLabel_Opt()) {
+      vEnter((char*)__func__);
+      continue;
+    }
+    
+    vKeywordDescend();
+    
+    vEnter((char*)__func__);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1735,45 +1895,6 @@ void Vortex::vVarFun_Variable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip a label i.e. private|protected|public :                               */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bLabel_Opt(void)
-{
-  vEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-    
-  if (m_oCurTkn.bSame("private"_Stz)) {
-    CHECKED(bGetNextToken());
-    CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vSawElement(VP_LABEL);
-    vRecognisedPart(CP_LABEL);
-    vGetNextToken();
-    return true;
-  }
-  
-  if (m_oCurTkn.bSame("protected"_Stz)) {
-    CHECKED(bGetNextToken());
-    CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vSawElement(VP_LABEL);
-    vRecognisedPart(CP_LABEL);
-    vGetNextToken();
-    return true;
-  }
-  
-  if (m_oCurTkn.bSame("public"_Stz)) {
-    CHECKED(bGetNextToken());
-    CHECKED(m_oCurTkn.bSame(":"_Stz));
-    vSawElement(VP_LABEL);
-    vRecognisedPart(CP_LABEL);
-    vGetNextToken();
-    return true;
-  }
-  
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* shift funvar name etc to be class                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vShiftClassNm(void)
@@ -2093,7 +2214,7 @@ void Vortex::vMemberNew(void)
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ class                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vTypeNew_class(Stz* szClassNm)
+void Vortex::vTypeNewClass(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -2119,7 +2240,7 @@ void Vortex::vTypeNew_class(Stz* szClassNm)
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ struct                                      */
 /*----------------------------------------------------------------------------*/
-void Vortex::vTypeNew_struct(Stz* szStructNm)
+void Vortex::vTypeNewStruct(Stz* szStructNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -2135,7 +2256,7 @@ void Vortex::vTypeNew_struct(Stz* szStructNm)
 /*----------------------------------------------------------------------------*/
 /* create new meta type for a c++ union                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vTypeNew_union(Stz* szUnionNm)
+void Vortex::vTypeNewUnion(Stz* szUnionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -2192,18 +2313,6 @@ void Vortex::vTypePush(Stz* szTypeNm, eMT eStructure, eCP eCppPart)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* is syntax element active?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bIsActive(eVP eSyntaxElement)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  bool bActive = m_baSaw[eSyntaxElement];
-
-  return bActive;
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear given syntax element                                                  */
 /*----------------------------------------------------------------------------*/
 void Vortex::vClearElement(eVP eSyntaxElement)
@@ -2229,6 +2338,18 @@ bool Vortex::bContinueAgain(void)
     return false;
   else
     return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is syntax element active?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bElementIsActive(eVP eSyntaxElement)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  bool bActive = m_baSaw[eSyntaxElement];
+
+  return bActive;
 }
 
 /*----------------------------------------------------------------------------*/
