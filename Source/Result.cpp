@@ -94,7 +94,6 @@ void Result::vPrint(eRS eResponse)
   switch (eResponse) {
       
     case RS_NONE         : /* do nothing */      break;
-    case RS_DATA_ROWS    : RASSERT(0);           break;
     case RS_LOAD_ROWS    : vPrintLoadRows();     break;
     case RS_LOCAL_ROWS   : vPrintLocalRows();    break;
     case RS_LOCAL_ZERO   : vPrintLocalZero();    break;

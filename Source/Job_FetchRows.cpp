@@ -8,7 +8,7 @@ JobClass xJobClass_FetchRows =
 {
   CN_JOB_FETCHROWS,          // class number
   JK_LOCAL,                  // job kind
-  RS_DATA_ROWS,              // response kind
+  RS_NONE,                   // response kind
   "fetch rows"_Stz,          // comment about the job
   "fetch"_Stz,               // the prompt command
   nullptr,                   // the second word
@@ -46,7 +46,7 @@ JobClass xJobClass_FetchRetrieveRows =
 {
   CN_JOB_FETCHROWS,          // class number
   JK_LOCAL,                  // job kind
-  RS_DATA_ROWS,              // response kind
+  RS_NONE,                   // response kind
   "fetch retrive rows"_Stz,  // comment about the job
   "fetch"_Stz,               // the prompt command
   "retrieve"_Stz,            // the second word

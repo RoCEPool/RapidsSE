@@ -582,7 +582,6 @@ void Constants::vAddConstantsCpp(void)
 
   // RS_ : response kind
   /*  0 */ vAddConstant("RS_NONE"_Stz,         RS_NONE);
-  /*  0 */ vAddConstant("RS_DATA_ROWS"_Stz,    RS_DATA_ROWS);
   /*  0 */ vAddConstant("RS_LOAD_ROWS"_Stz,    RS_LOAD_ROWS);
   /*  0 */ vAddConstant("RS_LOCAL_ROWS"_Stz,   RS_LOCAL_ROWS);
   /*  0 */ vAddConstant("RS_LOCAL_ZERO"_Stz,   RS_LOCAL_ZERO);
