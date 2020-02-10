@@ -143,6 +143,7 @@ namespace Utilities
 
     void vVarFun_Name(void);
     void vVarFun_Constructor(void);
+    void vVarFun_Destructor(void);
     void vVarFun_Operator(void);
 
     void vVarFun_AryFunVar(void);

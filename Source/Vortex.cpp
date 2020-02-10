@@ -1592,6 +1592,21 @@ void Vortex::vVarFun_Constructor(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect information about a destructor -> vVarFun_FunBody         sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Destructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_bIsFunPtr = false;
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect information about operator function -> vVarFun_FunBody()  sequence */
 /*----------------------------------------------------------------------------*/
 void Vortex::vVarFun_Operator(void)
