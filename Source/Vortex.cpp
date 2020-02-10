@@ -356,15 +356,16 @@ void Vortex::vParseClass(void)
   
   // forward declaration of a class?
   if (m_oCurTkn.bSame(";"_Stz)) {
-    vCppPartSaw(VP_FORWARD);
-    vCppPartClear(VP_FORWARD);
+    vCppPartSaw(VP_FORWARD_CLASS);
+    vCppPartClear(VP_FORWARD_CLASS);
     m_oClassArgs.vReset();
     return;
   }
 
   vTypePush(sClassNm,MT_LINEAR,CP_CLASS_BEGIN);
   vClassBegin(sClassNm);
-  
+  vRecogniseStructure();
+
   if (m_oTplSpec.nItems()) {
     m_p_MetaType->vTplParams(& m_oTplSpec);
     m_oTplSpec.vReset();
@@ -379,7 +380,7 @@ void Vortex::vParseClass(void)
   }
   else
   if (m_oCurTkn.bSame("{"_Stz)) {
-    vCppPartSaw(VP_MEMBERS_BEGIN);
+    vCppPartSaw(VP_MEMBERS);
             
     vGetNextToken();
     vMembers_List();
@@ -398,7 +399,7 @@ void Vortex::vParseClass(void)
   
   vCppPartClear(VP_CLASS);
   vCppPartClear(VP_BASE);
-  vCppPartClear(VP_MEMBERS_BEGIN);
+  vCppPartClear(VP_MEMBERS);
   vCppPartClear(VP_MEMBERS_END);
 
   vClassEnd();
@@ -406,7 +407,7 @@ void Vortex::vParseClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: CONST _^_ <type> <name> = <terms>                              leaf */
+/* parse: CONST _^_ <type> <name> = <terms>                   collecting leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseConst(void)
 {
@@ -415,7 +416,6 @@ void Vortex::vParseConst(void)
 
   RASSERT(m_oCurTkn.bSame("const"_Stz));
   //RASSERT(0 == m_oOtherTerms.nItems());
-
 
   // get <type>
   vGetNextToken();
@@ -452,7 +452,7 @@ void Vortex::vParseConst(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: ENUM _^_ ... ;                                            discard ; */
+/* parse: ENUM _^_ ... ;                                      discarding leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseEnum(void)
 {
@@ -467,7 +467,8 @@ void Vortex::vParseEnum(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    
+  // discarded
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vCppPartClear(VP_ENUM);
@@ -476,7 +477,7 @@ void Vortex::vParseEnum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: EXTERN _^_ ... ;                                          discard ; */
+/* parse: EXTERN _^_ ... ;                                    discarding leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseExtern(void)
 {
@@ -485,12 +486,13 @@ void Vortex::vParseExtern(void)
 
   RASSERT(m_oCurTkn.bSame("extern"_Stz));
 
+  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  
   vCppPartSaw(VP_EXTERN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
-  
+  // discarded
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -500,7 +502,7 @@ void Vortex::vParseExtern(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: FRIEND _^_ ... ;                                          discard ; */
+/* parse: FRIEND _^_ ... ;                                    discarding leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFriend(void)
 {
@@ -510,16 +512,17 @@ void Vortex::vParseFriend(void)
   RASSERT(m_oCurTkn.bSame("friend"_Stz));
   RASSERT(m_bInClass);
 
-  vCppPartSaw(VP_FRIEND);
+  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  
+  vCppPartSaw(VP_FRIEND_CLASS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
-  
+  // discarded
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vCppPartClear(VP_FRIEND);
+  vCppPartClear(VP_FRIEND_CLASS);
 
   bool bMaybe = bGetNextToken();
 }
@@ -569,7 +572,6 @@ void Vortex::vParseInline(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vGetNextToken();
-  
   vKeywordDescend();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,6 +676,7 @@ void Vortex::vParsePublic(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // leaf
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -696,7 +699,8 @@ void Vortex::vParseSemicolon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    
+  // leaf
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vCppPartClear(VP_PUBLIC);
@@ -765,6 +769,9 @@ void Vortex::vParseStruct(void)
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
     vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
+    
+    vRecogniseStructure();
+
     vGetNextToken();
     vMembers_List();
     vTypePop();
@@ -806,6 +813,8 @@ void Vortex::vParseStruct(void)
   // 5) struct <blockNm> { ... } ;
   if (m_oCurTkn.bSame("{"_Stz)) {
     
+    vRecogniseStructure();
+    
     vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
     vGetNextToken();
     vMembers_List();
@@ -839,27 +848,30 @@ void Vortex::vParseTemplate(void)
         
   vGetExpectedToken("<"_Stz);
   
+  m_oTplSpec.vReset();
   vCollectTemplateSpec(m_oTplSpec);
 
   vCppPartSaw(VP_TEMPLATE);
 
+  vTemplateBegin();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTemplateBegin();
-    
   vGetNextToken();
 
   vKeywordDescend();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vTemplateEnd();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_oTplSpec.vReset();
 
   vCppPartClear(VP_TEMPLATE);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: TYPEDEF _^_ ... ;                                         discard ; */
+/* parse: TYPEDEF _^_ ... ;                                   discarding leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTypedef(void)                           // MORE WORK REQUIRED
 {
@@ -874,6 +886,7 @@ void Vortex::vParseTypedef(void)                           // MORE WORK REQUIRED
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // discarded
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -980,6 +993,7 @@ void Vortex::vParseUsing(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // leaf
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -989,7 +1003,7 @@ void Vortex::vParseUsing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: <other> _^_ <term> ...                                       branch */
+/* parse: <other> _^_ <term> ...                                     sequence */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseVarFun(void)
 {

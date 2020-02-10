@@ -19,8 +19,8 @@ enum eVP // c++ part
   /*    */ VP_ENUM,                // enum
   /*    */ VP_EXTERN,              // extern
   /*    */ VP_FIELD_BITS,          // field
-  /*    */ VP_FORWARD,             // forward class
-  /*    */ VP_FRIEND,              // friend
+  /*    */ VP_FORWARD_CLASS,       // forward class
+  /*    */ VP_FRIEND_CLASS,        // friend
   /*    */ VP_FUNCTION,            // function
   /*    */ VP_FUNCTION_BODY,       // function
   /*    */ VP_FUNCTION_POINTER,    // function
@@ -37,7 +37,7 @@ enum eVP // c++ part
   /*    */ VP_LABEL,               // class member label
   /*    */ VP_MEMBER_FUNCTION,     // member function
   /*    */ VP_MEMBER_VARIABLE,     // member variable
-  /*    */ VP_MEMBERS_BEGIN,       // members
+  /*    */ VP_MEMBERS,             // members
   /*    */ VP_MEMBERS_END,         // members end
   /*    */ VP_NAMESPACE,           // namespace
   /*    */ VP_NAMESPACE_END,       // end of namespace
@@ -46,6 +46,7 @@ enum eVP // c++ part
   /*    */ VP_PUBLIC,              // public
   /*    */ VP_STATIC,              // static
   /*    */ VP_STRUCT,              // struct
+  /*    */ VP_STRUCT_END,          // struct end
   /*    */ VP_TEMPLATE,            // template
   /*    */ VP_TYPEDEF,             // typedef
   /*    */ VP_TYPE_ARGS,           // typetemplate args
@@ -63,7 +64,7 @@ static Stz* aVP[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "VP_ARRAY_SPEC"_Stz,
-  /*    */ "VP_BASE_BEGIN"_Stz,
+  /*    */ "VP_BASE"_Stz,
   /*    */ "VP_BASE_END"_Stz,
   /*    */ "VP_CLASS"_Stz,
   /*    */ "VP_CLASS_END"_Stz,
@@ -74,8 +75,8 @@ static Stz* aVP[]
   /*    */ "VP_ENUM"_Stz,
   /*    */ "VP_EXTERN"_Stz,
   /*    */ "VP_FIELD_BITS"_Stz,
-  /*    */ "VP_FORWARD"_Stz,
-  /*    */ "VP_FRIEND"_Stz,
+  /*    */ "VP_FORWARD_CLASS"_Stz,
+  /*    */ "VP_FRIEND_CLASS"_Stz,
   /*    */ "VP_FUNCTION"_Stz,
   /*    */ "VP_FUNCTION_BODY"_Stz,
   /*    */ "VP_FUNCTION_POINTER"_Stz,
@@ -92,7 +93,7 @@ static Stz* aVP[]
   /*    */ "VP_LABEL"_Stz,
   /*    */ "VP_MEMBER_FUNCTION"_Stz,
   /*    */ "VP_MEMBER_VARIABLE"_Stz,
-  /*    */ "VP_MEMBERS_BEGIN"_Stz,
+  /*    */ "VP_MEMBERS"_Stz,
   /*    */ "VP_MEMBERS_END"_Stz,
   /*    */ "VP_NAMESPACE"_Stz,
   /*    */ "VP_NAMESPACE_END"_Stz,
@@ -101,11 +102,13 @@ static Stz* aVP[]
   /*    */ "VP_PUBLIC"_Stz,
   /*    */ "VP_STATIC"_Stz,
   /*    */ "VP_STRUCT"_Stz,
+  /*    */ "VP_STRUCT_END"_Stz,
   /*    */ "VP_TEMPLATE"_Stz,
   /*    */ "VP_TYPEDEF"_Stz,
   /*    */ "VP_TYPE_ARGS"_Stz,
   /*    */ "VP_TYPE_SPECIFICATION"_Stz,
   /*    */ "VP_UNION"_Stz,
+  /*    */ "VP_UNION_END"_Stz,
   /*    */ "VP_UNSIGNED"_Stz,
   /*    */ "VP_USING"_Stz,
   /*    */ "VP_VARIABLE"_Stz,
