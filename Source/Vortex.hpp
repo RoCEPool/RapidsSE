@@ -92,7 +92,7 @@ namespace Utilities
     void vRecogniseVariable(void);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // top-down parsing of C++ parts
+    // keyword parsing
   
     bool bParseAllParts(void);
     void vKeywordDescend(void);
@@ -118,7 +118,7 @@ namespace Utilities
     void vParseVarFun(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    //
+    // second-level parsing
 
     void vBase_List(void);
   
@@ -132,6 +132,9 @@ namespace Utilities
 
     void vMembers_List(void);
   
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // variable / function sequence
+
     void vVarFun_Type(void);
     void vVarFun_Name(void);
 
