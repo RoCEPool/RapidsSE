@@ -226,8 +226,6 @@ void Vortex::vRecogniseFunction(void)
     vTraceFunction();
   // not recording functions
   }
-
-  vGetNextToken();
 }
 
 
@@ -1832,6 +1830,30 @@ void Vortex::vVarFun_FunCode(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+//  if (m_bInClass) {
+//    vCppPartSaw(VP_MEMBER_FUNCTION);
+//  }
+//  else {
+//    vCppPartSaw(VP_FUNCTION);
+//  }
+//
+//  bool bMayBe = bGetNextToken();
+//
+//
+//  m_oTypeSpec.vReset();
+//  m_oFunVarNm.vReset();
+  
+  vVarFun_SequenceEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end of var/fun sequence                                      sequence leaf */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_SequenceEnd(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   if (m_bInClass) {
     vCppPartSaw(VP_MEMBER_FUNCTION);
   }
@@ -1839,11 +1861,12 @@ void Vortex::vVarFun_FunCode(void)
     vCppPartSaw(VP_FUNCTION);
   }
   
-  bool bMayBe = bGetNextToken();
-
+  vRecogniseFunction();
 
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
+
+  bool bMayBe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
