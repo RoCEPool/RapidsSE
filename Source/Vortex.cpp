@@ -589,18 +589,17 @@ void Vortex::vParseNamespace(void)
   
   RASSERT(m_oCurTkn.bSame("namespace"_Stz));
   
-  vCppPartSaw(VP_NAMESPACE);
-
   // get <name> of namespace
   vGetNextToken();
   
-  vNamepaceBegin(m_oCurTkn.szTerm());
-  
   // get {
   vGetExpectedToken("{"_Stz);
+  
+  vNamepaceBegin(m_oCurTkn.szTerm());
+  vCppPartSaw(VP_NAMESPACE);
 
-  vTraceNamespaceNm();
-    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vGetNextToken();
 
   vTraceEnter((char*)__func__);
@@ -609,27 +608,25 @@ void Vortex::vParseNamespace(void)
   for (;;) {
   
     // test for } being end-of-namespace
-    if (m_oCurTkn.bSame("}"_Stz))  {
-      vTraceNamespaceNm();
-      vCppPartSaw(VP_NAMESPACE_END);
-      vNamepaceEnd();
-      
-      vCppPartClear(VP_NAMESPACE);
-
-      bool bMaybe = bGetNextToken();
-      return;
-    }
+    if (m_oCurTkn.bSame("}"_Stz))
+      break;
     
     // -- -- -- -- -- --
-    
-    Stz* szKeyWord = m_oCurTkn.szTerm();
-    
+        
     vKeywordDescend();
     
     vTraceEnter((char*)__func__);
-    
-  } // while more tokens
+  }
   
+  vCppPartSaw(VP_NAMESPACE_END);
+  vNamepaceEnd();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vCppPartClear(VP_NAMESPACE);
+  vCppPartClear(VP_NAMESPACE_END);
+
+  bool bMaybe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
