@@ -29,27 +29,30 @@ namespace Utilities
   
     File*       m_pOutputFile;   // output file
     MetaGraph*  m_pMetaGraph;    // the metagraph that is being created
-  
+
+    ConstSet*   m_p_ConstSet;    // set of const i8's etc
+    MetaType*   m_p_MetaType;    // meta type
+    MetaMember* m_p_MetaMember;  // meta member
+ 
     // working section
   
     bool        m_baPart[VP_ENUMS]; // which cpp syntax parts are active?
   
-    bool        m_bInClass;      // currently in a class?
-    s32         m_sClassNm;      // current class name
+    s32         m_sConstNm;      // const name
+    EnameSet    m_oConstTerms;   // collected terms of const
+
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
+  
+    bool        m_bInClass;      // currently in a class?
+    s32         m_sClassNm;      // current class name
+  
     bool        m_bInTemplate;   // currently in a namespace?
     EnameSet    m_oTplSpec;      // working set of collected template terms
     s4K         m_sTplSpec;      // current template specification
   
-    s32         m_sConstNm;      // current class name
-
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
-
-    MetaType*   m_p_MetaType;    // current working meta type
-    MetaMember* m_p_MetaMember;  // current working meta member
-    ConstSet*   m_p_ConstSet;    // set of static const i8's etc
 
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
     i8          m_nAsterisks;
@@ -83,6 +86,7 @@ namespace Utilities
 
   private:
   
+    void vRecogniseConst(void);
     void vRecogniseFunction(void);
     void vRecogniseStructure(void);
     void vRecogniseVariable(void);
@@ -196,6 +200,7 @@ namespace Utilities
     void vThrowProblem(i8 i_Problem);
   
     bool bTraceAgain(void);
+    void vTraceConstant(void);
     void vTraceEnter(char* azFunc);
     void vTraceEnter_short(char* azFunc);
     void vTraceFunction(void);

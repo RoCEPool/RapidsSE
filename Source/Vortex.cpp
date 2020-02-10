@@ -47,26 +47,31 @@ Vortex::Vortex(void)
   m_pOutputFile  = nullptr;
   m_pMetaGraph   = new MetaGraph;
   
+  m_p_ConstSet   = m_pMetaGraph->pConstSet();
+  m_p_MetaType   = nullptr;
+  m_p_MetaMember = nullptr;
+
   // working
   
   for (i8 i_Saw = 0; i_Saw < VP_ENUMS; i_Saw++)
     m_baPart[i_Saw] = false;
+
+  m_sConstNm     = C_NO_NAME;
+  m_oConstTerms.vReset();
   
-  m_bInClass     = false;
-  m_sClassNm     = C_NO_NAME;
   m_bInNamespace = false;
   m_sNamespaceNm = C_NO_NAME;
+  
   m_bInTemplate  = false;
   m_oTplSpec.vReset();
+  
   m_sTplSpec     = C_NO_NAME;
-
+  m_bInClass     = false;
+  m_sClassNm     = C_NO_NAME;
   
   m_iNextStruct  = 0;
   m_iNextUnion   = 0;
 
-  m_p_MetaType   = nullptr;
-  m_p_MetaMember = nullptr;
-  m_p_ConstSet   = m_pMetaGraph->pConstSet();
   
   m_oTypeSpec.vReset();
   m_nAsterisks = 0;
@@ -190,6 +195,20 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* recognise a const                                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vRecogniseConst(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  ConstDef* pConstDef = m_p_ConstSet->pAddConstDef(m_sConstNm);
+  pConstDef->vTerms(m_oConstTerms);
+  
+  vTraceConstant();
+}
 
 /*----------------------------------------------------------------------------*/
 /* recognise a function                                                       */
@@ -397,7 +416,6 @@ void Vortex::vParseConst(void)
   RASSERT(m_oCurTkn.bSame("const"_Stz));
   //RASSERT(0 == m_oOtherTerms.nItems());
 
-  m_oOtherTerms.vReset();
 
   // get <type>
   vGetNextToken();
@@ -414,18 +432,17 @@ void Vortex::vParseConst(void)
   // get =
   vGetExpectedToken("="_Stz);
   
-  // get ... ;
-  vCollectRemainingTerms(m_oOtherTerms);
+  // collect ... ; into m_oConstTerms
+  m_oOtherTerms.vReset();
+  vCollectRemainingTerms(m_oConstTerms);
   
   vCppPartSaw(VP_CONST);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ConstDef* pConstDef = m_p_ConstSet->pAddConstDef(m_sConstNm);
-  pConstDef->vTerms(m_oOtherTerms);
+  vRecogniseConst();
 
-  
-  m_oOtherTerms.vReset();
+  m_oConstTerms.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1760,62 +1777,6 @@ void Vortex::vShiftClassNm(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* trace function entry                                                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTraceEnter(char* azFunc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  if (! m_bTrace)
-    return;
-  
-  vTrace("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz,
-    
-    m_nSources,
-    m_sSourcePath.szStz(),
-    azFunc,
-  
-    m_oCurTkn.szTerm(),
-    
-    m_bInNamespace ? " --NAMESPACE `" : "",
-    m_bInNamespace ? m_sNamespaceNm.azChar() : "",
-    m_bInNamespace ? "`" : "",
-    
-    m_bInClass     ? " --CLASS `" : "",
-    m_bInClass     ? m_sClassNm.azChar() : "",
-    m_bInClass     ? "`" : "",
-    
-    m_bInTemplate  ? " --TPLSPEC `" : "",
-    m_bInTemplate  ? m_sTplSpec.azChar() : "",
-    m_bInTemplate  ? "`" : "",
-  
-    C_ENDARGS
-  );
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace function entry                                                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vTraceEnter_short(char* azFunc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  if (! m_bTrace)
-    return;
-  
-  vTrace("%lld/%s/%16s/  `%s`\n"_Stz,
-    
-    m_nSources,
-    m_sSourcePath.szStz(),
-    azFunc,
-    
-    m_oCurTkn.szTerm(),
-
-    C_ENDARGS
-  );
-}
-
-/*----------------------------------------------------------------------------*/
 /* get expected token                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vGetExpectedToken(Stz* szExpect)
@@ -2420,6 +2381,77 @@ bool Vortex::bTraceAgain(void)
     return false;
   else
     return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace constant                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceConstant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (! m_bTrace)
+    return;
+  
+  s48K sTrace;
+  
+  TRACE("  Constant: %s\n"_Stz,sTrace.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace function entry                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceEnter(char* azFunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  if (! m_bTrace)
+    return;
+  
+  vTrace("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz,
+    
+    m_nSources,
+    m_sSourcePath.szStz(),
+    azFunc,
+  
+    m_oCurTkn.szTerm(),
+    
+    m_bInNamespace ? " --NAMESPACE `" : "",
+    m_bInNamespace ? m_sNamespaceNm.azChar() : "",
+    m_bInNamespace ? "`" : "",
+    
+    m_bInClass     ? " --CLASS `" : "",
+    m_bInClass     ? m_sClassNm.azChar() : "",
+    m_bInClass     ? "`" : "",
+    
+    m_bInTemplate  ? " --TPLSPEC `" : "",
+    m_bInTemplate  ? m_sTplSpec.azChar() : "",
+    m_bInTemplate  ? "`" : "",
+  
+    C_ENDARGS
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace function entry                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vTraceEnter_short(char* azFunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  if (! m_bTrace)
+    return;
+  
+  vTrace("%lld/%s/%16s/  `%s`\n"_Stz,
+    
+    m_nSources,
+    m_sSourcePath.szStz(),
+    azFunc,
+    
+    m_oCurTkn.szTerm(),
+
+    C_ENDARGS
+  );
 }
 
 /*----------------------------------------------------------------------------*/
