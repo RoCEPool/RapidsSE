@@ -17,6 +17,8 @@ enum eVP // c++ part
   /*    */ VP_DESTRUCTOR,          // destructor
   /*    */ VP_EMPTY,               // ;
   /*    */ VP_ENUM,                // enum
+  /*    */ VP_EXTERN,              // extern
+  /*    */ VP_FIELD_BITS,          // field
   /*    */ VP_FORWARD,             // forward class
   /*    */ VP_FRIEND,              // friend
   /*    */ VP_FUNCTION,            // function
@@ -70,6 +72,8 @@ static Stz* aVP[]
   /*    */ "VP_DESTRUCTOR"_Stz,
   /*    */ "VP_EMPTY"_Stz,
   /*    */ "VP_ENUM"_Stz,
+  /*    */ "VP_EXTERN"_Stz,
+  /*    */ "VP_FIELD_BITS"_Stz,
   /*    */ "VP_FORWARD"_Stz,
   /*    */ "VP_FRIEND"_Stz,
   /*    */ "VP_FUNCTION"_Stz,

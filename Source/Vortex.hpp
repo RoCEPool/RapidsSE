@@ -55,6 +55,7 @@ namespace Utilities
     i8          m_nAsterisks;
     EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
     bool        m_bIsFunPtr;     //
+    i8          m_nFieldBits;   
     bool        m_bIsArray;      //
     EnameSet    m_oArraySpec;    // working set of collected array spec terms
     bool        m_bIsFun;        //
@@ -81,6 +82,10 @@ namespace Utilities
     void vProcessSource(Stz* szSourcePath);
 
   private:
+  
+    void vRecogniseFunction(void);
+    void vRecogniseStructure(void);
+    void vRecogniseVariable(void);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing of C++ parts
@@ -132,8 +137,8 @@ namespace Utilities
     void vVarFun_Field(void);
     void vVarFun_FunBody(void);
     void vVarFun_Operator(void);
-    void vVarFun_Variable(void);
-  
+
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // begin and end
 
@@ -193,10 +198,14 @@ namespace Utilities
     void vRecognisedPart(eCP eCppPart);
     void vSawElement(eVP eSyntaxElement);
     void vThrowProblem(i8 i_Problem);
+    void vTraceElements(void);
+    void vTraceFunction(void);
     void vTraceFunVarNm(void);
     void vTraceNamespaceNm(void);
+    void vTraceStructure(void);
     void vTraceTypeArgs(void);
     void vTraceTypeSpec(void);
+    void vTraceVariable(void);
 
    private:
     Footer* aFooter(void);
