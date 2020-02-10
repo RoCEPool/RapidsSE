@@ -81,7 +81,7 @@ jobInfo: pythonShellOp
   
   <?jobType?>  = JT_PYTHONSHELLOP
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NODE_ZERO
+  <?rspKind?>  = RS_NODE_ROWS
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

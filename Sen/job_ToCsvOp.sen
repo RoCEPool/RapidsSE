@@ -79,7 +79,7 @@ jobInfo: ToCsvOp
   
   <?jobType?>  = JT_TOCSVOP
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NODE_ZERO
+  <?rspKind?>  = RS_NODE_ROWS
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

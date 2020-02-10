@@ -42,7 +42,6 @@ namespace Jobs
     void vPrintLocalZero(void);
     void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
-    void vPrintNodeZero(void);
     void vPrintQueueRows(void);
     
     Footer* aFooter(void);

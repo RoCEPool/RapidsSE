@@ -101,7 +101,6 @@ void Result::vPrint(eRS eResponse)
     case RS_LOCAL_ZERO   : vPrintLocalZero();    break;
     case RS_NODE_ERRORS  : vPrintNodeErrors();   break;
     case RS_NODE_ROWS    : vPrintNodeRows();     break;
-    case RS_NODE_ZERO    : vPrintNodeZero();     break;
     case RS_QUEUE_ROWS   : vPrintQueueRows();    break;
       
     default:
@@ -207,7 +206,7 @@ void Result::vPrintNodeRows(void)
   
   RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
   
-  if (AM::bMetadata()) {
+  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz)) {
     vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   }
   
@@ -218,33 +217,6 @@ void Result::vPrintNodeRows(void)
     iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
   }
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print zero rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintNodeZero(void)
-{
-  //! RAY HACK 5 NOV 2109 re universal job cf
-  if (! m_pOriginResponseVec) {
-    vTrace("success: 0 rows affected\n"_Stz);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 iResponses = m_pOriginResponseVec->nItems();
-  
-  if (m_bPartHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
-  
-  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
-  
-  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
