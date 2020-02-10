@@ -1554,6 +1554,43 @@ void Vortex::vVarFun_Name(void)
   goto L_Parse_Function_Name;
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect information about a constructor -> vVarFun_FunBody        sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Constructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_bIsFunPtr = false;
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect information about operator function -> vVarFun_FunBody()  sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Operator(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  for (;;) {
+    vGetNextToken();
+    
+    if (m_oCurTkn.bSame("("_Stz))
+      break;
+  }
+  
+  vCppPartSaw(VP_OPERATOR);
+
+  vVarFun_FunBody();
+  
+  vCppPartClear(VP_OPERATOR);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* detect next is array, function or variable                        sequence */
@@ -1596,7 +1633,9 @@ void Vortex::vVarFun_AryFunVar(void)
   }
 
   if (m_oCurTkn.bSame("="_Stz)) {
+    RASSERT(! m_bInClass);
     vCollectRemainingTerms(m_oOtherTerms);
+    vRecogniseVariable();
     m_oOtherTerms.vReset();
     bool bMayBe = bGetNextToken();
     return;
@@ -1659,21 +1698,6 @@ void Vortex::vVarFun_Array(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect information about a constructor -> vVarFun_FunBody        sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Constructor(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  m_bIsFunPtr = false;
-
-  m_oFunVarNm.vAdd(m_sClassNm);
-
-  vVarFun_FunBody();
-}
-
-/*----------------------------------------------------------------------------*/
 /* collect information about a field                            sequence leaf */
 /*----------------------------------------------------------------------------*/
 void Vortex::vVarFun_Field(void)
@@ -1688,7 +1712,6 @@ void Vortex::vVarFun_Field(void)
   vGetExpectedToken(";"_Stz);
   
   vCppPartSaw(VP_FIELD_BITS);
-  
   
   vCppPartClear(VP_FIELD_BITS);
 
@@ -1762,8 +1785,6 @@ void Vortex::vVarFun_FunBody(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //vVarFun_FunBody();
   
   if (m_oCurTkn.bSame("{"_Stz)) {
 
@@ -1789,28 +1810,6 @@ void Vortex::vVarFun_FunBody(void)
 
   m_oTypeSpec.vReset();
   m_oFunVarNm.vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect information about operator function -> vVarFun_FunBody()  sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Operator(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  for (;;) {
-    vGetNextToken();
-    
-    if (m_oCurTkn.bSame("("_Stz))
-      break;
-  }
-  
-  vCppPartSaw(VP_OPERATOR);
-
-  vVarFun_FunBody();
-  
-  vCppPartClear(VP_OPERATOR);
 }
 
 /*----------------------------------------------------------------------------*/

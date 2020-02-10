@@ -137,13 +137,13 @@ namespace Utilities
 
     void vVarFun_Type(void);
     void vVarFun_Name(void);
+    void vVarFun_Constructor(void);
+    void vVarFun_Operator(void);
 
     void vVarFun_AryFunVar(void);
     void vVarFun_Array(void);
-    void vVarFun_Constructor(void);
     void vVarFun_Field(void);
     void vVarFun_FunBody(void);
-    void vVarFun_Operator(void);
 
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
