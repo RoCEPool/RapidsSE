@@ -1349,12 +1349,12 @@ void Vortex::vVarFun_Type(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
+
+  s32 sFirstToken = m_oCurTkn.szTerm();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // typeless constructor / destructor / auto-conversion operator
   if (m_bInClass) {
-
-    s32 sFirstToken = m_oCurTkn.szTerm();
     
     // -- -- -- -- -- -- -- -- -- -- -- --
     // 1) typeless constructor
