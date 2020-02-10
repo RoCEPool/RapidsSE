@@ -76,7 +76,11 @@ static const char D_ESCAPE_CHAR          = '\\';
 static const char D_FIELD_DELIMITER      = ',';
 static const char D_RECORD_TERMINATOR    = '\0';
 
-static Stz* C_SE_TRACE = "/tmp/se_trace.txt"_Stz;
+#ifdef WITH_DEBUG_VERSION
+  static Stz* C_SE_TRACE = "/tmp/se_traceDebug.txt"_Stz;
+#else
+  static Stz* C_SE_TRACE = "/tmp/se_trace.txt"_Stz;
+#endif
 
 static Stz* C_NO_NAME = "-- NO_NAME --"_Stz;
 
