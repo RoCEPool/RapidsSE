@@ -18,7 +18,7 @@ SETH_TIMEOUT="900"
 SE_DIR="${ROOT_DIR}/Linux/bin"
 SE_PATH="${SE_DIR}/rapidsse"
 SE_NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
-SE_ARGS="--name NODE0 --node NODE0 127.0.0.1 5541 --munged --commands ../Commands"  # in addition to --metadata and --script
+SE_ARGS="--name NODE0 --node NODE0 127.0.0.1 5541 --munged --commands ./Commands"  # in addition to --metadata and --script
 
 export LD_LIBRARY_PATH="${SE_DIR}:${LD_LIBRARY_PATH}"
 
