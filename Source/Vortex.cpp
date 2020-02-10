@@ -743,7 +743,6 @@ void Vortex::vParseStruct(void)
   
   RASSERT(m_oCurTkn.bSame("struct"_Stz));
 
-  vCppPartSaw(VP_STRUCT);
   
   /*
     
@@ -757,6 +756,8 @@ void Vortex::vParseStruct(void)
 
    5) struct <structNm> { ... } ;
 
+   6) struct <structNm> <memberNm> ;
+   
    */
   
   s32 sStructNm;
@@ -764,78 +765,105 @@ void Vortex::vParseStruct(void)
   vGetNextToken();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // scenarios 1), 2) and 3)
+  // scenarios 1), 2) and 3) anonymous structures
   
   if (m_oCurTkn.bSame("{"_Stz)) {
     
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
     vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
-    
     vRecogniseStructure();
 
+    vCppPartSaw(VP_STRUCT);
+    
+    // -- -- -- -- -- --
+    
     vGetNextToken();
     vMembers_List();
-    vTypePop();
+    
+    // -- -- -- -- -- --
+    
 
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // 1) struct { ... } ;
-    //vGetNextToken();
-    if (m_oCurTkn.bSame(";"_Stz))
-      return;
     
-    // <#> handle member name in xTkn
+    if (m_oCurTkn.bSame(";"_Stz)) {
+      vTypePop();
+      goto L_Clear;
+    }
     
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // 2) struct { ... } <memberNm> ;
+    
     vGetNextToken();
-    if (m_oCurTkn.bSame(";"_Stz))
-      return;
-
+    if (m_oCurTkn.bSame(";"_Stz)) {
+      vTypePop();
+      goto L_Clear;
+    }
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // 3) struct { ... } <memberNm> [ <constNm> ] ;
+
     CHECKED(m_oCurTkn.bSame("["_Stz));
     vGetNextToken();
     vGetExpectedToken("]"_Stz);
     vGetExpectedToken(";"_Stz);
-    return;
+    vTypePop();
+    goto L_Clear;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // scenarios 4) and 5)
+  // scenarios 4), 5) and 6) named structures
   
-  // <#> handle member name in xTkn
-
   sStructNm = m_oCurTkn.szTerm();
   
   // get ; or {
   vGetNextToken();
   
+  // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   // 4) struct <blockNm> ;
+  
   if (m_oCurTkn.bSame(";"_Stz))
-    return;
+    goto L_Clear;
 
+  // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   // 5) struct <blockNm> { ... } ;
+  
   if (m_oCurTkn.bSame("{"_Stz)) {
     
+    vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
     vRecogniseStructure();
     
-    vTypePush(sStructNm,MT_LINEAR,CP_STRUCT);
+    // -- -- -- -- -- --
     vGetNextToken();
     vMembers_List();
     CHECKED(m_oCurTkn.bSame(";"_Stz));
+    // -- -- -- -- -- --
+
     vTypePop();
-    
-    return;
+    goto L_Clear;
   }
   
-  // 6) struct <blockNm> <memberNm> ;
+  // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+  // 6) struct <structNm> <memberNm> ;
+  
   vGetExpectedToken(";"_Stz);
 
   // <#> handle member name
   
   vCppPartSaw(VP_STRUCT);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  goto L_Clear;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  L_Clear:
+  
   vCppPartClear(VP_STRUCT);
+  
+  vDebugPoint();
+  
+  
+  bool bMayBe = bGetNextToken();
 }
 
 /*----------------------------------------------------------------------------*/
