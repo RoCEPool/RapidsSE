@@ -193,7 +193,6 @@ namespace Utilities
     bool bContinueAgain(void);
     bool bElementIsActive(eVP eSyntaxElement);
     void vSawElement(eVP eSyntaxElement);
-    void vSawPart(eCP eCppPart);
     void vThrowProblem(i8 i_Problem);
   
     void vTraceElements(void);
