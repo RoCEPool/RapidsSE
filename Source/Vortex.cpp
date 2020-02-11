@@ -1509,7 +1509,9 @@ void Vortex::vVarFun_Name(void)
 
   m_oFunVarNm.vReset();
 
-  // do we have ( * <name> ) ( ...) ?
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // do we have ( * <name> ) ( ... ) ?
+  
   if (m_oCurTkn.bSame("("_Stz)) {
     
     m_bIsFunPtr = true;
@@ -1526,8 +1528,7 @@ void Vortex::vVarFun_Name(void)
         
     vGetNextToken();
     
-    vVarFun_AryFunVar();
-    return;
+    goto L_AryFunVar;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1537,17 +1538,11 @@ void Vortex::vVarFun_Name(void)
   // do we have operator <name>
   if (m_oCurTkn.bSame("operator"_Stz)) {
     vGetNextToken();
-    vVarFun_Operator();
-    return;
+    goto L_Operator;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
     vGetNextToken();
-    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
-    vCppPartSaw(VP_DESTRUCTOR);
-    vGetNextToken();
-    
-    vVarFun_AryFunVar();
-    return;
+    goto L_Destructor;
   }
   
   // we have a <name>
@@ -1559,8 +1554,7 @@ void Vortex::vVarFun_Name(void)
   
   // do we have type qualifier args?
   if (! m_oCurTkn.bSame("<"_Stz)) {
-    vVarFun_AryFunVar();
-    return;
+    goto L_AryFunVar;
   }
   
   vCollectTypeArgs(m_oTypeArgs);
@@ -1571,8 +1565,7 @@ void Vortex::vVarFun_Name(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! m_oCurTkn.bSame(":"_Stz)) {
-    vVarFun_AryFunVar();
-    return;
+    goto L_AryFunVar;
   }
   
   vGetExpectedToken(":"_Stz);
@@ -1584,6 +1577,23 @@ void Vortex::vVarFun_Name(void)
   vTraceEnter((char*)__func__);
 
   goto L_Parse_Function_Name;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  L_AryFunVar:
+  vVarFun_AryFunVar();
+  goto L_Return;
+  
+  L_Destructor:
+  vVarFun_Destructor();
+  goto L_Return;
+
+  L_Operator:
+  vVarFun_Operator();
+  goto L_Return;
+
+  L_Return:
+  return;
 }
 
 
