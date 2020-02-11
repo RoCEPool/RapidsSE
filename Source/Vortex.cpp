@@ -1382,7 +1382,21 @@ void Vortex::vVarFun_Type(void)
   if (m_oCurTkn.bSame("&"_Stz))
     vGetNextToken();
 
+  
+  
+  
+  vVarFun_Special();
+}
 
+/*----------------------------------------------------------------------------*/
+/* collect type spec for variable or function -> vVarFun_Name()      sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Special(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // typeless constructor / destructor / auto-conversion operator
   if (m_bInClass) {
