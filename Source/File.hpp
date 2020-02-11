@@ -54,6 +54,7 @@ namespace Resources
    ~File(void) noexcept(false);
     
     static bool bExists(Stz* aFilePath);
+    static bool bModTime(Stz* aFilePath, time_t& tTime);
     static void vMonitorPortrait(s48K& sPortrait);
     static bool bRemove(Stz* aFilePath);
     static void vStatistics(void);

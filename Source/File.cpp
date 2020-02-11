@@ -109,6 +109,28 @@ bool File::bExists(Stz* aFilePath)
   return false;
 }
 
+/*---------------------------------------------------------------------------*/
+/* get the modification time of the file                                     */
+/*---------------------------------------------------------------------------*/
+bool File::bModTime(Stz* aFilePath, time_t& tTime)
+{
+  struct stat xStat;
+  
+  int iResult = stat(aFilePath->azChar(),&xStat);
+  
+  if (0 == iResult) {
+    tTime = xStat.st_mtime;
+    return true;
+  }
+  
+  if (iResult && ENOENT == errno)
+    return false;
+  
+  vWarn("File::bModTime: %s stat() error; errno=%d"_Stz, aFilePath->azChar(), errno);
+  
+  return false;
+}
+
 /*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
 /*----------------------------------------------------------------------------*/
