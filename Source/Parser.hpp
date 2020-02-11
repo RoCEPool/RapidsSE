@@ -23,6 +23,8 @@ namespace TokenStream
     s48K    m_sRawLine;  // either raw line read from file or given string
     char*   m_azRawLine; // ptr into m_sRawLine -- debug help
     char*   m_acRawChar; // next raw char in raw line
+    i8      m_iLineRaw;
+    i8      m_iColRaw;
 
     // registers
     i8      m_nLoaded;   // 0: neither has char
@@ -33,7 +35,12 @@ namespace TokenStream
     eCS     m_eComment;  // comment style currently being processed
     bool    m_bRead;     // prompt user for more input
     bool    m_bEOF;      // eof seen?
-    
+  
+    i8      m_iLineFirst;
+    i8      m_iColFirst;
+    i8      m_iLineSecond;
+    i8      m_iColSecond;
+
     // must be last
     Footer m_xFooter;
     

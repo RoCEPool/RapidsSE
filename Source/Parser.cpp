@@ -300,19 +300,26 @@ void Parser::vResetParser(void)
   //ASSERT(! m_oRawFile.bIsOpen());
   
   // reset input sources
-  m_eSource   = IS_NONE;
+  m_eSource    = IS_NONE;
   m_oRawFile.vReset();
-  m_bLineMode = false;
-  m_sRawLine  = ""_Stz;
-  m_azRawLine = m_sRawLine.azChar();
-  m_acRawChar = m_sRawLine.azChar();
- 
-  m_nLoaded   = 0;
-  m_cFirst    = '\0';
-  m_cSecond   = '\0';
-  m_eComment  = CS_NONE;
-  m_bRead     = false;
-  m_bEOF      = false;
+  m_bLineMode  = false;
+  m_sRawLine   = ""_Stz;
+  m_azRawLine  = m_sRawLine.azChar();
+  m_acRawChar  = m_sRawLine.azChar();
+  m_iLineRaw   = 0;
+  m_iColRaw    = 0;
+
+  m_nLoaded    = 0;
+  m_cFirst     = '\0';
+  m_cSecond    = '\0';
+  m_eComment   = CS_NONE;
+  m_bRead      = false;
+  m_bEOF       = false;
+  
+  m_iLineFirst  = 0;
+  m_iColFirst   = 0;
+  m_iLineSecond = 0;
+  m_iColSecond  = 0;
 }
 
 
