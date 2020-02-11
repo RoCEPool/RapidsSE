@@ -14,6 +14,8 @@ namespace TokenStream
 
 //------------------------------------------------------------------------------
 
+#include "AnnChar.hpp"
+
 #include "Token.hpp"
 #include "TokenVec.hpp"
 
