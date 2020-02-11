@@ -617,6 +617,25 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   ASSERT(bStartNormalOther());
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather ]] as a token
+  if (bIsCloseBracket()) {
+    vGetNextStripped();
+    if (bIsCloseBracket()) {
+      *z++ = ']';
+      *z++ = ']';
+      *z = '\0';
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as ]
+      m_cParsedChar = ']';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather :: as a string
   if (bIsColon()) {
 
@@ -714,6 +733,25 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
       
       // set last single character as <
       m_cParsedChar = '<';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather [[ as a token
+  if (bIsOpenBracket()) {
+    vGetNextStripped();
+    if (bIsOpenBracket()) {
+      *z++ = '[';
+      *z++ = '[';
+      *z = '\0';
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as [
+      m_cParsedChar = '[';
     }
   }
   
