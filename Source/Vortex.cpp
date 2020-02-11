@@ -310,7 +310,7 @@ void Vortex::vKeywordDescend(void)
   if (m_oCurTkn.bSame("#"_Stz))         vParseHash();       else
   if (m_oCurTkn.bSame("inline"_Stz))    vParseInline();     else
   if (m_oCurTkn.bSame("namespace"_Stz)) vParseNamespace();  else
-  if (m_oCurTkn.bSame("["_Stz))         vParseOpenSquare(); else
+  if (m_oCurTkn.bSame("[["_Stz))        vParseOpenSquare(); else
   if (m_oCurTkn.bSame("public"_Stz))    vParsePublic();     else
   if (m_oCurTkn.bSame(";"_Stz))         vParseSemicolon();  else
   if (m_oCurTkn.bSame("static"_Stz))    vParseStatic();     else
@@ -641,12 +641,10 @@ void Vortex::vParseOpenSquare(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  RASSERT(m_oCurTkn.bSame("["_Stz));
+  RASSERT(m_oCurTkn.bSame("[["_Stz));
     
-  vGetExpectedToken("["_Stz);
   vGetExpectedToken("noreturn"_Stz);
-  vGetExpectedToken("]"_Stz);
-  vGetExpectedToken("]"_Stz);
+  vGetExpectedToken("]]"_Stz);
   
   vCppPartSaw(VP_NORETURN);
   
@@ -1395,9 +1393,8 @@ void Vortex::vVarFun_TypeScope(void)
   
   // do we see the scope resolution opeator (::)
   //   indicating templated function in a _t.hpp file?
-  if (m_oCurTkn.bSame(":"_Stz)) {
+  if (m_oCurTkn.bSame("::"_Stz)) {
     
-    vGetExpectedToken(":"_Stz);
     vGetNextToken();
 
     if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
@@ -1564,12 +1561,10 @@ void Vortex::vVarFun_Name(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! m_oCurTkn.bSame(":"_Stz)) {
+  if (! m_oCurTkn.bSame("::"_Stz)) {
     goto L_AryFunVar;
   }
-  
-  vGetExpectedToken(":"_Stz);
-  
+    
   vShiftClassNm();
   
   vGetNextToken();
@@ -1625,17 +1620,18 @@ void Vortex::vVarFun_AryFunVar(void)
     
     vGetNextToken();
     
-    if (m_oCurTkn.bSame(":"_Stz)) {
-      vGetNextToken();
-      vVarFun_Name();
-      return;
-    }
-    
     // detected a field
     
     vVarFun_Field();
     return;
   }
+
+  if (m_oCurTkn.bSame("::"_Stz)) {
+    vGetNextToken();
+    vVarFun_Name();
+    return;
+  }
+    
 
   if (m_oCurTkn.bSame("="_Stz)) {
     RASSERT(! m_bInClass);
