@@ -795,9 +795,9 @@ char Parser::cNextCharFromRawLine(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  char cRaw = *m_acRawChar++;
-  
-  return cRaw;
+  rxAnnChar.m_cChar = *m_acRawChar++;
+    
+  return rxAnnChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
