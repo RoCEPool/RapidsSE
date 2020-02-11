@@ -1395,9 +1395,8 @@ void Vortex::vVarFun_TypeScope(void)
   
   // do we see the scope resolution opeator (::)
   //   indicating templated function in a _t.hpp file?
-  if (m_oCurTkn.bSame(":"_Stz)) {
+  if (m_oCurTkn.bSame("::"_Stz)) {
     
-    vGetExpectedToken(":"_Stz);
     vGetNextToken();
 
     if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
@@ -1564,12 +1563,10 @@ void Vortex::vVarFun_Name(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! m_oCurTkn.bSame(":"_Stz)) {
+  if (! m_oCurTkn.bSame("::"_Stz)) {
     goto L_AryFunVar;
   }
-  
-  vGetExpectedToken(":"_Stz);
-  
+    
   vShiftClassNm();
   
   vGetNextToken();
@@ -1625,17 +1622,18 @@ void Vortex::vVarFun_AryFunVar(void)
     
     vGetNextToken();
     
-    if (m_oCurTkn.bSame(":"_Stz)) {
-      vGetNextToken();
-      vVarFun_Name();
-      return;
-    }
-    
     // detected a field
     
     vVarFun_Field();
     return;
   }
+
+  if (m_oCurTkn.bSame("::"_Stz)) {
+    vGetNextToken();
+    vVarFun_Name();
+    return;
+  }
+    
 
   if (m_oCurTkn.bSame("="_Stz)) {
     RASSERT(! m_bInClass);
