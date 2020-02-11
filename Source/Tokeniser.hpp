@@ -83,6 +83,7 @@ namespace TokenStream
     bool bStartSpecialString(void);
     bool bEndSpecialString(void);
    
+    bool bIsCloseBracket(void);
     bool bIsColon(void);
     bool bIsDigit(void);
     bool bIsDot(void);
@@ -91,6 +92,7 @@ namespace TokenStream
     bool bIsLessThan(void);
     bool bIsGreaterThan(void);
     bool bIsMinus(void);
+    bool bIsOpenBracket(void);
     bool bIsPipe(void);
     bool bIsWhite(void);
     bool bIsX(void);

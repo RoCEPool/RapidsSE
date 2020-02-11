@@ -1137,6 +1137,19 @@ bool Tokeniser::bEndSpecialString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a close square bracket ]                                          */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsCloseBracket(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if (']' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a colon                                                           */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsColon(void)
@@ -1189,6 +1202,19 @@ bool Tokeniser::bIsEqual(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a greater than sign                                               */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsGreaterThan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('>' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a base-16 digit                                                   */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsHex(void)
@@ -1215,19 +1241,6 @@ bool Tokeniser::bIsLessThan(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for a greater than sign                                               */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsGreaterThan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('>' == m_cParsedChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for a minus sign                                                      */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsMinus(void)
@@ -1235,6 +1248,19 @@ bool Tokeniser::bIsMinus(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if ('-' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a open square bracket [                                           */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsOpenBracket(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('[' == m_cParsedChar)
     return true;
   
   return false;
