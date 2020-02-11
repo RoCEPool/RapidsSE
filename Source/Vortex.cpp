@@ -72,7 +72,8 @@ Vortex::Vortex(void)
   m_iNextStruct  = 0;
   m_iNextUnion   = 0;
 
-  
+  m_sTypeNm      = C_NO_NAME;
+
   m_oTypeSpec.vReset();
   m_nAsterisks = 0;
   m_oFunVarNm.vReset();
@@ -1349,77 +1350,53 @@ void Vortex::vVarFun_Type(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // constructor / destructor / auto-conversion operator (i.e. no specifier)
-  if (m_bInClass) {
-    
-    // -- -- -- -- -- -- -- -- -- -- -- --
-    // 1)
-    if (m_oCurTkn.bSame(m_sClassNm)) {
-      
-      vGetNextToken();
-      
-      // do we have type arguments?
-      if (m_oCurTkn.bSame("<"_Stz)) {
-        vCollectTypeArgs(m_oTypeArgs);
-        vGetNextToken();
-      }
-      
-      if (m_oCurTkn.bSame("("_Stz)) {
-        
-        // 1a) constructor (no specifier)
-        TRACE("  (typeless) constructor\n"_Stz);
-        vGetNextToken();
-        vVarFun_Constructor();
-        goto L_Return;
-      }
-            
-      // 1b)
-      goto L_Template_Args;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- --
-    // 2) destructor (no specifier)
-    if (m_oCurTkn.bSame("~"_Stz)) {
-      TRACE("  (typeless) destructor\n"_Stz);
-      vGetNextToken();
-      vVarFun_Name();
-      goto L_Return;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- --
-    // 3) typeless operator (no specifier)
-    if (m_oCurTkn.bSame("operator"_Stz)) {
-      vGetNextToken();
-      vVarFun_Operator();
-      goto L_Return;
-    }
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  
-  // do not expect the keyword `operator` at this point
-  CHECKED(! m_oCurTkn.bSame("operator"_Stz));
 
-  // we have a <typeNm>
-  m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+  m_sTypeNm = m_oCurTkn.szTerm();
+
   vGetNextToken();
-  
-  L_Template_Args:
-  
-  // do we have template arguments?
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // possible < classArgs >
   if (m_oCurTkn.bSame("<"_Stz)) {
     vCollectTypeArgs(m_oTypeArgs);
     vGetNextToken();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
+  // zero or more * asterisks
+  for (;;) {
+    
+    // collected when we have no more asterisks
+    if (! m_oCurTkn.bSame("*"_Stz))
+      break;
+    
+    // we have an asterisk
+    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+    m_nAsterisks++;
   
+    vGetNextToken();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // a possible & reference
+  if (m_oCurTkn.bSame("&"_Stz))
+    vGetNextToken();
+
+  vVarFun_TypeScope();
+}
+
+/*----------------------------------------------------------------------------*/
+/* scope test                                                                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_TypeScope(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // do we see the scope resolution opeator (::)
+  //   indicating templated function in a _t.hpp file?
   if (m_oCurTkn.bSame(":"_Stz)) {
+    
     vGetExpectedToken(":"_Stz);
     vGetNextToken();
 
@@ -1439,65 +1416,85 @@ void Vortex::vVarFun_Type(void)
       goto L_Return;
     }
     
-    NEVER_REACH
+    //NEVER_REACH
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vVarFun_Asterisks();
+  vVarFun_Special();
+
+  L_Return:
+
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect type spec for variable or function -> vVarFun_Name()      sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Special(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // typeless constructor / destructor / auto-conversion operator
+  if (m_bInClass) {
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // 1) typeless constructor
+    if (m_sTypeNm.bSame(m_sClassNm)) {
+      
+      // 1a) do we have a constructor?
+      //        e.g. myClass <i8> (void);
+      if (m_oCurTkn.bSame("("_Stz)) {
+        
+        // constructor (no specifier)
+        TRACE("  (typeless) constructor\n"_Stz);
+        vVarFun_Constructor();
+        goto L_Return;
+      }
+            
+      // 1b) at this point we have type which is the class
+      //       e.g.  myClass<i8>* pGetParent(void);
+      goto L_Scope_Test;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // 2) typeless destructor
+    if (m_sTypeNm.bSame("~"_Stz)) {
+      TRACE("  (typeless) destructor\n"_Stz);
+      vVarFun_Destructor();
+      goto L_Return;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // 3) typeless operator
+    if (m_sTypeNm.bSame("operator"_Stz)) {
+      TRACE("  (typeless) operator\n"_Stz);
+      vVarFun_Operator();
+      goto L_Return;
+    }
+    
+    // no typeless constructor/destructor/operator found
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initial type has been detected
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
+  
+  L_Scope_Test:
+
+  vVarFun_Name();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   L_Return:
   
   return;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect asterisks                                                 sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Asterisks(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  // zero or more asterisks
-  for (;;) {
-    
-    // collected when we have no more asterisks
-    if (! m_oCurTkn.bSame("*"_Stz))
-      break;
-    
-    // we have an asterisk
-    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
-    m_nAsterisks++;
-  
-    vGetNextToken();
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vVarFun_Ref();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect reference                                                 sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Ref(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  // a possible &
-  if (m_oCurTkn.bSame("&"_Stz))
-    vGetNextToken();
-
-  vTraceTypeSpec();
-  vCppPartSaw(VP_TYPE_SPECIFICATION);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vVarFun_Name();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1512,7 +1509,9 @@ void Vortex::vVarFun_Name(void)
 
   m_oFunVarNm.vReset();
 
-  // do we have ( * <name> ) ( ...) ?
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // do we have ( * <name> ) ( ... ) ?
+  
   if (m_oCurTkn.bSame("("_Stz)) {
     
     m_bIsFunPtr = true;
@@ -1529,8 +1528,7 @@ void Vortex::vVarFun_Name(void)
         
     vGetNextToken();
     
-    vVarFun_AryFunVar();
-    return;
+    goto L_AryFunVar;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1540,17 +1538,11 @@ void Vortex::vVarFun_Name(void)
   // do we have operator <name>
   if (m_oCurTkn.bSame("operator"_Stz)) {
     vGetNextToken();
-    vVarFun_Operator();
-    return;
+    goto L_Operator;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
     vGetNextToken();
-    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
-    vCppPartSaw(VP_DESTRUCTOR);
-    vGetNextToken();
-    
-    vVarFun_AryFunVar();
-    return;
+    goto L_Destructor;
   }
   
   // we have a <name>
@@ -1562,8 +1554,7 @@ void Vortex::vVarFun_Name(void)
   
   // do we have type qualifier args?
   if (! m_oCurTkn.bSame("<"_Stz)) {
-    vVarFun_AryFunVar();
-    return;
+    goto L_AryFunVar;
   }
   
   vCollectTypeArgs(m_oTypeArgs);
@@ -1574,8 +1565,7 @@ void Vortex::vVarFun_Name(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! m_oCurTkn.bSame(":"_Stz)) {
-    vVarFun_AryFunVar();
-    return;
+    goto L_AryFunVar;
   }
   
   vGetExpectedToken(":"_Stz);
@@ -1587,43 +1577,23 @@ void Vortex::vVarFun_Name(void)
   vTraceEnter((char*)__func__);
 
   goto L_Parse_Function_Name;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect information about a constructor -> vVarFun_FunBody        sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Constructor(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  m_bIsFunPtr = false;
-
-  m_oFunVarNm.vAdd(m_sClassNm);
-
-  vVarFun_FunBody();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect information about operator function -> vVarFun_FunBody()  sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Operator(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  for (;;) {
-    vGetNextToken();
-    
-    if (m_oCurTkn.bSame("("_Stz))
-      break;
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vCppPartSaw(VP_OPERATOR);
+  L_AryFunVar:
+  vVarFun_AryFunVar();
+  goto L_Return;
+  
+  L_Destructor:
+  vVarFun_Destructor();
+  goto L_Return;
 
-  vVarFun_FunBody();
-  
-  vCppPartClear(VP_OPERATOR);
+  L_Operator:
+  vVarFun_Operator();
+  goto L_Return;
+
+  L_Return:
+  return;
 }
 
 
@@ -1870,6 +1840,71 @@ void Vortex::vVarFun_FunCode(void)
 
   vVarFun_SequenceEnd();
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect information about a constructor -> vVarFun_FunBody        sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Constructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(m_oCurTkn.bSame("("_Stz));
+
+  m_bIsFunPtr = false;
+
+  vGetNextToken();
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect information about a destructor -> vVarFun_FunBody         sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Destructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(! m_oCurTkn.bSame("~"_Stz));
+  
+  m_bIsFunPtr = false;
+  
+  vGetNextToken();
+
+  // possible < classArgs >
+  if (m_oCurTkn.bSame("<"_Stz)) {
+    vCollectTypeArgs(m_oTypeArgs);
+    vGetNextToken();
+  }
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect information about operator function -> vVarFun_FunBody()  sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Operator(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  for (;;) {
+    vGetNextToken();
+    
+    if (m_oCurTkn.bSame("("_Stz))
+      break;
+  }
+  
+  vCppPartSaw(VP_OPERATOR);
+
+  vVarFun_FunBody();
+  
+  vCppPartClear(VP_OPERATOR);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* end of var/fun sequence                                      sequence leaf */

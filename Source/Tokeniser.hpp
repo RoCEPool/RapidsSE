@@ -83,6 +83,7 @@ namespace TokenStream
     bool bStartSpecialString(void);
     bool bEndSpecialString(void);
    
+    bool bIsColon(void);
     bool bIsDigit(void);
     bool bIsDot(void);
     bool bIsEqual(void);

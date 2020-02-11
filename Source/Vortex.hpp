@@ -54,6 +54,7 @@ namespace Utilities
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
 
+    s32         m_sTypeNm;       // current type name
     EnameSet    m_oTypeSpec;     // working set of collected specifier terms
     i8          m_nAsterisks;
     EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
@@ -138,11 +139,9 @@ namespace Utilities
     void vVarFun_SequenceBegin(void);
   
     void vVarFun_Type(void);
-    void vVarFun_Asterisks(void);
-    void vVarFun_Ref(void);
+    void vVarFun_TypeScope(void);
+    void vVarFun_Special(void);
     void vVarFun_Name(void);
-    void vVarFun_Constructor(void);
-    void vVarFun_Operator(void);
 
     void vVarFun_AryFunVar(void);
     void vVarFun_Array(void);
@@ -150,6 +149,10 @@ namespace Utilities
     void vVarFun_FunBody(void);
   
     void vVarFun_FunCode(void);
+
+    void vVarFun_Constructor(void);
+    void vVarFun_Destructor(void);
+    void vVarFun_Operator(void);
 
     void vVarFun_SequenceEnd(void);
 

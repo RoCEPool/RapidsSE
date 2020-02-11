@@ -668,7 +668,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
     }
     API_LOC(330);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     FetchBuffer* pFetchBuffer;
     for (;;) {
@@ -685,7 +685,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
                            * C_ROWS_PER_BUFFER);
     API_LOC(350);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // is it a last buffer ?
     if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
