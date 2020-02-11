@@ -106,7 +106,8 @@ namespace TokenStream
     char  cFromRawFile(void);
     char  cFromRawStdin(void);
     char  cFromRawString(void);
-    
+    char  cNextRawChar(void);
+
     void  vReadLineFile(void);
     void  vReadLineStdin(void);
     

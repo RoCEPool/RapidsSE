@@ -777,6 +777,18 @@ char Parser::cFromRawString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next raw character                                                     */
+/*----------------------------------------------------------------------------*/
+char Parser::cNextRawChar(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  
+  char cRaw = *m_acRawChar++;
+  
+  return cRaw;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read raw line from input file                                              */
 /*----------------------------------------------------------------------------*/
 void Parser::vReadLineFile(void)
