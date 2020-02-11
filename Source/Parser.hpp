@@ -89,7 +89,7 @@ namespace TokenStream
     void vLoadFirst(void);
     void vLoadRegs(bool bStripComments);
     void vLoadSecond(void);
-    void vRewindLocals(char c);
+    void vRewindRegs(char c);
     
     // Comment Processing
     bool bBlockCommentEnd(void);
@@ -104,13 +104,13 @@ namespace TokenStream
     
     // Reading
     void  vRawCharFromInput(AnnChar& rxAnnChar);
-    char  cRawCharFromFile(void);
-    char  cRawCharFromStdin(void);
-    char  cRawCharFromString(void);
-    char  cNextRawChar(void);
+    char  cRawCharFromFile(AnnChar& rxAnnChar);
+    char  cRawCharFromStdin(AnnChar& rxAnnChar);
+    char  cRawCharFromString(AnnChar& rxAnnChar);
+    char  cNextCharFromRawLine(AnnChar& rxAnnChar);
 
-    void  vReadLineFile(void);
-    void  vReadLineStdin(void);
+    void  vReadRawLineFile(void);
+    void  vReadRawLineStdin(void);
     
     Footer* aFooter(void);
   };

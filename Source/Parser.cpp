@@ -248,7 +248,7 @@ void Parser::vUnget(char cParsed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vRewindLocals(cParsed);
+  vRewindRegs(cParsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,7 +464,7 @@ void Parser::vLoadSecond(void)
 /*----------------------------------------------------------------------------*/
 /* rewind registers by one character                                          */
 /*----------------------------------------------------------------------------*/
-void Parser::vRewindLocals(char cParsed)
+void Parser::vRewindRegs(char cParsed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -488,12 +488,12 @@ void Parser::vStripComment(void)
       
     case CS_BLOCK:
       vBlockCommentSkip();
-      vRewindLocals(' ');
+      vRewindRegs(' ');
       break;
       
     case CS_LINE:
       vLineCommentSkip();
-      vRewindLocals(' ');
+      vRewindRegs(' ');
       break;
       
     default:
@@ -657,17 +657,17 @@ void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
   switch (m_eSource) {
       
     case IS_FILE:
-      cRaw = cRawCharFromFile();
+      cRaw = cRawCharFromFile(rxAnnChar);
       ASSERT( (cRaw) || (!cRaw && (m_bEOF || m_bLineMode)) );
       break;
       
     case IS_STDIN:
-      cRaw = cRawCharFromStdin();
+      cRaw = cRawCharFromStdin(rxAnnChar);
       ASSERT(! m_bEOF);
       break;
       
     case IS_STRING:
-      cRaw = cRawCharFromString();
+      cRaw = cRawCharFromString(rxAnnChar);
       ASSERT(m_bEOF);
       break;
       
@@ -681,15 +681,15 @@ void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next raw character from source file                                    */
+/* get next raw character from line-buffered source file                      */
 /*----------------------------------------------------------------------------*/
-char Parser::cRawCharFromFile(void)
+char Parser::cRawCharFromFile(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   char cRaw;
   
-  cRaw = cNextRawChar();
+  cRaw = cNextCharFromRawLine(rxAnnChar);
   
   if (cRaw)
     return cRaw;
@@ -702,8 +702,8 @@ char Parser::cRawCharFromFile(void)
   ASSERT(m_oRawFile.bIsOpen());
   
   if (! m_bLineMode) {
-    vReadLineFile();
-    cRaw = cNextRawChar();
+    vReadRawLineFile();
+    cRaw = cNextCharFromRawLine(rxAnnChar);
     return cRaw;
   }
   
@@ -715,8 +715,8 @@ char Parser::cRawCharFromFile(void)
   }
   
   m_bRead = false;
-  vReadLineFile();
-  cRaw = cNextRawChar();
+  vReadRawLineFile();
+  cRaw = cNextCharFromRawLine(rxAnnChar);
   
   ASSERT( (cRaw) || (!cRaw && m_bEOF) );
   
@@ -724,9 +724,9 @@ char Parser::cRawCharFromFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next raw character from stdin                                          */
+/* get next raw character from line-buffered stdin                            */
 /*----------------------------------------------------------------------------*/
-char Parser::cRawCharFromStdin(void)
+char Parser::cRawCharFromStdin(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -734,7 +734,7 @@ char Parser::cRawCharFromStdin(void)
   
   char cRaw;
   
-  cRaw = cNextRawChar();
+  cRaw = cNextCharFromRawLine(rxAnnChar);
   
   if (cRaw) {
     ASSERT(! m_bEOF);
@@ -745,8 +745,8 @@ char Parser::cRawCharFromStdin(void)
   ASSERT(m_oRawFile.bIsOpen());
   
   if (! m_bLineMode) {
-    vReadLineStdin();
-    cRaw = cNextRawChar();
+    vReadRawLineStdin();
+    cRaw = cNextCharFromRawLine(rxAnnChar);
     ASSERT(! m_bEOF);
     return cRaw;
   }
@@ -760,17 +760,17 @@ char Parser::cRawCharFromStdin(void)
   }
   
   m_bRead = false;
-  vReadLineStdin();
-  cRaw = cNextRawChar();
+  vReadRawLineStdin();
+  cRaw = cNextCharFromRawLine(rxAnnChar);
   
   ASSERT(! m_bEOF);
   return cRaw;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next raw character from string                                         */
+/* get next raw character from buffered string                                */
 /*----------------------------------------------------------------------------*/
-char Parser::cRawCharFromString(void)
+char Parser::cRawCharFromString(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -778,7 +778,7 @@ char Parser::cRawCharFromString(void)
   
   char cRaw;
   
-  cRaw = cNextRawChar();
+  cRaw = cNextCharFromRawLine(rxAnnChar);
   
   if (cRaw)
     return cRaw;
@@ -791,7 +791,7 @@ char Parser::cRawCharFromString(void)
 /*----------------------------------------------------------------------------*/
 /* get next raw character                                                     */
 /*----------------------------------------------------------------------------*/
-char Parser::cNextRawChar(void)
+char Parser::cNextCharFromRawLine(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -803,7 +803,7 @@ char Parser::cNextRawChar(void)
 /*----------------------------------------------------------------------------*/
 /* read raw line from input file                                              */
 /*----------------------------------------------------------------------------*/
-void Parser::vReadLineFile(void)
+void Parser::vReadRawLineFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -836,7 +836,7 @@ void Parser::vReadLineFile(void)
 /*----------------------------------------------------------------------------*/
 /* read raw line from stdin                                                   */
 /*----------------------------------------------------------------------------*/
-void Parser::vReadLineStdin(void)
+void Parser::vReadRawLineStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
