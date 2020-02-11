@@ -94,13 +94,23 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the az of term                                                         */
+/* get the column number                                                      */
 /*----------------------------------------------------------------------------*/
-char* Token::azTerm(void)
+i8 Token::iColNo()
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  return m_sTerm.azChar();
+  return m_iColNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the column number                                                      */
+/*----------------------------------------------------------------------------*/
+void Token::vColNo(i8 iColNo)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_iColNo = iColNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,14 +207,37 @@ bool Token::bIsNumeric(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the line number                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Token::iLineNo()
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  return m_iLineNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the line number                                                        */
+/*----------------------------------------------------------------------------*/
+void Token::vLineNo(i8 iLineNo)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_iLineNo = iLineNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
 void Token::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_eToken = TN_NONE;
-  m_sTerm = ""_Stz;
+  m_eToken  = TN_NONE;
+  m_sTerm   = ""_Stz;
+  
+  m_iLineNo = C_UNKNOWN;
+  m_iColNo  = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,6 +250,16 @@ bool Token::bSame(Stz* aArg)
   bool b = m_sTerm.bSame(aArg);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the az of term                                                         */
+/*----------------------------------------------------------------------------*/
+char* Token::azTerm(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  return m_sTerm.azChar();
 }
 
 /*----------------------------------------------------------------------------*/
