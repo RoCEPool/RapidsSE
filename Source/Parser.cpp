@@ -677,7 +677,7 @@ char Parser::cFromRawFile(void)
   
   char cRaw;
   
-  cRaw = *m_acRawChar++;
+  cRaw = cNextRawChar();
   
   if (cRaw)
     return cRaw;
@@ -691,7 +691,7 @@ char Parser::cFromRawFile(void)
   
   if (! m_bLineMode) {
     vReadLineFile();
-    cRaw = *m_acRawChar++;
+    cRaw = cNextRawChar();
     return cRaw;
   }
   
@@ -704,7 +704,7 @@ char Parser::cFromRawFile(void)
   
   m_bRead = false;
   vReadLineFile();
-  cRaw = *m_acRawChar++;
+  cRaw = cNextRawChar();
   
   ASSERT( (cRaw) || (!cRaw && m_bEOF) );
   
@@ -722,7 +722,7 @@ char Parser::cFromRawStdin(void)
   
   char cRaw;
   
-  cRaw = *m_acRawChar++;
+  cRaw = cNextRawChar();
   
   if (cRaw) {
     ASSERT(! m_bEOF);
@@ -734,7 +734,7 @@ char Parser::cFromRawStdin(void)
   
   if (! m_bLineMode) {
     vReadLineStdin();
-    cRaw = *m_acRawChar++;
+    cRaw = cNextRawChar();
     ASSERT(! m_bEOF);
     return cRaw;
   }
@@ -749,7 +749,7 @@ char Parser::cFromRawStdin(void)
   
   m_bRead = false;
   vReadLineStdin();
-  cRaw = *m_acRawChar++;
+  cRaw = cNextRawChar();
   
   ASSERT(! m_bEOF);
   return cRaw;
@@ -766,7 +766,7 @@ char Parser::cFromRawString(void)
   
   char cRaw;
   
-  cRaw = *m_acRawChar++;
+  cRaw = cNextRawChar();
   
   if (cRaw)
     return cRaw;
@@ -799,13 +799,13 @@ void Parser::vReadLineFile(void)
 
   char cInput;
   
-  m_acRawChar = m_sRawLine.azChar();
+  char* acRawLine = m_sRawLine.azChar();
   
   do {
     
     cInput = m_oRawFile.cGetChar();
     
-    *m_acRawChar++ = cInput;
+    *acRawLine++ = cInput;
     
     if (C_END_OF_LINE == cInput)
       break;
@@ -816,7 +816,7 @@ void Parser::vReadLineFile(void)
   if (! cInput)
     m_bEOF = true;
   
-  *m_acRawChar++ = '\0';
+  *acRawLine++ = '\0';
   
   m_acRawChar = m_sRawLine.azChar();
 }
@@ -830,7 +830,7 @@ void Parser::vReadLineStdin(void)
   
   ASSERT(! m_bEOF);
   
-  m_acRawChar = m_sRawLine.azChar();
+  char* acRawLine = m_sRawLine.azChar();
     
 //  bool bHasStarted = AM::bHasStarted();
 //
@@ -862,13 +862,13 @@ void Parser::vReadLineStdin(void)
     
     char cInput = m_oRawFile.cGetChar();
     
-    *m_acRawChar++ = cInput;
+    *acRawLine++ = cInput;
     
     if (C_END_OF_LINE == cInput)
       break;
   }
   
-  *m_acRawChar++ = '\0';
+  *acRawLine++ = '\0';
   
   m_acRawChar = m_sRawLine.azChar();
   
