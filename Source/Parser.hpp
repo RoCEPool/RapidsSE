@@ -105,7 +105,7 @@ namespace TokenStream
     // Reading
     void  vRawCharFromInput(AnnChar& rxAnnChar);
     void  vRawCharFromFile(AnnChar& rxAnnChar);
-    char  cRawCharFromStdin(AnnChar& rxAnnChar);
+    void  vRawCharFromStdin(AnnChar& rxAnnChar);
     char  cRawCharFromString(AnnChar& rxAnnChar);
     void  vNextCharFromRawLine(AnnChar& rxAnnChar);
 
