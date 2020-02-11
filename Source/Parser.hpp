@@ -10,9 +10,9 @@ namespace TokenStream
   // annotated char experiment
   class AnnChar {
   public:
-    char m_cChar;   // the char
-    i8   m_iLineNo; // line number
-    i8   m_iColNo;  // column number
+    char m_cChar;  // the char
+    i8   m_iLine;  // line number
+    i8   m_iCol;   // column number
   };
 
 
@@ -39,8 +39,8 @@ namespace TokenStream
     i8      m_nLoaded;   // 0: neither has char
                          // 1: m_cFirst has char
                          // 2: m_cFirst and m_cSecond each have a char
-    char    m_cFirst;    // first single char
-    char    m_cSecond;   // second single char
+    AnnChar m_xFirst;    //
+    AnnChar m_xSecond;   //
     eCS     m_eComment;  // comment style currently being processed
     bool    m_bRead;     // prompt user for more input
     bool    m_bEOF;      // eof seen?

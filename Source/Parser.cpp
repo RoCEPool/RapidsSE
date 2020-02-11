@@ -310,8 +310,12 @@ void Parser::vResetParser(void)
   m_iColRaw    = 0;
 
   m_nLoaded    = 0;
-  m_cFirst     = '\0';
-  m_cSecond    = '\0';
+  m_xFirst.m_cChar  = '\0';
+  m_xFirst.m_iLine  = '\0';
+  m_xFirst.m_iCol   = '\0';
+  m_xSecond.m_cChar = '\0';
+  m_xSecond.m_iLine = '\0';
+  m_xSecond.m_iCol  = '\0';
   m_eComment   = CS_NONE;
   m_bRead      = false;
   m_bEOF       = false;
@@ -335,8 +339,8 @@ void Parser::vClearRegs(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   m_nLoaded = 0;
-  m_cFirst  = '\0';
-  m_cSecond = '\0';
+  m_xFirst.m_cChar  = '\0';
+  m_xSecond.m_cChar = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,10 +352,10 @@ char Parser::cConsumeFirst(void)
   
   ASSERT(m_nLoaded);
   
-  char cWasFirst = m_cFirst;
+  char cWasFirst = m_xFirst.m_cChar;
   
-  m_cFirst  = m_cSecond;
-  m_cSecond = '\0';
+  m_xFirst.m_cChar  = m_xSecond.m_cChar;
+  m_xSecond.m_cChar = '\0';
   
   m_nLoaded--;
   
@@ -367,8 +371,8 @@ void Parser::vDiscardFirst(void)
   
   ASSERT(m_nLoaded);
   
-  m_cFirst  = m_cSecond;
-  m_cSecond = '\0';
+  m_xFirst.m_cChar  = m_xSecond.m_cChar;
+  m_xSecond.m_cChar = '\0';
   
   m_nLoaded--;
 }
@@ -382,15 +386,15 @@ void Parser::vLoadBoth(void)
   
   ASSERT(! m_nLoaded);
   
-  m_cFirst = cFromRawInput();
+  m_xFirst.m_cChar = cFromRawInput();
   
-  if (m_cFirst) {
+  if (m_xFirst.m_cChar) {
     
     m_nLoaded++;
     
-    m_cSecond = cFromRawInput();
+    m_xSecond.m_cChar = cFromRawInput();
     
-    if (m_cSecond)
+    if (m_xSecond.m_cChar)
       m_nLoaded++;
   }
 }
@@ -404,9 +408,9 @@ void Parser::vLoadFirst(void)
   
   ASSERT(! m_nLoaded);
   
-  m_cFirst = cFromRawInput();
+  m_xFirst.m_cChar = cFromRawInput();
   
-  if (m_cFirst)
+  if (m_xFirst.m_cChar)
     m_nLoaded++;
 }
 
@@ -441,11 +445,11 @@ void Parser::vLoadSecond(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(1 == m_nLoaded);
-  ASSERT(m_cFirst);
+  ASSERT(m_xFirst.m_cChar);
   
-  m_cSecond = cFromRawInput();
+  m_xSecond.m_cChar = cFromRawInput();
   
-  if (m_cSecond)
+  if (m_xSecond.m_cChar)
     m_nLoaded++;
 }
 
@@ -457,10 +461,10 @@ void Parser::vRewindLocals(char cParsed)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(m_nLoaded < 2);
-  ASSERT('\0' == m_cSecond);
+  ASSERT('\0' == m_xSecond.m_cChar);
   
-  m_cSecond = m_cFirst;
-  m_cFirst  = cParsed;
+  m_xSecond.m_cChar = m_xFirst.m_cChar;
+  m_xFirst.m_cChar  = cParsed;
   
   m_nLoaded++;
 }
@@ -501,7 +505,7 @@ bool Parser::bBlockCommentEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  if ('*' == m_cFirst && '/' == m_cSecond)
+  if ('*' == m_xFirst.m_cChar && '/' == m_xSecond.m_cChar)
     return true;
   else
     return false;
@@ -542,7 +546,7 @@ bool Parser::bBlockCommentStart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  if ('/' == m_cFirst && '*' == m_cSecond)
+  if ('/' == m_xFirst.m_cChar && '*' == m_xSecond.m_cChar)
     return true;
   else
     return false;
@@ -557,7 +561,7 @@ bool Parser::bPossibleComment(void)
   
   ASSERT(m_nLoaded);
   
-  if ('/' == m_cFirst) {
+  if ('/' == m_xFirst.m_cChar) {
     if (1 == m_nLoaded)
       vLoadSecond();
     return true;
@@ -590,7 +594,7 @@ bool Parser::bLineCommentEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  if ('\n' == m_cFirst)
+  if ('\n' == m_xFirst.m_cChar)
     return true;
   else
     return false;
@@ -612,7 +616,7 @@ void Parser::vLineCommentSkip(void)
     vLoadFirst();
   }
   
-  ASSERT('\n' == m_cFirst || '\0' == m_cFirst);
+  ASSERT('\n' == m_xFirst.m_cChar || '\0' == m_xFirst.m_cChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -622,7 +626,7 @@ bool Parser::bLineCommentStart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  if ('/' == m_cFirst && '/' == m_cSecond)
+  if ('/' == m_xFirst.m_cChar && '/' == m_xSecond.m_cChar)
     return true;
   else
     return false;
