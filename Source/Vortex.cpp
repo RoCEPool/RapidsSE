@@ -1519,7 +1519,8 @@ void Vortex::vVarFun_Name(void)
         
     vGetNextToken();
     
-    goto L_AryFunVar;
+    vVarFun_AryFunVar();
+    goto L_Return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1529,11 +1530,13 @@ void Vortex::vVarFun_Name(void)
   // do we have operator <name>
   if (m_oCurTkn.bSame("operator"_Stz)) {
     vGetNextToken();
-    goto L_Operator;
+    vVarFun_Operator();
+    goto L_Return;
   }
   else if (m_oCurTkn.bSame("~"_Stz)) {
     vGetNextToken();
-    goto L_Destructor;
+    vVarFun_Destructor();
+    goto L_Return;
   }
   
   // we have a <name>
@@ -1545,7 +1548,8 @@ void Vortex::vVarFun_Name(void)
   
   // do we have type qualifier args?
   if (! m_oCurTkn.bSame("<"_Stz)) {
-    goto L_AryFunVar;
+    vVarFun_AryFunVar();
+    goto L_Return;
   }
   
   vCollectTypeArgs(m_oTypeArgs);
@@ -1556,7 +1560,8 @@ void Vortex::vVarFun_Name(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! m_oCurTkn.bSame("::"_Stz)) {
-    goto L_AryFunVar;
+    vVarFun_AryFunVar();
+    goto L_Return;
   }
     
   vShiftClassNm();
@@ -1568,19 +1573,7 @@ void Vortex::vVarFun_Name(void)
   goto L_Parse_Function_Name;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  L_AryFunVar:
-  vVarFun_AryFunVar();
-  goto L_Return;
-  
-  L_Destructor:
-  vVarFun_Destructor();
-  goto L_Return;
-
-  L_Operator:
-  vVarFun_Operator();
-  goto L_Return;
-
+    
   L_Return:
   return;
 }
