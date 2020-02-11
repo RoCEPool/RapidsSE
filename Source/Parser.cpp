@@ -394,13 +394,13 @@ void Parser::vLoadBoth(void)
   
   ASSERT(! m_nLoaded);
   
-  m_xAnnOne.m_cChar = cRawCharFromInput(m_xAnnOne);
+  vRawCharFromInput(m_xAnnOne);
   
   if (m_xAnnOne.m_cChar) {
     
     m_nLoaded++;
     
-    m_xAnnTwo.m_cChar = cRawCharFromInput(m_xAnnTwo);
+    vRawCharFromInput(m_xAnnTwo);
     
     if (m_xAnnTwo.m_cChar)
       m_nLoaded++;
@@ -416,7 +416,7 @@ void Parser::vLoadFirst(void)
   
   ASSERT(! m_nLoaded);
   
-  m_xAnnOne.m_cChar = cRawCharFromInput(m_xAnnOne);
+  vRawCharFromInput(m_xAnnOne);
   
   if (m_xAnnOne.m_cChar)
     m_nLoaded++;
@@ -455,7 +455,7 @@ void Parser::vLoadSecond(void)
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xAnnOne.m_cChar);
   
-  m_xAnnTwo.m_cChar = cRawCharFromInput(m_xAnnTwo);
+  vRawCharFromInput(m_xAnnTwo);
   
   if (m_xAnnTwo.m_cChar)
     m_nLoaded++;
@@ -648,7 +648,7 @@ bool Parser::bLineCommentStart(void)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from input source                                   */
 /*----------------------------------------------------------------------------*/
-char Parser::cRawCharFromInput(AnnChar& rxAnnChar)
+void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -677,7 +677,7 @@ char Parser::cRawCharFromInput(AnnChar& rxAnnChar)
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
   
-  return cRaw;
+  rxAnnChar.m_cChar = cRaw;
 }
 
 /*----------------------------------------------------------------------------*/

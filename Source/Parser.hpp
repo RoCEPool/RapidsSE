@@ -103,7 +103,7 @@ namespace TokenStream
     void vStripComment(void);
     
     // Reading
-    char  cRawCharFromInput(AnnChar& rxAnnChar);
+    void  vRawCharFromInput(AnnChar& rxAnnChar);
     char  cRawCharFromFile(void);
     char  cRawCharFromStdin(void);
     char  cRawCharFromString(void);
