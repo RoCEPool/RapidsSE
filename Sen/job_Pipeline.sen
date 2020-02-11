@@ -5,6 +5,24 @@
 " job_Pipeline.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* pipeline request (on originating node)                                     */
+/*----------------------------------------------------------------------------*/
+: pipeline::request _eeh ( -- <R> )
+
+  job::this locals| pJob_pipeline |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile the pipeline command
+  <cmd> job_Pipeline::compile dup
+  EC_NONE != if
+    job::this <SYNTAXERROR_JOB> !!logError exit
+  else
+    job_Pipeline::deleteDynamo
+    drop
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline job on a node                                         */
 /*----------------------------------------------------------------------------*/
 : pipeline::execute _eeh ( -- )
@@ -32,12 +50,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile dup
-  EC_NONE != if
-    job::this <ERROR_JOB> !!logError exit
-  else
-    drop
-  then
+  <cmd> job_Pipeline::compile
+  EC_NONE == assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)

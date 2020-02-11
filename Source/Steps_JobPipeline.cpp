@@ -9,10 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobPipeline(void)
 {
-  vAddStep("Job_Pipeline.begin"_Stz,    &Step::vJob_PipelineBegin);
-  vAddStep("Job_Pipeline.cancel"_Stz,   &Step::vJob_PipelineCancel);
-  vAddStep("Job_Pipeline.execute"_Stz,  &Step::vJob_PipelineExecute);
-  vAddStep("Job_Pipeline::compile"_Stz, &Step::vJob_PipelineCompile);
+  vAddStep("Job_Pipeline.begin"_Stz,         &Step::vJob_PipelineBegin);
+  vAddStep("Job_Pipeline.cancel"_Stz,        &Step::vJob_PipelineCancel);
+  vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
+  vAddStep("Job_Pipeline::deletedynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
+  vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +58,19 @@ void Step::vJob_PipelineBegin(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::deleteDynamo -- delete the dynamo                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineDeleteDynamo(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineDeleteDynamo"_Stz);
+  
+  delete *m_pRegSet->m_xpDynamo;
+  m_pRegSet->m_xpDynamo = nullptr;
+  
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* Job_Pipeline.cancel -- cancel the Pipeline job                             */
 /*----------------------------------------------------------------------------*/

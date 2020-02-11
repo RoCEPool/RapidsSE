@@ -113,26 +113,38 @@ void Result::vPrintBufferQueueResult(void)
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
   
+  // wait till the job has a buffer queue
+  while ( m_pOriginBufferQueue == nullptr ) {
+    // do something else release version optimizes this out
+    // check for syntax errors
+    if (m_eSyntaxError != EC_NONE) {
+      vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
+      goto L_EXIT;
+    }
+    AM::vNapMsec(1,CN_SEPROMPT);
+  }
+  
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());
     
     if (! pOperand) {
-      // invalid command ? exit early
-      bool bInvalidCommand = false;
-      if (m_bPartHasError) {
-        i8 iResponses = m_pOriginResponseVec->nItems();
-        
-        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-          if (m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
-            bInvalidCommand = true;
-            break;
-          }
-        }
-      }
       
-      if (bInvalidCommand)
-        break;
+      // invalid command ? exit early
+//      bool bInvalidCommand = false;
+//      if (m_bPartHasError) {
+//        i8 iResponses = m_pOriginResponseVec->nItems();
+//
+//        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+//          if (m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
+//            bInvalidCommand = true;
+//            break;
+//          }
+//        }
+//      }
+//
+//      if (bInvalidCommand)
+//        break;
       AM::vNapUsec(250,CN_NONE);
       continue;
     }
