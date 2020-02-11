@@ -1416,10 +1416,10 @@ void Vortex::vVarFun_TypeScope(void)
     //NEVER_REACH
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   vVarFun_Special();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   L_Return:
 
   return;
@@ -1454,7 +1454,8 @@ void Vortex::vVarFun_Special(void)
             
       // 1b) at this point we have type which is the class
       //       e.g.  myClass<i8>* pGetParent(void);
-      goto L_Scope_Test;
+      vVarFun_Name();
+      goto L_Return;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- --
@@ -1475,16 +1476,9 @@ void Vortex::vVarFun_Special(void)
     
     // no typeless constructor/destructor/operator found
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initial type has been detected
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // no specifier (constructor / destructor) after  <classNm> <typeAgs> ::
   
-  L_Scope_Test:
-
   vVarFun_Name();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1642,7 +1636,6 @@ void Vortex::vVarFun_AryFunVar(void)
     return;
   }
 
-  
   NEVER_REACH
 }
 
