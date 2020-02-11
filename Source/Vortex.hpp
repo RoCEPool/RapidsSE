@@ -139,13 +139,9 @@ namespace Utilities
     void vVarFun_SequenceBegin(void);
   
     void vVarFun_Type(void);
-    void vVarFun_Special(void);
     void vVarFun_Scope(void);
-
+    void vVarFun_Special(void);
     void vVarFun_Name(void);
-    void vVarFun_Constructor(void);
-    void vVarFun_Destructor(void);
-    void vVarFun_Operator(void);
 
     void vVarFun_AryFunVar(void);
     void vVarFun_Array(void);
@@ -153,6 +149,10 @@ namespace Utilities
     void vVarFun_FunBody(void);
   
     void vVarFun_FunCode(void);
+
+    void vVarFun_Constructor(void);
+    void vVarFun_Destructor(void);
+    void vVarFun_Operator(void);
 
     void vVarFun_SequenceEnd(void);
 

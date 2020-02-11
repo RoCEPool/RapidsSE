@@ -1382,10 +1382,50 @@ void Vortex::vVarFun_Type(void)
   if (m_oCurTkn.bSame("&"_Stz))
     vGetNextToken();
 
+  vVarFun_Scope();
+}
+
+/*----------------------------------------------------------------------------*/
+/* scope test                                                                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Scope(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  // do we see the scope resolution opeator (::)
+  //   indicating templated function in a _t.hpp file?
+  if (m_oCurTkn.bSame(":"_Stz)) {
+    
+    vGetExpectedToken(":"_Stz);
+    vGetNextToken();
+
+    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
+      vVarFun_Name();
+      goto L_Return;
+    }
+    
+    if (m_oCurTkn.bSame("~"_Stz)) {
+      vVarFun_Name();
+      goto L_Return;
+    }
+    
+    if (m_oCurTkn.bSame("operator"_Stz)) {
+      vGetNextToken();
+      vVarFun_Operator();
+      goto L_Return;
+    }
+    
+    //NEVER_REACH
+  }
   
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vVarFun_Special();
+
+  L_Return:
+
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1448,55 +1488,12 @@ void Vortex::vVarFun_Special(void)
   
   L_Scope_Test:
 
-  vVarFun_Scope();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  L_Return:
-  
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
-/* scope test                                                                 */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Scope(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  // do we see the scope resolution opeator (::)
-  //   indicating templated function in a _t.hpp file?
-  if (m_oCurTkn.bSame(":"_Stz)) {
-    
-    vGetExpectedToken(":"_Stz);
-    vGetNextToken();
-
-    if (m_oCurTkn.bSame(m_oTypeSpec.szName(0))) {
-      vVarFun_Name();
-      goto L_Return;
-    }
-    
-    if (m_oCurTkn.bSame("~"_Stz)) {
-      vVarFun_Name();
-      goto L_Return;
-    }
-    
-    if (m_oCurTkn.bSame("operator"_Stz)) {
-      vGetNextToken();
-      vVarFun_Operator();
-      goto L_Return;
-    }
-    
-    //NEVER_REACH
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   vVarFun_Name();
-
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   L_Return:
-
+  
   return;
 }
 
@@ -1587,70 +1584,6 @@ void Vortex::vVarFun_Name(void)
   vTraceEnter((char*)__func__);
 
   goto L_Parse_Function_Name;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect information about a constructor -> vVarFun_FunBody        sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Constructor(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(m_oCurTkn.bSame("("_Stz));
-
-  m_bIsFunPtr = false;
-
-  vGetNextToken();
-
-  m_oFunVarNm.vAdd(m_sClassNm);
-
-  vVarFun_FunBody();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect information about a destructor -> vVarFun_FunBody         sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Destructor(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(! m_oCurTkn.bSame("~"_Stz));
-  
-  m_bIsFunPtr = false;
-  
-  vGetNextToken();
-
-  // possible < classArgs >
-  if (m_oCurTkn.bSame("<"_Stz)) {
-    vCollectTypeArgs(m_oTypeArgs);
-    vGetNextToken();
-  }
-
-  m_oFunVarNm.vAdd(m_sClassNm);
-
-  vVarFun_FunBody();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect information about operator function -> vVarFun_FunBody()  sequence */
-/*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Operator(void)
-{
-  vTraceEnter((char*)__func__);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  for (;;) {
-    vGetNextToken();
-    
-    if (m_oCurTkn.bSame("("_Stz))
-      break;
-  }
-  
-  vCppPartSaw(VP_OPERATOR);
-
-  vVarFun_FunBody();
-  
-  vCppPartClear(VP_OPERATOR);
 }
 
 
@@ -1897,6 +1830,71 @@ void Vortex::vVarFun_FunCode(void)
 
   vVarFun_SequenceEnd();
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect information about a constructor -> vVarFun_FunBody        sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Constructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(m_oCurTkn.bSame("("_Stz));
+
+  m_bIsFunPtr = false;
+
+  vGetNextToken();
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect information about a destructor -> vVarFun_FunBody         sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Destructor(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(! m_oCurTkn.bSame("~"_Stz));
+  
+  m_bIsFunPtr = false;
+  
+  vGetNextToken();
+
+  // possible < classArgs >
+  if (m_oCurTkn.bSame("<"_Stz)) {
+    vCollectTypeArgs(m_oTypeArgs);
+    vGetNextToken();
+  }
+
+  m_oFunVarNm.vAdd(m_sClassNm);
+
+  vVarFun_FunBody();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect information about operator function -> vVarFun_FunBody()  sequence */
+/*----------------------------------------------------------------------------*/
+void Vortex::vVarFun_Operator(void)
+{
+  vTraceEnter((char*)__func__);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  for (;;) {
+    vGetNextToken();
+    
+    if (m_oCurTkn.bSame("("_Stz))
+      break;
+  }
+  
+  vCppPartSaw(VP_OPERATOR);
+
+  vVarFun_FunBody();
+  
+  vCppPartClear(VP_OPERATOR);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* end of var/fun sequence                                      sequence leaf */
