@@ -8,7 +8,7 @@ JobClass xJobClass_Universal =
 {
   CN_JOB_UNIVERSAL,       // class number
   JK_DIST2PC,             // job kind
-  RS_NODE_ROWS,           // response kind
+  RS_PARTICIPANT_RESULT,           // response kind
   "universal"_Stz,        // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word

@@ -582,10 +582,10 @@ void Constants::vAddConstantsCpp(void)
 
   // RS_ : response kind
   /*  0 */ vAddConstant("RS_NONE"_Stz,         RS_NONE);
-  /*  0 */ vAddConstant("RS_LOAD_ROWS"_Stz,    RS_LOAD_ROWS);
-  /*  0 */ vAddConstant("RS_LOCAL_ROWS"_Stz,   RS_LOCAL_ROWS);
-  /*  0 */ vAddConstant("RS_NODE_ROWS"_Stz,    RS_NODE_ROWS);
-  /*  0 */ vAddConstant("RS_QUEUE_ROWS"_Stz,   RS_QUEUE_ROWS);
+  /*  0 */ vAddConstant("RS_LOAD_RESULT"_Stz,    RS_LOAD_RESULT);
+  /*  0 */ vAddConstant("RS_JOB_RESULT"_Stz,   RS_JOB_RESULT);
+  /*  0 */ vAddConstant("RS_PARTICIPANT_RESULT"_Stz,    RS_PARTICIPANT_RESULT);
+  /*  0 */ vAddConstant("RS_BUFFERQUEUE_RESULT"_Stz,   RS_BUFFERQUEUE_RESULT);
 
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);

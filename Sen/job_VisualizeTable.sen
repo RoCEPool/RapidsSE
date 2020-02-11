@@ -89,7 +89,7 @@ jobInfo: visualizeTable
   
   <?jobType?>  = JT_VISUALIZETABLE
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_LOCAL_ROWS
+  <?rspKind?>  = RS_JOB_RESULT
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

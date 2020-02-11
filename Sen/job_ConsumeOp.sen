@@ -150,7 +150,7 @@ jobInfo: ConsumeOp
   
   <?jobType?>  = JT_CONSUMEOP
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NODE_ROWS
+  <?rspKind?>  = RS_PARTICIPANT_RESULT
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted
