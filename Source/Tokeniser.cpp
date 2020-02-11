@@ -1119,6 +1119,19 @@ bool Tokeniser::bEndSpecialString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a colon                                                           */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsColon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if (':' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a base-10 digit                                                   */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsDigit(void)
