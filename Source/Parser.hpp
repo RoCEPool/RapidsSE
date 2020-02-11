@@ -7,6 +7,15 @@ namespace TokenStream
 {
   const char C_END_OF_LINE = '\n';
   
+  // annotated char experiment
+  class AnnChar {
+  public:
+    char m_cChar;   // the char
+    i8   m_iLineNo; // line number
+    i8   m_iColNo;  // column number
+  };
+
+
   class Parser : public Object
   {
   private:
