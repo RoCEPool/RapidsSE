@@ -77,6 +77,7 @@
     task::wait
 
   else
+    "JOB HAS SYNTAX ERROR"
     job::this job.removeOriginator  // this is currently being done by job_ended
   then
 
