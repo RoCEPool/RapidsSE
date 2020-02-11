@@ -139,7 +139,7 @@ namespace Utilities
     void vVarFun_SequenceBegin(void);
   
     void vVarFun_Type(void);
-    void vVarFun_Scope(void);
+    void vVarFun_TypeScope(void);
     void vVarFun_Special(void);
     void vVarFun_Name(void);
 

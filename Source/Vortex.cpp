@@ -1382,13 +1382,13 @@ void Vortex::vVarFun_Type(void)
   if (m_oCurTkn.bSame("&"_Stz))
     vGetNextToken();
 
-  vVarFun_Scope();
+  vVarFun_TypeScope();
 }
 
 /*----------------------------------------------------------------------------*/
 /* scope test                                                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vVarFun_Scope(void)
+void Vortex::vVarFun_TypeScope(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
