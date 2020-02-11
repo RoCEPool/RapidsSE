@@ -31,8 +31,8 @@ namespace TokenStream
     i8      m_nLoaded;   // 0: neither has char
                          // 1: m_cFirst has char
                          // 2: m_cFirst and m_cSecond each have a char
-    AnnChar m_xFirst;    //
-    AnnChar m_xSecond;   //
+    AnnChar m_xAnnOne;    //
+    AnnChar m_xAnnTwo;   //
     eCS     m_eComment;  // comment style currently being processed
     bool    m_bRead;     // prompt user for more input
     bool    m_bEOF;      // eof seen?
@@ -103,10 +103,10 @@ namespace TokenStream
     void vStripComment(void);
     
     // Reading
-    char  cFromRawInput(void);
-    char  cFromRawFile(void);
-    char  cFromRawStdin(void);
-    char  cFromRawString(void);
+    char  cRawCharFromInput(AnnChar& rxAnnChar);
+    char  cRawCharFromFile(void);
+    char  cRawCharFromStdin(void);
+    char  cRawCharFromString(void);
     char  cNextRawChar(void);
 
     void  vReadLineFile(void);

@@ -10,6 +10,8 @@ namespace TokenStream
     char m_cChar;  // the char
     i8   m_iLine;  // line number
     i8   m_iCol;   // column number
+    
+    void vReset(void);
   };
 }
 
