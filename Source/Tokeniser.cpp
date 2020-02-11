@@ -617,6 +617,28 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   ASSERT(bStartNormalOther());
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather :: as a string
+//  if (bIsColon()) {
+//    
+//    vGetNextStripped();
+//    
+//    if (bIsColon()) {
+//      *z++ = ':';
+//      *z++ = ':';
+//      *z = '\0';
+//      
+//      return TN_STRING;
+//    }
+//    else {
+//      // push back the unconsumed char
+//      vUngetStrippedChar();
+//      
+//      // set last single character as :
+//      m_cParsedChar = ':';
+//    }
+//  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather .. as a string
   if (bIsDot()) {
     
@@ -625,8 +647,6 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     if (bIsDot()) {
       *z++ = '.';
       *z++ = '.';
-      
-      // terminate the string token
       *z = '\0';
       
       return TN_STRING;
@@ -637,30 +657,6 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
       
       // set last single character as .
       m_cParsedChar = '.';
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // gather || as a string
-  if (bIsPipe()) {
-    
-    vGetNextStripped();
-    
-    if (bIsPipe()) {
-      *z++ = '|';
-      *z++ = '|';
-      
-      // terminate the string token
-      *z = '\0';
-      
-      return TN_STRING;
-    }
-    else {
-      // push back the unconsumed char
-      vUngetStrippedChar();
-      
-      // set last single character as .
-      m_cParsedChar = '|';
     }
   }
   
@@ -684,6 +680,25 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather >= as a token
+  if (bIsGreaterThan()) {
+    vGetNextStripped();
+    if (bIsEqual()) {
+      *z++ = '>';
+      *z++ = '=';
+      *z = '\0';
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as >
+      m_cParsedChar = '>';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather <= as a token
   if (bIsLessThan()) {
     vGetNextStripped();
@@ -703,21 +718,24 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // gather >= as a token
-  if (bIsGreaterThan()) {
+  // gather || as a string
+  if (bIsPipe()) {
+    
     vGetNextStripped();
-    if (bIsEqual()) {
-      *z++ = '>';
-      *z++ = '=';
+    
+    if (bIsPipe()) {
+      *z++ = '|';
+      *z++ = '|';
       *z = '\0';
+      
       return TN_STRING;
     }
     else {
       // push back the unconsumed char
       vUngetStrippedChar();
       
-      // set last single character as >
-      m_cParsedChar = '>';
+      // set last single character as .
+      m_cParsedChar = '|';
     }
   }
   
