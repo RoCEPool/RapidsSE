@@ -20,6 +20,7 @@ namespace Jobs
     bool         m_bPartHasError;      // participant has an error
     ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
     
+    // buffer queue
     Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
     // must be last
@@ -34,12 +35,12 @@ namespace Jobs
 
     void vPrint(eRS eResponse);
     
-    //! ALKA : private
   public:
-    void vPrintLoadRows(void);
-    void vPrintLocalRows(void);
-    void vPrintNodeRows(void);
-    void vPrintQueueRows(void);
+    void vPrintBufferQueueResult(void);
+    void vPrintJobResult(void);
+    void vPrintLoadResult(void);
+    void vPrintParticipantResult(void);
+    
     
     Footer* aFooter(void);
   };

@@ -55,7 +55,7 @@ jobInfo: XmitOp
   
   <?jobType?>  = JT_XMITOP
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NODE_ROWS
+  <?rspKind?>  = RS_PARTICIPANT_RESULT
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

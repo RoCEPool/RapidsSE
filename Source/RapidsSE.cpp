@@ -854,11 +854,11 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   eRS eResponseKind = pJob->aJobClass()->m_eResponse;
   Response* pResponse = nullptr;
   
-  if (eResponseKind == RS_LOCAL_ROWS) {
+  if (eResponseKind == RS_JOB_RESULT) {
     pResponse = pJob->pResponse();
   }
   else {
-    RASSERT(eResponseKind == RS_NODE_ROWS);
+    RASSERT(eResponseKind == RS_PARTICIPANT_RESULT);
   
     i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
     
@@ -934,11 +934,11 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   
   i8 iRowsProcessed= 0;
   
-  if (eResponseKind == RS_LOCAL_ROWS) {
+  if (eResponseKind == RS_JOB_RESULT) {
     iRowsProcessed = pJob->iRowsProcessed();
   }
   else {
-    RASSERT(eResponseKind == RS_NODE_ROWS);
+    RASSERT(eResponseKind == RS_PARTICIPANT_RESULT);
     
     i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
     

@@ -112,7 +112,7 @@ jobInfo: lscol
   
   <?jobType?>  = JT_LISTCOLUMNS
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_LOCAL_ROWS
+  <?rspKind?>  = RS_JOB_RESULT
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

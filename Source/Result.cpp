@@ -92,12 +92,13 @@ void Result::vPrint(eRS eResponse)
   }
   
   switch (eResponse) {
-      
-    case RS_NONE         : /* do nothing */      break;
-    case RS_LOAD_ROWS    : vPrintLoadRows();     break;
-    case RS_LOCAL_ROWS   : vPrintLocalRows();    break;
-    case RS_NODE_ROWS    : vPrintNodeRows();     break;
-    case RS_QUEUE_ROWS   : vPrintQueueRows();    break;
+    
+    case RS_NONE                 : /* do nothing */               break;
+    case RS_BUFFERQUEUE_RESULT   : vPrintBufferQueueResult();     break;
+    case RS_JOB_RESULT           : vPrintJobResult();             break;
+    case RS_LOAD_RESULT          : vPrintLoadResult();            break;
+    case RS_PARTICIPANT_RESULT   : vPrintParticipantResult();     break;
+    
       
     default:
       vTrace("Invalid response : %s\n"_Stz,aRS[eResponse]);
@@ -105,103 +106,10 @@ void Result::vPrint(eRS eResponse)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print load rows                                                            */
+/* print buffer queue results                                                 */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintLoadRows(void)
+void Result::vPrintBufferQueueResult(void)
 {
-  i8 iResponses = m_pOriginResponseVec->nItems();
-  
-  if ( m_bPartHasError ) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
-    return;
-  }
-  
-  RASSERT(iResponses == AM::nDefinedNodes());
-  
-  i8 iRowsProcessed = 0;
-  i8 iRowsInvalid   = 0;
-  i8 iRowsSkipped   = 0;
-  
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    
-    Response* pResponse = m_pOriginResponseVec->pGet(i_Node);
-    iRowsProcessed += *pResponse->m_ixRowsProcessed;
-    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
-    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
-  }
-  if (iRowsInvalid || iRowsSkipped)
-    vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  else
-    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* print local rows                                                           */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintLocalRows(void)
-{
-  if (m_bJobHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xJobResponse.m_eErrorCode]);
-    return;
-  }
-  
-  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz))
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
-  
-  if (*m_xJobResponse.m_ixRowsProcessed)
-    vTrace("%s"_Stz, m_xJobResponse.m_sResponse.azChar());
-  
-  vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print node rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintNodeRows(void)
-{
-  i8 iResponses = m_pOriginResponseVec->nItems();
-
-  if (m_bPartHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
-  
-  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
-  
-  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz)) {
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
-  }
-  
-  i8 iRowsProcessed = 0;
-  
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("%s\n"_Stz, m_pOriginResponseVec->pGet(i_Node)->m_sResponse.azChar());
-    iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
-  }
-  vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print queue rows                                                            */
-/*----------------------------------------------------------------------------*/
-void Result::vPrintQueueRows(void)
-{
-  //  if ( m_bHasError ) {
-  //    i8 iResponses = m_pOriginResponseVec->nItems();
-  //    RASSERT(iResponses == AM::nDefinedNodes());
-  //    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-  //      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
-  //    }
-  //    return;
-  //  }
-  
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
   
@@ -214,7 +122,7 @@ void Result::vPrintQueueRows(void)
       bool bInvalidCommand = false;
       if (m_bPartHasError) {
         i8 iResponses = m_pOriginResponseVec->nItems();
-
+        
         for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
           if (m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
             bInvalidCommand = true;
@@ -222,7 +130,7 @@ void Result::vPrintQueueRows(void)
           }
         }
       }
-
+      
       if (bInvalidCommand)
         break;
       AM::vNapUsec(250,CN_NONE);
@@ -368,6 +276,90 @@ L_EXIT:
     AM::vDeleteOperand(pStreamDef);
   return;
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* print job result                                                           */
+/*----------------------------------------------------------------------------*/
+void Result::vPrintJobResult(void)
+{
+  if (m_bJobHasError) {
+    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
+           aEC[m_xJobResponse.m_eErrorCode]);
+    return;
+  }
+  
+  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz))
+    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
+  
+  if (*m_xJobResponse.m_ixRowsProcessed)
+    vTrace("%s"_Stz, m_xJobResponse.m_sResponse.azChar());
+  
+  vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print load result                                                          */
+/*----------------------------------------------------------------------------*/
+void Result::vPrintLoadResult(void)
+{
+  i8 iResponses = m_pOriginResponseVec->nItems();
+  
+  if ( m_bPartHasError ) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
+    return;
+  }
+  
+  RASSERT(iResponses == AM::nDefinedNodes());
+  
+  i8 iRowsProcessed = 0;
+  i8 iRowsInvalid   = 0;
+  i8 iRowsSkipped   = 0;
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    
+    Response* pResponse = m_pOriginResponseVec->pGet(i_Node);
+    iRowsProcessed += *pResponse->m_ixRowsProcessed;
+    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
+    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
+  }
+  if (iRowsInvalid || iRowsSkipped)
+    vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+  else
+    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* print participant node results                                             */
+/*----------------------------------------------------------------------------*/
+void Result::vPrintParticipantResult(void)
+{
+  i8 iResponses = m_pOriginResponseVec->nItems();
+  
+  if (m_bPartHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
+  
+  if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz)) {
+    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
+  }
+  
+  i8 iRowsProcessed = 0;
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    vTrace("%s\n"_Stz, m_pOriginResponseVec->pGet(i_Node)->m_sResponse.azChar());
+    iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+  }
+  vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/

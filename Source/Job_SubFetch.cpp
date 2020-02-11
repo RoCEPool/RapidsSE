@@ -8,7 +8,7 @@ JobClass xJobClass_SubFetch =
 {
   CN_JOB_SUBFETCH,           // class number
   JK_CHILD,                  // job kind
-  RS_NODE_ROWS,              // response kind
+  RS_PARTICIPANT_RESULT,              // response kind
   "sub-fetch rows"_Stz,      // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
