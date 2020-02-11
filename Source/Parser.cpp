@@ -687,24 +687,22 @@ char Parser::cRawCharFromFile(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  char cRaw;
+  vNextCharFromRawLine(rxAnnChar);
   
-  cRaw = cNextCharFromRawLine(rxAnnChar);
-  
-  if (cRaw)
-    return cRaw;
+  if (rxAnnChar.m_cChar)
+    return rxAnnChar.m_cChar;
   
   if (m_bEOF) {
-    cRaw = '\0';
-    return cRaw;
+    rxAnnChar.m_cChar = '\0';
+    return rxAnnChar.m_cChar;
   }
   
   ASSERT(m_oRawFile.bIsOpen());
   
   if (! m_bLineMode) {
     vReadRawLineFile();
-    cRaw = cNextCharFromRawLine(rxAnnChar);
-    return cRaw;
+    vNextCharFromRawLine(rxAnnChar);
+    return rxAnnChar.m_cChar;
   }
   
   if (! m_bRead) {
@@ -716,11 +714,11 @@ char Parser::cRawCharFromFile(AnnChar& rxAnnChar)
   
   m_bRead = false;
   vReadRawLineFile();
-  cRaw = cNextCharFromRawLine(rxAnnChar);
+  vNextCharFromRawLine(rxAnnChar);
   
-  ASSERT( (cRaw) || (!cRaw && m_bEOF) );
+  ASSERT( (rxAnnChar.m_cChar) || (!rxAnnChar.m_cChar && m_bEOF) );
   
-  return cRaw;
+  return rxAnnChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,14 +729,12 @@ char Parser::cRawCharFromStdin(AnnChar& rxAnnChar)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(! m_bEOF);
+    
+  vNextCharFromRawLine(rxAnnChar);
   
-  char cRaw;
-  
-  cRaw = cNextCharFromRawLine(rxAnnChar);
-  
-  if (cRaw) {
+  if (rxAnnChar.m_cChar) {
     ASSERT(! m_bEOF);
-    return cRaw;
+    return rxAnnChar.m_cChar;
   }
   
   ASSERT(m_oRawFile.bIsStdin());
@@ -746,9 +742,9 @@ char Parser::cRawCharFromStdin(AnnChar& rxAnnChar)
   
   if (! m_bLineMode) {
     vReadRawLineStdin();
-    cRaw = cNextCharFromRawLine(rxAnnChar);
+    vNextCharFromRawLine(rxAnnChar);
     ASSERT(! m_bEOF);
-    return cRaw;
+    return rxAnnChar.m_cChar;
   }
   
   if (! m_bRead) {
@@ -761,10 +757,10 @@ char Parser::cRawCharFromStdin(AnnChar& rxAnnChar)
   
   m_bRead = false;
   vReadRawLineStdin();
-  cRaw = cNextCharFromRawLine(rxAnnChar);
+  vNextCharFromRawLine(rxAnnChar);
   
   ASSERT(! m_bEOF);
-  return cRaw;
+  return rxAnnChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -775,29 +771,26 @@ char Parser::cRawCharFromString(AnnChar& rxAnnChar)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(m_bEOF);
+    
+  vNextCharFromRawLine(rxAnnChar);
   
-  char cRaw;
-  
-  cRaw = cNextCharFromRawLine(rxAnnChar);
-  
-  if (cRaw)
-    return cRaw;
+  if (rxAnnChar.m_cChar)
+    return rxAnnChar.m_cChar;
   
   ASSERT(m_bEOF);
-  
+  ASSERT('\0' == rxAnnChar.m_cChar);
+
   return '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* get next raw character                                                     */
 /*----------------------------------------------------------------------------*/
-char Parser::cNextCharFromRawLine(AnnChar& rxAnnChar)
+void Parser::vNextCharFromRawLine(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   rxAnnChar.m_cChar = *m_acRawChar++;
-    
-  return rxAnnChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
