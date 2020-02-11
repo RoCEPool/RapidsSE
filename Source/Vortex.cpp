@@ -1397,7 +1397,6 @@ void Vortex::vVarFun_Type(void)
         
         // constructor (no specifier)
         TRACE("  (typeless) constructor\n"_Stz);
-        vGetNextToken();
         vVarFun_Constructor();
         goto L_Return;
       }
@@ -1411,7 +1410,7 @@ void Vortex::vVarFun_Type(void)
     // 2) typeless destructor
     if (m_sTypeNm.bSame("~"_Stz)) {
       TRACE("  (typeless) destructor\n"_Stz);
-      vVarFun_Name();
+      vVarFun_Destructor();
       goto L_Return;
     }
     
@@ -1583,8 +1582,11 @@ void Vortex::vVarFun_Constructor(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(m_oCurTkn.bSame("("_Stz));
 
   m_bIsFunPtr = false;
+
+  vGetNextToken();
 
   m_oFunVarNm.vAdd(m_sClassNm);
 
@@ -1598,8 +1600,17 @@ void Vortex::vVarFun_Destructor(void)
 {
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
+  RASSERT(! m_oCurTkn.bSame("~"_Stz));
+  
   m_bIsFunPtr = false;
+  
+  vGetNextToken();
+
+  // possible < classArgs >
+  if (m_oCurTkn.bSame("<"_Stz)) {
+    vCollectTypeArgs(m_oTypeArgs);
+    vGetNextToken();
+  }
 
   m_oFunVarNm.vAdd(m_sClassNm);
 
