@@ -42,7 +42,7 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
     
   }
   else {
-    Word* pStoredProcedureWord = pRootDic->pFindWord("storedProcedure"_Stz);
+    Word* pStoredProcedureWord = pRootDic->pFindWord("procedure"_Stz);
     
     pProcWord = new (pRootDic) Word(sProcNm);
   }
