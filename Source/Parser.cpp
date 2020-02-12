@@ -652,31 +652,26 @@ void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  char cRaw;
-
   switch (m_eSource) {
       
     case IS_FILE:
       vRawCharFromFile(rxAnnChar);
-      cRaw = rxAnnChar.m_cChar;
-      ASSERT( (cRaw) || (!cRaw && (m_bEOF || m_bLineMode)) );
+      ASSERT( (rxAnnChar.m_cChar) ||
+              (! rxAnnChar.m_cChar && (m_bEOF || m_bLineMode)) );
       break;
       
     case IS_STDIN:
       vRawCharFromStdin(rxAnnChar);
-      cRaw = rxAnnChar.m_cChar;
       ASSERT(! m_bEOF);
       break;
       
     case IS_STRING:
-      cRaw = cRawCharFromString(rxAnnChar);
-      rxAnnChar.m_cChar = cRaw;
+      vRawCharFromString(rxAnnChar);
       ASSERT(m_bEOF);
       break;
       
     default:
-      cRaw = '\0';
-      rxAnnChar.m_cChar = cRaw;
+      rxAnnChar.m_cChar = '\0';
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
@@ -767,7 +762,7 @@ void Parser::vRawCharFromStdin(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from buffered string                                */
 /*----------------------------------------------------------------------------*/
-char Parser::cRawCharFromString(AnnChar& rxAnnChar)
+void Parser::vRawCharFromString(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -776,12 +771,10 @@ char Parser::cRawCharFromString(AnnChar& rxAnnChar)
   vNextCharFromRawLine(rxAnnChar);
   
   if (rxAnnChar.m_cChar)
-    return rxAnnChar.m_cChar;
+    return;
   
   ASSERT(m_bEOF);
   ASSERT('\0' == rxAnnChar.m_cChar);
-
-  return '\0';
 }
 
 /*----------------------------------------------------------------------------*/
