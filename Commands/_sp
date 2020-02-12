@@ -1,8 +1,23 @@
 /*============================================================================*/
-/* _sp -- stored pipe linetest                                                */
+/* _sp -- stored pipeline test                                                */
 /*============================================================================*/
 
-  print "\"stored pipeline test\"" ;
+print "Stored procedure test" ;
+
+procedure t_upsert
+  parameters $Table1 $Table2
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    genCsvOp $Table | toCrwOp $Table | upsertOp $Table | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+
+end;
 
 /*============================================================================*/
 /* end                                                                        */
