@@ -42,8 +42,10 @@ void Engine::vMainEntry(void)
   
   vWriteRegionName();
   
-  vChangeDirectory();
+  vChangeDirectory(); //! what happens if this fails?
   
+  EnvCheck::vCheckManifest(); //! what happens if this fails
+ 
   vKillPrev();
   
   vOpenPool();

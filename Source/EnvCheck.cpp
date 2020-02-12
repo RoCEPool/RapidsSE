@@ -5,9 +5,24 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* memory monitor profile                                                     */
+/* check mainfest list                                                        */
 /*----------------------------------------------------------------------------*/
-void EnvCheck::vCheck(void)
+void EnvCheck::vCheckManifest(void)
+{
+  vCheckDir("../Commands"_Stz,C_UNKNOWN,C_UNKNOWN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check directory                                                            */
+/*----------------------------------------------------------------------------*/
+void EnvCheck::vCheckDir(Stz* szDirPath,  i8 iDisposition, i8 iPermissions)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* check file                                                                 */
+/*----------------------------------------------------------------------------*/
+void EnvCheck::vCheckFile(Stz* szFilePath, i8 iDisposition, i8 iPermissions)
 {
 }
 

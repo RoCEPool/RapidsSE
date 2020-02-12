@@ -9,7 +9,10 @@ namespace StorageEngine
   {
   public:
   
-    static void vCheck(void);
+    static void vCheckManifest(void);
+  
+    static void vCheckDir(Stz* szDirPath, i8 iDisposition, i8 iPermissions);
+    static void vCheckFile(Stz* szFilePath, i8 iDisposition, i8 iPermissions);
   };
 }
 
