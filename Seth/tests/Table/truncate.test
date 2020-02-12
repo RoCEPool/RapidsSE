@@ -1,0 +1,75 @@
+/*----------------------------------------------------------------------------*/
+/* truncate table tests                                                       */
+/*----------------------------------------------------------------------------*/
+
+// truncate where table does not exist
+truncate table noTable;
+failure contains: 'no such table'
+
+// create a table
+create table customer (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         CHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    CHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+success
+
+//------------------------------------------------------------------------------
+// create an index on custkey
+CREATE INDEX customer_idx1 ON customer(c_custkey);
+affected: 0
+
+//------------------------------------------------------------------------------
+// create an index on nationkey
+CREATE INDEX customer_idx2 ON customer(c_nationkey);
+affected: 0
+
+// check existence of index
+lsidx customer;
+rows:
+  ("customer_idx1",false,false)
+  ("customer_idx2",false,false)
+
+// check columns of index
+lsidxcol customer customer_idx1;
+rows:
+  ("C_CUSTKEY", "INTEGER", 19, 0, false, true)
+
+// truncate when table is empty
+truncate table customer;
+success
+
+// fetch
+fetch customer;
+rows: 0
+
+// load the table
+ld customer "/TPCH/SF1/customer.tbl"  field_delimiter "|";
+success
+
+// truncate the table
+truncate table customer;
+success
+
+// fetch
+fetch customer;
+rows: 0
+
+// now drop the table
+drop table customer;
+success
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  bye;
+  mute
+}
+

@@ -11466,7 +11466,7 @@ void Task::vAddMunged(Forth* pForth)
     "/***                            - Definition -                              ***/\n"
     "/*----------------------------------------------------------------------------*/\n"
     "\n"
-    "jobSyntax: truncateTable :: truncateTable <tableNm> ;\n"
+    "jobSyntax: truncateTable :: truncate table <tableNm> ;\n"
     "jobSyntax: truncateTable :: trtbl <tableNm> ;\n"
     "\n"
     "jobInfo: truncateTable\n"

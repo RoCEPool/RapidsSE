@@ -78,7 +78,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: truncateTable :: truncateTable <tableNm> ;
+jobSyntax: truncateTable :: truncate table <tableNm> ;
 jobSyntax: truncateTable :: trtbl <tableNm> ;
 
 jobInfo: truncateTable

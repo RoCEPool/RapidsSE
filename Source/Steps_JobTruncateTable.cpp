@@ -73,7 +73,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
-  pJob_SubTruncate->vParentId(pJob_Universal->m_iFocalId);
+  pJob_SubTruncate->vParentId(iTruncateJobId);
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->pEnameSet()->vAdd("<tableNm>"_Stz,
                         pJob_Universal->pEnameSet()->szValue("<tableNm>"_Stz));
