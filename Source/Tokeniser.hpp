@@ -63,7 +63,7 @@ namespace TokenStream
     void vCollectNormalString(Token* pToken, char* azTermCrs);
     
     eTN  eCollectSpecial(Token* pToken, char* azTermCrs);
-    eTN  eCollectSpecialInteger(Token* pToken, char* azTermCrs);
+    void vCollectSpecialInteger(Token* pToken, char* azTermCrs);
     void vCollectSpecialName(Token* pToken, char* azTermCrs);
     void vCollectSpecialString(Token* pToken, char* azTermCrs);
     

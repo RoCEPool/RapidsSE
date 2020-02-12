@@ -845,8 +845,8 @@ eTN Tokeniser::eCollectSpecial(Token* pToken, char* azTermCrs)
   
   // collect integer literal?
   if (bStartSpecialInteger()) {
-    eTN eLiteral = eCollectSpecialInteger(pToken,azTermCrs);
-    return eLiteral;
+    vCollectSpecialInteger(pToken,azTermCrs);
+    return pToken->eToken();
   }
   
   // collect string literal?
@@ -863,7 +863,7 @@ eTN Tokeniser::eCollectSpecial(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect special integer                                                    */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSpecialInteger(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -904,7 +904,7 @@ eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
   // - handle minus only
   if (! iNoDigits) {
     vCollectSpecialName(pToken,z);
-    return pToken->eToken();
+    return;
   }
   
   // - handle the case where we have a name like 1_ugh
@@ -918,12 +918,11 @@ eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
     // terminate an intlit
     *z = '\0';
     pToken->vToken(TN_INTEGER);
-    return pToken->eToken();
+    return;
   }
   
   // its actually a name; complete parsing name
   vCollectSpecialName(pToken,z);
-  return pToken->eToken();
 }
 
 /*----------------------------------------------------------------------------*/
