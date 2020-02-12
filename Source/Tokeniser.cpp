@@ -505,8 +505,8 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
   
   // collect integer literal?
   if (bStartNormalInteger()) {
-    eTN eLiteral = eCollectNormalInteger(pToken,azTermCrs);
-    return eLiteral;
+    vCollectNormalInteger(pToken,azTermCrs);
+    return pToken->eToken();
   }
   
   // collect string literal?
@@ -528,7 +528,7 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect normal integer literal                                             */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalInteger(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalInteger(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -566,7 +566,7 @@ eTN Tokeniser::eCollectNormalInteger(Token* pToken, char* azTermCrs)
   // terminate the integer literal
   *z = '\0';
   
-  return TN_INTEGER;
+  pToken->vToken(TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
