@@ -467,7 +467,7 @@ eTN Tokeniser::eNextNormal(char* wToken)
   
   *wToken = '\0';
   
-  eTN eToken = eParseNormal(wToken);
+  eTN eToken = aCollectNormal(wToken);
   
   return eToken;
 }
@@ -481,7 +481,7 @@ eTN Tokeniser::eNextSpecial(char* wToken)
   
   *wToken = '\0';
 
-  eTN eToken = eParseSpecial(wToken);
+  eTN eToken = aCollectSpecial(wToken);
   
   return eToken;
 }
@@ -492,9 +492,9 @@ eTN Tokeniser::eNextSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse normal                                                               */
+/* collect normal token                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseNormal(char* wToken)
+eTN Tokeniser::aCollectNormal(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -510,30 +510,30 @@ eTN Tokeniser::eParseNormal(char* wToken)
   
   // collect integer literal?
   if (bStartNormalInteger()) {
-    eTN eLiteral = eParseNormalInteger(wToken);
+    eTN eLiteral = aCollectNormalInteger(wToken);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartNormalString()) {
-    eTN eToken = eParseNormalString(wToken);
+    eTN eToken = aCollectNormalString(wToken);
     return eToken;
   }
   
   // collect name token?
   if (bStartNormalName()) {
-    eTN eToken = eParseNormalName(wToken);
+    eTN eToken = aCollectNormalName(wToken);
     return eToken;
   }
   
-  eTN eToken = eParseNormalOther(wToken);
+  eTN eToken = aCollectNormalOther(wToken);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse normal integer literal                                               */
+/* collect normal integer literal                                             */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseNormalInteger(char* wToken)
+eTN Tokeniser::aCollectNormalInteger(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -575,9 +575,9 @@ eTN Tokeniser::eParseNormalInteger(char* wToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse normal name token                                                    */
+/* collect normal name                                                        */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseNormalName(char* wToken)
+eTN Tokeniser::aCollectNormalName(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -601,9 +601,9 @@ eTN Tokeniser::eParseNormalName(char* wToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse other token                                                          */
+/* collect other token                                                        */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseNormalOther(char* wToken)
+eTN Tokeniser::aCollectNormalOther(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -783,9 +783,9 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse normal string literal                                                */
+/* collect normal string literal                                              */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseNormalString(char* wToken)
+eTN Tokeniser::aCollectNormalString(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -831,9 +831,9 @@ eTN Tokeniser::eParseNormalString(char* wToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse special                                                              */
+/* collect special token                                                      */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseSpecial(char* wToken)
+eTN Tokeniser::aCollectSpecial(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -849,25 +849,25 @@ eTN Tokeniser::eParseSpecial(char* wToken)
   
   // collect integer literal?
   if (bStartSpecialInteger()) {
-    eTN eLiteral = eParseSpecialInteger(wToken);
+    eTN eLiteral = aCollectSpecialInteger(wToken);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartSpecialString()) {
-    eTN eToken = eParseSpecialString(wToken);
+    eTN eToken = aCollectSpecialString(wToken);
     return eToken;
   }
   
   // collect name token
-  eTN eToken = eParseSpecialName(wToken);
+  eTN eToken = aCollectSpecialName(wToken);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse special integer                                                      */
+/* collect special integer                                                    */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseSpecialInteger(char* wToken)
+eTN Tokeniser::aCollectSpecialInteger(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -907,7 +907,7 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
   
   // - handle minus only
   if (! iNoDigits) {
-    eTN eToken = eParseSpecialName(z);
+    eTN eToken = aCollectSpecialName(z);
     return eToken;    
   }
   
@@ -925,14 +925,14 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
   }
   
   // its actually a name; complete parsing name
-  eTN eToken = eParseSpecialName(z);
+  eTN eToken = aCollectSpecialName(z);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse special name                                                         */
+/* collect special name                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseSpecialName(char* wToken)
+eTN Tokeniser::aCollectSpecialName(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -956,9 +956,9 @@ eTN Tokeniser::eParseSpecialName(char* wToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse special string                                                       */
+/* collect special string                                                     */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eParseSpecialString(char* wToken)
+eTN Tokeniser::aCollectSpecialString(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

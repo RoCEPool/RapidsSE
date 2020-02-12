@@ -56,16 +56,16 @@ namespace TokenStream
     eTN  eNextNormal(char* aToken);
     eTN  eNextSpecial(char* aToken);
     
-    eTN  eParseNormal(char* aToken);
-    eTN  eParseNormalInteger(char* aToken);
-    eTN  eParseNormalName(char* aToken);
-    eTN  eParseNormalOther(char* aToken);
-    eTN  eParseNormalString(char* aToken);
+    eTN  aCollectNormal(char* aToken);
+    eTN  aCollectNormalInteger(char* aToken);
+    eTN  aCollectNormalName(char* aToken);
+    eTN  aCollectNormalOther(char* aToken);
+    eTN  aCollectNormalString(char* aToken);
     
-    eTN  eParseSpecial(char* aToken);
-    eTN  eParseSpecialInteger(char* aToken);
-    eTN  eParseSpecialName(char* aToken);
-    eTN  eParseSpecialString(char* aToken);
+    eTN  aCollectSpecial(char* aToken);
+    eTN  aCollectSpecialInteger(char* aToken);
+    eTN  aCollectSpecialName(char* aToken);
+    eTN  aCollectSpecialString(char* aToken);
     
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
