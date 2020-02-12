@@ -186,6 +186,7 @@ void SePrompt::vPromptLoop(void)
     
     vPreJob();
     
+    // this should go
     if (m_pJob->bHasSyntaxError()) {
       vPostJob();
       vDumpTokenVec();
