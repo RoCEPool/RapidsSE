@@ -210,7 +210,7 @@ void SePrompt::vPromptLoop(void)
     
     if (bExecutePipeline()) {
       // start the buffer queue processing while the pipeline ops are running
-      m_pJob->m_xResult.vPrintBufferQueueResult();
+      m_pJob->m_xResult.vProcessBufferQueue();
     }
     
     vJobWaitCond();

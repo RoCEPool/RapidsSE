@@ -36,12 +36,11 @@ namespace Jobs
     void vPrint(eRS eResponse);
     
   public:
-    void vPrintBufferQueueResult(void);
     void vPrintJobResult(void);
     void vPrintLoadResult(void);
     void vPrintParticipantErrors(void);
     void vPrintParticipantResult(void);
-    
+    void vProcessBufferQueue(void);
     
     Footer* aFooter(void);
   };

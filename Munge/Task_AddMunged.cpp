@@ -8154,7 +8154,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \n"
     "  <?jobType?>  = JT_PIPELINE\n"
     "  <?jobKind?>  = JK_DIST2PC\n"
-    "  <?rspKind?>  = RS_BUFFERQUEUE_RESULT\n"
+    "  <?rspKind?>  = RS_PARTICIPANT_ERROR\n"
     "  <?ddlLock?>  = DL_GRAB_READ\n"
     "  \n"
     "  <?preCheck?> = bClusterStarted\n"
