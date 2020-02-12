@@ -238,12 +238,11 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = (*pTokenVec_arg)[i_Token];
-    eTN eToken = eNextTokenX(pToken);
-    ASSERT(TN_NONE != eToken);
-    pToken->vToken(eToken);
+    vNextTokenX(pToken);
+    ASSERT(TN_NONE != pToken->eToken());
     
     // look for terminal
-    if (TN_OTHER == eToken && pToken->bSame(";"_Stz))
+    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
       break;
   }
   
@@ -316,7 +315,7 @@ void Tokeniser::vMalloc(bool bMalloc)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eNextTokenX(Token* pToken)
+void Tokeniser::vNextTokenX(Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -327,9 +326,8 @@ eTN Tokeniser::eNextTokenX(Token* pToken)
   else
     eToken = eNextSpecial(pToken->azTerm());
   
-  m_oCurrToken.vToken(eToken);
-  
-  return eToken;
+  pToken->vToken(eToken);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +337,7 @@ void Tokeniser::vNextTokenX(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTN eToken = eNextTokenX(&m_oCurrToken);
+  vNextTokenX(&m_oCurrToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,7 +498,7 @@ eTN Tokeniser::eParseNormal(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vGetNextStripped();
+  vParserGetAnnCharStripped();
   
   vSkipWhitespace();
   
@@ -551,7 +549,7 @@ eTN Tokeniser::eParseNormalInteger(char* wToken)
   while (bIsDigit()) {
     *z++ = m_xAnnChar.m_cChar;
     iNoDigits++;
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
   }
   
   // 0x hex number?
@@ -563,12 +561,12 @@ eTN Tokeniser::eParseNormalInteger(char* wToken)
     // collect the hex digits
     while (bIsHex()) {
       *z++ = m_xAnnChar.m_cChar;
-      vGetNextStripped();
+      vParserGetAnnCharStripped();
     }
   }
   
   // push back the unconsumed character
-  vUngetStrippedChar();
+  vParserUngetAnnCharStripped();
     
   // terminate the integer literal
   *z = '\0';
@@ -590,11 +588,11 @@ eTN Tokeniser::eParseNormalName(char* wToken)
   // collect the characters of the name
   while ( StrLib::bIsAlphaDigitUnder(m_xAnnChar.m_cChar) ) {
     *z++ = m_xAnnChar.m_cChar;
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
   }
   
   // push back the unconsumed char
-  vUngetStrippedChar();
+  vParserUngetAnnCharStripped();
   
   // terminate the name
   *z = '\0';
@@ -616,7 +614,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather ]] as a token
   if (bIsCloseBracket()) {
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     if (bIsCloseBracket()) {
       *z++ = ']';
       *z++ = ']';
@@ -625,7 +623,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as ]
       m_xAnnChar.m_cChar = ']';
@@ -636,7 +634,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // gather :: as a string
   if (bIsColon()) {
 
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
 
     if (bIsColon()) {
       *z++ = ':';
@@ -647,7 +645,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
 
       // set last single character as :
       m_xAnnChar.m_cChar = ':';
@@ -658,7 +656,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // gather .. as a string
   if (bIsDot()) {
     
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     
     if (bIsDot()) {
       *z++ = '.';
@@ -669,7 +667,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as .
       m_xAnnChar.m_cChar = '.';
@@ -679,7 +677,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather == as a token
   if (bIsEqual()) {
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     if (bIsEqual()) {
       *z++ = '=';
       *z++ = '=';
@@ -688,7 +686,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as =
       m_xAnnChar.m_cChar = '=';
@@ -698,7 +696,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather >= as a token
   if (bIsGreaterThan()) {
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     if (bIsEqual()) {
       *z++ = '>';
       *z++ = '=';
@@ -707,7 +705,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as >
       m_xAnnChar.m_cChar = '>';
@@ -717,7 +715,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather <= as a token
   if (bIsLessThan()) {
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     if (bIsEqual()) {
       *z++ = '<';
       *z++ = '=';
@@ -726,7 +724,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as <
       m_xAnnChar.m_cChar = '<';
@@ -736,7 +734,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather [[ as a token
   if (bIsOpenBracket()) {
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     if (bIsOpenBracket()) {
       *z++ = '[';
       *z++ = '[';
@@ -745,7 +743,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as [
       m_xAnnChar.m_cChar = '[';
@@ -756,7 +754,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   // gather || as a string
   if (bIsPipe()) {
     
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
     
     if (bIsPipe()) {
       *z++ = '|';
@@ -767,7 +765,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
     else {
       // push back the unconsumed char
-      vUngetStrippedChar();
+      vParserUngetAnnCharStripped();
       
       // set last single character as .
       m_xAnnChar.m_cChar = '|';
@@ -796,7 +794,7 @@ eTN Tokeniser::eParseNormalString(char* wToken)
   ASSERT(bStartSpecialString());
   
   // skip the leading '"'
-  vGetNextStripped();
+  vParserGetAnnCharStripped();
   
   // collect the characters within the string
   while ( ! bEndNormalString() ) {
@@ -808,13 +806,13 @@ eTN Tokeniser::eParseNormalString(char* wToken)
       if ('n' == m_xAnnChar.m_cChar)
         m_xAnnChar.m_cChar = '\n';
       else {
-        vUngetStrippedChar();
+        vParserUngetAnnCharStripped();
         m_xAnnChar.m_cChar = '\\';
       }
     }
 */
     if ('\\' == m_xAnnChar.m_cChar) {
-      vGetNextStripped();
+      vParserGetAnnCharStripped();
       // translate \n into new line
       if ('n' == m_xAnnChar.m_cChar)
         m_xAnnChar.m_cChar = '\n';
@@ -823,7 +821,7 @@ eTN Tokeniser::eParseNormalString(char* wToken)
     }
     
     *z++ = m_xAnnChar.m_cChar;
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
   }
   
   // terminate the string literal
@@ -839,7 +837,7 @@ eTN Tokeniser::eParseSpecial(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vGetNextStripped();
+  vParserGetAnnCharStripped();
   
   vSkipWhitespace();
   
@@ -884,14 +882,14 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
   // collect leading minus
   if (bIsMinus()) {
     *z++ = m_xAnnChar.m_cChar;
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
   }
   
   // collect initial digits
   while (bIsDigit()) {
     *z++ = m_xAnnChar.m_cChar;
     iNoDigits++;
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
   }
   
   // 0x hex number?
@@ -903,7 +901,7 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
     // collect the hex digits
     while (bIsHex()) {
       *z++ = m_xAnnChar.m_cChar;
-      vGetNextStripped();
+      vParserGetAnnCharStripped();
     }
   }
   
@@ -919,7 +917,7 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
   if ( bIsWhite() || bStartSpecialString() ) {
     
     // push back the unconsumed char
-    vUngetStrippedChar();
+    vParserUngetAnnCharStripped();
     
     // terminate an intlit
     *z = '\0';
@@ -945,11 +943,11 @@ eTN Tokeniser::eParseSpecialName(char* wToken)
   // collect the characters of the name
   while ( m_xAnnChar.m_cChar && !bIsWhite() && !bStartSpecialString() ) {
     *z++ = m_xAnnChar.m_cChar;
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
   }
   
   // push back the unconsumed char
-  vUngetStrippedChar();
+  vParserUngetAnnCharStripped();
   
   // terminate a namelit
   *z = '\0';
@@ -971,7 +969,7 @@ eTN Tokeniser::eParseSpecialString(char* wToken)
   char cStartQuote = m_xAnnChar.m_cChar;
   
   // skip the leading '"' or '\''
-  vGetNext();
+  vParserGetAnnChar();
   
   // collect the chars in the string
   //while ( ! bEndSpecialString() ) {
@@ -986,21 +984,21 @@ eTN Tokeniser::eParseSpecialString(char* wToken)
       if ('n' == m_xAnnChar.m_cChar)
         m_xAnnChar.m_cChar = '\n';
       else {
-        vUngetStrippedChar();
+        vParserUngetAnnCharStripped();
         m_xAnnChar.m_cChar = '\\';
       }
     }
 */
     
     if ('\\' == m_xAnnChar.m_cChar) {
-      vGetNext();
+      vParserGetAnnChar();
       // translate \n into new line
       if ('n' == m_xAnnChar.m_cChar)
         m_xAnnChar.m_cChar = '\n';
     }    
     
     *z++ = m_xAnnChar.m_cChar;
-    vGetNext();
+    vParserGetAnnChar();
   }
  
   // terminate the strlit
@@ -1022,7 +1020,7 @@ void Tokeniser::vSkipWhitespace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   while (bHaveWhitespace())
-    vGetNextStripped();
+    vParserGetAnnCharStripped();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1341,9 +1339,9 @@ bool Tokeniser::bIsX(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next input character                                                   */
+/* get next character from parser input                                      */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vGetNext(void)
+void Tokeniser::vParserGetAnnChar(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1354,7 +1352,7 @@ void Tokeniser::vGetNext(void)
 /*----------------------------------------------------------------------------*/
 /* get next input character (stripped of comments)                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vGetNextStripped(void)
+void Tokeniser::vParserGetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1365,7 +1363,7 @@ void Tokeniser::vGetNextStripped(void)
 /*----------------------------------------------------------------------------*/
 /* unget current input character                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUngetStrippedChar(void)
+void Tokeniser::vParserUngetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
