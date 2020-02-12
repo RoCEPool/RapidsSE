@@ -55,6 +55,8 @@ Tokeniser::Tokeniser(void)
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
+  m_oCurrToken.vReset();
+  
   _checkInitialised_(CN_TOKENISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -407,16 +409,6 @@ Stz* Tokeniser::szToken(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   return m_sToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set token string                                                           */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vToken(Stz* szStr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_sToken = szStr;
 }
 
 /*----------------------------------------------------------------------------*/

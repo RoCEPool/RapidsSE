@@ -16,6 +16,8 @@ namespace TokenStream
     
     s48K m_sToken;      // current token
     eTN  m_eToken;      // token type
+  
+    Token m_oCurrToken; // current working token
 
     // must be last
     Footer m_xFooter;    
@@ -48,7 +50,6 @@ namespace TokenStream
     bool bStdin(void);
     eTN  eToken(void);
     Stz* szToken(void);
-    void vToken(Stz* szStr);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
     void vUseStdin(void);
