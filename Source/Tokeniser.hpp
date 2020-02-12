@@ -12,8 +12,7 @@ namespace TokenStream
   
     bool m_bMalloc;     // malloc or pool heap?
     bool m_bNormal;     // normal tokens?
-    char m_cParsedChar; // character from parser
-    AnnChar m_xParsedChar; // char from parser
+    AnnChar m_xAnnChar; // annotated char from parser
     
     s48K m_sToken;      // current token
     eTN  m_eToken;      // token type
@@ -26,7 +25,7 @@ namespace TokenStream
     void  operator delete(void*);
     
     Tokeniser(void);
-  ~Tokeniser(void) noexcept(false);
+   ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(Stz* szString);
