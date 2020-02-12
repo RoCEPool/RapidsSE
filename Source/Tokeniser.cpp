@@ -50,6 +50,8 @@ Tokeniser::Tokeniser(void)
   m_bMalloc = false;
   m_bNormal = false;
   
+  m_xParsedChar.vReset();
+  
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
@@ -1350,7 +1352,7 @@ void Tokeniser::vGetNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cParsedChar = m_pParser->cGet(false);
+  m_cParsedChar = m_pParser->cGet(m_xParsedChar,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1360,7 +1362,7 @@ void Tokeniser::vGetNextStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cParsedChar = m_pParser->cGet(true);
+  m_cParsedChar = m_pParser->cGet(m_xParsedChar,true);
 }
 
 /*----------------------------------------------------------------------------*/

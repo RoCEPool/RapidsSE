@@ -66,7 +66,7 @@ namespace TokenStream
     i8      iDepth(void);
     
     // Processing Functions
-    char cGet(bool bStripComments);
+    char cGet(AnnChar& rxAnnChar, bool bStripComments);
     void vUnget(char c);
     bool bEOF(void);
     bool bLineMode(void);

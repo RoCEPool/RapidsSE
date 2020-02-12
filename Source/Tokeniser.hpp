@@ -13,6 +13,7 @@ namespace TokenStream
     bool m_bMalloc;     // malloc or pool heap?
     bool m_bNormal;     // normal tokens?
     char m_cParsedChar; // character from parser
+    AnnChar m_xParsedChar; // char from parser
     
     s48K m_sToken;      // current token
     eTN  m_eToken;      // token type
