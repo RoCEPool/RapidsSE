@@ -64,8 +64,8 @@ namespace TokenStream
     
     eTN  eCollectSpecial(Token* pToken, char* azTermCrs);
     eTN  eCollectSpecialInteger(Token* pToken, char* azTermCrs);
-    eTN  eCollectSpecialName(Token* pToken, char* azTermCrs);
-    eTN  eCollectSpecialString(Token* pToken, char* azTermCrs);
+    void vCollectSpecialName(Token* pToken, char* azTermCrs);
+    void vCollectSpecialString(Token* pToken, char* azTermCrs);
     
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);

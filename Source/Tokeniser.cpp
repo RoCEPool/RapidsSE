@@ -851,13 +851,13 @@ eTN Tokeniser::eCollectSpecial(Token* pToken, char* azTermCrs)
   
   // collect string literal?
   if (bStartSpecialString()) {
-    eTN eToken = eCollectSpecialString(pToken,azTermCrs);
-    return eToken;
+    vCollectSpecialString(pToken,azTermCrs);
+    return pToken->eToken();
   }
   
   // collect name token
-  eTN eToken = eCollectSpecialName(pToken,azTermCrs);
-  return eToken;
+  vCollectSpecialName(pToken,azTermCrs);
+  return pToken->eToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -903,8 +903,8 @@ eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
   
   // - handle minus only
   if (! iNoDigits) {
-    eTN eToken = eCollectSpecialName(pToken,z);
-    return eToken;    
+    vCollectSpecialName(pToken,z);
+    return pToken->eToken();
   }
   
   // - handle the case where we have a name like 1_ugh
@@ -921,14 +921,14 @@ eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
   }
   
   // its actually a name; complete parsing name
-  eTN eToken = eCollectSpecialName(pToken,z);
-  return eToken;
+  vCollectSpecialName(pToken,z);
+  return pToken->eToken();
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect special name                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecialName(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSpecialName(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -948,13 +948,13 @@ eTN Tokeniser::eCollectSpecialName(Token* pToken, char* azTermCrs)
   // terminate a namelit
   *z = '\0';
 
-  return TN_NAME;
+  pToken->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect special string                                                     */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecialString(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSpecialString(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1000,7 +1000,7 @@ eTN Tokeniser::eCollectSpecialString(Token* pToken, char* azTermCrs)
   // terminate the strlit
   *z = '\0';
 
-  return TN_STRING;
+  pToken->vToken(TN_STRING);
 }
 
 
