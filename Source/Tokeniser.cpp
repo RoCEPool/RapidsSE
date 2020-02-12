@@ -917,7 +917,8 @@ eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
     
     // terminate an intlit
     *z = '\0';
-    return TN_INTEGER;
+    pToken->vToken(TN_INTEGER);
+    return pToken->eToken();
   }
   
   // its actually a name; complete parsing name
