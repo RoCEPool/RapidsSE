@@ -128,9 +128,9 @@ namespace Strings
     
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
-    static bool  bIsAlphaDigitUnder(const char c);
-    static bool  bIsAlphaUnder(const char c);
     static bool  bIsDigit(const char c);
+    static bool  bIsNameBodyChar(const char c);
+    static bool  bIsNameStartChar(const char c);
     static bool  bIsNumeric(char* ps);
     static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);

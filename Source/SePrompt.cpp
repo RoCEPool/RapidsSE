@@ -1290,6 +1290,8 @@ bool SePrompt::bTranslateProcedure(void)
   
   TokenVec* pProcTokenVec = Tokeniser::pTokenise(szProcText);
   
+  pProcTokenVec->vDumpTokens();
+  
   Token* pTkn0 = pProcTokenVec->pGet(0);
 
   pTkn0->vCopy("pipeline"_Stz);

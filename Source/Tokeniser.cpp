@@ -577,7 +577,7 @@ void Tokeniser::vCollectNormalName(Token* pToken, char* azTermCrs)
   ASSERT(bStartNormalName());
   
   // collect the characters of the name
-  while ( StrLib::bIsAlphaDigitUnder(m_xAnnChar.m_cChar) ) {
+  while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
     *z++ = m_xAnnChar.m_cChar;
     vParserGetAnnCharStripped();
   }
@@ -1065,7 +1065,7 @@ bool Tokeniser::bStartNormalName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (StrLib::bIsAlphaUnder(m_xAnnChar.m_cChar))
+  if (StrLib::bIsNameStartChar(m_xAnnChar.m_cChar))
     return true;
   
   return false;
@@ -1078,7 +1078,7 @@ bool Tokeniser::bStartNormalOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (! StrLib::bIsAlphaDigitUnder(m_xAnnChar.m_cChar))
+  if (! StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar))
     return true;
   
   return false;

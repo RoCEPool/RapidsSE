@@ -2179,33 +2179,33 @@ bool StrLib::bIsAlphaDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is char an alphabetic, numeric digit or '_' character?                     */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bIsAlphaDigitUnder(const char c)
-{
-  if (isalpha(c) || isdigit(c) || '_' == c)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bIsAlphaUnder: is char an alphabetic or '_' character?                     */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bIsAlphaUnder(const char c)
-{
-  if (isalpha(c) || '_' == c)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* bIsDigit: is char a numeric decimal digit?                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsDigit(const char c)
 {
   if (isdigit(c))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is char an alphabetic, numeric digit, '_' or '$'?                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsNameBodyChar(const char c)
+{
+  if (isalpha(c) || isdigit(c) || '_' == c || '$' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAlphaUnder: is char an alphabetic, '_' or '$'?                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsNameStartChar(const char c)
+{
+  if (isalpha(c) || '_' == c || '$' == c)
     return true;
   else
     return false;
