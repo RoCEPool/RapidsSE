@@ -658,7 +658,7 @@ void Step::vJobHasSyntaxError(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->bHasSyntaxError());
+  //m_pDataStack->vPushInt(pJob->bHasSyntaxError());
   
   EXIT();
 }
@@ -1689,11 +1689,11 @@ void Step::vJobSyntaxErrorStore(void)
 {
   ENTRY(); // ENTRY("vJobSyntaxErrorStore"_Stz);
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iJobError = m_pDataStack->iPopAsInt(__func__);
-  
-  pJob->vSyntaxError((eEC)iJobError);
+//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+//  
+//  i8 iJobError = m_pDataStack->iPopAsInt(__func__);
+//  
+//  pJob->vSyntaxError((eEC)iJobError);
   
   //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   

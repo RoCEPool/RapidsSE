@@ -15,7 +15,7 @@
   // compile the pipeline command
   <cmd> job_Pipeline::compile dup
   EC_NONE != if
-    job::this <SYNTAXERROR_JOB> !!logError exit
+    job::this <ERROR_JOB> !!logError exit
   else
     job_Pipeline::deleteDynamo
     drop

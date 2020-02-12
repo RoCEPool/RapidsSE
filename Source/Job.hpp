@@ -111,7 +111,6 @@ namespace Jobs
     eEC  eErrorCode(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
-    bool bHasSyntaxError(void);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);
@@ -119,7 +118,6 @@ namespace Jobs
     void vJobClass(JobClass* aJobClass, char* azCaller);
     bool bJobHasError(void);
     void vJobHasError(bool bHasError);
-    bool bJobHasSyntaxError(void);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
@@ -153,7 +151,6 @@ namespace Jobs
     void vRowsInvalid(i8 iRowsInvalid);
     Stz* szSide(void);
     void vSignalJobMutex(void);
-    void vSyntaxError(eEC eErrorCode);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
     Stz* szNodeNm(void);

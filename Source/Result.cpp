@@ -50,7 +50,6 @@ Result::Result(void)
   
   m_sMetadata          = ""_Stz;
   
-  m_eSyntaxError       = EC_NONE;
   //m_xJobResponse
   m_bJobHasError       = false;
   
@@ -85,9 +84,10 @@ void Result::vPrint(eRS eResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
-  // check for syntax errors
-  if (m_eSyntaxError != EC_NONE) {
-    vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
+  // first check for job errors
+  if (m_bJobHasError != EC_NONE) {
+    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
+           aEC[m_xJobResponse.m_eErrorCode]);
     return;
   }
   
@@ -110,12 +110,8 @@ void Result::vPrint(eRS eResponse)
 void Result::vPrintJobResponse(void)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Errors
-  if (m_bJobHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_xJobResponse.m_eErrorCode]);
-    return;
-  }
+  // Errors should already be handled
+  ASSERT( ! m_bJobHasError );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Responses
@@ -236,9 +232,10 @@ void Result::vProcessBufferQueue(void)
   while ( m_pOriginBufferQueue == nullptr ) {
     // do something else release version optimizes this out
     
-    // exit early if syntax errors
-    if (m_eSyntaxError != EC_NONE) {
-      vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
+    // exit early if job has errors
+    if (m_bJobHasError != EC_NONE) {
+      vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
+             aEC[m_xJobResponse.m_eErrorCode]);
       goto L_EXIT;
     }
     

@@ -68,7 +68,7 @@
     drop
   then
 
-  job::this job.hasSyntaxError not if
+  job::this job.hasError not if
 
     // distribute the job
     job::distributeConnected

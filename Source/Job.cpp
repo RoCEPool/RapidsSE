@@ -594,16 +594,6 @@ bool Job::bHasEnameTag(Stz* szEnameTag)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has a syntax error                                        */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasSyntaxError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_eSyntaxError == EC_NONE ? false : true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* inc rows processed                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vIncRowsProcessed(void)
@@ -664,16 +654,6 @@ void Job::vJobHasError(bool bHasError)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_xResult.m_bJobHasError = bHasError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job has syntax error                                                   */
-/*----------------------------------------------------------------------------*/
-bool Job::bJobHasSyntaxError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_eSyntaxError == EC_NONE ? false : true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -798,7 +778,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
   // did we get a job name ?
   if ( szJobNm->bEqual(""_Stz) ) {
     // would have been a startup problem (unable to match job syntax !!!)
-    ASSERT(m_xResult.m_eSyntaxError != EC_NONE);
+    ASSERT(m_xResult.m_bJobHasError);
     return nullptr;
   }
   
@@ -906,16 +886,6 @@ void Job::vSignalJobMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   AM::vTaskMutexSignal(m_pTaskJ);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the sytax error                                                        */
-/*----------------------------------------------------------------------------*/
-void Job::vSyntaxError(eEC eErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_eSyntaxError = eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/

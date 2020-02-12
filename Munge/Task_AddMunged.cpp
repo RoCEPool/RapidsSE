@@ -3839,7 +3839,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check create index syntax\n"
     "  <cmd> IndexDef::syntax dup EC_NONE != if\n"
-    "    pJob_CreateIndex <SYNTAXERROR_JOB> !!logError\n"
+    "    pJob_CreateIndex <ERROR_JOB> !!logError\n"
     "  else\n"
     "    drop\n"
     "  then\n"
@@ -4102,7 +4102,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check create index syntax\n"
     "  <cmd> TableDef::syntax dup EC_NONE != if\n"
-    "    pJob_CreateTable <SYNTAXERROR_JOB> !!logError\n"
+    "    pJob_CreateTable <ERROR_JOB> !!logError\n"
     "  else\n"
     "    drop\n"
     "  then\n"
@@ -8099,7 +8099,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // compile the pipeline command\n"
     "  <cmd> job_Pipeline::compile dup\n"
     "  EC_NONE != if\n"
-    "    job::this <SYNTAXERROR_JOB> !!logError exit\n"
+    "    job::this <ERROR_JOB> !!logError exit\n"
     "  else\n"
     "    job_Pipeline::deleteDynamo\n"
     "    drop\n"
@@ -11543,7 +11543,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \\\"<?preCheck?>\\\" jobInfo::enameSet@ enameSet.hasName if\n"
     "    <?preCheck?> find execute not if\n"
     "      task::seedInitially task::doneFinally\n"
-    "      job::this <SYNTAXERROR_JOB>\n"
+    "      job::this <ERROR_JOB>\n"
     "    then\n"
     "  then\n"
     "\n"
@@ -14145,7 +14145,7 @@ void Task::vAddMunged(Forth* pForth)
     "    drop\n"
     "  then\n"
     "\n"
-    "  job::this job.hasSyntaxError not if\n"
+    "  job::this job.hasError not if\n"
     "\n"
     "    // distribute the job\n"
     "    job::distributeConnected\n"
@@ -14945,10 +14945,11 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "\\\"-se.sen\\\" .verbose\n"
     "\n"
-    "\\\"se_docols.sen\\\"  include\n"
-    "\\\"se_folders.sen\\\" include\n"
-    "\\\"se_munge.sen\\\"   include\n"
-    "\\\"se_vortex.sen\\\"  include\n"
+    "\\\"se_docols.sen\\\"     include\n"
+    "\\\"se_folders.sen\\\"    include\n"
+    "\\\"se_munge.sen\\\"      include\n"
+    "\\\"se_procedures.sen\\\" include\n"
+    "\\\"se_vortex.sen\\\"     include\n"
     "\n"
     "// create the root /tenants dictionary\n"
     "dicTenants: tenants\n"
@@ -15355,6 +15356,33 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT se_munge.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_procedures.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_procedures.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_procedures.sen -- procedures                                            */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_procedures.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* procedure category                                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": procedure ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_procedures.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);

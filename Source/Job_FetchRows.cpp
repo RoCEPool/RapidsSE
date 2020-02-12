@@ -286,6 +286,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 2 to 5 tokens
+  if (iNumTokens < 2 || iNumTokens > 6)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
   // is it a fetch retrieve ?
   if (pTokenVec->pGet(1)->bSame("retrieve"_Stz)) {
     
@@ -323,11 +328,6 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
 
     return false;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 to 5 tokens
-  if (iNumTokens < 2 || iNumTokens > 6)
-    return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
@@ -626,7 +626,8 @@ Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    pJob_FetchRows->vSyntaxError(EC_INVALID_COMMAND);
+    pJob_FetchRows->vJobHasError(true);
+    pJob_FetchRows->vErrorCode(EC_INVALID_COMMAND);
   }
   
   return pJob_FetchRows;
@@ -639,7 +640,7 @@ void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
-  if ( pJob_FetchRows->bParticipantHasError() ) {
+  if ( pJob_FetchRows->bJobHasError() ) {
     
     vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
              aEC[pJob_FetchRows->eErrorCode()]);
@@ -652,7 +653,6 @@ void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
   i8 iRowsPrinted = 0;
   
   FetchBuffer* pFetchBuffer = nullptr;
-  bool bDone = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // retrieve

@@ -12,7 +12,6 @@ namespace Jobs
     s4K          m_sMetadata;          // meta data of result
     
     // this job
-    eEC          m_eSyntaxError;       // syntax errors
     bool         m_bJobHasError;       // this job has an error
     Response     m_xJobResponse;       // response of this job
     

@@ -64,7 +64,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create index syntax
   <cmd> TableDef::syntax dup EC_NONE != if
-    pJob_CreateTable <SYNTAXERROR_JOB> !!logError
+    pJob_CreateTable <ERROR_JOB> !!logError
   else
     drop
   then
