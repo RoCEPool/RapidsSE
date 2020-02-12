@@ -52,7 +52,6 @@ Tokeniser::Tokeniser(void)
   
   m_xAnnChar.vReset();
   
-  m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
   m_oCurrToken.vReset();
@@ -338,7 +337,7 @@ void Tokeniser::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTN eToken = eNextToken(m_sToken.azChar());
+  eTN eToken = eNextToken(m_oCurrToken.azTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -408,7 +407,7 @@ Stz* Tokeniser::szToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  return m_sToken;
+  return m_oCurrToken.szTerm();
 }
 
 /*----------------------------------------------------------------------------*/

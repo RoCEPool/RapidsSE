@@ -14,7 +14,6 @@ namespace TokenStream
     bool m_bNormal;     // normal tokens?
     AnnChar m_xAnnChar; // annotated char from parser
     
-    s48K m_sToken;      // current token
     eTN  m_eToken;      // token type
   
     Token m_oCurrToken; // current working token
