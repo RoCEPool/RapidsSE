@@ -98,7 +98,6 @@ void Result::vPrint(eRS eResponse)
     case RS_LOAD_RESPONSE          : vPrintLoadResponse();         break;
     case RS_PARTICIPANT_ERROR      : vPrintParticipantErrors();    break;
     case RS_PARTICIPANT_RESPONSE   : vPrintParticipantResponses(); break;
-    
       
     default:
       vTrace("Invalid response : %s\n"_Stz,aRS[eResponse]);
