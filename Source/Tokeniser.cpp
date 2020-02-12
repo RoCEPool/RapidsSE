@@ -500,7 +500,8 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
   // end of input?
   if (bEndInput()) {
     *azTermCrs = '\0';
-    return TN_NONE;
+    pToken->vToken(TN_NONE);
+    return pToken->eToken();
   }
   
   // collect integer literal?
