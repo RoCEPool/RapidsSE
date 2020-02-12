@@ -101,7 +101,7 @@ namespace Prompt
     TokenVec* pTokenVec(void);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
-    void vTranslateProcedure(void);
+    bool bTranslateProcedure(void);
     void vUnknownCommand(void);
     void vVerifyJobSeeds(void);
 

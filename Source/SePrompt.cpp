@@ -167,7 +167,8 @@ void SePrompt::vPromptLoop(void)
 
     vLogCommand();
     
-    vTranslateProcedure();
+    if (bTranslateProcedure())
+      continue;
     
     vRestateCommand();
     
@@ -1260,7 +1261,7 @@ bool SePrompt::bTrackingMemory(void)
 /*----------------------------------------------------------------------------*/
 /* translate stored procedure into its final command form                     */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vTranslateProcedure(void)
+bool SePrompt::bTranslateProcedure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1272,21 +1273,36 @@ void SePrompt::vTranslateProcedure(void)
 
   Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
   if (! pProcedureWord)
-    return;
+    return false;
   
   Word* pProcWord = pRootDic->pFindWord(pProcNm->szTerm());
   
   if (! pProcWord)
-    return;
+    return false;
   
   if (pProcWord->pCategory() != pProcedureWord)
-    return;
+    return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Stz* szProcText = pProcWord->pEnameSet()->szValue("procText"_Stz);
   
-  m_pSession->m_sToDo = szProcText;
+  
+  TokenVec* pProcTokenVec = Tokeniser::pTokenise(szProcText);
+  
+  Token* pTkn0 = pProcTokenVec->pGet(0);
+
+  pTkn0->vCopy("pipeline"_Stz);
+
+  s4K sPipelineSmt;
+  
+  pProcTokenVec->vToString(sPipelineSmt);
+  
+  m_pSession->m_sToDo = sPipelineSmt.szStz();
+
+  delete pProcTokenVec;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
