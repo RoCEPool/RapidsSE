@@ -511,8 +511,8 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
   
   // collect string literal?
   if (bStartNormalString()) {
-    eTN eToken = eCollectNormalString(pToken,azTermCrs);
-    return eToken;
+    vCollectNormalString(pToken,azTermCrs);
+    return pToken->eToken();
   }
   
   // collect name token?
@@ -521,8 +521,8 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
     return eToken;
   }
   
-  eTN eToken = eCollectNormalOther(pToken,azTermCrs);
-  return eToken;
+  vCollectNormalOther(pToken,azTermCrs);
+  return pToken->eToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -598,7 +598,7 @@ eTN Tokeniser::eCollectNormalName(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect other token                                                        */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -614,7 +614,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = ']';
       *z++ = ']';
       *z = '\0';
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -635,8 +636,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = ':';
       *z++ = ':';
       *z = '\0';
-
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -657,8 +658,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = '.';
       *z++ = '.';
       *z = '\0';
-      
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -677,7 +678,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = '=';
       *z++ = '=';
       *z = '\0';
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -696,7 +698,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = '>';
       *z++ = '=';
       *z = '\0';
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -715,7 +718,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = '<';
       *z++ = '=';
       *z = '\0';
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -734,7 +738,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = '[';
       *z++ = '[';
       *z = '\0';
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -755,8 +760,8 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
       *z++ = '|';
       *z++ = '|';
       *z = '\0';
-      
-      return TN_STRING;
+      pToken->vToken(TN_STRING);
+      return;
     }
     else {
       // push back the unconsumed char
@@ -773,14 +778,13 @@ eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // terminate the other token
   *z = '\0';
-  
-  return TN_OTHER;
+  pToken->vToken(TN_OTHER);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect normal string literal                                              */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalString(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -822,7 +826,7 @@ eTN Tokeniser::eCollectNormalString(Token* pToken, char* azTermCrs)
   // terminate the string literal
   *z = '\0';
   
-  return TN_STRING;
+  pToken->vToken(TN_STRING);
 }
 
 /*----------------------------------------------------------------------------*/
