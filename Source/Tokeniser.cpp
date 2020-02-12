@@ -1352,7 +1352,8 @@ void Tokeniser::vGetNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cParsedChar = m_pParser->cGet(m_xParsedChar,false);
+  m_pParser->vGet(m_xParsedChar,false);
+  m_cParsedChar = m_xParsedChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1362,7 +1363,8 @@ void Tokeniser::vGetNextStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cParsedChar = m_pParser->cGet(m_xParsedChar,true);
+  m_pParser->vGet(m_xParsedChar,true);
+  m_cParsedChar = m_xParsedChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -223,23 +223,21 @@ i8 Parser::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* get next parsed char                                                       */
 /*----------------------------------------------------------------------------*/
-char Parser::cGet(AnnChar& rxAnnChar, bool bStripComments)
+void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
-  
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
     vLoadRegs(bStripComments);
   
-  if (! m_nLoaded)
-    return '\0';
+  if (! m_nLoaded) {
+    rxAnnChar.m_cChar = '\0';
+    return;
+  }
   
   // consume the first char reg
   vConsumeFirst(rxAnnChar);
-  
-  // return the consumed char
-  return rxAnnChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
