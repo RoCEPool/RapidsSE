@@ -56,16 +56,16 @@ namespace TokenStream
     void vNextNormal(Token* pToken);
     void vNextSpecial(Token* pToken);
     
-    eTN  eCollectNormal(char* azTerm);
-    eTN  eCollectNormalInteger(char* azTerm);
-    eTN  eCollectNormalName(char* azTerm);
-    eTN  eCollectNormalOther(char* azTerm);
-    eTN  eCollectNormalString(char* azTerm);
+    eTN  eCollectNormal(Token* pToken, char* azTermCrs);
+    eTN  eCollectNormalInteger(Token* pToken, char* azTermCrs);
+    eTN  eCollectNormalName(Token* pToken, char* azTermCrs);
+    eTN  eCollectNormalOther(Token* pToken, char* azTermCrs);
+    eTN  eCollectNormalString(Token* pToken, char* azTermCrs);
     
-    eTN  eCollectSpecial(char* azTerm);
-    eTN  eCollectSpecialInteger(char* azTerm);
-    eTN  eCollectSpecialName(char* azTerm);
-    eTN  eCollectSpecialString(char* azTerm);
+    eTN  eCollectSpecial(Token* pToken, char* azTermCrs);
+    eTN  eCollectSpecialInteger(Token* pToken, char* azTermCrs);
+    eTN  eCollectSpecialName(Token* pToken, char* azTermCrs);
+    eTN  eCollectSpecialString(Token* pToken, char* azTermCrs);
     
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);

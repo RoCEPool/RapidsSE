@@ -462,7 +462,7 @@ void Tokeniser::vNextNormal(Token* pToken)
   
   pToken->vReset();
   
-  eTN eToken = eCollectNormal(pToken->azTerm());
+  eTN eToken = eCollectNormal(pToken,pToken->azTerm());
   
   pToken->vToken(eToken);
 }
@@ -476,7 +476,7 @@ void Tokeniser::vNextSpecial(Token* pToken)
   
   pToken->vReset();
 
-  eTN eToken = eCollectSpecial(pToken->azTerm());
+  eTN eToken = eCollectSpecial(pToken,pToken->azTerm());
   
   pToken->vToken(eToken);
 }
@@ -489,7 +489,7 @@ void Tokeniser::vNextSpecial(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* collect normal token                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormal(char* azTerm)
+eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -499,41 +499,41 @@ eTN Tokeniser::eCollectNormal(char* azTerm)
   
   // end of input?
   if (bEndInput()) {
-    *azTerm = '\0';
+    *azTermCrs = '\0';
     return TN_NONE;
   }
   
   // collect integer literal?
   if (bStartNormalInteger()) {
-    eTN eLiteral = eCollectNormalInteger(azTerm);
+    eTN eLiteral = eCollectNormalInteger(pToken,azTermCrs);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartNormalString()) {
-    eTN eToken = eCollectNormalString(azTerm);
+    eTN eToken = eCollectNormalString(pToken,azTermCrs);
     return eToken;
   }
   
   // collect name token?
   if (bStartNormalName()) {
-    eTN eToken = eCollectNormalName(azTerm);
+    eTN eToken = eCollectNormalName(pToken,azTermCrs);
     return eToken;
   }
   
-  eTN eToken = eCollectNormalOther(azTerm);
+  eTN eToken = eCollectNormalOther(pToken,azTermCrs);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect normal integer literal                                             */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalInteger(char* azTerm)
+eTN Tokeniser::eCollectNormalInteger(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   i8 iNoDigits = 0;
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   // we have seen a digit
   ASSERT(bStartNormalInteger());
@@ -572,11 +572,11 @@ eTN Tokeniser::eCollectNormalInteger(char* azTerm)
 /*----------------------------------------------------------------------------*/
 /* collect normal name                                                        */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalName(char* azTerm)
+eTN Tokeniser::eCollectNormalName(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   ASSERT(bStartNormalName());
   
@@ -598,11 +598,11 @@ eTN Tokeniser::eCollectNormalName(char* azTerm)
 /*----------------------------------------------------------------------------*/
 /* collect other token                                                        */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalOther(char* azTerm)
+eTN Tokeniser::eCollectNormalOther(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   ASSERT(bStartNormalOther());
  
@@ -780,11 +780,11 @@ eTN Tokeniser::eCollectNormalOther(char* azTerm)
 /*----------------------------------------------------------------------------*/
 /* collect normal string literal                                              */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalString(char* azTerm)
+eTN Tokeniser::eCollectNormalString(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   ASSERT(bStartSpecialString());
   
@@ -828,7 +828,7 @@ eTN Tokeniser::eCollectNormalString(char* azTerm)
 /*----------------------------------------------------------------------------*/
 /* collect special token                                                      */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecial(char* azTerm)
+eTN Tokeniser::eCollectSpecial(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -838,36 +838,36 @@ eTN Tokeniser::eCollectSpecial(char* azTerm)
   
   // end of input?
   if (bEndInput()) {
-    *azTerm = '\0';
+    *azTermCrs = '\0';
     return TN_NONE;
   }
   
   // collect integer literal?
   if (bStartSpecialInteger()) {
-    eTN eLiteral = eCollectSpecialInteger(azTerm);
+    eTN eLiteral = eCollectSpecialInteger(pToken,azTermCrs);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartSpecialString()) {
-    eTN eToken = eCollectSpecialString(azTerm);
+    eTN eToken = eCollectSpecialString(pToken,azTermCrs);
     return eToken;
   }
   
   // collect name token
-  eTN eToken = eCollectSpecialName(azTerm);
+  eTN eToken = eCollectSpecialName(pToken,azTermCrs);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect special integer                                                    */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecialInteger(char* azTerm)
+eTN Tokeniser::eCollectSpecialInteger(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   i8 iNoDigits = 0;
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   // we have seen a minus or a digit
   ASSERT(bStartSpecialInteger());
@@ -902,7 +902,7 @@ eTN Tokeniser::eCollectSpecialInteger(char* azTerm)
   
   // - handle minus only
   if (! iNoDigits) {
-    eTN eToken = eCollectSpecialName(z);
+    eTN eToken = eCollectSpecialName(pToken,z);
     return eToken;    
   }
   
@@ -920,18 +920,18 @@ eTN Tokeniser::eCollectSpecialInteger(char* azTerm)
   }
   
   // its actually a name; complete parsing name
-  eTN eToken = eCollectSpecialName(z);
+  eTN eToken = eCollectSpecialName(pToken,z);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect special name                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecialName(char* azTerm)
+eTN Tokeniser::eCollectSpecialName(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   //ASSERT(bStartSpecialName());
   
@@ -953,11 +953,11 @@ eTN Tokeniser::eCollectSpecialName(char* azTerm)
 /*----------------------------------------------------------------------------*/
 /* collect special string                                                     */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectSpecialString(char* azTerm)
+eTN Tokeniser::eCollectSpecialString(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTerm;
+  char *z = azTermCrs;
   
   ASSERT(bStartSpecialString());
   
