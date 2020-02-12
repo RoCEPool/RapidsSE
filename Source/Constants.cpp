@@ -581,11 +581,11 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("file[2]"_Stz,      RG_FILE2);
 
   // RS_ : response kind
-  /*  0 */ vAddConstant("RS_NONE"_Stz,         RS_NONE);
-  /*  0 */ vAddConstant("RS_LOAD_RESULT"_Stz,    RS_LOAD_RESULT);
-  /*  0 */ vAddConstant("RS_JOB_RESULT"_Stz,   RS_JOB_RESULT);
-  /*  0 */ vAddConstant("RS_PARTICIPANT_ERROR"_Stz,     RS_PARTICIPANT_ERROR);
-  /*  0 */ vAddConstant("RS_PARTICIPANT_RESULT"_Stz,    RS_PARTICIPANT_RESULT);
+  /*  0 */ vAddConstant("RS_NONE"_Stz,                 RS_NONE);
+  /*  0 */ vAddConstant("RS_JOB_RESPONSE"_Stz,         RS_JOB_RESPONSE);
+  /*  0 */ vAddConstant("RS_LOAD_RESPONSE"_Stz,        RS_LOAD_RESPONSE);
+  /*  0 */ vAddConstant("RS_PARTICIPANT_ERROR"_Stz,    RS_PARTICIPANT_ERROR);
+  /*  0 */ vAddConstant("RS_PARTICIPANT_RESPONSE"_Stz, RS_PARTICIPANT_RESPONSE);
 
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);

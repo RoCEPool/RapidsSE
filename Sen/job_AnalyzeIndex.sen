@@ -120,7 +120,7 @@ jobInfo: analyzeIndex
   
   <?jobType?>  = JT_ANALYZEINDEX
   <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_PARTICIPANT_RESULT
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

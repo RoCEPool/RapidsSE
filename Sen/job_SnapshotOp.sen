@@ -119,7 +119,7 @@ jobInfo: SnapshotOp
   
   <?jobType?>  = JT_SNAPSHOTOP
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_PARTICIPANT_RESULT
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

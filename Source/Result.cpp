@@ -93,11 +93,11 @@ void Result::vPrint(eRS eResponse)
   
   switch (eResponse) {
     
-    case RS_NONE                 : /* do nothing */               break;
-    case RS_JOB_RESULT           : vPrintJobResult();             break;
-    case RS_LOAD_RESULT          : vPrintLoadResult();            break;
-    case RS_PARTICIPANT_ERROR    : vPrintParticipantErrors();     break;
-    case RS_PARTICIPANT_RESULT   : vPrintParticipantResult();     break;
+    case RS_NONE                   : /* do nothing */              break;
+    case RS_JOB_RESPONSE           : vPrintJobResponse();          break;
+    case RS_LOAD_RESPONSE          : vPrintLoadResponse();         break;
+    case RS_PARTICIPANT_ERROR      : vPrintParticipantErrors();    break;
+    case RS_PARTICIPANT_RESPONSE   : vPrintParticipantResponses(); break;
     
       
     default:
@@ -106,40 +106,49 @@ void Result::vPrint(eRS eResponse)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print job result                                                           */
+/* print job response                                                         */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintJobResult(void)
+void Result::vPrintJobResponse(void)
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Errors
   if (m_bJobHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
            aEC[m_xJobResponse.m_eErrorCode]);
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Responses
   if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz))
     vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   
   if (*m_xJobResponse.m_ixRowsProcessed)
     vTrace("%s"_Stz, m_xJobResponse.m_sResponse.azChar());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sucess
   vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/
-/* print load result                                                          */
+/* print load response                                                        */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintLoadResult(void)
+void Result::vPrintLoadResponse(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
+  RASSERT(iResponses == AM::nDefinedNodes());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Errors
   if ( m_bPartHasError ) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     return;
   }
   
-  RASSERT(iResponses == AM::nDefinedNodes());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Responses
   i8 iRowsProcessed = 0;
   i8 iRowsInvalid   = 0;
   i8 iRowsSkipped   = 0;
@@ -151,6 +160,9 @@ void Result::vPrintLoadResult(void)
     iRowsInvalid   += *pResponse->m_ixRowsInvalid;
     iRowsSkipped   += *pResponse->m_ixRowsSkipped;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // success / error
   if (iRowsInvalid || iRowsSkipped)
     vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
            iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
@@ -167,6 +179,8 @@ void Result::vPrintParticipantErrors(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Errors
   if (m_bPartHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
@@ -176,12 +190,15 @@ void Result::vPrintParticipantErrors(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print participant node results                                             */
+/* print participant node responses                                           */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintParticipantResult(void)
+void Result::vPrintParticipantResponses(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
+  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Errors
   if (m_bPartHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
@@ -189,8 +206,8 @@ void Result::vPrintParticipantResult(void)
     return;
   }
   
-  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Responses
   if (AM::bMetadata() && ! m_sMetadata.szStz()->bEqual(""_Stz)) {
     vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   }
@@ -201,6 +218,9 @@ void Result::vPrintParticipantResult(void)
     vTrace("%s\n"_Stz, m_pOriginResponseVec->pGet(i_Node)->m_sResponse.azChar());
     iRowsProcessed += *m_pOriginResponseVec->pGet(i_Node)->m_ixRowsProcessed;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Success
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
 }
 
@@ -212,17 +232,22 @@ void Result::vProcessBufferQueue(void)
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till the job has a buffer queue
   while ( m_pOriginBufferQueue == nullptr ) {
     // do something else release version optimizes this out
-    // check for syntax errors
+    
+    // exit early if syntax errors
     if (m_eSyntaxError != EC_NONE) {
       vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
       goto L_EXIT;
     }
+    
     AM::vNapUsec(250,CN_RESULT);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process the buffer queue
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());

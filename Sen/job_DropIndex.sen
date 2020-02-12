@@ -135,7 +135,7 @@ jobInfo: dropIndex
   
   <?jobType?>  = JT_DROPINDEX
   <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_PARTICIPANT_RESULT
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_WRITE
   
   <?preCheck?> = bClusterStarted
