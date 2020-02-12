@@ -517,8 +517,8 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
   
   // collect name token?
   if (bStartNormalName()) {
-    eTN eToken = eCollectNormalName(pToken,azTermCrs);
-    return eToken;
+    vCollectNormalName(pToken,azTermCrs);
+    return pToken->eToken();
   }
   
   vCollectNormalOther(pToken,azTermCrs);
@@ -572,7 +572,7 @@ eTN Tokeniser::eCollectNormalInteger(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect normal name                                                        */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormalName(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalName(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -591,8 +591,7 @@ eTN Tokeniser::eCollectNormalName(Token* pToken, char* azTermCrs)
   
   // terminate the name
   *z = '\0';
-  
-  return TN_NAME;
+  pToken->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
