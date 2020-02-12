@@ -21,6 +21,7 @@ namespace StorageEngine
 #include "FocalObjects.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
+#include "EnvCheck.hpp"
 #include "Globals.hpp"
 #include "Portrait.hpp"
 
