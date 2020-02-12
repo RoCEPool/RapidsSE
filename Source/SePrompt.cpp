@@ -1266,6 +1266,27 @@ void SePrompt::vTranslateProcedure(void)
   
   TokenVec* pTknVec = this->pTokenVec();
   
+  Token* pProcNm = pTokenVec()->pGet(0);
+
+  Dic* pRootDic = AM::pRootDic();
+
+  Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
+  if (! pProcedureWord)
+    return;
+  
+  Word* pProcWord = pRootDic->pFindWord(pProcNm->szTerm());
+  
+  if (! pProcWord)
+    return;
+  
+  if (pProcWord->pCategory() != pProcedureWord)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Stz* szProcText = pProcWord->pEnameSet()->szValue("procText"_Stz);
+  
+  m_pSession->m_sToDo = szProcText;
 }
 
 /*----------------------------------------------------------------------------*/
