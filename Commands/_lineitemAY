@@ -100,7 +100,7 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-
+/*
 time pipeline python
 begin
 
@@ -116,7 +116,7 @@ pythonShellOp "/Users/alka/rapidsse/Python/shellSample.py" | sinkOp | stageA
 end
 ;
 
-/*
+
 time pipeline python
 begin
 

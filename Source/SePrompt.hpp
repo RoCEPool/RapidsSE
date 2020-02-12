@@ -26,7 +26,8 @@ namespace Prompt
     i8        m_iRequestId;     // id of last command
 
     ShortCutVec m_oShortCutVec; // vector of short cuts
-  
+    bool        m_bMunged;      // munged ?
+    
     bool      m_bTrackingMemory; // tracking memory ?
     i8        m_nObjectsInPool[CN_ENUMS];
     
@@ -77,6 +78,7 @@ namespace Prompt
     void vJobWaitCond(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
+    bool bMunge(void);
     bool bNoWait(void);
     i8*  iaObjectsInPool(void);
     bool bPassesCheck(void);

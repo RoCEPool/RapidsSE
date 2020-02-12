@@ -86,6 +86,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pRequest = nullptr;
   m_i_RequestFocal = C_UNKNOWN;
   m_iRequestId = C_UNKNOWN;
+  m_bMunged = false;
   
   m_pBPA = nullptr;
 //  if (AM::bDeveloper())
@@ -151,6 +152,12 @@ void SePrompt::vPromptLoop(void)
     
     if (bShortCut())
       continue;
+ 
+#ifdef WITH_APPLE
+    if (bMunge()) {
+      continue;
+    }
+#endif
     
     while (bSubLet())
       {;}
@@ -716,6 +723,77 @@ void SePrompt::vLogFreeSpace(void)
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
               AM::szNodeNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* munge ??                                                                   */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bMunge(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // already munged ?
+  if (m_bMunged)
+    return false;
+  
+  m_bMunged = true;
+  
+  // get the time of the Sen files in the Sen folder
+  Dir* pDir = new Dir(nullptr);
+  bool bResult = pDir->bOpen("../Sen"_Stz);
+  ASSERT(bResult);
+  
+  s256 sEntryNm;
+  s256 sFilePath;
+  s256 sLastModified;
+  
+  time_t tSenTime = 0;
+  time_t tMungedTime;
+  time_t tModTime;
+  
+  while (pDir->bRead()) {
+    
+    // get the entry
+    sEntryNm = pDir->szEntryNm();
+    
+    // skip . and ..
+    if (sEntryNm.bSame("."_Stz) || sEntryNm.bSame(".."_Stz))
+      continue;
+    
+    // create the complete filepath
+    sFilePath = "../Sen/"_Stz;
+    sFilePath.vConcat(sEntryNm);
+    
+    // get the last modification time of the file
+    bResult = File::bModTime(sFilePath, tModTime);
+    ASSERT(bResult);
+    
+    // get the last modified sen file time
+    if (tModTime > tSenTime) {
+      sLastModified = sEntryNm;
+      tSenTime = tModTime;
+    }
+  }
+  pDir->vClose();
+  
+  delete pDir;
+  
+  // get the time of the Munged file
+  bResult = File::bModTime("../Munge/Task_AddMunged.cpp"_Stz, tMungedTime);
+  ASSERT(bResult);
+  
+  // is the last modified sen file time after the last munge ?
+  if (tSenTime > tMungedTime) {
+    
+    vTrace("\n******************************************************************\n"_Stz);
+    vTrace("\n MUNGING!!! (Last modified Sen file : %s)        \n\n"_Stz, sLastModified.azChar());
+    vTrace("******************************************************************\n"_Stz);
+    
+    m_pSession->m_sToDo = "docol munge"_Stz;
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
