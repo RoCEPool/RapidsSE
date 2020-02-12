@@ -52,7 +52,7 @@ Tokeniser::Tokeniser(void)
   
   m_xAnnChar.vReset();
     
-  m_oCurrToken.vReset();
+  m_oToken.vReset();
   
   _checkInitialised_(CN_TOKENISER);
   
@@ -319,7 +319,7 @@ void Tokeniser::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vNextToken(&m_oCurrToken);
+  vNextToken(&m_oToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,7 +392,7 @@ eTN Tokeniser::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTN eToken = m_oCurrToken.eToken();
+  eTN eToken = m_oToken.eToken();
   
   return eToken;
 }
@@ -404,7 +404,7 @@ Stz* Tokeniser::szToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  return m_oCurrToken.szTerm();
+  return m_oToken.szTerm();
 }
 
 /*----------------------------------------------------------------------------*/
