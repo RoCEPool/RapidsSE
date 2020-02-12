@@ -199,7 +199,7 @@ bool Input::bGetToken(Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  eTN eToken = m_pTokeniser->eNextToken((char*)pTkn->szTerm());
+  eTN eToken = m_pTokeniser->eNextTokenX(pTkn);
       
   pTkn->vToken(eToken);
   

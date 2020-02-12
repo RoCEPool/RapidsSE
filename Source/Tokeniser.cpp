@@ -86,7 +86,7 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken();
+    pTokeniser->vNextTokenX();
     if (TN_NONE == pTokeniser->eToken())
     break;
     
@@ -115,7 +115,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken();
+    pTokeniser->vNextTokenX();
     if (TN_NONE == pTokeniser->eToken())
       break;
     
@@ -238,7 +238,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = (*pTokenVec_arg)[i_Token];
-    eTN eToken = eNextToken((char*)pToken->szTerm());
+    eTN eToken = eNextTokenX(pToken);
     ASSERT(TN_NONE != eToken);
     pToken->vToken(eToken);
     
@@ -316,16 +316,16 @@ void Tokeniser::vMalloc(bool bMalloc)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eNextToken(char* aToken)
+eTN Tokeniser::eNextTokenX(Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   eTN eToken;
 
   if (m_bNormal)
-    eToken = eNextNormal(aToken);
+    eToken = eNextNormal(pToken->azTerm());
   else
-    eToken = eNextSpecial(aToken);
+    eToken = eNextSpecial(pToken->azTerm());
   
   m_oCurrToken.vToken(eToken);
   
@@ -335,11 +335,11 @@ eTN Tokeniser::eNextToken(char* aToken)
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextToken(void)
+void Tokeniser::vNextTokenX(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTN eToken = eNextToken(m_oCurrToken.azTerm());
+  eTN eToken = eNextTokenX(&m_oCurrToken);
 }
 
 /*----------------------------------------------------------------------------*/

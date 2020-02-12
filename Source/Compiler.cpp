@@ -175,7 +175,7 @@ void Compiler::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
-  m_pTokeniser->vNextToken();
+  m_pTokeniser->vNextTokenX();
 }
 
 /*----------------------------------------------------------------------------*/

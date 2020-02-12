@@ -39,8 +39,8 @@ namespace TokenStream
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
     void vMalloc(bool bMalloc);
-    eTN  eNextToken(char* aToken);
-    void vNextToken(void);
+    eTN  eNextTokenX(Token* pToken);
+    void vNextTokenX(void);
     void vNormal(bool bNormal);
     bool bPopParser(void);
     void vPushParser(void);
