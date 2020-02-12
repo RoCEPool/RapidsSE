@@ -209,36 +209,15 @@ void SePrompt::vPromptLoop(void)
     }
     
     if (bExecutePipeline()) {
-      
-      // wait till the job has a buffer queue
-//      while ( m_pJob->m_xResult.m_pOriginBufferQueue == nullptr ) {
-//        // do something else release version optimizes this out
-//        //if (AM::bVerbose())
-//        //  vTrace("Waiting for buffer queue\n"_Stz);
-//        AM::vNapMsec(1,CN_SEPROMPT);
-//      }
+      // start the buffer queue processing while the pipeline ops are running
+      m_pJob->m_xResult.vPrintBufferQueueResult();
+    }
     
-      // start the post processing while the pipeline ops are running
-      vPostJob();
-        
-      // wait for the pipeline to complete
-      vJobWaitCond();
-      vJobUnlockMutex();
-      m_oTimer.vUpdate();
-      
-      // handle errors
-      if (m_pJob->bParticipantHasError())
-        m_pJob->m_xResult.vPrintParticipantResult();
-      
-    }
-    else {
-      
-      vJobWaitCond();
-      vJobUnlockMutex();
-      m_oTimer.vUpdate();
-      
-      vPostJob();
-    }
+    vJobWaitCond();
+    vJobUnlockMutex();
+    m_oTimer.vUpdate();
+    
+    vPostJob();
 
     vReportTime();
     

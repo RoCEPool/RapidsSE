@@ -94,9 +94,9 @@ void Result::vPrint(eRS eResponse)
   switch (eResponse) {
     
     case RS_NONE                 : /* do nothing */               break;
-    case RS_BUFFERQUEUE_RESULT   : vPrintBufferQueueResult();     break;
     case RS_JOB_RESULT           : vPrintJobResult();             break;
     case RS_LOAD_RESULT          : vPrintLoadResult();            break;
+    case RS_PARTICIPANT_ERROR    : vPrintParticipantErrors();     break;
     case RS_PARTICIPANT_RESULT   : vPrintParticipantResult();     break;
     
       
@@ -121,7 +121,7 @@ void Result::vPrintBufferQueueResult(void)
       vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
       goto L_EXIT;
     }
-    AM::vNapMsec(1,CN_SEPROMPT);
+    AM::vNapUsec(250,CN_RESULT);
   }
   
   for (;;) {
@@ -129,23 +129,7 @@ void Result::vPrintBufferQueueResult(void)
     Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());
     
     if (! pOperand) {
-      
-      // invalid command ? exit early
-//      bool bInvalidCommand = false;
-//      if (m_bPartHasError) {
-//        i8 iResponses = m_pOriginResponseVec->nItems();
-//
-//        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-//          if (m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode == EC_INVALID_COMMAND) {
-//            bInvalidCommand = true;
-//            break;
-//          }
-//        }
-//      }
-//
-//      if (bInvalidCommand)
-//        break;
-      AM::vNapUsec(250,CN_NONE);
+      AM::vNapUsec(250,CN_RESULT);
       continue;
     }
     
@@ -343,6 +327,21 @@ void Result::vPrintLoadResult(void)
     vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
            iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* print participant node errors                                              */
+/*----------------------------------------------------------------------------*/
+void Result::vPrintParticipantErrors(void)
+{
+  i8 iResponses = m_pOriginResponseVec->nItems();
+  
+  if (m_bPartHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

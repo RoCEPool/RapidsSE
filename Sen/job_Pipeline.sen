@@ -70,7 +70,7 @@ jobInfo: pipeline
   
   <?jobType?>  = JT_PIPELINE
   <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_BUFFERQUEUE_RESULT
+  <?rspKind?>  = RS_PARTICIPANT_ERROR
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted
