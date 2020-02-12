@@ -551,26 +551,6 @@ EnameSet* Job::pEnameSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get error code                                                             */
-/*----------------------------------------------------------------------------*/
-eEC Job::eErrorCode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_xJobResponse.m_eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set error code                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vErrorCode(eEC eErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void Job::vFocalOutline(s4K& sOutline)
@@ -639,21 +619,32 @@ void Job::vJobClass(JobClass* aJobClass, char* azCaller)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set job error                                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vJobError(eEC eErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
+  m_xResult.m_bJobHasError = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job error                                                              */
+/*----------------------------------------------------------------------------*/
+eEC Job::eJobError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_xResult.m_xJobResponse.m_eErrorCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get job has error                                                          */
 /*----------------------------------------------------------------------------*/
 bool Job::bJobHasError(void)
 {
   return m_xResult.m_bJobHasError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job has an error                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vJobHasError(bool bHasError)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_bJobHasError = bHasError;
 }
 
 /*----------------------------------------------------------------------------*/

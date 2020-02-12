@@ -107,8 +107,6 @@ namespace Jobs
     Queue* pBufferQueue(void);
     void vContentDump(void);
     EnameSet* pEnameSet(void);
-    void vErrorCode(eEC eErrorCode);
-    eEC  eErrorCode(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
     void vIncRowsProcessed(void);
@@ -116,8 +114,9 @@ namespace Jobs
     i8   iJobId(void);
     JobClass* aJobClass(void);
     void vJobClass(JobClass* aJobClass, char* azCaller);
+    void vJobError(eEC eErrorCode);
+    eEC  eJobError(void);
     bool bJobHasError(void);
-    void vJobHasError(bool bHasError);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);

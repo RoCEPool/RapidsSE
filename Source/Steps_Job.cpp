@@ -540,7 +540,7 @@ void Step::vJobErrorFetch(void)
 
   i8 iNode = m_pDataStack->iPopAsInt(__func__);
   
-  m_pDataStack->vPushInt(pJob->eErrorCode());
+  m_pDataStack->vPushInt(pJob->eJobError());
   
   EXIT();
 }
@@ -557,8 +557,7 @@ void Step::vJobErrorStore(void)
   i8 iJobError = m_pDataStack->iPopAsInt(__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
-  pJob->vJobHasError(true);
-  pJob->vErrorCode((eEC)iJobError);
+  pJob->vJobError((eEC)iJobError);
   
   //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
@@ -988,7 +987,7 @@ void Step::vJobParticipantResponseStore(void)
   pResponse->m_ixRowsProcessed = pParticipantJob->iRowsProcessed();
   pResponse->m_ixRowsInvalid   = pParticipantJob->iRowsInvalid();
   pResponse->m_ixRowsSkipped   = pParticipantJob->iRowsSkipped();
-  pResponse->m_eErrorCode      = pParticipantJob->eErrorCode();
+  pResponse->m_eErrorCode      = pParticipantJob->eJobError();
   
   if (pResponse->m_eErrorCode != EC_NONE)
     pJob->vParticipantHasError(true);

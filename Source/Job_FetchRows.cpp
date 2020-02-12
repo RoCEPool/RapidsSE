@@ -626,8 +626,7 @@ Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    pJob_FetchRows->vJobHasError(true);
-    pJob_FetchRows->vErrorCode(EC_INVALID_COMMAND);
+    pJob_FetchRows->vJobError(EC_INVALID_COMMAND);
   }
   
   return pJob_FetchRows;
@@ -643,7 +642,7 @@ void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
   if ( pJob_FetchRows->bJobHasError() ) {
     
     vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
-             aEC[pJob_FetchRows->eErrorCode()]);
+             aEC[pJob_FetchRows->eJobError()]);
    
     return;
   }

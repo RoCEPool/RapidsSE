@@ -42,8 +42,7 @@ void Step::vIndexDefParse(void)
     ASSERT(eResult != EC_INVALID_COMMAND);
     
     // set the error in the job
-    pJob_CreateIndex->vJobHasError(true);
-    pJob_CreateIndex->vErrorCode(eResult);
+    pJob_CreateIndex->vJobError(eResult);
     
     // delete IndexDef
     delete pIndexDef;
