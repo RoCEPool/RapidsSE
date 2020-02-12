@@ -462,9 +462,7 @@ void Tokeniser::vNextNormal(Token* pToken)
   
   pToken->vReset();
   
-  eTN eToken = eCollectNormal(pToken,pToken->azTerm());
-  
-  pToken->vToken(eToken);
+  vCollectNormal(pToken,pToken->azTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,7 +487,7 @@ void Tokeniser::vNextSpecial(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* collect normal token                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormal(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -501,29 +499,28 @@ eTN Tokeniser::eCollectNormal(Token* pToken, char* azTermCrs)
   if (bEndInput()) {
     *azTermCrs = '\0';
     pToken->vToken(TN_NONE);
-    return pToken->eToken();
+    return;
   }
   
   // collect integer literal?
   if (bStartNormalInteger()) {
     vCollectNormalInteger(pToken,azTermCrs);
-    return pToken->eToken();
+    return;
   }
   
   // collect string literal?
   if (bStartNormalString()) {
     vCollectNormalString(pToken,azTermCrs);
-    return pToken->eToken();
+    return;
   }
   
   // collect name token?
   if (bStartNormalName()) {
     vCollectNormalName(pToken,azTermCrs);
-    return pToken->eToken();
+    return;
   }
   
   vCollectNormalOther(pToken,azTermCrs);
-  return pToken->eToken();
 }
 
 /*----------------------------------------------------------------------------*/
