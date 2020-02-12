@@ -227,6 +227,8 @@ char Parser::cGet(bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
+  AnnChar xAnnChar;
+  
   // do we have any chars in the regs?
   if (! m_nLoaded)
     vLoadRegs(bStripComments);
@@ -235,10 +237,10 @@ char Parser::cGet(bool bStripComments)
     return '\0';
   
   // consume the first char reg
-  char cParsedChar = cConsumeFirst();
+  vConsumeFirst(xAnnChar);
   
   // return the consumed char
-  return cParsedChar;
+  return xAnnChar.m_cChar;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,11 +317,6 @@ void Parser::vResetParser(void)
   m_eComment   = CS_NONE;
   m_bRead      = false;
   m_bEOF       = false;
-  
-  m_iLineFirst  = 0;
-  m_iColFirst   = 0;
-  m_iLineSecond = 0;
-  m_iColSecond  = 0;
 }
 
 
@@ -342,32 +339,19 @@ void Parser::vClearRegs(void)
 /*----------------------------------------------------------------------------*/
 /* consume the character in the first register                                */
 /*----------------------------------------------------------------------------*/
-char Parser::cConsumeFirst(void)
+void Parser::vConsumeFirst(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(m_nLoaded);
 
-  AnnChar xWasFirst = m_xAnnOne;
+  rxAnnChar = m_xAnnOne;
   
   m_xAnnOne = m_xAnnTwo;
   
   m_xAnnTwo.m_cChar = '\0';
   
   m_nLoaded--;
-  
-  return xWasFirst.m_cChar;
-
-  
-  
-//  char cWasFirst = m_xAnnOne.m_cChar;
-//
-//  m_xAnnOne.m_cChar  = m_xAnnTwo.m_cChar;
-//  m_xAnnTwo.m_cChar = '\0';
-//
-//  m_nLoaded--;
-//
-//  return cWasFirst;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,11 +37,6 @@ namespace TokenStream
     bool    m_bRead;     // prompt user for more input
     bool    m_bEOF;      // eof seen?
   
-    i8      m_iLineFirst;
-    i8      m_iColFirst;
-    i8      m_iLineSecond;
-    i8      m_iColSecond;
-
     // must be last
     Footer m_xFooter;
     
@@ -83,7 +78,7 @@ namespace TokenStream
     
     // Character Processing
     void vClearRegs(void);
-    char cConsumeFirst(void);
+    void vConsumeFirst(AnnChar& rxAnnChar);
     void vDiscardFirst(void);
     void vLoadBoth(void);
     void vLoadFirst(void);
