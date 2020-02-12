@@ -86,9 +86,9 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextTokenX();
+    pTokeniser->vNextToken();
     if (TN_NONE == pTokeniser->eToken())
-    break;
+      break;
     
     pTokenVec->vIncTokens();
     
@@ -115,7 +115,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextTokenX();
+    pTokeniser->vNextToken();
     if (TN_NONE == pTokeniser->eToken())
       break;
     
@@ -238,7 +238,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = (*pTokenVec_arg)[i_Token];
-    vNextTokenX(pToken);
+    vNextToken(pToken);
     ASSERT(TN_NONE != pToken->eToken());
     
     // look for terminal
@@ -313,31 +313,26 @@ void Tokeniser::vMalloc(bool bMalloc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next token into given buffer                                         */
+/* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextTokenX(Token* pToken)
+void Tokeniser::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTN eToken;
-
-  if (m_bNormal)
-    eToken = eNextNormal(pToken);
-  else
-    eToken = eNextSpecial(pToken);
-  
-  pToken->vToken(eToken);
-
+  vNextToken(&m_oCurrToken);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next token                                                           */
+/* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextTokenX(void)
+void Tokeniser::vNextToken(Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vNextTokenX(&m_oCurrToken);
+  if (m_bNormal)
+    vNextNormal(pToken);
+  else
+    vNextSpecial(pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -461,7 +456,7 @@ void Tokeniser::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* parse next normal token into given buffer                                  */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eNextNormal(Token* pToken)
+void Tokeniser::vNextNormal(Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -469,13 +464,13 @@ eTN Tokeniser::eNextNormal(Token* pToken)
   
   eTN eToken = eCollectNormal(pToken->azTerm());
   
-  return eToken;
+  pToken->vToken(eToken);
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next special token into given buffer                                 */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eNextSpecial(Token* pToken)
+void Tokeniser::vNextSpecial(Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -483,7 +478,7 @@ eTN Tokeniser::eNextSpecial(Token* pToken)
 
   eTN eToken = eCollectSpecial(pToken->azTerm());
   
-  return eToken;
+  pToken->vToken(eToken);
 }
 
 

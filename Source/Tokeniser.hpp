@@ -39,8 +39,8 @@ namespace TokenStream
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
     void vMalloc(bool bMalloc);
-    void vNextTokenX(Token* pToken);
-    void vNextTokenX(void);
+    void vNextToken(void);
+    void vNextToken(Token* pToken);
     void vNormal(bool bNormal);
     bool bPopParser(void);
     void vPushParser(void);
@@ -53,8 +53,8 @@ namespace TokenStream
     void vUseString(Stz* szString);
  
   private:
-    eTN  eNextNormal(Token* pToken);
-    eTN  eNextSpecial(Token* pToken);
+    void vNextNormal(Token* pToken);
+    void vNextSpecial(Token* pToken);
     
     eTN  eCollectNormal(char* azTerm);
     eTN  eCollectNormalInteger(char* azTerm);
