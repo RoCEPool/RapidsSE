@@ -41,7 +41,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-  vAddStep("job.hasSyntaxError"_Stz,   &Step::vJobHasSyntaxError);
   vAddStep("job.hasOperand"_Stz,       &Step::vJobHasOperand);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
@@ -104,7 +103,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
-  vAddStep("job.syntaxError!"_Stz,     &Step::vJobSyntaxErrorStore);
   
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
@@ -650,20 +648,6 @@ void Step::vJobHasError(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasSyntaxError -- return true if job has a syntax error                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobHasSyntaxError(void)
-{
-  ENTRY(); // ENTRY("vJobErrorFetch"_Stz);
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //m_pDataStack->vPushInt(pJob->bHasSyntaxError());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.hasOperand -- return true if job has an operand                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobHasOperand(void)
@@ -671,8 +655,7 @@ void Step::vJobHasOperand(void)
   ENTRY(); // ENTRY("vJobHasOperand"_Stz);
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  
+    
   i8 bHas = pJob->m_pOperand ? true : false;
   if (pJob->aJobClass()->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
@@ -1678,24 +1661,6 @@ void Step::vJobStateDiagram(void)
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
   m_pDataStack->vPushStr(sDiagram);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.syntaxError! -- store the job syntax error                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSyntaxErrorStore(void)
-{
-  ENTRY(); // ENTRY("vJobSyntaxErrorStore"_Stz);
-  
-//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-//  
-//  i8 iJobError = m_pDataStack->iPopAsInt(__func__);
-//  
-//  pJob->vSyntaxError((eEC)iJobError);
-  
-  //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
   EXIT();
 }

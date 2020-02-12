@@ -467,7 +467,6 @@ public:
   void vJobFindParticipant(void);
 
   void vJobHasError(void);
-  void vJobHasSyntaxError(void);
   void vJobHasOperand(void);
 
   void vJobIdFetch(void);
@@ -530,7 +529,6 @@ public:
   void vJobSpawnDedicated(void);
   void vJobSpawnUniversal(void);
   void vJobStateDiagram(void);
-  void vJobSyntaxErrorStore(void);
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
