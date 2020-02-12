@@ -51,9 +51,7 @@ Tokeniser::Tokeniser(void)
   m_bNormal = false;
   
   m_xAnnChar.vReset();
-  
-  m_eToken  = TN_NONE;
-  
+    
   m_oCurrToken.vReset();
   
   _checkInitialised_(CN_TOKENISER);
@@ -322,12 +320,16 @@ eTN Tokeniser::eNextToken(char* aToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  eTN eToken;
+
   if (m_bNormal)
-    m_eToken = eNextNormal(aToken);
+    eToken = eNextNormal(aToken);
   else
-    m_eToken = eNextSpecial(aToken);
+    eToken = eNextSpecial(aToken);
   
-  return m_eToken;
+  m_oCurrToken.vToken(eToken);
+  
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -397,7 +399,9 @@ eTN Tokeniser::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  return m_eToken;
+  eTN eToken = m_oCurrToken.eToken();
+  
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/

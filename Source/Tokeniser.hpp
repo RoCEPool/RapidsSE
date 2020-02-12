@@ -8,15 +8,13 @@ namespace TokenStream
   class Tokeniser : public Object
   {
   private:
-    Parser*  m_pParser; // parser
+    Parser*  m_pParser;    // parser
   
-    bool m_bMalloc;     // malloc or pool heap?
-    bool m_bNormal;     // normal tokens?
-    AnnChar m_xAnnChar; // annotated char from parser
+    bool     m_bMalloc;    // malloc or pool heap?
+    bool     m_bNormal;    // normal tokens?
+    AnnChar  m_xAnnChar;   // annotated char from parser
     
-    eTN  m_eToken;      // token type
-  
-    Token m_oCurrToken; // current working token
+    Token    m_oCurrToken; // current working token
 
     // must be last
     Footer m_xFooter;    
