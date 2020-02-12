@@ -55,7 +55,7 @@ jobInfo: cancelQuery
   
   <?jobType?>  = JT_CANCELQUERY
   <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_PARTICIPANT_RESULT
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_WRITE
 
   <?preCheck?> = bClusterStarted

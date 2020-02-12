@@ -87,7 +87,7 @@ jobInfo: cf
   
   <?jobType?>  = JT_CF
   <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_JOB_RESULT
+  <?rspKind?>  = RS_JOB_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted

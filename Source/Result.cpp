@@ -93,11 +93,11 @@ void Result::vPrint(eRS eResponse)
   
   switch (eResponse) {
     
-    case RS_NONE                 : /* do nothing */               break;
-    case RS_JOB_RESULT           : vPrintJobResult();             break;
-    case RS_LOAD_RESULT          : vPrintLoadResult();            break;
-    case RS_PARTICIPANT_ERROR    : vPrintParticipantErrors();     break;
-    case RS_PARTICIPANT_RESULT   : vPrintParticipantResult();     break;
+    case RS_NONE                   : /* do nothing */              break;
+    case RS_JOB_RESPONSE           : vPrintJobResponse();          break;
+    case RS_LOAD_RESPONSE          : vPrintLoadResponse();         break;
+    case RS_PARTICIPANT_ERROR      : vPrintParticipantErrors();    break;
+    case RS_PARTICIPANT_RESPONSE   : vPrintParticipantResponses(); break;
     
       
     default:
@@ -106,9 +106,9 @@ void Result::vPrint(eRS eResponse)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print job result                                                           */
+/* print job response                                                         */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintJobResult(void)
+void Result::vPrintJobResponse(void)
 {
   if (m_bJobHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
@@ -126,9 +126,9 @@ void Result::vPrintJobResult(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print load result                                                          */
+/* print load response                                                        */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintLoadResult(void)
+void Result::vPrintLoadResponse(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
   
@@ -176,9 +176,9 @@ void Result::vPrintParticipantErrors(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print participant node results                                             */
+/* print participant node responses                                           */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintParticipantResult(void)
+void Result::vPrintParticipantResponses(void)
 {
   i8 iResponses = m_pOriginResponseVec->nItems();
   
@@ -212,17 +212,22 @@ void Result::vProcessBufferQueue(void)
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till the job has a buffer queue
   while ( m_pOriginBufferQueue == nullptr ) {
     // do something else release version optimizes this out
-    // check for syntax errors
+    
+    // exit early if syntax errors
     if (m_eSyntaxError != EC_NONE) {
       vTrace("error: %s\n"_Stz, aEC[m_eSyntaxError]);
       goto L_EXIT;
     }
+    
     AM::vNapUsec(250,CN_RESULT);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process the buffer queue
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());
