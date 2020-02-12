@@ -160,6 +160,8 @@ void SePrompt::vPromptLoop(void)
 
     vLogCommand();
     
+    vTranslateProcedure();
+    
     vRestateCommand();
     
     vReformatCommand();
@@ -1174,6 +1176,17 @@ bool SePrompt::bTrackingMemory(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_bTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* translate stored procedure into its final command form                     */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vTranslateProcedure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTokenVec();
+  
 }
 
 /*----------------------------------------------------------------------------*/
