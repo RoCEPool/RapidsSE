@@ -48,8 +48,6 @@ void Step::vJob_SubLoaderSpawn(void)
   
   
   pJob_SubLoader->pEnameSet()->vCopy(pJob_LoadTable->pEnameSet());
-  
-  pJob_SubLoader->m_eJobType = pJob_LoadTable->m_eJobType;
   pJob_SubLoader->vJobKind(pJob_LoadTable->eJobKind());
 
 

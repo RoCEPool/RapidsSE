@@ -53,7 +53,6 @@ jobInfo: XmitOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_XMITOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ

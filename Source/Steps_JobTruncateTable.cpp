@@ -78,8 +78,6 @@ void Step::vJob_TruncateTableSpawnSub(void)
   pJob_SubTruncate->pEnameSet()->vAdd("<tableNm>"_Stz,
                         pJob_Universal->pEnameSet()->szValue("<tableNm>"_Stz));
   pJob_SubTruncate->vSlot(iSlot);
- 
-  pJob_SubTruncate->m_eJobType = pJob_Universal->m_eJobType;
   pJob_SubTruncate->vJobKind(pJob_Universal->eJobKind());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

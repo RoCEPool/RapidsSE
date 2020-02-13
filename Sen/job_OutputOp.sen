@@ -128,7 +128,6 @@ jobInfo: outputOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_OUTPUTOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ

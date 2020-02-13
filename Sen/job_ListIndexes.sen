@@ -122,7 +122,6 @@ jobInfo: lsidx
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_LISTINDEXES
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_JOB_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ

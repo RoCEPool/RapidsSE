@@ -1627,8 +1627,7 @@ void Step::vJobSpawnUniversal(void)
   ReqTuple xReqTuple("!!vJobSpawnUniversal"_Stz,false);
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,&xReqTuple);
 
-  // ranslate job type and kind
-  pJob_Universal->m_eJobType = (eJT) pEnameSet_jobInfo->iValue("<?jobType?>"_Stz);
+  // translate job kind
   pJob_Universal->vJobKind((eJK) pEnameSet_jobInfo->iValue("<?jobKind?>"_Stz));
 
   // add the necessary ename tags

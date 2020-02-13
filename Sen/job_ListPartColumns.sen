@@ -104,7 +104,6 @@ jobInfo: lspartcol
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_LISTPARTCOLUMNS
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_JOB_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ

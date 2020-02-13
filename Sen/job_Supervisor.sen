@@ -45,7 +45,6 @@ jobInfo: supervisor
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NONE
   <?ddlLock?>  = DL_NONE

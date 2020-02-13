@@ -71,7 +71,6 @@ jobInfo: lf
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_LF
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_JOB_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ

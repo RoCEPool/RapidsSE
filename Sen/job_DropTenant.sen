@@ -72,7 +72,6 @@ jobInfo: dropTenant
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_DROPTENANT
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_WRITE

@@ -71,7 +71,6 @@ jobInfo: dropSchema
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_DROPSCHEMA
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_WRITE

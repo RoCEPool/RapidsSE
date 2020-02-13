@@ -99,7 +99,6 @@ jobInfo: InsertOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_INSERTOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_WRITE

@@ -98,7 +98,6 @@ jobInfo: PurgeOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_PURGEOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ

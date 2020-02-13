@@ -73,7 +73,6 @@ Job::Job(eCN eClassNo)
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
   
-  m_eJobType  = JT_NONE;
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
@@ -129,7 +128,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
   
-  m_eJobType  = JT_NONE;
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
@@ -183,7 +181,6 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
   
-  m_eJobType  = JT_NONE;
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
@@ -508,7 +505,7 @@ void Job::vContentDump(void)
          this,
          aCN[eClass()],
          
-         aJT[m_eJobType]->azChar(),
+         m_sJobNm.azChar(),
          aJK[m_eJobKind]->azChar(),
          
          aJL[m_eJobList],

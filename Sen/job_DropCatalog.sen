@@ -75,7 +75,6 @@ jobInfo: dropCatalog
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_DROPCATALOG
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_WRITE

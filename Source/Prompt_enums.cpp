@@ -43,7 +43,6 @@ bool Prompt::bPrompt_enums(SePrompt* pPrompt)
   vTrace("  eJL: job list\n"_Stz);
   vTrace("  eJP: job phase\n"_Stz);
   vTrace("  eJS: job state\n"_Stz);
-  vTrace("  eJT: job trace\n"_Stz);
   vTrace("  eKC: key compare\n"_Stz);
   vTrace("  eLK: lock kind\n"_Stz);
   vTrace("  ePK: predicate kind\n"_Stz);

@@ -66,12 +66,7 @@ namespace Jobs
   
     Task*     m_pOriginatingTask; // originating task of the request
     i8        m_iOriginatingId;   // job id of originating job
-
-    // to go ------------------
     
-  public:
-    eJT       m_eJobType;     // type of job
-  
   private:
     Decider m_oAcksRmg_2pc;   // acks remaining for coordinating 2pc job
     eSS     m_eSeed;          // seed to spawn

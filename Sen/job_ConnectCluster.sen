@@ -108,7 +108,6 @@ jobInfo: connectCluster
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_CONNECTCLUSTER
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NONE
   <?ddlLock?>  = DL_NONE

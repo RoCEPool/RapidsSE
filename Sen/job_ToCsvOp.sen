@@ -77,7 +77,6 @@ jobInfo: ToCsvOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_TOCSVOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_PARTICIPANT_RESPONSE
   <?ddlLock?>  = DL_GRAB_READ
