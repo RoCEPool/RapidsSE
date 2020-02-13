@@ -1239,6 +1239,18 @@ bool SePrompt::bTranslateProcedure(void)
   pProcVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_Cut = pProcVec->iFindToken("parameters"_Stz);
+  if (C_UNKNOWN != i_Cut) {
+    for (;;) {
+      pProcVec->vCutToken(i_Cut);
+      Token* pTest = pProcVec->pGet(i_Cut);
+      if (pTest->bSame("begin"_Stz))
+        break;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s4K sPipelineSmt;
   
