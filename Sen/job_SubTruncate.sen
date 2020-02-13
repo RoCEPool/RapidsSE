@@ -76,8 +76,8 @@
   pTask_TruncateTable task.dropLock
   pTask_TruncateTable task.ack
 
+  job::deleteThis
   <DONE_RUN>
-
   job::completed
 
   HAZARD

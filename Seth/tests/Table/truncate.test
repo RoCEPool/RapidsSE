@@ -2,6 +2,9 @@
 /* truncate table tests                                                       */
 /*----------------------------------------------------------------------------*/
 
+trackMemory;
+success;
+
 indexEntries 200;
 success;
 
@@ -71,6 +74,9 @@ success
 
 indexEntries 0;
 success
+
+memoryLeaks;
+rows 0;
 
 CLEANUP {
 
