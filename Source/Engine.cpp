@@ -560,6 +560,67 @@ void Engine::vMonitorProfile(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
+/* munge chec                                                                   */
+/*----------------------------------------------------------------------------*/
+void Engine::vMungeCheck(void)
+{
+  // get the time of the Sen files in the Sen folder
+  Dir* pDir = new Dir(nullptr);
+  bool bResult = pDir->bOpen("../Sen"_Stz);
+  ASSERT(bResult);
+  
+  s256 sEntryNm;
+  s256 sFilePath;
+  s256 sLastModified;
+  
+  time_t tSenTime = 0;
+  time_t tMungedTime;
+  time_t tModTime;
+  
+  while (pDir->bRead()) {
+    
+    // get the entry
+    sEntryNm = pDir->szEntryNm();
+    
+    // skip . and ..
+    if (sEntryNm.bSame("."_Stz) || sEntryNm.bSame(".."_Stz))
+      continue;
+    
+    // create the complete filepath
+    sFilePath = "../Sen/"_Stz;
+    sFilePath.vConcat(sEntryNm);
+    
+    // get the last modification time of the file
+    bResult = File::bModTime(sFilePath, tModTime);
+    ASSERT(bResult);
+    
+    // get the last modified sen file time
+    if (tModTime > tSenTime) {
+      sLastModified = sEntryNm;
+      tSenTime = tModTime;
+    }
+  }
+  pDir->vClose();
+  
+  delete pDir;
+  
+  // get the time of the Munged file
+  bResult = File::bModTime("../Munge/Task_AddMunged.cpp"_Stz, tMungedTime);
+  ASSERT(bResult);
+  
+  // is the last modified sen file time after the last munge ?
+  if (tSenTime > tMungedTime) {
+    
+    vTrace("\n******************************************************************\n"_Stz);
+    vTrace("\n MUNGING!!! (Last modified Sen file : %s)        \n\n"_Stz, sLastModified.azChar());
+    vTrace("******************************************************************\n"_Stz);
+    
+    gxArgs.m_sCommand = "docol munge"_Stz;
+    gxArgs.m_bCommand = true;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* create or open the Log                                                     */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenLog(void)
@@ -776,7 +837,13 @@ void Engine::vRunCommandLine(void)
         
       case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
       case BO_SETH_PROMPT:  vCallPrompt();                                break;
-      case BO_START_PROMPT: vStartSystem();   vCallPrompt();              break;
+      case BO_START_PROMPT:
+        vStartSystem();
+#ifdef WITH_APPLE
+        vMungeCheck();
+#endif
+        vCallPrompt();
+        break;
         
       case BO_STATUS:       vPrintStatus();                               break;
       case BO_STOP:         vStopSystem();                                break;
