@@ -143,7 +143,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
     
     s4K sCmd;
     TokenVec* pTknVec = pSession->pTokenVec();
-    pTknVec->vVecToString(sCmd,0);
+    pTknVec->vVecToString(sCmd,0,false);
     
     pJob->pEnameSet()->vAdd("<cmd>"_Stz,sCmd);
     

@@ -50,7 +50,7 @@ bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
   pTknVec->vSetTokens();
 
   
-  pTknVec->vVecToString(sCmd.szStz(),2);
+  pTknVec->vVecToString(sCmd.szStz(),2,false);
   
   ShortCut* pShortCut = new ShortCut(sNm,sCmd);
   
