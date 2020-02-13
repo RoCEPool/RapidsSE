@@ -29,7 +29,7 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
   
   s4K sProcText;
   s32 sProcNm = (*pTokenVec)[1]->szTerm();
-  pTokenVec->vVecToString(sProcText);
+  pTokenVec->vVecToString(sProcText,0);
   
   vTrace("Procedure: %s\n"_Stz,sProcNm.szStz());
   vTrace("Procedure: %s\n"_Stz,sProcText.szStz());
