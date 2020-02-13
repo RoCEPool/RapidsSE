@@ -10,7 +10,7 @@ namespace Jobs
   {
   public:
    
-    i8 m_iTruncateJobId; //job id of the truncate job that spawned this sub truncate
+    //i8 m_iTruncateJobId; //job id of the truncate job that spawned this sub truncate
     
     // must be last
     Footer m_xFooter;

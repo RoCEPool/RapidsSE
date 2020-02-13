@@ -38,7 +38,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(void)
   
   Job_SubTruncate* pJob = _pJob_SubTruncate(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->m_iTruncateJobId);
+  m_pDataStack->vPushInt(pJob->iParentId());
   
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
   pJob_SubTruncate->vParentId(iTruncateJobId);
-  pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
+  //pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->pEnameSet()->vAdd("<tableNm>"_Stz,
                         pJob_Universal->pEnameSet()->szValue("<tableNm>"_Stz));
   pJob_SubTruncate->vSlot(iSlot);

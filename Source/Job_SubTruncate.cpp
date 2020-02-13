@@ -106,7 +106,7 @@ Job_SubTruncate::Job_SubTruncate(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
     
-  m_iTruncateJobId  = -1;
+  //m_iTruncateJobId  = -1;
   
   _checkInitialised_(CN_JOB_SUBTRUNCATE);
   
