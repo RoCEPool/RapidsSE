@@ -766,6 +766,9 @@ void Parser::vNextCharFromRawLine(AnnChar& rxAnnChar)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   rxAnnChar.m_cChar = *m_acRawChar++;
+  
+  rxAnnChar.m_iLine = m_iLineRaw;
+  rxAnnChar.m_iCol  = ++m_iColRaw;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -779,13 +782,13 @@ void Parser::vReadRawLineFile(void)
 
   char cInput;
   
-  char* acRawLine = m_sRawLine.azChar();
+  char* acRawLineCrs = m_sRawLine.azChar();
   
   do {
     
     cInput = m_oRawFile.cGetChar();
     
-    *acRawLine++ = cInput;
+    *acRawLineCrs++ = cInput;
     
     if (C_END_OF_LINE == cInput)
       break;
@@ -796,7 +799,9 @@ void Parser::vReadRawLineFile(void)
   if (! cInput)
     m_bEOF = true;
   
-  *acRawLine++ = '\0';
+  *acRawLineCrs++ = '\0';
+  
+  m_iLineRaw++;
   
   m_acRawChar = m_sRawLine.azChar();
 }

@@ -45,7 +45,7 @@ namespace TokenStream
     void operator delete(void* pDirAddress);
     
     Parser(Parser* pNext);
-    ~Parser(void) noexcept(false);
+   ~Parser(void) noexcept(false);
     
     static Parser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
