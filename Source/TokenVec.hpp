@@ -45,7 +45,7 @@ namespace TokenStream
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
     i8   nTokens(void);
-    void vToString(Stz* szStr, i8 iFromTkn=0);
+    void vVecToString(Stz* szStr, i8 iFromTkn=0);
 
     Footer* aFooter(void);
   };

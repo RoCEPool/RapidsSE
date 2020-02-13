@@ -402,7 +402,7 @@ i8 TokenVec::nTokens(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
+void TokenVec::vVecToString(Stz* szBuff, i8 iFromTkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
