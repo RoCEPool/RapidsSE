@@ -1288,21 +1288,32 @@ bool SePrompt::bTranslateProcedure(void)
   Stz* szProcText = pProcWord->pEnameSet()->szValue("procText"_Stz);
   
   
-  TokenVec* pProcTokenVec = Tokeniser::pTokenise(szProcText);
+  TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
   
-  pProcTokenVec->vDumpTokens();
+  pProcVec->vDumpTokens();
   
-  Token* pTkn0 = pProcTokenVec->pGet(0);
+  Token* pTkn0 = pProcVec->pGet(0);
 
   pTkn0->vCopy("pipeline"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TokenVec* pParamsVec = Tokeniser::pSubVec(pProcVec,"parameters"_Stz,"begin"_Stz);
+  
+  if (pParamsVec)
+    pParamsVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s4K sPipelineSmt;
   
-  pProcTokenVec->vToString(sPipelineSmt);
+  pProcVec->vToString(sPipelineSmt);
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();
 
-  delete pProcTokenVec;
+  delete pProcVec;
+  
+  delete pParamsVec;
   
   return true;
 }

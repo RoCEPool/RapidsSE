@@ -75,6 +75,40 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* extract sub vector of tokens                                               */
+/*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd)
+{
+  
+  i8 nTokens = pTokenVec->nTokens();
+  
+  i8 i_Token;
+  for (i_Token = 0; i_Token < nTokens; i_Token++) {
+    Token* pToken = pTokenVec->pGet(i_Token);
+    if (pToken->bSame(szStart)) {
+      break;
+    }
+  }
+
+  if (i_Token >= nTokens)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TokenVec* pExtractedVec = new TokenVec;
+
+  for (i_Token++; i_Token < nTokens; i_Token++) {
+    Token* pToken = pTokenVec->pGet(i_Token);
+    if (pToken->bSame(szEnd))
+      break;
+    
+    pExtractedVec->vAddToken(pToken->szTerm());
+  }
+  
+  return pExtractedVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
 TokenVec* Tokeniser::pTokenise(Stz* szString)

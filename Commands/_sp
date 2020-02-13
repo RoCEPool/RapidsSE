@@ -5,13 +5,14 @@
 print "Stored procedure test" ;
 
 procedure sp_lineitem
+  parameters $Table
 begin
 
   stage stageA on origin:
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp $lineitem | stageC
+    scanOp $Table | stageC
 
   stage stageC on origin:
     outputOp | sinkOp | stageA
