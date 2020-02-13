@@ -101,7 +101,10 @@ namespace TokenStream
     void vParserGetAnnChar(void);
     void vParserGetAnnCharStripped(void);
     void vParserUngetAnnCharStripped(void);
-    
+  
+    void vTokenCollectBegin(Token* pToken);
+    void vTokenCollectEnd(void);
+
     bool bEndInput(void);
     
     Footer* aFooter(void);

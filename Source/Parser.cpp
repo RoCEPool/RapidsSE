@@ -802,6 +802,7 @@ void Parser::vReadRawLineFile(void)
   *acRawLineCrs++ = '\0';
   
   m_iLineRaw++;
+  m_iColRaw = 0;
   
   m_acRawChar = m_sRawLine.azChar();
 }
@@ -855,6 +856,9 @@ void Parser::vReadRawLineStdin(void)
   
   *acRawLine++ = '\0';
   
+  m_iLineRaw++;
+  m_iColRaw = 0;
+
   m_acRawChar = m_sRawLine.azChar();
   
   ASSERT(! m_bEOF);

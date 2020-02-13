@@ -1941,8 +1941,11 @@ void Vortex::vGetExpectedToken(Stz* szExpect)
   CHECKED(bGetNextToken());
   
   if (! m_oCurTkn.bSame(szExpect)) {
-    TRACE("Expecting token: %s got: %s\n"_Stz,
-           szExpect->azChar(), m_oCurTkn.azTerm());
+    TRACE("Expecting token: `%s` got: `%s` @%lld.%lld\n"_Stz,
+          szExpect->azChar(),
+          m_oCurTkn.azTerm(),
+          m_oCurTkn.iLineNo(),
+          m_oCurTkn.iColNo());
     
     vThrowProblem(__LINE__);
   }
@@ -1962,7 +1965,10 @@ bool Vortex::bGetNextToken(void)
     if (m_bEOF)
       vTrace("  got: EOF\n"_Stz);
     else
-      vTrace("  got: `%s`\n"_Stz,m_oCurTkn.szTerm());
+      vTrace("  got: `%s` @%lld,%lld\n"_Stz,
+             m_oCurTkn.szTerm(),
+             m_oCurTkn.iLineNo(),
+             m_oCurTkn.iColNo());
   }
     
   return ! m_bEOF;
@@ -2563,7 +2569,7 @@ void Vortex::vTraceEnter(char* azFunc)
   if (! m_bTrace)
     return;
   
-  vTrace("%lld/%s/%16s/  `%s` @%lld.%lld %s%s%s%s%s%s%s%s%s\n"_Stz,
+  vTrace("%lld/%s/%16s/  `%s` @%lld,%lld %s%s%s%s%s%s%s%s%s\n"_Stz,
     
     m_nSources,
     m_sSourcePath.szStz(),
@@ -2599,7 +2605,7 @@ void Vortex::vTraceEnter_short(char* azFunc)
   if (! m_bTrace)
     return;
   
-  vTrace("%lld/%s/%16s/  `%s` @%lld.%lld\n"_Stz,
+  vTrace("%lld/%s/%16s/  `%s` @%lld,%lld\n"_Stz,
     
     m_nSources,
     m_sSourcePath.szStz(),
