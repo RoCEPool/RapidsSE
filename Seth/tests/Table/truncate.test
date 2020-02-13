@@ -2,71 +2,82 @@
 /* truncate table tests                                                       */
 /*----------------------------------------------------------------------------*/
 
+indexEntries 200;
+success;
+
 // truncate where table does not exist
 truncate table noTable;
 failure contains: 'no such table'
 
 // create a table
-create table customer (
-C_CUSTKEY       INTEGER NOT NULL,
-C_NAME          VARCHAR(25) NOT NULL,
-C_ADDRESS       VARCHAR(40) NOT NULL,
-C_NATIONKEY     INTEGER NOT NULL,
-C_PHONE         CHAR(15) NOT NULL,
-C_ACCTBAL       DECIMAL(15,2) NOT NULL,
-C_MKTSEGMENT    CHAR(10) NOT NULL,
-C_COMMENT       VARCHAR(117) NOT NULL
+create table LINEITEM (
+l_orderkey INTEGER NOT NULL,
+l_partkey INTEGER NOT NULL,
+l_suppkey INTEGER NOT NULL,
+l_linenumber INTEGER,
+l_quantity INTEGER,
+l_extendedprice DECIMAL(15, 2),
+l_discount DECIMAL(15, 2),
+l_tax DECIMAL(15, 2),
+l_returnflag VARCHAR(1),
+l_linestatus VARCHAR(1),
+l_shipdate TIMESTAMP,
+l_commitdate TIMESTAMP,
+l_receiptdate TIMESTAMP,
+l_shipinstruct VARCHAR(25),
+l_shipmode VARCHAR(10),
+l_comment VARCHAR(44)
 );
 success
 
 //------------------------------------------------------------------------------
 // create an index on custkey
-CREATE INDEX customer_idx1 ON customer(c_custkey);
-affected: 0
-
-//------------------------------------------------------------------------------
-// create an index on nationkey
-CREATE INDEX customer_idx2 ON customer(c_nationkey);
+CREATE INDEX LINEITEM_IDX1 ON LINEITEM(l_orderkey);
 affected: 0
 
 // check existence of index
-lsidx customer;
+lsidx lineitem;
 rows:
-  ("customer_idx1",false,false)
-  ("customer_idx2",false,false)
+  ("LINEITEM_IDX1",false,false)
 
 // check columns of index
-lsidxcol customer customer_idx1;
+lsidxcol lineitem LINEITEM_IDX1;
 rows:
-  ("C_CUSTKEY", "INTEGER", 19, 0, false, true)
+  ("l_orderkey", "INTEGER", 19, 0, false, true)
 
 // truncate when table is empty
-truncate table customer;
+truncate table lineitem;
 success
 
 // fetch
-fetch customer;
+fetch lineitem;
 rows: 0
 
 // load the table
-ld customer "/TPCH/SF1/customer.tbl"  field_delimiter "|";
+ld lineitem "../DATA/Regression/lineitem.csv";
 success
 
 // truncate the table
-truncate table customer;
+truncate table lineitem;
 success
 
 // fetch
-fetch customer;
+fetch lineitem;
 rows: 0
 
 // now drop the table
-drop table customer;
+drop table lineitem;
+success
+
+indexEntries 0;
 success
 
 CLEANUP {
 
-  drop table customer;
+  drop table lineitem;
+  mute
+
+  indexExtries 0;
   mute
 
   bye;
