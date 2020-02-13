@@ -77,6 +77,24 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* extract sub vector of tokens                                               */
 /*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, i8 i_From, i8 i_To)
+{
+  TokenVec* pExtractedVec = new TokenVec;
+
+  i8 nTokens = pTokenVec->nTokens();
+  
+  i8 i_Token;
+  for (i_Token = i_From; i_Token < nTokens && i_Token < i_To; i_Token++) {
+    Token* pToken = pTokenVec->pGet(i_Token);
+    pExtractedVec->vAddToken(pToken->szTerm());
+  }
+  
+  return pExtractedVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract sub vector of tokens                                               */
+/*----------------------------------------------------------------------------*/
 TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd)
 {
   

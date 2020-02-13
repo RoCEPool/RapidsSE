@@ -27,6 +27,7 @@ namespace TokenStream
    ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static TokenVec* pSubVec(TokenVec* pTokenVec, i8 i_From, i8 i_To);
     static TokenVec* pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd);
     static TokenVec* pTokenise(Stz* szString);
     static void vTokenise(TokenVec* pTokenVec, Stz* szString);
