@@ -23,11 +23,13 @@ PromptFun __Prompt_ls (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ls(SePrompt* pPrompt)
 {
-  Dir  oDir(pPrompt);
+  Dir* pDir;
   s256 sDirPath;
   s256 sEntryNm;
   i8 iEntryType;
   
+  pDir = new Dir(pPrompt);
+                 
   TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
@@ -37,19 +39,21 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
     return false;
   
   // open the current directory
-  if (!oDir.bOpen(sDirPath))
+  if (!pDir->bOpen(sDirPath))
     return false;
   
   // read the current directory and list contents
-  while (oDir.bRead()) {
-    sEntryNm = oDir.szEntryNm();
-    iEntryType = oDir.iEntryType();
+  while (pDir->bRead()) {
+    sEntryNm = pDir->szEntryNm();
+    iEntryType = pDir->iEntryType();
     vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryNm.azChar());
   }
   
   // close the current directory
-  oDir.vClose();
+  pDir->vClose();
   
+  delete pDir;
+                 
   return true;
 }
 
