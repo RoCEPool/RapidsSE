@@ -23,6 +23,9 @@ namespace Datums
   
     Datum_y32 m_xMaxVal;
     Datum_y32 m_xMinVal;
+  
+    eFA   m_eFunApplied;
+    i8    m_iFunColArg;
 
     // must be last
     Footer m_xFooter;
