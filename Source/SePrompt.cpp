@@ -1266,10 +1266,13 @@ bool SePrompt::bTranslateProcedure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   TokenVec* pCommandVec = this->pTokenVec();
+  
   i8 nTokens = pCommandVec->nTokens();
   
-  Token* pProcNm = pTokenVec()->pGet(0);
+  Token* pProcNm = pCommandVec->pGet(0);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
@@ -1287,7 +1290,6 @@ bool SePrompt::bTranslateProcedure(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Stz* szProcText = pProcWord->pEnameSet()->szValue("procText"_Stz);
-  
   
   TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
   
@@ -1310,17 +1312,23 @@ bool SePrompt::bTranslateProcedure(void)
     pArgsVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Tokeniser::vReplace(pProcVec,pParamsVec,pArgsVec);
+  pProcVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s4K sPipelineSmt;
   
   pProcVec->vToString(sPipelineSmt);
+  vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();
 
   delete pProcVec;
-  
   delete pParamsVec;
-  
+  delete pArgsVec;
+
   return true;
 }
 
