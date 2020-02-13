@@ -848,10 +848,15 @@ void Scheduler::vTask_Ready(Task* pTask)
   
   pTask->vState(TS_READY);
 
-  if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
-    pQueues->vAppendReadyQueue(pTask);
-  else
-    pQueues->vAppendReadyQueueLP(pTask);
+  //! ALKA: only catering to Normal priority
+  //! Only job that is Low priority is WriteBuffer
+  //! which should go
+  //    if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
+  //      pQueues->vAppendReadyQueue(pTask);
+  //    else
+  //      pQueues->vAppendReadyQueueLP(pTask);
+   pQueues->vAppendReadyQueue(pTask);
+  
   // **do not touch task**
 }
 
