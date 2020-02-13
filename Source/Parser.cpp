@@ -232,7 +232,7 @@ void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
     vLoadRegs(bStripComments);
   
   if (! m_nLoaded) {
-    rxAnnChar.m_cChar = '\0';
+    rxAnnChar.vReset();
     return;
   }
   
@@ -329,8 +329,8 @@ void Parser::vClearRegs(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   m_nLoaded = 0;
-  m_xAnnOne.m_cChar  = '\0';
-  m_xAnnTwo.m_cChar = '\0';
+  m_xAnnOne.vReset();
+  m_xAnnTwo.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,10 +343,9 @@ void Parser::vConsumeFirst(AnnChar& rxAnnChar)
   ASSERT(m_nLoaded);
 
   rxAnnChar = m_xAnnOne;
-  
   m_xAnnOne = m_xAnnTwo;
   
-  m_xAnnTwo.m_cChar = '\0';
+  m_xAnnTwo.vReset();
   
   m_nLoaded--;
 }
@@ -361,8 +360,9 @@ void Parser::vDiscardFirst(void)
   ASSERT(m_nLoaded);
   
   m_xAnnOne.m_cChar  = m_xAnnTwo.m_cChar;
-  m_xAnnTwo.m_cChar = '\0';
   
+  m_xAnnTwo.vReset();
+
   m_nLoaded--;
 }
 
@@ -652,7 +652,7 @@ void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
       break;
       
     default:
-      rxAnnChar.m_cChar = '\0';
+      rxAnnChar.vReset();
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
