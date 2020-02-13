@@ -75,10 +75,36 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* replace tokens                                                             */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vReplace(TokenVec* pThisVec,
+                              TokenVec* pFindVec, TokenVec* pWithVec)
+{
+  _static_
+  
+  i8 nTokens = pThisVec->nTokens();
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+    
+    Token* pThisToken = pThisVec->pGet(i_Token);
+    
+    i8 i_Find = pFindVec->iFindToken(pThisToken->szTerm());
+    
+    if (C_UNKNOWN == i_Find)
+      continue;
+    
+    Token* pWithToken = pWithVec->pGet(i_Find);
+
+    pThisToken->vCopy(pWithToken->szTerm());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract sub vector of tokens                                               */
 /*----------------------------------------------------------------------------*/
 TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, i8 i_From, i8 i_To)
 {
+  _static_
+  
   TokenVec* pExtractedVec = new TokenVec;
 
   i8 nTokens = pTokenVec->nTokens();
@@ -97,7 +123,8 @@ TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, i8 i_From, i8 i_To)
 /*----------------------------------------------------------------------------*/
 TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd)
 {
-  
+  _static_
+
   i8 nTokens = pTokenVec->nTokens();
   
   i8 i_Token;
@@ -131,6 +158,8 @@ TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd)
 /*----------------------------------------------------------------------------*/
 TokenVec* Tokeniser::pTokenise(Stz* szString)
 {
+  _static_
+  
   TokenVec* pTokenVec = new TokenVec;
   
   Tokeniser* pTokeniser = new Tokeniser;
@@ -160,6 +189,8 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
 {
+  _static_
+  
   pTokenVec->vReset();
   
   Tokeniser* pTokeniser = new Tokeniser;
@@ -187,6 +218,8 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec)
 {
+  _static_
+  
   pEnameSet->vReset();
 
   i8 i_OpenToken  = pTknVec->iFindToken("{"_Stz);
@@ -203,6 +236,8 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 i_To)
 {
+  _static_
+  
   pEnameSet->vReset();
   
   for (i8 i_Tkn = i_From; i_Tkn <= i_To; ) {
@@ -228,6 +263,8 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter, i8 i_From, i8 i_To)
 {
+  _static_
+  
   pEnameSet->vReset();
   
   for (i8 i_Tkn = i_From; i_Tkn <= i_To; ) {
@@ -252,6 +289,8 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimite
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  _static_
+
   Tokeniser* pTokeniser = _pTokeniser(pObject);
   
   vTrace("parser %p %s\n"_Stz,

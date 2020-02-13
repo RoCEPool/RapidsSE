@@ -213,7 +213,7 @@ i8 TokenVec::iFindToken(Stz* aLookFor)
       return i_Token;
   }
   
-  return -1;
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
