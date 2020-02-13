@@ -398,7 +398,7 @@ create table T1 (
 failure contains: 'invalid command'
 
 // (13) try create table t1 with invalid table name
-create table T1$ (
+create table T1& (
   c1   INTEGER NOT NULL
 );
 failure contains: 'invalid command'
