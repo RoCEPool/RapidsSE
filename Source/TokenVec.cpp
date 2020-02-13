@@ -448,8 +448,7 @@ void TokenVec::vVecToString(Stz* szBuff, i8 iFromTkn, bool bAddSemicolon)
   }
   
   // concat a terminating semicolon (needed??)
-  if (! iFromTkn) {                                        //! this is a hack RAY}
-    ASSERT(!bAddSemicolon);
+  if (bAddSemicolon) {
     StrLib::vConcat(szBuff->azChar(),";");
   }
 }

@@ -690,7 +690,7 @@ void SePrompt::vLogCommand(void)
   if (pTkn0->bSame("logNote"_Stz))
   return;
   
-  pTknVec->vVecToString(sCommand,0,false);
+  pTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_LOG_NOTE / 2);
   
   vIncStepNo();
@@ -1242,7 +1242,7 @@ bool SePrompt::bTranslateProcedure(void)
 
   s4K sPipelineSmt;
   
-  pProcVec->vVecToString(sPipelineSmt,0,false);
+  pProcVec->vVecToString(sPipelineSmt,0,true);
   vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();
