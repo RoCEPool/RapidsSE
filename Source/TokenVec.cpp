@@ -402,7 +402,7 @@ i8 TokenVec::nTokens(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
+void TokenVec::vVecToString(Stz* szBuff, i8 iFromTkn, bool bAddSemicolon)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -448,8 +448,9 @@ void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
   }
   
   // concat a terminating semicolon (needed??)
-  if (! iFromTkn)                                         //! this is a hack RAY
+  if (bAddSemicolon) {
     StrLib::vConcat(szBuff->azChar(),";");
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -690,7 +690,7 @@ void SePrompt::vLogCommand(void)
   if (pTkn0->bSame("logNote"_Stz))
   return;
   
-  pTknVec->vToString(sCommand);
+  pTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_LOG_NOTE / 2);
   
   vIncStepNo();
@@ -1188,10 +1188,13 @@ bool SePrompt::bTranslateProcedure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   TokenVec* pCommandVec = this->pTokenVec();
+  
   i8 nTokens = pCommandVec->nTokens();
   
-  Token* pProcNm = pTokenVec()->pGet(0);
+  Token* pProcNm = pCommandVec->pGet(0);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
@@ -1209,7 +1212,6 @@ bool SePrompt::bTranslateProcedure(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Stz* szProcText = pProcWord->pEnameSet()->szValue("procText"_Stz);
-  
   
   TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
   
@@ -1232,17 +1234,35 @@ bool SePrompt::bTranslateProcedure(void)
     pArgsVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Tokeniser::vReplace(pProcVec,pParamsVec,pArgsVec);
+  pProcVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_Cut = pProcVec->iFindToken("parameters"_Stz);
+  if (C_UNKNOWN != i_Cut) {
+    for (;;) {
+      pProcVec->vCutToken(i_Cut);
+      Token* pTest = pProcVec->pGet(i_Cut);
+      if (pTest->bSame("begin"_Stz))
+        break;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s4K sPipelineSmt;
   
-  pProcVec->vToString(sPipelineSmt);
+  pProcVec->vVecToString(sPipelineSmt,0,true);
+  vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();
 
   delete pProcVec;
-  
   delete pParamsVec;
-  
+  delete pArgsVec;
+
   return true;
 }
 
