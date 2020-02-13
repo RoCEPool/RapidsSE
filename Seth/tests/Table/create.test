@@ -405,7 +405,7 @@ failure contains: 'invalid command'
 
 // (14) try create table t1 with invalid column name
 create table T1 (
-  c1$  INTEGER NOT NULL
+  c1&  INTEGER NOT NULL
 );
 failure contains: 'invalid command'
 
