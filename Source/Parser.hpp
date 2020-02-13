@@ -31,7 +31,7 @@ namespace TokenStream
     i8      m_nLoaded;   // 0: neither has char
                          // 1: m_cFirst has char
                          // 2: m_cFirst and m_cSecond each have a char
-    AnnChar m_xAnnOne;    //
+    AnnChar m_xAnnOne;   //
     AnnChar m_xAnnTwo;   //
     eCS     m_eComment;  // comment style currently being processed
     bool    m_bRead;     // prompt user for more input
@@ -67,7 +67,7 @@ namespace TokenStream
     
     // Processing Functions
     void vGet(AnnChar& rxAnnChar, bool bStripComments);
-    void vUnget(char c);
+    void vUnget(AnnChar& rxAnnChar);
     bool bEOF(void);
     bool bLineMode(void);
     bool bStdin(void);
@@ -84,7 +84,7 @@ namespace TokenStream
     void vLoadFirst(void);
     void vLoadRegs(bool bStripComments);
     void vLoadSecond(void);
-    void vRewindRegs(char c);
+    void vRewindRegs(AnnChar& rxAnnChar);
     
     // Comment Processing
     bool bBlockCommentEnd(void);

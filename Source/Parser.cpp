@@ -243,11 +243,11 @@ void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 /*----------------------------------------------------------------------------*/
 /* put char back into parsing stream                                          */
 /*----------------------------------------------------------------------------*/
-void Parser::vUnget(char cParsed)
+void Parser::vUnget(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vRewindRegs(cParsed);
+  vRewindRegs(rxAnnChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,15 +445,15 @@ void Parser::vLoadSecond(void)
 /*----------------------------------------------------------------------------*/
 /* rewind registers by one character                                          */
 /*----------------------------------------------------------------------------*/
-void Parser::vRewindRegs(char cParsed)
+void Parser::vRewindRegs(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(m_nLoaded < 2);
   ASSERT('\0' == m_xAnnTwo.m_cChar);
   
-  m_xAnnTwo.m_cChar = m_xAnnOne.m_cChar;
-  m_xAnnOne.m_cChar = cParsed;
+  m_xAnnTwo = m_xAnnOne;
+  m_xAnnOne = rxAnnChar;
   
   m_nLoaded++;
 }
@@ -465,16 +465,25 @@ void Parser::vStripComment(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
+  AnnChar xRewAnnChar;
+  
+  xRewAnnChar.vReset();
+  xRewAnnChar.m_cChar = ' ';
+
   switch (eCommentStyle()) {
       
     case CS_BLOCK:
       vBlockCommentSkip();
-      vRewindRegs(' ');
+      xRewAnnChar.m_iLine = m_iLineRaw;
+      xRewAnnChar.m_iCol  = m_iColRaw;
+      vRewindRegs(xRewAnnChar);
       break;
       
     case CS_LINE:
       vLineCommentSkip();
-      vRewindRegs(' ');
+      xRewAnnChar.m_iLine = m_iLineRaw;
+      xRewAnnChar.m_iCol  = m_iColRaw;
+      vRewindRegs(xRewAnnChar);
       break;
       
     default:

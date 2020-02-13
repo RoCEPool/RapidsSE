@@ -1485,7 +1485,7 @@ void Tokeniser::vParserUngetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUnget(m_xAnnChar.m_cChar);
+  m_pParser->vUnget(m_xAnnChar);
 }
 
 /*----------------------------------------------------------------------------*/
