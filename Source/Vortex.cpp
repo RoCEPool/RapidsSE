@@ -2563,14 +2563,16 @@ void Vortex::vTraceEnter(char* azFunc)
   if (! m_bTrace)
     return;
   
-  vTrace("%lld/%s/%16s/  `%s`  %s%s%s%s%s%s%s%s%s\n"_Stz,
+  vTrace("%lld/%s/%16s/  `%s` @%lld.%lld %s%s%s%s%s%s%s%s%s\n"_Stz,
     
     m_nSources,
     m_sSourcePath.szStz(),
     azFunc,
   
     m_oCurTkn.szTerm(),
-    
+    m_oCurTkn.iLineNo(),
+    m_oCurTkn.iColNo(),
+
     m_bInNamespace ? " --NAMESPACE `" : "",
     m_bInNamespace ? m_sNamespaceNm.azChar() : "",
     m_bInNamespace ? "`" : "",
@@ -2597,13 +2599,15 @@ void Vortex::vTraceEnter_short(char* azFunc)
   if (! m_bTrace)
     return;
   
-  vTrace("%lld/%s/%16s/  `%s`\n"_Stz,
+  vTrace("%lld/%s/%16s/  `%s` @%lld.%lld\n"_Stz,
     
     m_nSources,
     m_sSourcePath.szStz(),
     azFunc,
     
     m_oCurTkn.szTerm(),
+    m_oCurTkn.iLineNo(),
+    m_oCurTkn.iColNo(),
 
     C_ENDARGS
   );
