@@ -30,6 +30,7 @@ namespace StorageEngine
     static void vKillPrev(void);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vMonitorProfile(s48K& sPortrait);
+    static void vMungeCheck(void);
     static void vOpenLog(void);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
