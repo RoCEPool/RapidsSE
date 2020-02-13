@@ -4,7 +4,7 @@
 
 print "Stored procedure test" ;
 
-procedure sp_lineitem
+procedure sp_fetch
   parameters $Table
 begin
 
@@ -18,7 +18,7 @@ begin
     outputOp | sinkOp | stageA
 end;
 
-sp_lineitem;
+sp_fetch lineitem;
 
 /*
 procedure t_upsert

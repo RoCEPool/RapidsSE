@@ -1265,7 +1265,8 @@ bool SePrompt::bTranslateProcedure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = this->pTokenVec();
+  TokenVec* pCommandVec = this->pTokenVec();
+  i8 nTokens = pCommandVec->nTokens();
   
   Token* pProcNm = pTokenVec()->pGet(0);
 
@@ -1299,9 +1300,14 @@ bool SePrompt::bTranslateProcedure(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TokenVec* pParamsVec = Tokeniser::pSubVec(pProcVec,"parameters"_Stz,"begin"_Stz);
-  
   if (pParamsVec)
     pParamsVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TokenVec* pArgsVec = Tokeniser::pSubVec(pCommandVec,1,nTokens-1);
+  if (pArgsVec)
+    pArgsVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
