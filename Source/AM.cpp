@@ -1347,8 +1347,8 @@ bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }
 
-eJT AM::eJobType(Job* pJob) { return pJob->m_eJobType;                        }
-i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
+Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
+i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 
 void AM::vPrintGlobals(void)
 {

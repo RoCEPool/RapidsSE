@@ -181,7 +181,6 @@ namespace Oblique
     static void vFocalRemove(Focal* pFocal);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static eJT  eJobType(Job* pJob);
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
@@ -231,6 +230,8 @@ namespace Oblique
     static void vDeleteJobOperand(Job_Operand* pJob);
     static Job_Operand* pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn);
     static Job* pNewJobUniversal(Job* pParentJob, Op* pOp, ReqTuple* pReqTuple);
+    
+    static Stz* szJobName(Job* pJob);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vPoolAnalyze(void);

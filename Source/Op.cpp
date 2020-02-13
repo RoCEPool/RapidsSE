@@ -127,7 +127,7 @@ void Op::vAckJob(void)
               "Acking job task"_Stz); //!format-LogOpr
   
   if (AM::bVerbose())
-    vTrace("Op %s: acking pipeline job\n"_Stz, aJT[AM::eJobType(m_pOpJob)]);
+    vTrace("Op %s: acking pipeline job\n"_Stz, AM::szJobName(m_pOpJob));
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
 }
@@ -470,38 +470,31 @@ void Op::vPipeOut(Operand* pOperand)
              aOM[(_pMarker(pOperand))->eOpMarker()] :
              aCN[pOperand->eClass()],
            pOperand);
-
-  eJT eJobType = AM::eJobType(m_pOpJob);
   
-  switch(eJobType) {
-      
-    case JT_XMITOP:
-      vSendJobOperand(pOperand);
-      break;
-      
-    default:
-        
-        // get the next stage the xmit is supposed to xmit to
-        Stage* pStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
-        
-        // get the op to forward to depending on the cross topology
-        Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
-                                     m_nNode,
-                                     m_nPartition,
-                                     m_iNextOp);                
-      if (m_bAppendRight)
-        pOp->vAppendRight(pOperand);
-      else
-        pOp->vAppendLeft(pOperand);
-      
-      AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                  "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-                  pOperand->eClass() == CN_MARKER ?
-                  aOM[(_pMarker(pOperand))->eOpMarker()] :
-                  aCN[pOperand->eClass()],
-                  m_bAppendRight ? "right"_Stz : "left"_Stz,
-                  aCN[pOp->eClass()]);
-      break;
+  if (AM::szJobName(m_pOpJob)->bSame("xmitop"_Stz)) {
+    vSendJobOperand(pOperand);
+  } else {
+    
+      // get the next stage the xmit is supposed to xmit to
+      Stage* pStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+    
+      // get the op to forward to depending on the cross topology
+      Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                   m_nNode,
+                                   m_nPartition,
+                                   m_iNextOp);
+    if (m_bAppendRight)
+      pOp->vAppendRight(pOperand);
+    else
+      pOp->vAppendLeft(pOperand);
+    
+    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+                pOperand->eClass() == CN_MARKER ?
+                aOM[(_pMarker(pOperand))->eOpMarker()] :
+                aCN[pOperand->eClass()],
+                m_bAppendRight ? "right"_Stz : "left"_Stz,
+                aCN[pOp->eClass()]);
   }
   
 }

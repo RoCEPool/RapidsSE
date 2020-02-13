@@ -152,7 +152,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
+      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
   }
@@ -164,7 +164,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
+      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
   }
@@ -381,7 +381,7 @@ void Stage::vStartPipeline(void)
     
     // get first operator of this first stage
     Op* pOp = pStageNde->pOpVec()->pGet(0);
-    RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
+    RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
     
     // append a STARTMARKER
     pOp->vAppendLeft(new Marker(OM_STARTMARKER));

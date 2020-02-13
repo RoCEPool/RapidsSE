@@ -449,7 +449,7 @@ bool SePrompt::bExecutePipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_pJob->m_eJobType == JT_PIPELINE)
+  if (AM::szJobName(m_pJob)->bSame("pipeline"_Stz))
     return true;
   else
     return false;
