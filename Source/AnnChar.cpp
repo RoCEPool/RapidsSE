@@ -12,8 +12,8 @@ void AnnChar::vReset(void)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   m_cChar  = '\0';
-  m_iLine  = 0;
-  m_iCol   = 0;
+  m_iLine  = C_UNKNOWN;
+  m_iCol   = C_UNKNOWN;
 }
 
 /*============================================================================*/

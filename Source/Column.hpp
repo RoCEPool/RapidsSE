@@ -8,21 +8,25 @@ namespace Datums
   class Column : public Object
   {
     private:
-    i8    m_iColumnNo;
-    s32   m_sColumnNm;
+    i8    m_iColumnNo;      // this columns subscript
+    s32   m_sColumnNm;      // name of the column
+    eDM   m_eDatum;         // SE internal datum type (DM_INT etc)
+
+    eCT   m_eColumnType;    // column type (CT_INTEGER etc)
+    i8    m_iColumnLength;  // logical length of the column
+    i8    m_iColumnScale;   // logical scale of the column
   
-    eCT   m_eColumnType;
-    i8    m_iColumnLength;
-    i8    m_iColumnScale;
-    eDM   m_eDatum;
-    eDG   m_eGeneration;
-    bool  m_bIsNullable;
-    bool  m_bIsUnique;
-    bool  m_bIsPtnKey;
-    bool  m_bIsLastColumn;
+    bool  m_bIsNullable;    // is column nullable?
+    bool  m_bIsUnique;      // is column unique?
+    bool  m_bIsPtnKey;      // is part of partition key?
+    bool  m_bIsLastColumn;  // is last column
   
-    Datum_y32 m_xMaxVal;
-    Datum_y32 m_xMinVal;
+    eDG   m_eGeneration;    // data generation (DG_ASCENDING etc)
+    Datum_y32 m_xMaxVal;    // max value that can be generated
+    Datum_y32 m_xMinVal;    // min value that can be generated
+  
+    eFA   m_eFunApplied;    // function to be applied (FA_COUNT etc)
+    i8    m_iFunColArg;     // which column is the arg for applied fun
 
     // must be last
     Footer m_xFooter;

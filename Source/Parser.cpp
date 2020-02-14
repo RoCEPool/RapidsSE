@@ -232,7 +232,7 @@ void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
     vLoadRegs(bStripComments);
   
   if (! m_nLoaded) {
-    rxAnnChar.m_cChar = '\0';
+    rxAnnChar.vReset();
     return;
   }
   
@@ -243,11 +243,11 @@ void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 /*----------------------------------------------------------------------------*/
 /* put char back into parsing stream                                          */
 /*----------------------------------------------------------------------------*/
-void Parser::vUnget(char cParsed)
+void Parser::vUnget(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vRewindRegs(cParsed);
+  vRewindRegs(rxAnnChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,8 +329,8 @@ void Parser::vClearRegs(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   m_nLoaded = 0;
-  m_xAnnOne.m_cChar  = '\0';
-  m_xAnnTwo.m_cChar = '\0';
+  m_xAnnOne.vReset();
+  m_xAnnTwo.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,10 +343,9 @@ void Parser::vConsumeFirst(AnnChar& rxAnnChar)
   ASSERT(m_nLoaded);
 
   rxAnnChar = m_xAnnOne;
-  
   m_xAnnOne = m_xAnnTwo;
   
-  m_xAnnTwo.m_cChar = '\0';
+  m_xAnnTwo.vReset();
   
   m_nLoaded--;
 }
@@ -361,8 +360,9 @@ void Parser::vDiscardFirst(void)
   ASSERT(m_nLoaded);
   
   m_xAnnOne.m_cChar  = m_xAnnTwo.m_cChar;
-  m_xAnnTwo.m_cChar = '\0';
   
+  m_xAnnTwo.vReset();
+
   m_nLoaded--;
 }
 
@@ -445,15 +445,15 @@ void Parser::vLoadSecond(void)
 /*----------------------------------------------------------------------------*/
 /* rewind registers by one character                                          */
 /*----------------------------------------------------------------------------*/
-void Parser::vRewindRegs(char cParsed)
+void Parser::vRewindRegs(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   ASSERT(m_nLoaded < 2);
   ASSERT('\0' == m_xAnnTwo.m_cChar);
   
-  m_xAnnTwo.m_cChar = m_xAnnOne.m_cChar;
-  m_xAnnOne.m_cChar = cParsed;
+  m_xAnnTwo = m_xAnnOne;
+  m_xAnnOne = rxAnnChar;
   
   m_nLoaded++;
 }
@@ -465,16 +465,25 @@ void Parser::vStripComment(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
+  AnnChar xRewAnnChar;
+  
+  xRewAnnChar.vReset();
+  xRewAnnChar.m_cChar = ' ';
+
   switch (eCommentStyle()) {
       
     case CS_BLOCK:
       vBlockCommentSkip();
-      vRewindRegs(' ');
+      xRewAnnChar.m_iLine = m_iLineRaw;
+      xRewAnnChar.m_iCol  = m_iColRaw;
+      vRewindRegs(xRewAnnChar);
       break;
       
     case CS_LINE:
       vLineCommentSkip();
-      vRewindRegs(' ');
+      xRewAnnChar.m_iLine = m_iLineRaw;
+      xRewAnnChar.m_iCol  = m_iColRaw;
+      vRewindRegs(xRewAnnChar);
       break;
       
     default:
@@ -652,7 +661,7 @@ void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
       break;
       
     default:
-      rxAnnChar.m_cChar = '\0';
+      rxAnnChar.vReset();
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
@@ -766,6 +775,9 @@ void Parser::vNextCharFromRawLine(AnnChar& rxAnnChar)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   rxAnnChar.m_cChar = *m_acRawChar++;
+  
+  rxAnnChar.m_iLine = m_iLineRaw;
+  rxAnnChar.m_iCol  = ++m_iColRaw;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -779,13 +791,13 @@ void Parser::vReadRawLineFile(void)
 
   char cInput;
   
-  char* acRawLine = m_sRawLine.azChar();
+  char* acRawLineCrs = m_sRawLine.azChar();
   
   do {
     
     cInput = m_oRawFile.cGetChar();
     
-    *acRawLine++ = cInput;
+    *acRawLineCrs++ = cInput;
     
     if (C_END_OF_LINE == cInput)
       break;
@@ -796,7 +808,10 @@ void Parser::vReadRawLineFile(void)
   if (! cInput)
     m_bEOF = true;
   
-  *acRawLine++ = '\0';
+  *acRawLineCrs++ = '\0';
+  
+  m_iLineRaw++;
+  m_iColRaw = 0;
   
   m_acRawChar = m_sRawLine.azChar();
 }
@@ -850,6 +865,9 @@ void Parser::vReadRawLineStdin(void)
   
   *acRawLine++ = '\0';
   
+  m_iLineRaw++;
+  m_iColRaw = 0;
+
   m_acRawChar = m_sRawLine.azChar();
   
   ASSERT(! m_bEOF);

@@ -50,22 +50,25 @@ Column::Column(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_iColumnNo     = -1;
+  m_iColumnNo     = C_UNKNOWN;
   m_sColumnNm     = C_NO_NAME;
+  m_eDatum        = DM_NONE;
   
   m_eColumnType   = CT_NONE;
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
-  m_eDatum        = DM_NONE;
-  m_eGeneration   = DG_NONE;
+
   m_bIsNullable   = true;
   m_bIsUnique     = false;
   m_bIsPtnKey     = false;
-  
   m_bIsLastColumn = false;
   
+  m_eGeneration   = DG_NONE;
 //  m_xMaxVal.vInit();
 //  m_xMinVal.vInit();
+  
+  m_eFunApplied = FA_NONE;
+  m_iFunColArg  = C_UNKNOWN;
 
   _checkInitialised_(CN_COLUMN);
   

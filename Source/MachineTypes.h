@@ -13,12 +13,14 @@ namespace Base
   typedef float              d4;   // 4 byte single word float
   typedef double             d8;   // 8 byte double word float
   typedef long double        d10;  // 10 byte float
+
   
   typedef char               i1;   // 1 byte signed integer
   typedef short              i2;   // 2 byte signed integer
   typedef int                i4;   // 4 byte signed integer
   typedef long long          i8;   // 8 byte signed integer
-  
+  typedef __int128           i16;  // 16 byte signed integer
+
   typedef i8                 t8;   // transaction perspective
 
   typedef unsigned char      u1;   // 1 byte unsigned integer
