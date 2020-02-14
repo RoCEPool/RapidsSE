@@ -2,29 +2,30 @@
 /* _shortcuts -- a list of shortcuts                                          */
 /*============================================================================*/
 
-print "_shortcuts" ;
+print "_shortcuts";
 
 // alka's  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-shortcut a _lineitemay ;
+shortcut a _lineitemay;
 
 // ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-shortcut ad article_dump ;
+shortcut ad article_dump;
+shortcut b  _bm_insidx;
 shortcut ct /flow create table t (a integer);
-shortcut d  _pipeline ;
-shortcut dl _pipelineLineItem ;
+shortcut d  _pipeline;
+shortcut dl _pipelineLineItem;
 shortcut p _purgeAY;
-shortcut dn _defineNode ;
-shortcut en semantic ;
+shortcut dn _defineNode;
+shortcut en semantic;
 shortcut fn forget node node9 abc def;
-shortcut ln show nodes ;
-shortcut lw logwrite ;
+shortcut ln show nodes;
+shortcut lw logwrite;
 shortcut o  olist;
-shortcut pt _passthru ;
-shortcut r  _lineitemrjh ;
-shortcut s  _select ;
-shortcut sc startCluster ;
+shortcut pt _passthru;
+shortcut r  _lineitemrjh;
+shortcut s  _select;
+shortcut sc startCluster;
 shortcut u  _upsertRJH;
 shortcut v  vortex;
 

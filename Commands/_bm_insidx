@@ -8,13 +8,13 @@ pwf ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_1;
-print "** 1/n) __report";
+print "** 1/n) run __report setup";
 
 __report
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_2;
-print "** 2/n) create table BM_INSIDX_TABLE";
+print "** 2/n) create ALLCOLS_TABLE table";
 
 trackMemory;
 
@@ -22,21 +22,24 @@ _allCols_Table
 
 lscol ALLCOLS_TABLE;
 
-create index ALLCOLS_INDEX_int on ALLCOLS_TABLE (int);
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INSIDX_3;
+print "** 3/n) create ALLCOLS_INDEX_int index on ALLCOLS_TABLE(int) column";
+
+create index ALLCOLS_INDEX_int on ALLCOLS_TABLE(int);
 
 lsidx ALLCOLS_TABLE;
 
 lsidxcol ALLCOLS_TABLE ALLCOLS_INDEX_int;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-logSection __BM_INSIDX_3;
-print "** 3/n) ";
-
+logSection __BM_INSIDX_4;
+print "** 4/n) ";
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_7;
-print "** 7/n) ";
+print "** 7/n) drop ALLCOLS_TABLE";
 
 drop table ALLCOLS_TABLE;
 
