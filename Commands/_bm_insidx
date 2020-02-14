@@ -8,11 +8,13 @@ pwf ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_1;
-print "** 1/n) ";
+print "** 1/n) __report";
+
+__report
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_2;
-print "** 2/n) createTable";
+print "** 2/n) create table BM_INSIDX_TABLE";
 
 trackMemory;
 
