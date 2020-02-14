@@ -20,6 +20,8 @@
 "job_AnalyzeIndex.sen"   include
 "job_AnalyzeTable.sen"   include
 
+"job_BufferGenOp.sen"    include
+
 "job_CancelQuery.sen"    include
 "job_Cf.sen"             include
 "job_CompactIndex.sen"   include
