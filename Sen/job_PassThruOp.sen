@@ -11,6 +11,9 @@
 
   >>logEntry <SEED_REQ>
 
+  0 locals| bufferCount |
+  "__REPORT" locals| sReportTable |
+
   // set topolgy in the op
   <topology> op.topology!
 
@@ -30,6 +33,53 @@
 
     // decode kind
     Operand[].kind case
+
+       ZK_CSVBUFFER of
+         //"Operand:- ZK_CSVBUFFER" .verbose
+         bufferCount 1 + to bufferCount
+         Operand[].delete
+         true
+      endof
+
+      ZK_EOSMARKER of
+        //"Operand:- ZK_EOSMARKER" .verbose
+        Operand[].delete
+        Operand[].newCsvBuffer
+        Operand[].report
+        bufferCount "passThru" "%v,%v" str.format Operand[].csvAppend
+        Operand[].pipeout
+
+        Operand[].newEosMarker
+        Operand[].pipeout
+        true
+      endof
+
+      ZK_PULSEMARKER of
+
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+
+        // new a stream def
+        Operand[].newStreamDef
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+
+        sReportTable checkIsValidTable not if
+          op.pipelineJob@ <ERROR_JOB> !!logError
+          Operand[].delete
+          Operand[].newErrorMarker
+        else
+          sReportTable pushTable assert
+          sReportTable find execute to table[]
+        then
+
+        Operand[].pipeOut
+        true
+      endof
 
       // handle other operand as generic operands
       jobOperand::generic

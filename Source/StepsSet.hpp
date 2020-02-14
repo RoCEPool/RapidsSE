@@ -867,6 +867,7 @@ public:
   void vOpTopologyStore(void);
 
   // operand
+  void vOperandCsvAppend(void);
   void vOperandBide(void);
   void vOperandCsvData(void);
   void vOperandDelete(void);
@@ -881,6 +882,7 @@ public:
   void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandNewEosMarker(void);
+  void vOperandNewCsvBuffer(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewPulseMarker(void);
   void vOperandNewStartMarker(void);
@@ -891,6 +893,7 @@ public:
   void vOperandNext(void);
   void vOperandPipeOut(void);
   void vOperandPipeToJob(void);
+  void vOperandReport(void);
   void vOperandRowCountFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);

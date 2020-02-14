@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Operand(void)
 {
+  
+  vAddStep("Operand[].csvAppend"_Stz,      &Step::vOperandCsvAppend);
   vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
   vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
@@ -24,6 +26,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
+  vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vOperandNewPulseMarker);
@@ -35,6 +38,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vOperandPipeToJob);
+  vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
@@ -55,6 +59,27 @@ void Step::vOperandBide(void)
     ASSERT(m_pTask->bIsLocked());
     m_pTask->vSchedulerAct(SA_BIDE);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvAppend -- append a csv row to the csv operand                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCsvAppend(void)
+{
+  ENTRY(); // ENTRY("vOperandCsvAppend"_Stz);
+  
+  s256 sCsvRow;
+  m_pDataStack->vPopStr(sCsvRow,__func__);
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  i8 nBytes = sCsvRow.nSize();
+  if (pCsvBuffer->nFreeBytes() < nBytes + 1)
+    ASSERT(0);
+  
+  Stz* szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
+  StrLib::vCopyLen(szRecord->azChar(),sCsvRow.azChar(),nBytes - 1);
   
   EXIT();
 }
@@ -376,6 +401,20 @@ void Step::vOperandNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newCsbBuffer -- new a csv buffer                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCsvBuffer(void)
+{
+  ENTRY(); // ENTRY("vOperandNewCsvBuffer"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
+  
+  m_pRegSet->m_xpOperandA = new CsvBuffer;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newEosMarker -- new an end marker                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEosMarker(void)
@@ -519,6 +558,19 @@ void Step::vOperandPipeToJob(void)
   pOp->vPipeToJob(*m_pRegSet->m_xpOperandA);
   
   m_pRegSet->m_xpOperandA = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].report -- mark operand for report processing ?                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandReport(void)
+{
+  ENTRY(); // ENTRY("vOperandReport"_Stz);
+  
+  Operand* pOperand = *m_pRegSet->m_xpOperandA;
+  pOperand->vTailProcessing(TP_REPORT);
   
   EXIT();
 }

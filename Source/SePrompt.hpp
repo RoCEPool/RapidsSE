@@ -77,7 +77,6 @@ namespace Prompt
     void vJobWaitCond(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    bool bMunge(void);
     bool bNoWait(void);
     i8*  iaObjectsInPool(void);
     bool bPassesCheck(void);
