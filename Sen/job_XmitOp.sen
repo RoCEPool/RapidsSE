@@ -5,7 +5,7 @@
 " job_XmitOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for cancelQuery                            (on node where spawned) */
+/* execute for xmit request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : XmitOp_req ( -- )
 

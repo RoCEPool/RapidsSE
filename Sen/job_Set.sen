@@ -67,6 +67,7 @@
 
 "Job_OutputOp.sen"       include
 
+"Job_PassThruOp.sen"     include
 "Job_Periodic.sen"       include
 "Job_PeriodicOp.sen"     include
 "Job_Ping.sen"           include
