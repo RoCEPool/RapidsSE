@@ -52,18 +52,18 @@ Column::Column(void)
   
   m_iColumnNo     = C_UNKNOWN;
   m_sColumnNm     = C_NO_NAME;
+  m_eDatum        = DM_NONE;
   
   m_eColumnType   = CT_NONE;
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
-  m_eDatum        = DM_NONE;
-  m_eGeneration   = DG_NONE;
+
   m_bIsNullable   = true;
   m_bIsUnique     = false;
   m_bIsPtnKey     = false;
-  
   m_bIsLastColumn = false;
   
+  m_eGeneration   = DG_NONE;
 //  m_xMaxVal.vInit();
 //  m_xMinVal.vInit();
   

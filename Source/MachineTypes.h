@@ -19,7 +19,7 @@ namespace Base
   typedef short              i2;   // 2 byte signed integer
   typedef int                i4;   // 4 byte signed integer
   typedef long long          i8;   // 8 byte signed integer
-  typedef __int128           i16;
+  typedef __int128           i16;  // 16 byte signed integer
 
   typedef i8                 t8;   // transaction perspective
 
