@@ -120,6 +120,8 @@
 
 "job_XmitOp.sen"         include
 
+"job_BM_InsIdxOp.sen"    include
+
 "otherJobs"              include-subdir
 
 "job_Start.sen"          include // last

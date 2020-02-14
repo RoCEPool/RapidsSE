@@ -49,13 +49,14 @@ begin
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-logSection __BM_INSIDX_7;
+logSection __BM_INSIDX_5;
 print "** 5/6) drop ALLCOLS_TABLE";
 
 drop table ALLCOLS_TABLE;
 
 memoryLeaks fatal;
 
+logSection __BM_INSIDX_6;
 print "** 6/6) success _bm_insidx";
 
 /*============================================================================*/
