@@ -6,6 +6,8 @@ startCluster;
 
 pwf ;
 
+trackMemory;
+
 pipeline p_passthru
 begin
 
@@ -20,7 +22,7 @@ begin
 
 end;
 
-memoryLeaks ;
+memoryLeaks fatal;
 
 print "** success _passthru";
 

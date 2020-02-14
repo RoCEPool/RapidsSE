@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BufferGen_req ( -- )
+: BufferGenOp_req ( -- )
 
   >>logEntry <SEED_REQ>
 
@@ -35,7 +35,7 @@
     Operand[].kind case
 
       ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
+        "Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
 
         // pipeout a single generated csv buffer
