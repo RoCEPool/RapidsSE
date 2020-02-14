@@ -41,6 +41,8 @@
         Operand[].pipeOut
 
         <nBuffers> 0 do
+          I "buffer# %v" .printf
+
           csvBuffer::new to Operand[]
           Operand[].pipeOut
         loop
