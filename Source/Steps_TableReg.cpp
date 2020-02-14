@@ -1,0 +1,62 @@
+/*============================================================================*/
+/* Steps_table[].cpp - table step group                                         */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_TableReg(void)
+{
+  vAddStep("table[].get"_Stz,                &Step::vTableGet);
+  vAddStep("table[].set"_Stz,                &Step::vTableSet);
+  vAddStep("table[].tablePtn@"_Stz,          &Step::vTablePtnFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].get -- get table                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableGet(void)
+{
+  ENTRY(); // ENTRY("vTableGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].set -- set table                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableSet(void)
+{
+  ENTRY(); // ENTRY("vTableSet"_Stz);
+  
+  m_pRegSet->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].tablePtn@ -- feth the table partition                              */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnFetch(void)
+{
+  ENTRY(); // ENTRY("vTableSet"_Stz);
+  
+  Job* pJob = m_pTask->m_pJob;
+  
+  i8 iPtn = pJob->m_pOp->nPartition();
+  
+  i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
+  TablePtn* pTablePtn = m_pRegSet->m_xpTable->pSlots()->pPartition(iSlot);
+  
+  m_pDataStack->vPushPtr(pTablePtn);
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
