@@ -13,6 +13,8 @@
 
   job::this locals| pJob_BufferGen |
 
+  <nBuffers> "Number of buffers: %v" .printf
+
   // set topolgy in the op
   <topology> op.topology!
 
