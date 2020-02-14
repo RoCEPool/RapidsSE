@@ -40,12 +40,10 @@
         "Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
 
-        // pipeout a single generated csv buffer
-        //begin
-        csvBuffer::new to Operand[]
-        Operand[].pipeOut
-        //false
-        //while repeat
+        <nBuffers> 0 do
+          csvBuffer::new to Operand[]
+          Operand[].pipeOut
+        loop
 
         Operand[].newEosMarker
         Operand[].pipeOut

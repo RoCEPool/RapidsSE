@@ -22,7 +22,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on origin:
-    bufferGenOp 1 | passThruOp | stageC
+    bufferGenOp 10 | passThruOp | stageC
 
   stage stageC on origin:
     // reportOp | outputOp | sinkOp | stageA
