@@ -28,6 +28,7 @@ namespace Registers
     REG<Table>     m_xpTable;
     REG<StreamDef> m_xpStreamDef;
     REG<TablePtn>  m_xpTablePtn;
+    REG<Index>     m_xpIndex;
     REG<Operand>   m_xpSubset;
   
     REG<Tx>        m_xpTx;
