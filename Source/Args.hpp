@@ -9,7 +9,7 @@ namespace Arguments
   {
     friend class       Oblique::AM;
     friend class StorageEngine::Engine;
-    friend class   LexicalAnalysis::Input;
+    friend class   LexicalAnalysis::TokenStream;
     friend class   LexicalAnalysis::Characterise;
     friend class   LexicalAnalysis::Tokeniser;
 

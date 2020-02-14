@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Input.hpp -- Input Processor                                               */
+/* TokenStream.hpp -- TokenStream Processor                                               */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace LexicalAnalysis
 {
-  class Input : public Object
+  class TokenStream : public Object
   {
   private:
     Tokeniser* m_pTokeniser; // input stream tokeniser
@@ -19,8 +19,8 @@ namespace LexicalAnalysis
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Input(void);
-    ~Input(void) noexcept(false);
+    TokenStream(void);
+    ~TokenStream(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
@@ -47,7 +47,7 @@ namespace LexicalAnalysis
     Footer* aFooter(void);
   };
   
-  Input* _pInput(void* aAddr);
+  TokenStream* _pInput(void* aAddr);
 }
 
 /*============================================================================*/

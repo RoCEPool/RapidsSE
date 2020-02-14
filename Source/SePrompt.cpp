@@ -263,7 +263,7 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pInput = this->pInput();
+  TokenStream* pInput = this->pInput();
   
   TokenVec* pTknVec = this->pTokenVec();
   bool bBlankLine = pInput->bBlankLine(pTknVec);
@@ -462,7 +462,7 @@ bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pInput = this->pInput();
+  TokenStream* pInput = this->pInput();
   
   bool bExecuteFile = pInput->bExecuteFile(m_pSession->pTokenVec());
   
@@ -564,7 +564,7 @@ void SePrompt::vGetCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  Input* pInput = this->pInput();
+  TokenStream* pInput = this->pInput();
   if (pInput->bStdIn())
     vDebugPoint();
     
@@ -574,7 +574,7 @@ void SePrompt::vGetCommand(void)
 /*----------------------------------------------------------------------------*/
 /* get command input processor                                                */
 /*----------------------------------------------------------------------------*/
-Input* SePrompt::pInput(void)
+TokenStream* SePrompt::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1044,7 +1044,7 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->eJobState());
   
-  Input* pInput = this->pInput();
+  TokenStream* pInput = this->pInput();
   
   m_pSession->pTokenVec()->vSetTokens();
   
@@ -1067,7 +1067,7 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pInput = this->pInput();
+  TokenStream* pInput = this->pInput();
   if (pInput->bStdIn())
     return true;
   else

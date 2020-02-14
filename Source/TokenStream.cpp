@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Input.cpp -- Input Processor                                               */
+/* TokenStream.cpp -- TokenStream Processor                                               */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Input* LexicalAnalysis::_pInput(void* aAddr)
+TokenStream* LexicalAnalysis::_pInput(void* aAddr)
 {
-  Input* pInput = reinterpret_cast<Input*>(aAddr);
+  TokenStream* pInput = reinterpret_cast<TokenStream*>(aAddr);
   
   RASSERT_TYPE(pInput,CN_TOKENSTREAM);
   
@@ -25,7 +25,7 @@ Input* LexicalAnalysis::_pInput(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Input::operator new(size_t)
+void* TokenStream::operator new(size_t)
 {
   Object* pObject = HeapMem::pAllocate(CN_TOKENSTREAM);
   
@@ -35,9 +35,9 @@ void* Input::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Input::operator delete(void* aAddr)
+void TokenStream::operator delete(void* aAddr)
 {
-  Input* pInput = reinterpret_cast<Input*>(aAddr);
+  TokenStream* pInput = reinterpret_cast<TokenStream*>(aAddr);
   
   HeapMem::vFree(pInput);
 }
@@ -45,7 +45,7 @@ void Input::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Input::Input(void)
+TokenStream::TokenStream(void)
 : Object(CN_TOKENSTREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
@@ -71,7 +71,7 @@ Input::Input(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Input::~Input(void) noexcept(false)
+TokenStream::~TokenStream(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -86,7 +86,7 @@ Input::~Input(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a command file                                         */
 /*----------------------------------------------------------------------------*/
-bool Input::bExecuteFile(TokenVec* pTknVec_arg)
+bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -102,7 +102,7 @@ bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* set file to run                                                            */
 /*----------------------------------------------------------------------------*/
-bool Input::bRunFile(TokenVec* pTknVec_arg)
+bool TokenStream::bRunFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -120,7 +120,7 @@ bool Input::bRunFile(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void Input::vPushFile(Stz* aFileName)
+void TokenStream::vPushFile(Stz* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -137,7 +137,7 @@ void Input::vPushFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 /* check for a specific number of tokens                                      */
 /*----------------------------------------------------------------------------*/
-bool Input::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
+bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -151,7 +151,7 @@ bool Input::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
 /*----------------------------------------------------------------------------*/
-bool Input::bBlankLine(TokenVec* pTknVec_arg)
+bool TokenStream::bBlankLine(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -164,7 +164,7 @@ bool Input::bBlankLine(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
-void Input::vGetCommand(TokenVec* pTknVec_arg)
+void TokenStream::vGetCommand(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -195,7 +195,7 @@ void Input::vGetCommand(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* get next token from input                                                  */
 /*----------------------------------------------------------------------------*/
-bool Input::bGetToken(Token* pTkn)
+bool TokenStream::bGetToken(Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -212,7 +212,7 @@ bool Input::bGetToken(Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* get command tokens from input                                              */
 /*----------------------------------------------------------------------------*/
-void Input::vGetTokens(TokenVec* pTknVec_arg)
+void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -258,7 +258,7 @@ void Input::vGetTokens(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
-bool Input::bTestFile(Stz* aFileName)
+bool TokenStream::bTestFile(Stz* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -271,7 +271,7 @@ bool Input::bTestFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 /* tokenize string                                                            */
 /*----------------------------------------------------------------------------*/
-void Input::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
+void TokenStream::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -287,7 +287,7 @@ void Input::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void Input::vUseStdin(void)
+void TokenStream::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -299,7 +299,7 @@ void Input::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* using stdin ?                                                              */
 /*----------------------------------------------------------------------------*/
-bool Input::bStdIn(void)
+bool TokenStream::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
 
@@ -312,7 +312,7 @@ bool Input::bStdIn(void)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Input);
+__aFooterFunction(TokenStream);
 
 /*============================================================================*/
 /* end                                                                        */

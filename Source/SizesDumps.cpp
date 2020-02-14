@@ -658,7 +658,7 @@ i8 giClassSize[]
   /* */ sizeof(TmeVal),             // CN_TMEVAL
   /* */ sizeof(Token),              // CN_TOKEN
   /* */ sizeof(Tokeniser),          // CN_TOKENISER
-  /* */ sizeof(Input),              // CN_TOKENSTREAM
+  /* */ sizeof(TokenStream),              // CN_TOKENSTREAM
   /* */ sizeof(TokenVec),           // CN_TOKENVEC
   /* */ sizeof(TspVal),             // CN_TSPVAL
   /* */ sizeof(Tx),                 // CN_TX

@@ -50,7 +50,7 @@ namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
                           class Job_Operand; class Job_Universal;             }
-namespace LexicalAnalysis { class Input; class Characterise; class Tokeniser;
+namespace LexicalAnalysis { class TokenStream; class Characterise; class Tokeniser;
                             class TokenVec;                                   }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
