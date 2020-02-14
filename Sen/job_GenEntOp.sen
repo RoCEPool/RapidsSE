@@ -1,0 +1,110 @@
+/*============================================================================*/
+/* job_genEntOp.sen -- Generate Entry Operator                                */
+/*============================================================================*/
+
+" job_genEntOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* genEntOp request                                   (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: genEntOp_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_genEntOp |
+  0 locals| pTable |
+
+  <tableNm> locals| sTableNm |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_PULSEMARKER of
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+
+        // new a stream def
+        Operand[].newStreamDef
+        Operand[].pipeOut
+
+        // pipeout a single generated csv buffer
+        //begin
+        table[].get table.genCsvBuffer to Operand[]
+        Operand[].pipeOut
+        //false
+        //while repeat
+
+        Operand[].newEosMarker
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+        // check if table exits
+        sTableNm checkIsValidTable not if
+          op.pipelineJob@ <ERROR_JOB>
+          Operand[].delete
+          Operand[].newErrorMarker
+        else
+          // move to table folder and find the table
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+        then
+
+        Operand[].pipeOut
+        true
+      endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  "*** genEntOP EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: genEntOp :: genEntOp <tableNm> <topology> <nextStage> <nextOp> ;
+
+jobInfo: genEntOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
