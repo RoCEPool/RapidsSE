@@ -122,7 +122,6 @@ enum eCN : u2 // Class Number
   /*  91 0x05B     4168B Heap:M */ CN_INDEXDEF,
   /*  92 0x05C      232B Heap:S */ CN_INDEXTREE,
   /*  93 0x05D     8224B Heap:M */ CN_INDEXTREEVEC,
-  /*  94 0x05E       24B Heap:M */ CN_INPUT,
   /*  95 0x05F     8216B Heap:M */ CN_IDXCOLVEC,
   /*  96 0x060     8224B Heap:M */ CN_IDXVEC,
   /*  97 0x061  1000088B Heap:L */ CN_INGESTCHUNK,
@@ -321,6 +320,7 @@ enum eCN : u2 // Class Number
   /*  99 0x063       16B Heap:I */ CN_TMEVAL,
   /* 276 0x114      304B Heap:S */ CN_TOKEN,
   /* 277 0x115    56856B Heap:M */ CN_TOKENISER,
+  /*  94 0x05E       24B Heap:M */ CN_TOKENSTREAM,
   /* 278 0x116     8232B Heap:M */ CN_TOKENVEC,
   /*  99 0x063       16B Heap:I */ CN_TSPVAL,
   /* 279 0x117      432B Heap:S */ CN_TX,
@@ -458,7 +458,6 @@ static Stz* aCN[]
   /*  91 0x05B */ "INDEXDEF"_Stz,            // CN_INDEXDEF
   /*  92 0x05C */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /*  93 0x05D */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
-  /*  94 0x05E */ "INPUT"_Stz,               // CN_INPUT
   /*  95 0x05F */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /*  96 0x060 */ "IDXVEC"_Stz,              // CN_IDXVEC
   /*  97 0x061 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
@@ -657,6 +656,7 @@ static Stz* aCN[]
   /*  99 0x063 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* 276 0x114 */ "TOKEN"_Stz,               // CN_TOKEN
   /* 277 0x115 */ "TOKENISER"_Stz,           // CN_TOKENISER
+  /*  94 0x05E */ "TOKENSTREAM"_Stz,         // CN_TOKENSTREAM
   /* 278 0x116 */ "TOKENVEC"_Stz,            // CN_TOKENVEC
   /*  99 0x063 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /* 279 0x117 */ "TX"_Stz,                  // CN_TX

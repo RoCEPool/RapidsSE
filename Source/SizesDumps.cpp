@@ -123,7 +123,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_INDEXDEF
   /* */ &Dump::vDummy,           // CN_INDEXTREE
   /* */ &Dump::vDummy,           // CN_INDEXTREEVEC
-  /* */ &Dump::vDummy,           // CN_INPUT
   /* */ &Dump::vDummy,           // CN_IDXCOLVEC
   /* */ &Dump::vDummy,           // CN_IDXVEC
   /* */ &Dump::vDummy,           // CN_INGESTCHUNK
@@ -322,6 +321,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_TMEVAL
   /* */ &Token::vDump,           // CN_TOKEN
   /* */ &Tokeniser::vDump,       // CN_TOKENISER
+  /* */ &Dump::vDummy,           // CN_TOKENSTREAM
   /* */ &Dump::vInvalid,         // CN_TOKENVEC
   /* */ &Dump::vInvalid,         // CN_TSPVAL
   /* */ &Tx::vDump,              // CN_TX
@@ -460,7 +460,6 @@ i8 giClassSize[]
   /* */ sizeof(IndexDef),           // CN_INDEXDEF
   /* */ sizeof(IndexTree),          // CN_INDEXTREE
   /* */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
-  /* */ sizeof(Input),              // CN_INPUT
   /* */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* */ sizeof(IdxVec),             // CN_IDXVEC
   /* */ sizeof(IngestChunk),        // CN_INGESTCHUNK
@@ -659,6 +658,7 @@ i8 giClassSize[]
   /* */ sizeof(TmeVal),             // CN_TMEVAL
   /* */ sizeof(Token),              // CN_TOKEN
   /* */ sizeof(Tokeniser),          // CN_TOKENISER
+  /* */ sizeof(Input),              // CN_TOKENSTREAM
   /* */ sizeof(TokenVec),           // CN_TOKENVEC
   /* */ sizeof(TspVal),             // CN_TSPVAL
   /* */ sizeof(Tx),                 // CN_TX
@@ -797,7 +797,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INDEXDEF
   /* */ HT_TRANSIENT_SMALL,   // CN_INDEXTREE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INDEXTREEVEC
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_INPUT
   /* */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* */ HT_TRANSIENT_LARGE,   // CN_INGESTCHUNK
@@ -996,6 +995,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_TMEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_TOKEN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TOKENISER
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_TOKENSTREAM
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TOKENVEC
   /* */ HT_INVALID,           // CN_TSPVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_TX

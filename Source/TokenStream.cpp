@@ -17,7 +17,7 @@ Input* LexicalAnalysis::_pInput(void* aAddr)
 {
   Input* pInput = reinterpret_cast<Input*>(aAddr);
   
-  RASSERT_TYPE(pInput,CN_INPUT);
+  RASSERT_TYPE(pInput,CN_TOKENSTREAM);
   
   return pInput;
 }
@@ -27,7 +27,7 @@ Input* LexicalAnalysis::_pInput(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Input::operator new(size_t)
 {
-  Object* pObject = HeapMem::pAllocate(CN_INPUT);
+  Object* pObject = HeapMem::pAllocate(CN_TOKENSTREAM);
   
   return pObject;
 }
@@ -46,9 +46,9 @@ void Input::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Input::Input(void)
-: Object(CN_INPUT)
+: Object(CN_TOKENSTREAM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
 
   m_pTokeniser = new Tokeniser;
@@ -63,9 +63,9 @@ Input::Input(void)
   m_pTokeniser->vNormal(true);
 
     
-  _checkInitialised_(CN_INPUT);
+  _checkInitialised_(CN_TOKENSTREAM);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ Input::Input(void)
 /*----------------------------------------------------------------------------*/
 Input::~Input(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   delete m_pTokeniser;
 }
@@ -88,7 +88,7 @@ Input::~Input(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   if (! bTestFile(pTknVec_arg->pGet(0)->szTerm()))
     return false;
@@ -104,7 +104,7 @@ bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 bool Input::bRunFile(TokenVec* pTknVec_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
 //  if ( ! bTokenCheck(1) )
 //    if (! pTkn(1)->bSame(";"_Stz))
@@ -122,7 +122,7 @@ bool Input::bRunFile(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 void Input::vPushFile(Stz* aFileName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   s256 sPath;
   
@@ -139,7 +139,7 @@ void Input::vPushFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 bool Input::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   if (pTknVec_arg->pGet(nTokens)->bHasText()) {
     return false;
@@ -153,7 +153,7 @@ bool Input::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 bool Input::bBlankLine(TokenVec* pTknVec_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   if (0 != (*pTknVec_arg)[0]->iLength())
     return false;
@@ -166,7 +166,7 @@ bool Input::bBlankLine(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 void Input::vGetCommand(TokenVec* pTknVec_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   vGetTokens(pTknVec_arg);
     
@@ -197,7 +197,7 @@ void Input::vGetCommand(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 bool Input::bGetToken(Token* pTkn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   m_pTokeniser->vNextToken(pTkn);
   
@@ -214,7 +214,7 @@ bool Input::bGetToken(Token* pTkn)
 /*----------------------------------------------------------------------------*/
 void Input::vGetTokens(TokenVec* pTknVec_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   while (true) {
     
@@ -260,7 +260,7 @@ void Input::vGetTokens(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 bool Input::bTestFile(Stz* aFileName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   if (File::bExists(aFileName))
     return true;
@@ -273,7 +273,7 @@ bool Input::bTestFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 void Input::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   s48K sCommand(aCommand);
   
@@ -289,7 +289,7 @@ void Input::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 void Input::vUseStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   m_pTokeniser->vUseStdin();
   m_pTokeniser->vLineMode(true);
@@ -301,7 +301,7 @@ void Input::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 bool Input::bStdIn(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
 
   bool bIsStdIn = m_pTokeniser->bStdin();
   
