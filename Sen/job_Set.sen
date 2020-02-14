@@ -48,7 +48,6 @@
 "job_ForgetNode.sen"      include
 
 "job_GenCsvOp.sen"        include
-"job_GenEntOp.sen"        include
 
 "Job_InsertOp.sen"        include
 "job_InsertRow.sen"       include
@@ -120,6 +119,7 @@
 
 "job_XmitOp.sen"         include
 
+"job_BM_GenEntOp.sen"    include
 "job_BM_InsIdxOp.sen"    include
 
 "otherJobs"              include-subdir
