@@ -18,6 +18,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
+  vAddStep("Operand[].isReport"_Stz,       &Step::vOperandIsReport);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
@@ -163,6 +164,19 @@ void Step::vOperandIsNull(void)
   ENTRY(); // ENTRY("vOperandIsNull"_Stz);
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpOperandA.bIsNull() ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].isReport -- is operand for report processing ?                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandIsReport(void)
+{
+  ENTRY(); // ENTRY("vOperandIsReport"_Stz);
+  
+  Operand* pOperand = *m_pRegSet->m_xpOperandA;
+  m_pDataStack->vPushInt(pOperand->eTailProcessing() == TP_REPORT ? true : false);
   
   EXIT();
 }
