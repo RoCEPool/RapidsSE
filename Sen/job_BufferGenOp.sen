@@ -74,9 +74,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: BufferGen :: BufferGen <topology> <nextStage> <nextOp> ;
+jobSyntax: bufferGenOp :: bufferGenOp <topology> <nextStage> <nextOp> ;
 
-jobInfo: BufferGen
+jobInfo: bufferGenOp
 {
   <?jobDesc?>  = "--description of job--"
   
