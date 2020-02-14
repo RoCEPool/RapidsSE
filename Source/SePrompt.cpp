@@ -77,7 +77,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   if (bSethScript)
     m_pSession->m_sToDo = ""_Stz;
   else
-    m_pSession->m_sToDo = "_shortcuts"_Stz;
+    m_pSession->m_sToDo = "_seprompt"_Stz;
   
   m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
