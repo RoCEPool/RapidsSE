@@ -43,7 +43,8 @@ Operand::Operand(eCN eClassNo)
 : AlignedObject(eClassNo,sizeof(Operand))
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-    
+  
+  m_eTailProcessing = TP_OUTPUT;
   MemLib::vZero(m__Padding,sizeof(m__Padding),eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
@@ -57,6 +58,25 @@ Operand::~Operand(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set tail processing of the operand                                         */
+/*----------------------------------------------------------------------------*/
+void Operand::vTailProcessing(eTP eTailProcessing)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eTailProcessing = eTailProcessing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail processing of the operand                                         */
+/*----------------------------------------------------------------------------*/
+eTP Operand::eTailProcessing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eTailProcessing;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
