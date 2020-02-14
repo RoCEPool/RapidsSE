@@ -2,7 +2,7 @@
 /* Characterise.cpp -- read input as chars, removing line and block comments  */
 /*============================================================================*/
 
-#include "TokenStream.h"
+#include "LexicalAnalysis.h"
 
 
 extern Args gxArgs;

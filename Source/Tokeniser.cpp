@@ -2,7 +2,7 @@
 /* Tokeniser.cpp -- Tokeniser : divide input stream into tokens               */
 /*============================================================================*/
 
-#include "TokenStream.h"
+#include "LexicalAnalysis.h"
 
 
 

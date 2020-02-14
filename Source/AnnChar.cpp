@@ -2,7 +2,7 @@
 /* AnnChar.cpp -- Annotated Char                                              */
 /*============================================================================*/
 
-#include "TokenStream.h"
+#include "LexicalAnalysis.h"
 
 /*----------------------------------------------------------------------------*/
 /* reset this annotated char                                                  */

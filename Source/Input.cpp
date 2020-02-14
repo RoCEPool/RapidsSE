@@ -2,7 +2,7 @@
 /* Input.cpp -- Input Processor                                               */
 /*============================================================================*/
 
-#include "TokenStream.h"
+#include "LexicalAnalysis.h"
 
 
 
