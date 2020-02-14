@@ -40,6 +40,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CARRYOVER
   /* */ &Dump::vDummy,           // CN_CATALOG
   /* */ &Dump::vDummy,           // CN_CATALOG
+  /* */ &Parser::vDump,          // CN_CHARACTERISE
   /* */ &Dump::vDummy,           // CN_CLAUSE_FROM
   /* */ &Dump::vDummy,           // CN_CLAUSE_GROUPBY
   /* */ &Dump::vDummy,           // CN_CLAUSE_JOIN
@@ -205,7 +206,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_OPVEC
 
   /* */ &Dump::vInvalid,         // CN__P__
-  /* */ &Parser::vDump,          // CN_PARSER
   /* */ &Dump::vInvalid,         // CN_PATHVEC
   /* */ &Dump::vInvalid,         // CN_PERUSE
   /* */ &Dump::vInvalid,         // CN_PIPE
@@ -376,6 +376,7 @@ i8 giClassSize[]
   /* */ sizeof(Calculator),         // CN_CALCULATOR
   /* */ sizeof(CarryOver),          // CN_CARRYOVER
   /* */ sizeof(Catalog),            // CN_CATALOG
+  /* */ sizeof(Parser),             // CN_CHARACTERISE
   /* */ sizeof(Clause_From),        // CN_CLAUSE_FROM
   /* */ sizeof(Clause_GroupBy),     // CN_CLAUSE_GROUPBY
   /* */ sizeof(Clause_Join),        // CN_CLAUSE_JOIN
@@ -522,7 +523,7 @@ i8 giClassSize[]
   /* */ sizeof(MetaInherit),        // CN_METAINHERIT
   /* */ sizeof(MetaInherits),       // CN_METAINHERITS
   /* */ sizeof(MetaMember),         // CN_METAMEMBER
-  /* */ sizeof(MetaType),      // CN_METATYPE
+  /* */ sizeof(MetaType),           // CN_METATYPE
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N' - ('A' - 1),            // CN__N__
@@ -542,7 +543,6 @@ i8 giClassSize[]
   /* */ sizeof(OpVec),              // CN_OPVEC
 
   /* */ 'P' - ('A' - 1),            // CN__P__
-  /* */ sizeof(Parser),             // CN_PARSER
   /* */ sizeof(PathVec),            // CN_PATHVEC
   /* */ sizeof(Peruse),             // CN_PERUSE
   /* */ sizeof(Fifo),               // CN_PIPE
@@ -713,6 +713,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CALCULATOR
   /* */ HT_INVALID,           // CN_CARRYOVER
   /* */ HT_INVALID,           // CN_CATALOG
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_CHARACTERISE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_FROM
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_GROUPBY
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_JOIN
@@ -879,7 +880,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_OPVEC
 
   /* */ HT_INVALID,           // CN__P__
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
   /* */ HT_TRANSIENT_SMALL,   // CN_PIPE

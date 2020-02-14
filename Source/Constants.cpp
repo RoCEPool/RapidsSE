@@ -289,7 +289,7 @@ void Constants::vAddConstantsCpp(void)
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
   /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
 
-  /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
+  /* 40 */ vAddConstant("CN_CHARACTERISE"_Stz,       CN_CHARACTERISE);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
 

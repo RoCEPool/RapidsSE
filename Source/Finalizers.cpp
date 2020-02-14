@@ -35,6 +35,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CALCULATOR
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
+  /* 78 */ &Finalize::vUndefined,         // CN_CHARACTERISE
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_FROM
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_GROUPBY
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_JOIN
@@ -201,7 +202,6 @@ pFINALIZE *gpFinalize[]
   /* 28 */ &Finalize::vUndefined,         // CN_OPVEC
 
   /*    */ &Finalize::vUndefined,         // CN__P__
-  /* 78 */ &Finalize::vUndefined,         // CN_PARSER
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
   /* 82 */ &Finalize::vUndefined,         // CN_PERUSE
   /*    */ &Finalize::vUndefined,         // CN_PIPE

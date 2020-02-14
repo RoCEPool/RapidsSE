@@ -38,6 +38,7 @@ enum eCN : u2 // Class Number
   /*  17 0x011    36880B Heap:M */ CN_CALCULATOR,
   /*  19 0x013       40B Heap:I */ CN_CARRYOVER,
   /*  20 0x014       16B Heap:I */ CN_CATALOG,
+  /* 166 0x0A6    48840B Heap:M */ CN_CHARACTERISE,
   /*  21 0x015      136B Heap:M */ CN_CLAUSE_FROM,
   /*  22 0x016      136B Heap:M */ CN_CLAUSE_GROUPBY,
   /*  23 0x017      136B Heap:M */ CN_CLAUSE_JOIN,
@@ -204,7 +205,6 @@ enum eCN : u2 // Class Number
   /* 164 0x0A4     2080B Heap:S */ CN_OPVEC,
   
   /* 165 0x0A5       16B Heap:I */ CN__P__,
-  /* 166 0x0A6    48840B Heap:M */ CN_PARSER,
   /* 167 0x0A7     1048B Heap:M */ CN_PATHVEC,
   /* 169 0x0A9      232B Heap:M */ CN_PERUSE,
   /* 170 0x0AA      384B Heap:S */ CN_PIPE,
@@ -374,6 +374,7 @@ static Stz* aCN[]
   /*  17 0x011 */ "CALCULATOR"_Stz,          // CN_CALCULATOR
   /*  19 0x013 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  20 0x014 */ "CATALOG"_Stz,             // CN_CATALOG
+  /* 166 0x0A6 */ "CHARACTERISE"_Stz,        // CN_CHARACTERISE
   /*  21 0x015 */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
   /*  22 0x016 */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
   /*  23 0x017 */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN
@@ -540,7 +541,6 @@ static Stz* aCN[]
   /* 164 0x0A4 */ "OPVEC"_Stz,               // CN_OPVEC
   
   /* 165 0x0A5 */ "_P__"_Stz,                // CN__P__
-  /* 166 0x0A6 */ "PARSER"_Stz,              // CN_PARSER
   /* 167 0x0A7 */ "PATHVEC"_Stz,             // CN_PATHVEC
   /* 169 0x0A9 */ "PERUSE"_Stz,              // CN_PERUSE
   /* 170 0x0AA */ "PIPE"_Stz,                // CN_PIPE

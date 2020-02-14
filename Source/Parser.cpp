@@ -14,7 +14,7 @@ Parser* Parser::_pParser(void* aAddr)
 {
   Parser* pParser = reinterpret_cast<Parser*>(aAddr);
   
-  RASSERT_TYPE(pParser,CN_PARSER);
+  RASSERT_TYPE(pParser,CN_CHARACTERISE);
   
   return pParser;
 }
@@ -29,7 +29,7 @@ void* Parser::operator new(size_t, bool bMalloc)
   if (bMalloc)
     pParser = reinterpret_cast<Parser*>(MemLib::aMallocBlock(sizeof(Parser)));
   else
-    pParser = reinterpret_cast<Parser*>(HeapMem::pAllocate(CN_PARSER));
+    pParser = reinterpret_cast<Parser*>(HeapMem::pAllocate(CN_CHARACTERISE));
   
   pParser->m_bMalloc = bMalloc;
   
@@ -53,10 +53,10 @@ void Parser::operator delete(void* pParserAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parser::Parser(Parser* pNext)
-: Object(CN_PARSER)
+: Object(CN_CHARACTERISE)
 , m_oRawFile(nullptr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   //m_bMalloc set in new
   m_pNext   = pNext;
@@ -64,9 +64,9 @@ Parser::Parser(Parser* pNext)
   
   vResetParser();
   
-  _checkInitialised_(CN_PARSER);
+  _checkInitialised_(CN_CHARACTERISE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
 };
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ Parser::Parser(Parser* pNext)
 /*----------------------------------------------------------------------------*/
 Parser::~Parser(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if (m_oRawFile.bIsOpen())
     m_oRawFile.vClose();
@@ -102,7 +102,7 @@ void Parser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Parser::vLineMode(bool bLineMode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   m_bLineMode = bLineMode;
 }
@@ -116,7 +116,7 @@ void Parser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 bool Parser::bUseFile(Stz* szPath)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vResetParser();
   
@@ -133,7 +133,7 @@ bool Parser::bUseFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 void Parser::vUseStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vResetParser();
   
@@ -147,7 +147,7 @@ void Parser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vUseString(Stz* szString)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vResetParser();
   
@@ -161,7 +161,7 @@ void Parser::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 void Parser::vUseEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   switch (m_eSource) {
       
@@ -191,7 +191,7 @@ void Parser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 Parser* Parser::pNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   return m_pNext;
 }
@@ -201,7 +201,7 @@ Parser* Parser::pNext(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vNext(Parser* pNext)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   m_pNext = pNext;
 }
@@ -211,7 +211,7 @@ void Parser::vNext(Parser* pNext)
 /*----------------------------------------------------------------------------*/
 i8 Parser::iDepth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   return m_iDepth;
 }
@@ -225,7 +225,7 @@ i8 Parser::iDepth(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
@@ -245,7 +245,7 @@ void Parser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 /*----------------------------------------------------------------------------*/
 void Parser::vUnget(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vRewindRegs(rxAnnChar);
 }
@@ -255,7 +255,7 @@ void Parser::vUnget(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 bool Parser::bEOF(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   return m_bEOF;
 }
@@ -265,7 +265,7 @@ bool Parser::bEOF(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bLineMode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   return m_bLineMode;
 }
@@ -275,7 +275,7 @@ bool Parser::bLineMode(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if (IS_STDIN != m_eSource)
     return false;
@@ -294,7 +294,7 @@ bool Parser::bStdin(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vResetParser(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   //ASSERT(! m_oRawFile.bIsOpen());
   
@@ -326,7 +326,7 @@ void Parser::vResetParser(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vClearRegs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   m_nLoaded = 0;
   m_xAnnOne.vReset();
@@ -338,7 +338,7 @@ void Parser::vClearRegs(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vConsumeFirst(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(m_nLoaded);
 
@@ -355,7 +355,7 @@ void Parser::vConsumeFirst(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vDiscardFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(m_nLoaded);
   
@@ -371,7 +371,7 @@ void Parser::vDiscardFirst(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vLoadBoth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(! m_nLoaded);
   
@@ -393,7 +393,7 @@ void Parser::vLoadBoth(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vLoadFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(! m_nLoaded);
   
@@ -408,7 +408,7 @@ void Parser::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vLoadRegs(bool bStripComments)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(0 == m_nLoaded);
   
@@ -431,7 +431,7 @@ void Parser::vLoadRegs(bool bStripComments)
 /*----------------------------------------------------------------------------*/
 void Parser::vLoadSecond(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xAnnOne.m_cChar);
@@ -447,7 +447,7 @@ void Parser::vLoadSecond(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vRewindRegs(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(m_nLoaded < 2);
   ASSERT('\0' == m_xAnnTwo.m_cChar);
@@ -463,7 +463,7 @@ void Parser::vRewindRegs(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vStripComment(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   AnnChar xRewAnnChar;
   
@@ -501,7 +501,7 @@ void Parser::vStripComment(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bBlockCommentEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if ('*' == m_xAnnOne.m_cChar && '/' == m_xAnnTwo.m_cChar)
     return true;
@@ -514,7 +514,7 @@ bool Parser::bBlockCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vBlockCommentSkip(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vClearRegs();
   
@@ -542,7 +542,7 @@ void Parser::vBlockCommentSkip(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bBlockCommentStart(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if ('/' == m_xAnnOne.m_cChar && '*' == m_xAnnTwo.m_cChar)
     return true;
@@ -555,7 +555,7 @@ bool Parser::bBlockCommentStart(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bPossibleComment(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(m_nLoaded);
   
@@ -574,7 +574,7 @@ bool Parser::bPossibleComment(void)
 /*----------------------------------------------------------------------------*/
 eCS Parser::eCommentStyle(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if (bLineCommentStart())
     return CS_LINE;
@@ -590,7 +590,7 @@ eCS Parser::eCommentStyle(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bLineCommentEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if ('\n' == m_xAnnOne.m_cChar)
     return true;
@@ -603,7 +603,7 @@ bool Parser::bLineCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vLineCommentSkip(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vClearRegs();
   
@@ -622,7 +622,7 @@ void Parser::vLineCommentSkip(void)
 /*----------------------------------------------------------------------------*/
 bool Parser::bLineCommentStart(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   if ('/' == m_xAnnOne.m_cChar && '/' == m_xAnnTwo.m_cChar)
     return true;
@@ -640,7 +640,7 @@ bool Parser::bLineCommentStart(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   switch (m_eSource) {
       
@@ -673,7 +673,7 @@ void Parser::vRawCharFromInput(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vRawCharFromFile(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   vNextCharFromRawLine(rxAnnChar);
   
@@ -712,7 +712,7 @@ void Parser::vRawCharFromFile(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vRawCharFromStdin(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(! m_bEOF);
     
@@ -754,7 +754,7 @@ void Parser::vRawCharFromStdin(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vRawCharFromString(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(m_bEOF);
     
@@ -772,7 +772,7 @@ void Parser::vRawCharFromString(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vNextCharFromRawLine(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   rxAnnChar.m_cChar = *m_acRawChar++;
   
@@ -785,7 +785,7 @@ void Parser::vNextCharFromRawLine(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 void Parser::vReadRawLineFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(! m_bEOF);
 
@@ -821,7 +821,7 @@ void Parser::vReadRawLineFile(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vReadRawLineStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   ASSERT(! m_bEOF);
   
@@ -882,7 +882,7 @@ void Parser::vReadRawLineStdin(void)
 /*----------------------------------------------------------------------------*/
 Footer* Parser::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE);
   
   return &m_xFooter;
 }
