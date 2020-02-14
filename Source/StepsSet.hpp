@@ -596,7 +596,7 @@ public:
   void vJob_IndexJoinSpawnSub(void);
   void vJob_SubIndexJoinIndexJoin(void);
 
-  // table2
+  // index reg
   void vIndexRegGet(void);
   void vIndexRegSet(void);
 
@@ -1174,11 +1174,6 @@ public:
   void vTableVerify(void);
   void vTableVisualize(void);
 
-  // table2
-  void vTableGet(void);
-  void vTableSet(void);
-  void vTablePtnFetch(void);
-
   // table definition
   void vTableDefParse(void);
   void vTableDefSyntax(void);
@@ -1196,6 +1191,11 @@ public:
   void vTablePtnPurge(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
+
+  // table reg
+  void vTableRegGet(void);
+  void vTableRegSet(void);
+  void vTableRegPtnFetch(void);
 
   // task
   void vTaskAck(void);

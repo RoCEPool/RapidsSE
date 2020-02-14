@@ -9,17 +9,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TableReg(void)
 {
-  vAddStep("table[].get"_Stz,                &Step::vTableGet);
-  vAddStep("table[].set"_Stz,                &Step::vTableSet);
-  vAddStep("table[].tablePtn@"_Stz,          &Step::vTablePtnFetch);
+  vAddStep("table[].get"_Stz,                &Step::vTableRegGet);
+  vAddStep("table[].set"_Stz,                &Step::vTableRegSet);
+  vAddStep("table[].tablePtn@"_Stz,          &Step::vTableRegPtnFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* table[].get -- get table                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableGet(void)
+void Step::vTableRegGet(void)
 {
-  ENTRY(); // ENTRY("vTableGet"_Stz);
+  ENTRY(); // ENTRY("vTableRegGet"_Stz);
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpTable);
   
@@ -29,9 +29,9 @@ void Step::vTableGet(void)
 /*----------------------------------------------------------------------------*/
 /* table[].set -- set table                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableSet(void)
+void Step::vTableRegSet(void)
 {
-  ENTRY(); // ENTRY("vTableSet"_Stz);
+  ENTRY(); // ENTRY("vTableRegSet"_Stz);
   
   m_pRegSet->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -41,7 +41,7 @@ void Step::vTableSet(void)
 /*----------------------------------------------------------------------------*/
 /* table[].tablePtn@ -- feth the table partition                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnFetch(void)
+void Step::vTableRegPtnFetch(void)
 {
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
