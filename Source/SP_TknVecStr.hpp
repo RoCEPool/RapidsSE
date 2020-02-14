@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace TokenStream
+namespace LexicalAnalysis
 {
   class SP_TknVecStr : public SP
   {

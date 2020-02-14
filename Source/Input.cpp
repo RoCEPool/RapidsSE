@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Input* TokenStream::_pInput(void* aAddr)
+Input* LexicalAnalysis::_pInput(void* aAddr)
 {
   Input* pInput = reinterpret_cast<Input*>(aAddr);
   

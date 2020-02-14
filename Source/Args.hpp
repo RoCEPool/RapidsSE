@@ -9,9 +9,9 @@ namespace Arguments
   {
     friend class       Oblique::AM;
     friend class StorageEngine::Engine;
-    friend class   TokenStream::Input;
-    friend class   TokenStream::Characterise;
-    friend class   TokenStream::Tokeniser;
+    friend class   LexicalAnalysis::Input;
+    friend class   LexicalAnalysis::Characterise;
+    friend class   LexicalAnalysis::Tokeniser;
 
     friend class   Prompt::SePrompt;
 

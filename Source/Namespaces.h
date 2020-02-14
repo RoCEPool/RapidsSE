@@ -50,6 +50,8 @@ namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
                           class Job_Operand; class Job_Universal;             }
+namespace LexicalAnalysis { class Input; class Characterise; class Tokeniser;
+                            class TokenVec;                                   }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
@@ -69,7 +71,7 @@ namespace Records       {                                                     }
 namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaBlock; class MetaCell; class MetaGraph;
                           class MetaInherit; class MetaInherits;
-                          class MetaMember; class MetaType;              }
+                          class MetaMember; class MetaType;                   }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
@@ -86,8 +88,6 @@ namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Scheduler;  class Thread; class Queues;       }
-namespace TokenStream   { class Input; class Characterise; class Tokeniser;
-                          class TokenVec;                                     }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Utilities     { class BPA; class PoolHelper;                        }
 namespace Verbs         {                                                     }
@@ -122,6 +122,7 @@ using namespace Host;
 using namespace IndexTrees;
 using namespace Interface;
 using namespace Jobs;
+using namespace LexicalAnalysis;
 using namespace Library;
 using namespace Locking;
 using namespace Logging;
@@ -153,7 +154,6 @@ using namespace Strings;
 using namespace Structures;
 using namespace Tasks;
 using namespace Threads;
-using namespace TokenStream;
 using namespace Transactions;
 using namespace Utilities;
 using namespace Verbs;

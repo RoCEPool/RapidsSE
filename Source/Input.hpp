@@ -5,7 +5,7 @@
 
 #include "LexicalAnalysis.h"
 
-namespace TokenStream
+namespace LexicalAnalysis
 {
   class Input : public Object
   {

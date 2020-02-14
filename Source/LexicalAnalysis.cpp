@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TokenStream.cpp -- TokenStream namespace functions                         */
+/* LexicalAnalysis.cpp -- LexicalAnalysis namespace functions                         */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vCheckAssumptions(void)
+void LexicalAnalysis::vCheckAssumptions(void)
 {
 }
 

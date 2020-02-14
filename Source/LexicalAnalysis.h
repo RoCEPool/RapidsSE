@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LexicalAnalysis.h -- TokenStream namespace                                     */
+/* LexicalAnalysis.h -- LexicalAnalysis namespace                                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace TokenStream
+namespace LexicalAnalysis
 {
   void vCheckAssumptions(void);
 }
