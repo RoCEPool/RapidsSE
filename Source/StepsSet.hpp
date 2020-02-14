@@ -874,6 +874,7 @@ public:
   void vOperandGet(void);
   void vOperandHandleAggEnd(void);
   void vOperandIsNull(void);
+  void vOperandIsReport(void);
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
   void vOperandInvokePython(void);
