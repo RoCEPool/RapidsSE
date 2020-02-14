@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* _passthru -- passthru benchmark                                            */
+/*============================================================================*/
+
+startCluster;
+
+pwf ;
+
+pipeline p_passthru
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    bufferGenOp | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+
+end;
+
+memoryLeaks ;
+
+print "** success _passthru";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
