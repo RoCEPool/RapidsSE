@@ -46,7 +46,7 @@
         Operand[].delete
         Operand[].newCsvBuffer
         Operand[].report
-        bufferCount "passThru" "%v,%v" str.format Operand[].csvAppend
+        bufferCount "passThru" "%v,%v\nn" str.format Operand[].csvAppend
         Operand[].pipeout
 
         Operand[].newEosMarker
