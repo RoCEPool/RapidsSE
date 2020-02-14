@@ -596,6 +596,10 @@ public:
   void vJob_IndexJoinSpawnSub(void);
   void vJob_SubIndexJoinIndexJoin(void);
 
+  // table2
+  void vIndexRegGet(void);
+  void vIndexRegSet(void);
+
   // job Ingest
   void vJob_IngestBegin(void);
   void vJob_IngestChunk(void);
