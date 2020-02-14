@@ -446,7 +446,7 @@ bool Tokeniser::bPopParser(void)
   if (! m_pParser)
     return false;
   
-  Parser* pToBeDelete = m_pParser;
+  Characterise* pToBeDelete = m_pParser;
   m_pParser = m_pParser->pNext();
   
   delete pToBeDelete;
@@ -461,7 +461,7 @@ void Tokeniser::vPushParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser = new(m_bMalloc) Parser(m_pParser);
+  m_pParser = new(m_bMalloc) Characterise(m_pParser);
 }
 
 /*----------------------------------------------------------------------------*/

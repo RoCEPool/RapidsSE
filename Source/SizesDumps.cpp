@@ -40,7 +40,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CARRYOVER
   /* */ &Dump::vDummy,           // CN_CATALOG
   /* */ &Dump::vDummy,           // CN_CATALOG
-  /* */ &Parser::vDump,          // CN_CHARACTERISE
+  /* */ &Characterise::vDump,          // CN_CHARACTERISE
   /* */ &Dump::vDummy,           // CN_CLAUSE_FROM
   /* */ &Dump::vDummy,           // CN_CLAUSE_GROUPBY
   /* */ &Dump::vDummy,           // CN_CLAUSE_JOIN
@@ -376,7 +376,7 @@ i8 giClassSize[]
   /* */ sizeof(Calculator),         // CN_CALCULATOR
   /* */ sizeof(CarryOver),          // CN_CARRYOVER
   /* */ sizeof(Catalog),            // CN_CATALOG
-  /* */ sizeof(Parser),             // CN_CHARACTERISE
+  /* */ sizeof(Characterise),             // CN_CHARACTERISE
   /* */ sizeof(Clause_From),        // CN_CLAUSE_FROM
   /* */ sizeof(Clause_GroupBy),     // CN_CLAUSE_GROUPBY
   /* */ sizeof(Clause_Join),        // CN_CLAUSE_JOIN

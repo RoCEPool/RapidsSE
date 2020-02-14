@@ -8,7 +8,7 @@ namespace TokenStream
   class Tokeniser : public Object
   {
   private:
-    Parser*  m_pParser;   // parser
+    Characterise*  m_pParser;   // parser
   
     bool     m_bMalloc;   // malloc or pool heap?
     bool     m_bNormal;   // normal tokens?

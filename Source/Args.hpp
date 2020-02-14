@@ -10,7 +10,7 @@ namespace Arguments
     friend class       Oblique::AM;
     friend class StorageEngine::Engine;
     friend class   TokenStream::Input;
-    friend class   TokenStream::Parser;
+    friend class   TokenStream::Characterise;
     friend class   TokenStream::Tokeniser;
 
     friend class   Prompt::SePrompt;

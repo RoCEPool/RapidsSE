@@ -15,11 +15,10 @@ namespace TokenStream
 //------------------------------------------------------------------------------
 
 #include "AnnChar.hpp"
-
 #include "Token.hpp"
 #include "TokenVec.hpp"
 
-#include "Parser.hpp"
+#include "Characterise.hpp"
 #include "Tokeniser.hpp"
 #include "Input.hpp"
 

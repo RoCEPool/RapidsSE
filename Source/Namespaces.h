@@ -86,7 +86,7 @@ namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Scheduler;  class Thread; class Queues;       }
-namespace TokenStream   { class Input; class Parser; class Tokeniser;
+namespace TokenStream   { class Input; class Characterise; class Tokeniser;
                           class TokenVec;                                     }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Utilities     { class BPA; class PoolHelper;                        }

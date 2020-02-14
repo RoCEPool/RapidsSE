@@ -614,7 +614,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
   /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
   
-  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
+  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Characterise));
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
