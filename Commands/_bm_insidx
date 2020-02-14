@@ -18,29 +18,15 @@ print "** 2/n) create table BM_INSIDX_TABLE";
 
 trackMemory;
 
-create table BM_INSIDX_TABLE
-(
-  colA DECIMAL   NOT NULL min 0              max 250,
-  colB BOOLEAN   NOT NULL min false          max true,
-  colC DATE      NOT NULL min "2019-01-01"   max "2019-12-31",
-  colD FLOAT     NOT NULL min "1.0"          max "1000.0",
-  colE INTEGER   NOT NULL min 1              max 1000,
-  colF INTERVAL  NOT NULL min "0.0"          max "100.0",
-  colG TIME      NOT NULL min "00:00:00.000" max "23:59:59.999",
-//  colH TIMESTAMP NOT NULL min "2019-01-01 00:00:00.000"
-//                          max "2019-12-31 23:59:59.999",
-  colI VARCHAR   NOT NULL min "a"            max "zzzzzzzzz"
-)
-  rowsize 256
-;
+_allCols_Table
 
-lscol BM_INSIDX_TABLE;
+lscol ALLCOLS_TABLE;
 
-create index BM_INSIDX_INDEX on BM_INSIDX_TABLE (colE);
+create index ALLCOLS_INDEX_int on ALLCOLS_TABLE (int);
 
-lsidx BM_INSIDX_TABLE;
+lsidx ALLCOLS_TABLE;
 
-lsidxcol BM_INSIDX_TABLE BM_INSIDX_INDEX;
+lsidxcol ALLCOLS_TABLE ALLCOLS_INDEX_int;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_3;
@@ -52,7 +38,7 @@ print "** 3/n) ";
 logSection __BM_INSIDX_7;
 print "** 7/n) ";
 
-drop table BM_INSIDX_TABLE;
+drop table ALLCOLS_TABLE;
 
 memoryLeaks fatal;
 
