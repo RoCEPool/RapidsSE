@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LexicalAnalysis.cpp -- LexicalAnalysis namespace functions                         */
+/* LexicalAnalysis.cpp -- LexicalAnalysis namespace functions                 */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"

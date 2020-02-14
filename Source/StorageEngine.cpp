@@ -36,9 +36,11 @@ void StorageEngine::vCheckAllAssumptions(void)
   IndexTrees::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Jobs::vCheckAssumptions();
+  LexicalAnalysis::vCheckAssumptions();
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
   MetaData::vCheckAssumptions();
+  Operands::vCheckAssumptions();
   Operators::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Persistence::vCheckAssumptions();
@@ -57,12 +59,10 @@ void StorageEngine::vCheckAllAssumptions(void)
   SortBuffers::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
-  Operands::vCheckAssumptions();
   Strings::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
-  LexicalAnalysis::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Utilities::vCheckAssumptions();
 

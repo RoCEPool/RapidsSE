@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LexicalAnalysis.h -- LexicalAnalysis namespace                                     */
+/* LexicalAnalysis.h -- LexicalAnalysis namespace                             */
 /*============================================================================*/
 #pragma once
 
@@ -20,7 +20,7 @@ namespace LexicalAnalysis
 
 #include "Characterise.hpp"
 #include "Tokeniser.hpp"
-#include "Input.hpp"
+#include "TokenStream.hpp"
 
 #include "SP_TknVecStr.hpp"
 
