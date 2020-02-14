@@ -142,6 +142,9 @@ public:
   // crwBuffer
   void vCrwBufferSnapshot(void);
 
+  // csv buffer
+  void vCsvBufferNew(void);
+
   // cursor
   void vCursorFetch(void);
   void vCursorStore(void);
@@ -1132,6 +1135,7 @@ public:
   // table
   void vTableAddIndex(void);
   void vTableAnalyze(void);
+  void vTableBufferGenCsv(void);
   void vTableColumnCountFetch(void);
   void vTableDrop(void);
   void vTableDump(void);
