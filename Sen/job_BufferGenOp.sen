@@ -12,9 +12,6 @@
   >>logEntry <SEED_REQ>
 
   job::this locals| pJob_BufferGen |
-  0 locals| pTable |
-
-  <tableNm> locals| sTableNm |
 
   // set topolgy in the op
   <topology> op.topology!
@@ -41,13 +38,9 @@
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
 
-        // new a stream def
-        Operand[].newStreamDef
-        Operand[].pipeOut
-
         // pipeout a single generated csv buffer
         //begin
-        table[].get table.genCsvBuffer to Operand[]
+        csvBuffer::new to Operand[]
         Operand[].pipeOut
         //false
         //while repeat
@@ -59,16 +52,6 @@
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
-        // check if table exits
-        sTableNm checkIsValidTable not if
-          op.pipelineJob@ <ERROR_JOB>
-          Operand[].delete
-          Operand[].newErrorMarker
-        else
-          // move to table folder and find the table
-          sTableNm pushTable assert
-          sTableNm find execute to table[]
-        then
 
         Operand[].pipeOut
         true
@@ -91,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: BufferGen :: BufferGen <tableNm> <topology> <nextStage> <nextOp> ;
+jobSyntax: BufferGen :: BufferGen <topology> <nextStage> <nextOp> ;
 
 jobInfo: BufferGen
 {
