@@ -6,6 +6,13 @@ startCluster;
 
 pwf ;
 
+create table __REPORT
+(
+  name  VARCHAR(32) NOT NULL,
+  value INTEGER     NOT NULL
+)
+;
+
 trackMemory;
 
 pipeline p_passthru
@@ -14,10 +21,11 @@ begin
   stage stageA on origin:
     startOp | periodicOp once | stageB
 
-  stage stageB on all partitions:
-    bufferGenOp | stageC
+  stage stageB on origin:
+    bufferGenOp | passThruOp | stageC
 
   stage stageC on origin:
+    // reportOp | outputOp | sinkOp | stageA
     outputOp | sinkOp | stageA
 
 end;
