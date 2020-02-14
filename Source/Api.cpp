@@ -87,19 +87,19 @@ void Api::vDeleteJobs(Session* pSession)
 Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
                           bool bPostJob, bool bFromPrompt)
 {
-  TokenStream* pInput = pSession->m_pInput;
+  TokenStream* pTokenStream = pSession->m_pTokenStream;
   
   SessionArray::vMarkApiLoc(pSession,101);
   
-//  bool bFound = pInput->bFindJobClass();
+//  bool bFound = pTokenStream->bFindJobClass();
 //  if (! bFound) {
 //    return nullptr;
 //  }
-//  JobClass* pJobClass = pInput->pJobClass();
+//  JobClass* pJobClass = pTokenStream->pJobClass();
   
   TokenVec* pTknVec = pSession->pTokenVec();
   
-  pInput->vTokenise(sCommand,pTknVec);
+  pTokenStream->vTokenise(sCommand,pTknVec);
   Stz* aCommand1 = pTknVec->pGet(0)->szTerm();
   Stz* aCommand2 = pTknVec->pGet(1)->szTerm();
   

@@ -64,7 +64,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pSession->m_pInput->vUseStdin();
+  m_pSession->m_pTokenStream->vUseStdin();
   
   m_bOneCommand = bOneCommand;
   m_bContinue = true;
@@ -263,10 +263,10 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenStream* pInput = this->pInput();
+  TokenStream* pTokenStream = this->pTokenStream();
   
   TokenVec* pTknVec = this->pTokenVec();
-  bool bBlankLine = pInput->bBlankLine(pTknVec);
+  bool bBlankLine = pTokenStream->bBlankLine(pTknVec);
 
   return bBlankLine;
 }
@@ -462,9 +462,9 @@ bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenStream* pInput = this->pInput();
+  TokenStream* pTokenStream = this->pTokenStream();
   
-  bool bExecuteFile = pInput->bExecuteFile(m_pSession->pTokenVec());
+  bool bExecuteFile = pTokenStream->bExecuteFile(m_pSession->pTokenVec());
   
   return bExecuteFile;
 }
@@ -564,21 +564,21 @@ void SePrompt::vGetCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  TokenStream* pInput = this->pInput();
-  if (pInput->bStdIn())
+  TokenStream* pTokenStream = this->pTokenStream();
+  if (pTokenStream->bStdIn())
     vDebugPoint();
     
-  pInput->vGetCommand(m_pSession->pTokenVec());
+  pTokenStream->vGetCommand(m_pSession->pTokenVec());
 }
 
 /*----------------------------------------------------------------------------*/
 /* get command input processor                                                */
 /*----------------------------------------------------------------------------*/
-TokenStream* SePrompt::pInput(void)
+TokenStream* SePrompt::pTokenStream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pInput;
+  return m_pSession->m_pTokenStream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1044,7 +1044,7 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->eJobState());
   
-  TokenStream* pInput = this->pInput();
+  TokenStream* pTokenStream = this->pTokenStream();
   
   m_pSession->pTokenVec()->vSetTokens();
   
@@ -1067,8 +1067,8 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenStream* pInput = this->pInput();
-  if (pInput->bStdIn())
+  TokenStream* pTokenStream = this->pTokenStream();
+  if (pTokenStream->bStdIn())
     return true;
   else
     return false;

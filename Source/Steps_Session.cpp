@@ -34,7 +34,7 @@ void Step::vSessionCommand(void)
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushPtr(pSession->m_pInput);
+  m_pDataStack->vPushPtr(pSession->m_pTokenStream);
   
   EXIT();
 }

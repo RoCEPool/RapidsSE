@@ -113,7 +113,7 @@ Session::Session(void)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pInput          = new TokenStream;
+  m_pTokenStream          = new TokenStream;
   
   m_sToDo           = ""_Stz;
   
@@ -152,7 +152,7 @@ Session::~Session(void) noexcept(false)
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
   
-  delete m_pInput;
+  delete m_pTokenStream;
   
   delete m_pNmStrLst;
   

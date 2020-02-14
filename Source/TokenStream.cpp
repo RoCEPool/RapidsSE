@@ -13,13 +13,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TokenStream* LexicalAnalysis::_pInput(void* aAddr)
+TokenStream* LexicalAnalysis::_pTokenStream(void* aAddr)
 {
-  TokenStream* pInput = reinterpret_cast<TokenStream*>(aAddr);
+  TokenStream* pTokenStream = reinterpret_cast<TokenStream*>(aAddr);
   
-  RASSERT_TYPE(pInput,CN_TOKENSTREAM);
+  RASSERT_TYPE(pTokenStream,CN_TOKENSTREAM);
   
-  return pInput;
+  return pTokenStream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,9 +37,9 @@ void* TokenStream::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void TokenStream::operator delete(void* aAddr)
 {
-  TokenStream* pInput = reinterpret_cast<TokenStream*>(aAddr);
+  TokenStream* pTokenStream = reinterpret_cast<TokenStream*>(aAddr);
   
-  HeapMem::vFree(pInput);
+  HeapMem::vFree(pTokenStream);
 }
 
 /*----------------------------------------------------------------------------*/

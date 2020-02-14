@@ -70,7 +70,7 @@ namespace Prompt
     bool bFindMatch(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
-    TokenStream* pInput(void);
+    TokenStream* pTokenStream(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);

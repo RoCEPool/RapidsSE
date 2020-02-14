@@ -47,7 +47,7 @@ namespace LexicalAnalysis
     Footer* aFooter(void);
   };
   
-  TokenStream* _pInput(void* aAddr);
+  TokenStream* _pTokenStream(void* aAddr);
 }
 
 /*============================================================================*/

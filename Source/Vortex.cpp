@@ -30,7 +30,7 @@ Vortex::Vortex(void)
   
   m_sSourcePath  = ""_Stz;
   m_nSources     = 0;
-  m_pInput       = nullptr;
+  m_pTokenStream       = nullptr;
   m_oCurTkn.vReset();
   m_bEOF         = false;
   
@@ -100,7 +100,7 @@ Vortex::~Vortex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  delete m_pInput;
+  delete m_pTokenStream;
   delete m_pOutputFile;
   delete m_pMetaGraph;
 }
@@ -156,8 +156,8 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   TRACE("Parsing file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
   
   m_sSourcePath = szSourcePath;
-  m_pInput = new TokenStream;
-  m_pInput->vPushFile(szSourcePath);
+  m_pTokenStream = new TokenStream;
+  m_pTokenStream->vPushFile(szSourcePath);
   
   bool b = bGetNextToken();
   
@@ -184,8 +184,8 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 
   m_nSources++;
   
-  delete m_pInput;
-  m_pInput = nullptr;
+  delete m_pTokenStream;
+  m_pTokenStream = nullptr;
   
   RASSERT(! m_bInClass);
   RASSERT(! m_bInNamespace);
@@ -1959,7 +1959,7 @@ bool Vortex::bGetNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_bEOF = ! m_pInput->bGetToken(&m_oCurTkn);
+  m_bEOF = ! m_pTokenStream->bGetToken(&m_oCurTkn);
   
   if (m_bTrace) {
     if (m_bEOF)
