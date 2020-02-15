@@ -24,6 +24,11 @@
   <tableNm> pushTable assert
   <tableNm> find execute to table[]
 
+  // cross-check
+  table[].get assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // move to indexes folder
   pushIndexes assert
 
@@ -34,7 +39,12 @@
     exit
   then
 
-  //<IndexNm> find execute to index[]
+  <IndexNm> find execute to index[]
+
+  // cross-check
+  index[].get assert
+
+  debug::breakPoint
 ;
 
 /*----------------------------------------------------------------------------*/
