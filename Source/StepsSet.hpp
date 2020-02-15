@@ -397,6 +397,9 @@ public:
   void vIndexDefParse(void);
   void vIndexDefSyntax(void);
 
+  // index tree
+  void vIndexTreeInsEntBuffer(void);
+
   // input
   void vInputClose(void);
   void vInputDepth(void);

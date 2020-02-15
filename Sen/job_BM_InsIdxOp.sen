@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_EntBuffer
 
+  // indexTree[].get indexTree.insEntBuffer
+
   Operand[].delete
 ;
 
