@@ -7,6 +7,31 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: BM_GenEnt_PulseMarker
+
+  // pipe out the pulse marker to the next operator
+  Operand[].pipeOut
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  // pipeout a single generated csv buffer
+  //begin
+  table[].get table.genCsvBuffer to Operand[]
+  Operand[].pipeOut
+  //false
+  //while repeat
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : BM_GenEnt_StartMarker
 
   "BM_GenEnt_StartMarker (Table A)" .
@@ -61,27 +86,10 @@
   index[].get assert
 
   debug::breakPoint
-;
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: BM_GenEnt_PulseMarker
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Operand[].pipeOut
-
-  // new a stream def
-  Operand[].newStreamDef
-  Operand[].pipeOut
-
-  // pipeout a single generated csv buffer
-  //begin
-  table[].get table.genCsvBuffer to Operand[]
-  Operand[].pipeOut
-  //false
-  //while repeat
-
-  Operand[].newEosMarker
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -117,20 +125,11 @@
     // decode operand kind
     Operand[].kind case
 
-      ZK_PULSEMARKER of
-        BM_GenEnt_PulseMarker
-        Operand[].pipeOut
-        true
-      endof
+      ZK_PULSEMARKER of BM_GenEnt_PulseMarker true endof
 
-      ZK_STARTMARKER of
-        BM_GenEnt_StartMarker
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of BM_GenEnt_StartMarker true endof
 
-      jobOperand::generic
-      swap
+      jobOperand::generic swap
 
     endcase
 
