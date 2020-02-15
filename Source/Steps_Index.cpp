@@ -179,7 +179,24 @@ void Step::vIndexDump(void)
 void Step::vIndexGenEntBuffer(void)
 {
   ENTRY(); // ENTRY("vIndexGenEntBuffer"_Stz);
+  
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  IdxColVec* pIdxColVec = pIndexDef->pIdxColVec();
 
+  i8 nIdxCol = pIdxColVec->nItems();
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCol; i_IdxCol++)
+    vTrace("  [%lld] %s\n"_Stz,i_IdxCol,pIdxColVec->pGet(i_IdxCol)->szColNm());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  EntBuffer* pEntBuffer = new EntBuffer();
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pDataStack->vPushPtr(pEntBuffer);
+  
   EXIT();
 }
 

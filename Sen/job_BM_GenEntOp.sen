@@ -16,10 +16,12 @@
   
   // new a stream def
   Operand[].newStreamDef
+
   Operand[].pipeOut
 
   // generate ent buffer's
   index[].get index.genEntBuffer to Operand[]
+debug::breakPoint
   Operand[].pipeOut
 
   Operand[].newEosMarker
@@ -81,8 +83,6 @@
 
   // cross-check
   index[].get assert
-
-  debug::breakPoint
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
