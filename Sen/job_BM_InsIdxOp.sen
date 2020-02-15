@@ -5,15 +5,28 @@
 " job_BM_InsIdxOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_ENTBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: BM_InsIdx_EntBuffer
+
+  Operand[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: BM_InsIdx_StartMarker
+
+  Operand[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for insertOp                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : BM_InsIdxOp_req ( -- )
+: BM_InsIdxOp_req ( -- )
  
   >>logEntry <SEED_REQ>
-  job::this locals| pJob_BM_InsIdxOp |
-
-  <tableNm> locals| sTableNm |
-
+//
   // set topolgy in the op
   <topology> op.topology!
 
@@ -34,51 +47,17 @@
     // decode kind
     Operand[].kind case
 
-    ZK_CRWBUFFER of
-      //"Operand:- ZK_CRWBUFFER" .verbose
-      tx[].begin
-      tablePtn[].get tablePtnGrabWrite2
-      Operand[].upsertIntoTable
-      tablePtn[].get tablePtnDropWrite2
-      tx[].commit
-      Operand[].delete
-      true
-    endof
+    ZK_ENTBUFFER   of BM_InsIdx_EntBuffer   true endof
 
-    ZK_STARTMARKER of
-      //"Operand:- ZK_STARTMARKER" .verbose
-      // check if we can insert into the table
-      sTableNm checkIsValidTable not if
-        op.pipelineJob@ <ERROR_JOB> !!logError
-        Operand[].delete
-        Operand[].newErrorMarker
-      else
-        // move to table folder and find the table and tablePtn
-        sTableNm pushTable assert
-        sTableNm find execute to table[]
-        table[].tablePtn@ to tablePtn[]
-      then
+    ZK_STARTMARKER of BM_InsIdx_StartMarker true endof
 
-      Operand[].pipeout
-      true
-    endof
-
-    ZK_STREAMDEF of
-      //"Operand:- ZK_STREAMDEF" .verbose
-      Operand[].delete
-      Operand[].newStreamDef
-      Operand[].pipeOut
-      true
-    endof
-
-    // handle other operand as generic operands
-    jobOperand::generic
-    swap
+    jobOperand::generic swap
 
     endcase
 
-    while assert::stack_0 repeat
+  while assert::stack_0 repeat
 
+  "*** BM_InsIdxOp EXITS" .
   <<logExit
   job::deleteThis
   <DONE_RUN>
@@ -87,7 +66,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <topology> <nextStage> <nextOp> ;
+jobSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: BM_InsIdxOp
 {
