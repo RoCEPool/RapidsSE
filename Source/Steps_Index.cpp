@@ -19,6 +19,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.genEntBuffer"_Stz,    &Step::vIndexGenEntBuffer);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
+  vAddStep("index.indexTree"_Stz,       &Step::vIndexIndexTree);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
@@ -249,6 +250,38 @@ void Step::vIndexIndexDefStore(void)
   
   pIndex->vIndexDef(pIndexDef);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.indexTree -- get  index tree of given index for current partition    */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexIndexTree(void)
+{
+  ENTRY(); // ENTRY("vIndexIndexDefStore"_Stz);
+  
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  Job* pJob = m_pTask->m_pJob;
+  
+  i8 iPtn = pJob->m_pOp->nPartition();
+
+  i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
+
+  Table* pTable = pIndex->pTable();
+  
+  TablePtn* pTablePtn = pTable->pPartition(iSlot);
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  
+  m_pDataStack->vPushPtr(pIndexTree);
+
   EXIT();
 }
 
