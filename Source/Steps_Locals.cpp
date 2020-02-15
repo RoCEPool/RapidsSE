@@ -169,48 +169,55 @@ void Step::vLocalsTo(void)
   
   // is is a semantic ename?
   
-  if (m_pCompiler->szToken()->bSame("/semantic"_Stz) ||
-      m_pCompiler->szToken()->bSame("/session"_Stz)) {
+  Stz* szTerm = m_pCompiler->szToken();
+  
+  if (szTerm->bSame("/semantic"_Stz) ||
+      szTerm->bSame("/session"_Stz)) {
     
     bSemanticTo = true;
     m_pCompiler->vNextToken();
   }
-  else if (m_pCompiler->szToken()->bSame("File0[]"_Stz)) {
+  else if (szTerm->bSame("File0[]"_Stz)) {
     pCurrentWord->vEncodeCall("File0[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("Operand[]"_Stz)) {
+  else if (szTerm->bSame("Index[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Index[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("Register0[]"_Stz)) {
+  else if (szTerm->bSame("Register0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Register0[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("StreamDef[]"_Stz)) {
+  else if (szTerm->bSame("StreamDef[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDef[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("Subset[]"_Stz)) {
+  else if (szTerm->bSame("Subset[]"_Stz)) {
     pCurrentWord->vEncodeCall("Subset[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("Table[]"_Stz)) {
+  else if (szTerm->bSame("Table[]"_Stz)) {
     pCurrentWord->vEncodeCall("Table[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("TablePtn[]"_Stz)) {
+  else if (szTerm->bSame("TablePtn[]"_Stz)) {
     pCurrentWord->vEncodeCall("TablePtn[].set"_Stz);
     EXIT();
     return;
   }
-  else if (m_pCompiler->szToken()->bSame("WriteBehind[]"_Stz)) {
+  else if (szTerm->bSame("WriteBehind[]"_Stz)) {
     pCurrentWord->vEncodeCall("WriteBehind[].set"_Stz);
     EXIT();
     return;
