@@ -5,7 +5,7 @@
 " job_BM_GenEntOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : BM_GenEnt_PulseMarker
 
@@ -18,19 +18,16 @@
   Operand[].newStreamDef
   Operand[].pipeOut
 
-  // pipeout a single generated csv buffer
-  //begin
-  table[].get table.genCsvBuffer to Operand[]
+  // generate ent buffer's
+  index[].get index.genEntBuffer to Operand[]
   Operand[].pipeOut
-  //false
-  //while repeat
 
   Operand[].newEosMarker
   Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : BM_GenEnt_StartMarker
 

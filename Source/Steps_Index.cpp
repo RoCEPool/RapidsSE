@@ -16,6 +16,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
+  vAddStep("index.genEntBuffer"_Stz,    &Step::vIndexGenEntBuffer);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
@@ -169,6 +170,16 @@ void Step::vIndexDump(void)
     pIndexTree->vDump(false);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.genEntBuffer -- generate an ent buffer for this index                */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexGenEntBuffer(void)
+{
+  ENTRY(); // ENTRY("vIndexGenEntBuffer"_Stz);
+
   EXIT();
 }
 

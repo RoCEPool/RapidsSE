@@ -372,6 +372,7 @@ public:
   void vIndexColumnType(void);
   void vIndexCompact(void);
   void vIndexDump(void);
+  void vIndexGenEntBuffer(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexInit(void);
