@@ -397,8 +397,16 @@ public:
   void vIndexDefParse(void);
   void vIndexDefSyntax(void);
 
+  // index reg
+  void vIndexRegGet(void);
+  void vIndexRegSet(void);
+
   // index tree
   void vIndexTreeInsEntBuffer(void);
+
+  // index reg
+  void vIndexTreeRegGet(void);
+  void vIndexTreeRegSet(void);
 
   // input
   void vInputClose(void);
@@ -599,10 +607,6 @@ public:
   void vJob_IndexJoinRightTableNameFetch(void);
   void vJob_IndexJoinSpawnSub(void);
   void vJob_SubIndexJoinIndexJoin(void);
-
-  // index reg
-  void vIndexRegGet(void);
-  void vIndexRegSet(void);
 
   // job Ingest
   void vJob_IngestBegin(void);
