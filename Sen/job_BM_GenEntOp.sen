@@ -141,7 +141,8 @@ debug::breakPoint
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <topology> <nextStage> <nextOp> ;
+jobSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers>
+                                      <topology> <nextStage> <nextOp> ;
 
 jobInfo: BM_GenEntOp
 {

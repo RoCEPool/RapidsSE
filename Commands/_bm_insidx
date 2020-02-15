@@ -42,8 +42,8 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int |
-    BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int | stageC
+    BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int 1 |
+    BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int   | stageC
 
   stage stageC on origin:
     outputOp | sinkOp | stageA
