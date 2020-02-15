@@ -54,6 +54,7 @@ namespace Entries
     Ref&  xRef(void);
     void  vRef(Ref xRef);
     Ref   wRef(void);
+    void  vReset(void);
   
     void  vSetEntry(Ent* aFromEntry);
 

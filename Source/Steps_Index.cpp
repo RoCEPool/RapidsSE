@@ -190,8 +190,30 @@ void Step::vIndexGenEntBuffer(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  EntWrk oEntWrk;
+  
   EntBuffer* pEntBuffer = new EntBuffer();
   
+  i8 iBufferNo = pEntBuffer->iBufferNo();
+  
+  for (i8 i_EntNo = 0; ; i_EntNo++) {
+    
+    oEntWrk.vReset();
+    
+    oEntWrk.vRandomEnt(pIdxColVec);
+    oEntWrk.vBuffer(iBufferNo);
+    oEntWrk.vItem(i_EntNo);
+    
+    oEntWrk.vShow(pIdxColVec);
+
+    i8 nBytes = oEntWrk.nSize_EntKey();
+
+    byte* ayEnt = pEntBuffer->ayAllotBytes(nBytes);
+    if (! ayEnt)
+      break;
+    
+    MemLib::vCopy(ayEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

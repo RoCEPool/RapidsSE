@@ -33,6 +33,7 @@ namespace Rows
     void  vItem(i8 iItem);
     i8    nOffsets(void);
     void  vOffsets(i8 nOffsets);
+    void  vReset(void);
     void  vSet(Ref xwRef);
     void  vSetNil(void);
   };

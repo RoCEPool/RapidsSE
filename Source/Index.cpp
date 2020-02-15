@@ -139,6 +139,16 @@ void Index::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+IdxColVec* Index::pIdxColVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_pIndexDef->m_pIdxColVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index definition                                                   */
 /*----------------------------------------------------------------------------*/
 IndexDef* Index::pIndexDef(void)
@@ -196,40 +206,6 @@ i8 Index::iIndexNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the table                                                              */
-/*----------------------------------------------------------------------------*/
-Table* Index::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table                                                              */
-/*----------------------------------------------------------------------------*/
-void Index::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tidyup                                                                     */
-/*----------------------------------------------------------------------------*/
-void Index::vTidyUp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  // tidyup the index from the table partitions
-  if (m_pTable)
-    m_pTable->vTidyUpIndex(m_iIndexNo);
-  
-  delete m_pIndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a primary key  index                                               */
 /*----------------------------------------------------------------------------*/
 bool Index::bIsPrimaryKey(void)
@@ -270,16 +246,6 @@ void Index::vIsUnique(bool bUnique)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get index column vector                                                    */
-/*----------------------------------------------------------------------------*/
-IdxColVec* Index::pIdxColVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return m_pIndexDef->m_pIdxColVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute the size of sort key datum                                         */
 /*----------------------------------------------------------------------------*/
 i8 Index::iSortKeyDatum(void)
@@ -293,6 +259,40 @@ i8 Index::iSortKeyDatum(void)
   }
   
   return nKeyDatumSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table                                                              */
+/*----------------------------------------------------------------------------*/
+Table* Index::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table                                                              */
+/*----------------------------------------------------------------------------*/
+void Index::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Index::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  // tidyup the index from the table partitions
+  if (m_pTable)
+    m_pTable->vTidyUpIndex(m_iIndexNo);
+  
+  delete m_pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/

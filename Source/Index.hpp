@@ -33,6 +33,7 @@ namespace MetaData
    ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
+    IdxColVec* pIdxColVec(void);
     IndexDef* pIndexDef(void);
     void   vIndexDef(IndexDef* pIndexDef);
     Stz*   szIndexNm(void);
@@ -47,7 +48,6 @@ namespace MetaData
     Table* pTable(void);
     void   vTidyUp(void);
     
-    IdxColVec* pIdxColVec(void);
   
     Footer* aFooter(void);
   };

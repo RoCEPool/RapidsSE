@@ -31,6 +31,7 @@ namespace Entries
     void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nElmSeqSize(void);
     void vElmSeqSize(i8 nElmSeqSize);
+    void vReset(void);
     void vShow(IdxColVec* pIdxColVec);
 
     /*------------------------------------------------------------------------*/

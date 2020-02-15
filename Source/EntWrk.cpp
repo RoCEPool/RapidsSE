@@ -69,7 +69,31 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
+/* add element from datum to key                                              */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendDatum(Datum* pDatum,Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nElmSize = 0;
+
+  if (pDatum->bIsNull()) {
+    vAppendNull();
+    return;
+  }
+
+  if (DM_VCH == pCol->eDatum()) {
+    Stz* szSrc = pDatum->szStz();
+    vAppendStz(szSrc);
+  }
+  else {
+    i8 iValue = pDatum->iInt();
+    vAppendInt(iValue);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendElement(Row* pRow, Column* pCol)
 {
@@ -356,6 +380,27 @@ void EntWrk::vOffsets(i8 nLevels)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate random entry                                                      */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vRandomEnt(IdxColVec* pIdxColVec)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+
+  Datum oDatum;
+  
+  i8 nIdxCol = pIdxColVec->nItems();
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCol; i_IdxCol++) {
+    
+    Column* pCol = pIdxColVec->pGet(i_IdxCol);
+    
+    DatumRandom::vRndDtm(&oDatum,pCol);
+  
+    vAppendDatum(&oDatum,pCol);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
 Ref& EntWrk::xRef(void)
@@ -373,6 +418,16 @@ void EntWrk::vRef(Ref& xRef)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vRef(xRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this entwrk                                                          */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,9 +467,23 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   Ent* aEnt = this->aEnt();
   Key* aKey = aEnt->aKey();
   
-  //aKey->vShow(pIdxColVec);
-  //vTrace("\n"_Stz);
+  aKey->vShow(pIdxColVec);
+  vTrace(" Buffer %lld Item %lld\n"_Stz,iBuffer(),iItem());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the size this (Ent+Key)                                                */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nSize_EntKey(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
+  i8 nSizeEnt    = sizeof(Ent);
+  i8 nSizeElmSeq = m_xEnt.nElmSeqSize();
+  
+  i8 nSize = nSizeEnt + nSizeElmSeq;
+  
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/
