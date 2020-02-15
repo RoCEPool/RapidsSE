@@ -8,13 +8,13 @@ pwf ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_1;
-print "** 1/n) run __report setup";
+print "** 1/6) run __report setup";
 
 __report
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_2;
-print "** 2/n) create ALLCOLS_TABLE table";
+print "** 2/6) create ALLCOLS_TABLE table";
 
 trackMemory;
 
@@ -42,7 +42,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp ALLCOLS_TABLE | stageC
+    BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int | stageC
 
   stage stageC on origin:
     outputOp | sinkOp | stageA
