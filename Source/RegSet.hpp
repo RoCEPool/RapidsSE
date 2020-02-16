@@ -25,14 +25,14 @@ namespace Registers
     REG<File> m_xpFile0;    // file0[]
     REG<File> m_xpFile1;    // file1[]
 
-    REG<Table>     m_xpTable;
-    REG<StreamDef> m_xpStreamDef;
-    REG<TablePtn>  m_xpTablePtn;
-    REG<Index>     m_xpIndex;
-    REG<IndexTree> m_xpIndexTree;
-    REG<Operand>   m_xpSubset;
+    REG<Table>       m_xpTable;
+    REG<StreamDef>   m_xpStreamDef;
+    REG<TablePtn>    m_xpTablePtn;
+    REG<Index>       m_xpIndex;
+    REG<IndexTree>   m_xpIndexTree;
+    REG<Operand>     m_xpSubset;
   
-    REG<Tx>        m_xpTx;
+    REG<Tx>          m_xpTx;
     
     REG<WriteBehind> m_xpWriteBehind;
     REG<Row>         m_xpRow;
@@ -41,10 +41,14 @@ namespace Registers
     REG<Operand>     m_xpOperandB;  // operand B
     REG<Operand>     m_xpOperandC;  // operand C
 
-    REG<Object> m_xpRegister0; // general purpose reg 0[]
-    REG<Object> m_xpRegister1; // general purpose reg 1[]
-    REG<Object> m_xpRegister2; // general purpose reg 2[]
-    REG<Object> m_xpRegister3; // general purpose reg 3[]
+    REG<Object>      m_xpRegister0; // general purpose reg 0[]
+    REG<Object>      m_xpRegister1; // general purpose reg 1[]
+    REG<Object>      m_xpRegister2; // general purpose reg 2[]
+    REG<Object>      m_xpRegister3; // general purpose reg 3[]
+  
+    REG<Timer>       m_xpTimer;     // timer
+    i8               m_iCounter0;   // counter
+    i8               m_iCounter1;   // counter
 
     // must be last
     Footer m_xFooter;
