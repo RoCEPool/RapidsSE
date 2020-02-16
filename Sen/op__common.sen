@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* op__common.sen -- operator common words                                    */
+/*============================================================================*/
+
+" op__common.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: op__table_index
+
+  "op__table_index (Table A)" .
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  "op__table_index (Table B)" .
+
+  // table
+  <tableNm> checkIsValidTable not if
+    op.pipelineJob@ <ERROR_JOB>
+    Operand[].delete
+    Operand[].newErrorMarker
+    exit
+  then
+
+  "op__table_index (Table C)" .
+
+  // move to table folder and find the table
+  <tableNm> pushTable assert
+  <tableNm> find execute to table[]
+
+  "op__table_index (Table D)" .
+
+  // cross-check
+  table[].get assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "op__table_index (Index A)" .
+
+  // move to indexes folder
+  pushIndexes assert
+
+  "op__table_index (Index B)" .
+
+  <indexNm> checkIsIndex not if
+    op.pipelineJob@ <ERROR_JOB>
+    Operand[].delete
+    Operand[].newErrorMarker
+    exit
+  then
+
+  "op__table_index (Index C)" .
+
+  <IndexNm> find execute to index[]
+
+  "op__table_index (Index D)" .
+
+  // cross-check
+  index[].get assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Operand[].pipeOut
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

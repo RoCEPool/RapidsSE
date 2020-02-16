@@ -4,6 +4,8 @@
 
 "job_Set.sen" .verbose
 
+"op__common.sen"         include
+ 
 "job__Ended.sen"         include
 "job__End.sen"           include
 "job__Cancelled.sen"     include
