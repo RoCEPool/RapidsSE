@@ -1012,6 +1012,7 @@ public:
 
   // reg timer
   void vRegTimerGet(void);
+  void vRegTimerSet(void);
 
   void vRowIntColumnFetch(void);
 

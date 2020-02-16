@@ -23,18 +23,21 @@ Timer* Gadgets::_pTimer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Timer::operator new(size_t, Timer* pTimer)
+void* Timer::operator new(size_t)
 {
-  return pTimer;
+  void* pObject = HeapMem::pAllocate(CN_TIMER);
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Timer::operator delete(void*)
+void Timer::operator delete(void* aAddr)
 {
-  // do nothing
-  // must be explicitly free'd by caller
+  Object* pObject = reinterpret_cast<Object*>(aAddr);
+  
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

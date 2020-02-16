@@ -18,7 +18,6 @@ namespace Gadgets
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Timer* pTimer);
     void operator delete(void* pTimerAddress);
   
     Timer(void);

@@ -51,10 +51,10 @@ void Step::vTimerInit(void)
 {
   ENTRY(); // ENTRY("vTimerInit"_Stz);
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TIMER == pTimer->eClass());
-  
-  new(pTimer) Timer;
+//  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+//  ASSERT(CN_TIMER == pTimer->eClass());
+//
+//  new(pTimer) Timer;
   
   EXIT();
 }
@@ -117,15 +117,9 @@ void Step::vTimerNew(void)
 {
   ENTRY(); // ENTRY("vTimerNew"_Stz);
 
-  Timer* pTimer = _pTimer(HeapMem::pAllocate(CN_TIMER));
-
-  new(pTimer) Timer;
- 
-  ASSERT(CN_TIMER == pTimer->eClass());
-  
-  Object* pPtrTimer = pTimer;
-  
-  m_pDataStack->vPushPtr(pPtrTimer);
+  Timer* pTimer = new Timer;
+     
+  m_pDataStack->vPushPtr(pTimer);
   
   EXIT();
 }

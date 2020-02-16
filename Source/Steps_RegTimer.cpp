@@ -11,6 +11,7 @@ void Step::vAddSteps_RegTimer(void)
 {
   vAddStep("timer[]"_Stz,      &Step::vRegTimerGet);
   vAddStep("timer[].get"_Stz,  &Step::vRegTimerGet);
+  vAddStep("timer[].set"_Stz,  &Step::vRegTimerSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,6 +22,18 @@ void Step::vRegTimerGet(void)
   ENTRY(); // ENTRY("vRegTimerGet"_Stz);
     
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpTimer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer[].set -- set timer                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRegTimerSet(void)
+{
+  ENTRY(); // ENTRY("vRegTimerGet"_Stz);
+    
+  m_pRegSet->m_xpTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

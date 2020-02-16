@@ -66,6 +66,9 @@ RegSet::~RegSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
+  
+  if (! m_xpTimer.bIsNull())
+    delete *m_xpTimer;
 }
 
 
