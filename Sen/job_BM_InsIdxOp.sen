@@ -23,6 +23,10 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_StartMarker
 
+  op__table_index
+
+  folderPath.str "Folder path: %v" .printf
+
   Operand[].pipeout
 ;
 
