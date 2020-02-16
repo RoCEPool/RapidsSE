@@ -1287,6 +1287,7 @@ public:
   void vTimerMillisecs(void);
   void vTimerNanosecs(void);
   void vTimerNew(void);
+  void vTimerReportStr(void);
   void vTimerReset(void);
   void vTimerSecs(void);
   void vTimerStart(void);

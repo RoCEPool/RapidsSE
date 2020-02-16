@@ -16,6 +16,7 @@ void Step::vAddSteps_Timer(void)
   vAddStep("timer.microsecs"_Stz, &Step::vTimerMicrosecs);
   vAddStep("timer.millisecs"_Stz, &Step::vTimerMillisecs);
   vAddStep("timer.nanosecs"_Stz,  &Step::vTimerNanosecs);
+  vAddStep("timer.reportStr"_Stz, &Step::vTimerReportStr);
   vAddStep("timer.reset"_Stz,     &Step::vTimerReset);
   vAddStep("timer.secs"_Stz,      &Step::vTimerSecs);
   vAddStep("timer.start"_Stz,     &Step::vTimerStart);
@@ -121,6 +122,23 @@ void Step::vTimerNew(void)
      
   m_pDataStack->vPushPtr(pTimer);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.reportStr -- timer report string                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTimerReportStr(void)
+{
+  ENTRY(); // ENTRY("vTimerReset"_Stz);
+  
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  SP_Timer spTimer;
+  
+  m_pDataStack->vPushStz(spTimer.sz(pTimer));
+
   EXIT();
 }
 
