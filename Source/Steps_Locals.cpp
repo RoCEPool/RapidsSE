@@ -182,6 +182,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Counter1[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter1[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Counter2[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter2[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("File0[]"_Stz)) {
     pCurrentWord->vEncodeCall("File0[].set"_Stz);
     EXIT();

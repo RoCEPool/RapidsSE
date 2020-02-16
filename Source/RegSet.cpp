@@ -52,7 +52,8 @@ RegSet::RegSet(Task* pTask)
 
   m_iCounter0 = 0;
   m_iCounter1 = 0;
-  
+  m_iCounter2 = 0;
+
   _checkInitialised_(CN_REGSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);

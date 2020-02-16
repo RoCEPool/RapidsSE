@@ -24,9 +24,10 @@
   Operand[].newCsvBuffer
   Operand[].report
 
-  timer[] timer.reportStr "InsIdx Timer"    "%v,%v\n" str.format Operand[].csvAppend
-  counter0[].get          "InsIdx Counter0" "%v,%v\n" str.format Operand[].csvAppend
-
+  timer[] timer.reportStr "InsIdx Timer"      "%v,%v\n" str.format Operand[].csvAppend
+  counter0[].get          "InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
+  counter1[].get          "InsIdx Entries"    "%v,%v\n" str.format Operand[].csvAppend
+  
   Operand[].pipeout
 ;
 
@@ -44,6 +45,8 @@
 
   // insert all the entries into tree
   Operand[].get indexTree[].get indexTree.insEntBuffer
+
+  counter0[] 1 + to counter0[]
 
   Operand[].delete
 

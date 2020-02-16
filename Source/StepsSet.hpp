@@ -1013,8 +1013,10 @@ public:
   // reg counter
   void vRegCounter0Get(void);
   void vRegCounter1Get(void);
+  void vRegCounter2Get(void);
   void vRegCounter0Set(void);
   void vRegCounter1Set(void);
+  void vRegCounter2Set(void);
 
   // reg timer
   void vRegTimerGet(void);
