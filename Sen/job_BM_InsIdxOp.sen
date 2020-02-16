@@ -21,6 +21,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: BM_InsIdx_EosMarker
+
+  Operand[].delete
+
+  Operand[].newCsvBuffer
+  Operand[].report
+  0 "InsIdx" "%v,%v\n" str.format Operand[].csvAppend
+  Operand[].pipeout
+
+  Operand[].newEosMarker
+  Operand[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_StartMarker
@@ -60,6 +76,8 @@
     Operand[].kind case
 
     ZK_ENTBUFFER   of BM_InsIdx_EntBuffer   true endof
+
+    ZK_EOSMARKER   of BM_InsIdx_EosMarker   true endof
 
     ZK_STARTMARKER of BM_InsIdx_StartMarker true endof
 

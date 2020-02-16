@@ -32,22 +32,24 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
   sFile = (*pTokenVec)[1]->szTerm();
   i8 nLines = pTokenVec->pGet(2)->iToI8();
 
-  File oFile(pPrompt);
+  File* pFile = new File(pPrompt);
   
-  if (! oFile.bOpenRead(sFile)) {
+  if (! pFile->bOpenRead(sFile)) {
     vTrace("No such file\n"_Stz);
     return true;
   }
   
   s16KB sLine;
   int i_Line = 0;
-  while (oFile.bReadLine(sLine)) {
+  while (pFile->bReadLine(sLine)) {
     if (++i_Line > nLines)
       break;
     vTrace("%s\n"_Stz,sLine.szStz());
   }
   
-  oFile.vClose();
+  pFile->vClose();
+  
+  delete pFile;
 
   return true;
 }

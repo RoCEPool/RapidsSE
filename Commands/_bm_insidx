@@ -49,6 +49,8 @@ begin
     reportOp | outputOp | sinkOp | stageA
 end;
 
+filecat "/tmp/passThru.rep" 100;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_5;
 print "** 5/6) drop ALLCOLS_TABLE";
