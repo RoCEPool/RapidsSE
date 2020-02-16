@@ -117,6 +117,7 @@ namespace Steps
     static void vAddSteps_Queues(void);
   
     static void vAddSteps_Register(void);
+    static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegSet(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_Row(void);
