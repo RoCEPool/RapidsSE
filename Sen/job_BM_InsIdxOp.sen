@@ -23,7 +23,10 @@
 
   Operand[].newCsvBuffer
   Operand[].report
-  timer[] timer.reportStr "InsIdx" "%v,%v\n" str.format Operand[].csvAppend
+
+  timer[] timer.reportStr "InsIdx Timer"    "%v,%v\n" str.format Operand[].csvAppend
+  counter0[].get          "InsIdx Counter0" "%v,%v\n" str.format Operand[].csvAppend
+
   Operand[].pipeout
 ;
 
