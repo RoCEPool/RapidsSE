@@ -25,7 +25,8 @@ void Step::vIndexTreeInsEntBuffer(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDebugPoint();
+  
+  m_pDataStack->vPushInt(C_UNKNOWN);
   
   EXIT();
 }

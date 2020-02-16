@@ -45,6 +45,7 @@
 
   // insert all the entries into tree
   Operand[].get indexTree[].get indexTree.insEntBuffer
+    counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]
 
