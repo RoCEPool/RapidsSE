@@ -111,7 +111,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get current patch as string                                                */
+/* get current folder path as string                                          */
 /*----------------------------------------------------------------------------*/
 : folderPath.str ( -- s )
 
@@ -130,6 +130,24 @@
     pathPick dic.name str.cat
 
   loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* get current folder contents                                                */
+/*----------------------------------------------------------------------------*/
+: folderContents.str ( -- s )
+
+  ""
+  pathCurrentFolder dic.lastWord dup iterate
+
+    object@ word.name@ str.cat
+
+    " " str.cat
+
+    object@ word.prev object!
+
+  next
+
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
