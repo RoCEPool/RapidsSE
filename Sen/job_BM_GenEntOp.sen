@@ -33,58 +33,9 @@ debug::breakPoint
 /*----------------------------------------------------------------------------*/
 : BM_GenEnt_StartMarker
 
-  "BM_GenEnt_StartMarker (Table A)" .
+  "BM_GenEnt_StartMarker" .
 
-  // check in tables folder
-  checkInTables not if false exit then
-
-  "BM_GenEnt_StartMarker (Table B)" .
-
-  // table
-  <tableNm> checkIsValidTable not if
-    op.pipelineJob@ <ERROR_JOB>
-    Operand[].delete
-    Operand[].newErrorMarker
-    exit
-  then
-
-  "BM_GenEnt_StartMarker (Table C)" .
-
-  // move to table folder and find the table
-  <tableNm> pushTable assert
-  <tableNm> find execute to table[]
-
-  "BM_GenEnt_StartMarker (Table D)" .
-
-  // cross-check
-  table[].get assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  "BM_GenEnt_StartMarker (Index A)" .
-
-  // move to indexes folder
-  pushIndexes assert
-
-  "BM_GenEnt_StartMarker (Index B)" .
-
-  <indexNm> checkIsIndex not if
-    op.pipelineJob@ <ERROR_JOB>
-    Operand[].delete
-    Operand[].newErrorMarker
-    exit
-  then
-
-  "BM_GenEnt_StartMarker (Index C)" .
-
-  <IndexNm> find execute to index[]
-
-  "BM_GenEnt_StartMarker (Index D)" .
-
-  // cross-check
-  index[].get assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  op__table_index
 
   Operand[].pipeOut
 ;
