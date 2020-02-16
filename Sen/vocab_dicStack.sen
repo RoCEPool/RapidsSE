@@ -110,6 +110,28 @@
   dicStack.depth 1 - pathPick
 ;
 
+/*----------------------------------------------------------------------------*/
+/* get current patch as string                                                */
+/*----------------------------------------------------------------------------*/
+: folderPath.str ( -- s )
+
+  "/"
+
+  // iterate thru each folder in path and concat to end
+  pathDepth 0 do
+
+    I if "/" str.cat then
+
+    // compute the path subscript
+    //pathDepth 1 - I -
+    I
+
+    // pick the path, get its name and concat name to working string
+    pathPick dic.name str.cat
+
+  loop
+;
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

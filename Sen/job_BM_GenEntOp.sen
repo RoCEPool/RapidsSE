@@ -37,6 +37,8 @@ debug::breakPoint
 
   op__table_index
 
+  folderPath.str "Folder path: %v" .printf
+
   Operand[].pipeOut
 ;
 
