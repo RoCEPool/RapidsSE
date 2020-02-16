@@ -34,7 +34,7 @@ lsidxcol ALLCOLS_TABLE ALLCOLS_INDEX_int;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_4;
-print "** 4/6) ";
+print "** 4/6) bm_insidx pipeline";
 
 pipeline bm_insidx
 begin
@@ -46,7 +46,7 @@ begin
     BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int   | stageC
 
   stage stageC on origin:
-    outputOp | sinkOp | stageA
+    reportOp | outputOp | sinkOp | stageA
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
