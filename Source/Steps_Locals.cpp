@@ -177,6 +177,11 @@ void Step::vLocalsTo(void)
     bSemanticTo = true;
     m_pCompiler->vNextToken();
   }
+  else if (szTerm->bSame("Counter0[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Counter0[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("File0[]"_Stz)) {
     pCurrentWord->vEncodeCall("File0[].set"_Stz);
     EXIT();
