@@ -169,8 +169,11 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
  
     case CN_ENTBUFFER: {
-      // should never be called for ent buffers
-      RASSERT(0);
+      // should never be called for permanent ent buffers
+      EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+      RASSERT(! pEntBuffer->bIsPermanent());
+      delete pEntBuffer;
+      break;
     }
       
     case CN_IRWBUFFER: {

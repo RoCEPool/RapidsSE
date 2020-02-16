@@ -195,6 +195,8 @@ void Step::vIndexGenEntBuffer(void)
   
   EntBuffer* pEntBuffer = new EntBuffer();
   
+  pEntBuffer->vIsPermanent(false);
+  
   i8 iBufferNo = pEntBuffer->iBufferNo();
   
   i8 i_EntNo;
