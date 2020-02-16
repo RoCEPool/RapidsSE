@@ -9,11 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_EntBuffer
 
+  "BM_InsIdx_EntBuffer" .
+
   // get index tree for current partition
   index[].get index.indexTree to indexTree[]
 
   // insert all the entries into tree
-  indexTree[].get indexTree.insEntBuffer
+  Operand[].get indexTree[].get indexTree.insEntBuffer
 
   Operand[].delete
 ;

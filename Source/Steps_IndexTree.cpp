@@ -23,6 +23,9 @@ void Step::vIndexTreeInsEntBuffer(void)
 
   EntBuffer* pEntBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDebugPoint();
   
   EXIT();
 }

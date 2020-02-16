@@ -21,7 +21,7 @@
 
   // generate ent buffer's
   index[].get index.genEntBuffer to Operand[]
-debug::breakPoint
+
   Operand[].pipeOut
 
   Operand[].newEosMarker
