@@ -1010,7 +1010,9 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
-  // row
+  // reg timer
+  void vRegTimerGet(void);
+
   void vRowIntColumnFetch(void);
 
   // rowCursor
