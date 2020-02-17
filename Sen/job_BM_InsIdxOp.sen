@@ -39,18 +39,35 @@
   Operand[].newCsvBuffer
   Operand[].report
 
+  now[] now.asOf
+
+  now[] now.timestampStr locals| sTsp |
+  now[] now.sinceEpoch   locals| iNow |
+
   // csv report for bm_insidx
   aggTimer[] aggTimer.reportStr
-    "BM_InsIdx,Elapsed Time,%v\n" str.format Operand[].csvAppend
+    iNow
+    sTsp
+    "BM_InsIdx,%v,%v,Elapsed Time,%v\n"
+    str.format Operand[].csvAppend
 
   counter0[].get
-    "BM_InsIdx,Number of EntBuffers,%v\n" str.format Operand[].csvAppend
+    iNow
+    sTsp
+    "BM_InsIdx,%v,%v,Number of EntBuffers,%v\n"
+    str.format Operand[].csvAppend
 
   counter1[].get
-    "BM_InsIdx,Total Number of Entries,%v\n" str.format Operand[].csvAppend
+    iNow
+    sTsp
+    "BM_InsIdx,%v,%v,Total Number of Entries,%v\n"
+    str.format Operand[].csvAppend
 
   aggTimer[] aggTimer.nanosecs counter1[].get /
-    "BM_InsIdx,Average Time per Entry,%vns\n" str.format Operand[].csvAppend
+    iNow
+    sTsp
+    "BM_InsIdx,%v,%v,Average Time per Entry,%vns\n"
+    str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;
