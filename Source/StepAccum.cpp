@@ -255,18 +255,22 @@ void StepAccum::vShow(void)
   //                          Ns
   i8 nMaxNanosecondsForInvoke = DIV(m_nMaxCycles,nCyclesPerNanosecond);
 
+  
+  i8 nTotalTime = DIV(m_nSumCycles,nCyclesPerNanosecond);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //      0   1     2     3     4     5
-  vTrace("%s: %lld, %lld, %lld, %lld, %lld\n"_Stz,
+  vTrace("%s: "
+         "called %lld, total %lldns, "
+         "avgPerCall %lldns, maxCall %lldns\n"_Stz,
+         
           m_szStepNm,               // 0
-
-          m_nInvoked,              // 1
-
-          m_nSumCycles,            // 2
-          nCyclesPerInvoke,        // 3
-          nNanosecondsPerInvoke,   // 4
-          nMaxNanosecondsForInvoke,// 5
+         
+          m_nInvoked,               // 1
+          nTotalTime,               // 2
+         
+          nNanosecondsPerInvoke,    // 2
+          nMaxNanosecondsForInvoke, // 3
 
           C_ENDARGS);
 }
