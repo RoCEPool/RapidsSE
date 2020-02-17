@@ -34,23 +34,23 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: BM_TimerReport
+: BM_InsIdx_Report
 
   Operand[].newCsvBuffer
   Operand[].report
 
   // csv report for bm_insidx
   aggTimer[] aggTimer.reportStr
-    "BM_InsIdx,Elapsed Time, %v\n" str.format Operand[].csvAppend
+    "BM_InsIdx,Elapsed Time,%v\n" str.format Operand[].csvAppend
 
   counter0[].get
-    "BM_InsIdx,No of EntBuffers,%v\n" str.format Operand[].csvAppend
+    "BM_InsIdx,Number of EntBuffers,%v\n" str.format Operand[].csvAppend
 
   counter1[].get
-    "BM_InsIdx,No of Entries,%v\n" str.format Operand[].csvAppend
+    "BM_InsIdx,Total Number of Entries,%v\n" str.format Operand[].csvAppend
 
   aggTimer[] aggTimer.nanosecs counter1[].get /
-    "BM_InsIdx,Time per Entry,%vns\n" str.format Operand[].csvAppend
+    "BM_InsIdx,Average Time per Entry,%vns\n" str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;
@@ -86,7 +86,7 @@
 
   Operand[].delete
 
-  BM_TimerReport
+  BM_InsIdx_Report
 
   Operand[].newEosMarker
   Operand[].pipeout
