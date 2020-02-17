@@ -77,7 +77,7 @@ StepAccum* StepTiming::pAllocAccum(Stz* aStepNm)
    
   ASSERT(iAccum < C_STEPS);
   
-  m_xStepAccum[iAccum].m_aStepNm = aStepNm;
+  m_xStepAccum[iAccum].m_szStepNm = aStepNm;
   
   return &m_xStepAccum[iAccum];
 }
@@ -168,7 +168,7 @@ void StepTiming::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
   
   pFile->vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
-    if (m_xStepAccum[i_Step].m_aStepNm->bSame(szStepNm))
+    if (m_xStepAccum[i_Step].m_szStepNm->bSame(szStepNm))
       m_xStepAccum[i_Step].vPrint(pFile);
   
   m_okLock.vDropWrite();

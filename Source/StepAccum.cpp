@@ -12,7 +12,7 @@ StepAccum::StepAccum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM,_FOOTER_);
   
-  m_aStepNm  = nullptr;
+  m_szStepNm  = nullptr;
   m_nInvoked = 0;
   
   m_nSumCycles = 0;
@@ -85,7 +85,7 @@ void StepAccum::vPrint(File* pFile)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // 0) m_aStepNm
+  // 0) m_szStepNm
   
   // 1) m_nInvoked
   
@@ -116,7 +116,7 @@ void StepAccum::vPrint(File* pFile)
 
   //             0   1     2     3     4     5
   pFile->vPrint("%s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
-               m_aStepNm,               // 0
+               m_szStepNm,               // 0
                m_nInvoked,              // 1
                
                m_nSumCycles,            // 2
@@ -140,7 +140,7 @@ void StepAccum::vPrintAll(File* pFile)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // 0) m_aStepNm
+  // 0) m_szStepNm
   
   // 1) m_nInvoked
   
@@ -175,7 +175,7 @@ void StepAccum::vPrintAll(File* pFile)
 
 //            0    1      2      3       4     5     6     7
 //  vTrace("  %24s %12lld %12lld %8lldns %8lld %8lld %8lld %8lld\n"_Stz,
-//          m_aStepNm,               // 0
+//          m_szStepNm,               // 0
 //          m_nInvoked,              // 1
 //
 //          m_nSumCycles,            // 2
@@ -189,7 +189,7 @@ void StepAccum::vPrintAll(File* pFile)
 
   //            0   1     2     3     4     5     6     7
   pFile->vPrint("%s, %lld, %lld, %lld, %lld, %lld, %lld, %lld\n"_Stz,
-               m_aStepNm,               // 0
+               m_szStepNm,               // 0
                m_nInvoked,              // 1
                
                m_nSumCycles,            // 2

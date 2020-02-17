@@ -8,7 +8,7 @@ namespace Steps
   class StepAccum : public Object
   {
   public:
-    Stz* m_aStepNm;     // name of function
+    Stz* m_szStepNm;    // name of function
     i8   m_nInvoked;    // number of times the function has been invoked
   
     i8   m_nSumCycles;  // total cycles
