@@ -114,6 +114,20 @@ void StepTiming::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
+void StepTiming::vShow(Stz* szStepNm)
+{
+  m_okLock.vGrabWrite();
+  
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    if (m_xStepAccum[i_Step].m_szStepNm->bSame(szStepNm))
+      m_xStepAccum[i_Step].vShow();
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* write steps to given file                                                  */
+/*----------------------------------------------------------------------------*/
 void StepTiming::vWrite(Stz* szPath)
 {
   File* pFile = new File(nullptr);

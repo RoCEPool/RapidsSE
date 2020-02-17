@@ -25,7 +25,10 @@ PromptFun __Prompt_st (
 bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
+
+  i8 nTokens = pTokenVec->nTokens();
   
+
   ASSERT((*pTokenVec)[0]->bSame("stepTiming"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -51,8 +54,22 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show a step timing
+  if ( (*pTokenVec)[1]->bSame("show"_Stz) && nTokens == 3) {
+    
+    s32 sStepNm = (*pTokenVec)[2]->szTerm();
+
+    if (! AM::pStepTiming()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pStepTiming()->vShow(sStepNm);
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write step timings to given file
-  if ( (*pTokenVec)[1]->bSame("write"_Stz) ) {
+  if ( (*pTokenVec)[1]->bSame("write"_Stz) && nTokens == 3) {
     
     s256 sPath = (*pTokenVec)[2]->szTerm();
 

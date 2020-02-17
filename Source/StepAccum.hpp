@@ -28,7 +28,8 @@ namespace Steps
     void vPrint(File* pFile);
     void vPrintAll(File* pFile);
     void vReset(void);
-    
+    void vShow(void);
+
     Footer* aFooter(void);
   };
 }

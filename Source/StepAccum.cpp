@@ -216,6 +216,62 @@ void StepAccum::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print to given file                                                        */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vShow(void)
+{
+  if (0 == m_nInvoked)
+    return;
+  
+  i8 nCyclesPerGigaNanosecond = Tick::iTicksPerSecond();
+  i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // 0) m_szStepNm
+  
+  // 1) m_nInvoked
+  
+  // 2) m_nSumCycles
+  
+  //    Cycles   Sum(Cycles)
+  // 3) ------ = -----------
+  //    Invoke   NoOfInvokes
+  i8 nCyclesPerInvoke = DIV(m_nSumCycles,m_nInvoked);
+  
+  //               Cycles
+  //               ------
+  //      Ns       Invoke     Cycles     NS
+  // 4) ------ = ---------- : ------ x ------
+  //    Invoke     Cycles     Invoke   Cycles
+  //               ------
+  //                 Ns
+  i8 nNanosecondsPerInvoke = DIV(nCyclesPerInvoke,nCyclesPerNanosecond);
+  
+  //       Max(Ns) for     Max(Cycles)    Max(Cycles)
+  //        an Invoke  = ------------- : ----------- x Ns
+  // 5)                     Cycles          Cycles
+  //                        ------
+  //                          Ns
+  i8 nMaxNanosecondsForInvoke = DIV(m_nMaxCycles,nCyclesPerNanosecond);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //      0   1     2     3     4     5
+  vTrace("%s: %lld, %lld, %lld, %lld, %lld\n"_Stz,
+          m_szStepNm,               // 0
+
+          m_nInvoked,              // 1
+
+          m_nSumCycles,            // 2
+          nCyclesPerInvoke,        // 3
+          nNanosecondsPerInvoke,   // 4
+          nMaxNanosecondsForInvoke,// 5
+
+          C_ENDARGS);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

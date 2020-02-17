@@ -53,6 +53,8 @@ stepTiming write "/tmp/StepTiming.csv";
 
 filecat "/tmp/bm_insidx_rep.csv" 100;
 
+stepTiming show "vIndexTreeInsEntBuffer";
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_5;
 print "** 5/6) drop ALLCOLS_TABLE";

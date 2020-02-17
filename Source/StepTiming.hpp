@@ -30,6 +30,7 @@ namespace Steps
     void vDropWrite(void);
     void vGrabWrite(void);
     void vReset(void);
+    void vShow(Stz* szStepNm);
     void vWrite(Stz* szPath);
     void vWriteSingleStep(Stz* szPath, Stz* szStepNm);
 
