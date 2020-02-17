@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* Prompt_stepTiming.cpp -- step timing                                       */
+/*============================================================================*/
+
+#include "Prompt.h"
+
+
+PromptFun __Prompt_st (
+  PF_ST,                // prompt function
+  "Prompt_st"_Stz,      // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "stepTiming"_Stz,     // the prompt command
+  nullptr,              // the second word
+  bPrompt_stepTiming,   // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "stepTiming"_Stz,     // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
+{
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  
+  ASSERT((*pTokenVec)[0]->bSame("stepTiming"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // start step timing
+  if ( (*pTokenVec)[1]->bSame("start"_Stz) ) {
+    if (AM::pStepTiming()) {
+      vTrace("Step timing already started\n"_Stz);
+      return true;
+    }
+    AM::vStepTiming(new StepTiming);
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reset step timing
+  if ( (*pTokenVec)[1]->bSame("reset"_Stz) ) {
+    if (! AM::pStepTiming()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pStepTiming()->vReset();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write step timings to given file
+  if ( (*pTokenVec)[1]->bSame("write"_Stz) ) {
+    
+    s256 sPath = (*pTokenVec)[2]->szTerm();
+
+    if (! AM::pStepTiming()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pStepTiming()->vWrite(sPath);
+    return true;
+  }
+  
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
