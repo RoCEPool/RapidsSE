@@ -199,6 +199,8 @@ void Step::vIndexGenEntBuffer(void)
   
   i8 iBufferNo = pEntBuffer->iBufferNo();
   
+  Ent* aPrevEnt = nullptr;
+
   i8 i_EntNo;
   for (i_EntNo = 0; ; i_EntNo++) {
     
@@ -207,16 +209,26 @@ void Step::vIndexGenEntBuffer(void)
     oEntWrk.vRandomEnt(pIdxColVec);
     oEntWrk.vBuffer(iBufferNo);
     oEntWrk.vItem(i_EntNo);
-    
+    oEntWrk.vOffsets(1);
+
     //oEntWrk.vShow(pIdxColVec);
 
-    i8 nBytes = oEntWrk.nSize_EntKey();
+    i8 nBytes = oEntWrk.nSize_EntKeyNeo();
 
-    byte* ayEnt = pEntBuffer->ayAllotBytes(nBytes);
-    if (! ayEnt)
+    Ent* aEnt = (Ent*)pEntBuffer->ayAllotBytes(nBytes);
+    if (! aEnt)
       break;
     
-    MemLib::vCopy(ayEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
+    MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
+    aEnt->vNEO(0,-1);
+    
+    i8 iOffset = pEntBuffer->iToOffset(aEnt);
+    if (aPrevEnt)
+      aPrevEnt->vNEO(0,(i4)iOffset);
+    
+    pEntBuffer->vIncItems();
+    
+    aPrevEnt = aEnt;
   }
   
   vTrace("Generated EntBuffer with %lld entries\n"_Stz,i_EntNo);
