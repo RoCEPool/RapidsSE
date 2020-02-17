@@ -7,26 +7,50 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: BM_TimerNew
+  
+  timer::new    to timer[]
+  aggTimer::new to aggTimer[]
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : BM_TimerBegin
   
-  timer::new to timer[]
-
   timer[] timer.start
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: BM_TimerReport
-
+: BM_TimerUpdate
+  
   timer[] timer.update
+
+  timer[] timer.ticks aggTimer[] aggTimer.add
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: BM_InsIdx_Report
 
   Operand[].newCsvBuffer
   Operand[].report
 
-  timer[] timer.reportStr "InsIdx Timer"      "%v,%v\n" str.format Operand[].csvAppend
-  counter0[].get          "InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
-  counter1[].get          "InsIdx Entries"    "%v,%v\n" str.format Operand[].csvAppend
+  // csv report for bm_insidx
+  aggTimer[] aggTimer.reportStr
+    "BM_InsIdx,Elapsed Time,%v\n" str.format Operand[].csvAppend
+
+  counter0[].get
+    "BM_InsIdx,Number of EntBuffers,%v\n" str.format Operand[].csvAppend
+
+  counter1[].get
+    "BM_InsIdx,Total Number of Entries,%v\n" str.format Operand[].csvAppend
+
+  aggTimer[] aggTimer.nanosecs counter1[].get /
+    "BM_InsIdx,Average Time per Entry,%vns\n" str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;
@@ -38,20 +62,21 @@
 
   "BM_InsIdx_EntBuffer" .
 
+  // get index partition for current partition
+  index[].get index.indexTree to indexTree[] // indexPtn
+
   BM_TimerBegin
 
-  // get index tree for current partition
-  index[].get index.indexTree to indexTree[]
-
   // insert all the entries into tree
-  Operand[].get indexTree[].get indexTree.insEntBuffer
+  //   NB: registers are available in the step!!
+  Operand[].get indexTree[].get indexTree.insEntBuffer // <- focal pt of bm
     counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]
 
-  Operand[].delete
+  BM_TimerUpdate
 
-  BM_TimerReport
+  Operand[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +86,7 @@
 
   Operand[].delete
 
-  BM_TimerReport
+  BM_InsIdx_Report
 
   Operand[].newEosMarker
   Operand[].pipeout
@@ -72,9 +97,12 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_StartMarker
 
+  // table index folder push
   op__table_index
 
   folderPath.str "Folder path: %v" .printf
+
+  BM_TimerNew
 
   Operand[].pipeout
 ;
@@ -108,7 +136,7 @@
 
     ZK_ENTBUFFER   of BM_InsIdx_EntBuffer   true endof
 
-    //ZK_EOSMARKER   of BM_InsIdx_EosMarker   true endof
+    ZK_EOSMARKER   of BM_InsIdx_EosMarker   true endof
 
     ZK_STARTMARKER of BM_InsIdx_StartMarker true endof
 

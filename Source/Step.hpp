@@ -19,6 +19,7 @@ namespace Steps
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Address(void);
+    static void vAddSteps_AggTimer(void);
     static void vAddSteps_Args(void);
     static void vAddSteps_Article(void);
     static void vAddSteps_Assert(void);
@@ -116,6 +117,7 @@ namespace Steps
   
     static void vAddSteps_Queues(void);
   
+    static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_Register(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegSet(void);

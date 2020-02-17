@@ -6,12 +6,8 @@ startCluster;
 
 pwf ;
 
-create table __REPORT
-(
-  name  VARCHAR(32) NOT NULL,
-  value INTEGER     NOT NULL
-)
-;
+// create __report
+__REPORT
 
 trackMemory;
 
@@ -25,7 +21,7 @@ begin
     bufferGenOp 10 | passThruOp | stageC
 
   stage stageC on origin:
-    reportOp | outputOp | sinkOp | stageA
+    reportOp "/tmp/passThru.rep" | outputOp | sinkOp | stageA
     //outputOp | sinkOp | stageA
 
 end;

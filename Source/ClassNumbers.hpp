@@ -17,6 +17,7 @@ enum eCN : u2 // Class Number
   
   /*   1 0x001        1B Heap:I */ CN__A__,
   /*   2 0x002       80B Heap:M */ CN_ACCESSPATH,
+  /* 275 0x113       32B Heap:S */ CN_AGGTIMER,
   /*   3 0x003      304B Heap:S */ CN_ARG,
   /*   4 0x004    16584B Heap:I */ CN_ARGUMENTS,
   /*   5 0x005      384B Heap:S */ CN_ARTICLE,
@@ -353,6 +354,7 @@ static Stz* aCN[]
   
   /*   1 0x001 */ "_A__"_Stz,                // CN__A__
   /*   2 0x002 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
+  /*   2 0x002 */ "AGGTIMER"_Stz,            // CN_AGGTIMER
   /*   3 0x003 */ "ARG"_Stz,                 // CN_ARG
   /*   4 0x004 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
   /*   5 0x005 */ "ARTICLE"_Stz,             // CN_ARTICLE

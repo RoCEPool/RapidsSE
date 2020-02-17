@@ -14,6 +14,7 @@ namespace Gadgets
 
 //------------------------------------------------------------------------------
 
+#include "AggTimer.hpp"
 #include "Birth.hpp"
 #include "CRM.hpp"
 #include "DecaCnt.hpp"
@@ -41,6 +42,7 @@ namespace Gadgets
 #include "Peruse.hpp"
 #include "Numbat.hpp"
 
+#include "SP_AggTimer.hpp"
 #include "SP_Elapsed.hpp"
 #include "SP_EnmSet.hpp"
 #include "SP_Footer.hpp"

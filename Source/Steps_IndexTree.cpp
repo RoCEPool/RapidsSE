@@ -31,8 +31,9 @@ void Step::vIndexTreeInsEntBuffer(void)
        aEnt;
        aEnt = pEntBuffer->aNextEntry(aEnt,0)) {
     
-    nEntries++;
+    // ..add code here to insert entry into index tree..
     
+    nEntries++;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
