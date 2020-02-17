@@ -30,6 +30,7 @@ namespace CompactBuffers
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(Row* pRow, Crw* aCrw);
 
+    HeadLine*  aGetHead(i8 i_Row);
     void       vTable(Table* pTable);
     Table*     pTable(void);
     i8         nRowCount(void);
@@ -67,8 +68,6 @@ namespace CompactBuffers
 
   private:
     bool       bHasSpace(i8 nBytes);
-  
-    HeadLine*  aGetHead(i8 i_Row);
 
 
     ////////////////////////////////////////////////////////////////////////////

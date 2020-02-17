@@ -41,16 +41,16 @@
 
   // csv report for bm_insidx
   aggTimer[] aggTimer.reportStr
-    "BM_InsIdx,Elapsed Time,%v\n" str.format Operand[].csvAppend
+    "BM_InflateCrw,Elapsed Time,%v\n" str.format Operand[].csvAppend
 
   counter0[].get
-    "BM_InsIdx,Number of EntBuffers,%v\n" str.format Operand[].csvAppend
+    "BM_InflateCrw,Number of CrwBuffers,%v\n" str.format Operand[].csvAppend
 
   counter1[].get
-    "BM_InsIdx,Total Number of Entries,%v\n" str.format Operand[].csvAppend
+    "BM_InflateCrw,Total Number of Compact Rows,%v\n" str.format Operand[].csvAppend
 
   aggTimer[] aggTimer.nanosecs counter1[].get /
-    "BM_InsIdx,Average Time per Entry,%vns\n" str.format Operand[].csvAppend
+    "BM_InflateCrw,Average Time per Compact Row,%vns\n" str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;
@@ -69,8 +69,8 @@
 
   // Inflate the entries from the crwBuffer
   //   NB: registers are available in the step!!
-  //tablePtn[].inflateCrwBuffer // <- focal pt of bm
-  //  counter1[] + to counter1[]
+  tablePtn[].inflateCrwBuffer // <- focal pt of bm
+    counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]
 
@@ -146,7 +146,7 @@
 
   while assert::stack_0 repeat
 
-  "*** BM_InsIdxOp EXITS" .
+  "*** BM_InflateRowOp EXITS" .
   <<logExit
   job::deleteThis
   <DONE_RUN>

@@ -9,11 +9,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePartition2(void)
 {
-  vAddStep("tablePtn[].get"_Stz,           &Step::vTablePtnGet);
-  vAddStep("tablePtn[].genCrwBuffers"_Stz, &Step::vTablePtnGenCrwBuffers);
-  vAddStep("tablePtn[].purge"_Stz,         &Step::vTablePtnPurge);
-  vAddStep("tablePtn[].root"_Stz ,         &Step::vTablePtnRoot);
-  vAddStep("tablePtn[].set"_Stz  ,         &Step::vTablePtnSet);
+  vAddStep("tablePtn[].get"_Stz,              &Step::vTablePtnGet);
+  vAddStep("tablePtn[].genCrwBuffers"_Stz,    &Step::vTablePtnGenCrwBuffers);
+  vAddStep("tablePtn[].inflateCrwBuffer"_Stz, &Step::vTablePtnInflateCrwBuffer);
+  vAddStep("tablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
+  vAddStep("tablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
+  vAddStep("tablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +36,6 @@ void Step::vTablePtnGenCrwBuffers(void)
 {
   ENTRY(); // ENTRY("vTablePtnGenCrwBuffers"_Stz);
   
-  
   // get no of buffers to generate
   i8 nBuffers = m_pDataStack->iPopInt(__func__);
   
@@ -46,9 +46,7 @@ void Step::vTablePtnGenCrwBuffers(void)
   Table* pTable = pTablePtn->pTable();
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  ExtractRow* pExtractRow = new ExtractRow(*m_pRegSet->m_xpTable);
   Row* pCsvRow = new Row(pStreamDef,C_ALL);
-  Row* pCrwRow = nullptr;
   
   // create a row compactor for the crw buffer
   RowCompactor* pRowCompactor = new RowCompactor;
@@ -58,6 +56,7 @@ void Step::vTablePtnGenCrwBuffers(void)
   pCrwBuffer->vIsPermanent(false);
   pCrwBuffer->vTable(pTable);
   pCrwBuffer->vAppendOpen(pRowCompactor, true);
+  nBuffers--;
   
   CrwBuffer* pRootBuffer = pCrwBuffer;
   CrwBuffer* pPrevBuffer = nullptr;
@@ -102,12 +101,53 @@ void Step::vTablePtnGenCrwBuffers(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // close current buffer
+  pCrwBuffer->vAppendClose();
+  
   m_pDataStack->vPushPtr(pRootBuffer);
   
   delete pRowCompactor;
   delete pCsvRow;
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].inflateCrwBuffer -- inflate crw buffers for this tablePtn       */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnInflateCrwBuffer(void)
+{
+  ENTRY(); // ENTRY("vTablePtnInflateCrwBuffers"_Stz);
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
+  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  StreamDef* pStreamDef = pTablePtn->pTable()->pStreamDef();
+  
+  // create a row
+  HV_Row hRow(pStreamDef,C_ALL);
+  
+//#ifdef WITH_DEBUG_VERSION
+//  HV_Rec hvRec(pStreamDef,C_ALL);
+//#endif
+  
+  i8 nRows = pCrwBuffer->nRowCount();
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    // get compact row
+    Crw* aCompactRow = (Crw*)pCrwBuffer->aGetHead(i_Row);
+    
+    // inflate compact row into row
+    RowInflator::vInflateRow(hRow,aCompactRow);
+
+//#ifdef WITH_DEBUG_VERSION
+//    // append the row to the record
+//    hvRec->vAppend(hRow);
+//    vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
+//#endif
+  }
+  
+  m_pDataStack->vPushInt(nRows);
+  
 }
 
 /*----------------------------------------------------------------------------*/
