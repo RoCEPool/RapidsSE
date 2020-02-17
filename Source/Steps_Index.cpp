@@ -16,7 +16,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
-  vAddStep("index.genEntBuffer"_Stz,    &Step::vIndexGenEntBuffer);
+  vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("index.indexTree"_Stz,       &Step::vIndexIndexTree);
@@ -175,13 +175,13 @@ void Step::vIndexDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.genEntBuffer -- generate an ent buffer for this index                */
+/* index[].genEntBuffer -- generate an ent buffer for this index              */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexGenEntBuffer(void)
 {
   ENTRY(); // ENTRY("vIndexGenEntBuffer"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = *m_pRegSet->m_xpIndex;
   IndexDef* pIndexDef = pIndex->pIndexDef();
   IdxColVec* pIdxColVec = pIndexDef->pIdxColVec();
 

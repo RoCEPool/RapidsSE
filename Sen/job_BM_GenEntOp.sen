@@ -19,11 +19,10 @@
 
   Operand[].pipeOut
 
-  // generate ent buffer's
-
+  // generate the ent buffer's
   <nBuffers> 0 do
-    index[].get index.genEntBuffer to Operand[]
-    Operand[].pipeOut
+    index[].genEntBuffer to Operand[]
+    Operand[].pipeout
   loop
 
   Operand[].newEosMarker
