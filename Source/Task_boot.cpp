@@ -33,11 +33,15 @@ void Task::vAddRoutines(void)
   s48K sDefinition;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // : __nil
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": __nil ;"_Stz;
   
   pCompileColon(sDefinition);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // : interpret
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": interpret"
@@ -149,6 +153,8 @@ void Task::vAddRoutines(void)
   pCompileColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // : include file
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include-file"
   "  input::push"
@@ -162,6 +168,8 @@ void Task::vAddRoutines(void)
   pCompileColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // : include-string
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include-string"
   "  input::push"
@@ -173,6 +181,8 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // : include
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include"
@@ -191,6 +201,7 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #ifdef WITH_APPLE
   sDefinition =
