@@ -24,9 +24,20 @@ void Step::vIndexTreeInsEntBuffer(void)
   EntBuffer* pEntBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nEntries = 0;
   
+  for (Ent* aEnt = pEntBuffer->aFirstItem();
+       aEnt;
+       aEnt = pEntBuffer->aNextEntry(aEnt,0)) {
+    
+    nEntries++;
+    
+  }
   
-  m_pDataStack->vPushInt(C_UNKNOWN);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pDataStack->vPushInt(nEntries);
   
   EXIT();
 }
