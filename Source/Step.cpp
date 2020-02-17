@@ -39,7 +39,7 @@ void Step::vAddSteps(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Step::vAddSteps_AccessPath();
-  Step::vAddSteps_Log();
+  Step::vAddSteps_AggTimer();
   Step::vAddSteps_Address();
   Step::vAddSteps_Args();
   Step::vAddSteps_Article();
@@ -114,6 +114,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_LockTracker();
+  Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
   
   Step::vAddSteps_Magnitude();

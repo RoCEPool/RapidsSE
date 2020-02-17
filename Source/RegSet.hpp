@@ -47,7 +47,7 @@ namespace Registers
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
     REG<Timer>       m_xpTimer;     // timer
-    REG<Timer>       m_xpAggTimer;  // aggregate timer
+    REG<AggTimer>    m_xpAggTimer;  // aggregate timer
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter

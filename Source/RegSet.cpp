@@ -70,6 +70,9 @@ RegSet::~RegSet(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
+  
+  if (! m_xpAggTimer.bIsNull())
+    delete *m_xpAggTimer;
 }
 
 

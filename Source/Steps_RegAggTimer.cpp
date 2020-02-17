@@ -33,7 +33,7 @@ void Step::vRegAggTimerSet(void)
 {
   ENTRY(); // ENTRY("vRegAggTimerSet"_Stz);
     
-  m_pRegSet->m_xpAggTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  m_pRegSet->m_xpAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }
