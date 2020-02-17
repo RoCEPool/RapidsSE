@@ -14,6 +14,7 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN__A__
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
+  /* 19 */ &Finalize::vUndefined,         // CN_AGGTIMER
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
   /* 23 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /*    */ &Finalize::vUndefined,         // CN_ARTICLE

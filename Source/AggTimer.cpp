@@ -15,7 +15,7 @@ AggTimer* Gadgets::_pAggTimer(void* aAddr)
 {
   AggTimer* pAggTimer = reinterpret_cast<AggTimer*>(aAddr);
   
-  RASSERT_TYPE(pAggTimer, CN_TIMER);
+  RASSERT_TYPE(pAggTimer, CN_AGGTIMER);
   
   return pAggTimer;
 }
@@ -25,7 +25,7 @@ AggTimer* Gadgets::_pAggTimer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* AggTimer::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TIMER);
+  void* pObject = HeapMem::pAllocate(CN_AGGTIMER);
   
   return pObject;
 }
@@ -44,16 +44,16 @@ void AggTimer::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AggTimer::AggTimer(void)
-: Object(CN_TIMER)
+: Object(CN_AGGTIMER)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iStart  = 0;
   m_iUpdate = 0;
 
-  _checkInitialised_(CN_TIMER);
+  _checkInitialised_(CN_AGGTIMER);
 
-  _postcondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ AggTimer::AggTimer(void)
 /*----------------------------------------------------------------------------*/
 AggTimer::~AggTimer(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ AggTimer::~AggTimer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void AggTimer::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iStart  = 0;
   m_iUpdate = 0;
@@ -85,7 +85,7 @@ void AggTimer::vReset(void)
 /*----------------------------------------------------------------------------*/
 void AggTimer::vStart(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iStart  = Tick::iRdClock();
   m_iUpdate = 0;
@@ -96,7 +96,7 @@ void AggTimer::vStart(void)
 /*----------------------------------------------------------------------------*/
 void AggTimer::vSet(i8 iStart, i8 iUpdate)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   m_iStart  = iStart;
   m_iUpdate = iUpdate;
@@ -107,7 +107,7 @@ void AggTimer::vSet(i8 iStart, i8 iUpdate)
 /*----------------------------------------------------------------------------*/
 void AggTimer::vUpdate(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   ASSERT(m_iStart);
   m_iUpdate = Tick::iRdClock();
@@ -118,7 +118,7 @@ void AggTimer::vUpdate(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iNanoseconds(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
   //ASSERT(m_iUpdate);
@@ -136,7 +136,7 @@ i8 AggTimer::iNanoseconds(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iMicroseconds(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
   //ASSERT(m_iUpdate);
@@ -154,7 +154,7 @@ i8 AggTimer::iMicroseconds(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iMilliseconds(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
   //ASSERT(m_iUpdate);
@@ -172,7 +172,7 @@ i8 AggTimer::iMilliseconds(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iSeconds(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
   //ASSERT(m_iUpdate);
@@ -190,7 +190,7 @@ i8 AggTimer::iSeconds(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iTicks(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
   //ASSERT(m_iUpdate);
@@ -205,7 +205,7 @@ i8 AggTimer::iTicks(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iStart(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   return m_iStart;
 }
@@ -215,7 +215,7 @@ i8 AggTimer::iStart(void)
 /*----------------------------------------------------------------------------*/
 i8 AggTimer::iUpdate(void)
 {
-  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
   return m_iUpdate;
 }
