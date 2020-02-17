@@ -27,6 +27,8 @@
 : BM_TimerUpdate
   
   timer[] timer.update
+
+  timer[] timer.ticks aggTimer[] aggTimer.add
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,12 +40,17 @@
   Operand[].report
 
   // csv report for bm_insidx
-  timer[] timer.reportStr "BM_InsIdx Timer"      "%v,%v\n" str.format Operand[].csvAppend
-  counter0[].get          "BM_InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
-  counter1[].get          "BM_InsIdx Entries"    "%v,%v\n" str.format Operand[].csvAppend
+  aggTimer[] aggTimer.reportStr
+    "BM_InsIdx Timer" "%v,%v\n" str.format Operand[].csvAppend
 
-  timer[] timer.nanosecs counter1[].get /
-                        "BM_InsIdx ns per entry" "%v,%v\n" str.format Operand[].csvAppend
+  counter0[].get
+    "BM_InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
+
+  counter1[].get
+    "BM_InsIdx Entries" "%v,%v\n" str.format Operand[].csvAppend
+
+  aggTimer[] aggTimer.nanosecs counter1[].get /
+    "BM_InsIdx ns per entry" "%v,%v\n" str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;

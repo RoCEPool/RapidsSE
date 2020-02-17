@@ -30,7 +30,15 @@ void Step::vAggTimerAdd(void)
   ENTRY(); // ENTRY("vAggTimerAdd"_Stz);
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
-    
+
+  i8 iTicks = m_pDataStack->iPopInt(__func__);
+  
+  i8 iAggTicks = pAggTimer->iTicks();
+  
+  i8 iAdjTicks = iAggTicks + iTicks;
+  
+  pAggTimer->vSet(iAdjTicks);
+
   EXIT();
 }
 
@@ -119,9 +127,9 @@ void Step::vAggTimerReportStr(void)
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
-  SP_Timer spTimer;
+  SP_AggTimer spAggTimer;
   
-  //m_pDataStack->vPushStz(spTimer.sz(pTimer));
+  m_pDataStack->vPushStz(spAggTimer.sz(pAggTimer));
 
   EXIT();
 }
