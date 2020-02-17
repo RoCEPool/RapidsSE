@@ -146,6 +146,41 @@ void StepTiming::vWrite(Stz* szPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write steps to given file                                                  */
+/*----------------------------------------------------------------------------*/
+void StepTiming::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
+{
+  File* pFile = new File(nullptr);
+  
+  Now oNow;
+  
+  s256 sFilePath = szPath;
+  
+  //sFilePath.vCatSprint("/StepTiming_%s.csv"_Stz,oNow.sz());
+
+  bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
+  if (! bOpened) {
+    vTrace("Unable to open StepTiming file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return;
+  }
+  
+  m_okLock.vGrabWrite();
+  
+  pFile->vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    if (m_xStepAccum[i_Step].m_aStepNm->bSame(szStepNm))
+      m_xStepAccum[i_Step].vPrint(pFile);
+  
+  m_okLock.vDropWrite();
+  
+  vTrace("Written: %s\n"_Stz,pFile->sFilePath().szStz());
+  
+  pFile->vClose();
+  
+  delete pFile;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

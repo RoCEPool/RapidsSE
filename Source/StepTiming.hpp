@@ -31,6 +31,7 @@ namespace Steps
     void vGrabWrite(void);
     void vReset(void);
     void vWrite(Stz* szPath);
+    void vWriteSingleStep(Stz* szPath, Stz* szStepNm);
 
   
     Footer* aFooter(void);
