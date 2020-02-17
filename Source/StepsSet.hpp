@@ -30,7 +30,19 @@ public:
   void vAddressFetch(void);
   void vAddressStore(void);
 
-  // args
+  // timer
+  void vAggTimerAdd(void);
+  void vAggTimerDelete(void);
+  void vAggTimerMicrosecs(void);
+  void vAggTimerMillisecs(void);
+  void vAggTimerNanosecs(void);
+  void vAggTimerNew(void);
+  void vAggTimerReportStr(void);
+  void vAggTimerReset(void);
+  void vAggTimerSecs(void);
+  void vAggTimerTicks(void);
+
+// args
   void vArgsOscillate(void);
   void vArgsPrint(void);
 
@@ -1306,6 +1318,7 @@ public:
   void vTimerTicks(void);
   void vTimerUpdate(void);
 
+  // time
   void vTimeCurrent(void);
 
   // to
