@@ -5,16 +5,16 @@
 " op__common.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm>, then to <indexNm>                      */
+/* verify and set folder to <tableNm>                                         */
 /*----------------------------------------------------------------------------*/
-: op__table_index
+: op__table
 
-  "op__table_index (Table A)" .
+"op__table (Table A)" .
 
   // check in tables folder
   checkInTables not if false exit then
 
-  "op__table_index (Table B)" .
+  "op__table (Table B)" .
 
   // table
   <tableNm> checkIsValidTable not if
@@ -24,16 +24,27 @@
     exit
   then
 
-  "op__table_index (Table C)" .
+  "op__table (Table C)" .
 
   // move to table folder and find the table
   <tableNm> pushTable assert
   <tableNm> find execute to table[]
 
-  "op__table_index (Table D)" .
+  "op__table (Table D)" .
 
   // cross-check
   table[].get assert
+
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm>, then to <indexNm>                      */
+/*----------------------------------------------------------------------------*/
+: op__table_index
+
+  "op__table_index (Table A)" .
+  op__table
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
