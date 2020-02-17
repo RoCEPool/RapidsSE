@@ -48,8 +48,7 @@ AggTimer::AggTimer(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
-  m_iStart  = 0;
-  m_iUpdate = 0;
+  m_iTicks  = 0;
 
   _checkInitialised_(CN_AGGTIMER);
 
@@ -76,41 +75,17 @@ void AggTimer::vReset(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
-  m_iStart  = 0;
-  m_iUpdate = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* start                                                                      */
-/*----------------------------------------------------------------------------*/
-void AggTimer::vStart(void)
-{
-  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  m_iStart  = Tick::iRdClock();
-  m_iUpdate = 0;
+  m_iTicks  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set                                                                        */
 /*----------------------------------------------------------------------------*/
-void AggTimer::vSet(i8 iStart, i8 iUpdate)
+void AggTimer::vSet(i8 iTicks)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
-  m_iStart  = iStart;
-  m_iUpdate = iUpdate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* update                                                                     */
-/*----------------------------------------------------------------------------*/
-void AggTimer::vUpdate(void)
-{
-  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  ASSERT(m_iStart);
-  m_iUpdate = Tick::iRdClock();
+  m_iTicks  = iTicks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,11 +94,9 @@ void AggTimer::vUpdate(void)
 i8 AggTimer::iNanoseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
+    
+  i8 iTicks = this->iTicks();
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-  
-  i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iNano = (iTicks * C_1G) / iTicksPerSecond;
@@ -138,10 +111,8 @@ i8 AggTimer::iMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
+  i8 iTicks = this->iTicks();
   
-  i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iMicro = (iTicks * C_1M) / iTicksPerSecond;
@@ -156,10 +127,8 @@ i8 AggTimer::iMilliseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
+  i8 iTicks = this->iTicks();
   
-  i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iMilli = (iTicks * C_1K) / iTicksPerSecond;
@@ -174,10 +143,8 @@ i8 AggTimer::iSeconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
+  i8 iTicks = this->iTicks();
   
-  i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iSeconds = iTicks / iTicksPerSecond;
@@ -191,33 +158,8 @@ i8 AggTimer::iSeconds(void)
 i8 AggTimer::iTicks(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-
-  i8 iTicks = (m_iUpdate - m_iStart);
-  
-  return iTicks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get start                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 AggTimer::iStart(void)
-{
-  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  return m_iStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get update                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 AggTimer::iUpdate(void)
-{
-  _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-  
-  return m_iUpdate;
+    
+  return m_iTicks;
 }
 
 /*----------------------------------------------------------------------------*/

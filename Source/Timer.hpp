@@ -32,7 +32,7 @@ namespace Gadgets
     i8 iMicroseconds(void);
     i8 iMilliseconds(void);
     i8 iSeconds(void);
-    i8 iTicks(void);
+    i8 iTickDelta(void);
   
     i8 iStart(void);
     i8 iUpdate(void);

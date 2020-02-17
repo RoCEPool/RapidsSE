@@ -10,8 +10,8 @@ namespace Gadgets
   public:
   
   private:
-    i8 m_iStart;   // starting ticks
-    i8 m_iUpdate;  // update point
+  
+    i8 m_iTicks;   //
     
     // must be last
     Footer m_xFooter;
@@ -24,9 +24,7 @@ namespace Gadgets
    ~AggTimer(void) noexcept(false);
     
     void vReset(void);
-    void vSet(i8 iStart, i8 iUpdate);
-    void vStart(void);
-    void vUpdate(void);
+    void vSet(i8 iTicks);
     
     i8 iNanoseconds(void);
     i8 iMicroseconds(void);
@@ -34,8 +32,6 @@ namespace Gadgets
     i8 iSeconds(void);
     i8 iTicks(void);
   
-    i8 iStart(void);
-    i8 iUpdate(void);
 
     Footer* aFooter(void);
   };

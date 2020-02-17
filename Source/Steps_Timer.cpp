@@ -199,7 +199,7 @@ void Step::vTimerTicks(void)
   Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
-  i8 iTicks = pTimer->iTicks();
+  i8 iTicks = pTimer->iTickDelta();
   
   m_pDataStack->vPushInt(iTicks);
   

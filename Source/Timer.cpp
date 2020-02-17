@@ -120,10 +120,8 @@ i8 Timer::iNanoseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-  
-  i8 iTicks = (m_iUpdate - m_iStart);
+  i8 iTicks = this->iTickDelta();
+
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iNano = (iTicks * C_1G) / iTicksPerSecond;
@@ -138,10 +136,8 @@ i8 Timer::iMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-  
-  i8 iTicks = (m_iUpdate - m_iStart);
+  i8 iTicks = this->iTickDelta();
+
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iMicro = (iTicks * C_1M) / iTicksPerSecond;
@@ -156,10 +152,8 @@ i8 Timer::iMilliseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-  
-  i8 iTicks = (m_iUpdate - m_iStart);
+  i8 iTicks = this->iTickDelta();
+
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iMilli = (iTicks * C_1K) / iTicksPerSecond;
@@ -174,10 +168,8 @@ i8 Timer::iSeconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-  
-  i8 iTicks = (m_iUpdate - m_iStart);
+  i8 iTicks = this->iTickDelta();
+
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
   
   i8 iSeconds = iTicks / iTicksPerSecond;
@@ -188,13 +180,10 @@ i8 Timer::iSeconds(void)
 /*----------------------------------------------------------------------------*/
 /* number of ticks                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Timer::iTicks(void)
+i8 Timer::iTickDelta(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  //ASSERT(m_iStart);
-  //ASSERT(m_iUpdate);
-
   i8 iTicks = (m_iUpdate - m_iStart);
   
   return iTicks;
