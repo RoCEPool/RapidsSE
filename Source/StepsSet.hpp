@@ -1229,6 +1229,7 @@ public:
 
   // table partition
   void vTablePtnGet(void);
+  void vTablePtnGenCrwBuffers(void);
   void vTablePtnPurge(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);

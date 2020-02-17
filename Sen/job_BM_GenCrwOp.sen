@@ -20,7 +20,7 @@
   Operand[].pipeOut
 
   // generate the crw buffer's
-  //<nBuffers> index[].genCrwBuffers to Operand[]
+  <nBuffers> tablePtn[].genCrwBuffers to Operand[]
   Operand[].pipeoutSet
 
   Operand[].newEosMarker
@@ -34,7 +34,8 @@
 
   "BM_GenEnt_StartMarker" .
 
-  op__table_index
+  op__table
+  table[].tablePtn@ to tablePtn[]
 
   folderPath.str     "Folder path: %v" .printf
   folderContents.str "contains: %v" .printf
