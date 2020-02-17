@@ -24,9 +24,13 @@
   Operand[].newCsvBuffer
   Operand[].report
 
-  timer[] timer.reportStr "InsIdx Timer"      "%v,%v\n" str.format Operand[].csvAppend
-  counter0[].get          "InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
-  counter1[].get          "InsIdx Entries"    "%v,%v\n" str.format Operand[].csvAppend
+  // csv report for bm_insidx
+  timer[] timer.reportStr "BM_InsIdx Timer"      "%v,%v\n" str.format Operand[].csvAppend
+  counter0[].get          "BM_InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
+  counter1[].get          "BM_InsIdx Entries"    "%v,%v\n" str.format Operand[].csvAppend
+
+  timer[] timer.nanosecs counter1[].get /
+                        "BM_InsIdx ns per entry" "%v,%v\n" str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;
@@ -40,11 +44,12 @@
 
   BM_TimerBegin
 
-  // get index tree for current partition
-  index[].get index.indexTree to indexTree[]
+  // get index partition for current partition
+  index[].get index.indexTree to indexTree[] // indexPtn
 
   // insert all the entries into tree
-  Operand[].get indexTree[].get indexTree.insEntBuffer
+  //   NB: registers are available in the step!!
+  Operand[].get indexTree[].get indexTree.insEntBuffer // <- focal pt of bm
     counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]
@@ -72,6 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_StartMarker
 
+  // table index folder push
   op__table_index
 
   folderPath.str "Folder path: %v" .printf

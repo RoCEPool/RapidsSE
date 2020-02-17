@@ -46,10 +46,10 @@ begin
     BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int   | stageC
 
   stage stageC on origin:
-    reportOp "/tmp/bm_insidx.rep" | outputOp | sinkOp | stageA
+    reportOp "/tmp/bm_insidx.csv" | outputOp | sinkOp | stageA
 end;
 
-filecat "/tmp/bm_insidx.rep" 100;
+filecat "/tmp/bm_insidx.csv" 100;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_5;
