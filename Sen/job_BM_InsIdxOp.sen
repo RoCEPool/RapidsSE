@@ -41,16 +41,16 @@
 
   // csv report for bm_insidx
   aggTimer[] aggTimer.reportStr
-    "BM_InsIdx Timer" "%v,%v\n" str.format Operand[].csvAppend
+    "BM_InsIdx Elapsed Time" "%v,%v\n" str.format Operand[].csvAppend
 
   counter0[].get
-    "BM_InsIdx EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
+    "BM_InsIdx No of EntBuffers" "%v,%v\n" str.format Operand[].csvAppend
 
   counter1[].get
-    "BM_InsIdx Entries" "%v,%v\n" str.format Operand[].csvAppend
+    "BM_InsIdx No of Entries" "%v,%v\n" str.format Operand[].csvAppend
 
   aggTimer[] aggTimer.nanosecs counter1[].get /
-    "BM_InsIdx ns per entry" "%v,%v\n" str.format Operand[].csvAppend
+    "BM_InsIdx Time per entry" "%v,%vns\n" str.format Operand[].csvAppend
   
   Operand[].pipeout
 ;
