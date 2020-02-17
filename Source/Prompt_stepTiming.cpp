@@ -28,8 +28,17 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
 
   i8 nTokens = pTokenVec->nTokens();
   
-
   ASSERT((*pTokenVec)[0]->bSame("stepTiming"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (1 == nTokens) {
+    if (AM::pStepTiming())
+      vTrace("Step timing started\n"_Stz);
+    else
+      vTrace("Step timing not started\n"_Stz);
+    return true;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start step timing
