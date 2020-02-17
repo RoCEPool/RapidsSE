@@ -1263,6 +1263,21 @@ void AM::vBootCheck(void)
   Logging::vCheckAssumptions();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get build string                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* AM::szBuild(void)
+{
+#ifdef WITH_DEBUG_VERSION
+  return "debug"_Stz;
+#endif
+#ifdef WITH_RELEASE_VERSION
+  return "release"_Stz;
+#endif
+  NEVER_REACH
+}
+  
+  
 void AM::vLogOpenByApi(void)           { Log::vOpenByApi();          }
 void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
 void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }

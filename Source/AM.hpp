@@ -162,6 +162,7 @@ namespace Oblique
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vBootCheck(void);
+    static Stz* szBuild(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vCopyrightText(s256& sCopyRight);

@@ -266,7 +266,7 @@ void StepAccum::vShow(void)
 
   vTrace("%s: "
          "called %lld, total %s, "
-         "avgPerCall %s, maxCall %s\n"_Stz,
+         "avgPerCall %s, maxCall %s (%s)\n"_Stz,
          
           m_szStepNm,               // 0
          
@@ -275,6 +275,8 @@ void StepAccum::vShow(void)
          
           spPerInvoke.sz(nNanosecondsPerInvoke),    // 3
           spMaxInvoke.sz(nMaxNanosecondsForInvoke), // 4
+         
+           AM::szBuild(),
 
           C_ENDARGS);
 }
