@@ -6,12 +6,8 @@ startCluster;
 
 pwf ;
 
-create table __REPORT
-(
-  name  VARCHAR(32) NOT NULL,
-  value INTEGER     NOT NULL
-)
-;
+// create __report
+__REPORT
 
 trackMemory;
 
