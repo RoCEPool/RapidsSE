@@ -128,14 +128,22 @@ void Now::vSetNowUTC(void)
   _postcondition_(_MAGIC_,CN_NOW,_FOOTER_);
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* sprint Tme and return Stz* to result                                       */
+/*----------------------------------------------------------------------------*/
+i8 Now::iSinceEpoch(void)
+{
+  _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
+  
+  return m_iSinceEpoch;
+}
 
 /*----------------------------------------------------------------------------*/
 /* sprint Tme and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Now::sz(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
   return (Stz*) &m_caResult[0];
 }
@@ -162,9 +170,9 @@ Stz* Now::sz(Dtm* aTsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get time as i8                                                             */
+/* get time as 8B word                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Now::iTsp(void)
+i8 Now::wTsp(void)
 {
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   

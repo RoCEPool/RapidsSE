@@ -98,6 +98,7 @@
 : BM_InsIdx_StartMarker
 
   now[] now.asOf now[] now.timestampStr .
+  now[] now.sinceEpoch "SinceEpoch: %vs\n" .printf
 
   // table index folder push
   op__table_index

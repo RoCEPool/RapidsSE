@@ -10,6 +10,7 @@
 void Step::vAddSteps_Now(void)
 {
   vAddStep("now.asOf"_Stz,         &Step::vNowAsOf);
+  vAddStep("now.sinceEpoch"_Stz,   &Step::vNowSinceEpoch);
   vAddStep("now.timestampStr"_Stz, &Step::vNowTimestampStr);
 }
 
@@ -28,6 +29,26 @@ void Step::vNowAsOf(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* now.sinceEpoch -- get seconds since epoch from now                         */
+/*----------------------------------------------------------------------------*/
+void Step::vNowSinceEpoch(void)
+{
+  ENTRY(); // ENTRY("vNowSinceEpoch"_Stz);
+  
+  Now* pNow = _pNow(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iSinceEpoch = pNow->iSinceEpoch();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pDataStack->vPushInt(iSinceEpoch);
+  
   EXIT();
 }
 

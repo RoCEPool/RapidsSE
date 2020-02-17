@@ -873,6 +873,7 @@ public:
   // now
   void vNowAsOf(void);
   void vNowDateStr(void);
+  void vNowSinceEpoch(void);
   void vNowTimeStr(void);
   void vNowTimestampStr(void);
 

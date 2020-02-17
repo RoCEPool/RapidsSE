@@ -25,10 +25,12 @@ namespace Gadgets
     void vSetNow(void);
     void vSetNowUTC(void);
   
+    i8   iSinceEpoch(void);
+
     Stz* sz(void);
     Stz* sz(Dtm* pTsp);
 
-    i8   iTsp(void);
+    i8   wTsp(void);
   
     Footer* aFooter(void);
   };
