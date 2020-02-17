@@ -1036,6 +1036,9 @@ public:
   void vRegCounter1Set(void);
   void vRegCounter2Set(void);
 
+  // reg now
+  void vRegNowGet(void);
+
   // reg timer
   void vRegTimerGet(void);
   void vRegTimerSet(void);

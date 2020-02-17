@@ -139,6 +139,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_Register();
+  Step::vAddSteps_RegNow();
   Step::vAddSteps_RegSet();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_Row();
