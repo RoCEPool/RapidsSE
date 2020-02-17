@@ -30,7 +30,7 @@ namespace Steps
     void vDropWrite(void);
     void vGrabWrite(void);
     void vReset(void);
-    void vWrite(void);
+    void vWrite(Stz* szPath);
 
   
     Footer* aFooter(void);

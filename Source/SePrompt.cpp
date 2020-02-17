@@ -874,9 +874,9 @@ void SePrompt::vPromptUser(void)
         szNodeNm,
         iPid,
         
-        AM::bBootError()      ? "*BOOTERROR* " : "",
-        bLowMem               ? "*LOWMEM* "    : "",
-        AM::pStepTiming()     ? "*STEPTIMING*" : "",
+        AM::bBootError()      ? "*BOOTERROR* "  : "",
+        bLowMem               ? "*LOWMEMORY* "  : "",
+        AM::pStepTiming()     ? "*STEPTIMING* " : "",
         
         RAPIDSSE_VERSION_STRING,
   #ifdef WITH_DEBUG_VERSION

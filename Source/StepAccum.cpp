@@ -75,7 +75,62 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 /*----------------------------------------------------------------------------*/
 /* print to given file                                                        */
 /*----------------------------------------------------------------------------*/
-void StepAccum::vPrint(File& oFile)
+void StepAccum::vPrint(File* pFile)
+{
+  if (0 == m_nInvoked)
+    return;
+  
+  i8 nCyclesPerGigaNanosecond = Tick::iTicksPerSecond();
+  i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // 0) m_aStepNm
+  
+  // 1) m_nInvoked
+  
+  // 2) m_nSumCycles
+  
+  //    Cycles   Sum(Cycles)
+  // 3) ------ = -----------
+  //    Invoke   NoOfInvokes
+  i8 nCyclesPerInvoke = DIV(m_nSumCycles,m_nInvoked);
+  
+  //               Cycles
+  //               ------
+  //      Ns       Invoke     Cycles     NS
+  // 4) ------ = ---------- : ------ x ------
+  //    Invoke     Cycles     Invoke   Cycles
+  //               ------
+  //                 Ns
+  i8 nNanosecondsPerInvoke = DIV(nCyclesPerInvoke,nCyclesPerNanosecond);
+  
+  //       Max(Ns) for     Max(Cycles)    Max(Cycles)
+  //        an Invoke  = ------------- : ----------- x Ns
+  // 5)                     Cycles          Cycles
+  //                        ------
+  //                          Ns
+  i8 nMaxNanosecondsForInvoke = DIV(m_nMaxCycles,nCyclesPerNanosecond);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //             0   1     2     3     4     5
+  pFile->vPrint("%s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
+               m_aStepNm,               // 0
+               m_nInvoked,              // 1
+               
+               m_nSumCycles,            // 2
+               nCyclesPerInvoke,        // 3
+               nNanosecondsPerInvoke,   // 4
+               nMaxNanosecondsForInvoke,// 5
+               
+              C_ENDARGS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print to given file                                                        */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vPrintAll(File* pFile)
 {
   if (0 == m_nInvoked)
     return;
@@ -133,7 +188,7 @@ void StepAccum::vPrint(File& oFile)
 //          );
 
   //            0   1     2     3     4     5     6     7
-  oFile.vPrint("%s, %lld, %lld, %lld, %lld, %lld, %lld, %lld\n"_Stz,
+  pFile->vPrint("%s, %lld, %lld, %lld, %lld, %lld, %lld, %lld\n"_Stz,
                m_aStepNm,               // 0
                m_nInvoked,              // 1
                

@@ -9,7 +9,7 @@ PromptFun __Prompt_st (
   PF_ST,                // prompt function
   "Prompt_st"_Stz,      // name of the prompt function
   "comment"_Stz,        // comment about the function
-  "st"_Stz,             // the prompt command
+  "stepTiming"_Stz,     // the prompt command
   nullptr,              // the second word
   bPrompt_st,           // prompt function
   true,                 // enabled
@@ -26,9 +26,10 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
-  ASSERT((*pTokenVec)[0]->bSame("st"_Stz));
+  ASSERT((*pTokenVec)[0]->bSame("stepTiming"_Stz));
   
-  // start step tracker
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // start step timing
   if ( (*pTokenVec)[1]->bSame("start"_Stz) ) {
     if (AM::pStepTiming()) {
       vTrace("Step timing already exists\n"_Stz);
@@ -38,7 +39,8 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
     return true;
   }
   
-  // reset step tracker
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reset step timing
   if ( (*pTokenVec)[1]->bSame("reset"_Stz) ) {
     if (! AM::pStepTiming()) {
       vTrace("No step tracker\n"_Stz);
@@ -48,13 +50,17 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
     return true;
   }
   
-  // write step tracker contents to file
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write step timings to given file
   if ( (*pTokenVec)[1]->bSame("write"_Stz) ) {
+    
+    s256 sPath = (*pTokenVec)[2]->szTerm();
+
     if (! AM::pStepTiming()) {
       vTrace("No step tracker\n"_Stz);
       return true;
     }
-    AM::pStepTiming()->vWrite();
+    AM::pStepTiming()->vWrite(sPath);
     return true;
   }
   

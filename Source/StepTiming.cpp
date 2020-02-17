@@ -4,10 +4,6 @@
 
 #include "Steps.h"
 
-
-
-const Stz* C_StepTiming_FILE = "../StepTimings/StepTiming %s.csv"_Stz;
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -118,33 +114,35 @@ void StepTiming::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vWrite(void)
+void StepTiming::vWrite(Stz* szPath)
 {
-  File oFile(nullptr);
+  File* pFile = new File(nullptr);
   
   Now oNow;
   
-  s256 sFilePath;
+  s256 sFilePath = szPath;
   
-  sFilePath.vSprint((Stz*)C_StepTiming_FILE,oNow.sz());
+  //sFilePath.vCatSprint("/StepTiming_%s.csv"_Stz,oNow.sz());
 
-  bool bOpened = oFile.bOpenWrite(sFilePath.szStz());
+  bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
   if (! bOpened) {
-    vTrace("Unable to open StepTiming file: %s\n"_Stz,oFile.sFilePath().szStz());
+    vTrace("Unable to open StepTiming file: %s\n"_Stz,pFile->sFilePath().szStz());
     return;
   }
   
   m_okLock.vGrabWrite();
   
-  oFile.vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
+  pFile->vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
-    m_xStepAccum[i_Step].vPrint(oFile);
+    m_xStepAccum[i_Step].vPrint(pFile);
   
   m_okLock.vDropWrite();
   
-  vTrace("Written: %s\n"_Stz,oFile.sFilePath().szStz());
+  vTrace("Written: %s\n"_Stz,pFile->sFilePath().szStz());
   
-  oFile.vClose();
+  pFile->vClose();
+  
+  delete pFile;
 }
 
 /*----------------------------------------------------------------------------*/

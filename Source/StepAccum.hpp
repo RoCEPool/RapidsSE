@@ -25,7 +25,8 @@ namespace Steps
   
     void vEnter(i8& nEnterCycles, i8& nEnterMisses);
     void vExit(i8 nEnterCycles, i8 nEnterMisses);
-    void vPrint(File& oFile);
+    void vPrint(File* pFile);
+    void vPrintAll(File* pFile);
     void vReset(void);
     
     Footer* aFooter(void);
