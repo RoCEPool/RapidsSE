@@ -121,7 +121,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Memory();
   
   Step::vAddSteps_Node();
-  
+  Step::vAddSteps_Now();
+
   Step::vAddSteps_Object();
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();

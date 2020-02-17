@@ -5,12 +5,23 @@
 #include "Gadgets.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__pCastFunction(Gadgets,Now,CN_NOW)
+__aNewFunction(Now,CN_NOW)
+__vDeleteFunction(Now,CN_NOW)
+__aFooterFunction(Now)
+
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Now::Now(void)
 : Object(CN_NOW)
 {
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
+  
+  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_NOW);
   
   vSetNow();
   
@@ -40,6 +51,8 @@ void Now::vSetNow(void)
   
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
+  
+  m_iSinceEpoch = iSecondsSincePosixEpoch;
   
   // convert current epoch time into LOCAL:date&time
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
@@ -81,6 +94,8 @@ void Now::vSetNowUTC(void)
   
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
+  
+  m_iSinceEpoch = iSecondsSincePosixEpoch;
   
   // convert secondsSince into a tm structure for UTC/GMT time zone
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
@@ -155,11 +170,6 @@ i8 Now::iTsp(void)
   
   return m_wTsp.m_iAsI8;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Now)
 
 /*============================================================================*/
 /* end                                                                        */

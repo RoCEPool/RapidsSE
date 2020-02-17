@@ -25,7 +25,7 @@ namespace Registers
     REG<File>        m_xpFile0;    // file0[]
     REG<File>        m_xpFile1;    // file1[]
 
-    REG<Dynamo>      m_xpDynamo;    // dynamo pipleine compiler
+    REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
     REG<Index>       m_xpIndex;
     REG<IndexTree>   m_xpIndexTree;

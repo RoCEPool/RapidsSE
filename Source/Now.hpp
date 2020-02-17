@@ -9,12 +9,16 @@ namespace Gadgets
   {
   private:
     char m_caResult[32];
+    i8   m_iSinceEpoch;
     Tsp  m_wTsp;
 
     // must be last
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t);
+    void operator delete(void*);
+
     Now(void);
     ~Now(void) noexcept(false);
   
@@ -28,6 +32,8 @@ namespace Gadgets
   
     Footer* aFooter(void);
   };
+
+  Now* _pNow(void* aAddr);
 }
 
 /*============================================================================*/

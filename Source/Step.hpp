@@ -102,7 +102,8 @@ namespace Steps
     static void vAddSteps_Memory(void);
   
     static void vAddSteps_Node(void);
-  
+    static void vAddSteps_Now(void);
+
     static void vAddSteps_Object(void);
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);

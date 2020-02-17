@@ -97,6 +97,8 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_StartMarker
 
+  now[] now.asOf now[] now.timestampStr .
+
   // table index folder push
   op__table_index
 

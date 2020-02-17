@@ -870,6 +870,12 @@ public:
   void vNodeStateFetch(void);
   void vNodeStatus(void);
 
+  // now
+  void vNowAsOf(void);
+  void vNowDateStr(void);
+  void vNowTimeStr(void);
+  void vNowTimestampStr(void);
+
   // object
   void vObjectClassFetch(void);
   void vObjectClassStore(void);
