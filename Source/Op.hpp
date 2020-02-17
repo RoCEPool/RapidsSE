@@ -50,8 +50,8 @@ namespace Operators
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);
-    void vAppendLeft(Operand* pOperand);
-    void vAppendRight(Operand* pOperand);
+    void vAppendLeft(Operand* pOperand, bool bSet = false);
+    void vAppendRight(Operand* pOperand, bool bSet = false);
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
@@ -78,7 +78,7 @@ namespace Operators
     i8   nPartition(void);
     bool bPause(void);
     Pipeline* pPipeline(void);
-    void vPipeOut(Operand* pOperand);
+    void vPipeOut(Operand* pOperand, bool bSet = false);
     void vPipeToJob(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
@@ -87,7 +87,7 @@ namespace Operators
     OperandQueue* pQueueRight(void);
     i8   nRightEosMarkers(void);
     void vRightEosMarkers(i8 nEosMarkers);
-    void vSendJobOperand(Operand* pOperand);
+    void vSendJobOperand(Operand* pOperand, bool bSet);
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);

@@ -145,7 +145,7 @@ void Op::vAddWorkDone(i8 iWorkDone)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendLeft(Operand* pOperand)
+void Op::vAppendLeft(Operand* pOperand, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -155,8 +155,15 @@ void Op::vAppendLeft(Operand* pOperand)
 //         aCN[pOperand->eClass()]);
   
   vGrabTaskLock();
-  
-  pQueueLeft()->vAppendOperand(pOperand);
+  if (bSet) {
+    while (pOperand) {
+      pQueueLeft()->vAppendOperand(pOperand);
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      pOperand = pDataBuffer->pNextBuffer();
+    }
+  }
+  else
+    pQueueLeft()->vAppendOperand(pOperand);
 
   Task* pTask = AM::pExecutingTask(m_pOpJob);
   
@@ -174,7 +181,7 @@ void Op::vAppendLeft(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendRight(Operand* pOperand)
+void Op::vAppendRight(Operand* pOperand, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
@@ -185,6 +192,13 @@ void Op::vAppendRight(Operand* pOperand)
   
   vGrabTaskLock();
   
+  if (bSet) {
+    while (pOperand) {
+      pQueueRight()->vAppendOperand(pOperand);
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      pOperand = pDataBuffer->pNextBuffer();
+    }
+  }
   pQueueRight()->vAppendOperand(pOperand);
   
   Task* pTask = AM::pExecutingTask(m_pOpJob);
@@ -455,7 +469,7 @@ Pipeline* Op::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeOut(Operand* pOperand)
+void Op::vPipeOut(Operand* pOperand, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -472,7 +486,7 @@ void Op::vPipeOut(Operand* pOperand)
            pOperand);
   
   if (AM::szJobName(m_pOpJob)->bSame("xmitop"_Stz)) {
-    vSendJobOperand(pOperand);
+    vSendJobOperand(pOperand, bSet);
   } else {
     
       // get the next stage the xmit is supposed to xmit to
@@ -484,9 +498,9 @@ void Op::vPipeOut(Operand* pOperand)
                                    m_nPartition,
                                    m_iNextOp);
     if (m_bAppendRight)
-      pOp->vAppendRight(pOperand);
+      pOp->vAppendRight(pOperand, bSet);
     else
-      pOp->vAppendLeft(pOperand);
+      pOp->vAppendLeft(pOperand, bSet);
     
     AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                 "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
@@ -703,7 +717,7 @@ void Op::vRightEosMarkers(i8 nEosMarkers)
 /*----------------------------------------------------------------------------*/
 /* set job operand                                                            */
 /*----------------------------------------------------------------------------*/
-void Op::vSendJobOperand(Operand* pOperand)
+void Op::vSendJobOperand(Operand* pOperand, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
@@ -725,13 +739,27 @@ void Op::vSendJobOperand(Operand* pOperand)
       m_iXmitNode = m_pPipeline->iOriginatingNode();
       
       // new a operand job
-      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, C_UNKNOWN);
+      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand, this, m_iXmitNode, C_UNKNOWN);
       
       // get the send node in the task
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
       
-      // send the operand job across the sendNode
-      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+      if (bSet) {
+        while (pOperand) {
+          
+          // set the operand in teh job
+          AM::vSetOperand(pJob_Operand, pOperand);
+          
+          // send the operand job across the sendNode
+          AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+          DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+          pOperand = pDataBuffer->pNextBuffer();
+        }
+      }
+      else {
+        // send the operand job across the sendNode
+        AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+      }
       
       // delete the operand job
       AM::vDeleteJobOperand(pJob_Operand);

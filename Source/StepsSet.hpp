@@ -905,6 +905,7 @@ public:
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);
+  void vOperandPipeOutSet(void);
   void vOperandPipeToJob(void);
   void vOperandReport(void);
   void vOperandRowCountFetch(void);

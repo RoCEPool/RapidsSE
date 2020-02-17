@@ -49,9 +49,9 @@ space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-//time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
@@ -117,6 +117,23 @@ colI VARCHAR   NOT NULL min "a"            max "zzzzzzzzz"
 rowsize 256
 ;
 
+docol epochTake;
+time pipeline scan
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | stageC
+
+stage stageC on origin:
+outputOp | sinkOp | stageA
+
+end
+;
+
+/*
 time pipeline passThru
 begin
 
@@ -132,7 +149,7 @@ begin
 end
 ;
 
-/*
+
 time pipeline python
 begin
 

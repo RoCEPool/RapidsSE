@@ -1095,6 +1095,15 @@ Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 
 }
 
 /*----------------------------------------------------------------------------*/
+/* set operand in operand job                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::vSetOperand(Job_Operand* pJob_Operand, Operand* pOperand)
+{
+  //Job_Operand* pJob_Operand = _pJob_Operand(pJob);
+  pJob_Operand->m_pOperand = pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new a universal job                                                        */
 /*----------------------------------------------------------------------------*/
 Job* AM::pNewJobUniversal( Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)

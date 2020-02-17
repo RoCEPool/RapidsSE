@@ -249,6 +249,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand);
     static Session* pSessionGet(ReqTuple* aReqTuple);
+    static void vSetOperand(Job_Operand* pJobOperand, Operand* pOperand);
     static bool bSpawnJob(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
