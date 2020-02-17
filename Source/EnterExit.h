@@ -12,79 +12,39 @@
 /*----------------------------------------------------------------------------*/
 /* step entry macro                                                           */
 /*----------------------------------------------------------------------------*/
-// this variant uses __func__ instead of szStepNm
 #define ENTRY() \
   \
-  static StepAccum* _pStepAccum = nullptr; \
-  i8 _iEnterCycles = 0; \
-  i8 _iEnterMisses = 0; \
+  i8 __iEnterCycles = 0; \
+  i8 __iEnterMisses = 0; \
+  static StepAccum* __pStepAccum = nullptr; \
   \
-  if (AM::pStepTiming()) { \
-    if (! _pStepAccum) { \
-      StepTiming* pStepTiming = AM::pStepTiming(); \
+  if (StepTiming* pStepTiming = AM::pStepTiming()) { \
+  \
+    if (! __pStepAccum) { \
+    \
       pStepTiming->vGrabWrite(); \
-      if (! _pStepAccum) \
-        _pStepAccum = pStepTiming->pAllocAccum((Stz*)__func__); \
+      if (! __pStepAccum) \
+        __pStepAccum = pStepTiming->pAllocAccum((Stz*)__func__); \
         pStepTiming->vDropWrite(); \
       } \
-    _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
+    \
+    __pStepAccum->vEnter(__iEnterCycles,__iEnterMisses); \
+    \
   } \
   \
   if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
     m_pTask->vTraceStep((Stz*)__func__); \
+  \
 EndDefine
-
-// this variant uses __func__ instead of szStepNm
-//#define ENTRY(szStepNm) \
-//  \
-//  static StepAccum* _pStepAccum = nullptr; \
-//  i8 _iEnterCycles = 0; \
-//  i8 _iEnterMisses = 0; \
-//  \
-//  if (AM::pStepTiming()) { \
-//    if (! _pStepAccum) { \
-//      StepTiming* pStepTiming = AM::pStepTiming(); \
-//      pStepTiming->vGrabWrite(); \
-//      if (! _pStepAccum) \
-//        _pStepAccum = pStepTiming->pAllocAccum((Stz*)__func__); \
-//      pStepTiming->vDropWrite(); \
-//    } \
-//    _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
-//  } \
-//  \
-//  if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
-//    m_pTask->vTraceStep((Stz*)__func__); \
-//EndDefine
-
-// this is the original variant which uses szStepNm
-//#define ENTRY(szStepNm) \
-//  \
-//  static StepAccum* _pStepAccum = nullptr; \
-//  i8 _iEnterCycles = 0; \
-//  i8 _iEnterMisses = 0; \
-//  \
-//  if (AM::pStepTiming()) { \
-//    if (! _pStepAccum) { \
-//      StepTiming* pStepTiming = AM::pStepTiming(); \
-//      pStepTiming->vGrabWrite(); \
-//      if (! _pStepAccum) \
-//        _pStepAccum = pStepTiming->pAllocAccum(szStepNm); \
-//      pStepTiming->vDropWrite(); \
-//    } \
-//    _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
-//  } \
-//  \
-//  if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
-//    m_pTask->vTraceStep(szStepNm); \
-//EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* step exit macro                                                            */
 /*----------------------------------------------------------------------------*/
 #define EXIT() \
   \
-  if (_pStepAccum) \
-    _pStepAccum->vExit(_iEnterCycles,_iEnterMisses); \
+  if (__pStepAccum) \
+    __pStepAccum->vExit(__iEnterCycles,__iEnterMisses); \
+  \
 EndDefine
 
 
