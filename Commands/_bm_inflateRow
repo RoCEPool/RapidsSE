@@ -30,6 +30,19 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
+    BM_GenCrwOp ALLCOLS_TABLE 10 | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+end;
+
+/*
+pipeline bm_inflateRow
+begin
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
     BM_GenCrwOp ALLCOLS_TABLE 10 |
     BM_InflateRowOp ALLCOLS_TABLE | stageC
 
@@ -38,7 +51,7 @@ begin
 end;
 
 filecat "/tmp/bm_inflateRow_rep.csv" 100;
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INFLATEROW_4;
 print "** 5/6) drop ALLCOLS_TABLE";
