@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* _bm_inflateRow -- inflate row benchmark                                    */
+/*============================================================================*/
+
+startCluster;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INFLATEROW_1;
+print "** 1/6) run __report setup";
+
+__report
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INFLATEROW_2;
+print "** 2/6) create ALLCOLS_TABLE table";
+
+trackMemory;
+
+_allCols_Table
+
+lscol ALLCOLS_TABLE;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INFLATEROW_3;
+print "** 4/6) execute bm_inflateRow pipeline";
+
+pipeline bm_inflateRow
+begin
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    BM_GenCrwOp ALLCOLS_TABLE 10 |
+    BM_InflateRowOp ALLCOLS_TABLE | stageC
+
+  stage stageC on origin:
+    reportOp "/tmp/bm_inflateRow_rep.csv" | outputOp | sinkOp | stageA
+end;
+
+filecat "/tmp/bm_inflateRow_rep.csv" 100;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INFLATEROW_4;
+print "** 5/6) drop ALLCOLS_TABLE";
+
+drop table ALLCOLS_TABLE;
+
+memoryLeaks fatal;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INFLATEROW_5;
+print "** 6/6) success _bm_inflateRow";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
