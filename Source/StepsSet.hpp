@@ -1010,6 +1010,10 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
+  // reg agg timer
+  void vRegAggTimerGet(void);
+  void vRegAggTimerSet(void);
+
   // reg counter
   void vRegCounter0Get(void);
   void vRegCounter1Get(void);

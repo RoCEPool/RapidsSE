@@ -152,7 +152,7 @@ void Step::vLocalsPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* to -- encode code for: store value into local variable           immediate */
+/* "to" -- encode code for: store value into local var / reg        immediate */
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsTo(void)
 {
@@ -162,7 +162,7 @@ void Step::vLocalsTo(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  // advance to token after "to"
+  // advance to token after to
   m_pCompiler->vNextToken();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -176,6 +176,11 @@ void Step::vLocalsTo(void)
     
     bSemanticTo = true;
     m_pCompiler->vNextToken();
+  }
+  else if (szTerm->bSame("AggTimer[]"_Stz)) {
+    pCurrentWord->vEncodeCall("AggTimer[].set"_Stz);
+    EXIT();
+    return;
   }
   else if (szTerm->bSame("Counter0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Counter0[].set"_Stz);

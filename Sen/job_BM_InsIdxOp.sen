@@ -19,8 +19,6 @@
 /*----------------------------------------------------------------------------*/
 : BM_TimerReport
 
-  timer[] timer.update
-
   Operand[].newCsvBuffer
   Operand[].report
 
@@ -42,10 +40,10 @@
 
   "BM_InsIdx_EntBuffer" .
 
-  BM_TimerBegin
-
   // get index partition for current partition
   index[].get index.indexTree to indexTree[] // indexPtn
+
+  BM_TimerBegin
 
   // insert all the entries into tree
   //   NB: registers are available in the step!!
@@ -53,6 +51,8 @@
     counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]
+
+  timer[] timer.update
 
   Operand[].delete
 
