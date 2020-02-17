@@ -17,6 +17,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
   vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);
+  vAddStep("index[].genEntBuffers"_Stz, &Step::vIndexGenEntBuffers);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("index.indexTree"_Stz,       &Step::vIndexIndexTree);
@@ -236,6 +237,91 @@ void Step::vIndexGenEntBuffer(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pDataStack->vPushPtr(pEntBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].genEntBuffers -- generate ent buffers for this index               */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexGenEntBuffers(void)
+{
+  ENTRY(); // ENTRY("vIndexGenEntBuffer"_Stz);
+  
+  i8 nBuffers = m_pDataStack->iPopInt(__func__);
+  
+  Index* pIndex = *m_pRegSet->m_xpIndex;
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  IdxColVec* pIdxColVec = pIndexDef->pIdxColVec();
+  
+  i8 nIdxCol = pIdxColVec->nItems();
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCol; i_IdxCol++)
+    vTrace("  [%lld] %s\n"_Stz,i_IdxCol,pIdxColVec->pGet(i_IdxCol)->szColNm());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  EntWrk oEntWrk;
+  
+  EntBuffer* pEntBuffer = nullptr;
+  EntBuffer* pRootBuffer = nullptr;
+  EntBuffer* pPrevBuffer = nullptr;
+  
+  while (nBuffers) {
+    
+    pPrevBuffer = pEntBuffer;
+    pEntBuffer = new EntBuffer();
+    
+    // set root buffer
+    if ( ! pRootBuffer )
+      pRootBuffer = pEntBuffer;
+    
+    pEntBuffer->vIsPermanent(false);
+    i8 iBufferNo = pEntBuffer->iBufferNo();
+    
+    // link the new buffer with the prev
+    if (pPrevBuffer)
+      pPrevBuffer->vNextBuffer(pEntBuffer);
+    pEntBuffer->vPrevBuffer(pPrevBuffer);
+    
+    Ent* aPrevEnt = nullptr;
+    
+    i8 i_EntNo;
+    for (i_EntNo = 0; ; i_EntNo++) {
+      
+      oEntWrk.vReset();
+      
+      oEntWrk.vRandomEnt(pIdxColVec);
+      oEntWrk.vBuffer(iBufferNo);
+      oEntWrk.vItem(i_EntNo);
+      oEntWrk.vOffsets(1);
+      
+      //oEntWrk.vShow(pIdxColVec);
+      
+      i8 nBytes = oEntWrk.nSize_EntKeyNeo();
+      
+      Ent* aEnt = (Ent*)pEntBuffer->ayAllotBytes(nBytes);
+      if (! aEnt)
+        break;
+      
+      MemLib::vCopy(aEnt,oEntWrk.aEnt(),nBytes,CN_ENTBUFFER);
+      aEnt->vNEO(0,-1);
+      
+      i8 iOffset = pEntBuffer->iToOffset(aEnt);
+      if (aPrevEnt)
+        aPrevEnt->vNEO(0,(i4)iOffset);
+      
+      pEntBuffer->vIncItems();
+      
+      aPrevEnt = aEnt;
+    }
+    
+    vTrace("Generated EntBuffer with %lld entries\n"_Stz,i_EntNo);
+    nBuffers--;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pDataStack->vPushPtr(pRootBuffer);
   
   EXIT();
 }

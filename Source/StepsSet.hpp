@@ -385,6 +385,7 @@ public:
   void vIndexCompact(void);
   void vIndexDump(void);
   void vIndexGenEntBuffer(void);
+  void vIndexGenEntBuffers(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexIndexTree(void);
