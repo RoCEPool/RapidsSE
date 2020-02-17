@@ -260,17 +260,21 @@ void StepAccum::vShow(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  SP_Timer spTotal;
+  SP_Timer spPerInvoke;
+  SP_Timer spMaxInvoke;
+
   vTrace("%s: "
-         "called %lld, total %lldns, "
-         "avgPerCall %lldns, maxCall %lldns\n"_Stz,
+         "called %lld, total %s, "
+         "avgPerCall %s, maxCall %s\n"_Stz,
          
           m_szStepNm,               // 0
          
           m_nInvoked,               // 1
-          nTotalTime,               // 2
+          spTotal.sz(nTotalTime),   // 2
          
-          nNanosecondsPerInvoke,    // 2
-          nMaxNanosecondsForInvoke, // 3
+          spPerInvoke.sz(nNanosecondsPerInvoke),    // 3
+          spMaxInvoke.sz(nMaxNanosecondsForInvoke), // 4
 
           C_ENDARGS);
 }
@@ -278,16 +282,7 @@ void StepAccum::vShow(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer*StepAccum::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(StepAccum)
 
 /*============================================================================*/
 /* end                                                                        */

@@ -32,7 +32,7 @@ SP_Timer::~SP_Timer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint SP_Timer and return Stz* to result                                  */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Timer::sz(Timer* pTimer)
+Stz* SP_Timer::sz(i8 iNanoseconds)
 {
   /*
   
@@ -56,7 +56,7 @@ Stz* SP_Timer::sz(Timer* pTimer)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   // get elapsed time in nanoseconds
-  i8 nElpased_nsec = pTimer->iNanoseconds();
+  i8 nElpased_nsec = iNanoseconds;
   
   // convert elapsed nanoseconds to seconds and nanoseconds
   i8 nSeconds      = nElpased_nsec / C_1G;
@@ -90,6 +90,16 @@ Stz* SP_Timer::sz(Timer* pTimer)
                     "0.000s"_Stz);
 
   return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint SP_Timer and return Stz* to result                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Timer::sz(Timer* pTimer)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  return sz(pTimer->iNanoseconds());
 }
 
 

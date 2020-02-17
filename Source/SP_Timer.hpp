@@ -16,6 +16,7 @@ namespace Gadgets
     SP_Timer(void);
    ~SP_Timer(void) noexcept(false);
   
+    Stz* sz(i8 iNanoseconds);
     Stz* sz(Timer* pTimer);
 
   private:
