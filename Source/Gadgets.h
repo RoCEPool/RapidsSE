@@ -14,6 +14,7 @@ namespace Gadgets
 
 //------------------------------------------------------------------------------
 
+#include "AggTimer.hpp"
 #include "Birth.hpp"
 #include "CRM.hpp"
 #include "DecaCnt.hpp"
