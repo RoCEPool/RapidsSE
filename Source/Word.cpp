@@ -73,22 +73,22 @@ Word::Word(Stz* szWordNm)
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
 
   m_sWordNm    = szWordNm;
-  m_eKind      = WK_ROUTINE;
-  //m_bPersistent   = false;
-  m_iTrace     = 0;
+  
+  m_bBreakPt   = false;
+  m_pCategory  = AM::pRootWord() ? AM::pRootWord() : this;
   //m_pDic     = pDic;
-  m_pCategory      = AM::pRootWord() ? AM::pRootWord() : this;
+  m_pEnameSet  = nullptr;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
-  m_iParams    = 0;
-  m_bPrompt    = false;
+  m_eKind      = WK_ROUTINE;
   m_iLocalNo   = 0;
-  
-  m_pEnameSet    = nullptr;
+  m_iParams    = 0;
+  //m_bPersistent   = false;
+  m_bPrompt    = false;
+  m_iTrace     = 0;
 
   m_fpIntrinsic = gfpEntryStep;
-  m_aInxPtr  = aFirstCell();
-  
+  m_aInxPtr     = aFirstCell();
   m_xRoutine.vZero(CN_WORD);
   
   _setFooter_();
@@ -240,7 +240,7 @@ void Word::vAppend(i8 iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append address of pointer to task step                                     */
+/* append address of pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(StepFp* afpStepFp)
 {
@@ -283,6 +283,26 @@ void Word::vArticle(Article* pArticle)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pArticle = pArticle;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get break point                                                            */
+/*----------------------------------------------------------------------------*/
+bool Word::bBreakPt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_bBreakPt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set break point                                                            */
+/*----------------------------------------------------------------------------*/
+void Word::vBreakPt(bool bBreakPt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_bBreakPt = bBreakPt;
 }
 
 /*----------------------------------------------------------------------------*/

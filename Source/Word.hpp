@@ -16,6 +16,7 @@ namespace SenVM
 
     s32       m_sWordNm;      // the name of this word
   
+    bool      m_bBreakPt;     // this work gas a break point set
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
     EnameSet* m_pEnameSet;    // optional ename set
@@ -29,7 +30,7 @@ namespace SenVM
     bool      m_bPersistent;  // is on persistent heap
     bool      m_bPrompt;      // can be executed by prompt?
     i8        m_iTrace;       // trace level
-
+  
     // the following three must be together
     //struct {
 
@@ -71,6 +72,8 @@ namespace SenVM
     void  vAppend(AnyVal* aAnyVal);
     Article* pArticle(void);
     void  vArticle(Article* pArticle);
+    bool  bBreakPt(void);
+    void  vBreakPt(bool bBreakPt);
     Word* pCategory(void);
     void  vCategory(Word* pCategory);
     void  vContentDump(void);
