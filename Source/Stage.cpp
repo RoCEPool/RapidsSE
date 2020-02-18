@@ -48,6 +48,8 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
+  i8 i_Ptn;
+  i8 i_Nde;
   m_sName = pStageSpec->szName();
   
   //m_oOpVec
@@ -58,13 +60,13 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
   switch (pStageSpec->eTopology()) {
       
     case PO_ALL_NODES:
-      for (i8 i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
+      for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
         m_oStageNdeVec.vAdd(new StageNde(pStageSpec, i_Nde));
       }
       break;
       
     case PO_ALL_PARTITIONS:
-      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
+      for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
         m_oStagePtnVec.vAdd(new StagePtn(pStageSpec, i_Ptn));
       }
       break;
@@ -84,7 +86,8 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       break;
       
     case PO_SPECIFIC_PARTITION:
-      RASSERT(0);
+      i_Ptn = pStageSpec->szLocus()->iToI8();
+      m_oStagePtnVec.vAdd(new StagePtn(pStageSpec, i_Ptn));
       break;
       
     default:
@@ -285,11 +288,13 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
       pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(iOp);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
         pStagePtn = m_oStagePtnVec.pGet(iPtn);
         pOp = pStagePtn->pOpVec()->pGet(iOp);
       break;
@@ -301,6 +306,12 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       pStagePtn = m_oStagePtnVec.pGet(iPtn);
+      pOp = pStagePtn->pOpVec()->pGet(iOp);
+      break;
+      
+    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
+      pStagePtn = m_oStagePtnVec.pGet(0);
+      ASSERT(pStagePtn->iPartition() == iPtn);
       pOp = pStagePtn->pOpVec()->pGet(iOp);
       break;
       
