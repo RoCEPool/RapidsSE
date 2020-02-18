@@ -131,7 +131,7 @@
   input::stdin
 
   begin
-    "Task> " .put
+    "SE Task> " .put
 
   Task_Interpret_line while repeat
 
