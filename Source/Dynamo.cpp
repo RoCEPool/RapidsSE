@@ -374,7 +374,7 @@ bool Dynamo::bCollectTopology(void)
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
-  // on partition <nodeNm> :
+  // on partition <partitionNo> :
   
   else if (m_pTkn->bSame("partition"_Stz)) {
     vAcceptToken();
@@ -556,12 +556,7 @@ bool Dynamo::bPhase2_staging(void)
         vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_FoundStage, aPX[eTopologyX]);
 #endif
         
-        if (eTopologyX != PX_ORIGIN_TO_ORIGIN) {
-          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
-          pStageSpecFound->vPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
-          
-        }
-        else {
+        if (eTopologyX == PX_ORIGIN_TO_ORIGIN) {
           // add parameter to the prev sink op
           OpSpec* pPrevOpSpec = pOpSpecVec->pGet(i_Op-1);
           vReplaceStageParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
@@ -570,6 +565,10 @@ bool Dynamo::bPhase2_staging(void)
           RASSERT(i_Op == pOpSpecVec->nItems()-1);
           pOpSpecVec->vRemove(pOpSpec);
           delete pOpSpec;
+        }
+        else {
+          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
+          pStageSpecFound->vPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
         }
       }
       else {
