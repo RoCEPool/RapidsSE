@@ -54,7 +54,7 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
-  m_pRootBuffer  = nullptr;
+  m_pRootEntBuffer  = nullptr;
   
   _checkInitialised_(CN_INDEXTREE);
   
@@ -250,7 +250,7 @@ void IndexTree::vDump(bool bSameHeight)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
   if (bSameHeight) {
-    EntBuffer* pEntBuffer = m_pRootBuffer;
+    EntBuffer* pEntBuffer = m_pRootEntBuffer;
     
     while (pEntBuffer) {
       //pEntBuffer->vShow();
@@ -259,8 +259,8 @@ void IndexTree::vDump(bool bSameHeight)
   }
   else {
     // start with the root
-    if (m_pRootBuffer)
-      m_pRootBuffer->vDump();
+    if (m_pRootEntBuffer)
+      m_pRootEntBuffer->vDump();
   }
 }
 
@@ -271,7 +271,7 @@ EntBuffer* IndexTree::pFirstH1Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntBuffer* pEntBuffer = m_pRootBuffer;
+  EntBuffer* pEntBuffer = m_pRootEntBuffer;
   
   if ( ! pEntBuffer )
     return nullptr;
@@ -302,7 +302,7 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntBuffer* pEntBuffer = m_pRootBuffer;
+  EntBuffer* pEntBuffer = m_pRootEntBuffer;
   
   if ( ! pEntBuffer )
     return nullptr;
@@ -374,8 +374,8 @@ i8 IndexTree::nEntBuffers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   i8 nBufferCount = 0;
-  if (m_pRootBuffer)
-    m_pRootBuffer->vBufferCount(nBufferCount);
+  if (m_pRootEntBuffer)
+    m_pRootEntBuffer->vBufferCount(nBufferCount);
   
   return nBufferCount;
 }
@@ -418,13 +418,13 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
 
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
-  if (! m_pRootBuffer)
+  if (! m_pRootEntBuffer)
     RASSERT(pNewRootBuffer());
   
-  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootBuffer);
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
   
-  //m_pRootBuffer->bVerify();
+  //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();                                           //! DROP LOCK
   
@@ -449,13 +449,13 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
 
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
-  if (! m_pRootBuffer)
+  if (! m_pRootEntBuffer)
     RASSERT(pNewRootBuffer());
   
-  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootBuffer);
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
   
-  //m_pRootBuffer->bVerify();
+  //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();                                           //! DROP LOCK
   
@@ -477,13 +477,13 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
-  if (! m_pRootBuffer)
+  if (! m_pRootEntBuffer)
     RASSERT(pNewRootBuffer());
 
-  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootBuffer);
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
   
-  //m_pRootBuffer->bVerify();
+  //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();
   
@@ -497,7 +497,7 @@ void IndexTree::vLazyBuild(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  m_pRootBuffer->vLazyBuild();
+  m_pRootEntBuffer->vLazyBuild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -530,8 +530,8 @@ EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionH0Buffer(aFindKey);
+  if (m_pRootEntBuffer)
+    return m_pRootEntBuffer->pPositionH0Buffer(aFindKey);
   else
     return nullptr;
 }
@@ -543,13 +543,13 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  RASSERT(! m_pRootBuffer);
+  RASSERT(! m_pRootEntBuffer);
   
-  m_pRootBuffer = new EntBuffer;
-  m_pRootBuffer->vIndex(m_pIndex);
-  m_pRootBuffer->vPartitionNo(m_iPartitionNo);
+  m_pRootEntBuffer = new EntBuffer;
+  m_pRootEntBuffer->vIndex(m_pIndex);
+  m_pRootEntBuffer->vPartitionNo(m_iPartitionNo);
   
-  return m_pRootBuffer;
+  return m_pRootEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -559,7 +559,7 @@ EntBuffer* IndexTree::pRootBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pRootBuffer;
+  return m_pRootEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,7 +569,7 @@ void IndexTree::vRootBuffer(EntBuffer* pRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  m_pRootBuffer = pRootBuffer;
+  m_pRootEntBuffer = pRootBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,10 +591,10 @@ void IndexTree::vTruncate(void)
   
   m_okLock.vGrabWrite();
   
-  if (m_pRootBuffer)
-    m_pRootBuffer->vTruncate();
+  if (m_pRootEntBuffer)
+    m_pRootEntBuffer->vTruncate();
   
-  m_pRootBuffer    = nullptr;
+  m_pRootEntBuffer    = nullptr;
   
   m_okLock.vDropWrite();
 }
@@ -606,8 +606,8 @@ bool IndexTree::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  if (m_pRootBuffer)
-    return m_pRootBuffer->bVerify();
+  if (m_pRootEntBuffer)
+    return m_pRootEntBuffer->bVerify();
 
   return true;
 }
@@ -619,8 +619,8 @@ bool IndexTree::bVerifyIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  if (m_pRootBuffer)
-    return m_pRootBuffer->bVerify();
+  if (m_pRootEntBuffer)
+    return m_pRootEntBuffer->bVerify();
   
   return true;
 }
@@ -757,7 +757,7 @@ void IndexTree::vVisualize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // start with the root buffer
-  EntBuffer* pEntBuffer = m_pRootBuffer;
+  EntBuffer* pEntBuffer = m_pRootEntBuffer;
   
   if ( ! pEntBuffer)
     return;

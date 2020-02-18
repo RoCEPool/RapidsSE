@@ -33,6 +33,8 @@ void Step::vIndexTreeInsEntBuffer(void)
     
     // ..add code here to insert entry into index tree..
     
+    bool bInserted = pIndexTree->bInsertEntry(aEnt);
+    
     nEntries++;
   }
   

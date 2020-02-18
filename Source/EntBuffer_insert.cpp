@@ -588,35 +588,35 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntTree(Ent* aEntryWork, EntBuffer** ppRootBuffer)
+Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 {
-  // ** note: this is a static function **
+  _static_
 
-  EntBuffer* pRootKeyBuffer = *ppRootBuffer;
+  EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
   i8 nOffsets = AM::nRandomLevels();
 
-  aEntryWork->vOffsets(nOffsets);
+  aEnt->vOffsets(nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on an H0 buffer which we will try and insert into
   
-  EntBuffer* pPositionedBuffer =
-    pRootKeyBuffer->pPositionH0Buffer(aEntryWork->aKey());
+  EntBuffer* pPositionedH0EntBuffer =
+    pRootEntBuffer->pPositionH0Buffer(aEnt->aKey());
   
-  ASSERT(0 == pPositionedBuffer->iBufferHeight());
+  ASSERT(0 == pPositionedH0EntBuffer->iBufferHeight());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into the tree
 
-  Ent* aInsertedEntry =
-    pPositionedBuffer->aInsertEntUpwards(aEntryWork,ppRootBuffer);
+  Ent* aInsertedEnt =
+    pPositionedH0EntBuffer->aInsertEntUpwards(aEnt,ppRootEntBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  return aInsertedEntry;
+  return aInsertedEnt;
 }
 
 /*----------------------------------------------------------------------------*/

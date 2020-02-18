@@ -15,7 +15,7 @@ namespace IndexTrees
     Index* m_pIndex;        // which index
     i8     m_iPartitionNo;  // which partition no
     
-    EntBuffer* m_pRootBuffer;    // the root buffer
+    EntBuffer* m_pRootEntBuffer;    // the root ent buffer
 
     // must be last
     Footer m_xFooter;
