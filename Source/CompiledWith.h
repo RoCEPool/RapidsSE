@@ -54,7 +54,7 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 //#define WITH_CHECK_INITIALISED EndDefine    // _checkInitialised_()
 //#define WITH_CORECTNESS_ALGEBRA EndDefine   // known class, magic, footer
 #define WITH_EB_LAZY_CHAIN EndDefine         // build lazy chain on insert
-//#define WITH_ENTRY_EXIT EndDefine           // code for ENTRY() & EXIT() macros compiled in
+#define WITH_ENTRY_EXIT EndDefine           // code for ENTRY() & EXIT() macros compiled in
 #define WITH_IT_COMPACT_TRACE EndDefine      // compact trace
 //#define WITH_PREPOST_CHECKING EndDefine    // _pre/postCondition_()
 #define WITH_SETH_SUPPORT EndDefine           // seth support

@@ -77,7 +77,7 @@ void Step::vTablePtnGenCrwBuffers(void)
       
       // close current buffer
       pCrwBuffer->vAppendClose();
-      vTrace("Generated CrwBuffer with %lld compact rows\n"_Stz,pCrwBuffer->nRowCount());
+      //vTrace("Generated CrwBuffer with %lld compact rows\n"_Stz,pCrwBuffer->nRowCount());
       
       // create a new buffer
       pCrwBuffer = new CrwBuffer();
@@ -148,6 +148,7 @@ void Step::vTablePtnInflateCrwBuffer(void)
   
   m_pDataStack->vPushInt(nRows);
   
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : op__table
 
-"op__table (Table A)" .
+  "op__table (Table A)" .
 
   // check in tables folder
   checkInTables not if false exit then

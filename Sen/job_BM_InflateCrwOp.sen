@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : BM_InflateCrwOp_CrwBuffer
 
-  "BM_InflateCrw_CrwBuffer" .
+  //"BM_InflateCrw_CrwBuffer" .
 
   // get table partition for current partition
   table[].tablePtn@ to tablePtn[]
