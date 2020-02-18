@@ -6,13 +6,13 @@ startCluster;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_1;
-print "** 1/6) run __report setup";
+print "** 1/7) run __report setup";
 
 __report
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_2;
-print "** 2/6) create ALLCOLS_TABLE table";
+print "** 2/7) create ALLCOLS_TABLE table";
 
 trackMemory;
 
@@ -22,7 +22,7 @@ lscol ALLCOLS_TABLE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_3;
-print "** 3/6) create ALLCOLS_INDEX_int index on ALLCOLS_TABLE(int) column";
+print "** 3/7) create ALLCOLS_INDEX_int index on ALLCOLS_TABLE(int) column";
 
 create index ALLCOLS_INDEX_int on ALLCOLS_TABLE(int);
 
@@ -32,7 +32,7 @@ lsidxcol ALLCOLS_TABLE ALLCOLS_INDEX_int;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_4;
-print "** 4/6) execute bm_insidx pipeline";
+print "** 4/7) execute bm_insidx pipeline";
 
 stepTiming start;
 
@@ -49,23 +49,35 @@ begin
     reportOp "/tmp/bm_insidx_rep.csv" | outputOp | sinkOp | stageA
 end;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __BM_INSIDX_5;
+print "** 5/7) information";
+
 stepTiming write "/tmp/StepTiming.csv";
 
 filecat "/tmp/bm_insidx_rep.csv" 100;
 
 stepTiming show "vIndexTreeInsEntBuffer";
 
+sizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
+
+compactIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
+
+sizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
+
+visidx ALLCOLS_TABLE ALLCOLS_INDEX_int ;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-logSection __BM_INSIDX_5;
-print "** 5/6) drop ALLCOLS_TABLE";
+logSection __BM_INSIDX_6;
+print "** 5/7) drop ALLCOLS_TABLE";
 
 drop table ALLCOLS_TABLE;
 
 //memoryLeaks fatal;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-logSection __BM_INSIDX_6;
-print "** 6/6) success _bm_insidx";
+logSection __BM_INSIDX_7;
+print "** 6/7) success _bm_insidx";
 
 /*============================================================================*/
 /* end                                                                        */
