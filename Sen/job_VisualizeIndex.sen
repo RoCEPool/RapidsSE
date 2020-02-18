@@ -95,6 +95,7 @@
 /*----------------------------------------------------------------------------*/
 
 jobSyntax: visualizeIndex :: visidx <tableNm> <indexNm> ;
+jobSyntax: visualizeIndex :: visualizeIndex <tableNm> <indexNm> ;
 
 jobInfo: visualizeIndex
 {

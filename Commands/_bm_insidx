@@ -65,7 +65,7 @@ compactIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
 
 sizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
 
-visidx ALLCOLS_TABLE ALLCOLS_INDEX_int ;
+visualizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_6;
