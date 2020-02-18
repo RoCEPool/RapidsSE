@@ -28,6 +28,7 @@ namespace Pipelines
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
     void vLocus(Stz* szLocus);
+    Stz* szLocus(void);
     Stz* szName(void);
     OpSpecVec* pOpSpecVec(void);
     void vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);

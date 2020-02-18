@@ -98,6 +98,16 @@ void StageSpec::vLocus(Stz* szLocus)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get locus                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* StageSpec::szLocus(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sLocus;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get opspec vec                                                             */
 /*----------------------------------------------------------------------------*/
 OpSpecVec* StageSpec::pOpSpecVec(void)
@@ -154,6 +164,15 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
     case PX_ORIGIN_TO_ALL_PARTITIONS:
       iConsumeArg = 1;
       break;
+      
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+      iConsumeArg = 1;
+      break;
+      
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+      iConsumeArg = 1;
+      break;
+      
     default:
       RASSERT(0);
   }

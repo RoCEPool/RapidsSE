@@ -733,7 +733,8 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ORIGIN: {
+    case PX_ORIGIN_TO_ORIGIN:
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
       
       //xmitNde is the originating node
       m_iXmitNode = m_pPipeline->iOriginatingNode();
@@ -767,7 +768,8 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       break;
     }
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS: {
+    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       for (i8 i_Ptn = 0; i_Ptn < pNextStage->pStagePtnVec()->nItems(); i_Ptn++) {
         
         // xmitNode is the partition node
