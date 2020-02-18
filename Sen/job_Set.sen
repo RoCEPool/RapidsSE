@@ -104,6 +104,7 @@
 "job_ToCrwOp.sen"        include
 "job_ToCsvOp.sen"        include
 "job_ToFileOp.sen"       include
+"job_TruncateOp.sen"     include
 "job_TruncateTable.sen"  include
 
 "job_Universal.sen"      include

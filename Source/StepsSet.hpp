@@ -1241,6 +1241,7 @@ public:
   void vTablePtnPurge(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
+  void vTablePtnTruncate(void);
 
   // table reg
   void vTableRegGet(void);

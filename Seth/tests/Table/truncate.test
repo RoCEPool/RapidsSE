@@ -14,22 +14,22 @@ failure contains: 'no such table'
 
 // create a table
 create table LINEITEM (
-l_orderkey INTEGER NOT NULL,
-l_partkey INTEGER NOT NULL,
-l_suppkey INTEGER NOT NULL,
-l_linenumber INTEGER,
-l_quantity INTEGER,
-l_extendedprice DECIMAL(15, 2),
-l_discount DECIMAL(15, 2),
-l_tax DECIMAL(15, 2),
-l_returnflag VARCHAR(1),
-l_linestatus VARCHAR(1),
-l_shipdate TIMESTAMP,
-l_commitdate TIMESTAMP,
-l_receiptdate TIMESTAMP,
-l_shipinstruct VARCHAR(25),
-l_shipmode VARCHAR(10),
-l_comment VARCHAR(44)
+  l_orderkey INTEGER NOT NULL,
+  l_partkey INTEGER NOT NULL,
+  l_suppkey INTEGER NOT NULL,
+  l_linenumber INTEGER,
+  l_quantity INTEGER,
+  l_extendedprice DECIMAL(15, 2),
+  l_discount DECIMAL(15, 2),
+  l_tax DECIMAL(15, 2),
+  l_returnflag VARCHAR(1),
+  l_linestatus VARCHAR(1),
+  l_shipdate TIMESTAMP,
+  l_commitdate TIMESTAMP,
+  l_receiptdate TIMESTAMP,
+  l_shipinstruct VARCHAR(25),
+  l_shipmode VARCHAR(10),
+  l_comment VARCHAR(44)
 );
 success
 
@@ -76,7 +76,7 @@ indexEntries 0;
 success
 
 memoryLeaks;
-rows 0;
+rows: 0;
 
 CLEANUP {
 

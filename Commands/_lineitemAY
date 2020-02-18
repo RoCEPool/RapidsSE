@@ -117,6 +117,26 @@ colI VARCHAR   NOT NULL min "a"            max "zzzzzzzzz"
 rowsize 256
 ;
 
+fetch lineitem;
+
+time pipeline truncate
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  truncateOp lineitem | stageC
+
+  stage stageC on origin:
+  sinkOp | stageA
+
+end
+;
+
+fetch lineitem;
+
+/*
 docol epochTake;
 time pipeline scan
 begin
@@ -133,7 +153,7 @@ outputOp | sinkOp | stageA
 end
 ;
 
-/*
+
 time pipeline passThru
 begin
 

@@ -1,0 +1,117 @@
+/*============================================================================*/
+/* job_Truncate.sen -- Job TruncateOp                                         */
+/*============================================================================*/
+
+" job_TruncateOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for TruncateOp req                         (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : TruncateOp_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_TruncateOp |
+
+  <tableNm> locals| sTableNm |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_PULSEMARKER of
+
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+
+        // new a stream def
+        //Operand[].newStreamDef
+        //Operand[].pipeOut
+
+        // truncate the buffers of the tablePtn
+        tablePtn[].truncate
+/*
+        Subset[]@ to Operand[]
+        begin
+          Operand[].isNull
+        not while
+          Operand[].pipeOut
+          Subset[].nextBuffer to Operand[]
+        repeat
+*/
+        Operand[].newEosMarker
+        Operand[].pipeOut
+        true
+
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+
+        // check if we can scan the table
+        sTableNm checkIsValidTable not if
+          op.pipelineJob@ <ERROR_JOB> !!logError
+          Operand[].delete
+          Operand[].newErrorMarker
+        else
+
+          // move to table folder and find the table and tablePtn
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+          table[].tablePtn@ to tablePtn[]
+        then
+
+        Operand[].pipeOut
+        true
+      endof
+
+        // handle other operand as generic operands
+        jobOperand::generic
+        swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: truncateOp :: truncateOp <tableNm> <topology> <nextStage> <nextOp> ;
+
+jobInfo: truncateOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

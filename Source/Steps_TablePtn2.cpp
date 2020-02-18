@@ -15,6 +15,7 @@ void Step::vAddSteps_TablePartition2(void)
   vAddStep("tablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
   vAddStep("tablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("tablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
+  vAddStep("tablePtn[].truncate"_Stz, &Step::vTablePtnTruncate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,6 +190,19 @@ void Step::vTablePtnSet(void)
   ENTRY(); // ENTRY("vTablePtnSet"_Stz);
   
   m_pRegSet->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].truncate -- truncate the tablePtn                               */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnTruncate(void)
+{
+  ENTRY(); // ENTRY("vTablePtnTruncate"_Stz);
+  
+  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  pTablePtn->vTruncate();
   
   EXIT();
 }
