@@ -9,9 +9,9 @@
 8 .put  "tasks.sen"     include
 7 .put  "gridModel.sen" include
 6 .put  "dbObjects.sen" include
+3 .put  "prompt.sen"    include
 5 .put  "jobModel.sen"  include
 4 .put  "testing.sen"   include
-3 .put  "prompt.sen"    include
 2 .put  "pipelines.sen" include
 1 .put  "se.sen"        include  // last
 0 .put  .\n

@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Task_Prompt
+: Task_Interpret_line
   
   // -- -- -- -- -- -- --
   // get next input token
@@ -19,6 +19,7 @@
   // -- -- -- -- -- -- --
   // test for end of input?
   input::type TN_NONE == if
+    "!!NONE!!" .
     true exit_rt
   then
 
@@ -122,12 +123,22 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Task_Prompt_Loop
+: Task_Interpreter
   
-  begin
-    "task> " .put
 
-  while Task_Prompt repeat
+  debug::breakpoint
+
+  input::push
+  input::stdin
+
+  begin
+    "Task> " .put
+
+  Task_Interpret_line while repeat
+
+  debug::breakpoint
+
+  input::pop
 ;
 
 /*============================================================================*/

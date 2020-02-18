@@ -125,7 +125,8 @@ void Step::vInputStdin(void)
     m_pCompiler = new Compiler;
   
   m_pCompiler->pTokeniser()->vUseStdin();
-  
+  m_pCompiler->pTokeniser()->vLineMode(true);
+
   EXIT();
 }
 
