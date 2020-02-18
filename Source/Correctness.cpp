@@ -40,10 +40,6 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
 #endif
   
-#ifdef WITH_SHARED_LOG
-  vTrace("  WITH_SHARED_LOG\n"_Stz);
-#endif
-  
 #ifdef WITH_ADDRESS_CHECKING
   vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
 #endif

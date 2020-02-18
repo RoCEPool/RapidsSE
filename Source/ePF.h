@@ -106,7 +106,8 @@ enum ePF // prompt function
   /*    */ PF_UPTIME,
   /*    */ PF_VERSION,
   /*    */ PF_WAITING,
-  
+  /*    */ PF_WITH,
+
   /*    */ PF_ENUMT_
 };
 
@@ -212,7 +213,8 @@ static Stz* aPF[]
   /*    */ "UPTIME"_Stz,
   /*    */ "VERSION"_Stz,
   /*    */ "WAITING"_Stz,
-  
+  /*    */ "WITH"_Stz,
+
   /*    */ "ENUMT_"_Stz
 };
 
