@@ -15,6 +15,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::new"_Stz,         &Step::vWordNew);
   
   vAddStep("word.allotObject"_Stz,  &Step::vWordAllotObject);
+  vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
+  vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
@@ -67,6 +69,38 @@ void Step::vWordAllotObject(void)
 
   m_pDataStack->vPushPtr(pEmbObject);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.breakPt@ -- fetch m_bBreakPt of word                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vWordBreakPtFetch(void)
+{
+  ENTRY(); // ENTRY("vWordBreakPtFetch"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  bool bBreakPt = pWord->bBreakPt();
+  
+  m_pDataStack->vPushInt(bBreakPt);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.breakPt! -- store m_bBreakPt of word                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vWordBreakPtStore(void)
+{
+  ENTRY(); // ENTRY("vWordBreakPtStore"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iBreakPt = m_pDataStack->iPopInt(__func__);
+  
+  pWord->vBreakPt(iBreakPt);
+  
   EXIT();
 }
 
