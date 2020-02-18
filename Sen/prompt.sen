@@ -19,7 +19,7 @@
   // -- -- -- -- -- -- --
   // test for end of input?
   input::type TN_NONE == if
-    "!!NONE!!" .
+    //"!!NONE!!" .put
     true exit_rt
   then
 
@@ -30,7 +30,7 @@
     input::token >int        // convert str to int, leave on stack
 
     compiler::isPostponing if
-      "SHOULD NOT BE POSTPONING AN INT" .
+      "SHOULD NOT BE POSTPONING AN INT" .put
       process::quit
       reenter
     then
@@ -51,7 +51,7 @@
     input::token             // put str on stack
 
     compiler::isPostponing if
-      "SHOULD NOT BE POSTPONING A STR" .
+      "SHOULD NOT BE POSTPONING A STR" .put
       process::quit
       reenter
     then
@@ -68,7 +68,7 @@
   // -- -- -- -- -- -- --
   // token should be a name
   input::type TN_NAME != if
-    "strange token" . input::type .
+    "strange token" .put input::type .put
     reenter
   then
 
@@ -100,7 +100,7 @@
   // -- -- -- -- -- -- --
   // postponing mode?
   compiler::isPostponing if
-    "POSTPONING" .
+    "POSTPONING" .put
     ,
     "compile," word::find compile,
     reenter
@@ -125,8 +125,7 @@
 /*----------------------------------------------------------------------------*/
 : Task_Interpreter
   
-
-  debug::breakpoint
+  //debug::breakpoint
 
   input::push
   input::stdin
@@ -136,7 +135,7 @@
 
   Task_Interpret_line while repeat
 
-  debug::breakpoint
+  //debug::breakpoint
 
   input::pop
 ;
