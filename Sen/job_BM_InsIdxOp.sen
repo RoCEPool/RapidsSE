@@ -97,7 +97,7 @@
 
   BM_TimerNew
 
-  Task_Interpreter
+  //Task_Interpreter
 
   Operand[].pipeout
 ;
@@ -117,6 +117,8 @@
 
   // set nextOp in op
   <nextOp> op.nextOp!
+
+  true "BM_InsIdx_StartMarker" find word.breakPt!
 
   begin
 

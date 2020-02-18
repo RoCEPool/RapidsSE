@@ -39,6 +39,7 @@ namespace SenVM
     Forth(Task* pTask, RegSet* pRegSet);
    ~Forth(void) noexcept(false);
   
+    void vCheckBreakPt(void);
     void vContentDump(void);
     bool bCorrectLayout(void);
     DicStack* pDicStack(void);

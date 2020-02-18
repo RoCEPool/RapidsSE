@@ -102,6 +102,24 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* check for break point                                                      */
+/*----------------------------------------------------------------------------*/
+void Forth::vCheckBreakPt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  if (! m_aInxPtr)
+    return;
+  
+  Word* pThisWord = Word::pToWord(m_aInxPtr);
+  
+  if (! pThisWord->bBreakPt())
+    return;
+  
+  Correctness::vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump execution context                                                     */
 /*----------------------------------------------------------------------------*/
 void Forth::vContentDump(void)

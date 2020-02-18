@@ -35,6 +35,8 @@
   if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
     m_pTask->vTraceStep((Stz*)__func__); \
   \
+  vCheckBreakPt();
+  \
 EndDefine
 
 /*----------------------------------------------------------------------------*/
