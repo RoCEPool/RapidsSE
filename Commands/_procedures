@@ -24,8 +24,8 @@ begin
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// stored procedure syntax test
-procedure sp_One Two
+// two part stored procedure syntax test
+procedure select table
   parameters $Table
 begin
 

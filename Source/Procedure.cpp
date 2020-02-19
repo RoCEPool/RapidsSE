@@ -15,7 +15,9 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 {
   _static_
   
-  s32 sProcNm = pTokenVec->pGet(1)->szTerm();
+  Token* pTkn1_ProcNm = pTokenVec->pGet(1);
+  
+  s32 sProcNm = pTkn1_ProcNm->szTerm();
   
   vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
 
@@ -24,7 +26,14 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
     sProcNm.vAppend('_');
     sProcNm.vConcat(pTokenVec->pGet(2)->szTerm());
     vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
+    
+    pTokenVec->vCutToken(2);
+    
+    pTkn1_ProcNm->vCopy(sProcNm);
+    
+    pTokenVec->vDumpTokens();
   }
+  
   
   s4K sProcText;
   pTokenVec->vVecToString(sProcText,0,false);
