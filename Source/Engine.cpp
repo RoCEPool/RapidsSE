@@ -508,7 +508,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
-  IndexPtn::vMonitorPortrait(sPortrait);
+  Index::vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
@@ -840,7 +840,7 @@ void Engine::vRunCommandLine(void)
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
-        //vMungeCheck();
+        vMungeCheck();
 #endif
         vCallPrompt();
         break;

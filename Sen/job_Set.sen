@@ -97,7 +97,6 @@
 "job_SubFetch.sen"       include
 "Job_SubInserter.sen"    include
 "job_SubLoader.sen"      include
-"job_SubTruncate.sen"    include
 "job_Supervisor.sen"     include
 
 "job_TableSizes.sen"     include
@@ -105,7 +104,6 @@
 "job_ToCsvOp.sen"        include
 "job_ToFileOp.sen"       include
 "job_TruncateOp.sen"     include
-"job_TruncateTable.sen"  include
 
 "job_Universal.sen"      include
 "Job_UpsertOp.sen"       include

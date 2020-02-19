@@ -773,9 +773,6 @@ public:
   void vJob_SubWalkerWalkJobFetch(void);
   void vJob_SubWalkerSpawn(void);
 
-  // Job Truncate
-  void vJob_TruncateTableSpawnSub(void);
-
   // job Walk
   void vJob_WalkBegin(void);
   void vJob_WalkEnd(void);
