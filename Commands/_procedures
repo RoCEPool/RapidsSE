@@ -6,6 +6,59 @@ print "_procedures" ;
 
 print "  (no initial set of procedures yet)" ;
 
+procedure sp_truncate
+  parameters $table
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  truncateOp $table | stageC
+
+  stage stageC on origin:
+  sinkOp | stageA
+
+end
+;
+
+/*
+procedure sp_dropTable
+parameters $table
+begin
+
+  stage stageA on origin: // one
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions: //many many
+  truncateOp $table | stageC
+
+  stage stageC on all nodes: // many
+  dropTableOp $table | stageD
+
+  stage stageD on origin: // one
+  sinkOp | stageA
+
+end
+;
+
+procedure sp_createTable
+  parameters $tableName $cmd
+begin
+
+  stage stageA on origin: // one
+  startOp | periodicOp once | stageB
+
+  stage stageB on all nodes: // many
+  createTableOp $cmd | stagec
+
+  stage stageD on origin: // one
+  sinkOp | stageA
+
+end
+;
+*/
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
