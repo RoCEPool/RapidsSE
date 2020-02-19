@@ -121,8 +121,8 @@ enum eCN : u2 // Class Number
   /*  89 0x059        9B Heap:I */ CN__I__,
   /*  90 0x05A      184B Heap:I */ CN_INDEX,
   /*  91 0x05B     4168B Heap:M */ CN_INDEXDEF,
-  /*  92 0x05C      232B Heap:S */ CN_INDEXTREE,
-  /*  93 0x05D     8224B Heap:M */ CN_INDEXTREEVEC,
+  /*  92 0x05C      232B Heap:S */ CN_INDEXPTN,
+  /*  93 0x05D     8224B Heap:M */ CN_INDEXPTNVEC,
   /*  95 0x05F     8216B Heap:M */ CN_IDXCOLVEC,
   /*  96 0x060     8224B Heap:M */ CN_IDXVEC,
   /*  97 0x061  1000088B Heap:L */ CN_INGESTCHUNK,
@@ -458,8 +458,8 @@ static Stz* aCN[]
   /*  89 0x059 */ "_I__"_Stz,                // CN__I__
   /*  90 0x05A */ "INDEX"_Stz,               // CN_INDEX
   /*  91 0x05B */ "INDEXDEF"_Stz,            // CN_INDEXDEF
-  /*  92 0x05C */ "INDEXTREE"_Stz,           // CN_INDEXTREE
-  /*  93 0x05D */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
+  /*  92 0x05C */ "INDEXPTN"_Stz,            // CN_INDEXPTN
+  /*  93 0x05D */ "INDEXPTNVEC"_Stz,         // CN_INDEXPTNVEC
   /*  95 0x05F */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /*  96 0x060 */ "IDXVEC"_Stz,              // CN_IDXVEC
   /*  97 0x061 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
