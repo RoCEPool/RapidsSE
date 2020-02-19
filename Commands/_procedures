@@ -6,6 +6,40 @@ print "_procedures" ;
 
 //print "  (no initial set of procedures yet)" ;
 
+// fetch rows from a table (all nodes)
+procedure tableFetch
+  parameters $table
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp $table | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+
+// fetch rows from a partition of a table
+procedure partitionFetch
+  parameters $table, $partition
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on partition $partition:
+  scanOp $table | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+
 procedure truncate
   parameters $table
 begin
