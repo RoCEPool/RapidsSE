@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace IndexTrees
+namespace IndexPtns
 {
   class SkipRoots : public Ent
   {

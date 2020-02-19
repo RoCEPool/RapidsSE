@@ -460,8 +460,8 @@ i8 giClassSize[]
   /* */ 'I' - ('A' - 1),            // CN__I__
   /* */ sizeof(Index),              // CN_INDEX
   /* */ sizeof(IndexDef),           // CN_INDEXDEF
-  /* */ sizeof(IndexTree),          // CN_INDEXPTN
-  /* */ sizeof(IndexTreeVec),       // CN_INDEXPTNVEC
+  /* */ sizeof(IndexPtn),          // CN_INDEXPTN
+  /* */ sizeof(IndexPtnVec),       // CN_INDEXPTNVEC
   /* */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* */ sizeof(IdxVec),             // CN_IDXVEC
   /* */ sizeof(IngestChunk),        // CN_INGESTCHUNK

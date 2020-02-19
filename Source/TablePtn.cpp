@@ -66,7 +66,7 @@ TablePtn::TablePtn(void)
   m_pRootCrwBuffer  = nullptr;
   m_pCurrentCrwBuffer = nullptr;
   
-  m_pIndexTreeVec = new IndexTreeVec;
+  m_pIndexPtnVec = new IndexPtnVec;
   
   m_pReadApi = new ReadApi;
   
@@ -97,7 +97,7 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
   TablePtn* pPartition = _pTablePtn(pObject);
   
   vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
-         pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);
+         pPartition->m_iPartitionId, pPartition->m_pIndexPtnVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,12 +166,12 @@ void TablePtn::vAddInsertWriteBehindBuffers(i8 nBuffersFromSomeSubInserter)
 /*----------------------------------------------------------------------------*/
 /* add index                                                                  */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddIndex(IndexTree* pIndexTree)
+void TablePtn::vAddIndex(IndexPtn* pIndexPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
-  m_pIndexTreeVec->vAdd(pIndexTree);
+  ASSERT(m_pIndexPtnVec->nItems() < C_MAX_INDEXES);
+  m_pIndexPtnVec->vAdd(pIndexPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,7 +308,7 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 
 #ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+  gpAttachMap->m_oStatistics.IndexPtn.m_nAppendBuffers++;
 #endif
   
   RASSERT(m_okLock.bIsLocked());
@@ -337,7 +337,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
 #ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+  gpAttachMap->m_oStatistics.IndexPtn.m_nAppendBuffers++;
 #endif
   
   RASSERT(m_okLock.bIsLocked());
@@ -365,16 +365,16 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   xRowRef.vItem(iRow);
   
   // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
+  i8 nIndexes = m_pIndexPtnVec->nItems();
   
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    IndexPtn* pIndexPtn = m_pIndexPtnVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(m_pCurrentCrwBuffer,iRow,xRowRef);
+    bool bResult = pIndexPtn->bInsertEntry(m_pCurrentCrwBuffer,iRow,xRowRef);
     RASSERT(bResult);
   }
   
@@ -487,33 +487,33 @@ void TablePtn::vIncBuffersWritten(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get IndexTree                                                              */
+/* get IndexPtn                                                              */
 /*----------------------------------------------------------------------------*/
-IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
+IndexPtn* TablePtn::pIndexPtn(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTree* pIndexTree = nullptr;
-  i8 nIndexes = m_pIndexTreeVec->nItems();
+  IndexPtn* pIndexPtn = nullptr;
+  i8 nIndexes = m_pIndexPtnVec->nItems();
   
   for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    Index* pIndex = pIndexTree->pIndex();
+    pIndexPtn = m_pIndexPtnVec->pGet(i_Index);
+    Index* pIndex = pIndexPtn->pIndex();
     if (pIndex->iIndexNo() == iIndexNo)
       break;
   }
   
-  return pIndexTree;
+  return pIndexPtn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get index data vector                                                      */
 /*----------------------------------------------------------------------------*/
-IndexTreeVec* TablePtn::pIndexTreeVec(void)
+IndexPtnVec* TablePtn::pIndexPtnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_pIndexTreeVec;
+  return m_pIndexPtnVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -524,16 +524,16 @@ void TablePtn::vInsertIndexEntries(Crw* aCrw, Ref& xRowRef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
+  i8 nIndexes = m_pIndexPtnVec->nItems();
   
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    IndexPtn* pIndexPtn = m_pIndexPtnVec->pGet(i_Index);
     
     // insert entry from row into the index
-    pIndexTree->bInsertEntry(aCrw,xRowRef);
+    pIndexPtn->bInsertEntry(aCrw,xRowRef);
   }
 }
 
@@ -545,16 +545,16 @@ void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
+  i8 nIndexes = m_pIndexPtnVec->nItems();
   
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    IndexPtn* pIndexPtn = m_pIndexPtnVec->pGet(i_Index);
     
     // insert entries from EntBuffer into the index
-    pIndexTree->vInsertEntries(pCrwBuffer);
+    pIndexPtn->vInsertEntries(pCrwBuffer);
   }
 }
 
@@ -576,7 +576,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
 #ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+  gpAttachMap->m_oStatistics.IndexPtn.m_nAppendBuffers++;
 #endif
   
   RASSERT(m_okLock.bIsLocked());
@@ -655,12 +655,12 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
+  IndexPtn* pIndexPtn = this->pIndexPtn(iIndexNo);
   
   CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   
   while (pCrwBuffer) {
-    pIndexTree->vInsertEntries(pCrwBuffer);
+    pIndexPtn->vInsertEntries(pCrwBuffer);
     pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
 
@@ -770,7 +770,7 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   delete pCrwBuffer;
 
 #ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
+  gpAttachMap->m_oStatistics.IndexPtn.m_nBuffersPurged++;
 #endif
   
   return true;
@@ -873,7 +873,7 @@ void TablePtn::vTidyUp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   // delete the index data vector
-  delete m_pIndexTreeVec;
+  delete m_pIndexPtnVec;
   
   delete m_pReadApi;
 }
@@ -885,11 +885,11 @@ void TablePtn::vTidyUpIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
+  IndexPtn* pIndexPtn = this->pIndexPtn(iIndexNo);
   
   // remove the index from the IdxDataVec
-  m_pIndexTreeVec->vRemove(pIndexTree);
-  delete pIndexTree;
+  m_pIndexPtnVec->vRemove(pIndexPtn);
+  delete pIndexPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,8 +919,8 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
   
   StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
   
-  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
-  IdxColVec* pIdxColVec = pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
+  IndexPtn* pIndexPtn = m_pIndexPtnVec->pGet(0);
+  IdxColVec* pIdxColVec = pIndexPtn->pIndex()->pIndexDef()->pIdxColVec();
 
   HV_Row hvRow_upsert(pStreamDef,C_ALL);
   
@@ -944,14 +944,14 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     pEncoding_upsert->vEncodeRow(hvRow_upsert);
 
     xEntWrk.vElmSeqSize(0);
-    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
+    pIndexPtn->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
     SP_Ent spEnt;
     TRACE_UPSERT( vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIdxColVec)); )
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // possible insert (can we find the row using primary key)
     
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
+    EntBuffer* pEntH0Buf = pIndexPtn->pPositionH0Buffer(xEntWrk.aKey());
     if (! pEntH0Buf) {
       TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);

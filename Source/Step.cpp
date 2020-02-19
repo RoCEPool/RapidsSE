@@ -88,8 +88,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Index();
   Step::vAddSteps_IndexDef();
   Step::vAddSteps_IndexReg();
-  Step::vAddSteps_IndexTree();
-  Step::vAddSteps_IndexTreeReg();
+  Step::vAddSteps_IndexPtn();
+  Step::vAddSteps_IndexPtnReg();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
   

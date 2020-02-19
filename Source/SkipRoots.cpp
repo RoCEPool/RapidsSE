@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipRoots* IndexTrees::_aSkipRoots(void* aAddr)
+SkipRoots* IndexPtns::_aSkipRoots(void* aAddr)
 {
   SkipRoots* aFreeEntry = reinterpret_cast<SkipRoots*>(aAddr);
   

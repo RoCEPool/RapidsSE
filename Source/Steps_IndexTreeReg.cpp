@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_IndexTreeReg.cpp - index[] step group                                */
+/* Steps_IndexPtnReg.cpp - index[] step group                                */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,32 +7,32 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_IndexTreeReg(void)
+void Step::vAddSteps_IndexPtnReg(void)
 {
-  vAddStep("indexTree[].get"_Stz,  &Step::vIndexTreeRegGet);
-  vAddStep("indexTree[].set"_Stz,  &Step::vIndexTreeRegSet);
+  vAddStep("IndexPtn[].get"_Stz,  &Step::vIndexPtnRegGet);
+  vAddStep("IndexPtn[].set"_Stz,  &Step::vIndexPtnRegSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexTree[].get -- get index tree                                          */
+/* IndexPtn[].get -- get index tree                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeRegGet(void)
+void Step::vIndexPtnRegGet(void)
 {
-  ENTRY(); // ENTRY("vIndexTreeRegGet"_Stz);
+  ENTRY(); // ENTRY("vIndexPtnRegGet"_Stz);
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexTree);
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexPtn);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexTree[].set -- set index tree                                          */
+/* IndexPtn[].set -- set index tree                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeRegSet(void)
+void Step::vIndexPtnRegSet(void)
 {
-  ENTRY(); // ENTRY("vIndexTreeRegSet"_Stz);
+  ENTRY(); // ENTRY("vIndexPtnRegSet"_Stz);
   
-  m_pRegSet->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  m_pRegSet->m_xpIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

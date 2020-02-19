@@ -53,13 +53,13 @@
   "BM_InsIdx_EntBuffer" .
 
   // get index partition for current partition
-  index[].get index.indexTree to indexTree[] // indexPtn
+  index[].get index.IndexPtn to IndexPtn[] // indexPtn
 
   BM_TimerBegin
 
   // insert all the entries into tree
   //   NB: registers are available in the step!!
-  Operand[].get indexTree[].get indexTree.insEntBuffer // <- focal pt of bm
+  Operand[].get IndexPtn[].get IndexPtn.insEntBuffer // <- focal pt of bm
     counter1[] + to counter1[]
 
   counter0[] 1 + to counter0[]

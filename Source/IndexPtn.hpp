@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* IndexTree.hpp - index portion of table partition                           */
+/* IndexPtn.hpp -- Index Partition                                            */ 
 /*============================================================================*/
 #pragma once
 
-namespace IndexTrees
+namespace IndexPtns
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-  class IndexTree : public Object
+  class IndexPtn : public Object
   {
   private:
     Lock   m_okLock;        // lock on the buffer tree
@@ -22,11 +22,11 @@ namespace IndexTrees
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, IndexTree* pIndexTree);
+    void* operator new(size_t, IndexPtn* pIndexPtn);
     void  operator delete(void*);
     
-    IndexTree(Index* pIndex, i8 iPartitionNo);
-   ~IndexTree(void) noexcept(false);
+    IndexPtn(Index* pIndex, i8 iPartitionNo);
+   ~IndexPtn(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
@@ -66,7 +66,7 @@ namespace IndexTrees
     EntBuffer* pPopSubList(EntBuffer** ppSubList);
   };
   
-  IndexTree* _pIndexTree(void* pAddr);
+  IndexPtn* _pIndexPtn(void* pAddr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

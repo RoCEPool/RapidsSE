@@ -57,7 +57,7 @@ stepTiming write "/tmp/StepTiming.csv";
 
 filecat "/tmp/bm_insidx_rep.csv" 100;
 
-stepTiming show "vIndexTreeInsEntBuffer";
+stepTiming show "vIndexPtnInsEntBuffer";
 
 sizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
 

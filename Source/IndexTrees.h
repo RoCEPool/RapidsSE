@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexTrees.h -- IndexTrees namespace                                       */
+/* IndexTrees.h -- IndexPtns namespace                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace IndexTrees
+namespace IndexPtns
 {  
   void vCheckAssumptions(void);
   

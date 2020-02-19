@@ -20,7 +20,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].genEntBuffers"_Stz, &Step::vIndexGenEntBuffers);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
-  vAddStep("index.indexTree"_Stz,       &Step::vIndexIndexTree);
+  vAddStep("index.IndexPtn"_Stz,       &Step::vIndexIndexPtn);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
@@ -166,10 +166,10 @@ void Step::vIndexDump(void)
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
-    IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+    IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
-    pIndexTree->vDump(false);
+    pIndexPtn->vDump(false);
   }
   
   EXIT();
@@ -357,9 +357,9 @@ void Step::vIndexIndexDefStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.indexTree -- get  index tree of given index for current partition    */
+/* index.IndexPtn -- get  index tree of given index for current partition    */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIndexTree(void)
+void Step::vIndexIndexPtn(void)
 {
   ENTRY(); // ENTRY("vIndexIndexDefStore"_Stz);
   
@@ -379,11 +379,11 @@ void Step::vIndexIndexTree(void)
   
   i8 iIndexNo = pIndex->iIndexNo();
 
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  IndexPtn* pIndexPtn = pTablePtn->pIndexPtn(iIndexNo);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
-  m_pDataStack->vPushPtr(pIndexTree);
+  m_pDataStack->vPushPtr(pIndexPtn);
 
   EXIT();
 }
@@ -534,7 +534,7 @@ void Step::vIndexLowerBound(void)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   TablePtn* pPartition = pTable->pPartition(iSlot);
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
@@ -558,7 +558,7 @@ void Step::vIndexLowerBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aKey());
+  aLowerEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkLower.aKey());
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -720,7 +720,7 @@ void Step::vIndexRange(void)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   TablePtn* pPartition = pTable->pPartition(iSlot);
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a fetchBuffer for the results
@@ -775,7 +775,7 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aKey());
+  aLowerEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkLower.aKey());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
@@ -802,7 +802,7 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
-  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aKey());
+  aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
   
   //aUpperEntBuffer->vShow();
   
@@ -1009,7 +1009,7 @@ void Step::vIndexUpperBound(void)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   TablePtn* pPartition = pTable->pPartition(iSlot);
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
@@ -1034,7 +1034,7 @@ void Step::vIndexUpperBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at the first level 0 buffer
-  pEntBuffer = pIndexTree->pFirstH0Buffer();
+  pEntBuffer = pIndexPtn->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
@@ -1048,7 +1048,7 @@ void Step::vIndexUpperBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
-  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aKey());
+  aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
   
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
@@ -1158,9 +1158,9 @@ void Step::vIndexVisualize(void)
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
-    IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+    IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
     vTrace("Table Partition %lld\n"_Stz, iPartition);
-    pIndexTree->vVisualize();
+    pIndexPtn->vVisualize();
   }
   
   EXIT();

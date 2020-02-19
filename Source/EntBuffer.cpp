@@ -15,7 +15,7 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTrees::_pEntBuffer(void* aAddress)
+EntBuffer* IndexPtns::_pEntBuffer(void* aAddress)
 {
   EntBuffer* pEntBuffer = reinterpret_cast<EntBuffer*>(aAddress);
   
@@ -91,7 +91,7 @@ EntBuffer::~EntBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
 {
-  TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
+  TRACE_COMPACT( vTrace("IndexPtn::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
   
   EntWrk xLeftEntWrk;
@@ -110,7 +110,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
   ASSERT(1 == pH1->iBufferHeight());
   ASSERT(pRightH0->pHigherBuffer() == pLeftH0->pHigherBuffer());
   
-  //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
+  //vTrace("IndexPtn::vCopyLeft (left %lld right %lld)\n"_Stz,
   //       pLeftL0->iBufferNo(),pRightL0->iBufferNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexTrees.cpp - IndexTrees namespace functions                            */
+/* IndexPtns.cpp - IndexPtns namespace functions                            */
 /*============================================================================*/
 
 #include "IndexTrees.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void IndexTrees::vCheckAssumptions(void)
+void IndexPtns::vCheckAssumptions(void)
 {
   //RASSERT(sizeof(NEO)      == C_NEO_SIZE);
 }

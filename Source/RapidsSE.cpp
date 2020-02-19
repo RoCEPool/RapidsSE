@@ -1076,8 +1076,8 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
       // get first entry buffer
       TablePtn* pPartition = pTable->pPartition(iPartition);
       Index* pIndex = pTable->pHiddenIndex();
-      IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
-      pEntBuffer = pIndexTree->pFirstH0Buffer();
+      IndexPtn* pIndexPtn = pPartition->pIndexPtn(pIndex->iIndexNo());
+      pEntBuffer = pIndexPtn->pFirstH0Buffer();
       //vTrace("Got first buffer %p\n"_Stz, pEntBuffer);
       if ( ! pEntBuffer) {
         *aaRow = nullptr;
@@ -1172,10 +1172,10 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
     // get first entry buffer
     TablePtn* pPartition = pTable->pPartition(iPartition);
     Index* pIndex = pTable->pHiddenIndex();
-    IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
+    IndexPtn* pIndexPtn = pPartition->pIndexPtn(pIndex->iIndexNo());
     API_LOC(330);
     
-    EntBuffer* pEntBuffer = pIndexTree->pFirstH0Buffer();
+    EntBuffer* pEntBuffer = pIndexPtn->pFirstH0Buffer();
     API_LOC(340);
     
     // return the first buffer
