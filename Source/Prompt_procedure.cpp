@@ -27,12 +27,9 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
   
   ASSERT((*pTokenVec)[0]->bSame("procedure"_Stz));
   
-  s32 sProcNm = (*pTokenVec)[1]->szTerm();
+  Stz* ssProcNm = (*pTokenVec)[1]->szTerm();
   
-  s4K sProcText;
-  pTokenVec->vVecToString(sProcText,0,false);
-  
-  Procedure::vAddProcedure(sProcNm,sProcText);
+  Procedure::vAddProcedure(pTokenVec);
   
   return true;
 }

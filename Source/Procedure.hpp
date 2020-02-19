@@ -8,7 +8,7 @@ namespace Pipelines
   class Procedure
   {
   public:
-    static void  vAddProcedure(Stz* szProcNm, Stz* szProcText);
+    static void  vAddProcedure(TokenVec* pTokenVec);
     static Word* pFindProcedure(Stz* szProcNm, DicStack* pDicStack);
   };
 }

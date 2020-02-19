@@ -7,28 +7,34 @@
 /*----------------------------------------------------------------------------*/
 /* add word for procedure in root dictionary                                  */
 /*----------------------------------------------------------------------------*/
-void Procedure::vAddProcedure(Stz* szProcNm, Stz* szProcText)
+void Procedure::vAddProcedure(TokenVec* pTokenVec)
 {
   _static_
+  
+  s32 sProcNm = (*pTokenVec)[1]->szTerm();
+  
+  s4K sProcText;
+  pTokenVec->vVecToString(sProcText,0,false);
+
   
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProceCatg = pRootDic->pFindWord("procedure"_Stz);
   
-  Word* pProcWord = pRootDic->pFindWord(szProcNm);
+  Word* pProcWord = pRootDic->pFindWord(sProcNm);
   if (pProcWord)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pProcWord = new (pRootDic) Word(szProcNm);
+  pProcWord = new (pRootDic) Word(sProcNm);
   
   pProcWord->vCategory(pProceCatg);
   
   if (! pProcWord->pEnameSet())
     pProcWord->vEnameSet(new EnameSet);
   
-  pProcWord->pEnameSet()->vAdd("procText"_Stz,szProcText);
+  pProcWord->pEnameSet()->vAdd("procText"_Stz,sProcText);
 }
 
 /*----------------------------------------------------------------------------*/
