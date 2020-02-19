@@ -11,6 +11,7 @@ namespace Correctness
 {
   void vCheckAssumptions(void);
   void vTraceWith(void);
+  void vTraceWithout(void);
 }
 
 //------------------------------------------------------------------------------

@@ -149,6 +149,126 @@ void Correctness::vTraceWith(void)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* trace what hasn't been compiled with                                       */
+/*----------------------------------------------------------------------------*/
+void Correctness::vTraceWithout(void)
+{
+  vTrace("\nWith:\n"_Stz);
+
+#ifndef WITH_ACTION_SEQUENCE
+  vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
+#endif
+  
+#ifndef WITH_ADDRESS_CHECKING
+  vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
+#endif
+  
+#ifndef WITH_APPLE
+  vTrace("  WITH_APPLE\n"_Stz);
+#endif
+  
+#ifndef WITH_ANALYSE_FREE
+  vTrace("  WITH_ANALYSE_FREE\n"_Stz);
+#endif
+  
+#ifndef WITH_ASSERT_MACRO
+  vTrace("  WITH_ASSERT_MACRO\n"_Stz);
+#endif
+  
+#ifndef WITH_BUCKET_HASHING
+  vTrace("  WITH_BUCKET_HASHING\n"_Stz);
+#endif
+  
+#ifndef WITH_CHECK_INITIALISED
+  vTrace("  WITH_CHECK_INITIALISED\n"_Stz);
+#endif
+  
+#ifndef WITH_CORECTNESS_ALGEBRA
+  vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
+#endif
+    
+#ifndef WITH_DEBUG_VERSION
+  vTrace("  WITH_DEBUG_VERSION\n"_Stz);
+#endif
+  
+#ifndef WITH_EB_LAZY_CHAIN
+  vTrace("  WITH_EB_LAZY_CHAIN\n"_Stz);
+#endif
+  
+#ifndef WITH_ENCODING_TRACE
+  vTrace("  WITH_ENCODING_TRACE\n"_Stz);
+#endif
+  
+#ifndef WITH_ENTRY_EXIT
+  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
+#endif
+    
+#ifndef WITH_INFLATE_TRACE
+  vTrace("  WITH_INFLATE_TRACE\n"_Stz);
+#endif
+  
+#ifndef WITH_IT_COMPACT_TRACE
+  vTrace("  WITH_IT_COMPACT_TRACE\n"_Stz);
+#endif
+  
+#ifndef WITH_LINUX
+  vTrace("  WITH_LINUX\n"_Stz);
+#endif
+  
+#ifndef WITH_MUNGED_SEN
+  vTrace("  WITH_MUNGED_SEN\n"_Stz);
+#endif
+  
+#ifndef WITH_PREPOST_CHECKING
+  vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
+#endif
+  
+#ifndef WITH_PULSING
+  vTrace("  WITH_PULSING\n"_Stz);
+#endif
+  
+#ifndef WITH_PYTHON_SUPPORT
+  vTrace("  WITH_PYTHON_SUPPORT\n"_Stz);
+#endif
+  
+#ifndef WITH_RELEASE_VERSION
+  vTrace("  WITH_RELEASE_VERSION\n"_Stz);
+#endif
+  
+#ifndef WITH_SETH_SUPPORT
+  vTrace("  WITH_SETH_SUPPORT\n"_Stz);
+#endif
+  
+#ifndef WITH_SHARED_LOG
+  vTrace("  WITH_SHARED_LOG\n"_Stz);
+#endif
+  
+#ifndef WITH_SHOCO_DUPLICATES
+  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
+#endif
+  
+#ifndef WITH_STATISTICS_COUNTERS
+  vTrace("  WITH_STATISTICS_COUNTERS\n"_Stz);
+#endif
+  
+#ifndef WITH_TRACE_API
+  vTrace("  WITH_TRACE_API\n"_Stz);
+#endif
+  
+#ifndef WITH_TRACE_DYNAMO
+  vTrace("  WITH_TRACE_DYNAMO\n"_Stz);
+#endif
+  
+#ifndef WITH_TRACE_PURGING
+  vTrace("  WITH_TRACE_PURGING\n"_Stz);
+#endif
+  
+#ifndef WITH_TRACE_TOKENS
+  vTrace("  WITH_TRACE_TOKENS\n"_Stz);
+#endif
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
