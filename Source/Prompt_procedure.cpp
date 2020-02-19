@@ -31,17 +31,18 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
   s32 sProcNm = (*pTokenVec)[1]->szTerm();
   pTokenVec->vVecToString(sProcText,0,false);
   
-  vTrace("Procedure: %s\n"_Stz,sProcNm.szStz());
-  vTrace("Procedure: %s\n"_Stz,sProcText.szStz());
+  //vTrace("Procedure: %s\n"_Stz,sProcNm.szStz());
+  //vTrace("Procedure: %s\n"_Stz,sProcText.szStz());
   
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcWord = pRootDic->pFindWord(sProcNm);
   
-  if (pProcWord) {
-    vTrace(" : %s\n"_Stz,pProcWord->pEnameSet()->szValue("procText"_Stz));
-  }
-  else {
+//  if ( pProcWord  ) {
+//    vTrace(" : %s\n"_Stz,pProcWord->pEnameSet()->szValue("procText"_Stz));
+//  }
+  
+  if ( ! pProcWord  ) {
     Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
     
     pProcWord = new (pRootDic) Word(sProcNm);

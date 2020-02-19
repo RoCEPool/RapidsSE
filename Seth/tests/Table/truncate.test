@@ -9,7 +9,7 @@ indexEntries 200;
 success;
 
 // truncate where table does not exist
-truncate table noTable;
+truncate noTable;
 failure contains: 'no such table'
 
 // create a table
@@ -49,7 +49,7 @@ rows:
   ("l_orderkey", "INTEGER", 19, 0, false, true)
 
 // truncate when table is empty
-truncate table lineitem;
+truncate lineitem;
 success
 
 // fetch
@@ -61,7 +61,7 @@ ld lineitem "../DATA/Regression/lineitem.csv";
 success
 
 // truncate the table
-truncate table lineitem;
+truncate lineitem;
 success
 
 // fetch

@@ -152,7 +152,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_JOB_SUBINGESTER
   /* */ &Dump::vDummy,           // CN_JOB_SUBINSERTER
   /* */ &Dump::vDummy,           // CN_JOB_SUBLOADER
-  /* */ &Dump::vDummy,           // CN_JOB_SUBTRUNCATE
   /* */ &Dump::vDummy,           // CN_JOB_UNIVERSAL
   /* */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
   /* */ &Dump::vDummy,           // CN_JOB_WRITEROW
@@ -490,7 +489,6 @@ i8 giClassSize[]
   /* */ sizeof(Job_SubFetch),       // CN_JOB_SUBINGESTER
   /* */ sizeof(Job_SubInserter),    // CN_JOB_SUBINSERTER
   /* */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
-  /* */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
   /* */ sizeof(Job_Universal),      // CN_JOB_UNIVERSAL
   /* */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /* */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
@@ -828,7 +826,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINGESTER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINSERTER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBLOADER
-  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBTRUNCATE
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_UNIVERSAL
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW

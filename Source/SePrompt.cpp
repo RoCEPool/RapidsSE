@@ -74,10 +74,10 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pJob = nullptr;
   // m_oTimer
 
-  if (bSethScript)
-    m_pSession->m_sToDo = ""_Stz;
-  else
-    m_pSession->m_sToDo = "_seprompt"_Stz;
+  //if (bSethScript)
+  //  m_pSession->m_sToDo = ""_Stz;
+  //else
+  m_pSession->m_sToDo = "_seprompt"_Stz;
   
   m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
@@ -1215,7 +1215,7 @@ bool SePrompt::bTranslateProcedure(void)
   
   TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
   
-  pProcVec->vDumpTokens();
+  //pProcVec->vDumpTokens();
   
   Token* pTkn0 = pProcVec->pGet(0);
 
@@ -1224,19 +1224,19 @@ bool SePrompt::bTranslateProcedure(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TokenVec* pParamsVec = Tokeniser::pSubVec(pProcVec,"parameters"_Stz,"begin"_Stz);
-  if (pParamsVec)
-    pParamsVec->vDumpTokens();
+//  if (pParamsVec)
+//    pParamsVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TokenVec* pArgsVec = Tokeniser::pSubVec(pCommandVec,1,nTokens-1);
-  if (pArgsVec)
-    pArgsVec->vDumpTokens();
+//  if (pArgsVec)
+//    pArgsVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Tokeniser::vReplace(pProcVec,pParamsVec,pArgsVec);
-  pProcVec->vDumpTokens();
+  //pProcVec->vDumpTokens();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1255,7 +1255,7 @@ bool SePrompt::bTranslateProcedure(void)
   s4K sPipelineSmt;
   
   pProcVec->vVecToString(sPipelineSmt,0,true);
-  vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
+  //vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();
 

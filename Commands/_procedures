@@ -4,9 +4,9 @@
 
 print "_procedures" ;
 
-print "  (no initial set of procedures yet)" ;
+//print "  (no initial set of procedures yet)" ;
 
-procedure sp_truncate
+procedure truncate
   parameters $table
 begin
 
@@ -17,7 +17,7 @@ begin
   truncateOp $table | stageC
 
   stage stageC on origin:
-  sinkOp | stageA
+  outputOp | sinkOp | stageA
 
 end
 ;

@@ -57,7 +57,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINSERTER);
-  nJobs++; JobClass::vJobCat(CN_JOB_SUBTRUNCATE);
 
   // grankid
   nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);
