@@ -6,6 +6,8 @@ print "_procedures" ;
 
 //print "  (no initial set of procedures yet)" ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// stored procedure syntax test
 procedure sp_TEST
   parameters $Table
 begin
@@ -21,6 +23,24 @@ begin
 
 end;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// stored procedure syntax test
+procedure sp_OneTwo
+  parameters $Table
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp $Table | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // fetch rows from a table (all nodes)
 procedure tableFetch
   parameters $table
@@ -38,6 +58,7 @@ begin
 end
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // fetch rows from a partition of a table
 procedure partitionFetch
   parameters $table, $partition
@@ -55,6 +76,8 @@ begin
 end
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// table truncate
 procedure truncate
   parameters $table
 begin

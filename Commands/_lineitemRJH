@@ -68,9 +68,9 @@ lsidx lineitem;
 space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
+time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
-time ld lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv" max_errors 100;
+//time ld lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
@@ -102,7 +102,10 @@ ping;
 
 logWrite;
 
+print "\nsp_TEST lineitem $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 sp_TEST lineitem;
+print "\nsp_OneTwo lineitem $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
+sp_OneTwo lineitem;
 
 //dynamic pipeline lineItem_dyn
 //begin
