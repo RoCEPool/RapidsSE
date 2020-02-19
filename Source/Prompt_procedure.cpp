@@ -27,34 +27,13 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
   
   ASSERT((*pTokenVec)[0]->bSame("procedure"_Stz));
   
-  s4K sProcText;
   s32 sProcNm = (*pTokenVec)[1]->szTerm();
+  
+  s4K sProcText;
   pTokenVec->vVecToString(sProcText,0,false);
   
-  //vTrace("Procedure: %s\n"_Stz,sProcNm.szStz());
-  //vTrace("Procedure: %s\n"_Stz,sProcText.szStz());
+  Procedure::vAddProcedure(sProcNm,sProcText);
   
-  Dic* pRootDic = AM::pRootDic();
-
-  Word* pProcWord = pRootDic->pFindWord(sProcNm);
-  
-//  if ( pProcWord  ) {
-//    vTrace(" : %s\n"_Stz,pProcWord->pEnameSet()->szValue("procText"_Stz));
-//  }
-  
-  if ( ! pProcWord  ) {
-    Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
-    
-    pProcWord = new (pRootDic) Word(sProcNm);
-    
-    pProcWord->vCategory(pProcedureWord);
-    
-    if (! pProcWord->pEnameSet())
-      pProcWord->vEnameSet(new EnameSet);
-    
-    pProcWord->pEnameSet()->vAdd("procText"_Stz,sProcText);
-  }
-
   return true;
 }
 
