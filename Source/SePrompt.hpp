@@ -63,11 +63,12 @@ namespace Prompt
     void vDeleteJob(void);
     void vDumpTokenVec(void);
     void vEndRequest(void);
-    bool bExecutePipeline(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
+    bool bExecutePipeline(void);
     bool bFindJobClass(void);
-    bool bFindMatch(void);
+    bool bFindMatch_job(void);
+    bool bFindMatch_procedure(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
     TokenStream* pTokenStream(void);
