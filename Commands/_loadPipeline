@@ -31,7 +31,7 @@ begin
   stage stageA on origin:
    startOp | periodicOp once | stageB
 
-  stage stageB on all partitions:
+  stage stageB on origin 3 threads:
    printOp "hello-world" | stageC
 
   stage stageC on origin:

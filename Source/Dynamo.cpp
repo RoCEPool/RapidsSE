@@ -414,6 +414,25 @@ bool Dynamo::bCollectTopology(void)
       m_pStageSpec->vTopology(PO_ORIGIN);
       return true;
     }
+    else {
+      s32 sLocus(m_pTkn->szTerm());
+      vAcceptToken();
+      
+      if (m_pTkn->bSame("threads"_Stz)) {
+        vAcceptToken();
+        
+        if (m_pTkn->bSame(":"_Stz)) {
+          vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
+          vTrace("Topology Phrase recognised >on origin %s threads:<\n"_Stz, sLocus.aChar();
+#endif
+          m_pStageSpec->vTopology(PO_ORIGIN);
+          return true;
+        }
+        else
+          return false;
+      }
+    }
   }
   else
     return false;
