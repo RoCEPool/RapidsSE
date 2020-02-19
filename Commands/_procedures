@@ -25,7 +25,7 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // stored procedure syntax test
-procedure sp_OneTwo
+procedure sp_One Two
   parameters $Table
 begin
 

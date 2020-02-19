@@ -15,10 +15,16 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 {
   _static_
   
-  s32 sProcNm = (*pTokenVec)[1]->szTerm();
+  s32 sProcNm = pTokenVec->pGet(1)->szTerm();
   
-  
-  // end test
+  vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
+
+  if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+          pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    sProcNm.vAppend('_');
+    sProcNm.vConcat(pTokenVec->pGet(2)->szTerm());
+    vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
+  }
   
   s4K sProcText;
   pTokenVec->vVecToString(sProcText,0,false);
