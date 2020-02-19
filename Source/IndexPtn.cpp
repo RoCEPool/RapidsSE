@@ -2,7 +2,7 @@
 /* IndexPtn.cpp -- Index Partition                                            */
 /*============================================================================*/
 
-#include "IndexTrees.h"
+#include "Indexing.h"
 
 
 bool mbCheckPriorVec = false;
@@ -14,7 +14,7 @@ bool mbCheckPriorVec = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexPtn* IndexPtns::_pIndexPtn(void* pAddr)
+IndexPtn* Indexing::_pIndexPtn(void* pAddr)
 {
   IndexPtn* pIndexPtn = reinterpret_cast<IndexPtn*>(pAddr);
   

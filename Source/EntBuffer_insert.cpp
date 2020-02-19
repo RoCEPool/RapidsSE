@@ -2,7 +2,7 @@
 /* EntBuffer_insert.cpp -- insert related functions for Entry Buffer          */
 /*============================================================================*/
 
-#include "IndexTrees.h"
+#include "Indexing.h"
 
 
 

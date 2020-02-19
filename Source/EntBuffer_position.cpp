@@ -2,7 +2,7 @@
 /* EntBuffer_position.cpp -- position related functions for EntBuffer         */
 /*============================================================================*/
 
-#include "IndexTrees.h"
+#include "Indexing.h"
 
 
 /*----------------------------------------------------------------------------*/

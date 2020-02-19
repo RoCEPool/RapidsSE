@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace IndexPtns
+namespace Indexing
 {
   static const bool C_NOT_FINAL    = false;
   static const bool C_FINAL        = true;

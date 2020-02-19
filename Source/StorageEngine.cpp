@@ -33,7 +33,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   GoldenGate::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Host::vCheckAssumptions();
-  IndexPtns::vCheckAssumptions();
+  Indexing::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Jobs::vCheckAssumptions();
   LexicalAnalysis::vCheckAssumptions();

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace IndexPtns
+namespace Indexing
 {
   class KeyBuilder
   {
