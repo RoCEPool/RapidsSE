@@ -27,7 +27,7 @@ ReadApi::ReadApi(void)
   
   m_pStreamDef = nullptr;
   
-  m_pIndexTree = new IndexTree(pReadApiIndex,0);
+  m_pIndexPtn = new IndexPtn(pReadApiIndex,0);
   
   m_pCrvBufferHead = nullptr;
   m_pCrvBufferTail = nullptr;
@@ -44,7 +44,7 @@ ReadApi::~ReadApi(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
 
-  delete m_pIndexTree;
+  delete m_pIndexPtn;
   
   for (CrvBuffer* pCrvBuffer = m_pCrvBufferTail; pCrvBuffer; /*none*/) {
     CrvBuffer* pCrvBufferTBD = pCrvBuffer;
@@ -77,7 +77,7 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
   xEntVersion.vAppendInt(tVersionPsp);
 
   // -- -- --
-  bool b = m_pIndexTree->bInsertEntry(xEntVersion.aEnt());
+  bool b = m_pIndexPtn->bInsertEntry(xEntVersion.aEnt());
   ASSERT(b);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,7 +104,7 @@ Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
   
   Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
   
-  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  Ref xwRef = m_pIndexPtn->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
     return nullptr;
@@ -130,7 +130,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   
   Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
   
-  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  Ref xwRef = m_pIndexPtn->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
     return nullptr;
@@ -162,7 +162,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective
   
   Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
   
-  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  Ref xwRef = m_pIndexPtn->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
     return nullptr;
@@ -235,7 +235,7 @@ void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the entry into the index tree
 
-  m_pIndexTree->bInsertEntry(xEntWrk.aEnt());
+  m_pIndexPtn->bInsertEntry(xEntWrk.aEnt());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,7 +267,7 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // need a new head buffer
   
-  //m_pIndexTree->vDump(false);
+  //m_pIndexPtn->vDump(false);
   
   CrvBuffer* pNewCrvBufferTail = new CrvBuffer(m_pStreamDef);
   
@@ -290,20 +290,20 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
   Ent* aEntNext;
-  EntBuffer* pRootBuffer = m_pIndexTree->pRootBuffer();
-  IdxColVec* pIdxColVec = m_pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
+  EntBuffer* pRootBuffer = m_pIndexPtn->pRootBuffer();
+  IdxColVec* pIdxColVec = m_pIndexPtn->pIndex()->pIndexDef()->pIdxColVec();
 
 #ifdef WITH_TRACE_PURGING
   vTrace("Purging Entry Buffers OldestPsp: (t%lld)\n"_Stz, tPerspective);
-//  vTrace("INDEXTREE DUMP BEFORE PURGING...\n"_Stz);
-//  m_pIndexTree->vDump(false);
+//  vTrace("IndexPtn DUMP BEFORE PURGING...\n"_Stz);
+//  m_pIndexPtn->vDump(false);
 #endif
   
   i8 iNotDeleted = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first level 0 buffer
-  EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
+  EntBuffer* pEntBuffer = m_pIndexPtn->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru H0 buffers
@@ -334,7 +334,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
         pEntBuffer->vPurgeUpwards(aEnt, &pRootBuffer);
 
         // set the roor buffer in case changed
-        m_pIndexTree->vRootBuffer(pRootBuffer);
+        m_pIndexPtn->vRootBuffer(pRootBuffer);
       }
       else {
         
@@ -356,13 +356,13 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
 #ifdef WITH_TRACE_PURGING
   vTrace("Entries not deleted %lld\n"_Stz, iNotDeleted);
 //  vTrace("-----------------------------------\n"_Stz);
-//  vTrace("INDEXTREE DUMP AFTER PURGING...\n"_Stz);
-//  m_pIndexTree->vDump(false);
-  m_pIndexTree->bVerify();
+//  vTrace("IndexPtn DUMP AFTER PURGING...\n"_Stz);
+//  m_pIndexPtn->vDump(false);
+  m_pIndexPtn->bVerify();
 #endif
   
   // cross-verify that the no of entries in the H0 buffers equals not deleted count
-  i8 iCount = m_pIndexTree->iCountH0Entries();
+  i8 iCount = m_pIndexPtn->iCountH0Entries();
   RASSERT(iCount == iNotDeleted);
 }
   

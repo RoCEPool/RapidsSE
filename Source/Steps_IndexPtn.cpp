@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_IndexTree.cpp - index tree step group                                */
+/* Steps_IndexPtn.cpp - index tree step group                                 */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,19 +7,19 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_IndexTree(void)
+void Step::vAddSteps_IndexPtn(void)
 {
-  vAddStep("indexTree.insEntBuffer"_Stz,    &Step::vIndexTreeInsEntBuffer);
+  vAddStep("IndexPtn.insEntBuffer"_Stz,    &Step::vIndexPtnInsEntBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexTree.insEntBuffer -- insert all entries from given ent buffer         */
+/* IndexPtn.insEntBuffer -- insert all entries from given ent buffer          */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeInsEntBuffer(void)
+void Step::vIndexPtnInsEntBuffer(void)
 {
-  ENTRY(); // ENTRY("vIndexTreeInsEntBuffer"_Stz);
+  ENTRY(); // ENTRY("vIndexPtnInsEntBuffer"_Stz);
   
-  IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  IndexPtn* pIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
 
   EntBuffer* pEntBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -33,7 +33,7 @@ void Step::vIndexTreeInsEntBuffer(void)
     
     // ..add code here to insert entry into index tree..
     
-    bool bInserted = pIndexTree->bInsertEntry(aEnt);
+    bool bInserted = pIndexPtn->bInsertEntry(aEnt);
     
     nEntries++;
   }

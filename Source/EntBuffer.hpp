@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace IndexTrees
+namespace Indexing
 {
   static const bool C_NOT_FINAL    = false;
   static const bool C_FINAL        = true;
@@ -12,7 +12,7 @@ namespace IndexTrees
   class EntBuffer : public DataBuffer,
                     public MiniHeap_t<Ent>
   {
-  friend class IndexTree;
+  friend class IndexPtn;
 
   protected:
     Index*    m_pIndex;     // index this buffer belongs to

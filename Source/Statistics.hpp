@@ -66,7 +66,7 @@ namespace Correctness
     i8 m_nAppendBuffers;
     i8 m_nAppendRows;
     i8 m_nBuffersPurged;
-  } IndexTree;
+  } IndexPtn;
   
   struct {
     i8 m_iaCopy[CN_ENUMS];

@@ -45,7 +45,7 @@ namespace Gadgets       { class EnumFlags;                                    }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
-namespace IndexTrees    { class EntBuffer; class IndexTree;                   }
+namespace Indexing    { class EntBuffer; class IndexPtn;                   }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
@@ -119,7 +119,7 @@ using namespace Gadgets;
 using namespace GoldenGate;
 using namespace Grids;
 using namespace Host;
-using namespace IndexTrees;
+using namespace Indexing;
 using namespace Interface;
 using namespace Jobs;
 using namespace LexicalAnalysis;

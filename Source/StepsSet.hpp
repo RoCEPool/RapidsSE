@@ -388,7 +388,7 @@ public:
   void vIndexGenEntBuffers(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
-  void vIndexIndexTree(void);
+  void vIndexIndexPtn(void);
   void vIndexInit(void);
   void vIndexIsPrimaryKeyFetch(void);
   void vIndexIsPrimaryKeyStore(void);
@@ -416,11 +416,11 @@ public:
   void vIndexRegSet(void);
 
   // index tree
-  void vIndexTreeInsEntBuffer(void);
+  void vIndexPtnInsEntBuffer(void);
 
   // index reg
-  void vIndexTreeRegGet(void);
-  void vIndexTreeRegSet(void);
+  void vIndexPtnRegGet(void);
+  void vIndexPtnRegSet(void);
 
   // input
   void vInputClose(void);

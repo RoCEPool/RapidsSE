@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexTrees.h -- IndexTrees namespace                                       */
+/* Indexing.h -- Indexing namespace                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace IndexTrees
+namespace Indexing
 {  
   void vCheckAssumptions(void);
   
@@ -27,7 +27,7 @@ namespace IndexTrees
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
-#include "IndexTree.hpp"
+#include "IndexPtn.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

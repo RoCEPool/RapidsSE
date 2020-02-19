@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* IndexTrees.cpp - IndexTrees namespace functions                            */
+/* Indexing.cpp - Indexing namespace functions                            */
 /*============================================================================*/
 
-#include "IndexTrees.h"
+#include "Indexing.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void IndexTrees::vCheckAssumptions(void)
+void Indexing::vCheckAssumptions(void)
 {
   //RASSERT(sizeof(NEO)      == C_NEO_SIZE);
 }

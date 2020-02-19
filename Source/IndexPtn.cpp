@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* IndexTree.cpp - index data portion of table partition                      */
+/* IndexPtn.cpp -- Index Partition                                            */
 /*============================================================================*/
 
-#include "IndexTrees.h"
+#include "Indexing.h"
 
 
 bool mbCheckPriorVec = false;
@@ -14,21 +14,21 @@ bool mbCheckPriorVec = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexTree* IndexTrees::_pIndexTree(void* pAddr)
+IndexPtn* Indexing::_pIndexPtn(void* pAddr)
 {
-  IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
+  IndexPtn* pIndexPtn = reinterpret_cast<IndexPtn*>(pAddr);
   
-  RASSERT_TYPE(pIndexTree,CN_INDEXTREE);
+  RASSERT_TYPE(pIndexPtn,CN_INDEXPTN);
   
-  return pIndexTree;
+  return pIndexPtn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* IndexTree::operator new(size_t)
+void* IndexPtn::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_INDEXTREE);
+  void* pObject = HeapMem::pAllocate(CN_INDEXPTN);
   
   return pObject;
 }
@@ -36,37 +36,37 @@ void* IndexTree::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void IndexTree::operator delete(void* pDataAddress)
+void IndexPtn::operator delete(void* pDataAddress)
 {
-  IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pDataAddress);
+  IndexPtn* pIndexPtn = reinterpret_cast<IndexPtn*>(pDataAddress);
   
-  HeapMem::vFree(pIndexTree);
+  HeapMem::vFree(pIndexPtn);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
-: Object(CN_INDEXTREE)
+IndexPtn::IndexPtn(Index* pIndex, i8 iPartitionNo)
+: Object(CN_INDEXPTN)
 , m_okLock(LK_INDEX_TREE,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
   m_pRootEntBuffer  = nullptr;
   
-  _checkInitialised_(CN_INDEXTREE);
+  _checkInitialised_(CN_INDEXPTN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-IndexTree::~IndexTree(void) noexcept(false)
+IndexPtn::~IndexPtn(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
 
   vTruncate();
 
@@ -80,36 +80,36 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void IndexPtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* finalize                                                                   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vFinalize(eCN eClass, Object* pObject)
+void IndexPtn::vFinalize(eCN eClass, Object* pObject)
 {
-  ASSERT(eClass == CN_INDEXTREE);
-  ASSERT(pObject->eClass() == CN_INDEXTREE);
+  ASSERT(eClass == CN_INDEXPTN);
+  ASSERT(pObject->eClass() == CN_INDEXPTN);
   
-  IndexTree* pIndexTree = _pIndexTree(pObject);
-  ASSERT(pIndexTree->bWordBody());
+  IndexPtn* pIndexPtn = _pIndexPtn(pObject);
+  ASSERT(pIndexPtn->bWordBody());
   
-  pIndexTree->vTidyUp();
+  pIndexPtn->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vMonitorPortrait(s48K& sPortrait)
+void IndexPtn::vMonitorPortrait(s48K& sPortrait)
 {
   Statistics* pStats = AM::pStatistics();
 
-  sPortrait.vSprint("IndexTree: appendBuffers %lld appendRows %lld "
+  sPortrait.vSprint("IndexPtn: appendBuffers %lld appendRows %lld "
                                "buffersPurged %lld\n"_Stz,
-                    pStats->IndexTree.m_nAppendBuffers,
-                    pStats->IndexTree.m_nAppendRows,
-                    pStats->IndexTree.m_nBuffersPurged
+                    pStats->IndexPtn.m_nAppendBuffers,
+                    pStats->IndexPtn.m_nAppendRows,
+                    pStats->IndexPtn.m_nBuffersPurged
                     );
 }
 
@@ -120,9 +120,9 @@ void IndexTree::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* IndexTree::pAnalyze(void)
+Stz* IndexPtn::pAnalyze(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   i8 nRowsTotal = 0;
   i8 nBuffersTotal = 0;
@@ -140,11 +140,11 @@ Stz* IndexTree::pAnalyze(void)
 /*----------------------------------------------------------------------------*/
 /* compact the index                                                          */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vCompact(void)
+void IndexPtn::vCompact(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
-  TRACE_COMPACT( vTrace("IndexTree::vCompact\n"_Stz); )
+  TRACE_COMPACT( vTrace("IndexPtn::vCompact\n"_Stz); )
   
   mbCheckPriorVec = true;
   
@@ -227,9 +227,9 @@ void IndexTree::vCompact(void)
 /*----------------------------------------------------------------------------*/
 /* count the index entries at H0 level                                        */
 /*----------------------------------------------------------------------------*/
-i8 IndexTree::iCountH0Entries(void)
+i8 IndexPtn::iCountH0Entries(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   i8 iCount = 0;
   EntBuffer* pEntBuffer = pFirstH0Buffer();
@@ -245,9 +245,9 @@ i8 IndexTree::iCountH0Entries(void)
 /*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vDump(bool bSameHeight)
+void IndexPtn::vDump(bool bSameHeight)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
 
   if (bSameHeight) {
     EntBuffer* pEntBuffer = m_pRootEntBuffer;
@@ -267,9 +267,9 @@ void IndexTree::vDump(bool bSameHeight)
 /*----------------------------------------------------------------------------*/
 /* get the first H1 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pFirstH1Buffer(void)
+EntBuffer* IndexPtn::pFirstH1Buffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   EntBuffer* pEntBuffer = m_pRootEntBuffer;
   
@@ -298,9 +298,9 @@ EntBuffer* IndexTree::pFirstH1Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the first H0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pFirstH0Buffer(void)
+EntBuffer* IndexPtn::pFirstH0Buffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   EntBuffer* pEntBuffer = m_pRootEntBuffer;
   
@@ -327,9 +327,9 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get reference given key                                                    */
 /*----------------------------------------------------------------------------*/
-Ref IndexTree::xwGetRef(Key* aFindKey)
+Ref IndexPtn::xwGetRef(Key* aFindKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   Ref xwNilRef;
   
@@ -359,9 +359,9 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* get the index                                                              */
 /*----------------------------------------------------------------------------*/
-Index* IndexTree::pIndex(void)
+Index* IndexPtn::pIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   return m_pIndex;
 }
@@ -369,9 +369,9 @@ Index* IndexTree::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
-i8 IndexTree::nEntBuffers(void)
+i8 IndexPtn::nEntBuffers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   i8 nBufferCount = 0;
   if (m_pRootEntBuffer)
@@ -383,9 +383,9 @@ i8 IndexTree::nEntBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert entries for pCrwBuffer into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
+void IndexPtn::vInsertEntries(CrwBuffer* pCrwBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   //m_okLock.vGrabWrite();
 
@@ -412,9 +412,9 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a given entry into this index tree starting at leaf / height 0      */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Ent* aEnt)
+bool IndexPtn::bInsertEntry(Ent* aEnt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
 
   m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
@@ -434,9 +434,9 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
+bool IndexPtn::bInsertEntry(Crw* aCrw, Ref& xRowRef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
 
   StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
 
@@ -465,9 +465,9 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
+bool IndexPtn::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
@@ -493,9 +493,9 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
 /*----------------------------------------------------------------------------*/
 /* build skip lists for the index                                             */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vLazyBuild(void)
+void IndexPtn::vLazyBuild(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   m_pRootEntBuffer->vLazyBuild();
 }
@@ -503,9 +503,9 @@ void IndexTree::vLazyBuild(void)
 /*----------------------------------------------------------------------------*/
 /* pop entry buffer from sub list                                             */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
+EntBuffer* IndexPtn::pPopSubList(EntBuffer** ppSubList)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
 
   EntBuffer* pTopBuffer = *ppSubList;
   
@@ -526,9 +526,9 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position to the first H0 buffer which has given key                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
+EntBuffer* IndexPtn::pPositionH0Buffer(Key* aFindKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   if (m_pRootEntBuffer)
     return m_pRootEntBuffer->pPositionH0Buffer(aFindKey);
@@ -539,9 +539,9 @@ EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* create a new root buffer                                                   */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pNewRootBuffer(void)
+EntBuffer* IndexPtn::pNewRootBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   RASSERT(! m_pRootEntBuffer);
   
@@ -555,9 +555,9 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get root buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pRootBuffer(void)
+EntBuffer* IndexPtn::pRootBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   return m_pRootEntBuffer;
 }
@@ -565,9 +565,9 @@ EntBuffer* IndexTree::pRootBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set root buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vRootBuffer(EntBuffer* pRootBuffer)
+void IndexPtn::vRootBuffer(EntBuffer* pRootBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   m_pRootEntBuffer = pRootBuffer;
 }
@@ -575,9 +575,9 @@ void IndexTree::vRootBuffer(EntBuffer* pRootBuffer)
 /*----------------------------------------------------------------------------*/
 /* tidyup                                                                     */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vTidyUp(void)
+void IndexPtn::vTidyUp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   // nothing to do
 }
@@ -585,9 +585,9 @@ void IndexTree::vTidyUp(void)
 /*----------------------------------------------------------------------------*/
 /* truncate the index                                                         */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vTruncate(void)
+void IndexPtn::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
@@ -602,9 +602,9 @@ void IndexTree::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* verify                                                                     */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bVerify(void)
+bool IndexPtn::bVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   if (m_pRootEntBuffer)
     return m_pRootEntBuffer->bVerify();
@@ -615,9 +615,9 @@ bool IndexTree::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* verify index from root                                                     */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bVerifyIndex(void)
+bool IndexPtn::bVerifyIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   if (m_pRootEntBuffer)
     return m_pRootEntBuffer->bVerify();
@@ -628,7 +628,7 @@ bool IndexTree::bVerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 /* extract a key from given row into EntWrk                                   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
+void IndexPtn::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 {
   // get stream def
   StreamDef* pStreamDef = pEntWrk->pStreamDef();
@@ -674,7 +674,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 /*----------------------------------------------------------------------------*/
 /* extract a key from row into EntWrk                                         */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
+void IndexPtn::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
   HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
@@ -719,9 +719,9 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vDumpLevel(EntBuffer* pEntBuffer)
+void IndexPtn::vDumpLevel(EntBuffer* pEntBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   // get the first entry
   Ent* aEnt = pEntBuffer->aLeadEntry();
@@ -752,9 +752,9 @@ void IndexTree::vDumpLevel(EntBuffer* pEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vVisualize(void)
+void IndexPtn::vVisualize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXPTN,_FOOTER_);
   
   // start with the root buffer
   EntBuffer* pEntBuffer = m_pRootEntBuffer;
@@ -801,7 +801,7 @@ void IndexTree::vVisualize(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(IndexTree);
+__aFooterFunction(IndexPtn);
 
 /*============================================================================*/
 /* end                                                                        */

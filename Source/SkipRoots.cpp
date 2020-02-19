@@ -2,7 +2,7 @@
 /* SkipRoots.cpp -- roots of the skips list in an entry buffer                */
 /*============================================================================*/
 
-#include "IndexTrees.h"
+#include "Indexing.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipRoots* IndexTrees::_aSkipRoots(void* aAddr)
+SkipRoots* Indexing::_aSkipRoots(void* aAddr)
 {
   SkipRoots* aFreeEntry = reinterpret_cast<SkipRoots*>(aAddr);
   
