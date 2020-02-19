@@ -25,97 +25,76 @@ create index T1_idx on T1 (jidx_key);
 
 ld T1 "../DATA/Operators/operators1_1.csv" ;
 
-
-fetch T1 "jidx_key 1 >= jidx_10 2 <= and";
 /*
+fetch T1 "jidx_key 1 >= jidx_10 2 <= and";
+
 pipeline _fetch
 begin
 
-stage stageA on origin:
-startOp | periodicOp once | stageB
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
 
-stage stageB on all partitions:
-scanOp T1 "jidx_key 1 = " | scanOp T1 "jidx_key 2 = " |stageC
+  stage stageB on all partitions:
+  scanOp T1 "jidx_key 1 >= jidx_key 2 <= and " | stageC
 
-stage stageC on origin:
-outputOp | sinkOp | stageA
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
 
 end
 ;
 
 
-
-// fetch rows on partition 0
-fetch T1 0;
-
-pipeline fetch
-  begin
-
-  stage stageA on origin:
-    startOp | periodicOp once | stageB
-
-  stage stageB on partition 0:
-    scanOp T1 | stageC
-
-  stage stageC on origin:
-    outputOp | sinkOp | stageA
-
-  end
-;
-
- // fetch rows on partition 1
- fetch T1 1;
-
- pipeline fetch
- begin
+fetch T1 "jidx_key 1 >= jidx_10 2 <= or";
+ 
+pipeline _fetch
+begin
  
  stage stageA on origin:
  startOp | periodicOp once | stageB
- 
- stage stageB on partition 1:
- scanOp T1 | stageC
- 
+
+ stage stageB on all partitions:
+ scanOp T1 "jidx_key 1 = " || scanOp T1 "jidx_key 2 = " | rowOnceOp | stageC
+
  stage stageC on origin:
  outputOp | sinkOp | stageA
  
- end
- ;
-
-// fetch rows on partition 2
-fetch T1 2;
-
-pipeline fetch
+end
+;
+ 
+fetch retrieve jidx_name;
+ 
+pipeline _fetch
 begin
 
-stage stageA on origin:
-startOp | periodicOp once | stageB
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
 
-stage stageB on partition 2:
-scanOp T1 | stageC
+  stage stageB on all partitions:
+  scanOp T1 | projectOp jidx_name | stageC
 
-stage stageC on origin:
-outputOp | sinkOp | stageA
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
 
 end
 ;
 
-// fetch rows on partition 3
-fetch T1 3;
+fetch T1 limit 10;
 
-pipeline fetch
+pipeline _fetch
 begin
 
-stage stageA on origin:
-startOp | periodicOp once | stageB
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
 
-stage stageB on partition 3:
-scanOp T1 | stageC
+  stage stageB on all partitions:
+  scanOp T1 | limitOp 10 | stageC
 
-stage stageC on origin:
-outputOp | sinkOp | stageA
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
 
 end
 ;
+ 
 */
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
