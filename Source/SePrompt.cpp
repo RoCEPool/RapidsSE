@@ -1205,79 +1205,13 @@ bool SePrompt::bTranslateProcedure(void)
   
   TokenVec* pCommandVec = this->pTokenVec();
   
-  i8 nTokens = pCommandVec->nTokens();
   
-  Token* pProcNm = pCommandVec->pGet(0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Dic* pRootDic = AM::pRootDic();
-
-  Word* pProcedureWord = pRootDic->pFindWord("procedure"_Stz);
-  if (! pProcedureWord)
-    return false;
-  
-  Word* pProcWord = pRootDic->pFindWord(pProcNm->szTerm());
-  
-  if (! pProcWord)
-    return false;
-  
-  if (pProcWord->pCategory() != pProcedureWord)
-    return false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Stz* szProcText = pProcWord->pEnameSet()->szValue("procText"_Stz);
-  
-  TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
-  
-  //pProcVec->vDumpTokens();
-  
-  Token* pTkn0 = pProcVec->pGet(0);
-
-  pTkn0->vCopy("pipeline"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TokenVec* pParamsVec = Tokeniser::pSubVec(pProcVec,"parameters"_Stz,"begin"_Stz);
-//  if (pParamsVec)
-//    pParamsVec->vDumpTokens();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TokenVec* pArgsVec = Tokeniser::pSubVec(pCommandVec,1,nTokens-1);
-//  if (pArgsVec)
-//    pArgsVec->vDumpTokens();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Tokeniser::vReplace(pProcVec,pParamsVec,pArgsVec);
-  //pProcVec->vDumpTokens();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_Cut = pProcVec->iFindToken("parameters"_Stz);
-  if (C_UNKNOWN != i_Cut) {
-    for (;;) {
-      pProcVec->vCutToken(i_Cut);
-      Token* pTest = pProcVec->pGet(i_Cut);
-      if (pTest->bSame("begin"_Stz))
-        break;
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   s4K sPipelineSmt;
   
-  pProcVec->vVecToString(sPipelineSmt,0,true);
-  //vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
+  if (! Procedure::bTranslateProcedure(sPipelineSmt.pString(),pCommandVec))
+    return false;
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();
-
-  delete pProcVec;
-  delete pParamsVec;
-  delete pArgsVec;
 
   return true;
 }
