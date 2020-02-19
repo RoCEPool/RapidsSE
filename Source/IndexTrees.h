@@ -27,7 +27,7 @@ namespace IndexTrees
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
-#include "IndexTree.hpp"
+#include "IndexPtn.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
