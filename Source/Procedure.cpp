@@ -41,15 +41,10 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   if (! pProcWord->pEnameSet())
     pProcWord->vEnameSet(new EnameSet);
-  
-  pProcWord->pEnameSet()->vAdd("procText"_Stz,sProcText);
-  
-  // -- Test --
-  
-  if (sProcNm.bSame("sp_TEST"_Stz)) {
-    vParseParameters(pProcWord,pTokenVec);
-  }
 
+  vParseParameters(pProcWord,pTokenVec);
+
+  pProcWord->pEnameSet()->vAdd("procText"_Stz,sProcText);
 }
 
 /*----------------------------------------------------------------------------*/
