@@ -67,6 +67,89 @@ Word* Procedure::pFindProcedure(Stz* szProcNm, DicStack* pDicStack)
   return pProcWord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* translate stored procedure into its final command form                     */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bTranslateProcedure(String* pString, TokenVec* pTokenVec)
+{
+  _static_
+
+  i8 nTokens = pTokenVec->nTokens();
+  
+  Token* pProcNm = pTokenVec->pGet(0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Dic* pRootDic = AM::pRootDic();
+
+  Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
+  if (! pProcCatg)
+    return false;
+  
+  Word* pProcWord = pRootDic->pFindWord(pProcNm->szTerm());
+  
+  if (! pProcWord)
+    return false;
+  
+  if (pProcWord->pCategory() != pProcCatg)
+    return false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  EnameSet* pEnameSet = pProcWord->pEnameSet();
+  
+  Stz* szProcText = pEnameSet->szValue("procText"_Stz);
+  
+  TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
+  
+  //pProcVec->vDumpTokens();
+  
+  Token* pTkn0 = pProcVec->pGet(0);
+
+  pTkn0->vCopy("pipeline"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TokenVec* pParamsVec = Tokeniser::pSubVec(pProcVec,"parameters"_Stz,"begin"_Stz);
+//  if (pParamsVec)
+//    pParamsVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TokenVec* pArgsVec = Tokeniser::pSubVec(pTokenVec,1,nTokens-1);
+//  if (pArgsVec)
+//    pArgsVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Tokeniser::vReplace(pProcVec,pParamsVec,pArgsVec);
+  //pProcVec->vDumpTokens();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_Cut = pProcVec->iFindToken("parameters"_Stz);
+  if (C_UNKNOWN != i_Cut) {
+    for (;;) {
+      pProcVec->vCutToken(i_Cut);
+      Token* pTest = pProcVec->pGet(i_Cut);
+      if (pTest->bSame("begin"_Stz))
+        break;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pProcVec->vVecToString(pString->szStz(),0,true);
+  //vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
+  
+  delete pProcVec;
+  delete pParamsVec;
+  delete pArgsVec;
+
+  return true;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
