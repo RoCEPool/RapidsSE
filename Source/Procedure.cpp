@@ -26,7 +26,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   Dic* pRootDic = AM::pRootDic();
 
-  Word* pProceCatg = pRootDic->pFindWord("procedure"_Stz);
+  Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
   
   Word* pProcWord = pRootDic->pFindWord(sProcNm);
   if (pProcWord)
@@ -37,7 +37,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   pProcWord = new (pRootDic) Word(sProcNm);
   
-  pProcWord->vCategory(pProceCatg);
+  pProcWord->vCategory(pProcCatg);
   
   if (! pProcWord->pEnameSet())
     pProcWord->vEnameSet(new EnameSet);

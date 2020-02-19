@@ -102,6 +102,7 @@ ping;
 
 logWrite;
 
+sp_TEST lineitem;
 
 //dynamic pipeline lineItem_dyn
 //begin

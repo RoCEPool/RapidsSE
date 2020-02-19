@@ -7,8 +7,18 @@ print "_procedures" ;
 //print "  (no initial set of procedures yet)" ;
 
 procedure sp_TEST
-  parameters $table etc
+  parameters $Table
 begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp $Table | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
 end;
 
 // fetch rows from a table (all nodes)
