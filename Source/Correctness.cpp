@@ -154,7 +154,7 @@ void Correctness::vTraceWith(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vTraceWithout(void)
 {
-  vTrace("\nWith:\n"_Stz);
+  vTrace("\nWithout:\n"_Stz);
 
 #ifndef WITH_ACTION_SEQUENCE
   vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
