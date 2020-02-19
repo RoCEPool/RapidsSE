@@ -18,7 +18,7 @@ success;
 ld vch "../DATA/Load/vch_enclosedBy.csv" enclosed_by_leading "'";
 success
 
-fetch vch;
+tableFetch vch;
 rows: 21
 
 fetch vch "vch_testno 101 ==";

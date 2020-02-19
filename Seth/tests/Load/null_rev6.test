@@ -18,10 +18,10 @@ ld T1 "../DATA/Load/null.csv" ;
 success
 
 // fetch rows
-fetch T1;
+tableFetch T1;
 rows: 11
 
-fetch T1;
+tableFetch T1;
 rows:
   (NULL,null,NULL)
   (null,null,NULL)
@@ -55,10 +55,10 @@ ld T1 "../DATA/Load/null_enclosedBy.csv" enclosed_by_leading "'" ;
 success
 
 // fetch rows
-fetch T1;
+tableFetch T1;
 rows: 11
 
-fetch T1;
+tableFetch T1;
 rows:
   (NULL,null,NULL)
   (null,null,NULL)
@@ -92,10 +92,10 @@ ld T1 "../DATA/Load/null_enclosedByCurly.csv" enclosed_by_leading "{" enclosed_b
 success
 
 // fetch rows
-fetch T1;
+tableFetch T1;
 rows: 11
 
-fetch T1;
+tableFetch T1;
 rows:
   (NULL,null,NULL)
   (null,null,NULL)

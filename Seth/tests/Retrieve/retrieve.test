@@ -19,7 +19,7 @@ ld retTbl "../DATA/Retrieve/retrieve.csv" ;
 success
 
 // check no of rows
-fetch retTbl;
+tableFetch retTbl;
 rows: 10
 
 fetch retrieve retTbl dec_col1 print;

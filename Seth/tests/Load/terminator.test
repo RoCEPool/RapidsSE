@@ -26,7 +26,7 @@ success
 ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|" record_terminator "|";
 success
 
-fetch terminator;
+tableFetch terminator;
 rows: 11
 
 // fetch
@@ -60,7 +60,7 @@ success
 ld terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
 success
 
-fetch terminator;
+tableFetch terminator;
 rows: 11
 
 // fetch

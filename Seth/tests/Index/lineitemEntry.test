@@ -109,7 +109,7 @@ rows: 231001
 compactidx lineitem lineitem_idx1;
 success
 
-//fetch lineitem;
+//tableFetch lineitem;
 //rows: 6001215
 
 -----------------------------------------------------------------------

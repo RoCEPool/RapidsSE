@@ -18,7 +18,7 @@ success
 ld vch "../DATA/Load/vch_no_enclosed.csv" ;
 success
 
-fetch vch;
+tableFetch vch;
 rows: 17
 
 fetch vch "vch_testno 201 =";
@@ -110,7 +110,7 @@ success
 ld vch "../DATA/Load/vch_no_enclosed.csv" enclosed_by_leading "\0";
 success
 
-fetch vch;
+tableFetch vch;
 rows: 17
 
 fetch vch "vch_testno 201 =";

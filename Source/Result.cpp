@@ -234,8 +234,8 @@ void Result::vProcessBufferQueue(void)
     
     // exit early if job has errors
     if (m_bJobHasError != EC_NONE) {
-      vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-             aEC[m_xJobResponse.m_eErrorCode]);
+//      vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
+//             aEC[m_xJobResponse.m_eErrorCode]);
       goto L_EXIT;
     }
     

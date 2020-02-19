@@ -35,7 +35,7 @@ rows:
 ld supplier "/TPCH/SF1/supplier.tbl" field_delimiter "|";
 success
 
-fetch supplier;
+tableFetch supplier;
 rows: 10000
 
 -----------------------------------------------------------------------

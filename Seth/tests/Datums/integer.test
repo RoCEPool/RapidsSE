@@ -42,7 +42,7 @@ ld IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
-fetch IntTbl;
+tableFetch IntTbl;
 rows: 101
 
 // dump index int_idx1

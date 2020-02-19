@@ -36,7 +36,7 @@ rows:
 ld part "/TPCH/SF1/part.tbl" field_delimiter "|";
 success
 
-fetch part;
+tableFetch part;
 rows: 200000
 
 -----------------------------------------------------------------------

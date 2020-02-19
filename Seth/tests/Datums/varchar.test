@@ -54,7 +54,7 @@ ld VchTbl "../DATA/Datums/varchar.csv" enclosed_by_leading "'";
 failure contains: '2 invalid'
 
 // check no of rows
-fetch VchTbl;
+tableFetch VchTbl;
 rows: 101
 
 //------------------------------------------------------------------------------

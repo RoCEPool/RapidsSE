@@ -141,7 +141,7 @@ success
 end insert;
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -196,7 +196,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -251,7 +251,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -305,7 +305,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -359,7 +359,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -413,7 +413,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -467,7 +467,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";
@@ -521,7 +521,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-fetch tsp;
+tableFetch tsp;
 rows: 26
 
 fetch tsp "tsp_key 8 =";

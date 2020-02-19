@@ -32,7 +32,7 @@ ld OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
-fetch OpTable1;
+tableFetch OpTable1;
 rows: 26
 
 // (1) create a table
@@ -61,7 +61,7 @@ ld OpTable2 "../DATA/Operators/operators1_2.csv" ;
 success
 
 // check no of rows
-fetch OpTable2;
+tableFetch OpTable2;
 rows: 21
 
 // scan error

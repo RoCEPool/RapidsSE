@@ -30,7 +30,7 @@ rows:
 ld nation "/TPCH/SF1/nation.tbl" field_delimiter "|";
 success
 
-fetch nation;
+tableFetch nation;
 rows: 25
 
 -----------------------------------------------------------------------

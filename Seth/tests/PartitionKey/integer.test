@@ -25,7 +25,7 @@ ld dataTable "../DATA/PartitionKey/data.csv";
 success
 
 // select rows from the table
-fetch dataTable;
+tableFetch dataTable;
 rows:
 1000
 

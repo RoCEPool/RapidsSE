@@ -18,7 +18,7 @@ ld T1 "../DATA/Load/emptyString1.csv" ;
 success
 
 // fetch rows
-fetch T1;
+tableFetch T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -49,7 +49,7 @@ ld T1 "../DATA/Load/emptyString1.csv" enclosed_by_leading "'";
 success
 
 // fetch rows
-fetch T1;
+tableFetch T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -80,7 +80,7 @@ ld T1 "../DATA/Load/emptyString2.csv" enclosed_by_leading "{" enclosed_by_traili
 success
 
 // fetch rows
-fetch T1;
+tableFetch T1;
 rows: 2
 
 fetch T1 "col_id 1 =";

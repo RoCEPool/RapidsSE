@@ -29,7 +29,7 @@ ld orders "../DATA/tpch/orders10k.csv" ;
 success
 
 // check no of rows
-fetch orders;
+tableFetch orders;
 rows: 10000
 
 dynamic scan orders | output;
