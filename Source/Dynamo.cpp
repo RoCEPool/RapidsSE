@@ -368,6 +368,9 @@ bool Dynamo::bCollectTopology(void)
       vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
 #endif
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
+      i8 i_Nde = sLocus.szStz()->iToI8();
+      if ( i_Nde > AM::pGrid()->nConnectedNodes() )
+        return false;
       m_pStageSpec->vLocus(sLocus.szStz());
       return true;
     }
@@ -388,6 +391,10 @@ bool Dynamo::bCollectTopology(void)
       vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
 #endif
       m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
+      i8 i_Ptn = sLocus.szStz()->iToI8();
+      if (i_Ptn >= AM::pGrid()->nPartitions())
+        return false;
+      
       m_pStageSpec->vLocus(sLocus.szStz());
       return true;
     }
