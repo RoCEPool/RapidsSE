@@ -508,7 +508,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
-  IndexTree::vMonitorPortrait(sPortrait);
+  Index::vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
