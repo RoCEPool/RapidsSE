@@ -83,7 +83,7 @@ namespace SenVM
     void  vEntryStep(StepFp fpIntrinsic);
     StepFp fpEntryStep(void);
     StepFp* afpEntryStep(void);
-    EnameSet* pEnameSet(void);
+    EnameSet* pEnameSet(bool bCreateNew = false);
     void  vEnameSet(EnameSet* pEnameSet);
     void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);

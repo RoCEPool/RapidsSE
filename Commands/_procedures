@@ -6,6 +6,11 @@ print "_procedures" ;
 
 //print "  (no initial set of procedures yet)" ;
 
+procedure sp_TEST
+  parameters $table etc
+begin
+end;
+
 // fetch rows from a table (all nodes)
 procedure tableFetch
   parameters $table

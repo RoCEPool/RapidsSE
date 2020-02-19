@@ -483,9 +483,12 @@ void Word::vEncodePush(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-EnameSet* Word::pEnameSet(void)
+EnameSet* Word::pEnameSet(bool bCreateNew)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  if (! m_pEnameSet && bCreateNew)
+    m_pEnameSet = new EnameSet;
   
   return m_pEnameSet;
 }
