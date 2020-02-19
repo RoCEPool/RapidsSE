@@ -24,8 +24,15 @@ PromptFun __Prompt_without (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_without(SePrompt* pPrompt)
 {
-  Correctness::vTraceWithout();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
+  i8 nTokens = pTokenVec->nTokens();
+  
+  if (1 == nTokens) {
+    Correctness::vTraceWithout();
+    return true;
+  }
+  
   return true;
 }
 

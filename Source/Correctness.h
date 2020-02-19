@@ -10,7 +10,11 @@
 namespace Correctness
 {
   void vCheckAssumptions(void);
+
+  bool bTraceWith(Stz* szWith);
   void vTraceWith(void);
+
+  bool bTraceWithout(Stz* szWith);
   void vTraceWithout(void);
 }
 

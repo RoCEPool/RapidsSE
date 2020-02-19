@@ -24,7 +24,20 @@ PromptFun __Prompt_with (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_with(SePrompt* pPrompt)
 {
-  Correctness::vTraceWith();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  
+  i8 nTokens = pTokenVec->nTokens();
+  
+  if (1 == nTokens) {
+    Correctness::vTraceWith();
+    return true;
+  }
+  
+  Stz* szWith = pTokenVec->pGet(1)->szTerm();
+  
+  if (! Correctness::bTraceWith(szWith))
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "With: Not compiled with: %s"_Stz,szWith);
 
   return true;
 }
