@@ -1,0 +1,45 @@
+/*----------------------------------------------------------------------------*/
+/* _loadPipeline.test -- Load pipeline tests                                  */
+/*----------------------------------------------------------------------------*/
+
+// strat cluster
+startCluster;
+
+// begin tracking memory
+trackMemory;
+
+// (1) create a table
+create table T1 (
+  jidx_key   INTEGER     NOT NULL,
+  jidx_name  VARCHAR(32) NOT NULL,
+  jidx_100   INTEGER     NOT NULL,
+  jidx_10    INTEGER     NOT NULL,
+  jidx_int   INTEGER     NOT NULL,
+  jidx_flt   FLOAT       NOT NULL,
+  jidx_tsp   TIMESTAMP   NOT NULL,
+  jidx_dte   DATE        NOT NULL
+);
+
+// create indexes
+create index T1_idx on T1 (jidx_key);
+
+ld T1 "../DATA/Operators/operators1_1.csv" ;
+
+pipeline _threads
+begin
+
+  stage stageA on origin:
+   startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+   printOp "hello-world" | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

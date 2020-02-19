@@ -1,0 +1,86 @@
+/*============================================================================*/
+/* job_PrintOp.sen -- Job PrintOp                                             */
+/*============================================================================*/
+
+" job_PrintOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* printnOp request                                   (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: printOp_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_printOp |
+  <string> locals| sString |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_PULSEMARKER of
+
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+        sString .
+        true
+
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+
+        Operand[].pipeOut
+        true
+      endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: printOp :: printOp <string> <topology> <nextStage> <nextOp> ;
+
+jobInfo: printOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

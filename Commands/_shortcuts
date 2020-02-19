@@ -14,6 +14,7 @@ shortcut ad article_dump;
 shortcut b  _bm_insidx;
 shortcut i  _bm_inflateRow;
 shortcut ct /flow create table t (a integer);
+shortcut l _loadPipeline;
 shortcut d  _pipeline;
 shortcut dl _pipelineLineItem;
 shortcut p _purgeAY;
