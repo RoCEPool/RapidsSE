@@ -33,6 +33,12 @@ bool Prompt::bPrompt_without(SePrompt* pPrompt)
     return true;
   }
   
+  Stz* szWith = pTokenVec->pGet(1)->szTerm();
+  
+  if (! Correctness::bTraceWithout(szWith))
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "Without: Code was compiled with: %s"_Stz,szWith);
+
   return true;
 }
 

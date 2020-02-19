@@ -298,6 +298,154 @@ void Correctness::vTraceWith(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test without                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Correctness::bTraceWithout(Stz* szWith)
+{
+#ifndef WITH_ACTION_SEQUENCE
+  if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_ADDRESS_CHECKING
+  if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_APPLE
+  if (szWith->bSame("WITH_APPLE"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_ANALYSE_FREE
+  if (szWith->bSame("WITH_ANALYSE_FREE"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_ASSERT_MACRO
+  if (szWith->bSame("WITH_ASSERT_MACRO"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_BUCKET_HASHING
+  if (szWith->bSame("WITH_BUCKET_HASHING"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_CHECK_INITIALISED
+  if (szWith->bSame("WITH_CHECK_INITIALISED"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_CORECTNESS_ALGEBRA
+  if (szWith->bSame("WITH_CORECTNESS_ALGEBRA"_Stz))
+    return true;
+#endif
+    
+#ifndef WITH_DEBUG_VERSION
+  if (szWith->bSame("WITH_DEBUG_VERSION"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_EB_LAZY_CHAIN
+  if (szWith->bSame("WITH_EB_LAZY_CHAIN"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_ENCODING_TRACE
+  if (szWith->bSame("WITH_ENCODING_TRACE"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_ENTRY_EXIT
+  if (szWith->bSame("WITH_ENTRY_EXIT"_Stz))
+    return true;
+#endif
+    
+#ifndef WITH_INFLATE_TRACE
+  if (szWith->bSame("WITH_INFLATE_TRACE"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_IT_COMPACT_TRACE
+  if (szWith->bSame("WITH_IT_COMPACT_TRACE"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_LINUX
+  if (szWith->bSame("WITH_LINUX"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_MUNGED_SEN
+  if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_PREPOST_CHECKING
+  if (szWith->bSame("WITH_PREPOST_CHECKING"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_PULSING
+  if (szWith->bSame("WITH_PULSING"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_PYTHON_SUPPORT
+  if (szWith->bSame("WITH_PYTHON_SUPPORT"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_RELEASE_VERSION
+  if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_SETH_SUPPORT
+  if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_SHARED_LOG
+  if (szWith->bSame("WITH_SHARED_LOG"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_SHOCO_DUPLICATES
+  if (szWith->bSame("WITH_SHOCO_DUPLICATES"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_STATISTICS_COUNTERS
+  if (szWith->bSame("WITH_STATISTICS_COUNTERS"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_TRACE_API
+  if (szWith->bSame("WITH_TRACE_API"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_TRACE_DYNAMO
+  if (szWith->bSame("WITH_TRACE_DYNAMO"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_TRACE_PURGING
+  if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
+    return true;
+#endif
+  
+#ifndef WITH_TRACE_TOKENS
+  if (szWith->bSame("WITH_TRACE_TOKENS"_Stz))
+   return true;
+#endif
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace what hasn't been compiled with                                       */
 /*----------------------------------------------------------------------------*/
 void Correctness::vTraceWithout(void)

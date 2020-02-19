@@ -37,7 +37,7 @@ bool Prompt::bPrompt_with(SePrompt* pPrompt)
   
   if (! Correctness::bTraceWith(szWith))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "With: Not compiled with: %s"_Stz,szWith);
+           "With: Code was not compiled with: %s"_Stz,szWith);
 
   return true;
 }
