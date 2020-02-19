@@ -25,21 +25,25 @@ create index T1_idx on T1 (jidx_key);
 
 ld T1 "../DATA/Operators/operators1_1.csv" ;
 
-// fetch rows on all partitions
+
+fetch T1 "jidx_key 1 >= jidx_10 2 <= and";
+/*
 pipeline _fetch
 begin
 
-    stage stageA on origin:
-    startOp | periodicOp once | stageB
+stage stageA on origin:
+startOp | periodicOp once | stageB
 
-    stage stageB on all partitions:
-    scanOp T1 | stageC
+stage stageB on all partitions:
+scanOp T1 "jidx_key 1 = " | scanOp T1 "jidx_key 2 = " |stageC
 
-    stage stageC on origin:
-    outputOp | sinkOp | stageA
+stage stageC on origin:
+outputOp | sinkOp | stageA
 
 end
 ;
+
+
 
 // fetch rows on partition 0
 fetch T1 0;
@@ -112,7 +116,7 @@ outputOp | sinkOp | stageA
 
 end
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
 /*----------------------------------------------------------------------------*/
