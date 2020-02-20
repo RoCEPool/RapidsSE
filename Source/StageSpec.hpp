@@ -13,6 +13,7 @@ namespace Pipelines
     ePO m_eTopology;    // stage topoplogy
     i8  m_iNode;        // stage node
     i8  m_iPartition;   // stage ptn
+    i8  m_iThreads;     // threads
   
     OpSpecVec* m_pOpSpecVec;
   
@@ -35,6 +36,8 @@ namespace Pipelines
     i8   iPartition(void);
     void vPartition(i8 i_Ptn);
     void vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);
+    void vThreads(i8 iThreads);
+    i8   iThreads(void);
     ePO  eTopology(void);
     void vTopology(ePO eTopology);
     void vToPipeStr(Stz* szPipeStr);

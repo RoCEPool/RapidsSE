@@ -426,6 +426,8 @@ bool Dynamo::bCollectTopology(void)
 #ifdef WITH_TRACE_DYNAMO
           vTrace("Topology Phrase recognised >on origin %s threads:<\n"_Stz, sLocus.aChar();
 #endif
+          i8 i_Threads = sLocus.szStz()->iToI8();
+          m_pStageSpec->vThreads(i_Threads);
           m_pStageSpec->vTopology(PO_ORIGIN);
           return true;
         }

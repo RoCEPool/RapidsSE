@@ -38,6 +38,7 @@ StageSpec::StageSpec(Stz* szName)
   m_pOpSpecVec = new OpSpecVec;
   m_iNode      = C_UNKNOWN;
   m_iPartition = C_UNKNOWN;
+  m_iThreads   = C_UNKNOWN;
   
    _checkInitialised_(CN_STAGESPEC);
   
@@ -207,6 +208,26 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
     pOpSpec->v_OpSpec(i_Op);
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get threads                                                                */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iThreads(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_iThreads;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set threads                                                                */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vThreads(i8 i_Threads)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_iThreads = i_Threads;
 }
 
 /*----------------------------------------------------------------------------*/
