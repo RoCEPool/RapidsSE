@@ -5,24 +5,13 @@
 #include "Pipelines.h"
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* Dynamo::operator new(size_t)
-{
-  Dynamo* pDynamo = reinterpret_cast<Dynamo*>(HeapMem::pAllocate(CN_DYNAMO));
-  
-  return pDynamo;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Dynamo::operator delete(void* aAddr)
-{
-  Dynamo* pDynamo = reinterpret_cast<Dynamo*>(aAddr);
-  
-  HeapMem::vFree(pDynamo);
-}
+__pCastFunction(Pipelines,Dynamo,CN_DYNAMO)
+__aNewFunction(Dynamo,CN_DYNAMO)
+__vDeleteFunction(Dynamo,CN_DYNAMO)
+__aFooterFunction(Dynamo)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -71,7 +60,9 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get cross topology between two stages                                      */
 /*----------------------------------------------------------------------------*/
-ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec) {
+ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
+{
+  _static_
   
   switch (pFromStageSpec->eTopology()) {
     case PO_ALL_NODES:
@@ -181,53 +172,42 @@ bool Dynamo::bCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* phase 1: collect the plan                                                  */
+/* get the pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase1_collect(void)
+PipelineSpec* Dynamo::pPipelineSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  m_p_Job = m_p_Job;
-  
-  bool bResult = true;
-  
-  vBeginToken(0);
-  
-  if (m_pTkn->bSame("pipeline"_Stz)) {
-    bResult = bCollectName();
-    if (! bResult)
-      return false;
-  }
-
-  while (m_pTkn->bSame("tag"_Stz)) {
-    bResult = bCollectTag();
-    if (! bResult)
-      return false;
-  }
-  
-  if (m_pTkn->bSame("begin"_Stz)) {
-    bResult = bCollectBegin();
-    if (! bResult)
-      return false;
-  }
-  else {
-    return false;
-  }
-  
-  if ( ! m_pTkn->bSame("stage"_Stz)) {
-    return false;
-  }
-  
-  while (m_pTkn->bSame("stage"_Stz)) {
-    bResult = bCollectStage();
-    if ( ! bResult )
-      return false;
-  }
-  
-  bResult = bCollectEnd();
-
-  return bResult;
+  return m_pPipelineSpec;
 }
+
+/*----------------------------------------------------------------------------*/
+/* find stage matching given name                                             */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(0);
+  
+  s4K sPipe("pipeline "_Stz);
+  pStageSpec->vToPipeStr(sPipe.szStz());
+  
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.szStz());
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+#endif
+  
+  Tokeniser::vTokenise(m_pTknVec,sPipe);
+  
+  SP_TknVecStr spTknVecStr;
+  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pTknVec));
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compile begin                                                              */
@@ -603,6 +583,120 @@ bool Dynamo::bCollectEnd(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAcceptToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  ++ m_i_Tkn;
+  
+  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szTerm());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace the <stageNm> with xmit <nodeNo>                                   */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  // arg-0 is the cross topology of the xmit op
+  pOpSpec->vAddEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  
+  // arg-1 is the next stage for the xmit
+  pOpSpec->vAddEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
+  
+  // arg-2 is the op of the next stage for the xmit
+  pOpSpec->vAddEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
+  //pOpSpec->pEnameSet()->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token on which parsing begins                                          */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vBeginToken(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  m_i_Tkn = i_Tkn;
+  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
+  
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szTerm());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token a known operator?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bIsOperator(Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  if (pTkn->bSame("|"_Stz))
+    return false;
+  
+  if (pTkn->bSame("end"_Stz))
+    return false;
+  
+  if (pTkn->bSame("stage"_Stz))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* phase 1: collect the plan                                                  */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPhase1_collect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+    
+  bool bResult = true;
+  
+  vBeginToken(0);
+  
+  if (m_pTkn->bSame("pipeline"_Stz)) {
+    bResult = bCollectName();
+    if (! bResult)
+      return false;
+  }
+
+  while (m_pTkn->bSame("tag"_Stz)) {
+    bResult = bCollectTag();
+    if (! bResult)
+      return false;
+  }
+  
+  if (m_pTkn->bSame("begin"_Stz)) {
+    bResult = bCollectBegin();
+    if (! bResult)
+      return false;
+  }
+  else {
+    return false;
+  }
+  
+  if ( ! m_pTkn->bSame("stage"_Stz)) {
+    return false;
+  }
+  
+  while (m_pTkn->bSame("stage"_Stz)) {
+    bResult = bCollectStage();
+    if ( ! bResult )
+      return false;
+  }
+  
+  bResult = bCollectEnd();
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Phase2 : staging                                                           */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bPhase2_staging(void)
@@ -663,114 +757,6 @@ bool Dynamo::bPhase2_staging(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find stage matching given name                                             */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vShow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(0);
-  
-  s4K sPipe("pipeline "_Stz);
-  pStageSpec->vToPipeStr(sPipe.szStz());
-  
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.szStz());
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-#endif
-  
-  Tokeniser::vTokenise(m_pTknVec,sPipe);
-  
-  SP_TknVecStr spTknVecStr;
-  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pTknVec));
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* accept token and advance to next token                                     */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vAcceptToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-
-  ++ m_i_Tkn;
-  
-  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szTerm());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set token on which parsing begins                                          */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vBeginToken(i8 i_Tkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_i_Tkn = i_Tkn;
-  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
-  
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szTerm());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the pipeline spec                                                      */
-/*----------------------------------------------------------------------------*/
-PipelineSpec* Dynamo::pPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  return m_pPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is token a known operator?                                                 */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bIsOperator(Token* pTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  if (pTkn->bSame("|"_Stz))
-    return false;
-  
-  if (pTkn->bSame("end"_Stz))
-    return false;
-  
-  if (pTkn->bSame("stage"_Stz))
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* replace the <stageNm> with xmit <nodeNo>                                   */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
-  
-  // arg-1 is the next stage for the xmit
-  pOpSpec->vAddEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
-  
-  // arg-2 is the op of the next stage for the xmit
-  pOpSpec->vAddEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
-  //pOpSpec->pEnameSet()->vPrint();
-}
-
-/*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
@@ -799,11 +785,6 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
   
   vAddStageParams(pOpSpec, eTopologyX, i_Stage, 0);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Dynamo)
 
 /*============================================================================*/
 /* end                                                                        */

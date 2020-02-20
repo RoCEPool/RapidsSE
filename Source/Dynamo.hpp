@@ -28,11 +28,13 @@ namespace Pipelines
     Dynamo(Stz* sCmd, Job* pJob);
    ~Dynamo(void) noexcept(false);
   
-    static ePX eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec);
+    static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
     
-    void vAcceptToken(void);
-    void vBeginToken(i8 i_Tkn);
     bool bCompile(void);
+    PipelineSpec* pPipelineSpec(void);
+    void vShow(void);
+
+  private:
     bool bCollectBegin(void);
     bool bCollectName(void);
     bool bCollectTag(void);
@@ -41,20 +43,20 @@ namespace Pipelines
     bool bCollectPipe(void);
     bool bCollectOp(void);
     bool bCollectEnd(void);
+
+    void vAcceptToken(void);
+    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
+    void vBeginToken(i8 i_Tkn);
     bool bIsOperator(Token* pTkn);
     bool bPhase1_collect(void);
     bool bPhase2_staging(void);
-
-    PipelineSpec* pPipelineSpec(void);
-    void vShow(void);
-
-  private:
-    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
     
     Footer* aFooter(void);
   };
+
+  Dynamo* _pDynamo(void* aAddr);
 }
 
 /*============================================================================*/
