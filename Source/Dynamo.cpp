@@ -371,7 +371,7 @@ bool Dynamo::bCollectTopology(void)
       i8 i_Nde = sLocus.szStz()->iToI8();
       if ( i_Nde > AM::pGrid()->nConnectedNodes() )
         return false;
-      m_pStageSpec->vLocus(sLocus.szStz());
+      m_pStageSpec->vNode(i_Nde);
       return true;
     }
   }
@@ -395,7 +395,7 @@ bool Dynamo::bCollectTopology(void)
       if (i_Ptn >= AM::pGrid()->nPartitions())
         return false;
       
-      m_pStageSpec->vLocus(sLocus.szStz());
+      m_pStageSpec->vPartition(i_Ptn);
       return true;
     }
   }

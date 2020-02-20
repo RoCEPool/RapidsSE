@@ -12,6 +12,8 @@ namespace Pipelines
     s32 m_sName;        // stage name
     ePO m_eTopology;    // stage topoplogy
     s32 m_sLocus;       // stage locus
+    i8  m_iNode;        // stage node
+    i8  m_iPartition;   // stage ptn
   
     OpSpecVec* m_pOpSpecVec;
   
@@ -30,7 +32,11 @@ namespace Pipelines
     void vLocus(Stz* szLocus);
     Stz* szLocus(void);
     Stz* szName(void);
+    void vNode(i8 i_Nde);
+    i8   iNode(void);
     OpSpecVec* pOpSpecVec(void);
+    i8   iPartition(void);
+    void vPartition(i8 i_Ptn);
     void vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);
     ePO  eTopology(void);
     void vTopology(ePO eTopology);

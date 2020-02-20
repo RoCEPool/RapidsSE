@@ -33,11 +33,11 @@ StageSpec::StageSpec(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sName = szName;
-  
-   m_eTopology = PO_NONE;
-  
-   m_pOpSpecVec = new OpSpecVec;
+  m_sName      = szName;
+  m_eTopology  = PO_NONE;
+  m_pOpSpecVec = new OpSpecVec;
+  m_iNode      = C_UNKNOWN;
+  m_iPartition = C_UNKNOWN;
   
    _checkInitialised_(CN_STAGESPEC);
   
@@ -125,6 +125,46 @@ Stz* StageSpec::szName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_iNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set node                                                                   */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vNode(i8 i_Nde)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_iNode = i_Nde;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition                                                              */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition                                                              */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vPartition(i8 i_Ptn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_iPartition = i_Ptn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,9 +292,9 @@ void StageSpec::vPrint(void)
                                  break;
     case PO_ORIGIN:              vTrace("on origin"_Stz);
                                  break;
-    case PO_SPECIFIC_NODE:       vTrace("on node %s"_Stz,m_sLocus.szStz());
+    case PO_SPECIFIC_NODE:       vTrace("on node %s"_Stz,m_iNode);
                                  break;
-    case PO_SPECIFIC_PARTITION:  vTrace("on partition %s"_Stz,m_sLocus.szStz());
+    case PO_SPECIFIC_PARTITION:  vTrace("on partition %s"_Stz,m_iPartition);
                                  break;
     default:
       ;

@@ -86,7 +86,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       break;
       
     case PO_SPECIFIC_PARTITION:
-      i_Ptn = pStageSpec->szLocus()->iToI8();
+      i_Ptn = pStageSpec->iPartition();
       m_oStagePtnVec.vAdd(new StagePtn(pStageSpec, i_Ptn));
       break;
       

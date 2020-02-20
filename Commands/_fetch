@@ -25,6 +25,13 @@ create index T1_idx on T1 (jidx_key);
 
 ld T1 "../DATA/Operators/operators1_1.csv" ;
 
+tableFetch T1;
+
+partitionFetch T1, 0;
+partitionFetch T1, 1;
+partitionFetch T1, 2;
+partitionFetch T1, 3;
+
 /*
 fetch T1 "jidx_key 1 >= jidx_10 2 <= and";
 
