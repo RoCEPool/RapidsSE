@@ -105,7 +105,7 @@ logWrite;
 print "\nsp_TEST lineitem $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 sp_TEST lineitem;
 print "\nselect_table lineitem $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
-select_table lineitem;
+Select Table lineItem;
 
 //dynamic pipeline lineItem_dyn
 //begin

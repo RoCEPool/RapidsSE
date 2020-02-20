@@ -141,6 +141,8 @@ void SePrompt::vPromptLoop(void)
       vPromptUser();
     }
 
+    L_Get_Command:
+    
     vGetCommand();
        
     if (bBlankLine()) {
@@ -161,7 +163,7 @@ void SePrompt::vPromptLoop(void)
     vLogCommand();
     
     if (bTranslateProcedure())
-      continue;
+      goto L_Get_Command;
     
     vRestateCommand();
     
