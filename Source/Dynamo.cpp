@@ -27,7 +27,7 @@ void Dynamo::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* sCmd)
+Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -35,10 +35,12 @@ Dynamo::Dynamo(Stz* sCmd)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the pipeline
   
-  m_p_TknVec = new TokenVec;
-  Tokeniser::vTokenise(m_p_TknVec, sCmd);
+  m_p_Job = p_Job;
   
-  m_p_TknVec->vCutToken(m_p_TknVec->nTokens());
+  m_pTknVec = new TokenVec;
+  Tokeniser::vTokenise(m_pTknVec, sCmd);
+  
+  m_pTknVec->vCutToken(m_pTknVec->nTokens());
   
   m_pPipelineSpec = nullptr;
   m_pStageSpec   = nullptr;
@@ -60,8 +62,8 @@ Dynamo::~Dynamo(void) noexcept(false)
   
   delete m_pPipelineSpec;
   
-  m_p_TknVec->vSetAllTokens();
-  delete m_p_TknVec;
+  m_pTknVec->vSetAllTokens();
+  delete m_pTknVec;
   //delete m_pStageSpec;
   
 }
@@ -135,24 +137,24 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec) {
 /*----------------------------------------------------------------------------*/
 /* compile entire pipeline                                                    */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompile(Job* pJob)
+bool Dynamo::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   bool bResult = false;
   
 #ifdef WITH_TRACE_DYNAMO
-  i8 nTokens = m_p_TknVec->nTokens();
+  i8 nTokens = m_pTknVec->nTokens();
   
   for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
-    Token* pTkn = m_p_TknVec->pGet(i_Tkn++);
+    Token* pTkn = m_pTknVec->pGet(i_Tkn++);
 
-    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szText());
+    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szTerm());
   }
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
   
-  bResult = bPhase1_collect(pJob);
+  bResult = bPhase1_collect();
   if (! bResult)
     return false;
  
@@ -181,9 +183,11 @@ bool Dynamo::bCompile(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* phase 1: collect the plan                                                  */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase1_collect(Job* pJob)
+bool Dynamo::bPhase1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  m_p_Job = m_p_Job;
   
   bool bResult = true;
   
@@ -191,6 +195,12 @@ bool Dynamo::bPhase1_collect(Job* pJob)
   
   if (m_pTkn->bSame("pipeline"_Stz)) {
     bResult = bCollectName();
+    if (! bResult)
+      return false;
+  }
+
+  while (m_pTkn->bSame("tag"_Stz)) {
+    bResult = bCollectTag();
     if (! bResult)
       return false;
   }
@@ -209,7 +219,7 @@ bool Dynamo::bPhase1_collect(Job* pJob)
   }
   
   while (m_pTkn->bSame("stage"_Stz)) {
-    bResult = bCollectStage(pJob);
+    bResult = bCollectStage();
     if ( ! bResult )
       return false;
   }
@@ -217,34 +227,6 @@ bool Dynamo::bPhase1_collect(Job* pJob)
   bResult = bCollectEnd();
 
   return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile name phrase                                                        */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  ASSERT(m_pTkn->bSame("pipeline"_Stz));
-  vAcceptToken();
-  
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("        pipeline=%s\n"_Stz,m_pTkn->szText());
-#endif
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vAcceptToken();
- 
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("Name Clause recognised\n"_Stz);
-#endif
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,9 +247,64 @@ bool Dynamo::bCollectBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compile name phrase                                                        */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  ASSERT(m_pTkn->bSame("pipeline"_Stz));
+  vAcceptToken();
+  
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("        pipeline=%s\n"_Stz,m_pTkn->szTerm());
+#endif
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vAcceptToken();
+ 
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Name Clause recognised\n"_Stz);
+#endif
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile tag                                                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  ASSERT(m_pTkn->bSame("tag"_Stz));
+  vAcceptToken();
+  
+  s32 sTagNm = m_pTkn->szTerm();
+  vAcceptToken();
+
+  if (! m_pTkn->bSame("="_Stz))
+    return false;
+  vAcceptToken();
+
+  s4K sTagValue = m_pTkn->szTerm();
+  vAcceptToken();
+
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
+#endif
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compile stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectStage(Job* pJob)
+bool Dynamo::bCollectStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
@@ -275,7 +312,7 @@ bool Dynamo::bCollectStage(Job* pJob)
   vAcceptToken();
   
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("        stage=%s\n"_Stz,m_pTkn->szText());
+  vTrace("        stage=%s\n"_Stz,m_pTkn->szTerm());
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -291,7 +328,7 @@ bool Dynamo::bCollectStage(Job* pJob)
     return false;
   
   if (bIsOperator(m_pTkn))
-    bCollectPipe(pJob);
+    bCollectPipe();
   
 #ifdef WITH_TRACE_DYNAMO
   vTrace("Stage Clause recognised\n"_Stz);
@@ -427,7 +464,7 @@ bool Dynamo::bCollectTopology(void)
         if (m_pTkn->bSame(":"_Stz)) {
           vAcceptToken();
 #ifdef WITH_TRACE_DYNAMO
-          vTrace("Topology Phrase recognised >on origin %s threads:<\n"_Stz, sLocus.aChar();
+          vTrace("Topology Phrase recognised >on origin %s threads:<\n"_Stz, sLocus.szStz());
 #endif
           i8 i_Threads = sLocus.szStz()->iToI8();
           m_pStageSpec->vThreads(i_Threads);
@@ -465,7 +502,7 @@ bool Dynamo::bCollectTopology(void)
 /*----------------------------------------------------------------------------*/
 /* compile pipe                                                               */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectPipe(Job* pJob)
+bool Dynamo::bCollectPipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -474,7 +511,7 @@ bool Dynamo::bCollectPipe(Job* pJob)
     if (! bIsOperator(m_pTkn))
       break;
 
-    bCollectOp(pJob);
+    bCollectOp();
     
     if (! m_pTkn->bSame("|"_Stz))
       break;
@@ -492,12 +529,12 @@ bool Dynamo::bCollectPipe(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* compile op                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectOp(Job* pJob)
+bool Dynamo::bCollectOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("        op=%s\n"_Stz,m_pTkn->szText());
+  vTrace("        op=%s\n"_Stz,m_pTkn->szTerm());
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -642,10 +679,10 @@ void Dynamo::vShow(void)
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 #endif
   
-  Tokeniser::vTokenise(m_p_TknVec,sPipe);
+  Tokeniser::vTokenise(m_pTknVec,sPipe);
   
   SP_TknVecStr spTknVecStr;
-  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_p_TknVec));
+  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pTknVec));
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }
 
@@ -661,9 +698,9 @@ void Dynamo::vAcceptToken(void)
 
   ++ m_i_Tkn;
   
-  m_pTkn = m_p_TknVec->pGet(m_i_Tkn);
+  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szText());
+  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szTerm());
 #endif
 }
 
@@ -675,10 +712,10 @@ void Dynamo::vBeginToken(i8 i_Tkn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   m_i_Tkn = i_Tkn;
-  m_pTkn  = m_p_TknVec->pGet(m_i_Tkn);
+  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
   
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szText());
+  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szTerm());
 #endif
 }
 
@@ -690,16 +727,6 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   return m_pPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the pipeline spec                                                       */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vPipelineSpec(PipelineSpec* pPipelineSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_pPipelineSpec = pPipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/

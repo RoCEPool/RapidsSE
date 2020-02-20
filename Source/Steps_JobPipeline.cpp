@@ -100,9 +100,9 @@ void Step::vJob_PipelineCompile(void)
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
   
-  m_pRegSet->m_xpDynamo = new Dynamo(sCmd);
+  m_pRegSet->m_xpDynamo = new Dynamo(sCmd,m_pTask->m_pJob);
   
-  bool bResult = m_pRegSet->m_xpDynamo->bCompile(m_pTask->m_pJob);
+  bool bResult = m_pRegSet->m_xpDynamo->bCompile();
   
   if ( ! bResult) {
     delete *m_pRegSet->m_xpDynamo;

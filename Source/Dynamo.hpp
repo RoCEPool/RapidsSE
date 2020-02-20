@@ -9,13 +9,14 @@ namespace Pipelines
   {
   private:
   
-    TokenVec*    m_p_TknVec;
+    Job*          m_p_Job;
+    TokenVec*     m_pTknVec;
   
     PipelineSpec* m_pPipelineSpec;
-    StageSpec*   m_pStageSpec;
+    StageSpec*    m_pStageSpec;
   
-    i8           m_i_Tkn;
-    Token*       m_pTkn;
+    i8            m_i_Tkn;
+    Token*        m_pTkn;
 
     // must be last
     Footer m_xFooter;
@@ -24,24 +25,24 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Stz* sCmd);
+    Dynamo(Stz* sCmd, Job* pJob);
    ~Dynamo(void) noexcept(false);
   
     static ePX eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec);
     
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    bool bCompile(Job* pJob);
-    bool bCollectName(void);
+    bool bCompile(void);
     bool bCollectBegin(void);
-    bool bCollectStage(Job* pJob);
+    bool bCollectName(void);
+    bool bCollectTag(void);
+    bool bCollectStage(void);
     bool bCollectTopology(void);
-    bool bCollectPipe(Job* pJob);
-    bool bCollectOp(Job* pJob);
+    bool bCollectPipe(void);
+    bool bCollectOp(void);
     bool bCollectEnd(void);
-    void vPipelineSpec(PipelineSpec* pPipelineSpec);
     bool bIsOperator(Token* pTkn);
-    bool bPhase1_collect(Job* pJob);
+    bool bPhase1_collect(void);
     bool bPhase2_staging(void);
 
     PipelineSpec* pPipelineSpec(void);
