@@ -37,6 +37,7 @@ OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
   m_bAppendRight = false;
   m_i_OpSpec     = C_UNKNOWN;
   m_i_Slot = 0; // ALKA: C_UNKNOWN;
+  m_eStageKind = SK_NORMAL;
 
   //m_oEnameSet
   
@@ -168,6 +169,25 @@ i8 OpSpec::i_Slot(void)
   return m_i_Slot;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get stage kind                                                             */
+/*----------------------------------------------------------------------------*/
+eSK OpSpec::eStageKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_eStageKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage kind                                                             */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vStageKind(eSK eStageKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eStageKind = eStageKind;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

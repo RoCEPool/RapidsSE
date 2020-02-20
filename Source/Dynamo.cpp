@@ -326,6 +326,7 @@ bool Dynamo::bCollectTopology(void)
       
       if (m_pTkn->bSame(":"_Stz)) {
         vAcceptToken();
+        
 #ifdef WITH_TRACE_DYNAMO
         vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
 #endif
@@ -408,6 +409,7 @@ bool Dynamo::bCollectTopology(void)
     
     if (m_pTkn->bSame(":"_Stz)) {
       vAcceptToken();
+      
 #ifdef WITH_TRACE_DYNAMO
       vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
 #endif
@@ -415,6 +417,7 @@ bool Dynamo::bCollectTopology(void)
       return true;
     }
     else {
+      
       s32 sLocus(m_pTkn->szTerm());
       vAcceptToken();
       
@@ -505,6 +508,17 @@ bool Dynamo::bCollectOp(Job* pJob)
   
   vAcceptToken();
   
+  if (m_pTkn->bSame("Robin"_Stz)) {
+    pOpSpec->vStageKind(SK_ROBIN);
+    vAcceptToken();
+  }
+  else if (m_pTkn->bSame("Hashed"_Stz)) {
+    pOpSpec->vStageKind(SK_HASHED);
+    vAcceptToken();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 i_Arg = 0;
   for (;;) {
     
@@ -583,6 +597,8 @@ bool Dynamo::bPhase2_staging(void)
 #ifdef WITH_TRACE_DYNAMO
         vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_FoundStage, aPX[eTopologyX]);
 #endif
+        // ste the stage kind in the stage
+        pStageSpecFound->vStageKind(pOpSpec->eStageKind());
         
         if (eTopologyX == PX_ORIGIN_TO_ORIGIN) {
           // add parameter to the prev sink op

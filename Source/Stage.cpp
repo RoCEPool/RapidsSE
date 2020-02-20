@@ -50,7 +50,9 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
   
   i8 i_Ptn;
   i8 i_Nde;
-  m_sName = pStageSpec->szName();
+  
+  m_sName      = pStageSpec->szName();
+  m_eStageKind = pStageSpec->eStageKind();
   
   //m_oOpVec
   
@@ -78,7 +80,8 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
           vTrace("Pipeline Originating node : %lld\n"_Stz, pPipeLine->iOriginatingNode());
         }
       }
-      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode()));
+      //for (i8 i_Threads = 0; i_Threads < pStageSpec->iThreads(); i_Threads++)
+        m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -320,6 +323,26 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
   }
   
   return pOp;  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage kind                                                             */
+/*----------------------------------------------------------------------------*/
+eSK Stage::eStageKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_eStageKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage kind                                                             */
+/*----------------------------------------------------------------------------*/
+void Stage::vStageKind(eSK eStageKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  m_eStageKind = eStageKind;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,8 +12,9 @@ namespace Pipelines
     bool       m_bAppendRight;
     i8         m_i_OpSpec;
     i8         m_i_Slot;
-
-    EnameSet  m_oEnameSet;
+    eSK        m_eStageKind;
+    
+    EnameSet   m_oEnameSet;
     
     // must be last
     Footer m_xFooter;
@@ -36,6 +37,8 @@ namespace Pipelines
     void vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken);
     void vReplaceEnamePair(Stz* sName, i8 iValue, eTN eToken);
     i8   i_Slot(void);
+    eSK  eStageKind(void);
+    void vStageKind(eSK eStageKind);
     StageSpec* pStageSpec(void);
 
     void vPrint(void);

@@ -29,7 +29,7 @@ pipeline _threads
 begin
 
   stage stageA on origin:
-   startOp | periodicOp once | stageB
+   startOp | periodicOp once | stageB Robin
 
   stage stageB on origin 3 threads:
    printOp "hello-world" | stageC

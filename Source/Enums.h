@@ -105,6 +105,7 @@ namespace Enums
 #include "eSA.h"
 #include "eSC.h"
 #include "eSL.h"
+#include "eSK.h"
 #include "eSS.h"
 #include "eST.h"
 
