@@ -88,26 +88,6 @@ void StageSpec::vCopyOps(StageSpec* pStageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set locus                                                                  */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vLocus(Stz* szLocus)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  m_sLocus = szLocus;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get locus                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* StageSpec::szLocus(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_sLocus;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get opspec vec                                                             */
 /*----------------------------------------------------------------------------*/
 OpSpecVec* StageSpec::pOpSpecVec(void)

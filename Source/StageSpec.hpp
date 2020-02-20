@@ -11,7 +11,6 @@ namespace Pipelines
   
     s32 m_sName;        // stage name
     ePO m_eTopology;    // stage topoplogy
-    s32 m_sLocus;       // stage locus
     i8  m_iNode;        // stage node
     i8  m_iPartition;   // stage ptn
   
@@ -29,8 +28,6 @@ namespace Pipelines
   
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
-    void vLocus(Stz* szLocus);
-    Stz* szLocus(void);
     Stz* szName(void);
     void vNode(i8 i_Nde);
     i8   iNode(void);
