@@ -89,22 +89,38 @@ bool Procedure::bTranslateProcedure(String* pString, TokenVec* pTokenVec)
 {
   _static_
 
-  i8 nTokens = pTokenVec->nTokens();
-  
-  Token* pProcNm = pTokenVec->pGet(0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
   if (! pProcCatg)
     return false;
   
-  Word* pProcWord = pRootDic->pFindWord(pProcNm->szTerm());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nTokens = pTokenVec->nTokens();
+
+  Token* pProcNm = pTokenVec->pGet(0);
+
+  s32 sProcNm = pProcNm->szTerm();
   
-  if (! pProcWord)
+  Word* pProcWord = pRootDic->pFindWord(sProcNm);
+  
+  if (! pProcWord) {
     return false;
+
+//    if (1 == nTokens)
+//      return false;
+//
+//    Token* pTkn1_ProcNmTwo = pTokenVec->pGet(1);
+//
+//    sProcNm.vAppend('_');
+//    sProcNm.vConcat(pTkn1_ProcNmTwo->szTerm());
+//
+//    pProcWord = pRootDic->pFindWord(sProcNm);
+//    if (! pProcWord)
+//      return false;
+    
+  }
   
   if (pProcWord->pCategory() != pProcCatg)
     return false;
