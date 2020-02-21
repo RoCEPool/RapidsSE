@@ -626,7 +626,7 @@ void PoolHelper::vWriteBuffers(Stz* sFilePath)
   File* pFile = new File(nullptr);
   pFile->bOpenWrite(sFilePath);
   
-  i8 iStart  = TickingDevice::iRdClock();
+  i8 iStart  = TickingDevice::iGetTick();
   
   for (i8 i_Buffer = gpBufferPool->iBufferFirst();
        i_Buffer <= gpBufferPool->iBufferLast();
@@ -637,7 +637,7 @@ void PoolHelper::vWriteBuffers(Stz* sFilePath)
     ASSERT(bResult);
     
   }
-  i8 iUpdate = TickingDevice::iRdClock();
+  i8 iUpdate = TickingDevice::iGetTick();
   
   i8 iTicks = (iUpdate - iStart);
   i8 iTicksPerSecond = TickingDevice::iTicksPerSecond();

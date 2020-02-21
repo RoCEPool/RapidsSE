@@ -255,7 +255,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
       // burn some cpu
       i8 iSum = 0;
       for (i8 i_Loop = 0; i_Loop < AM::nDummyLoop(); i_Loop++)
-        iSum += TickingDevice::iRdTscp();
+        iSum += TickingDevice::iGetTick();
     }
     
     //pThread->m_pPsxThd->vThreadExit();
