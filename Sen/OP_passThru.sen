@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PassThruOp.sen -- Job PassThruOp                                       */
+/* OP_passThru.sen -- Operator passThru                                       */
 /*============================================================================*/
 
-" job_PassThruOp.sen" .verbose
+" OP_passThru.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for passThru req                           (on node where spawned) */

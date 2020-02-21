@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_BM_InflateCrwOp.sen -- Job BM_InfrlateCrwOp                            */
+/* BM_inflateCrw.sen -- Benchmark Operator inflateCrw                         */
 /*============================================================================*/
 
-" job_BM_InflateCrwOp.sen" .verbose
+" BM_inflateCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

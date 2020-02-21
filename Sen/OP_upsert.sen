@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_UpsertOp.sen -- Job UpsertOp                                           */
+/* OP_upsert.sen -- Operator upsert                                           */
 /*============================================================================*/
 
-" job_UpsertOp.sen" .verbose
+" OP_upsert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for insertOp                               (on node where spawned) */

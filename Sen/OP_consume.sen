@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_ConsumeOp.sen -- Job ConsumeOp                                         */
+/* OP_consume.sen -- Operator consume                                         */
 /*============================================================================*/
 
-" job_ConsumeOp.sen" .verbose
+" OP_consume.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for consumeOp req                          (on node where spawned) */

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_BufferGen.sen -- Job BufferGen                                           */
+/* OP_bufferGen.sen -- Operator bufferGen                                     */
 /*============================================================================*/
 
-" job_BufferGen.sen" .verbose
+" OP_bufferGen.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                   (on node where spawned) */

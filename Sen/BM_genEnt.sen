@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_BM_GenEntOp.sen -- Generate Entry Operator                             */
+/* BM_genEnt.sen -- Benchmark Operator genEnt                                 */
 /*============================================================================*/
 
-" job_BM_GenEntOp.sen" .verbose
+" BM_genEnt.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */

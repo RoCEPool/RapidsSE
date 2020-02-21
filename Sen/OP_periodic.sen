@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PeriodicOp.sen -- Job PeriodicOp                                       */
+/* OP_periodic.sen -- Operator periodic                                       */
 /*============================================================================*/
 
-" job_PeriodicOp.sen" .verbose
+" OP_periodic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for periodicOp request                     (on node where spawned) */

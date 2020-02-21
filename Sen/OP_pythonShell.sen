@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PythonShellOp.sen -- Job PythonShellOp                                 */
+/* OP_pythonShell.sen -- Operator pythonShell                                 */
 /*============================================================================*/
 
-" job_PythonShellOp.sen" .verbose
+" OP_pythonShell.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for pythonShellOp request                  (on node where spawned) */

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_StartOp.sen -- Job StartOp                                             */
+/* OP_start.sen -- Operator start                                             */
 /*============================================================================*/
 
-" job_StartOp.sen" .verbose
+" OP_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for startOp request                        (on node where spawned) */

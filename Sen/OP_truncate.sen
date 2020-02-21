@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_Truncate.sen -- Job TruncateOp                                         */
+/* OP_truncate.sen -- Operator truncate                                       */
 /*============================================================================*/
 
-" job_TruncateOp.sen" .verbose
+" OP_truncate.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for TruncateOp req                         (on node where spawned) */

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_OutputOp.sen -- Job OutputOp                                           */
+/* OP_output.sen -- Operator output                                           */
 /*============================================================================*/
 
-" job_OutputOp.sen" .verbose
+" OP_output.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for outputOp request                       (on node where spawned) */

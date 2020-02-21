@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PythonOp.sen -- Job PythonOp                                           */
+/* OP_python.sen -- Operator python                                           */
 /*============================================================================*/
 
-" job_PythonOp.sen" .verbose
+" OP_python.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for pythonOp request                       (on node where spawned) */

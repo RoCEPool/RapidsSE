@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_SnapshotOp.sen -- Job SnapshotOp                                       */
+/* OP_snapshot.sen -- Operator snapshot                                       */
 /*============================================================================*/
 
-" job_SnapshotOp.sen" .verbose
+" OP_snapshot.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* SnapshotOp request                                 (on node where spawned) */

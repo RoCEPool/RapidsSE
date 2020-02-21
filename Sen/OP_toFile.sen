@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_ToFileOp.sen -- Job ToFileOp                                           */
+/* OP_toFile.sen -- Operator toFile                                           */
 /*============================================================================*/
 
-" job_ToFileOp.sen" .verbose
+" OP_toFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for toFileOp req                           (on node where spawned) */

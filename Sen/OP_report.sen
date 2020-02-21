@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_ReportOp.sen -- Job ReportOp                                           */
+/* OP_report.sen -- Operator report                                           */
 /*============================================================================*/
 
-" job_ReportOp.sen" .verbose
+" OP_report.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for reportOp request                       (on node where spawned) */

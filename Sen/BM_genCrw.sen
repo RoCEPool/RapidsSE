@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_BM_GenCrwOp.sen -- Generate Compact Row Buffers Operator               */
+/* BM_genCrw.sen -- Benchmark Operator genCrw                                 */
 /*============================================================================*/
 
-" job_BM_GenCrwOp.sen" .verbose
+" BM_genCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
