@@ -15915,7 +15915,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "jobInfo: XmitOp\n"
     "{\n"
-    "  <?jobDesc?>  = \\\"--description of job--\\\"\n"
+    "  <?jobDesc?>  = \\\"--description of  job--\\\"\n"
     "  \n"
     "  <?jobKind?>  = JK_LOCAL\n"
     "  <?rspKind?>  = RS_PARTICIPANT_RESPONSE\n"

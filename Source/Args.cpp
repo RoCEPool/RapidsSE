@@ -74,6 +74,7 @@ Args::Args(void)
   m_bHugePages       = false;
   m_bKillPrev        = false;
   m_bLog             = false;
+  m_bNoMunge         = false;
   m_nMaxLoadErrors   = 0;
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
@@ -358,6 +359,12 @@ bool Args::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--noLog"_Stz)) {
       m_bLog = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--NoMunge"_Stz)) {
+      m_bNoMunge = true;
       continue;
     }
     

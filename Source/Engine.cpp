@@ -560,7 +560,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* munge chec                                                                   */
+/* munge check                                                                */
 /*----------------------------------------------------------------------------*/
 void Engine::vMungeCheck(void)
 {
@@ -840,7 +840,8 @@ void Engine::vRunCommandLine(void)
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
-        vMungeCheck();
+        if (! gxArgs.m_bNoMunge )
+          vMungeCheck();
 #endif
         vCallPrompt();
         break;
