@@ -7,38 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-TokenVec* TokenVec::_pTokenSet(void* aAddr)
-{
-  TokenVec* pTokenSet = reinterpret_cast<TokenVec*>(aAddr);
-  
-  RASSERT_TYPE(pTokenSet,CN_TOKENVEC);
-  
-  return pTokenSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* TokenVec::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_TOKENVEC);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TokenVec::operator delete(void* pAddr)
-{
-  TokenVec* pTokenVec = reinterpret_cast<TokenVec*>(pAddr);
-  
-  HeapMem::vFree(pTokenVec);
-}
+__pCastFunction(LexicalAnalysis,TokenVec,CN_TOKENVEC)
+__aNewFunction(TokenVec,CN_TOKENVEC)
+__vDeleteFunction(TokenVec,CN_TOKENVEC)
+__aFooterFunction(TokenVec)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -81,12 +53,11 @@ TokenVec::~TokenVec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAppendToken(Stz* aStr)
+void TokenVec::vAppendToken(Stz* szTerm)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_pItem[m_nItems++]->vCopy(aStr);
-  
+  m_pItem[m_nItems++]->vCopy(szTerm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,10 +141,10 @@ void TokenVec::vCutToken(i8 i_Tkn)
   
   for (i8 i_Token = i_Tkn; i_Token < nTkns ; i_Token++) {
     
-    Token* pTknA = m_pItem[i_Token];
-    Token* pTknB = m_pItem[i_Token + 1];
+    Token* pTknDst = m_pItem[i_Token];
+    Token* pTknSrc = m_pItem[i_Token + 1];
     
-    pTknA->vCopy(pTknB);
+    pTknDst->vCopy(pTknSrc);
   }
   
   m_nItems--;
@@ -203,13 +174,13 @@ void TokenVec::vDumpTokens(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 TokenVec::iFindToken(Stz* aLookFor)
+i8 TokenVec::iFindToken(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = m_pItem[i_Token];
-    if (aLookFor->bSame(pToken->szTerm()))
+    if (szTerm->bSame(pToken->szTerm()))
       return i_Token;
   }
   
@@ -219,13 +190,13 @@ i8 TokenVec::iFindToken(Stz* aLookFor)
 /*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
-Token* TokenVec::pFindToken(Stz* aText, i8& i_Token)
+Token* TokenVec::pFindToken(Stz* szTerm, i8& i_Token)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i_Token++; i_Token < nTokens(); i_Token++) {
     Token* pToken = m_pItem[i_Token];
-    if (pToken->szTerm()->bSame(aText))
+    if (pToken->szTerm()->bSame(szTerm))
       return pToken;
   }
   
@@ -262,10 +233,26 @@ void TokenVec::vIncTokens(void)
 /*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vInsertToken(i8 i_Tkn, Stz* aStr, eTN eToken)
+void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
+  i8 nTkns = nItems();
+  
+  for (i8 i_Token = nTkns - 1; i_Token >= i_Tkn ; i_Token++) {
+    
+    Token* pTknDst = m_pItem[i_Token + 1];
+    Token* pTknSrc = m_pItem[i_Token];
+    
+    pTknDst->vCopy(pTknSrc);
+  }
+  
+  m_nItems++;
+  
+  Token* pTknIns = m_pItem[i_Tkn];
+  
+  pTknIns->vCopy(szTerm);
+  pTknIns->vToken(eToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -411,11 +398,11 @@ i8 TokenVec::nTokens(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vVecToString(Stz* szBuff, i8 iFromTkn, bool bAddSemicolon)
+void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  StrLib::vCopy(szBuff->azChar(),"");
+  StrLib::vCopy(szDstStr->azChar(),"");
   
   i8 nTokens = this->nTokens();
   
@@ -429,52 +416,39 @@ void TokenVec::vVecToString(Stz* szBuff, i8 iFromTkn, bool bAddSemicolon)
     switch (eToken) {
         
       case TN_INTEGER:
-        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
         break;
         
       case TN_NONE:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(szBuff->azChar(),"\"");
-        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
-        StrLib::vConcat(szBuff->azChar(),"\"");
+        StrLib::vConcat(szDstStr->azChar(),"\"");
+        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),"\"");
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(szBuff->azChar()," ");
+    StrLib::vConcat(szDstStr->azChar()," ");
   }
   
   // concat a terminating semicolon (needed??)
   if (bAddSemicolon) {
-    StrLib::vConcat(szBuff->azChar(),";");
+    StrLib::vConcat(szDstStr->azChar(),";");
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* TokenVec::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC);
-  
-  return &m_xFooter;
-}
 
 /*============================================================================*/
 /* end                                                                        */

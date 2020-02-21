@@ -23,7 +23,7 @@ namespace LexicalAnalysis
   
     static TokenVec* _pTokenSet(void* aAddr);
   
-    void vAppendToken(Stz* aStr);
+    void vAppendToken(Stz* szTerm);
     void vAppendVector(TokenVec* pTokenVec);
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);
@@ -32,10 +32,10 @@ namespace LexicalAnalysis
     void vCutToken(i8 i_Tkn);
     void vDumpTokens(void);
     i8   iFindToken(Stz* pLookFor);
-    Token* pFindToken(Stz* aText, i8& i_Token);
+    Token* pFindToken(Stz* szTerm, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
-    void vInsertToken(i8 i_Tkn, Stz* aStr, eTN eToken);
+    void vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken);
     Token* pNextToken(void);
     Token* pPrevToken(void);
     void vPrint(void);
@@ -46,10 +46,12 @@ namespace LexicalAnalysis
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
     i8   nTokens(void);
-    void vVecToString(Stz* szStr, i8 iFromTkn, bool bAddSemicolon);
+    void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
 
     Footer* aFooter(void);
   };
+
+  TokenVec* _pTokenVec(void* aAddr);
 }
 
 /*============================================================================*/
