@@ -329,9 +329,11 @@ bool Dynamo::bCollectTag(void)
   s4K sTagValue = m_pTkn->szTerm();
   vAcceptToken();
 
-  ASSERT(m_pTkn->bSame("endTag"_Stz));
+  while (! m_pTkn->bSame("endTag"_Stz)) {
+    vAcceptToken();
+  }
   vAcceptToken();
-  
+
 //#ifdef WITH_TRACE_DYNAMO
   vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
 //#endif
