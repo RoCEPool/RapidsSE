@@ -745,7 +745,8 @@ bool Dynamo::bPhase2_staging(void)
         }
         else {
           pOpSpec->vAddEnamePair("<XmitKind>"_Stz,(i8)pOpSpec->eStageKind(),TN_INTEGER);
-          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);          
+          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
+          pStageSpecFound->vPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
         }
       }
       else {
