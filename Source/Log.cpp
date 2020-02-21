@@ -436,8 +436,8 @@ void Log::vOpenBySE(bool bStarting)
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
   
-  s32 sClock;
-  MagLib::vHzMag(Hardware::iClockFrequency(),sClock);
+  s32 sCpuFreq;
+  MagLib::vHzMag(Hardware::iCpuFrequency(),sCpuFreq);
 
   s32 sHost;
   s32 sUser;
@@ -452,7 +452,7 @@ void Log::vOpenBySE(bool bStarting)
               
              Hardware::iCoreCount(),
              sMem.szStz(),
-             sClock.szStz()
+             sCpuFreq.szStz()
              );
   
   AM::vLogArguments();

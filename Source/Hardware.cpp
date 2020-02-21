@@ -5,11 +5,56 @@
 #include "Host.h"
 
 /*----------------------------------------------------------------------------*/
-/* get clock frequency of this machine                                        */
+/* get number of logical cores                                                */
 /*----------------------------------------------------------------------------*/
-i8 Hardware::iClockFrequency(void)
+i8 Hardware::iCoreCount(void)
 {
+  _static_
   
+  i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
+  if (iCount == -1) {
+    vWarn("Error while getting cpu count %lld\n"_Stz, iCount);
+    return 0;
+  }
+ 
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the no of cou's on this machine                                        */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iCpuCount(void)
+{
+  _static_
+
+#ifdef WITH_APPLE
+  
+  i8     iCount = 0;
+  size_t len = sizeof(iCount);
+  
+  i8 iReturn = sysctlbyname("machdep.cpu.core_count", &iCount, &len, 0, 0);
+  if (iReturn) {
+    vWarn("Error while getting cpu count %lld\n"_Stz, iReturn);
+    return 0;
+  }
+  return iCount;
+  
+#else
+  
+  //vWarn("iCpuCount() not implemented on LINUX!\n");
+  return 0;
+
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cpu frequency of this machine                                          */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iCpuFrequency(void)
+{
+  _static_
+
 #ifdef WITH_APPLE
 
   struct clockinfo clockrate;
@@ -72,52 +117,12 @@ i8 Hardware::iClockFrequency(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of logical cores                                                */
-/*----------------------------------------------------------------------------*/
-i8 Hardware::iCoreCount(void)
-{
-  
-  i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
-  if (iCount == -1) {
-    vWarn("Error while getting cpu count %lld\n"_Stz, iCount);
-    return 0;
-  }
- 
-  return iCount;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the no of cou's on this machine                                        */
-/*----------------------------------------------------------------------------*/
-i8 Hardware::iCpuCount(void)
-{
- 
-#ifdef WITH_APPLE
-  
-  i8     iCount = 0;
-  size_t len = sizeof(iCount);
-  
-  i8 iReturn = sysctlbyname("machdep.cpu.core_count", &iCount, &len, 0, 0);
-  if (iReturn) {
-    vWarn("Error while getting cpu count %lld\n"_Stz, iReturn);
-    return 0;
-  }
-  return iCount;
-  
-#else
-  
-  //vWarn("iCpuCount() not implemented on LINUX!\n");
-  return 0;
-
-#endif
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get amount of physical memory                                              */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iPhysicalMemory(void)
 {
+  _static_
+
   i8 iNumPages = sysconf(_SC_PHYS_PAGES);
   if (iNumPages == -1) {
     vWarn("Error while getting physical memory %lld\n"_Stz, iNumPages);
@@ -139,6 +144,8 @@ i8 Hardware::iPhysicalMemory(void)
 /*----------------------------------------------------------------------------*/
 void Hardware::vHostName(s32& sName)
 {
+  _static_
+  
   i8 iResult = gethostname(sName.azChar(), 32);
   if (iResult)
     perror("gethostname");
@@ -149,6 +156,8 @@ void Hardware::vHostName(s32& sName)
 /*----------------------------------------------------------------------------*/
 void Hardware::vLoginName(s32& sName)
 {
+  _static_
+  
   i8 iResult = getlogin_r(sName.azChar(), 32);
   if (iResult)
     perror("getlogin_r");

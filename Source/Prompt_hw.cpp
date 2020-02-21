@@ -26,16 +26,16 @@ bool Prompt::bPrompt_hw(SePrompt* pPrompt)
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
 
-  s32 sClock;
-  MagLib::vHzMag(Hardware::iClockFrequency(),sClock);
+  s32 sCpuFreq;
+  MagLib::vHzMag(Hardware::iCpuFrequency(),sCpuFreq);
 
   unsigned int x = 0x1;
   char *c = (char*) &x;
   
-  vTrace("hw: %lld cores; %s memory; %s clock frequency; %s\n"_Stz,
+  vTrace("hw: %lld cores; %s memory; %s cpu frequency; %s\n"_Stz,
          Hardware::iCoreCount(),
          sMem.szStz(),
-         sClock.szStz(),
+         sCpuFreq.szStz(),
          *c == 0x1 ? "little endian"_Stz : "big endian"_Stz
          );
   
