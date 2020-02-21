@@ -35,6 +35,7 @@ namespace LexicalAnalysis
     Token* pFindToken(Stz* aText, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
+    void vInsertToken(i8 i_Tkn, Stz* aStr, eTN eToken);
     Token* pNextToken(void);
     Token* pPrevToken(void);
     void vPrint(void);
