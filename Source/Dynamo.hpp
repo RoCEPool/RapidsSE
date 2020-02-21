@@ -35,6 +35,12 @@ namespace Pipelines
     void vShow(void);
 
   private:
+  
+    //
+    // phase 1
+    //
+    bool bPhase1_collect(void);
+  
     bool bCollectBegin(void);
     bool bCollectName(void);
     bool bCollectTag(void);
@@ -43,16 +49,21 @@ namespace Pipelines
     bool bCollectPipe(void);
     bool bCollectOp(void);
     bool bCollectEnd(void);
-
+  
     void vAcceptToken(void);
-    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vBeginToken(i8 i_Tkn);
     bool bIsOperator(Token* pTkn);
-    bool bPhase1_collect(void);
+
+    //
+    // phase 2
+    //
     bool bPhase2_staging(void);
+  
+    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
-    
+
+     
     Footer* aFooter(void);
   };
 

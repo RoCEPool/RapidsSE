@@ -79,7 +79,7 @@ sztbl lineitem;
 //fetch lineitem limit 10;
 
 pipeline lineitem_fetch
-  tag "<stmt>" = "statement given to procedure"
+  tag "<stmt>" = "statement given to procedure" endTag
 begin
 
   stage stageA on origin:
