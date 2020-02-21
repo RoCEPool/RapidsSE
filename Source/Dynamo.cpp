@@ -332,9 +332,14 @@ bool Dynamo::bCollectTag(void)
   ASSERT(m_pTkn->bSame("endTag"_Stz));
   vAcceptToken();
   
-#ifdef WITH_TRACE_DYNAMO
+//#ifdef WITH_TRACE_DYNAMO
   vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
-#endif
+//#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //EnameSet* pEnameSet = m_p_Job->pEnameSet(true);
+  
   
   return true;
 }

@@ -45,13 +45,13 @@ namespace Gadgets       { class EnumFlags;                                    }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
-namespace Indexing    { class EntBuffer; class IndexPtn;                   }
+namespace Indexing      { class EntBuffer; class IndexPtn;                    }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
                           class Job_Operand; class Job_Universal;             }
-namespace LexicalAnalysis { class TokenStream; class Characterise; class Tokeniser;
-                            class TokenVec;                                   }
+namespace LexicalAnalysis { class TokenStream; class Characterise;
+                            class Tokeniser; class TokenVec;                  }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
