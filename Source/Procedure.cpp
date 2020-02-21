@@ -186,8 +186,21 @@ bool Procedure::bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+//  i8 i_InsTkn = i_Cut;
+//  pProcVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+//
+//  pProcVec->vInsertToken(i_InsTkn++,"<stmt>"_Stz,TN_NAME);
+//  
+//  pProcVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+//
+//  pProcVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
+//
+//  pProcVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pProcVec->vVecToString(pPipelineStmt->szStz(),0,true);
-  //vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
+  vTrace(" => %s\n"_Stz,pPipelineStmt->szStz());
   
   delete pProcVec;
   delete pParamsVec;

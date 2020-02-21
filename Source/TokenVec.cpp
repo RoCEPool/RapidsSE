@@ -236,12 +236,15 @@ void TokenVec::vIncTokens(void)
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-    
-  i8 nTkns = nItems();
-  
-  for (i8 i_Token = nTkns - 1; i_Token >= i_Tkn ; i_Token++) {
+      
+  for (i8 i_Token = m_nItems - 1; i_Token >= i_Tkn ; i_Token--) {
     
     Token* pTknDst = m_pItem[i_Token + 1];
+    if (! pTknDst) {
+      m_pItem[i_Token + 1] = new Token;
+      pTknDst = m_pItem[i_Token + 1];
+    }
+    
     Token* pTknSrc = m_pItem[i_Token];
     
     pTknDst->vCopy(pTknSrc);
