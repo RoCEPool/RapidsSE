@@ -22,7 +22,7 @@ namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
                           template <i8 SPACE> class Datum_t;                  }
 namespace Debugging     {                                                     }
-namespace DynamoCompiler {                                                    }
+namespace DynamoCompiler { class Dynamo;                                      }
 namespace Entries       {                                                     }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
