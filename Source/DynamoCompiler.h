@@ -9,6 +9,7 @@
 
 namespace DynamoCompiler
 {
+  void vCheckAssumptions(void);
 }
 
 //------------------------------------------------------------------------------
