@@ -229,109 +229,44 @@ void HeapMem::vReport(void)
   s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
   s32 sMagJumbo;  MagLib::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
-  vTrace("  Transient  Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagSmall.azChar(),
-         AM::pHeapMem()->Transient.m_pSmall->iBufferCount(),
-         AM::pHeapMem()->Transient.m_pSmall->iAllocCount(),
-         AM::pHeapMem()->Transient.m_pSmall->iFreeCount(),
-         
-         AM::pHeapMem()->Transient.m_pSmall->iAllocCount() *
-         C_SIZE_SMALL_OBJECT
-         +
-         AM::pHeapMem()->Transient.m_pSmall->iFreeCount()  *
-         C_SIZE_SMALL_OBJECT
-         );
+  i8  iSum;
+  s32 sMagSum;
   
-  vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagMedium.azChar(),
-         AM::pHeapMem()->Transient.m_pMedium->iBufferCount(),
-         AM::pHeapMem()->Transient.m_pMedium->iAllocCount(),
-         AM::pHeapMem()->Transient.m_pMedium->iFreeCount(),
-         
-         AM::pHeapMem()->Transient.m_pMedium->iAllocCount() *
-         C_SIZE_MEDIUM_OBJECT
-         +
-         AM::pHeapMem()->Transient.m_pMedium->iFreeCount()  *
-         C_SIZE_MEDIUM_OBJECT
-         );
-  
-  vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagLarge.azChar(),
-         AM::pHeapMem()->Transient.m_pLarge->iBufferCount(),
-         AM::pHeapMem()->Transient.m_pLarge->iAllocCount(),
-         AM::pHeapMem()->Transient.m_pLarge->iFreeCount(),
-         
-         AM::pHeapMem()->Transient.m_pLarge->iAllocCount() *
-         C_SIZE_LARGE_OBJECT
-         +
-         AM::pHeapMem()->Transient.m_pLarge->iFreeCount()  *
-         C_SIZE_LARGE_OBJECT
-         );
-  
-  vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Transient.m_pJumbo->iBufferCount(),
-         AM::pHeapMem()->Transient.m_pJumbo->iAllocCount(),
-         AM::pHeapMem()->Transient.m_pJumbo->iFreeCount(),
-         
-         AM::pHeapMem()->Transient.m_pJumbo->iAllocCount() *
-         C_SIZE_JUMBO_OBJECT
-         +
-         AM::pHeapMem()->Transient.m_pJumbo->iFreeCount()  *
-         C_SIZE_JUMBO_OBJECT
-         );
-  
-  vTrace("  Persistent Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagSmall.azChar(),
-         AM::pHeapMem()->Persistent.m_pSmall->iBufferCount(),
-         AM::pHeapMem()->Persistent.m_pSmall->iAllocCount(),
-         AM::pHeapMem()->Persistent.m_pSmall->iFreeCount(),
+  s256 sReport;
 
-         AM::pHeapMem()->Persistent.m_pSmall->iAllocCount() *
-         C_SIZE_SMALL_OBJECT
-         +
-         AM::pHeapMem()->Persistent.m_pSmall->iFreeCount()  *
-         C_SIZE_SMALL_OBJECT
-         );
+
+  // small transient heap
+  AM::pHeapMem()->Transient.m_pSmall->vReport(sReport.pString());
+  vTrace(" %s\n"_Stz,sReport.szStz());
   
-  vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagMedium.azChar(),
-         AM::pHeapMem()->Persistent.m_pMedium->iBufferCount(),
-         AM::pHeapMem()->Persistent.m_pMedium->iAllocCount(),
-         AM::pHeapMem()->Persistent.m_pMedium->iFreeCount(),
-         
-         AM::pHeapMem()->Persistent.m_pMedium->iAllocCount() *
-         C_SIZE_MEDIUM_OBJECT
-         +
-         AM::pHeapMem()->Persistent.m_pMedium->iFreeCount()  *
-         C_SIZE_MEDIUM_OBJECT
-         );
+  // medium transient heap
+  AM::pHeapMem()->Transient.m_pMedium->vReport(sReport.pString());
+  vTrace(" %s\n"_Stz,sReport.szStz());
+
+  // large transient heap
+  AM::pHeapMem()->Transient.m_pLarge->vReport(sReport.pString());
+  vTrace(" %s\n"_Stz,sReport.szStz());
+
+  // jumbo transient heap
+  AM::pHeapMem()->Transient.m_pJumbo->vReport(sReport.pString());
+  vTrace(" %s\n"_Stz,sReport.szStz());
+
   
-  vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagLarge.azChar(),
-         AM::pHeapMem()->Persistent.m_pLarge->iBufferCount(),
-         AM::pHeapMem()->Persistent.m_pLarge->iAllocCount(),
-         AM::pHeapMem()->Persistent.m_pLarge->iFreeCount(),
-         
-         AM::pHeapMem()->Persistent.m_pLarge->iAllocCount() *
-         C_SIZE_LARGE_OBJECT
-         +
-         AM::pHeapMem()->Persistent.m_pLarge->iFreeCount()  *
-         C_SIZE_LARGE_OBJECT
-         );
-  
-  vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Persistent.m_pJumbo->iBufferCount(),
-         AM::pHeapMem()->Persistent.m_pJumbo->iAllocCount(),
-         AM::pHeapMem()->Persistent.m_pJumbo->iFreeCount(),
-         
-         AM::pHeapMem()->Persistent.m_pJumbo->iAllocCount() *
-         C_SIZE_JUMBO_OBJECT
-         +
-         AM::pHeapMem()->Persistent.m_pJumbo->iFreeCount()  *
-         C_SIZE_JUMBO_OBJECT
-         );
+  // small persistent heap
+//  AM::pHeapMem()->Persistent.m_pSmall->vReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//
+//  // medium persistent heap
+//  AM::pHeapMem()->Persistent.m_pMedium->vReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//
+//  // large persistent heap
+//  AM::pHeapMem()->Persistent.m_pLarge->vReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//  
+//  // large jumbo heap
+//  AM::pHeapMem()->Persistent.m_pJumbo->vReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

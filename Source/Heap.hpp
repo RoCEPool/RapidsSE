@@ -47,6 +47,8 @@ namespace Pool
     void    vMonitorPortrait(s48K& sPortrait);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      iObjectSize(void);
+    void    vReport(String* pReportString);
+    i8      iSum(void);
         
   private:
     bool bExtendHeap(void);

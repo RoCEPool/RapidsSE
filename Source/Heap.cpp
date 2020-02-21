@@ -349,6 +349,45 @@ i8 Heap::iObjectSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* form report string                                                         */
+/*----------------------------------------------------------------------------*/
+void Heap::vReport(String* pReportString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  s32 sMagSum;   MagLib::vByteMag(iSum(),sMagSum);
+  s32 sMagSize;  MagLib::vByteMag(iObjectSize(),sMagSize);
+
+  pReportString->szStz()->vSprint(
+                                  
+    "%16s (%6s)"
+    " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,
+                                  
+    aCN[eClass()],
+    sMagSize.azChar(),
+                                  
+    iBufferCount(),
+    iAllocCount(),
+    iFreeCount(),
+    sMagSum.szStz()
+    );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get computed size of heap                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Heap::iSum(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 iSum =   iAllocCount() * iObjectSize()
+            +
+              iFreeCount()  * iObjectSize();
+  
+  return iSum;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
