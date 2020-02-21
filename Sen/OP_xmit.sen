@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: XmitOp :: XmitOp <topology> <nextStage> <nextOp> ;
+jobSyntax: XmitOp :: XmitOp <xmitKind> <topology> <nextStage> <nextOp> ;
 
 jobInfo: XmitOp
 {

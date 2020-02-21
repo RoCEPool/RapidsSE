@@ -733,19 +733,19 @@ bool Dynamo::bPhase2_staging(void)
         // ste the stage kind in the stage
         pStageSpecFound->vStageKind(pOpSpec->eStageKind());
         
-        if (eTopologyX == PX_ORIGIN_TO_ORIGIN) {
+        if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
           // add parameter to the prev sink op
           OpSpec* pPrevOpSpec = pOpSpecVec->pGet(i_Op-1);
           vReplaceStageParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
-          
+
           // remove the last (stage) OpSpec from the OpSpecVec
           RASSERT(i_Op == pOpSpecVec->nItems()-1);
           pOpSpecVec->vRemove(pOpSpec);
           delete pOpSpec;
         }
         else {
-          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
-          pStageSpecFound->vPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
+          pOpSpec->vAddEnamePair("<XmitKind>"_Stz,(i8)pOpSpec->eStageKind(),TN_INTEGER);
+          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);          
         }
       }
       else {
