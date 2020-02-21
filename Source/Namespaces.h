@@ -22,6 +22,7 @@ namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
                           template <i8 SPACE> class Datum_t;                  }
 namespace Debugging     {                                                     }
+namespace DynamoCompiler {                                                    }
 namespace Entries       {                                                     }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
@@ -109,6 +110,7 @@ using namespace DataBuffers;
 using namespace DataOperators;
 using namespace Datums;
 using namespace Debugging;
+using namespace DynamoCompiler;
 using namespace Pipelines;
 using namespace Entries;
 using namespace Enums;
