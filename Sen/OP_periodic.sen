@@ -1,0 +1,114 @@
+/*============================================================================*/
+/* job_PeriodicOp.sen -- Job PeriodicOp                                       */
+/*============================================================================*/
+
+" job_PeriodicOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for periodicOp request                     (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : periodicOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+
+  <minutes> locals| minutes |
+  <hours> locals| hours |
+  0 locals| elapsed |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  hours if
+    hours 60 * to minutes
+  then
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_ERRORMARKER of
+        //"Operand:- ZK_ERRORMARKER" .verbose
+        Operand[].delete
+        Operand[].newStopMarker
+        Operand[].pipeOut
+        Op.ackPipelineJob
+        false
+      endof
+
+      ZK_PULSEMARKER of
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+
+        minutes if
+          begin
+            begin
+              minutes elapsed >
+            while
+              task::yield
+              assert::stack_0
+              "sleeping for 1 min" .
+              60 task::sleepSsec
+              elapsed 1 + to elapsed
+            repeat
+            0 to elapsed
+            minutes "Sending PULSEMARKER after %v mins" str.format .
+            Operand[].newPulseMarker
+            Operand[].pipeOut
+            true
+          while assert::stack_0 repeat
+        then
+
+        Operand[].newStopMarker
+        Operand[].pipeOut
+        Op.ackPipelineJob
+        false
+      endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: periodicOp :: periodicOp once <topology> <nextStage> <nextOp> ;
+jobSyntax: periodicOp :: periodicOp min <minutes> <topology> <nextStage> <nextOp> ;
+jobSyntax: periodicOp :: periodicOp hour <hours> <topology> <nextStage> <nextOp> ;
+
+jobInfo: periodicOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

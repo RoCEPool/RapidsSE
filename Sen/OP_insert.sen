@@ -1,0 +1,112 @@
+/*============================================================================*/
+/* job_InsertOp.sen -- Job InsertOp                                           */
+/*============================================================================*/
+
+" job_InsertOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for insertOp                               (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : InsertOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+  job::this locals| pJob_InsertOp |
+
+  <tableNm> locals| sTableNm |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+    ZK_CRWBUFFER of
+      //"Operand:- ZK_CRWBUFFER" .verbose
+      tablePtn[].get tablePtnGrabWrite2
+      Operand[].insertIntoTable
+      tablePtn[].get tablePtnDropWrite2
+      true
+    endof
+
+    ZK_STARTMARKER of
+      //"Operand:- ZK_STARTMARKER" .verbose
+
+      // check if we can insert into the table
+      sTableNm checkIsValidTable not if
+        op.pipelineJob@ <ERROR_JOB> !!logError
+        Operand[].delete
+        Operand[].newErrorMarker
+      else
+        // move to table folder and find the table and tablePtn
+        sTableNm pushTable assert
+        sTableNm find execute to table[]
+        table[].tablePtn@ to tablePtn[]
+      then
+
+      Operand[].pipeout
+      true
+    endof
+
+    ZK_STOPMARKER of
+      //"Operand:- ZK_STOPMARKER" .verbose
+      popTable
+      Operand[].pipeOut
+      Op.ackPipelineJob
+      false
+    endof
+
+    ZK_STREAMDEF of
+      //"Operand:- ZK_STREAMDEF" .verbose
+      Operand[].delete
+      Operand[].newStreamDef
+      Operand[].pipeOut
+      true
+    endof
+
+    // handle other operand as generic operands
+    jobOperand::generic
+    swap
+
+    endcase
+
+    while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: InsertOp :: InsertOp <tableNm> <topology> <nextStage> <nextOp> ;
+
+jobInfo: InsertOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

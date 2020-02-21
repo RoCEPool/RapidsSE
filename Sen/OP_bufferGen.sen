@@ -1,0 +1,95 @@
+/*============================================================================*/
+/* job_BufferGen.sen -- Job BufferGen                                           */
+/*============================================================================*/
+
+" job_BufferGen.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* BufferGen request                                   (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: BufferGenOp_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_BufferGen |
+
+  <nBuffers> "Number of buffers: %v" .printf
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_PULSEMARKER of
+        "Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+
+        <nBuffers> 0 do
+          I "buffer# %v" .printf
+
+          csvBuffer::new to Operand[]
+          Operand[].pipeOut
+        loop
+
+        Operand[].newEosMarker
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+
+        Operand[].pipeOut
+        true
+      endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  "*** BufferGen EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: bufferGenOp :: bufferGenOp <nBuffers> <topology> <nextStage> <nextOp> ;
+
+jobInfo: bufferGenOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

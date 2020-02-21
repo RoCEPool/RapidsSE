@@ -1,0 +1,81 @@
+/*============================================================================*/
+/* job_StartOp.sen -- Job StartOp                                             */
+/*============================================================================*/
+
+" job_StartOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for startOp request                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : startOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_STARTEDMARKER of
+        //"Operand:- ZK_STARTEDMARKER" .verbose
+        Operand[].delete
+        Operand[].newPulseMarker
+        Operand[].pipeout
+        true
+      endof
+
+      ZK_STOPPEDMARKER of
+        //"Operand:- ZK_STOPPEDMARKER" .verbose
+        Operand[].delete
+        Op.ackPipelineJob
+        false
+      endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: startOp :: startOp <topology> <nextStage> <nextOp> ;
+
+jobInfo: startOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
