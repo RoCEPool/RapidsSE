@@ -223,17 +223,7 @@ void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vReport(void)
 {
-  // get MagLib of the various heaps
-  s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
-  s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
-  s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
-  s32 sMagJumbo;  MagLib::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
-  
-  i8  iSum;
-  s32 sMagSum;
-  
   s256 sReport;
-
 
   // small transient heap
   AM::pHeapMem()->Transient.m_pSmall->vReport(sReport.pString());
@@ -263,7 +253,7 @@ void HeapMem::vReport(void)
 //  // large persistent heap
 //  AM::pHeapMem()->Persistent.m_pLarge->vReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
-//  
+//
 //  // large jumbo heap
 //  AM::pHeapMem()->Persistent.m_pJumbo->vReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
