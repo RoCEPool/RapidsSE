@@ -16,7 +16,7 @@ namespace Gadgets
     static i8 iToNsec(i8 iTickDelta);
     static i8 iToUsec(i8 iTickDelta);
   
-  private:
+  //private:
     static i8 iClockResNsec(void);
     static i8 iReadClock(void);
     static i8 iReadTscp(void);

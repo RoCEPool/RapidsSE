@@ -25,7 +25,7 @@ i8 TickingDevice::iGetTick(void)
   
 #elif defined(WITH_LINUX)
 
-  iTicks = iReaddClock();
+  iTicks = iReadClock();
 
 #else
   NEVER_REACH;
