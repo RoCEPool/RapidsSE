@@ -621,8 +621,8 @@ bool SePrompt::bIsPromptWord(void)
     return false;
 
   pTknVec->vReset();
-  pTknVec->vAddToken("docol"_Stz);
-  pTknVec->vAddToken(sWordNm);
+  pTknVec->vAppendToken("docol"_Stz);
+  pTknVec->vAppendToken(sWordNm);
   pTknVec->vSetTokens();
   
   if (! bFindJobClass())

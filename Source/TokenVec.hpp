@@ -23,7 +23,7 @@ namespace LexicalAnalysis
   
     static TokenVec* _pTokenSet(void* aAddr);
   
-    void vAddToken(Stz* aStr);
+    void vAppendToken(Stz* aStr);
     void vAppendVector(TokenVec* pTokenVec);
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);

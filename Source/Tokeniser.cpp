@@ -112,7 +112,7 @@ TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, i8 i_From, i8 i_To)
   i8 i_Token;
   for (i_Token = i_From; i_Token < nTokens && i_Token <= i_To; i_Token++) {
     Token* pToken = pTokenVec->pGet(i_Token);
-    pExtractedVec->vAddToken(pToken->szTerm());
+    pExtractedVec->vAppendToken(pToken->szTerm());
   }
   
   return pExtractedVec;
@@ -147,7 +147,7 @@ TokenVec* Tokeniser::pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd)
     if (pToken->bSame(szEnd))
       break;
     
-    pExtractedVec->vAddToken(pToken->szTerm());
+    pExtractedVec->vAppendToken(pToken->szTerm());
   }
   
   return pExtractedVec;

@@ -553,9 +553,9 @@ void Planner::vParsePhrases(void)
 
     // add token to phrase1 or phrase2
     if (bAdd1)
-      pPhrase1->vAddToken(pToken->szTerm());
+      pPhrase1->vAppendToken(pToken->szTerm());
     else
-      pPhrase2->vAddToken(pToken->szTerm());
+      pPhrase2->vAppendToken(pToken->szTerm());
 
     // if we see <, <=, >=, > then switch to phrase2
     if (bIsRelationalOp(pToken)) {

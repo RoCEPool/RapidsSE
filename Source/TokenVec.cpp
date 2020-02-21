@@ -79,9 +79,9 @@ TokenVec::~TokenVec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a token                                                                */
+/* append a token                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAddToken(Stz* aStr)
+void TokenVec::vAppendToken(Stz* aStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -98,7 +98,7 @@ void TokenVec::vAppendVector(TokenVec* pTokenVec)
   
   for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
     Token* pToken = pTokenVec->pGet(i_Token);
-    vAddToken(pToken->szTerm());
+    vAppendToken(pToken->szTerm());
   }
 }
 

@@ -11,7 +11,7 @@ namespace Pipelines
     static void  vAddProcedure(TokenVec* pTokenVec);
     static Word* pFindProcedure(Stz* szProcNm, DicStack* pDicStack);
 
-    static bool  bTranslateProcedure(String* pString, TokenVec* pTokenVec);
+    static bool  bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec);
 
   private:
     static void  vParseParameters(Word* pProcWord, TokenVec* pTokenVec);

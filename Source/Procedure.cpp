@@ -83,9 +83,9 @@ Word* Procedure::pFindProcedure(Stz* szProcNm, DicStack* pDicStack)
 }
 
 /*----------------------------------------------------------------------------*/
-/* translate stored procedure into its final command form                     */
+/* translate stored procedure into a pipeline command                         */
 /*----------------------------------------------------------------------------*/
-bool Procedure::bTranslateProcedure(String* pString, TokenVec* pTokenVec)
+bool Procedure::bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec)
 {
   _static_
 
@@ -94,7 +94,14 @@ bool Procedure::bTranslateProcedure(String* pString, TokenVec* pTokenVec)
   Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
   if (! pProcCatg)
     return false;
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  s4K sOriginalCmd;
   
+  pTokenVec->vVecToString(sOriginalCmd,0,false);
+  vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nTokens = pTokenVec->nTokens();
@@ -179,7 +186,7 @@ bool Procedure::bTranslateProcedure(String* pString, TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pProcVec->vVecToString(pString->szStz(),0,true);
+  pProcVec->vVecToString(pPipelineStmt->szStz(),0,true);
   //vTrace(" => %s\n"_Stz,sPipelineSmt.szStz());
   
   delete pProcVec;
