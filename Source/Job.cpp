@@ -525,7 +525,7 @@ void Job::vContentDump(void)
          C_ENDARGS
          );
   
-  if (m_pPipeline) {
+  if ( ! m_sJobNm.bSame("pipeline"_Stz) && m_pPipeline) {
     
     vTrace("\n"_Stz);
     vTrace("Pipeline Job\n"_Stz);
