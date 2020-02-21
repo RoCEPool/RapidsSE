@@ -1062,7 +1062,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
       break;
     
     LogEntry* pPrevEntry = &m_oaEntry[(i_Entry - 1) % m_nEntries];
-    i8 iEntryDeltaUsec = Tick::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
+    i8 iEntryDeltaUsec = TickingDevice::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
 
     if (bCsv)
       pLogEntry->vWriteCsv(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);

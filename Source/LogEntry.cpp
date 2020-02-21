@@ -148,7 +148,7 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
 
   m_i_Prev = C_UNKNOWN;
   
-  m_iTick = Tick::iRdClock();
+  m_iTick = TickingDevice::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
   StrLib::vCopyLen(m_caNode,AM::szNodeNm()->azChar(),sizeof(m_caNode) - 1);
   
@@ -179,7 +179,7 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   m_i_Prev = pFocal->m_i_Log;
   pFocal->m_i_Log = m_i_Entry;
   
-  m_iTick = Tick::iRdClock();
+  m_iTick = TickingDevice::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
   StrLib::vCopyLen(m_caNode,AM::szNodeNm()->azChar(),sizeof(m_caNode) - 1);
   

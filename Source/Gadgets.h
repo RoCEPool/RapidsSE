@@ -35,7 +35,7 @@ namespace Gadgets
 #include "Scan.hpp"
 #include "Sprint.hpp"
 #include "TempName.hpp"
-#include "Tick.hpp"
+#include "TickingDevice.hpp"
 #include "Timer.hpp"
 
 #include "ByteRate.hpp"

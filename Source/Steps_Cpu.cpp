@@ -19,7 +19,7 @@ void Step::vCpuRdtscp(void)
 {
   ENTRY(); // ENTRY("vCpuRdtscp"_Stz);
   
-  i8 iTscp = Tick::iRdClock();
+  i8 iTscp = TickingDevice::iRdClock();
   
   m_pDataStack->vPushInt(iTscp);
   

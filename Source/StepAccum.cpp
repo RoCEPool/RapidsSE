@@ -39,7 +39,7 @@ StepAccum::~StepAccum(void) noexcept(false)
 void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 {
 #ifdef WITH_APPLE
-  nEnterCycles = Tick::iRdClock();
+  nEnterCycles = TickingDevice::iRdClock();
   nEnterMisses = 0; //iPmc_GetLlcMisses();
 #else
   nEnterCycles = 0;
@@ -53,7 +53,7 @@ void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 {
   #ifdef WITH_APPLE
-  i8 nExitCycles = Tick::iRdClock();
+  i8 nExitCycles = TickingDevice::iRdClock();
   i8 nDiffCycles = nExitCycles - nEnterCycles;
 
   i8 nExitMisses = 0; //iPmc_GetLlcMisses();
@@ -80,7 +80,7 @@ void StepAccum::vPrint(File* pFile)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = Tick::iTicksPerSecond();
+  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSecond();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,7 +135,7 @@ void StepAccum::vPrintAll(File* pFile)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = Tick::iTicksPerSecond();
+  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSecond();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -223,7 +223,7 @@ void StepAccum::vShow(void)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = Tick::iTicksPerSecond();
+  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSecond();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

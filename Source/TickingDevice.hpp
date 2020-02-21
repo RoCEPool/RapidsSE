@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* TickingDevice.hpp -- TickingDevice reader (Hardward Clock or Time Stamp Counter              */
+/*============================================================================*/
+#pragma once
+
+namespace Gadgets
+{
+  class TickingDevice
+  {
+  public:
+    static i8 iClockResNsec(void);
+  
+    static i8 iRdClock(void);
+    static i8 iRdTscp(void);
+  
+    static i8 iTicksPerSecond(void);
+    static i8 iToMsec(i8 iTickDelta);
+    static i8 iToNsec(i8 iTickDelta);
+    static i8 iToUsec(i8 iTickDelta);
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
