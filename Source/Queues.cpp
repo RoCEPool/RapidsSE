@@ -663,10 +663,11 @@ void Queues::vDumpBidingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Biding Set: %p\n"_Stz, m_pBidingSet);
-  vTrace("------------------------------------\n"_Stz);
   m_pBidingSet->vGrabLock();
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Biding Set: %p Tasks %lld\n"_Stz,
+         m_pBidingSet,m_pBidingSet->nItems());
+  vTrace("------------------------------------\n"_Stz);
   m_pBidingSet->vContentDump();
   m_pBidingSet->vDropLock();
   vTrace("====================================\n"_Stz);
@@ -681,10 +682,11 @@ void Queues::vDumpExecutingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Set: %p\n"_Stz, m_pExecutingSet);
-  vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vGrabLock();
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Executing Set: %p Tasks %lld\n"_Stz,
+         m_pExecutingSet,m_pExecutingSet->nItems());
+  vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vContentDump();
   m_pExecutingSet->vDropLock();
   vTrace("====================================\n"_Stz);
@@ -699,10 +701,11 @@ void Queues::vDumpReadyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (normal priority): %p\n"_Stz, m_pReadyQueue);
-  vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vGrabLock();
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Ready Queue (normal priority): %p Tasks %lld\n"_Stz,
+         m_pReadyQueue,m_pReadyQueue->nItems());
+  vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vContentDump();
   m_pReadyQueue->vDropLock();
   vTrace("====================================\n"_Stz);
@@ -717,10 +720,11 @@ void Queues::vDumpReadyQueueLP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (low Priority): %p\n"_Stz, m_pReadyQueueLP);
-  vTrace("------------------------------------\n"_Stz);
   m_pReadyQueueLP->vGrabLock();
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Ready Queue (low Priority): %p Tasks %lld\n"_Stz,
+         m_pReadyQueueLP,m_pReadyQueueLP->nItems());
+  vTrace("------------------------------------\n"_Stz);
   m_pReadyQueueLP->vContentDump();
   m_pReadyQueueLP->vDropLock();
   vTrace("====================================\n"_Stz);
@@ -734,11 +738,12 @@ void Queues::vDumpReadyQueueLP(void)
 void Queues::vDumpSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
-  
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Sleeping Queue: %p\n"_Stz, m_pSleepingQueue);
-  vTrace("------------------------------------\n"_Stz);
+
   m_pSleepingQueue->vGrabLock();
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Sleeping Queue: %p Tasks %lld\n"_Stz,
+         m_pSleepingQueue,m_pSleepingQueue->nTasks());
+  vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vContentDump();
   m_pSleepingQueue->vDropLock();
   vTrace("====================================\n"_Stz);
@@ -753,10 +758,11 @@ void Queues::vDumpWaitingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Set: %p\n"_Stz, m_pWaitingSet);
-  vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vGrabLock();
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Waiting Set: %p Tasks %lld\n"_Stz,
+         m_pWaitingSet,m_pWaitingSet->nItems());
+  vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vContentDump();
   m_pWaitingSet->vDropLock();
   vTrace("====================================\n"_Stz);

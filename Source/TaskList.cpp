@@ -269,8 +269,8 @@ void TaskList::vContentDump(void)
   
   ASSERT(m_okLock.bIsLocked());
 
-  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Task>::nItems());
-  
+  //vTrace("ITEMS %lld\n"_Stz,nItems());
+
   for (Task* pTask = ListNL_t<Task>::pHead();
        pTask;
        pTask = pTask->pNextItem()) {
