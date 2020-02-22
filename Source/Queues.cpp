@@ -123,7 +123,7 @@ void Queues::vThreadsReport(void)
     vTrace("  Gen Thread %2lld %p"
            " base %llx size %lld"
            " user %lld system %lld usage %lld%% sleep %llds"
-           " %7s %s"
+           " %s %s"
            " assigned %lld\n"_Stz,
            pThread->iThreadNo(),
            pThread,
