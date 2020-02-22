@@ -50,7 +50,7 @@ namespace Jobs
     eJS       m_eJobState;    // current state of the job
     
   public:
-    Result       m_xResult;      // result of this job
+    Result    m_xResult;      // result of this job
     
   
   public:
