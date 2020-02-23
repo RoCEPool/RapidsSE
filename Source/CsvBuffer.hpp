@@ -6,7 +6,7 @@
 static const i8 C_WSP_CSVBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
 
 
-namespace CompactBuffers
+namespace DataBuffers
 {
   class CsvBuffer : public DataBuffer
   {
@@ -23,7 +23,7 @@ namespace CompactBuffers
     void  operator delete(void*);
     
     CsvBuffer(void);
-    ~CsvBuffer(void) noexcept(false);
+   ~CsvBuffer(void) noexcept(false);
     
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);

@@ -2,44 +2,16 @@
 /* CsvBuffer.cpp -- Csv Buffer                                                */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-CsvBuffer* CompactBuffers::_pCsvBuffer(void* aAddress)
-{
-  CsvBuffer* pCsvBuffer = reinterpret_cast<CsvBuffer*>(aAddress);
-  
-  RASSERT_TYPE(pCsvBuffer,CN_CSVBUFFER);
-  
-  return pCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a new row buffer from heap                                        */
-/*----------------------------------------------------------------------------*/
-void* CsvBuffer::operator new(size_t)
-{
-  CsvBuffer* pCsvBuffer =
-    static_cast<CsvBuffer*>(HeapMem::pAllocate(CN_CSVBUFFER));
-  
-  return pCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free a row buffer back to the heap                                         */
-/*----------------------------------------------------------------------------*/
-void CsvBuffer::operator delete(void* aAddress)
-{
-  CsvBuffer* pCsvBuffer = static_cast<CsvBuffer*>(aAddress);
-  
-  HeapMem::vFree(pCsvBuffer);
-}
+__pCastFunction(DataBuffers,CsvBuffer,CN_CSVBUFFER)
+__aNewFunction(CsvBuffer,CN_CSVBUFFER)
+__vDeleteFunction(CsvBuffer,CN_CSVBUFFER)
+__aFooterFunction(CsvBuffer)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -167,11 +139,6 @@ i8 CsvBuffer::nRecords(void)
   
   return m_nRecords;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(CsvBuffer)
 
 /*============================================================================*/
 /* end                                                                        */
