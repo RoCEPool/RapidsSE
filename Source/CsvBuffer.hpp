@@ -32,11 +32,9 @@ namespace CompactBuffers
     CsvBuffer* pNextBuffer(void);
     void       vPrintRecords(void);
     i8         nRecords(void);
-    CrwBuffer* pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor);
-    
+  
   private:
     Footer* aFooter(void);
-    
   };
   
   CsvBuffer* _pCsvBuffer(void* aAddr);
