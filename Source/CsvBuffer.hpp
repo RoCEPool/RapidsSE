@@ -10,9 +10,10 @@ namespace DataBuffers
 {
   class CsvBuffer : public DataBuffer
   {
-    
-  public:
-    i8 m_nRecords;
+  private:
+    s32 m_sReportNm; // optional report name this csv buffer belong to
+  
+    i8  m_nRecords;
     Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
     
     // must be last
@@ -32,7 +33,9 @@ namespace DataBuffers
     CsvBuffer* pNextBuffer(void);
     void       vPrintRecords(void);
     i8         nRecords(void);
-  
+    Stz*       szReportNm(void);
+    void       vReportNm(Stz* szReportNm);
+
   private:
     Footer* aFooter(void);
   };

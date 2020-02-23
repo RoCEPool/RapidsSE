@@ -21,7 +21,8 @@ CsvBuffer::CsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  m_nRecords = 0;
+  m_sReportNm = C_NO_NAME;
+  m_nRecords  = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_CSVBUFFER);
@@ -138,6 +139,26 @@ i8 CsvBuffer::nRecords(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
   return m_nRecords;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get optional report name                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* CsvBuffer::szReportNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+    
+  return m_sReportNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set optional report name                                                   */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vReportNm(Stz* szReportNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+    
+  m_sReportNm = szReportNm;
 }
 
 /*============================================================================*/
