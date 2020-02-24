@@ -4,6 +4,10 @@
 
 startCluster;
 
+heapmem;
+
+bp;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_1;
 print "** 1/7) run __report setup";
@@ -74,6 +78,10 @@ print "** 5/7) drop ALLCOLS_TABLE";
 drop table ALLCOLS_TABLE;
 
 //memoryLeaks fatal;
+
+heapmem;
+
+bp;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INSIDX_7;

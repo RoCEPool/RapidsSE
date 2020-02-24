@@ -6,13 +6,14 @@
 static const i8 C_WSP_CSVBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
 
 
-namespace CompactBuffers
+namespace DataBuffers
 {
   class CsvBuffer : public DataBuffer
   {
-    
-  public:
-    i8 m_nRecords;
+  private:
+    s32 m_sReportNm; // optional report name this csv buffer belong to
+  
+    i8  m_nRecords;
     Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
     
     // must be last
@@ -23,7 +24,7 @@ namespace CompactBuffers
     void  operator delete(void*);
     
     CsvBuffer(void);
-    ~CsvBuffer(void) noexcept(false);
+   ~CsvBuffer(void) noexcept(false);
     
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);
@@ -32,11 +33,11 @@ namespace CompactBuffers
     CsvBuffer* pNextBuffer(void);
     void       vPrintRecords(void);
     i8         nRecords(void);
-    CrwBuffer* pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor);
-    
+    Stz*       szReportNm(void);
+    void       vReportNm(Stz* szReportNm);
+
   private:
     Footer* aFooter(void);
-    
   };
   
   CsvBuffer* _pCsvBuffer(void* aAddr);

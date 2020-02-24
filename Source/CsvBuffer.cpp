@@ -2,44 +2,16 @@
 /* CsvBuffer.cpp -- Csv Buffer                                                */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-CsvBuffer* CompactBuffers::_pCsvBuffer(void* aAddress)
-{
-  CsvBuffer* pCsvBuffer = reinterpret_cast<CsvBuffer*>(aAddress);
-  
-  RASSERT_TYPE(pCsvBuffer,CN_CSVBUFFER);
-  
-  return pCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a new row buffer from heap                                        */
-/*----------------------------------------------------------------------------*/
-void* CsvBuffer::operator new(size_t)
-{
-  CsvBuffer* pCsvBuffer =
-    static_cast<CsvBuffer*>(HeapMem::pAllocate(CN_CSVBUFFER));
-  
-  return pCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free a row buffer back to the heap                                         */
-/*----------------------------------------------------------------------------*/
-void CsvBuffer::operator delete(void* aAddress)
-{
-  CsvBuffer* pCsvBuffer = static_cast<CsvBuffer*>(aAddress);
-  
-  HeapMem::vFree(pCsvBuffer);
-}
+__pCastFunction(DataBuffers,CsvBuffer,CN_CSVBUFFER)
+__aNewFunction(CsvBuffer,CN_CSVBUFFER)
+__vDeleteFunction(CsvBuffer,CN_CSVBUFFER)
+__aFooterFunction(CsvBuffer)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -49,7 +21,8 @@ CsvBuffer::CsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  m_nRecords = 0;
+  m_sReportNm = C_NO_NAME;
+  m_nRecords  = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_CSVBUFFER);
@@ -169,57 +142,24 @@ i8 CsvBuffer::nRecords(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert CswBuffer to a CrwBuffer                                           */
+/* get optional report name                                                   */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
+Stz* CsvBuffer::szReportNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
-  
-  //vPrintRows();
-  
-  CrwBuffer* pCrwBuffer = new CrwBuffer;
-  pCrwBuffer->vTable(pTable);
-  pCrwBuffer->vPartitionNo(0);  //!ALKA
-  
-  Row* pRow = new Row(pTable->pStreamDef(),C_ALL);
-
-  char* aCursor = (char*)ayDataArea();
-  bool bBlankLine = false;
-  Format* pFormat = AM::pFmt();
-  pFormat->m_cRecordTerminator = '\n';
-  
-  pCrwBuffer->vAppendOpen(pRowCompactor, false);
-  
-  for(i8 i_Record = 0; i_Record < m_nRecords; i_Record++) {
     
-    pRow->vResetValues();
-    bool bResult = CsvCursor::bExtractNext(pRow, pTable->pStreamDef(), &aCursor, pFormat, bBlankLine);
-    RASSERT(bResult);
-    
-    bResult = pCrwBuffer->bAppendRow(pRow);
-    
-    if ( ! bResult ) {
-      CrwBuffer* pNewCsvBuffer = new CrwBuffer;
-      pCrwBuffer->vTable(pTable);
-      pCrwBuffer->vPartitionNo(0);  //!ALKA
-      
-      pCrwBuffer->vNextBuffer(pNewCsvBuffer);
-      pCrwBuffer = pNewCsvBuffer;
-      bResult = pCrwBuffer->bAppendRow(pRow);
-      RASSERT(bResult);
-    }
-  }
-  
-  //pCrwBuffer->vDump();
-  
-  return pCrwBuffer;
+  return m_sReportNm;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/* set optional report name                                                   */
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(CsvBuffer)
+void CsvBuffer::vReportNm(Stz* szReportNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+    
+  m_sReportNm = szReportNm;
+}
 
 /*============================================================================*/
 /* end                                                                        */

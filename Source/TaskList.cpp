@@ -269,18 +269,29 @@ void TaskList::vContentDump(void)
   
   ASSERT(m_okLock.bIsLocked());
 
-  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Task>::nItems());
-  
+  //vTrace("ITEMS %lld\n"_Stz,nItems());
+
   for (Task* pTask = ListNL_t<Task>::pHead();
        pTask;
        pTask = pTask->pNextItem()) {
     
-    vTrace("Task %p %s %s\n"_Stz,
+    Job* pJob = pTask->pJob();
+    
+    vTrace("Task %p %s Job %p %s"_Stz,
            pTask,
-           aCN[pTask->pJob()->eClass()],
-           aTS[pTask->eState()]
+           aTS[pTask->eState()],
+           
+           pJob,
+           aCN[pJob->eClass()]
            );
+    
+    if (Thread* pThread = pTask->pThread()) {
+     vTrace(" Thread %p"_Stz,
+            pThread);
 
+    }
+
+    vTrace("\n"_Stz);
   }
 }
 

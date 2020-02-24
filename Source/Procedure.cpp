@@ -2,7 +2,7 @@
 /* Procedure.cpp -- Procedure Helper                                          */
 /*============================================================================*/
 
-#include "Pipelines.h"
+#include "DynamoCompiler.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -83,12 +83,15 @@ Word* Procedure::pFindProcedure(Stz* szProcNm, DicStack* pDicStack)
 }
 
 /*----------------------------------------------------------------------------*/
-/* translate stored procedure into a pipeline command                         */
+/* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
-bool Procedure::bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec)
+bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
+                                    TokenVec* pCmdTokenVec)
 {
   _static_
 
+  // check we have prcoedure category defined
+  
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
@@ -96,20 +99,22 @@ bool Procedure::bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec)
     return false;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  s4K sOriginalCmd;
+  // debug: print the original command typed in by the user
   
-  pTokenVec->vVecToString(sOriginalCmd,0,false);
+  s4K sOriginalCmd;
+  pCmdTokenVec->vVecToString(sOriginalCmd,0,false);
   vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // attempt to find the procedure which matches the command
+  
+  i8 nTokens = pCmdTokenVec->nTokens();
 
-  i8 nTokens = pTokenVec->nTokens();
-
-  Token* pTkn_ProcNm = pTokenVec->pGet(0);
+  Token* pTkn_ProcNm = pCmdTokenVec->pGet(0);
 
   s4K sProcNm = pTkn_ProcNm->szTerm();
   
+  // one-part name
   Word* pProcWord = pRootDic->pFindWord(sProcNm);
   
   if (! pProcWord) {
@@ -118,7 +123,8 @@ bool Procedure::bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec)
     if (1 == nTokens)
       return false;
 
-    Token* pTkn1_ProcNmTwo = pTokenVec->pGet(1);
+    // try two-part name
+    Token* pTkn1_ProcNmTwo = pCmdTokenVec->pGet(1);
 
     sProcNm.vConcat("__"_Stz);
     sProcNm.vConcat(pTkn1_ProcNmTwo->szTerm());
@@ -128,81 +134,78 @@ bool Procedure::bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec)
     if (! pProcWord)
       return false;
     
-    
-    pTokenVec->vCutToken(1);
+    // -- -- -- -- -- --
+    // found two-part; correct the token vector
+    pCmdTokenVec->vCutToken(1);
     
     pTkn_ProcNm->vCopy(sProcNm);
     
-    pTokenVec->vDumpTokens();
+    pCmdTokenVec->vDumpTokens();
 
     Correctness::vDebugPoint();
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test that the found word is a procedure
+
   if (pProcWord->pCategory() != pProcCatg)
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // get the procedure text and toeknise it
   EnameSet* pEnameSet = pProcWord->pEnameSet();
   
   Stz* szProcText = pEnameSet->szValue("procText"_Stz);
   
-  TokenVec* pProcVec = Tokeniser::pTokenise(szProcText);
+  TokenVec* pProcTextVec = Tokeniser::pTokenise(szProcText);
   
   //pProcVec->vDumpTokens();
   
-  Token* pTkn0 = pProcVec->pGet(0);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert procedure into pipeline
+  
+  Token* pTkn0 = pProcTextVec->pGet(0);
 
   pTkn0->vCopy("pipeline"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TokenVec* pParamsVec = Tokeniser::pSubVec(pProcVec,"parameters"_Stz,"begin"_Stz);
-//  if (pParamsVec)
-//    pParamsVec->vDumpTokens();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TokenVec* pArgsVec = Tokeniser::pSubVec(pTokenVec,1,nTokens-1);
-//  if (pArgsVec)
-//    pArgsVec->vDumpTokens();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // substitute parameters in procedure text with command arguments
   
-  Tokeniser::vReplace(pProcVec,pParamsVec,pArgsVec);
-  //pProcVec->vDumpTokens();
+  TokenVec* pParamsVec = Tokeniser::pSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
+  TokenVec* pArgsVec   = Tokeniser::pSubVec(pCmdTokenVec,1,nTokens-1);
+  
+  Tokeniser::vReplace(pProcTextVec,pParamsVec,pArgsVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the parameters clause from the modified text vector
   
-  i8 i_Cut = pProcVec->iFindToken("parameters"_Stz);
+  i8 i_Cut = pProcTextVec->iFindToken("parameters"_Stz);
   if (C_UNKNOWN != i_Cut) {
     for (;;) {
-      pProcVec->vCutToken(i_Cut);
-      Token* pTest = pProcVec->pGet(i_Cut);
+      pProcTextVec->vCutToken(i_Cut);
+      Token* pTest = pProcTextVec->pGet(i_Cut);
       if (pTest->bSame("begin"_Stz))
         break;
     }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the <stmt> tag into the modified text vector
   
   i8 i_InsTkn = i_Cut;
-  pProcVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
-
-  pProcVec->vInsertToken(i_InsTkn++,"<stmt>"_Stz,TN_NAME);
-
-  pProcVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
-
-  pProcVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
-
-  pProcVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"<stmt>"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pProcVec->vVecToString(pPipelineStmt->szStz(),0,true);
-  vTrace(" => %s\n"_Stz,pPipelineStmt->szStz());
+  // stringise the modified text vector into a pipeline statement
   
-  delete pProcVec;
+  pProcTextVec->vVecToString(pToPipelineStmt->szStz(),0,true);
+  vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());
+  
+  delete pProcTextVec;
   delete pParamsVec;
   delete pArgsVec;
 

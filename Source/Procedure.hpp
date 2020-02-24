@@ -3,15 +3,15 @@
 /*============================================================================*/
 #pragma once
 
-namespace Pipelines
+namespace DynamoCompiler
 {
   class Procedure
   {
   public:
     static void  vAddProcedure(TokenVec* pTokenVec);
     static Word* pFindProcedure(Stz* szProcNm, DicStack* pDicStack);
-
-    static bool  bTranslateProcedure(String* pPipelineStmt, TokenVec* pTokenVec);
+    static bool  bTranslateProcedure(String* pToPipelineStmt,
+                                     TokenVec* pCmdTokenVec);
 
   private:
     static void  vParseParameters(Word* pProcWord, TokenVec* pTokenVec);

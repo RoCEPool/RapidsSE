@@ -22,8 +22,6 @@ namespace Pipelines
 
 #include "PipelineSpec.hpp"
 
-#include "Procedure.hpp"
-
 
 /*============================================================================*/
 /* end                                                                        */
