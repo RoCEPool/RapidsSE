@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables pathPush "tables" :dic tick folder swap execute dic.kind! pathDrop ;
+//: makeTables pathPush "tables" :dic find: folder swap execute dic.kind! pathDrop ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
@@ -40,7 +40,7 @@
 ;
 
 
-: isTable word.category@ tick table eql ;
+: isTable word.category@ find: table eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a table using name from input stream (doesnt leave table on stk)    */
@@ -57,7 +57,7 @@
   compiler::current@ word.embObject table.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick table compiler::current@ word.category!
+  find: table compiler::current@ word.category!
 
   does>
 ;
@@ -77,7 +77,7 @@
   compiler::current@ word.embObject table.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick table compiler::current@ word.category!
+  find: table compiler::current@ word.category!
 
   compiler::current@
   does>
@@ -166,7 +166,7 @@
   dup ( "<tableNm>" ^w:table ^w:table )
 
   word.category@ ( "<tableNm>" ^w:table ^word )
-  tick table ( "<tableNm>" ^w:table ^word ^word )
+  find: table ( "<tableNm>" ^w:table ^word ^word )
   eql ( "<tableNm>" ^w:table bool )
   if
     drop ( "<tableNm>" )

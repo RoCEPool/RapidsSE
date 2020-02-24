@@ -225,7 +225,7 @@ storeProcedure myCollect
   end
 ;
 
-tick myCollect word.see
+find: myCollect word.see
 
 //debug::breakPoint
 /*============================================================================*/

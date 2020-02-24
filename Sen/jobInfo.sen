@@ -14,7 +14,7 @@
   sEvalue find locals| pEvalueWord |
 
   pEvalueWord if
-    pEvalueWord word.category@ tick rootConstant eql if
+    pEvalueWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
        sEname pEvalueWord execute pEnameSet EnameSet.addInt

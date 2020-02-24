@@ -4,6 +4,11 @@
 
 "se_boot.sen" .verbose
 
+: category immediate
+
+  
+;
+
 "SEN: " .put
 9 .put  "vocab.sen"     include
 8 .put  "tasks.sen"     include

@@ -24,7 +24,7 @@
   :folder      ( )
 ;
 
-: isIndex word.category@ tick index eql ;
+: isIndex word.category@ find: index eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create an index using name from input stream (doesnt leave index on stk)   */
@@ -41,7 +41,7 @@
   compiler::current@ word.embObject index.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick index compiler::current@ word.category!
+  find: index compiler::current@ word.category!
 
   does>
 ;
@@ -61,7 +61,7 @@
   compiler::current@ word.embObject index.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick index compiler::current@ word.category!
+  find: index compiler::current@ word.category!
 
   compiler::current@
   does>
@@ -109,7 +109,7 @@
 
   indexPtr ( indexPtr )
   word.category@ ( ^word )
-  tick index ( ^word ^word )
+  find: index ( ^word ^word )
   eql ( bool )
   if
     true ( true )

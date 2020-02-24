@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : folder ;
 
-: isFolder word.category@ tick folder eql ;
+: isFolder word.category@ find: folder eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
@@ -28,7 +28,7 @@ diclock.grabwrite
   compiler::current@ word.embObject dic.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick folder compiler::current@ word.category!
+  find: folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
 
@@ -54,7 +54,7 @@ diclock.grabwrite
   compiler::current@ word.embObject dic.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick folder compiler::current@ word.category!
+  find: folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
 
@@ -78,7 +78,7 @@ diclock.grabwrite
   compiler::current@ word.embObject dic.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick folder compiler::current@ word.category!
+  find: folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
 
@@ -104,7 +104,7 @@ diclock.grabwrite
   compiler::current@ word.embObject dic.init
 
   true compiler::current@ word.embObject object.wordbody!
-  tick folder compiler::current@ word.category!
+  find: folder compiler::current@ word.category!
 
   compiler::current@
 
@@ -127,7 +127,7 @@ diclock.grabwrite
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
 
-  tick folder compiler::current@ word.category!
+  find: folder compiler::current@ word.category!
 
   true compiler::current@ word.embObject object.wordbody!
   compiler::current@ word.embObject dic.init
@@ -147,7 +147,7 @@ diclock.dropwrite
   params| pWord |
 
   pWord not if EC_NO_SUCH_FOLDER false exit_rt then
-  pWord word.category@ tick folder eql if true exit_rt then
+  pWord word.category@ find: folder eql if true exit_rt then
   EC_NOT_A_FOLDER false
 ;
 

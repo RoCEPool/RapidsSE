@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 : word::seed#
 
-  tick seed compiler::current@ word.category!
+  find: seed compiler::current@ word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 : suffix immediate
 
-  tick suffix compiler::current@ word.category!
+  find: suffix compiler::current@ word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@
   "_beg" word::addSuffix
 
   // the compiled word is a seed
-  tick seed compiler::current@ word.category!
+  find: seed compiler::current@ word.category!
 
   word::seed#
 

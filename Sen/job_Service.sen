@@ -90,9 +90,9 @@ jobInfo: service
 
   "service" ,
 
-  tick job::spawnUniversal compile,
+  find: job::spawnUniversal compile,
 
-  //tick drop compile,
+  //find: drop compile,
 
   assert::stack_0
 ;

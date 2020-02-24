@@ -9,24 +9,24 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Forth(void)
 {
-  vAddStep(":"_Stz,               &Step::vColon);
-  vAddStep(","_Stz,               &Step::vComma);
-  vAddStep("compile,"_Stz,        &Step::vCompileComma);
-  vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
-  vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
+  vAddStep(":"_Stz,                 &Step::vColon);
+  vAddStep(","_Stz,                 &Step::vComma);
+  vAddStep("compile,"_Stz,          &Step::vCompileComma);
+  vAddStep("createTenants"_Stz,     &Step::vCreateTenants);
+  vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
-  vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
-  vAddStep("does>"_Stz,           &Step::vDoes,             true);
-  vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
-  vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
-  vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
-  vAddStep("immediate"_Stz,       &Step::vImmediate,        true);
-  vAddStep("postpone"_Stz,        &Step::vPostpone,         true);
-  vAddStep("prompt"_Stz,          &Step::vPrompt,           true);
-  vAddStep("see"_Stz,             &Step::vSee,              true);
-  vAddStep(";"_Stz,               &Step::vSemicolon,        true);
-  vAddStep("series-name"_Stz,     &Step::vSeriesName);
-  vAddStep("tick"_Stz,            &Step::vTick,             true);
+  vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
+  vAddStep("does>"_Stz,             &Step::vDoes,             true);
+  vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
+  vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
+  vAddStep("findInCurrent"_Stz,     &Step::vFindInCurrent);
+  vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
+  vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
+  vAddStep("prompt"_Stz,            &Step::vPrompt,           true);
+  vAddStep("see"_Stz,               &Step::vSee,              true);
+  vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
+  vAddStep("series-name"_Stz,       &Step::vSeriesName);
+  vAddStep("find:"_Stz,             &Step::vTick,             true);
 }
 
 /*----------------------------------------------------------------------------*/

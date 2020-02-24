@@ -157,7 +157,7 @@
 /* initialise OFs counter                                                     */
 /*----------------------------------------------------------------------------*/
 0 CONSTANT CASE
-true tick CASE word.immediate!
+true find: CASE word.immediate!
 
 /*----------------------------------------------------------------------------*/
 /* OF block                                                                   */
