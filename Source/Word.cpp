@@ -67,8 +67,16 @@ Word::Word(Stz* szWordNm)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
-  
+
   //vTrace("WORD: %s\n"_Stz,szWordNm);
+
+#ifdef WITH_DEBUG
+  if (szWordNm->bSame("word"_Stz)) {
+    vDebugPoint();
+    RASSERT(m_pDic);
+    RASSERT(! m_pDic->pLastWord());
+  }
+#endif
   
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
 
