@@ -31,14 +31,6 @@ void Task::vAddRoutines(void)
     vTrace("[[mainThread]] Adding routines...\n"_Stz);
   
   s48K sDefinition;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // : __nil
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  sDefinition =
-  ": __nil ;"_Stz;
-  
-  pCompileColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : interpret
