@@ -25,7 +25,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: status :: status ;
+opSyntax: status :: status ;
 
 jobInfo: status
 {

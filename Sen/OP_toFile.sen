@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToFileOp :: ToFileOp <fileNm> <topology> <nextStage> <nextOp> ;
+opSyntax: ToFileOp :: ToFileOp <fileNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: ToFileOp
 {

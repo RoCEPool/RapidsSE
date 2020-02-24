@@ -31,7 +31,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: waker :: waker ;
+opSyntax: waker :: waker ;
 
 jobInfo: waker
 {

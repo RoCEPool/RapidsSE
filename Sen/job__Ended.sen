@@ -89,7 +89,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: _Ended :: _Ended ;
+opSyntax: _Ended :: _Ended ;
 
 jobInfo: _Ended
 {

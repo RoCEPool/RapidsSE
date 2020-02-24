@@ -43,7 +43,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: periodic :: periodic ;
+opSyntax: periodic :: periodic ;
 
 jobInfo: periodic
 {

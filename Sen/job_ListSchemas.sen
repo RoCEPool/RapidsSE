@@ -39,7 +39,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: lssch :: lssch ;
+opSyntax: lssch :: lssch ;
 
 jobInfo: lssch
 {

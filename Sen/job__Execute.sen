@@ -65,7 +65,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: _Execute :: _Execute ;
+opSyntax: _Execute :: _Execute ;
 
 jobInfo: _Execute
 {

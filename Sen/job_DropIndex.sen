@@ -127,7 +127,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: dropIndex :: drop index <tableNm> <indexNm> ;
+opSyntax: dropIndex :: drop index <tableNm> <indexNm> ;
 
 jobInfo: dropIndex
 {

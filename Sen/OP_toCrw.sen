@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToCrwOp :: ToCrwOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: ToCrwOp :: ToCrwOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: ToCrwOp
 {

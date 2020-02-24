@@ -98,7 +98,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: lspartcol :: lspartcol <tableNm> ;
+opSyntax: lspartcol :: lspartcol <tableNm> ;
 
 jobInfo: lspartcol
 {

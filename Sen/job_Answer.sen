@@ -110,7 +110,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: answer :: answer ;
+opSyntax: answer :: answer ;
 
 jobInfo: answer
 {

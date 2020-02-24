@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: bufferGenOp :: bufferGenOp <nBuffers> <topology> <nextStage> <nextOp> ;
+opSyntax: bufferGenOp :: bufferGenOp <nBuffers> <topology> <nextStage> <nextOp> ;
 
 jobInfo: bufferGenOp
 {

@@ -34,7 +34,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: startNode :: start node <nodeNm> ;
+opSyntax: startNode :: start node <nodeNm> ;
 
 jobInfo: startNode
 {

@@ -24,7 +24,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: NAME_OF_JOB :: NAME_OF_JOB ;
+opSyntax: NAME_OF_JOB :: NAME_OF_JOB ;
 
 jobInfo: NAME_OF_JOB
 {

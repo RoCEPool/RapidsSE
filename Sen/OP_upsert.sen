@@ -87,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: UpsertOp :: UpsertOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: UpsertOp :: UpsertOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: UpsertOp
 {

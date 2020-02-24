@@ -116,8 +116,8 @@ then
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: verifyIndex :: verifyIndex <tableNm> <indexNm> ;
-jobSyntax: verifyIndex :: vfyIdx <tableNm> <indexNm> ;
+opSyntax: verifyIndex :: verifyIndex <tableNm> <indexNm> ;
+opSyntax: verifyIndex :: vfyIdx <tableNm> <indexNm> ;
 
 jobInfo: verifyIndex
 {

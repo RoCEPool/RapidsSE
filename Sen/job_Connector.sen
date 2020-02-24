@@ -142,7 +142,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: connector :: connector ;
+opSyntax: connector :: connector ;
 
 jobInfo: connector
 {

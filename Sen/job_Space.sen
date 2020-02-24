@@ -31,7 +31,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: space :: space ;
+opSyntax: space :: space ;
 
 jobInfo: space
 {

@@ -127,7 +127,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: reportOp :: reportOp <fileNm> <topology> <nextStage> <nextOp> ;
+opSyntax: reportOp :: reportOp <fileNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: reportOp
 {

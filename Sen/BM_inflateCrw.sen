@@ -128,7 +128,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: BM_InflateCrwOp
 {

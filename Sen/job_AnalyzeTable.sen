@@ -98,10 +98,10 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: analyzeTable :: analyzeTable <tableNm> ;
-jobSyntax: analyzeTable :: analyzeTable <tableNm> <detailed> ;
-jobSyntax: analyzeTable :: antbl <tableNm> ;
-jobSyntax: analyzeTable :: antbl <tableNm> <detailed> ;
+opSyntax: analyzeTable :: analyzeTable <tableNm> ;
+opSyntax: analyzeTable :: analyzeTable <tableNm> <detailed> ;
+opSyntax: analyzeTable :: antbl <tableNm> ;
+opSyntax: analyzeTable :: antbl <tableNm> <detailed> ;
 
 jobInfo: analyzeTable
 {

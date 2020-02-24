@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToCsvOp :: ToCsvOp <topology> <nextStage> <nextOp> ;
+opSyntax: ToCsvOp :: ToCsvOp <topology> <nextStage> <nextOp> ;
 
 jobInfo: ToCsvOp
 {

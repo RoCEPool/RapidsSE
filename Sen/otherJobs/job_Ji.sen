@@ -27,7 +27,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: ji :: ji <wordNm> ;
+opSyntax: ji :: ji <wordNm> ;
 
 jobInfo: ji
 {

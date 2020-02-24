@@ -22,7 +22,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: showCluster :: showCluster ;
+opSyntax: showCluster :: showCluster ;
 
 jobInfo: showCluster
 {

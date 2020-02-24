@@ -79,7 +79,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: cf :: cf <folderNm> ;
+opSyntax: cf :: cf <folderNm> ;
 
 jobInfo: cf
 {

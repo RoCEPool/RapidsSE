@@ -93,9 +93,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: periodicOp :: periodicOp once <topology> <nextStage> <nextOp> ;
-jobSyntax: periodicOp :: periodicOp min <minutes> <topology> <nextStage> <nextOp> ;
-jobSyntax: periodicOp :: periodicOp hour <hours> <topology> <nextStage> <nextOp> ;
+opSyntax: periodicOp :: periodicOp once <topology> <nextStage> <nextOp> ;
+opSyntax: periodicOp :: periodicOp min <minutes> <topology> <nextStage> <nextOp> ;
+opSyntax: periodicOp :: periodicOp hour <hours> <topology> <nextStage> <nextOp> ;
 
 jobInfo: periodicOp
 {

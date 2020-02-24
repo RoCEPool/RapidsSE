@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: sinkOp :: sinkOp <topology> <nextStage> <nextOp> ;
+opSyntax: sinkOp :: sinkOp <topology> <nextStage> <nextOp> ;
 
 jobInfo: sinkOp
 {

@@ -27,7 +27,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: wd :: wd <wordNm> ;
+opSyntax: wd :: wd <wordNm> ;
 
 jobInfo: wd
 {

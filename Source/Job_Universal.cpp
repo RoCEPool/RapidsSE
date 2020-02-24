@@ -162,12 +162,12 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  Word* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
+//  Word* pWord_jobsyn = pRootDic->pFindWord("opSyntax:"_Stz);
 //
 //  Word* pWord_jobdef = nullptr;
 //
 //  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
-//    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().szStz());
+//    vTrace("  opSyntax: %s\n"_Stz,pWord_jobdef->sName().szStz());
 //
 //    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnameSet())) {
 //      vTrace("    matches\n"_Stz);

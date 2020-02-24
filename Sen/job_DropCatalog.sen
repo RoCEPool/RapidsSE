@@ -69,7 +69,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: dropCatalog :: drop catalog <catalogNm> ;
+opSyntax: dropCatalog :: drop catalog <catalogNm> ;
 
 jobInfo: dropCatalog
 {

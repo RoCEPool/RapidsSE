@@ -36,8 +36,8 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: forgetNode :: forget node <nodeNm> __etc__ ;
-jobSyntax: forgetNode :: fgnde <nodeNm> ;
+opSyntax: forgetNode :: forget node <nodeNm> __etc__ ;
+opSyntax: forgetNode :: fgnde <nodeNm> ;
 
 jobInfo: forgetNode
 {

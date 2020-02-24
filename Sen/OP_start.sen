@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: startOp :: startOp <topology> <nextStage> <nextOp> ;
+opSyntax: startOp :: startOp <topology> <nextStage> <nextOp> ;
 
 jobInfo: startOp
 {

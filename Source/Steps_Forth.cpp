@@ -410,7 +410,7 @@ void Step::vSeriesName(void)
   
   Dic* pRootDic = AM::pRootDic();
   
-  Word* pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
+  Word* pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
 
   Word* pWord = nullptr;
   while ( (pWord = pRootDic->pEachWord(pCategory,pWord)) ) {

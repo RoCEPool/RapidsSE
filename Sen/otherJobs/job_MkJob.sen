@@ -38,7 +38,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: mkjob :: mkjob <newNm> ;
+opSyntax: mkjob :: mkjob <newNm> ;
 
 jobInfo: mkjob
 {

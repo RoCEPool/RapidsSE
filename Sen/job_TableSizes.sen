@@ -69,7 +69,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: tableSizes :: tableSizes ;
+opSyntax: tableSizes :: tableSizes ;
 
 jobInfo: tableSizes
 {

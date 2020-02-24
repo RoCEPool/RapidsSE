@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ConsumeOp :: ConsumeOp <consumeXmits> <topology> <nextStage> <nextOp> ;
+opSyntax: ConsumeOp :: ConsumeOp <consumeXmits> <topology> <nextStage> <nextOp> ;
 
 jobInfo: ConsumeOp
 {

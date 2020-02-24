@@ -128,7 +128,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: _Begun :: _Begun ;
+opSyntax: _Begun :: _Begun ;
 
 jobInfo: _Begun
 {

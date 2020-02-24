@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: SnapshotOp :: SnapshotOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: SnapshotOp :: SnapshotOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: SnapshotOp
 {

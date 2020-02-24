@@ -46,7 +46,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: lstbl :: lstbl ;
+opSyntax: lstbl :: lstbl ;
 
 jobInfo: lstbl
 {

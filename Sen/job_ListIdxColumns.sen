@@ -127,7 +127,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
+opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
 jobInfo: lsidxcol
 {

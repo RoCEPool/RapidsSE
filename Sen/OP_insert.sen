@@ -93,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: InsertOp :: InsertOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: InsertOp :: InsertOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: InsertOp
 {
