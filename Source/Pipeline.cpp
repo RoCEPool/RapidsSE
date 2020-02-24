@@ -111,7 +111,7 @@ void Pipeline::vDump(void)
   // dump the stages with the operators
   for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++ ) {
     Stage* pStage = m_oStageVec.pGet(i_Stage);
-    vTrace("\n[%lld] Stage %s (%s): \n"_Stz, i_Stage, pStage->szName(), aSK[pStage->eStageKind()]);
+    vTrace("\n[%lld] Stage %s : \n"_Stz, i_Stage, pStage->szName());
     pStage->vDump(&m_oStageVec);
   }
   

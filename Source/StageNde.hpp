@@ -10,7 +10,7 @@ namespace Operators
   private:
     OpVec      m_oOpVec;     // set of operators
     i8         m_i_Nde;      // which node
-  
+    
     // must be last
     Footer m_xFooter;
 

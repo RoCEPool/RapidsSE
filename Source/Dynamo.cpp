@@ -503,23 +503,6 @@ bool Dynamo::bCollectTopology(void)
       
       s32 sLocus(m_pTkn->szTerm());
       vAcceptToken();
-      
-      if (m_pTkn->bSame("threads"_Stz)) {
-        vAcceptToken();
-        
-        if (m_pTkn->bSame(":"_Stz)) {
-          vAcceptToken();
-#ifdef WITH_TRACE_DYNAMO
-          vTrace("Topology Phrase recognised >on origin %s threads:<\n"_Stz, sLocus.szStz());
-#endif
-          i8 i_Threads = sLocus.szStz()->iToI8();
-          m_pStageSpec->vThreads(i_Threads);
-          m_pStageSpec->vTopology(PO_ORIGIN);
-          return true;
-        }
-        else
-          return false;
-      }
     }
   }
   else
@@ -592,11 +575,11 @@ bool Dynamo::bCollectOp(void)
   vAcceptToken();
   
   if (m_pTkn->bSame("Robin"_Stz)) {
-    pOpSpec->vStageKind(SK_ROBIN);
+    pOpSpec->vXmitKind(XK_ROBIN);
     vAcceptToken();
   }
   else if (m_pTkn->bSame("Hashed"_Stz)) {
-    pOpSpec->vStageKind(SK_HASHED);
+    pOpSpec->vXmitKind(XK_HASHED);
     vAcceptToken();
   }
   
@@ -730,8 +713,6 @@ bool Dynamo::bPhase2_staging(void)
 #ifdef WITH_TRACE_DYNAMO
         vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_FoundStage, aPX[eTopologyX]);
 #endif
-        // ste the stage kind in the stage
-        pStageSpecFound->vStageKind(pOpSpec->eStageKind());
         
         if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
           // add parameter to the prev sink op
@@ -744,7 +725,7 @@ bool Dynamo::bPhase2_staging(void)
           delete pOpSpec;
         }
         else {
-          pOpSpec->vAddEnamePair("<XmitKind>"_Stz,(i8)pOpSpec->eStageKind(),TN_INTEGER);
+          pOpSpec->vAddEnamePair("<XmitKind>"_Stz,(i8)pOpSpec->eXmitKind(),TN_INTEGER);
           vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
           pStageSpecFound->vPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
         }

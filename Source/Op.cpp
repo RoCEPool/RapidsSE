@@ -78,6 +78,7 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_iNextStage = C_UNKNOWN;
   m_iNextOp    = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
+  m_iRobin     = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -726,9 +727,12 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
   ASSERT(m_iNextOp != C_UNKNOWN);
   Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
   RASSERT(pNextStage);
+  bool bIsMarker;
+  eXK eXmitKind = XK_NORMAL;
+  i8 i_Ptn;
   
   Job_Operand* pJob_Operand = nullptr;
-  
+
   switch(m_eTopologyX) {
       
     case PX_ALL_NODES_TO_ORIGIN:
@@ -748,7 +752,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       if (bSet) {
         while (pOperand) {
           
-          // set the operand in teh job
+          // set the operand in the job
           AM::vSetOperand(pJob_Operand, pOperand);
           
           // send the operand job across the sendNode
@@ -768,26 +772,68 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       break;
     }
       
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      for (i8 i_Ptn = 0; i_Ptn < pNextStage->pStagePtnVec()->nItems(); i_Ptn++) {
-        
-        // xmitNode is the partition node
-        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-        
-        // new a operand job
-        pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
-        
-        // get the send node in the task
-        Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
-        
-        // send the operand job across the sendNode
-        AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
-        
-        // delete the operand job
-        AM::vDeleteJobOperand(pJob_Operand);
+    case PX_ORIGIN_TO_ALL_PARTITIONS: {
+      
+      bIsMarker = pOperand->bIsMarker();
+      if ( ! bIsMarker) {
+        eXmitKind = m_eXmitKind;
+      }
+      
+      // check the XmitKind
+      switch (eXmitKind) {
+          
+        case XK_ROBIN : {
+          m_iRobin++;
+          i_Ptn = m_iRobin % AM::pGrid()->nPartitions();
+          // xmitNode is the partition node
+          m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+          
+          // new a operand job
+          pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+          
+          // get the send node in the task
+          Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+          
+          // send the operand job across the sendNode
+          AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+          
+          // delete the operand job
+          AM::vDeleteJobOperand(pJob_Operand);
+          
+          break;
+        }
+          
+        case XK_HASHED : ASSERT(0);
+          
+        case XK_NORMAL: {
+      
+          for (i_Ptn = 0; i_Ptn < pNextStage->pStagePtnVec()->nItems(); i_Ptn++) {
+            
+            // xmitNode is the partition node
+            m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+            
+            // new a operand job
+            pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+            
+            // get the send node in the task
+            Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+            
+            // send the operand job across the sendNode
+            AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+            
+            // delete the operand job
+            AM::vDeleteJobOperand(pJob_Operand);
+          }
+          break;
+        }
+        default:
+          ASSERT(0);
       }
       break;
+    }
+      
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
+      RASSERT(0);
     }
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
@@ -912,6 +958,26 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkQuanta = iWorkQuanta;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get xmit kind                                                              */
+/*----------------------------------------------------------------------------*/
+eXK Op::eXmitKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_eXmitKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set xmit kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vXmitKind(eXK eXmitKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_eXmitKind = eXmitKind;
 }
 
 /*----------------------------------------------------------------------------*/

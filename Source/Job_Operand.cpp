@@ -166,10 +166,10 @@ Job_Operand* Job_Operand::pNewJobOperand(Operand* pOperand,
   pJob_Operand->vSeed(SS_SEED_RUN);
   
   pJob_Operand->vParentId(iParentJobId);
-  pJob_Operand->m_pOp        = pOp;
-  pJob_Operand->m_iNode      = iNde;
-  pJob_Operand->m_iPartition = iPtn;
-  pJob_Operand->m_pOperand   = pOperand;
+  pJob_Operand->m_pOp         = pOp;
+  pJob_Operand->m_iNode       = iNde;
+  pJob_Operand->m_iPartition  = iPtn;
+  pJob_Operand->m_pOperand    = pOperand;
   
   pJob_Operand->m_eTopologyX = pOp->eTopologyX();
   pJob_Operand->m_iNextStage = pOp->iNextStage();

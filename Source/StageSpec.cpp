@@ -34,12 +34,11 @@ StageSpec::StageSpec(Stz* szName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sName      = szName;
-  m_eStageKind = SK_NORMAL;
   m_eTopology  = PO_NONE;
   m_pOpSpecVec = new OpSpecVec;
   m_iNode      = C_UNKNOWN;
   m_iPartition = C_UNKNOWN;
-  m_iThreads   = 1;
+  //m_nThreads   = 1;
   
    _checkInitialised_(CN_STAGESPEC);
   
@@ -212,44 +211,24 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage kind                                                             */
-/*----------------------------------------------------------------------------*/
-eSK StageSpec::eStageKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_eStageKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage kind                                                             */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vStageKind(eSK eStageKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  m_eStageKind = eStageKind;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get threads                                                                */
 /*----------------------------------------------------------------------------*/
-i8 StageSpec::iThreads(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_iThreads;
-}
+//i8 StageSpec::nThreads(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+//
+//  return m_nThreads;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set threads                                                                */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vThreads(i8 i_Threads)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  m_iThreads = i_Threads;
-}
+//void StageSpec::vThreads(i8 i_Threads)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+//  
+//  m_nThreads = i_Threads;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get topology                                                               */

@@ -895,6 +895,7 @@ public:
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
   void vOpTopologyStore(void);
+  void vOpXmitKindStore(void);
 
   // operand
   void vOperandCsvAppend(void);

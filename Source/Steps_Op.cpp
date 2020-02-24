@@ -18,6 +18,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
+  vAddStep("Op.xmitKind!"_Stz,        &Step::vOpXmitKindStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,6 +117,18 @@ void Step::vOpTopologyStore(void)
   ENTRY(); // ENTRY("vOpTopologyStore"_Stz);
   
   m_pTask->m_pJob->m_pOp->vTopologyX((ePX)m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.xmitKind! -- store xmitKind in the operator                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOpXmitKindStore(void)
+{
+  ENTRY(); // ENTRY("vOpXmitKindStore"_Stz);
+  
+  m_pTask->m_pJob->m_pOp->vXmitKind((eXK)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

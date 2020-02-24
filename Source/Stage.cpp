@@ -51,8 +51,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
   i8 i_Ptn;
   i8 i_Nde;
   
-  m_sName      = pStageSpec->szName();
-  m_eStageKind = pStageSpec->eStageKind();
+  m_sName    = pStageSpec->szName();
   
   //m_oOpVec
   
@@ -80,8 +79,9 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
           vTrace("Pipeline Originating node : %lld\n"_Stz, pPipeLine->iOriginatingNode());
         }
       }
-      //for (i8 i_Threads = 0; i_Threads < pStageSpec->iThreads(); i_Threads++)
-        m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode()));
+      //for (i8 i_Thd = 0; i_Thd < pStageSpec->nThreads(); i_Thd++)
+      //  m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode(), i_Thd));
+      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -109,9 +109,9 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
-      Op* pOp = new Op(pOpSpec,pPipeLine);
       StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
+      Op* pOp = new Op(pOpSpec,pPipeLine);
       pOp->vNode(pStageNde->iNode());
       pStageNde->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
@@ -323,26 +323,6 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
   }
   
   return pOp;  
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage kind                                                             */
-/*----------------------------------------------------------------------------*/
-eSK Stage::eStageKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  return m_eStageKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage kind                                                             */
-/*----------------------------------------------------------------------------*/
-void Stage::vStageKind(eSK eStageKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  m_eStageKind = eStageKind;
 }
 
 /*----------------------------------------------------------------------------*/

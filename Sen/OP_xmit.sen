@@ -20,6 +20,9 @@
   // set nextOp in op
   <nextOp> op.nextOp!
 
+  // set the xmit kind
+  <xmitKind> op.xmitKind!
+
   begin
 
     // bide till next operand is available

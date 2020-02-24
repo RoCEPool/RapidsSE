@@ -59,6 +59,16 @@ Operand::~Operand(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this operand a marker ?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Operand::bIsMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return eClass() == CN_MARKER ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
 void Operand::vTailProcessing(eTP eTailProcessing)

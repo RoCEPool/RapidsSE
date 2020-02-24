@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* eSK.h - Pipeline Stage Kind                                                */
+/* eXK.h - Pipeline Xmit Kind                                                 */
 /*============================================================================*/
 #pragma once
 
-enum eSK // system call
+enum eXK // system call
 {
-  /* 0 */ SK_NONE = 0, // none
-  /* 1 */ SK_HASHED,   // hashed
-  /* 2 */ SK_NORMAL,   // normal
-  /* 3 */ SK_ROBIN     // round robin
+  /* 0 */ XK_NONE = 0, // none
+  /* 1 */ XK_HASHED,   // hashed
+  /* 2 */ XK_NORMAL,   // normal
+  /* 3 */ XK_ROBIN     // round robin
 };
 
-static Stz* aSK[]
+static Stz* aXK[]
 {
   /* 0 */ "NONE"_Stz,
   /* 1 */ "HASHED"_Stz,

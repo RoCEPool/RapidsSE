@@ -265,6 +265,13 @@
   [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
+/* push value of <nextOp> from job's ename-set                                */
+/*----------------------------------------------------------------------------*/
+: <xmitKind> <<jobArgTag>> ( -- s )
+
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

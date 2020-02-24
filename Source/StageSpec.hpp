@@ -10,11 +10,10 @@ namespace Pipelines
   private:
   
     s32 m_sName;        // stage name
-    eSK m_eStageKind;   // stage kind
     ePO m_eTopology;    // stage topoplogy
     i8  m_iNode;        // stage node
     i8  m_iPartition;   // stage ptn
-    i8  m_iThreads;     // threads
+    //i8  m_nThreads;     // threads
   
     OpSpecVec* m_pOpSpecVec;
   
@@ -37,10 +36,8 @@ namespace Pipelines
     i8   iPartition(void);
     void vPartition(i8 i_Ptn);
     void vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);
-    void vStageKind(eSK eStageKind);
-    eSK  eStageKind(void);
-    void vThreads(i8 iThreads);
-    i8   iThreads(void);
+    //void vThreads(i8 iThreads);
+    //i8   nThreads(void);
     ePO  eTopology(void);
     void vTopology(ePO eTopology);
     void vToPipeStr(Stz* szPipeStr);

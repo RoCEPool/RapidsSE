@@ -12,7 +12,7 @@ namespace Pipelines
     bool       m_bAppendRight;
     i8         m_i_OpSpec;
     i8         m_i_Slot;
-    eSK        m_eStageKind;
+    eXK        m_eXmitKind;
     
     EnameSet   m_oEnameSet;
     
@@ -37,8 +37,8 @@ namespace Pipelines
     void vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken);
     void vReplaceEnamePair(Stz* sName, i8 iValue, eTN eToken);
     i8   i_Slot(void);
-    eSK  eStageKind(void);
-    void vStageKind(eSK eStageKind);
+    eXK  eXmitKind(void);
+    void vXmitKind(eXK eStageKind);
     StageSpec* pStageSpec(void);
 
     void vPrint(void);

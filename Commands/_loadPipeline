@@ -29,13 +29,16 @@ pipeline _threads
 begin
 
   stage stageA on origin:
-   startOp | periodicOp once | stageB Robin
+   startOp | periodicOp once | stageB
 
-  stage stageB on origin 3 threads:
-   printOp "hello-world" | stageC
+  stage stageB on origin:
+   genCsvOp T1 | stageC Robin
 
-  stage stageC on origin:
-  outputOp | sinkOp | stageA
+  stage stageC on all partitions:
+    outputOp | stageD
+
+  stage stageD on origin:
+  sinkOp | stageA
 
 end
 ;
