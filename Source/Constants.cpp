@@ -532,17 +532,19 @@ void Constants::vAddConstantsCpp(void)
   
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
-  /*  0 */ vAddConstant("TN_EOF"_Stz,       TN_EOF);
+  /*  1 */ vAddConstant("TN_EOF"_Stz,       TN_EOF);
   /*  2 */ vAddConstant("TN_INTEGER"_Stz,   TN_INTEGER);
-  /*  1 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
-  /*  3 */ vAddConstant("TN_STRING"_Stz,    TN_STRING);
-  /*  4 */ vAddConstant("TN_ENUMS"_Stz,     TN_ENUMS);
+  /*  3 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
+  /*  4 */ vAddConstant("TN_OTHER"_Stz,     TN_OTHER);
+  /*  5 */ vAddConstant("TN_STRING"_Stz,    TN_STRING);
+  /*  6 */ vAddConstant("TN_TAG"_Stz,       TN_TAG);
+  /*  7 */ vAddConstant("TN_ENUMS"_Stz,     TN_ENUMS);
     
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);
   /*  1 */ vAddConstant("TS_BIDING"_Stz,     TS_BIDING);
   /*  2 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
-  /*  3 */ vAddConstant("TS_COMPLETED"_Stz,     TS_COMPLETED);
+  /*  3 */ vAddConstant("TS_COMPLETED"_Stz,  TS_COMPLETED);
   /*  4 */ vAddConstant("TS_READY"_Stz,      TS_READY);
   /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);

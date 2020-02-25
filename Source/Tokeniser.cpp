@@ -554,6 +554,27 @@ void Tokeniser::vNextNormal(Token* pToken)
   pToken->vReset();
   
   vCollectNormal(pToken,pToken->azTerm());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // cross check valid normal tokens
+  switch (pToken->eToken()) {
+      
+    // the expected tokens
+    case TN_EOF:
+    case TN_INTEGER:
+    case TN_NAME:
+    case TN_STRING:
+    case TN_OTHER:
+      break;
+      
+    // unexpected tokens
+    case TN_TAG:
+      NEVER_REACH;
+      
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -577,6 +598,7 @@ void Tokeniser::vNextSen(Token* pToken)
     case TN_INTEGER:
     case TN_NAME:
     case TN_STRING:
+    case TN_TAG:
       break;
       
     // unexpected tokens

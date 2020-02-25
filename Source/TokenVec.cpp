@@ -442,6 +442,10 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
         StrLib::vConcat(szDstStr->azChar(),"\"");
         break;
         
+      case TN_TAG:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        break;
+        
       default:
         NEVER_REACH;
     }

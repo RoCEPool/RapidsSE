@@ -12,8 +12,9 @@ enum eTN // token type
   /*  3 */ TN_NAME,    // name token, e.g. WASHER (or ++ in special mode)
   /*  4 */ TN_OTHER,   // other literal, e.g. {,~
   /*  5 */ TN_STRING,  // string literal, e.g. "the answer"
-  
-  /*  6 */ TN_ENUMS
+  /*  6 */ TN_TAG,     // tag token such as <tableNm>
+
+  /*  7 */ TN_ENUMS
 };
 
 static Stz* aTN[]
@@ -25,8 +26,9 @@ static Stz* aTN[]
   /*  3 */ "NAME"_Stz,
   /*  4 */ "OTHER"_Stz,
   /*  5 */ "STRING"_Stz,
-  
-  /*  6 */ "ENUMS"_Stz,
+  /*  6 */ "TAG"_Stz,
+
+  /*  7 */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/
