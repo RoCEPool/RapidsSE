@@ -56,10 +56,7 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_sName = pOpSpec->szName();
 
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());
-  m_oEnameSet.vPrint();
-  
-  m_oHiddenEnameSet.vCopy(pOpSpec->pHiddenEnameSet());
-  m_oHiddenEnameSet.vPrint();
+  m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
   
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
@@ -895,7 +892,7 @@ bool Op::bSpawnJob(i8 iSessionId)
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
   
   // now append the hidden topology ename pairs to the job ename set
-  AM::vAppendEnameSet(m_pOpJob, &m_oHiddenEnameSet);
+  AM::vAppendEnameSet(m_pOpJob, &m_oTopologyEnameSet);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();
@@ -934,11 +931,6 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sName);
-//  if (m_oEnameSet.nEnames() > 3) {
-//    for (i8 i_Ename = 0; i_Ename < m_oEnameSet.nEnames()-3; i_Ename++) {
-//      m_oEnameSet.vAppend(szCmdStr, i_Ename);
-//    }
-//  }
   m_oEnameSet.vAppend(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }

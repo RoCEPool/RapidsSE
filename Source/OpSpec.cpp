@@ -40,7 +40,7 @@ OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
   m_eXmitKind = XK_NORMAL;
 
   //m_oEnameSet
-  //m_oHiddenEnameSet
+  //m_oTopologyEnameSet
   
   _checkInitialised_(CN_OPSPEC);
   
@@ -83,11 +83,11 @@ void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* add an ename pair to hidden ename set                                      */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vAddHiddenEnamePair(Stz* sName, i8 iValue, eTN eToken)
+void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oHiddenEnameSet.vAdd(sName, iValue);
+  m_oTopologyEnameSet.vAdd(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,16 +108,6 @@ EnameSet* OpSpec::pEnameSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return &m_oEnameSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the EnameSet                                                           */
-/*----------------------------------------------------------------------------*/
-EnameSet* OpSpec::pHiddenEnameSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return &m_oHiddenEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +153,7 @@ void OpSpec::v_OpSpec(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* replace an ename value                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vReplaceHiddenEnamePair(Stz* szName, Stz* szValue, eTN eToken)
+void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -173,11 +163,11 @@ void OpSpec::vReplaceHiddenEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* replace an ename value                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vReplaceHiddenEnamePair(Stz* szName, i8 iValue, eTN eToken)
+void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oHiddenEnameSet.vReplace(szName, iValue);
+  m_oTopologyEnameSet.vReplace(szName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,6 +178,16 @@ i8 OpSpec::i_Slot(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_i_Slot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the topology EnameSet                                                  */
+/*----------------------------------------------------------------------------*/
+EnameSet* OpSpec::pTopologyEnameSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return &m_oTopologyEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/

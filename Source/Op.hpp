@@ -13,9 +13,9 @@ namespace Operators
   private:
     s32            m_sName;          // first word of prompt command
     
-    Pipeline*      m_pPipeline;      // op digest
-    EnameSet       m_oEnameSet;      // ename set of cmd
-    EnameSet       m_oHiddenEnameSet; // hidden enameset
+    Pipeline*      m_pPipeline;         // op digest
+    EnameSet       m_oEnameSet;         // ename set of cmd
+    EnameSet       m_oTopologyEnameSet; // topology enameset
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
