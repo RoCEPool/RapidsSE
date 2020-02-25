@@ -1276,6 +1276,19 @@ bool Tokeniser::bStartSpecialString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for start of special tag                                              */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bStartSpecialTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('<' == m_xAnnChar.m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for end of special string                                             */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEndSpecialString(void)

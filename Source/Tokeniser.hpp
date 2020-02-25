@@ -82,6 +82,7 @@ namespace LexicalAnalysis
     bool bStartSpecialInteger(void);
     bool bStartSpecialName(void);
     bool bStartSpecialString(void);
+    bool bStartSpecialTag(void);
     bool bEndSpecialString(void);
    
     bool bIsCloseBracket(void);
