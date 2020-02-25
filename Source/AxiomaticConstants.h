@@ -31,6 +31,7 @@ static const bool B_DONT_CALL_AGAIN = false;
 
 static const b8 C_NONFOCAL          = true;
 
+static const i8 C_SET_OFFSETS       = 128;
 
 
 static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
