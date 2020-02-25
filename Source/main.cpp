@@ -32,6 +32,8 @@ int main(int argc, const char* argv[])
   
   try {
     
+    // force bamboo build
+    
     Process::vEntry();
     
     // parse the command line arguments
