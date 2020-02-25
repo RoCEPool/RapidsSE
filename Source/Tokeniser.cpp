@@ -672,20 +672,20 @@ void Tokeniser::vCollectNormalInteger(Token* pToken, char* azTermCrs)
   // - start parsing an integer
   
   // collect initial digits
-  while (bIsDigit()) {
+  while (m_xAnnChar.bIsDigit()) {
     *z++ = m_xAnnChar.m_cChar;
     iNoDigits++;
     vParserGetAnnCharStripped();
   }
   
   // 0x hex number?
-  if (1 == iNoDigits && bIsX()) {
+  if (1 == iNoDigits && m_xAnnChar.bIsX()) {
     
     // add the 'x'
     *z++ = m_xAnnChar.m_cChar;
     
     // collect the hex digits
-    while (bIsHex()) {
+    while (m_xAnnChar.bIsHex()) {
       *z++ = m_xAnnChar.m_cChar;
       vParserGetAnnCharStripped();
     }
@@ -746,9 +746,9 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather ]] as a token
-  if (bIsCloseBracket()) {
+  if (m_xAnnChar.bIsCloseBracket()) {
     vParserGetAnnCharStripped();
-    if (bIsCloseBracket()) {
+    if (m_xAnnChar.bIsCloseBracket()) {
       *z++ = ']';
       *z++ = ']';
       *z = '\0';
@@ -767,11 +767,11 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather :: as a string
-  if (bIsColon()) {
+  if (m_xAnnChar.bIsColon()) {
 
     vParserGetAnnCharStripped();
 
-    if (bIsColon()) {
+    if (m_xAnnChar.bIsColon()) {
       *z++ = ':';
       *z++ = ':';
       *z = '\0';
@@ -790,11 +790,11 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather .. as a string
-  if (bIsDot()) {
+  if (m_xAnnChar.bIsDot()) {
     
     vParserGetAnnCharStripped();
     
-    if (bIsDot()) {
+    if (m_xAnnChar.bIsDot()) {
       *z++ = '.';
       *z++ = '.';
       *z = '\0';
@@ -813,9 +813,9 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather == as a token
-  if (bIsEqual()) {
+  if (m_xAnnChar.bIsEqual()) {
     vParserGetAnnCharStripped();
-    if (bIsEqual()) {
+    if (m_xAnnChar.bIsEqual()) {
       *z++ = '=';
       *z++ = '=';
       *z = '\0';
@@ -834,9 +834,9 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather >= as a token
-  if (bIsGreaterThan()) {
+  if (m_xAnnChar.bIsGreaterThan()) {
     vParserGetAnnCharStripped();
-    if (bIsEqual()) {
+    if (m_xAnnChar.bIsEqual()) {
       *z++ = '>';
       *z++ = '=';
       *z = '\0';
@@ -855,9 +855,9 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather <= as a token
-  if (bIsLessThan()) {
+  if (m_xAnnChar.bIsLessThan()) {
     vParserGetAnnCharStripped();
-    if (bIsEqual()) {
+    if (m_xAnnChar.bIsEqual()) {
       *z++ = '<';
       *z++ = '=';
       *z = '\0';
@@ -876,9 +876,9 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather [[ as a token
-  if (bIsOpenBracket()) {
+  if (m_xAnnChar.bIsOpenBracket()) {
     vParserGetAnnCharStripped();
-    if (bIsOpenBracket()) {
+    if (m_xAnnChar.bIsOpenBracket()) {
       *z++ = '[';
       *z++ = '[';
       *z = '\0';
@@ -897,11 +897,11 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather || as a string
-  if (bIsPipe()) {
+  if (m_xAnnChar.bIsPipe()) {
     
     vParserGetAnnCharStripped();
     
-    if (bIsPipe()) {
+    if (m_xAnnChar.bIsPipe()) {
       *z++ = '|';
       *z++ = '|';
       *z = '\0';
@@ -1034,26 +1034,26 @@ void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
   // - start parsing an integer
   
   // collect leading minus
-  if (bIsMinus()) {
+  if (m_xAnnChar.bIsMinus()) {
     *z++ = m_xAnnChar.m_cChar;
     vParserGetAnnCharStripped();
   }
   
   // collect initial digits
-  while (bIsDigit()) {
+  while (m_xAnnChar.bIsDigit()) {
     *z++ = m_xAnnChar.m_cChar;
     iNoDigits++;
     vParserGetAnnCharStripped();
   }
   
   // 0x hex number?
-  if (1 == iNoDigits && bIsX()) {
+  if (1 == iNoDigits && m_xAnnChar.bIsX()) {
 
     // add the 'x'
     *z++ = m_xAnnChar.m_cChar;
     
     // collect the hex digits
-    while (bIsHex()) {
+    while (m_xAnnChar.bIsHex()) {
       *z++ = m_xAnnChar.m_cChar;
       vParserGetAnnCharStripped();
     }
@@ -1069,7 +1069,7 @@ void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
   // - handle the case where we have a name like 1_ugh
   
   // just a number?
-  if ( bIsWhite() || bStartSenString() ) {
+  if (m_xAnnChar.bIsWhite() || bStartSenString() ) {
     
     // push back the unconsumed char
     vParserUngetAnnCharStripped();
@@ -1097,7 +1097,7 @@ void Tokeniser::vCollectSenName(Token* pToken, char* azTermCrs)
   //ASSERT(bStartSenName());
   
   // collect the characters of the name
-  while ( m_xAnnChar.m_cChar && !bIsWhite() && !bStartSenString() ) {
+  while ( m_xAnnChar.m_cChar && !m_xAnnChar.bIsWhite() && !bStartSenString() ) {
     *z++ = m_xAnnChar.m_cChar;
     vParserGetAnnCharStripped();
   }
@@ -1187,7 +1187,7 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
   // skip the leading <
   vParserGetAnnChar();
   
-  if (! m_xAnnChar.m_cChar || bIsWhite() || bStartSenString() ) {
+  if (! m_xAnnChar.m_cChar || m_xAnnChar.bIsWhite() || bStartSenString() ) {
     // push back the unconsumed char
     vParserUngetAnnCharStripped();
     
@@ -1326,7 +1326,7 @@ bool Tokeniser::bStartSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (bIsMinus() || StrLib::bIsDigit(m_xAnnChar.m_cChar))
+  if (m_xAnnChar.bIsMinus() || StrLib::bIsDigit(m_xAnnChar.m_cChar))
     return true;
   
   return false;
@@ -1379,175 +1379,6 @@ bool Tokeniser::bEndSenString(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if ('"' == m_xAnnChar.m_cChar || '\'' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a close square bracket ]                                          */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsCloseBracket(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if (']' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a colon                                                           */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsColon(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if (':' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a base-10 digit                                                   */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsDigit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if (StrLib::bIsDigit(m_xAnnChar.m_cChar))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a dot                                                             */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsDot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('.' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a equal sign                                                      */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsEqual(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('=' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a greater than sign                                               */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsGreaterThan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('>' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a base-16 digit                                                   */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsHex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if (StrLib::bIsHex(m_xAnnChar.m_cChar))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a less than sign                                                  */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsLessThan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('<' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a minus sign                                                      */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsMinus(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('-' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a open square bracket [                                           */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsOpenBracket(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('[' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a pipe sign                                                       */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsPipe(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('|' == m_xAnnChar.m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a white character                                                 */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsWhite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if (StrLib::bIsWhite(m_xAnnChar.m_cChar))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for an 'x' or 'X'                                                     */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsX(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if ('x' == m_xAnnChar.m_cChar || 'X' == m_xAnnChar.m_cChar)
     return true;
   
   return false;

@@ -86,20 +86,6 @@ namespace LexicalAnalysis
     bool bStartSenTag(void);
     bool bEndSenString(void);
    
-    bool bIsCloseBracket(void);
-    bool bIsColon(void);
-    bool bIsDigit(void);
-    bool bIsDot(void);
-    bool bIsEqual(void);
-    bool bIsHex(void);
-    bool bIsLessThan(void);
-    bool bIsGreaterThan(void);
-    bool bIsMinus(void);
-    bool bIsOpenBracket(void);
-    bool bIsPipe(void);
-    bool bIsWhite(void);
-    bool bIsX(void);
-
     void vParserGetAnnChar(void);
     void vParserGetAnnCharStripped(void);
     void vParserUngetAnnCharStripped(void);
