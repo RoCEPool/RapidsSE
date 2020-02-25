@@ -56,7 +56,8 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_sName = pOpSpec->szName();
 
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());
-
+  m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
+  
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
   m_pOpJob        = nullptr;
@@ -879,6 +880,7 @@ bool Op::bSpawnJob(i8 iSessionId)
 
   m_pOpJob = AM::pNewJobUniversal(m_pJobPipeline, this, &xReqTuple);
   
+  // form the command string using the parameter ename pairs
   s4K szCmdStr;
   vToCmdStr(szCmdStr);
   
@@ -888,6 +890,9 @@ bool Op::bSpawnJob(i8 iSessionId)
   //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
   
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
+  
+  // now append the hidden topology ename pairs to the job ename set
+  AM::vAppendEnameSet(m_pOpJob, &m_oTopologyEnameSet);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();

@@ -250,6 +250,12 @@ bool AM::bAttached(void) {
   else
     return false;
 }
+
+void AM::vAppendEnameSet(Job* pJob, EnameSet* pEnameSet)
+{
+  pJob->pEnameSet()->vCopy(pEnameSet);
+}
+
 void AM::vDumpApi(void) {
   pSessionArray()->vDump();
 }
@@ -269,7 +275,6 @@ void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
 {
   eEC eError = _pJob_Universal(pJob)->ePopulateJob(pTknVec);
-  
   return eError;
 }
 

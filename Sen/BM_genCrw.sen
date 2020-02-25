@@ -95,8 +95,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers>
-                                      <topology> <nextStage> <nextOp> ;
+opSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
 jobInfo: BM_GenCrwOp
 {

@@ -157,6 +157,7 @@ namespace Oblique
   
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vAppendEnameSet(Job* pJob, EnameSet* pEnameSet);
     static bool bAttached(void);
     static i8   iAMTimePoint(void);
 

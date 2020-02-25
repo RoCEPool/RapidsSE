@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: truncateOp :: truncateOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: truncateOp :: truncateOp <tableNm> ;
 
 jobInfo: truncateOp
 {

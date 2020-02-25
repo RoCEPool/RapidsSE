@@ -91,7 +91,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: genCsvOp :: genCsvOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: genCsvOp :: genCsvOp <tableNm> ;
 
 jobInfo: genCsvOp
 {

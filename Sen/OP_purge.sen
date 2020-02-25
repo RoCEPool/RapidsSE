@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: PurgeOp :: PurgeOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: PurgeOp :: PurgeOp <tableNm> ;
 
 jobInfo: PurgeOp
 {

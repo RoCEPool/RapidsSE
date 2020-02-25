@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: scanOp :: scanOp <tableNm> <topology> <nextStage> <nextOp> ;
+opSyntax: scanOp :: scanOp <tableNm> ;
 
 jobInfo: scanOp
 {
