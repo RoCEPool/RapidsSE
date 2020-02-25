@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* categorising word                                                          */
 /*----------------------------------------------------------------------------*/
-: category immediate
+: \\category immediate
 
   //
   // this word is used while compiling another word.

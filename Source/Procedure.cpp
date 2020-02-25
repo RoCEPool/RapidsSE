@@ -41,7 +41,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   Dic* pRootDic = AM::pRootDic();
 
-  Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
+  Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
   
   Word* pProcWord = pRootDic->pFindWord(sProcNm);
   if (pProcWord)
@@ -74,7 +74,7 @@ Word* Procedure::pFindProcedure(Stz* szProcNm, DicStack* pDicStack)
   if (! pProcWord)
     return nullptr;
   
-  Word* pProcCatg = pDicStack->pFindWord("procedure"_Stz);
+  Word* pProcCatg = pDicStack->pFindWord(C_PROCEDURE_CATG);
 
   if (pProcWord->pCategory() != pProcCatg)
     return nullptr;
@@ -94,7 +94,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   Dic* pRootDic = AM::pRootDic();
 
-  Word* pProcCatg = pRootDic->pFindWord("procedure"_Stz);
+  Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
   if (! pProcCatg)
     return false;
  
