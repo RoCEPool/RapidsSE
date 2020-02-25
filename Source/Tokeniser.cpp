@@ -578,7 +578,7 @@ void Tokeniser::vNextNormal(Token* pToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next Sen token into given buffer                                 */
+/* parse next Sen token into given buffer                                     */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vNextSen(Token* pToken)
 {
@@ -948,18 +948,6 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
   // collect the characters within the string
   while ( ! bEndNormalString() ) {
     
-/*
-    // test for \n
-    if ('\\' == m_xAnnChar.m_cChar) {
-      vGetNextStripped();
-      if ('n' == m_xAnnChar.m_cChar)
-        m_xAnnChar.m_cChar = '\n';
-      else {
-        vParserUngetAnnCharStripped();
-        m_xAnnChar.m_cChar = '\\';
-      }
-    }
-*/
     if ('\\' == m_xAnnChar.m_cChar) {
       vParserGetAnnCharStripped();
       // translate \n into new line
@@ -1136,20 +1124,7 @@ void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
   while ( m_xAnnChar.m_cChar != cStartQuote ) {
   
     //vTrace(">>%c<<\n"_Stz,m_xAnnChar.m_cChar);
-    
-/*
-    // test for \n
-    if ('\\' == m_xAnnChar.m_cChar) {
-      vGetNextStripped();
-      if ('n' == m_xAnnChar.m_cChar)
-        m_xAnnChar.m_cChar = '\n';
-      else {
-        vParserUngetAnnCharStripped();
-        m_xAnnChar.m_cChar = '\\';
-      }
-    }
-*/
-    
+        
     if ('\\' == m_xAnnChar.m_cChar) {
       vParserGetAnnChar();
       // translate \n into new line
@@ -1385,7 +1360,7 @@ bool Tokeniser::bEndSenString(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next character from parser input                                      */
+/* get next character from parser input                                       */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vParserGetAnnChar(void)
 {
