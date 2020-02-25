@@ -9,15 +9,26 @@
 /*----------------------------------------------------------------------------*/
 : category immediate
 
+  //
+  // this word is used while compiling another word.
+  // let us call that another word the catgWord.
+  // this word sets the catgWord being compiled to be an immediate word.
+  // that catgWord is then later used to set yet another word being comiled
+  //   to have the category of catgWord.
+  // let us call that yet another word the targetWord
+  //
+
+  // while compiling a new catgWord set the catgWord to be immediate
   true
   compiler::current@
   word.immediate!
 
+  // add code into the catgWord so that when catgWord ised used while compiling
+  // the target word, the category of the target word is set to be catgWord
   compiler::current@ ,
   POSTPONE compiler::current@
   POSTPONE word.category!
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
