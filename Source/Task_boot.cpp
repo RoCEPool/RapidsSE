@@ -91,6 +91,16 @@ void Task::vAddRoutines(void)
   "  then"
   
   // -- -- -- -- -- -- --
+  // is token a tag?
+  "  input::type TN_TAG == if"
+  
+  "    \"OOPS... SAW A TAG\" ."
+  "    process::quit"
+  "    reenter"                  // ... MORE TO DO ...
+
+  "  then"
+
+  // -- -- -- -- -- -- --
   // token should be a name
   "  input::type TN_NAME != if"
   "    \"strange token\" . input::type ."
