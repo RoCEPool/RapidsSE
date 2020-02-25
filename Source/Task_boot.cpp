@@ -96,7 +96,19 @@ void Task::vAddRoutines(void)
   
   "    \"OOPS... SAW A TAG\" ."
   "    process::quit"
-  "    reenter"                  // ... MORE TO DO ...
+  
+  "    compiler::isPostponing if"
+  "      \"SHOULD NOT BE POSTPONING A TAG\" ."
+  "      process::quit"
+  "      reenter"
+  "    then"
+
+  "    compiler::isCompiling if"
+  "      ,"                      // compile encodes push stzVal
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret leaves str on stack
 
   "  then"
 
