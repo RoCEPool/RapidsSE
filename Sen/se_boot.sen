@@ -4,18 +4,6 @@
 
 "se_boot.sen" .verbose
 
-: category immediate
-
-  true
-  compiler::current@
-  word.immediate!
-
-  compiler::current@ ,
-  POSTPONE compiler::current@
-  POSTPONE word.category!
-;
-
-
 "SEN: " .put
 9 .put  "vocab.sen"     include
 8 .put  "tasks.sen"     include
