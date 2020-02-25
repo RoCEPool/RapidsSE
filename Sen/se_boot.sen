@@ -6,8 +6,27 @@
 
 : category immediate
 
-  
+  true
+  compiler::current@
+  word.immediate!
+
+  compiler::current@ ,
+  POSTPONE compiler::current@
+  POSTPONE word.category!
 ;
+
+find: category word.dump
+find: category word.see
+
+: procCatg category ;
+
+find: procCatg word.dump
+find: procCatg word.see
+
+: testProc procCatg ;
+
+find: testProc word.dump
+find: testProc word.see
 
 "SEN: " .put
 9 .put  "vocab.sen"     include

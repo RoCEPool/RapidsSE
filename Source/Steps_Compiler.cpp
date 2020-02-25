@@ -67,7 +67,10 @@ void Step::vCompilerCurrentFetch(void)
     m_pCompiler = new Compiler;
   
   Word* pCurrWord = m_pCompiler->pCurrentWord();
-  
+    
+//  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
+//    Correctness::vDebugPoint();
+
   m_pDataStack->vPushPtr(pCurrWord);
   
   EXIT();
