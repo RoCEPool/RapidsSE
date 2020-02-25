@@ -11,6 +11,7 @@ namespace LexicalAnalysis
     i8   m_iLine;  // line number
     i8   m_iCol;   // column number
     
+    bool bIsBackSlash(void);
     bool bIsBlank(void);
     bool bIsCloseBracket(void);
     bool bIsColon(void);
@@ -28,6 +29,7 @@ namespace LexicalAnalysis
     bool bIsPipe(void);
     bool bIsPlus(void);
     bool bIsSingleQuote(void);
+    bool bIsSlash(void);
     bool bIsWhite(void);
     bool bIsX(void);
 

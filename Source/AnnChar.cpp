@@ -5,6 +5,17 @@
 #include "LexicalAnalysis.h"
 
 /*----------------------------------------------------------------------------*/
+/* test for backslash                                                         */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsBackSlash(void)
+{
+  if ('\\' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for blank                                                             */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsBlank(void)
@@ -186,6 +197,17 @@ bool AnnChar::bIsPlus(void)
 bool AnnChar::bIsSingleQuote(void)
 {
   if ('\'' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for slash                                                             */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsSlash(void)
+{
+  if ('/' == m_cChar)
     return true;
   
   return false;
