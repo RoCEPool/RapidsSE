@@ -925,7 +925,7 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
   // collect the characters within the string
   while ( ! bEndNormalString() ) {
     
-    if ('\\' == m_xAnnChar.m_cChar) {
+    if (m_xAnnChar.bIsBackSlash()) {
       vParserGetAnnCharStripped();
       // translate \n into new line
       if ('n' == m_xAnnChar.m_cChar)
@@ -1102,7 +1102,7 @@ void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
   
     //vTrace(">>%c<<\n"_Stz,m_xAnnChar.m_cChar);
         
-    if ('\\' == m_xAnnChar.m_cChar) {
+    if (m_xAnnChar.bIsBackSlash()) {
       vParserGetAnnChar();
       // translate \n into new line
       if ('n' == m_xAnnChar.m_cChar)
@@ -1252,7 +1252,7 @@ bool Tokeniser::bStartNormalString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_xAnnChar.m_cChar)
+  if (m_xAnnChar.bIsDoubleQuote())
     return true;
   
   return false;
@@ -1265,7 +1265,7 @@ bool Tokeniser::bEndNormalString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_xAnnChar.m_cChar)
+  if (m_xAnnChar.bIsDoubleQuote())
     return true;
   
   return false;
@@ -1304,9 +1304,12 @@ bool Tokeniser::bStartSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_xAnnChar.m_cChar || '\'' == m_xAnnChar.m_cChar)
+  if (m_xAnnChar.bIsDoubleQuote())
     return true;
-  
+
+  if (m_xAnnChar.bIsSingleQuote())
+    return true;
+
   return false;
 }
 
@@ -1317,7 +1320,7 @@ bool Tokeniser::bStartSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('<' == m_xAnnChar.m_cChar)
+  if (m_xAnnChar.bIsLessThan())
     return true;
   
   return false;
@@ -1330,9 +1333,12 @@ bool Tokeniser::bEndSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_xAnnChar.m_cChar || '\'' == m_xAnnChar.m_cChar)
+  if (m_xAnnChar.bIsDoubleQuote())
     return true;
-  
+
+  if (m_xAnnChar.bIsSingleQuote())
+    return true;
+
   return false;
 }
 
@@ -1394,7 +1400,7 @@ bool Tokeniser::bEndInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('\0' == m_xAnnChar.m_cChar)
+  if (m_xAnnChar.bIsNull())
     return true;
   
   return false;
