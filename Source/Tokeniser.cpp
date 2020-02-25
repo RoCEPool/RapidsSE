@@ -5,38 +5,15 @@
 #include "LexicalAnalysis.h"
 
 
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Tokeniser* LexicalAnalysis::_pTokeniser(void* aAddr)
-{
-  Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(aAddr);
-  
-  RASSERT_TYPE(pTokeniser,CN_TOKENISER);
-  
-  return pTokeniser;
-}
+__pCastFunction(LexicalAnalysis,Tokeniser,CN_TOKENISER)
+__aNewFunction(Tokeniser,CN_TOKENISER)
+__vDeleteFunction(Tokeniser,CN_TOKENISER)
+__aFooterFunction(Tokeniser)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Tokeniser::operator new(size_t)
-{
-  void* pTokeniser = HeapMem::pAllocate(CN_TOKENISER);
-  
-  return pTokeniser;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::operator delete(void* pTokeniserAddress)
-{
-  Tokeniser* pTokeniser = _pTokeniser(pTokeniserAddress);
-  
-  HeapMem::vFree(pTokeniser);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -1421,20 +1398,6 @@ bool Tokeniser::bEndInput(void)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Tokeniser::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/
