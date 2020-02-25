@@ -418,6 +418,9 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
     
     switch (eToken) {
         
+      case TN_NONE:
+        break;
+        
       case TN_INTEGER:
         StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
         break;
@@ -426,7 +429,7 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
         StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
         break;
         
-      case TN_NONE:
+      case TN_EOF:
         break;
         
       case TN_OTHER:

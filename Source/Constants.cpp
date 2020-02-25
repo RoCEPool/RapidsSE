@@ -532,8 +532,9 @@ void Constants::vAddConstantsCpp(void)
   
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
-  /*  1 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
+  /*  0 */ vAddConstant("TN_EOF"_Stz,       TN_EOF);
   /*  2 */ vAddConstant("TN_INTEGER"_Stz,   TN_INTEGER);
+  /*  1 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
   /*  3 */ vAddConstant("TN_STRING"_Stz,    TN_STRING);
   /*  4 */ vAddConstant("TN_ENUMS"_Stz,     TN_ENUMS);
     

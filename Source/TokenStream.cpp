@@ -203,7 +203,7 @@ bool TokenStream::bGetToken(Token* pTkn)
   
   eTN eToken = pTkn->eToken();
   
-  if (TN_NONE == eToken)
+  if (TN_EOF == eToken)
     return false;
 
   return true;
@@ -226,7 +226,7 @@ void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
       
 //      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
 //
-//      if (TN_NONE == eToken)
+//      if (TN_EOF == eToken)
 //        break;
 //
 //      pToken->vToken(eToken);

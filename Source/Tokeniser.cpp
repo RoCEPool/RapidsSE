@@ -168,7 +168,7 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   
   for (i8 i_Token = 0; ; i_Token++) {
     pTokeniser->vNextToken();
-    if (TN_NONE == pTokeniser->eToken())
+    if (TN_EOF == pTokeniser->eToken())
       break;
     
     pTokenVec->vIncTokens();
@@ -199,7 +199,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
   
   for (i8 i_Token = 0; ; i_Token++) {
     pTokeniser->vNextToken();
-    if (TN_NONE == pTokeniser->eToken())
+    if (TN_EOF == pTokeniser->eToken())
       break;
     
     pTokenVec->vIncTokens();
@@ -330,7 +330,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
     
     Token* pToken = (*pTokenVec_arg)[i_Token];
     vNextToken(pToken);
-    ASSERT(TN_NONE != pToken->eToken());
+    ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
@@ -573,10 +573,10 @@ void Tokeniser::vNextSen(Token* pToken)
   switch (pToken->eToken()) {
       
     // the expected tokens
+    case TN_EOF:
     case TN_INTEGER:
     case TN_NAME:
     case TN_STRING:
-    case TN_NONE:
       break;
       
     // unexpected tokens
@@ -607,7 +607,7 @@ void Tokeniser::vCollectNormal(Token* pToken, char* azTermCrs)
   // end of input?
   if (bEndInput()) {
     *azTermCrs = '\0';
-    pToken->vToken(TN_NONE);
+    pToken->vToken(TN_EOF);
     return;
   }
   
@@ -960,7 +960,7 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect Sen token                                                      */
+/* collect Sen token                                                          */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
 {
@@ -973,6 +973,7 @@ void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
   // end of input?
   if (bEndInput()) {
     *azTermCrs = '\0';
+    pToken->vToken(TN_EOF);
     return;
   }
   
@@ -994,7 +995,7 @@ void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect Sen integer                                                    */
+/* collect Sen integer                                                        */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
 {
@@ -1063,7 +1064,7 @@ void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect Sen name                                                       */
+/* collect Sen name                                                           */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectSenName(Token* pToken, char* azTermCrs)
 {
@@ -1091,7 +1092,7 @@ void Tokeniser::vCollectSenName(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect Sen string                                                     */
+/* collect Sen string                                                         */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
 {
@@ -1147,7 +1148,7 @@ void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect Sen tag                                                        */
+/* collect Sen tag                                                            */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
 {

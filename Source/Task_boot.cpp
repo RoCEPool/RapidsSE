@@ -44,7 +44,7 @@ void Task::vAddRoutines(void)
   
   // -- -- -- -- -- -- --
   // test for end of input?
-  "  input::type TN_NONE == if"
+  "  input::type TN_EOF == if"
   "    exit_rt"
   "  then"
   
@@ -252,7 +252,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
 
   m_pForth->m_pCompiler->vNextToken();
   
-  while (TN_NONE != m_pForth->m_pCompiler->pTokeniser()->eToken()) {
+  while (TN_EOF != m_pForth->m_pCompiler->pTokeniser()->eToken()) {
     
     //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
     

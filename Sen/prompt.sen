@@ -18,7 +18,7 @@
 
   // -- -- -- -- -- -- --
   // test for end of input?
-  input::type TN_NONE == if
+  input::type TN_EOF == if
     //"!!NONE!!" .put
     true exit_rt
   then
