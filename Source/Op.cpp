@@ -776,7 +776,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     case PX_ORIGIN_TO_ALL_PARTITIONS: {
       
       bIsMarker = pOperand->bIsMarker();
-      if ( ! bIsMarker) {
+      if ( ! bIsMarker && pOperand->eClass() != CN_STREAMDEF) {
         eXmitKind = m_eXmitKind;
       }
       
@@ -804,7 +804,29 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           break;
         }
           
-        case XK_HASHED : ASSERT(0);
+        case XK_HASHED : {
+          DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+          i_Ptn = pDataBuffer->iPartitionNo();
+          
+          // xmitNode is the partition node
+          m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+          
+          vTrace("Nde %lld; Ptn %lld;"_Stz, m_iXmitNode, i_Ptn);
+          
+          // new a operand job
+          pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand, this, m_iXmitNode, i_Ptn);
+          
+          // get the send node in the task
+          Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+          
+          // send the operand job across the sendNode
+          AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+          
+          // delete the operand job
+          AM::vDeleteJobOperand(pJob_Operand);
+          
+          break;
+        }
           
         case XK_NORMAL: {
       

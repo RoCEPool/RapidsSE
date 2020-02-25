@@ -100,25 +100,29 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-
-time create table T
-(
-colA DECIMAL   NOT NULL min 0              max 250,
-colB BOOLEAN   NOT NULL min false          max true,
-colC DATE      NOT NULL min "2019-01-01"   max "2019-12-31",
-colD FLOAT     NOT NULL min "1.0"          max "1000.0",
-colE INTEGER   NOT NULL min 1              max 1000,
-colF INTERVAL  NOT NULL min "0.0"          max "100.0",
-colG TIME      NOT NULL min "00:00:00.000" max "23:59:59.999",
-//  colH TIMESTAMP NOT NULL min "2019-01-01 00:00:00.000"
-//                          max "2019-12-31 23:59:59.999",
-colI VARCHAR   NOT NULL min "a"            max "zzzzzzzzz"
-)
-rowsize 256
-;
-
 fetch lineitem;
 
+time pipeline insert
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
+
+stage stageC on origin:
+  stageD hashed
+
+stage StageD on all partitions:
+  insertOp lineitem2  | stageE
+
+stage stageE on origin:
+  sinkOp | stageA
+
+end
+;
+/*
 time pipeline truncate
 begin
 
@@ -136,7 +140,7 @@ end
 
 fetch lineitem;
 
-/*
+
 docol epochTake;
 time pipeline scan
 begin
