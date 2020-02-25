@@ -566,6 +566,26 @@ void Tokeniser::vNextSpecial(Token* pToken)
   pToken->vReset();
 
   vCollectSpecial(pToken,pToken->azTerm());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // cross check valid SEN tokens
+  switch (pToken->eToken()) {
+      
+    // the expected tokens
+    case TN_INTEGER:
+    case TN_NAME:
+    case TN_STRING:
+    case TN_NONE:
+      break;
+      
+    // unexpected tokens
+    case TN_OTHER:
+      NEVER_REACH;
+      
+    default:
+      NEVER_REACH;
+  }
 }
 
 
@@ -1143,21 +1163,25 @@ void Tokeniser::vCollectSpecialTag(Token* pToken, char* azTermCrs)
 
   // skip the leading <
   vParserGetAnnChar();
+  
+  if (! m_xAnnChar.m_cChar || bIsWhite() || bStartSpecialString() ) {
+    // push back the unconsumed char
+    vParserUngetAnnCharStripped();
+    
+    // terminate a namelit
+    *z = '\0';
 
-//  if ( ) {
-//    // terminate the tag
-//    *z = '\0';
-//
-//    pToken->vToken(TN_OTHER);
-//
-//    vTokenCollectEnd();
-//  }
+    pToken->vToken(TN_NAME);
+    
+    vTokenCollectEnd();
 
-   
+    return;
+  }
+     
   // terminate the tag
   *z = '\0';
 
-  pToken->vToken(TN_STRING);
+  pToken->vToken(TN_NAME);
   
   vTokenCollectEnd();
 }
