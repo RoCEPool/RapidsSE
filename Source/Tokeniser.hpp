@@ -57,7 +57,7 @@ namespace LexicalAnalysis
  
   private:
     void vNextNormal(Token* pToken);
-    void vNextSpecial(Token* pToken);
+    void vNextSen(Token* pToken);
     
     void vCollectNormal(Token* pToken, char* azTermCrs);
     void vCollectNormalInteger(Token* pToken, char* azTermCrs);
@@ -65,11 +65,11 @@ namespace LexicalAnalysis
     void vCollectNormalOther(Token* pToken, char* azTermCrs);
     void vCollectNormalString(Token* pToken, char* azTermCrs);
     
-    void vCollectSpecial(Token* pToken, char* azTermCrs);
-    void vCollectSpecialInteger(Token* pToken, char* azTermCrs);
-    void vCollectSpecialName(Token* pToken, char* azTermCrs);
-    void vCollectSpecialString(Token* pToken, char* azTermCrs);
-    void vCollectSpecialTag(Token* pToken, char* azTermCrs);
+    void vCollectSen(Token* pToken, char* azTermCrs);
+    void vCollectSenInteger(Token* pToken, char* azTermCrs);
+    void vCollectSenName(Token* pToken, char* azTermCrs);
+    void vCollectSenString(Token* pToken, char* azTermCrs);
+    void vCollectSenTag(Token* pToken, char* azTermCrs);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
@@ -80,11 +80,11 @@ namespace LexicalAnalysis
     bool bStartNormalString(void);
     bool bEndNormalString(void);
 
-    bool bStartSpecialInteger(void);
-    bool bStartSpecialName(void);
-    bool bStartSpecialString(void);
-    bool bStartSpecialTag(void);
-    bool bEndSpecialString(void);
+    bool bStartSenInteger(void);
+    bool bStartSenName(void);
+    bool bStartSenString(void);
+    bool bStartSenTag(void);
+    bool bEndSenString(void);
    
     bool bIsCloseBracket(void);
     bool bIsColon(void);

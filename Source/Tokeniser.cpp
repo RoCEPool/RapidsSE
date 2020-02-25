@@ -423,7 +423,7 @@ void Tokeniser::vNextToken(Token* pToken)
   if (m_bNormal)
     vNextNormal(pToken);
   else
-    vNextSpecial(pToken);
+    vNextSen(pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -557,15 +557,15 @@ void Tokeniser::vNextNormal(Token* pToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next special token into given buffer                                 */
+/* parse next Sen token into given buffer                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextSpecial(Token* pToken)
+void Tokeniser::vNextSen(Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   pToken->vReset();
 
-  vCollectSpecial(pToken,pToken->azTerm());
+  vCollectSen(pToken,pToken->azTerm());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -916,7 +916,7 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
   
   char *z = azTermCrs;
   
-  ASSERT(bStartSpecialString());
+  ASSERT(bStartSenString());
   
   vTokenCollectBegin(pToken);
   
@@ -960,9 +960,9 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect special token                                                      */
+/* collect Sen token                                                      */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSpecial(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -977,26 +977,26 @@ void Tokeniser::vCollectSpecial(Token* pToken, char* azTermCrs)
   }
   
   // collect integer literal?
-  if (bStartSpecialInteger()) {
-    vCollectSpecialInteger(pToken,azTermCrs);
+  if (bStartSenInteger()) {
+    vCollectSenInteger(pToken,azTermCrs);
     return;
   }
   
   // collect string literal?
-  if (bStartSpecialString()) {
-    vCollectSpecialString(pToken,azTermCrs);
+  if (bStartSenString()) {
+    vCollectSenString(pToken,azTermCrs);
     return;
   }
   
   // collect name token
   vTokenCollectBegin(pToken);
-  vCollectSpecialName(pToken,azTermCrs);
+  vCollectSenName(pToken,azTermCrs);
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect special integer                                                    */
+/* collect Sen integer                                                    */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSpecialInteger(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1004,7 +1004,7 @@ void Tokeniser::vCollectSpecialInteger(Token* pToken, char* azTermCrs)
   char *z = azTermCrs;
   
   // we have seen a minus or a digit
-  ASSERT(bStartSpecialInteger());
+  ASSERT(bStartSenInteger());
   
   vTokenCollectBegin(pToken);
 
@@ -1038,7 +1038,7 @@ void Tokeniser::vCollectSpecialInteger(Token* pToken, char* azTermCrs)
   
   // - handle minus only
   if (! iNoDigits) {
-    vCollectSpecialName(pToken,z);
+    vCollectSenName(pToken,z);
     vTokenCollectEnd();
     return;
   }
@@ -1046,7 +1046,7 @@ void Tokeniser::vCollectSpecialInteger(Token* pToken, char* azTermCrs)
   // - handle the case where we have a name like 1_ugh
   
   // just a number?
-  if ( bIsWhite() || bStartSpecialString() ) {
+  if ( bIsWhite() || bStartSenString() ) {
     
     // push back the unconsumed char
     vParserUngetAnnCharStripped();
@@ -1059,22 +1059,22 @@ void Tokeniser::vCollectSpecialInteger(Token* pToken, char* azTermCrs)
   }
   
   // its actually a name; complete parsing name
-  vCollectSpecialName(pToken,z);
+  vCollectSenName(pToken,z);
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect special name                                                       */
+/* collect Sen name                                                       */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSpecialName(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenName(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   char *z = azTermCrs;
   
-  //ASSERT(bStartSpecialName());
+  //ASSERT(bStartSenName());
   
   // collect the characters of the name
-  while ( m_xAnnChar.m_cChar && !bIsWhite() && !bStartSpecialString() ) {
+  while ( m_xAnnChar.m_cChar && !bIsWhite() && !bStartSenString() ) {
     *z++ = m_xAnnChar.m_cChar;
     vParserGetAnnCharStripped();
   }
@@ -1091,15 +1091,15 @@ void Tokeniser::vCollectSpecialName(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect special string                                                     */
+/* collect Sen string                                                     */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSpecialString(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   char *z = azTermCrs;
   
-  ASSERT(bStartSpecialString());
+  ASSERT(bStartSenString());
   
   vTokenCollectBegin(pToken);
   
@@ -1109,7 +1109,7 @@ void Tokeniser::vCollectSpecialString(Token* pToken, char* azTermCrs)
   vParserGetAnnChar();
   
   // collect the chars in the string
-  //while ( ! bEndSpecialString() ) {
+  //while ( ! bEndSenString() ) {
   while ( m_xAnnChar.m_cChar != cStartQuote ) {
   
     //vTrace(">>%c<<\n"_Stz,m_xAnnChar.m_cChar);
@@ -1147,15 +1147,15 @@ void Tokeniser::vCollectSpecialString(Token* pToken, char* azTermCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect special tag                                                        */
+/* collect Sen tag                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSpecialTag(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   char *z = azTermCrs;
   
-  ASSERT(bStartSpecialString());
+  ASSERT(bStartSenString());
   
   vTokenCollectBegin(pToken);
   
@@ -1164,7 +1164,7 @@ void Tokeniser::vCollectSpecialTag(Token* pToken, char* azTermCrs)
   // skip the leading <
   vParserGetAnnChar();
   
-  if (! m_xAnnChar.m_cChar || bIsWhite() || bStartSpecialString() ) {
+  if (! m_xAnnChar.m_cChar || bIsWhite() || bStartSenString() ) {
     // push back the unconsumed char
     vParserUngetAnnCharStripped();
     
@@ -1297,9 +1297,9 @@ bool Tokeniser::bEndNormalString(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of special integer                                          */
+/* test for start of Sen integer                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSpecialInteger(void)
+bool Tokeniser::bStartSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1310,22 +1310,22 @@ bool Tokeniser::bStartSpecialInteger(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of special name                                             */
+/* test for start of Sen name                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSpecialName(void)
+bool Tokeniser::bStartSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (bStartSpecialInteger() || bStartSpecialString())
+  if (bStartSenInteger() || bStartSenString())
     return false;
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of special string                                           */
+/* test for start of Sen string                                               */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSpecialString(void)
+bool Tokeniser::bStartSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1336,9 +1336,9 @@ bool Tokeniser::bStartSpecialString(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of special tag                                              */
+/* test for start of Sen tag                                                  */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSpecialTag(void)
+bool Tokeniser::bStartSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1349,9 +1349,9 @@ bool Tokeniser::bStartSpecialTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for end of special string                                             */
+/* test for end of Sen string                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bEndSpecialString(void)
+bool Tokeniser::bEndSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
