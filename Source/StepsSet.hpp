@@ -304,6 +304,7 @@ public:
 
   // file
   void vFile0Get(void);
+  void vFile0GetEofLocation(void);
   void vFile0Set(void);
   void vFileClose(void);
   void vFileDelete(void);

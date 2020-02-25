@@ -9,8 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_File(void)
 {
-  vAddStep("file0[].get"_Stz,     &Step::vFile0Get);
-  vAddStep("file0[].set"_Stz,     &Step::vFile0Set);
+  vAddStep("file0[].get"_Stz,            &Step::vFile0Get);
+  vAddStep("file0[].getEofLocation"_Stz, &Step::vFile0GetEofLocation);
+  vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
   vAddStep("file::new"_Stz,       &Step::vFileNew);
   vAddStep("file.close"_Stz,      &Step::vFileClose);
@@ -29,6 +30,24 @@ void Step::vFile0Get(void)
   ENTRY(); // ENTRY("vFile0Get"_Stz);
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpFile0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].getEofLocation -- get eof location of file0                        */
+/*----------------------------------------------------------------------------*/
+void Step::vFile0GetEofLocation(void)
+{
+  ENTRY(); // ENTRY("vFile0GetEofLocation"_Stz);
+  
+  File* pFile = *m_pRegSet->m_xpFile0;
+  
+  // get the end-of-file location
+  pFile->vSeekEnd();
+  i8 iEofLoc = pFile->iTell();
+  
+  m_pDataStack->vPushInt(iEofLoc);
   
   EXIT();
 }
