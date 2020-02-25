@@ -152,7 +152,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> <topology> <nextStage> <nextOp> ;
+opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
 jobInfo: BM_InsIdxOp
 {

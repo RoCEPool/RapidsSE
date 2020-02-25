@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: printOp :: printOp <string> <topology> <nextStage> <nextOp> ;
+opSyntax: printOp :: printOp <string> ;
 
 jobInfo: printOp
 {

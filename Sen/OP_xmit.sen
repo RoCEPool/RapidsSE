@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: XmitOp :: XmitOp <xmitKind> <topology> <nextStage> <nextOp> ;
+opSyntax: XmitOp :: XmitOp <xmitKind> ;
 
 jobInfo: XmitOp
 {

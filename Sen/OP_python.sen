@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> <topology> <nextStage> <nextOp> ;
+opSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> ;
 
 jobInfo: pythonOp
 {

@@ -59,8 +59,8 @@ namespace DynamoCompiler
     //
     bool bPhase2_staging(void);
   
-    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
-    void vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
+    void vAddHiddenParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
+    void vReplaceHiddenParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
 
      

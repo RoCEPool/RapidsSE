@@ -40,6 +40,7 @@ OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
   m_eXmitKind = XK_NORMAL;
 
   //m_oEnameSet
+  //m_oHiddenEnameSet
   
   _checkInitialised_(CN_OPSPEC);
   
@@ -60,7 +61,7 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get append right                                                           */
+/* add an ename pair                                                          */
 /*----------------------------------------------------------------------------*/
 void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 {
@@ -70,13 +71,23 @@ void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get append right                                                           */
+/*add an ename pair                                                            */
 /*----------------------------------------------------------------------------*/
 void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_oEnameSet.vAdd(sName, iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an ename pair to hidden ename set                                      */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vAddHiddenEnamePair(Stz* sName, i8 iValue, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_oHiddenEnameSet.vAdd(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,6 +108,16 @@ EnameSet* OpSpec::pEnameSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return &m_oEnameSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the EnameSet                                                           */
+/*----------------------------------------------------------------------------*/
+EnameSet* OpSpec::pHiddenEnameSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return &m_oHiddenEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +163,7 @@ void OpSpec::v_OpSpec(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* replace an ename value                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken)
+void OpSpec::vReplaceHiddenEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -152,11 +173,11 @@ void OpSpec::vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* replace an ename value                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vReplaceEnamePair(Stz* szName, i8 iValue, eTN eToken)
+void OpSpec::vReplaceHiddenEnamePair(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnameSet.vReplace(szName, iValue);
+  m_oHiddenEnameSet.vReplace(szName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/

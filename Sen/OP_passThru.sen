@@ -97,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: PassThruOp :: PassThruOp <topology> <nextStage> <nextOp> ;
+opSyntax: PassThruOp :: PassThruOp ;
 
 jobInfo: PassThruOp
 {

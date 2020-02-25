@@ -141,6 +141,25 @@ void EnameSet::vAppend(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append enameset to cmd string                                              */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vAppend(Stz* szCmd, i8 i_Ename)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  szCmd->vConcat(" "_Stz);
+  
+  if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
+    
+    szCmd->vCatSprint("%lld "_Stz,
+                      m_xEname[i_Ename].m_i_Value
+                      );
+  }
+  else
+    szCmd->vConcat(m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value));
+}
+
+/*----------------------------------------------------------------------------*/
 /* content dump                                                               */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vContentDump(void)

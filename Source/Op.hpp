@@ -15,6 +15,7 @@ namespace Operators
     
     Pipeline*      m_pPipeline;      // op digest
     EnameSet       m_oEnameSet;      // ename set of cmd
+    EnameSet       m_oHiddenEnameSet; // hidden enameset
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to

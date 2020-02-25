@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 : <nextOp> <<jobArgTag>> ( -- s )
 
-  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@
 /*----------------------------------------------------------------------------*/
 : <nextStage> <<jobArgTag>> ( -- s )
 
-  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -254,7 +254,7 @@
 /*----------------------------------------------------------------------------*/
 : <topology> <<jobArgTag>> ( -- s )
 
-  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/

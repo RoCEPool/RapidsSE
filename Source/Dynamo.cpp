@@ -717,7 +717,7 @@ bool Dynamo::bPhase2_staging(void)
         if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
           // add parameter to the prev sink op
           OpSpec* pPrevOpSpec = pOpSpecVec->pGet(i_Op-1);
-          vReplaceStageParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
+          vReplaceHiddenParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
 
           // remove the last (stage) OpSpec from the OpSpecVec
           RASSERT(i_Op == pOpSpecVec->nItems()-1);
@@ -732,7 +732,7 @@ bool Dynamo::bPhase2_staging(void)
       }
       else {
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpec);
-        vAddStageParams(pOpSpec, eTopologyX, i_Stage, i_Op+1);
+        vAddHiddenParams(pOpSpec, eTopologyX, i_Stage, i_Op+1);
       }
     }
   }
@@ -743,36 +743,36 @@ bool Dynamo::bPhase2_staging(void)
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
+void Dynamo::vAddHiddenParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vAddHiddenEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
-  pOpSpec->vAddEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vAddHiddenEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
   
   // arg-2 is the op of the next stage for the xmit
-  pOpSpec->vAddEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
+  pOpSpec->vAddHiddenEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
   //pOpSpec->pEnameSet()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
+void Dynamo::vReplaceHiddenParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vReplaceEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vReplaceHiddenEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
-  pOpSpec->vReplaceEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vReplaceHiddenEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
   
   // arg-2 is the op of the next stage for the xmit
-  pOpSpec->vReplaceEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
+  pOpSpec->vReplaceHiddenEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
   //pOpSpec->pEnameSet()->vPrint();
 }
 
@@ -785,7 +785,7 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
   
   pOpSpec->vName("xmitOp"_Stz);
   
-  vAddStageParams(pOpSpec, eTopologyX, i_Stage, 0);
+  vAddHiddenParams(pOpSpec, eTopologyX, i_Stage, 0);
 }
 
 

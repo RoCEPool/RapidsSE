@@ -35,6 +35,7 @@ namespace Gadgets
     void vAdd(Stz* szName);
     void vAdd(Stz* szName, Stz* szValue);
     void vAppend(Stz* szCmd);
+    void vAppend(Stz* szCmd, i8 i_Ename);
     void vContentDump(void);
     void vCopy(EnameSet* pSrcEnameSet);
     i8   nEnames(void);

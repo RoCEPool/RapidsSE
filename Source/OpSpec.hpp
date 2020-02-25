@@ -15,6 +15,7 @@ namespace Pipelines
     eXK        m_eXmitKind;
     
     EnameSet   m_oEnameSet;
+    EnameSet   m_oHiddenEnameSet;
     
     // must be last
     Footer m_xFooter;
@@ -28,14 +29,16 @@ namespace Pipelines
   
     void vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken);
     void vAddEnamePair(Stz* sName, i8 iValue, eTN eToken);
+    void vAddHiddenEnamePair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
     EnameSet* pEnameSet(void);
+    EnameSet* pHiddenEnameSet(void);
     Stz* szName(void);
     void vName(Stz* szName);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
-    void vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken);
-    void vReplaceEnamePair(Stz* sName, i8 iValue, eTN eToken);
+    void vReplaceHiddenEnamePair(Stz* szName, Stz* szValue, eTN eToken);
+    void vReplaceHiddenEnamePair(Stz* sName, i8 iValue, eTN eToken);
     i8   i_Slot(void);
     eXK  eXmitKind(void);
     void vXmitKind(eXK eStageKind);
