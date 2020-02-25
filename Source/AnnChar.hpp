@@ -12,7 +12,20 @@ namespace LexicalAnalysis
     i8   m_iCol;   // column number
     
     bool bIsBlank(void);
+    bool bIsCloseBracket(void);
+    bool bIsColon(void);
+    bool bIsDigit(void);
+    bool bIsDot(void);
     bool bIsEOF(void);
+    bool bIsEqual(void);
+    bool bIsHex(void);
+    bool bIsLessThan(void);
+    bool bIsGreaterThan(void);
+    bool bIsMinus(void);
+    bool bIsOpenBracket(void);
+    bool bIsPipe(void);
+    bool bIsWhite(void);
+    bool bIsX(void);
 
     void vReset(void);
   };
