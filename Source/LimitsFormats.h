@@ -84,6 +84,8 @@ static const char D_RECORD_TERMINATOR    = '\0';
 
 static Stz* C_NO_NAME = "-- NO_NAME --"_Stz;
 
+static Stz* C_PROCEDURE_CATG = "\\procedure"_Stz;
+
 static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public/tables"_Stz;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

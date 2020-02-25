@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* procedure category                                                         */
 /*----------------------------------------------------------------------------*/
-: procedure category ;
+: \procedure \\category ;
 
-find: procedure word.dump
-find: procedure word.see
+find: \procedure word.dump
+find: \procedure word.see
 
 /*============================================================================*/
 /* end                                                                        */

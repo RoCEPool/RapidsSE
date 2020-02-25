@@ -343,13 +343,13 @@ void Word::vContentDump(void)
   Dic* pRootDic = AM::pRootDic();
   Word* pStepWord = pRootDic->pFindStep(m_fpIntrinsic);
   
-  vTrace("Word %p: %s %s Category %s Immediate %d DataBytes %lld "_Stz
+  vTrace("Word %s %p Kind %s; Category %s; %s; DataBytes %lld; "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
-         this,
          m_sWordNm.azChar(),
+         this,
          aWK[m_eKind]->azChar(),
          m_pCategory->m_sWordNm.azChar(),
-         m_bImmediate,
+         m_bImmediate ? "immediate" : "not-immediate",
          m_xRoutine.nUsed(),
          m_fpIntrinsic,
          pStepWord ? pStepWord->szWordNm() : "<not-found>"_Stz,
