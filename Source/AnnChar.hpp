@@ -11,6 +11,9 @@ namespace LexicalAnalysis
     i8   m_iLine;  // line number
     i8   m_iCol;   // column number
     
+    bool bIsBlank(void);
+    bool bIsEOF(void);
+
     void vReset(void);
   };
 }

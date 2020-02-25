@@ -69,7 +69,8 @@ namespace LexicalAnalysis
     void vCollectSpecialInteger(Token* pToken, char* azTermCrs);
     void vCollectSpecialName(Token* pToken, char* azTermCrs);
     void vCollectSpecialString(Token* pToken, char* azTermCrs);
-    
+    void vCollectSpecialTag(Token* pToken, char* azTermCrs);
+
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
     

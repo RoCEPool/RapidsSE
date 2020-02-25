@@ -1126,6 +1126,42 @@ void Tokeniser::vCollectSpecialString(Token* pToken, char* azTermCrs)
   vTokenCollectEnd();
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect special tag                                                        */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vCollectSpecialTag(Token* pToken, char* azTermCrs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  char *z = azTermCrs;
+  
+  ASSERT(bStartSpecialString());
+  
+  vTokenCollectBegin(pToken);
+  
+  char cStartOpenAngle = m_xAnnChar.m_cChar;
+
+  // skip the leading <
+  vParserGetAnnChar();
+
+//  if ( ) {
+//    // terminate the tag
+//    *z = '\0';
+//
+//    pToken->vToken(TN_OTHER);
+//
+//    vTokenCollectEnd();
+//  }
+
+   
+  // terminate the tag
+  *z = '\0';
+
+  pToken->vToken(TN_STRING);
+  
+  vTokenCollectEnd();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- character processing ----------------------------------------------------*/
