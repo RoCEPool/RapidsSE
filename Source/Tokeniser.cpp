@@ -975,6 +975,15 @@ void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
     vCollectSenString(pToken,azTermCrs);
     return;
   }
+
+#ifdef WITH_SEN_TAGS
+  // collect string literal?
+  if (bStartSenTag()) {
+    //vCollectSenString(pToken,azTermCrs);
+    //return;
+    Correctness::vDebugPoint();
+  }
+#endif
   
   // collect name token
   vTokenCollectBegin(pToken);
@@ -1322,7 +1331,7 @@ bool Tokeniser::bStartSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (m_xAnnChar.bIsLessThan())
+  if (m_xAnnChar.bIsTilde())
     return true;
   
   return false;
