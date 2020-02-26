@@ -94,9 +94,6 @@ void Task::vAddRoutines(void)
   // is token a tag?
   "  input::type TN_TAG == if"
   
-  "    \": interpret : OOPS... SAW A TAG\" ."
-  "    process::quit"
-  
   "    compiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A TAG\" ."
   "      process::quit"
@@ -104,11 +101,17 @@ void Task::vAddRoutines(void)
   "    then"
 
   "    compiler::isCompiling if"
-  "      ,"                      // compile encodes push stzVal
+  "      input::token"           // compile : encode push "<tagNm>"
+  "      ,"                      //         :
+  "      \"tag::get\""           //         : encode tag::get
+  "        word::find"           //         :
+  "        compile,"             //         :
   "      reenter"
   "    then"
   
-  "    reenter"                  // interpret leaves str on stack
+  "    input::token"             // interpret : push <tagNm>
+  "    tag::get"                 //           : translate to <tagValue>
+  "    reenter" 
 
   "  then"
 

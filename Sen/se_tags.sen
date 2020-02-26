@@ -7,17 +7,23 @@
 /*----------------------------------------------------------------------------*/
 /* tag testing                                                                */
 /*----------------------------------------------------------------------------*/
-: ~SenTag
+: SenTag
 
-  // ~SenTag
+  ~SenTag .
 
 ;
 
+"SenTag" word::find word.see
+
 "SEN_TAG_VALUE" "~SenTag" tag::set
 
-"~SenTag" tag::get .
+//"~SenTag" tag::get .
 
-// debug::breakPoint
+~SenTag .
+
+SenTag
+
+//debug::breakPoint
 
 /*============================================================================*/
 /* end                                                                        */
