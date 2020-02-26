@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace Utilities
 {
   static const i8 C_CALC_CODE  = C_4KB;
   static const i8 C_CALC_STACK = C_4KB;

@@ -15,6 +15,7 @@ namespace Utilities
 //------------------------------------------------------------------------------
 
 #include "BPA.hpp"
+#include "Calculator.hpp"
 #include "GenData.hpp"
 #include "LlcTest.hpp"
 #include "PoolHelper.hpp"

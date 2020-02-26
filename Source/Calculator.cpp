@@ -2,13 +2,13 @@
 /* Calculator.cpp -- Calculator                                               */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "Utilities.h"
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Calculator* Operators::_pCalculator(void* aAddr)
+Calculator* Utilities::_pCalculator(void* aAddr)
 {
   Calculator* pCalculator = reinterpret_cast<Calculator*>(aAddr);
   

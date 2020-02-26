@@ -27,7 +27,6 @@ namespace Operators
 
 #include "Pipeline.hpp"
 
-#include "Calculator.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
