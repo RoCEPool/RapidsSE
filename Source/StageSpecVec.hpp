@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Pipelines
+namespace PipelineSpecs
 {
   class StageSpecVec : public VectorNL_t<CN_STAGESPECVEC,StageSpec,C_MAX_STAGES>
   {

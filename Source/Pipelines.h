@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Pipelines
+namespace PipelineSpecs
 {
   void vCheckAssumptions(void);
 }

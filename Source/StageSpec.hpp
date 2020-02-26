@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Pipelines
+namespace PipelineSpecs
 {
   class StageSpec : public Object
   {

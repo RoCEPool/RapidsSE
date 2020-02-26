@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Pipelines::vCheckAssumptions(void)
+void PipelineSpecs::vCheckAssumptions(void)
 {
 }
 
