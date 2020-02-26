@@ -55,7 +55,7 @@ void Task::vAddRoutines(void)
   "    input::token >int"        // convert str to int, leave on stack
 
   "    compiler::isPostponing if"
-  "      \"SHOULD NOT BE POSTPONING AN INT\" ."
+  "      \": interpret : SHOULD NOT BE POSTPONING AN INT\" ."
   "      process::quit"
   "      reenter"
   "    then"
@@ -76,7 +76,7 @@ void Task::vAddRoutines(void)
   "    input::token"             // put str on stack
   
   "    compiler::isPostponing if"
-  "      \"SHOULD NOT BE POSTPONING A STR\" ."
+  "      \": interpret : SHOULD NOT BE POSTPONING A STR\" ."
   "      process::quit"
   "      reenter"
   "    then"
@@ -94,11 +94,11 @@ void Task::vAddRoutines(void)
   // is token a tag?
   "  input::type TN_TAG == if"
   
-  "    \"OOPS... SAW A TAG\" ."
+  "    \": interpret : OOPS... SAW A TAG\" ."
   "    process::quit"
   
   "    compiler::isPostponing if"
-  "      \"SHOULD NOT BE POSTPONING A TAG\" ."
+  "      \": interpret : SHOULD NOT BE POSTPONING A TAG\" ."
   "      process::quit"
   "      reenter"
   "    then"

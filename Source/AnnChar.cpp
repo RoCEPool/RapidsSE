@@ -5,6 +5,50 @@
 #include "LexicalAnalysis.h"
 
 /*----------------------------------------------------------------------------*/
+/* test for ampersand                                                         */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsAmpersand(void)
+{
+  if ('&' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for asterisk                                                          */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsAsterisk(void)
+{
+  if ('*' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for at sign                                                           */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsAt(void)
+{
+  if ('@' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for back-quote                                                        */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsBackQuote(void)
+{
+  if ('`' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for backslash                                                         */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsBackSlash(void)
@@ -27,11 +71,44 @@ bool AnnChar::bIsBlank(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for circumflex                                                        */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsCircumflex(void)
+{
+  if ('^' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a close square bracket ]                                          */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsCloseBracket(void)
 {
   if (']' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a close brace                                                     */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsCloseBrace(void)
+{
+  if ('}' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a close paraenthesis                                               */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsCloseParenthesis(void)
+{
+  if (')' == m_cChar)
     return true;
   
   return false;
@@ -54,6 +131,17 @@ bool AnnChar::bIsColon(void)
 bool AnnChar::bIsDigit(void)
 {
   if (StrLib::bIsDigit(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for dollar                                                            */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsDollar(void)
+{
+  if ('$' == m_cChar)
     return true;
   
   return false;
@@ -104,11 +192,33 @@ bool AnnChar::bIsEqual(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for exclamation                                                       */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsExclamation(void)
+{
+  if ('!' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a greater than sign                                               */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsGreaterThan(void)
 {
   if ('>' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for hash                                                              */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsHash(void)
+{
+  if ('#' == m_cChar)
     return true;
   
   return false;
@@ -148,6 +258,17 @@ bool AnnChar::bIsMinus(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a open brace                                                      */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsOpenBrace(void)
+{
+  if ('{' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a open square bracket [                                           */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsOpenBracket(void)
@@ -159,11 +280,33 @@ bool AnnChar::bIsOpenBracket(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a open paraenthesis                                               */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsOpenParenthesis(void)
+{
+  if ('(' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a null char                                                       */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsNull(void)
 {
   if ('\0' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a percent sign                                                    */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsPercent(void)
+{
+  if ('%' == m_cChar)
     return true;
   
   return false;
@@ -192,6 +335,28 @@ bool AnnChar::bIsPlus(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for question mark                                                     */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsQuestion(void)
+{
+  if ('?' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a semicolon                                                       */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsSemicolon(void)
+{
+  if (';' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a single quote                                                    */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsSingleQuote(void)
@@ -208,6 +373,28 @@ bool AnnChar::bIsSingleQuote(void)
 bool AnnChar::bIsSlash(void)
 {
   if ('/' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for tilde                                                             */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsTilde(void)
+{
+  if ('~' == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for underscore                                                        */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsUnderscore(void)
+{
+  if ('_' == m_cChar)
     return true;
   
   return false;

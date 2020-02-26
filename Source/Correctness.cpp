@@ -134,6 +134,11 @@ bool Correctness::bTraceWith(Stz* szWith)
     return true;
 #endif
   
+#ifdef WITH_SEN_TAGS
+  if (szWith->bSame("WITH_SEN_TAGS"_Stz))
+    return true;
+#endif
+  
 #ifdef WITH_SETH_SUPPORT
   if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
     return true;
@@ -262,6 +267,10 @@ void Correctness::vTraceWith(void)
   
 #ifdef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
+#endif
+  
+#ifdef WITH_SEN_TAGS
+  vTrace("  WITH_SEN_TAGS\n"_Stz);
 #endif
   
 #ifdef WITH_SETH_SUPPORT
@@ -402,6 +411,11 @@ bool Correctness::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
+#ifndef WITH_SEN_TAGS
+  if (szWith->bSame("WITH_SEN_TAGS"_Stz))
+    return true;
+#endif
+  
 #ifndef WITH_SETH_SUPPORT
   if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
     return true;
@@ -530,6 +544,10 @@ void Correctness::vTraceWithout(void)
   
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
+#endif
+  
+#ifndef WITH_SEN_TAGS
+  vTrace("  WITH_SEN_TAGS\n"_Stz);
 #endif
   
 #ifndef WITH_SETH_SUPPORT
