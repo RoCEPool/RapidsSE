@@ -23,8 +23,25 @@ create table T1 (
 // create indexes
 create index T1_idx on T1 (jidx_key);
 
-ld T1 "../DATA/Operators/operators1_1.csv" ;
+//ld T1 "../DATA/Operators/operators1_1.csv" ;
 
+pipeline _threads
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on origin:
+  //chunk "../DATA/Operators/operators1_1.csv" | stageC
+  chunk "/tpch/SF1/lineitem.csv" | stageC
+
+  stage stageC on origin:
+  sinkOp | stageA
+
+end
+;
+
+/*
 pipeline _threads
 begin
 
@@ -42,7 +59,7 @@ begin
 
 end
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
 /*----------------------------------------------------------------------------*/

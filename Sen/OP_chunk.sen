@@ -1,0 +1,118 @@
+/*============================================================================*/
+/* OP_chunk.sen -- Operator chunk                                             */
+/*============================================================================*/
+
+" OP_chunk.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for chunk req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : Chunk_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_ToFileOp |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_EOSMARKER of
+        //"Operand:- ZK_EOSMARKER" .verbose
+        File0[].get file.close
+        File0[].get file.delete
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_PULSEMARKER of
+
+      //"Operand:- ZK_PULSEMARKER" .verbose
+      Operand[].pipeOut
+
+      // set eof location in counter0
+      File0[].getEofLocation to counter1[]
+
+      // set chunk location in counter1 to 0
+      0 to counter0[]
+
+      begin
+        counter1[] counter0[] >
+      while
+        // create a seekOffset operand
+        Operand[].newSeekOffsets
+        Operand[].chunkFile
+        Operand[].pipeOut
+      repeat
+
+      Operand[].newEosMarker
+      Operand[].pipeOut
+      true
+
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+
+        // open the file for reading
+        file::new to File0[]
+        <fileNm> OPEN_READ File0[].get file.open
+        not if
+          File0[].get file.delete assert::stack_0 EC_INVALID_FILE
+          op.pipelineJob@ <ERROR_JOB> !!logError
+          Operand[].delete
+          Operand[].newErrorMarker
+        then
+        Operand[].pipeout
+        true
+      endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: Chunk :: Chunk <fileNm> ;
+
+jobInfo: Chunk
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

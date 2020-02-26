@@ -182,6 +182,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
+    case CN_SEEKOFFSETS: {
+      SeekOffsets* pSeekOffsets = _pSeekOffsets(pOperand);
+      delete pSeekOffsets;
+      break;
+    }
+      
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = _pStreamDef(pOperand);
       delete pStreamDef;

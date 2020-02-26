@@ -244,6 +244,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__S__
   /* */ &Dump::vUndefined,       // CN_SCHEMA
   /* */ &Dump::vUndefined,       // CN_SCHEMATEST
+  /* */ &Dump::vUndefined,       // CN_SEEKOFFSETS
   /* */ &Dump::vUndefined,       // CN_SEEME
   /* */ &Dump::vUndefined,       // CN_SEMANTIC
   /* */ &SePrompt::vDump,        // CN_SEPROMPT
@@ -581,6 +582,7 @@ i8 giClassSize[]
   /* */ 'S' - ('A' - 1),            // CN__S__
   /* */ sizeof(Schema),             // CN_SCHEMA
   /* */ sizeof(SchemaTest),         // CN_SCHEMATEST
+  /* */ sizeof(SeeMe),              // CN_SEEKOFFSETS
   /* */ sizeof(SeeMe),              // CN_SEEME
   /* */ sizeof(Semantic),           // CN_SEMANTIC
   /* */ sizeof(SePrompt),           // CN_SEPROMPT
@@ -918,6 +920,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__S__
   /* */ HT_TRANSIENT_SMALL,   // CN_SCHEMA
   /* */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
+  /* */ HT_TRANSIENT_SMALL,   // CN_SEEKOFFSETS
   /* */ HT_INVALID,           // CN_SEEME
   /* */ HT_TRANSIENT_MEDIUM,  // CN_SEMANTIC
   /* */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT

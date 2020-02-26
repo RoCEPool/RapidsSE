@@ -23,6 +23,11 @@ namespace Load
   
     SeekOffsets(void);
    ~SeekOffsets(void) noexcept(false);
+    
+    bool bAddOffset(i8 iOffset, i8 nBytes);
+    void vDump(void);
+    bool bIsFull(void);
+    i8   nOffsets(void);
   };
 
   SeekOffsets* _pSeekOffsets(void* aAddr);

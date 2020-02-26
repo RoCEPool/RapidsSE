@@ -901,6 +901,7 @@ public:
   // operand
   void vOperandCsvAppend(void);
   void vOperandBide(void);
+  void vOperandChunkFile(void);
   void vOperandCsvData(void);
   void vOperandDelete(void);
   void vOperandFirstRowFetch(void);
@@ -917,6 +918,7 @@ public:
   void vOperandNewCsvBuffer(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewPulseMarker(void);
+  void vOperandNewSeekOffsets(void);
   void vOperandNewStartMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStopMarker(void);

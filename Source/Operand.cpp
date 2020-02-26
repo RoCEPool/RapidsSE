@@ -29,6 +29,7 @@ bool Operands::_bIsValidOperand(eCN eClass)
     case CN_CSVBUFFER:
     case CN_IRWBUFFER:
     case CN_MARKER:
+    case CN_SEEKOFFSETS:
     case CN_STREAMDEF:
       return true;
     default:

@@ -15,6 +15,7 @@ enum eZK // operand kind
   /*    */ ZK_ERRORMARKER,
   /*    */ ZK_IRWBUFFER,
   /*    */ ZK_PULSEMARKER,
+  /*    */ ZK_SEEKOFFSETS,
   /*    */ ZK_SRTBUFFER,
   /*    */ ZK_STARTMARKER,
   /*    */ ZK_STARTEDMARKER,
@@ -36,6 +37,7 @@ static Stz* aZK[]
   /*    */ "ZK_EOSMARKER"_Stz,
   /*    */ "ZK_ERRORMARKER"_Stz,
   /*    */ "ZK_IRWBUFFER"_Stz,
+  /*    */ "ZK_SEEKOFFSETS"_Stz
   /*    */ "ZK_PULSEMARKER"_Stz,
   /*    */ "ZK_SRTBUFFER"_Stz,
   /*    */ "ZK_STARTMARKER"_Stz,

@@ -240,6 +240,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__S__
   /*    */ &Finalize::vUndefined,         // CN_SCHEMA
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
+  /*    */ &Finalize::vUndefined,         // CN_SEEKOFFSETS
   /*    */ &Finalize::vUndefined,         // CN_SEEME
   /*    */ &Finalize::vUndefined,         // CN_SEMANTIC
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
