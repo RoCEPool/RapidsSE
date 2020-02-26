@@ -33,7 +33,7 @@ void Task::vAddRoutines(void)
   s48K sDefinition;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // : interpret
+  // : interpret -- Sen Interpret & Compile Loop
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": interpret"
@@ -52,20 +52,20 @@ void Task::vAddRoutines(void)
   // is token an integer?
   "  input::type TN_INTEGER == if"
   
-  "    input::token >int"        // convert str to int, leave on stack
-
   "    compiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING AN INT\" ."
   "      process::quit"
-  "      reenter"
   "    then"
 
+  "    input::token"             // push str token onto stack
+  "    >int"                     // convert to int, leave on stack
+
   "    compiler::isCompiling if"
-  "      ,"                      // compile encodes push intval
+  "      ,"                      // compile : encode push int
   "      reenter"
   "    then"
   
-  "    reenter"                  // interpret leaves int on stack
+  "    reenter"                  // interpret : leave int on stack
 
   "  then"
   
@@ -73,20 +73,19 @@ void Task::vAddRoutines(void)
   // is token a string?
   "  input::type TN_STRING == if"
   
-  "    input::token"             // put str on stack
-  
   "    compiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A STR\" ."
   "      process::quit"
-  "      reenter"
   "    then"
+  
+  "    input::token"             // push str token onto stack
   
   "    compiler::isCompiling if"
-  "      ,"                      // compile encodes push stzVal
+  "      ,"                      // compile : encode push str
   "      reenter"
   "    then"
   
-  "    reenter"                  // interpret leaves str on stack
+  "    reenter"                  // interpret : leave str on stack
 
   "  then"
   
@@ -109,61 +108,74 @@ void Task::vAddRoutines(void)
   "      reenter"
   "    then"
   
-  "    input::token"             // interpret : push <tagNm>
+  "    input::token"             // interpret : push <tagNm> onto stack
   "    tag::get"                 //           : translate to <tagValue>
   "    reenter" 
 
   "  then"
 
-  // -- -- -- -- -- -- --
-  // token should be a name
+  //
+  // -- token should be a name --
+  //
   "  input::type TN_NAME != if"
   "    \"strange token\" . input::type ."
   "    reenter"
   "  then"
   
+  // push name token onto stack
+  "  input::token"
+
+  // find word using name on stack
+  "  word::find"
+
+  // pointer to word on stack
+
   // -- -- -- -- -- -- --
   // is token a known word?
-  "  input::token word::find"
   "  dup not if"
-  "    drop"                     // token is an unknown word
+  "    drop"                     // error -- token is an unknown word
   "    input::unknown"
   "    reenter"
   "  then"
-  
+
+  // pointer to word on stack
+
   // -- -- -- -- -- -- --
-  // pWord now on d-stack
-  
-  // -- -- -- -- -- -- --
-  // is an immediate word?
+  // is it an immediate word?
   "  dup word.isImmediate if"
-  "    execute"                  // execute the immediate word
+  "    execute"                  // execute the immediate word on stack
   "    reenter"
   "  then"
+  
+  // pointer to word on stack
   
   // -- -- -- -- -- -- --
   // postponing mode?
   "  compiler::isPostponing if"
-//  "    \"SHOULD NOT BE POSTPONING\" ."
-//  "    process::quit"
   "    \"POSTPONING\" ."
   "    , "
   "    \"compile,\" word::find compile,"
   "    reenter"
   "  then"
 
+  // pointer to word on stack
+  
   // -- -- -- -- -- -- --
   // compiling mode?
   "  compiler::isCompiling if "
-  "    compile,"                 // compile, encodes call to word
+  "    compile,"                 // compile : encode call to word on stack
   "    reenter"
   "  then"
   
+  // pointer to word on stack
+
   // -- -- -- -- -- -- --
   // we are interpreting
-  "  execute"                    // execute word
-  
-  "  reenter"                    // loop over
+  "  execute"                    // interpret: execute word on stack
+
+  // -- -- -- -- -- -- --
+  // loop over
+  "  reenter"
 
   "  ;"_Stz;
   
