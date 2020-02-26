@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace Oblique
 {
   class Pipe : public Object
   {
