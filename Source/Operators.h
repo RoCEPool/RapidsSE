@@ -26,8 +26,6 @@ namespace Operators
 #include "StageVec.hpp"
 
 #include "Pipeline.hpp"
-#include "OpHelper.hpp"
-
 
 #include "Calculator.hpp"
 
