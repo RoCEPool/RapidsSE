@@ -460,8 +460,8 @@ i8 giClassSize[]
   /* */ 'I' - ('A' - 1),            // CN__I__
   /* */ sizeof(Index),              // CN_INDEX
   /* */ sizeof(IndexDef),           // CN_INDEXDEF
-  /* */ sizeof(IndexPtn),          // CN_INDEXPTN
-  /* */ sizeof(IndexPtnVec),       // CN_INDEXPTNVEC
+  /* */ sizeof(IndexPtn),           // CN_INDEXPTN
+  /* */ sizeof(IndexPtnVec),        // CN_INDEXPTNVEC
   /* */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* */ sizeof(IdxVec),             // CN_IDXVEC
   /* */ sizeof(IngestChunk),        // CN_INGESTCHUNK
@@ -527,7 +527,7 @@ i8 giClassSize[]
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N' - ('A' - 1),            // CN__N__
-  /* */ sizeof(NextGid),             // CN_NEXTGID
+  /* */ sizeof(NextGid),            // CN_NEXTGID
   /* */ sizeof(NmStr),              // CN_NMSTR
   /* */ sizeof(NmStrList),          // CN_NMSTRLIST
   /* */ sizeof(NmVal),              // CN_NMVAL
