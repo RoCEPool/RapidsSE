@@ -9,13 +9,13 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Exemplar::Exemplar(void)
-: Object(CN_PIPE)
+: Object(CN_EXEMPLAR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXEMPLAR,_FOOTER_);
   
-   _checkInitialised_(CN_PIPE);
+   _checkInitialised_(CN_EXEMPLAR);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_EXEMPLAR,_FOOTER_);
 }
 
 
@@ -24,7 +24,7 @@ Exemplar::Exemplar(void)
 /*----------------------------------------------------------------------------*/
 Exemplar::~Exemplar(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXEMPLAR,_FOOTER_);
 }
 
 
@@ -37,7 +37,7 @@ Exemplar::~Exemplar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Footer* Exemplar::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_PIPE);
+  _precondition_(_MAGIC_,CN_EXEMPLAR);
   
   return &m_xFooter;
 }

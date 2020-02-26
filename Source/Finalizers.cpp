@@ -74,6 +74,7 @@ pFINALIZE *gpFinalize[]
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_ENUMSS
+  /*    */ &Finalize::vUndefined,         // CN_EXEMPLAR
   /*    */ &Finalize::vUndefined,         // CN_EXTRACTROW
 
   /*    */ &Finalize::vUndefined,         // CN__F__
@@ -203,7 +204,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__P__
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
   /* 82 */ &Finalize::vUndefined,         // CN_PERUSE
-  /*    */ &Finalize::vUndefined,         // CN_PIPE
   /* 34 */ &Finalize::vUndefined,         // CN_PIPELINE
   /*    */ &Finalize::vUndefined,         // CN_PIPELINESPEC
   /* 86 */ &Finalize::vUndefined,         // CN_PLAN

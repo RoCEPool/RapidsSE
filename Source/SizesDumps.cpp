@@ -78,6 +78,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_ENTBUFFER
   /* */ &Dump::vInvalid,         // CN_ENTWRK
   /* */ &Dump::vDummy,           // CN_ENUMFLAGS
+  /* */ &Dump::vInvalid,         // CN_EXEMPLAR
   /* */ &Dump::vDummy,           // CN_EXTRACTROW
 
   /* */ &Dump::vInvalid,         // CN__F__
@@ -207,7 +208,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__P__
   /* */ &Dump::vInvalid,         // CN_PATHVEC
   /* */ &Dump::vInvalid,         // CN_PERUSE
-  /* */ &Dump::vInvalid,         // CN_PIPE
   /* */ &Dump::vDummy,           // CN_PIPELINE
   /* */ &Dump::vDummy,           // CN_PIPELINESPEC
   /* */ &Plan::vDump,            // CN_PLAN
@@ -416,6 +416,7 @@ i8 giClassSize[]
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
+  /* */ sizeof(Exemplar),           // CN_EXEMPLAR
   /* */ sizeof(ExtractRow),         // CN_EXTRACTROW
 
   /* */ 'F' - ('A' - 1),            // CN__F__
@@ -545,7 +546,6 @@ i8 giClassSize[]
   /* */ 'P' - ('A' - 1),            // CN__P__
   /* */ sizeof(PathVec),            // CN_PATHVEC
   /* */ sizeof(Peruse),             // CN_PERUSE
-  /* */ sizeof(Fifo),               // CN_PIPE
   /* */ sizeof(Pipeline),           // CN_PIPELINE
   /* */ sizeof(PipelineSpec),       // CN_PIPELINESPEC
   /* */ sizeof(Plan),               // CN_PLAN
@@ -754,6 +754,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
   /* */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
+  /* */ HT_TRANSIENT_SMALL,   // CN_EXEMPLAR
   /* */ HT_TRANSIENT_SMALL,   // CN_EXTRACTROW
 
   /* */ HT_INVALID,           // CN__F__
@@ -883,7 +884,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__P__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
-  /* */ HT_TRANSIENT_SMALL,   // CN_PIPE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PIPELINE
   /* */ HT_TRANSIENT_SMALL,   // CN_PIPELINESPEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PLAN

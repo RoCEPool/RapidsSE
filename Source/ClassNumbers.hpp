@@ -77,6 +77,7 @@ enum eCN : u2 // Class Number
   /*  51 0x033  1043952B Heap:L */ CN_ENTBUFFER,
   /*  52 0x034      304B Heap:I */ CN_ENTWRK,
   /*  53 0x035      312B Heap:S */ CN_ENUMFLAGS,
+  /* 170 0x0AA      384B Heap:S */ CN_EXEMPLAR,
   /*                312B Heap:S */ CN_EXTRACTROW,
   
   /*  54 0x036        6B Heap:I */ CN__F__,
@@ -206,7 +207,6 @@ enum eCN : u2 // Class Number
   /* 165 0x0A5       16B Heap:I */ CN__P__,
   /* 167 0x0A7     1048B Heap:M */ CN_PATHVEC,
   /* 169 0x0A9      232B Heap:M */ CN_PERUSE,
-  /* 170 0x0AA      384B Heap:S */ CN_PIPE,
   /* 171 0x0AB     2136B Heap:M */ CN_PIPELINE,
   /* 172 0x0AC       80B Heap:S */ CN_PIPELINESPEC,
   /* 173 0x0AD    48224B Heap:M */ CN_PLAN,
@@ -414,6 +414,7 @@ static Stz* aCN[]
   /*  51 0x033 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  52 0x034 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  53 0x035 */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
+  /* 170 0x0AA */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR
   /*           */ "EXTRACTROW"_Stz,          // CN_EXTRACTROW
   
   /*  54 0x036 */ "_F__"_Stz,                // CN__F__
@@ -543,7 +544,6 @@ static Stz* aCN[]
   /* 165 0x0A5 */ "_P__"_Stz,                // CN__P__
   /* 167 0x0A7 */ "PATHVEC"_Stz,             // CN_PATHVEC
   /* 169 0x0A9 */ "PERUSE"_Stz,              // CN_PERUSE
-  /* 170 0x0AA */ "PIPE"_Stz,                // CN_PIPE
   /* 171 0x0AB */ "PIPELINE"_Stz,            // CN_PIPELINE
   /* 172 0x0AC */ "PIPELINESPEC"_Stz,        // CN_PIPELINESPEC
   /* 173 0x0AD */ "PLAN"_Stz,                // CN_PLAN
