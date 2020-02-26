@@ -14,7 +14,7 @@ namespace Pipelines
     bool        m_bCancelling;
     i8          m_iOriginatingNode;
     
-    StageVec      m_oStageVec;     // vector of stages
+    StageVec    m_oStageVec;     // vector of stages
   
   private:
   

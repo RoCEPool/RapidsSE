@@ -5,7 +5,6 @@
 
 namespace Pipelines
 {
-  class Stage;
   class Op : public Focal
   {
   friend class Pipeline;
