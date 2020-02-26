@@ -11,7 +11,7 @@ namespace Operators
   friend class Pipeline;
   
   private:
-    s32            m_sName;          // first word of prompt command
+    s32            m_sOpNm;          // name of the operator
     
     Pipeline*      m_pPipeline;         // op digest
     EnameSet       m_oEnameSet;         // ename set of cmd
@@ -69,7 +69,6 @@ namespace Operators
     void vJobPipeline(Job* pJob);
     i8   nLeftEosMarkers(void);
     void vLeftEosMarkers(i8 nEosMarkers);
-    Stz* szName(void);
     i8   iNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
@@ -77,6 +76,7 @@ namespace Operators
     i8   nNode(void);
     void vNode(i8 nNode);
     Job* pOpJob(void);
+    Stz* szOpNm(void);
     void vPartition(i8 iPartition);
     i8   nPartition(void);
     bool bPause(void);

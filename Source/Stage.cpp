@@ -213,11 +213,11 @@ void Stage::vDump(StageVec* pStageVec)
            i_Op,
            pOp->nNode(),
            pOp->nPartition(),
-           pOp->szName(),
+           pOp->szOpNm(),
            sArgs.szStz(),
            iLeftEosMarkers,
            pOp->nRightEosMarkers(),
-           pNextOp->szName(),
+           pNextOp->szOpNm(),
            pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
            aPX[eTopology]
           );

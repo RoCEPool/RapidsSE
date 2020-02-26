@@ -53,7 +53,7 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   RASSERT(pOpSpec);
   
-  m_sName = pOpSpec->szName();
+  m_sOpNm = pOpSpec->szName();
 
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());
   m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
@@ -152,7 +152,7 @@ void Op::vAppendLeft(Operand* pOperand, bool bSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
 //  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sName.szStz(),
+//         m_sOpNm.szStz(),
 //         pOperand,
 //         aCN[pOperand->eClass()]);
   
@@ -188,7 +188,7 @@ void Op::vAppendRight(Operand* pOperand, bool bSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-  //         m_sName(),
+  //         m_sOpNm(),
   //         pOperand,
   //         aCN[pOperand->eClass()]);
   
@@ -339,16 +339,6 @@ void Op::vLeftEosMarkers(i8 nEosMarkers)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get op name                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Op::szName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_sName;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next op                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Op::iNextOp(void)
@@ -420,6 +410,16 @@ Job* Op::pOpJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op name                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Op::szOpNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_sOpNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set partition in op                                                        */
 /*----------------------------------------------------------------------------*/
 void Op::vPartition(i8 nPartition)
@@ -477,7 +477,7 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
   
   if (AM::bVerbose())
     vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sName.szStz(),
+           m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
@@ -528,7 +528,7 @@ void Op::vPipeToJob(Operand* pOperand)
   
   if (AM::bVerbose())
     vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sName.szStz(),
+           m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
@@ -576,7 +576,7 @@ Operand* Op::pPopQueue(void)
   
   if (AM::bVerbose() && pOperand) {
     vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sName.szStz(),
+           m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
@@ -625,7 +625,7 @@ Operand* Op::pPopQueueLeft(void)
   if (pOperand) {
     if (AM::bVerbose())
       vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
-             m_sName.szStz(),
+             m_sOpNm.szStz(),
              pOperand->eClass() == CN_MARKER ?
                aOM[(_pMarker(pOperand))->eOpMarker()] :
                aCN[pOperand->eClass()],
@@ -666,7 +666,7 @@ Operand* Op::pPopQueueRight(void)
   if (pOperand) {
     if (AM::bVerbose())
       vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
-             m_sName.szStz(),
+             m_sOpNm.szStz(),
              pOperand->eClass() == CN_MARKER ?
                aOM[(_pMarker(pOperand))->eOpMarker()] :
                aCN[pOperand->eClass()],
@@ -898,7 +898,7 @@ bool Op::bSpawnJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  ReqTuple xReqTuple(m_sName,iSessionId, false);
+  ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
 
   m_pOpJob = AM::pNewJobUniversal(m_pJobPipeline, this, &xReqTuple);
   
@@ -952,7 +952,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
-  szCmdStr->vCopy(m_sName);
+  szCmdStr->vCopy(m_sOpNm);
   m_oEnameSet.vAppend(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }

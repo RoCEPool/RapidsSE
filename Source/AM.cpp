@@ -1126,7 +1126,7 @@ Job* AM::pNewJobUniversal( Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)
   pJobUniversal->m_pOp = pOp;
   pJobUniversal->pEnameSet()->vAdd("<path>"_Stz,
                        pOp->pPipeline()->pJob()->pEnameSet()->szValue("<path>"_Stz));
-  pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->szName());
+  pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->szOpNm());
   pJobUniversal->vSeed(SS_SEED_REQ);
 
   //pJobUniversal->pEnameSet()->vPrint();
