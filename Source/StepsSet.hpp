@@ -928,8 +928,10 @@ public:
   void vOperandPipeOut(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToJob(void);
+  void vOperandReadChunk(void);
   void vOperandReport(void);
   void vOperandRowCountFetch(void);
+void vOperandSeekSetsFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);
   void vOperandCrwToCsv(void);

@@ -41,8 +41,10 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vOperandPipeToJob);
+  vAddStep("Operand[].readChunk"_Stz,      &Step::vOperandReadChunk);
   vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
+  vAddStep("Operand[].seekSets@"_Stz,      &Step::vOperandSeekSetsFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
@@ -703,6 +705,27 @@ void Step::vOperandPipeToJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].readChunk -- reach a chunk from file given the seekOffsets       */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandReadChunk(void)
+{
+  ENTRY(); // ENTRY("vOperandReadChunk"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpOperandA);
+  SeekOffsets* pSeekOffsets = _pSeekOffsets(*m_pRegSet->m_xpOperandA);
+  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
+  
+  i8 iEntry = m_pDataStack->iPopInt(__func__);
+  
+  i8 nBytes = pSeekOffsets->nBytes(iEntry);
+  i8 iOffset = pSeekOffsets->iOffset(iEntry);
+  
+  vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].report -- mark operand for report processing ?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandReport(void)
@@ -726,6 +749,21 @@ void Step::vOperandRowCountFetch(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
   
   m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].rowCount@ -- fetch the operand row count                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandSeekSetsFetch(void)
+{
+  ENTRY(); // ENTRY("vOperandSeekSetsFetch"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpOperandA);
+  SeekOffsets* pSeekOffsets = _pSeekOffsets(*m_pRegSet->m_xpOperandA);
+  
+  m_pDataStack->vPushInt(pSeekOffsets->nOffsets());
   
   EXIT();
 }

@@ -52,8 +52,8 @@ SeekOffsets::SeekOffsets(void)
   
   for (i8 i_Offset = 0; i_Offset < C_SET_OFFSETS; i_Offset++)
   {
-    m_xSetOffsets[i_Offset].n_iOffsets = C_UNKNOWN;
-    m_xSetOffsets[i_Offset].m_nBytes    = C_UNKNOWN;
+    m_xSetOffsets[i_Offset].m_iOffset = C_UNKNOWN;
+    m_xSetOffsets[i_Offset].m_nBytes  = C_UNKNOWN;
   }
 }
 
@@ -75,11 +75,21 @@ bool SeekOffsets::bAddOffset(i8 iOffset, i8 nBytes)
   if (m_nOffsets == C_SET_OFFSETS)
     return false;
   
-  m_xSetOffsets[m_nOffsets].n_iOffsets = iOffset;
-  m_xSetOffsets[m_nOffsets].m_nBytes   = nBytes;
+  m_xSetOffsets[m_nOffsets].m_iOffset = iOffset;
+  m_xSetOffsets[m_nOffsets].m_nBytes  = nBytes;
   m_nOffsets++;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nBytes for entry                                                       */
+/*----------------------------------------------------------------------------*/
+i8 SeekOffsets::nBytes(i8 iEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKOFFSETS);
+  
+  return m_xSetOffsets[iEntry].m_nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +104,7 @@ void SeekOffsets::vDump(void)
   for (i8 i_Offset = 0; i_Offset < m_nOffsets; i_Offset++)
   {
     vTrace("%d : %d\n"_Stz,
-           m_xSetOffsets[i_Offset].n_iOffsets,
+           m_xSetOffsets[i_Offset].m_iOffset,
            m_xSetOffsets[i_Offset].m_nBytes);
   }
   vTrace("***************\n"_Stz);
@@ -109,6 +119,17 @@ bool SeekOffsets::bIsFull(void)
   
   return m_nOffsets == C_SET_OFFSETS ? true : false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get offset for entry                                                       */
+/*----------------------------------------------------------------------------*/
+i8 SeekOffsets::iOffset(i8 iEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKOFFSETS);
+  
+  return m_xSetOffsets[iEntry].m_iOffset;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get offsets                                                                 */

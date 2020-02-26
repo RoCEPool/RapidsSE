@@ -32,11 +32,13 @@ begin
   startOp | periodicOp once | stageB
 
   stage stageB on origin:
-  //chunk "../DATA/Operators/operators1_1.csv" | stageC
-  chunk "/tpch/SF1/lineitem.csv" | stageC
+    chunk "../DATA/Operators/operators1_1.csv" | stageC Robin
 
   stage stageC on origin:
-  sinkOp | stageA
+    readChunk "../DATA/Operators/operators1_1.csv" | stageD
+
+  stage stageD on origin:
+    sinkOp | stageA
 
 end
 ;

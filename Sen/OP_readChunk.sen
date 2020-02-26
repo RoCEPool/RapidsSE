@@ -1,0 +1,108 @@
+/*============================================================================*/
+/* OP_readChunk.sen -- Operator readChunk                                     */
+/*============================================================================*/
+
+" OP_readChunk.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: readChunk_EosMarker
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+  File0[].get file.close
+  File0[].get file.delete
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: readChunk_StartMarker
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // open the file for reading
+  file::new to File0[]
+  <fileNm> OPEN_READ File0[].get file.open
+  not if
+    File0[].get file.delete assert::stack_0 EC_INVALID_FILE
+    op.pipelineJob@ <ERROR_JOB> !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  then
+  Operand[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for reachChunk req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : readChunk_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_SEEKOFFSETS of
+        //"Operand:- ZK_SEEKOFFSETS" .verbose
+        Operand[].seekSets@ 0
+        do
+         I Operand[].readChunk
+        loop
+        true
+      endof
+
+      ZK_STARTMARKER of readChunk_StartMarker true endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: readChunk :: readChunk <fileNm> ;
+
+jobInfo: readChunk
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

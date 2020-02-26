@@ -12,7 +12,7 @@ namespace Load
     
     struct {
       
-      i8 n_iOffsets; // chunk of csv records
+      i8 m_iOffset; // chunk of csv records
       i8 m_nBytes;   // bytes in teh offset
       
     } m_xSetOffsets[C_SET_OFFSETS];
@@ -25,8 +25,10 @@ namespace Load
    ~SeekOffsets(void) noexcept(false);
     
     bool bAddOffset(i8 iOffset, i8 nBytes);
+    i8   nBytes(i8 iEntry);
     void vDump(void);
     bool bIsFull(void);
+    i8   iOffset(i8 iEntry);
     i8   nOffsets(void);
   };
 
