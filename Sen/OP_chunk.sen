@@ -5,6 +5,63 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: chunk_EosMarker
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+  File0[].get file.close
+  File0[].get file.delete
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: chunk_PulseMarker
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+  // set eof location in counter0
+  File0[].getEofLocation to counter1[]
+
+  // set chunk location in counter1 to 0
+  0 to counter0[]
+
+  begin
+    counter1[] counter0[] >
+  while
+    // create a seekOffset operand
+    Operand[].newSeekOffsets
+    Operand[].chunkFile
+    Operand[].pipeOut
+  repeat
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: chunk_StartMarker
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // open the file for reading
+  file::new to File0[]
+  <fileNm> OPEN_READ File0[].get file.open
+  not if
+    File0[].get file.delete assert::stack_0 EC_INVALID_FILE
+    op.pipelineJob@ <ERROR_JOB> !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  then
+  Operand[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : Chunk_req ( -- )
@@ -33,59 +90,14 @@
     // decode kind
     Operand[].kind case
 
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        File0[].get file.close
-        File0[].get file.delete
-        Operand[].pipeOut
-        true
-      endof
+      ZK_EOSMARKER of chunk_EosMarker true endof
 
-      ZK_PULSEMARKER of
+      ZK_PULSEMARKER of chunk_PulseMarker true endof
 
-      //"Operand:- ZK_PULSEMARKER" .verbose
-      Operand[].pipeOut
-
-      // set eof location in counter0
-      File0[].getEofLocation to counter1[]
-
-      // set chunk location in counter1 to 0
-      0 to counter0[]
-
-      begin
-        counter1[] counter0[] >
-      while
-        // create a seekOffset operand
-        Operand[].newSeekOffsets
-        Operand[].chunkFile
-        Operand[].pipeOut
-      repeat
-
-      Operand[].newEosMarker
-      Operand[].pipeOut
-      true
-
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-
-        // open the file for reading
-        file::new to File0[]
-        <fileNm> OPEN_READ File0[].get file.open
-        not if
-          File0[].get file.delete assert::stack_0 EC_INVALID_FILE
-          op.pipelineJob@ <ERROR_JOB> !!logError
-          Operand[].delete
-          Operand[].newErrorMarker
-        then
-        Operand[].pipeout
-        true
-      endof
+      ZK_STARTMARKER of chunk_StartMarker true endof
 
       // handle other operand as generic operands
-      jobOperand::generic
-      swap
+      jobOperand::generic swap
 
     endcase
 
