@@ -979,9 +979,8 @@ void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
 #ifdef WITH_SEN_TAGS
   // collect string literal?
   if (bStartSenTag()) {
-    //vCollectSenString(pToken,azTermCrs);
-    //return;
-    Correctness::vDebugPoint();
+    vCollectSenTag(pToken,azTermCrs);
+    return;
   }
 #endif
   
@@ -1148,6 +1147,8 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
   // skip the leading <
   vParserGetAnnChar();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (! m_xAnnChar.m_cChar || m_xAnnChar.bIsWhite() || bStartSenString() ) {
     // push back the unconsumed char
     vParserUngetAnnCharStripped();
@@ -1162,10 +1163,21 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
     return;
   }
      
-  // terminate the tag
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect the characters of the name
+  
+  while ( m_xAnnChar.m_cChar && !m_xAnnChar.bIsWhite() && !bStartSenString() ) {
+    *z++ = m_xAnnChar.m_cChar;
+    vParserGetAnnCharStripped();
+  }
+  
+  // push back the unconsumed char
+  vParserUngetAnnCharStripped();
+  
+  // terminate a namelit
   *z = '\0';
 
-  pToken->vToken(TN_NAME);
+  pToken->vToken(TN_TAG);
   
   vTokenCollectEnd();
 }
