@@ -92,7 +92,7 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
-//#define WITH_SEN_TAGS EndDefine              // code for sen tags
+#define WITH_SEN_TAGS EndDefine              // code for sen tags
 
 
 /*============================================================================*/

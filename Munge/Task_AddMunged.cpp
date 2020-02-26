@@ -13787,6 +13787,34 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_tags.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_tags.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_tags.sen -- tags                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_tags.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* tag testing                                                                */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ":  ~SenTag ;\n"
+    "\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_tags.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Status.sen
 
   sFileContents =
@@ -14810,6 +14838,7 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"se_folders.sen\\\"    include\n"
     "\\\"se_munge.sen\\\"      include\n"
     "\\\"se_procedures.sen\\\" include\n"
+    "\\\"se_tags.sen\\\"       include\n"
     "\\\"se_vortex.sen\\\"     include\n"
     "\n"
     "// create the root /tenants dictionary\n"

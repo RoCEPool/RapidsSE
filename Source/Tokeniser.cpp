@@ -1138,15 +1138,10 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
   
   char *z = azTermCrs;
   
-  ASSERT(bStartSenString());
+  ASSERT(bStartSenTag());
   
   vTokenCollectBegin(pToken);
-  
-  char cStartOpenAngle = m_xAnnChar.m_cChar;
-
-  // skip the leading <
-  vParserGetAnnChar();
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! m_xAnnChar.m_cChar || m_xAnnChar.bIsWhite() || bStartSenString() ) {
