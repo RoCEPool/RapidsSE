@@ -473,16 +473,6 @@ i8 CrwBuffer::nRowCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace existing into this buffer                                          */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vReplaceRow(Row* pRow, i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vRestore(void)
