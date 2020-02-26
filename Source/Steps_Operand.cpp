@@ -85,7 +85,7 @@ void Step::vOperandChunkFile(void)
   // get the Eof location
   i8 i_EofLoc = m_pRegSet->m_iCounter1;
   
-  char* pReadBlock = (char*)MemLib::aMallocBlock(C_2K);
+  char* pReadBlock = (char*)MemLib::aMallocBlock(C_CHUNKBLOCK);
   
   i8 nChunkBytes;
   
@@ -95,7 +95,7 @@ void Step::vOperandChunkFile(void)
   while (true) {
     
     // compute the location of the final block of the current chunk
-    i8 i_FinalBlockLoc = i_ChunkLoc + C_WSP_DATACHUNK - 2048;
+    i8 i_FinalBlockLoc = i_ChunkLoc + C_DATACHUNK - C_CHUNKBLOCK;
     
     // the final block will be past the eof if the chunk is
     // less than maximum chunk size
