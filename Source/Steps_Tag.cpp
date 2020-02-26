@@ -13,12 +13,27 @@ void Step::vAddSteps_Tag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tag decode                                                                 */
+/* decode tag into it value                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTagDecode(void)
 {
   ENTRY(); // ENTRY("vTagDecode"_Stz);
-    
+  
+  s32 sTagNm;
+  m_pDataStack->vPopStr(sTagNm,__func__);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Job* pJob = m_pTask->pJob();
+      
+  EnameSet* pEnameSet = pJob->pEnameSet();
+  
+  Stz* szValue = pEnameSet->szValue(sTagNm.szStz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pDataStack->vPushStz(szValue);
+
   EXIT();
 }
 
