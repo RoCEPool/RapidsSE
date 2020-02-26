@@ -38,7 +38,7 @@ begin
     readChunk "/tpch/SF1/lineitem.csv" | stageD
 
   stage stageD on origin:
-    sinkOp | stageA
+    outputOp | sinkOp | stageA
 
 end
 ;

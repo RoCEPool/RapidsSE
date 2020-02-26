@@ -941,6 +941,7 @@ void vOperandSeekSetsFetch(void);
 
   // operandB
   void vOperandBGet(void);
+  void vOperandBPipeOut(void);
   void vOperandBSet(void);
 
   // persistence

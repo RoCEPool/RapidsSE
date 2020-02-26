@@ -65,7 +65,8 @@
         //"Operand:- ZK_SEEKOFFSETS" .verbose
         Operand[].seekSets@ 0
         do
-         I Operand[].readChunk
+          I Operand[].readChunk
+          OperandB[].pipeout
         loop
         true
       endof

@@ -720,7 +720,13 @@ void Step::vOperandReadChunk(void)
   i8 nBytes = pSeekOffsets->nBytes(iEntry);
   i8 iOffset = pSeekOffsets->iOffset(iEntry);
   
-  vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+  //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+  
+  CsvBuffer* pCsvBuffer = new CsvBuffer;
+  i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
+  ASSERT(nBytesRead == nBytes);
+  
+  m_pRegSet->m_xpOperandB = pCsvBuffer;
   
   EXIT();
 }
