@@ -1253,7 +1253,8 @@ void vOperandSeekSetsFetch(void);
   void vTableRegPtnFetch(void);
 
   // tag
-  void vTagDecode(void);
+  void vTagGet(void);
+  void vTagSet(void);
 
   // task
   void vTaskAck(void);

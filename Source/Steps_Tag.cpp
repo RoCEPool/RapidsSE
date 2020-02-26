@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Trace.cpp - trace step group                                         */
+/* Steps_Tag.cpp - tag step group                                             */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -9,15 +9,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tag(void)
 {
-  vAddStep("tagDecode"_Stz,  &Step::vTagDecode);
+  vAddStep("tagGet"_Stz,  &Step::vTagGet);
+  vAddStep("tagSet"_Stz,  &Step::vTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode tag into it value                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTagDecode(void)
+void Step::vTagGet(void)
 {
-  ENTRY(); // ENTRY("vTagDecode"_Stz);
+  ENTRY(); // ENTRY("vTagGet"_Stz);
   
   s32 sTagNm;
   m_pDataStack->vPopStr(sTagNm,__func__);
@@ -37,6 +38,27 @@ void Step::vTagDecode(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* set tag value                                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vTagSet(void)
+{
+  ENTRY(); // ENTRY("vTagSet"_Stz);
+  
+  s32 sTagNm;
+  m_pDataStack->vPopStr(sTagNm,__func__);
+
+  s4K sTagValue;
+  m_pDataStack->vPopStr(sTagValue,__func__);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Job* pJob = m_pTask->pJob();
+      
+  EnameSet* pEnameSet = pJob->pEnameSet();
+
+  pEnameSet->vAdd(sTagNm,sTagValue);
+}
 
 /*============================================================================*/
 /* end                                                                        */
