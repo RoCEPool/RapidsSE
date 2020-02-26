@@ -582,7 +582,7 @@ i8 giClassSize[]
   /* */ 'S' - ('A' - 1),            // CN__S__
   /* */ sizeof(Schema),             // CN_SCHEMA
   /* */ sizeof(SchemaTest),         // CN_SCHEMATEST
-  /* */ sizeof(SeeMe),              // CN_SEEKOFFSETS
+  /* */ sizeof(SeekOffsets),        // CN_SEEKOFFSETS
   /* */ sizeof(SeeMe),              // CN_SEEME
   /* */ sizeof(Semantic),           // CN_SEMANTIC
   /* */ sizeof(SePrompt),           // CN_SEPROMPT
