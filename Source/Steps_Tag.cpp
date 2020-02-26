@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tag(void)
 {
-  vAddStep("tagGet"_Stz,  &Step::vTagGet);
-  vAddStep("tagSet"_Stz,  &Step::vTagSet);
+  vAddStep("tag::get"_Stz,  &Step::vTagGet);
+  vAddStep("tag::set"_Stz,  &Step::vTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
