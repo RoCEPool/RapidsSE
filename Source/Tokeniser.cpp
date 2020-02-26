@@ -977,7 +977,7 @@ void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
   }
 
 #ifdef WITH_SEN_TAGS
-  // collect string literal?
+  // collect sen tag?
   if (bStartSenTag()) {
     vCollectSenTag(pToken,azTermCrs);
     return;
@@ -1175,6 +1175,10 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
   pToken->vToken(TN_TAG);
   
   vTokenCollectEnd();
+  
+  vTrace("Recognised Sen Tag: %s\n"_Stz,pToken->szTerm());
+  
+  Correctness::vDebugPoint();
 }
 
 
