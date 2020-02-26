@@ -2,7 +2,7 @@
 /* Op.cpp -- Operator                                                         */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "Pipelines.h"
 
 
 Atomic gixOp;
@@ -14,7 +14,7 @@ Atomic gixOp;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Op* Operators::_pOp(void* aAddr)
+Op* Pipelines::_pOp(void* aAddr)
 {
   Op* pOp = reinterpret_cast<Op*>(aAddr);
   

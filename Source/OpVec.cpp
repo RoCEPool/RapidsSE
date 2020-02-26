@@ -2,7 +2,7 @@
 /* OpVec.cpp -- Operator Set                                                  */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "Pipelines.h"
 
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OpVec* Operators::_pOpSet(void* aAddr)
+OpVec* Pipelines::_pOpSet(void* aAddr)
 {
   OpVec* pOpSet = reinterpret_cast<OpVec*>(aAddr);
   

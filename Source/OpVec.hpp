@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace Pipelines
 {
   class OpVec : public VectorNL_t<CN_OPVEC,Op,C_MAX_OPS>
   {

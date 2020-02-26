@@ -2,12 +2,12 @@
 /* Pipeline.cpp -- Operator Set Pipeline                                      */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "Pipelines.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Pipeline* Operators::_pPipeline(void* aAddr)
+Pipeline* Pipelines::_pPipeline(void* aAddr)
 {
   Pipeline* pPipeline = reinterpret_cast<Pipeline*>(aAddr);
   

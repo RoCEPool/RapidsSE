@@ -42,9 +42,9 @@ void StorageEngine::vCheckAllAssumptions(void)
   Locking::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Operands::vCheckAssumptions();
-  Operators::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Persistence::vCheckAssumptions();
+  Pipelines::vCheckAssumptions();
   PipelineSpecs::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Pool::vCheckAssumptions();

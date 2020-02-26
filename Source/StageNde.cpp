@@ -2,7 +2,7 @@
 /* StageNde.cpp -- Pipe Stage-Partition                                       */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "Pipelines.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StageNde* Operators::_pStageNde(void* aAddr)
+StageNde* Pipelines::_pStageNde(void* aAddr)
 {
   StageNde* pStage = reinterpret_cast<StageNde*>(aAddr);
   

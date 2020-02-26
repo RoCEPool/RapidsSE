@@ -57,16 +57,16 @@ namespace Load          {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class IdxColVec; class Index;          }
+namespace Oblique       { class AM;                                           }
+namespace Operands      { class Operand;                                      }
 namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
+namespace Pipelines     { class Op; class Pipeline;  class StageVec;          }
 namespace PipelineSpecs { class OpSpec; class StageSpec;                      }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapBuffer; class HeapMem;
                           class PoolBuffer;                                   }
 namespace Prompt        { class SePrompt;                                     }
-namespace Oblique       { class AM;                                           }
-namespace Operands      { class Operand;                                      }
-namespace Operators     { class Op; class Pipeline;  class StageVec;          }
 namespace ReadConsistency { class Crv;                                        }
 namespace Records       {                                                     }
 namespace Reflection    { class ConstDef; class ConstSet;
@@ -131,9 +131,9 @@ using namespace Logging;
 using namespace MetaData;
 using namespace Oblique;
 using namespace Operands;
-using namespace Operators;
 using namespace Partitioning;
 using namespace Persistence;
+using namespace Pipelines;
 using namespace PipelineSpecs;
 using namespace Plans;
 using namespace Pool;

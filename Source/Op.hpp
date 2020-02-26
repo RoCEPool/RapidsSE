@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace Pipelines
 {
   class Stage;
   class Op : public Focal
