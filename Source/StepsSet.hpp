@@ -1247,6 +1247,9 @@ public:
   void vTableRegSet(void);
   void vTableRegPtnFetch(void);
 
+  // tag
+  void vTagDecode(void);
+
   // task
   void vTaskAck(void);
   void vTaskAcksStore(void);

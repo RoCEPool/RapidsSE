@@ -160,6 +160,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TablePartition();
   Step::vAddSteps_TablePartition2();
   Step::vAddSteps_TableReg();
+  Step::vAddSteps_Tag();
   Step::vAddSteps_Task();
   Step::vAddSteps_Test();
   Step::vAddSteps_Thread();
