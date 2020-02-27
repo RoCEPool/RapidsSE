@@ -8,13 +8,15 @@ namespace Pipelines
   class Pipeline : public Object
   {
   private:
-    Job*        m_pJob;
-    bool        m_bPulsed;
-    Op*         m_pOpToPulse;
-    bool        m_bCancelling;
-    i8          m_iOriginatingNode;
+    Job*          m_pJob;
+    PipelineSpec* m_pPipelineSepc;
+    i8            m_iOriginatingNode;
+
+    bool          m_bPulsed;
+    Op*           m_pOpToPulse;
+    bool          m_bCancelling;
     
-    StageVec    m_oStageVec;     // vector of stages
+    StageVec      m_oStageVec;         // vector of stages
   
   private:
   
@@ -25,7 +27,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pJob, i8 iOriginatingNode);
+    Pipeline(Job* pJob, PipelineSpec* pPipelineSepc, i8 iOriginatingNode);
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
