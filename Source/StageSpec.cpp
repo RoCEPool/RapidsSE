@@ -28,17 +28,19 @@ void StageSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(Stz* szStageNm)
+StageSpec::StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec)
 : Object(CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sStageNm   = szStageNm;
-  m_eTopology  = PO_NONE;
-  m_pOpSpecVec = new OpSpecVec;
-  m_iNode      = C_UNKNOWN;
-  m_iPartition = C_UNKNOWN;
-  //m_nThreads   = 1;
+  m_sStageNm      = szStageNm;
+  m_pPipelineSpec = pPipelineSpec;
+  
+  m_eTopology     = PO_NONE;
+  m_pOpSpecVec    = new OpSpecVec;
+  m_iNode         = C_UNKNOWN;
+  m_iPartition    = C_UNKNOWN;
+  //m_nThreads    = 1;
   
    _checkInitialised_(CN_STAGESPEC);
   

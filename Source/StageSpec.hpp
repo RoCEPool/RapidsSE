@@ -8,8 +8,9 @@ namespace PipelineSpecs
   class StageSpec : public Object
   {
   private:
+    s32           m_sStageNm;       // stage name
+    PipelineSpec* m_pPipelineSpec;  // which pipeline spec
   
-    s32 m_sStageNm;     // stage name
     ePO m_eTopology;    // stage topoplogy
     i8  m_iNode;        // stage node
     i8  m_iPartition;   // stage ptn
@@ -24,7 +25,7 @@ namespace PipelineSpecs
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm);
+    StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
   
     void vAddOpSpec(OpSpec* pOpSpec);
