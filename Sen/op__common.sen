@@ -79,6 +79,8 @@
 /*----------------------------------------------------------------------------*/
 : op__topology
 
+  op[].init
+
   // set topolgy in the op
   <topology> op.topology!
 

@@ -14157,6 +14157,8 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": op__topology\n"
     "\n"
+    "  op[].init\n"
+    "\n"
     "  // set topolgy in the op\n"
     "  <topology> op.topology!\n"
     "\n"
