@@ -5,7 +5,7 @@
 "se_boot.sen" .verbose
 
 "SEN: " .put
-9. put
+9 .put
 8 .put  "vocab.sen"     include
 7 .put  "tasks.sen"     include
 6 .put  "gridModel.sen" include

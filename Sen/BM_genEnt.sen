@@ -49,19 +49,8 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_BM_GenEntOp |
-  0 locals| pTable |
-
-  <tableNm> locals| sTableNm |
-
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
+  // set topology, next stage and op
+  op__topology
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
