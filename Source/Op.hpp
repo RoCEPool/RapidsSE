@@ -15,7 +15,7 @@ namespace Pipelines
     Stage*         m_pStage;         // which stage of pipeline
     Pipeline*      m_pPipeline;      // which pipeline
   
-    Job*           m_pJobPipeline;   // pipeline job this operator belongs to
+    Job*           m_pPipelineJob;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
   
     EnameSet       m_oEnameSet;         // ename set of cmd

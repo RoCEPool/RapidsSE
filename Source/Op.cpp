@@ -61,7 +61,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());
   m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
   
-  m_pJobPipeline  = pPipeline->pJob();
+  m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
   
   m_bPulsed       = false;
@@ -317,7 +317,7 @@ void Op::vJobPipeline(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_pJobPipeline = pJob;
+  m_pPipelineJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -482,7 +482,7 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
            m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
-           m_pJobPipeline,
+           m_pPipelineJob,
            "vPipeOut :"_Stz,
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
@@ -524,7 +524,7 @@ void Op::vPipeToJob(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
+  Queue* pBufferQueue = AM::pBufferQueue(m_pPipelineJob);
   
   RASSERT(pBufferQueue);
   
@@ -533,7 +533,7 @@ void Op::vPipeToJob(Operand* pOperand)
            m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
-           m_pJobPipeline,
+           m_pPipelineJob,
            "vPipeToJob :"_Stz,
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
@@ -581,7 +581,7 @@ Operand* Op::pPopQueue(void)
            m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
-           m_pJobPipeline,
+           m_pPipelineJob,
            "pPopQueue :"_Stz,
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
@@ -747,7 +747,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       m_iXmitNode = m_pPipeline->iOriginatingNode();
       
       // new a operand job
-      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand, this, m_iXmitNode, C_UNKNOWN);
+      pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, m_iXmitNode, C_UNKNOWN);
       
       // get the send node in the task
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -792,7 +792,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
           
           // new a operand job
-          pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+          pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
           
           // get the send node in the task
           Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -816,7 +816,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           vTrace("Nde %lld; Ptn %lld;"_Stz, m_iXmitNode, i_Ptn);
           
           // new a operand job
-          pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand, this, m_iXmitNode, i_Ptn);
+          pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, m_iXmitNode, i_Ptn);
           
           // get the send node in the task
           Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -838,7 +838,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
             m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
             
             // new a operand job
-            pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+            pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
             
             // get the send node in the task
             Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -871,7 +871,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       m_iXmitNode = TablePtn::iPartitionToNode(m_nPartition);
       
       // new a operand job
-      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, m_nPartition);
+      pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, m_nPartition);
       
       // get the send node in the task
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -902,7 +902,7 @@ bool Op::bSpawnJob(i8 iSessionId)
   
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
 
-  m_pOpJob = AM::pNewJobUniversal(m_pJobPipeline, this, &xReqTuple);
+  m_pOpJob = AM::pNewJobUniversal(m_pPipelineJob, this, &xReqTuple);
   
   // form the command string using the parameter ename pairs
   s4K szCmdStr;
