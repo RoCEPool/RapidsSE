@@ -5,9 +5,74 @@
 " OP_toCrwH.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for ToCrwOp req                            (on node where spawned) */
+/* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
- : ToCrwH_req ( -- )
+: toCrwH_PulseMarker
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  // create a loader
+  Loader[].create
+
+  // pipe out the pulsemarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CSVBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toCrwH_CsvBuffer
+
+  //"Operand:- ZK_CSVBUFFER" .verbose
+
+  // use extractRow from register0 and convert csvtoCrw
+  Operand[].csvToCrwH
+  Operand[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: toCrwH_EosMarker
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+  loader[].handleDangling
+
+  // delete loader
+  loader[].delete
+
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: toCrwH_StartMarker
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  <tableNm> locals| sTableNm |
+
+  // check if we can scan the table
+  sTableNm checkIsValidTable not if
+    op.pipelineJob@ <ERROR_JOB> !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+    // move to table folder and find the table and tablePtn
+    sTableNm pushTable assert
+    sTableNm find execute to table[]
+  then
+
+  Operand[].pipeout
+  Operand[].newStreamDef
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for toCrwOp req                            (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : toCrwH_req ( -- )
 
   >>logEntry <SEED_REQ>
 
@@ -35,64 +100,13 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CSVBUFFER of
-        //"Operand:- ZK_CSVBUFFER" .verbose
-        // use extractRow from register0 and convert csvtoCrw
-        Operand[].csvToCrwH
-        Operand[].delete
-        true
-      endof
+      ZK_CSVBUFFER of toCrwH_CsvBuffer true endof
 
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        writeBehind[].handleDangling
+      ZK_EOSMARKER of toCrwH_EosMarker true endof
 
-        // delete writeBehind
-        writeBehind[].delete
+      ZK_PULSEMARKER of toCrwH_PulseMarker true endof
 
-        // deelete extractRow from reister0
-        extractRow.delete
-
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        // create a loader
-        Loader[].create
-
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        // check if we can scan the table
-        sTableNm checkIsValidTable not if
-          op.pipelineJob@ <ERROR_JOB> !!logError
-          Operand[].delete
-          Operand[].newErrorMarker
-        else
-          // move to table folder and find the table and tablePtn
-          sTableNm pushTable assert
-          sTableNm find execute to table[]
-        then
-
-        Operand[].pipeout
-        Operand[].newStreamDef
-        Operand[].pipeOut
-
-        true
-      endof
-
-      ZK_STREAMDEF of
-        //"Operand:- ZK_STREAMDEF" .verbose
-        Operand[].delete
-        Operand[].newStreamDef
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of toCrwH_StartMarker true endof
 
       // handle other operand as generic operands
       jobOperand::generic
@@ -107,13 +121,12 @@
   <DONE_RUN>
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ToCrwH :: ToCrwH <tableNm> ;
+opSyntax: toCrwH :: toCrwH <tableNm> ;
 
-jobInfo: ToCrwH
+jobInfo: toCrwH
 {
   <?jobDesc?>  = "--description of job--"
   
