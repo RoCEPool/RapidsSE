@@ -91,6 +91,7 @@ namespace Steps
     static void vAddSteps_JobWriteRecord(void);
     static void vAddSteps_JobWriteRow(void);
   
+    static void vAddSteps_Loader(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
     static void vAddSteps_LockTracker(void);

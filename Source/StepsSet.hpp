@@ -796,6 +796,13 @@ public:
   void vJob_WriteRowPartitionFetch(void);
   void vJob_WriteRowTableStore(void);
 
+  // loader
+  void vLoaderCreate(void);
+  void vLoaderDelete(void);
+  void vLoaderGet(void);
+  void vLoaderHandleDangling(void);
+  void vLoaderset(void);
+
   // load table
   void vLoadTableChunkFile(void);
   void vLoadTableDelete(void);

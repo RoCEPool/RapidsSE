@@ -59,11 +59,8 @@
 
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
-        // create a write behind
-        writeBehind[].create
-
-        // create an extractRow and put it in register 0
-        extractRow.create to register0[]
+        // create a loader
+        Loader[].create
 
         Operand[].pipeOut
         true

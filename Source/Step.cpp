@@ -110,6 +110,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobWriteRecord();
   Step::vAddSteps_JobWriteRow();
   
+  Step::vAddSteps_Loader();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_LockTracker();
