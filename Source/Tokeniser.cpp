@@ -1329,8 +1329,8 @@ bool Tokeniser::bStartSenString(void)
   
 // 2020-Feb-26 RJH: I commented this out as I don't think we have 'string'
 //                  in sen literals
-//  if (m_xAnnChar.bIsSingleQuote())
-//    return true;
+  if (m_xAnnChar.bIsSingleQuote())
+    return true;
 
   return false;
 }
@@ -1360,8 +1360,8 @@ bool Tokeniser::bEndSenString(void)
 
 // 2020-Feb-26 RJH: I commented this out as I don't think we have 'string'
 //                  in sen literals
-//  if (m_xAnnChar.bIsSingleQuote())
-//    return true;
+  if (m_xAnnChar.bIsSingleQuote())
+    return true;
 
   return false;
 }
