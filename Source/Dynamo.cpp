@@ -296,7 +296,7 @@ bool Dynamo::bCollectName(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm());
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm(),m_p_Job);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -28,12 +28,13 @@ void PipelineSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz* szPipelineNm)
+PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pJob)
 : Object(CN_PIPELINESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
+  m_pJob = pJob;
   
   m_pStageSpecVec = new StageSpecVec;
   
