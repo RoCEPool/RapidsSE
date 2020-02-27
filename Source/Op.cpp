@@ -45,7 +45,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
+Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
 : Focal(CN_OP,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
 
 {
@@ -55,6 +55,7 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_sOpNm     = pOpSpec->szOpNm();
   m_pOpSpec   = pOpSpec;
+  m_pStage    = pStage;
   m_pPipeline = pPipeline;
 
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());

@@ -11,7 +11,8 @@ namespace Pipelines
   
   private:
     s32            m_sOpNm;          // name of the operator
-    OpSpec*        m_pOpSpec;        // which op spec
+    OpSpec*        m_pOpSpec;        // specification of this operator
+    Stage*         m_pStage;         // which stage of pipeline
     Pipeline*      m_pPipeline;      // which pipeline
   
     EnameSet       m_oEnameSet;         // ename set of cmd
@@ -47,7 +48,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Pipeline* pPipeline);
+    Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
 
     // - - - - - - - - - - - - - - - -
