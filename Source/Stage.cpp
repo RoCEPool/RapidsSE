@@ -51,7 +51,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
   i8 i_Ptn;
   i8 i_Nde;
   
-  m_sStageNm = pStageSpec->szName();
+  m_sStageNm = pStageSpec->szStageNm();
   
   //m_oOpVec
   

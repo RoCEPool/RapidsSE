@@ -60,7 +60,7 @@ StageSpec* StageSpecVec::pFindStage(Stz* szStageNm)
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     StageSpec* pStageSpec = pGet(i_Stage);
     
-    if (pStageSpec->szName()->bSame(szStageNm))
+    if (pStageSpec->szStageNm()->bSame(szStageNm))
       return pStageSpec;
   }
   

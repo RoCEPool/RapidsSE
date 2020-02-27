@@ -9,11 +9,11 @@ namespace PipelineSpecs
   {
   private:
   
-    s32 m_sName;        // stage name
+    s32 m_sStageNm;     // stage name
     ePO m_eTopology;    // stage topoplogy
     i8  m_iNode;        // stage node
     i8  m_iPartition;   // stage ptn
-    //i8  m_nThreads;     // threads
+    //i8  m_nThreads;   // threads
   
     OpSpecVec* m_pOpSpecVec;
   
@@ -24,12 +24,12 @@ namespace PipelineSpecs
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szName);
+    StageSpec(Stz* szStageNm);
    ~StageSpec(void) noexcept(false);
   
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
-    Stz* szName(void);
+    Stz* szStageNm(void);
     void vNode(i8 i_Nde);
     i8   iNode(void);
     OpSpecVec* pOpSpecVec(void);

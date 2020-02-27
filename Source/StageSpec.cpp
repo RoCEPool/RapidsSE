@@ -28,12 +28,12 @@ void StageSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(Stz* szName)
+StageSpec::StageSpec(Stz* szStageNm)
 : Object(CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sName      = szName;
+  m_sStageNm   = szStageNm;
   m_eTopology  = PO_NONE;
   m_pOpSpecVec = new OpSpecVec;
   m_iNode      = C_UNKNOWN;
@@ -101,11 +101,11 @@ OpSpecVec* StageSpec::pOpSpecVec(void)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* StageSpec::szName(void)
+Stz* StageSpec::szStageNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  return m_sName;
+  return m_sStageNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +284,7 @@ void StageSpec::vPrint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   vTrace("\n"_Stz);
-  vTrace("stage %s "_Stz,m_sName.szStz());
+  vTrace("stage %s "_Stz,m_sStageNm.szStz());
   
   switch (m_eTopology) {
     case PO_ALL_NODES:           vTrace("on all nodes"_Stz);

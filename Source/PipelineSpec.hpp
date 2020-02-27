@@ -26,7 +26,7 @@ namespace PipelineSpecs
     void vAddStageSpec(StageSpec* pStageSpec);
     Stz* szPipelineNm(void);
 
-    StageSpec* pFindStageSpec(Stz* szName, i8& i_Stage);
+    StageSpec* pFindStageSpec(Stz* szFindNm, i8& i_Stage);
     StageSpec* pStageSpec(i8 i_Stage);
     StageSpecVec* pStageSpecVec(void);
 
