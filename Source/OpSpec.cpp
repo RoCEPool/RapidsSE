@@ -33,11 +33,13 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sOpNm = szOpNm;
+  m_sOpNm        = szOpNm;
+  m_pStageSpec   = pStageSpec;
+  
   m_bAppendRight = false;
   m_i_OpSpec     = C_UNKNOWN;
-  m_i_Slot = 0; // ALKA: C_UNKNOWN;
-  m_eXmitKind = XK_NORMAL;
+  m_i_Slot       = 0; // ALKA: C_UNKNOWN;
+  m_eXmitKind    = XK_NORMAL;
 
   //m_oEnameSet
   //m_oTopologyEnameSet

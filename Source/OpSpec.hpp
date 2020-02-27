@@ -9,6 +9,7 @@ namespace PipelineSpecs
   {
   private:
     s32        m_sOpNm;
+    StageSpec* m_pStageSpec;
   
     bool       m_bAppendRight;
     i8         m_i_OpSpec;
