@@ -705,7 +705,7 @@ bool Dynamo::bPhase2_staging(void)
       OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
       
       i8 i_FoundStage = C_UNKNOWN;
-      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName(), i_FoundStage);
+      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
       
       if (pStageSpecFound) {
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
@@ -783,7 +783,7 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  pOpSpec->vName("xmitOp"_Stz);
+  pOpSpec->vOpNm("xmitOp"_Stz);
   
   vAddTopologyParams(pOpSpec, eTopologyX, i_Stage, 0);
 }
