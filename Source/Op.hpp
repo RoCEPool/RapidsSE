@@ -38,6 +38,8 @@ namespace Pipelines
     i8             m_iXmitNode;       // xmit node (for xmitOp)
     eXK            m_eXmitKind;       // xmit kind
     i8             m_iRobin;          // xmit Round Robin partition/node/thread
+  
+    Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     
     // must be last
     Footer m_xFooter;
@@ -63,6 +65,7 @@ namespace Pipelines
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
+    void vInitOperandHandlers(void);
     bool bIsCancelling(void);
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);

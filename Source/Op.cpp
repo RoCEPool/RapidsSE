@@ -83,6 +83,8 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_iXmitNode  = C_UNKNOWN;
   m_iRobin     = 0;
   
+  vInitOperandHandlers();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pTask = AM::pThisTLSTask();
@@ -286,6 +288,17 @@ void Op::vIncWorkDone(void)
  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* init operand handlers                                                      */
+/*----------------------------------------------------------------------------*/
+void Op::vInitOperandHandlers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  for (i8 i_Kind = 0; i_Kind < ZK_ENUMS; i_Kind++)
+    m_paOperandHandler[i_Kind] = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
