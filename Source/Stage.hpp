@@ -9,6 +9,9 @@ namespace Pipelines
   {
   private:
     s32         m_sStageNm;        // stage name
+    StageSpec*  m_pStageSpec;      // specification of this stage
+    Pipeline*   m_pPipeline;       // which pipeline
+  
     OpVec       m_oOpVec;          // set of operators
     StagePtnVec m_oStagePtnVec;    // set of stage-partitions
     StageNdeVec m_oStageNdeVec;    // set of stage-nodes

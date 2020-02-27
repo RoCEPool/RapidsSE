@@ -48,10 +48,13 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
+  m_sStageNm   = pStageSpec->szStageNm();
+  m_pStageSpec = pStageSpec;
+  m_pPipeline  = pPipeline;
+
   i8 i_Ptn;
   i8 i_Nde;
   
-  m_sStageNm = pStageSpec->szStageNm();
   
   //m_oOpVec
   
