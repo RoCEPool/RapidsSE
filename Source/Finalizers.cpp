@@ -164,6 +164,7 @@ pFINALIZE *gpFinalize[]
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_LEXICON
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
+  /*    */ &Finalize::vUndefined,         // CN_LOADER
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /*    */ &Finalize::vUndefined,         // CN_LOCAL
   /*    */ &Finalize::vUndefined,         // CN_LOCALSCHAIN

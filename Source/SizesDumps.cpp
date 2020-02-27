@@ -168,6 +168,7 @@ pDUMPFUN *gpDump[]
   /* */ &Heap::vDump,            // CN_LARGETRANSIENT
   /* */ &Dump::vDummy,           // CN_LEXICON
   /* */ &Dump::vDummy,           // CN_LOADCHUNK
+  /* */ &Dump::vInvalid,         // CN_LOADER
   /* */ &LoadMap::vDump,         // CN_LOADMAP
   /* */ &Dump::vInvalid,         // CN_LOCAL
   /* */ &LocalChain::vDump,      // CN_LOCALSCHAIN
@@ -506,6 +507,7 @@ i8 giClassSize[]
   /* */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
   /* */ sizeof(Lexicon),            // CN_LEXICON
   /* */ sizeof(LoadChunk),          // CN_LOADCHUNK
+  /* */ sizeof(Loader),             // CN_LOADER
   /* */ sizeof(LoadMap),            // CN_LOADMAP
   /* */ sizeof(Local),              // CN_LOCAL
   /* */ sizeof(LocalChain),         // CN_LOCALSCHAIN
@@ -844,6 +846,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_LARGETRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_LEXICON
   /* */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
+  /* */ HT_TRANSIENT_LARGE,   // CN_LOADER
   /* */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* */ HT_INVALID,           // CN_LOCAL
   /* */ HT_TRANSIENT_LARGE,   // CN_LOCALSCHAIN

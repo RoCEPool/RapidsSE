@@ -16,6 +16,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_SEEKOFFSETS ...                                                      */
+/*----------------------------------------------------------------------------*/
+: readChunk_SeekOffsets
+
+  //"Operand:- ZK_SEEKOFFSETS" .verbose
+
+  Operand[].seekSets@ 0
+  do
+    I Operand[].readChunk
+    OperandB[].pipeout
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : readChunk_StartMarker
@@ -61,15 +75,7 @@
     // decode kind
     Operand[].kind case
 
-      ZK_SEEKOFFSETS of
-        //"Operand:- ZK_SEEKOFFSETS" .verbose
-        Operand[].seekSets@ 0
-        do
-          I Operand[].readChunk
-          OperandB[].pipeout
-        loop
-        true
-      endof
+      ZK_SEEKOFFSETS of readChunk_SeekOffsets true endof
 
       ZK_STARTMARKER of readChunk_StartMarker true endof
 

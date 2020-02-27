@@ -901,65 +901,7 @@ void Step::vOperandCsvToCrwH(void)
 {
   ENTRY(); // ENTRY("vOperandCsvToCrwH"_Stz);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
-  WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
-  Table* pTable = *m_pRegSet->m_xpTable;
-  
-  char* aCursor = (char*)pCsvBuffer->ayDataArea();
-  CrwBuffer* pCrwBuffer = nullptr;
-  
-  bool bBlankLine = false;
-  
-  ExtractRow* pExtractRow = _pExtractRow(*m_pRegSet->m_xpRegister0);
-  
-  Row* pRow;
-  
-  //i8 nRecords = pCsvBuffer->nRecords();
-  //for (i8 i_Record = 0; i_Record < nRecords; i_Record++) {
-  while(true) {
-    bool bValid = pExtractRow->bExtractRow(&pRow, &aCursor, bBlankLine);
-    
-    if (bBlankLine)
-      continue;
-    
-    if (! bValid ) {
-      vTrace("Warning: Skipping row (invalid value)\n"_Stz);
-      if (pCrwBuffer) {
-        pCrwBuffer->vAppendClose();
-        pOp->vPipeOut(_pOperand(pCrwBuffer));
-        pCrwBuffer = nullptr;
-      }
-      goto L_Exit;
-    }
-    
-    //    if (EC_MAX_ROW_LENGTH == eError) {
-    //      vTrace("Warning: Skipping row (Max row length)\n"_Stz);
-    //      continue;
-    //    }
-    
-    // use row hash to get partition
-    i8 i_Ptn = pTable->iToPartition(pRow->m_iHash);
-    
-    // attempt to append row into a write-behind buffer
-    eEC eError = pWriteBehind->eAppendRow(pRow, &pCrwBuffer, i_Ptn);
-    
-    // was there an error ?
-    if (eError != EC_NONE) {
-      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
-      continue;
-    }
-    
-    if (pCrwBuffer) {
-      pCrwBuffer->vAppendClose();
-      pOp->vPipeOut(_pOperand(pCrwBuffer));
-      pCrwBuffer = nullptr;
-    }
-    
-  }
-  
-L_Exit:
   EXIT();
 }
 
