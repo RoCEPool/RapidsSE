@@ -15,12 +15,12 @@ namespace Pipelines
     Stage*         m_pStage;         // which stage of pipeline
     Pipeline*      m_pPipeline;      // which pipeline
   
-    EnameSet       m_oEnameSet;         // ename set of cmd
-    EnameSet       m_oTopologyEnameSet; // topology enameset
-    
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
   
+    EnameSet       m_oEnameSet;         // ename set of cmd
+    EnameSet       m_oTopologyEnameSet; // topology enameset
+    
     bool           m_bPulsed;        // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done

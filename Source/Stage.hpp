@@ -9,6 +9,7 @@ namespace Pipelines
   {
   private:
     s32         m_sStageNm;        // stage name
+  
     StageSpec*  m_pStageSpec;      // specification of this stage
     Pipeline*   m_pPipeline;       // which pipeline
   
