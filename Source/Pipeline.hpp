@@ -10,6 +10,7 @@ namespace Pipelines
   private:
     s32           m_sPipelineNm;
     PipelineSpec* m_pPipelineSpec;
+  
     Job*          m_pJob;
   
     i8            m_iOriginatingNode;

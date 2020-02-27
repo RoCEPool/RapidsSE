@@ -7,8 +7,6 @@ namespace Pipelines
 {
   class Op : public Focal
   {
-  friend class Pipeline;
-  
   private:
     s32            m_sOpNm;          // name of the operator
     OpSpec*        m_pOpSpec;        // specification of this operator
@@ -87,6 +85,8 @@ namespace Pipelines
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
+    bool bPulsed(void);
+    void vPulsed(bool bPulsed);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
     i8   nRightEosMarkers(void);
