@@ -11,8 +11,9 @@ namespace Pipelines
   
   private:
     s32            m_sOpNm;          // name of the operator
-    
-    Pipeline*      m_pPipeline;         // op digest
+    OpSpec*        m_pOpSpec;        // which op spec
+    Pipeline*      m_pPipeline;      // which pipeline
+  
     EnameSet       m_oEnameSet;         // ename set of cmd
     EnameSet       m_oTopologyEnameSet; // topology enameset
     

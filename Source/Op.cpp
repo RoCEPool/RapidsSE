@@ -53,12 +53,13 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   RASSERT(pOpSpec);
   
-  m_sOpNm = pOpSpec->szOpNm();
+  m_sOpNm     = pOpSpec->szOpNm();
+  m_pOpSpec   = pOpSpec;
+  m_pPipeline = pPipeline;
 
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());
   m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
   
-  m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
   m_pOpJob        = nullptr;
   
