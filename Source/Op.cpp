@@ -297,8 +297,27 @@ void Op::vInitOperandHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  for (i8 i_Kind = 0; i_Kind < ZK_ENUMS; i_Kind++)
-    m_paOperandHandler[i_Kind] = nullptr;
+  Dic* pRootDic = AM::pRootDic();
+  
+  s32 sHandlerNm;
+  
+  for (i8 i_Kind = 1; i_Kind < ZK_ENUMS; i_Kind++) {
+    
+    sHandlerNm = aZK[i_Kind];
+    sHandlerNm.vConcat("_handler"_Stz);
+    
+    vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
+    
+    Word* pHandler = pRootDic->pFindWord(sHandlerNm);
+    if (! pHandler)
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Unable to find operand handler for: %s"_Stz,
+             sHandlerNm.szStz());
+    
+    m_paOperandHandler[i_Kind] = pHandler;
+  }
+  
+  Correctness::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

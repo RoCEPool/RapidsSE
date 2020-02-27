@@ -37,8 +37,8 @@ static Stz* aZK[]
   /*    */ "ZK_EOSMARKER"_Stz,
   /*    */ "ZK_ERRORMARKER"_Stz,
   /*    */ "ZK_IRWBUFFER"_Stz,
-  /*    */ "ZK_SEEKOFFSETS"_Stz
   /*    */ "ZK_PULSEMARKER"_Stz,
+  /*    */ "ZK_SEEKOFFSETS"_Stz,
   /*    */ "ZK_SRTBUFFER"_Stz,
   /*    */ "ZK_STARTMARKER"_Stz,
   /*    */ "ZK_STARTEDMARKER"_Stz,
