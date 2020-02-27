@@ -931,11 +931,12 @@ public:
   void vOperandReadChunk(void);
   void vOperandReport(void);
   void vOperandRowCountFetch(void);
-void vOperandSeekSetsFetch(void);
+  void vOperandSeekSetsFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);
   void vOperandCrwToCsv(void);
   void vOperandCsvToCrw(void);
+  void vOperandCsvToCrwH(void);
   void vOperandWorkDone(void);
   void vOperandWriteToFile0(void);
 
