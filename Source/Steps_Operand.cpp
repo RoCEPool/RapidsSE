@@ -97,7 +97,7 @@ void Step::vOperandChunkFile(void)
   while (true) {
     
     // compute the location of the final block of the current chunk
-    i8 i_FinalBlockLoc = i_ChunkLoc + C_DATACHUNK - C_CHUNKBLOCK;
+    i8 i_FinalBlockLoc = i_ChunkLoc + C_LOAD_READCHUNK - C_CHUNKBLOCK;
     
     // the final block will be past the eof if the chunk is
     // less than maximum chunk size
@@ -126,7 +126,7 @@ void Step::vOperandChunkFile(void)
     // read next block of the chunk
     pFile->vSeek(i_FinalBlockLoc);
     
-    i8 nBytesRead = pFile->nReadBytes(pReadBlock,2048);
+    i8 nBytesRead = pFile->nReadBytes(pReadBlock,C_CHUNKBLOCK);
     
     // compute last actual byte of final block just read in
     char *aLastByte = &pReadBlock[nBytesRead - 1];
@@ -723,6 +723,7 @@ void Step::vOperandReadChunk(void)
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
+  pFile->vSeek(iOffset);
   i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
   ASSERT(nBytesRead == nBytes);
   
@@ -845,9 +846,9 @@ void Step::vOperandCsvToCrw(void)
   
   Row* pRow;
   
-  i8 nRecords = pCsvBuffer->nRecords();
-  for (i8 i_Record = 0; i_Record < nRecords; i_Record++) {
-    
+  //i8 nRecords = pCsvBuffer->nRecords();
+  //for (i8 i_Record = 0; i_Record < nRecords; i_Record++) {
+  while(true) {
     bool bValid = pExtractRow->bExtractRow(&pRow, &aCursor, bBlankLine);
     
     if (bBlankLine)
@@ -855,6 +856,12 @@ void Step::vOperandCsvToCrw(void)
     
     if (! bValid ) {
       vTrace("Warning: Skipping row (invalid value)\n"_Stz);
+      if (pCrwBuffer) {
+        pCrwBuffer->vAppendClose();
+        pOp->vPipeOut(_pOperand(pCrwBuffer));
+        pCrwBuffer = nullptr;
+      }
+      goto L_Exit;
     }
     
 //    if (EC_MAX_ROW_LENGTH == eError) {
@@ -881,7 +888,8 @@ void Step::vOperandCsvToCrw(void)
     }
     
   }
-  
+ 
+L_Exit:
   EXIT();
 }
 
