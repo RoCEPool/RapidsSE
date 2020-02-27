@@ -39,13 +39,15 @@ void Pipeline::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSepc, i8 iOriginatingNode)
+Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
 : Object(CN_PIPELINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
+  m_sPipelineNm = pPipelineSpec->szPipelineNm();
+  
   m_pJob = pJob;
-  m_pPipelineSepc = pPipelineSepc;
+  m_pPipelineSpec = pPipelineSpec;
   m_iOriginatingNode = iOriginatingNode;
   
   m_bPulsed    = false;

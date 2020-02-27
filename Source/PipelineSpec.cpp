@@ -28,12 +28,12 @@ void PipelineSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz* szName)
+PipelineSpec::PipelineSpec(Stz* szPipelineNm)
 : Object(CN_PIPELINESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  m_sName = szName;
+  m_sPipelineNm = szPipelineNm;
   
   m_pStageSpecVec = new StageSpecVec;
   
@@ -70,11 +70,11 @@ void PipelineSpec::vAddStageSpec(StageSpec* pStageSpec)
 /*----------------------------------------------------------------------------*/
 /* add stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* PipelineSpec::szName(void)
+Stz* PipelineSpec::szPipelineNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  return m_sName.szStz();
+  return m_sPipelineNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +126,7 @@ void PipelineSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  vTrace("pipeline %s\n"_Stz,m_sName.szStz());
+  vTrace("pipeline %s\n"_Stz,m_sPipelineNm.szStz());
   vTrace("begin\n"_Stz);
   
   for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++)

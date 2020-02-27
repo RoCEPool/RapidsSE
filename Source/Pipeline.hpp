@@ -8,8 +8,10 @@ namespace Pipelines
   class Pipeline : public Object
   {
   private:
+    s32           m_sPipelineNm;
+  
     Job*          m_pJob;
-    PipelineSpec* m_pPipelineSepc;
+    PipelineSpec* m_pPipelineSpec;
     i8            m_iOriginatingNode;
 
     bool          m_bPulsed;
@@ -27,7 +29,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pJob, PipelineSpec* pPipelineSepc, i8 iOriginatingNode);
+    Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode);
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
