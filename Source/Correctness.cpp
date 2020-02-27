@@ -574,6 +574,10 @@ void Correctness::vTraceWithout(void)
   vTrace("  WITH_TRACE_DYNAMO\n"_Stz);
 #endif
   
+#ifndef WITH_TRACE_PROCEDURE
+  vTrace("  WITH_TRACE_PROCEDURE\n"_Stz);
+#endif
+  
 #ifndef WITH_TRACE_PURGING
   vTrace("  WITH_TRACE_PURGING\n"_Stz);
 #endif

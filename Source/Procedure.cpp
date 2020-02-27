@@ -19,14 +19,18 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   s32 sProcNm = pTkn1_ProcNm->szTerm();
   
+#ifdef WITH_TRACE_PROCEDURE
   vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
-
+#endif
+  
   if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
           pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
     sProcNm.vConcat("__"_Stz);
     sProcNm.vConcat(pTokenVec->pGet(2)->szTerm());
-    vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
     
+#ifdef WITH_TRACE_PROCEDURE
+    vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
+#endif
     pTokenVec->vCutToken(2);
     
     pTkn1_ProcNm->vCopy(sProcNm);
@@ -103,7 +107,10 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   s4K sOriginalCmd;
   pCmdTokenVec->vVecToString(sOriginalCmd,0,false);
+
+#ifdef WITH_TRACE_PROCEDURE
   vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to find the procedure which matches the command
@@ -128,7 +135,10 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 
     sProcNm.vConcat("__"_Stz);
     sProcNm.vConcat(pTkn1_ProcNmTwo->szTerm());
+
+#ifdef WITH_TRACE_PROCEDURE
     vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
+#endif
 
     pProcWord = pRootDic->pFindWord(sProcNm);
     if (! pProcWord)
@@ -247,7 +257,10 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
     if (pTkn->bSame("begin"_Stz))
       break;
     
+#ifdef WITH_TRACE_PROCEDURE
     vTrace("%s: adding parameter %s\n"_Stz,pProcWord->szWordNm(),pTkn->szTerm());
+#endif
+    
     pEnameSet->vAdd(pTkn->szTerm());
   }
 
