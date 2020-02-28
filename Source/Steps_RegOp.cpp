@@ -9,8 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOp(void)
 {
-  vAddStep("op[]"_Stz,      &Step::vRegOpGet);
-  vAddStep("op[].init"_Stz, &Step::vRegOpInit);
+  vAddStep("op[]"_Stz,         &Step::vRegOpGet);
+  vAddStep("op[].handler"_Stz, &Step::vRegOpHandler);
+  vAddStep("op[].init"_Stz,    &Step::vRegOpInit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,11 +27,27 @@ void Step::vRegOpGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* op[].handler -- get this op's handler for given operand                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpHandler(void)
+{
+  ENTRY(); // ENTRY("vRegOpHandler"_Stz);
+
+  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+
+  Word* pHandler = m_pRegSet->m_xpOp->pOperandHandler(i_OperandKind);
+    
+  m_pDataStack->vPushPtr(pHandler);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* op[].init -- init op                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpInit(void)
 {
-  ENTRY(); // ENTRY("vRegOpGet"_Stz);
+  ENTRY(); // ENTRY("vRegOpInit"_Stz);
 
   Op* pOp = m_pTask->m_pJob->m_pOp;
 

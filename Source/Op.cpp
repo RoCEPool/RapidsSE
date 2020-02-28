@@ -432,6 +432,17 @@ void Op::vNode(i8 nNode)
   m_nNode = nNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get operand handler for given operand kind                                 */
+/*----------------------------------------------------------------------------*/
+Word* Op::pOperandHandler(i8 i_OperandKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Word* pHandler = m_paOperandHandler[i_OperandKind];
+  
+  return pHandler;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get out operator                                                           */

@@ -77,6 +77,7 @@ namespace Pipelines
     void vNextStage(i8 iNextStage);
     i8   nNode(void);
     void vNode(i8 nNode);
+    Word* pOperandHandler(i8 i_OperandKind);
     Job* pOpJob(void);
     Stz* szOpNm(void);
     void vPartition(i8 iPartition);

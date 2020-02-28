@@ -1060,6 +1060,7 @@ public:
 
   // reg op
   void vRegOpGet(void);
+  void vRegOpHandler(void);
   void vRegOpInit(void);
 
   // reg timer
