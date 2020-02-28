@@ -203,7 +203,6 @@ enum eCN : u2 // Class Number
   /* 156 0x09C      464B Heap:S */ CN_OP,
   /* 161 0x0A1       56B Heap:S */ CN_OPERANDQUEUE,
   /* 162 0x0A2     5696B Heap:M */ CN_OPSPEC,
-  /* 163 0x0A3     2080B Heap:S */ CN_OPSPECVEC,
   /* 164 0x0A4     2080B Heap:S */ CN_OPVEC,
   
   /* 165 0x0A5       16B Heap:I */ CN__P__,
@@ -537,7 +536,6 @@ static Stz* aCN[]
   /* 156 0x09C */ "OP"_Stz,                  // CN_OP
   /* 161 0x0A1 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
   /* 162 0x0A2 */ "OPSPEC"_Stz,              // CN_OPSPEC
-  /* 163 0x0A3 */ "OPSPECVEC"_Stz,           // CN_OPSPECVEC
   /* 164 0x0A4 */ "OPVEC"_Stz,               // CN_OPVEC
   
   /* 165 0x0A5 */ "_P__"_Stz,                // CN__P__
