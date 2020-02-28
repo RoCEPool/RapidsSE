@@ -13,11 +13,16 @@ namespace Oblique
     Footer m_xFooter;
 
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
     Exemplar(void);
    ~Exemplar(void) noexcept(false);
   
     Footer* aFooter(void);
   };
+
+  Exemplar* _pExemplar(void* aAddr);
 }
 
 /*============================================================================*/
