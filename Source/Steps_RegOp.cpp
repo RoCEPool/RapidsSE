@@ -50,8 +50,9 @@ void Step::vRegOpHandlerStore(void)
 {
   ENTRY(); // ENTRY("vRegOpHandlerStore"_Stz);
 
-  Word* pHandler   = _pWord(m_pDataStack->pPopPtr(__func__));
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  
+  Word* pHandler   = _pWord(m_pDataStack->pPopPtr(__func__));
 
   m_pRegSet->m_xpOp->vOperandHandler(i_OperandKind,pHandler);
     

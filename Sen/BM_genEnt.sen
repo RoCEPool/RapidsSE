@@ -25,6 +25,8 @@
 
   Operand[].newEosMarker
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -40,6 +42,8 @@
   folderContents.str "contains: %v" .printf
 
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,6 +56,11 @@
   // set topology, next stage and op
   op__topology
 
+  find: BM_GenEnt_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: BM_GenEnt_StartMarker ZK_STARTMARKER op[].handler!
+
+  //op_generic
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
@@ -62,15 +71,13 @@
     Operand[].next
 
     // decode operand kind
-    Operand[].kind case
+    //Operand[].kind case
+    //  ZK_PULSEMARKER of BM_GenEnt_PulseMarker true endof
+    //  ZK_STARTMARKER of BM_GenEnt_StartMarker true endof
+    //  jobOperand::generic swap
+    //endcase
 
-      ZK_PULSEMARKER of BM_GenEnt_PulseMarker true endof
-
-      ZK_STARTMARKER of BM_GenEnt_StartMarker true endof
-
-      jobOperand::generic swap
-
-    endcase
+    Operand[].kind op[].handler@ execute
 
   while assert::stack_0 repeat
 
