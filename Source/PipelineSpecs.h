@@ -18,8 +18,6 @@ namespace PipelineSpecs
 #include "OpSpecVec.hpp"
 
 #include "StageSpec.hpp"
-#include "StageSpecVec.hpp"
-
 #include "PipelineSpec.hpp"
 
 

@@ -628,7 +628,7 @@ i8 giClassSize[]
   /* */ sizeof(Stage),              // CN_STAGE
   /* */ sizeof(StagePtnVec),        // CN_STAGEPTNVEC
   /* */ sizeof(StageSpec),          // CN_STAGESPEC
-  /* */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
+  /* */ 0,//sizeof(StageSpecVec),       // CN_STAGESPECVEC
   /* */ sizeof(Statistics),         // CN_STATISTICS
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
