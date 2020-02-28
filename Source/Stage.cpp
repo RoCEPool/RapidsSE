@@ -71,7 +71,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       
     case PO_ALL_PARTITIONS:
       for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
-        m_oStagePtnVec.vAdd(new StagePtn(pStageSpec, i_Ptn));
+        m_oStagePtnVec.vAdd(new Division(pStageSpec, i_Ptn));
       }
       break;
       
@@ -93,7 +93,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       
     case PO_SPECIFIC_PARTITION:
       i_Ptn = pStageSpec->iPartition();
-      m_oStagePtnVec.vAdd(new StagePtn(pStageSpec, i_Ptn));
+      m_oStagePtnVec.vAdd(new Division(pStageSpec, i_Ptn));
       break;
       
     default:
@@ -123,7 +123,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
     // add the operator to the stages of the stagePtnVec
     for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
       Op* pOp = new Op(pOpSpec,this,pPipeline);
-      StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+      Division* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
       
       pOp->vPartition(pStagePtn->i_Ptn());
       pStagePtn->pOpVec()->vAdd(pOp);
@@ -167,7 +167,7 @@ void Stage::vCancelOperators(i8 iThisNode)
   }
   
   for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    Division* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
     
     i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
     
@@ -238,7 +238,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
   
   for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
     
-    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    Division* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
     
     // skip if partition is not for this node
     i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
@@ -277,7 +277,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
   StageNde* pStageNde = nullptr;
-  StagePtn* pStagePtn = nullptr;
+  Division* pStagePtn = nullptr;
   
   switch (eTopologyX) {
       
@@ -369,11 +369,11 @@ StagePtnVec* Stage::pStagePtnVec(void)
 /*----------------------------------------------------------------------------*/
 /* get stage ptn for given ptn                                                */
 /*----------------------------------------------------------------------------*/
-StagePtn* Stage::pStagePtn(i8 i_Ptn)
+Division* Stage::pStagePtn(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  StagePtn* pStagePtn = nullptr;
+  Division* pStagePtn = nullptr;
   
   for (i8 iPtnVec = 0; iPtnVec < m_oStagePtnVec.nItems(); iPtnVec++) {
     pStagePtn = m_oStagePtnVec.pGet(iPtnVec);

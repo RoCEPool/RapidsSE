@@ -35,7 +35,7 @@ namespace Pipelines
     StageNde*    pStageNde(i8 i_Nde);
     StageNdeVec* pStageNdeVec(void);
     Stz*         szStageNm(void);
-    StagePtn*    pStagePtn(i8 i_Ptn);
+    Division*    pStagePtn(i8 i_Ptn);
     StagePtnVec* pStagePtnVec(void);
     void         vStartPipeline(void);
     
