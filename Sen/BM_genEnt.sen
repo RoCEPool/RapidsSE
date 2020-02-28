@@ -59,27 +59,7 @@
   find: BM_GenEnt_PulseMarker ZK_PULSEMARKER op[].handler!
   find: BM_GenEnt_StartMarker ZK_STARTMARKER op[].handler!
 
-  //op_generic
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode operand kind
-    //Operand[].kind case
-    //  ZK_PULSEMARKER of BM_GenEnt_PulseMarker true endof
-    //  ZK_STARTMARKER of BM_GenEnt_StartMarker true endof
-    //  jobOperand::generic swap
-    //endcase
-
-    Operand[].kind op[].handler@ execute
-
-  while assert::stack_0 repeat
+  op__loop
 
   "*** BM_GenEntOp EXITS" .
   <<logExit

@@ -92,6 +92,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default operator loop                                                      */
+/*----------------------------------------------------------------------------*/
+: op__loop
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // execute the operator's handler for the operand
+    Operand[].kind op[].handler@ execute
+
+  while assert::stack_0 repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : BM_TimerNew
