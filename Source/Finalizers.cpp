@@ -288,7 +288,6 @@ pFINALIZE *gpFinalize[]
   /*126 */ &Finalize::vUndefined,         // CN_STAGE
   /*126 */ &Finalize::vUndefined,         // CN_STAGEPTNVEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPEC
-  /*126 */ &Finalize::vUndefined,         // CN_STAGESPECVEC
   /*    */ &Finalize::vUndefined,         // CN_STATISTICS
   /*127 */ &Finalize::vUndefined,         // CN_STEPACCUM
   /*128 */ &Finalize::vUndefined,         // CN_STEPTIMING
