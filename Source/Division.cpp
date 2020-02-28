@@ -19,7 +19,6 @@ __aFooterFunction(Division)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Division::Division(StageSpec* pStageSpec, i8 i_Div)
-: Object(CN_DIVISION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
   

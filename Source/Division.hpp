@@ -5,7 +5,7 @@
 
 namespace Pipelines
 {
-  class Division : public Object
+  class Division : public VectorNL_t<CN_DIVISION,Op,C_MAX_OPS>
   {
   private:
     OpVec m_oOpVec;  // set of operators
