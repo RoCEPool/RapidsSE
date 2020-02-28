@@ -9,7 +9,10 @@ namespace Pipelines
   {
   private:
     OpVec      m_oOpVec;     // set of operators
-    i8         m_i_Ptn;      // which partition
+    union {
+      i8       m_i_Nde;      // which node
+      i8       m_i_Ptn;      // which partition
+    };
   
     // must be last
     Footer m_xFooter;
@@ -22,8 +25,9 @@ namespace Pipelines
    ~StagePtn(void) noexcept(false);
   
     OpVec*     pOpVec(void);
-    i8         iPartition(void);
-    void       vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
+    i8         i_Nde(void);
+    i8         i_Ptn(void);
+    void       vSpawnOperators(i8 iSessionId, i8 iNode);
   
     Footer* aFooter(void);
   };

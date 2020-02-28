@@ -82,7 +82,7 @@ OpVec* StagePtn::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this stageNde needs to run on                                */
 /*----------------------------------------------------------------------------*/
-i8 StagePtn::iPartition(void)
+i8 StagePtn::i_Ptn(void)
 {
   _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
   
@@ -92,7 +92,7 @@ i8 StagePtn::iPartition(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void StagePtn::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
+void StagePtn::vSpawnOperators(i8 iSessionId, i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
   

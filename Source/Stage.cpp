@@ -125,7 +125,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       Op* pOp = new Op(pOpSpec,this,pPipeline);
       StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
       
-      pOp->vPartition(pStagePtn->iPartition());
+      pOp->vPartition(pStagePtn->i_Ptn());
       pStagePtn->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
@@ -169,7 +169,7 @@ void Stage::vCancelOperators(i8 iThisNode)
   for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
     StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
     
-    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
@@ -241,7 +241,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
     StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
     
     // skip if partition is not for this node
-    i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+    i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
     if (iPartitionNode == iNode) {
       nOps += pStagePtn->pOpVec()->nItems();
     }
@@ -307,7 +307,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pStagePtn = m_oStagePtnVec.pGet(0);
-      ASSERT(pStagePtn->iPartition() == iPtn);
+      ASSERT(pStagePtn->i_Ptn() == iPtn);
       pOp = pStagePtn->pOpVec()->pGet(iOp);
       break;
       
@@ -377,7 +377,7 @@ StagePtn* Stage::pStagePtn(i8 i_Ptn)
   
   for (i8 iPtnVec = 0; iPtnVec < m_oStagePtnVec.nItems(); iPtnVec++) {
     pStagePtn = m_oStagePtnVec.pGet(iPtnVec);
-    if (pStagePtn->iPartition() == i_Ptn)
+    if (pStagePtn->i_Ptn() == i_Ptn)
       return pStagePtn;
   }
   
