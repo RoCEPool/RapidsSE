@@ -41,6 +41,9 @@ namespace Pipelines
     // to be removed
     Division*    pStageNde(i8 i_Nde);
     StagePtnVec* pStageNdeVec(void);
+  
+  private:
+    void vCreateDivisions(void);
 
     Footer* aFooter(void);
   };
