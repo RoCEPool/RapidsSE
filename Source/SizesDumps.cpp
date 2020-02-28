@@ -539,7 +539,7 @@ i8 giClassSize[]
   /* */ sizeof(Op),                 // CN_OP
   /* */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* */ sizeof(OpSpec),             // CN_OPSPEC
-  /* */ sizeof(OpSpecVec),          // CN_OPSPECVEC
+  /* */ 0,//sizeof(OpSpecVec),          // CN_OPSPECVEC
   /* */ sizeof(OpVec),              // CN_OPVEC
 
   /* */ 'P' - ('A' - 1),            // CN__P__
