@@ -5,7 +5,7 @@
 
 namespace PipelineSpecs
 {
-  class StageSpec : public Object
+  class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
   {
   private:
     s32           m_sStageNm;       // stage name

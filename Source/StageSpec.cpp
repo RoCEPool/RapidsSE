@@ -29,7 +29,6 @@ void StageSpec::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec)
-: Object(CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
