@@ -18,7 +18,6 @@ namespace Pipelines
 #include "Op.hpp"
 #include "OpVec.hpp"
 #include "Division.hpp"
-#include "StageNdeVec.hpp"
 #include "StagePtnVec.hpp"
 #include "Stage.hpp"
 #include "StageVec.hpp"

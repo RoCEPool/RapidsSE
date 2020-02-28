@@ -339,7 +339,7 @@ Division* Stage::pDivision(i8 i_Nde)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StageNdeVec* Stage::pStageNdeVec(void)
+StagePtnVec* Stage::pStageNdeVec(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   

@@ -628,7 +628,7 @@ i8 giClassSize[]
   /* */ sizeof(SrtSet),             // CN_SRTSET
   /* */ sizeof(Stack),              // CN_STACK
   /* */ sizeof(Stage),              // CN_STAGE
-  /* */ sizeof(StageNdeVec),        // CN_STAGENDEVEC
+  /* */ sizeof(StagePtnVec),        // CN_STAGENDEVEC
   /* */ sizeof(StagePtnVec),        // CN_STAGEPTNVEC
   /* */ sizeof(StageSpec),          // CN_STAGESPEC
   /* */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
