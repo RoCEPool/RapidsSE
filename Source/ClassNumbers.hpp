@@ -292,7 +292,6 @@ enum eCN : u2 // Class Number
   /* 247 0x0F7     2080B Heap:S */ CN_STAGEPTNVEC,
   /* 248 0x0F8      144B Heap:S */ CN_STAGESPEC,
   /* 249 0x0F9     2080B Heap:S */ CN_STAGESPECVEC,
-  /* 250 0x0FA     2080B Heap:S */ CN_STAGEVEC,
   /* 252 0x0FC    16840B Heap:I */ CN_STATISTICS,
   /* 253 0x0FD       64B Heap:I */ CN_STEPACCUM,
   /* 254 0x0FE   131288B Heap:L */ CN_STEPTIMING,
@@ -628,7 +627,6 @@ static Stz* aCN[]
   /* 247 0x0F7 */ "STAGEPTNVEC"_Stz,         // CN_STAGEPTNVEC
   /* 248 0x0F8 */ "STAGESPEC"_Stz,           // CN_STAGESPEC
   /* 249 0x0F9 */ "STAGESPECVEC"_Stz,        // CN_STAGESPECVEC
-  /* 250 0x0FA */ "STAGEVEC"_Stz,            // CN_STAGEVEC
   /* 252 0x0FC */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 253 0x0FD */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 254 0x0FE */ "STEPTIMING"_Stz,          // CN_STEPTIMING
