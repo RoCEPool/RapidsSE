@@ -99,16 +99,13 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
     default:
       RASSERT(0);
   }
-  
-  // get the opSpecVec
-  OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the opVec and StageNde's and stagePtn's from the opSpec
   
-  for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
+  for (i8 i_OpSpec = 0; i_OpSpec < pStageSpec->nItems(); i_OpSpec++ ) {
     
-    OpSpec* pOpSpec = pOpSpecVec->pGet(i_OpSpec);
+    OpSpec* pOpSpec = pStageSpec->pGet(i_OpSpec);
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {

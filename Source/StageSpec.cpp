@@ -36,7 +36,6 @@ StageSpec::StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec)
   m_pPipelineSpec = pPipelineSpec;
   
   m_eTopology     = PO_NONE;
-  m_pOpSpecVec    = new OpSpecVec;
   m_iNode         = C_UNKNOWN;
   m_iPartition    = C_UNKNOWN;
   //m_nThreads    = 1;
@@ -52,8 +51,6 @@ StageSpec::StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec)
 StageSpec::~StageSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  delete m_pOpSpecVec;
 }
 
 
@@ -68,35 +65,23 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  pOpSpec->v_OpSpec(m_pOpSpecVec->nItems());
+  pOpSpec->v_OpSpec(nItems());
   
-  m_pOpSpecVec->vAdd(pOpSpec);
+  vAdd(pOpSpec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* copy ops from given stage spec                                             */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vCopyOps(StageSpec* pStageSpec)
+void StageSpec::vCopyOps(StageSpec* pStageSpec_from)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  OpSpecVec* pOpSpecVec_from = pStageSpec->pOpSpecVec();
-  
-  for (i8 i_Op = 0; i_Op < pOpSpecVec_from->nItems(); i_Op++) {
-    OpSpec* pOpSpec_from = pOpSpecVec_from->pGet(i_Op);
     
-    m_pOpSpecVec->vAdd(pOpSpec_from);
+  for (i8 i_Op = 0; i_Op < pStageSpec_from->nItems(); i_Op++) {
+    OpSpec* pOpSpec_from = pStageSpec_from->pGet(i_Op);
+    
+    vAdd(pOpSpec_from);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get opspec vec                                                             */
-/*----------------------------------------------------------------------------*/
-OpSpecVec* StageSpec::pOpSpecVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_pOpSpecVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,11 +186,11 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
   
   pOpSpec->vAddEnamePair("<consumeXmits>"_Stz,iConsumeArg,TN_INTEGER);
   
-  m_pOpSpecVec->vInsert(pOpSpec);
+  vInsert(pOpSpec);
   
   // rework the m_i_OpSpec
-  for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {
-    OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
+  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
+    OpSpec* pOpSpec = pGet(i_Op);
     pOpSpec->v_OpSpec(i_Op);
   }
   
@@ -258,8 +243,8 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {\
-    OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
+  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {\
+    OpSpec* pOpSpec = pGet(i_Op);
 
     if (i_Op)
       szPipeStr->vConcat(" | "_Stz);
@@ -305,10 +290,10 @@ void StageSpec::vPrint(void)
 
 
   vTrace("  "_Stz);
-  for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {
+  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
     if (i_Op)
       vTrace("| "_Stz);
-    m_pOpSpecVec->pGet(i_Op)->vPrint();
+    pGet(i_Op)->vPrint();
   }
   vTrace("\n"_Stz);
 }

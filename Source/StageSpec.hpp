@@ -15,9 +15,7 @@ namespace PipelineSpecs
     i8  m_iNode;        // stage node
     i8  m_iPartition;   // stage ptn
     //i8  m_nThreads;   // threads
-  
-    OpSpecVec* m_pOpSpecVec;
-  
+    
     // must be last
     Footer m_xFooter;
 
@@ -33,7 +31,6 @@ namespace PipelineSpecs
     Stz* szStageNm(void);
     void vNode(i8 i_Nde);
     i8   iNode(void);
-    OpSpecVec* pOpSpecVec(void);
     i8   iPartition(void);
     void vPartition(i8 i_Ptn);
     void vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);

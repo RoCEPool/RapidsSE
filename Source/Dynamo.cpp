@@ -694,12 +694,12 @@ bool Dynamo::bPhase2_staging(void)
     StageSpec* pStageSpec = m_pPipelineSpec->pGet(i_Stage);
     
     // get the OpSpecVec from the stageSpec
-    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
-    i8 nOpSpecs = pOpSpecVec->nItems();
+    //OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+    i8 nOpSpecs = pStageSpec->nItems();
     
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       
-      OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
+      OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
       
       i8 i_FoundStage = C_UNKNOWN;
       StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
@@ -713,12 +713,12 @@ bool Dynamo::bPhase2_staging(void)
         
         if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
           // add parameter to the prev sink op
-          OpSpec* pPrevOpSpec = pOpSpecVec->pGet(i_Op-1);
+          OpSpec* pPrevOpSpec = pStageSpec->pGet(i_Op-1);
           vReplaceTopologyParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
 
           // remove the last (stage) OpSpec from the OpSpecVec
-          RASSERT(i_Op == pOpSpecVec->nItems()-1);
-          pOpSpecVec->vRemove(pOpSpec);
+          RASSERT(i_Op == pStageSpec->nItems()-1);
+          pStageSpec->vRemove(pOpSpec);
           delete pOpSpec;
         }
         else {
