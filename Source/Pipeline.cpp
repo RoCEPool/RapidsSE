@@ -40,7 +40,6 @@ void Pipeline::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
-: Object(CN_PIPELINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   

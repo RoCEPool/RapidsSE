@@ -5,7 +5,7 @@
 
 namespace Pipelines
 {
-  class Pipeline : public Object
+  class Pipeline : public VectorNL_t<CN_PIPELINE,Division,C_MAX_STAGES>
   {
   private:
     s32           m_sPipelineNm;
