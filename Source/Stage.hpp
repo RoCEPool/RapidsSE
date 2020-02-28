@@ -13,7 +13,7 @@ namespace Pipelines
     Pipeline*   m_pPipeline;       // which pipeline
   
     OpVec       m_oOpVec;          // set of operators
-    StagePtnVec m_oStagePtnVec;    // set of stage-partitions
+    StagePtnVec m_oDivisionVec;    // set of stage-partitions
     StagePtnVec m_oStageNdeVec;    // set of stage-nodes
     
     // must be last
