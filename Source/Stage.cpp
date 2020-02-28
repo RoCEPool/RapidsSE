@@ -341,25 +341,20 @@ void Stage::vCreateDivisions(void)
   
   i8 i_Ptn;
   i8 i_Nde;
-  
-  
-  //m_oOpVec
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create StageNde's and StagePtn's depending on the toplogy of the stage
   
   switch (m_pStageSpec->eTopology()) {
       
     case PO_ALL_NODES:
-      for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
+      for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++)
         m_oStageNdeVec.vAdd(new Division(m_pStageSpec, i_Nde));
-      }
       break;
       
     case PO_ALL_PARTITIONS:
-      for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
+      for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++)
         m_oDivisionVec.vAdd(new Division(m_pStageSpec, i_Ptn));
-      }
       break;
       
     case PO_ORIGIN:
@@ -370,8 +365,6 @@ void Stage::vCreateDivisions(void)
                  m_pPipeline->iOriginatingNode());
         }
       }
-      //for (i8 i_Thd = 0; i_Thd < pStageSpec->nThreads(); i_Thd++)
-      //  m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode(), i_Thd));
       m_oStageNdeVec.vAdd(new Division(m_pStageSpec, m_pPipeline->iOriginatingNode()));
       break;
       
@@ -415,6 +408,15 @@ void Stage::vCreateDivisions(void)
       m_oOpVec.vAdd(pOp);
     }
   }
+  
+  //
+  // either the division vector is used, or the stage node vector is used
+  //   but not both
+  //
+  RASSERT(    (m_oDivisionVec.nItems()      && 0 == m_oStageNdeVec.nItems())
+           ||
+              (0 == m_oDivisionVec.nItems() && m_oStageNdeVec.nItems())
+          );
 }
 
 /*----------------------------------------------------------------------------*/
