@@ -52,83 +52,9 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
   m_pStageSpec = pStageSpec;
   m_pPipeline  = pPipeline;
 
-  i8 i_Ptn;
-  i8 i_Nde;
-  
-  
-  //m_oOpVec
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create StageNde's and StagePtn's depending on the toplogy of the stage
-  
-  switch (pStageSpec->eTopology()) {
-      
-    case PO_ALL_NODES:
-      for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
-        m_oStageNdeVec.vAdd(new Division(pStageSpec, i_Nde));
-      }
-      break;
-      
-    case PO_ALL_PARTITIONS:
-      for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
-        m_oDivisionVec.vAdd(new Division(pStageSpec, i_Ptn));
-      }
-      break;
-      
-    case PO_ORIGIN:
-      if (AM::bVerbose()) {
-        i8 iThisNode = AM::pGrid()->iThisNode();
-        if (iThisNode == 0) {
-          vTrace("Pipeline Originating node : %lld\n"_Stz, pPipeline->iOriginatingNode());
-        }
-      }
-      //for (i8 i_Thd = 0; i_Thd < pStageSpec->nThreads(); i_Thd++)
-      //  m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode(), i_Thd));
-      m_oStageNdeVec.vAdd(new Division(pStageSpec, pPipeline->iOriginatingNode()));
-      break;
-      
-    case PO_SPECIFIC_NODE:
-      RASSERT(0);
-      break;
-      
-    case PO_SPECIFIC_PARTITION:
-      i_Ptn = pStageSpec->iPartition();
-      m_oDivisionVec.vAdd(new Division(pStageSpec, i_Ptn));
-      break;
-      
-    default:
-      RASSERT(0);
-  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the opVec and StageNde's and stagePtn's from the opSpec
-  
-  for (i8 i_OpSpec = 0; i_OpSpec < pStageSpec->nItems(); i_OpSpec++ ) {
-    
-    OpSpec* pOpSpec = pStageSpec->pGet(i_OpSpec);
-    
-    // add the operator to the stages of the stageNdeVec
-    for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
-      Division* pDivision = m_oStageNdeVec.pGet(i_Index);
-      
-      Op* pOp = new Op(pOpSpec,this,pPipeline);
-      pOp->vNode(pDivision->i_Nde());
-      pDivision->vAdd(pOp);
-      m_oOpVec.vAdd(pOp);
-    }
-    
-    // add the operator to the stages of the stagePtnVec
-    for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
-      Op* pOp = new Op(pOpSpec,this,pPipeline);
-      Division* pStagePtn = m_oDivisionVec.pGet(i_Ptn);
-      
-      pOp->vPartition(pStagePtn->i_Ptn());
-      pStagePtn->vAdd(pOp);
-      m_oOpVec.vAdd(pOp);
-    }
-  }
-  
   _checkInitialised_(CN_STAGE);
+
+  vCreateDivisions();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
 }
@@ -446,7 +372,7 @@ void Stage::vCreateDivisions(void)
       }
       //for (i8 i_Thd = 0; i_Thd < pStageSpec->nThreads(); i_Thd++)
       //  m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode(), i_Thd));
-      m_oStageNdeVec.vAdd(new Division(pStageSpec, m_pPipeline->iOriginatingNode()));
+      m_oStageNdeVec.vAdd(new Division(m_pStageSpec, m_pPipeline->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -454,7 +380,7 @@ void Stage::vCreateDivisions(void)
       break;
       
     case PO_SPECIFIC_PARTITION:
-      i_Ptn = pStageSpec->iPartition();
+      i_Ptn = m_pStageSpec->iPartition();
       m_oDivisionVec.vAdd(new Division(m_pStageSpec, i_Ptn));
       break;
       
