@@ -255,8 +255,8 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
       pDivision->vSpawnOperators(iSessionId, i_Nde);
     }
     
-    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
-      Division* pDivision = pStage->pStagePtnVec()->pGet(i_Ptn);
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pDivisionVec()->nItems(); i_Ptn++) {
+      Division* pDivision = pStage->pDivisionVec()->pGet(i_Ptn);
       
       pDivision->vSpawnOperators(iSessionId, iNode);
     }

@@ -359,7 +359,7 @@ Stz* Stage::szStageNm(void)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StagePtnVec* Stage::pStagePtnVec(void)
+StagePtnVec* Stage::pDivisionVec(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -369,7 +369,7 @@ StagePtnVec* Stage::pStagePtnVec(void)
 /*----------------------------------------------------------------------------*/
 /* get stage ptn for given ptn                                                */
 /*----------------------------------------------------------------------------*/
-Division* Stage::pStagePtn(i8 i_Ptn)
+Division* Stage::pDivision(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
