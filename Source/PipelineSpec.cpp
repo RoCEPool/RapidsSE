@@ -29,7 +29,6 @@ void PipelineSpec::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pJob)
-: Object(CN_PIPELINESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   

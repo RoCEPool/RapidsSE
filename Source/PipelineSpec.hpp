@@ -5,7 +5,7 @@
 
 namespace PipelineSpecs
 {
-  class PipelineSpec : public Object
+  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
   {
   private:
   
