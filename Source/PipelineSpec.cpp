@@ -34,9 +34,7 @@ PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pJob)
   
   m_sPipelineNm = szPipelineNm;
   m_pJob = pJob;
-  
-  m_pStageSpecVec = new StageSpecVec;
-  
+    
   _checkInitialised_(CN_PIPELINESPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -48,8 +46,6 @@ PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pJob)
 PipelineSpec::~PipelineSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  delete m_pStageSpecVec;
 }
 
 
@@ -64,7 +60,7 @@ void PipelineSpec::vAddStageSpec(StageSpec* pStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  m_pStageSpecVec->vAdd(pStageSpec);
+  vAdd(pStageSpec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,8 +80,8 @@ StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm, i8& i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  for (i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++) {
-    StageSpec* pStageSpec = m_pStageSpecVec->pGet(i_Stage);
+  for (i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    StageSpec* pStageSpec = pGet(i_Stage);
     
     if (pStageSpec->szStageNm()->bSame(szFindNm))
       return pStageSpec;
@@ -101,20 +97,11 @@ StageSpec* PipelineSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  StageSpec* pStageSpec = m_pStageSpecVec->pGet(i_Stage);
+  StageSpec* pStageSpec = pGet(i_Stage);
   
   return pStageSpec;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get stage spec vec                                                          */
-/*----------------------------------------------------------------------------*/
-StageSpecVec* PipelineSpec::pStageSpecVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  return m_pStageSpecVec;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -129,8 +116,8 @@ void PipelineSpec::vPrint(void)
   vTrace("pipeline %s\n"_Stz,m_sPipelineNm.szStz());
   vTrace("begin\n"_Stz);
   
-  for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++)
-    m_pStageSpecVec->pGet(i_Stage)->vPrint();
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++)
+    pGet(i_Stage)->vPrint();
 
   vTrace("\n"_Stz);
   vTrace("end\n"_Stz);

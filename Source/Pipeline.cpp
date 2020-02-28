@@ -176,12 +176,9 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the stageSpecVec
-  StageSpecVec* pStageSpecVec = pPipelineSpec->pStageSpecVec();
-  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Buld the stageVec from the stageSpecVec
-  for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
+  for (i8 i_StageSpec = 0; i_StageSpec < pPipelineSpec->nItems(); i_StageSpec++ ) {
     
     // get the stageSpec
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);

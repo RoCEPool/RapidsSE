@@ -12,9 +12,7 @@ namespace PipelineSpecs
     s32  m_sPipelineNm;
   
     Job* m_pJob;
-  
-    StageSpecVec* m_pStageSpecVec;
-  
+    
     // must be last
     Footer m_xFooter;
 
@@ -29,7 +27,6 @@ namespace PipelineSpecs
     StageSpec* pFindStageSpec(Stz* szFindNm, i8& i_Stage);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    StageSpecVec* pStageSpecVec(void);
 
     void vPrint(void);
 

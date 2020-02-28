@@ -687,14 +687,11 @@ bool Dynamo::bIsOperator(Token* pTkn)
 bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  // get the stageSpecVec from the pipeline
-  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
-  
-  for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
+    
+  for (i8 i_Stage = 0; i_Stage < m_pPipelineSpec->nItems(); i_Stage++) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
+    StageSpec* pStageSpec = m_pPipelineSpec->pGet(i_Stage);
     
     // get the OpSpecVec from the stageSpec
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
