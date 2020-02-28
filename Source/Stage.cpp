@@ -183,7 +183,7 @@ void Stage::vCancelOperators(i8 iThisNode)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-void Stage::vDump(StageVec* pStageVec)
+void Stage::vDump(Pipeline* pPipeline)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -198,7 +198,7 @@ void Stage::vDump(StageVec* pStageVec)
     
     // get the next stage
     i8 iNextStage = pEnameSet->iValue("<nextStage>"_Stz);
-    Stage* pNextStage = pStageVec->pGet(iNextStage);
+    Stage* pNextStage = pPipeline->pGet(iNextStage);
     
     // get the next op
     i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);

@@ -112,10 +112,10 @@ void Pipeline::vDump(void)
     
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++ ) {
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
+    Stage* pStage = pGet(i_Stage);
     vTrace("\n[%lld] Stage %s : \n"_Stz, i_Stage, pStage->szStageNm());
-    pStage->vDump(&m_oStageVec);
+    pStage->vDump(this);
   }
   
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
@@ -150,8 +150,8 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
     nOps += pStage->nOpsOnNode(iNode);
   }
   
@@ -188,7 +188,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);
-    m_oStageVec.vAdd(pStage);
+    vAdd(pStage);
   }
 }
 
@@ -209,7 +209,7 @@ void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage = m_oStageVec.pGet(0);
+  Stage* pStage = pGet(0);
   i8 nOps = pStage->pOpVec()->nItems();
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
@@ -245,9 +245,9 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
+    Stage* pStage = pGet(i_Stage);
     
     for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
       Division* pDivision = pStage->pStageNdeVec()->pGet(i_Nde);
@@ -262,14 +262,6 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
     }
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the stage vector                                                       */
-/*----------------------------------------------------------------------------*/
-StageVec* Pipeline::pStageVec(void)
-{
-  return &m_oStageVec;
 }
 
 /*----------------------------------------------------------------------------*/

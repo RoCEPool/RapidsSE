@@ -26,7 +26,7 @@ namespace Pipelines
     Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
    ~Stage(void) noexcept(false);
   
-    void vDump(StageVec* pStageVec);
+    void vDump(Pipeline* pPipeline);
     
     void         vCancelOperators(i8 iThisNode);
     i8           nOpsOnNode(i8 iNode);

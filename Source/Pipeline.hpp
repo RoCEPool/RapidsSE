@@ -18,9 +18,7 @@ namespace Pipelines
     bool          m_bPulsed;
     Op*           m_pOpToPulse;
     bool          m_bCancelling;
-    
-    StageVec      m_oStageVec;         // vector of stages
-  
+      
   private:
   
     // must be last
@@ -45,7 +43,6 @@ namespace Pipelines
     bool      bPulsed(void);
     void      vSetupJob(void);
     void      vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
-    StageVec* pStageVec(void);
 
     Footer* aFooter(void);
   };

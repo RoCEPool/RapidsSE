@@ -26,7 +26,7 @@ void Step::vJob_OperandPipeOut(void)
   Job* pParentJob = Scheduler::pFindParticipatingJob(iParentJob);
 
   // get the next stage the xmit is supposed to xmit to
-  Stage* pStage = pParentJob->m_pPipeline->pStageVec()->pGet(pJob_Operand->m_iNextStage);
+  Stage* pStage = pParentJob->m_pPipeline->pGet(pJob_Operand->m_iNextStage);
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pJob_Operand->m_eTopologyX,

@@ -85,7 +85,7 @@ void Step::vJob_PipelineCancel(void)
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // get the first stage of the pipeline
-  Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
+  Stage* pStage = pJob_Pipeline->m_pPipeline->pGet(0);
   
   // send cancelMarker to the startOps of the first stage of the pipeline
   i8 iThisNode = AM::pGrid()->iThisNode();
@@ -144,7 +144,7 @@ void Step::vJob_PipelineExecute(void)
   AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
   
   // get the first stage of the pipeline
-  Stage* pStage = pPipeline->pStageVec()->pGet(0);
+  Stage* pStage = pPipeline->pGet(0);
   
   // send startMarker to the startOp of the first stage of the pipeline
   pStage->vStartPipeline();

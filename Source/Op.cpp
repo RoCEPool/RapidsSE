@@ -547,7 +547,7 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
   } else {
     
       // get the next stage the xmit is supposed to xmit to
-      Stage* pStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+      Stage* pStage = m_pPipeline->pGet(m_iNextStage);
     
       // get the op to forward to depending on the cross topology
       Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
@@ -801,7 +801,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
   // get next stage to xmit to
   ASSERT (m_iNextStage != C_UNKNOWN);
   ASSERT(m_iNextOp != C_UNKNOWN);
-  Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   bool bIsMarker;
   eXK eXmitKind = XK_NORMAL;
