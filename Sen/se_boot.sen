@@ -11,6 +11,9 @@
 6 .put  "gridModel.sen" include
 5 .put  "dbObjects.sen" include
 4 .put  "prompt.sen"    include
+        "se_categories.sen" include
+        "se_handlers.sen"   include
+        "se_procedures.sen" include
 3 .put  "jobModel.sen"  include
 2 .put  "testing.sen"   include
 1 .put  "se.sen"        include  // last

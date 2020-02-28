@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: BM_GenEnt_PulseMarker
+: BM_GenEnt_PulseMarker \handler
 
   // pipe out the pulse marker to the next operator
   Operand[].pipeOut
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: BM_GenEnt_StartMarker
+: BM_GenEnt_StartMarker \handler
 
   "BM_GenEnt_StartMarker" .
 
