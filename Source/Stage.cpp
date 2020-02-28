@@ -285,7 +285,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      pStageNde = this->pDivision(iNde);
+      pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pGet(iOp);
       break;
       
@@ -296,7 +296,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pStageNde = this->pDivision(iNde);
+      pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pGet(iOp);
       break;
       
@@ -321,7 +321,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 /*----------------------------------------------------------------------------*/
 /* get stage node for given node                                              */
 /*----------------------------------------------------------------------------*/
-Division* Stage::pDivision(i8 i_Nde)
+Division* Stage::pStageNde(i8 i_Nde)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   

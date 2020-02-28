@@ -14,6 +14,7 @@ namespace Pipelines
   
     OpVec       m_oOpVec;          // set of operators
     StagePtnVec m_oDivisionVec;    // set of stage-partitions
+  
     StagePtnVec m_oStageNdeVec;    // set of stage-nodes
     
     // must be last
@@ -32,13 +33,15 @@ namespace Pipelines
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
-    Division*    pDivision(i8 i_Nde);
-    StagePtnVec* pStageNdeVec(void);
     Stz*         szStageNm(void);
     Division*    pStagePtn(i8 i_Ptn);
     StagePtnVec* pStagePtnVec(void);
     void         vStartPipeline(void);
-    
+
+    // to be removed
+    Division*    pStageNde(i8 i_Nde);
+    StagePtnVec* pStageNdeVec(void);
+
     Footer* aFooter(void);
   };
   
