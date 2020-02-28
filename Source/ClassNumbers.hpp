@@ -66,6 +66,7 @@ enum eCN : u2 // Class Number
   /*  40 0x028      920B Heap:S */ CN_DICPATH,
   /*  41 0x029      152B Heap:S */ CN_DICSTACK,
   /*  42 0x02A      680B Heap:S */ CN_DIR,
+  /* 246 0x0F6     2112B Heap:S */ CN_DIVISION,
   /*  99 0x063       16B Heap:I */ CN_DTEVAL,
   /*  44 0x02C       56B Heap:S */ CN_DYNAMO,
   
@@ -290,7 +291,6 @@ enum eCN : u2 // Class Number
   /* 243 0x0F3     6264B Heap:M */ CN_STAGE,
   /* 244 0x0F4     2112B Heap:S */ CN_STAGENDE,
   /* 245 0x0F5     2080B Heap:S */ CN_STAGENDEVEC,
-  /* 246 0x0F6     2112B Heap:S */ CN_STAGEPTN,
   /* 247 0x0F7     2080B Heap:S */ CN_STAGEPTNVEC,
   /* 248 0x0F8      144B Heap:S */ CN_STAGESPEC,
   /* 249 0x0F9     2080B Heap:S */ CN_STAGESPECVEC,
@@ -404,6 +404,7 @@ static Stz* aCN[]
   /*  40 0x028 */ "DICPATH"_Stz,             // CN_DICPATH
   /*  41 0x029 */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  42 0x02A */ "DIR"_Stz,                 // CN_DIR
+  /* 246 0x0F6 */ "DIVISION"_Stz,            // CN_DIVISION
   /*  99 0x063 */ "DTEVAL"_Stz,              // CN_DTEVAL
   /*  44 0x02C */ "DYNAMO"_Stz,              // CN_DYNAMO
   
@@ -628,7 +629,6 @@ static Stz* aCN[]
   /* 243 0x0F3 */ "STAGE"_Stz,               // CN_STAGE
   /* 244 0x0F4 */ "STAGENDE"_Stz,            // CN_STAGENDE
   /* 245 0x0F5 */ "STAGENDEVEC"_Stz,         // CN_STAGENDEVEC
-  /* 246 0x0F6 */ "STAGEPTN"_Stz,            // CN_STAGEPTN
   /* 247 0x0F7 */ "STAGEPTNVEC"_Stz,         // CN_STAGEPTNVEC
   /* 248 0x0F8 */ "STAGESPEC"_Stz,           // CN_STAGESPEC
   /* 249 0x0F9 */ "STAGESPECVEC"_Stz,        // CN_STAGESPECVEC

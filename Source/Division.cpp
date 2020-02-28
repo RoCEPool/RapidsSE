@@ -12,11 +12,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Division* Pipelines::_pStagePtn(void* aAddr)
+Division* Pipelines::_pDivision(void* aAddr)
 {
   Division* pStage = reinterpret_cast<Division*>(aAddr);
   
-  RASSERT_TYPE(pStage,CN_STAGEPTN);
+  RASSERT_TYPE(pStage,CN_DIVISION);
   
   return pStage;
 }
@@ -26,7 +26,7 @@ Division* Pipelines::_pStagePtn(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Division::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_STAGEPTN);
+  void* pObject = HeapMem::pAllocate(CN_DIVISION);
   
   return pObject;
 }
@@ -44,17 +44,17 @@ void Division::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Division::Division(StageSpec* pStageSpec, i8 i_Ptn)
-: Object(CN_STAGEPTN)
+Division::Division(StageSpec* pStageSpec, i8 i_Div)
+: Object(CN_DIVISION)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
   
-  m_i_Ptn      = i_Ptn;
+  m_i_Div = i_Div;
   //m_oOpVec
   
-  _checkInitialised_(CN_STAGEPTN);
+  _checkInitialised_(CN_DIVISION);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ Division::Division(StageSpec* pStageSpec, i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 Division::~Division(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ Division::~Division(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 OpVec* Division::pOpVec(void)
 {
-  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
   
   return &m_oOpVec;
 }
@@ -84,7 +84,7 @@ OpVec* Division::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Ptn(void)
 {
-  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
   
   return m_i_Ptn;
 }
@@ -94,7 +94,7 @@ i8 Division::i_Ptn(void)
 /*----------------------------------------------------------------------------*/
 void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
 {
-  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
   
   i8 iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
   

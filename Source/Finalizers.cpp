@@ -63,6 +63,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
+  /*126 */ &Finalize::vUndefined,         // CN_DIVISION
   /*  7 */ &Finalize::vUndefined,         // CN_DTEVAL
   /*    */ &Finalize::vUndefined,         // CN_DYNAMO
 
@@ -287,7 +288,6 @@ pFINALIZE *gpFinalize[]
   /*126 */ &Finalize::vUndefined,         // CN_STAGE
   /*126 */ &Finalize::vUndefined,         // CN_STAGENDE
   /*126 */ &Finalize::vUndefined,         // CN_STAGENDEVEC
-  /*126 */ &Finalize::vUndefined,         // CN_STAGEPTN
   /*126 */ &Finalize::vUndefined,         // CN_STAGEPTNVEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPECVEC

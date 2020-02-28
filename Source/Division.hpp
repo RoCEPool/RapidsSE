@@ -8,10 +8,11 @@ namespace Pipelines
   class Division : public Object
   {
   private:
-    OpVec      m_oOpVec;     // set of operators
+    OpVec m_oOpVec;  // set of operators
     union {
-      i8       m_i_Nde;      // which node
-      i8       m_i_Ptn;      // which partition
+      i8  m_i_Div;   // which division
+      i8  m_i_Nde;   // which node
+      i8  m_i_Ptn;   // which partition
     };
   
     // must be last
@@ -21,18 +22,19 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Division(StageSpec* pStageSpec, i8 i_Ptn);
+    Division(StageSpec* pStageSpec, i8 i_Div);
    ~Division(void) noexcept(false);
   
-    OpVec*     pOpVec(void);
-    i8         i_Nde(void);
-    i8         i_Ptn(void);
-    void       vSpawnOperators(i8 iSessionId, i8 iNode);
+    OpVec* pOpVec(void);
+    i8     i_Div(void);
+    i8     i_Nde(void);
+    i8     i_Ptn(void);
+    void   vSpawnOperators(i8 iSessionId, i8 iNode);
   
     Footer* aFooter(void);
   };
   
-  Division* _pStagePtn(void* aAddr);
+  Division* _pDivision(void* aAddr);
 }
 
 /*============================================================================*/
