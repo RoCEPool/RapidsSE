@@ -56,6 +56,16 @@ OpVec* Division::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this stageNde needs to run on                                */
 /*----------------------------------------------------------------------------*/
+i8 Division::i_Nde(void)
+{
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  
+  return m_i_Nde;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition this stageNde needs to run on                                */
+/*----------------------------------------------------------------------------*/
 i8 Division::i_Ptn(void)
 {
   _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);

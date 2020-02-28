@@ -251,15 +251,15 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
     Stage* pStage = m_oStageVec.pGet(i_Stage);
     
     for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
+      Division* pDivision = pStage->pStageNdeVec()->pGet(i_Nde);
       
-      pStageNde->vSpawnOperatorJobs(iSessionId, iNode);
+      pDivision->vSpawnOperators(iSessionId, i_Nde);
     }
     
     for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
-      Division* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
+      Division* pDivision = pStage->pStagePtnVec()->pGet(i_Ptn);
       
-      pStagePtn->vSpawnOperators(iSessionId, iNode);
+      pDivision->vSpawnOperators(iSessionId, iNode);
     }
   }
   

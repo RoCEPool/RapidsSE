@@ -32,7 +32,7 @@ namespace Pipelines
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
-    StageNde*    pStageNde(i8 i_Nde);
+    Division*    pDivision(i8 i_Nde);
     StageNdeVec* pStageNdeVec(void);
     Stz*         szStageNm(void);
     Division*    pStagePtn(i8 i_Ptn);

@@ -65,7 +65,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       
     case PO_ALL_NODES:
       for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
-        m_oStageNdeVec.vAdd(new StageNde(pStageSpec, i_Nde));
+        m_oStageNdeVec.vAdd(new Division(pStageSpec, i_Nde));
       }
       break;
       
@@ -84,7 +84,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       }
       //for (i8 i_Thd = 0; i_Thd < pStageSpec->nThreads(); i_Thd++)
       //  m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode(), i_Thd));
-      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeline->iOriginatingNode()));
+      m_oStageNdeVec.vAdd(new Division(pStageSpec, pPipeline->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -112,11 +112,11 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
-      StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
+      Division* pDivision = m_oStageNdeVec.pGet(i_Index);
       
       Op* pOp = new Op(pOpSpec,this,pPipeline);
-      pOp->vNode(pStageNde->iNode());
-      pStageNde->pOpVec()->vAdd(pOp);
+      pOp->vNode(pDivision->i_Nde());
+      pDivision->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
     
@@ -157,22 +157,22 @@ void Stage::vCancelOperators(i8 iThisNode)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
+    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
     
-    if (pStageNde->iNode() == iThisNode) {
-      Op* pOp = pStageNde->pOpVec()->pGet(0);
+    if (pDivision->i_Nde() == iThisNode) {
+      Op* pOp = pDivision->pOpVec()->pGet(0);
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
   }
   
   for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-    Division* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    Division* pDivision = m_oStagePtnVec.pGet(i_Ptn);
     
-    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
+    i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
     
     if (iPtnNode == iThisNode) {
-      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+      Op* pOp = pDivision->pOpVec()->pGet(0);
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
@@ -249,11 +249,11 @@ i8 Stage::nOpsOnNode(i8 iNode)
   
   for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
     
-    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
+    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
     
     // skip if Op not for this node
-    if (pStageNde->iNode() == iNode) {
-      nOps += pStageNde->pOpVec()->nItems();
+    if (pDivision->i_Nde() == iNode) {
+      nOps += pDivision->pOpVec()->nItems();
     }
   }
   
@@ -276,7 +276,7 @@ OpVec* Stage::pOpVec(void)
 Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
-  StageNde* pStageNde = nullptr;
+  Division* pStageNde = nullptr;
   Division* pStagePtn = nullptr;
   
   switch (eTopologyX) {
@@ -285,7 +285,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      pStageNde = this->pStageNde(iNde);
+      pStageNde = this->pDivision(iNde);
       pOp = pStageNde->pOpVec()->pGet(iOp);
       break;
       
@@ -296,7 +296,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pStageNde = this->pStageNde(iNde);
+      pStageNde = this->pDivision(iNde);
       pOp = pStageNde->pOpVec()->pGet(iOp);
       break;
       
@@ -321,15 +321,15 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 /*----------------------------------------------------------------------------*/
 /* get stage node for given node                                              */
 /*----------------------------------------------------------------------------*/
-StageNde* Stage::pStageNde(i8 i_Nde)
+Division* Stage::pDivision(i8 i_Nde)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  StageNde* pStageNde = nullptr;
+  Division* pStageNde = nullptr;
   
   for (i8 iNdeVec = 0; iNdeVec < m_oStageNdeVec.nItems(); iNdeVec++) {
     pStageNde = m_oStageNdeVec.pGet(iNdeVec);
-    if (pStageNde->iNode() == i_Nde)
+    if (pStageNde->i_Nde() == i_Nde)
       return pStageNde;
   }
   
@@ -392,9 +392,9 @@ void Stage::vStartPipeline(void)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   // get first stage from stageNdeVec
-  StageNde* pStageNde = m_oStageNdeVec.pGet(0);
+  Division* pStageNde = m_oStageNdeVec.pGet(0);
 
-  if (pStageNde->iNode() == AM::pGrid()->iThisNode()) {
+  if (pStageNde->i_Nde() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
     Op* pOp = pStageNde->pOpVec()->pGet(0);
