@@ -20,8 +20,6 @@ namespace Pipelines
 #include "Division.hpp"
 #include "StagePtnVec.hpp"
 #include "Stage.hpp"
-#include "StageVec.hpp"
-
 #include "Pipeline.hpp"
 
 
