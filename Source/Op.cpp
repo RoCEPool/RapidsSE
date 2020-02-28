@@ -445,6 +445,16 @@ Word* Op::pOperandHandler(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set operand handler for given operand kind                                 */
+/*----------------------------------------------------------------------------*/
+void Op::vOperandHandler(i8 i_OperandKind, Word* pHandler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_paOperandHandler[i_OperandKind] = pHandler;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get out operator                                                           */
 /*----------------------------------------------------------------------------*/
 Job* Op::pOpJob(void)

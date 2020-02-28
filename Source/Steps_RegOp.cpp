@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOp(void)
 {
-  vAddStep("op[]"_Stz,         &Step::vRegOpGet);
-  vAddStep("op[].handler"_Stz, &Step::vRegOpHandler);
-  vAddStep("op[].init"_Stz,    &Step::vRegOpInit);
+  vAddStep("op[]"_Stz,          &Step::vRegOpGet);
+  vAddStep("op[].handler@"_Stz, &Step::vRegOpHandlerFetch);
+  vAddStep("op[].handler!"_Stz, &Step::vRegOpHandlerStore);
+  vAddStep("op[].init"_Stz,     &Step::vRegOpInit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,11 +28,11 @@ void Step::vRegOpGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].handler -- get this op's handler for given operand                    */
+/* op[].handler@ -- get this op's handler for given operand                   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOpHandler(void)
+void Step::vRegOpHandlerFetch(void)
 {
-  ENTRY(); // ENTRY("vRegOpHandler"_Stz);
+  ENTRY(); // ENTRY("vRegOpHandlerFetch"_Stz);
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
@@ -39,6 +40,21 @@ void Step::vRegOpHandler(void)
     
   m_pDataStack->vPushPtr(pHandler);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op[].handler! -- set this op's handler for given operand                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpHandlerStore(void)
+{
+  ENTRY(); // ENTRY("vRegOpHandlerStore"_Stz);
+
+  Word* pHandler   = _pWord(m_pDataStack->pPopPtr(__func__));
+  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+
+  m_pRegSet->m_xpOp->vOperandHandler(i_OperandKind,pHandler);
+    
   EXIT();
 }
 
