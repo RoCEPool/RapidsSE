@@ -43,16 +43,6 @@ Division::~Division(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get opVec                                                                  */
-/*----------------------------------------------------------------------------*/
-OpVec* Division::pOpVec(void)
-{
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
-  
-  return &m_oOpVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get partition this stageNde needs to run on                                */
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Nde(void)
@@ -83,9 +73,9 @@ void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
   
   if (iPtnNode == iNode) {
     // for each operator in the stage ptn
-    for (i8 i_Op = m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+    for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       
-      Op* pOp = m_oOpVec.pGet(i_Op);
+      Op* pOp = pGet(i_Op);
       
       bool bSpawned = pOp->bSpawnJob(iSessionId);
       

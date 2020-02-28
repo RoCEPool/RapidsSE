@@ -8,7 +8,6 @@ namespace Pipelines
   class Division : public VectorNL_t<CN_DIVISION,Op,C_MAX_OPS>
   {
   private:
-    OpVec m_oOpVec;  // set of operators
     union {
       i8  m_i_Div;   // which division
       i8  m_i_Nde;   // which node
@@ -25,7 +24,6 @@ namespace Pipelines
     Division(StageSpec* pStageSpec, i8 i_Div);
    ~Division(void) noexcept(false);
   
-    OpVec* pOpVec(void);
     i8     i_Div(void);
     i8     i_Nde(void);
     i8     i_Ptn(void);

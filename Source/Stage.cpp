@@ -116,7 +116,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       
       Op* pOp = new Op(pOpSpec,this,pPipeline);
       pOp->vNode(pDivision->i_Nde());
-      pDivision->pOpVec()->vAdd(pOp);
+      pDivision->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
     
@@ -126,7 +126,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
       Division* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
       
       pOp->vPartition(pStagePtn->i_Ptn());
-      pStagePtn->pOpVec()->vAdd(pOp);
+      pStagePtn->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
   }
@@ -160,7 +160,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
     
     if (pDivision->i_Nde() == iThisNode) {
-      Op* pOp = pDivision->pOpVec()->pGet(0);
+      Op* pOp = pDivision->pGet(0);
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
@@ -172,7 +172,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
     
     if (iPtnNode == iThisNode) {
-      Op* pOp = pDivision->pOpVec()->pGet(0);
+      Op* pOp = pDivision->pGet(0);
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
@@ -243,7 +243,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
     // skip if partition is not for this node
     i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
     if (iPartitionNode == iNode) {
-      nOps += pStagePtn->pOpVec()->nItems();
+      nOps += pStagePtn->nItems();
     }
   }
   
@@ -253,7 +253,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
     
     // skip if Op not for this node
     if (pDivision->i_Nde() == iNode) {
-      nOps += pDivision->pOpVec()->nItems();
+      nOps += pDivision->nItems();
     }
   }
   
@@ -286,29 +286,29 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
       pStageNde = this->pDivision(iNde);
-      pOp = pStageNde->pOpVec()->pGet(iOp);
+      pOp = pStageNde->pGet(iOp);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
         pStagePtn = m_oStagePtnVec.pGet(iPtn);
-        pOp = pStagePtn->pOpVec()->pGet(iOp);
+        pOp = pStagePtn->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
       pStageNde = this->pDivision(iNde);
-      pOp = pStageNde->pOpVec()->pGet(iOp);
+      pOp = pStageNde->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       pStagePtn = m_oStagePtnVec.pGet(iPtn);
-      pOp = pStagePtn->pOpVec()->pGet(iOp);
+      pOp = pStagePtn->pGet(iOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pStagePtn = m_oStagePtnVec.pGet(0);
       ASSERT(pStagePtn->i_Ptn() == iPtn);
-      pOp = pStagePtn->pOpVec()->pGet(iOp);
+      pOp = pStagePtn->pGet(iOp);
       break;
       
     default:
@@ -397,7 +397,7 @@ void Stage::vStartPipeline(void)
   if (pStageNde->i_Nde() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
-    Op* pOp = pStageNde->pOpVec()->pGet(0);
+    Op* pOp = pStageNde->pGet(0);
     RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
     
     // append a STARTMARKER
