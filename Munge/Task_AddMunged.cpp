@@ -13468,6 +13468,33 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_operators.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_operators.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_roperators.sen -- operators                                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_operators.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* operator category                                                           */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": \\\\operator \\\\\\\\category ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_operators.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListPartitions.sen
 
   sFileContents =
@@ -14780,7 +14807,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* BM_GenEntOp request                                (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenEntOp_req ( -- )\n"
+    ": BM_GenEntOp_req \\\\operator\n"
     "\n"
     "  >>logEntry <SEED_REQ>\n"
     "\n"
@@ -17445,6 +17472,7 @@ void Task::vAddMunged(Forth* pForth)
     "4 .put  \\\"prompt.sen\\\"    include\n"
     "        \\\"se_categories.sen\\\" include\n"
     "        \\\"se_handlers.sen\\\"   include\n"
+    "        \\\"se_operators.sen\\\"  include\n"
     "        \\\"se_procedures.sen\\\" include\n"
     "3 .put  \\\"jobModel.sen\\\"  include\n"
     "2 .put  \\\"testing.sen\\\"   include\n"
