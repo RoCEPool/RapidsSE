@@ -153,75 +153,75 @@ void Stage::vDump(Pipeline* pPipeline)
 /*----------------------------------------------------------------------------*/
 /* get ops to be executed on given node                                       */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsOnNode(i8 iNode)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  i8 nOps = 0;
-  
-  for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
-    
-    Division* pStagePtn = m_oDivisionVec.pGet(i_Ptn);
-    
-    // skip if partition is not for this node
-    i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
-    if (iPartitionNode == iNode) {
-      nOps += pStagePtn->nItems();
-    }
-  }
-  
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    
-    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
-    
-    // skip if Op not for this node
-    if (pDivision->i_Nde() == iNode) {
-      nOps += pDivision->nItems();
-    }
-  }
-  
-  return nOps;
-}
-/*----------------------------------------------------------------------------*/
 //i8 Stage::nOpsOnNode(i8 iNode)
 //{
 //  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-//
+//  
 //  i8 nOps = 0;
-//
+//  
 //  for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
-//
-//    Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
-//
-//    if (m_pStageSpec->bNodeTopo()) {
-//      // skip if partition is not for this node
-//      i8 iPartitionNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
-//      if (iPartitionNode == iNode) {
-//        nOps += pDivision->nItems();
-//      }
-//    }
-//    else {
-//      NEVER_REACH;
+//    
+//    Division* pStagePtn = m_oDivisionVec.pGet(i_Ptn);
+//    
+//    // skip if partition is not for this node
+//    i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->i_Ptn());
+//    if (iPartitionNode == iNode) {
+//      nOps += pStagePtn->nItems();
 //    }
 //  }
-//
+//  
 //  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-//
+//    
 //    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
-//
-//    if (m_pStageSpec->bNodeTopo()) {
-//      NEVER_REACH;
-//    }
-//    else {
-//      // skip if Op not for this node
-//      if (pDivision->i_Nde() == iNode) {
-//        nOps += pDivision->nItems();
-//      }
+//    
+//    // skip if Op not for this node
+//    if (pDivision->i_Nde() == iNode) {
+//      nOps += pDivision->nItems();
 //    }
 //  }
-//
+//  
 //  return nOps;
 //}
+/*----------------------------------------------------------------------------*/
+i8 Stage::nOpsOnNode(i8 iNode)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+
+  i8 nOps = 0;
+
+  for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
+
+    Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
+
+    if (m_pStageSpec->bNodeTopo()) {
+      NEVER_REACH;
+    }
+    else {
+      // skip if partition is not for this node
+      i8 iPartitionNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
+      if (iPartitionNode == iNode) {
+        nOps += pDivision->nItems();
+      }
+    }
+  }
+
+  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
+
+    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
+
+    if (m_pStageSpec->bNodeTopo()) {
+      // skip if Op not for this node
+      if (pDivision->i_Nde() == iNode) {
+        nOps += pDivision->nItems();
+      }
+    }
+    else {
+      NEVER_REACH;
+    }
+  }
+
+  return nOps;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get opeVec                                                                 */
