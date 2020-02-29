@@ -29,8 +29,8 @@ namespace Load
     eEC        eProcessRecord(Stz* aRecord,  i8 nBytes);
     
   private:
-    bool bExtractRow(Stz* szRecStr, bool &bBlankLine);
-    void vNewCrwBuffer(i8 iPartition);
+    bool       bExtractRow(Stz* szRecStr, bool &bBlankLine);
+    CrwBuffer* pNewCrwBuffer(i8 iPartition);
   };
   
   WriteHash* _pWriteHash(void* aAddr);

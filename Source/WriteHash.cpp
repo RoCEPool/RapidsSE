@@ -71,61 +71,58 @@ eEC WriteHash::eAppendRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  CrwBuffer* pCrwBuffer = nullptr;
+  
   // use row hash to get partition
   i8 i_Ptn = m_pTable->iToPartition(m_pRow->m_iHash);
   
   // append the row into a working buffer
-  while (true) {
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // check for row buffer
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for row buffer
+  
+  if (! m_pCrwBuffer[i_Ptn]) {
     
-    if (! m_pCrwBuffer[i_Ptn]) {
-      
-      // create a new crw buffer for this partition
-      vNewCrwBuffer(i_Ptn);
-      
-      if (! m_pCrwBuffer[i_Ptn]) {
-        vTrace("CrwBuffer allocation failed\n"_Stz);
-        return EC_LOW_MEMORY;
-      }
-      
-      CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-      pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);
+    // create a new crw buffer for this partition
+    pCrwBuffer= pNewCrwBuffer(i_Ptn);
+    
+    if (! pCrwBuffer) {
+      vTrace("CrwBuffer allocation failed\n"_Stz);
+      return EC_LOW_MEMORY;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // append row into working buffer
-    
-    CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-    
-    //pCrwBuffer->vGrabWrite();
-    bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
-    //pCrwBuffer->vDropWrite();
-    //pCrwBuffer->vDump();
-    
-    // appended ?
-    if (bWasAppended)
-      return EC_NONE;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // spawn a write buffer job
-    
-    m_pCrwBuffer[i_Ptn] = nullptr;
-    pCrwBuffer->vAppendClose();
-    
-//    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->pSession(),
-//                                          m_pTable->szTableNm(),
-//                                          m_eDataSource,
-//                                          pCrwBuffer,
-//                                          m_pParentJob->iJobId(),
-//                                          i_Ptn,
-//                                          C_NOT_FINAL,
-//                                          0);
-    
-    // repeat, try-again
-    // ...
+
   }
+  else {
+    pCrwBuffer = m_pCrwBuffer[i_Ptn];
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append row into working buffer
+  
+  //pCrwBuffer->vGrabWrite();
+  bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
+  //pCrwBuffer->vDropWrite();
+  
+  // appended ?
+  if (bWasAppended)
+    return EC_NONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the buffer for append
+  
+  pCrwBuffer->vAppendClose();
+  
+  // create a new crw buffer for this partition linking to the old
+  pCrwBuffer = pNewCrwBuffer(i_Ptn);
+  
+  if (! pCrwBuffer) {
+    vTrace("CrwBuffer allocation failed\n"_Stz);
+    return EC_LOW_MEMORY;
+  }
+  
+  // reattempt insrt. Should work
+  bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
+  ASSERT(bWasAppended);
   
   return EC_NONE;
 }
@@ -224,15 +221,29 @@ bool WriteHash::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void WriteHash::vNewCrwBuffer( i8 i_Ptn)
+CrwBuffer* WriteHash::pNewCrwBuffer( i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pCrwBuffer[i_Ptn] = new CrwBuffer();
+  //  create a new buffer
+  CrwBuffer* pCrwBuffer = new CrwBuffer();;
   
-  m_pCrwBuffer[i_Ptn]->vTable(m_pTable);
-  m_pCrwBuffer[i_Ptn]->vPartitionNo(i_Ptn);
+  // link the old with this
+  if ( m_pCrwBuffer[i_Ptn] )
+    m_pCrwBuffer[i_Ptn]->vNextBuffer(pCrwBuffer);
+  else
+    m_pCrwBuffer[i_Ptn] = pCrwBuffer;
+  
+  // set table and ptn no in it
+  pCrwBuffer->vTable(m_pTable);
+  pCrwBuffer->vPartitionNo(i_Ptn);
+  
+  // open buffer for append
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);
+  
   //m_pCrwBuffer[i_Ptn]->vDump();
+  
+  return pCrwBuffer;
 }
 
 /*============================================================================*/
