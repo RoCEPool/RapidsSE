@@ -22,18 +22,26 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
   
-  m_sDivisionNm = pStageSpec->szStageNm();
-  
   m_pStageSpec = pStageSpec;
   
   m_i_Div = i_Div;
   
-  m_i_Nde = i_Div;
-  m_i_Ptn = i_Div;
-  m_i_Slt = C_UNKNOWN;
+  // determine the node,slot coordinates of this division
+  if (m_pStageSpec->bNodeTopo()) {
+    // node only
+    m_i_Nde = i_Div;
+    m_i_Ptn = C_UNKNOWN;
+    m_i_Slt = C_UNKNOWN;
+  }
+  else {
+    // node,slot
+    m_i_Ptn = i_Div;
+    m_i_Nde = TablePtn::iPartitionToNode(m_i_Ptn);
+    m_i_Slt = TablePtn::iPartitionToSlot(m_i_Ptn);
+  }
   
-  //m_oOpVec
-  
+  vFormName();
+
   _checkInitialised_(CN_DIVISION);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
@@ -79,6 +87,23 @@ i8 Division::i_Slt(void)
   _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
   
   return m_i_Slt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* form name of this division                                                 */
+/*----------------------------------------------------------------------------*/
+void Division::vFormName(void)
+{
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+ 
+  if (m_pStageSpec->bNodeTopo()) {
+    m_sDivisionNm.vSprint("%s[%lld]_N%lld"_Stz,
+                          m_pStageSpec->szStageNm(),m_i_Div,m_i_Nde);
+  }
+  else {
+    m_sDivisionNm.vSprint("%s[%lld]_N%lldS%lld"_Stz,
+                          m_pStageSpec->szStageNm(),m_i_Div,m_i_Nde,m_i_Slt);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

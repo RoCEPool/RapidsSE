@@ -31,6 +31,8 @@ namespace Pipelines
     i8     i_Nde(void);
     i8     i_Ptn(void);
     i8     i_Slt(void);
+  
+    void   vFormName(void);
     void   vSpawnOperators(i8 iSessionId, i8 iNode);
   
     Footer* aFooter(void);
