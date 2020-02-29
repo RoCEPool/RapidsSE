@@ -66,6 +66,7 @@ enum eCN : u2 // Class Number
   /*  40 0x028      920B Heap:S */ CN_DICPATH,
   /*  41 0x029      152B Heap:S */ CN_DICSTACK,
   /*  42 0x02A      680B Heap:S */ CN_DIR,
+  /* 246 0x0F6     2112B Heap:S */ CN_DIVISION,
   /*  99 0x063       16B Heap:I */ CN_DTEVAL,
   /*  44 0x02C       56B Heap:S */ CN_DYNAMO,
   
@@ -202,7 +203,6 @@ enum eCN : u2 // Class Number
   /* 156 0x09C      464B Heap:S */ CN_OP,
   /* 161 0x0A1       56B Heap:S */ CN_OPERANDQUEUE,
   /* 162 0x0A2     5696B Heap:M */ CN_OPSPEC,
-  /* 163 0x0A3     2080B Heap:S */ CN_OPSPECVEC,
   /* 164 0x0A4     2080B Heap:S */ CN_OPVEC,
   
   /* 165 0x0A5       16B Heap:I */ CN__P__,
@@ -288,13 +288,8 @@ enum eCN : u2 // Class Number
   /* 241 0x0F1       24B Heap:I */ CN_SRTSET,
   /* 242 0x0F2  1043528B Heap:L */ CN_STACK,
   /* 243 0x0F3     6264B Heap:M */ CN_STAGE,
-  /* 244 0x0F4     2112B Heap:S */ CN_STAGENDE,
-  /* 245 0x0F5     2080B Heap:S */ CN_STAGENDEVEC,
-  /* 246 0x0F6     2112B Heap:S */ CN_STAGEPTN,
   /* 247 0x0F7     2080B Heap:S */ CN_STAGEPTNVEC,
   /* 248 0x0F8      144B Heap:S */ CN_STAGESPEC,
-  /* 249 0x0F9     2080B Heap:S */ CN_STAGESPECVEC,
-  /* 250 0x0FA     2080B Heap:S */ CN_STAGEVEC,
   /* 252 0x0FC    16840B Heap:I */ CN_STATISTICS,
   /* 253 0x0FD       64B Heap:I */ CN_STEPACCUM,
   /* 254 0x0FE   131288B Heap:L */ CN_STEPTIMING,
@@ -404,6 +399,7 @@ static Stz* aCN[]
   /*  40 0x028 */ "DICPATH"_Stz,             // CN_DICPATH
   /*  41 0x029 */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  42 0x02A */ "DIR"_Stz,                 // CN_DIR
+  /* 246 0x0F6 */ "DIVISION"_Stz,            // CN_DIVISION
   /*  99 0x063 */ "DTEVAL"_Stz,              // CN_DTEVAL
   /*  44 0x02C */ "DYNAMO"_Stz,              // CN_DYNAMO
   
@@ -540,7 +536,6 @@ static Stz* aCN[]
   /* 156 0x09C */ "OP"_Stz,                  // CN_OP
   /* 161 0x0A1 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
   /* 162 0x0A2 */ "OPSPEC"_Stz,              // CN_OPSPEC
-  /* 163 0x0A3 */ "OPSPECVEC"_Stz,           // CN_OPSPECVEC
   /* 164 0x0A4 */ "OPVEC"_Stz,               // CN_OPVEC
   
   /* 165 0x0A5 */ "_P__"_Stz,                // CN__P__
@@ -626,13 +621,8 @@ static Stz* aCN[]
   /* 241 0x0F1 */ "SRTSET"_Stz,              // CN_SRTSET
   /* 242 0x0F2 */ "STACK"_Stz,               // CN_STACK
   /* 243 0x0F3 */ "STAGE"_Stz,               // CN_STAGE
-  /* 244 0x0F4 */ "STAGENDE"_Stz,            // CN_STAGENDE
-  /* 245 0x0F5 */ "STAGENDEVEC"_Stz,         // CN_STAGENDEVEC
-  /* 246 0x0F6 */ "STAGEPTN"_Stz,            // CN_STAGEPTN
   /* 247 0x0F7 */ "STAGEPTNVEC"_Stz,         // CN_STAGEPTNVEC
   /* 248 0x0F8 */ "STAGESPEC"_Stz,           // CN_STAGESPEC
-  /* 249 0x0F9 */ "STAGESPECVEC"_Stz,        // CN_STAGESPECVEC
-  /* 250 0x0FA */ "STAGEVEC"_Stz,            // CN_STAGEVEC
   /* 252 0x0FC */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 253 0x0FD */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 254 0x0FE */ "STEPTIMING"_Stz,          // CN_STEPTIMING

@@ -28,16 +28,18 @@ void OpSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
+OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sName = szOpName;
+  m_sOpNm        = szOpNm;
+  m_pStageSpec   = pStageSpec;
+  
   m_bAppendRight = false;
   m_i_OpSpec     = C_UNKNOWN;
-  m_i_Slot = 0; // ALKA: C_UNKNOWN;
-  m_eXmitKind = XK_NORMAL;
+  m_i_Slot       = 0; // ALKA: C_UNKNOWN;
+  m_eXmitKind    = XK_NORMAL;
 
   //m_oEnameSet
   //m_oTopologyEnameSet
@@ -113,21 +115,21 @@ EnameSet* OpSpec::pEnameSet(void)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* OpSpec::szName(void)
+Stz* OpSpec::szOpNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_sName.szStz();
+  return m_sOpNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
 /* set name                                                                   */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vName(Stz* szName)
+void OpSpec::vOpNm(Stz* szOpNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_sName = szName;
+
+  m_sOpNm = szOpNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,7 +222,7 @@ void OpSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sName.szStz());
+  vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
     
   m_oEnameSet.vPrint();
 }

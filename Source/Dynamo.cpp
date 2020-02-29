@@ -296,7 +296,7 @@ bool Dynamo::bCollectName(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm());
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm(),m_p_Job);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -362,7 +362,7 @@ bool Dynamo::bCollectStage(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pStageSpec = new StageSpec(m_pTkn->szTerm());
+  m_pStageSpec = new StageSpec(m_pTkn->szTerm(),m_pPipelineSpec);
   m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -687,25 +687,22 @@ bool Dynamo::bIsOperator(Token* pTkn)
 bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  // get the stageSpecVec from the pipeline
-  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
-  
-  for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
+    
+  for (i8 i_Stage = 0; i_Stage < m_pPipelineSpec->nItems(); i_Stage++) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
+    StageSpec* pStageSpec = m_pPipelineSpec->pGet(i_Stage);
     
     // get the OpSpecVec from the stageSpec
-    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
-    i8 nOpSpecs = pOpSpecVec->nItems();
+    //OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+    i8 nOpSpecs = pStageSpec->nItems();
     
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       
-      OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
+      OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
       
       i8 i_FoundStage = C_UNKNOWN;
-      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName(), i_FoundStage);
+      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
       
       if (pStageSpecFound) {
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
@@ -716,12 +713,12 @@ bool Dynamo::bPhase2_staging(void)
         
         if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
           // add parameter to the prev sink op
-          OpSpec* pPrevOpSpec = pOpSpecVec->pGet(i_Op-1);
+          OpSpec* pPrevOpSpec = pStageSpec->pGet(i_Op-1);
           vReplaceTopologyParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
 
           // remove the last (stage) OpSpec from the OpSpecVec
-          RASSERT(i_Op == pOpSpecVec->nItems()-1);
-          pOpSpecVec->vRemove(pOpSpec);
+          RASSERT(i_Op == pStageSpec->nItems()-1);
+          pStageSpec->vRemove(pOpSpec);
           delete pOpSpec;
         }
         else {
@@ -783,7 +780,7 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  pOpSpec->vName("xmitOp"_Stz);
+  pOpSpec->vOpNm("xmitOp"_Stz);
   
   vAddTopologyParams(pOpSpec, eTopologyX, i_Stage, 0);
 }

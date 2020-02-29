@@ -1,24 +1,13 @@
 /*============================================================================*/
-/* StageVec.hpp -- Stage Vector                                               */
+/* se_handlers.sen -- handlers                                                */
 /*============================================================================*/
-#pragma once
 
-namespace Pipelines
-{
-  class StageVec : public VectorNL_t<CN_STAGEVEC,Stage,C_MAX_STAGES>
-  {
-  private:
-  
-    // must be last
-    Footer m_xFooter;
+" se_handlers.sen" .verbose
 
-  public:
-    StageVec(void);
-   ~StageVec(void) noexcept(false);
-  
-    Footer* aFooter(void);
-  };
-}
+/*----------------------------------------------------------------------------*/
+/* handler category                                                           */
+/*----------------------------------------------------------------------------*/
+: \handler \\category ;
 
 /*============================================================================*/
 /* end                                                                        */

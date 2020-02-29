@@ -42,6 +42,7 @@ namespace Registers
     REG<Now>         m_xpNow;       // now
     REG<Timer>       m_xpTimer;     // timer
   
+    REG<Op>          m_xpOp;        // operator
     REG<Operand>     m_xpOperandA;  // operand A
     REG<Operand>     m_xpOperandB;  // operand B
     REG<Operand>     m_xpOperandC;  // operand C

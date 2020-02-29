@@ -5,14 +5,14 @@
 
 namespace PipelineSpecs
 {
-  class PipelineSpec : public Object
+  class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
   {
   private:
   
-    s32 m_sName;
+    s32  m_sPipelineNm;
   
-    StageSpecVec* m_pStageSpecVec;
-  
+    Job* m_pJob;
+    
     // must be last
     Footer m_xFooter;
 
@@ -20,15 +20,13 @@ namespace PipelineSpecs
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Stz* szName);
+    PipelineSpec(Stz* szPipelineNm, Job* pJob);
    ~PipelineSpec(void) noexcept(false);
   
     void vAddStageSpec(StageSpec* pStageSpec);
-    Stz* szName(void);
-
-    StageSpec* pFindStageSpec(Stz* szName, i8& i_Stage);
+    StageSpec* pFindStageSpec(Stz* szFindNm, i8& i_Stage);
+    Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    StageSpecVec* pStageSpecVec(void);
 
     void vPrint(void);
 

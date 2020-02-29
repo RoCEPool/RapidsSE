@@ -1,0 +1,160 @@
+/*============================================================================*/
+/* OPERAND__handlers.sen -- Default Operand Handlers                          */
+/*============================================================================*/
+
+" OPERAND__handlers.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: ZK_CANCELMARKER_handler \handler
+
+  //"ZK_CANCELMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_CRWBUFFER_handler \handler
+
+  //"ZK_CRWBUFFER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CSVBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_CSVBUFFER_handler \handler
+
+  //"ZK_CSVBUFFER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ENTBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_ENTBUFFER_handler \handler
+
+  //"ZK_ENTBUFFER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_EOSMARKER_handler \handler
+
+  //"ZK_EOSMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: ZK_ERRORMARKER_handler \handler
+
+  //"ZK_ERRORMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_IRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_IRWBUFFER_handler \handler
+
+  //"ZK_IRWBUFFER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: ZK_PULSEMARKER_handler \handler
+
+  //"ZK_PULSEMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_SEEKOFFSETS ...                                             */
+/*----------------------------------------------------------------------------*/
+: ZK_SEEKOFFSETS_handler \handler
+
+  //"ZK_SEEKOFFSETS_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_SRTBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_SRTBUFFER_handler \handler
+
+  //"ZK_SRTBUFFER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: ZK_STARTMARKER_handler \handler
+
+  //"ZK_STARTMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTEDMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: ZK_STARTEDMARKER_handler \handler
+
+  //"ZK_STARTEDMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STOPMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: ZK_STOPMARKER_handler \handler
+
+  //"jobOperand::generic:- ZK_STOPMARKER" .verbose
+  Operand[].pipeOut
+  Op.ackPipelineJob
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STOPPEDMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: ZK_STOPPEDMARKER_handler \handler
+
+  //"ZK_STOPPEDMARKER_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMDEF ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_STREAMDEF_handler \handler
+
+  //"ZK_STREAMDEF_handler" .verbose
+  Operand[].pipeOut
+  true
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

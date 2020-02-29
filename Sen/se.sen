@@ -4,11 +4,12 @@
 
 "-se.sen" .verbose
 
-"se_categories.sen" include
+//"se_categories.sen" include
 "se_docols.sen"     include
 "se_folders.sen"    include
+//"se_handlers.sen"   include
 "se_munge.sen"      include
-"se_procedures.sen" include
+//"se_procedures.sen" include
 "se_tags.sen"       include
 "se_vortex.sen"     include
 

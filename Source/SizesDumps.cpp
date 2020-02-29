@@ -67,6 +67,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_DICPATH
   /* */ &DicStack::vDump,        // CN_DICSTACK
   /* */ &Dump::vInvalid,         // CN_DIR
+  /* */ &Dump::vInvalid,         // CN_DIVISION
   /* */ &Dump::vInvalid,         // CN_DTEVAL
   /* */ &Dump::vDummy,           // CN_DYNAMO
 
@@ -203,7 +204,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_OP
   /* */ &Dump::vInvalid,         // CN_OPERANDQUEUE
   /* */ &Dump::vInvalid,         // CN_OPSPEC
-  /* */ &Dump::vInvalid,         // CN_OPSPECVEC
   /* */ &Dump::vInvalid,         // CN_OPVEC
 
   /* */ &Dump::vInvalid,         // CN__P__
@@ -289,13 +289,8 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_SRTSET
   /* */ &Dump::vInvalid,         // CN_STACK
   /* */ &Dump::vInvalid,         // CN_STAGE
-  /* */ &Dump::vInvalid,         // CN_STAGENDE
-  /* */ &Dump::vInvalid,         // CN_STAGENDEVEC
-  /* */ &Dump::vInvalid,         // CN_STAGEPTN
   /* */ &Dump::vInvalid,         // CN_STAGEPTNVEC
   /* */ &Dump::vInvalid,         // CN_STAGESPEC
-  /* */ &Dump::vInvalid,         // CN_STAGESPECVEC
-  /* */ &Dump::vInvalid,         // CN_STAGEVEC
   /* */ &Dump::vInvalid,         // CN_STATISTICS
   /* */ &Dump::vInvalid,         // CN_STEPACCUM
   /* */ &StepTiming::vDump,      // CN_STEPTIMING
@@ -406,6 +401,7 @@ i8 giClassSize[]
   /* */ sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
+  /* */ sizeof(Division),           // CN_DIVISION
   /* */ sizeof(DteVal),             // CN_DTEVAL
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
@@ -542,7 +538,6 @@ i8 giClassSize[]
   /* */ sizeof(Op),                 // CN_OP
   /* */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* */ sizeof(OpSpec),             // CN_OPSPEC
-  /* */ sizeof(OpSpecVec),          // CN_OPSPECVEC
   /* */ sizeof(OpVec),              // CN_OPVEC
 
   /* */ 'P' - ('A' - 1),            // CN__P__
@@ -628,13 +623,8 @@ i8 giClassSize[]
   /* */ sizeof(SrtSet),             // CN_SRTSET
   /* */ sizeof(Stack),              // CN_STACK
   /* */ sizeof(Stage),              // CN_STAGE
-  /* */ sizeof(StageNde),           // CN_STAGENDE
-  /* */ sizeof(StageNdeVec),        // CN_STAGENDEVEC
-  /* */ sizeof(StagePtn),           // CN_STAGEPTN
   /* */ sizeof(StagePtnVec),        // CN_STAGEPTNVEC
   /* */ sizeof(StageSpec),          // CN_STAGESPEC
-  /* */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
-  /* */ sizeof(StageVec),           // CN_STAGEVEC
   /* */ sizeof(Statistics),         // CN_STATISTICS
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
@@ -745,6 +735,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* */ HT_TRANSIENT_SMALL,   // CN_DIR
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_DIVISION
   /* */ HT_INVALID,           // CN_DTEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_DYNAMO
 
@@ -881,7 +872,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_OP
   /* */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_OPSPEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_OPSPECVEC
   /* */ HT_TRANSIENT_SMALL,   // CN_OPVEC
 
   /* */ HT_INVALID,           // CN__P__
@@ -967,13 +957,8 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_SRTSET
   /* */ HT_TRANSIENT_LARGE,   // CN_STACK
   /* */ HT_TRANSIENT_MEDIUM,  // CN_STAGE
-  /* */ HT_TRANSIENT_SMALL,   // CN_STAGENDE
-  /* */ HT_TRANSIENT_SMALL,   // CN_STAGENDEVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_STAGEPTN
   /* */ HT_TRANSIENT_SMALL,   // CN_STAGEPTNVEC
   /* */ HT_TRANSIENT_SMALL,   // CN_STAGESPEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_STAGESPECVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_STAGEVEC
   /* */ HT_INVALID,           // CN_STEPACCUM
   /* */ HT_INVALID,           // CN_STATISTICS
   /* */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING

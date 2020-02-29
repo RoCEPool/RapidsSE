@@ -45,7 +45,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
+Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
 : Focal(CN_OP,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
 
 {
@@ -53,13 +53,15 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   RASSERT(pOpSpec);
   
-  m_sOpNm = pOpSpec->szName();
+  m_sOpNm     = pOpSpec->szOpNm();
+  m_pOpSpec   = pOpSpec;
+  m_pStage    = pStage;
+  m_pPipeline = pPipeline;
 
   m_oEnameSet.vCopy(pOpSpec->pEnameSet());
   m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
   
-  m_pPipeline     = pPipeline;
-  m_pJobPipeline  = pPipeline->pJob();
+  m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
   
   m_bPulsed       = false;
@@ -80,6 +82,8 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_iNextOp    = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
   m_iRobin     = 0;
+  
+  vInitOperandHandlers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -287,6 +291,36 @@ void Op::vIncWorkDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* init operand handlers                                                      */
+/*----------------------------------------------------------------------------*/
+void Op::vInitOperandHandlers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Dic* pRootDic = AM::pRootDic();
+  
+  s32 sHandlerNm;
+  
+  for (i8 i_Kind = 1; i_Kind < ZK_ENUMS; i_Kind++) {
+    
+    sHandlerNm = aZK[i_Kind];
+    sHandlerNm.vConcat("_handler"_Stz);
+    
+    vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
+    
+    Word* pHandler = pRootDic->pFindWord(sHandlerNm);
+    if (! pHandler)
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Unable to find operand handler for: %s"_Stz,
+             sHandlerNm.szStz());
+    
+    m_paOperandHandler[i_Kind] = pHandler;
+  }
+  
+  Correctness::vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is cancelling?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Op::bIsCancelling(void)
@@ -315,7 +349,7 @@ void Op::vJobPipeline(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_pJobPipeline = pJob;
+  m_pPipelineJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,6 +432,27 @@ void Op::vNode(i8 nNode)
   m_nNode = nNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get operand handler for given operand kind                                 */
+/*----------------------------------------------------------------------------*/
+Word* Op::pOperandHandler(i8 i_OperandKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Word* pHandler = m_paOperandHandler[i_OperandKind];
+  
+  return pHandler;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set operand handler for given operand kind                                 */
+/*----------------------------------------------------------------------------*/
+void Op::vOperandHandler(i8 i_OperandKind, Word* pHandler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_paOperandHandler[i_OperandKind] = pHandler;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get out operator                                                           */
@@ -480,7 +535,7 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
            m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
-           m_pJobPipeline,
+           m_pPipelineJob,
            "vPipeOut :"_Stz,
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
@@ -492,7 +547,7 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
   } else {
     
       // get the next stage the xmit is supposed to xmit to
-      Stage* pStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+      Stage* pStage = m_pPipeline->pGet(m_iNextStage);
     
       // get the op to forward to depending on the cross topology
       Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
@@ -522,7 +577,7 @@ void Op::vPipeToJob(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
+  Queue* pBufferQueue = AM::pBufferQueue(m_pPipelineJob);
   
   RASSERT(pBufferQueue);
   
@@ -531,7 +586,7 @@ void Op::vPipeToJob(Operand* pOperand)
            m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
-           m_pJobPipeline,
+           m_pPipelineJob,
            "vPipeToJob :"_Stz,
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
@@ -579,7 +634,7 @@ Operand* Op::pPopQueue(void)
            m_sOpNm.szStz(),
            m_nNode,
            m_nPartition,
-           m_pJobPipeline,
+           m_pPipelineJob,
            "pPopQueue :"_Stz,
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
@@ -677,6 +732,26 @@ Operand* Op::pPopQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is pulsed operator?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Op::bPulsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_bPulsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pulsed operator                                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vPulsed(bool bPulsed)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_bPulsed = bPulsed;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get left operand queue                                                     */
 /*----------------------------------------------------------------------------*/
 OperandQueue* Op::pQueueLeft(void)
@@ -726,7 +801,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
   // get next stage to xmit to
   ASSERT (m_iNextStage != C_UNKNOWN);
   ASSERT(m_iNextOp != C_UNKNOWN);
-  Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   bool bIsMarker;
   eXK eXmitKind = XK_NORMAL;
@@ -745,7 +820,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       m_iXmitNode = m_pPipeline->iOriginatingNode();
       
       // new a operand job
-      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand, this, m_iXmitNode, C_UNKNOWN);
+      pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, m_iXmitNode, C_UNKNOWN);
       
       // get the send node in the task
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -790,7 +865,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
           
           // new a operand job
-          pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+          pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
           
           // get the send node in the task
           Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -814,7 +889,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           vTrace("Nde %lld; Ptn %lld;"_Stz, m_iXmitNode, i_Ptn);
           
           // new a operand job
-          pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand, this, m_iXmitNode, i_Ptn);
+          pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, m_iXmitNode, i_Ptn);
           
           // get the send node in the task
           Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -830,13 +905,13 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           
         case XK_NORMAL: {
       
-          for (i_Ptn = 0; i_Ptn < pNextStage->pStagePtnVec()->nItems(); i_Ptn++) {
+          for (i_Ptn = 0; i_Ptn < pNextStage->pDivisionVec()->nItems(); i_Ptn++) {
             
             // xmitNode is the partition node
             m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
             
             // new a operand job
-            pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+            pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
             
             // get the send node in the task
             Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -869,7 +944,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       m_iXmitNode = TablePtn::iPartitionToNode(m_nPartition);
       
       // new a operand job
-      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, m_nPartition);
+      pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, m_nPartition);
       
       // get the send node in the task
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
@@ -900,7 +975,7 @@ bool Op::bSpawnJob(i8 iSessionId)
   
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
 
-  m_pOpJob = AM::pNewJobUniversal(m_pJobPipeline, this, &xReqTuple);
+  m_pOpJob = AM::pNewJobUniversal(m_pPipelineJob, this, &xReqTuple);
   
   // form the command string using the parameter ename pairs
   s4K szCmdStr;

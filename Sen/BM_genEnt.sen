@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: BM_GenEnt_PulseMarker
+: BM_GenEnt_PulseMarker \handler
 
   // pipe out the pulse marker to the next operator
   Operand[].pipeOut
@@ -25,12 +25,14 @@
 
   Operand[].newEosMarker
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: BM_GenEnt_StartMarker
+: BM_GenEnt_StartMarker \handler
 
   "BM_GenEnt_StartMarker" .
 
@@ -40,50 +42,24 @@
   folderContents.str "contains: %v" .printf
 
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* BM_GenEntOp request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BM_GenEntOp_req ( -- )
+: BM_GenEntOp_req \operator
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_BM_GenEntOp |
-  0 locals| pTable |
+  // set topology, next stage and op
+  op__topology
 
-  <tableNm> locals| sTableNm |
+  find: BM_GenEnt_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: BM_GenEnt_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode operand kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of BM_GenEnt_PulseMarker true endof
-
-      ZK_STARTMARKER of BM_GenEnt_StartMarker true endof
-
-      jobOperand::generic swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   "*** BM_GenEntOp EXITS" .
   <<logExit

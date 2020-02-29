@@ -7,18 +7,18 @@ namespace Pipelines
 {
   class Op : public Focal
   {
-  friend class Pipeline;
-  
   private:
     s32            m_sOpNm;          // name of the operator
-    
-    Pipeline*      m_pPipeline;         // op digest
+    OpSpec*        m_pOpSpec;        // specification of this operator
+    Stage*         m_pStage;         // which stage of pipeline
+    Pipeline*      m_pPipeline;      // which pipeline
+  
+    Job*           m_pPipelineJob;   // pipeline job this operator belongs to
+    Job*           m_pOpJob;         // operator job this operator belongs to
+  
     EnameSet       m_oEnameSet;         // ename set of cmd
     EnameSet       m_oTopologyEnameSet; // topology enameset
     
-    Job*           m_pJobPipeline;   // pipeline job this operator belongs to
-    Job*           m_pOpJob;         // operator job this operator belongs to
-  
     bool           m_bPulsed;        // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
@@ -38,6 +38,8 @@ namespace Pipelines
     i8             m_iXmitNode;       // xmit node (for xmitOp)
     eXK            m_eXmitKind;       // xmit kind
     i8             m_iRobin;          // xmit Round Robin partition/node/thread
+  
+    Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     
     // must be last
     Footer m_xFooter;
@@ -46,7 +48,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Pipeline* pPipeline);
+    Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
 
     // - - - - - - - - - - - - - - - -
@@ -63,6 +65,7 @@ namespace Pipelines
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
+    void vInitOperandHandlers(void);
     bool bIsCancelling(void);
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);
@@ -74,6 +77,8 @@ namespace Pipelines
     void vNextStage(i8 iNextStage);
     i8   nNode(void);
     void vNode(i8 nNode);
+    Word* pOperandHandler(i8 i_OperandKind);
+    void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     Job* pOpJob(void);
     Stz* szOpNm(void);
     void vPartition(i8 iPartition);
@@ -85,6 +90,8 @@ namespace Pipelines
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
+    bool bPulsed(void);
+    void vPulsed(bool bPulsed);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
     i8   nRightEosMarkers(void);

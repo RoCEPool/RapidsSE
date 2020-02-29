@@ -8,7 +8,9 @@ namespace PipelineSpecs
   class OpSpec : public Object
   {
   private:
-    s32        m_sName;
+    s32        m_sOpNm;
+    StageSpec* m_pStageSpec;
+  
     bool       m_bAppendRight;
     i8         m_i_OpSpec;
     i8         m_i_Slot;
@@ -24,7 +26,7 @@ namespace PipelineSpecs
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(Stz* szOpName, StageSpec* pStageSpec);
+    OpSpec(Stz* szOpNm, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
     void vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken);
@@ -32,8 +34,8 @@ namespace PipelineSpecs
     void vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
     EnameSet* pEnameSet(void);
-    Stz* szName(void);
-    void vName(Stz* szName);
+    Stz* szOpNm(void);
+    void vOpNm(Stz* szOpNm);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
     void vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken);

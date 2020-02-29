@@ -39,17 +39,20 @@ void Pipeline::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pJob, i8 iOriginatingNode)
-: Object(CN_PIPELINE)
+Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pJob       = pJob;
+  m_sPipelineNm = pPipelineSpec->szPipelineNm();
+  
+  m_pJob = pJob;
+  m_pPipelineSpec = pPipelineSpec;
+  m_iOriginatingNode = iOriginatingNode;
+  
   m_bPulsed    = false;
   m_pOpToPulse = nullptr;
   
   m_bCancelling = false;
-  m_iOriginatingNode = iOriginatingNode;
   
   //m_oStageVec
   
@@ -109,10 +112,10 @@ void Pipeline::vDump(void)
     
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++ ) {
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
+    Stage* pStage = pGet(i_Stage);
     vTrace("\n[%lld] Stage %s : \n"_Stz, i_Stage, pStage->szStageNm());
-    pStage->vDump(&m_oStageVec);
+    pStage->vDump(this);
   }
   
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
@@ -147,8 +150,8 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
     nOps += pStage->nOpsOnNode(iNode);
   }
   
@@ -166,6 +169,26 @@ Op* Pipeline::pOpToPulse(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Pipeline::szPipelineNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_sPipelineNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline spec                                                          */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* Pipeline::pPipelineSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_pPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Populate the OpVec from the PipeLineSpec                                   */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
@@ -173,19 +196,16 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the stageSpecVec
-  StageSpecVec* pStageSpecVec = pPipelineSpec->pStageSpecVec();
-  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Buld the stageVec from the stageSpecVec
-  for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
+  for (i8 i_StageSpec = 0; i_StageSpec < pPipelineSpec->nItems(); i_StageSpec++ ) {
     
     // get the stageSpec
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);
-    m_oStageVec.vAdd(pStage);
+    vAdd(pStage);
   }
 }
 
@@ -206,13 +226,13 @@ void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage = m_oStageVec.pGet(0);
+  Stage* pStage = pGet(0);
   i8 nOps = pStage->pOpVec()->nItems();
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
-    if (AM::szJobName(pOp->m_pOpJob)->bSame("limitOp"_Stz)) {
+    if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
       m_bPulsed = true;
       break;
     }
@@ -226,9 +246,9 @@ void Pipeline::vSetupJob(void)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
-    if (AM::szJobName(pOp->m_pOpJob)->bSame("scanOp"_Stz)) {
+    if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
       m_pOpToPulse = pOp;
-      pOp->m_bPulsed = true;
+      pOp->vPulsed(true);
       break;
     }
   }
@@ -242,31 +262,23 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
+    Stage* pStage = pGet(i_Stage);
     
     for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
+      Division* pDivision = pStage->pStageNdeVec()->pGet(i_Nde);
       
-      pStageNde->vSpawnOperatorJobs(iSessionId, iNode);
+      pDivision->vSpawnOperators(iSessionId, i_Nde);
     }
     
-    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
-      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pDivisionVec()->nItems(); i_Ptn++) {
+      Division* pDivision = pStage->pDivisionVec()->pGet(i_Ptn);
       
-      pStagePtn->vSpawnOperatorJobs(iSessionId, iNode);
+      pDivision->vSpawnOperators(iSessionId, iNode);
     }
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the stage vector                                                       */
-/*----------------------------------------------------------------------------*/
-StageVec* Pipeline::pStageVec(void)
-{
-  return &m_oStageVec;
 }
 
 /*----------------------------------------------------------------------------*/

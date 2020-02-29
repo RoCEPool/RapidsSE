@@ -1058,6 +1058,12 @@ public:
   // reg now
   void vRegNowGet(void);
 
+  // reg op
+  void vRegOpGet(void);
+  void vRegOpHandlerFetch(void);
+  void vRegOpHandlerStore(void);
+  void vRegOpInit(void);
+
   // reg timer
   void vRegTimerGet(void);
   void vRegTimerSet(void);

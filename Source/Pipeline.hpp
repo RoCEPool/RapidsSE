@@ -5,17 +5,20 @@
 
 namespace Pipelines
 {
-  class Pipeline : public Object
+  class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>
   {
   private:
-    Job*        m_pJob;
-    bool        m_bPulsed;
-    Op*         m_pOpToPulse;
-    bool        m_bCancelling;
-    i8          m_iOriginatingNode;
-    
-    StageVec    m_oStageVec;     // vector of stages
+    s32           m_sPipelineNm;
+    PipelineSpec* m_pPipelineSpec;
   
+    Job*          m_pJob;
+  
+    i8            m_iOriginatingNode;
+
+    bool          m_bPulsed;
+    Op*           m_pOpToPulse;
+    bool          m_bCancelling;
+      
   private:
   
     // must be last
@@ -25,7 +28,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pJob, i8 iOriginatingNode);
+    Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode);
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
@@ -36,11 +39,12 @@ namespace Pipelines
     Job*      pJob(void);
     i8        nOpsOnNode(i8 iNode);
     Op*       pOpToPulse(void);
+    Stz*      szPipelineNm(void);
+    PipelineSpec* pPipelineSpec(void);
     void      vPopulateOpVec(PipelineSpec* pPipelineSpec);
     bool      bPulsed(void);
     void      vSetupJob(void);
     void      vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
-    StageVec* pStageVec(void);
 
     Footer* aFooter(void);
   };
