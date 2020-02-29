@@ -348,16 +348,19 @@ void Stage::vCreateDivisions(void)
   switch (m_pStageSpec->eTopology()) {
       
     case PO_ALL_NODES:
+      RASSERT(m_pStageSpec->bNodeTopo());
       for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++)
         m_oStageNdeVec.vAdd(new Division(m_pStageSpec, i_Nde));
       break;
       
     case PO_ALL_PARTITIONS:
+      RASSERT(! m_pStageSpec->bNodeTopo());
       for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++)
         m_oDivisionVec.vAdd(new Division(m_pStageSpec, i_Ptn));
       break;
       
     case PO_ORIGIN:
+      RASSERT(m_pStageSpec->bNodeTopo());
       if (AM::bVerbose()) {
         i8 iThisNode = AM::pGrid()->iThisNode();
         if (iThisNode == 0) {
@@ -369,10 +372,12 @@ void Stage::vCreateDivisions(void)
       break;
       
     case PO_SPECIFIC_NODE:
+      RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);
       break;
       
     case PO_SPECIFIC_PARTITION:
+      RASSERT(! m_pStageSpec->bNodeTopo());
       i_Ptn = m_pStageSpec->iPartition();
       m_oDivisionVec.vAdd(new Division(m_pStageSpec, i_Ptn));
       break;
@@ -390,21 +395,21 @@ void Stage::vCreateDivisions(void)
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
-      Division* pDivision = m_oStageNdeVec.pGet(i_Index);
+      Division* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
       Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-      pOp->vNode(pDivision->i_Nde());
-      pDivision->vAdd(pOp);
+      pOp->vNode(pStageNde->i_Nde());
+      pStageNde->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
     
     // add the operator to the stages of the stagePtnVec
     for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
       Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-      Division* pStagePtn = m_oDivisionVec.pGet(i_Ptn);
+      Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
       
-      pOp->vPartition(pStagePtn->i_Ptn());
-      pStagePtn->vAdd(pOp);
+      pOp->vPartition(pDivision->i_Ptn());
+      pDivision->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
   }
