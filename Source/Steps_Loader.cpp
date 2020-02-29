@@ -40,7 +40,7 @@ void Step::vLoaderCrwBufferFetch(void)
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
   
-  m_pRegSet->m_xpOperandB = pLoader->pCrwBuffer(iPartition);
+  m_pDataStack->vPushPtr(pLoader->pCrwBuffer(iPartition));
 }
 
 /*----------------------------------------------------------------------------*/

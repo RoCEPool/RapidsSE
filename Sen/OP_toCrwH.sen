@@ -30,7 +30,7 @@
 
   grid::partitions 0
   do
-    I loader[].crwBuffer@
+    I loader[].crwBuffer@ to OperandB[]
     OperandB[].isNull not if
       OperandB[].appendClose
       OperandB[].pipeOut
@@ -51,7 +51,7 @@
 
   grid::partitions 0
   do
-    I loader[].crwBuffer@
+    I loader[].crwBuffer@ to OperandB[]
     OperandB[].isNull not if
       OperandB[].appendClose
       OperandB[].pipeOut
