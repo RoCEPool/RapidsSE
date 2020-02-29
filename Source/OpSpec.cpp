@@ -38,7 +38,6 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   
   m_bAppendRight = false;
   m_i_OpSpec     = C_UNKNOWN;
-  m_i_Slot       = 0; // ALKA: C_UNKNOWN;
   m_eXmitKind    = XK_NORMAL;
 
   //m_oEnameSet
@@ -170,16 +169,6 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_oTopologyEnameSet.vReplace(szName, iValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get i_Slot                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 OpSpec::i_Slot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_i_Slot;
 }
 
 /*----------------------------------------------------------------------------*/

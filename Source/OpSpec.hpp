@@ -13,7 +13,6 @@ namespace PipelineSpecs
   
     bool       m_bAppendRight;
     i8         m_i_OpSpec;
-    i8         m_i_Slot;
     eXK        m_eXmitKind;
     
     EnameSet   m_oEnameSet;
@@ -41,7 +40,6 @@ namespace PipelineSpecs
     void vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken);
     void vReplaceTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
     EnameSet* pTopologyEnameSet(void);
-    i8   i_Slot(void);
     eXK  eXmitKind(void);
     void vXmitKind(eXK eStageKind);
     StageSpec* pStageSpec(void);
