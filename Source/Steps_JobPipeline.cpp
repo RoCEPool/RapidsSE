@@ -12,7 +12,7 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Job_Pipeline.begin"_Stz,         &Step::vJob_PipelineBegin);
   vAddStep("Job_Pipeline.cancel"_Stz,        &Step::vJob_PipelineCancel);
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
-  vAddStep("Job_Pipeline::deletedynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
+  vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
   vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
 }
 
@@ -69,9 +69,11 @@ void Step::vJob_PipelineDeleteDynamo(void)
 {
   ENTRY(); // ENTRY("vJob_PipelineDeleteDynamo"_Stz);
   
+  PipelineSpec* pPipelineSpec = m_pRegSet->m_xpDynamo->pPipelineSpec();
+  delete pPipelineSpec;
+  
   delete *m_pRegSet->m_xpDynamo;
   m_pRegSet->m_xpDynamo = nullptr;
-  
   
   EXIT();
 }

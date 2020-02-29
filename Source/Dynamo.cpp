@@ -49,7 +49,8 @@ Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  delete m_pPipelineSpec;
+  // 2020 Mar 01: RJH move this into destructor of pipeline
+  //delete m_pPipelineSpec;
   
   m_pTknVec->vSetAllTokens();
   delete m_pTknVec;

@@ -67,6 +67,8 @@ Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
 Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  delete m_pPipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/
