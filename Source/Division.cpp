@@ -29,6 +29,8 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
   m_i_Div = i_Div;
   
   m_i_Nde = i_Div;
+  m_i_Ptn = i_Div;
+  m_i_Slt = C_UNKNOWN;
   
   //m_oOpVec
   
@@ -50,7 +52,7 @@ Division::~Division(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get partition this stageNde needs to run on                                */
+/* get partition this division needs to run on                                */
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Nde(void)
 {
@@ -60,13 +62,23 @@ i8 Division::i_Nde(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this stageNde needs to run on                                */
+/* get partition this division needs to run on                                */
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Ptn(void)
 {
   _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
   
   return m_i_Ptn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get slot this division needs to run on                                     */
+/*----------------------------------------------------------------------------*/
+i8 Division::i_Slt(void)
+{
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  
+  return m_i_Slt;
 }
 
 /*----------------------------------------------------------------------------*/
