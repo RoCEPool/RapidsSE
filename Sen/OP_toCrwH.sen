@@ -28,14 +28,18 @@
   // use extractRow from register0 and convert csvtoCrw
   Operand[].csvToCrwH
 
+  // pipe out any full buffers
   grid::partitions 0
   do
-    I loader[].crwBuffer@ to OperandB[]
-    OperandB[].isNull not if
+    I loader[].fullCrwBuffer@ to OperandB[]
+
+    begin
+      OperandB[].isNull not
+    while
       OperandB[].appendClose
       OperandB[].pipeOut
-      nullptr I loader[].crwBuffer!
-    then
+      I loader[].fullCrwBuffer@ to OperandB[]
+    repeat
   loop
 
   Operand[].delete
@@ -48,6 +52,8 @@
 
   //"Operand:- ZK_EOSMARKER" .verbose
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipe out any dangling buffers
 
   grid::partitions 0
   do
@@ -55,6 +61,7 @@
     OperandB[].isNull not if
       OperandB[].appendClose
       OperandB[].pipeOut
+      nullptr I loader[].crwBuffer!
     then
   loop
 

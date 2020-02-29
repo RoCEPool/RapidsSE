@@ -84,7 +84,7 @@ eEC WriteHash::eAppendRow(void)
   if (! m_pCrwBuffer[i_Ptn]) {
     
     // create a new crw buffer for this partition
-    pCrwBuffer= pNewCrwBuffer(i_Ptn);
+    pCrwBuffer = pNewCrwBuffer(i_Ptn);
     
     if (! pCrwBuffer) {
       vTrace("CrwBuffer allocation failed\n"_Stz);
@@ -126,6 +126,7 @@ eEC WriteHash::eAppendRow(void)
   
   return EC_NONE;
 }
+
 /*----------------------------------------------------------------------------*/
 /* return the ptn crwBuffer                                                   */
 /*----------------------------------------------------------------------------*/
@@ -143,6 +144,29 @@ void WriteHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pCrwBuffer[iPtn] = pCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a full ptn crwBuffer if any                                         */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn]->pNextBuffer();
+  CrwBuffer* pFirstCrwBuffer = nullptr;
+  
+  while( pCrwBuffer) {
+    pFirstCrwBuffer = pCrwBuffer;
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
+  }
+  
+  if (pFirstCrwBuffer) {
+    CrwBuffer* pPrevBuffer = pFirstCrwBuffer->pPrevBuffer();
+    pPrevBuffer->vNextBuffer(nullptr);
+  }
+  
+  return pFirstCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,10 +253,12 @@ CrwBuffer* WriteHash::pNewCrwBuffer( i8 i_Ptn)
   CrwBuffer* pCrwBuffer = new CrwBuffer();;
   
   // link the old with this
-  if ( m_pCrwBuffer[i_Ptn] )
-    m_pCrwBuffer[i_Ptn]->vNextBuffer(pCrwBuffer);
-  else
-    m_pCrwBuffer[i_Ptn] = pCrwBuffer;
+  pCrwBuffer->vNextBuffer(m_pCrwBuffer[i_Ptn]);
+  
+  if (m_pCrwBuffer[i_Ptn])
+    m_pCrwBuffer[i_Ptn]->vPrevBuffer(pCrwBuffer);
+  
+  m_pCrwBuffer[i_Ptn] = pCrwBuffer;
   
   // set table and ptn no in it
   pCrwBuffer->vTable(m_pTable);

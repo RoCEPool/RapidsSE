@@ -161,14 +161,14 @@ void Step::vOperandChunkFile(void)
       m_pRegSet->m_iCounter0 = i_ChunkLoc;
       
       // dump
-      pSeekOffsets->vDump();
+      //pSeekOffsets->vDump();
       
       break;
     }
   }
   
   // dump
-  pSeekOffsets->vDump();
+  //pSeekOffsets->vDump();
   
   // free the read block
   MemLib::vFreeBlock(pReadBlock, C_2K);

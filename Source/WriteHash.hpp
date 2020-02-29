@@ -26,6 +26,7 @@ namespace Load
     eEC        eAppendRow(void);
     CrwBuffer* pCrwBuffer(i8 iPtn);
     void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
+    CrwBuffer* pFullCrwBuffer(i8 iPtn);
     eEC        eProcessRecord(Stz* aRecord,  i8 nBytes);
     
   private:
