@@ -97,12 +97,16 @@ int main(int argc, const char* argv[])
  
  c) For debug, in ../Seth run (for example, to run all tests):
  
-    $ ./allTests
+    $ ./seth.sh
  
  d) For debug, in ../Seth run (for example, to run a specific set of tests):
  
-    $ ./seth.sh tests/Tpch/customer.test
-
+    $ ./sethTest.sh tests/Tpch/customer.test
+ 
+ e) To execute a testList file
+ 
+    $ ./sethTest.sh -f tests/Tpch/testList
+ 
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
  Seth Testing (release):
@@ -117,11 +121,15 @@ int main(int argc, const char* argv[])
  
  c) For release, in ../Seth run (for example, to run all tests):
  
-    $ ./allTestsRel
+    $ ./sethRel.sh
  
  d) For release, in ../Seth run (for example, to run a specific set of tests):
  
-    $ ./sethRel.sh tests/Tpch/customer.test
+    $ ./sethTestRel.sh tests/Tpch/customer.test
+ 
+ e) To execute a testList file
+ 
+    $ ./sethTestRel.sh -f tests/Tpch/testList
  
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
