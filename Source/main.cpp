@@ -91,6 +91,8 @@ int main(int argc, const char* argv[])
  
     --start --prompt --metadata --partitionsPerNode 4 --node NODE1
  
+    NOTE: NOT TO run with --developer
+ 
  b) start the cluster
  
     se> startCluster;
@@ -106,6 +108,10 @@ int main(int argc, const char* argv[])
  e) To execute a testList file
  
     $ ./sethTest.sh -f tests/Tpch/testList
+ 
+ f) To execute operator tests
+ 
+    $ ./sethTest.sh -f tests/Operators/testList
  
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
@@ -130,6 +136,10 @@ int main(int argc, const char* argv[])
  e) To execute a testList file
  
     $ ./sethTestRel.sh -f tests/Tpch/testList
+ 
+ f) To execute operator tests
+ 
+    $ ./sethTestRel.sh -f tests/Operators/testList
  
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
