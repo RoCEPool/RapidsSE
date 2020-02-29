@@ -126,13 +126,19 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree(Object* pObject, bool bPersistent)
 {
+  // should not be freeing objects that are part of a word body
+  ASSERT(!pObject->bWordBody());
+  
   HeapMem* pHeapMem = AM::pHeapMem();
   
-  eCN eAllocClass = pObject->eClass();
+  eCN eClassBeingFreed = pObject->eClass();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dont-free capability
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ENTBUFFER != eAllocClass) {
+    if (CN_ENTBUFFER != eClassBeingFreed) {
       pObject->vClass(CN_FREEDNOT);
       return;
     }
@@ -143,10 +149,10 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
     }
   }
   
-  // should not be freeing objects that are part of a word body
-  ASSERT(!pObject->bWordBody());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // actually free the object and return its space for reuse
   
-  eHT eHeap = geWhichHeap[eAllocClass];
+  eHT eHeap = geWhichHeap[eClassBeingFreed];
   
   if (bPersistent) {
     switch(eHeap) {
@@ -163,7 +169,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
       MemLib::vWordDump(pObject,256,0);
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
-             eAllocClass,aCN[eAllocClass]);
+             eClassBeingFreed,aCN[eClassBeingFreed]);
       
     case HT_TRANSIENT_SMALL:
       pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
