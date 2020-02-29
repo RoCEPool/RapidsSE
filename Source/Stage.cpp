@@ -422,10 +422,7 @@ void Stage::vCreateDivisions(void)
     NEVER_REACH;
   }
 
-//  RASSERT(    (m_oDivisionVec.nItems()      && 0 == m_oStageNdeVec.nItems())
-//           ||
-//              (0 == m_oDivisionVec.nItems() && m_oStageNdeVec.nItems())
-//          );
+  RASSERT(  ! (m_oDivisionVec.nItems() && m_oStageNdeVec.nItems()) );
 }
 
 /*----------------------------------------------------------------------------*/
