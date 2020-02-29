@@ -169,6 +169,26 @@ Op* Pipeline::pOpToPulse(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Pipeline::szPipelineNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_sPipelineNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline spec                                                          */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* Pipeline::pPipelineSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_pPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Populate the OpVec from the PipeLineSpec                                   */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)

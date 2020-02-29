@@ -39,6 +39,8 @@ namespace Pipelines
     Job*      pJob(void);
     i8        nOpsOnNode(i8 iNode);
     Op*       pOpToPulse(void);
+    Stz*      szPipelineNm(void);
+    PipelineSpec* pPipelineSpec(void);
     void      vPopulateOpVec(PipelineSpec* pPipelineSpec);
     bool      bPulsed(void);
     void      vSetupJob(void);

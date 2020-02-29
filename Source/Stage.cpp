@@ -413,6 +413,15 @@ void Stage::vCreateDivisions(void)
   // either the division vector is used, or the stage node vector is used
   //   but not both
   //
+
+  if (m_oDivisionVec.nItems() && m_oStageNdeVec.nItems()) {
+    vTrace("Pipeline %s : %lld in DivisionVec ; %lld in StageNdeVec\n"_Stz,
+           m_pPipeline->szPipelineNm(),
+           m_oDivisionVec.nItems(),
+           m_oStageNdeVec.nItems());
+    NEVER_REACH;
+  }
+
 //  RASSERT(    (m_oDivisionVec.nItems()      && 0 == m_oStageNdeVec.nItems())
 //           ||
 //              (0 == m_oDivisionVec.nItems() && m_oStageNdeVec.nItems())
