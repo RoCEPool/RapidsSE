@@ -27,6 +27,9 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
   m_pStageSpec = pStageSpec;
   
   m_i_Div = i_Div;
+  
+  m_i_Nde = i_Div;
+  
   //m_oOpVec
   
   _checkInitialised_(CN_DIVISION);
