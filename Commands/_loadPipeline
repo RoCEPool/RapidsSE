@@ -30,6 +30,30 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // 16 columns                                  174B  91B
 );
 
+pipeline _threads
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on origin:
+chunk "/DATA/TPCH/lineitem10k.csv" | stageC
+
+stage stageC on origin: // on all partitions on origin
+readChunk "/DATA/TPCH/lineitem10k.csv" | toCrwH lineitem | stageD hashed
+
+stage stageD on all partitions:
+insertOP lineitem | stageE
+
+stage stageE on origin:
+sinkOp | stageA
+
+end
+;
+
+//fetch lineitem;
+
+/*
 // create indexes
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
@@ -49,30 +73,10 @@ end
 ;
 
 
-pipeline _threads
-begin
 
-  stage stageA on origin:
-  startOp | periodicOp once | stageB
 
-  stage stageB on origin:
-    chunk "/DATA/TPCH/lineitem10.csv" | stageC
-
-  stage stageC origin:
-    readChunk "/DATA/TPCH/lineitem10.csv" | toCrwOp lineitem | stageD Hashed
-
-  stage stageD on all partitions:
-    insertOP lineitem | stageE
-
-  stage stageE on origin:
-    sinkOp | stageA
-
-end
-;
-
-fetch lineitem;
 //stage stageD on all partitions on origin:
-/*
+
 pipeline _threads
 begin
 

@@ -9,19 +9,46 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_OperandB(void)
 {
+  vAddStep("OperandB[].appendClose"_Stz,    &Step::vOperandBAppendClose);
   vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
+  vAddStep("OperandB[].isNull"_Stz,         &Step::vOperandBIsNull);
   vAddStep("OperandB[].pipeout"_Stz,        &Step::vOperandBPipeOut);
   vAddStep("OperandB[].set"_Stz,            &Step::vOperandBSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].get -- fetch operand                                             */
+/* OperandB[].get -- fetch operand                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandBAppendClose(void)
+{
+  ENTRY(); // ENTRY("vOperandBAppendClose"_Stz);
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandB);
+  pCrwBuffer->vAppendClose();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandB[].get -- fetch operand                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandBGet(void)
 {
   ENTRY(); // ENTRY("vOperandBGet"_Stz);
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandB[].isNull -- is operandB null ?                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandBIsNull(void)
+{
+  ENTRY(); // ENTRY("vOperandBIsNull"_Stz);
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpOperandB.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -45,7 +72,7 @@ void Step::vOperandBPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].set -- set operand                                               */
+/* OperandB[].set -- set operand                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandBSet(void)
 {

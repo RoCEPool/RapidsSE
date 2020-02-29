@@ -224,6 +224,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_READAPI
   /*    */ &Finalize::vUndefined,         // CN_RECORD
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_RECORDDATA
   /*    */ &Finalize::vUndefined,         // CN_REGSET
   /* 77 */ &Finalize::vUndefined,         // CN_RELOP
   /* 77 */ &Finalize::vUndefined,         // CN_REQUEST

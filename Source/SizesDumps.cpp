@@ -228,6 +228,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_READAPI
   /* */ &Dump::vUndefined,       // CN_RECORD
   /* */ &Dump::vUndefined,       // CN_RECORDBUFFER
+  /* */ &Dump::vUndefined,       // CN_RECORDDATA
   /* */ &Dump::vUndefined,       // CN_REGSET
   /* */ &Dump::vUndefined,       // CN_RELOP
   /* */ &Dump::vUndefined,       // CN_REQUEST
@@ -562,6 +563,7 @@ i8 giClassSize[]
   /* */ sizeof(ReadApi),            // CN_READAPI
   /* */ sizeof(Record),             // CN_RECORD
   /* */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
+  /* */ sizeof(RecordData),         // CN_RECORDDATA
   /* */ sizeof(RegSet),             // CN_REGSET
   /* */ sizeof(RelOp),              // CN_RELOP
   /* */ sizeof(Request),            // CN_REQUEST
@@ -896,6 +898,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_READAPI
   /* */ HT_TRANSIENT_MEDIUM,  // CN_RECORD
   /* */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
+  /* */ HT_TRANSIENT_LARGE,   // CN_RECORDDATA
   /* */ HT_TRANSIENT_SMALL,   // CN_REGSET
   /* */ HT_TRANSIENT_SMALL,   // CN_RELOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_REQUEST

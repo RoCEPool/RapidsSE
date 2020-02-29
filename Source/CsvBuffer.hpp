@@ -29,12 +29,14 @@ namespace DataBuffers
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);
     byte*      ayDataArea(void);
+    i8         nDataBytes(void);
     i8         nFreeBytes(void);
     CsvBuffer* pNextBuffer(void);
     void       vPrintRecords(void);
     i8         nRecords(void);
     Stz*       szReportNm(void);
     void       vReportNm(Stz* szReportNm);
+    void       vTake(i8 nBytes);
 
   private:
     Footer* aFooter(void);

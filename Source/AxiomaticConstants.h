@@ -33,7 +33,7 @@ static const b8 C_NONFOCAL          = true;
 
 static const i8 C_SET_OFFSETS       = 128;
 static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
-static const i8 C_CHUNKBLOCK        = C_2K;
+static const i8 C_CHUNKBLOCK        = 2048;
 
 static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 

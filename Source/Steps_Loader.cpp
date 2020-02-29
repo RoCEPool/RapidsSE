@@ -10,6 +10,8 @@
 void Step::vAddSteps_Loader(void)
 {
   vAddStep("Loader[].create"_Stz,         &Step::vLoaderCreate);
+  vAddStep("Loader[].crwBuffer@"_Stz,     &Step::vLoaderCrwBufferFetch);
+  vAddStep("Loader[].crwBuffer!"_Stz,     &Step::vLoaderCrwBufferStore);
   vAddStep("Loader[].delete"_Stz,         &Step::vLoaderDelete);
   vAddStep("Loader[].get"_Stz,            &Step::vLoaderGet);
   vAddStep("Loader[].handleDangling"_Stz, &Step::vLoaderHandleDangling);
@@ -26,6 +28,33 @@ void Step::vLoaderCreate(void)
   Loader* pLoader = new Loader(*m_pRegSet->m_xpTable);
   
   m_pRegSet->m_xpLoader = pLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Loader[].crwBuffer@ -- get crwbuffer for given partition from the loader   */
+/*----------------------------------------------------------------------------*/
+void Step::vLoaderCrwBufferFetch(void)
+{
+  ENTRY(); // ENTRY("vLoaderCrwBufferFetch"_Stz);
+  
+  i8 iPartition = m_pDataStack->iPopInt(__func__);
+  Loader* pLoader = *m_pRegSet->m_xpLoader;
+  
+  m_pRegSet->m_xpOperandB = pLoader->pCrwBuffer(iPartition);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Loader[].crwBuffer! -- set crwbuffer for given partition from the loader   */
+/*----------------------------------------------------------------------------*/
+void Step::vLoaderCrwBufferStore(void)
+{
+  ENTRY(); // ENTRY("vLoaderCrwBufferStore"_Stz);
+  
+  i8 iPartition = m_pDataStack->iPopInt(__func__);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  Loader* pLoader = *m_pRegSet->m_xpLoader;
+  
+  pLoader->vCrwBuffer(iPartition, pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

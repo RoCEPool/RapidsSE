@@ -166,6 +166,7 @@ bool LoadMap::bMapChunk(void)
   
   // compute end location of chunk
   i8 i_EndChunkLoc = i_FinalBlockLoc + nPartialBytes - 1;
+  
   vAddEntry(i_EndChunkLoc);
   
   // advance to start of next chunk

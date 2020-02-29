@@ -53,11 +53,13 @@ void Loader::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Loader::Loader(Table* pTable)
-: WriteBehind(pTable)
+: WriteHash(CN_LOADER, pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_SUBLOADER);
+  m_pRecordData = new RecordData(&m_oFormatter);
+  
+  _checkInitialised_(CN_LOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 }
@@ -82,91 +84,58 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin loading                                                              */
+/* read records                                                               */
 /*----------------------------------------------------------------------------*/
-//bool Job_SubLoader::bBegin(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,LOADER,_FOOTER_);
-//
-//  s256 sPath;
-//  sPath = m_pJob_LoadTable->szFilePath();
-//
-//  // open the chunked file
-//  bool bOpened = m_pLoadChunk->bOpenRead(sPath);
-//
-//  // set the table and parentJob in the writeBehind Job
-//  JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
-//  JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
-//  JobWriteBehind::m_oFormatters.vSet(&m_pJob_LoadTable->m_oFormatters);
+bool Loader::bReadRecords(Stz* aDataArea, i8 nDataBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
-//  return bOpened;
-//}
+  Stz* aRecord;
+  i8 nRecordBytes;
+  
+  m_pRecordData->vInit(aDataArea, nDataBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process the records in the chunk
+  for (;;) {
 
-/*----------------------------------------------------------------------------*/
-/* chunk records                                                               */
-/*----------------------------------------------------------------------------*/
-//bool Loader::bChunk(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-//  
-//  Session* pSession = m_pJob_LoadTable->pSession();
-//  Table* pTable = m_pJob_LoadTable->m_pTable;
-//  i8 iParentJobId = m_pJob_LoadTable->m_iFocalId;
-//  Format* pFmt = &m_pJob_LoadTable->m_oFormatters;
-//
-//  i8 i_Seek;
-//  i8 nChunkBytes;
-//
-//  Stz* aRecord;
-//  i8 nRecordBytes;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // read next mapped chunk
-//  if (! m_pJob_LoadTable->m_pLoadMap->bNextChunk(i_Seek,nChunkBytes))
-//    return false;
-//
-//  m_pLoadChunk->vReadSpecificChunk(i_Seek,nChunkBytes);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // process the records in the chunk
-//  for (;;) {
-//
-//    if (bTerminate())
-//      return false;
-//
-//    // fetch next record from current chunk
-//    bool bHaveRecord = m_pLoadChunk->bNextRecord(&aRecord,nRecordBytes);
-//    if (! bHaveRecord)
-//      return true;
-//
-//    // process that record into write behind
-//    eEC eError = eProcessRecord(aRecord, nRecordBytes);
-//
-//    if (EC_NONE == eError) {
-//      vIncRowsProcessed();
-//      continue;
-//    }
-//
-//    if (EC_BLANKLINE == eError)
-//      continue;
-//
-//    if (EC_INVALID_VALUE == eError) {
-//      vIncRowsInvalid();
-//      ++m_pJob_LoadTable->m_ixErrors;
-//      continue;
-//    }
-//
-//    if (EC_MAX_ROW_LENGTH == eError) {
-//      vIncRowsInvalid();
-//      ++m_pJob_LoadTable->m_ixErrors;
-//      continue;
-//    }
-//
-//    return false;
-//  }
-//
-//  NEVER_REACH
-//}
+    if (bTerminate())
+      return false;
+
+    // fetch next record from data area
+    bool bHaveRecord = m_pRecordData->bNextRecord(&aRecord,nRecordBytes);
+    if (! bHaveRecord)
+      return true;
+
+    // process that record into write behind
+    eEC eError = eProcessRecord(aRecord, nRecordBytes);
+
+    if (EC_NONE == eError) {
+      //vTrace(aRecord);
+      //vIncRowsProcessed();
+      continue;
+    }
+
+    if (EC_BLANKLINE == eError)
+      continue;
+
+    if (EC_INVALID_VALUE == eError) {
+      //vIncRowsInvalid();
+      //++m_pJob_LoadTable->m_ixErrors;
+      continue;
+    }
+
+    if (EC_MAX_ROW_LENGTH == eError) {
+      //vIncRowsInvalid();
+      //++m_pJob_LoadTable->m_ixErrors;
+      continue;
+    }
+
+    return false;
+  }
+
+  NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /* end loading                                                                */
@@ -199,14 +168,14 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* terminate loading early?                                                   */
 /*----------------------------------------------------------------------------*/
-//bool Job_SubLoader::bTerminate(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-//
+bool Loader::bTerminate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
 //  if (m_oFormatters.m_nMaxErrors &&
 //      *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors) {
-//    vTrace("Job_SubLoader #%lld -- terminating with max errors %lld %lld\n"_Stz,
-//           m_iFocalId,*m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
+//    vTrace("Loader -- terminating with max errors %lld %lld\n"_Stz,
+//           *m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
 //    return true;
 //  }
 //
@@ -215,14 +184,15 @@ Loader::~Loader(void) noexcept(false)
 //           m_iFocalId);
 //    return true;
 //  }
-//
-//  return false;
-//}
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(Loader)
+
 
 /*============================================================================*/
 /* end                                                                        */

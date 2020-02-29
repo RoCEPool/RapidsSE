@@ -167,6 +167,9 @@ void Step::vOperandChunkFile(void)
     }
   }
   
+  // dump
+  pSeekOffsets->vDump();
+  
   // free the read block
   MemLib::vFreeBlock(pReadBlock, C_2K);
   
@@ -725,6 +728,7 @@ void Step::vOperandReadChunk(void)
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
   pFile->vSeek(iOffset);
+  pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
   ASSERT(nBytesRead == nBytes);
   
@@ -836,6 +840,7 @@ void Step::vOperandCsvToCrw(void)
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
+
   Table* pTable = *m_pRegSet->m_xpTable;
   
   char* aCursor = (char*)pCsvBuffer->ayDataArea();
@@ -901,6 +906,10 @@ void Step::vOperandCsvToCrwH(void)
 {
   ENTRY(); // ENTRY("vOperandCsvToCrwH"_Stz);
   
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
+  Loader* pLoader = *m_pRegSet->m_xpLoader;
+  
+  pLoader->bReadRecords((Stz*)pCsvBuffer->ayDataArea(), pCsvBuffer->nDataBytes());
   
   EXIT();
 }

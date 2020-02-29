@@ -798,6 +798,8 @@ public:
 
   // loader
   void vLoaderCreate(void);
+  void vLoaderCrwBufferFetch(void);
+  void vLoaderCrwBufferStore(void);
   void vLoaderDelete(void);
   void vLoaderGet(void);
   void vLoaderHandleDangling(void);
@@ -948,7 +950,9 @@ public:
   void vOperandWriteToFile0(void);
 
   // operandB
+  void vOperandBAppendClose(void);
   void vOperandBGet(void);
+  void vOperandBIsNull(void);
   void vOperandBPipeOut(void);
   void vOperandBSet(void);
 

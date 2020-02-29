@@ -88,13 +88,35 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the recoords pointer                                                   */
+/* get the records pointer                                                    */
 /*----------------------------------------------------------------------------*/
 byte* CsvBuffer::ayDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
   return m_xWsp.ayArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the recoords pointer                                                   */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vTake(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  m_xWsp.vTake(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of data bytes                                                   */
+/*----------------------------------------------------------------------------*/
+i8 CsvBuffer::nDataBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  i8 nDataBytes = m_xWsp.nUsed();
+  
+  return nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/

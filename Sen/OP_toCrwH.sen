@@ -27,6 +27,17 @@
 
   // use extractRow from register0 and convert csvtoCrw
   Operand[].csvToCrwH
+
+  grid::partitions 0
+  do
+    I loader[].crwBuffer@
+    OperandB[].isNull not if
+      OperandB[].appendClose
+      OperandB[].pipeOut
+      nullptr I loader[].crwBuffer!
+    then
+  loop
+
   Operand[].delete
 ;
 
@@ -36,7 +47,16 @@
 : toCrwH_EosMarker
 
   //"Operand:- ZK_EOSMARKER" .verbose
-  loader[].handleDangling
+
+
+  grid::partitions 0
+  do
+    I loader[].crwBuffer@
+    OperandB[].isNull not if
+      OperandB[].appendClose
+      OperandB[].pipeOut
+    then
+  loop
 
   // delete loader
   loader[].delete
