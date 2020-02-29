@@ -22,6 +22,8 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
   
+  m_sDivisionNm = pStageSpec->szStageNm();
+  
   m_pStageSpec = pStageSpec;
   
   m_i_Div = i_Div;
