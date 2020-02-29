@@ -8,6 +8,8 @@ namespace Pipelines
   class Division : public VectorNL_t<CN_DIVISION,Op,C_MAX_OPS>
   {
   private:
+    StageSpec* m_pStageSpec; // this is a division of which stage
+  
     union {
       i8  m_i_Div;   // which division
       i8  m_i_Nde;   // which node
