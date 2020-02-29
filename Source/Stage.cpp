@@ -82,22 +82,33 @@ void Stage::vCancelOperators(i8 iThisNode)
   for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
     Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
     
-    if (pDivision->i_Nde() == iThisNode) {
-      Op* pOp = pDivision->pGet(0);
-      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
-      pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
+    if (m_pStageSpec->bNodeTopo()) {
+      
+      if (pDivision->i_Nde() == iThisNode) {
+        Op* pOp = pDivision->pGet(0);
+        RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
+        pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
+      }
+    }
+    else {
+      NEVER_REACH;
     }
   }
   
   for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
     Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
     
-    i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
-    
-    if (iPtnNode == iThisNode) {
-      Op* pOp = pDivision->pGet(0);
-      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
-      pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
+    if (m_pStageSpec->bNodeTopo()) {
+      NEVER_REACH;
+    }
+    else {
+      i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
+      
+      if (iPtnNode == iThisNode) {
+        Op* pOp = pDivision->pGet(0);
+        RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
+        pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
+      }
     }
   }
   
@@ -189,8 +200,21 @@ i8 Stage::nOpsOnNode(i8 iNode)
 
   i8 nOps = 0;
 
-  for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
+  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
+    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
 
+    if (m_pStageSpec->bNodeTopo()) {
+      // skip if Op not for this node
+      if (pDivision->i_Nde() == iNode) {
+        nOps += pDivision->nItems();
+      }
+    }
+    else {
+      NEVER_REACH;
+    }
+  }
+
+  for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
     Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
 
     if (m_pStageSpec->bNodeTopo()) {
@@ -202,21 +226,6 @@ i8 Stage::nOpsOnNode(i8 iNode)
       if (iPartitionNode == iNode) {
         nOps += pDivision->nItems();
       }
-    }
-  }
-
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-
-    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
-
-    if (m_pStageSpec->bNodeTopo()) {
-      // skip if Op not for this node
-      if (pDivision->i_Nde() == iNode) {
-        nOps += pDivision->nItems();
-      }
-    }
-    else {
-      NEVER_REACH;
     }
   }
 
