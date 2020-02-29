@@ -38,7 +38,7 @@ lsidxcol ALLCOLS_TABLE ALLCOLS_INDEX_int;
 logSection __BM_INSIDX_4;
 print "** 4/7) execute bm_insidx pipeline";
 
-stepTiming start;
+//stepTiming start;
 
 pipeline bm_insidx
 begin
@@ -57,11 +57,11 @@ end;
 logSection __BM_INSIDX_5;
 print "** 5/7) information";
 
-stepTiming write "/tmp/StepTiming.csv";
+//stepTiming write "/tmp/StepTiming.csv";
 
 filecat "/tmp/bm_insidx_rep.csv" 100;
 
-stepTiming show "vIndexPtnInsEntBuffer";
+//stepTiming show "vIndexPtnInsEntBuffer";
 
 sizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
 
@@ -77,7 +77,7 @@ print "** 5/7) drop ALLCOLS_TABLE";
 
 drop table ALLCOLS_TABLE;
 
-//memoryLeaks fatal;
+memoryLeaks fatal;
 
 heapmem;
 
