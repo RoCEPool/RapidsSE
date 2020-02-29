@@ -423,6 +423,9 @@ void Stage::vCreateDivisions(void)
   }
 
   RASSERT(  ! (m_oDivisionVec.nItems() && m_oStageNdeVec.nItems()) );
+  
+  RASSERT(    (  m_pStageSpec->bNodeTopo() && 0 == m_oDivisionVec.nItems())
+           || (! m_pStageSpec->bNodeTopo() && 0 == m_oStageNdeVec.nItems()) );
 }
 
 /*----------------------------------------------------------------------------*/
