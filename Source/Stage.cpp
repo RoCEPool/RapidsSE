@@ -413,10 +413,10 @@ void Stage::vCreateDivisions(void)
   // either the division vector is used, or the stage node vector is used
   //   but not both
   //
-  RASSERT(    (m_oDivisionVec.nItems()      && 0 == m_oStageNdeVec.nItems())
-           ||
-              (0 == m_oDivisionVec.nItems() && m_oStageNdeVec.nItems())
-          );
+//  RASSERT(    (m_oDivisionVec.nItems()      && 0 == m_oStageNdeVec.nItems())
+//           ||
+//              (0 == m_oDivisionVec.nItems() && m_oStageNdeVec.nItems())
+//          );
 }
 
 /*----------------------------------------------------------------------------*/
