@@ -36,6 +36,7 @@ StageSpec::StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec)
   m_pPipelineSpec = pPipelineSpec;
   
   m_eTopology     = PO_NONE;
+  m_bNodeTopo     = true;
   m_iNode         = C_UNKNOWN;
   m_iPartition    = C_UNKNOWN;
   //m_nThreads    = 1;
@@ -234,6 +235,16 @@ void StageSpec::vTopology(ePO eTopology)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_eTopology = eTopology;
+  
+  switch (m_eTopology) {
+    case PO_ALL_NODES:           m_bNodeTopo = true;   break;
+    case PO_ALL_PARTITIONS:      m_bNodeTopo = false;  break;
+    case PO_ORIGIN:              m_bNodeTopo = true;   break;
+    case PO_SPECIFIC_NODE:       m_bNodeTopo = true;   break;
+    case PO_SPECIFIC_PARTITION:  m_bNodeTopo = false;  break;
+    default:                     m_bNodeTopo = true;   break;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

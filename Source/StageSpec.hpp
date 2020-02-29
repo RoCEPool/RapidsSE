@@ -11,10 +11,11 @@ namespace PipelineSpecs
     s32           m_sStageNm;       // stage name
     PipelineSpec* m_pPipelineSpec;  // which pipeline spec
   
-    ePO m_eTopology;    // stage topoplogy
-    i8  m_iNode;        // stage node
-    i8  m_iPartition;   // stage ptn
-    //i8  m_nThreads;   // threads
+    ePO  m_eTopology;  // stage topoplogy
+    bool m_bNodeTopo;  // is node-level topology (or partition)?
+    i8   m_iNode;      // stage node
+    i8   m_iPartition; // stage ptn
+    //i8  m_nThreads;  // threads
     
     // must be last
     Footer m_xFooter;
@@ -31,6 +32,7 @@ namespace PipelineSpecs
     Stz* szStageNm(void);
     void vNode(i8 i_Nde);
     i8   iNode(void);
+    bool bNodeTopo(void);
     i8   iPartition(void);
     void vPartition(i8 i_Ptn);
     void vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);
