@@ -18,23 +18,23 @@ __aFooterFunction(Strand)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Strand::Strand(StageSpec* pStageSpec, i8 i_Div)
+Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
   m_pStageSpec = pStageSpec;
-  m_i_Div      = i_Div;
+  m_i_Strand   = i_Strand;
   
   // determine the node,slot coordinates of this division
   if (m_pStageSpec->bNodeTopo()) {
     // node only
-    m_i_Nde = i_Div;
+    m_i_Nde = i_Strand;
     m_i_Ptn = C_UNKNOWN;
     m_i_Slt = C_UNKNOWN;
   }
   else {
     // node,slot
-    m_i_Ptn = i_Div;
+    m_i_Ptn = i_Strand;
     m_i_Nde = TablePtn::iPartitionToNode(m_i_Ptn);
     m_i_Slt = TablePtn::iPartitionToSlot(m_i_Ptn);
   }
@@ -67,13 +67,13 @@ void Strand::vDump(void)
   
   if (m_pStageSpec->bNodeTopo()) {
     vTrace("  [%02lld] (N%lld) Node-Strand %s:\n"_Stz,
-           m_i_Div,
+           m_i_Strand,
            m_i_Nde,
            m_sDivisionNm.szStz());
   }
   else {
-    vTrace("  [%02lld] (N%lld,S%02lld) Paertition-Strand %s:\n"_Stz,
-           m_i_Div,
+    vTrace("  [%02lld] (N%lld,S%02lld) Partition-Strand %s:\n"_Stz,
+           m_i_Strand,
            m_i_Nde,
            m_i_Slt,
            m_sDivisionNm.szStz());

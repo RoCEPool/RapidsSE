@@ -9,7 +9,7 @@ namespace Pipelines
   {
   private:
     s32        m_sDivisionNm; // synthesised name of this division
-    i8         m_i_Div;       // which division of stage
+    i8         m_i_Strand;    // which strand of stage
     StageSpec* m_pStageSpec;  // this is a division of which stage
   
     i8         m_i_Ptn;       // which partition in grid
@@ -23,12 +23,12 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Strand(StageSpec* pStageSpec, i8 i_Div);
+    Strand(StageSpec* pStageSpec, i8 i_Strand);
    ~Strand(void) noexcept(false);
   
     void   vDump(void);
   
-    i8     i_Div(void);
+    i8     i_Strand(void);
     i8     i_Nde(void);
     i8     i_Ptn(void);
     i8     i_Slt(void);
