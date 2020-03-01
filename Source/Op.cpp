@@ -148,7 +148,7 @@ void Op::vDump(i8 i_Op)
   i8 iConsumeXmits =  pEnameSet->iValue("<consumeXmits>"_Stz);
   i8 iLeftEosMarkers = iConsumeXmits ? iConsumeXmits : nLeftEosMarkers();
   
-  vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-20s EosMarkers(L%lld R%lld) :%-10s %s %s}\n"_Stz,
+  vTrace("    [%03lld] (N%lld,P%02lld) {%12s%-20s EosMarkers(L%lld R%lld) :%-10s %s %s}\n"_Stz,
          i_Op,
          this->nNode(),
          this->nPartition(),

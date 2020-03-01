@@ -95,15 +95,18 @@ void Stage::vDump(Pipeline* pPipeline)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   i8 i_Stage = m_pStageSpec->i_StageSpec();
-  vTrace("\n[%lld] Stage %s : \n"_Stz,i_Stage,m_sStageNm.szStz());
+  vTrace("\n[%lld] Stage %s %s: \n"_Stz,
+         i_Stage,
+         m_sStageNm.szStz(),
+         aPO[m_pStageSpec->eTopology()]);
 
-  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems(); i_Op++) {
-    Op* pOp = m_oOpVec.pGet(i_Op);
-  
-    pOp->vDump(i_Op);
-  }
-
-  vTrace("*******************************************************\n"_Stz);
+//  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems(); i_Op++) {
+//    Op* pOp = m_oOpVec.pGet(i_Op);
+//
+//    pOp->vDump(i_Op);
+//  }
+//
+//  vTrace("*******************************************************\n"_Stz);
 
   for (i8 i_Div = 0; i_Div < nItems(); i_Div++) {
     Division* pDiv = pGet(i_Div);
@@ -111,8 +114,7 @@ void Stage::vDump(Pipeline* pPipeline)
     pDiv->vDump();
   }
 
-  
-  vTrace("*******************************************************\n"_Stz);
+//  vTrace("*******************************************************\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
