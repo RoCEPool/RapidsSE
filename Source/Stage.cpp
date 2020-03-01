@@ -151,8 +151,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
 Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
-  Strand* pNdeDivision = nullptr;
-  Strand* pPtnDivision = nullptr;
+  Strand* pNdeStrand = nullptr;
+  Strand* pPtnStrand = nullptr;
   
   switch (eTopologyX) {
       
@@ -160,30 +160,30 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      pNdeDivision = this->pGetNodeStrand(iNde);
-      pOp = pNdeDivision->pGet(iOp);
+      pNdeStrand = this->pGetNodeStrand(iNde);
+      pOp = pNdeStrand->pGet(iOp);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-        pPtnDivision = pGet(iPtn);
-        pOp = pPtnDivision->pGet(iOp);
+        pPtnStrand = pGet(iPtn);
+        pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeDivision = this->pGetNodeStrand(iNde);
-      pOp = pNdeDivision->pGet(iOp);
+      pNdeStrand = this->pGetNodeStrand(iNde);
+      pOp = pNdeStrand->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pPtnDivision = pGet(iPtn);
-      pOp = pPtnDivision->pGet(iOp);
+      pPtnStrand = pGet(iPtn);
+      pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      pPtnDivision = pGet(0);
-      ASSERT(pPtnDivision->i_Ptn() == iPtn);
-      pOp = pPtnDivision->pGet(iOp);
+      pPtnStrand = pGet(0);
+      ASSERT(pPtnStrand->i_Ptn() == iPtn);
+      pOp = pPtnStrand->pGet(iOp);
       break;
       
     default:

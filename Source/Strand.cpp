@@ -25,7 +25,7 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
   m_pStageSpec = pStageSpec;
   m_i_Strand   = i_Strand;
   
-  // determine the node,slot coordinates of this division
+  // determine the node,slot coordinates of this strand
   if (m_pStageSpec->bNodeTopo()) {
     // node only
     m_i_Nde = i_Strand;
@@ -87,7 +87,7 @@ void Strand::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this division needs to run on                                */
+/* get partition this strand needs to run on                                */
 /*----------------------------------------------------------------------------*/
 i8 Strand::i_Nde(void)
 {
@@ -97,7 +97,7 @@ i8 Strand::i_Nde(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this division needs to run on                                */
+/* get partition this strand needs to run on                                */
 /*----------------------------------------------------------------------------*/
 i8 Strand::i_Ptn(void)
 {
@@ -107,7 +107,7 @@ i8 Strand::i_Ptn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get slot this division needs to run on                                     */
+/* get slot this strand needs to run on                                     */
 /*----------------------------------------------------------------------------*/
 i8 Strand::i_Slt(void)
 {
@@ -117,7 +117,7 @@ i8 Strand::i_Slt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage spec for this division                                           */
+/* get stage spec for this strand                                           */
 /*----------------------------------------------------------------------------*/
 StageSpec* Strand::pStageSpec(void)
 {
@@ -149,7 +149,7 @@ void Strand::vSpawnOperators(i8 iSessionId, i8 iNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* synthesise name of this division                                           */
+/* synthesise name of this strand                                           */
 /*----------------------------------------------------------------------------*/
 void Strand::vSynthesiseName(void)
 {
@@ -161,7 +161,7 @@ void Strand::vSynthesiseName(void)
                           m_pStageSpec->szStageNm());
   }
   else {
-    m_sStrandNm.vSprint("_strand_N%lldS%lld_of_%s"_Stz,
+    m_sStrandNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
                           m_i_Nde,
                           m_i_Slt,
                           m_pStageSpec->szStageNm());

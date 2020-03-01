@@ -10,7 +10,7 @@ namespace Pipelines
   private:
     s32        m_sStrandNm;   // synthesised name of this strand
     i8         m_i_Strand;    // which strand of stage
-    StageSpec* m_pStageSpec;  // this is a division of which stage
+    StageSpec* m_pStageSpec;  // this is a strand of which stage
   
     i8         m_i_Ptn;       // which partition in grid
     i8         m_i_Nde;       // which node in grid
