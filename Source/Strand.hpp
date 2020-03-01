@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Division.hpp -- Pipe Stage-Partition                                       */
+/* Strand.hpp -- Strand of Stage of Pipeline                                  */
 /*============================================================================*/
 #pragma once
 
 namespace Pipelines
 {
-  class Division : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
+  class Strand : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
   {
   private:
     s32        m_sDivisionNm; // synthesised name of this division
@@ -23,8 +23,8 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Division(StageSpec* pStageSpec, i8 i_Div);
-   ~Division(void) noexcept(false);
+    Strand(StageSpec* pStageSpec, i8 i_Div);
+   ~Strand(void) noexcept(false);
   
     void   vDump(void);
   
@@ -40,7 +40,7 @@ namespace Pipelines
     Footer* aFooter(void);
   };
   
-  Division* _pDivision(void* aAddr);
+  Strand* _pStrand(void* aAddr);
 }
 
 /*============================================================================*/

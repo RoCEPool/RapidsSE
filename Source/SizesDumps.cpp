@@ -628,7 +628,7 @@ i8 giClassSize[]
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
-  /* */ sizeof(Division),           // CN_STRAND
+  /* */ sizeof(Strand),           // CN_STRAND
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL

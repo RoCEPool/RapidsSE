@@ -5,7 +5,7 @@
 
 namespace Pipelines
 {
-  class Stage : public VectorNL_t<CN_STAGE,Division,C_MAX_STAGES>
+  class Stage : public VectorNL_t<CN_STAGE,Strand,C_MAX_STAGES>
   {
   private:
     s32         m_sStageNm;   // stage name
@@ -25,7 +25,7 @@ namespace Pipelines
     void vDump(Pipeline* pPipeline);
     
     void      vCancelOperators(i8 iThisNode);
-    Division* pGetNodeDivision(i8 i_Nde);
+    Strand* pGetNodeDivision(i8 i_Nde);
     i8        nOpsOnNode(i8 iNode);
     Op*       pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
     Stz*      szStageNm(void);

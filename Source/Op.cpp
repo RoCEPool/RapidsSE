@@ -138,7 +138,7 @@ void Op::vDump(i8 i_Op)
   
   // get the next op
   i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
-  Division* pNextDivision = pNextStage->pGet(0);
+  Strand* pNextDivision = pNextStage->pGet(0);
   Op* pNextOp = pNextDivision->pGet(iNextOp);
 
   // get the cross topology

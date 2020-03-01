@@ -210,7 +210,7 @@ void Pipeline::vSetupJob(void)
   
   i8 nDivs = pStage->nItems();
   for (i8 i_Div = 0; i_Div < nDivs; i_Div++) {
-    Division* pDivision = pStage->pGet(i_Div);
+    Strand* pDivision = pStage->pGet(i_Div);
 
     i8 nOps = pDivision->nItems();
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
@@ -226,7 +226,7 @@ void Pipeline::vSetupJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Div = 0; i_Div < nDivs; i_Div++) {
-    Division* pDivision = pStage->pGet(i_Div);
+    Strand* pDivision = pStage->pGet(i_Div);
 
     i8 nOps = pDivision->nItems();
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
@@ -254,7 +254,7 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
     Stage* pStage = pGet(i_Stage);
         
     for (i8 i_Ptn = 0; i_Ptn < pStage->nItems(); i_Ptn++) {
-      Division* pDivision = pStage->pGet(i_Ptn);
+      Strand* pDivision = pStage->pGet(i_Ptn);
       
       pDivision->vSpawnOperators(iSessionId, iNode);
     }

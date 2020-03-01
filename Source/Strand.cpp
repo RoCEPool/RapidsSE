@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Division.cpp -- Pipe Stage-Partition                                       */
+/* Strand.cpp -- Strand of Stage of Pipeline                                  */
 /*============================================================================*/
 
 #include "Pipelines.h"
@@ -9,16 +9,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Pipelines,Division,CN_STRAND)
-__aNewFunction(Division,CN_STRAND)
-__vDeleteFunction(Division,CN_STRAND)
-__aFooterFunction(Division)
+__pCastFunction(Pipelines,Strand,CN_STRAND)
+__aNewFunction(Strand,CN_STRAND)
+__vDeleteFunction(Strand,CN_STRAND)
+__aFooterFunction(Strand)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Division::Division(StageSpec* pStageSpec, i8 i_Div)
+Strand::Strand(StageSpec* pStageSpec, i8 i_Div)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -49,7 +49,7 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Division::~Division(void) noexcept(false)
+Strand::~Strand(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
 }
@@ -61,18 +61,18 @@ Division::~Division(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-void Division::vDump(void)
+void Strand::vDump(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   if (m_pStageSpec->bNodeTopo()) {
-    vTrace("  [%02lld] (N%lld) Node-Division %s:\n"_Stz,
+    vTrace("  [%02lld] (N%lld) Node-Strand %s:\n"_Stz,
            m_i_Div,
            m_i_Nde,
            m_sDivisionNm.szStz());
   }
   else {
-    vTrace("  [%02lld] (N%lld,S%02lld) Paertition-Division %s:\n"_Stz,
+    vTrace("  [%02lld] (N%lld,S%02lld) Paertition-Strand %s:\n"_Stz,
            m_i_Div,
            m_i_Nde,
            m_i_Slt,
@@ -89,7 +89,7 @@ void Division::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this division needs to run on                                */
 /*----------------------------------------------------------------------------*/
-i8 Division::i_Nde(void)
+i8 Strand::i_Nde(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -99,7 +99,7 @@ i8 Division::i_Nde(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this division needs to run on                                */
 /*----------------------------------------------------------------------------*/
-i8 Division::i_Ptn(void)
+i8 Strand::i_Ptn(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -109,7 +109,7 @@ i8 Division::i_Ptn(void)
 /*----------------------------------------------------------------------------*/
 /* get slot this division needs to run on                                     */
 /*----------------------------------------------------------------------------*/
-i8 Division::i_Slt(void)
+i8 Strand::i_Slt(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -119,7 +119,7 @@ i8 Division::i_Slt(void)
 /*----------------------------------------------------------------------------*/
 /* get stage spec for this division                                           */
 /*----------------------------------------------------------------------------*/
-StageSpec* Division::pStageSpec(void)
+StageSpec* Strand::pStageSpec(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -129,7 +129,7 @@ StageSpec* Division::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
+void Strand::vSpawnOperators(i8 iSessionId, i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -151,7 +151,7 @@ void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
 /*----------------------------------------------------------------------------*/
 /* synthesise name of this division                                           */
 /*----------------------------------------------------------------------------*/
-void Division::vSynthesiseName(void)
+void Strand::vSynthesiseName(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
  

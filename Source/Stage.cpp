@@ -52,7 +52,7 @@ void Stage::vCancelOperators(i8 iThisNode)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   for (i8 i_Nde = 0; i_Nde < nItems(); i_Nde++) {
-    Division* pDivision = pGet(i_Nde);
+    Strand* pDivision = pGet(i_Nde);
     
     if (m_pStageSpec->bNodeTopo()) {
       
@@ -77,11 +77,11 @@ void Stage::vCancelOperators(i8 iThisNode)
 /*----------------------------------------------------------------------------*/
 /* get division for given node                                                */
 /*----------------------------------------------------------------------------*/
-Division* Stage::pGetNodeDivision(i8 i_Nde)
+Strand* Stage::pGetNodeDivision(i8 i_Nde)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Division* pDivision   = nullptr;
+  Strand* pDivision   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
   for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
@@ -110,7 +110,7 @@ void Stage::vDump(Pipeline* pPipeline)
          aPO[m_pStageSpec->eTopology()]);
 
   for (i8 i_Div = 0; i_Div < nItems(); i_Div++) {
-    Division* pDiv = pGet(i_Div);
+    Strand* pDiv = pGet(i_Div);
   
     pDiv->vDump();
   }
@@ -126,7 +126,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
   i8 nOps = 0;
 
   for (i8 i_Nde = 0; i_Nde < nItems(); i_Nde++) {
-    Division* pDivision = pGet(i_Nde);
+    Strand* pDivision = pGet(i_Nde);
 
     if (m_pStageSpec->bNodeTopo()) {
       // skip if Op not for this node
@@ -151,8 +151,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
 Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
-  Division* pNdeDivision = nullptr;
-  Division* pPtnDivision = nullptr;
+  Strand* pNdeDivision = nullptr;
+  Strand* pPtnDivision = nullptr;
   
   switch (eTopologyX) {
       
@@ -213,7 +213,7 @@ void Stage::vStartPipeline(void)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Division*  pDivision = pGet(0);
+  Strand*  pDivision = pGet(0);
   StageSpec* pStageSpec = pDivision->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
@@ -250,13 +250,13 @@ void Stage::vCreateDivisions(void)
     case PO_ALL_NODES:
       RASSERT(m_pStageSpec->bNodeTopo());
       for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++)
-        vAdd(new Division(m_pStageSpec, i_Nde));
+        vAdd(new Strand(m_pStageSpec, i_Nde));
       break;
       
     case PO_ALL_PARTITIONS:
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++)
-        vAdd(new Division(m_pStageSpec, i_Ptn));
+        vAdd(new Strand(m_pStageSpec, i_Ptn));
       break;
       
     case PO_ORIGIN:
@@ -268,7 +268,7 @@ void Stage::vCreateDivisions(void)
                  m_pPipeline->iOriginatingNode());
         }
       }
-      vAdd(new Division(m_pStageSpec, m_pPipeline->iOriginatingNode()));
+      vAdd(new Strand(m_pStageSpec, m_pPipeline->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -279,7 +279,7 @@ void Stage::vCreateDivisions(void)
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
       i_Ptn = m_pStageSpec->iPartition();
-      vAdd(new Division(m_pStageSpec, i_Ptn));
+      vAdd(new Strand(m_pStageSpec, i_Ptn));
       break;
       
     default:
@@ -294,7 +294,7 @@ void Stage::vCreateDivisions(void)
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < nItems(); i_Index++) {
-      Division* pDivision = pGet(i_Index);
+      Strand* pDivision = pGet(i_Index);
       
       if (m_pStageSpec->bNodeTopo()) {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
