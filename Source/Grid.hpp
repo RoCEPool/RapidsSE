@@ -11,7 +11,7 @@ namespace Grids
   
     Article* m_pArticle;
   
-    s32    m_sName;
+    s32    m_sGridNm;
   
     i8     m_nSlotsPerNode;    // no of partition slots on each node
   
@@ -47,6 +47,7 @@ namespace Grids
     i8   nConnectedNodes(void);
     i8   nDefinedNodes(void);
     void vDumpPartitioning(void);
+    Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);

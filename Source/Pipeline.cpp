@@ -108,9 +108,15 @@ void Pipeline::vDump(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump all operators of each stage
     
+  Grid* pGrid = AM::pGrid();
+  
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
     
-  vTrace("Pipeline Job %s :\n"_Stz,m_sPipelineNm.szStz());
+  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld Slots/Node:\n"_Stz,
+         m_sPipelineNm.szStz(),
+         pGrid->szGridNm(),
+         pGrid->nDefinedNodes(),
+         pGrid->nSlotsPerNode());
     
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators

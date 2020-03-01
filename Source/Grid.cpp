@@ -36,7 +36,7 @@ void* Grid::operator new(size_t)
 void Grid::operator delete(void*)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: Grids class cannot be deleted"_Stz);
+         "fatal: Grid class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,9 +47,9 @@ Grid::Grid(i8 nNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_sName = "SEgrid"_Stz;
+  m_sGridNm = "SEgrid"_Stz;
   
-  m_pArticle = new Article(m_sName,this,nullptr);
+  m_pArticle = new Article(m_sGridNm,this,nullptr);
   
   vInit(nNodes, nSlotsPerNode);
   
@@ -168,6 +168,16 @@ void Grid::vDumpPartitioning(void)
     vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
            TablePtn::iPartitionToNode(i_Index));
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return grid name                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Grid::szGridNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_sGridNm;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -95,7 +95,7 @@ void Stage::vDump(Pipeline* pPipeline)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   i8 i_Stage = m_pStageSpec->i_StageSpec();
-  vTrace("\n[%lld] Stage %s %s: \n"_Stz,
+  vTrace("\n[%lld] Stage %s Topology %s: \n"_Stz,
          i_Stage,
          m_sStageNm.szStz(),
          aPO[m_pStageSpec->eTopology()]);

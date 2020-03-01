@@ -66,15 +66,17 @@ void Division::vDump(void)
   _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
   
   if (m_pStageSpec->bNodeTopo()) {
-    vTrace("  [%02lld] Node-Division: Node %lld: \n"_Stz,
-           m_i_Div,
-           m_i_Nde);
-  }
-  else {
-    vTrace("  [%02lld] Partition-Division: Node %lld Slot %lld: \n"_Stz,
+    vTrace("  [%02lld] (N%lld) Node-Division %s:\n"_Stz,
            m_i_Div,
            m_i_Nde,
-           m_i_Slt);
+           m_sDivisionNm.szStz());
+  }
+  else {
+    vTrace("  [%02lld] (N%lld,S%02lld) Paertition-Division %s:\n"_Stz,
+           m_i_Div,
+           m_i_Nde,
+           m_i_Slt,
+           m_sDivisionNm.szStz());
   }
 
   for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
@@ -154,12 +156,12 @@ void Division::vSynthesiseName(void)
   _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
  
   if (m_pStageSpec->bNodeTopo()) {
-    m_sDivisionNm.vSprint("Div_N%lld_of_%s"_Stz,
+    m_sDivisionNm.vSprint("div_N%lld_of_%s"_Stz,
                           m_i_Nde,
                           m_pStageSpec->szStageNm());
   }
   else {
-    m_sDivisionNm.vSprint("Div_N%lldS%lld_of_%s"_Stz,
+    m_sDivisionNm.vSprint("div_N%lldS%lld_of_%s"_Stz,
                           m_i_Nde,
                           m_i_Slt,
                           m_pStageSpec->szStageNm());
