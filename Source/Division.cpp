@@ -59,6 +59,22 @@ Division::~Division(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+void Division::vDump(void)
+{
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  
+  vTrace("\n[%02lld] Division %s : \n"_Stz,m_i_Div,m_sDivisionNm.szStz());
+
+  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
+    Op* pOp = pGet(i_Op);
+  
+    pOp->vDump(i_Op);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get partition this division needs to run on                                */
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Nde(void)

@@ -26,6 +26,8 @@ namespace Pipelines
     Division(StageSpec* pStageSpec, i8 i_Div);
    ~Division(void) noexcept(false);
   
+    void   vDump(void);
+  
     i8     i_Div(void);
     i8     i_Nde(void);
     i8     i_Ptn(void);
