@@ -234,10 +234,10 @@ void Pipeline::vSetupJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   Stage* pStage = pGet(0);
-  i8 nOps = pStage->pOpVec()->nItems();
+  i8 nOps = pStage->pOpVec_tbr()->nItems();
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pStage->pOpVec()->pGet(i_Op);
+    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
     
     if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
       m_bPulsed = true;
@@ -251,7 +251,7 @@ void Pipeline::vSetupJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pStage->pOpVec()->pGet(i_Op);
+    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
     
     if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
       m_pOpToPulse = pOp;

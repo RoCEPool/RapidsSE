@@ -137,7 +137,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
 /*----------------------------------------------------------------------------*/
 /* get opeVec                                                                 */
 /*----------------------------------------------------------------------------*/
-OpVec* Stage::pOpVec(void)
+OpVec* Stage::pOpVec_tbr(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   

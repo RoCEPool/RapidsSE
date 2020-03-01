@@ -28,7 +28,7 @@ namespace Pipelines
     
     void         vCancelOperators(i8 iThisNode);
     i8           nOpsOnNode(i8 iNode);
-    OpVec*       pOpVec(void);
+    OpVec*       pOpVec_tbr(void);
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
     Stz*         szStageNm(void);
     Division*    pDivision(i8 i_Ptn);

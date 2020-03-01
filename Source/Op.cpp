@@ -138,7 +138,7 @@ void Op::vDump(i8 i_Op)
   
   // get the next op
   i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
-  Op* pNextOp = pNextStage->pOpVec()->pGet(iNextOp);
+  Op* pNextOp = pNextStage->pOpVec_tbr()->pGet(iNextOp);
   
   // get the cross topology
   ePX eTopology = (ePX)(pEnameSet->iValue("<topology>"_Stz));
