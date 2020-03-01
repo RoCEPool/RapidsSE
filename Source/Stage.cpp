@@ -64,17 +64,6 @@ void Stage::vCancelOperators(i8 iThisNode)
       }
     }
     else {
-      //NEVER_REACH;
-    }
-  }
-  
-  for (i8 i_Ptn = 0; i_Ptn < nItems(); i_Ptn++) {
-    Division* pDivision = pGet(i_Ptn);
-    
-    if (m_pStageSpec->bNodeTopo()) {
-      //NEVER_REACH;
-    }
-    else {
       i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
       
       if (iPtnNode == iThisNode) {
@@ -84,7 +73,6 @@ void Stage::vCancelOperators(i8 iThisNode)
       }
     }
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
