@@ -5,36 +5,13 @@
 #include "Pipelines.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Pipeline* Pipelines::_pPipeline(void* aAddr)
-{
-  Pipeline* pPipeline = reinterpret_cast<Pipeline*>(aAddr);
-  
-  RASSERT_TYPE(pPipeline,CN_PIPELINE);
-  
-  return pPipeline;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new                                                                        */
-/*----------------------------------------------------------------------------*/
-void* Pipeline::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_PIPELINE);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Pipeline::operator delete(void* aAddr)
-{
-  Pipeline* pPipeline = reinterpret_cast<Pipeline*>(aAddr);
-  
-  HeapMem::vFree(pPipeline);
-}
+__pCastFunction(Pipelines,Pipeline,CN_PIPELINE)
+__aNewFunction(Pipeline,CN_PIPELINE)
+__vDeleteFunction(Pipeline,CN_PIPELINE)
+__aFooterFunction(Pipeline)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -53,9 +30,7 @@ Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
   m_pOpToPulse = nullptr;
   
   m_bCancelling = false;
-  
-  //m_oStageVec
-  
+    
   _checkInitialised_(CN_PIPELINE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -202,8 +177,6 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Buld the stageVec from the stageSpecVec
   for (i8 i_StageSpec = 0; i_StageSpec < pPipelineSpec->nItems(); i_StageSpec++ ) {
     
@@ -227,7 +200,7 @@ bool Pipeline::bPulsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set up the job                                                             */
+/* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSetupJob(void)
 {
@@ -268,39 +241,6 @@ void Pipeline::vSetupJob(void)
   }
   
 }
-/*----------------------------------------------------------------------------*/
-//void Pipeline::vSetupJob(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-//
-//  Stage* pStage = pGet(0);
-//  i8 nOps = pStage->pOpVec_tbr()->nItems();
-//
-//  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-//    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
-//
-//    if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
-//      m_bPulsed = true;
-//      break;
-//    }
-//  }
-//
-//  if (! m_bPulsed)
-//    return;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-//    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
-//
-//    if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
-//      m_pOpToPulse = pOp;
-//      pOp->vPulsed(true);
-//      break;
-//    }
-//  }
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
@@ -312,13 +252,7 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     
     Stage* pStage = pGet(i_Stage);
-    
-//    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-//      Division* pDivision = pStage->pStageNdeVec()->pGet(i_Nde);
-//
-//      pDivision->vSpawnOperators(iSessionId, i_Nde);
-//    }
-    
+        
     for (i8 i_Ptn = 0; i_Ptn < pStage->nItems(); i_Ptn++) {
       Division* pDivision = pStage->pGet(i_Ptn);
       
@@ -327,11 +261,6 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
   }
   
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Pipeline);
 
 /*============================================================================*/
 /* end                                                                        */
