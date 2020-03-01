@@ -53,8 +53,8 @@ void Stage::vCancelOperators(i8 iThisNode)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
+  for (i8 i_Nde = 0; i_Nde < m_oDivisionVec.nItems(); i_Nde++) {
+    Division* pDivision = m_oDivisionVec.pGet(i_Nde);
     
     if (m_pStageSpec->bNodeTopo()) {
       
@@ -65,7 +65,7 @@ void Stage::vCancelOperators(i8 iThisNode)
       }
     }
     else {
-      NEVER_REACH;
+      //NEVER_REACH;
     }
   }
   
@@ -73,7 +73,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
     
     if (m_pStageSpec->bNodeTopo()) {
-      NEVER_REACH;
+      //NEVER_REACH;
     }
     else {
       i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
@@ -144,8 +144,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
 
   i8 nOps = 0;
 
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    Division* pDivision = m_oStageNdeVec.pGet(i_Nde);
+  for (i8 i_Nde = 0; i_Nde < m_oDivisionVec.nItems(); i_Nde++) {
+    Division* pDivision = m_oDivisionVec.pGet(i_Nde);
 
     if (m_pStageSpec->bNodeTopo()) {
       // skip if Op not for this node
@@ -154,7 +154,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      NEVER_REACH;
+      //NEVER_REACH;
     }
   }
 
@@ -162,7 +162,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
     Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
 
     if (m_pStageSpec->bNodeTopo()) {
-      NEVER_REACH;
+      //NEVER_REACH;
     }
     else {
       // skip if partition is not for this node
@@ -241,25 +241,19 @@ Division* Stage::pStageNde(i8 i_Nde)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Division* pDivision = nullptr;
+  Division* pDivision   = nullptr;
+  StageSpec* pStageSpec = nullptr;
   
-  for (i8 iNdeVec = 0; iNdeVec < m_oStageNdeVec.nItems(); iNdeVec++) {
-    pDivision = m_oStageNdeVec.pGet(iNdeVec);
-    if (pDivision->i_Nde() == i_Nde)
+  for (i8 iNdeVec = 0; iNdeVec < m_oDivisionVec.nItems(); iNdeVec++) {
+    pDivision  = m_oDivisionVec.pGet(iNdeVec);
+    pStageSpec = pDivision->pStageSpec();
+    
+    if (pStageSpec->bNodeTopo() &&
+        pDivision->i_Nde() == i_Nde)
       return pDivision;
   }
   
   return pDivision;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-StagePtnVec* Stage::pStageNdeVec(void)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  return &m_oStageNdeVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,11 +283,14 @@ Division* Stage::pDivision(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Division* pDivision = nullptr;
-  
+  Division*  pDivision = nullptr;
+  StageSpec* pStageSpec = nullptr;
+
   for (i8 iPtnVec = 0; iPtnVec < m_oDivisionVec.nItems(); iPtnVec++) {
-    pDivision = m_oDivisionVec.pGet(iPtnVec);
-    if (pDivision->i_Ptn() == i_Ptn)
+    pDivision  = m_oDivisionVec.pGet(iPtnVec);
+    pStageSpec = pDivision->pStageSpec();
+    
+    if (! pStageSpec->bNodeTopo() && pDivision->i_Ptn() == i_Ptn)
       return pDivision;
   }
   
@@ -310,7 +307,7 @@ void Stage::vStartPipeline(void)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Division*  pDivision = m_oStageNdeVec.pGet(0);
+  Division*  pDivision = m_oDivisionVec.pGet(0);
   StageSpec* pStageSpec = pDivision->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
@@ -347,7 +344,7 @@ void Stage::vCreateDivisions(void)
     case PO_ALL_NODES:
       RASSERT(m_pStageSpec->bNodeTopo());
       for (i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++)
-        m_oStageNdeVec.vAdd(new Division(m_pStageSpec, i_Nde));
+        m_oDivisionVec.vAdd(new Division(m_pStageSpec, i_Nde));
       break;
       
     case PO_ALL_PARTITIONS:
@@ -365,7 +362,7 @@ void Stage::vCreateDivisions(void)
                  m_pPipeline->iOriginatingNode());
         }
       }
-      m_oStageNdeVec.vAdd(new Division(m_pStageSpec, m_pPipeline->iOriginatingNode()));
+      m_oDivisionVec.vAdd(new Division(m_pStageSpec, m_pPipeline->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -390,8 +387,8 @@ void Stage::vCreateDivisions(void)
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
     
     // add the operator to the stages of the stageNdeVec
-    for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
-      Division* pStageNde = m_oStageNdeVec.pGet(i_Index);
+    for (i8 i_Index = 0; i_Index < m_oDivisionVec.nItems(); i_Index++) {
+      Division* pStageNde = m_oDivisionVec.pGet(i_Index);
       
       if (m_pStageSpec->bNodeTopo()) {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
@@ -400,7 +397,7 @@ void Stage::vCreateDivisions(void)
         m_oOpVec.vAdd(pOp);
       }
       else {
-        NEVER_REACH;
+        //NEVER_REACH;
       }
     }
     
@@ -409,7 +406,7 @@ void Stage::vCreateDivisions(void)
       Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
       
       if (m_pStageSpec->bNodeTopo()) {
-        NEVER_REACH;
+        //NEVER_REACH;
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
@@ -425,18 +422,18 @@ void Stage::vCreateDivisions(void)
   //   but not both
   //
 
-  if (m_oDivisionVec.nItems() && m_oStageNdeVec.nItems()) {
-    vTrace("Pipeline %s : %lld in DivisionVec ; %lld in StageNdeVec\n"_Stz,
-           m_pPipeline->szPipelineNm(),
-           m_oDivisionVec.nItems(),
-           m_oStageNdeVec.nItems());
-    NEVER_REACH;
-  }
-
-  RASSERT(  ! (m_oDivisionVec.nItems() && m_oStageNdeVec.nItems()) );
-  
-  RASSERT(    (  m_pStageSpec->bNodeTopo() && 0 == m_oDivisionVec.nItems())
-           || (! m_pStageSpec->bNodeTopo() && 0 == m_oStageNdeVec.nItems()) );
+//  if (m_oDivisionVec.nItems() && m_oDivisionVec.nItems()) {
+//    vTrace("Pipeline %s : %lld in DivisionVec ; %lld in StageNdeVec\n"_Stz,
+//           m_pPipeline->szPipelineNm(),
+//           m_oDivisionVec.nItems(),
+//           m_oDivisionVec.nItems());
+//    NEVER_REACH;
+//  }
+//
+//  RASSERT(  ! (m_oDivisionVec.nItems() && m_oDivisionVec.nItems()) );
+//  
+//  RASSERT(    (  m_pStageSpec->bNodeTopo() && 0 == m_oDivisionVec.nItems())
+//           || (! m_pStageSpec->bNodeTopo() && 0 == m_oDivisionVec.nItems()) );
 }
 
 /*============================================================================*/

@@ -15,7 +15,7 @@ namespace Pipelines
     OpVec       m_oOpVec;          // set of operators
     StagePtnVec m_oDivisionVec;    // set of stage-partitions
   
-    StagePtnVec m_oStageNdeVec;    // set of stage-nodes
+    //StagePtnVec m_oStageNdeVec;    // set of stage-nodes
     
     // must be last
     Footer m_xFooter;
@@ -40,7 +40,6 @@ namespace Pipelines
 
     // to be removed
     Division*    pStageNde(i8 i_Nde);
-    StagePtnVec* pStageNdeVec(void);
   
   private:
     void vCreateDivisions(void);

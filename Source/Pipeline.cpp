@@ -268,11 +268,11 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
     
     Stage* pStage = pGet(i_Stage);
     
-    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-      Division* pDivision = pStage->pStageNdeVec()->pGet(i_Nde);
-      
-      pDivision->vSpawnOperators(iSessionId, i_Nde);
-    }
+//    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
+//      Division* pDivision = pStage->pStageNdeVec()->pGet(i_Nde);
+//      
+//      pDivision->vSpawnOperators(iSessionId, i_Nde);
+//    }
     
     for (i8 i_Ptn = 0; i_Ptn < pStage->pDivisionVec()->nItems(); i_Ptn++) {
       Division* pDivision = pStage->pDivisionVec()->pGet(i_Ptn);
