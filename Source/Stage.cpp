@@ -336,25 +336,13 @@ void Stage::vCreateDivisions(void)
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < nItems(); i_Index++) {
-      Division* pStageNde = pGet(i_Index);
+      Division* pDivision = pGet(i_Index);
       
       if (m_pStageSpec->bNodeTopo()) {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vNode(pStageNde->i_Nde());
-        pStageNde->vAdd(pOp);
+        pOp->vNode(pDivision->i_Nde());
+        pDivision->vAdd(pOp);
         m_oOpVec.vAdd(pOp);
-      }
-      else {
-        //NEVER_REACH;
-      }
-    }
-    
-    // add the operator to the stages of the stagePtnVec
-    for (i8 i_Ptn = 0; i_Ptn < nItems(); i_Ptn++) {
-      Division* pDivision = pGet(i_Ptn);
-      
-      if (m_pStageSpec->bNodeTopo()) {
-        //NEVER_REACH;
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
@@ -364,24 +352,6 @@ void Stage::vCreateDivisions(void)
       }
     }
   }
-  
-  //
-  // either the division vector is used, or the stage node vector is used
-  //   but not both
-  //
-
-//  if (nItems() && nItems()) {
-//    vTrace("Pipeline %s : %lld in DivisionVec ; %lld in StageNdeVec\n"_Stz,
-//           m_pPipeline->szPipelineNm(),
-//           nItems(),
-//           nItems());
-//    NEVER_REACH;
-//  }
-//
-//  RASSERT(  ! (nItems() && nItems()) );
-//  
-//  RASSERT(    (  m_pStageSpec->bNodeTopo() && 0 == nItems())
-//           || (! m_pStageSpec->bNodeTopo() && 0 == nItems()) );
 }
 
 /*============================================================================*/
