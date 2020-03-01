@@ -5,7 +5,7 @@
 
 namespace Pipelines
 {
-  class Division : public VectorNL_t<CN_DIVISION,Op,C_MAX_OPS>
+  class Division : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
   {
   private:
     s32        m_sDivisionNm; // synthesised name of this division

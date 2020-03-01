@@ -66,7 +66,6 @@ enum eCN : u2 // Class Number
   /*  40 0x028      920B Heap:S */ CN_DICPATH,
   /*  41 0x029      152B Heap:S */ CN_DICSTACK,
   /*  42 0x02A      680B Heap:S */ CN_DIR,
-  /* 246 0x0F6     2112B Heap:S */ CN_DIVISION,
   /*  99 0x063       16B Heap:I */ CN_DTEVAL,
   /*  44 0x02C       56B Heap:S */ CN_DYNAMO,
   
@@ -294,6 +293,7 @@ enum eCN : u2 // Class Number
   /* 253 0x0FD       64B Heap:I */ CN_STEPACCUM,
   /* 254 0x0FE   131288B Heap:L */ CN_STEPTIMING,
   /* 255 0x0FF       80B Heap:L */ CN_STMT_SELECT,
+  /* 246 0x0F6     2112B Heap:S */ CN_STRAND,
   /* 256 0x100    47800B Heap:L */ CN_STREAMDEF,
   /* 257 0x101       56B Heap:I */ CN_STRING_T,
   /* 258 0x102       24B Heap:I */ CN_STZVAL,
@@ -399,7 +399,6 @@ static Stz* aCN[]
   /*  40 0x028 */ "DICPATH"_Stz,             // CN_DICPATH
   /*  41 0x029 */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  42 0x02A */ "DIR"_Stz,                 // CN_DIR
-  /* 246 0x0F6 */ "DIVISION"_Stz,            // CN_DIVISION
   /*  99 0x063 */ "DTEVAL"_Stz,              // CN_DTEVAL
   /*  44 0x02C */ "DYNAMO"_Stz,              // CN_DYNAMO
   
@@ -627,6 +626,7 @@ static Stz* aCN[]
   /* 253 0x0FD */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 254 0x0FE */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* 255 0x0FF */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
+  /* 246 0x0F6 */ "STRAND"_Stz,              // CN_STRAND
   /* 256 0x100 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 257 0x101 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 258 0x102 */ "STZVAL"_Stz,              // CN_STZVAL

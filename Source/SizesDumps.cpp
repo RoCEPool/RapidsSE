@@ -67,7 +67,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_DICPATH
   /* */ &DicStack::vDump,        // CN_DICSTACK
   /* */ &Dump::vInvalid,         // CN_DIR
-  /* */ &Dump::vInvalid,         // CN_DIVISION
   /* */ &Dump::vInvalid,         // CN_DTEVAL
   /* */ &Dump::vDummy,           // CN_DYNAMO
 
@@ -295,6 +294,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_STEPACCUM
   /* */ &StepTiming::vDump,      // CN_STEPTIMING
   /* */ &Dump::vInvalid,         // CN_STMT_SELECT
+  /* */ &Dump::vInvalid,         // CN_STRAND
   /* */ &Dump::vInvalid,         // CN_STREAMDEF
   /* */ &Dump::vInvalid,         // CN_STRING_T
   /* */ &Dump::vInvalid,         // CN_STZVAL
@@ -401,7 +401,6 @@ i8 giClassSize[]
   /* */ sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
-  /* */ sizeof(Division),           // CN_DIVISION
   /* */ sizeof(DteVal),             // CN_DTEVAL
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
@@ -629,6 +628,7 @@ i8 giClassSize[]
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
+  /* */ sizeof(Division),           // CN_STRAND
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL
@@ -735,7 +735,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* */ HT_TRANSIENT_SMALL,   // CN_DIR
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_DIVISION
   /* */ HT_INVALID,           // CN_DTEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_DYNAMO
 
@@ -963,6 +962,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_STATISTICS
   /* */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING
   /* */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_STRAND
   /* */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* */ HT_INVALID,           // CN_STRING_T
   /* */ HT_INVALID,           // CN_STZVAL

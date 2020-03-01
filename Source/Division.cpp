@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Pipelines,Division,CN_DIVISION)
-__aNewFunction(Division,CN_DIVISION)
-__vDeleteFunction(Division,CN_DIVISION)
+__pCastFunction(Pipelines,Division,CN_STRAND)
+__aNewFunction(Division,CN_STRAND)
+__vDeleteFunction(Division,CN_STRAND)
 __aFooterFunction(Division)
 
 
@@ -20,7 +20,7 @@ __aFooterFunction(Division)
 /*----------------------------------------------------------------------------*/
 Division::Division(StageSpec* pStageSpec, i8 i_Div)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
   m_pStageSpec = pStageSpec;
   m_i_Div      = i_Div;
@@ -41,9 +41,9 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
   
   vSynthesiseName();
 
-  _checkInitialised_(CN_DIVISION);
+  _checkInitialised_(CN_STRAND);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
 /*----------------------------------------------------------------------------*/
 Division::~Division(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ Division::~Division(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Division::vDump(void)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   if (m_pStageSpec->bNodeTopo()) {
     vTrace("  [%02lld] (N%lld) Node-Division %s:\n"_Stz,
@@ -91,7 +91,7 @@ void Division::vDump(void)
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Nde(void)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   return m_i_Nde;
 }
@@ -101,7 +101,7 @@ i8 Division::i_Nde(void)
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Ptn(void)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   return m_i_Ptn;
 }
@@ -111,7 +111,7 @@ i8 Division::i_Ptn(void)
 /*----------------------------------------------------------------------------*/
 i8 Division::i_Slt(void)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   return m_i_Slt;
 }
@@ -121,7 +121,7 @@ i8 Division::i_Slt(void)
 /*----------------------------------------------------------------------------*/
 StageSpec* Division::pStageSpec(void)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   return m_pStageSpec;
 }
@@ -131,7 +131,7 @@ StageSpec* Division::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   i8 iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
   
@@ -153,7 +153,7 @@ void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
 /*----------------------------------------------------------------------------*/
 void Division::vSynthesiseName(void)
 {
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
  
   if (m_pStageSpec->bNodeTopo()) {
     m_sDivisionNm.vSprint("div_N%lld_of_%s"_Stz,
