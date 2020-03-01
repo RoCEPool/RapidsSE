@@ -75,6 +75,28 @@ void Stage::vCancelOperators(i8 iThisNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get division for given node                                                */
+/*----------------------------------------------------------------------------*/
+Division* Stage::pGetNodeDivision(i8 i_Nde)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Division* pDivision   = nullptr;
+  StageSpec* pStageSpec = nullptr;
+  
+  for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
+    pDivision  = pGet(iNdeVec);
+    pStageSpec = pDivision->pStageSpec();
+    
+    if (pStageSpec->bNodeTopo() &&
+        pDivision->i_Nde() == i_Nde)
+      return pDivision;
+  }
+  
+  return pDivision;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 void Stage::vDump(Pipeline* pPipeline)
@@ -129,8 +151,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
 Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
-  Division* pStageNde = nullptr;
-  Division* pStagePtn = nullptr;
+  Division* pNdeDivision = nullptr;
+  Division* pPtnDivision = nullptr;
   
   switch (eTopologyX) {
       
@@ -138,30 +160,30 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      pStageNde = this->pStageNde(iNde);
-      pOp = pStageNde->pGet(iOp);
+      pNdeDivision = this->pGetNodeDivision(iNde);
+      pOp = pNdeDivision->pGet(iOp);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-        pStagePtn = pGet(iPtn);
-        pOp = pStagePtn->pGet(iOp);
+        pPtnDivision = pGet(iPtn);
+        pOp = pPtnDivision->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pStageNde = this->pStageNde(iNde);
-      pOp = pStageNde->pGet(iOp);
+      pNdeDivision = this->pGetNodeDivision(iNde);
+      pOp = pNdeDivision->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pStagePtn = pGet(iPtn);
-      pOp = pStagePtn->pGet(iOp);
+      pPtnDivision = pGet(iPtn);
+      pOp = pPtnDivision->pGet(iOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      pStagePtn = pGet(0);
-      ASSERT(pStagePtn->i_Ptn() == iPtn);
-      pOp = pStagePtn->pGet(iOp);
+      pPtnDivision = pGet(0);
+      ASSERT(pPtnDivision->i_Ptn() == iPtn);
+      pOp = pPtnDivision->pGet(iOp);
       break;
       
     default:
@@ -169,28 +191,6 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
   }
   
   return pOp;  
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage node for given node                                              */
-/*----------------------------------------------------------------------------*/
-Division* Stage::pStageNde(i8 i_Nde)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  Division* pDivision   = nullptr;
-  StageSpec* pStageSpec = nullptr;
-  
-  for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
-    pDivision  = pGet(iNdeVec);
-    pStageSpec = pDivision->pStageSpec();
-    
-    if (pStageSpec->bNodeTopo() &&
-        pDivision->i_Nde() == i_Nde)
-      return pDivision;
-  }
-  
-  return pDivision;
 }
 
 /*----------------------------------------------------------------------------*/
