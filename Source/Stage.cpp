@@ -136,18 +136,6 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      //NEVER_REACH;
-    }
-  }
-
-  for (i8 i_Ptn = 0; i_Ptn < nItems(); i_Ptn++) {
-    Division* pDivision = pGet(i_Ptn);
-
-    if (m_pStageSpec->bNodeTopo()) {
-      //NEVER_REACH;
-    }
-    else {
-      // skip if partition is not for this node
       i8 iPartitionNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
       if (iPartitionNode == iNode) {
         nOps += pDivision->nItems();
