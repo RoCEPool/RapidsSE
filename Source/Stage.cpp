@@ -38,7 +38,6 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 Stage::~Stage(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  m_oOpVec.vClear();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,21 +87,11 @@ void Stage::vDump(Pipeline* pPipeline)
          m_sStageNm.szStz(),
          aPO[m_pStageSpec->eTopology()]);
 
-//  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems(); i_Op++) {
-//    Op* pOp = m_oOpVec.pGet(i_Op);
-//
-//    pOp->vDump(i_Op);
-//  }
-//
-//  vTrace("*******************************************************\n"_Stz);
-
   for (i8 i_Div = 0; i_Div < nItems(); i_Div++) {
     Division* pDiv = pGet(i_Div);
   
     pDiv->vDump();
   }
-
-//  vTrace("*******************************************************\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,13 +321,11 @@ void Stage::vCreateDivisions(void)
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
         pOp->vNode(pDivision->i_Nde());
         pDivision->vAdd(pOp);
-        m_oOpVec.vAdd(pOp);
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
         pOp->vPartition(pDivision->i_Ptn());
         pDivision->vAdd(pOp);
-        m_oOpVec.vAdd(pOp);
       }
     }
   }

@@ -8,12 +8,10 @@ namespace Pipelines
   class Stage : public VectorNL_t<CN_STAGE,Division,C_MAX_STAGES>
   {
   private:
-    s32         m_sStageNm;        // stage name
-    StageSpec*  m_pStageSpec;      // specification of this stage
-    Pipeline*   m_pPipeline;       // which pipeline
+    s32         m_sStageNm;   // stage name
+    StageSpec*  m_pStageSpec; // specification of this stage
+    Pipeline*   m_pPipeline;  // which pipeline
   
-    OpVec       m_oOpVec;          // set of operators
-      
     // must be last
     Footer m_xFooter;
 
