@@ -234,33 +234,73 @@ void Pipeline::vSetupJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   Stage* pStage = pGet(0);
-  i8 nOps = pStage->pOpVec_tbr()->nItems();
   
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
-    
-    if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
-      m_bPulsed = true;
-      break;
+  i8 nDivs = pStage->nItems();
+  for (i8 i_Div = 0; i_Div < nDivs; i_Div++) {
+    Division* pDivision = pStage->pGet(i_Div);
+
+    i8 nOps = pDivision->nItems();
+    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+      Op* pOp = pDivision->pGet(i_Op);
+      
+      if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
+        m_bPulsed = true;
+        break;
+      }
     }
   }
   
-  if (! m_bPulsed)
-    return;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
-    
-    if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
-      m_pOpToPulse = pOp;
-      pOp->vPulsed(true);
-      break;
+  for (i8 i_Div = 0; i_Div < nDivs; i_Div++) {
+    Division* pDivision = pStage->pGet(i_Div);
+
+    i8 nOps = pDivision->nItems();
+    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+      Op* pOp = pDivision->pGet(i_Op);
+
+      if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
+        m_pOpToPulse = pOp;
+        pOp->vPulsed(true);
+        break;
+      }
     }
   }
   
 }
+/*----------------------------------------------------------------------------*/
+//void Pipeline::vSetupJob(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+//
+//  Stage* pStage = pGet(0);
+//  i8 nOps = pStage->pOpVec_tbr()->nItems();
+//
+//  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+//    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
+//
+//    if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
+//      m_bPulsed = true;
+//      break;
+//    }
+//  }
+//
+//  if (! m_bPulsed)
+//    return;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+//    Op* pOp = pStage->pOpVec_tbr()->pGet(i_Op);
+//
+//    if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
+//      m_pOpToPulse = pOp;
+//      pOp->vPulsed(true);
+//      break;
+//    }
+//  }
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
