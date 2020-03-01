@@ -110,13 +110,12 @@ void Pipeline::vDump(void)
     
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
     
-  vTrace("Pipeline Job:\n\n"_Stz);
+  vTrace("Pipeline Job %s :\n"_Stz,m_sPipelineNm.szStz());
     
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
     Stage* pStage = pGet(i_Stage);
-    vTrace("\n[%lld] Stage %s : \n"_Stz, i_Stage, pStage->szStageNm());
     pStage->vDump(this);
   }
   

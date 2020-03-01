@@ -363,7 +363,8 @@ bool Dynamo::bCollectStage(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pStageSpec = new StageSpec(m_pTkn->szTerm(),m_pPipelineSpec);
+  i8 i_Stage = m_pPipelineSpec->nItems();
+  m_pStageSpec = new StageSpec(m_pTkn->szTerm(),i_Stage,m_pPipelineSpec);
   m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
