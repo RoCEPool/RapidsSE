@@ -138,7 +138,6 @@ void Op::vDump(i8 i_Op)
   
   // get the next op
   i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
-  //Op* pNextOp = pNextStage->pOpVec_tbr()->pGet(iNextOp);
   Division* pNextDivision = pNextStage->pGet(0);
   Op* pNextOp = pNextDivision->pGet(iNextOp);
 

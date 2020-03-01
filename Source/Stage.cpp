@@ -135,16 +135,6 @@ i8 Stage::nOpsOnNode(i8 iNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get opeVec                                                                 */
-/*----------------------------------------------------------------------------*/
-OpVec* Stage::pOpVec_tbr(void)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  return &m_oOpVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
 Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
