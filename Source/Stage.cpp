@@ -52,21 +52,21 @@ void Stage::vCancelOperators(i8 iThisNode)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   for (i8 i_Nde = 0; i_Nde < nItems(); i_Nde++) {
-    Strand* pDivision = pGet(i_Nde);
+    Strand* pStrand = pGet(i_Nde);
     
     if (m_pStageSpec->bNodeTopo()) {
       
-      if (pDivision->i_Nde() == iThisNode) {
-        Op* pOp = pDivision->pGet(0);
+      if (pStrand->i_Nde() == iThisNode) {
+        Op* pOp = pStrand->pGet(0);
         RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
         pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
       }
     }
     else {
-      i8 iPtnNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
+      i8 iPtnNode = TablePtn::iPartitionToNode(pStrand->i_Ptn());
       
       if (iPtnNode == iThisNode) {
-        Op* pOp = pDivision->pGet(0);
+        Op* pOp = pStrand->pGet(0);
         RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
         pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
       }
@@ -81,19 +81,19 @@ Strand* Stage::pGetNodeDivision(i8 i_Nde)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Strand* pDivision   = nullptr;
+  Strand* pStrand   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
   for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
-    pDivision  = pGet(iNdeVec);
-    pStageSpec = pDivision->pStageSpec();
+    pStrand  = pGet(iNdeVec);
+    pStageSpec = pStrand->pStageSpec();
     
     if (pStageSpec->bNodeTopo() &&
-        pDivision->i_Nde() == i_Nde)
-      return pDivision;
+        pStrand->i_Nde() == i_Nde)
+      return pStrand;
   }
   
-  return pDivision;
+  return pStrand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,10 +109,10 @@ void Stage::vDump(Pipeline* pPipeline)
          m_sStageNm.szStz(),
          aPO[m_pStageSpec->eTopology()]);
 
-  for (i8 i_Div = 0; i_Div < nItems(); i_Div++) {
-    Strand* pDiv = pGet(i_Div);
+  for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
+    Strand* pStrand = pGet(i_Strand);
   
-    pDiv->vDump();
+    pStrand->vDump();
   }
 }
 
@@ -126,18 +126,18 @@ i8 Stage::nOpsOnNode(i8 iNode)
   i8 nOps = 0;
 
   for (i8 i_Nde = 0; i_Nde < nItems(); i_Nde++) {
-    Strand* pDivision = pGet(i_Nde);
+    Strand* pStrand = pGet(i_Nde);
 
     if (m_pStageSpec->bNodeTopo()) {
       // skip if Op not for this node
-      if (pDivision->i_Nde() == iNode) {
-        nOps += pDivision->nItems();
+      if (pStrand->i_Nde() == iNode) {
+        nOps += pStrand->nItems();
       }
     }
     else {
-      i8 iPartitionNode = TablePtn::iPartitionToNode(pDivision->i_Ptn());
+      i8 iPartitionNode = TablePtn::iPartitionToNode(pStrand->i_Ptn());
       if (iPartitionNode == iNode) {
-        nOps += pDivision->nItems();
+        nOps += pStrand->nItems();
       }
     }
   }
@@ -213,14 +213,14 @@ void Stage::vStartPipeline(void)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Strand*  pDivision = pGet(0);
-  StageSpec* pStageSpec = pDivision->pStageSpec();
+  Strand*  pStrand = pGet(0);
+  StageSpec* pStageSpec = pStrand->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pDivision->i_Nde() == AM::pGrid()->iThisNode()) {
+      pStrand->i_Nde() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
-    Op* pOp = pDivision->pGet(0);
+    Op* pOp = pStrand->pGet(0);
     RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
     
     // append a STARTMARKER onto first operator
@@ -294,17 +294,17 @@ void Stage::vCreateDivisions(void)
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < nItems(); i_Index++) {
-      Strand* pDivision = pGet(i_Index);
+      Strand* pStrand = pGet(i_Index);
       
       if (m_pStageSpec->bNodeTopo()) {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vNode(pDivision->i_Nde());
-        pDivision->vAdd(pOp);
+        pOp->vNode(pStrand->i_Nde());
+        pStrand->vAdd(pOp);
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vPartition(pDivision->i_Ptn());
-        pDivision->vAdd(pOp);
+        pOp->vPartition(pStrand->i_Ptn());
+        pStrand->vAdd(pOp);
       }
     }
   }
