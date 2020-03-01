@@ -439,27 +439,36 @@ void Stage::vCreateDivisions(void)
   // populate the opVec and StageNde's and stagePtn's from the opSpec
   
   for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-    
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
       Division* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
-      Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-      pOp->vNode(pStageNde->i_Nde());
-      pStageNde->vAdd(pOp);
-      m_oOpVec.vAdd(pOp);
+      if (m_pStageSpec->bNodeTopo()) {
+        Op* pOp = new Op(pOpSpec,this,m_pPipeline);
+        pOp->vNode(pStageNde->i_Nde());
+        pStageNde->vAdd(pOp);
+        m_oOpVec.vAdd(pOp);
+      }
+      else {
+        NEVER_REACH;
+      }
     }
     
     // add the operator to the stages of the stagePtnVec
     for (i8 i_Ptn = 0; i_Ptn < m_oDivisionVec.nItems(); i_Ptn++) {
-      Op* pOp = new Op(pOpSpec,this,m_pPipeline);
       Division* pDivision = m_oDivisionVec.pGet(i_Ptn);
       
-      pOp->vPartition(pDivision->i_Ptn());
-      pDivision->vAdd(pOp);
-      m_oOpVec.vAdd(pOp);
+      if (m_pStageSpec->bNodeTopo()) {
+        NEVER_REACH;
+      }
+      else {
+        Op* pOp = new Op(pOpSpec,this,m_pPipeline);
+        pOp->vPartition(pDivision->i_Ptn());
+        pDivision->vAdd(pOp);
+        m_oOpVec.vAdd(pOp);
+      }
     }
   }
   
