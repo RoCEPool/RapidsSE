@@ -69,14 +69,14 @@ void Strand::vDump(void)
     vTrace("  [%02lld] (N%lld) Node-Strand %s:\n"_Stz,
            m_i_Strand,
            m_i_Nde,
-           m_sDivisionNm.szStz());
+           m_sStrandNm.szStz());
   }
   else {
     vTrace("  [%02lld] (N%lld,S%02lld) Partition-Strand %s:\n"_Stz,
            m_i_Strand,
            m_i_Nde,
            m_i_Slt,
-           m_sDivisionNm.szStz());
+           m_sStrandNm.szStz());
   }
 
   for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
@@ -156,12 +156,12 @@ void Strand::vSynthesiseName(void)
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
  
   if (m_pStageSpec->bNodeTopo()) {
-    m_sDivisionNm.vSprint("div_N%lld_of_%s"_Stz,
+    m_sStrandNm.vSprint("_strand_N%lld_of_%s"_Stz,
                           m_i_Nde,
                           m_pStageSpec->szStageNm());
   }
   else {
-    m_sDivisionNm.vSprint("div_N%lldS%lld_of_%s"_Stz,
+    m_sStrandNm.vSprint("_strand_N%lldS%lld_of_%s"_Stz,
                           m_i_Nde,
                           m_i_Slt,
                           m_pStageSpec->szStageNm());

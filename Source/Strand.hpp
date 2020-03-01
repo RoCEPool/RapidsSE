@@ -8,7 +8,7 @@ namespace Pipelines
   class Strand : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
   {
   private:
-    s32        m_sDivisionNm; // synthesised name of this division
+    s32        m_sStrandNm;   // synthesised name of this strand
     i8         m_i_Strand;    // which strand of stage
     StageSpec* m_pStageSpec;  // this is a division of which stage
   
