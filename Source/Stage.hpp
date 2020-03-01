@@ -24,15 +24,15 @@ namespace Pipelines
   
     void vDump(Pipeline* pPipeline);
     
-    void      vCancelOperators(i8 iThisNode);
-    Strand* pGetNodeDivision(i8 i_Nde);
-    i8        nOpsOnNode(i8 iNode);
-    Op*       pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
-    Stz*      szStageNm(void);
-    void      vStartPipeline(void);
+    void    vCancelOperators(i8 iThisNode);
+    Strand* pGetNodeStrand(i8 i_Nde);
+    i8      nOpsOnNode(i8 iNode);
+    Op*     pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
+    Stz*    szStageNm(void);
+    void    vStartPipeline(void);
   
   private:
-    void vCreateDivisions(void);
+    void    vCreateStrands(void);
 
     Footer* aFooter(void);
   };

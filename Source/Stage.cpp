@@ -27,7 +27,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 
   _checkInitialised_(CN_STAGE);
 
-  vCreateDivisions();
+  vCreateStrands();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
 }
@@ -75,9 +75,9 @@ void Stage::vCancelOperators(i8 iThisNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get division for given node                                                */
+/* get strand for given node                                                  */
 /*----------------------------------------------------------------------------*/
-Strand* Stage::pGetNodeDivision(i8 i_Nde)
+Strand* Stage::pGetNodeStrand(i8 i_Nde)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -160,7 +160,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      pNdeDivision = this->pGetNodeDivision(iNde);
+      pNdeDivision = this->pGetNodeStrand(iNde);
       pOp = pNdeDivision->pGet(iOp);
       break;
       
@@ -171,7 +171,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeDivision = this->pGetNodeDivision(iNde);
+      pNdeDivision = this->pGetNodeStrand(iNde);
       pOp = pNdeDivision->pGet(iOp);
       break;
       
@@ -233,9 +233,9 @@ void Stage::vStartPipeline(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create divisions of this stage based on topology                           */
+/* create the strands for this stage based on stage topology                  */
 /*----------------------------------------------------------------------------*/
-void Stage::vCreateDivisions(void)
+void Stage::vCreateStrands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
