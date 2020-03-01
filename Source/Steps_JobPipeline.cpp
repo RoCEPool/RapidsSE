@@ -111,6 +111,9 @@ void Step::vJob_PipelineCompile(void)
   bool bResult = m_pRegSet->m_xpDynamo->bCompile();
   
   if ( ! bResult) {
+    PipelineSpec* pPipelineSpec = m_pRegSet->m_xpDynamo->pPipelineSpec();
+    delete pPipelineSpec;
+    
     delete *m_pRegSet->m_xpDynamo;
     m_pRegSet->m_xpDynamo = nullptr;
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
