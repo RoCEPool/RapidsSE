@@ -204,27 +204,6 @@ Stz* Stage::szStageNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage ptn for given ptn                                                */
-/*----------------------------------------------------------------------------*/
-Division* Stage::pDivision(i8 i_Ptn)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  Division*  pDivision = nullptr;
-  StageSpec* pStageSpec = nullptr;
-
-  for (i8 iPtnVec = 0; iPtnVec < nItems(); iPtnVec++) {
-    pDivision  = pGet(iPtnVec);
-    pStageSpec = pDivision->pStageSpec();
-    
-    if (! pStageSpec->bNodeTopo() && pDivision->i_Ptn() == i_Ptn)
-      return pDivision;
-  }
-  
-  return pDivision;
-}
-
-/*----------------------------------------------------------------------------*/
 /* send startMarker to startop of the stage                                   */
 /*----------------------------------------------------------------------------*/
 void Stage::vStartPipeline(void)
