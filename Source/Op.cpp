@@ -905,7 +905,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           
         case XK_NORMAL: {
       
-          for (i_Ptn = 0; i_Ptn < pNextStage->pDivisionVec()->nItems(); i_Ptn++) {
+          for (i_Ptn = 0; i_Ptn < pNextStage->nItems(); i_Ptn++) {
             
             // xmitNode is the partition node
             m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
