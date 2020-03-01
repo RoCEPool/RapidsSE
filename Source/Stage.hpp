@@ -5,7 +5,7 @@
 
 namespace Pipelines
 {
-  class Stage : public VectorNL_t<CN_STAGE,Strand,C_MAX_STAGES>
+  class Stage : public VectorNL_t<CN_STAGE,Strand,C_MAX_STRANDS>
   {
   private:
     s32         m_sStageNm;   // stage name
