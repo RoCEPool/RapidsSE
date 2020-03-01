@@ -121,6 +121,48 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump contents                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vDump(i8 i_Op)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  s256 sArgs;
+  
+  EnameSet* pEnameSet = this->pEnameSet();
+  pEnameSet->vSprint(sArgs);
+  
+  // get the next stage
+  i8 iNextStage = pEnameSet->iValue("<nextStage>"_Stz);
+  Stage* pNextStage = m_pPipeline->pGet(iNextStage);
+  
+  // get the next op
+  i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
+  Op* pNextOp = pNextStage->pOpVec()->pGet(iNextOp);
+  
+  // get the cross topology
+  ePX eTopology = (ePX)(pEnameSet->iValue("<topology>"_Stz));
+  
+  // get the left EOS markers for consume op
+  //! ALKA: right EOS markers ???
+  i8 iConsumeXmits =  pEnameSet->iValue("<consumeXmits>"_Stz);
+  i8 iLeftEosMarkers = iConsumeXmits ? iConsumeXmits : nLeftEosMarkers();
+  
+  vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-20s EosMarkers(L%lld R%lld) :%-10s %s %s}\n"_Stz,
+         i_Op,
+         this->nNode(),
+         this->nPartition(),
+         this->szOpNm(),
+         sArgs.szStz(),
+         iLeftEosMarkers,
+         this->nRightEosMarkers(),
+         pNextOp->szOpNm(),
+         this->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
+         aPX[eTopology]
+        );
+}
+
+/*----------------------------------------------------------------------------*/
 /* set ack job on end marker                                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vAckJob(void)

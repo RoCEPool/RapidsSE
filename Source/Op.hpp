@@ -50,6 +50,8 @@ namespace Pipelines
   
     Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
+  
+    void vDump(i8 i_Op);
 
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
