@@ -28,12 +28,12 @@ void StageSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(Stz* szStageNm, i8 i_Stage, PipelineSpec* pPipelineSpec)
+StageSpec::StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm      = szStageNm;
-  m_i_Stage       = i_Stage;
+  m_i_StageSpec   = i_StageSpec;
   m_pPipelineSpec = pPipelineSpec;
   
   m_eTopology     = PO_NONE;
@@ -63,12 +63,12 @@ StageSpec::~StageSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
-i8 StageSpec::i_Stage(void)
+i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
 
-  return m_i_Stage;
+  return m_i_StageSpec;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -9,10 +9,10 @@ namespace PipelineSpecs
   {
   private:
     s32        m_sOpNm;
+    i8         m_i_OpSpec;
     StageSpec* m_pStageSpec;
   
     bool       m_bAppendRight;
-    i8         m_i_OpSpec;
     eXK        m_eXmitKind;
     
     EnameSet   m_oEnameSet;

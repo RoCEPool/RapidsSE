@@ -23,8 +23,7 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIVISION,_FOOTER_);
   
   m_pStageSpec = pStageSpec;
-  
-  m_i_Div = i_Div;
+  m_i_Div      = i_Div;
   
   // determine the node,slot coordinates of this division
   if (m_pStageSpec->bNodeTopo()) {
@@ -40,7 +39,7 @@ Division::Division(StageSpec* pStageSpec, i8 i_Div)
     m_i_Slt = TablePtn::iPartitionToSlot(m_i_Ptn);
   }
   
-  vFormName();
+  vSynthesiseName();
 
   _checkInitialised_(CN_DIVISION);
   
@@ -90,23 +89,6 @@ i8 Division::i_Slt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* form name of this division                                                 */
-/*----------------------------------------------------------------------------*/
-void Division::vFormName(void)
-{
-  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
- 
-  if (m_pStageSpec->bNodeTopo()) {
-    m_sDivisionNm.vSprint("%s[%lld]_N%lld"_Stz,
-                          m_pStageSpec->szStageNm(),m_i_Div,m_i_Nde);
-  }
-  else {
-    m_sDivisionNm.vSprint("%s[%lld]_N%lldS%lld"_Stz,
-                          m_pStageSpec->szStageNm(),m_i_Div,m_i_Nde,m_i_Slt);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stage spec for this division                                           */
 /*----------------------------------------------------------------------------*/
 StageSpec* Division::pStageSpec(void)
@@ -135,6 +117,23 @@ void Division::vSpawnOperators(i8 iSessionId, i8 iNode)
       
       ASSERT(bSpawned);
     }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* synthesise name of this division                                           */
+/*----------------------------------------------------------------------------*/
+void Division::vSynthesiseName(void)
+{
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+ 
+  if (m_pStageSpec->bNodeTopo()) {
+    m_sDivisionNm.vSprint("%s[%lld]_N%lld"_Stz,
+                          m_pStageSpec->szStageNm(),m_i_Div,m_i_Nde);
+  }
+  else {
+    m_sDivisionNm.vSprint("%s[%lld]_N%lldS%lld"_Stz,
+                          m_pStageSpec->szStageNm(),m_i_Div,m_i_Nde,m_i_Slt);
   }
 }
 
