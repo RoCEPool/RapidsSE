@@ -107,6 +107,16 @@ void Division::vFormName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stage spec for this division                                           */
+/*----------------------------------------------------------------------------*/
+StageSpec* Division::pStageSpec(void)
+{
+  _precondition_(_MAGIC_,CN_DIVISION,_FOOTER_);
+  
+  return m_pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
 void Division::vSpawnOperators(i8 iSessionId, i8 iNode)

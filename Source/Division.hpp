@@ -33,6 +33,7 @@ namespace Pipelines
     i8     i_Slt(void);
   
     void   vFormName(void);
+    StageSpec* pStageSpec(void);
     void   vSpawnOperators(i8 iSessionId, i8 iNode);
   
     Footer* aFooter(void);

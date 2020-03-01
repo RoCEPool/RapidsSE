@@ -307,16 +307,20 @@ void Stage::vStartPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
+  // would the start marker always be on ORIGIN???
+  
   // get first stage from stageNdeVec
-  Division* pDivision = m_oStageNdeVec.pGet(0);
-
-  if (pDivision->i_Nde() == AM::pGrid()->iThisNode()) {
+  Division*  pDivision = m_oStageNdeVec.pGet(0);
+  StageSpec* pStageSpec = pDivision->pStageSpec();
+  
+  if (pStageSpec->bNodeTopo() &&
+      pDivision->i_Nde() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
     Op* pOp = pDivision->pGet(0);
     RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
     
-    // append a STARTMARKER
+    // append a STARTMARKER onto first operator
     pOp->vAppendLeft(new Marker(OM_STARTMARKER));
   }
 }
