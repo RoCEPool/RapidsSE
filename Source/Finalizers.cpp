@@ -199,7 +199,6 @@ pFINALIZE *gpFinalize[]
   /* 28 */ &Finalize::vUndefined,         // CN_OP
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPEC
-  /* 28 */ &Finalize::vUndefined,         // CN_OPVEC
 
   /*    */ &Finalize::vUndefined,         // CN__P__
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
