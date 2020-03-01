@@ -5,7 +5,7 @@
 
 namespace Pipelines
 {
-  class StagePtnVec : public VectorNL_t<CN_STAGEPTNVEC,Division,C_MAX_STAGES>
+class StagePtnVec : public VectorNL_t<CN_STAGEPTNVEC,Division,C_MAX_STAGES>
   {
   private:
   
