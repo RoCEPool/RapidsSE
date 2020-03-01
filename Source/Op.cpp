@@ -138,8 +138,10 @@ void Op::vDump(i8 i_Op)
   
   // get the next op
   i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
-  Op* pNextOp = pNextStage->pOpVec_tbr()->pGet(iNextOp);
-  
+  //Op* pNextOp = pNextStage->pOpVec_tbr()->pGet(iNextOp);
+  Division* pNextDivision = pNextStage->pGet(0);
+  Op* pNextOp = pNextDivision->pGet(iNextOp);
+
   // get the cross topology
   ePX eTopology = (ePX)(pEnameSet->iValue("<topology>"_Stz));
   
@@ -586,7 +588,8 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
   
   if (AM::szJobName(m_pOpJob)->bSame("xmitop"_Stz)) {
     vSendJobOperand(pOperand, bSet);
-  } else {
+  }
+  else {
     
       // get the next stage the xmit is supposed to xmit to
       Stage* pStage = m_pPipeline->pGet(m_iNextStage);
