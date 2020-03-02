@@ -186,6 +186,9 @@ namespace Oblique
     static void vJobContentDump(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
+    static void vIncRowsInvalid(Job* pJob);
+    static void vIncRowsProcessed(Job* pJob);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
   

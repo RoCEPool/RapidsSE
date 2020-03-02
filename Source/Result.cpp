@@ -142,6 +142,8 @@ void Result::vPrintLoadResponse(void)
     return;
   }
   
+  //vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Responses
   i8 iRowsProcessed = 0;
@@ -181,6 +183,34 @@ void Result::vPrintParticipantErrors(void)
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
     return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Responses
+  i8 iRowsProcessed = 0;
+  i8 iRowsInvalid   = 0;
+  i8 iRowsSkipped   = 0;
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    
+    Response* pResponse = m_pOriginResponseVec->pGet(i_Node);
+    iRowsProcessed += *pResponse->m_ixRowsProcessed;
+    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
+    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
+  }
+  
+  if (iRowsProcessed || iRowsInvalid || iRowsSkipped ) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // success / error
+    if (iRowsInvalid || iRowsSkipped)
+      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+    else
+      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+  }
+  else {
+    vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
   }
 }
 
@@ -337,8 +367,8 @@ void Result::vProcessBufferQueue(void)
             
           case OM_STOPMARKER: {
             //vTrace("Pipeline Job: STOPMARKER\n"_Stz);
-            if ( ! bHasError )
-              vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+            //if ( ! bHasError )
+            //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);
             goto L_EXIT;
             break;

@@ -86,7 +86,7 @@ Loader::~Loader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* read records                                                               */
 /*----------------------------------------------------------------------------*/
-bool Loader::bReadRecords(Stz* aDataArea, i8 nDataBytes)
+bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
@@ -112,7 +112,7 @@ bool Loader::bReadRecords(Stz* aDataArea, i8 nDataBytes)
 
     if (EC_NONE == eError) {
       //vTrace(aRecord);
-      //vIncRowsProcessed();
+      AM::vIncRowsProcessed(pPipelineJob);
       continue;
     }
 
@@ -120,13 +120,13 @@ bool Loader::bReadRecords(Stz* aDataArea, i8 nDataBytes)
       continue;
 
     if (EC_INVALID_VALUE == eError) {
-      //vIncRowsInvalid();
+      AM::vIncRowsInvalid(pPipelineJob);
       //++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
 
     if (EC_MAX_ROW_LENGTH == eError) {
-      //vIncRowsInvalid();
+      AM::vIncRowsInvalid(pPipelineJob);
       //++m_pJob_LoadTable->m_ixErrors;
       continue;
     }

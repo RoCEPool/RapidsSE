@@ -908,8 +908,10 @@ void Step::vOperandCsvToCrwH(void)
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Job* pPipelineJob = pOp->pPipeline()->pJob();
   
-  pLoader->bReadRecords((Stz*)pCsvBuffer->ayDataArea(), pCsvBuffer->nDataBytes());
+  pLoader->bReadRecords(pPipelineJob, (Stz*)pCsvBuffer->ayDataArea(), pCsvBuffer->nDataBytes());
   
   EXIT();
 }

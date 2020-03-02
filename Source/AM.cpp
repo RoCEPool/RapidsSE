@@ -1381,6 +1381,8 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
 i8 AM::iRdTimePoint(void) { return TickingDevice::iGetTick();                  }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
+void AM::vIncRowsInvalid(Job* pJob)   { pJob->vIncRowsInvalid();               }
+void AM::vIncRowsProcessed(Job* pJob) { pJob->vIncRowsProcessed();             }
 bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }

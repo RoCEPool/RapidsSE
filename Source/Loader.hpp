@@ -26,7 +26,7 @@ namespace Load
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    bool bReadRecords(Stz* aDataArea, i8 nDataBytes);
+    bool bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes);
     bool bTerminate(void);
     
     Footer* aFooter(void);
