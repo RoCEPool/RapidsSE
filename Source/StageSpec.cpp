@@ -182,6 +182,10 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       iConsumeArg = 1;
       break;
+     
+    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+      iConsumeArg = AM::pGrid()->nSlotsPerNode();
+      break;
       
     case PX_ALL_PARTITIONS_TO_ORIGIN:
       iConsumeArg = AM::pGrid()->nPartitions();
@@ -192,6 +196,10 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
+      iConsumeArg = 1;
+      break;
+      
+    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
       iConsumeArg = 1;
       break;
       
@@ -259,12 +267,13 @@ void StageSpec::vTopology(ePO eTopology)
   m_eTopology = eTopology;
   
   switch (m_eTopology) {
-    case PO_ALL_NODES:           m_bNodeTopo = true;   break;
-    case PO_ALL_PARTITIONS:      m_bNodeTopo = false;  break;
-    case PO_ORIGIN:              m_bNodeTopo = true;   break;
-    case PO_SPECIFIC_NODE:       m_bNodeTopo = true;   break;
-    case PO_SPECIFIC_PARTITION:  m_bNodeTopo = false;  break;
-    default:                     m_bNodeTopo = true;   break;
+    case PO_ALL_NODES:                m_bNodeTopo = true;   break;
+    case PO_ALL_PARTITIONS:           m_bNodeTopo = false;  break;
+    case PO_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;
+    case PO_ORIGIN:                   m_bNodeTopo = true;   break;
+    case PO_SPECIFIC_NODE:            m_bNodeTopo = true;   break;
+    case PO_SPECIFIC_PARTITION:       m_bNodeTopo = false;  break;
+    default:                          m_bNodeTopo = true;   break;
   }
 
 }
@@ -306,16 +315,18 @@ void StageSpec::vPrint(void)
   vTrace("stage %s "_Stz,m_sStageNm.szStz());
   
   switch (m_eTopology) {
-    case PO_ALL_NODES:           vTrace("on all nodes"_Stz);
-                                 break;
-    case PO_ALL_PARTITIONS:      vTrace("on all partitions"_Stz);
-                                 break;
-    case PO_ORIGIN:              vTrace("on origin"_Stz);
-                                 break;
-    case PO_SPECIFIC_NODE:       vTrace("on node %s"_Stz,m_iNode);
-                                 break;
-    case PO_SPECIFIC_PARTITION:  vTrace("on partition %s"_Stz,m_iPartition);
-                                 break;
+    case PO_ALL_NODES:                vTrace("on all nodes"_Stz);
+                                      break;
+    case PO_ALL_PARTITIONS:           vTrace("on all partitions"_Stz);
+                                      break;
+    case PO_ALL_PARTITIONS_ON_ORIGIN: vTrace("on all partitions_on_origin"_Stz);
+                                      break;
+    case PO_ORIGIN:                   vTrace("on origin"_Stz);
+                                      break;
+    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_iNode);
+                                      break;
+    case PO_SPECIFIC_PARTITION:       vTrace("on partition %s"_Stz,m_iPartition);
+                                      break;
     default:
       ;
   }

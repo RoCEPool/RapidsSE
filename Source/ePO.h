@@ -9,6 +9,7 @@ enum ePO // topology
   
   /*    */ PO_ALL_NODES,
   /*    */ PO_ALL_PARTITIONS,
+  /*    */ PO_ALL_PARTITIONS_ON_ORIGIN,
   /*    */ PO_ORIGIN,
   /*    */ PO_SPECIFIC_NODE,
   /*    */ PO_SPECIFIC_PARTITION,
@@ -22,6 +23,7 @@ static Stz* aPO[]
   
   /*    */ "PO_ALL_NODES"_Stz,
   /*    */ "PO_ALL_PARTITIONS"_Stz,
+  /*    */ "PO_ALL_PARTITIONS_ON_ORIGIN"_Stz,
   /*    */ "PO_ORIGIN"_Stz,
   /*    */ "PO_SPECIFIC_NODE"_Stz,
   /*    */ "PO_SPECIFIC_PARTITION"_Stz,

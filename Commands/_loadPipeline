@@ -30,30 +30,68 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // 16 columns                                  174B  91B
 );
 
-pipeline _threads
+
+
+time pipeline _threads
 begin
 
 stage stageA on origin:
-startOp | periodicOp once | stageB
+  startOp | periodicOp once | stageB
 
 stage stageB on origin:
-chunk "/DATA/TPCH/lineitem10k.csv" | stageC
+  chunk "/TPCH/SF1/lineitem.csv" | stageC Robin
 
-stage stageC on origin: // on all partitions on origin
-readChunk "/DATA/TPCH/lineitem10k.csv" | toCrwH lineitem | stageD hashed
+stage stageC on origin:
+//stage stageC on all partitions on origin:
+  readChunk "/TPCH/SF1/lineitem.csv" | toCrwH lineitem | stageD hashed
 
 stage stageD on all partitions:
-insertOP lineitem | stageE
+  insertOP lineitem | stageE
 
 stage stageE on origin:
-sinkOp | stageA
+  sinkOp | stageA
 
 end
 ;
 
 //fetch lineitem;
-
 /*
+ time create table T1
+ (
+ colA DECIMAL   NOT NULL min 0              max 250,
+ colB BOOLEAN   NOT NULL min false          max true,
+ colC DATE      NOT NULL min "2019-01-01"   max "2019-12-31",
+ colD FLOAT     NOT NULL min "1.0"          max "1000.0",
+ colE INTEGER   NOT NULL min 1              max 1000,
+ colF INTERVAL  NOT NULL min "0.0"          max "100.0",
+ colG TIME      NOT NULL min "00:00:00.000" max "23:59:59.999",
+ //  colH TIMESTAMP NOT NULL min "2019-01-01 00:00:00.000"
+ //                          max "2019-12-31 23:59:59.999",
+ colI VARCHAR   NOT NULL min "a"            max "zzzzzzzzz"
+ )
+ rowsize 256
+ ;
+ 
+ 
+ pipeline _threads
+ begin
+ 
+ stage stageA on origin:
+ startOp | periodicOp once | stageB
+ 
+ stage stageB on origin:
+ genCsvOp T1 | stageC Robin
+ 
+ stage stageC on all partitions:
+ outputOp | stageD
+ 
+ stage stageD on origin:
+ sinkOp | stageA
+ 
+ end
+ ;
+
+
 // create indexes
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 

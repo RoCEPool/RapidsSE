@@ -166,6 +166,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
         pPtnStrand = pGet(iPtn);
         pOp = pPtnStrand->pGet(iOp);
       break;
@@ -176,6 +177,11 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+      pPtnStrand = pGet(iPtn);
+      pOp = pPtnStrand->pGet(iOp);
+      break;
+      
+    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       pPtnStrand = pGet(iPtn);
       pOp = pPtnStrand->pGet(iOp);
       break;
@@ -269,6 +275,15 @@ void Stage::vCreateStrands(void)
         }
       }
       vAdd(new Strand(m_pStageSpec, m_pPipeline->iOriginatingNode()));
+      break;
+      
+    case PO_ALL_PARTITIONS_ON_ORIGIN:
+      RASSERT( ! m_pStageSpec->bNodeTopo());
+      for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
+        i_Nde = TablePtn::iPartitionToNode(i_Ptn);
+        if (i_Nde == m_pPipeline->iOriginatingNode())
+          vAdd(new Strand(m_pStageSpec, i_Ptn));
+      }
       break;
       
     case PO_SPECIFIC_NODE:

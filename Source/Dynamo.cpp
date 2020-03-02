@@ -74,6 +74,7 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
       switch(pToStageSpec->eTopology()) {
         case PO_ALL_NODES:          return PX_ALL_NODES_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_ALL_NODES_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
         case PO_ORIGIN:             return PX_ALL_NODES_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_ALL_NODES_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_ALL_NODES_TO_SPECIFIC_PARTITION;
@@ -84,9 +85,21 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
       switch(pToStageSpec->eTopology()) {
         case PO_ALL_NODES:          return PX_ALL_PARTITIONS_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
         case PO_ORIGIN:             return PX_ALL_PARTITIONS_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
+        default:
+          ASSERT(0);
+      }
+    case PO_ALL_PARTITIONS_ON_ORIGIN:
+      switch(pToStageSpec->eTopology()) {
+        case PO_ALL_NODES:          ASSERT(0);
+        case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:     return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             ASSERT(0);
+        case PO_SPECIFIC_NODE:      ASSERT(0);
+        case PO_SPECIFIC_PARTITION: ASSERT(0);
         default:
           ASSERT(0);
       }
@@ -94,6 +107,7 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
       switch(pToStageSpec->eTopology()) {
         case PO_ALL_NODES:          return PX_ORIGIN_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_ORIGIN_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN: return PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
         case PO_ORIGIN:             return PX_ORIGIN_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_ORIGIN_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_ORIGIN_TO_SPECIFIC_PARTITION;
@@ -104,6 +118,7 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
       switch(pToStageSpec->eTopology()) {
         case PO_ALL_NODES:          return PX_SPECIFIC_NODE_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
         case PO_ORIGIN:             return PX_SPECIFIC_NODE_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
@@ -114,6 +129,7 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
       switch(pToStageSpec->eTopology()) {
         case PO_ALL_NODES:          return PX_SPECIFIC_PARTITION_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
         case PO_ORIGIN:             return PX_SPECIFIC_PARTITION_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_SPECIFIC_PARTITION_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
@@ -425,6 +441,24 @@ bool Dynamo::bCollectTopology(void)
     
     else if (m_pTkn->bSame("partitions"_Stz)) {
       vAcceptToken();
+      
+      if (m_pTkn->bSame("on"_Stz)) {
+        vAcceptToken();
+        if (m_pTkn->bSame("origin"_Stz)) {
+
+          vAcceptToken();
+          if (m_pTkn->bSame(":"_Stz)) {
+            vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
+            vTrace("Topology Phrase recognised >on all partitions to origin :<\n"_Stz);
+#endif
+            m_pStageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
+            return true;
+          }
+        }
+        else
+          return false;
+      }
       
       if (m_pTkn->bSame(":"_Stz)) {
         vAcceptToken();
