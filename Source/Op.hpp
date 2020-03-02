@@ -102,6 +102,7 @@ namespace Pipelines
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
+    EnameSet* pTopologyEnameSet(void);
     ePX  eTopologyX(void);
     void vTopologyX(ePX eTopologyX);
     void vWorkQuanta(i8 iWorkQuanta);

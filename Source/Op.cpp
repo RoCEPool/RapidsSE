@@ -129,7 +129,8 @@ void Op::vDump(i8 i_Op)
   
   s256 sArgs;
   
-  EnameSet* pEnameSet = this->pEnameSet();
+  EnameSet* pEnameSet = this->pTopologyEnameSet();
+  
   pEnameSet->vSprint(sArgs);
   
   // get the next stage
@@ -1074,6 +1075,16 @@ void Op::vToCmdStr(Stz* szCmdStr)
   szCmdStr->vCopy(m_sOpNm);
   m_oEnameSet.vAppend(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the topology EnameSet                                                  */
+/*----------------------------------------------------------------------------*/
+EnameSet* Op::pTopologyEnameSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return &m_oTopologyEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
