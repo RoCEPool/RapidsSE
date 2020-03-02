@@ -41,19 +41,25 @@ begin
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// fetch rows from a table (all nodes)
-procedure tableFetch
-  parameters $table
+// load data into a table from a file
+procedure load
+  parameters $table $file
 begin
 
-  stage stageA on origin:
+stage stageA on origin:
   startOp | periodicOp once | stageB
 
-  stage stageB on all partitions:
-  scanOp $table | stageC
+stage stageB on origin:
+  chunk $file | stageC Robin
 
-  stage stageC on origin:
-  outputOp | sinkOp | stageA
+stage stageC on all partitions on origin:
+  readChunk $file | toCrwH $table | stageD hashed
+
+stage stageD on all partitions:
+  insertOP $table | stageE
+
+stage stageE on origin:
+  sinkOp | stageA
 
 end
 ;
@@ -61,17 +67,35 @@ end
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // fetch rows from a partition of a table
 procedure partitionFetch
-  parameters $table, $partition
+  parameters $table $partition
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+    startOp | periodicOp once | stageB
 
   stage stageB on partition $partition:
-  scanOp $table | stageC
+    scanOp $table | stageC
 
   stage stageC on origin:
-  outputOp | sinkOp | stageA
+    outputOp | sinkOp | stageA
+
+end
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// fetch rows from a table (all nodes)
+procedure tableFetch
+parameters $table
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    scanOp $table | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
 
 end
 ;
@@ -83,13 +107,13 @@ procedure truncate
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+    startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-  truncateOp $table | stageC
+    truncateOp $table | stageC
 
   stage stageC on origin:
-  outputOp | sinkOp | stageA
+    outputOp | sinkOp | stageA
 
 end
 ;
