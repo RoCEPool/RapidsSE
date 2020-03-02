@@ -263,7 +263,7 @@ void Stage::vCreateStrands(void)
       RASSERT(m_pStageSpec->bNodeTopo());
       if (AM::bVerbose()) {
         i8 iThisNode = AM::pGrid()->iThisNode();
-        if (iThisNode == 0) {
+        if (iThisNode == m_pPipeline->iOriginatingNode()) {
           vTrace("Pipeline Originating node : %lld\n"_Stz,
                  m_pPipeline->iOriginatingNode());
         }

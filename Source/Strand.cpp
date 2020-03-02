@@ -133,7 +133,11 @@ void Strand::vSpawnOperators(i8 iSessionId, i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  i8 iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
+  i8 iPtnNode;
+  if (m_pStageSpec->bNodeTopo())
+    iPtnNode = iNode;
+  else
+    iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
   
   if (iPtnNode == iNode) {
     // for each operator in the stage ptn
@@ -146,6 +150,7 @@ void Strand::vSpawnOperators(i8 iSessionId, i8 iNode)
       ASSERT(bSpawned);
     }
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/

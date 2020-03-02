@@ -252,10 +252,10 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     
     Stage* pStage = pGet(i_Stage);
-        
-    for (i8 i_Ptn = 0; i_Ptn < pStage->nItems(); i_Ptn++) {
-      Strand* pStrand = pStage->pGet(i_Ptn);
-      
+    
+    for (i8 i_Strand = 0; i_Strand < pStage->nItems(); i_Strand++) {
+      Strand* pStrand = pStage->pGet(i_Strand);
+
       pStrand->vSpawnOperators(iSessionId, iNode);
     }
   }
