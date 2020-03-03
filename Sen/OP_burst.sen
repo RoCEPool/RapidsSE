@@ -1,41 +1,55 @@
 /*============================================================================*/
-/* Steps_IndexPtnReg.cpp - indexPtn[] step group                              */
+/* OP_burst.sen -- Burst Operator                                             */
 /*============================================================================*/
 
-#include "Steps.h"
+" OP_burst.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
+/* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_IndexPtnReg(void)
-{
-  vAddStep("IndexPtn[].get"_Stz,  &Step::vIndexPtnRegGet);
-  vAddStep("IndexPtn[].set"_Stz,  &Step::vIndexPtnRegSet);
-}
+: OP_burst_EosMarker \handler
+
+  "OP_burst_EosMarker" .
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
-/* IndexPtn[].get -- get index tree                                           */
+/* BM_GenEntOp request                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexPtnRegGet(void)
-{
-  ENTRY(); // ENTRY("vIndexPtnRegGet"_Stz);
-  
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexPtn);
-  
-  EXIT();
-}
+: OP_burst_req \operator
+
+  >>logEntry <SEED_REQ>
+
+  // set topology, next stage and op
+  op__topology
+
+  //find: OP_burst_EosMarker ZK_EOSMARKER op[].handler!
+
+  op__loop
+
+  "*** OP_burst_req EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
 
 /*----------------------------------------------------------------------------*/
-/* IndexPtn[].set -- set index tree                                           */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexPtnRegSet(void)
+opSyntax: OP_burst :: burstOp ;
+
+jobInfo: OP_burst
 {
-  ENTRY(); // ENTRY("vIndexPtnRegSet"_Stz);
+  <?jobDesc?>  = "--description of job--"
   
-  m_pRegSet->m_xpIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
   
-  EXIT();
+  <?preCheck?> = bClusterStarted
 }
+;
 
 /*============================================================================*/
 /* end                                                                        */

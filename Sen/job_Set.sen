@@ -95,6 +95,7 @@
 "job_WriteRow.sen"        include
 
 "OP_bufferGen.sen"        include
+"OP_burst.sen"            include
 "OP_chunk.sen"            include
 "OP_consume.sen"          include
 "OP_genCsv.sen"           include
