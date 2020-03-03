@@ -75,6 +75,28 @@ void Stage::vCancelOperators(i8 iThisNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get strand for given partition                                             */
+/*----------------------------------------------------------------------------*/
+Strand* Stage::pGetPartitionStrand(i8 i_Ptn)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Strand* pStrand   = nullptr;
+  StageSpec* pStageSpec = nullptr;
+  
+  for (i8 iPtnVec = 0; iPtnVec < nItems(); iPtnVec++) {
+    pStrand  = pGet(iPtnVec);
+    pStageSpec = pStrand->pStageSpec();
+    
+    if ( ! pStageSpec->bNodeTopo() &&
+        pStrand->i_Ptn() == i_Ptn)
+      return pStrand;
+  }
+  
+  return pStrand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get strand for given node                                                  */
 /*----------------------------------------------------------------------------*/
 Strand* Stage::pGetNodeStrand(i8 i_Nde)
@@ -165,10 +187,14 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
+      pPtnStrand = pGet(iPtn);
+      pOp = pPtnStrand->pGet(iOp);
+      break;
+      
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-        pPtnStrand = pGet(iPtn);
-        pOp = pPtnStrand->pGet(iOp);
+      pPtnStrand = pGetPartitionStrand(iPtn);
+      pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
@@ -182,7 +208,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStrand = pGet(iPtn);
+      pPtnStrand = pGetPartitionStrand(iPtn);
       pOp = pPtnStrand->pGet(iOp);
       break;
       
