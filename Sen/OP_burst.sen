@@ -11,6 +11,9 @@
 
   "OP_burst_EosMarker" .
 
+  operandC[].setFirst
+  operandC[].pipeoutSet
+
   ZK_EOSMARKER_handler
 ;
 

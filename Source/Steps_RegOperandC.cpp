@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOperandC(void)
 {
-  vAddStep("OperandC[].collect"_Stz,  &Step::vRegOperandCCollect);
-  vAddStep("OperandC[].pipeout"_Stz,  &Step::vRegOperandCPipeOut);
-  vAddStep("OperandC[].setFirst"_Stz, &Step::vRegOperandCSetFirst);
+  vAddStep("OperandC[].collect"_Stz,     &Step::vRegOperandCCollect);
+  vAddStep("OperandC[].pipeoutSet"_Stz,  &Step::vRegOperandCPipeOutSet);
+  vAddStep("OperandC[].setFirst"_Stz,    &Step::vRegOperandCSetFirst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,15 +41,16 @@ void Step::vRegOperandCCollect(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCPipeOut(void)
+void Step::vRegOperandCPipeOutSet(void)
 {
-  ENTRY(); // ENTRY("vRegOperandCPipeOut"_Stz);
+  ENTRY(); // ENTRY("vRegOperandCPipeOutSet"_Stz);
   
-  ASSERT(*m_pRegSet->m_xpOperandC);
+  if (m_pRegSet->m_xpOperandC.bIsNull())
+    return;
+    
+  Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
-  
-  pOp->vPipeOut(*m_pRegSet->m_xpOperandC);
+  pOp->vPipeOut(*m_pRegSet->m_xpOperandC, true);
   
   m_pRegSet->m_xpOperandC = nullptr;
   
@@ -63,10 +64,10 @@ void Step::vRegOperandCSetFirst(void)
 {
   ENTRY(); // ENTRY("vRegOperandCSetFirst"_Stz);
   
-  Operand* pCollect = *m_pRegSet->m_xpOperandC;
-
-  if (! pCollect)
+  if (m_pRegSet->m_xpOperandC.bIsNull())
     return;
+
+  Operand* pCollect = *m_pRegSet->m_xpOperandC;
   
   // move to first buffer
   DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollect);

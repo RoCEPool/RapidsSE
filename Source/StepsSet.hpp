@@ -1071,7 +1071,7 @@ public:
 
   // operandC
   void vRegOperandCCollect(void);
-  void vRegOperandCPipeOut(void);
+  void vRegOperandCPipeOutSet(void);
   void vRegOperandCSetFirst(void);
 
   // reg timer
