@@ -153,7 +153,7 @@ CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn]->pNextBuffer();
+  CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ? m_pCrwBuffer[iPtn]->pNextBuffer() : nullptr;
   CrwBuffer* pFirstCrwBuffer = nullptr;
   
   while( pCrwBuffer) {
