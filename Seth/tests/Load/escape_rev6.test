@@ -13,7 +13,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult escape
-ld T1 "../DATA/Load/escape_defaults.csv";
+load T1 "../DATA/Load/escape_defaults.csv";
 success
 
 // fetch rows

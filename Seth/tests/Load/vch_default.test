@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success
 
 // load data into the table with default formatter settings
-ld vch "../DATA/Load/vch_no_enclosed.csv" ;
+load vch "../DATA/Load/vch_no_enclosed.csv" ;
 success
 
 tableFetch vch;

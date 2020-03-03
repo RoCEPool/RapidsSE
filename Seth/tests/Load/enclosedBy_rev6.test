@@ -19,7 +19,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-ld T1 "../DATA/Load/enclosedBy1.csv" ;
+load T1 "../DATA/Load/enclosedBy1.csv" ;
 failure contains: '5 invalid'
 
 // fetch rows

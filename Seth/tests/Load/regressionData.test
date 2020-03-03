@@ -263,97 +263,97 @@ create table RETURNS (
 success
 
 // load data into the tables
-ld TABLE1 "../DATA/Load/tbl1data.csv" ;
+load TABLE1 "../DATA/Load/tbl1data.csv" ;
 success
 
-ld TABLE2 "../DATA/Load/tbl2data.csv" ;
+load TABLE2 "../DATA/Load/tbl2data.csv" ;
 success
 
-ld TABLE3 "../DATA/Load/tbl3data.csv" ;
+load TABLE3 "../DATA/Load/tbl3data.csv" ;
 success
 
-ld TABLE4 "../DATA/Load/tbl4data.csv" ;
+load TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
-ld TABLE5 "../DATA/Load/tbl5data.csv" ;
+load TABLE5 "../DATA/Load/tbl5data.csv" ;
 success
 
-ld TABLE6 "../DATA/Load/tbl6data.csv" ;
+load TABLE6 "../DATA/Load/tbl6data.csv" ;
 success
 
-ld TABLE7 "../DATA/Load/tbl7data.csv" ;
+load TABLE7 "../DATA/Load/tbl7data.csv" ;
 success
 
-ld TABLE8 "../DATA/Load/tbl8data.csv" ;
+load TABLE8 "../DATA/Load/tbl8data.csv" ;
 success
 
-ld TABLE9 "../DATA/Load/tbl9data.csv" ;
+load TABLE9 "../DATA/Load/tbl9data.csv" ;
 success
 
-ld ORDERS "../DATA/Load/orders.csv" ;
+load ORDERS "../DATA/Load/orders.csv" ;
 success
 
-ld LINEITEM "../DATA/Load/lineitem.csv" ;
+load LINEITEM "../DATA/Load/lineitem.csv" ;
 success
 
-ld CUSTOMERH "../DATA/Load/customer.csv" ;
+load CUSTOMERH "../DATA/Load/customer.csv" ;
 success
 
 ld PARTSUPP "../DATA/Load/partsupp.csv" record_ends "\r\n";
 success
 
-ld PART "../DATA/Load/part.csv" ;
+load PART "../DATA/Load/part.csv" ;
 success
 
-ld SHIPPING "../DATA/Load/shipping.csv" ;
+load SHIPPING "../DATA/Load/shipping.csv" ;
 success
 
-ld SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
+load SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
 success
 
-ld SUPPLIER "../DATA/Load/supplier.csv" ;
+load SUPPLIER "../DATA/Load/supplier.csv" ;
 success
 
-ld MANUFACTURER "../DATA/Load/manufacturer.csv";
+load MANUFACTURER "../DATA/Load/manufacturer.csv";
 success
 
 ld NATION "../DATA/Load/nation.csv" record_ends "\r\n";;
 success
 
-ld REGION "../DATA/Load/region.csv" ;
+load REGION "../DATA/Load/region.csv" ;
 success
 
-ld RETURNS "../DATA/Load/returns.csv";
+load RETURNS "../DATA/Load/returns.csv";
 success
 
 // tests row limits
 create table limitRow (col0 VARCHAR(20000));
 success
 
-//ld limitRow "../Seth/tests/Load/largeRow1.csv";
+//load limitRow "../Seth/tests/Load/largeRow1.csv";
 //success
 
 //fetch limitRow;
 //rows: 0
 
-ld limitRow "../DATA/Load/largeRow2.csv";
+load limitRow "../DATA/Load/largeRow2.csv";
 failure contains: '1 invalid'
 
 fetch limitRow;
 rows: 0
 
-ld limitRow "../DATA/Load/largeRow3.csv";
+load limitRow "../DATA/Load/largeRow3.csv";
 failure contains: '1 invalid'
 
 fetch limitRow;
 rows: 0
 /*
-ld limitRow "../DATA/Load/15KRow.csv";
+load limitRow "../DATA/Load/15KRow.csv";
 
 fetch limitRow;
 rows: 1
 
-ld limitRow "../DATA/Load/16KRow.csv";
+load limitRow "../DATA/Load/16KRow.csv";
 
 fetch limitRow;
 rows: 2
