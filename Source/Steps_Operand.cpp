@@ -348,6 +348,8 @@ void Step::vOperandInsertIntoTable(void)
   i8 iPartition = pOp->nPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
+  // ste the table in the crwBuffer
+  pCrwBuffer->vTable(*m_pRegSet->m_xpTable);
   m_pRegSet->m_xpTable->vAppendBufferInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
   
   EXIT();
