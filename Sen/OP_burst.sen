@@ -11,20 +11,20 @@
 
   "OP_burst_EosMarker" .
 
-  true
+  ZK_EOSMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* BM_GenEntOp request                                (on node where spawned) */
+/* burstOp request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: OP_burst_req \operator
+: burstOp_req \operator
 
   >>logEntry <SEED_REQ>
 
   // set topology, next stage and op
   op__topology
 
-  //find: OP_burst_EosMarker ZK_EOSMARKER op[].handler!
+  find: OP_burst_EosMarker ZK_EOSMARKER op[].handler!
 
   op__loop
 
@@ -37,9 +37,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: OP_burst :: burstOp ;
+opSyntax: burstOp :: burstOp ;
 
-jobInfo: OP_burst
+jobInfo: burstOp
 {
   <?jobDesc?>  = "--description of job--"
   

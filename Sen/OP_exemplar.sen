@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* OP_exemplar.sen -- exemplar Operator                                       */
+/*============================================================================*/
+
+" OP_exemplar.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: OP_exemplar_EosMarker \handler
+
+  "OP_exemplar_EosMarker" .
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* exemplarOp request                                 (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: exemplarOp_req \operator
+
+  >>logEntry <SEED_REQ>
+
+  // set topology, next stage and op
+  op__topology
+
+  //find: OP_exemplar_EosMarker ZK_EOSMARKER op[].handler!
+
+  op__loop
+
+  "*** OP_exemplar_req EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: exemplarOp :: exemplarOp ;
+
+jobInfo: exemplarOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
