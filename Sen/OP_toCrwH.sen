@@ -16,6 +16,10 @@
 
   // pipe out the pulsemarker
   Operand[].pipeOut
+
+  // pipe out the stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,8 +96,6 @@
   then
 
   Operand[].pipeout
-  Operand[].newStreamDef
-  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
