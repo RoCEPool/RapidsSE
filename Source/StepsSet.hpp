@@ -908,55 +908,6 @@ public:
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
 
-  // operand
-  void vOperandCsvAppend(void);
-  void vOperandBide(void);
-  void vOperandChunkFile(void);
-  void vOperandCsvData(void);
-  void vOperandDelete(void);
-  void vOperandFirstRowFetch(void);
-  void vOperandGet(void);
-  void vOperandHandleAggEnd(void);
-  void vOperandIsNull(void);
-  void vOperandIsReport(void);
-  void vOperandItemCountFetch(void);
-  void vOperandInsertIntoTable(void);
-  void vOperandInvokePython(void);
-  void vOperandInvokePythonShell(void);
-  void vOperandKind(void);
-  void vOperandNewEosMarker(void);
-  void vOperandNewCsvBuffer(void);
-  void vOperandNewErrorMarker(void);
-  void vOperandNewPulseMarker(void);
-  void vOperandNewSeekOffsets(void);
-  void vOperandNewStartMarker(void);
-  void vOperandNewStartedMarker(void);
-  void vOperandNewStopMarker(void);
-  void vOperandNewStoppedMarker(void);
-  void vOperandNewStreamDef(void);
-  void vOperandNext(void);
-  void vOperandPipeOut(void);
-  void vOperandPipeOutSet(void);
-  void vOperandPipeToJob(void);
-  void vOperandReadChunk(void);
-  void vOperandReport(void);
-  void vOperandRowCountFetch(void);
-  void vOperandSeekSetsFetch(void);
-  void vOperandSet(void);
-  void vOperandUpsertIntoTable(void);
-  void vOperandCrwToCsv(void);
-  void vOperandCsvToCrw(void);
-  void vOperandCsvToCrwH(void);
-  void vOperandWorkDone(void);
-  void vOperandWriteToFile0(void);
-
-  // operandB
-  void vOperandBAppendClose(void);
-  void vOperandBGet(void);
-  void vOperandBIsNull(void);
-  void vOperandBPipeOut(void);
-  void vOperandBSet(void);
-
   // persistence
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
@@ -1068,6 +1019,55 @@ public:
   void vRegOpHandlerFetch(void);
   void vRegOpHandlerStore(void);
   void vRegOpInit(void);
+
+  // operand
+  void vRegOperandCsvAppend(void);
+  void vRegOperandBide(void);
+  void vRegOperandChunkFile(void);
+  void vRegOperandCsvData(void);
+  void vRegOperandDelete(void);
+  void vRegOperandFirstRowFetch(void);
+  void vRegOperandGet(void);
+  void vRegOperandHandleAggEnd(void);
+  void vRegOperandIsNull(void);
+  void vRegOperandIsReport(void);
+  void vRegOperandItemCountFetch(void);
+  void vRegOperandInsertIntoTable(void);
+  void vRegOperandInvokePython(void);
+  void vRegOperandInvokePythonShell(void);
+  void vRegOperandKind(void);
+  void vRegOperandNewEosMarker(void);
+  void vRegOperandNewCsvBuffer(void);
+  void vRegOperandNewErrorMarker(void);
+  void vRegOperandNewPulseMarker(void);
+  void vRegOperandNewSeekOffsets(void);
+  void vRegOperandNewStartMarker(void);
+  void vRegOperandNewStartedMarker(void);
+  void vRegOperandNewStopMarker(void);
+  void vRegOperandNewStoppedMarker(void);
+  void vRegOperandNewStreamDef(void);
+  void vRegOperandNext(void);
+  void vRegOperandPipeOut(void);
+  void vRegOperandPipeOutSet(void);
+  void vRegOperandPipeToJob(void);
+  void vRegOperandReadChunk(void);
+  void vRegOperandReport(void);
+  void vRegOperandRowCountFetch(void);
+  void vRegOperandSeekSetsFetch(void);
+  void vRegOperandSet(void);
+  void vRegOperandUpsertIntoTable(void);
+  void vRegOperandCrwToCsv(void);
+  void vRegOperandCsvToCrw(void);
+  void vRegOperandCsvToCrwH(void);
+  void vRegOperandWorkDone(void);
+  void vRegOperandWriteToFile0(void);
+
+  // operandB
+  void vRegOperandBAppendClose(void);
+  void vRegOperandBGet(void);
+  void vRegOperandBIsNull(void);
+  void vRegOperandBPipeOut(void);
+  void vRegOperandBSet(void);
 
   // reg timer
   void vRegTimerGet(void);
