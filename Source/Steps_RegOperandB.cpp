@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_OperandB(void)
+void Step::vAddSteps_RegOperandB(void)
 {
   vAddStep("OperandB[].appendClose"_Stz,    &Step::vOperandBAppendClose);
   vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);

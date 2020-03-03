@@ -126,8 +126,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Object();
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
-  Step::vAddSteps_Operand();
-  Step::vAddSteps_OperandB();
+  Step::vAddSteps_RegOperand();
+  Step::vAddSteps_RegOperandB();
 
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Planner();

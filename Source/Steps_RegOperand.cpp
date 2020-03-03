@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Operand(void)
+void Step::vAddSteps_RegOperand(void)
 {
   
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vOperandCsvAppend);
