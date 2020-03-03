@@ -184,8 +184,12 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   TokenVec* pParamsVec = Tokeniser::pSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   TokenVec* pArgsVec   = Tokeniser::pSubVec(pCmdTokenVec,1,nTokens-1);
   
-  if (pParamsVec->nTokens() != pArgsVec->nTokens())
+  if (pParamsVec->nTokens() != pArgsVec->nTokens()) {
+    delete pProcTextVec;
+    delete pParamsVec;
+    delete pArgsVec;
     return false;
+  }
   
   Tokeniser::vReplace(pProcTextVec,pParamsVec,pArgsVec);
 
