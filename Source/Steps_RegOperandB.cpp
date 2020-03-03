@@ -60,7 +60,7 @@ void Step::vRegOperandBPipeOut(void)
 {
   ENTRY(); // ENTRY("vOperandBPipeOut"_Stz);
   
-  ASSERT(*m_pRegSet->m_xpOperandA);
+  ASSERT(*m_pRegSet->m_xpOperandB);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   

@@ -109,6 +109,7 @@ namespace Steps
     static void vAddSteps_Op(void);
     static void vAddSteps_RegOperand(void);
     static void vAddSteps_RegOperandB(void);
+    static void vAddSteps_RegOperandC(void);
 
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Planner(void);

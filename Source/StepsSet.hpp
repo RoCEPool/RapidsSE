@@ -1069,6 +1069,9 @@ public:
   void vRegOperandBPipeOut(void);
   void vRegOperandBSet(void);
 
+  // operandB
+  void vRegOperandCPipeOut(void);
+
   // reg timer
   void vRegTimerGet(void);
   void vRegTimerSet(void);
