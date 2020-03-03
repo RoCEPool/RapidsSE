@@ -71,6 +71,7 @@ Loader::~Loader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+  delete m_pRecordData;
 }
 
 

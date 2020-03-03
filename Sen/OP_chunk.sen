@@ -5,17 +5,6 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                        */
-/*----------------------------------------------------------------------------*/
-: chunk_EosMarker
-
-  //"Operand:- ZK_EOSMARKER" .verbose
-  File0[].get file.close
-  File0[].get file.delete
-  Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : chunk_PulseMarker
@@ -38,6 +27,11 @@
     Operand[].pipeOut
   repeat
 
+  // close the file
+  File0[].get file.close
+  File0[].get file.delete
+
+  // send EOSMARKER
   Operand[].newEosMarker
   Operand[].pipeOut
 ;
@@ -89,8 +83,6 @@
 
     // decode kind
     Operand[].kind case
-
-      ZK_EOSMARKER of chunk_EosMarker true endof
 
       ZK_PULSEMARKER of chunk_PulseMarker true endof
 

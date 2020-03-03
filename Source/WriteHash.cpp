@@ -53,6 +53,8 @@ WriteHash::~WriteHash(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  delete m_pRow;
+  
   // Assert we don't have any dangling buffers
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
     delete m_paRowCompactor[i_Ptn];

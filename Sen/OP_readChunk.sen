@@ -27,6 +27,7 @@
     I Operand[].readChunk
     OperandB[].pipeout
   loop
+  Operand[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -74,6 +75,8 @@
 
     // decode kind
     Operand[].kind case
+
+      ZK_EOSMARKER of readChunk_EosMarker true endof
 
       ZK_SEEKOFFSETS of readChunk_SeekOffsets true endof
 
