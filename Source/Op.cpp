@@ -852,6 +852,8 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
   eXK eXmitKind = XK_NORMAL;
   i8 i_Ptn;
   i8 i_Slt;
+  i8 i_Strand;
+  Strand* pStrand;
   
   Job_Operand* pJob_Operand = nullptr;
 
@@ -992,25 +994,31 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           
         case XK_NORMAL: {
           
-          for (i_Ptn = 0; i_Ptn < pNextStage->nItems(); i_Ptn++) {
+          for (i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
+            
+            pStrand = pNextStage->pGet(i_Strand);
+            i_Ptn = pStrand->i_Ptn();
             
             // xmitNode is the partition node
             m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
             
-            // new a operand job
-            pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
-            
-            // get the send node in the task
-            Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
-            
-            // send the operand job across the sendNode
-            AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
-            
-            // delete the operand job
-            AM::vDeleteJobOperand(pJob_Operand);
+            // transmit only on partitions of originating node
+            if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
+              // new a operand job
+              pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
+              
+              // get the send node in the task
+              Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+              
+              // send the operand job across the sendNode
+              AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+              
+              // delete the operand job
+              AM::vDeleteJobOperand(pJob_Operand);
+            }
           }
         }
-          break;
+        break;
           
         default:
           ASSERT(0);
