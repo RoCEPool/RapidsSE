@@ -1069,8 +1069,10 @@ public:
   void vRegOperandBPipeOut(void);
   void vRegOperandBSet(void);
 
-  // operandB
+  // operandC
+  void vRegOperandCCollect(void);
   void vRegOperandCPipeOut(void);
+  void vRegOperandCSetFirst(void);
 
   // reg timer
   void vRegTimerGet(void);
