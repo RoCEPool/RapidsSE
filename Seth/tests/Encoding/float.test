@@ -25,7 +25,7 @@ success
 
 Loop 1000 {
   
-  ld fltTbl "../DATA/Encoding/float.csv" ;
+  load fltTbl "../DATA/Encoding/float.csv" ;
   success
   
 }

@@ -57,7 +57,7 @@ tableFetch lineitem;
 rows: 0
 
 // load the table
-ld lineitem "../DATA/Regression/lineitem.csv";
+load lineitem "../DATA/Regression/lineitem.csv";
 success
 
 // truncate the table

@@ -23,7 +23,7 @@ L_COMMENT       VARCHAR(44) NOT NULL
 );
 success
   
-time ld lineitem "../DATA/tpch/lineitem10.csv";
+time load lineitem "../DATA/tpch/lineitem10.csv";
 success
 
 // check no of rows

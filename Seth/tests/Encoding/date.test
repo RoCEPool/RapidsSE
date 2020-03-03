@@ -23,7 +23,7 @@ dte_col15  DATE
 );
 success
   
-ld dteTbl "../DATA/Encoding/date.csv" ;
+load dteTbl "../DATA/Encoding/date.csv" ;
 success
 
 // check no of rows

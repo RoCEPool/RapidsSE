@@ -23,7 +23,7 @@ dec_col15  DECIMAL
 );
 success
 
-ld decTbl "../DATA/Encoding/decimal.csv" ;
+load decTbl "../DATA/Encoding/decimal.csv" ;
 success
 
 // check no of rows

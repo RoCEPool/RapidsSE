@@ -25,7 +25,7 @@ success
 
 Loop 1000 {
   
-  ld tspTbl "../DATA/Encoding/timestamp.csv" ;
+  load tspTbl "../DATA/Encoding/timestamp.csv" ;
   success
   
 }
