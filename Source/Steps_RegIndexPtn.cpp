@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* Steps_RegIndexPtn.cpp - indexPtn[] step group                              */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_RegIndexPtn(void)
+{
+  vAddStep("IndexPtn[].get"_Stz,  &Step::vRegIndexPtnGet);
+  vAddStep("IndexPtn[].set"_Stz,  &Step::vRegIndexPtnSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexPtn[].get -- get index tree                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegIndexPtnGet(void)
+{
+  ENTRY(); // ENTRY("vRegIndexPtnGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexPtn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexPtn[].set -- set index tree                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegIndexPtnSet(void)
+{
+  ENTRY(); // ENTRY("vRegIndexPtnSet"_Stz);
+  
+  m_pRegSet->m_xpIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

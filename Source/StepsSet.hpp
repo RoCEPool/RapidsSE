@@ -413,15 +413,15 @@ public:
   void vIndexDefSyntax(void);
 
   // index reg
-  void vIndexRegGet(void);
-  void vIndexRegSet(void);
+  void vRegIndexGet(void);
+  void vRegIndexSet(void);
 
   // index tree
   void vIndexPtnInsEntBuffer(void);
 
   // index reg
-  void vIndexPtnRegGet(void);
-  void vIndexPtnRegSet(void);
+  void vRegIndexPtnGet(void);
+  void vRegIndexPtnSet(void);
 
   // input
   void vInputClose(void);
