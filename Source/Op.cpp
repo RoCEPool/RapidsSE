@@ -575,8 +575,9 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   if (AM::bVerbose())
-    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
            m_nNode,
            m_nPartition,
            m_pPipelineJob,
@@ -627,8 +628,9 @@ void Op::vPipeToJob(Operand* pOperand)
   RASSERT(pBufferQueue);
   
   if (AM::bVerbose())
-    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
            m_nNode,
            m_nPartition,
            m_pPipelineJob,
@@ -675,8 +677,9 @@ Operand* Op::pPopQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
-    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
            m_nNode,
            m_nPartition,
            m_pPipelineJob,
@@ -1114,7 +1117,24 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     }
       
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      RASSERT(0);
+      pStrand = pNextStage->pGetPartitionStrand(m_nPartition);
+      i_Ptn = pStrand->i_Ptn();
+      
+      // xmitNode is the partition node
+      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      
+      // new a operand job
+      pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, i_Ptn);
+      
+      // get the send node in the task
+      Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+      
+      // send the operand job across the sendNode
+      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+      
+      // delete the operand job
+      AM::vDeleteJobOperand(pJob_Operand);
+      break;
     }
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
