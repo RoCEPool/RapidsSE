@@ -12,6 +12,7 @@
 5 .put  "dbObjects.sen"     include
 4 .put  "prompt.sen"        include
         "se_categories.sen" include
+        "se_demons.sen"     include
         "se_handlers.sen"   include
         "se_operators.sen"  include
         "se_procedures.sen" include

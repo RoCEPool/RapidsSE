@@ -293,9 +293,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": \\\\procedure \\\\\\\\category ;\n"
     "\n"
-    "find: \\\\procedure word.dump\n"
-    "find: \\\\procedure word.see\n"
-    "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
@@ -12972,6 +12969,33 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_demons.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_demons.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_demons.sen -- demons                                                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_demons.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* demon category                                                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": \\\\demon \\\\\\\\category ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_demons.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_output.sen
 
   sFileContents =
@@ -17667,6 +17691,7 @@ void Task::vAddMunged(Forth* pForth)
     "5 .put  \\\"dbObjects.sen\\\"     include\n"
     "4 .put  \\\"prompt.sen\\\"        include\n"
     "        \\\"se_categories.sen\\\" include\n"
+    "        \\\"se_demons.sen\\\"     include\n"
     "        \\\"se_handlers.sen\\\"   include\n"
     "        \\\"se_operators.sen\\\"  include\n"
     "        \\\"se_procedures.sen\\\" include\n"
@@ -19532,39 +19557,6 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"job_Waker.sen\\\"           include\n"
     "\\\"job_WriteBuffer.sen\\\"     include\n"
     "\\\"job_WriteRow.sen\\\"        include\n"
-    "\n"
-    "//\\\"OP_bufferGen.sen\\\"        include\n"
-    "//\\\"OP_burst.sen\\\"            include\n"
-    "//\\\"OP_chunk.sen\\\"            include\n"
-    "//\\\"OP_consume.sen\\\"          include\n"
-    "//\\\"OP_exemplar.sen\\\"         include\n"
-    "//\\\"OP_genCsv.sen\\\"           include\n"
-    "//\\\"OP_insert.sen\\\"           include\n"
-    "//\\\"OP_output.sen\\\"           include\n"
-    "//\\\"OP_passThru.sen\\\"         include\n"
-    "//\\\"OP_periodic.sen\\\"         include\n"
-    "//\\\"OP_print.sen\\\"            include\n"
-    "//\\\"OP_purge.sen\\\"            include\n"
-    "//\\\"OP_python.sen\\\"           include\n"
-    "//\\\"OP_pythonShell.sen\\\"      include\n"
-    "//\\\"OP_readChunk.sen\\\"        include\n"
-    "//\\\"OP_report.sen\\\"           include\n"
-    "//\\\"OP_scan.sen\\\"             include\n"
-    "//\\\"OP_sink.sen\\\"             include\n"
-    "//\\\"OP_snapshot.sen\\\"         include\n"
-    "//\\\"OP_start.sen\\\"            include\n"
-    "//\\\"OP_toCrw.sen\\\"            include\n"
-    "//\\\"OP_toCrwH.sen\\\"           include\n"
-    "//\\\"OP_toCsv.sen\\\"            include\n"
-    "//\\\"OP_toFile.sen\\\"           include\n"
-    "//\\\"OP_truncate.sen\\\"         include\n"
-    "//\\\"OP_upsert.sen\\\"           include\n"
-    "//\\\"OP_xmit.sen\\\"             include\n"
-    "//\n"
-    "//\\\"BM_genEnt.sen\\\"           include\n"
-    "//\\\"BM_genCrw.sen\\\"           include\n"
-    "//\\\"BM_inflateCrw.sen\\\"       include\n"
-    "//\\\"BM_insIdx.sen\\\"           include\n"
     "\n"
     "\\\"otherJobs\\\"               include-subdir\n"
     "\n"
