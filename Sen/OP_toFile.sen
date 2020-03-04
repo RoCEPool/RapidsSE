@@ -39,14 +39,6 @@
         true
       endof
 
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        File0[].get file.close
-        File0[].get file.delete
-        Operand[].pipeOut
-        true
-      endof
-
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -61,6 +53,18 @@
         then
         Operand[].pipeout
         true
+      endof
+
+      ZK_STOPMARKER of
+      //"Operand:- ZK_STOPMARKER" .verbose
+      File0[].isNull not if
+        File0[].get file.close
+        File0[].get file.delete
+      then
+
+      Operand[].pipeOut
+      Op.ackPipelineJob
+      false
       endof
 
       // handle other operand as generic operands
