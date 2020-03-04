@@ -55,6 +55,7 @@ namespace DynamoCompiler
     bool bIsOperator(Token* pTkn);
 
     bool bParseOnAll(void);
+    bool bParseOnAllNodes(void);
     bool bParseOnAllPartitions(void);
     bool bParseOnNode(void);
     bool bParseOnOrigin(void);
