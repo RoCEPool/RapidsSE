@@ -7,7 +7,7 @@
 
 print "Starting cluster..." ;
 
-//startCluster;
+startCluster;
 
 print "Cluster started" ;
 
@@ -102,61 +102,13 @@ print "*************************************************************************
 
 fetch lineitem;
 
-time pipeline insert
-begin
+tableFetch Lineitem;
+//truncate lineitem;
+//tableFetch lineitem;
+partitionFetch lineitem 1;
 
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
-
-stage stageC on origin:
-  stageD hashed
-
-stage StageD on all partitions:
-  insertOp lineitem2  | stageE
-
-stage stageE on origin:
-  sinkOp | stageA
-
-end
-;
 /*
-time pipeline truncate
-begin
-
-  stage stageA on origin:
-  startOp | periodicOp once | stageB
-
-  stage stageB on all partitions:
-  truncateOp lineitem | stageC
-
-  stage stageC on origin:
-  sinkOp | stageA
-
-end
-;
-
-fetch lineitem;
-
-
 docol epochTake;
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | stageC
-
-stage stageC on origin:
-outputOp | sinkOp | stageA
-
-end
-;
-
 
 time pipeline passThru
 begin

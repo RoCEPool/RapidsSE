@@ -1,0 +1,59 @@
+/*----------------------------------------------------------------------------*/
+/* invalid -- invalid load tests                                              */
+/*----------------------------------------------------------------------------*/
+
+// track memory
+trackMemory;
+success
+
+// incomplete load command
+load;
+failure contains: 'invalid command'
+
+// incomplete load command
+load T1;
+failure contains: 'invalid command'
+
+// incomplete load command
+load "../DATA/Load/null.csv";
+failure contains: 'invalid command'
+
+// load non-existent table T1
+load T1 "../DATA/Load/null.csv" ;
+failure contains: 'no such table'
+
+create table T1 (
+  col_id       INTEGER,
+  col_vch      VARCHAR(25),
+  col_int      INTEGER
+);
+success
+
+// create an index
+create index idx on T1 (col_id);
+success
+
+// load T1 with invalid file
+load T1 "no-such-file" ;
+failure contains: 'invalid file'
+
+// drop the table
+drop table T1;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  drop table T1;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

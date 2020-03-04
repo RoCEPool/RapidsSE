@@ -35,10 +35,10 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
 //load lineitem "/DATA/TPCH/lineitem10.csv";
 //load lineitem "/DATA/TPCH/lineitem10k.csv";
-//load lineitem "/TPCH/SF1/lineitem.csv";
+time load lineitem "/TPCH/SF1/lineitem.csv";
 
-//antbl lineitem;
-//anidx lineitem lineitem_idx1;
+antbl lineitem;
+anidx lineitem lineitem_idx1;
 
 //partitionFetch lineitem 0;
 //tableFetch lineitem;

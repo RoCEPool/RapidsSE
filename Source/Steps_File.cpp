@@ -12,6 +12,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file0[].get"_Stz,            &Step::vFile0Get);
   vAddStep("file0[].getEofLocation"_Stz, &Step::vFile0GetEofLocation);
   vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
+  vAddStep("file0[].isNull"_Stz,         &Step::vFile0IsNull);
   
   vAddStep("file::new"_Stz,       &Step::vFileNew);
   vAddStep("file.close"_Stz,      &Step::vFileClose);
@@ -48,6 +49,18 @@ void Step::vFile0GetEofLocation(void)
   i8 iEofLoc = pFile->iTell();
   
   m_pDataStack->vPushInt(iEofLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].isNull -- is file null ?                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vFile0IsNull(void)
+{
+  ENTRY(); // ENTRY("vFile0IsNull"_Stz);
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpFile0.bIsNull() ? 1 : 0);
   
   EXIT();
 }
