@@ -5,17 +5,6 @@
 " OP_readChunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                        */
-/*----------------------------------------------------------------------------*/
-: readChunk_EosMarker
-
-  //"Operand:- ZK_EOSMARKER" .verbose
-  File0[].get file.close
-  File0[].get file.delete
-  Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_SEEKOFFSETS ...                                                      */
 /*----------------------------------------------------------------------------*/
 : readChunk_SeekOffsets
@@ -41,12 +30,26 @@
   file::new to File0[]
   <fileNm> OPEN_READ File0[].get file.open
   not if
-    File0[].get file.delete assert::stack_0 EC_INVALID_FILE
+    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ <ERROR_JOB> !!logError
     Operand[].delete
     Operand[].newErrorMarker
   then
   Operand[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STOPMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: readChunk_StopMarker
+
+  //"Operand:- ZK_STOPMARKER" .verbose
+  File0[].isNull not if
+    File0[].get file.close
+    File0[].get file.delete
+  then
+  Operand[].pipeOut
+  Op.ackPipelineJob
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +79,7 @@
     // decode kind
     Operand[].kind case
 
-      ZK_EOSMARKER of readChunk_EosMarker true endof
+      ZK_STOPMARKER of readChunk_StopMarker false endof
 
       ZK_SEEKOFFSETS of readChunk_SeekOffsets true endof
 
