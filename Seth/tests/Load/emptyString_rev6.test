@@ -91,6 +91,21 @@ fetch T1 "col_id 2 =";
 rows:
   (2,null,3)
 
+export T1 "/tmp/T1.csv";
+success
+
+truncate T1;
+success
+
+tableFetch T1;
+rows: 0
+
+load T1 "/tmp/T1.csv";
+success
+
+tableFetch T1;
+rows: 2
+
 // drop the table
 drop table T1;
 success
