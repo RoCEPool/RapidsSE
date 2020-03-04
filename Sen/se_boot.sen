@@ -6,18 +6,19 @@
 
 "SEN: " .put
 9 .put
-8 .put  "vocab.sen"     include
-7 .put  "tasks.sen"     include
-6 .put  "gridModel.sen" include
-5 .put  "dbObjects.sen" include
-4 .put  "prompt.sen"    include
+8 .put  "vocab.sen"         include
+7 .put  "tasks.sen"         include
+6 .put  "gridModel.sen"     include
+5 .put  "dbObjects.sen"     include
+4 .put  "prompt.sen"        include
         "se_categories.sen" include
         "se_handlers.sen"   include
         "se_operators.sen"  include
         "se_procedures.sen" include
-3 .put  "jobModel.sen"  include
-2 .put  "testing.sen"   include
-1 .put  "se.sen"        include  // last
+3 .put  "jobModel.sen"      include
+        "operators.sen"     include
+2 .put  "testing.sen"       include
+1 .put  "se.sen"            include  // last
 0 .put  .\n
 
 assert::stack_0
