@@ -41,25 +41,46 @@ begin
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load data into a table from a file
+// load data into a table from a csv file
 procedure load
   parameters $table $file
 begin
 
-stage stageA on origin:
-  startOp | periodicOp once | stageB
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
 
-stage stageB on origin:
-  chunk $file | stageC Robin
+  stage stageB on origin:
+    chunk $file | stageC Robin
 
-stage stageC on all partitions on origin:
-  readChunk $file | toCrwH $table | stageD hashed
+  stage stageC on all partitions on origin:
+    readChunk $file | toCrwH $table | stageD hashed
 
-stage stageD on all partitions:
-  insertOP $table | stageE
+  stage stageD on all partitions:
+    insertOP $table | stageE
 
-stage stageE on origin:
-  sinkOp | stageA
+  stage stageE on origin:
+    sinkOp | stageA
+
+end
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// export table into csv file
+procedure export
+  parameters $Table $File
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    scanOp $Table | toCsvOp | stageC
+
+  stage stageC on origin:
+    toFileOp $File | stageD
+
+  stage stageD on origin:
+    sinkOp | stageA
 
 end
 ;
