@@ -456,13 +456,11 @@ void SePrompt::vDumpTokenVec(void)
   if (! m_bDumpTokens)
     return;
   
-#ifdef WITH_TRACE_TOKENS
   s48K sCommand;
   TokenVec* pTknVec = this->pTokenVec();
 
-  pTknVec->vToString(sCommand);
+  pTknVec->vVecToString(sCommand,0,false);
   vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.szStz());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
