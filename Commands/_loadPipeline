@@ -34,13 +34,13 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
 //load lineitem "/DATA/TPCH/lineitem10.csv";
-//load lineitem "/DATA/TPCH/lineitem10k.csv";
-time load lineitem "/TPCH/SF1/lineitem.csv";
+load lineitem "/DATA/TPCH/lineitem10k.csv";
+//time load lineitem "/TPCH/SF1/lineitem.csv";
 
 antbl lineitem;
 anidx lineitem lineitem_idx1;
 
-//partitionFetch lineitem 0;
+partitionFetch lineitem 0;
 //tableFetch lineitem;
 
 /*----------------------------------------------------------------------------*/
