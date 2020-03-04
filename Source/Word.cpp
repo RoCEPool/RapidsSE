@@ -90,6 +90,7 @@ Word::Word(Stz* szWordNm)
   m_bImmediate = false;
   m_eKind      = WK_ROUTINE;
   m_iLocalNo   = 0;
+  m_pObject    = nullptr;
   m_iParams    = 0;
   //m_bPersistent   = false;
   m_bPrompt    = false;
@@ -658,6 +659,26 @@ void Word::vLocalNo(i8 iLocalNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_iLocalNo = iLocalNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object                                                                 */
+/*----------------------------------------------------------------------------*/
+Object* Word::pObject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object                                                                 */
+/*----------------------------------------------------------------------------*/
+void Word::vObject(Object* pObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_pObject = pObject;
 }
 
 /*----------------------------------------------------------------------------*/

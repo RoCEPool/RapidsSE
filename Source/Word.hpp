@@ -26,6 +26,7 @@ namespace SenVM
     bool      m_bImmediate;   // immediate execution during compile?
     eWK       m_eKind;        // kind of word
     i8        m_iLocalNo;     // local number (for a local variable)
+    Object*   m_pObject;      // optional associated object
     i8        m_iParams;      // number of parameters
     bool      m_bPersistent;  // is on persistent heap
     bool      m_bPrompt;      // can be executed by prompt?
@@ -104,6 +105,8 @@ namespace SenVM
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
+    Object* pObject(void);
+    void  vObject(Object* pObject);
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
