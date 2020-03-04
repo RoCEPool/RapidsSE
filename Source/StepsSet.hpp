@@ -1019,6 +1019,7 @@ public:
   void vRegOpGet(void);
   void vRegOpHandlerFetch(void);
   void vRegOpHandlerStore(void);
+  void vRegOpHandlerAllStore(void);
   void vRegOpInit(void);
 
   // operand
