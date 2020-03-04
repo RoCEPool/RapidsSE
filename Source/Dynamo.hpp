@@ -54,6 +54,12 @@ namespace DynamoCompiler
     void vBeginToken(i8 i_Tkn);
     bool bIsOperator(Token* pTkn);
 
+    bool bParseOnAll(void);
+    bool bParseOnAllPartitions(void);
+    bool bParseOnNode(void);
+    bool bParseOnOrigin(void);
+    bool bParseOnPartition(void);
+    
     //
     // phase 2
     //

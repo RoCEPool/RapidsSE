@@ -418,59 +418,7 @@ bool Dynamo::bCollectTopology(void)
   
   if (m_pTkn->bSame("all"_Stz)) {
     vAcceptToken();
-    
-    // -- -- -- -- -- -- -- -- -- -- --
-    // on all nodes :
-
-    if (m_pTkn->bSame("nodes"_Stz)) {
-      vAcceptToken();
-      
-      if (m_pTkn->bSame(":"_Stz)) {
-        vAcceptToken();
-        
-#ifdef WITH_TRACE_DYNAMO
-        vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
-#endif
-        m_pStageSpec->vTopology(PO_ALL_NODES);
-        return true;
-      }
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- --
-    // on all partitions :
-    
-    else if (m_pTkn->bSame("partitions"_Stz)) {
-      vAcceptToken();
-      
-      if (m_pTkn->bSame("on"_Stz)) {
-        vAcceptToken();
-        if (m_pTkn->bSame("origin"_Stz)) {
-
-          vAcceptToken();
-          if (m_pTkn->bSame(":"_Stz)) {
-            vAcceptToken();
-#ifdef WITH_TRACE_DYNAMO
-            vTrace("Topology Phrase recognised >on all partitions to origin :<\n"_Stz);
-#endif
-            m_pStageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
-            return true;
-          }
-        }
-        else
-          return false;
-      }
-      
-      if (m_pTkn->bSame(":"_Stz)) {
-        vAcceptToken();
-#ifdef WITH_TRACE_DYNAMO
-        vTrace("Topology Phrase recognised >on all partitions :<\n"_Stz);
-#endif
-        m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
-        return true;
-      }
-    }
-    else
-      return false;
+    return bParseOnAll();
   }
  
   // -- -- -- -- -- -- -- -- -- -- --
@@ -478,22 +426,7 @@ bool Dynamo::bCollectTopology(void)
   
   else if (m_pTkn->bSame("node"_Stz)) {
     vAcceptToken();
-    
-    s32 sLocus(m_pTkn->szTerm());
-    vAcceptToken();
-
-    if (m_pTkn->bSame(":"_Stz)) {
-      vAcceptToken();
-#ifdef WITH_TRACE_DYNAMO
-      vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
-#endif
-      m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
-      i8 i_Nde = sLocus.szStz()->iToI8();
-      if ( i_Nde > AM::pGrid()->nConnectedNodes() )
-        return false;
-      m_pStageSpec->vNode(i_Nde);
-      return true;
-    }
+    return bParseOnNode();
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
@@ -501,23 +434,7 @@ bool Dynamo::bCollectTopology(void)
   
   else if (m_pTkn->bSame("partition"_Stz)) {
     vAcceptToken();
-    
-    s32 sLocus(m_pTkn->szTerm());
-    vAcceptToken();
-    
-    if (m_pTkn->bSame(":"_Stz)) {
-      vAcceptToken();
-#ifdef WITH_TRACE_DYNAMO
-      vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
-#endif
-      m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
-      i8 i_Ptn = sLocus.szStz()->iToI8();
-      if (i_Ptn >= AM::pGrid()->nPartitions())
-        return false;
-      
-      m_pStageSpec->vPartition(i_Ptn);
-      return true;
-    }
+    return bParseOnPartition();
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
@@ -525,41 +442,17 @@ bool Dynamo::bCollectTopology(void)
   
   else if (m_pTkn->bSame("origin"_Stz)) {
     vAcceptToken();
-    
-    if (m_pTkn->bSame(":"_Stz)) {
-      vAcceptToken();
-      
-#ifdef WITH_TRACE_DYNAMO
-      vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
-#endif
-      m_pStageSpec->vTopology(PO_ORIGIN);
-      return true;
-    }
-    else {
-      
-      s32 sLocus(m_pTkn->szTerm());
-      vAcceptToken();
-    }
+    return bParseOnOrigin();
   }
-  else
-    return false;
-  
-  // -- -- -- -- -- -- -- -- -- -- --
-  // :
-  
-  if (m_pTkn->bSame(":"_Stz)) {
-    vAcceptToken();
-#ifdef WITH_TRACE_DYNAMO
-    vTrace("Topology Phrase recognised :<\n"_Stz);
-#endif
-    m_pStageSpec->vTopology(PO_NONE);
-    return true;
-  }
+  else {
 
-  // -- -- -- -- -- -- -- -- -- -- --
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("Topology Phrase not recognised\n"_Stz);
-#endif
+    // -- -- -- -- -- -- -- -- -- -- --
+  #ifdef WITH_TRACE_DYNAMO
+    vTrace("Topology Phrase not recognised\n"_Stz);
+  #endif
+    
+    return false;
+  }
   
   return false;
 }
@@ -711,6 +604,146 @@ bool Dynamo::bIsOperator(Token* pTkn)
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse topology: on all                                                     */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bParseOnAll(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on all nodes :
+  
+  if (m_pTkn->bSame("nodes"_Stz)) {
+    vAcceptToken();
+    
+    if (m_pTkn->bSame(":"_Stz)) {
+      vAcceptToken();
+      
+#ifdef WITH_TRACE_DYNAMO
+      vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
+#endif
+      m_pStageSpec->vTopology(PO_ALL_NODES);
+      return true;
+    }
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on all partitions :
+  
+  else if (m_pTkn->bSame("partitions"_Stz)) {
+    vAcceptToken();
+    
+    if (m_pTkn->bSame("on"_Stz)) {
+      vAcceptToken();
+      if (m_pTkn->bSame("origin"_Stz)) {
+        
+        vAcceptToken();
+        if (m_pTkn->bSame(":"_Stz)) {
+          vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
+          vTrace("Topology Phrase recognised >on all partitions to origin :<\n"_Stz);
+#endif
+          m_pStageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
+          return true;
+        }
+      }
+      else
+        return false;
+    }
+    
+    if (m_pTkn->bSame(":"_Stz)) {
+      vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
+      vTrace("Topology Phrase recognised >on all partitions :<\n"_Stz);
+#endif
+      m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse topology: on node                                                    */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bParseOnNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  s32 sLocus(m_pTkn->szTerm());
+  vAcceptToken();
+  
+  if (m_pTkn->bSame(":"_Stz)) {
+    vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
+    vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
+#endif
+    m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
+    i8 i_Nde = sLocus.szStz()->iToI8();
+    if ( i_Nde > AM::pGrid()->nConnectedNodes() )
+      return false;
+    m_pStageSpec->vNode(i_Nde);
+    return true;
+  }
+  
+  return false;
+  
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* parse topology: on partition                                               */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bParseOnPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  s32 sLocus(m_pTkn->szTerm());
+  vAcceptToken();
+  
+  if (m_pTkn->bSame(":"_Stz)) {
+    vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
+    vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
+#endif
+    m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
+    i8 i_Ptn = sLocus.szStz()->iToI8();
+    if (i_Ptn >= AM::pGrid()->nPartitions())
+      return false;
+    
+    m_pStageSpec->vPartition(i_Ptn);
+    return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse topology: on origin                                                  */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bParseOnOrigin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  if (m_pTkn->bSame(":"_Stz)) {
+    vAcceptToken();
+    
+#ifdef WITH_TRACE_DYNAMO
+    vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
+#endif
+    m_pStageSpec->vTopology(PO_ORIGIN);
+    return true;
+  }
+  else {
+    s32 sLocus(m_pTkn->szTerm());
+    vAcceptToken();
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
