@@ -5,7 +5,17 @@
 " OP_burst.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
+/* on ZK_ENTBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: OP_burst_EntBuffer \handler
+
+  "OP_burst_EntBuffer" .
+
+  ZK_ENTBUFFER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : OP_burst_EosMarker \handler
 
@@ -27,6 +37,7 @@
   // set topology, next stage and op
   op__topology
 
+  find: OP_burst_EntBuffer ZK_ENTBUFFER op[].handler!
   find: OP_burst_EosMarker ZK_EOSMARKER op[].handler!
 
   op__loop
