@@ -23,17 +23,25 @@ void Step::vRegOperandCCollect(void)
     
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  Operand* pCollect = *m_pRegSet->m_xpOperandC;
+  Operand* pCollectingTail = nullptr;
+  
+  if (! m_pRegSet->m_xpOperandC.bIsNull())
+    pCollectingTail = *m_pRegSet->m_xpOperandC;
 
-  if (pCollect) {
-    DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollect);
+  if (pCollectingTail) {
+    DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollectingTail);
     DataBuffer* pOperand_dataBuffer = _pDataBuffer(pOperand);
     
     pCollect_dataBuffer->vNextBuffer(pOperand_dataBuffer);
     pOperand_dataBuffer->vPrevBuffer(pCollect_dataBuffer);
+    
+    pCollectingTail = pOperand;
+  }
+  else {
+    pCollectingTail = pOperand;
   }
 
-  m_pRegSet->m_xpOperandC = pCollect;
+  m_pRegSet->m_xpOperandC = pCollectingTail;
   
   EXIT();
 }
@@ -72,8 +80,7 @@ void Step::vRegOperandCSetFirst(void)
   // move to first buffer
   DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollect);
   while (pCollect_dataBuffer->pPrevBuffer())
-    {;}
-  
+    pCollect_dataBuffer = _pDataBuffer(pCollect_dataBuffer->pPrevBuffer());
   
   Operand* pCollect_first = _pOperand(pCollect_dataBuffer);
 
