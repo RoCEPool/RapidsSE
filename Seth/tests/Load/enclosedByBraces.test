@@ -39,8 +39,8 @@ success
 
 tableFetch T1;
 rows: 0
-
-load T1 "/tmp/T1.csv";
+/*
+ld T1 "/tmp/T1.csv" enclosed_by_leading "'" enclosed_by_trailing "'";
 success
 
 tableFetch T1;
@@ -51,6 +51,7 @@ rows:
   (3,20,109,'green',TIMESTAMP '2015-02-12 00:00:00.0',94.93,7.53,8,-162,976,'qqq')
   (4,234,124,'black',TIMESTAMP '2015-01-07 00:00:00.0',213.04,96.49,3,-167,144,'mmm')
   (5,164,438,'PINK',TIMESTAMP '2015-01-30 00:00:00.0',222.66,117.29,12,-46,449,'uuu')
+*/
 
 drop table T1;
 success
