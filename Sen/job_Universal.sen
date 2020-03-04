@@ -18,6 +18,11 @@
   // find the word mathcing the translated name
   sWordNm find locals| pWord |
 
+  pWord not if
+    sWordNm "Unable to find word: %v" .printf
+    process::quit
+  then
+
   // execute the word
   pWord execute
 ;

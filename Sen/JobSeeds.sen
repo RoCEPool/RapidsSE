@@ -55,18 +55,26 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeedDist _req ( -- )
 
+"** 1" .
+
   task::seedInitially
 
   // [ compiler::current@ word.name@ , ] .
   // <jobNm> .
 
+  "** 2" .
+
   job::becomeOriginator
 
   <jobNm> "::request" str.cat find dup if
+    "** 3a" .
     execute
   else
+    "** 3b" .
     drop
   then
+
+  "** 4" .
 
   job::this job.hasError not if
 
