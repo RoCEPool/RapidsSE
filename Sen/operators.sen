@@ -8,6 +8,7 @@
 "OP_burst.sen"            include
 "OP_chunk.sen"            include
 "OP_consume.sen"          include
+"OP_eatAll.sen"           include
 "OP_exemplar.sen"         include
 "OP_genCsv.sen"           include
 "OP_insert.sen"           include

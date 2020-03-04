@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* OP_eatAll.sen -- Eat All Operators                                         */
+/*============================================================================*/
+
+" OP_EatAll.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_Xyz ...                                                              */
+/*----------------------------------------------------------------------------*/
+: OP_EatAll_Xyz \handler
+
+  "OP_EatAll_Xyz" .
+
+  // delete all operands
+  operand[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* eatAll request                                     (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: eatAllOp_req \operator
+
+  >>logEntry <SEED_REQ>
+
+  // set topology, next stage and op
+  op__topology
+
+  //find: OP_exemplar_EosMarker ZK_EOSMARKER op[].handler!
+
+  op__loop
+
+  "*** eatAllOp_req EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: eatAllOp :: eatAllOp ;
+
+jobInfo: eatAllOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
