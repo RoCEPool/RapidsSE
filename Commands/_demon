@@ -5,8 +5,7 @@
 print "-- Demon Pipeline Test --" ;
 
 dumptokens true;
-
-nowait pipeline endless
+/nowait pipeline endless
 begin
 
   stage stageA on origin:

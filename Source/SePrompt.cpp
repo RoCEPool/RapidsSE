@@ -145,6 +145,9 @@ void SePrompt::vPromptLoop(void)
     L_Get_Command:
     
     vGetCommand();
+    
+    if (m_bDumpTokens)
+      Correctness::vDebugPoint();
     vDumpTokenVec(false);
 
     if (bBlankLine()) {
