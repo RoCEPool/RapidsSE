@@ -42,7 +42,6 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 //#define WITH_PYTHON_SUPPORT EndDefine       // code for python support
 #define WITH_TRACE_PURGING EndDefine          // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine        // trace procedure
-//#define WITH_TRACE_TOKENS  EndDefine        // trace tokens
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -65,7 +64,6 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 #define WITH_TRACE_PURGING EndDefine        // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine        // trace procedure
-//#define WITH_TRACE_TOKENS  EndDefine       // trace tokens
 
 #endif
 

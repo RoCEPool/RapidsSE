@@ -173,12 +173,7 @@ bool Correctness::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
     return true;
 #endif
-  
-#ifdef WITH_TRACE_TOKENS
-  if (szWith->bSame("WITH_TRACE_TOKENS"_Stz))
-   return true;
-#endif
-  
+    
   return false;
 }
 
@@ -301,9 +296,6 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_TRACE_PURGING\n"_Stz);
 #endif
   
-#ifdef WITH_TRACE_TOKENS
-  vTrace("  WITH_TRACE_TOKENS\n"_Stz);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,12 +442,7 @@ bool Correctness::bTraceWithout(Stz* szWith)
   if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
     return true;
 #endif
-  
-#ifndef WITH_TRACE_TOKENS
-  if (szWith->bSame("WITH_TRACE_TOKENS"_Stz))
-   return true;
-#endif
-  
+    
   return false;
 }
 
@@ -582,9 +569,6 @@ void Correctness::vTraceWithout(void)
   vTrace("  WITH_TRACE_PURGING\n"_Stz);
 #endif
   
-#ifndef WITH_TRACE_TOKENS
-  vTrace("  WITH_TRACE_TOKENS\n"_Stz);
-#endif
 }
 
 

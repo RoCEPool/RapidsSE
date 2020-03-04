@@ -145,11 +145,11 @@ void SePrompt::vPromptLoop(void)
     L_Get_Command:
     
     vGetCommand();
-    vDumpTokenVec();
+    vDumpTokenVec(false);
 
     if (bBlankLine()) {
-      if (AM::bDeveloper())
-        vDumpTokenVec();
+      //if (AM::bDeveloper())
+      //  vDumpTokenVec(false);
       continue;
     }
     
@@ -185,7 +185,8 @@ void SePrompt::vPromptLoop(void)
     }
     else {
       vUnknownCommand();
-      vDumpTokenVec();
+      if (AM::bDeveloper())
+        vDumpTokenVec(true);
       continue;
     }
 
@@ -202,7 +203,8 @@ void SePrompt::vPromptLoop(void)
     // this should go
     if (m_pJob->bJobHasError()) {
       vPostJob();
-      vDumpTokenVec();
+      if (AM::bDeveloper())
+        vDumpTokenVec(true);
       vCompletedTask();
       vDeleteJob();
       vEndRequest();
@@ -449,18 +451,24 @@ void SePrompt::vDumpTokens(bool bDumpTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token vector                                                          */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDumpTokenVec(void)
+void SePrompt::vDumpTokenVec(bool bForce)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_bDumpTokens)
-    return;
-  
-  s48K sCommand;
   TokenVec* pTknVec = this->pTokenVec();
+  
+  if (! m_bDumpTokens && ! bForce)
+    return;
+
+  if (! pTknVec->nTokens() && ! bForce)
+    return;
+
+  s48K sCommand;
 
   pTknVec->vVecToString(sCommand,0,false);
   vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.szStz());
+  
+  Correctness::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

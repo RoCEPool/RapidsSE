@@ -63,7 +63,7 @@ namespace Prompt
     void vDeleteJob(void);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
-    void vDumpTokenVec(void);
+    void vDumpTokenVec(bool bForce);
     void vEndRequest(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);

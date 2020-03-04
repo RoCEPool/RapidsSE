@@ -4,6 +4,8 @@
 
 print "-- Demon Pipeline Test --" ;
 
+dumptokens true;
+
 nowait pipeline endless
 begin
 
