@@ -146,13 +146,22 @@ void Step::vJob_PipelineExecute(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
-  AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
+  if (nOps) {
+    AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
   
-  // get the first stage of the pipeline
-  Stage* pStage = pPipeline->pGet(0);
-  
-  // send startMarker to the startOp of the first stage of the pipeline
-  pStage->vStartPipeline();
+    // get the first stage of the pipeline
+    Stage* pStage = pPipeline->pGet(0);
+    
+    // send startMarker to the startOp of the first stage of the pipeline
+    pStage->vStartPipeline();
+    
+    // pipeline job to wait for acks
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    // pipeline job has no operators to wait for
+    m_pDataStack->vPushInt(false);
+  }
   
   EXIT();
 }

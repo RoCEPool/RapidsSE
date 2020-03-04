@@ -36,11 +36,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to startOp)
-  pJob_pipeline job_Pipeline.execute
+  pJob_pipeline job_Pipeline.execute if
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for operators to finish
-  task::wait
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for operators to finish
+    task::wait
+
+ then
 ;
 
 /*----------------------------------------------------------------------------*/
