@@ -14,6 +14,7 @@ namespace Prompt
 
     bool      m_bOneCommand;// run one command only
     bool      m_bContinue;  // continue processing commands?
+    bool      m_bDumpTokens;// dump tokens?
 
     i8        m_iCmdNo;     // command no
     JobClass* m_aJobClass;  // job class
@@ -55,12 +56,13 @@ namespace Prompt
     void vCheckJobCtl(void);
     void vCheckTimed(void);
     i8   iCommandFocal(void);
-    i8   iRequestId(void);
     void vCompletedTask(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);
     void vDeleteJob(void);
+    bool bDumpTokens(void);
+    void vDumpTokens(bool bDumpTokens);
     void vDumpTokenVec(void);
     void vEndRequest(void);
     bool bExecuteFile(void);
@@ -90,6 +92,7 @@ namespace Prompt
     void vRestateCommand(void);
     void vReportObjects();
     void vReportTime(void);
+    i8   iRequestId(void);
     Session* pSession(void);
     void vSetJob(void);
     bool bShortCut(void);

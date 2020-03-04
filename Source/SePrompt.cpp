@@ -67,11 +67,12 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pSession->m_pTokenStream->vUseStdin();
   
   m_bOneCommand = bOneCommand;
-  m_bContinue = true;
+  m_bContinue   = true;
+  m_bDumpTokens = false;
   
-  m_iCmdNo = 0;
-  m_aJobClass = nullptr;
-  m_pJob = nullptr;
+  m_iCmdNo      = 0;
+  m_aJobClass   = nullptr;
+  m_pJob        = nullptr;
   // m_oTimer
 
   //if (bSethScript)
@@ -144,7 +145,8 @@ void SePrompt::vPromptLoop(void)
     L_Get_Command:
     
     vGetCommand();
-       
+    vDumpTokenVec();
+
     if (bBlankLine()) {
       if (AM::bDeveloper())
         vDumpTokenVec();
@@ -425,11 +427,34 @@ void SePrompt::vDeleteJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dump tokens?                                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bDumpTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_bDumpTokens;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dump tokens                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDumpTokens(bool bDumpTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bDumpTokens = bDumpTokens;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump token vector                                                          */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDumpTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! m_bDumpTokens)
+    return;
   
 #ifdef WITH_TRACE_TOKENS
   s48K sCommand;
@@ -1177,6 +1202,16 @@ Token* SePrompt::pTkn(i8 i_Token)
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
+bool SePrompt::bTrackingMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_bTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
 void SePrompt::vTrackingMemory(bool bTrackingMemory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -1186,16 +1221,6 @@ void SePrompt::vTrackingMemory(bool bTrackingMemory)
   if (bTrackingMemory) {
     PoolHelper::vObjectSnapshot(m_nObjectsInPool);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bTrackingMemory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_bTrackingMemory;
 }
 
 /*----------------------------------------------------------------------------*/
