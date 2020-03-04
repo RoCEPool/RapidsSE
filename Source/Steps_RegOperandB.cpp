@@ -7,19 +7,19 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_OperandB(void)
+void Step::vAddSteps_RegOperandB(void)
 {
-  vAddStep("OperandB[].appendClose"_Stz,    &Step::vOperandBAppendClose);
-  vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
-  vAddStep("OperandB[].isNull"_Stz,         &Step::vOperandBIsNull);
-  vAddStep("OperandB[].pipeout"_Stz,        &Step::vOperandBPipeOut);
-  vAddStep("OperandB[].set"_Stz,            &Step::vOperandBSet);
+  vAddStep("OperandB[].appendClose"_Stz,    &Step::vRegOperandBAppendClose);
+  vAddStep("OperandB[].get"_Stz,            &Step::vRegOperandBGet);
+  vAddStep("OperandB[].isNull"_Stz,         &Step::vRegOperandBIsNull);
+  vAddStep("OperandB[].pipeout"_Stz,        &Step::vRegOperandBPipeOut);
+  vAddStep("OperandB[].set"_Stz,            &Step::vRegOperandBSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* OperandB[].get -- fetch operand                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandBAppendClose(void)
+void Step::vRegOperandBAppendClose(void)
 {
   ENTRY(); // ENTRY("vOperandBAppendClose"_Stz);
   
@@ -32,7 +32,7 @@ void Step::vOperandBAppendClose(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].get -- fetch operand                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandBGet(void)
+void Step::vRegOperandBGet(void)
 {
   ENTRY(); // ENTRY("vOperandBGet"_Stz);
   
@@ -44,7 +44,7 @@ void Step::vOperandBGet(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].isNull -- is operandB null ?                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandBIsNull(void)
+void Step::vRegOperandBIsNull(void)
 {
   ENTRY(); // ENTRY("vOperandBIsNull"_Stz);
   
@@ -56,11 +56,11 @@ void Step::vOperandBIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].pipeOut -- append operand onto next operator in pipeline         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandBPipeOut(void)
+void Step::vRegOperandBPipeOut(void)
 {
   ENTRY(); // ENTRY("vOperandBPipeOut"_Stz);
   
-  ASSERT(*m_pRegSet->m_xpOperandA);
+  ASSERT(*m_pRegSet->m_xpOperandB);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
@@ -74,7 +74,7 @@ void Step::vOperandBPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].set -- set operand                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandBSet(void)
+void Step::vRegOperandBSet(void)
 {
   ENTRY(); // ENTRY("vOperandBSet"_Stz);
   

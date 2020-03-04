@@ -7,21 +7,47 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
+//: BM_GenEnt_PulseMarker \handler
+//
+//  // pipe out the pulse marker to the next operator
+//  Operand[].pipeOut
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // new a stream def
+//  Operand[].newStreamDef
+//
+//  Operand[].pipeOut
+//
+//  // generate the ent buffer's
+//  <nBuffers> index[].genEntBuffers to Operand[]
+//  Operand[].pipeoutSet
+//
+//  Operand[].newEosMarker
+//  Operand[].pipeOut
+//
+//  true
+//;
+/*----------------------------------------------------------------------------*/
 : BM_GenEnt_PulseMarker \handler
 
   // pipe out the pulse marker to the next operator
   Operand[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // new a stream def
+  // pipeout a new stream def
   Operand[].newStreamDef
-
   Operand[].pipeOut
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the ent buffer's
-  <nBuffers> index[].genEntBuffers to Operand[]
-  Operand[].pipeoutSet
+  <nBuffers> 0 do
+    index[].genEntBuffer to Operand[]
+    Operand[].pipeout
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeout a new eos marker
 
   Operand[].newEosMarker
   Operand[].pipeOut

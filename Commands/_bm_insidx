@@ -46,8 +46,10 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int 10 |
-    BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int    | stageC
+      BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int 10
+    | burstOp
+    | BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int
+    | stageC
 
   stage stageC on origin:
     reportOp "/tmp/bm_insidx_rep.csv" | outputOp | sinkOp | stageA

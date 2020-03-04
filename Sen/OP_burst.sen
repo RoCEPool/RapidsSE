@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* OP_burst.sen -- Burst Operator                                             */
+/*============================================================================*/
+
+" OP_burst.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ENTBUFFER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: OP_burst_EntBuffer \handler
+
+  "OP_burst_EntBuffer" .
+
+  operand[].get OperandC[].collect
+
+  //ZK_ENTBUFFER_handler
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: OP_burst_EosMarker \handler
+
+  "OP_burst_EosMarker" .
+
+  operandC[].setFirst
+  operandC[].pipeoutSet
+
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* burstOp request                                    (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: burstOp_req \operator
+
+  >>logEntry <SEED_REQ>
+
+  // set topology, next stage and op
+  op__topology
+
+  find: OP_burst_EntBuffer ZK_ENTBUFFER op[].handler!
+  find: OP_burst_EosMarker ZK_EOSMARKER op[].handler!
+
+  op__loop
+
+  "*** OP_burst_req EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: burstOp :: burstOp ;
+
+jobInfo: burstOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

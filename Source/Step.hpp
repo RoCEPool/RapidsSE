@@ -67,9 +67,9 @@ namespace Steps
   
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
-    static void vAddSteps_IndexReg(void);
+    static void vAddSteps_RegIndex(void);
     static void vAddSteps_IndexPtn(void);
-    static void vAddSteps_IndexPtnReg(void);
+    static void vAddSteps_RegIndexPtn(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
   
@@ -107,8 +107,9 @@ namespace Steps
     static void vAddSteps_Object(void);
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
-    static void vAddSteps_Operand(void);
-    static void vAddSteps_OperandB(void);
+    static void vAddSteps_RegOperand(void);
+    static void vAddSteps_RegOperandB(void);
+    static void vAddSteps_RegOperandC(void);
 
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Planner(void);

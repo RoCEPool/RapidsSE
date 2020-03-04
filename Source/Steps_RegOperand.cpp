@@ -7,55 +7,55 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Operand(void)
+void Step::vAddSteps_RegOperand(void)
 {
   
-  vAddStep("Operand[].csvAppend"_Stz,      &Step::vOperandCsvAppend);
-  vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
-  vAddStep("Operand[].chunkFile"_Stz,      &Step::vOperandChunkFile);
-  vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
-  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
-  vAddStep("Operand[].csvToCrw"_Stz,       &Step::vOperandCsvToCrw);
-  vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vOperandCsvToCrwH);
-  vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
-  vAddStep("Operand[].firstRow@"_Stz,      &Step::vOperandFirstRowFetch);
-  vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
-  vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
-  vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
-  vAddStep("Operand[].isReport"_Stz,       &Step::vOperandIsReport);
-  vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
-  vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
-  vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
-  vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
-  vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
-  vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
-  vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
-  vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
-  vAddStep("Operand[].newPulseMarker"_Stz, &Step::vOperandNewPulseMarker);
-  vAddStep("Operand[].newSeekOffsets"_Stz, &Step::vOperandNewSeekOffsets);
-  vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
-  vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
-  vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
-  vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vOperandNewStoppedMarker);
-  vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
-  vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
-  vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
-  vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
-  vAddStep("Operand[].pipeToJob"_Stz,      &Step::vOperandPipeToJob);
-  vAddStep("Operand[].readChunk"_Stz,      &Step::vOperandReadChunk);
-  vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
-  vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
-  vAddStep("Operand[].seekSets@"_Stz,      &Step::vOperandSeekSetsFetch);
-  vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
-  vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
-  vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
-  vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
+  vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
+  vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
+  vAddStep("Operand[].chunkFile"_Stz,      &Step::vRegOperandChunkFile);
+  vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
+  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
+  vAddStep("Operand[].csvToCrw"_Stz,       &Step::vRegOperandCsvToCrw);
+  vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
+  vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
+  vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
+  vAddStep("Operand[].get"_Stz,            &Step::vRegOperandGet);
+  vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
+  vAddStep("Operand[].isNull"_Stz,         &Step::vRegOperandIsNull);
+  vAddStep("Operand[].isReport"_Stz,       &Step::vRegOperandIsReport);
+  vAddStep("Operand[].itemCount@"_Stz,     &Step::vRegOperandItemCountFetch);
+  vAddStep("Operand[].insertIntoTable"_Stz,&Step::vRegOperandInsertIntoTable);
+  vAddStep("Operand[].invokePython"_Stz,   &Step::vRegOperandInvokePython);
+  vAddStep("Operand[].invokePythonShell"_Stz, &Step::vRegOperandInvokePythonShell);
+  vAddStep("Operand[].kind"_Stz,           &Step::vRegOperandKind);
+  vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
+  vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
+  vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
+  vAddStep("Operand[].newPulseMarker"_Stz, &Step::vRegOperandNewPulseMarker);
+  vAddStep("Operand[].newSeekOffsets"_Stz, &Step::vRegOperandNewSeekOffsets);
+  vAddStep("Operand[].newStartMarker"_Stz, &Step::vRegOperandNewStartMarker);
+  vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
+  vAddStep("Operand[].newStopMarker"_Stz,  &Step::vRegOperandNewStopMarker);
+  vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vRegOperandNewStoppedMarker);
+  vAddStep("Operand[].newStreamDef"_Stz,   &Step::vRegOperandNewStreamDef);
+  vAddStep("Operand[].next"_Stz,           &Step::vRegOperandNext);
+  vAddStep("Operand[].pipeOut"_Stz,        &Step::vRegOperandPipeOut);
+  vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vRegOperandPipeOutSet);
+  vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
+  vAddStep("Operand[].readChunk"_Stz,      &Step::vRegOperandReadChunk);
+  vAddStep("Operand[].report"_Stz,         &Step::vRegOperandReport);
+  vAddStep("Operand[].rowCount@"_Stz,      &Step::vRegOperandRowCountFetch);
+  vAddStep("Operand[].seekSets@"_Stz,      &Step::vRegOperandSeekSetsFetch);
+  vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
+  vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
+  vAddStep("Operand[].workDone"_Stz,       &Step::vRegOperandWorkDone);
+  vAddStep("Operand[].writeToFile0"_Stz,   &Step::vRegOperandWriteToFile0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Operand[].bide -- operand bide                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandBide(void)
+void Step::vRegOperandBide(void)
 {
   ENTRY(); // ENTRY("vOperandBide"_Stz);
   
@@ -72,7 +72,7 @@ void Step::vOperandBide(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].chunkFile -- operand chunk file                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandChunkFile(void)
+void Step::vRegOperandChunkFile(void)
 {
   ENTRY(); // ENTRY("vOperandChunkFile"_Stz);
   
@@ -179,7 +179,7 @@ void Step::vOperandChunkFile(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].csvAppend -- append a csv row to the csv operand                 */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandCsvAppend(void)
+void Step::vRegOperandCsvAppend(void)
 {
   ENTRY(); // ENTRY("vOperandCsvAppend"_Stz);
   
@@ -200,7 +200,7 @@ void Step::vOperandCsvAppend(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].csvData -- return operand csv data                               */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandCsvData(void)
+void Step::vRegOperandCsvData(void)
 {
   ENTRY(); // ENTRY("vOperandCsvData"_Stz);
   
@@ -214,7 +214,7 @@ void Step::vOperandCsvData(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].delete -- operand delete                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandDelete(void)
+void Step::vRegOperandDelete(void)
 {
   ENTRY(); // ENTRY("vOperandDelete"_Stz);
   
@@ -228,7 +228,7 @@ void Step::vOperandDelete(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].firstRow@ -- fetch operand first row                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandFirstRowFetch(void)
+void Step::vRegOperandFirstRowFetch(void)
 {
   ENTRY(); // ENTRY("vOperandFirstRowFetch"_Stz);
   
@@ -241,7 +241,7 @@ void Step::vOperandFirstRowFetch(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].get -- fetch operand                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandGet(void)
+void Step::vRegOperandGet(void)
 {
   ENTRY(); // ENTRY("vOperandGet"_Stz);
   
@@ -253,7 +253,7 @@ void Step::vOperandGet(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].handleAggEnd -- handle agg end                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandHandleAggEnd(void)
+void Step::vRegOperandHandleAggEnd(void)
 {
   ENTRY(); // ENTRY("vOperandHandleAggEnd"_Stz);
   
@@ -297,7 +297,7 @@ void Step::vOperandHandleAggEnd(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].isNull -- is operand null ?                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandIsNull(void)
+void Step::vRegOperandIsNull(void)
 {
   ENTRY(); // ENTRY("vOperandIsNull"_Stz);
   
@@ -309,7 +309,7 @@ void Step::vOperandIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].isReport -- is operand for report processing ?                   */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandIsReport(void)
+void Step::vRegOperandIsReport(void)
 {
   ENTRY(); // ENTRY("vOperandIsReport"_Stz);
   
@@ -322,7 +322,7 @@ void Step::vOperandIsReport(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].itemCount@ -- fetch the operand item count                       */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandItemCountFetch(void)
+void Step::vRegOperandItemCountFetch(void)
 {
   ENTRY(); // ENTRY("vOperandItemCountFetch"_Stz);
   
@@ -337,7 +337,7 @@ void Step::vOperandItemCountFetch(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].insertIntoTable -- insert operand into the table                 */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandInsertIntoTable(void)
+void Step::vRegOperandInsertIntoTable(void)
 {
   ENTRY(); // ENTRY("vOperandInsertIntoTable"_Stz);
   
@@ -358,7 +358,7 @@ void Step::vOperandInsertIntoTable(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].invokePython -- invoke python script                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandInvokePython(void)
+void Step::vRegOperandInvokePython(void)
 {
   ENTRY(); // ENTRY("vOperandInvokePython"_Stz);
 
@@ -430,7 +430,7 @@ void Step::vOperandInvokePython(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].invokePythonShell -- invoke python script from shell             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandInvokePythonShell(void)
+void Step::vRegOperandInvokePythonShell(void)
 {
   ENTRY(); // ENTRY("vOperandInvokePython"_Stz);
   
@@ -458,7 +458,7 @@ void Step::vOperandInvokePythonShell(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].kind -- decode operand into its operand kind                     */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandKind(void)
+void Step::vRegOperandKind(void)
 {
   ENTRY(); // ENTRY("vOperandKind"_Stz);
   
@@ -505,7 +505,7 @@ void Step::vOperandKind(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].next -- get next operand                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNext(void)
+void Step::vRegOperandNext(void)
 {
   ENTRY(); // ENTRY("vOperandNext"_Stz);
   
@@ -519,7 +519,7 @@ void Step::vOperandNext(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newCsbBuffer -- new a csv buffer                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewCsvBuffer(void)
+void Step::vRegOperandNewCsvBuffer(void)
 {
   ENTRY(); // ENTRY("vOperandNewCsvBuffer"_Stz);
   
@@ -533,7 +533,7 @@ void Step::vOperandNewCsvBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newEosMarker -- new an end marker                                */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewEosMarker(void)
+void Step::vRegOperandNewEosMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewEosMarker"_Stz);
   
@@ -547,7 +547,7 @@ void Step::vOperandNewEosMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newErrorMarker -- new an error marker                            */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewErrorMarker(void)
+void Step::vRegOperandNewErrorMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewErrorMarker"_Stz);
   
@@ -561,7 +561,7 @@ void Step::vOperandNewErrorMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newPulseMarker -- new a pulse marker                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewPulseMarker(void)
+void Step::vRegOperandNewPulseMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewPulseMarker"_Stz);
   
@@ -575,7 +575,7 @@ void Step::vOperandNewPulseMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newSeekOffsets -- new a seek offset operand                      */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewSeekOffsets(void)
+void Step::vRegOperandNewSeekOffsets(void)
 {
   ENTRY(); // ENTRY("vOperandNewSeekOffset"_Stz);
   
@@ -589,7 +589,7 @@ void Step::vOperandNewSeekOffsets(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStartMarker -- new a start marker                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStartMarker(void)
+void Step::vRegOperandNewStartMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewStartMarker"_Stz);
   
@@ -603,7 +603,7 @@ void Step::vOperandNewStartMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStartedMarker -- new a started marker                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStartedMarker(void)
+void Step::vRegOperandNewStartedMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewStartedMarker"_Stz);
   
@@ -617,7 +617,7 @@ void Step::vOperandNewStartedMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStopMarker -- new a stop marker                               */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStopMarker(void)
+void Step::vRegOperandNewStopMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewStopMarker"_Stz);
   
@@ -631,7 +631,7 @@ void Step::vOperandNewStopMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStopppedMarker -- new a stopped marker                        */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStoppedMarker(void)
+void Step::vRegOperandNewStoppedMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewStoppedMarker"_Stz);
   
@@ -645,7 +645,7 @@ void Step::vOperandNewStoppedMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStreamDef -- new a stream def from table[]                    */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewStreamDef(void)
+void Step::vRegOperandNewStreamDef(void)
 {
   ENTRY(); // ENTRY("vOperandNewStreamDef"_Stz);
   
@@ -659,7 +659,7 @@ void Step::vOperandNewStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].pipeOut -- append operand onto next operator in pipeline         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandPipeOut(void)
+void Step::vRegOperandPipeOut(void)
 {
   ENTRY(); // ENTRY("vOperandPipeOut"_Stz);
   
@@ -677,7 +677,7 @@ void Step::vOperandPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].pipeOutSet -- append operand set onto next operator in pipeline  */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandPipeOutSet(void)
+void Step::vRegOperandPipeOutSet(void)
 {
   ENTRY(); // ENTRY("vOperandPipeOutSet"_Stz);
   
@@ -695,7 +695,7 @@ void Step::vOperandPipeOutSet(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].pipeToJob -- append operand onto the pipeline job buffer queue   */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandPipeToJob(void)
+void Step::vRegOperandPipeToJob(void)
 {
   ENTRY(); // ENTRY("vOperandPipeToJob"_Stz);
   
@@ -713,7 +713,7 @@ void Step::vOperandPipeToJob(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].readChunk -- reach a chunk from file given the seekOffsets       */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandReadChunk(void)
+void Step::vRegOperandReadChunk(void)
 {
   ENTRY(); // ENTRY("vOperandReadChunk"_Stz);
   
@@ -742,7 +742,7 @@ void Step::vOperandReadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].report -- mark operand for report processing ?                   */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandReport(void)
+void Step::vRegOperandReport(void)
 {
   ENTRY(); // ENTRY("vOperandReport"_Stz);
   
@@ -755,7 +755,7 @@ void Step::vOperandReport(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].rowCount@ -- fetch the operand row count                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandRowCountFetch(void)
+void Step::vRegOperandRowCountFetch(void)
 {
   ENTRY(); // ENTRY("vOperandRowCountFetch"_Stz);
   
@@ -770,7 +770,7 @@ void Step::vOperandRowCountFetch(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].rowCount@ -- fetch the operand row count                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandSeekSetsFetch(void)
+void Step::vRegOperandSeekSetsFetch(void)
 {
   ENTRY(); // ENTRY("vOperandSeekSetsFetch"_Stz);
   
@@ -785,7 +785,7 @@ void Step::vOperandSeekSetsFetch(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].set -- set operand                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandSet(void)
+void Step::vRegOperandSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
@@ -799,7 +799,7 @@ void Step::vOperandSet(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].upsertIntoTable -- insert operand into the table                 */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandUpsertIntoTable(void)
+void Step::vRegOperandUpsertIntoTable(void)
 {
   ENTRY(); // ENTRY("vOperandUpsertIntoTable"_Stz);
   
@@ -821,7 +821,7 @@ void Step::vOperandUpsertIntoTable(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].crwToCsv -- convert Crw operand to Csv                           */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandCrwToCsv(void)
+void Step::vRegOperandCrwToCsv(void)
 {
   ENTRY(); // ENTRY("vOperandCrwToCsv"_Stz);
   
@@ -834,7 +834,7 @@ void Step::vOperandCrwToCsv(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].csvToCrw -- convert csv operand to Crw                           */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandCsvToCrw(void)
+void Step::vRegOperandCsvToCrw(void)
 {
   ENTRY(); // ENTRY("vOperandCsvToCrw"_Stz);
   
@@ -904,7 +904,7 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 /* Operand[].csvToCrwH -- convert csv operand to CrwH                         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandCsvToCrwH(void)
+void Step::vRegOperandCsvToCrwH(void)
 {
   ENTRY(); // ENTRY("vOperandCsvToCrwH"_Stz);
   
@@ -921,7 +921,7 @@ void Step::vOperandCsvToCrwH(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].workDone -- update work done                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandWorkDone(void)
+void Step::vRegOperandWorkDone(void)
 {
   ENTRY(); // ENTRY("vOperandWorkDone"_Stz);
   
@@ -982,7 +982,7 @@ void Step::vOperandWorkDone(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].writeToFile0 -- write to file0[]                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandWriteToFile0(void)
+void Step::vRegOperandWriteToFile0(void)
 {
   ENTRY(); // ENTRY("vOperandWriteToFile0"_Stz);
   
