@@ -30,6 +30,23 @@
   task::this locals| pTask |
   job::this  locals| pJob_pipeline |
 
+
+  // run <pre_execute>
+
+  "<pre_execute>"
+  job::this job.enameSet@ enameSet.hasName if
+    "<pre_execute>"
+    job::this job.enameSet@ enameSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    <pipelineNm> "No pre execute word for pipeline: %v" .printf
+  then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
   pTask task.grabLock
