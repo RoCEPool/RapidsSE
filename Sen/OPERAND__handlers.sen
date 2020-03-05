@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_INFOSET ...                                                 */
 /*----------------------------------------------------------------------------*/
-: ZK_INFOSET \handler
+: ZK_INFOSET_handler \handler
 
   //"ZK_INFOSET" .verbose
   Operand[].pipeOut
