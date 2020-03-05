@@ -470,15 +470,16 @@ void Step::vRegOperandKind(void)
     case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
     case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
     case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
+    case CN_INFOSET  :       eOperand = ZK_INFOSET;         break;
     case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
     case CN_MARKER: {
       Marker* pMarker = _pMarker(*m_pRegSet->m_xpOperandA);
 
        switch(pMarker->eOpMarker()) {
        
+        case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
-         case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;

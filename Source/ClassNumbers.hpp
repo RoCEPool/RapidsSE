@@ -126,6 +126,7 @@ enum eCN : u2 // Class Number
   /*  93 0x05D     8224B Heap:M */ CN_INDEXPTNVEC,
   /*  95 0x05F     8216B Heap:M */ CN_IDXCOLVEC,
   /*  96 0x060     8224B Heap:M */ CN_IDXVEC,
+  /*  97 0x061  1000088B Heap:L */ CN_INFOSET,
   /*  97 0x061  1000088B Heap:L */ CN_INGESTCHUNK,
   /*  98 0x062     1192B Heap:L */ CN_INTBUFFER,
   /*  99 0x063       16B Heap:I */ CN_INTVAL,
@@ -458,6 +459,7 @@ static Stz* aCN[]
   /*  93 0x05D */ "INDEXPTNVEC"_Stz,         // CN_INDEXPTNVEC
   /*  95 0x05F */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /*  96 0x060 */ "IDXVEC"_Stz,              // CN_IDXVEC
+  /*  97 0x061 */ "INFOSET"_Stz,             // INFOSET
   /*  97 0x061 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
   /*  98 0x062 */ "INTBUFFER"_Stz,           // CN_INTBUFFER
   /*  99 0x063 */ "INTVAL"_Stz,              // CN_INTVAL

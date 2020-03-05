@@ -123,6 +123,7 @@ pFINALIZE *gpFinalize[]
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXPTNVEC
   /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
+  /*    */ &Finalize::vUndefined,         // CN_INFOSET
   /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
   /*    */ &Finalize::vUndefined,         // CN_INTBUFFER
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL

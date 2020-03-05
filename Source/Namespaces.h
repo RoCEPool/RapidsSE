@@ -46,6 +46,7 @@ namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
 namespace Indexing      { class EntBuffer; class IndexPtn;                    }
+namespace InfoData      {                                                     }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
@@ -122,6 +123,7 @@ using namespace GoldenGate;
 using namespace Grids;
 using namespace Host;
 using namespace Indexing;
+using namespace InfoData;
 using namespace Interface;
 using namespace Jobs;
 using namespace LexicalAnalysis;
