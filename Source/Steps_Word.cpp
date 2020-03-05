@@ -33,6 +33,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.kind!"_Stz,        &Step::vWordKindStore);
   vAddStep("word.name@"_Stz,        &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,        &Step::vWordNameStore);
+  vAddStep("word.object@"_Stz,      &Step::vWordObjectFetch);
+  vAddStep("word.object!"_Stz,      &Step::vWordObjectStore);
   vAddStep("word.prev"_Stz,         &Step::vWordPrev);
   vAddStep("word.prompt@"_Stz,      &Step::vWordPromptFetch);
   vAddStep("word.prompt!"_Stz,      &Step::vWordPromptStore);
@@ -451,6 +453,38 @@ void Step::vWordNew(void)
   m_pDataStack->vPushPtr(pNewWord);
   //m_pCompiler->vCurrentWord(pNewWord);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.object@ -- fetch m_pObject of word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordObjectFetch(void)
+{
+  ENTRY(); // ENTRY("vWordObjectFetch"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  Object* pObject = pWord->pObject();
+  
+  m_pDataStack->vPushPtr(pObject);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.object! -- store m_pObject of word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordObjectStore(void)
+{
+  ENTRY(); // ENTRY("vWordObjectStore"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  pWord->vObject(pObject);
+  
   EXIT();
 }
 

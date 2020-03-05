@@ -5,11 +5,17 @@
 " jobOperand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* install a demon                                                            */
+/* install demon pipeline job                                                 */
 /*----------------------------------------------------------------------------*/
 : demon::install
 
-  <pipelineNm> "would install demon: %v" .printf
+  "__" <pipelineNm> str.cat locals| sDemonNm |
+
+  sDemonNm "installing demon pipeline job: %v" .printf
+
+  sDemonNm >createInRoot locals| pDemonWd |
+
+  job::this pDemonWd word.object!
 ;
 
 

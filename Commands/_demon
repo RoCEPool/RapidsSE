@@ -22,6 +22,9 @@ end;
 
 // -- -- -- -- -- -- -- --
 /nowait pipeline anyDemon2
+
+  tag "<pre_execute>" = "demon::install" endTag
+
 begin
 
   stage stageA on origin:
