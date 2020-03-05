@@ -913,6 +913,9 @@ public:
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
 
+  // pipeline
+  void vPipelinePipeout(void);
+
   // plan
   void vPlanCompile(void);
   void vPlanDelete(void);
