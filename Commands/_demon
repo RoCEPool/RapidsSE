@@ -5,7 +5,14 @@
 print "-- Demon Pipeline Test --" ;
 
 dumptokens true;
-/nowait pipeline endless
+/nowait pipeline anyDemon
+begin
+
+  stage stageA on origin:
+    eatAllOp | stageA
+
+end;
+/nowait pipeline anyDemon2
 begin
 
   stage stageA on origin:
