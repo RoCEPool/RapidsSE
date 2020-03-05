@@ -99,6 +99,8 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
+  i8 i_Cut;
+  
   if (! pProcCatg)
     return false;
  
@@ -182,29 +184,40 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // substitute parameters in procedure text with command arguments
   
   TokenVec* pParamsVec = Tokeniser::pSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
-  TokenVec* pArgsVec   = Tokeniser::pSubVec(pCmdTokenVec,1,nTokens-1);
+  TokenVec* pArgsVec = nullptr;
   
-  if (pParamsVec->nTokens() != pArgsVec->nTokens()) {
-    delete pProcTextVec;
-    delete pParamsVec;
-    delete pArgsVec;
-    return false;
-  }
+  if ( pParamsVec ) {
   
-  Tokeniser::vReplace(pProcTextVec,pParamsVec,pArgsVec);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove the parameters clause from the modified text vector
-  
-  i8 i_Cut = pProcTextVec->iFindToken("parameters"_Stz);
-  if (C_UNKNOWN != i_Cut) {
-    for (;;) {
-      pProcTextVec->vCutToken(i_Cut);
-      Token* pTest = pProcTextVec->pGet(i_Cut);
-      if (pTest->bSame("begin"_Stz))
-        break;
+    pArgsVec = Tokeniser::pSubVec(pCmdTokenVec,1,nTokens-1);
+    
+    if (pParamsVec->nTokens() != pArgsVec->nTokens()) {
+      delete pProcTextVec;
+      delete pParamsVec;
+      delete pArgsVec;
+      return false;
     }
+    
+    Tokeniser::vReplace(pProcTextVec,pParamsVec,pArgsVec);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // remove the parameters clause from the modified text vector
+    
+    i_Cut = pProcTextVec->iFindToken("parameters"_Stz);
+    
+    if (C_UNKNOWN != i_Cut) {
+      for (;;) {
+        pProcTextVec->vCutToken(i_Cut);
+        Token* pTest = pProcTextVec->pGet(i_Cut);
+        if (pTest->bSame("begin"_Stz))
+          break;
+      }
+    }
+    
   }
+  else {
+    i_Cut = pProcTextVec->iFindToken("begin"_Stz);
+  }
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the <stmt> tag into the modified text vector
