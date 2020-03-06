@@ -164,7 +164,9 @@ void TokenVec::vDumpTokens(void)
     if (! pToken->szTerm())
       break;
     
-    vTrace("  %s %s\n"_Stz,
+    vTrace("  (%2lld,%2lld) %s %s\n"_Stz,
+           pToken->iLineNo(),
+           pToken->iColNo(),
            aTN[pToken->eToken()],
            pToken->szTerm());
   }
