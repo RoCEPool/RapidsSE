@@ -80,7 +80,6 @@ sztbl lineitem;
 //fetch lineitem limit 10;
 
 pipeline lineitem_fetch
-  tag "<stmt>" = "statement given to procedure" endTag
 begin
 
   stage stageA on origin:
@@ -90,7 +89,8 @@ begin
     scanOp lineitem | stageC
 
   stage stageC on origin:
-    outputOp | toDemonOp | sinkOp | stageA
+    outputOp | sinkOp | stageA
+    //outputOp | toDemonOp | sinkOp | stageA
 
 end;
 

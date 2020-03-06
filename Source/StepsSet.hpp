@@ -1016,6 +1016,9 @@ public:
   void vRegCounter1Set(void);
   void vRegCounter2Set(void);
 
+  // reg job
+  void vRegJobGet(void);
+
   // reg now
   void vRegNowGet(void);
 
@@ -1085,6 +1088,9 @@ public:
   void vRegOperandCCollect(void);
   void vRegOperandCPipeOutSet(void);
   void vRegOperandCSetFirst(void);
+
+  // reg task
+  void vRegTaskGet(void);
 
   // reg timer
   void vRegTimerGet(void);
