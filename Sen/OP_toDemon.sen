@@ -13,9 +13,9 @@
 
   ZK_PULSEMARKER_handler
 
-  //Operand[].newPulseMarker
-
-  //"__anyDemon" find word.object@
+  Operand[].newPulseMarker
+    "__anyDemon" find word.object@
+    pipeline.pipeout
 ;
 
 /*----------------------------------------------------------------------------*/

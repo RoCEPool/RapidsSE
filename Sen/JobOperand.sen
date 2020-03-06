@@ -9,6 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : demon::install
 
+  ddlLock[].dropRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   "__" <pipelineNm> str.cat locals| sDemonNm |
 
   sDemonNm "installing demon pipeline job: %v" .printf

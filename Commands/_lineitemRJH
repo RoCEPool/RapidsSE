@@ -6,6 +6,7 @@ startCluster;
 
 logSection createTable;
 
+dumptokens true;
 time create table LineItem                 // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL min 1 max 1000,  //  0)  8B   3B  O_ORDERKEY 1+

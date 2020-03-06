@@ -53,11 +53,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to startOp)
+  <pipelineNm> "%v execute" .printf
   pJob_pipeline job_Pipeline.execute if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
+    <pipelineNm> "%v waiting on task::wait" .printf
     task::wait
+    <pipelineNm> "%v running" .printf
 
  then
 ;

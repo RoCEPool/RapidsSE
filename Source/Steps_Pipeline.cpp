@@ -18,12 +18,14 @@ void Step::vAddSteps_Pipeline(void)
 void Step::vPipelinePipeout(void)
 {
   ENTRY(); // ENTRY("vOpPipeOut"_Stz);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+
+  Job* pPipelineJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vPipeOut(pOperand);
+//  Op* pOp = m_pTask->m_pJob->m_pOp;
+//
+//  pOp->vPipeOut(pOperand);
 
   EXIT();
 }
