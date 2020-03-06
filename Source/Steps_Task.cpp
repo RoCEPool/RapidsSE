@@ -17,7 +17,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::sleepMsec"_Stz,     &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,     &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,     &Step::vTaskSleepUsec);
-  vAddStep("task::this"_Stz,          &Step::vTaskThis);
   vAddStep("task::wait"_Stz,          &Step::vTaskWait);
   vAddStep("task::yield"_Stz,         &Step::vTaskYield);
 
@@ -356,20 +355,6 @@ void Step::vTaskStateFetch(void)
   eTS eState = pThatTask->m_eState;
   
   m_pDataStack->vPushInt((i8)eState);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::this -- push this task                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskThis(void)
-{
-  ENTRY(); // ENTRY("vTaskThis"_Stz);
-  
-  Object* pTask = m_pTask;
-  
-  m_pDataStack->vPushPtr(pTask);
   
   EXIT();
 }

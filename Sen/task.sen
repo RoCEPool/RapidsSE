@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : task::acks! ( nAcks -- )
 
-  task::this task.acks!
+  task[] task.acks!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : task::sendSocket@
 
-  task::this task.sendNode@ node.sendSocket@
+  task[] task.sendNode@ node.sendSocket@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : task::socketLock ( -- )
 
-  task::this task.sendNode@ node.sendSocket@ socket.grabWrite
+  task[] task.sendNode@ node.sendSocket@ socket.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : task::socketUnlock ( -- )
 
-  task::this task.sendNode@ node.sendSocket@ socket.dropWrite
+  task[] task.sendNode@ node.sendSocket@ socket.dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : task::dicStackToPathStr ( -- "path" )
 
-  task::this task.dicStack dicStack.toPathStr
+  task[] task.dicStack dicStack.toPathStr
 ;
 
 /*============================================================================*/

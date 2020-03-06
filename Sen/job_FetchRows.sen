@@ -63,7 +63,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  task::this task.job@ to pJob_FetchRows
+  task[] task.job@ to pJob_FetchRows
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check partition if specified (should belong to this node)
@@ -119,7 +119,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
-  task::this to pTask
+  task[] to pTask
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task

@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::execute _eeh ( -- )
 
-  task::this locals| pTask |
+  task[] locals| pTask |
   job[]  locals| pJob_pipeline |
 
 

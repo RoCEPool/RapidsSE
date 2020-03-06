@@ -12,7 +12,7 @@
   params| pJob_InsertTable  |
   0 0 locals| pThisTask pJob_SubInserter |
 
-  task::this to pThisTask
+  task[] to pThisTask
 
   // calculate total partitions in the cluster
   grid::slots grid::definedNodes * locals| nTotalPartitions |
@@ -39,7 +39,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab this task's lock
-  task::this task.grabLock
+  task[] task.grabLock
 
   grid::slots task::acks!
 
@@ -60,7 +60,7 @@
 
 
   // get the task
-  task::this to pTask
+  task[] to pTask
 
   // get the job from the task
   pTask task.job@ to pJob

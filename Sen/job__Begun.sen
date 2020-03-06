@@ -33,7 +33,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the originator node as the send target node
-  //iJobId job::originator@ grid::node task::this task.sendNode!
+  //iJobId job::originator@ grid::node task[] task.sendNode!
 
   // send the begun job
   iJobId job::originator@ pJob__Begun job.reply

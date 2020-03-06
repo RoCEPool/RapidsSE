@@ -16,7 +16,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
-  task::this to pTask
+  task[] to pTask
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
@@ -101,8 +101,8 @@
   // wait if the row being inserted on this partition
   // writeRow will notify it
   iPartition Grid::toNode Grid::thisNode@ == if
-    //task::this iPartition "waiting for ack %v %v" str.format .
-    task::this task.grabLock
+    //task[] iPartition "waiting for ack %v %v" str.format .
+    task[] task.grabLock
     1 task::acks!
     task::wait
   then

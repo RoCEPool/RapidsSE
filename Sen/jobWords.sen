@@ -12,7 +12,7 @@
   0 0 locals| pDicStackTask |
 
   // get task dic stack
-  task::this task.dicStack to pDicStackTask
+  task[] task.dicStack to pDicStackTask
 
   // copy the path from task dic stack onto data stack
   pDicStackTask dicStack.depth 0 ?do
@@ -122,7 +122,7 @@
   0 locals| pThisJob  |
 
   // get this task and job
-  task::this to pThisTask
+  task[] to pThisTask
   pThisTask task.job@ to pThisJob
 
   // now delete the ended job
@@ -189,7 +189,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::node task::this task.sendNode!
+  i_Node grid::node task[] task.sendNode!
 
   pJob job.send
 ;
@@ -202,7 +202,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::node task::this task.sendNode!
+  i_Node grid::node task[] task.sendNode!
 
   pJob job.send
 ;
@@ -213,7 +213,7 @@
 : job::becomeOriginator ( -- )
 
    // set originating task
-  task::this job[] job.originatingTask!
+  task[] job[] job.originatingTask!
 
   job[] job.id@ job[] job.originatingId!
 
@@ -229,7 +229,7 @@
   params| pJob |
 
   // set originating task
-  task::this pJob job.originatingTask!
+  task[] pJob job.originatingTask!
 
   job[] job.id@ job[] job.originatingId!
 
@@ -246,7 +246,7 @@
   grid::connectedNodes pJob job.acksRemaining!
 
   // grab this task's lock
-  task::this task.grabLock
+  task[] task.grabLock
 
   // set acks for originator task
   1 task::acks!

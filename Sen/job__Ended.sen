@@ -25,7 +25,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the originator node as the send target node
-  //iJobId job::originator@ grid::node task::this task.sendNode!
+  //iJobId job::originator@ grid::node task[] task.sendNode!
 
   // send the ended job
   iJobId job::originator@ pJob__Ended job.reply

@@ -114,7 +114,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the task
-  task::this to pThisTask
+  task[] to pThisTask
 
   // get the connectpr job from the task
   pThisTask task.job@ to pJob_Connector

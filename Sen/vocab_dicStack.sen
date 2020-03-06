@@ -10,7 +10,7 @@
 : pathDepth ( -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // get depth
   dicStack.depth
@@ -22,7 +22,7 @@
 : pathDrop ( -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // drop the top dictionary
   dicStack.drop
@@ -34,7 +34,7 @@
 : pathDump ( -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // dump the dic stack
   dicStack.dump
@@ -46,7 +46,7 @@
 : pathPick ( i -- dic )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // pick the dictionary from dic stack
   dicStack.pick
@@ -58,7 +58,7 @@
 : pathPop ( -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // pop the top dictionary
   dicStack.pop
@@ -70,7 +70,7 @@
 : pathPush ( dic -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // push the dictionary onto dic stack
   dicStack.push
@@ -105,7 +105,7 @@
 : pathCurrentFolder ( -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   dicStack.depth 1 - pathPick
 ;
@@ -313,7 +313,7 @@
 : pathDropAll ( -- )
 
   // push the dic stack of this task
-  task::this task.dicStack
+  task[] task.dicStack
 
   // drop the top dictionary
   dicStack.dropAll

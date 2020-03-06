@@ -29,7 +29,7 @@
 
   params| pJob_LoadTable |
 
-  task::this task.grabLock
+  task[] task.grabLock
 
   grid::slots task::acks!
 
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_waitOnly ( pJob_LoadTable --  )
 
-  task::this task.grabLock
+  task[] task.grabLock
   grid::slots task::acks!
   task::wait
 ;

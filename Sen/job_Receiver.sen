@@ -30,7 +30,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_init ( -- )
 
-  CN_JOB_RECEIVER task::this task.thread thread.dedicated!
+  CN_JOB_RECEIVER task[] task.thread thread.dedicated!
 
   NS_ACTIVE grid::thisNode@ grid::node node.state!
 
@@ -122,7 +122,7 @@
 
   >>logEntry <SEED_RUN>
 
-  task::this locals| pThisTask |
+  task[] locals| pThisTask |
   job[]  locals| pJob_Receiver |
 
   // initialise
