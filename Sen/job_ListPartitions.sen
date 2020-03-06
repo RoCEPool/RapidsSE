@@ -34,13 +34,13 @@ opSyntax: listPartitions :: lspart ;
 
 jobInfo: listPartitions
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
-  <?ddlLock?>  = DL_NONE
+  ?<jobKind>?  = JK_DIST2PC
+  ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
+  ?<ddlLock>?  = DL_NONE
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 /*============================================================================*/

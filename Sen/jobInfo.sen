@@ -45,7 +45,7 @@
 
   compiler::current@ word.EnameSet@ locals| pEnameSet |
 
-  "<?jobKind?>" pEnameSet EnameSet.getInt
+  "?<jobKind>?" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -69,7 +69,7 @@
 
   compiler::current@ word.EnameSet@ locals| pEnameSet |
 
-  "<?jobKind?>" pEnameSet EnameSet.getInt
+  "?<jobKind>?" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -93,7 +93,7 @@
 
   compiler::current@ word.EnameSet@ locals| pEnameSet |
 
- "<?jobKind?>" pEnameSet EnameSet.getInt
+ "?<jobKind>?" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -117,7 +117,7 @@
 
   compiler::current@ word.EnameSet@ locals| pEnameSet |
 
-  "<?cmdKind?>" pEnameSet EnameSet.getInt
+  "?<cmdKind>?" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -162,15 +162,15 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_dist
 
-  "<?SeedReq?>" "_req" "defaultSeedDist" seedEnameAdd
+  "?<SeedReq>?" "_req" "defaultSeedDist" seedEnameAdd
 
-  "<?SeedRcv?>" "_beg" "defaultSeedDist" seedEnameAdd
+  "?<SeedRcv>?" "_beg" "defaultSeedDist" seedEnameAdd
 
-  "<?SeedExe?>" "_exe" "defaultSeedDist" seedEnameAdd
+  "?<SeedExe>?" "_exe" "defaultSeedDist" seedEnameAdd
 
-  "<?SeedEnd?>" "_end" "defaultSeedDist" seedEnameAdd
+  "?<SeedEnd>?" "_end" "defaultSeedDist" seedEnameAdd
 
-  "<?SeedCan?>" "_can" "defaultSeedDist" seedEnameAdd
+  "?<SeedCan>?" "_can" "defaultSeedDist" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_local
 
-  "<?SeedReq?>" "_req" "defaultSeedLocal" seedEnameAdd
+  "?<SeedReq>?" "_req" "defaultSeedLocal" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_generic
 
-  "<?SeedRun?>" "_run" "defaultSeedLocal" seedEnameAdd
+  "?<SeedRun>?" "_run" "defaultSeedLocal" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,33 +196,33 @@
 : .fillOutEnameSet params| pEnameSet |
 
   // default for command kind
-  "<?cmdKind?>" pEnameSet EnameSet.hasName not if
-    "<?cmdKind?>" "CK_COMMAND" jobInfo::addEname
+  "?<cmdKind>?" pEnameSet EnameSet.hasName not if
+    "?<cmdKind>?" "CK_COMMAND" jobInfo::addEname
   then
 
   // default for ddl lock
-  "<?ddlLock?>" pEnameSet EnameSet.hasName not if
-    "<?ddlLock?>" "DL_NONE" jobInfo::addEname
+  "?<ddlLock>?" pEnameSet EnameSet.hasName not if
+    "?<ddlLock>?" "DL_NONE" jobInfo::addEname
   then
 
   // default for job desc
-  "<?jobDesc?>" pEnameSet EnameSet.hasName not if
-    "<?jobDesc?>" "--description of job--" jobInfo::addEname
+  "?<jobDesc>?" pEnameSet EnameSet.hasName not if
+    "?<jobDesc>?" "--description of job--" jobInfo::addEname
   then
 
   // default for job kind
-  "<?jobKind?>" pEnameSet EnameSet.hasName not if
-    "<?jobKind?>" "JK_LOCAL" jobInfo::addEname
+  "?<jobKind>?" pEnameSet EnameSet.hasName not if
+    "?<jobKind>?" "JK_LOCAL" jobInfo::addEname
   then
 
   // default for priority
-  "<?priority?>" pEnameSet EnameSet.hasName not if
-    "<?priority?>" "PY_NORMAL" jobInfo::addEname
+  "?<priority>?" pEnameSet EnameSet.hasName not if
+    "?<priority>?" "PY_NORMAL" jobInfo::addEname
   then
 
   // default for response kind
-  "<?rspKind?>" pEnameSet EnameSet.hasName not if
-    "<?rspKind?>" "RS_NONE" jobInfo::addEname
+  "?<rspKind>?" pEnameSet EnameSet.hasName not if
+    "?<rspKind>?" "RS_NONE" jobInfo::addEname
   then
 
 
@@ -361,7 +361,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<?jobNm?>" word::name_trunc pEnameSet EnameSet.addStr
+  "?<jobNm>?" word::name_trunc pEnameSet EnameSet.addStr
 
   // skip the "{" token from input source
   next-token drop

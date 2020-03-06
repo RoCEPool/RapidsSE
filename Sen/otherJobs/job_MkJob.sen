@@ -42,7 +42,7 @@ opSyntax: mkjob :: mkjob <newNm> ;
 
 jobInfo: mkjob
 {
-  <?jobDesc?>  = "make job"
+  ?<jobDesc>?  = "make job"
 }
 ;
 

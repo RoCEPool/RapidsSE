@@ -31,7 +31,7 @@ opSyntax: ji :: ji <wordNm> ;
 
 jobInfo: ji
 {
-  <?jobDesc?>  = "dump job info"
+  ?<jobDesc>?  = "dump job info"
 }
 ;
 

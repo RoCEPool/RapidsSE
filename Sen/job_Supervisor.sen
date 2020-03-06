@@ -43,15 +43,15 @@ opSyntax: supervisor :: supervisor ;
 
 jobInfo: supervisor
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NONE
-  <?ddlLock?>  = DL_NONE
+  ?<jobKind>?  = JK_LOCAL
+  ?<rspKind>?  = RS_NONE
+  ?<ddlLock>?  = DL_NONE
   
-  //<?preCheck?> = bClusterStarted
+  //?<preCheck>? = bClusterStarted
   
-  <?cmdKind?>  = CK_SERVICE
+  ?<cmdKind>?  = CK_SERVICE
 }
 ;
 

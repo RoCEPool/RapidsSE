@@ -31,7 +31,7 @@ opSyntax: wd :: wd <wordNm> ;
 
 jobInfo: wd
 {
-  <?jobDesc?>  = "dump word"
+  ?<jobDesc>?  = "dump word"
 }
 ;
 

@@ -87,13 +87,13 @@ opSyntax: createTenant :: create tenant <tenantNm> ;
 
 jobInfo: createTenant
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
-  <?ddlLock?>  = DL_GRAB_WRITE
+  ?<jobKind>?  = JK_DIST2PC
+  ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
+  ?<ddlLock>?  = DL_GRAB_WRITE
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 

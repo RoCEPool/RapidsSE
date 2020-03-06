@@ -71,9 +71,9 @@ opSyntax: _Cancel :: _Cancel ;
 
 jobInfo: _Cancel
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_GENERIC
+  ?<jobKind>?  = JK_GENERIC
 }
 ;
 

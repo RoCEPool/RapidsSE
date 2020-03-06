@@ -1382,7 +1382,7 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
     
     
     if (pJobInfoEnameSet)
-      eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+      eResponse = (eRS) pJobInfoEnameSet->iValue("?<rspKind>?"_Stz);
 
     
     
@@ -1390,7 +1390,7 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
 //    if ( ! pJobInfoEnameSet )
 //      return;
 //
-//    eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
+//    eResponse = (eRS) pJobInfoEnameSet->iValue("?<rspKind>?"_Stz);
     
     
     

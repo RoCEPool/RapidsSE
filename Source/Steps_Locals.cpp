@@ -158,7 +158,7 @@ void Step::vLocalsTo(void)
 {
   ENTRY(); // ENTRY("vLocalsTo"_Stz);
   
-  bool bSemanticTo = false;
+  bool bSessionLevelTag = false;
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -171,10 +171,9 @@ void Step::vLocalsTo(void)
   
   Stz* szTerm = m_pCompiler->szToken();
   
-  if (szTerm->bSame("/semantic"_Stz) ||
-      szTerm->bSame("/session"_Stz)) {
+  if (szTerm->bSame("/session"_Stz)) {
     
-    bSemanticTo = true;
+    bSessionLevelTag = true;
     m_pCompiler->vNextToken();
   }
   else if (szTerm->bSame("AggTimer[]"_Stz)) {
@@ -278,6 +277,9 @@ void Step::vLocalsTo(void)
   if (pLocalWord->pCategory()
       && pLocalWord->pCategory()->szWordNm()->bSame("_<jobArgTag>_"_Stz)) {
     
+    RASSERT(bSessionLevelTag);
+    RASSERT(szTerm->bSame("<path>"_Stz));
+
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
     
     Datum xMetaNm;
@@ -286,12 +288,13 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodePush(xMetaNm);
     pCurrentWord->vEncodeCall("swap"_Stz);
 
-    if (bSemanticTo) {
+    if (bSessionLevelTag) {
       pCurrentWord->vEncodeCall("job[]"_Stz);
       pCurrentWord->vEncodeCall("job.session@"_Stz);
       pCurrentWord->vEncodeCall("session.enameSet@"_Stz);
     }
     else {
+      RASSERT(0);
       pCurrentWord->vEncodeCall("job[]"_Stz);
       pCurrentWord->vEncodeCall("job.enameSet@"_Stz);
     }

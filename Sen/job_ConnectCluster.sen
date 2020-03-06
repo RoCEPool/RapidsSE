@@ -106,11 +106,11 @@ opSyntax: connectCluster :: connectCluster ;
 
 jobInfo: connectCluster
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_NONE
-  <?ddlLock?>  = DL_NONE
+  ?<jobKind>?  = JK_DIST2PC
+  ?<rspKind>?  = RS_NONE
+  ?<ddlLock>?  = DL_NONE
 }
 ;
 

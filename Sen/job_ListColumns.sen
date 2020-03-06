@@ -108,13 +108,13 @@ opSyntax: lscol :: lscol <tableNm> ;
 
 jobInfo: lscol
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_JOB_RESPONSE
-  <?ddlLock?>  = DL_GRAB_READ
+  ?<jobKind>?  = JK_LOCAL
+  ?<rspKind>?  = RS_JOB_RESPONSE
+  ?<ddlLock>?  = DL_GRAB_READ
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 

@@ -69,9 +69,9 @@ opSyntax: _Execute :: _Execute ;
 
 jobInfo: _Execute
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_GENERIC
+  ?<jobKind>?  = JK_GENERIC
 }
 ;
 

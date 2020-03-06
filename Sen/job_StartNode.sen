@@ -38,13 +38,13 @@ opSyntax: startNode :: start node <nodeNm> ;
 
 jobInfo: startNode
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NONE
-  <?ddlLock?>  = DL_NONE
+  ?<jobKind>?  = JK_LOCAL
+  ?<rspKind>?  = RS_NONE
+  ?<ddlLock>?  = DL_NONE
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 

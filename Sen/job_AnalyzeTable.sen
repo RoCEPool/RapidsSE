@@ -105,13 +105,13 @@ opSyntax: analyzeTable :: antbl <tableNm> <detailed> ;
 
 jobInfo: analyzeTable
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
-  <?ddlLock?>  = DL_GRAB_READ
+  ?<jobKind>?  = JK_DIST2PC
+  ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
+  ?<ddlLock>?  = DL_GRAB_READ
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 

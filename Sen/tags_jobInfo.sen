@@ -27,57 +27,57 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* push integer value of <?cmdKind?> from job's jobInfo ename-set             */
+/* push integer value of ?<cmdKind>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?cmdKind?> _<jobInfoTag>_ ( -- i )
+: ?<cmdKind>? _<jobInfoTag>_ ( -- i )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push integer value of <?ddlLock?> from job's jobInfo ename-set             */
+/* push integer value of ?<ddlLock>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?ddlLock?> _<jobInfoTag>_ ( -- i )
+: ?<ddlLock>? _<jobInfoTag>_ ( -- i )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push string value of <?jobDesc?> from job's jobInfo ename-set             */
+/* push string value of ?<jobDesc>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?jobDesc?> _<jobInfoTag>_ ( -- s )
+: ?<jobDesc>? _<jobInfoTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push integer value of <?jobKind?> from job's jobInfo ename-set             */
+/* push integer value of ?<jobKind>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?jobKind?> _<jobInfoTag>_ ( -- i )
+: ?<jobKind>? _<jobInfoTag>_ ( -- i )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push integer value of <?jobType?> from job's jobInfo ename-set             */
+/* push integer value of ?<jobType>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?jobType?> _<jobInfoTag>_ ( -- i )
+: ?<jobType>? _<jobInfoTag>_ ( -- i )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push string value of <?preCheck?> from job's jobInfo ename-set             */
+/* push string value of ?<preCheck>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?preCheck?> _<jobInfoTag>_ ( -- s )
+: ?<preCheck>? _<jobInfoTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push integer value of <?rspKind?> from job's jobInfo ename-set             */
+/* push integer value of ?<rspKind>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?rspKind?> _<jobInfoTag>_ ( -- i )
+: ?<rspKind>? _<jobInfoTag>_ ( -- i )
 
   [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;

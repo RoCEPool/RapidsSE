@@ -100,13 +100,13 @@ opSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
 
 jobInfo: BM_GenEntOp
 {
-  <?jobDesc?>  = "--description of job--"
+  ?<jobDesc>?  = "--description of job--"
   
-  <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
-  <?ddlLock?>  = DL_GRAB_READ
+  ?<jobKind>?  = JK_LOCAL
+  ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
+  ?<ddlLock>?  = DL_GRAB_READ
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 

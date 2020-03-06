@@ -28,7 +28,7 @@ opSyntax: NAME_OF_JOB :: NAME_OF_JOB ;
 
 jobInfo: NAME_OF_JOB
 {
-  <?jobDesc?>  = "NAME_OF_JOB"
+  ?<jobDesc>?  = "NAME_OF_JOB"
 }
 ;
 

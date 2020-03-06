@@ -43,11 +43,11 @@ opSyntax: lssch :: lssch ;
 
 jobInfo: lssch
 {
-  <?jobKind?> = JK_LOCAL
-  <?rspKind?> = RS_JOB_RESPONSE
+  ?<jobKind>? = JK_LOCAL
+  ?<rspKind>? = RS_JOB_RESPONSE
   ddlLock = DL_GRAB_READ
   
-  <?preCheck?> = bClusterStarted
+  ?<preCheck>? = bClusterStarted
 }
 ;
 
