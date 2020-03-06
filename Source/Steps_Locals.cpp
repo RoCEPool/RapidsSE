@@ -287,12 +287,12 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodeCall("swap"_Stz);
 
     if (bSemanticTo) {
-      pCurrentWord->vEncodeCall("job::this"_Stz);
+      pCurrentWord->vEncodeCall("job[]"_Stz);
       pCurrentWord->vEncodeCall("job.session@"_Stz);
       pCurrentWord->vEncodeCall("session.enameSet@"_Stz);
     }
     else {
-      pCurrentWord->vEncodeCall("job::this"_Stz);
+      pCurrentWord->vEncodeCall("job[]"_Stz);
       pCurrentWord->vEncodeCall("job.enameSet@"_Stz);
     }
     
