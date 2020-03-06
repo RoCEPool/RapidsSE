@@ -7,6 +7,17 @@
 /*----------------------------------------------------------------------------*/
 /* test for ampersand                                                         */
 /*----------------------------------------------------------------------------*/
+bool AnnChar::bIs(char cChar)
+{
+  if (cChar == m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for ampersand                                                         */
+/*----------------------------------------------------------------------------*/
 bool AnnChar::bIsAmpersand(void)
 {
   if ('&' == m_cChar)
@@ -120,17 +131,6 @@ bool AnnChar::bIsCloseParenthesis(void)
 bool AnnChar::bIsColon(void)
 {
   if (':' == m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a base-10 digit                                                   */
-/*----------------------------------------------------------------------------*/
-bool AnnChar::bIsDigit(void)
-{
-  if (StrLib::bIsDigit(m_cChar))
     return true;
   
   return false;
@@ -406,6 +406,31 @@ bool AnnChar::bIsUnderscore(void)
 bool AnnChar::bIsWhite(void)
 {
   if (StrLib::bIsWhite(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* test for an alpha character                                                */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsAlpha(void)
+{
+  if (StrLib::bIsAlpha(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a base-10 digit                                                   */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsDigit(void)
+{
+  if (StrLib::bIsDigit(m_cChar))
     return true;
   
   return false;

@@ -11,6 +11,7 @@ namespace LexicalAnalysis
     i8   m_iLine;  // line number
     i8   m_iCol;   // column number
     
+    bool bIs(char cChar);
     bool bIsAmpersand(void);
     bool bIsAsterisk(void);
     bool bIsAt(void);
@@ -22,7 +23,6 @@ namespace LexicalAnalysis
     bool bIsCloseBracket(void);
     bool bIsCloseParenthesis(void);
     bool bIsColon(void);
-    bool bIsDigit(void);
     bool bIsDollar(void);
     bool bIsDot(void);
     bool bIsDoubleQuote(void);
@@ -48,6 +48,9 @@ namespace LexicalAnalysis
     bool bIsTilde(void);
     bool bIsUnderscore(void);
     bool bIsWhite(void);
+    
+    bool bIsAlpha(void);
+    bool bIsDigit(void);
     bool bIsX(void);
 
     void vReset(void);
