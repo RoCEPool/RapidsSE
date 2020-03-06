@@ -1016,6 +1016,9 @@ public:
   void vRegCounter1Set(void);
   void vRegCounter2Set(void);
 
+  // reg job
+  void vRegJobGet(void);
+
   // reg now
   void vRegNowGet(void);
 
