@@ -40,7 +40,7 @@ void Engine::vMainEntry(void)
   
   vSanityCheck();
   
-  vWriteRegionName();
+  //vWriteRegionName();
   
   vChangeDirectory(); //! what happens if this fails?
   
@@ -53,7 +53,9 @@ void Engine::vMainEntry(void)
 //  gpAttachMap->m_bMarkResource[RK_SOCKET] = true;
 //  gpAttachMap->m_bMarkResource[RK_FILE] = true;
 //  gpAttachMap->m_bMarkResource[RK_DIR] = true;
-
+  
+  vCreateFileNames();
+  
   vOpenTrace();
   
   vCheckPort();
@@ -250,7 +252,7 @@ void Engine::vCloseTrace(void)
   delete gpTraceFile;
   
   if (gxArgs.m_bVerbose)
-    vInfo("** trace file closed: %s\n"_Stz, C_SE_TRACE);
+    vInfo("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,6 +267,28 @@ void Engine::vCreateAttachMap(void)
     vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
           sizeof(AttachMap));
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* create log and trace file name                                             */
+/*----------------------------------------------------------------------------*/
+void Engine::vCreateFileNames(void)
+{
+  
+  // "SEgrid" to be gxArgs.m_sGridName.szStz()
+#ifdef WITH_DEBUG_VERSION
+  gpAttachMap->m_sTraceFile.vSprint("/tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
+                                    "SEgrid"_Stz, gxArgs.m_sNodeName.szStz());
+  gpAttachMap->m_sLogRegion.vSprint("/tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
+  gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
+  gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
+#else
+  gpAttachMap->m_sTraceFile.vSprint("/tmp/SE_Trace_%s_%s.txt"_Stz,
+                                    "SEgrid"_Stz, gxArgs.m_sNodeName.szStz());
+  gpAttachMap->m_sLogRegion.vSprint("/tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
+  gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
+  gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -754,13 +778,13 @@ void Engine::vOpenTrace(void)
   bool bOpened;
   
   if (gxArgs.m_bAppendTrace)
-    bOpened = gpTraceFile->bOpenAppend(C_SE_TRACE);
+    bOpened = gpTraceFile->bOpenAppend(gpAttachMap->m_sTraceFile.szStz());
   else
-    bOpened = gpTraceFile->bOpenWrite(C_SE_TRACE);
+    bOpened = gpTraceFile->bOpenWrite(gpAttachMap->m_sTraceFile.szStz());
   RASSERT(bOpened);
   
   if (gxArgs.m_bVerbose)
-    vInfo("** trace file opened: %s\n"_Stz,C_SE_TRACE);
+    vInfo("** trace file opened: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1020,7 +1044,7 @@ void Engine::vStartSystem(void)
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
-
+  
   // initialize the next id generators
   gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
   gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
@@ -1157,12 +1181,15 @@ void Engine::vWriteRegionName(void)
 {
   if (gxArgs.m_bVerbose)
     vInfo("\n*\n* Write Region Name\n*\n"_Stz);
+ 
+  s256 sFileName;
+  sFileName.vSprint("./SE_%s.region"_Stz,gxArgs.m_sNodeName.szStz());
   
   // write the regionName into a se.region file
   // used by shell script to start se prompt
   if (gxArgs.m_bStart) {
     File oFile(nullptr);
-    bool b = oFile.bOpenMode("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
+    bool b = oFile.bOpenMode(sFileName.szStz(),C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
     oFile.vPrint("%s\n"_Stz,gxArgs.m_sRegionName.azChar());
     oFile.vClose();

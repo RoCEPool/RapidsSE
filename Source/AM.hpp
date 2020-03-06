@@ -51,6 +51,10 @@ namespace Oblique
     static i8   nSubLoaders(void);
     static i8   nThreads(void);
 
+    static Stz* szLogRegion(void);
+    static Stz* szLogCsvFile(void);
+    static Stz* szLogTxtFile(void);
+    
     //
     static SessionArray* pSessionArray(void);
     static bool bBootError(void);

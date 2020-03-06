@@ -81,7 +81,7 @@ Log* Log::pAttachCreate(void)
   bool bResult;
   SysCall oSysCall;
 
-  s32 sLogRegionNm((Stz*)C_LOG_REGION);
+  s32 sLogRegionNm((Stz*)AM::szLogRegion());
   
   // unlink the name of any previous segment
   IGNORE_RETURN( ShmLib::bUnlink(sLogRegionNm,oSysCall) );
@@ -123,7 +123,7 @@ Log* Log::pAttachExisting(void)
   int iFD;
   SysCall oSysCall;
 
-  s32 sLogRegionNm((Stz*)C_LOG_REGION);
+  s32 sLogRegionNm((Stz*)AM::szLogRegion());
 
   // open existing shm region
   bool bResult = ShmLib::bOpenExisting(iFD,sLogRegionNm,oSysCall);
@@ -357,7 +357,7 @@ void Log::vOpenByApi(void)
   if (AM::bVerbose())
     vTrace("Log %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-           C_LOG_REGION,
+           AM::szLogRegion(),
            sizeof(Log),
            C_LOG_ENTRIES);
   
@@ -397,7 +397,7 @@ void Log::vOpenBySE(bool bStarting)
     if (AM::bVerbose())
       vTrace("Log %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_LOG_REGION,
+             AM::szLogRegion(),
              sizeof(Log),
              C_LOG_ENTRIES);
     gpLog = new(pLog) Log;
@@ -409,7 +409,7 @@ void Log::vOpenBySE(bool bStarting)
     if (AM::bVerbose())
       vTrace("Log %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_LOG_REGION,
+             AM::szLogRegion(),
              sizeof(Log),
              C_LOG_ENTRIES);
     
@@ -1005,7 +1005,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   s256 sLogPath;
-  sLogPath = bCsv ? (Stz*)C_LOG_FILE_CSV : (Stz*)C_LOG_FILE_TXT;
+  sLogPath = bCsv ? (Stz*)AM::szLogCsvFile() : (Stz*)AM::szLogTxtFile();
 
   File* pLogFile = new File(nullptr);
   

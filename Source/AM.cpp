@@ -37,6 +37,11 @@ i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
 i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
+// file names
+Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }
+Stz* AM::szLogCsvFile(void)   { return gpAttachMap->m_sLogCsvFile;            }
+Stz* AM::szLogTxtFile(void)   { return gpAttachMap->m_sLogTxtFile;            }
+
 //
 SessionArray* AM::pSessionArray(void) { return gpAttachMap->m_pSessionArray;  }
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }

@@ -16,7 +16,12 @@ namespace StorageEngine
     Birth m_oBirth;
     Now   m_oNow;
     i8    m_iTimePoint;
-  
+    
+    s256  m_sTraceFile;
+    s256  m_sLogRegion;
+    s256  m_sLogCsvFile;
+    s256  m_sLogTxtFile;
+    
     struct {
       bool m_bDeveloper;
       i8   m_nDummyLoop;    // loop count for dummy threads

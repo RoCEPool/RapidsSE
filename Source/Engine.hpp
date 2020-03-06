@@ -21,6 +21,7 @@ namespace StorageEngine
     static void vClosePool(void);
     static void vCloseTrace(void);
     static void vCreateAttachMap(void);
+    static void vCreateFileNames(void);
     static eBO  eDecodeCommandLine(void);
     static void vDeleteImmmediate(Task** ppTask);
     static void vDeleteSession(Session* pSession);
