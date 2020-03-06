@@ -8,7 +8,7 @@ namespace LexicalAnalysis
   class Tokeniser : public Object
   {
   private:
-    Characterise*  m_pParser;   // parser
+    Characterise*  m_pCharser;   // charser
   
     bool     m_bMalloc;   // malloc or pool heap?
     bool     m_bNormal;   // normal tokens?

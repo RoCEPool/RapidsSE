@@ -23,7 +23,7 @@ Tokeniser::Tokeniser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser = nullptr;
+  m_pCharser = nullptr;
   m_bMalloc = false;
   m_bNormal = false;
   
@@ -43,7 +43,7 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  while (m_pParser)
+  while (m_pCharser)
     RASSERT(bPopParser());
 }
 
@@ -271,7 +271,7 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Tokeniser* pTokeniser = _pTokeniser(pObject);
   
   vTrace("parser %p %s\n"_Stz,
-         pTokeniser->m_pParser,
+         pTokeniser->m_pCharser,
          pTokeniser->m_bMalloc == true ? "malloc"_Stz : "pool"_Stz);
 }
 
@@ -330,8 +330,8 @@ i8 Tokeniser::iDepth(void)
   
   i8 iParserDepth = 0;
   
-  if (m_pParser)
-    iParserDepth = m_pParser->iDepth();
+  if (m_pCharser)
+    iParserDepth = m_pCharser->iDepth();
   
   return iParserDepth;
 }
@@ -343,7 +343,7 @@ bool Tokeniser::bEOF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  bool bEOF = m_pParser->bEOF();
+  bool bEOF = m_pCharser->bEOF();
   
   return bEOF;
 }
@@ -355,7 +355,7 @@ Stz* Tokeniser::szSource(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  Stz* szSource = m_pParser->szSource();
+  Stz* szSource = m_pCharser->szSource();
   
   return szSource;
 }
@@ -367,7 +367,7 @@ void Tokeniser::vLineMode(bool bLineMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vLineMode(bLineMode);
+  m_pCharser->vLineMode(bLineMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -377,7 +377,7 @@ bool Tokeniser::bLineMode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  bool bLineMode = m_pParser->bLineMode();
+  bool bLineMode = m_pCharser->bLineMode();
   
   return bLineMode;
 }
@@ -432,11 +432,11 @@ bool Tokeniser::bPopParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (! m_pParser)
+  if (! m_pCharser)
     return false;
   
-  Characterise* pToBeDelete = m_pParser;
-  m_pParser = m_pParser->pNext();
+  Characterise* pToBeDelete = m_pCharser;
+  m_pCharser = m_pCharser->pNext();
   
   delete pToBeDelete;
   
@@ -450,7 +450,7 @@ void Tokeniser::vPushParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser = new(m_bMalloc) Characterise(m_pParser);
+  m_pCharser = new(m_bMalloc) Characterise(m_pCharser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,7 +460,7 @@ bool Tokeniser::bStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  bool bStdin = m_pParser->bStdin();
+  bool bStdin = m_pCharser->bStdin();
   
   return bStdin;
 }
@@ -494,7 +494,7 @@ void Tokeniser::vUseEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUseEnd();
+  m_pCharser->vUseEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -504,7 +504,7 @@ bool Tokeniser::bUseFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  bool bOpened = m_pParser->bUseFile(szPath);
+  bool bOpened = m_pCharser->bUseFile(szPath);
   
   return bOpened;
 }
@@ -516,7 +516,7 @@ void Tokeniser::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUseStdin();
+  m_pCharser->vUseStdin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,7 +526,7 @@ void Tokeniser::vUseString(Stz* szString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUseString(szString);
+  m_pCharser->vUseString(szString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1385,7 +1385,7 @@ void Tokeniser::vParserGetAnnChar(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vGet(m_xAnnChar,false);
+  m_pCharser->vGet(m_xAnnChar,false);
   m_xAnnChar.m_cChar = m_xAnnChar.m_cChar;
 }
 
@@ -1396,7 +1396,7 @@ void Tokeniser::vParserGetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vGet(m_xAnnChar,true);
+  m_pCharser->vGet(m_xAnnChar,true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1406,7 +1406,7 @@ void Tokeniser::vParserUngetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUnget(m_xAnnChar);
+  m_pCharser->vUnget(m_xAnnChar);
 }
 
 /*----------------------------------------------------------------------------*/
