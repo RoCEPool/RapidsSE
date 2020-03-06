@@ -1,0 +1,95 @@
+/*============================================================================*/
+/* OP_sanity.sen -- Operator sanity                                           */
+/*============================================================================*/
+
+" OP_sanity.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_INFOSET ...                                                          */
+/*----------------------------------------------------------------------------*/
+: Sanity_InfoSet
+
+  //"Operand:- ZK_INFOSET" .verbose
+  0 locals| node |
+  Operand[].get to OperandB[]
+  "Node" OperandB[].getStrInfoSet to node
+
+  // check region size
+  "regionSize" OperandB[].getIntInfoSet
+  AttachMap::regionSize@ ==  if
+    OperandB[].delete
+    OperandB[].newInfoSet
+     node "matched for %v" str.format
+  else
+    OperandB[].delete
+    OperandB[].newInfoSet
+    node "mismatched for %v" str.format
+  then
+  "regionSize" OperandB[].addStrInfoSet
+
+  OperandB[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for chunk req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : SanityOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_ToFileOp |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_INFOSET of Sanity_InfoSet true endof
+
+      // handle other operand as generic operands
+      jobOperand::generic swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: SanityOp :: SanityOp ;
+
+jobInfo: SanityOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

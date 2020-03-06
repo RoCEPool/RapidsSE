@@ -13,7 +13,7 @@ namespace Load
     struct {
       
       i8 m_iOffset; // chunk of csv records
-      i8 m_nBytes;   // bytes in teh offset
+      i8 m_nBytes;   // bytes in the offset
       
     } m_xSetOffsets[C_SET_OFFSETS];
     

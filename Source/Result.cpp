@@ -287,7 +287,7 @@ void Result::vProcessBufferQueue(void)
     
     switch (pOperand->eClass()) {
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
@@ -297,7 +297,7 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
@@ -307,7 +307,7 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -317,7 +317,17 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
+        
+      case CN_INFOSET: {
+        InfoSet* pInfoSet = _pInfoSet(pOperand);
+        m_xJobResponse.m_ixRowsProcessed += pInfoSet->nSets();
+        pInfoSet->vPrintRows(pStreamDef);
+        AM::vDeleteOperand(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
         
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
@@ -327,7 +337,8 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
+        
       case CN_MARKER: {
         Marker* pMarker = _pMarker(pOperand);
         
@@ -380,7 +391,7 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -390,7 +401,7 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
         //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);

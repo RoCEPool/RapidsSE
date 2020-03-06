@@ -44,7 +44,7 @@ void InfoSet::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 InfoSet::InfoSet(void)
-: Operand(CN_MARKER)
+: Operand(CN_INFOSET)
 {
   _precondition_(_MAGIC_,CN_INFOSET);
 }
@@ -54,7 +54,67 @@ InfoSet::InfoSet(void)
 /*----------------------------------------------------------------------------*/
 InfoSet::~InfoSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vAdd(Stz* szName, i8 iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_oEnameSet.vAdd(szName, iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vAdd(Stz* szName, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_oEnameSet.vAdd(szName, szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the rows                                                             */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vPrintRows(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_oEnameSet.vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of sets                                                             */
+/*----------------------------------------------------------------------------*/
+i8 InfoSet::nSets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return m_oEnameSet.nItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ename value                                                            */
+/*----------------------------------------------------------------------------*/
+i8 InfoSet::iValue(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return m_oEnameSet.iValue(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ename value                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* InfoSet::szValue(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return m_oEnameSet.szValue(szName);
 }
 
 /*============================================================================*/

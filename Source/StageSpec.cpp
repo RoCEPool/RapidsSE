@@ -199,6 +199,10 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
       iConsumeArg = 1;
       break;
       
+    case PX_ORIGIN_TO_ALL_NODES:
+      iConsumeArg = AM::pGrid()->nConnectedNodes();
+      break;
+      
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
       iConsumeArg = 1;
       break;

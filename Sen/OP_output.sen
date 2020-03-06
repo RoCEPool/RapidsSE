@@ -65,6 +65,12 @@
         true
       endof
 
+      ZK_INFOSET of
+      //"Operand:- ZK_INFOSET" .verbose
+      Operand[].pipeToJob
+      true
+      endof
+
       ZK_IRWBUFFER of
         //"Operand:- ZK_IRWBUFFER" .verbose
         Operand[].pipeToJob

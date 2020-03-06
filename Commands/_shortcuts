@@ -17,6 +17,7 @@ shortcut ct /flow create table t (a integer);
 shortcut l _loadPipeline;
 shortcut d  _pipeline;
 shortcut dl _pipelineLineItem;
+shortcut gs gridSanity;
 shortcut p _purgeAY;
 shortcut dn _defineNode;
 shortcut en semantic;

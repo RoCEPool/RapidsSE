@@ -1,0 +1,85 @@
+/*============================================================================*/
+/* OP_nodeInfo.sen -- Operator node info                                      */
+/*============================================================================*/
+
+" OP_nodeInfo.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: nodeInfo_StartMarker
+
+  "Operand:- ZK_STARTMARKER" .verbose
+
+  // craete a new info set and add node info
+  OperandB[].newInfoSet
+  attachMap::regionSize@ "RegionSize" OperandB[].addIntInfoSet
+  grid::thisNodeName@ "Node" OperandB[].addStrInfoSet
+  "Node" OperandB[].getStrInfoSet .
+  Operand[].pipeout
+  OperandB[].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for chunk req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : nodeInfo_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_ToFileOp |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // set nextOp in op
+  <nextOp> op.nextOp!
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_STARTMARKER of nodeInfo_StartMarker true endof
+
+      // handle other operand as generic operands
+      jobOperand::generic swap
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: NodeInfo :: NodeInfo ;
+
+jobInfo: NodeInfo
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AttachMap(void)
 {
+  vAddStep("attachmap::regionSize@"_Stz,  &Step::vAttachMapRegionSizeFetch);
   vAddStep("attachmap::tenants@"_Stz,     &Step::vAttachMapTenantsFetch);
 }
 
@@ -20,6 +21,16 @@ void Step::vAttachMapTenantsFetch(void)
   ENTRY(); // ENTRY("vAttachMapTenantsFetch"_Stz);
   
   m_pDataStack->vPushPtr(AM::pTenants());
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::regionSize@ -- fetch region size from attachmap                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAttachMapRegionSizeFetch(void)
+{
+  ENTRY(); // ENTRY("vAttachMapRegionSizeFetch"_Stz);
+  
+  m_pDataStack->vPushInt(AM::iRegionSize());
 }
 
 /*============================================================================*/

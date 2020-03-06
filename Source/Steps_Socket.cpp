@@ -436,6 +436,27 @@ void Step::vSocketRecvObject(void)
       return;
     }
      
+    case CN_INFOSET: {
+      InfoSet* pInfoSet = new InfoSet();
+      
+      MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
+      
+      aBody = aAdd<void*>(pInfoSet,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_INFOSET] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushPtr(pInfoSet);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
     case CN_MARKER: {
       Marker* pMarker = new Marker();
       

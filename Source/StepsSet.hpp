@@ -97,6 +97,7 @@ public:
 
   // attachmap
   void vAttachMapTenantsFetch(void);
+  void vAttachMapRegionSizeFetch(void);
 
   // bp
   void vBpAnalyze(void);
@@ -1065,9 +1066,15 @@ public:
   void vRegOperandWriteToFile0(void);
 
   // operandB
+  void vRegOperandBAddIntInfoSet(void);
+  void vRegOperandBAddStrInfoSet(void);
   void vRegOperandBAppendClose(void);
+  void vRegOperandBDelete(void);
   void vRegOperandBGet(void);
+  void vRegOperandBGetIntInfoSet(void);
+  void vRegOperandBGetStrInfoSet(void);
   void vRegOperandBIsNull(void);
+  void vRegOperandBNewInfoSet(void);
   void vRegOperandBPipeOut(void);
   void vRegOperandBSet(void);
 

@@ -854,6 +854,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
   bool bIsMarker;
   eXK eXmitKind = XK_NORMAL;
   i8 i_Ptn;
+  i8 i_Nde;
   i8 i_Slt;
   i8 i_Strand;
   Strand* pStrand;
@@ -1158,6 +1159,28 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       // delete the operand job
       AM::vDeleteJobOperand(pJob_Operand);
       
+      break;
+    }
+      
+    case PX_ORIGIN_TO_ALL_NODES: {
+      
+      for (i_Nde = 0; i_Nde < pNextStage->nItems(); i_Nde++) {
+        
+        // xmitNode is the partition node
+        m_iXmitNode = i_Nde;
+        
+        // new a operand job
+        pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand,this, m_iXmitNode, C_UNKNOWN);
+        
+        // get the send node in the task
+        Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+        
+        // send the operand job across the sendNode
+        AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+        
+        // delete the operand job
+        AM::vDeleteJobOperand(pJob_Operand);
+      }
       break;
     }
       

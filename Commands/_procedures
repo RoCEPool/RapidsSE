@@ -104,6 +104,23 @@ end
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// check sanity of the grid
+procedure gridSanity
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all nodes:
+  nodeInfo | stageC
+
+  stage stageC on origin:
+  sanityOp | outputOp | sinkOp | stageA
+
+end
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // fetch rows from a table (all nodes)
 procedure tableFetch
 parameters $table

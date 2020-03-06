@@ -1198,7 +1198,7 @@ void Step::vJobRemoveParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.regionSizeResponse@ -- fetch region size from job_sanity               */
+/* job.regionSize@ -- fetch region size from job_sanity                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRegionSizeFetch(void)
 {
