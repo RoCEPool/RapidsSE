@@ -39,6 +39,7 @@ namespace LexicalAnalysis
     void vCollectStatement(TokenVec* pTokenVec_arg);
     i8   iDepth(void);
     bool bEOF(void);
+    Stz* szSource(void);
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
     void vMalloc(bool bMalloc);

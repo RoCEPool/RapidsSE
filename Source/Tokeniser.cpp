@@ -349,6 +349,18 @@ bool Tokeniser::bEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get EOF?                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Tokeniser::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  Stz* szSource = m_pParser->szSource();
+  
+  return szSource;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vLineMode(bool bLineMode)

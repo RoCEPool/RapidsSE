@@ -17,6 +17,7 @@ namespace LexicalAnalysis
     
     // source definition
     eIS     m_eSource;   // what source are we parsing? given file or string?
+    s256    m_sSource;   // source
     bool    m_bLineMode; // line mode?
   
     // sources
@@ -50,7 +51,8 @@ namespace LexicalAnalysis
     static Characterise* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
-
+    Stz* szSource(void);
+  
     // Options
     void vLineMode(bool bLineMode);
     

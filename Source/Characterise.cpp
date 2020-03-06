@@ -59,8 +59,9 @@ Characterise::Characterise(Characterise* pNext)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   //m_bMalloc set in new
-  m_pNext   = pNext;
   m_iDepth  = 0;
+  m_pNext   = pNext;
+  m_sSource = C_NO_NAME;
   
   vResetParser();
   
@@ -94,6 +95,17 @@ void Characterise::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get source                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Characterise::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  
+  return m_sSource;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Options -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -123,6 +135,8 @@ bool Characterise::bUseFile(Stz* szPath)
   m_eSource = IS_FILE;
   m_bRead = true;
   
+  m_sSource.vSprint("file: %s"_Stz,szPath);
+  
   bool bOpened = m_oRawFile.bOpenRead(szPath);
   
   return bOpened;
@@ -140,6 +154,8 @@ void Characterise::vUseStdin(void)
   m_oRawFile.vUseStdin();
   m_eSource = IS_STDIN;
   m_bRead = true;
+  
+  m_sSource = "stdin"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,6 +170,8 @@ void Characterise::vUseString(Stz* szString)
   m_sRawLine = szString;
   m_eSource = IS_STRING;
   m_bEOF = true;
+  
+m_sSource = "string"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,6 +19,8 @@ TokenVec::TokenVec(bool bNewTokens)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  m_sSource = C_NO_NAME;
+  
   if (bNewTokens) {
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
       m_pItem[i_Token] = new Token;
@@ -157,6 +159,8 @@ void TokenVec::vDumpTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  vTrace("  Token Source: %s\n"_Stz,m_sSource.szStz());
+
   for (i8 i_Token = 0; i_Token < nItems(); i_Token++) {
     
     Token* pToken = m_pItem[i_Token];
@@ -230,26 +234,6 @@ void TokenVec::vIncTokens(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_nItems++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input source                                                           */
-/*----------------------------------------------------------------------------*/
-Stz* TokenVec::szInputSource(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  return m_sInputSource;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set input source                                                           */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vInputSource(Stz* szInputSource)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_sInputSource = szInputSource;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,6 +318,8 @@ void TokenVec::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  m_sSource = C_NO_NAME;
+  
   m_nItems = 0;
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
@@ -365,6 +351,26 @@ void TokenVec::vSetTokens(void)
   }
   
   m_nItems = i_Token;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input source                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* TokenVec::szSource(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  return m_sSource;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input source                                                           */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vSource(Stz* szSource)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_sSource = szSource;
 }
 
 /*----------------------------------------------------------------------------*/

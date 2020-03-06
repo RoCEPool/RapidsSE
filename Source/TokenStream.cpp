@@ -220,6 +220,7 @@ void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
     
     pTknVec_arg->vReset();
     
+    pTknVec_arg->vSource(m_pTokeniser->szSource());
     for (;;) {
       
       Token* pToken = (*pTknVec_arg)[pTknVec_arg->nTokens()];

@@ -9,7 +9,7 @@ namespace LexicalAnalysis
   {
   private:
    
-    s256 m_sInputSource;  // where did the tokens come from
+    s256 m_sSource;  // where did the tokens come from
   
     i8 m_iCurTkn;
   
@@ -37,8 +37,6 @@ namespace LexicalAnalysis
     Token* pFindToken(Stz* szTerm, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
-    Stz* szInputSource(void);
-    void vInputSource(Stz* szInputSource);
     void vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken);
     Token* pNextToken(void);
     Token* pPrevToken(void);
@@ -46,6 +44,8 @@ namespace LexicalAnalysis
     void vReset(void);
     void vSetAllTokens(void);
     void vSetTokens(void);
+    Stz* szSource(void);
+    void vSource(Stz* szSource);
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
