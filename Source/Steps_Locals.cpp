@@ -274,10 +274,8 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle a meta-symbol
   
-  if (pLocalWord->pCategory()
-      && pLocalWord->pCategory()->szWordNm()->bSame("_<jobArgTag>_"_Stz)) {
+  if (bSessionLevelTag) {
     
-    RASSERT(bSessionLevelTag);
     RASSERT(szTerm->bSame("<path>"_Stz));
 
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
@@ -288,16 +286,9 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodePush(xMetaNm);
     pCurrentWord->vEncodeCall("swap"_Stz);
 
-    if (bSessionLevelTag) {
-      pCurrentWord->vEncodeCall("job[]"_Stz);
-      pCurrentWord->vEncodeCall("job.session@"_Stz);
-      pCurrentWord->vEncodeCall("session.enameSet@"_Stz);
-    }
-    else {
-      RASSERT(0);
-      pCurrentWord->vEncodeCall("job[]"_Stz);
-      pCurrentWord->vEncodeCall("job.enameSet@"_Stz);
-    }
+    pCurrentWord->vEncodeCall("job[]"_Stz);
+    pCurrentWord->vEncodeCall("job.session@"_Stz);
+    pCurrentWord->vEncodeCall("session.enameSet@"_Stz);
     
     pCurrentWord->vEncodeCall("enameSet.upsertStr"_Stz);
     
