@@ -148,7 +148,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::request _eeh ( -- <R> )
 
-  job::this locals| pJob_CreateIndex |
+  job[] locals| pJob_CreateIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create index syntax
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::execute _eeh ( -- )
 
-  job::this locals| pJob_CreateIndex |
+  job[] locals| pJob_CreateIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::checkResources _eeh ( -- )
 
-  job::this locals| pJob_CreateIndex |
+  job[] locals| pJob_CreateIndex |
   0 0 locals| sTableNm sIndexNm |
 
   //"checkResources received" .

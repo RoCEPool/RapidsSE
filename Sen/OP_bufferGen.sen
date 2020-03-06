@@ -11,7 +11,7 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_BufferGen |
+  job[] locals| pJob_BufferGen |
 
   <nBuffers> "Number of buffers: %v" .printf
 

@@ -51,7 +51,7 @@
   0 locals| pSocket      |
   0 locals| bRecvd       |
 
-  job::this locals| pJob_Receiver |
+  job[] locals| pJob_Receiver |
 
   pJob_Receiver job_Receiver.node@ to pOtherNode
 
@@ -123,7 +123,7 @@
   >>logEntry <SEED_RUN>
 
   task::this locals| pThisTask |
-  job::this  locals| pJob_Receiver |
+  job[]  locals| pJob_Receiver |
 
   // initialise
   receiver_init

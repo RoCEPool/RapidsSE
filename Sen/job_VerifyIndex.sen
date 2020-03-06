@@ -53,7 +53,7 @@
   // set metadata string in the job
   args.metadata if
     "(nodeName VARCHAR, indexName VARCHAR, tableName VARCHAR, status VARCHAR)"
-  job::this job.metadata!
+  job[] job.metadata!
 
 then
 ;
@@ -63,7 +63,7 @@ then
 /*----------------------------------------------------------------------------*/
 : verifyIndex::execute _eeh ( -- )
 
-  job::this locals| pJob_VerifyIndex |
+  job[] locals| pJob_VerifyIndex |
 
   0 0 0 0 locals| pTask pIndex sTableNm sIndexNm  |
 
@@ -108,7 +108,7 @@ then
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  sTableNm sIndexNm checkVerifyIndex not if job::this <ERROR_JOB> !!logError exit then
+  sTableNm sIndexNm checkVerifyIndex not if job[] <ERROR_JOB> !!logError exit then
 
   DdlLock[].dropRead
 ;

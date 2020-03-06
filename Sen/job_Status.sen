@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : status::execute _eeh ( -- )
 
-  job::this locals| pJob_Status |
+  job[] locals| pJob_Status |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the status of this node

@@ -12,7 +12,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::assertCorrectness"_Stz, &Step::vJobAssertCorrectness);
   vAddStep("job::completed"_Stz,         &Step::vJobCompleted);
   vAddStep("job::spawnUniversal"_Stz,    &Step::vJobSpawnUniversal);
-  vAddStep("job::this"_Stz,              &Step::vJobThis);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
@@ -1692,20 +1691,6 @@ void Step::vJobTaskStore(void)
   ASSERT(! pTask);
   pJob->vTask(pTask);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::this -- get this job from this task                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobThis(void)
-{
-  ENTRY(); // ENTRY("vJobThis"_Stz);
-  
-  Job* pJob = m_pTask->m_pJob;
-  
-  m_pDataStack->vPushPtr(pJob);
-
   EXIT();
 }
 

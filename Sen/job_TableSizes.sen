@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes::execute _eeh ( -- )
 
-  job::this locals| pJob_TableSizes |
+  job[] locals| pJob_TableSizes |
 
   0 0 0 0 locals| pIndex iSize iCount sTableNm |
 
@@ -62,7 +62,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if job::this <ERROR_JOB> !!logError exit then
+  checkInTables not if job[] <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

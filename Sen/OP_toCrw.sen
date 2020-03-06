@@ -11,7 +11,7 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_ToCrwOp |
+  job[] locals| pJob_ToCrwOp |
 
   <tableNm> locals| sTableNm |
 

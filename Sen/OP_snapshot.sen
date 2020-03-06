@@ -13,7 +13,7 @@
 
   0 locals| pTable |
 
-  job::this locals| pJob_SnapshotOp |
+  job[] locals| pJob_SnapshotOp |
   <tableNm> locals| sTableNm |
 
   // set topolgy in the op

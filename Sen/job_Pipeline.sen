@@ -9,13 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::request _eeh ( -- <R> )
 
-  job::this locals| pJob_pipeline |
+  job[] locals| pJob_pipeline |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   <cmd> job_Pipeline::compile dup
   EC_NONE != if
-    job::this <ERROR_JOB> !!logError exit
+    job[] <ERROR_JOB> !!logError exit
   else
     job_Pipeline::deleteDynamo
     drop
@@ -28,15 +28,15 @@
 : pipeline::execute _eeh ( -- )
 
   task::this locals| pTask |
-  job::this  locals| pJob_pipeline |
+  job[]  locals| pJob_pipeline |
 
 
   // run <pre_execute>
 
   "<pre_execute>"
-  job::this job.enameSet@ enameSet.hasName if
+  job[] job.enameSet@ enameSet.hasName if
     "<pre_execute>"
-    job::this job.enameSet@ enameSet.getStr locals| sPreExe |
+    job[] job.enameSet@ enameSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -77,7 +77,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
-  job::this job_Pipeline.begin
+  job[] job_Pipeline.begin
 ;
 
 /*----------------------------------------------------------------------------*/

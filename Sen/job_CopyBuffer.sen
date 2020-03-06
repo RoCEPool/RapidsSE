@@ -12,7 +12,7 @@
   >>logEntry <SEED_REQ>
 
   0 locals| pThisTask |
-  job::this locals| pJob_CopyBuffer |
+  job[] locals| pJob_CopyBuffer |
 
 
   // get the task

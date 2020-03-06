@@ -40,7 +40,7 @@
 
   DdlLock[].testDrop
 
-  JP_BEGUN job::this job.phase!
+  JP_BEGUN job[] job.phase!
 
   <done_finally>
   task::delete
@@ -55,7 +55,7 @@
 
   DdlLock[].testDrop
 
-  JP_CANCELED job::this job.phase!
+  JP_CANCELED job[] job.phase!
 
   <done_finally>
   job::completed
@@ -70,7 +70,7 @@
 
   DdlLock[].testDrop
 
-  JP_ENDED job::this job.phase!
+  JP_ENDED job[] job.phase!
 
   <done_finally>
   job::completed
@@ -85,7 +85,7 @@
 
   DdlLock[].testDrop
 
-  JP_EXECUTED job::this job.phase!
+  JP_EXECUTED job[] job.phase!
 
   <done_finally>
   task::delete
@@ -129,7 +129,7 @@
   //"Signalling the thread waiting on job completion" .
   <done_finally>
 
-  job::this job.signalWaiter
+  job[] job.signalWaiter
 
   HAZARD
 ;
@@ -170,7 +170,7 @@
 
   SS_SEED_BEG log::jobSeed
 
-  JP_BEGINNING job::this job.phase!
+  JP_BEGINNING job[] job.phase!
 
   <path> str.toStrVec task::dicStack.set
 
@@ -186,7 +186,7 @@
 
   SS_SEED_CAN log::jobSeed
 
-  JP_CANCELING job::this job.phase!
+  JP_CANCELING job[] job.phase!
 
   <seed_initially>
 
@@ -200,7 +200,7 @@
 
   SS_SEED_END log::jobSeed
 
-  JP_ENDING job::this job.phase!
+  JP_ENDING job[] job.phase!
 
   <seed_initially>
 
@@ -214,7 +214,7 @@
 
   SS_SEED_EXE log::jobSeed
 
-  JP_EXECUTING job::this job.phase!
+  JP_EXECUTING job[] job.phase!
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job

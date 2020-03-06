@@ -36,7 +36,7 @@
   task::doneFinally
 
   //"Signalling waiting thread" .
-  job::this job.signalWaiter
+  job[] job.signalWaiter
 
   HAZARD
 ;
@@ -76,7 +76,7 @@
 
   "** 4" .
 
-  job::this job.hasError not if
+  job[] job.hasError not if
 
     // distribute the job
     job::distributeConnected
@@ -85,13 +85,13 @@
     task::wait
 
   else
-    job::this job.removeOriginator  // this is currently being done by job_ended
+    job[] job.removeOriginator  // this is currently being done by job_ended
   then
 
   task::doneFinally
 
   //"Signalling waiting thread" .
-  job::this job.signalWaiter
+  job[] job.signalWaiter
 
   HAZARD
 ;
@@ -109,7 +109,7 @@
 
   // [ compiler::current@ word.name@ , ] .
 
-  JP_BEGINNING job::this job.phase!
+  JP_BEGINNING job[] job.phase!
 
   <path> str.toStrVec task::dicStack.set
 
@@ -121,7 +121,7 @@
     drop
   then
 
-  JP_BEGUN job::this job.phase!
+  JP_BEGUN job[] job.phase!
 
   2pcReply::job__begun
 
@@ -137,7 +137,7 @@
 
   // [ compiler::current@ word.name@ , ] .
 
-  JP_EXECUTING job::this job.phase!
+  JP_EXECUTING job[] job.phase!
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
@@ -153,7 +153,7 @@
     drop
   then
 
-  JP_EXECUTED job::this job.phase!
+  JP_EXECUTED job[] job.phase!
 
   2pcReply::job__executed
 
@@ -169,7 +169,7 @@
 
   // [ compiler::current@ word.name@ , ] .
 
-  JP_ENDING job::this job.phase!
+  JP_ENDING job[] job.phase!
 
   <jobNm> "::releaseResources" str.cat find dup if
     execute
@@ -177,9 +177,9 @@
     drop
   then
 
-  JP_ENDED job::this job.phase!
+  JP_ENDED job[] job.phase!
 
-  job::this job.removeParticipant
+  job[] job.removeParticipant
 
   2pcReply::job__ended
 
@@ -195,7 +195,7 @@
 
   // [ compiler::current@ word.name@ , ] .
 
-  JP_CANCELING job::this job.phase!
+  JP_CANCELING job[] job.phase!
 
   <jobNm> "::releaseResources" str.cat find dup if
     execute
@@ -203,9 +203,9 @@
     drop
   then
 
-  JP_CANCELED job::this job.phase!
+  JP_CANCELED job[] job.phase!
 
-  job::this job.removeParticipant
+  job[] job.removeParticipant
 
   2pcReply::job__cancelled
 

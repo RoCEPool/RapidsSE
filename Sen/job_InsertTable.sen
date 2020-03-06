@@ -78,7 +78,7 @@
 
   >>logEntry <SEED_EXE>
 
-  job::this locals| pJob_InsertTable |
+  job[] locals| pJob_InsertTable |
 
   0 0 locals| pTable sTableNm |
 
@@ -138,7 +138,7 @@
 
   >>logEntry <SEED_BEG>
 
-  job::this locals| pJob_InsertTable |
+  job[] locals| pJob_InsertTable |
 
   ">> insertTable_beg <<" .verbose
 
@@ -161,7 +161,7 @@
 
   >>logEntry <SEED_END>
 
-  job::this locals| pJob_InsertTable |
+  job[] locals| pJob_InsertTable |
 
   ">> insertTable_end <<" .verbose
 
@@ -180,7 +180,7 @@
 
   >>logEntry <SEED_CAN>
 
-  job::this locals| pJob_InsertTable |
+  job[] locals| pJob_InsertTable |
 
   pJob_InsertTable insertTable.releaseResources
 

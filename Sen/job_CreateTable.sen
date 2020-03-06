@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable::request _eeh ( -- <R> )
 
-  job::this locals| pJob_CreateTable |
+  job[] locals| pJob_CreateTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create index syntax
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable::execute _eeh ( -- )
 
-  job::this locals| pJob_CreateTable |
+  job[] locals| pJob_CreateTable |
 
   0 locals| pTable |
 
@@ -116,7 +116,7 @@
 
   //"checkResources received" .
 
-  job::this locals| pJob_CreateTable |
+  job[] locals| pJob_CreateTable |
 
   //----------------------------------------------------------------------------
   // grab a ddl lock

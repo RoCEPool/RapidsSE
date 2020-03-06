@@ -123,7 +123,7 @@
   task::doneFinally
 
   //"Signalling waiting thread" .
-  job::this job.signalWaiter
+  job[] job.signalWaiter
 
   HAZARD
 ;

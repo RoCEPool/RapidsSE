@@ -73,7 +73,7 @@
  
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_ToFileOp |
+  job[] locals| pJob_ToFileOp |
 
   // set topolgy in the op
   <topology> op.topology!

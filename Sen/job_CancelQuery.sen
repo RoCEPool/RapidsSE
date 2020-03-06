@@ -11,7 +11,7 @@
  
    >>logEntry <SEED_EXE>
 
-   job::this locals| pJob_CancelQuery |
+   job[] locals| pJob_CancelQuery |
 
    0 0 locals| sJobId iJobId |
 
@@ -25,7 +25,7 @@
   //----------------------------------------------------------------------------
 
   // check if we can find the query associated with the job
-  // <jobId> plist::findJob not if job::this <ERROR_JOB> !!logError exit then
+  // <jobId> plist::findJob not if job[] <ERROR_JOB> !!logError exit then
 
   sJobId str.tailInt drop to iJobId
   iJobId  plist::findJob drop

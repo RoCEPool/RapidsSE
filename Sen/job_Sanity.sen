@@ -44,7 +44,7 @@
   >>logEntry <SEED_EXE>
 
   //params| pJob_Sanity |
-  job::this locals| pJob_Sanity |
+  job[] locals| pJob_Sanity |
 
   0 0 locals| iSize iPartitions |
 
@@ -103,7 +103,7 @@
 
   >>logEntry <SEED_BEG>
 
-  job::this locals| pJob_sanity |
+  job[] locals| pJob_sanity |
 
   pJob_sanity job.becomeParticipant
 
@@ -119,7 +119,7 @@
 
   >>logEntry <SEED_END>
 
-  job::this locals| pJob_sanity |
+  job[] locals| pJob_sanity |
 
   job::participantEnded
 
@@ -133,7 +133,7 @@
 
   >>logEntry <SEED_CAN>
 
-  job::this locals| pJob_sanity |
+  job[] locals| pJob_sanity |
 
   job::participantCancelled
 

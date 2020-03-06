@@ -51,7 +51,7 @@
   //
   // where: on the participating node
   //
-  job::this locals| pJob__Cancel |
+  job[] locals| pJob__Cancel |
 
   // find the job to be executed in the participating jobs
   pJob__Cancel job.id@ locals| iJobId |

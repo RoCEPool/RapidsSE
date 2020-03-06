@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : listPartitions::execute _eeh ( -- )
 
-  job::this locals| pJob_ListPartitions |
+  job[] locals| pJob_ListPartitions |
 
   ""   // intialize the string
   grid::slots 0 do

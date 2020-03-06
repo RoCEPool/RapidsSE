@@ -89,7 +89,7 @@
 
   >>logEntry <SEED_RUN>
 
-  job::this locals| pJob_WriteRow |
+  job[] locals| pJob_WriteRow |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is enough Rows and load
@@ -135,7 +135,7 @@
 
   >>logEntry <SEED_RUN>
 
-  job::this locals| pJob_WriteRow  |
+  job[] locals| pJob_WriteRow  |
 
   "writeRow_run :" .verbose
 

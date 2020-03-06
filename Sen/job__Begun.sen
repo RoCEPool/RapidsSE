@@ -63,7 +63,7 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  job::this locals| pJob__Begun |
+  job[] locals| pJob__Begun |
 
   pJob__Begun job.id@ locals| iJobId |
 

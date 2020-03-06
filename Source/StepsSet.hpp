@@ -564,7 +564,6 @@ public:
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
-  void vJobThis(void);
 
   void vJobWaitParticipant(void);
 

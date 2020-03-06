@@ -13,7 +13,7 @@
 
   0 locals| pTable |
 
-  job::this locals| pJob_PurgeOp |
+  job[] locals| pJob_PurgeOp |
   <tableNm> locals| sTableNm |
 
   // set topolgy in the op

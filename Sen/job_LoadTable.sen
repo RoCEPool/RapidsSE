@@ -96,7 +96,7 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_LoadTable |
+  job[] locals| pJob_LoadTable |
 
   // add job to originator list and distribute
   pJob_LoadTable job.distribute
@@ -111,7 +111,7 @@
 
   >>logEntry <SEED_EXE>
 
-  job::this locals| pJob_LoadTable |
+  job[] locals| pJob_LoadTable |
 
   0 locals| iOriginNode |
 
@@ -213,7 +213,7 @@
 
   >>logEntry <SEED_BEG>
 
-  job::this locals| pJob_LoadTable |
+  job[] locals| pJob_LoadTable |
 
   pJob_LoadTable job.becomeParticipant
 
@@ -231,7 +231,7 @@
 
   >>logEntry <SEED_END>
 
-  job::this locals| pJob_LoadTable |
+  job[] locals| pJob_LoadTable |
 
   pJob_loadTable loadTable.releaseResources
 
@@ -247,7 +247,7 @@
 
   >>logEntry <SEED_CAN>
 
-  job::this locals| pJob_LoadTable |
+  job[] locals| pJob_LoadTable |
 
   pJob_LoadTable loadTable.releaseResources
 

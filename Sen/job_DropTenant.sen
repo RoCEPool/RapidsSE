@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenan::execute _eeh ( -- )
 
-  job::this locals| pJob_DropTenant |
+  job[] locals| pJob_DropTenant |
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,7 +59,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the tenant
-  <tenantNm> checkRemoveTenant not if job::this <ERROR_JOB> !!logError exit then
+  <tenantNm> checkRemoveTenant not if job[] <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

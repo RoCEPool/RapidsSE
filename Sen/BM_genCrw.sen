@@ -50,7 +50,7 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_BM_GenCrwOp |
+  job[] locals| pJob_BM_GenCrwOp |
   0 locals| pTable |
 
   <tableNm> locals| sTableNm |

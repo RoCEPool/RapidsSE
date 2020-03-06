@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : job::becomeParticipant ( -- )
 
-  job::this locals| pJob |
+  job[] locals| pJob |
 
   // set participant node in job
   grid::thisNode@ pJob job.participant!
@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 : job::participantBegun ( -- )
 
-  job::this locals| pJob |
+  job[] locals| pJob |
 
   // send job__begun back to originating node
   pJob "Job__Begun::send" find execute
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : job::participantEnded ( -- )
 
-  job::this locals| pJobParticipant |
+  job[] locals| pJobParticipant |
 
   pJobParticipant job.removeParticipant
 
@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 : job::participantCancelled ( -- )
 
-  job::this locals| pJobParticipant |
+  job[] locals| pJobParticipant |
 
   pJobParticipant job.removeParticipant
 
@@ -99,11 +99,11 @@
 : job::</seeXfer/>
 
   "</xfer/>"
-  job::this job.enameSet@ enameSet.hasName
+  job[] job.enameSet@ enameSet.hasName
   if
 
    r@ locate .
-   job::this job.enameSet@ enameSet.asStr .
+   job[] job.enameSet@ enameSet.asStr .
 
   then
 ;
@@ -213,12 +213,12 @@
 : job::becomeOriginator ( -- )
 
    // set originating task
-  task::this job::this job.originatingTask!
+  task::this job[] job.originatingTask!
 
-  job::this job.id@ job::this job.originatingId!
+  job[] job.id@ job[] job.originatingId!
 
   // add job to originator jobs
-  job::this job.addOriginator
+  job[] job.addOriginator
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +231,7 @@
   // set originating task
   task::this pJob job.originatingTask!
 
-  job::this job.id@ job::this job.originatingId!
+  job[] job.id@ job[] job.originatingId!
 
   // add job to originator jobs
   pJob job.addOriginator
@@ -299,11 +299,11 @@
 : job::</seeFlow/>
 
   "</flow/>"
-    job::this job.enameSet@ enameSet.hasName
+    job[] job.enameSet@ enameSet.hasName
   if
 
     r@ locate .
-    job::this job.enameSet@ enameSet.asStr .
+    job[] job.enameSet@ enameSet.asStr .
 
   then
 ;

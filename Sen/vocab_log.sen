@@ -119,7 +119,7 @@
 /*----------------------------------------------------------------------------*/
 //: >>logEntry immediate
 //
-//  POSTPONE job::this
+//  POSTPONE job[]
 //  POSTPONE job.class
 //  POSTPONE class::name
 //  ">>%v %v" ,

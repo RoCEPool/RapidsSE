@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : job::distributeConnected ( -- )
 
-  job::this locals| pJob |
+  job[] locals| pJob |
 
   // create the response vector in the orginating job to receive responses
   pJob job.createResponseVec
@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 : 2pcReply::job__begun ( -- )
 
-  job::this "Job__Begun::send" find execute
+  job[] "Job__Begun::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : 2pcReply::job__executed ( -- )
 
-  job::this "Job__Executed::send" find execute
+  job[] "Job__Executed::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : 2pcReply::job__ended ( -- )
 
-  job::this "Job__Ended::send" find execute
+  job[] "Job__Ended::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 : 2pcReply::job__cancelled ( -- )
 
-  job::this "Job__Cancelled::send" find execute
+  job[] "Job__Cancelled::send" find execute
 ;
 
 

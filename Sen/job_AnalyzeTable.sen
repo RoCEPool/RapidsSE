@@ -44,7 +44,7 @@
     else
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
     then
-    job::this job.metadata!
+    job[] job.metadata!
 
   then
 ;
@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable::execute _eeh ( -- )
 
-  job::this locals| pJob_AnalyzeTable |
+  job[] locals| pJob_AnalyzeTable |
 
   0 0 locals| sTableNm bIsDetailed |
 
@@ -92,7 +92,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   <tableNm>
-  checkAnalyzeTable not if job::this <ERROR_JOB> !!logError exit then
+  checkAnalyzeTable not if job[] <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : space::execute _eeh ( -- )
 
-  job::this locals| pJob_Space |
+  job[] locals| pJob_Space |
 
   "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .verbose
 //

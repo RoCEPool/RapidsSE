@@ -11,7 +11,7 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_printOp |
+  job[] locals| pJob_printOp |
   <string> locals| sString |
 
   // set topolgy in the op

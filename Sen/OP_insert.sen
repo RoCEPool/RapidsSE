@@ -10,7 +10,7 @@
  : InsertOp_req ( -- )
  
   >>logEntry <SEED_REQ>
-  job::this locals| pJob_InsertOp |
+  job[] locals| pJob_InsertOp |
 
   <tableNm> locals| sTableNm |
 

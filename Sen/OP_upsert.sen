@@ -10,7 +10,7 @@
  : UpsertOp_req ( -- )
  
   >>logEntry <SEED_REQ>
-  job::this locals| pJob_UpsertOp |
+  job[] locals| pJob_UpsertOp |
 
   <tableNm> locals| sTableNm |
 

@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex::execute _eeh ( -- )
 
-  job::this locals| pJob_CompactIndex |
+  job[] locals| pJob_CompactIndex |
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
@@ -84,7 +84,7 @@
   // grab a ddl lock
   DdlLock[].grabRead
 
-  <tableNm> <indexNm> checkCompactIndex not if job::this <ERROR_JOB> !!logError exit then
+  <tableNm> <indexNm> checkCompactIndex not if job[] <ERROR_JOB> !!logError exit then
 
 ;
 

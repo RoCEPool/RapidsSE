@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog::execute _eeh ( -- )
 
-  job::this locals| pJob_DropCatalog |
+  job[] locals| pJob_DropCatalog |
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,7 +62,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
-  //<catalogNm> checkRemoveCatalog not if job::this <ERROR_JOB> !!logError exit then
+  //<catalogNm> checkRemoveCatalog not if job[] <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

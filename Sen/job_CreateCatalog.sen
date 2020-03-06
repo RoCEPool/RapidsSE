@@ -69,11 +69,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if job::this <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if job[] <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
-  <catalogNm> checkMakeCatalog not if job::this <ERROR_JOB> !!logError exit then
+  <catalogNm> checkMakeCatalog not if job[] <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

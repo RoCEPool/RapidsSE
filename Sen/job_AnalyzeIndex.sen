@@ -55,7 +55,7 @@
     else
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
     then
-    job::this job.metadata!
+    job[] job.metadata!
 
   then
 ;
@@ -80,8 +80,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
-  job::this job.response!
-  grid::slots job::this job.rowsProcessed!
+  job[] job.response!
+  grid::slots job[] job.rowsProcessed!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
@@ -103,7 +103,7 @@
   // check if we can remove the table
   <tableNm>
   <indexNm> 
-  checkAnalyzeIndex not if job::this <ERROR_JOB> !!logError exit then
+  checkAnalyzeIndex not if job[] <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

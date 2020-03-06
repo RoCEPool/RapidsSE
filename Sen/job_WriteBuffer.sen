@@ -111,7 +111,7 @@
 
   >>logEntry <SEED_RUN>
 
-  job::this locals| pJob_WriteBuffer |
+  job[] locals| pJob_WriteBuffer |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is enough buffers and load
@@ -170,7 +170,7 @@
 
   >>logEntry <SEED_RUN>
 
-  job::this locals| pJob_WriteBuffer  |
+  job[] locals| pJob_WriteBuffer  |
 
   //"pJob_WriteBuffer :" .verbose
 

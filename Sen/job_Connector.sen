@@ -109,7 +109,7 @@
 
   //"connector_run" .
 
-  grid::thisNode@ job::this "Connector %v on node %v running" .printf
+  grid::thisNode@ job[] "Connector %v on node %v running" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

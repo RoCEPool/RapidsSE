@@ -52,7 +52,7 @@
 
   //"checkResources received" .
 
-  job::this locals| pJob_DefineNode |
+  job[] locals| pJob_DefineNode |
 
   //----------------------------------------------------------------------------
   // grab a ddl lock

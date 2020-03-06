@@ -49,7 +49,7 @@
   //
   // where: on the participating node
   //
-  job::this locals| pJob__Execute |
+  job[] locals| pJob__Execute |
 
   // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |

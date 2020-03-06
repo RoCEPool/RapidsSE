@@ -55,7 +55,7 @@
   >>logEntry <SEED_RUN>
   actLog::seed_rcv
 
-  job::this locals| pJob__Cancelled |
+  job[] locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 
   0 0 0 0 locals| bAmDecider error iParticipantNode |

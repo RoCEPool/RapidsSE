@@ -83,7 +83,7 @@
   >>logEntry <SEED_EXE>
 
   //params| pJob_Space |
-  job::this locals| pJob_InsertRow |
+  job[] locals| pJob_InsertRow |
 
   CN_JOB_INSERTROW pJob_InsertRow object.assertClass
 
@@ -183,7 +183,7 @@
 
   >>logEntry <SEED_BEG>
 
-  job::this locals| pJob_InsertRow |
+  job[] locals| pJob_InsertRow |
 
   pJob_InsertRow job.becomeParticipant
 
@@ -202,7 +202,7 @@
 
   >>logEntry <SEED_END>
 
-  job::this locals| pJob_InsertRow |
+  job[] locals| pJob_InsertRow |
 
   ">> insertRow_end <<" .verbose
 
