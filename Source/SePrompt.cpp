@@ -214,6 +214,9 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+    if (m_bDumpTokens)
+      Correctness::vDebugPoint();
+    
     vSetJob();
         
     vJobLockMutex();

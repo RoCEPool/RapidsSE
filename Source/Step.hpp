@@ -107,11 +107,9 @@ namespace Steps
     static void vAddSteps_Object(void);
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
-    static void vAddSteps_RegOperand(void);
-    static void vAddSteps_RegOperandB(void);
-    static void vAddSteps_RegOperandC(void);
 
     static void vAddSteps_Persistence(void);
+    static void vAddSteps_Pipeline(void);
     static void vAddSteps_Planner(void);
     static void vAddSteps_Plist(void);
     static void vAddSteps_Process(void);
@@ -124,6 +122,9 @@ namespace Steps
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegOp(void);
+    static void vAddSteps_RegOperand(void);
+    static void vAddSteps_RegOperandB(void);
+    static void vAddSteps_RegOperandC(void);
     static void vAddSteps_RegSet(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_Row(void);

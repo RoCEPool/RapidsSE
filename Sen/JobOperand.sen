@@ -5,6 +5,25 @@
 " jobOperand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* install demon pipeline job                                                 */
+/*----------------------------------------------------------------------------*/
+: demon::install
+
+  ddlLock[].dropRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "__" <pipelineNm> str.cat locals| sDemonNm |
+
+  sDemonNm "installing demon pipeline job: %v" .printf
+
+  sDemonNm >createInRoot locals| pDemonWd |
+
+  job::this pDemonWd word.object!
+;
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : jobOperand::generic

@@ -182,10 +182,12 @@ void EnameSet::vCopy(EnameSet* pScrEnameSet)
   
   for (i8 i_Ename = 0; i_Ename < pScrEnameSet->nEnames(); i_Ename++) {
     
+    Stz* szName = pScrEnameSet->szName(i_Ename);
+    
     if (TN_STRING == pScrEnameSet->eToken(i_Ename))
-      vAdd(pScrEnameSet->szName(i_Ename),pScrEnameSet->szValue(i_Ename));
+      vAdd(szName,pScrEnameSet->szValue(i_Ename));
     else
-      vAdd(pScrEnameSet->szName(i_Ename),pScrEnameSet->iValue(i_Ename));
+      vAdd(szName,pScrEnameSet->iValue(i_Ename));
   }
 }
 

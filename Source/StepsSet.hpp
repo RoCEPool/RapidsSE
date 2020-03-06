@@ -914,6 +914,9 @@ public:
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
 
+  // pipeline
+  void vPipelinePipeout(void);
+
   // plan
   void vPlanCompile(void);
   void vPlanDelete(void);
@@ -1464,6 +1467,8 @@ public:
   void vWordNameFetch(void);
   void vWordNameStore(void);
   void vWordNew(void);
+  void vWordObjectFetch(void);
+  void vWordObjectStore(void);
   void vWordPrev(void);
   void vWordPromptFetch(void);
   void vWordPromptStore(void);

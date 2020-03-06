@@ -9,13 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dic(void)
 {
+  vAddStep("dic::root"_Stz,        &Step::vDicRoot);
+  
   vAddStep("dic.init"_Stz,        &Step::vDicInit);
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
   vAddStep("dic.lastWord"_Stz,    &Step::vDicLastWord);
   vAddStep("dic.name"_Stz,        &Step::vDicName);
   vAddStep("dic.ref"_Stz,         &Step::vDicRef);
-  vAddStep("dic.root"_Stz,        &Step::vDicRoot);
   vAddStep("dic.wordCount"_Stz,   &Step::vDicWordCount);
 }
 
@@ -118,7 +119,7 @@ void Step::vDicRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dic.root -- push root dictionary onto stack                                */
+/* dic::root -- push root dictionary onto stack                                */
 /*----------------------------------------------------------------------------*/
 void Step::vDicRoot(void)
 {

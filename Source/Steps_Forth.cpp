@@ -163,8 +163,10 @@ void Step::vCreateFromInRoot(void)
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
   
-  m_pCompiler->vCurrentWord(pNewWord);
+  //m_pCompiler->vCurrentWord(pNewWord);
   
+  m_pDataStack->vPushPtr(pNewWord);
+
   EXIT();
 }
 

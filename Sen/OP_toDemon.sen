@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* OP_toDemon.sen -- To Demon Operator                                        */
+/*============================================================================*/
+
+" OP_toDemon.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: OP_toDemon_PulseMarker \handler
+
+  "OP_toDemon_PulseMarker" .
+
+  ZK_PULSEMARKER_handler
+
+  Operand[].newPulseMarker operand[].get 
+    "__anyDemon" find word.object@
+    pipeline.pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/* toDemon request                                    (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: toDemonOp_req \operator
+
+  >>logEntry <SEED_REQ>
+
+  // set topology, next stage and op
+  op__topology
+
+  find: OP_toDemon_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  "*** toDemonOp_req EXITS" .
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: toDemonOp :: toDemonOp ;
+
+jobInfo: toDemonOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
