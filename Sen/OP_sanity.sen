@@ -11,7 +11,18 @@
 
   //"Operand:- ZK_INFOSET" .verbose
   0 locals| node |
+
   Operand[].get to OperandB[]
+  nullptr to Operand[]
+
+  // create a new stream defnition as per the nodeinfo being sent
+  Operand[].newStreamDef
+  CT_VARCHAR "name" Operand[].addColumnDef
+  CT_VARCHAR "status" Operand[].addColumnDef
+
+  // pipeout the streamDef
+  Operand[].pipeout
+
   "Node" OperandB[].getStrInfoSet to node
 
   // check region size

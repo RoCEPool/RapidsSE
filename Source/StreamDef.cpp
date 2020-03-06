@@ -133,6 +133,29 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a column to the stream def to the current def set                      */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  m_i_DefStart[m_nDefSets] = 0;
+  
+  //! ALKA come back to this
+  m_nDefColumns[m_nDefSets]++;
+  i8 i_DefCol = m_nDefColumns[m_nDefSets];
+ 
+  m_xaColumn[i_DefCol].vColumnNo(m_nDefColumns[i_DefCol]);
+  m_xaColumn[i_DefCol].vColumnNm(sColumnNm);
+  m_xaColumn[i_DefCol].vColumnType(eColumnType);
+  
+  m_nDefColumns[m_nDefSets]++;
+  
+  if ( m_nDefSets == 0)
+    m_nDefSets++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
 i8 StreamDef::nColumns(i8 iSubSet)

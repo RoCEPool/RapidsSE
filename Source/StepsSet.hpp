@@ -1030,6 +1030,7 @@ public:
   void vRegOpInit(void);
 
   // operand
+  void vRegOperandAddColumnDef(void);
   void vRegOperandCsvAppend(void);
   void vRegOperandBide(void);
   void vRegOperandChunkFile(void);

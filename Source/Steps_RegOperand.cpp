@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOperand(void)
 {
-  
-  vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
+  vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
+  vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
   vAddStep("Operand[].chunkFile"_Stz,      &Step::vRegOperandChunkFile);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
@@ -50,6 +50,26 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
   vAddStep("Operand[].workDone"_Stz,       &Step::vRegOperandWorkDone);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vRegOperandWriteToFile0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].addColumnDef -- operand add column definition                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandAddColumnDef(void)
+{
+  ENTRY(); // ENTRY("vRegOperandAddColumnDef"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpOperandA);
+  
+  s256 sColumnNm;
+  m_pDataStack->vPopStr(sColumnNm, __func__);
+  
+  eCT eColumnType;
+  eColumnType = (eCT)m_pDataStack->iPopInt(__func__);
+  
+  pStreamDef->vAddColumn(sColumnNm, eColumnType);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -652,7 +672,10 @@ void Step::vRegOperandNewStreamDef(void)
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
-  m_pRegSet->m_xpOperandA = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
+  if (m_pRegSet->m_xpTable.bIsNull())
+    m_pRegSet->m_xpOperandA = new StreamDef();
+  else
+    m_pRegSet->m_xpOperandA = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
   
   EXIT();
 }

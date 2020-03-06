@@ -11,12 +11,22 @@
 
   "Operand:- ZK_STARTMARKER" .verbose
 
+  // pipeout the start marker
+  Operand[].pipeout
+
+  // create a new stream defnition as per the nodeinfo being sent
+  Operand[].newStreamDef
+  CT_INTEGER "regionSize" Operand[].addColumnDef
+
+  // pipeout the streamDef
+  Operand[].pipeout
+
   // craete a new info set and add node info
   OperandB[].newInfoSet
   attachMap::regionSize@ "RegionSize" OperandB[].addIntInfoSet
   grid::thisNodeName@ "Node" OperandB[].addStrInfoSet
-  "Node" OperandB[].getStrInfoSet .
-  Operand[].pipeout
+
+
   OperandB[].pipeout
 ;
 
