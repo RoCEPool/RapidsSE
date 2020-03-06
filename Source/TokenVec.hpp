@@ -8,6 +8,8 @@ namespace LexicalAnalysis
   class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
   {
   private:
+   
+    s256 m_sInputSource;  // where did the tokens come from
   
     i8 m_iCurTkn;
   
@@ -35,6 +37,8 @@ namespace LexicalAnalysis
     Token* pFindToken(Stz* szTerm, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
+    Stz* szInputSource(void);
+    void vInputSource(Stz* szInputSource);
     void vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken);
     Token* pNextToken(void);
     Token* pPrevToken(void);

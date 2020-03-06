@@ -233,6 +233,26 @@ void TokenVec::vIncTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get input source                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* TokenVec::szInputSource(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  return m_sInputSource;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input source                                                           */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vInputSource(Stz* szInputSource)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_sInputSource = szInputSource;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
