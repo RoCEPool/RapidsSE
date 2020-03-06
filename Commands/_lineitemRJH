@@ -89,7 +89,8 @@ begin
     scanOp lineitem | stageC
 
   stage stageC on origin:
-    outputOp | toDemonOp | sinkOp | stageA
+    outputOp | sinkOp | stageA
+    //outputOp | toDemonOp | sinkOp | stageA
 
 end;
 

@@ -1086,6 +1086,9 @@ public:
   void vRegOperandCPipeOutSet(void);
   void vRegOperandCSetFirst(void);
 
+  // reg task
+  void vRegTaskGet(void);
+
   // reg timer
   void vRegTimerGet(void);
   void vRegTimerSet(void);
