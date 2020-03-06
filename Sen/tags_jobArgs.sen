@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* the ename word kind                                                        */
 /*----------------------------------------------------------------------------*/
-: <<jobArgTag>> immediate ( -- )
+: _<jobArgTag>_ immediate ( -- )
 
   [ compiler::current@ , ]
 
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <catalogNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <catalogNm> <<jobArgTag>> ( -- "<catalogNm>" )
+: <catalogNm> _<jobArgTag>_ ( -- "<catalogNm>" )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <cmd> from job's ename-set                                   */
 /*----------------------------------------------------------------------------*/
-: <cmd> <<jobArgTag>> ( -- s )
+: <cmd> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <consumeXmits> from job's ename-set                          */
 /*----------------------------------------------------------------------------*/
-: <consumeXmits> <<jobArgTag>> ( -- s )
+: <consumeXmits> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;
@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <detailed> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <detailed> <<jobArgTag>> ( -- s )
+: <detailed> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <fileNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <fileNm> <<jobArgTag>> ( -- s )
+: <fileNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <folderNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <folderNm> <<jobArgTag>> ( -- s )
+: <folderNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <hours> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <hours> <<jobArgTag>> ( -- s )
+: <hours> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <indexNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <indexNm> <<jobArgTag>> ( -- s )
+: <indexNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobClass> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <jobClass> <<jobArgTag>> ( -- s )
+: <jobClass> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobNm> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobNm> <<jobArgTag>> ( -- s )
+: <jobNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobId> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobId> <<jobArgTag>> ( -- s )
+: <jobId> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -108,7 +108,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <minutes> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <minutes> <<jobArgTag>> ( -- s )
+: <minutes> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;
@@ -116,7 +116,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <nBuffers> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <nBuffers> <<jobArgTag>> ( -- i )
+: <nBuffers> _<jobArgTag>_ ( -- i )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;
@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <nextOp> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <nextOp> <<jobArgTag>> ( -- s )
+: <nextOp> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getInt
 ;
@@ -132,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <nextStage> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <nextStage> <<jobArgTag>> ( -- s )
+: <nextStage> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getInt
 ;
@@ -140,7 +140,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <newNm> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <newNm> <<jobArgTag>> ( -- s )
+: <newNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -148,7 +148,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <nodeNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <nodeNm> <<jobArgTag>> ( -- s )
+: <nodeNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <path> from job's ename-set                                  */
 /*----------------------------------------------------------------------------*/
-: <path> <<jobArgTag>> ( -- s )
+: <path> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <pipeNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <pipeNm> <<jobArgTag>> ( -- s )
+: <pipeNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -172,7 +172,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <pipelineNm> from job's ename-set                            */
 /*----------------------------------------------------------------------------*/
-: <pipelineNm> <<jobArgTag>> ( -- s )
+: <pipelineNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -180,7 +180,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <pythonFile> from job's ename-set                            */
 /*----------------------------------------------------------------------------*/
-: <pythonFile> <<jobArgTag>> ( -- s )
+: <pythonFile> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -188,7 +188,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <pythonFunction> from job's ename-set                        */
 /*----------------------------------------------------------------------------*/
-: <pythonFunction> <<jobArgTag>> ( -- s )
+: <pythonFunction> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -196,7 +196,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <routineNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <routineNm> <<jobArgTag>> ( -- s )
+: <routineNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -204,7 +204,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <schemaNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <schemaNm> <<jobArgTag>> ( -- s )
+: <schemaNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -212,7 +212,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <startOps> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <startOps> <<jobArgTag>> ( -- s )
+: <startOps> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;
@@ -220,7 +220,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <string> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <string> <<jobArgTag>> ( -- s )
+: <string> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -228,7 +228,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <subPath> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <subPath> <<jobArgTag>> ( -- s )
+: <subPath> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -236,7 +236,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <tableNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <tableNm> <<jobArgTag>> ( -- s )
+: <tableNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -244,7 +244,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <tenantNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <tenantNm> <<jobArgTag>> ( -- s )
+: <tenantNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
@@ -252,7 +252,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <topology> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <topology> <<jobArgTag>> ( -- s )
+: <topology> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getInt
 ;
@@ -260,14 +260,14 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <wordNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <wordNm> <<jobArgTag>> ( -- s )
+: <wordNm> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr
 ;
 
 /* push value of <nextOp> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <xmitKind> <<jobArgTag>> ( -- s )
+: <xmitKind> _<jobArgTag>_ ( -- s )
 
   [ compiler::current@ word.name@ , ] job[] job.enameSet@ enameSet.getStr >int
 ;

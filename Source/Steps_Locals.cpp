@@ -276,7 +276,7 @@ void Step::vLocalsTo(void)
   // handle a meta-symbol
   
   if (pLocalWord->pCategory()
-      && pLocalWord->pCategory()->szWordNm()->bSame("<<jobArgTag>>"_Stz)) {
+      && pLocalWord->pCategory()->szWordNm()->bSame("_<jobArgTag>_"_Stz)) {
     
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
     
