@@ -13,7 +13,7 @@
 
   ZK_PULSEMARKER_handler
 
-  Operand[].newPulseMarker
+  Operand[].newPulseMarker operand[].get 
     "__anyDemon" find word.object@
     pipeline.pipeout
 ;

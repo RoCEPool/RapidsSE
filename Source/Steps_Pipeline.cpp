@@ -22,10 +22,15 @@ void Step::vPipelinePipeout(void)
   Job* pPipelineJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  Op* pOp = m_pTask->m_pJob->m_pOp;
-//
-//  pOp->vPipeOut(pOperand);
+  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Stage*    pStage0   = pPipeline->pGet(0);
+  Strand*   pStand0   = pStage0->pGet(0);
+  Op*       pOp0      = pStand0->pGet(0);
+
+  pOp0->vPipeOut(pOperand);
 
   EXIT();
 }
