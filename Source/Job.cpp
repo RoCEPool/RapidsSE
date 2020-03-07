@@ -755,7 +755,7 @@ void Job::vJobState(eJS eJobState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the job id                                                             */
+/* get the ename set of job information                                       */
 /*----------------------------------------------------------------------------*/
 EnameSet* Job::pJobInfoEnameSet(void)
 {
