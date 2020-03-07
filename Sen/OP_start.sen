@@ -11,6 +11,8 @@
  
   LogEntry SEED_REQ
 
+  job[] job.enameSet@ enameSet.asStr .
+
   // set topolgy in the op
   <topology> op.topology!
 
