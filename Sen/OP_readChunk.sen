@@ -106,7 +106,7 @@ opSyntax: readChunk :: readChunk <fileNm> ;
 
 jobInfo: readChunk
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE

@@ -43,7 +43,7 @@ opSyntax: supervisor :: supervisor ;
 
 jobInfo: supervisor
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_NONE

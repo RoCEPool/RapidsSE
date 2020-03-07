@@ -114,7 +114,7 @@ opSyntax: answer :: answer ;
 
 jobInfo: answer
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_NONE

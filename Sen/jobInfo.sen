@@ -206,8 +206,8 @@
   then
 
   // default for job desc
-  "?<jobDesc>?" pEnameSet EnameSet.hasName not if
-    "?<jobDesc>?" "--description of job--" jobInfo::addEname
+  "<jobDesc>" pEnameSet EnameSet.hasName not if
+    "<jobDesc>" "--description of job--" jobInfo::addEname
   then
 
   // default for job kind

@@ -49,7 +49,7 @@ opSyntax: ping :: ping ;
 
 jobInfo: ping
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_JOB_RESPONSE

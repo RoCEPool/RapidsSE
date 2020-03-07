@@ -99,7 +99,7 @@ opSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
 jobInfo: BM_GenCrwOp
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE

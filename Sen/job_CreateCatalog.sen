@@ -84,7 +84,7 @@ opSyntax: createCatalog :: create catalog <catalogNm> ;
 
 jobInfo: createCatalog
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_DIST2PC
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE

@@ -77,7 +77,7 @@ opSyntax: pythonShellOp :: pythonShellOp <pythonFile> ;
 
 jobInfo: pythonShellOp
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE

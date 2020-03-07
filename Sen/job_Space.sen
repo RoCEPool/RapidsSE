@@ -35,7 +35,7 @@ opSyntax: space :: space ;
 
 jobInfo: space
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_DIST2PC
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE

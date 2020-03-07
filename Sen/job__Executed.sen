@@ -121,7 +121,7 @@ opSyntax: _Executed :: _Executed ;
 
 jobInfo: _Executed
 {
-  ?<jobDesc>?  = "--description of job--"
+  <jobDesc>  = "--description of job--"
   
   ?<jobKind>?  = JK_GENERIC
 }
