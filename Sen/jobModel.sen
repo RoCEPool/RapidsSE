@@ -4,7 +4,6 @@
 
 "-jobModel.sen" .verbose
 
-//"tags_jobArgs.sen" include
 "tags_jobInfo.sen" include
 
 "jobInfo.sen"      include
