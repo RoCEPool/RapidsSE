@@ -51,14 +51,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push integer value of ?<jobType>? from job's jobInfo ename-set             */
-/*----------------------------------------------------------------------------*/
-: ?<jobType>? _<jobInfoTag>_ ( -- i )
-
-  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
-;
-
-/*----------------------------------------------------------------------------*/
 /* push string value of ?<preCheck>? from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
 : ?<preCheck>? _<jobInfoTag>_ ( -- s )
