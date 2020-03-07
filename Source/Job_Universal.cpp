@@ -206,6 +206,18 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     vJobNm(szJobNm);
     
     pEnameSet()->vCopy(pEnameSet_ji);
+    
+    
+//    s32 sJob_Cls = szJobNm;
+//    sJob_Cls.vConcat("_cls"_Stz);
+//    
+//    Dic* pRootDic = AM::pRootDic();
+//    
+//    Word* pJob_Cls = pRootDic->pFindWord(sJob_Cls);
+//    if (pJob_Cls) {
+//      EnameSet* pEnameSet_class = pJob_Cls->pEnameSet();
+//      pEnameSet()->vCopy(pEnameSet_class);
+//    }
   }
   
   return EC_NONE;
