@@ -20,7 +20,7 @@
   Operand[].pipeOut
 
   // generate the crw buffer's
-  <nBuffers> tablePtn[].genCrwBuffers to Operand[]
+  <nBuffers> >int tablePtn[].genCrwBuffers to Operand[]
   Operand[].pipeoutSet
 
   Operand[].newEosMarker

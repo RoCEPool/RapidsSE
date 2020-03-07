@@ -165,8 +165,12 @@ bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
                              i8&       i_Tkn_
                              )
 {
-  pArgEnmSet->vAdd(pSynEnmSet->szValue(i_Syn_),
-                   pTknVec->pGet(i_Tkn_)->szTerm());
+  Stz* szValue = pSynEnmSet->szValue(i_Syn_);
+  
+  Token* pTkn = pTknVec->pGet(i_Tkn_);
+  Stz* szTerm = pTkn->szTerm();
+  
+  pArgEnmSet->vAdd(szValue,szTerm);
   
   // pArgEnmSet->vPrint();
   

@@ -1354,7 +1354,8 @@ bool Tokeniser::bStartSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (m_xAnnChar.bIsTilde())
+  //if (m_xAnnChar.bIsTilde())
+  if (m_xAnnChar.bIsLessThan())
     return true;
   
   return false;

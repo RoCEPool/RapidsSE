@@ -11,7 +11,7 @@
 
   LogEntry SEED_REQ
 
-  <consumeXmits> locals| xmits |
+  <consumeXmits> >int locals| xmits |
 
   0 0 0 locals| start pulse def |
   xmits xmits locals| stop eos |
@@ -25,7 +25,7 @@
   // set nextOp in op
   <nextOp> op.nextOp!
 
-  <consumeXmits> op.leftEosMarkers!
+  <consumeXmits> >int op.leftEosMarkers!
 
   begin
 

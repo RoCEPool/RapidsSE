@@ -47,10 +47,15 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex::request _eeh ( -- <R> )
 
+  "<detailed>" job[] job.enameset@ enameset.hasName not if
+
+    "<detailed>" "0" job[] job.enameset@ enameset.addStr
+  then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
-    <detailed> 1 == if
+    <detailed> >int 1 == if
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, bufferLevel VARCHAR, entries INTEGER)"
     else
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
@@ -76,7 +81,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table
-  <detailed> <indexNm> find execute index.analyze
+  <detailed> >int <indexNm> find execute index.analyze
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
@@ -94,6 +99,12 @@
 : analyzeIndex::checkResources _eeh ( -- )
 
   //"checkResources received" .
+
+  "<detailed>" job[] job.enameset@ enameset.hasName not if
+
+    "<detailed>" "0" job[] job.enameset@ enameset.addStr
+  then
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

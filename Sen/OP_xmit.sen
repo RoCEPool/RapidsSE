@@ -21,7 +21,7 @@
   <nextOp> op.nextOp!
 
   // set the xmit kind
-  <xmitKind> op.xmitKind!
+  <xmitKind> >int op.xmitKind!
 
   begin
 

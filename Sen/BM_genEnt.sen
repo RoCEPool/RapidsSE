@@ -41,7 +41,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the ent buffer's
-  <nBuffers> 0 do
+  <nBuffers> >int 0 do
     index[].genEntBuffer to Operand[]
     Operand[].pipeout
   loop
