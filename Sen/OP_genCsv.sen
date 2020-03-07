@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : genCsvOp_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   job[] locals| pJob_GenCsvOp |
   0 locals| pTable |
@@ -83,7 +83,7 @@
   while assert::stack_0 repeat
 
   "*** GENCSVOP EXITS" .
-  <<logExit
+  LogExit
   job::deleteThis
   DONE_RUN
 ;

@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
  : readChunk_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   // set topolgy in the op
   <topology> op.topology!
@@ -93,7 +93,7 @@
 
   while assert::stack_0 repeat
 
-  <<logExit
+  LogExit
   job::deleteThis
   DONE_RUN
 ;

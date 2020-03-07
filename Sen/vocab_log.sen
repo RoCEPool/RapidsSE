@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 /* log word entry                                                             */
 /*----------------------------------------------------------------------------*/
-: >>logEntry immediate
+: LogEntry immediate
 
   // format the string to be printed
   compiler::current@ word.name@ ">>%v" str.format
@@ -117,7 +117,7 @@
   POSTPONE Log::markEntry
 ;
 /*----------------------------------------------------------------------------*/
-//: >>logEntry immediate
+//: LogEntry immediate
 //
 //  POSTPONE job[]
 //  POSTPONE job.class
@@ -134,7 +134,7 @@
 /*----------------------------------------------------------------------------*/
 /* log word exit                                                              */
 /*----------------------------------------------------------------------------*/
-: <<logExit immediate
+: LogExit immediate
 
   // format the string to be printed
   compiler::current@ word.name@ "<<%v" str.format

@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : lsidx_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 0 0 locals| sTableNm iCount pJob_ListIndexes pTask |
 
@@ -109,7 +109,7 @@
   popTable
   assertInTables
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

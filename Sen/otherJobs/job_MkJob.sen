@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : mkjob_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   <newNm> "making new job: %v" .printf
 
@@ -29,7 +29,7 @@
 
   sSenFile include
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 
   HAZARD
 ;

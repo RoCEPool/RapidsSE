@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : dumpIndex_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_DumpIndex |
 
@@ -89,7 +89,7 @@
 
   pJob_DumpIndex job.notice
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

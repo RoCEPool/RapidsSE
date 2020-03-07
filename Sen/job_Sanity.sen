@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 locals| pJob pTask |
 
@@ -33,7 +33,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_exe ( pJob_Sanity -- )
 
-  >>logEntry SEED_EXE
+  LogEntry SEED_EXE
 
   //params| pJob_Sanity |
   job[] locals| pJob_Sanity |
@@ -93,7 +93,7 @@
 
   pJob_Sanity job::participantExecuted
 
-  <<logExit DONE_EXE
+  LogExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_beg ( -- )
 
-  >>logEntry SEED_BEG
+  LogEntry SEED_BEG
 
   job[] locals| pJob_sanity |
 
@@ -109,7 +109,7 @@
 
   job::participantBegun
 
-  <<logExit DONE_BEG
+  LogExit DONE_BEG
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -117,13 +117,13 @@
 /*----------------------------------------------------------------------------*/
 : sanity_end ( -- )
 
-  >>logEntry SEED_END
+  LogEntry SEED_END
 
   job[] locals| pJob_sanity |
 
   job::participantEnded
 
-  <<logExit DONE_END
+  LogExit DONE_END
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,13 +131,13 @@
 /*----------------------------------------------------------------------------*/
 : sanity_can ( -- )
 
-  >>logEntry SEED_CAN
+  LogEntry SEED_CAN
 
   job[] locals| pJob_sanity |
 
   job::participantCancelled
 
-  <<logExit DONE_CAN
+  LogExit DONE_CAN
 ;
 
 /*============================================================================*/

@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : lsidxcol_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 0 0 locals| sTableNm sIndexNm pJob_ListIdxColumns pTask |
 
@@ -118,7 +118,7 @@
   popTable
   assertInTables
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 
   HAZARD
 ;

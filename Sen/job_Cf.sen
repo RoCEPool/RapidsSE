@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : cf_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 0 0 locals| pCurrentFolder sFolderNm pJob_Cf pTask |
 
@@ -34,7 +34,7 @@
   sFolderNm ".." str.equal if
     pathCurrentFolder dic.name "tenants" str.equal not if pathDrop then
     setPath
-    <<logExit DONE_REQ
+    LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
   then
 
@@ -45,7 +45,7 @@
   sFolderNm "~" str.equal if
     begin pathCurrentFolder dic.name "tenants" str.equal not while pathDrop repeat
     setPath
-    <<logExit DONE_REQ
+    LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
   then
 
@@ -57,7 +57,7 @@
     pathDropAll
     attachmap::tenants@ execute pathPush
     setPath
-    <<logExit DONE_REQ
+    LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
   then
 
@@ -69,7 +69,7 @@
   pCurrentFolder checkIsDic not if pJob_Cf ERROR_REQUEST !!logError exit then
   pCurrentFolder execute pathPush
   setPath
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 
   HAZARD
 ;

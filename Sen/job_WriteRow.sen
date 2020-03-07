@@ -87,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 : writeRow_kid ( -- )
 
-  >>logEntry SEED_RUN
+  LogEntry SEED_RUN
 
   job[] locals| pJob_WriteRow |
 
@@ -99,7 +99,7 @@
   //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  <<logExit
+  LogExit
   job::deleteThis
 
   DONE_KID
@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 : writeRow_run (  -- )
 
-  >>logEntry SEED_RUN
+  LogEntry SEED_RUN
 
   job[] locals| pJob_WriteRow  |
 

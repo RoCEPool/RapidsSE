@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 locals| pJob_InsertRow pTask |
 
@@ -72,7 +72,7 @@
   // distribute the job
   pJob_InsertRow job.distribute
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_exe ( pJob_InsertRow -- )
 
-  >>logEntry SEED_EXE
+  LogEntry SEED_EXE
 
   //params| pJob_Space |
   job[] locals| pJob_InsertRow |
@@ -111,7 +111,7 @@
 
   pJob_InsertRow job::participantExecuted
 
-  <<logExit DONE_EXE
+  LogExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -119,7 +119,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.checkResources ( pJob_InsertRow -- )
 
-  >>logEntry Check_Resources
+  LogEntry Check_Resources
 
   params| pJob_InsertRow  |
 
@@ -159,7 +159,7 @@
 
   node::checkEnoughBuffers not if pJob_InsertRow ERROR_JOB !!logError exit then
 
-  <<logExit Resources_Checked
+  LogExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -167,13 +167,13 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.releaseResources ( pJob_InsertRow -- )
 
-  >>logEntry Release_Resources
+  LogEntry Release_Resources
 
   params| pJob_InsertRow  |
 
   //releaseResources received" .
 
-  <<logExit Resources_Released
+  LogExit Resources_Released
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_beg ( -- )
 
-  >>logEntry SEED_BEG
+  LogEntry SEED_BEG
 
   job[] locals| pJob_InsertRow |
 
@@ -192,7 +192,7 @@
 
   job::participantBegun
 
-  <<logExit DONE_BEG
+  LogExit DONE_BEG
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_end ( -- )
 
-  >>logEntry SEED_END
+  LogEntry SEED_END
 
   job[] locals| pJob_InsertRow |
 
@@ -211,7 +211,7 @@
 
   job::participantEnded
 
-  <<logExit DONE_END
+  LogExit DONE_END
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -219,13 +219,13 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_can ( -- )
 
-  >>logEntry SEED_CAN
+  LogEntry SEED_CAN
 
   ">> insertRow_can <<" .verbose
 
   job::participantCancelled
 
-  <<logExit DONE_CAN
+  LogExit DONE_CAN
 ;
 
 /*============================================================================*/

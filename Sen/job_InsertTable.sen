@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_req (  -- <R> )
 
-  >>logEntry 2
+  LogEntry 2
 
   0 0 locals| pJob pTask |
 
@@ -68,7 +68,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_exe ( Job_InsertTable -- )
 
-  >>logEntry SEED_EXE
+  LogEntry SEED_EXE
 
   job[] locals| pJob_InsertTable |
 
@@ -110,7 +110,7 @@
 
   pJob_InsertTable job::participantExecuted
 
-  <<logExit DONE_EXE
+  LogExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +136,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_beg ( -- )
 
-  >>logEntry SEED_BEG
+  LogEntry SEED_BEG
 
   job[] locals| pJob_InsertTable |
 
@@ -151,7 +151,7 @@
   // this job has begun
   job::participantBegun
 
-  <<logExit DONE_BEG
+  LogExit DONE_BEG
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_end ( -- )
 
-  >>logEntry SEED_END
+  LogEntry SEED_END
 
   job[] locals| pJob_InsertTable |
 
@@ -170,7 +170,7 @@
 
   job::participantEnded
 
-  <<logExit DONE_END
+  LogExit DONE_END
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_can ( -- )
 
-  >>logEntry SEED_CAN
+  LogEntry SEED_CAN
 
   job[] locals| pJob_InsertTable |
 
@@ -186,7 +186,7 @@
 
   job::participantCancelled
 
-  <<logExit DONE_CAN
+  LogExit DONE_CAN
 ;
 
 /*============================================================================*/

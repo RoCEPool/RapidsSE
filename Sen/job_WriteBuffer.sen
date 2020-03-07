@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 : writeBuffer_kid ( -- )
 
-  >>logEntry SEED_RUN
+  LogEntry SEED_RUN
 
   job[] locals| pJob_WriteBuffer |
 
@@ -121,7 +121,7 @@
   //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  <<logExit
+  LogExit
   job::deleteThis
 
   DONE_KID
@@ -168,7 +168,7 @@
 /*----------------------------------------------------------------------------*/
 : writeBuffer_run (  -- )
 
-  >>logEntry SEED_RUN
+  LogEntry SEED_RUN
 
   job[] locals| pJob_WriteBuffer  |
 

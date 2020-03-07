@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : scanOp_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 locals| pTable |
 
@@ -90,7 +90,7 @@
 
   while assert::stack_0 repeat
 
-  <<logExit
+  LogExit
   job::deleteThis
   DONE_RUN
 ;

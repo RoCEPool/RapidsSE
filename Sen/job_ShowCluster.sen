@@ -9,13 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : showCluster_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   "ShowCluster ..." .
 
   grid::show
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

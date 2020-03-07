@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : startNode_req (  -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 0 locals| pJob_StartNode pTask sNodeNm |
 
@@ -27,7 +27,7 @@
 
   sNodeNm grid::spawnAddingNode
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : lscat_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 locals| pJob_ListCatalogs pTask |
 
@@ -33,7 +33,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 
   HAZARD
 ;

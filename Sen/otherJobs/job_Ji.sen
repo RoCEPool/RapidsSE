@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : ji_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   <WordNm> "_cls" str.cat find dup if
     word.EnameSet@ EnameSet.asStr .
@@ -18,7 +18,7 @@
     <wordNm> "No such job: %v" .printf
   then
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 
   HAZARD
 ;

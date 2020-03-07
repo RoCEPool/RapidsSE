@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : SubInserter_req (  -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 locals| pThisTask |
   0 0 0 locals| pJob_SubInserter sTableNm pTable |
@@ -35,7 +35,7 @@
   // add job to originator jobs
   //pJob_SubInserter job.addOriginator
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : SubInserter.checkResources ( pJob_SubInserter -- )
 
-  >>logEntry Check_Resources
+  LogEntry Check_Resources
 
   params| pJob_SubInserter  |
 
@@ -86,7 +86,7 @@
 
   node::checkEnoughBuffers not if pJob_SubInserter ERROR_JOB !!logError exit then
 
-  <<logExit Resources_Checked
+  LogExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,13 +94,13 @@
 /*----------------------------------------------------------------------------*/
 : SubInserter.releaseResources ( pJob_SubInserter -- )
 
-  >>logEntry Release_Resources
+  LogEntry Release_Resources
 
   params| pJob_SubInserter  |
 
   //releaseResources received" .
 
-  <<logExit Resources_Released
+  LogExit Resources_Released
 ;
 
 /*============================================================================*/

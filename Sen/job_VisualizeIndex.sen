@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : visualizeIndex_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_VisualizeIndex |
 
@@ -87,7 +87,7 @@
 
   pJob_VisualizeIndex job.notice
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -9,13 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : NAME_OF_JOB_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   // put your code here...
 
   "NAME_OF_JOB was created by mkjob" .
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 
   HAZARD
 ;

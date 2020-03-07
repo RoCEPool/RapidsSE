@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : docol_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 0 locals| pJob_Docol pTask |
 
@@ -29,7 +29,7 @@
     depth while drop
   repeat
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

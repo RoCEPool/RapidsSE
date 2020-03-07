@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : eatAllOp_req \operator
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   // set topology, next stage and op
   op__topology
@@ -32,7 +32,7 @@
   op__loop
 
   "*** eatAllOp_req EXITS" .
-  <<logExit
+  LogExit
   job::deleteThis
   DONE_RUN
 ;

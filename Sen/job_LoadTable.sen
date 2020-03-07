@@ -94,14 +94,14 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   job[] locals| pJob_LoadTable |
 
   // add job to originator list and distribute
   pJob_LoadTable job.distribute
 
-  <<logExit DONE_REQ
+  LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( -- )
 
-  >>logEntry SEED_EXE
+  LogEntry SEED_EXE
 
   job[] locals| pJob_LoadTable |
 
@@ -125,7 +125,7 @@
 
   pJob_LoadTable job::participantExecuted
 
-  <<logExit DONE_EXE
+  LogExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.checkResources ( pJob_LoadTable -- )
 
-  >>logEntry Check_Resources
+  LogEntry Check_Resources
 
   params| pJob_LoadTable  |
 
@@ -191,7 +191,7 @@
 
   node::testEnoughBuffers not if pJob_LoadTable ERROR_JOB !!logError exit then
 
-  <<logExit Resources_Checked
+  LogExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,11 +199,11 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.releaseResources ( pJob_LoadTable -- )
 
-  >>logEntry Release_Resources
+  LogEntry Release_Resources
 
   params| pJob_LoadTable  |
 
-  <<logExit Resources_Released
+  LogExit Resources_Released
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +211,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
-  >>logEntry SEED_BEG
+  LogEntry SEED_BEG
 
   job[] locals| pJob_LoadTable |
 
@@ -221,7 +221,7 @@
 
   job::participantBegun
 
-  <<logExit DONE_BEG
+  LogExit DONE_BEG
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
 
-  >>logEntry SEED_END
+  LogEntry SEED_END
 
   job[] locals| pJob_LoadTable |
 
@@ -237,7 +237,7 @@
 
   job::participantEnded
 
-  <<logExit DONE_END
+  LogExit DONE_END
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +245,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
-  >>logEntry SEED_CAN
+  LogEntry SEED_CAN
 
   job[] locals| pJob_LoadTable |
 
@@ -253,7 +253,7 @@
 
   job::participantCancelled
 
-  <<logExit DONE_CAN
+  LogExit DONE_CAN
 ;
 
 /*============================================================================*/

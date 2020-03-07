@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
  : Chunk_req ( -- )
  
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   job[] locals| pJob_ToFileOp |
 
@@ -108,7 +108,7 @@
 
   while assert::stack_0 repeat
 
-  <<logExit
+  LogExit
   job::deleteThis
   DONE_RUN
 ;

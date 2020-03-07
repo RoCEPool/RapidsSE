@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : cancelQuery_exe ( -- )
  
-   >>logEntry SEED_EXE
+   LogEntry SEED_EXE
 
    job[] locals| pJob_CancelQuery |
 
@@ -36,7 +36,7 @@
 
   pJob_CancelQuery job::participantExecuted
 
-  <<logExit DONE_EXE
+  LogExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/

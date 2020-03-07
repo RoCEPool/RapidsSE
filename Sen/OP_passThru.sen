@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : PassThruOp_req ( -- )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
 
   0 locals| bufferCount |
   "__REPORT" locals| sReportTable |
@@ -89,7 +89,7 @@
 
   while assert::stack_0 repeat
 
-  <<logExit
+  LogExit
   job::deleteThis
   DONE_RUN
 ;

@@ -79,7 +79,7 @@
   <tableNm>
   checkSizeTable not if job[] ERROR_JOB !!logError exit then
 
-  <<logExit Resources_Checked
+  LogExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/

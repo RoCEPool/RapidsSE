@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pwf_req ( -- <R> )
 
-  >>logEntry SEED_REQ
+  LogEntry SEED_REQ
   //">>pwf_req" log::mark
 
   100 ssn::senLoc
@@ -54,7 +54,7 @@
   900 ssn::senLoc
 
   //"<<pwf_req" log::mark
-    <<logExit DONE_REQ
+    LogExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
