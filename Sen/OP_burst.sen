@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : burstOp_req \operator
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   // set topology, next stage and op
   op__topology

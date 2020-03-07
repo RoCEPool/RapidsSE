@@ -22,7 +22,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@
 
   job::assertCorrectness
 
-  <seed_initially>
+  Seed_Initially
 ;
 
 

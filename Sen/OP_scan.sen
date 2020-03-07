@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : scanOp_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   0 locals| pTable |
 

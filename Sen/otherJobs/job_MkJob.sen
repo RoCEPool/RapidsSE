@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : mkjob_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   <newNm> "making new job: %v" .printf
 

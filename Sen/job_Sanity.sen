@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   0 0 locals| pJob pTask |
 
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_exe ( pJob_Sanity -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry SEED_EXE
 
   //params| pJob_Sanity |
   job[] locals| pJob_Sanity |
@@ -101,7 +101,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry SEED_BEG
 
   job[] locals| pJob_sanity |
 
@@ -117,7 +117,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_end ( -- )
 
-  >>logEntry <SEED_END>
+  >>logEntry SEED_END
 
   job[] locals| pJob_sanity |
 
@@ -131,7 +131,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_can ( -- )
 
-  >>logEntry <SEED_CAN>
+  >>logEntry SEED_CAN
 
   job[] locals| pJob_sanity |
 

@@ -87,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 : writeRow_kid ( -- )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry SEED_RUN
 
   job[] locals| pJob_WriteRow |
 
@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 : writeRow_run (  -- )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry SEED_RUN
 
   job[] locals| pJob_WriteRow  |
 

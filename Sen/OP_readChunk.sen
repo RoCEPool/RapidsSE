@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
  : readChunk_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   // set topolgy in the op
   <topology> op.topology!

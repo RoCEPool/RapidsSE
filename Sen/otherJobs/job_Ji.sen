@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : ji_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   <WordNm> "_cls" str.cat find dup if
     word.EnameSet@ EnameSet.asStr .

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   0 0 locals| pJob_InsertRow pTask |
 
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_exe ( pJob_InsertRow -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry SEED_EXE
 
   //params| pJob_Space |
   job[] locals| pJob_InsertRow |
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry SEED_BEG
 
   job[] locals| pJob_InsertRow |
 
@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_end ( -- )
 
-  >>logEntry <SEED_END>
+  >>logEntry SEED_END
 
   job[] locals| pJob_InsertRow |
 
@@ -219,7 +219,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_can ( -- )
 
-  >>logEntry <SEED_CAN>
+  >>logEntry SEED_CAN
 
   ">> insertRow_can <<" .verbose
 

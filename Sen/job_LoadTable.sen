@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   job[] locals| pJob_LoadTable |
 
@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry SEED_EXE
 
   job[] locals| pJob_LoadTable |
 
@@ -211,7 +211,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry SEED_BEG
 
   job[] locals| pJob_LoadTable |
 
@@ -229,7 +229,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
 
-  >>logEntry <SEED_END>
+  >>logEntry SEED_END
 
   job[] locals| pJob_LoadTable |
 
@@ -245,7 +245,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
-  >>logEntry <SEED_CAN>
+  >>logEntry SEED_CAN
 
   job[] locals| pJob_LoadTable |
 

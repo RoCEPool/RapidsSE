@@ -155,7 +155,7 @@
 /*----------------------------------------------------------------------------*/
 /* check ready to execute any seed                                            */
 /*----------------------------------------------------------------------------*/
-: <seed_initially> ( -- )
+: Seed_Initially ( -- )
 
   task::seedInitially
 ;
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 /* seed begin                                                                 */
 /*----------------------------------------------------------------------------*/
-: <SEED_BEG>
+: SEED_BEG
 
   SS_SEED_BEG log::jobSeed
 
@@ -174,7 +174,7 @@
 
   <path> str.toStrVec task::dicStack.set
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;
@@ -182,13 +182,13 @@
 /*----------------------------------------------------------------------------*/
 /* seed cancel                                                                */
 /*----------------------------------------------------------------------------*/
-: <SEED_CAN>
+: SEED_CAN
 
   SS_SEED_CAN log::jobSeed
 
   JP_CANCELING job[] job.phase!
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;
@@ -196,13 +196,13 @@
 /*----------------------------------------------------------------------------*/
 /* seed end                                                                   */
 /*----------------------------------------------------------------------------*/
-: <SEED_END>
+: SEED_END
 
   SS_SEED_END log::jobSeed
 
   JP_ENDING job[] job.phase!
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;
@@ -210,7 +210,7 @@
 /*----------------------------------------------------------------------------*/
 /* seed execute                                                               */
 /*----------------------------------------------------------------------------*/
-: <SEED_EXE>
+: SEED_EXE
 
   SS_SEED_EXE log::jobSeed
 
@@ -222,7 +222,7 @@
   <path> str.toStrVec task::dicStack.set
   //task::dump
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;
@@ -230,11 +230,11 @@
 /*----------------------------------------------------------------------------*/
 /* seed receive                                                               */
 /*----------------------------------------------------------------------------*/
-: <SEED_RCV>
+: SEED_RCV
 
   SS_SEED_RCV log::jobSeed
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;
@@ -242,14 +242,14 @@
 /*----------------------------------------------------------------------------*/
 /* seed request                                                               */
 /*----------------------------------------------------------------------------*/
-: <SEED_REQ>
+: SEED_REQ
 
   SS_SEED_REQ log::jobSeed
 
   // use the <path> from <ename-set>
   <path> str.toStrVec task::dicStack.set
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;
@@ -257,13 +257,13 @@
 /*----------------------------------------------------------------------------*/
 /* seed run                                                                   */
 /*----------------------------------------------------------------------------*/
-: <SEED_RUN>
+: SEED_RUN
 
   SS_SEED_RUN log::jobSeed
 
   <path> str.toStrVec task::dicStack.set
 
-  <seed_initially>
+  Seed_Initially
 
   job::</seeFlow/>
 ;

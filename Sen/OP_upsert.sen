@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : UpsertOp_req ( -- )
  
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
   job[] locals| pJob_UpsertOp |
 
   <tableNm> locals| sTableNm |

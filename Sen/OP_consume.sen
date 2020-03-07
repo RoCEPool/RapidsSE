@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : consumeOp_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   <consumeXmits> locals| xmits |
 

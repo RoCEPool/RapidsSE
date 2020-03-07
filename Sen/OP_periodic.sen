@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : periodicOp_req ( -- )
  
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   <minutes> locals| minutes |
   <hours> locals| hours |

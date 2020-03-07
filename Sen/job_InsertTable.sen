@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_exe ( Job_InsertTable -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry SEED_EXE
 
   job[] locals| pJob_InsertTable |
 
@@ -136,7 +136,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry SEED_BEG
 
   job[] locals| pJob_InsertTable |
 
@@ -159,7 +159,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_end ( -- )
 
-  >>logEntry <SEED_END>
+  >>logEntry SEED_END
 
   job[] locals| pJob_InsertTable |
 
@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_can ( -- )
 
-  >>logEntry <SEED_CAN>
+  >>logEntry SEED_CAN
 
   job[] locals| pJob_InsertTable |
 

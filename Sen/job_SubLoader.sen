@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : subLoader_run ( -- )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry SEED_RUN
 
   task[] locals| pThisTask |
   job[]  locals| pJob_SubLoader |

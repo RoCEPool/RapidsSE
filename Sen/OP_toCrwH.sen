@@ -103,7 +103,7 @@
 /*----------------------------------------------------------------------------*/
  : toCrwH_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   job[] locals| pJob_ToCrwOp |
 

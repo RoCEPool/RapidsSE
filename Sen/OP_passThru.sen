@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : PassThruOp_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry SEED_REQ
 
   0 locals| bufferCount |
   "__REPORT" locals| sReportTable |

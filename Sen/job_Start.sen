@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : start_run ( -- <R> )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry SEED_RUN
 
   nullptr locals| pParentJob |
 
