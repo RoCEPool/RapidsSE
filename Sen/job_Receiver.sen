@@ -22,7 +22,7 @@
   iConnNo       pJob_Receiver job_receiver.connNo!
   pAnsweredNode pJob_Receiver job_receiver.node!
 
-  pJob_Receiver SEED_RUN job.spawn_dedicated
+  pJob_Receiver JM_SEED_RUN job.spawn_dedicated
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -59,7 +59,7 @@
   iJobId plist::findJob drop
 
   // execute the end seed of the job on this participating node
-  SEED_END JobRef[] job.seed!
+  JM_SEED_END JobRef[] job.seed!
   JobRef[] job.spawn
   JobRef[].return
 ;

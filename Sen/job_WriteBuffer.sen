@@ -152,7 +152,7 @@
   i_ForwardNode grid::thisNode@ == if
     //"not forwarding" .
     // on same node, just spawn/reseed job on same node
-    pJob_WriteBuffer SEED_RCV job.reseed
+    pJob_WriteBuffer JM_SEED_RCV job.reseed
     false
   else
     // send this job to the forward node

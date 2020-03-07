@@ -4,12 +4,12 @@
 
 " jobMarkers.sen" .verbose
 
-0 constant SEED_RUN
-1 constant SEED_REQ
-2 constant SEED_RCV
-3 constant SEED_EXE
-4 constant SEED_END
-5 constant SEED_CAN
+0 constant JM_SEED_RUN
+1 constant JM_SEED_REQ
+2 constant JM_SEED_RCV
+3 constant JM_SEED_EXE
+4 constant JM_SEED_END
+5 constant JM_SEED_CAN
 
 
 /******************************************************************************/
