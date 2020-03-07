@@ -60,7 +60,7 @@ jobInfo: XmitOp
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
   ?<ddlLock>?  = DL_GRAB_READ
   
-  ?<preCheck>? = bClusterStarted
+  <preCheck> = bClusterStarted
 }
 ;
 

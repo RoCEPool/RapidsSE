@@ -137,7 +137,7 @@ jobInfo: dropIndex
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
   ?<ddlLock>?  = DL_GRAB_WRITE
   
-  ?<preCheck>? = bClusterStarted
+  <preCheck> = bClusterStarted
 }
 ;
 

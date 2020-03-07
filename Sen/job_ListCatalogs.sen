@@ -52,7 +52,7 @@ jobInfo: lscat
   ?<rspKind>?  = RS_JOB_RESPONSE
   ?<ddlLock>?  = DL_GRAB_READ
   
-  ?<preCheck>? = bClusterStarted
+  <preCheck> = bClusterStarted
 }
 ;
 

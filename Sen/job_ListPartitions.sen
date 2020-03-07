@@ -40,7 +40,7 @@ jobInfo: listPartitions
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
   ?<ddlLock>?  = DL_NONE
   
-  ?<preCheck>? = bClusterStarted
+  <preCheck> = bClusterStarted
 }
 ;
 /*============================================================================*/

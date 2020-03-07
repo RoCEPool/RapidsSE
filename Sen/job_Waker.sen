@@ -41,7 +41,7 @@ jobInfo: waker
   ?<rspKind>?  = RS_NONE
   ?<ddlLock>?  = DL_NONE
   
-  //?<preCheck>? = bClusterStarted
+  //<preCheck> = bClusterStarted
   
   ?<cmdKind>?  = CK_SERVICE
 }

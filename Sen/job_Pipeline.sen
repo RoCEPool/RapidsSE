@@ -94,7 +94,7 @@ jobInfo: pipeline
   ?<rspKind>?  = RS_PARTICIPANT_ERROR
   ?<ddlLock>?  = DL_GRAB_READ
   
-  ?<preCheck>? = bClusterStarted
+  <preCheck> = bClusterStarted
 }
 ;
 /*============================================================================*/
