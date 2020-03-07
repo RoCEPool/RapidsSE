@@ -36,7 +36,7 @@
 
   pJob_CancelQuery job::participantExecuted
 
-  <<logExit <DONE_EXE>
+  <<logExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/

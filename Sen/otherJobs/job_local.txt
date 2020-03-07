@@ -15,7 +15,7 @@
 
   "NAME_OF_JOB was created by mkjob" .
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 
   HAZARD
 ;

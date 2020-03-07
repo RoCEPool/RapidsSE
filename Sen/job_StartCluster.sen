@@ -90,7 +90,7 @@
 
   grid::started@ if
                                              //! how do we set an error message?
-    <DONE_REQ>
+    DONE_REQ
     exit
   then
 

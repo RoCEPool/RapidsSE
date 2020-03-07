@@ -87,7 +87,7 @@
 
   pJob_VisualizeIndex job.notice
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

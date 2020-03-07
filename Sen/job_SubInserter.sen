@@ -35,7 +35,7 @@
   // add job to originator jobs
   //pJob_SubInserter job.addOriginator
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

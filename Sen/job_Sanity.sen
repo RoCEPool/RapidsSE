@@ -33,7 +33,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@
 
   pJob_Sanity job::participantExecuted
 
-  <<logExit <DONE_EXE>
+  <<logExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +109,7 @@
 
   job::participantBegun
 
-  <<logExit <DONE_BEG>
+  <<logExit DONE_BEG
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +123,7 @@
 
   job::participantEnded
 
-  <<logExit <DONE_END>
+  <<logExit DONE_END
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +137,7 @@
 
   job::participantCancelled
 
-  <<logExit <DONE_CAN>
+  <<logExit DONE_CAN
 ;
 
 /*============================================================================*/

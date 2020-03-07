@@ -90,7 +90,7 @@
   "*** BM_GenEntOp EXITS" .
   <<logExit
   job::deleteThis
-  <DONE_RUN>
+  DONE_RUN
 ;
 
 /*----------------------------------------------------------------------------*/

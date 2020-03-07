@@ -135,7 +135,7 @@
 
   DdlLock[].testDrop
 
-  <done_finally>
+  Done_Finally
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@
 
   DdlLock[].testDrop
 
-  <done_finally>
+  Done_Finally
 
   job::completed
 
@@ -197,7 +197,7 @@
 
   r@ locate log::markExit
 
-  <done_finally>
+  Done_Finally
 
  job::completed
 
@@ -215,7 +215,7 @@
 
   DdlLock[].testDrop
 
-  <done_finally>
+  Done_Finally
 
   job::completed
 

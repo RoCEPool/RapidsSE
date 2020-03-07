@@ -93,7 +93,7 @@
   bAmDecider not if
     JobRef[].return
     job::deleteThis
-    <DONE_RCV>
+    DONE_RCV
     exit                                                         // *EARLY EXIT*
   then
 
@@ -113,7 +113,7 @@
 
   // delete this completed __cancelled job
   job::deleteThis
-  <DONE_RCV>
+  DONE_RCV
 ;
 
 /*----------------------------------------------------------------------------*/

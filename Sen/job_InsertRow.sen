@@ -41,13 +41,13 @@
   //pJob_InsertRow job.pushPath task::dicStack.set
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError DONE_REQ then
 
   // push table dictionary
   sTableNm pushTable assert
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!logError DONE_REQ then
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |
@@ -62,7 +62,7 @@
   // encode the row
   pJob_InsertRow pJob_WriteRow job_writeRow.encodeRow locals| bResult |
 
-  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
+  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!logError DONE_REQ then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the writeRow job for the node to which the row hashes to
@@ -72,7 +72,7 @@
   // distribute the job
   pJob_InsertRow job.distribute
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@
 
   pJob_InsertRow job::participantExecuted
 
-  <<logExit <DONE_EXE>
+  <<logExit DONE_EXE
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +192,7 @@
 
   job::participantBegun
 
-  <<logExit <DONE_BEG>
+  <<logExit DONE_BEG
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +211,7 @@
 
   job::participantEnded
 
-  <<logExit <DONE_END>
+  <<logExit DONE_END
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -225,7 +225,7 @@
 
   job::participantCancelled
 
-  <<logExit <DONE_CAN>
+  <<logExit DONE_CAN
 ;
 
 /*============================================================================*/

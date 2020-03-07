@@ -118,7 +118,7 @@
   popTable
   assertInTables
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 
   HAZARD
 ;

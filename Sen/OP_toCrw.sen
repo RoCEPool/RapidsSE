@@ -104,7 +104,7 @@
 
   <<logExit
   job::deleteThis
-  <DONE_RUN>
+  DONE_RUN
 ;
 
 

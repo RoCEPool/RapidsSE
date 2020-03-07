@@ -38,7 +38,7 @@
   "row: ( 'pong' )\n" pJob_Ping job.response!
   1 pJob_Ping job.rowsProcessed!
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -18,7 +18,7 @@
     <wordNm> "No such word: %v" .printf
   then
 
-  <<logExit <DONE_REQ>
+  <<logExit DONE_REQ
 
   HAZARD
 ;

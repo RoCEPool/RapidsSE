@@ -27,7 +27,7 @@
 
   "end start_run" .verbose
 
-  <DONE_RUN>
+  DONE_RUN
   job::completed
 
   HAZARD

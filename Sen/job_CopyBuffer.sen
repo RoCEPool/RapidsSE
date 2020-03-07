@@ -29,7 +29,7 @@
   // delete the job
   pJob_CopyBuffer job.delete
 
-  <DONE_RUN>
+  DONE_RUN
 ;
 
 /*============================================================================*/
