@@ -41,13 +41,13 @@
   //pJob_InsertRow job.pushPath task::dicStack.set
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError DONE_REQ then
+  sTableNm checkIsTableFolder not if pJob_InsertRow ERROR_JOB !!logError DONE_REQ then
 
   // push table dictionary
   sTableNm pushTable assert
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!logError DONE_REQ then
+  sTableNm checkIsTable not if popTable pJob_InsertRow ERROR_JOB !!logError DONE_REQ then
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |
@@ -62,7 +62,7 @@
   // encode the row
   pJob_InsertRow pJob_WriteRow job_writeRow.encodeRow locals| bResult |
 
-  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!logError DONE_REQ then
+  bResult not if EC_INVALID_VALUE pJob_InsertRow ERROR_JOB !!logError DONE_REQ then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the writeRow job for the node to which the row hashes to
@@ -119,7 +119,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.checkResources ( pJob_InsertRow -- )
 
-  >>logEntry <Check_Resources>
+  >>logEntry Check_Resources
 
   params| pJob_InsertRow  |
 
@@ -140,7 +140,7 @@
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError exit then
+  sTableNm checkIsTableFolder not if pJob_InsertRow ERROR_JOB !!logError exit then
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
@@ -148,7 +148,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!logError exit then
+  sTableNm checkIsTable not if popTable pJob_InsertRow ERROR_JOB !!logError exit then
 
   // pop table dictionary
   popTable
@@ -157,9 +157,9 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  node::checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_InsertRow ERROR_JOB !!logError exit then
 
-  <<logExit <Resources_Checked>
+  <<logExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -167,13 +167,13 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.releaseResources ( pJob_InsertRow -- )
 
-  >>logEntry <Release_Resources>
+  >>logEntry Release_Resources
 
   params| pJob_InsertRow  |
 
   //releaseResources received" .
 
-  <<logExit <Resources_Released>
+  <<logExit Resources_Released
 ;
 
 /*----------------------------------------------------------------------------*/

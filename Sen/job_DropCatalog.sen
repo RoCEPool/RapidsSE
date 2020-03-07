@@ -62,7 +62,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
-  //<catalogNm> checkRemoveCatalog not if job[] <ERROR_JOB> !!logError exit then
+  //<catalogNm> checkRemoveCatalog not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

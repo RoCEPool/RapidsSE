@@ -108,7 +108,7 @@ then
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  sTableNm sIndexNm checkVerifyIndex not if job[] <ERROR_JOB> !!logError exit then
+  sTableNm sIndexNm checkVerifyIndex not if job[] ERROR_JOB !!logError exit then
 
   DdlLock[].dropRead
 ;

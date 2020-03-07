@@ -92,7 +92,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   <tableNm>
-  checkAnalyzeTable not if job[] <ERROR_JOB> !!logError exit then
+  checkAnalyzeTable not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

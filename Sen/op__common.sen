@@ -18,7 +18,7 @@
 
   // table
   <tableNm> checkIsValidTable not if
-    op.pipelineJob@ <ERROR_JOB>
+    op.pipelineJob@ ERROR_JOB
     Operand[].delete
     Operand[].newErrorMarker
     exit
@@ -56,7 +56,7 @@
   "op__table_index (Index B)" .
 
   <indexNm> checkIsIndex not if
-    op.pipelineJob@ <ERROR_JOB>
+    op.pipelineJob@ ERROR_JOB
     Operand[].delete
     Operand[].newErrorMarker
     exit

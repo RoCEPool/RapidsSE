@@ -103,7 +103,7 @@
   // check if we can remove the table
   <tableNm>
   <indexNm> 
-  checkAnalyzeIndex not if job[] <ERROR_JOB> !!logError exit then
+  checkAnalyzeIndex not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

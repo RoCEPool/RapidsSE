@@ -80,7 +80,7 @@
 
         // check if we can scan the table
         sTableNm checkIsValidTable not if
-          op.pipelineJob@ <ERROR_JOB> !!logError
+          op.pipelineJob@ ERROR_JOB !!logError
           Operand[].delete
           Operand[].newErrorMarker
         else

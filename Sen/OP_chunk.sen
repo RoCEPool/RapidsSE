@@ -44,7 +44,7 @@
   <fileNm> OPEN_READ File0[].get file.open
   not if
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
-    op.pipelineJob@ <ERROR_JOB> !!logError
+    op.pipelineJob@ ERROR_JOB !!logError
     Operand[].delete
     Operand[].newErrorMarker
   then

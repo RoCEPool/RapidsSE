@@ -48,7 +48,7 @@
   "?<preCheck>?" jobInfo::enameSet@ enameSet.hasName if
     ?<preCheck>? find execute not if
       task::seedInitially task::doneFinally
-      job[] <ERROR_JOB>
+      job[] ERROR_JOB
     then
   then
 

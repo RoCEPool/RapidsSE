@@ -58,7 +58,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can visualize table
-  sTableNm checkVisualizeTable not if pjob_VisualizeTable <ERROR_REQUEST> !!logError exit then
+  sTableNm checkVisualizeTable not if pjob_VisualizeTable ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder

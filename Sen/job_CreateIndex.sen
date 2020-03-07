@@ -122,7 +122,7 @@
   // validate the unqiue index columns are a subset of the partition keys
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex
-    not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex <ERROR_JOB>
+    not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
       popIndexes popTable exit
     then
   then
@@ -130,7 +130,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
-  not if pJob_CreateIndex <ERROR_JOB> popIndexes popTable
+  not if pJob_CreateIndex ERROR_JOB popIndexes popTable
     exit
   then
 
@@ -153,7 +153,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create index syntax
   <cmd> IndexDef::syntax dup EC_NONE != if
-    pJob_CreateIndex <ERROR_JOB> !!logError
+    pJob_CreateIndex ERROR_JOB !!logError
   else
     drop
   then
@@ -192,11 +192,11 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_CreateIndex ERROR_JOB !!logError exit then
 
   //----------------------------------------------------------------------------
   // check ok to make index
-  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> !!logError exit then
+  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -58,7 +58,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the schema
   //pJob_DropSchema job.schemaName@
-  <schemaNm> checkRemoveSchema not if job[] <ERROR_JOB> !!logError exit then
+  <schemaNm> checkRemoveSchema not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

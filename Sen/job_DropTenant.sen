@@ -59,7 +59,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the tenant
-  <tenantNm> checkRemoveTenant not if job[] <ERROR_JOB> !!logError exit then
+  <tenantNm> checkRemoveTenant not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

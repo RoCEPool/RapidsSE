@@ -70,12 +70,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if job[] <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if job[] ERROR_JOB !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   //pJob_CreateSchema job.schemaName@
-  <schemaNm> checkMakeSchema not if job[] <ERROR_JOB> !!logError exit then
+  <schemaNm> checkMakeSchema not if job[] ERROR_JOB !!logError exit then
 
 ;
 

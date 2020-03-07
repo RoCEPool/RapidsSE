@@ -60,12 +60,12 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_DefineNode <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_DefineNode ERROR_JOB !!logError exit then
 
   //----------------------------------------------------------------------------
   // check if we can make the Node
   //pJob_DefineNode job.nodeName@
-  <nodeNm> checkMakeNode not if pJob_DefineNode <ERROR_JOB> !!logError exit then
+  <nodeNm> checkMakeNode not if pJob_DefineNode ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

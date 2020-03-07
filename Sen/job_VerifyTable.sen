@@ -77,7 +77,7 @@
   // grab a ddl lock
   DdlLock[].grabRead
 
-<tableNm> checkverifyTable not if job[] <ERROR_JOB> !!logError exit then
+<tableNm> checkverifyTable not if job[] ERROR_JOB !!logError exit then
 
   DdlLock[].dropRead
 ;

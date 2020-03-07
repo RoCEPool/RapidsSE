@@ -61,7 +61,7 @@
         //"Operand:- ZK_STARTMARKER" .verbose
         // check if table exits
         sTableNm checkIsValidTable not if
-          op.pipelineJob@ <ERROR_JOB>
+          op.pipelineJob@ ERROR_JOB
           Operand[].delete
           Operand[].newErrorMarker
         else

@@ -84,7 +84,7 @@
   // grab a ddl lock
   DdlLock[].grabRead
 
-  <tableNm> <indexNm> checkCompactIndex not if job[] <ERROR_JOB> !!logError exit then
+  <tableNm> <indexNm> checkCompactIndex not if job[] ERROR_JOB !!logError exit then
 
 ;
 

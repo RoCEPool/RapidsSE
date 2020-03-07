@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : SubInserter.checkResources ( pJob_SubInserter -- )
 
-  >>logEntry <Check_Resources>
+  >>logEntry Check_Resources
 
   params| pJob_SubInserter  |
 
@@ -66,7 +66,7 @@
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_SubInserter <ERROR_JOB> !!logError exit then
+  sTableNm checkIsTableFolder not if pJob_SubInserter ERROR_JOB !!logError exit then
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
@@ -74,7 +74,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_SubInserter <ERROR_JOB> !!logError exit then
+  sTableNm checkIsTable not if popTable pJob_SubInserter ERROR_JOB !!logError exit then
   drop
 
   // pop table dictionary
@@ -84,9 +84,9 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  node::checkEnoughBuffers not if pJob_SubInserter <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_SubInserter ERROR_JOB !!logError exit then
 
-  <<logExit <Resources_Checked>
+  <<logExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,13 +94,13 @@
 /*----------------------------------------------------------------------------*/
 : SubInserter.releaseResources ( pJob_SubInserter -- )
 
-  >>logEntry <Release_Resources>
+  >>logEntry Release_Resources
 
   params| pJob_SubInserter  |
 
   //releaseResources received" .
 
-  <<logExit <Resources_Released>
+  <<logExit Resources_Released
 ;
 
 /*============================================================================*/

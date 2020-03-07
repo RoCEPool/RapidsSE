@@ -142,7 +142,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can fetch rows
-  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!logError exit then
+  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table

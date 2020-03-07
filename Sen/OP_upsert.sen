@@ -49,7 +49,7 @@
       //"Operand:- ZK_STARTMARKER" .verbose
       // check if we can insert into the table
       sTableNm checkIsValidTable not if
-        op.pipelineJob@ <ERROR_JOB> !!logError
+        op.pipelineJob@ ERROR_JOB !!logError
         Operand[].delete
         Operand[].newErrorMarker
       else

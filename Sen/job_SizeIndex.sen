@@ -111,7 +111,7 @@
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  sTableNm sIndexNm checkSizeIndex not if job[] <ERROR_JOB> !!logError exit then
+  sTableNm sIndexNm checkSizeIndex not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -64,7 +64,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create index syntax
   <cmd> TableDef::syntax dup EC_NONE != if
-    pJob_CreateTable <ERROR_JOB> !!logError
+    pJob_CreateTable ERROR_JOB !!logError
   else
     drop
   then
@@ -124,12 +124,12 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateTable <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_CreateTable ERROR_JOB !!logError exit then
 
   //----------------------------------------------------------------------------
   // check if we can make the table
   //pJob_CreateTable job.objectName@
-  <tableNm> checkMakeTable not if pJob_CreateTable <ERROR_JOB> !!logError exit then
+  <tableNm> checkMakeTable not if pJob_CreateTable ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

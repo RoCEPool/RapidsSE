@@ -107,7 +107,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index
-  sTableNm checkRemoveIndex not if job[] <ERROR_JOB> !!logError exit then
+  sTableNm checkRemoveIndex not if job[] ERROR_JOB !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -120,7 +120,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-  popIndexes popTable assertInTables job[] <ERROR_JOB> !!logError exit
+  popIndexes popTable assertInTables job[] ERROR_JOB !!logError exit
   then
 ;
 

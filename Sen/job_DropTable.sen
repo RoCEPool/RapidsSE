@@ -94,7 +94,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  <tableNm> checkRemoveTable not if job[] <ERROR_JOB> !!logError exit then
+  <tableNm> checkRemoveTable not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

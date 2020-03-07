@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.checkResources ( pJob_LoadTable -- )
 
-  >>logEntry <Check_Resources>
+  >>logEntry Check_Resources
 
   params| pJob_LoadTable  |
 
@@ -146,7 +146,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for sufficient memory
 
-  node::checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_LoadTable ERROR_JOB !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
@@ -159,7 +159,7 @@
 
     pJob_LoadTable job_LoadTable.filePath@ OPEN_READ pFile file.open
     not if
-       pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!logError exit
+       pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable ERROR_JOB !!logError exit
     then
 
     pFile file.close pFile file.delete assert::stack_0
@@ -172,7 +172,7 @@
   DdlLock[].grabRead
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> !!logError exit then
+  sTableNm checkIsTableFolder not if pJob_LoadTable ERROR_JOB !!logError exit then
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
@@ -180,7 +180,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_LoadTable <ERROR_JOB> !!logError exit then
+  sTableNm checkIsTable not if popTable pJob_LoadTable ERROR_JOB !!logError exit then
 
   // pop table dictionary
   popTable
@@ -189,9 +189,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
-  node::testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!logError exit then
+  node::testEnoughBuffers not if pJob_LoadTable ERROR_JOB !!logError exit then
 
-  <<logExit <Resources_Checked>
+  <<logExit Resources_Checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,11 +199,11 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.releaseResources ( pJob_LoadTable -- )
 
-  >>logEntry <Release_Resources>
+  >>logEntry Release_Resources
 
   params| pJob_LoadTable  |
 
-  <<logExit <Resources_Released>
+  <<logExit Resources_Released
 ;
 
 /*----------------------------------------------------------------------------*/

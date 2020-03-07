@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can dump the index
-  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_REQUEST> !!logError exit then
+  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder

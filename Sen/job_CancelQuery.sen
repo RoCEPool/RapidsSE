@@ -25,7 +25,7 @@
   //----------------------------------------------------------------------------
 
   // check if we can find the query associated with the job
-  // <jobId> plist::findJob not if job[] <ERROR_JOB> !!logError exit then
+  // <jobId> plist::findJob not if job[] ERROR_JOB !!logError exit then
 
   sJobId str.tailInt drop to iJobId
   iJobId  plist::findJob drop

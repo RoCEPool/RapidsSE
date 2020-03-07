@@ -66,7 +66,7 @@
   //  push sub-folder
 
   sFolderNm findInCurrent to pCurrentFolder
-  pCurrentFolder checkIsDic not if pJob_Cf <ERROR_REQUEST> !!logError exit then
+  pCurrentFolder checkIsDic not if pJob_Cf ERROR_REQUEST !!logError exit then
   pCurrentFolder execute pathPush
   setPath
   <<logExit DONE_REQ
