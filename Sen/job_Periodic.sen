@@ -49,7 +49,7 @@ jobInfo: periodic
 {
   <jobDesc>  = "--description of job--"
   
-  ?<jobKind>?  = JK_LOCAL
+  <jobKind>  = JK_LOCAL
   ?<rspKind>?  = RS_NONE
   <ddlLock>  = DL_NONE
   

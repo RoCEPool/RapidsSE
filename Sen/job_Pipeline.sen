@@ -90,7 +90,7 @@ jobInfo: pipeline
 {
   <jobDesc>  = "--description of job--"
   
-  ?<jobKind>?  = JK_DIST2PC
+  <jobKind>  = JK_DIST2PC
   ?<rspKind>?  = RS_PARTICIPANT_ERROR
   <ddlLock>  = DL_GRAB_READ
   

@@ -134,7 +134,7 @@ jobInfo: BM_InflateCrwOp
 {
   <jobDesc>  = "--description of job--"
   
-  ?<jobKind>?  = JK_LOCAL
+  <jobKind>  = JK_LOCAL
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
   <ddlLock>  = DL_GRAB_READ
   

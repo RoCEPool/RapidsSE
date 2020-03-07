@@ -43,7 +43,7 @@ opSyntax: lssch :: lssch ;
 
 jobInfo: lssch
 {
-  ?<jobKind>? = JK_LOCAL
+  <jobKind> = JK_LOCAL
   ?<rspKind>? = RS_JOB_RESPONSE
   ddlLock = DL_GRAB_READ
   

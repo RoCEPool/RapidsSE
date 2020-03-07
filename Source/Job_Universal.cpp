@@ -199,7 +199,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
   //pEnameSet_ji->vPrint();
   
   if (pEnameSet_ji) {
-    eJK eJobKind = (eJK) pEnameSet_ji->iValue("?<jobKind>?"_Stz);
+    eJK eJobKind = (eJK) pEnameSet_ji->iValue("<jobKind>"_Stz);
     vJobKind(eJobKind);
     
     Stz* szJobNm = pEnameSet_ji->szValue("?<jobNm>?"_Stz);

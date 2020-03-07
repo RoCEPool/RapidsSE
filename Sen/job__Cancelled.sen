@@ -126,7 +126,7 @@ jobInfo: _Cancelled
 {
   <jobDesc>  = "--description of job--"
   
-  ?<jobKind>?  = JK_GENERIC
+  <jobKind>  = JK_GENERIC
 }
 ;
 

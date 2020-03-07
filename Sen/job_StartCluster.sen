@@ -148,7 +148,7 @@ opSyntax: startCluster :: startCluster ;
 
 jobInfo: startCluster
 {
-  ?<jobKind>?  = JK_DIST2PC
+  <jobKind>  = JK_DIST2PC
   ?<rspKind>?  = RS_NONE
   <ddlLock>  = DL_NONE
 }

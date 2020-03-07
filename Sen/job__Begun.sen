@@ -134,7 +134,7 @@ jobInfo: _Begun
 {
   <jobDesc>  = "--description of job--"
   
-  ?<jobKind>?  = JK_GENERIC
+  <jobKind>  = JK_GENERIC
 }
 ;
 
