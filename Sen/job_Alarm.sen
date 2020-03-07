@@ -44,7 +44,7 @@ jobInfo: alarm
   
   //<preCheck> = bClusterStarted
   
-  ?<cmdKind>?  = CK_SERVICE
+  <cmdKind>  = CK_SERVICE
 }
 ;
 

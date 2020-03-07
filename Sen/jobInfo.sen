@@ -117,7 +117,7 @@
 
   compiler::current@ word.EnameSet@ locals| pEnameSet |
 
-  "?<cmdKind>?" pEnameSet EnameSet.getInt
+  "<cmdKind>" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -196,8 +196,8 @@
 : .fillOutEnameSet params| pEnameSet |
 
   // default for command kind
-  "?<cmdKind>?" pEnameSet EnameSet.hasName not if
-    "?<cmdKind>?" "CK_COMMAND" jobInfo::addEname
+  "<cmdKind>" pEnameSet EnameSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" jobInfo::addEname
   then
 
   // default for ddl lock
