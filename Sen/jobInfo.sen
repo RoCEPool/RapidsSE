@@ -221,8 +221,8 @@
   then
 
   // default for response kind
-  "?<rspKind>?" pEnameSet EnameSet.hasName not if
-    "?<rspKind>?" "RS_NONE" jobInfo::addEname
+  "<rspKind>" pEnameSet EnameSet.hasName not if
+    "<rspKind>" "RS_NONE" jobInfo::addEname
   then
 
 

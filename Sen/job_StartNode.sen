@@ -41,7 +41,7 @@ jobInfo: startNode
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL
-  ?<rspKind>?  = RS_NONE
+  <rspKind>  = RS_NONE
   <ddlLock>  = DL_NONE
   
   <preCheck> = bClusterStarted

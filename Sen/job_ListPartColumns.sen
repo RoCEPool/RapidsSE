@@ -105,7 +105,7 @@ jobInfo: lspartcol
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL
-  ?<rspKind>?  = RS_JOB_RESPONSE
+  <rspKind>  = RS_JOB_RESPONSE
   <ddlLock>  = DL_GRAB_READ
   
   <preCheck> = bClusterStarted
