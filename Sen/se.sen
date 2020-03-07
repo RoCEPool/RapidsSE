@@ -10,7 +10,7 @@
 //"se_handlers.sen"   include
 "se_munge.sen"      include
 //"se_procedures.sen" include
-"se_tags.sen"       include
+//"se_tags.sen"       include
 "se_vortex.sen"     include
 
 // create the root /tenants dictionary

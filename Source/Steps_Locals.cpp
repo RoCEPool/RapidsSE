@@ -267,7 +267,7 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no such local or <metaSymbol>
   
-  if (! pLocalWord)
+  if (! pLocalWord && !bSessionLevelTag)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "No such local: %s\n"_Stz,sLocalNm.azChar());
   
