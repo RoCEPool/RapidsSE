@@ -28,12 +28,19 @@ void Step::vTagGet(void)
   Job* pJob = m_pTask->pJob();
       
   EnameSet* pEnameSet = pJob->pEnameSet();
-  
-  Stz* szValue = pEnameSet->szValue(sTagNm.szStz());
+
+  i8 i_Tag = pEnameSet->i_Find(sTagNm.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDataStack->vPushStz(szValue);
+  if (TN_STRING == pEnameSet->eToken(i_Tag)) {
+    Stz* szValue = pEnameSet->szValue(i_Tag);
+    m_pDataStack->vPushStz(szValue);
+  }
+  else {
+    i8 iValue = pEnameSet->iValue(i_Tag);
+    m_pDataStack->vPushInt(iValue);
+  }
 
   EXIT();
 }
