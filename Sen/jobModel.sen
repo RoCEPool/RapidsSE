@@ -4,8 +4,6 @@
 
 "-jobModel.sen" .verbose
 
-"tags_jobInfo.sen" include
-
 "jobInfo.sen"      include
 "jobOperand.sen"   include
 "OPERAND__handlers.sen"   include

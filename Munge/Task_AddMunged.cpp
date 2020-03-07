@@ -4089,7 +4089,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::</seeFlow/>\n"
     "\n"
-    "  \\\"<preCheck>\\\" jobInfo::enameSet@ enameSet.hasName if\n"
+    "  \\\"<preCheck>\\\" job[] job.enameSet@ enameSet.hasName if\n"
     "    <preCheck> find execute not if\n"
     "      task::seedInitially task::doneFinally\n"
     "      job[] ERROR_JOB\n"
@@ -7957,8 +7957,6 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "\\\"-jobModel.sen\\\" .verbose\n"
     "\n"
-    "\\\"tags_jobInfo.sen\\\" include\n"
-    "\n"
     "\\\"jobInfo.sen\\\"      include\n"
     "\\\"jobOperand.sen\\\"   include\n"
     "\\\"OPERAND__handlers.sen\\\"   include\n"
@@ -9707,52 +9705,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_WriteBuffer.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of tags_jobInfo.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged tags_jobInfo.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* tags_jobInfo.sen -- Job Info related tags                                  */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" tags_jobInfo.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": jobInfo::enameSet@ ( -- pEnameSet )\n"
-    "\n"
-    "  <jobNm> \\\"_cls\\\" str.cat find word.EnameSet@\n"
-    " ;\n"
-    "\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* the ename word kind                                                        */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": _<jobInfoTag>_ immediate ( -- )\n"
-    "\n"
-    "  [ compiler::current@ , ]\n"
-    "\n"
-    "  compiler::current@ word.category!\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT tags_jobInfo.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
