@@ -77,7 +77,7 @@ jobInfo: dropCatalog
   
   ?<jobKind>?  = JK_DIST2PC
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
-  ?<ddlLock>?  = DL_GRAB_WRITE
+  <ddlLock>  = DL_GRAB_WRITE
   
   <preCheck> = bClusterStarted
 }

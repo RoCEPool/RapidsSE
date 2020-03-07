@@ -150,7 +150,7 @@ jobInfo: connector
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_NONE
-  ?<ddlLock>?  = DL_NONE
+  <ddlLock>  = DL_NONE
   
   //<preCheck> = bClusterStarted
   

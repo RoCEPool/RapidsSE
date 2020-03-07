@@ -33,7 +33,7 @@ jobInfo: status
   
   ?<jobKind>?  = JK_DIST2PC
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
-  ?<ddlLock>?  = DL_NONE
+  <ddlLock>  = DL_NONE
   
   <preCheck> = bClusterStarted
 }

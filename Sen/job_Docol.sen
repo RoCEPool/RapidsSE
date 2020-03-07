@@ -44,7 +44,7 @@ jobInfo: docol
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_JOB_RESPONSE
-  ?<ddlLock>?  = DL_NONE
+  <ddlLock>  = DL_NONE
 }
 ;
 

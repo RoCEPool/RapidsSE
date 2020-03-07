@@ -268,7 +268,7 @@
 /*----------------------------------------------------------------------------*/
 : job::acquireDdlLock
 
-  "?<ddlLock>?" <jobNm> findJobClassEnmSet EnameSet.getInt
+  "<ddlLock>" <jobNm> findJobClassEnmSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 

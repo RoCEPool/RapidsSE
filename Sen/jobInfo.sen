@@ -201,8 +201,8 @@
   then
 
   // default for ddl lock
-  "?<ddlLock>?" pEnameSet EnameSet.hasName not if
-    "?<ddlLock>?" "DL_NONE" jobInfo::addEname
+  "<ddlLock>" pEnameSet EnameSet.hasName not if
+    "<ddlLock>" "DL_NONE" jobInfo::addEname
   then
 
   // default for job desc

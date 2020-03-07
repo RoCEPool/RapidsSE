@@ -95,7 +95,7 @@ jobInfo: sizeTable
   
   ?<jobKind>?  = JK_DIST2PC
   ?<rspKind>?  = RS_PARTICIPANT_RESPONSE
-  ?<ddlLock>?  = DL_GRAB_READ
+  <ddlLock>  = DL_GRAB_READ
   
   <preCheck> = bClusterStarted
 }

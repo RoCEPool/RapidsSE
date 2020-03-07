@@ -112,7 +112,7 @@ jobInfo: lscol
   
   ?<jobKind>?  = JK_LOCAL
   ?<rspKind>?  = RS_JOB_RESPONSE
-  ?<ddlLock>?  = DL_GRAB_READ
+  <ddlLock>  = DL_GRAB_READ
   
   <preCheck> = bClusterStarted
 }
