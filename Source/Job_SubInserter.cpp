@@ -215,7 +215,7 @@ bool Job_SubInserter::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   
   // set the table name
-  pEnameSet()->vAdd("<tableNm>"_Stz, pTokenVec->pGet(3)->szTerm());
+  pEnameSet()->vAdd(C_TAG_TABLENM, pTokenVec->pGet(3)->szTerm());
   
   return true;
 }

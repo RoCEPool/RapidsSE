@@ -14,18 +14,19 @@ static Stz* C_TAG_TIME     = "</time>"_Stz;
 static Stz* C_TAG_XFER     = "</xfer>"_Stz;
 
 // job info tags
-static Stz* C_TAG_SEEDCAN  = "<SeedCan>"_Stz;
-static Stz* C_TAG_SEEDEND  = "<SeedEnd>"_Stz;
-static Stz* C_TAG_SEEDEXE  = "<SeedExe>"_Stz;
-static Stz* C_TAG_SEEDRCV  = "<SeedRcv>"_Stz;
-static Stz* C_TAG_SEEDREQ  = "<SeedReq>"_Stz;
-static Stz* C_TAG_SEEDRUN  = "<SeedRun>"_Stz;
+static Stz* C_TAG_SEEDCAN  = "<seedCan>"_Stz;
+static Stz* C_TAG_SEEDEND  = "<seedEnd>"_Stz;
+static Stz* C_TAG_SEEDEXE  = "<seedExe>"_Stz;
+static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
+static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
+static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
 // job tags
 static Stz* C_TAG_DISTID   = "<distId>"_Stz;
 static Stz* C_TAG_JOBNM    = "<jobNm>"_Stz;
 static Stz* C_TAG_NODENO   = "<nodeNo>"_Stz;
 static Stz* C_TAG_PATH     = "<path>"_Stz;
+static Stz* C_TAG_TABLENM  = "<tableNm>"_Stz;
 
 
 namespace Jobs

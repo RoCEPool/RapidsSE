@@ -133,8 +133,8 @@ void Step::vJob_FetchRowsSpawnSub(void)
   
   pJob_SubFetch->vParentId(pJob_FetchRows->m_iFocalId);
   pJob_SubFetch->m_pParentJob   = pJob_FetchRows;
-  pJob_SubFetch->pEnameSet()->vAdd("<tableNm>"_Stz,
-                        pJob_FetchRows->pEnameSet()->szValue("<tableNm>"_Stz));
+  pJob_SubFetch->pEnameSet()->vAdd(C_TAG_TABLENM,
+                        pJob_FetchRows->pEnameSet()->szValue(C_TAG_TABLENM));
   pJob_SubFetch->m_pPlanner     = pPlanner;
   pJob_SubFetch->m_iPhrase      = iPhrase;
   pJob_SubFetch->vSlot(iSlot);

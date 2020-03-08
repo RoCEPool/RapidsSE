@@ -221,7 +221,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   
   // set the table name
-  pEnameSet()->vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szTerm());
+  pEnameSet()->vAdd(C_TAG_TABLENM, pTokenVec->pGet(1)->szTerm());
   
   // set the file name
   vFilePath(pTokenVec->pGet(2)->szTerm());
