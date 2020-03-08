@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Operand.cpp -- Operand step group                                    */
+/* Steps_RegOperand.cpp -- Register Operand step group                        */
 /*============================================================================*/
 
 #include "Steps.h"

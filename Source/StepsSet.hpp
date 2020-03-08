@@ -1015,6 +1015,10 @@ public:
   void vRegCounter1Set(void);
   void vRegCounter2Set(void);
 
+  // info set
+  void vRegInfoSetNewInfoSet(void);
+  void vRegInfoSetSet(void);
+
   // reg job
   void vRegJobGet(void);
 
