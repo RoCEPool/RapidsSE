@@ -62,7 +62,7 @@
 
   job::</seeFlow/>
 
-  "?<SeedRcv>?" .executeSeed
+  "<SeedRcv>" .executeSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@
 
   job::</seeFlow/>
 
-  "?<SeedExe>?" .executeSeed
+  "<SeedExe>" .executeSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@
 
   job::</seeFlow/>
 
-  "?<SeedEnd>?" .executeSeed
+  "<SeedEnd>" .executeSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@
 
   job::</seeFlow/>
 
-  "?<SeedCan>?" .executeSeed
+  "<SeedCan>" .executeSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@
 
   job::</seeFlow/>
 
-  "?<SeedRun>?" .executeSeed
+  "<SeedRun>" .executeSeed
 ;
 
 
