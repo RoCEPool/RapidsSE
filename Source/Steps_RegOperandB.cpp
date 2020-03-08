@@ -29,13 +29,13 @@ void Step::vRegOperandBAddIntInfoSet(void)
 {
   ENTRY(); // ENTRY("vRegOperandBAddIntInfoSet"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
-  i8 iValue = m_pDataStack->iPopInt(__func__);
-  
-  pInfoSet->vAdd(sName, iValue);
+//  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
+//
+//  s256 sName;
+//  m_pDataStack->vPopStr(sName, __func__);
+//  i8 iValue = m_pDataStack->iPopInt(__func__);
+//
+//  pInfoSet->vAdd(iValue);
   
   EXIT();
 }
@@ -47,15 +47,15 @@ void Step::vRegOperandBAddStrInfoSet(void)
 {
   ENTRY(); // ENTRY("vRegOperandBAddStrInfoSet"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
-  
-  s256 sValue;
-  m_pDataStack->vPopStr(sValue, __func__);
-  
-  pInfoSet->vAdd(sName, sValue);
+//  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
+//
+//  s256 sName;
+//  m_pDataStack->vPopStr(sName, __func__);
+//
+//  s256 sValue;
+//  m_pDataStack->vPopStr(sValue, __func__);
+//
+//  pInfoSet->vAdd(sValue);
   
   EXIT();
 }
@@ -106,13 +106,13 @@ void Step::vRegOperandBGetIntInfoSet(void)
 {
   ENTRY(); // ENTRY("vRegOperandBAddIntInfoSet"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
-  i8 iValue = pInfoSet->iValue(sName);
-  
-  m_pDataStack->vPushInt(iValue);
+//  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
+//
+//  s256 sName;
+//  m_pDataStack->vPopStr(sName, __func__);
+//  i8 iValue = pInfoSet->iValue(sName);
+//
+//  m_pDataStack->vPushInt(iValue);
   
   EXIT();
 }
@@ -124,13 +124,13 @@ void Step::vRegOperandBGetStrInfoSet(void)
 {
   ENTRY(); // ENTRY("vRegOperandBGetStrInfoSet"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
-  s256 szValue = pInfoSet->szValue(sName);
-  
-  m_pDataStack->vPushStr(szValue);
+//  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandB);
+//
+//  s256 sName;
+//  m_pDataStack->vPopStr(sName, __func__);
+//  s256 szValue = pInfoSet->szValue(sName);
+//
+//  m_pDataStack->vPushStr(szValue);
   
   EXIT();
 }

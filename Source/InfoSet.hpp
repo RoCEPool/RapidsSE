@@ -5,10 +5,24 @@
 
 namespace InfoData
 {
+  static const i8 C_INFO_VALUES = 256;
+  
   class InfoSet : public Operand
   {
   protected:
-    EnameSet m_oEnameSet;
+    
+    i8 m_nInfoSets;
+    i8 m_nInfoValues;
+    
+    union {
+      i8 m_i_Name;
+      i8 m_i_Value;
+    } m_xInfo[C_INFO_VALUES];
+    
+    b4K  m_yxStrings;
+    
+    // must be last
+    Footer m_xFooter;
 
   public:
     void* operator new(size_t);
@@ -17,13 +31,12 @@ namespace InfoData
     InfoSet(void);
     ~InfoSet(void) noexcept(false);
     
-    void vAdd(Stz* szName, i8 iValue);
-    void vAdd(Stz* szName, Stz* szValue);
-    void vPrintRows(StreamDef* pStreamDef);
+    void vAddValue(i8 iValue);
+    void vAddValue(Stz* szValue);
+    void vIncSet(void);
+    void vPrint(StreamDef* pStreamDef);
+    i8   nValues(void);
     i8   nSets(void);
-    i8   iValue(Stz* szName);
-    Stz* szValue(Stz* szName);
-
   };
 
   InfoSet* _pInfoSet(void* aAddr);

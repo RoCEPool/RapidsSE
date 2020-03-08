@@ -8,7 +8,7 @@
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : nodeInfo_StartMarker
-
+/*
   "Operand:- ZK_STARTMARKER" .verbose
 
   // pipeout the start marker
@@ -23,11 +23,13 @@
 
   // craete a new info set and add node info
   OperandB[].newInfoSet
-  attachMap::regionSize@ "RegionSize" OperandB[].addIntInfoSet
-  grid::thisNodeName@ "Node" OperandB[].addStrInfoSet
+  OperandB[].incInfoSet
 
+  attachMap::regionSize@ OperandB[].addIntValue
+  grid::thisNodeName@ OperandB[].addStrValue
 
   OperandB[].pipeout
+ */
 ;
 
 /*----------------------------------------------------------------------------*/

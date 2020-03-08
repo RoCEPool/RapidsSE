@@ -8,7 +8,7 @@
 /* on ZK_INFOSET ...                                                          */
 /*----------------------------------------------------------------------------*/
 : Sanity_InfoSet
-
+/*
   //"Operand:- ZK_INFOSET" .verbose
   0 locals| node |
 
@@ -23,22 +23,22 @@
   // pipeout the streamDef
   Operand[].pipeout
 
-  "Node" OperandB[].getStrInfoSet to node
+  OperandB[].getStrValue to node
 
   // check region size
-  "regionSize" OperandB[].getIntInfoSet
+  OperandB[].getIntValue
   AttachMap::regionSize@ ==  if
-    OperandB[].delete
-    OperandB[].newInfoSet
-     node "matched for %v" str.format
+    node "matched for %v" str.format
   else
-    OperandB[].delete
-    OperandB[].newInfoSet
     node "mismatched for %v" str.format
   then
-  "regionSize" OperandB[].addStrInfoSet
+  OperandB[].delete
+  OperandB[].newInfoSet
+  OperandB[].incInfoSet
+  OperandB[].addStrValue
 
   OperandB[].pipeout
+ */
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -322,7 +322,7 @@ void Result::vProcessBufferQueue(void)
       case CN_INFOSET: {
         InfoSet* pInfoSet = _pInfoSet(pOperand);
         m_xJobResponse.m_ixRowsProcessed += pInfoSet->nSets();
-        pInfoSet->vPrintRows(pStreamDef);
+        pInfoSet->vPrint(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;
       }
