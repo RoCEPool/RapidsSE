@@ -101,6 +101,7 @@ namespace Jobs
     void vBufferQueue(Queue* pBufferQueue);
     Queue* pBufferQueue(void);
     void vContentDump(void);
+    void vCopyTags(JobClass* aJobClass);
     EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);

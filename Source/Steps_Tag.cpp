@@ -31,6 +31,13 @@ void Step::vTagGet(void)
 
   i8 i_Tag = pEnameSet->i_Find(sTagNm.szStz());
   
+  if (C_UNKNOWN == i_Tag) {
+    vTrace("vTagGet: unknown tag: %s\n"_Stz,sTagNm.szStz());
+    pEnameSet->vContentDump();
+    
+    THROW("Step::vTagGet : unknown tag\n"_Stz);
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (TN_STRING == pEnameSet->eToken(i_Tag)) {

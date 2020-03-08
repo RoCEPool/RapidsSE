@@ -971,7 +971,11 @@ void Engine::vSpawnJobStart(void)
     = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
   pJob_Start->pEnameSet()->vAdd("<path>"_Stz,"/"_Stz);
+  
+  pJob_Start->vCopyTags(pJobClass_Start);
 
+  pJob_Start->pEnameSet()->vContentDump();
+  
   pJob_Start->vSeed(SS_SEED_RUN);
   
   Api::bSpawnJob(pJob_Start);

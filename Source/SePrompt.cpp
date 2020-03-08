@@ -1064,6 +1064,8 @@ void SePrompt::vSetJob(void)
     m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(m_pJob->pEnameSet()));
     //m_pJob->pEnameSet()->vPrint();
   }
+  
+  m_pJob->pEnameSet()->vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/

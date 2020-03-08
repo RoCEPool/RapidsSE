@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_generic
 
-  "<SeedRun>" "_run" "defaultSeedLocal" seedEnameAdd
+  "<SeedReq>" "_run" "defaultSeedLocal" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -216,8 +216,8 @@
   then
 
   // default for priority
-  "?<priority>?" pEnameSet EnameSet.hasName not if
-    "?<priority>?" "PY_NORMAL" jobInfo::addEname
+  "<priority>" pEnameSet EnameSet.hasName not if
+    "<priority>" "PY_NORMAL" jobInfo::addEname
   then
 
   // default for response kind
@@ -361,7 +361,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "?<jobNm>?" word::name_trunc pEnameSet EnameSet.addStr
+  "<jobNm>" word::name_trunc pEnameSet EnameSet.addStr
 
   // skip the "{" token from input source
   next-token drop
