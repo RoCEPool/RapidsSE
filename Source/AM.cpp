@@ -1135,9 +1135,9 @@ Job* AM::pNewJobUniversal( Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)
   Job_Universal* pJobUniversal = new Job_Universal(pOp->pPipeline()->pJob(), pJobClass_Universal,pReqTuple,pParentJob->m_iFocalId);
   
   pJobUniversal->m_pOp = pOp;
-  pJobUniversal->pEnameSet()->vAdd("<path>"_Stz,
-                       pOp->pPipeline()->pJob()->pEnameSet()->szValue("<path>"_Stz));
-  pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->szOpNm());
+  pJobUniversal->pEnameSet()->vAdd(C_TAG_PATH,
+                       pOp->pPipeline()->pJob()->pEnameSet()->szValue(C_TAG_PATH));
+  pJobUniversal->pEnameSet()->vAdd(C_TAG_JOBNM,pOp->szOpNm());
   pJobUniversal->vSeed(SS_SEED_REQ);
 
   //pJobUniversal->pEnameSet()->vPrint();

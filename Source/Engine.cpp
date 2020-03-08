@@ -135,7 +135,7 @@ void Engine::vCallBoot(void)
   Job_Boot* pJob_Boot
     = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
   
-  pJob_Boot->pEnameSet()->vAdd("<path>"_Stz,"/"_Stz);
+  pJob_Boot->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
   
   pJob_Boot->vSeed(SS_SEED_RUN);
   
@@ -970,7 +970,7 @@ void Engine::vSpawnJobStart(void)
   Job_Start* pJob_Start
     = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
-  pJob_Start->pEnameSet()->vAdd("<path>"_Stz,"/"_Stz);
+  pJob_Start->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
   
   pJob_Start->vCopyTags(pJobClass_Start);
 

@@ -787,7 +787,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* szJobNm = m_oEnameSet.szValue("<jobNm>"_Stz);
+  Stz* szJobNm = m_oEnameSet.szValue(C_TAG_JOBNM);
   
   // did we get a job name ?
   if ( szJobNm->bEqual(""_Stz) ) {

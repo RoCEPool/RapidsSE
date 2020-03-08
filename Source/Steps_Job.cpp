@@ -1639,8 +1639,8 @@ void Step::vJobSpawnUniversal(void)
   pEnameSet_job->vCopy(pEnameSet_jobInfo);
   
   pEnameSet_job->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
-  //pEnameSet_job->vAdd("<jobNm>"_Stz,sJobNm);
-  pEnameSet_job->vAdd("<path>"_Stz,"/"_Stz);
+  //pEnameSet_job->vAdd(C_TAG_JOBNM,sJobNm);
+  pEnameSet_job->vAdd(C_TAG_PATH,"/"_Stz);
 
   // seed the job for request
   pJob_Universal->vSeed(SS_SEED_REQ);

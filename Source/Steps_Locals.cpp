@@ -281,7 +281,7 @@ void Step::vLocalsTo(void)
   
   if (bSessionLevelTag) {
     
-    RASSERT(szTerm->bSame("<path>"_Stz));
+    RASSERT(szTerm->bSame(C_TAG_PATH));
 
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
     

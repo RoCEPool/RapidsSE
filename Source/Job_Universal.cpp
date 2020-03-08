@@ -175,7 +175,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //      m_oEnameSet.vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
 //      s32 sJobName(pWord_jobdef->sName());
 //      StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-//      m_oEnameSet.vAdd("<jobNm>"_Stz,sJobName);
+//      m_oEnameSet.vAdd(C_TAG_JOBNM,sJobName);
 //      break;
 //    }
 //  }
@@ -202,7 +202,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     eJK eJobKind = (eJK) pEnameSet_ji->iValue("<jobKind>"_Stz);
     vJobKind(eJobKind);
     
-    Stz* szJobNm = pEnameSet_ji->szValue("<jobNm>"_Stz);
+    Stz* szJobNm = pEnameSet_ji->szValue(C_TAG_JOBNM);
     vJobNm(szJobNm);
     
     pEnameSet()->vCopy(pEnameSet_ji);
