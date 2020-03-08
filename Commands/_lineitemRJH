@@ -64,7 +64,7 @@ lsidx lineitem;
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
-//nowait monitor 3;
+// /nowait monitor 3;
 
 space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;

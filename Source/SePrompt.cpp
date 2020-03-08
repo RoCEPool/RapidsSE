@@ -315,7 +315,7 @@ void SePrompt::vCheckJobCtl(void)
   while ('/' == * pTkn0->azTerm() ) {
     
    Token* pTkn1 = pTkn(1);
-   sTag.vSprint("</%s/>"_Stz,pTkn1->szTerm());
+   sTag.vSprint("</%s>"_Stz,pTkn1->szTerm());
     
     m_oJobCtl.vAdd(sTag,1);
     

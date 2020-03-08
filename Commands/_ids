@@ -35,17 +35,17 @@ print "---------------------------------------------------------------------";
 print "ingesting sensorEvents table...";
 print "---------------------------------------------------------------------";
 
-//nowait monitor 10;
+// /nowait monitor 10;
 
-nowait purge sensorEvents 30;
+/nowait purge sensorEvents 30;
 
-nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
+/nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
 
-nowait report sensorEvents "/tmp/sensorEvents.rowAgg" ;
+/nowait report sensorEvents "/tmp/sensorEvents.rowAgg" ;
 
-nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.pipe" ;
+/nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.pipe" ;
 
-nowait ingest sensorEvents "/tmp/sensorEvents.pipe" stats ;
+/nowait ingest sensorEvents "/tmp/sensorEvents.pipe" stats ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -41,7 +41,7 @@ time create table LineItem                 // SF * 6,000,000 rows
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
-//nowait monitor 3;
+// /nowait monitor 3;
 
 space;
 //IndexEntries 4000;
