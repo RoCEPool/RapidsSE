@@ -13,7 +13,7 @@
 
   job[] locals| pJob_BufferGen |
 
-  <nBuffers> > int locals| nBuffers |
+  <nBuffers> >int locals| nBuffers |
 
   nBuffers "Number of buffers: %v" .printf
 
