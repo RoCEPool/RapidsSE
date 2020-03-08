@@ -92,11 +92,16 @@ void InfoSet::vAddValue(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* inc rows in the set                                                        */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vIncRows(void)
+bool InfoSet::bIncRows(i8 nValues)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  m_nInfoRows++;
+  if (m_nInfoValues + nValues < C_INFO_VALUES) {
+    m_nInfoRows++;
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

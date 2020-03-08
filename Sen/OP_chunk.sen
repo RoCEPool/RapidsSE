@@ -21,7 +21,7 @@
   begin
     counter1[] counter0[] >
   while
-    // create a seekOffset operand
+    // create an infoSet operand
     Operand[].newSeekOffsets
     Operand[].chunkFile
     Operand[].pipeOut

@@ -1016,6 +1016,7 @@ public:
   void vRegCounter2Set(void);
 
   // info set
+  void vRegInfoSetChunkFile(void);
   void vRegInfoSetNewInfoSet(void);
   void vRegInfoSetSet(void);
 

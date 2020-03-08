@@ -13530,7 +13530,7 @@ void Task::vAddMunged(Forth* pForth)
     "  begin\n"
     "    counter1[] counter0[] >\n"
     "  while\n"
-    "    // create a seekOffset operand\n"
+    "    // create an infoSet operand\n"
     "    Operand[].newSeekOffsets\n"
     "    Operand[].chunkFile\n"
     "    Operand[].pipeOut\n"

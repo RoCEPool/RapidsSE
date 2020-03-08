@@ -33,7 +33,7 @@ namespace InfoData
     
     void vAddValue(i8 iValue);
     void vAddValue(Stz* szValue);
-    void vIncRows(void);
+    bool bIncRows(i8 nValues);
     i8   nInfoRows(void);
     void vPrint(StreamDef* pStreamDef);
     i8   nValues(void);
