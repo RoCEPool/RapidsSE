@@ -356,7 +356,7 @@ void Task::vCaught(Exception xException)
   xException.vCaught();
 
   // dump the call stack
-  vStackDump();
+  vThreadCallStackDump();
   
   // write activity log
   AM::vWriteLog();

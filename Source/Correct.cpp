@@ -17,7 +17,7 @@ void Correctness::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 /* dump current thread's call stack                                           */
 /*----------------------------------------------------------------------------*/
-void Correctness::vStackDump(void)
+void Correctness::vThreadCallStackDump(void)
 {
   // get void*'s for all frames on the stack
   void* aaFramePtr[C_STACK_BACKTRACE];
@@ -40,7 +40,7 @@ void Correctness::vStackDump(void)
 [[ noreturn ]] void Correctness::vAbortProcess(void)
 {
   // dump the call stack
-  vStackDump();
+  vThreadCallStackDump();
   
   // write activity log
   AM::vWriteLog();
@@ -88,7 +88,7 @@ void Correctness::vStackDump(void)
    if (AM::bDeveloper()) {
     xException.vPrint();
     AM::vTaskDump();
-    vStackDump();
+    vThreadCallStackDump();
   }
   
   throw xException;
@@ -133,7 +133,7 @@ void Correctness::vStackDump(void)
   
   //if (AM::bDeveloper()) {
     AM::vTaskDump();
-    vStackDump();
+    vThreadCallStackDump();
   //}
 
   vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);

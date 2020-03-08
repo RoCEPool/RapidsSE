@@ -8,7 +8,7 @@ namespace Correctness
   static const i8 C_STACK_BACKTRACE = 16;
 
   void vDebugPoint(void);
-  void vStackDump(void);
+  void vThreadCallStackDump(void);
 
 
   // the [[ noreturn ]] attribute is the C++11 standard for indicating a
