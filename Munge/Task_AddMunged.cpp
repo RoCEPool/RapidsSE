@@ -13531,7 +13531,7 @@ void Task::vAddMunged(Forth* pForth)
     "    counter1[] counter0[] >\n"
     "  while\n"
     "    // create an infoSet operand\n"
-    "    InfoSet[].newInfoSet\n"
+    "    2 InfoSet[].newInfoSet\n"
     "    InfoSet[].chunkFile\n"
     "    InfoSet[].pipeOut\n"
     "  repeat\n"
