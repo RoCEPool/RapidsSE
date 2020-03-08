@@ -48,6 +48,7 @@ InfoSet::InfoSet(void)
 {
   _precondition_(_MAGIC_,CN_INFOSET);
   
+  m_nInfoRows = 0;
   m_nInfoValues = 0;
   
   for (i8 i_Set = 0; i_Set < C_INFO_VALUES; i_Set++) {
@@ -66,16 +67,6 @@ InfoSet::InfoSet(void)
 InfoSet::~InfoSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc a set                                                                  */
-/*----------------------------------------------------------------------------*/
-void InfoSet::vIncSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  m_nInfoSets++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,20 +90,43 @@ void InfoSet::vAddValue(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inc rows in the set                                                        */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vIncRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_nInfoRows++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of infoRows                                                         */
+/*----------------------------------------------------------------------------*/
+i8 InfoSet::nInfoRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return m_nInfoRows;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print the values as per the stream def                                     */
 /*----------------------------------------------------------------------------*/
 void InfoSet::vPrint(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
+  // streamdef columns should match the rows/values
+  ASSERT(m_nInfoRows / m_nInfoValues == pStreamDef->nColumns(0));
+  
   // for each infoset
-  for (i8 i_InfoSet = 0; i_InfoSet < m_nInfoSets; i_InfoSet++) {
+  for (i8 i_InfoRow = 0; i_InfoRow < m_nInfoRows; i_InfoRow++) {
     
     // for each column
     for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(0); i_Col++) {
       
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
-      i8 i_Value = i_InfoSet + i_Col;
+      i8 i_Value = i_InfoRow + i_Col;
       
       if (pColumn->eColumnType() == CT_INTEGER)
         vTrace("%s %slld\n"_Stz, pColumn->szColNm(),m_xInfo[i_Value].m_i_Name);
@@ -121,16 +135,6 @@ void InfoSet::vPrint(StreamDef* pStreamDef)
       }
     }
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of sets                                                           */
-/*----------------------------------------------------------------------------*/
-i8 InfoSet::nSets(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  return m_nInfoSets;
 }
 
 /*----------------------------------------------------------------------------*/

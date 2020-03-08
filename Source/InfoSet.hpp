@@ -11,7 +11,7 @@ namespace InfoData
   {
   protected:
     
-    i8 m_nInfoSets;
+    i8 m_nInfoRows;
     i8 m_nInfoValues;
     
     union {
@@ -33,10 +33,10 @@ namespace InfoData
     
     void vAddValue(i8 iValue);
     void vAddValue(Stz* szValue);
-    void vIncSet(void);
+    void vIncRows(void);
+    i8   nInfoRows(void);
     void vPrint(StreamDef* pStreamDef);
     i8   nValues(void);
-    i8   nSets(void);
   };
 
   InfoSet* _pInfoSet(void* aAddr);
