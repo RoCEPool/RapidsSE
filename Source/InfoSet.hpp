@@ -12,6 +12,7 @@ namespace InfoData
   protected:
     
     i8 m_nInfoRows;
+    i8 m_nValuesPerRow;
     i8 m_nInfoValues;
     
     union {
@@ -21,21 +22,20 @@ namespace InfoData
     
     b4K  m_yxStrings;
     
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void operator delete(void*);
   
-    InfoSet(void);
+    InfoSet(i8 nValuesPerRow);
     ~InfoSet(void) noexcept(false);
     
     void vAddValue(i8 iValue);
     void vAddValue(Stz* szValue);
-    bool bIncRows(i8 nValues);
+    bool bIncRows(void);
     i8   nInfoRows(void);
     void vPrint(StreamDef* pStreamDef);
+    i8   iValue(i8 iRow, i8 iCol);
+    Stz* szValue(i8 iRow, i8 iCol);
     i8   nValues(void);
   };
 

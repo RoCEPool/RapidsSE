@@ -43,13 +43,14 @@ void InfoSet::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InfoSet::InfoSet(void)
+InfoSet::InfoSet(i8 nValuesPerRow)
 : Operand(CN_INFOSET)
 {
-  _precondition_(_MAGIC_,CN_INFOSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
   m_nInfoRows = 0;
   m_nInfoValues = 0;
+  m_nValuesPerRow = nValuesPerRow;
   
   for (i8 i_Set = 0; i_Set < C_INFO_VALUES; i_Set++) {
    m_xInfo[i_Set].m_i_Value = C_UNKNOWN;
@@ -57,7 +58,7 @@ InfoSet::InfoSet(void)
   
   _checkInitialised_(CN_INFOSET);
   
-  _postcondition_(_MAGIC_,CN_INFOSET,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
 }
 
@@ -92,11 +93,11 @@ void InfoSet::vAddValue(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* inc rows in the set                                                        */
 /*----------------------------------------------------------------------------*/
-bool InfoSet::bIncRows(i8 nValues)
+bool InfoSet::bIncRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  if (m_nInfoValues + nValues < C_INFO_VALUES) {
+  if (m_nInfoValues + m_nValuesPerRow < C_INFO_VALUES) {
     m_nInfoRows++;
     return true;
   }
@@ -131,16 +132,47 @@ void InfoSet::vPrint(StreamDef* pStreamDef)
     for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(0); i_Col++) {
       
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
-      i8 i_Value = i_InfoRow + i_Col;
+      i8 i_InfoSet = i_InfoRow + i_Col;
       
       if (pColumn->eColumnType() == CT_INTEGER)
-        vTrace("%s %slld\n"_Stz, pColumn->szColNm(),m_xInfo[i_Value].m_i_Name);
+        vTrace("%s %slld\n"_Stz, pColumn->szColNm(),m_xInfo[i_InfoSet].m_i_Value);
       else {
-        vTrace("%s %s\n"_Stz, pColumn->szColNm(),m_yxStrings.szGet(m_xInfo[i_Value].m_i_Name));
+        vTrace("%s %s\n"_Stz, pColumn->szColNm(),m_yxStrings.szGet(m_xInfo[i_InfoSet].m_i_Name));
       }
     }
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* get int column value of row                                                */
+/*----------------------------------------------------------------------------*/
+i8 InfoSet::iValue(i8 iRow, i8 iCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  ASSERT(iRow < m_nInfoRows);
+  
+  i8 i_InfoSet = (iRow * m_nValuesPerRow) + iCol;
+  ASSERT(i_InfoSet < m_nInfoValues);
+  
+  return m_xInfo[i_InfoSet].m_i_Value;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get str column value of row                                                */
+/*----------------------------------------------------------------------------*/
+Stz* InfoSet::szValue(i8 iRow, i8 iCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  ASSERT(iRow < m_nInfoRows);
+  
+  i8 i_InfoSet = iRow + iCol;
+  ASSERT(i_InfoSet < m_nInfoValues);
+  
+  return m_yxStrings.szGet(m_xInfo[i_InfoSet].m_i_Name);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get no of values                                                           */

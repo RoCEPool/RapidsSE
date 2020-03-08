@@ -1017,7 +1017,10 @@ public:
 
   // info set
   void vRegInfoSetChunkFile(void);
+  void vRegInfoSetInfoRows(void);
   void vRegInfoSetNewInfoSet(void);
+  void vRegInfoSetPipeOut(void);
+  void vRegInfoSetReadChunk(void);
   void vRegInfoSetSet(void);
 
   // reg job
@@ -1077,15 +1080,10 @@ public:
   void vRegOperandWriteToFile0(void);
 
   // operandB
-  void vRegOperandBAddIntInfoSet(void);
-  void vRegOperandBAddStrInfoSet(void);
   void vRegOperandBAppendClose(void);
   void vRegOperandBDelete(void);
   void vRegOperandBGet(void);
-  void vRegOperandBGetIntInfoSet(void);
-  void vRegOperandBGetStrInfoSet(void);
   void vRegOperandBIsNull(void);
-  void vRegOperandBNewInfoSet(void);
   void vRegOperandBPipeOut(void);
   void vRegOperandBSet(void);
 

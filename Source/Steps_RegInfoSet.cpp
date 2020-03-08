@@ -10,7 +10,10 @@
 void Step::vAddSteps_RegInfoSet(void)
 {
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
+  vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
   vAddStep("InfoSet[].newInfoSet"_Stz,     &Step::vRegInfoSetNewInfoSet);
+  vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vRegInfoSetPipeOut);
+  vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
 }
 
@@ -52,7 +55,7 @@ void Step::vRegInfoSetChunkFile(void)
       // compute the number of bytes which belong to the current chunk
       nChunkBytes = i_EofLoc - i_ChunkLoc;
       
-      if ( pInfoSet->bIncRows(2) ) {
+      if ( pInfoSet->bIncRows() ) {
         pInfoSet->vAddValue(i_ChunkLoc);
         pInfoSet->vAddValue(nChunkBytes);
       }
@@ -95,7 +98,7 @@ void Step::vRegInfoSetChunkFile(void)
     // compute end location of chunk
     i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
     
-    if ( pInfoSet->bIncRows(2) ) {
+    if ( pInfoSet->bIncRows() ) {
       pInfoSet->vAddValue(i_ChunkLoc);
       pInfoSet->vAddValue(nChunkBytes);
       
@@ -108,7 +111,7 @@ void Step::vRegInfoSetChunkFile(void)
       m_pRegSet->m_iCounter0 = i_ChunkLoc;
       
       // dump
-      //pSeekOffsets->vDump();
+      //pInfoSet->vPrint();
       
       break;
     }
@@ -124,6 +127,22 @@ void Step::vRegInfoSetChunkFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* InfoSet[].infoRows -- get now of info rows in info set                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetInfoRows(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetInfoRows"_Stz);
+  
+  ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  m_pDataStack->vPushInt(pInfoSet->nInfoRows());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* InfoSet[].newInfoSet -- new an infoset operand                             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegInfoSetNewInfoSet(void)
@@ -132,7 +151,56 @@ void Step::vRegInfoSetNewInfoSet(void)
   
   ASSERT (m_pRegSet->m_xpInfoSet.bIsNull());
   
-  m_pRegSet->m_xpInfoSet = new InfoSet();
+  i8 iValuesPerRow = m_pDataStack->iPopInt(__func__);
+  m_pRegSet->m_xpInfoSet = new InfoSet(iValuesPerRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].pipeOut -- pipeout infoset                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetPipeOut(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetPipeOut"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpInfoSet);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
+  pOp->vPipeOut(*m_pRegSet->m_xpInfoSet);
+  
+  m_pRegSet->m_xpInfoSet = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].readChunk -- reach a chunk from file given the infoSet           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetReadChunk(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetReadChunk"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
+  
+  i8 iRow = m_pDataStack->iPopInt(__func__);
+  
+  i8 iOffset = pInfoSet->iValue(iRow, 0);
+  i8 nBytes = pInfoSet->iValue(iRow, 1);
+  
+  vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+  
+  CsvBuffer* pCsvBuffer = new CsvBuffer;
+  pFile->vSeek(iOffset);
+  pCsvBuffer->vTake(nBytes);
+  i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
+  ASSERT(nBytesRead == nBytes);
+  
+  // return the CsvBuffer
+  m_pDataStack->vPushPtr(pCsvBuffer);
   
   EXIT();
 }

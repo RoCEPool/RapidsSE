@@ -22,9 +22,9 @@
     counter1[] counter0[] >
   while
     // create an infoSet operand
-    Operand[].newSeekOffsets
-    Operand[].chunkFile
-    Operand[].pipeOut
+    2 InfoSet[].newInfoSet
+    InfoSet[].chunkFile
+    InfoSet[].pipeOut
   repeat
 
   // send EOSMARKER
