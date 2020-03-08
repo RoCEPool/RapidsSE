@@ -13326,7 +13326,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job[] locals| pJob_BufferGen |\n"
     "\n"
-    "  <nBuffers> > int locals| nBuffers |\n"
+    "  <nBuffers> >int locals| nBuffers |\n"
     "\n"
     "  nBuffers \\\"Number of buffers: %v\\\" .printf\n"
     "\n"
