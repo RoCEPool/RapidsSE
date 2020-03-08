@@ -21,16 +21,6 @@ static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
 static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
 static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
-// job tags
-static Stz* C_TAG_DISTID   = "<distId>"_Stz;
-static Stz* C_TAG_JOBCLASS = "<jobClass>"_Stz;
-static Stz* C_TAG_JOBKIND  = "<jobKind>"_Stz;
-static Stz* C_TAG_JOBNM    = "<jobNm>"_Stz;
-static Stz* C_TAG_NODENO   = "<nodeNo>"_Stz;
-static Stz* C_TAG_PATH     = "<path>"_Stz;
-static Stz* C_TAG_TABLENM  = "<tableNm>"_Stz;
-
-
 namespace Jobs
 {
   class Job : public Focal,

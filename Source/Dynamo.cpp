@@ -842,13 +842,13 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddTopologyEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vAddTopologyEnamePair(C_TAG_TOPOLOGY,(i8)eTopologyX,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
-  pOpSpec->vAddTopologyEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
   
   // arg-2 is the op of the next stage for the xmit
-  pOpSpec->vAddTopologyEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
+  pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
   //pOpSpec->pEnameSet()->vPrint();
 }
 
@@ -860,13 +860,13 @@ void Dynamo::vReplaceTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage,
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vReplaceTopologyEnamePair("<topology>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vReplaceTopologyEnamePair(C_TAG_TOPOLOGY,(i8)eTopologyX,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
-  pOpSpec->vReplaceTopologyEnamePair("<nextStage>"_Stz,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
   
   // arg-2 is the op of the next stage for the xmit
-  pOpSpec->vReplaceTopologyEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
+  pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
   //pOpSpec->pEnameSet()->vPrint();
 }
 

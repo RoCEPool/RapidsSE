@@ -134,16 +134,16 @@ void Op::vDump(i8 i_Op)
   pEnameSet->vSprint(sArgs);
   
   // get the next stage
-  i8 iNextStage = pEnameSet->iValue("<nextStage>"_Stz);
+  i8 iNextStage = pEnameSet->iValue(C_TAG_NEXTSTAGE);
   Stage* pNextStage = m_pPipeline->pGet(iNextStage);
   
   // get the next op
-  i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
+  i8 iNextOp = pEnameSet->iValue(C_TAG_NEXTOP);
   Strand* pNextStrand = pNextStage->pGet(0);
   Op* pNextOp = pNextStrand->pGet(iNextOp);
 
   // get the cross topology
-  ePX eTopology = (ePX)(pEnameSet->iValue("<topology>"_Stz));
+  ePX eTopology = (ePX)(pEnameSet->iValue(C_TAG_TOPOLOGY));
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
