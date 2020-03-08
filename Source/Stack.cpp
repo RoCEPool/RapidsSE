@@ -127,7 +127,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
           Word* pWord = pDicStack->pLocateWord(aFip);
           
           vTrace("=%p word %s \n"_Stz,aFip,
-                 pWord ? pWord->szWordNm() : "<none>"_Stz);
+                 pWord ? pWord->szWordNm() : C_NO_WORD);
         }
         else {
           vTrace("%p word %s \n"_Stz,aFip,

@@ -137,7 +137,7 @@ void Forth::vContentDump(void)
          
          this,
          
-         pWord ? pWord->szWordNm() : "<none>"_Stz,
+         pWord ? pWord->szWordNm() : C_NO_WORD,
          m_aInxPtr);
 
   vTrace("m_pSeedWord=%s %p\n"_Stz,

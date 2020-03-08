@@ -145,7 +145,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
     TokenVec* pTknVec = pSession->pTokenVec();
     pTknVec->vVecToString(sCmd,0,true);
     
-    pJob->pEnameSet()->vAdd("<cmd>"_Stz,sCmd);
+    pJob->pEnameSet()->vAdd(C_TAG_CMD,sCmd);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy the semantic ename-set into the job
