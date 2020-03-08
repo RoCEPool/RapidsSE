@@ -144,7 +144,7 @@ void Step::vFileOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.path@ -- get file path ( file -- "<path>" )                           */
+/* file.path@ -- get file path ( pFile -- sPath )                             */
 /*----------------------------------------------------------------------------*/
 void Step::vFilePathGet(void)
 {
@@ -160,7 +160,7 @@ void Step::vFilePathGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.read -- read line from a file ( file -- "<line>" 1 | 0 )              */
+/* file.read -- read line from a file ( pFile -- sLine 1 | 0 )                */
 /*----------------------------------------------------------------------------*/
 void Step::vFileRead(void)
 {
@@ -185,7 +185,7 @@ void Step::vFileRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.write -- write to a file ( "<line>" file -- )                         */
+/* file.write -- write to a file ( sLine pFile -- )                           */
 /*----------------------------------------------------------------------------*/
 void Step::vFileWrite(void)
 {

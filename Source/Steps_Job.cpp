@@ -1062,7 +1062,7 @@ void Step::vJobPostRecv(void)
   eCN eClass = pJob->eClass();
   
   if (CN_JOB_UNIVERSAL == eClass) {
-    eClass = (eCN)pJob->pEnameSet()->iValue("<jobClass>"_Stz);
+    eClass = (eCN)pJob->pEnameSet()->iValue(C_TAG_JOBCLASS);
     aJobClass = JobClass::pFind(eClass);
   }
   else {
@@ -1627,7 +1627,7 @@ void Step::vJobSpawnUniversal(void)
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,&xReqTuple);
 
   // translate job kind
-  pJob_Universal->vJobKind((eJK) pEnameSet_jobInfo->iValue("<jobKind>"_Stz));
+  pJob_Universal->vJobKind((eJK) pEnameSet_jobInfo->iValue(C_TAG_JOBKIND));
 
   // add the necessary ename tags
   EnameSet* pEnameSet_job = pJob_Universal->pEnameSet();
@@ -1638,7 +1638,7 @@ void Step::vJobSpawnUniversal(void)
   
   pEnameSet_job->vCopy(pEnameSet_jobInfo);
   
-  pEnameSet_job->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
+  pEnameSet_job->vAdd(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
   //pEnameSet_job->vAdd(C_TAG_JOBNM,sJobNm);
   pEnameSet_job->vAdd(C_TAG_PATH,"/"_Stz);
 
