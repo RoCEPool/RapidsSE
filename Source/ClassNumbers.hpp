@@ -239,6 +239,7 @@ enum eCN : u2 // Class Number
   /* 194 0x0C2      848B Heap:M */ CN_ROWAGG,
   /* 195 0x0C3     2184B Heap:L */ CN_ROWCOMPACTOR,
   /* 196 0x0C4      216B Heap:S */ CN_ROWONCE,
+  /* 197 0x0C5  1043608B Heap:L */ CN_ROWSINGLE,
   /* 197 0x0C5  1043608B Heap:L */ CN_ROWTRAY,
   
   /* 198 0x0C6       19B Heap:I */ CN__S__,
@@ -572,6 +573,7 @@ static Stz* aCN[]
   /* 194 0x0C2 */ "ROWAGG"_Stz,              // CN_ROWAGG
   /* 195 0x0C3 */ "ROWCOMPACTOR"_Stz,        // CN_ROWCOMPACTOR
   /* 196 0x0C4 */ "ROWONCE"_Stz,             // CN_ROWONCE
+  /* 197 0x0C5 */ "ROWSINGLE"_Stz,           // CN_ROWSINGLE
   /* 197 0x0C5 */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   
   /* 198 0x0C6 */ "_S__"_Stz,                // CN__S__

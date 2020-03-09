@@ -10,7 +10,7 @@ namespace InfoData
   class InfoSet : public Operand
   {
   protected:
-    
+
     i8 m_nInfoRows;
     i8 m_nValuesPerRow;
     i8 m_nInfoValues;
