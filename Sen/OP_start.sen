@@ -9,6 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : startOp_StartedMarker \handler
 
+  //"Operand:- ZK_STARTEDMARKER" .verbose
+  Operand[].delete
+  Operand[].newPulseMarker
+  Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +22,11 @@
 /*----------------------------------------------------------------------------*/
 : startOp_StoppedMarker \handler
 
+  //"Operand:- ZK_STOPPEDMARKER" .verbose
+  Operand[].delete
+  Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,20 +58,9 @@
     // decode kind
     Operand[].kind case
 
-      ZK_STARTEDMARKER of
-        //"Operand:- ZK_STARTEDMARKER" .verbose
-        Operand[].delete
-        Operand[].newPulseMarker
-        Operand[].pipeout
-        true
-      endof
+      ZK_STARTEDMARKER of startOp_StartedMarker endof
 
-      ZK_STOPPEDMARKER of
-        //"Operand:- ZK_STOPPEDMARKER" .verbose
-        Operand[].delete
-        Op.ackPipelineJob
-        false
-      endof
+      ZK_STOPPEDMARKER of startOp_StoppedMarker endof
 
       // handle other operand as generic operands
       jobOperand::generic

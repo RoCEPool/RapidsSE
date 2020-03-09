@@ -25,14 +25,14 @@
   //"Operand:- ZK_STARTMARKER" .verbose
 
   // check if we can insert into the table
-  sTableNm checkIsValidTable not if
+  <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB !!logError
     Operand[].delete
     Operand[].newErrorMarker
   else
     // move to table folder and find the table and tablePtn
-    sTableNm pushTable assert
-    sTableNm find execute to table[]
+    <tableNm> pushTable assert
+    <tableNm> find execute to table[]
     table[].tablePtn@ to tablePtn[]
   then
 

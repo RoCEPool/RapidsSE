@@ -9,6 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : sinkOp_ErrorMarker \handler
 
+  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +20,12 @@
 /*----------------------------------------------------------------------------*/
 : sinkOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+  Operand[].delete
+  Operand[].newStartedMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,6 +33,13 @@
 /*----------------------------------------------------------------------------*/
 : sinkOp_StopMarker \handler
 
+  //"Operand:- ZK_STOPMARKER" .verbose
+  Operand[].pipeToJob
+  Operand[].newStoppedMarker
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 
@@ -53,28 +70,11 @@
     // decode kind
     Operand[].kind case
 
-      ZK_ERRORMARKER of
-        //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+      ZK_ERRORMARKER of sinkOp_ErrorMarker endof
 
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].delete
-        Operand[].newStartedMarker
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of sinkOp_StartMarker endof
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].pipeToJob
-        Operand[].newStoppedMarker
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
+      ZK_STOPMARKER  of sinkOp_StopMarker endof
 
       Operand[].delete
       true
