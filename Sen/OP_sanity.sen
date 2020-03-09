@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_INFOSET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: Sanity_InfoSet
+: Sanity_InfoSet \handler
 /*
   //"Operand:- ZK_INFOSET" .verbose
   0 locals| node |
@@ -39,6 +39,9 @@
 
   OperandB[].pipeout
  */
+
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,8 +50,6 @@
  : SanityOp_req ( -- )
  
   LogEntry SEED_REQ
-
-  job[] locals| pJob_ToFileOp |
 
   // set topolgy in the op
   <topology> op.topology!
@@ -70,7 +71,7 @@
     // decode kind
     Operand[].kind case
 
-      ZK_INFOSET of Sanity_InfoSet true endof
+      ZK_INFOSET of Sanity_InfoSet endof
 
       // handle other operand as generic operands
       jobOperand::generic swap
