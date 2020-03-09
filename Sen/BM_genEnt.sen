@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : BM_GenEntOp_req \operator
 
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   // set topology, next stage and op
   op__topology
@@ -88,7 +88,7 @@
   op__loop
 
   "*** BM_GenEntOp EXITS" .
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

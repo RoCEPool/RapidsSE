@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
  : PassThruOp_req ( -- )
 
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   0 to Counter0[]
 
@@ -117,7 +117,7 @@
 
   while assert::stack_0 repeat
 
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

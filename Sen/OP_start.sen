@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
  : startOp_req ( -- )
  
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   job[] job.enameSet@ enameSet.asStr .
 
@@ -70,7 +70,7 @@
 
   while assert::stack_0 repeat
 
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

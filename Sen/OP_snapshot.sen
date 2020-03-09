@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : SnapshotOp_req ( -- )
 
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   0 locals| pTable |
 
@@ -113,7 +113,7 @@
 
   while assert::stack_0 repeat
 
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

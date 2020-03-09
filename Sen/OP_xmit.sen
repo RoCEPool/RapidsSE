@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : XmitOp_req ( -- )
 
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   // set topolgy in the op
   <topology> op.topology!
@@ -42,7 +42,7 @@
 
   while assert::stack_0 repeat
 
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

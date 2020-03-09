@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 : BM_GenCrwOp_req ( -- )
 
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   job[] locals| pJob_BM_GenCrwOp |
   0 locals| pTable |
@@ -87,7 +87,7 @@
   while assert::stack_0 repeat
 
   "*** BM_GenCrwOp EXITS" .
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

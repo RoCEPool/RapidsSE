@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
  : InsertOp_req ( -- )
  
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
   job[] locals| pJob_InsertOp |
 
   <tableNm> locals| sTableNm |
@@ -113,7 +113,7 @@
 
     while assert::stack_0 repeat
 
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;

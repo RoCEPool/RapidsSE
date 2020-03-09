@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 : BufferGenOp_req ( -- )
 
-  LogEntry SEED_REQ
+  LogReqEntry SEED_REQ
 
   job[] locals| pJob_BufferGen |
 
@@ -80,7 +80,7 @@
   while assert::stack_0 repeat
 
   "*** BufferGen EXITS" .
-  LogExit
+  LogReqExit
   job::deleteThis
   DONE_RUN
 ;
