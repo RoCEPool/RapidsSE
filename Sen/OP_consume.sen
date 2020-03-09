@@ -54,10 +54,10 @@
 
   LogEntry SEED_REQ
 
-  <consumeXmits> >int locals| xmits |
+  <consumeXmits> >int to Counter0[]
 
   0 0 0 locals| start pulse def |
-  xmits xmits locals| stop eos |
+  Counter0[] Counter0[] locals| stop eos |
 
   // set topolgy in the op
   <topology> op.topology!
@@ -85,10 +85,10 @@
           //"Operand:- ZK_EOSMARKER" .verbose
           eos 1 - to eos
           eos 0 == if
-            xmits to eos
+            Counter0[] to eos
             Operand[].pipeOut
           else
-            xmits to eos
+            Counter0[] to eos
             Operand[].delete
           then
 
@@ -99,7 +99,7 @@
           //"Operand:- ZK_ERRORMARKER" .verbose
           eos 1 - to eos
           eos 0 == if
-            xmits to eos
+            Counter0[] to eos
             Operand[].pipeOut
           else
             Operand[].delete
@@ -117,7 +117,7 @@
           then
           pulse 1 + to pulse
           // reset pulse to allow fow periodic pulses to come
-          pulse xmits == if
+          pulse Counter0[] == if
             0 to pulse
           then
           true
@@ -133,9 +133,9 @@
             Operand[].delete
           then
           start 1 + to start
-          start xmits > if
+          start Counter0[] > if
             start .
-            xmits start "Warning: ConsumeOp ZK_STARTMARKER received %v; expected %v" str.format .
+            Counter0[] start "Warning: ConsumeOp ZK_STARTMARKER received %v; expected %v" str.format .
           then
           true
         endof
@@ -152,8 +152,8 @@
           true
         then
 
-        stop xmits > if
-          xmits xmits stop - "Warning: ConsumeOp ZK_STOPMARKER received %v; expected %v" str.format .
+        stop Counter0[] > if
+          Counter0[] Counter0[] stop - "Warning: ConsumeOp ZK_STOPMARKER received %v; expected %v" str.format .
         then
 
         endof
