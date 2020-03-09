@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_ENTBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
-: BM_InsIdx_EntBuffer
+: BM_InsIdx_EntBuffer \handler
 
   "BM_InsIdx_EntBuffer" .
 
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                        */
 /*----------------------------------------------------------------------------*/
-: BM_InsIdx_EosMarker
+: BM_InsIdx_EosMarker \handler
 
   Operand[].delete
 
@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: BM_InsIdx_StartMarker
+: BM_InsIdx_StartMarker \handler
 
   now[] now.asOf now[] now.timestampStr .
   now[] now.sinceEpoch "SinceEpoch: %vs" .printf

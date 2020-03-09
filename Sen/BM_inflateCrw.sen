@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
-: BM_InflateCrwOp_CrwBuffer
+: BM_InflateCrwOp_CrwBuffer \handler
 
   //"BM_InflateCrw_CrwBuffer" .
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                        */
 /*----------------------------------------------------------------------------*/
-: BM_InflateCrwOp_EosMarker
+: BM_InflateCrwOp_EosMarker \handler
 
   Operand[].delete
 
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: BM_InflateCrwOp_StartMarker
+: BM_InflateCrwOp_StartMarker \handler
 
   // table folder push
   op__table
