@@ -23,6 +23,33 @@
 /*----------------------------------------------------------------------------*/
 : periodicOp_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+   Counter1[] if
+    begin
+      begin
+         Counter1[]  Counter0[] >
+      while
+        task::yield
+        assert::stack_0
+        "sleeping for 1 min" .
+        60 task::sleepSsec
+        Counter0[] 1 + to Counter0[]
+      repeat
+      0 to  Counter0[]
+       Counter1[] "Sending PULSEMARKER after %v mins" str.format .
+      Operand[].newPulseMarker
+      Operand[].pipeOut
+      true
+    while assert::stack_0 repeat
+  then
+
+  Operand[].newStopMarker
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,8 +62,6 @@
   0 locals| hours   |
   0 locals| minutes |
 
-  // elapsed
-  0 to Counter0[]
 
   "<minutes>" job[] job.enameset@ enameset.hasName if
     <minutes> >int to minutes
@@ -50,6 +75,13 @@
     hours 60 * to minutes
   then
 
+  // elapsed
+  0 to Counter0[]
+
+  // minutes
+  minutes to Counter1[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set topolgy in the op
   <topology> op.topology!
@@ -75,34 +107,7 @@
 
       ZK_ERRORMARKER of periodicOp_ErrorMarker endof
 
-      ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-
-        minutes if
-          begin
-            begin
-              minutes  Counter0[] >
-            while
-              task::yield
-              assert::stack_0
-              "sleeping for 1 min" .
-              60 task::sleepSsec
-               Counter0[] 1 + to  Counter0[]
-            repeat
-            0 to  Counter0[]
-            minutes "Sending PULSEMARKER after %v mins" str.format .
-            Operand[].newPulseMarker
-            Operand[].pipeOut
-            true
-          while assert::stack_0 repeat
-        then
-
-        Operand[].newStopMarker
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
+      ZK_PULSEMARKER of periodicOp_PulseMarker endof
 
       // handle other operand as generic operands
       jobOperand::generic
