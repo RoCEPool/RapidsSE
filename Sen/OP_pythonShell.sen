@@ -9,6 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : pythonShellOp_CsvBuffer \handler
 
+  //"Operand:- ZK_CSVBUFFER" .verbose
+  Operand[].csvData
+  <pythonFile> Operand[].invokePythonShell
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +21,10 @@
 /*----------------------------------------------------------------------------*/
 : pythonShellOp_ErrorMarker \handler
 
+  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,6 +32,10 @@
 /*----------------------------------------------------------------------------*/
 : pythonShellOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +43,11 @@
 /*----------------------------------------------------------------------------*/
 : pythonShellOp_StopMarker \handler
 
+  //"Operand:- ZK_STOPMARKER" .verbose
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 
@@ -60,31 +78,13 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CSVBUFFER of
-        //"Operand:- ZK_CSVBUFFER" .verbose
-        Operand[].csvData
-        <pythonFile> Operand[].invokePythonShell
-        true
-      endof
+      ZK_CSVBUFFER   of pythonShellOp_CsvBuffer   endof
 
-      ZK_ERRORMARKER of
-        //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+      ZK_ERRORMARKER of pythonShellOp_ErrorMarker endof
 
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of pythonShellOp_StartMarker endof
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
+      ZK_STOPMARKER  of pythonShellOp_StopMarker  endof
 
       Operand[].delete
       true

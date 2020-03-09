@@ -9,6 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : pythonOp_CsvBuffer \handler
 
+  //"Operand:- ZK_CSVBUFFER" .verbose
+  Operand[].csvData
+  <pythonFunction> <pythonFile> Operand[].invokePython
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +21,10 @@
 /*----------------------------------------------------------------------------*/
 : pythonOp_ErrorMarker \handler
 
+  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,6 +32,10 @@
 /*----------------------------------------------------------------------------*/
 : pythonOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +43,11 @@
 /*----------------------------------------------------------------------------*/
 : pythonOp_StopMarker \handler
 
+  //"Operand:- ZK_STOPMARKER" .verbose
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 
@@ -60,31 +78,13 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CSVBUFFER of
-        //"Operand:- ZK_CSVBUFFER" .verbose
-        Operand[].csvData
-        <pythonFunction> <pythonFile> Operand[].invokePython
-        true
-      endof
+      ZK_CSVBUFFER   of pythonOp_CsvBuffer endof
 
-      ZK_ERRORMARKER of
-        //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+      ZK_ERRORMARKER of pythonOp_ErrorMarker endof
 
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of pythonOp_StartMarker endof
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
+      ZK_STOPMARKER  of pythonOp_StopMarker endof
 
       Operand[].delete
       true
