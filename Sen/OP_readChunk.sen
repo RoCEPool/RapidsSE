@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_INFOSET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: readChunk_InfoSet
+: readChunk_InfoSet \handler
 
   //"Operand:- ZK_SEEKOFFSETS" .verbose
 
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: readChunk_StartMarker
+: readChunk_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_STOPMARKER ...                                                        */
 /*----------------------------------------------------------------------------*/
-: readChunk_StopMarker
+: readChunk_StopMarker \handler
 
   //"Operand:- ZK_STOPMARKER" .verbose
   File0[].isNull not if
