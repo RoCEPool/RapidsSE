@@ -9,6 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_CrwBuffer \handler
 
+  //"Operand:- ZK_CRWBUFFER" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +20,10 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_CsvBuffer \handler
 
+  //"Operand:- ZK_CSVBUFFER" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,6 +31,10 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_EntBuffer \handler
 
+  //"Operand:- ZK_ENTBUFFER" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +42,12 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_EosMarker \handler
 
+  //"Operand:- ZK_EOSMARKER" .verbose
+  Operand[].pipeToJob
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +55,12 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_ErrorMarker \handler
 
+  //"Operand:- ZK_ERRORMARKER" .verbose
+  Operand[].pipeToJob
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +68,10 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_InfoSet \handler
 
+  //"Operand:- ZK_INFOSET" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +79,10 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_IrwBuffer \handler
 
+  //"Operand:- ZK_IRWBUFFER" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -58,6 +90,12 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+  Operand[].newPulseMarker
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +103,10 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_SrtBuffer \handler
 
+  //"Operand:- ZK_SRTBUFFER" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +114,12 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+  Operand[].pipeToJob
+  Operand[].newStartMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,13 +127,22 @@
 /*----------------------------------------------------------------------------*/
 : outputOp_StopMarker \handler
 
+  //"Operand:- ZK_STOPMARKER" .verbose
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_StreamDef\handler
+: outputOp_StreamDef \handler
 
+  //"Operand:- ZK_STREAMDEF" .verbose
+  Operand[].pipeToJob
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,86 +172,29 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CRWBUFFER of
-        //"Operand:- ZK_CRWBUFFER" .verbose
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_CRWBUFFER of outputOp_CrwBuffer endof
 
-      ZK_CSVBUFFER of
-        //"Operand:- ZK_CSVBUFFER" .verbose
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_CSVBUFFER of outputOp_CsvBuffer endof
 
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        Operand[].pipeToJob
-        Operand[].newEosMarker
-        Operand[].pipeOut
-        true
-      endof
+      ZK_ENTBUFFER of outputOp_EntBuffer endof
 
-      ZK_ERRORMARKER of
-        //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeToJob
-        Operand[].newErrorMarker
-        Operand[].pipeOut
-        true
-      endof
+      ZK_EOSMARKER of outputOp_EosMarker endof
 
-      ZK_ENTBUFFER of
-        //"Operand:- ZK_ENTBUFFER" .verbose
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_ERRORMARKER of outputOp_ErrorMarker endof
 
-      ZK_INFOSET of
-      //"Operand:- ZK_INFOSET" .verbose
-      Operand[].pipeToJob
-      true
-      endof
+      ZK_INFOSET of outputOp_InfoSet endof
 
-      ZK_IRWBUFFER of
-        //"Operand:- ZK_IRWBUFFER" .verbose
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_IRWBUFFER of outputOp_IrwBuffer endof
 
-      ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-        Operand[].newPulseMarker
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_PULSEMARKER of outputOp_PulseMarker endof
 
-      ZK_SRTBUFFER of
-        //"Operand:- ZK_SRTBUFFER" .verbose
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_SRTBUFFER of outputOp_SrtBuffer endof
 
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeToJob
-        Operand[].newStartMarker
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of outputOp_StartMarker endof
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-        endof
+      ZK_STOPMARKER of outputOp_StopMarker endof
 
-      ZK_STREAMDEF of
-        //"Operand:- ZK_STREAMDEF" .verbose
-        Operand[].pipeToJob
-        true
-      endof
+      ZK_STREAMDEF of outputOp_StreamDef endof
 
       // handle other operand as generic operands
       jobOperand::generic
