@@ -9,6 +9,19 @@
 /*----------------------------------------------------------------------------*/
 : BufferGenOp_PulseMarker \handler
 
+  "Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+  nBuffers 0 do
+    I "buffer# %v" .printf
+
+    csvBuffer::new to Operand[]
+    Operand[].pipeOut
+  loop
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,8 +29,11 @@
 /*----------------------------------------------------------------------------*/
 : BufferGenOp_StartMarker \handler
 
-;
+  //"Operand:- ZK_STARTMARKER" .verbose
 
+  Operand[].pipeOut
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                   (on node where spawned) */
@@ -53,28 +69,9 @@
     // decode kind
     Operand[].kind case
 
-      ZK_PULSEMARKER of
-        "Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
+      ZK_PULSEMARKER of BufferGenOp_PulseMarker endof
 
-        nBuffers 0 do
-          I "buffer# %v" .printf
-
-          csvBuffer::new to Operand[]
-          Operand[].pipeOut
-        loop
-
-        Operand[].newEosMarker
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of BufferGenOp_StartMarker endof
 
       // handle other operand as generic operands
       jobOperand::generic
