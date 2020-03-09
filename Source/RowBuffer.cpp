@@ -27,7 +27,6 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  _checkInitialised_(eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
