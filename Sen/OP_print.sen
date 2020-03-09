@@ -9,6 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : printOp_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+  <string> .
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +21,11 @@
 /*----------------------------------------------------------------------------*/
 : printOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  Operand[].pipeOut
+
+  true
 ;
 
 
@@ -25,9 +35,6 @@
 : printOp_req ( -- )
 
   LogEntry SEED_REQ
-
-  job[] locals| pJob_printOp |
-  <string> locals| sString |
 
   // set topolgy in the op
   <topology> op.topology!
@@ -50,21 +57,9 @@
     // decode kind
     Operand[].kind case
 
-      ZK_PULSEMARKER of
+      ZK_PULSEMARKER of printOp_PulseMarker endof
 
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-        sString .
-        true
-
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of printOp_StartMarker endof
 
       // handle other operand as generic operands
       jobOperand::generic
