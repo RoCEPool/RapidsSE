@@ -9,6 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : periodicOp_ErrorMarker \handler
 
+  //"Operand:- ZK_ERRORMARKER" .verbose
+  Operand[].delete
+  Operand[].newStopMarker
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,8 +32,11 @@
  
   LogEntry SEED_REQ
 
+  0 locals| hours   |
   0 locals| minutes |
-  0 locals| hours |
+
+  // elapsed
+  0 to Counter0[]
 
   "<minutes>" job[] job.enameset@ enameset.hasName if
     <minutes> >int to minutes
@@ -36,7 +46,10 @@
     <hours> >int to hours
   then
 
-0 locals| elapsed |
+  hours if
+    hours 60 * to minutes
+  then
+
 
   // set topolgy in the op
   <topology> op.topology!
@@ -47,9 +60,7 @@
   // set nextOp in op
   <nextOp> op.nextOp!
 
-  hours if
-    hours 60 * to minutes
-  then
+
 
   begin
 
@@ -62,14 +73,7 @@
     // decode kind
     Operand[].kind case
 
-      ZK_ERRORMARKER of
-        //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].delete
-        Operand[].newStopMarker
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
+      ZK_ERRORMARKER of periodicOp_ErrorMarker endof
 
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
@@ -78,15 +82,15 @@
         minutes if
           begin
             begin
-              minutes elapsed >
+              minutes  Counter0[] >
             while
               task::yield
               assert::stack_0
               "sleeping for 1 min" .
               60 task::sleepSsec
-              elapsed 1 + to elapsed
+               Counter0[] 1 + to  Counter0[]
             repeat
-            0 to elapsed
+            0 to  Counter0[]
             minutes "Sending PULSEMARKER after %v mins" str.format .
             Operand[].newPulseMarker
             Operand[].pipeOut
