@@ -16,7 +16,8 @@
         "se_handlers.sen"   include
         "se_operators.sen"  include
         "se_procedures.sen" include
-3 .put  "jobModel.sen"      include
+3 .put  "se_requests.sen"   include
+        "jobModel.sen"      include
         "operators.sen"     include
 2 .put  "testing.sen"       include
 1 .put  "se.sen"            include  // last
