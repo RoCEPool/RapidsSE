@@ -7,15 +7,56 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: TruncateO_PulseMarker \handler
+: TruncateOp_PulseMarker \handler
 
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+  // new a stream def
+  //Operand[].newStreamDef
+  //Operand[].pipeOut
+
+  // truncate the buffers of the tablePtn
+  tablePtn[].truncate
+/*
+  Subset[]@ to Operand[]
+  begin
+    Operand[].isNull
+  not while
+    Operand[].pipeOut
+    Subset[].nextBuffer to Operand[]
+  repeat
+*/
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: TruncateO_StartMarker \handler
+: TruncateOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // check if we can scan the table
+  <tableNm> checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+
+    // move to table folder and find the table and tablePtn
+    <tableNm> pushTable assert
+    <tableNm> find execute to table[]
+    table[].tablePtn@ to tablePtn[]
+  then
+
+  Operand[].pipeOut
+
+  true
 ;
 
 
@@ -27,8 +68,6 @@
   LogEntry SEED_REQ
 
   job[] locals| pJob_TruncateOp |
-
-  <tableNm> locals| sTableNm |
 
   // set topolgy in the op
   <topology> op.topology!
@@ -50,51 +89,9 @@
     // decode kind
     Operand[].kind case
 
-      ZK_PULSEMARKER of
+      ZK_PULSEMARKER of TruncateOp_PulseMarker endof
 
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-
-        // new a stream def
-        //Operand[].newStreamDef
-        //Operand[].pipeOut
-
-        // truncate the buffers of the tablePtn
-        tablePtn[].truncate
-/*
-        Subset[]@ to Operand[]
-        begin
-          Operand[].isNull
-        not while
-          Operand[].pipeOut
-          Subset[].nextBuffer to Operand[]
-        repeat
-*/
-        Operand[].newEosMarker
-        Operand[].pipeOut
-        true
-
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-
-        // check if we can scan the table
-        sTableNm checkIsValidTable not if
-          op.pipelineJob@ ERROR_JOB !!logError
-          Operand[].delete
-          Operand[].newErrorMarker
-        else
-
-          // move to table folder and find the table and tablePtn
-          sTableNm pushTable assert
-          sTableNm find execute to table[]
-          table[].tablePtn@ to tablePtn[]
-        then
-
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of TruncateOp_StartMarker endof
 
         // handle other operand as generic operands
         jobOperand::generic
