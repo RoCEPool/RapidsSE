@@ -9,6 +9,15 @@
 /*----------------------------------------------------------------------------*/
 : UpsertOp_CrwBuffer \handler
 
+  //"Operand:- ZK_CRWBUFFER" .verbose
+  tx[].begin
+  tablePtn[].get tablePtnGrabWrite2
+  Operand[].upsertIntoTable
+  tablePtn[].get tablePtnDropWrite2
+  tx[].commit
+  Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,13 +25,35 @@
 /*----------------------------------------------------------------------------*/
 : UpsertOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+  // check if we can insert into the table
+  <tableNm> checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+    // move to table folder and find the table and tablePtn
+    <tableNm> pushTable assert
+    <tableNm> find execute to table[]
+    table[].tablePtn@ to tablePtn[]
+  then
+
+  Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: UpsertOp_StreamDef\handler
+: UpsertOp_StreamDef \handler
 
+  //"Operand:- ZK_STREAMDEF" .verbose
+  Operand[].delete
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,9 +62,6 @@
  : UpsertOp_req ( -- )
  
   LogEntry SEED_REQ
-  job[] locals| pJob_UpsertOp |
-
-  <tableNm> locals| sTableNm |
 
   // set topolgy in the op
   <topology> op.topology!
@@ -55,42 +83,11 @@
     // decode kind
     Operand[].kind case
 
-    ZK_CRWBUFFER of
-      //"Operand:- ZK_CRWBUFFER" .verbose
-      tx[].begin
-      tablePtn[].get tablePtnGrabWrite2
-      Operand[].upsertIntoTable
-      tablePtn[].get tablePtnDropWrite2
-      tx[].commit
-      Operand[].delete
-      true
-    endof
+    ZK_CRWBUFFER   of UpsertOp_CrwBuffer endof
 
-    ZK_STARTMARKER of
-      //"Operand:- ZK_STARTMARKER" .verbose
-      // check if we can insert into the table
-      sTableNm checkIsValidTable not if
-        op.pipelineJob@ ERROR_JOB !!logError
-        Operand[].delete
-        Operand[].newErrorMarker
-      else
-        // move to table folder and find the table and tablePtn
-        sTableNm pushTable assert
-        sTableNm find execute to table[]
-        table[].tablePtn@ to tablePtn[]
-      then
+    ZK_STARTMARKER of UpsertOp_StartMarker endof
 
-      Operand[].pipeout
-      true
-    endof
-
-    ZK_STREAMDEF of
-      //"Operand:- ZK_STREAMDEF" .verbose
-      Operand[].delete
-      Operand[].newStreamDef
-      Operand[].pipeOut
-      true
-    endof
+    ZK_STREAMDEF of  UpsertOp_StreamDef endof
 
     // handle other operand as generic operands
     jobOperand::generic
