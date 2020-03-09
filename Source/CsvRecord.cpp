@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
-Column* CsvRecord::pExtractRow(Row* pRow, StreamDef* pStreamDef,
+Column* CsvRecord::pExtractRow(RowSingle* pRow, StreamDef* pStreamDef,
                                char** aazCrs, Format* pFmt)
 {
   Datum oDatum;

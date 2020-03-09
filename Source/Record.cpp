@@ -81,7 +81,7 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* decode and sprint row into record                                          */
 /*----------------------------------------------------------------------------*/
-void Record::vAppend(Row* pRow)
+void Record::vAppend(RowSingle* pRow)
 {
   vReset();
   

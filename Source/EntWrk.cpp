@@ -95,11 +95,9 @@ void EntWrk::vAppendDatum(Datum* pDatum,Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(Row* pRow, Column* pCol)
+void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nElmSize = 0;
   
   i8 iValue = pRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
   

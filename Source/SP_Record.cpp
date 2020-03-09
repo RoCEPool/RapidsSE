@@ -34,7 +34,7 @@ SP_Record::SP_Record(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Record::SP_Record(Row* pRow)
+SP_Record::SP_Record(RowSingle* pRow)
 : Sprint(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
@@ -75,7 +75,7 @@ SP_Record::~SP_Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendCol(Column* pCol, Row* pRow)
+void SP_Record::vAppendCol(Column* pCol, RowSingle* pRow)
 {
   Datum oDatum;
   
@@ -282,7 +282,7 @@ Stz* SP_Record::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Record::sz(Row* pRow)
+Stz* SP_Record::sz(RowSingle* pRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -295,7 +295,7 @@ Stz* SP_Record::sz(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vToRecord(Row* pRow)
+void SP_Record::vToRecord(RowSingle* pRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

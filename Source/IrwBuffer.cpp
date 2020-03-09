@@ -158,9 +158,11 @@ void IrwBuffer::vPrintRows(StreamDef* pStreamDef)
   
   // get the first row
   Row* pRow = aFirstRow();
+  HV_Row hvRowSingle(pStreamDef, C_ALL);
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
-    hvRec->vAppend(pRow);
+    hvRowSingle->vCopy(pRow);
+    hvRec->vAppend(hvRowSingle);
     hvRec->vPrintRow();
     
     // get the next row
@@ -186,10 +188,12 @@ void IrwBuffer::vShow(StreamDef* pStreamDef)
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
   Row* pRow = aFirstRow();
-  
+  HV_Row hvRowSingle(pStreamDef, C_ALL);
+
   HV_Rec hvRec(pStreamDef,C_ALL);
   while (pRow) {
-    hvRec->vAppend(pRow);
+    hvRowSingle->vCopy(pRow);
+    hvRec->vAppend(hvRowSingle);
     pRow = aNextRow(pRow);
     hvRec->vPrintRow();
   }

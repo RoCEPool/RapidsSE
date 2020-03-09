@@ -332,7 +332,7 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* append a row to the row buffer into the TablePtn                           */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
+void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

@@ -145,7 +145,7 @@ CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* convert/inflate compact row into row                                       */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vToRow(Row* pRow, Crw* aCrw)
+void CrwBuffer::vToRow(RowSingle* pRow, Crw* aCrw)
 {
   RowInflator::vInflateRow(pRow,aCrw);
 }
@@ -236,7 +236,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendRow(Row* pRow)
+bool CrwBuffer::bAppendRow(RowSingle* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
@@ -318,7 +318,7 @@ void CrwBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vGetRow(Row* pRow, i8 i_Row)
+void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
 {
   Crw* aCrw = (Crw*)aGetHead(i_Row);
   

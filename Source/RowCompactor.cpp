@@ -146,7 +146,7 @@ void RowCompactor::vCompactEnd(void)
 /*----------------------------------------------------------------------------*/
 /* compact given row into current nub                                         */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRow(Row* pInflatedRow)
+bool RowCompactor::bCompactRow(RowSingle* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -174,7 +174,7 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* collect inflated row as a sample                                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCollectSample(Row* pInflatedRow)
+bool RowCompactor::bCollectSample(RowSingle* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -199,10 +199,10 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
   // copy inflated row into sample buffer
   
   SP_Row spRow;
-  MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+  //MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+  //pSampleRow->vAdjustAddresses(pInflatedRow);
+  pSampleRow->vCopy(pInflatedRow);
   
-  pSampleRow->vAdjustAddresses(pInflatedRow);
- 
 #ifdef WITH_ENCODING_TRACE
     vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
 #endif
@@ -359,7 +359,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 /*----------------------------------------------------------------------------*/
 /* add given row into current crw buffer                                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(Row* pInflatedRow)
+bool RowCompactor::bAddCrw(RowSingle* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -384,6 +384,44 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   
   m_aHeadLine = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify
+  
+#ifdef WITH_VERIFY_TAILS
+  m_pCrwNub->vVerifyTails(C_UNKNOWN);
+#endif
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given row into current crw buffer                                      */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bAddCrw(Row* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // 1) initially encode the inflated row
+  vEncodeHead(pInflatedRow);
+  
+  // 2) encode tails
+  //  if (! m_pStreamDef->m_nFixedSized)
+  vEncodeTails(pInflatedRow);
+  
+  // 3) split encoding between head and overflow
+  vSplitOver();
+  
+  // 4) allot a logical compact row (head & over)
+  if (! bAllotCrw()) {
+    m_nTotalBuffers++;
+    return false;
+  }
+  
+  // 5) pack encoded inflated row into a compact row
+  vPackCrw(m_aHeadLine,m_pEncoding);
+  
+  m_aHeadLine = nullptr;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify
   
@@ -478,9 +516,99 @@ void RowCompactor::vEncodeHead(Row* pInflatedRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode the head                                                            */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vEncodeHead(RowSingle* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  m_pEncoding->vEncodeRow(pInflatedRow);
+  
+#ifdef WITH_ENCODING_TRACE
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vEncodeTails(Row* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for non-null vch column of minimum length
+    
+    if (DM_VCH != aColEnc->m_pCol->eDatum())
+      continue;
+    
+    // -- vch column --
+    
+    Dtm* aColVal = & pInflatedRow->m_waColVal[i_Col];
+    
+    if (aColVal->bIsNull())
+      continue;
+    
+    // -- non-null vch column --
+    
+    char* azStr = aColVal->m_azStr;
+    if (StrLib::nLength(azStr) < 8)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // attempt to find tail for non-null vch column of minimum length
+    
+    TailStr xFindTail(aColVal->m_szVch);
+    
+#ifdef WITH_ENCODING_TRACE
+    vDumpTails();
+#endif
+    
+    
+#if 0
+    i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
+    if (C_UNKNOWN == i_Tail)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
+    
+    // put tial into the encoding
+    aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
+#else
+    i8 i_Tail;
+    TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
+    if (! aTailLine)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
+    
+    // put tial into the encoding
+    aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = aTailLine;
+#endif
+    
+    // morph the encoding
+    m_pEncoding->vMorphEncoding(aColEnc);
+  }
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark up the encoding of a row with tails                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vEncodeTails(RowSingle* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

@@ -47,7 +47,7 @@ void Step::vTablePtnGenCrwBuffers(void)
   Table* pTable = pTablePtn->pTable();
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  Row* pCsvRow = new Row(pStreamDef,C_ALL);
+  HV_Row hCsvRow(pStreamDef,C_ALL);
   
   // create a row compactor for the crw buffer
   RowCompactor* pRowCompactor = new RowCompactor;
@@ -68,13 +68,13 @@ void Step::vTablePtnGenCrwBuffers(void)
     pPrevBuffer = pCrwBuffer;
     
     // reset the csv row
-    pCsvRow->vResetValues();
+    hCsvRow->vResetValues();
     
     // generate a random row
-    RowGenerator::vRandom(pCsvRow,pStreamDef);
+    RowGenerator::vRandom(hCsvRow,pStreamDef);
     
     // append row to buffer
-    if (! pCrwBuffer->bAppendRow(pCsvRow)) {
+    if (! pCrwBuffer->bAppendRow(hCsvRow)) {
       
       // close current buffer
       pCrwBuffer->vAppendClose();
@@ -94,7 +94,7 @@ void Step::vTablePtnGenCrwBuffers(void)
       pCrwBuffer->vAppendOpen(pRowCompactor, true);
       
       // now append the row
-      bool bAppend = pCrwBuffer->bAppendRow(pCsvRow);
+      bool bAppend = pCrwBuffer->bAppendRow(hCsvRow);
       ASSERT(bAppend);
       nBuffers--;
     }
@@ -108,7 +108,7 @@ void Step::vTablePtnGenCrwBuffers(void)
   m_pDataStack->vPushPtr(pRootBuffer);
   
   delete pRowCompactor;
-  delete pCsvRow;
+  //delete pCsvRow;
   
   EXIT();
 }

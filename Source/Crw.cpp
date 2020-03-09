@@ -319,9 +319,10 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Row* pRow = new Row(pStreamDef, C_ALL);
+  //Row* pRow = new Row(pStreamDef, C_ALL);
   
-  RowInflator::vInflateRow(pRow,aHeadLine);
+  HV_Row hRow(pStreamDef, C_ALL);
+  RowInflator::vInflateRow(hRow,aHeadLine);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -345,7 +346,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     
   } // for (i_Col)
   
-  delete pRow;
+  //delete pRow;
 }
 
 

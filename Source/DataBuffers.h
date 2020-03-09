@@ -14,6 +14,10 @@ namespace DataBuffers
 
 //------------------------------------------------------------------------------
 
+typedef       HV <RowSingle,   StreamDef>                      HV_Row;
+
+//------------------------------------------------------------------------------
+
 #include "DataBuffer.hpp"
 
 #include "CsvBuffer.hpp"

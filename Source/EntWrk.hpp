@@ -29,7 +29,7 @@ namespace Entries
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
   
     void  vAppendDatum(Datum* pDatum, Column* pCol);
-    void  vAppendElement(Row* pRow, Column* pCol);
+    void  vAppendElement(RowSingle* pRow, Column* pCol);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);

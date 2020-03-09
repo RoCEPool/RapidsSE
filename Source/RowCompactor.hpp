@@ -39,14 +39,14 @@ namespace CompactBuffers
     
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
-    bool bCompactRow(Row* pInflatedRow);
+    bool bCompactRow(RowSingle* pInflatedRow);
   
   private:
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Sampling (structural order)
   
-    bool bCollectSample(Row* pInflatedRow);
+    bool bCollectSample(RowSingle* pInflatedRow);
   
     void vPackSamples(void);
     void vAnalyzeSamples(void);
@@ -55,10 +55,13 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing
   
+    bool bAddCrw(RowSingle* pInflatedRow);
     bool bAddCrw(Row* pInflatedRow);
     bool bAllotCrw(void);
     void vEncodeHead(Row* pInflatedRow);
+    void vEncodeHead(RowSingle* pInflatedRow);
     void vEncodeTails(Row* pInflatedRow);
+    void vEncodeTails(RowSingle* pInflatedRow);
     void vSplitOver(void);
 
   private:

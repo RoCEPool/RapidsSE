@@ -56,6 +56,7 @@ namespace CompactBuffers
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
+    void vEncodeRow(RowSingle* pRow);
     void vEncodeRow(Row* pRow);
     void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
@@ -64,6 +65,7 @@ namespace CompactBuffers
 
   private:
     // encoding (structural order)
+    void vInitialEncoding(RowSingle* pRow);
     void vInitialEncoding(Row* pRow);
     void vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal);
     void vEncodeBol(_ColEnc& xColEnc, Dtm wColVal);

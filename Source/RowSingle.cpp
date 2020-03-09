@@ -101,7 +101,7 @@ RowSingle::~RowSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* adjust addresses                                                           */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vAdjustAddresses(Row* pCopiedFromRow)
+void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   

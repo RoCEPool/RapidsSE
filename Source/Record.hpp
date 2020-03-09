@@ -20,7 +20,7 @@ namespace Records
     Record(StreamDef* pStreamDef, i8 iSubSet);
    ~Record(void) noexcept(false);
   
-    void vAppend(Row* pRow);
+    void vAppend(RowSingle* pRow);
   
     void vPrintRow(void);
     void vPrintPartialRow(void);

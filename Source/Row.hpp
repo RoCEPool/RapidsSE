@@ -5,6 +5,8 @@
 
 namespace Rows
 {
+  class RowSingle;
+  
   class Row : public Object
   {
   public:
@@ -40,8 +42,9 @@ namespace Rows
     Row(StreamDef* pStreamDef, i8 iSubSet);
     ~Row(void) noexcept(false);
   
-    void vAdjustAddresses(Row* pCopiedFromRow);
+    void vAdjustAddresses(RowSingle* pCopiedFromRow);
     void vCopy(Row* pRow);
+    void vCopy(RowSingle* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);

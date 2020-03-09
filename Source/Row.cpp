@@ -101,7 +101,7 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* adjust addresses                                                           */
 /*----------------------------------------------------------------------------*/
-void Row::vAdjustAddresses(Row* pCopiedFromRow)
+void Row::vAdjustAddresses(RowSingle* pCopiedFromRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -132,6 +132,45 @@ void Row::vCopy(Row* pRow)
   
   for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
   
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // vch
+    
+    if (DM_VCH == pCol->eDatum()) {
+      
+      if (pRow->m_waColVal[i_Col].bIsNull()) {
+        m_waColVal[i_Col].vSetNull();
+        continue;
+      }
+      
+      char* acDstString = (char*)m_xWsp.ayLatter();
+      char* acSrcString = (char*)pRow->m_waColVal[i_Col].m_szVch;
+      
+      i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
+      
+      m_waColVal[i_Col].m_iWrd = (i8)acDstString;
+      
+      m_xWsp.vTake(nSrcLength + 1);
+      
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // all others
+    
+    m_waColVal[i_Col].m_iWrd = pRow->m_waColVal[i_Col].m_iWrd;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append column value to row                                                 */
+/*----------------------------------------------------------------------------*/
+void Row::vCopy(RowSingle* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+    
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // vch

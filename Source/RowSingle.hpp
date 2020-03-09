@@ -40,7 +40,7 @@ namespace Rows
     RowSingle(StreamDef* pStreamDef, i8 iSubSet);
     ~RowSingle(void) noexcept(false);
   
-    void vAdjustAddresses(Row* pCopiedFromRow);
+    void vAdjustAddresses(RowSingle* pCopiedFromRow);
     void vCopy(Row* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);

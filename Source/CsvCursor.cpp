@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
-bool CsvCursor::bExtractNext(Row* pRow, StreamDef* pStreamDef,
+bool CsvCursor::bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
                              char** aazCrs, Format* pFmt,
                              bool& bBlankLine_)
 {

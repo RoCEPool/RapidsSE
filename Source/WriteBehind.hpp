@@ -23,7 +23,7 @@ namespace CompactBuffers
     ~WriteBehind(void) noexcept(false);
     
   public:
-    eEC        eAppendRow(Row* pRow, CrwBuffer** ppCrwBuffer, i8 i_Ptn);
+    eEC        eAppendRow(RowSingle* pRow, CrwBuffer** ppCrwBuffer, i8 i_Ptn);
     CrwBuffer* pCrwBuffer(i8 iPtn);
     void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
     

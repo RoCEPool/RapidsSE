@@ -31,7 +31,7 @@ WriteHash::WriteHash(eCN eClassNo, Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_pTable = pTable;
-  m_pRow   = new Row(pTable->pStreamDef(),C_ALL);
+  m_pRow = new RowSingle(pTable->pStreamDef(),C_ALL);
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pCrwBuffer[i_Partition]     = nullptr;

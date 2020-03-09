@@ -663,7 +663,7 @@ void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
     }
     
     // create a row for retrieval
-    pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pStreamDef(),0);
+    pJob_FetchRows->m_pRow = new RowSingle(pJob_FetchRows->m_pTable->pStreamDef(),0);
     
     while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
       
@@ -698,7 +698,7 @@ void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
   }
   
   // create a row for retrieval
-  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pStreamDef(), 0);
+  pJob_FetchRows->m_pRow = new RowSingle(pJob_FetchRows->m_pTable->pStreamDef(), 0);
                    
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
     

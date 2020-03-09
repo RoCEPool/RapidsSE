@@ -89,7 +89,7 @@ WriteBehind::~WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC WriteBehind::eAppendRow(Row* pRow, CrwBuffer** ppCrwBuffer, i8 i_Ptn)
+eEC WriteBehind::eAppendRow(RowSingle* pRow, CrwBuffer** ppCrwBuffer, i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   

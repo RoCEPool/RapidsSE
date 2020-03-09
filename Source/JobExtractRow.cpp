@@ -62,7 +62,7 @@ bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
   if (m_pRow)
     m_pRow->vResetValues();
   else
-    m_pRow = new Row(pStreamDef,C_ALL);
+    m_pRow = new RowSingle(pStreamDef,C_ALL);
 
   char* acRecCrs = szRecStr->azChar();
 

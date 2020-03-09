@@ -876,7 +876,7 @@ void Step::vRegOperandCsvToCrw(void)
   
   ExtractRow* pExtractRow = _pExtractRow(*m_pRegSet->m_xpRegister0);
   
-  Row* pRow;
+  RowSingle* pRow;
   
   //i8 nRecords = pCsvBuffer->nRecords();
   //for (i8 i_Record = 0; i_Record < nRecords; i_Record++) {

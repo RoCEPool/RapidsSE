@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* generate a random row                                                      */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRandom(Row* pRow, StreamDef* pStreamDef)
+void RowGenerator::vRandom(RowSingle* pRow, StreamDef* pStreamDef)
 {
   i8 nCols = pStreamDef->nColumns(C_ALL);
   
@@ -53,7 +53,7 @@ void RowGenerator::vRandom(Row* pRow, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* generate a random bcd column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndBcd(Row* pRow, Column* pCol)
+void RowGenerator::vRndBcd(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -65,7 +65,7 @@ void RowGenerator::vRndBcd(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random bol column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndBol(Row* pRow, Column* pCol)
+void RowGenerator::vRndBol(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -77,7 +77,7 @@ void RowGenerator::vRndBol(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random dte column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndDte(Row* pRow, Column* pCol)
+void RowGenerator::vRndDte(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -89,7 +89,7 @@ void RowGenerator::vRndDte(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random flt column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndFlt(Row* pRow, Column* pCol)
+void RowGenerator::vRndFlt(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -101,7 +101,7 @@ void RowGenerator::vRndFlt(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random int column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndInt(Row* pRow, Column* pCol)
+void RowGenerator::vRndInt(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -113,7 +113,7 @@ void RowGenerator::vRndInt(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random ivl column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndIvl(Row* pRow, Column* pCol)
+void RowGenerator::vRndIvl(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -125,7 +125,7 @@ void RowGenerator::vRndIvl(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random tme column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndTme(Row* pRow, Column* pCol)
+void RowGenerator::vRndTme(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -137,7 +137,7 @@ void RowGenerator::vRndTme(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random tsp column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndTsp(Row* pRow, Column* pCol)
+void RowGenerator::vRndTsp(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   
@@ -149,7 +149,7 @@ void RowGenerator::vRndTsp(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* generate a random vch column                                               */
 /*----------------------------------------------------------------------------*/
-void RowGenerator::vRndVch(Row* pRow, Column* pCol)
+void RowGenerator::vRndVch(RowSingle* pRow, Column* pCol)
 {
   Datum oDatum;
   

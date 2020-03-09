@@ -8,7 +8,7 @@ namespace Records
   class CsvCursor
   {
   public:
-    static bool bExtractNext(Row* pRow, StreamDef* pStreamDef,
+    static bool bExtractNext(RowSingle* pRow, StreamDef* pStreamDef,
                              char** aazCrs, Format* pFmt,
                              bool& bBlankLine_);
   

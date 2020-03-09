@@ -28,7 +28,7 @@ namespace CompactBuffers
     static Crw*       pRefdCrw(Ref xRef);
     static CrwBuffer* pRefdCrwBuffer(Ref& xRef);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
-    static void       vToRow(Row* pRow, Crw* aCrw);
+    static void       vToRow(RowSingle* pRow, Crw* aCrw);
 
     HeadLine*  aGetHead(i8 i_Row);
     void       vTable(Table* pTable);
@@ -54,7 +54,7 @@ namespace CompactBuffers
     // row functions
     bool       bAppendCrw(Crw* aCrwSrc);
     Crw*       aCrw(i8 i_Row);
-    void       vGetRow(Row* pRow, i8 i_Row);
+    void       vGetRow(RowSingle* pRow, i8 i_Row);
     void       vShow(void);
     void       vShowRow(i8 i_Row);
     StreamDef* pStreamDef(void);
@@ -63,7 +63,7 @@ namespace CompactBuffers
     // row functions
     void vAppendClose(void);
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
-    bool bAppendRow(Row* pRow);
+    bool bAppendRow(RowSingle* pRow);
 
   private:
     bool       bHasSpace(i8 nBytes);

@@ -8,9 +8,9 @@ namespace CompactBuffers
   class ExtractRow : public Object
   {
   public:
-    Row*    m_pRow;         // row
-    Table*  m_pTable;       // table
-    Format  m_oFormatters;  // formatters
+    RowSingle* m_pRow;         // row
+    Table*     m_pTable;       // table
+    Format     m_oFormatters;  // formatters
     
     // must be last
     Footer m_xFooter;
@@ -23,7 +23,7 @@ namespace CompactBuffers
    ~ExtractRow(void) noexcept(false);
     
   public:
-    bool bExtractRow(Row** ppRow, char** aazRecStr, bool &bBlankLine);
+    bool bExtractRow(RowSingle** ppRow, char** aazRecStr, bool &bBlankLine);
     
   private:
     Footer* aFooter(void);

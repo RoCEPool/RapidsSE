@@ -52,7 +52,7 @@ namespace Partitioning
     bool bAllBuffersWritten(eDS eDataSource);
     Crw* aAllotFixedSizeCrw(Ref& xRowRef);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
-    void vAppendRow(RowCompactor* pRowCompactor, Row* pRow);
+    void vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow);
     void vBuffersWritten(i8 m_nBuffersWritten);
     i8   nBuffersWritten(void);
     i8   nCrwBuffers(void);

@@ -19,10 +19,10 @@ namespace Records
     
   public:
     SP_Record(void);
-    SP_Record(Row* pRow);
+    SP_Record(RowSingle* pRow);
    ~SP_Record(void) noexcept(false);
   
-    void vAppendCol(Column* pCol, Row* pRow);
+    void vAppendCol(Column* pCol, RowSingle* pRow);
     void vAppendDtm(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
@@ -37,9 +37,9 @@ namespace Records
     char* azRecord(void);
     void vReset(void);
     Stz* sz(void);
-    Stz* sz(Row* pRow);
+    Stz* sz(RowSingle* pRow);
   
-    void vToRecord(Row* pRow);
+    void vToRecord(RowSingle* pRow);
   
     Footer* aFooter(void);
   };

@@ -56,7 +56,7 @@ ExtractRow::ExtractRow(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
   m_pTable = pTable;
-  m_pRow   = new Row(m_pTable->pStreamDef(), C_ALL);
+  m_pRow   = new RowSingle(m_pTable->pStreamDef(), C_ALL);
   
   m_oFormatters.vSet(AM::pFmt());
   m_oFormatters.m_cEnclosedBy_Leading = '\'';
@@ -86,7 +86,7 @@ ExtractRow::~ExtractRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-bool ExtractRow::bExtractRow(Row** ppRow, char** aazRecStr, bool &bBlankLine)
+bool ExtractRow::bExtractRow(RowSingle** ppRow, char** aazRecStr, bool &bBlankLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
