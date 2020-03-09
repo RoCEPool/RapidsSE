@@ -240,6 +240,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_ROWAGG
   /* */ &Dump::vUndefined,       // CN_ROWCOMPACTOR
   /* */ &Dump::vUndefined,       // CN_ROWONCE
+  /* */ &Dump::vUndefined,       // CN_ROWSINGLE
   /* */ &Dump::vUndefined,       // CN_ROWTRAY
   
   /* */ &Dump::vInvalid,         // CN__S__
@@ -574,6 +575,7 @@ i8 giClassSize[]
   /* */ sizeof(Row),  //correct     // CN_ROWAGG
   /* */ sizeof(RowCompactor),       // CN_ROWCOMPACTOR
   /* */ sizeof(RowOnce),            // CN_ROWONCE
+  /* */ sizeof(RowSingle),          // CN_ROWSINGLE
   /* */ sizeof(RowTray),            // CN_ROWTRAY
   
   /* */ 'S' - ('A' - 1),            // CN__S__
@@ -908,6 +910,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWCOMPACTOR
   /* */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
+  /* */ HT_TRANSIENT_LARGE,   // CN_ROWSINGLE
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWTRAY
   
   /* */ HT_INVALID,           // CN__S__
