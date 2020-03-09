@@ -9,14 +9,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_EnameSet(void)
 {
-  vAddStep("enameSet::new"_Stz,    &Step::vEnameSetNew);
+  vAddStep("enameSet::new"_Stz,      &Step::vEnameSetNew);
   
-  vAddStep("enameSet.addInt"_Stz,  &Step::vEnameSetAddInt);
-  vAddStep("enameSet.addStr"_Stz,  &Step::vEnameSetAddStr);
-  vAddStep("enameSet.asStr"_Stz,   &Step::vEnameSetAsStr);
-  vAddStep("enameSet.getInt"_Stz,  &Step::vEnameSetGetInt);
-  vAddStep("enameSet.getStr"_Stz,  &Step::vEnameSetGetStr);
-  vAddStep("enameSet.hasName"_Stz, &Step::vEnameSetHasName);
+  vAddStep("enameSet.addInt"_Stz,    &Step::vEnameSetAddInt);
+  vAddStep("enameSet.addStr"_Stz,    &Step::vEnameSetAddStr);
+  vAddStep("enameSet.asStr"_Stz,     &Step::vEnameSetAsStr);
+  vAddStep("enameSet.copy"_Stz,      &Step::vEnameSetCopy);
+  vAddStep("enameSet.getInt"_Stz,    &Step::vEnameSetGetInt);
+  vAddStep("enameSet.getStr"_Stz,    &Step::vEnameSetGetStr);
+  vAddStep("enameSet.hasName"_Stz,   &Step::vEnameSetHasName);
   vAddStep("enameSet.upsertStr"_Stz, &Step::vEnameSetUpsertStr);
 }
 
@@ -92,6 +93,23 @@ void Step::vEnameSetAsStr(void)
   sStr = spEnameSet.sz(pEnameSet);
   
   m_pDataStack->vPushStr(sStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* EnameSet.copy -- copy source set into this destination set                 */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetCopy(void)
+{
+  ENTRY(); // ENTRY("vEnameSetCopy"_Stz);
+  
+  EnameSet* pEnameSet_dst = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  EnameSet* pEnameSet_src = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pEnameSet_dst->vCopy(pEnameSet_src);
   
   EXIT();
 }
