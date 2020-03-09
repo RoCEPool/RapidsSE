@@ -23,6 +23,14 @@
 /*----------------------------------------------------------------------------*/
 : PassThruOp_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +38,22 @@
 /*----------------------------------------------------------------------------*/
 : PassThruOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  "__REPORT" locals| sReportTable |
+
+  sReportTable checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+    sReportTable pushTable assert
+    sReportTable find execute to table[]
+  then
+
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -39,8 +63,7 @@
 
   LogEntry SEED_REQ
 
-  0 locals| bufferCount |
-  "__REPORT" locals| sReportTable |
+  0 to Counter0[]
 
   // set topolgy in the op
   <topology> op.topology!
@@ -64,7 +87,7 @@
 
        ZK_CSVBUFFER of
          //"Operand:- ZK_CSVBUFFER" .verbose
-         bufferCount 1 + to bufferCount
+          Counter0[] 1 + to  Counter0[]
          Operand[].delete
          true
       endof
@@ -74,7 +97,7 @@
         Operand[].delete
         Operand[].newCsvBuffer
         Operand[].report
-        bufferCount "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
+         Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
         Operand[].pipeout
 
         Operand[].newEosMarker
@@ -82,32 +105,9 @@
         true
       endof
 
-      ZK_PULSEMARKER of
+      ZK_PULSEMARKER of PassThruOp_PulseMarker endof
 
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-
-        // new a stream def
-        Operand[].newStreamDef
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-
-        sReportTable checkIsValidTable not if
-          op.pipelineJob@ ERROR_JOB !!logError
-          Operand[].delete
-          Operand[].newErrorMarker
-        else
-          sReportTable pushTable assert
-          sReportTable find execute to table[]
-        then
-
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of PassThruOp_StartMarker endof
 
       // handle other operand as generic operands
       jobOperand::generic
