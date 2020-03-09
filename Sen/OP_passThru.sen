@@ -9,6 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : PassThruOp_CsvBuffer \handler
 
+  //"Operand:- ZK_CSVBUFFER" .verbose
+  Counter0[] 1 + to  Counter0[]
+  Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +21,17 @@
 /*----------------------------------------------------------------------------*/
 : PassThruOp_EosMarker \handler
 
+  //"Operand:- ZK_EOSMARKER" .verbose
+  Operand[].delete
+  Operand[].newCsvBuffer
+  Operand[].report
+  Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
+  Operand[].pipeout
+
+  Operand[].newEosMarker
+  Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -85,25 +101,9 @@
     // decode kind
     Operand[].kind case
 
-       ZK_CSVBUFFER of
-         //"Operand:- ZK_CSVBUFFER" .verbose
-          Counter0[] 1 + to  Counter0[]
-         Operand[].delete
-         true
-      endof
+      ZK_CSVBUFFER   of PassThruOp_CsvBuffer   endof
 
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        Operand[].delete
-        Operand[].newCsvBuffer
-        Operand[].report
-         Counter0[] "passThru" "passThru,%v,%v\nn" str.format Operand[].csvAppend
-        Operand[].pipeout
-
-        Operand[].newEosMarker
-        Operand[].pipeout
-        true
-      endof
+      ZK_EOSMARKER   of PassThruOp_EosMarker   endof
 
       ZK_PULSEMARKER of PassThruOp_PulseMarker endof
 
