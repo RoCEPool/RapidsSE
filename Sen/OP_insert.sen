@@ -9,6 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : InsertOp_CrwBuffer \handler
 
+  //"Operand:- ZK_CRWBUFFER" .verbose
+  tablePtn[].get tablePtnGrabWrite2
+  Operand[].insertIntoTable
+  tablePtn[].get tablePtnDropWrite2
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +22,23 @@
 /*----------------------------------------------------------------------------*/
 : InsertOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // check if we can insert into the table
+  sTableNm checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+    // move to table folder and find the table and tablePtn
+    sTableNm pushTable assert
+    sTableNm find execute to table[]
+    table[].tablePtn@ to tablePtn[]
+  then
+
+  Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,13 +46,25 @@
 /*----------------------------------------------------------------------------*/
 : InsertOp_StopMarker \handler
 
+  //"Operand:- ZK_STOPMARKER" .verbose
+  popTable
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: InsertOp_StreamDef\handler
+: InsertOp_StreamDef \handler
 
+  //"Operand:- ZK_STREAMDEF" .verbose
+  Operand[].delete
+  Operand[].newStreamDef
+  Operand[].pipeOut
+  
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -62,48 +97,13 @@
     // decode kind
     Operand[].kind case
 
-    ZK_CRWBUFFER of
-      //"Operand:- ZK_CRWBUFFER" .verbose
-      tablePtn[].get tablePtnGrabWrite2
-      Operand[].insertIntoTable
-      tablePtn[].get tablePtnDropWrite2
-      true
-    endof
+    ZK_CRWBUFFER   of InsertOp_CrwBuffer   endof
 
-    ZK_STARTMARKER of
-      //"Operand:- ZK_STARTMARKER" .verbose
+    ZK_STARTMARKER of InsertOp_StartMarker endof
 
-      // check if we can insert into the table
-      sTableNm checkIsValidTable not if
-        op.pipelineJob@ ERROR_JOB !!logError
-        Operand[].delete
-        Operand[].newErrorMarker
-      else
-        // move to table folder and find the table and tablePtn
-        sTableNm pushTable assert
-        sTableNm find execute to table[]
-        table[].tablePtn@ to tablePtn[]
-      then
+    ZK_STOPMARKER  of InsertOp_StopMarker  endof
 
-      Operand[].pipeout
-      true
-    endof
-
-    ZK_STOPMARKER of
-      //"Operand:- ZK_STOPMARKER" .verbose
-      popTable
-      Operand[].pipeOut
-      Op.ackPipelineJob
-      false
-    endof
-
-    ZK_STREAMDEF of
-      //"Operand:- ZK_STREAMDEF" .verbose
-      Operand[].delete
-      Operand[].newStreamDef
-      Operand[].pipeOut
-      true
-    endof
+    ZK_STREAMDEF   of InsertOp_StreamDef   endof
 
     // handle other operand as generic operands
     jobOperand::generic

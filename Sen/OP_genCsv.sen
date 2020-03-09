@@ -9,6 +9,24 @@
 /*----------------------------------------------------------------------------*/
 : genCsvOp_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  // pipeout a single generated csv buffer
+  //begin
+  table[].get table.genCsvBuffer to Operand[]
+  Operand[].pipeOut
+  //false
+  //while repeat
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,6 +34,21 @@
 /*----------------------------------------------------------------------------*/
 : genCsvOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+  // check if table exits
+  sTableNm checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+    // move to table folder and find the table
+    sTableNm pushTable assert
+    sTableNm find execute to table[]
+  then
+
+  Operand[].pipeOut
+
+  true
 ;
 
 
@@ -52,42 +85,9 @@
     // decode kind
     Operand[].kind case
 
-      ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
+      ZK_PULSEMARKER of genCsvOp_PulseMarker endof
 
-        // new a stream def
-        Operand[].newStreamDef
-        Operand[].pipeOut
-
-        // pipeout a single generated csv buffer
-        //begin
-        table[].get table.genCsvBuffer to Operand[]
-        Operand[].pipeOut
-        //false
-        //while repeat
-
-        Operand[].newEosMarker
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        // check if table exits
-        sTableNm checkIsValidTable not if
-          op.pipelineJob@ ERROR_JOB
-          Operand[].delete
-          Operand[].newErrorMarker
-        else
-          // move to table folder and find the table
-          sTableNm pushTable assert
-          sTableNm find execute to table[]
-        then
-
-        Operand[].pipeOut
-        true
-      endof
+      ZK_STARTMARKER of genCsvOp_StartMarker endof
 
       // handle other operand as generic operands
       jobOperand::generic
