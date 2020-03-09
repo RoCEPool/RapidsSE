@@ -1188,7 +1188,7 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
   
   vTokenCollectEnd();
   
-  vTrace("Recognised Sen Tag: %s\n"_Stz,pToken->szTerm());
+  //vTrace("Recognised Sen Tag: %s\n"_Stz,pToken->szTerm());
   
   Correctness::vDebugPoint();
 }

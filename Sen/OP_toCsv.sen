@@ -9,13 +9,32 @@
 /*----------------------------------------------------------------------------*/
 : ToCsvOp_CrwBuffer \handler
 
+  //"Operand:- ZK_CRWBUFFER" .verbose
+  Operand[].crwToCsv
+  Operand[].get to Subset[]
+  begin
+    Operand[].isNull
+  not while
+    assert::stack_0
+    Operand[].pipeOut
+    Subset[].nextBuffer to Operand[]
+    assert::stack_0
+  repeat
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCsvOp_StreamDef\handler
+: ToCsvOp_StreamDef \handler
 
+  //"Operand:- ZK_STREAMDEF" .verbose
+  Operand[].delete
+  StreamDef[].newToCsvStream
+  StreamDef[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,28 +64,9 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CRWBUFFER of
-        //"Operand:- ZK_CRWBUFFER" .verbose
-        Operand[].crwToCsv
-        Operand[].get to Subset[]
-        begin
-          Operand[].isNull
-        not while
-          assert::stack_0
-          Operand[].pipeOut
-          Subset[].nextBuffer to Operand[]
-          assert::stack_0
-        repeat
-        true
-      endof
+      ZK_CRWBUFFER of ToCsvOp_CrwBuffer  endof
 
-      ZK_STREAMDEF of
-        //"Operand:- ZK_STREAMDEF" .verbose
-        Operand[].delete
-        StreamDef[].newToCsvStream
-        StreamDef[].pipeout
-        true
-      endof
+      ZK_STREAMDEF of ToCsvOp_StreamDef  endof
 
       // handle other operand as generic operands
       jobOperand::generic

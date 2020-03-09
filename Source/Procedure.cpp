@@ -35,7 +35,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
     
     pTkn1_ProcNm->vCopy(sProcNm);
     
-    pTokenVec->vDumpTokens();
+    //pTokenVec->vDumpTokens();
   }
   
   

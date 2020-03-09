@@ -36,14 +36,14 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if table exits
-  sTableNm checkIsValidTable not if
+  <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB
     Operand[].delete
     Operand[].newErrorMarker
   else
     // move to table folder and find the table
-    sTableNm pushTable assert
-    sTableNm find execute to table[]
+    <tableNm> pushTable assert
+    <tableNm> find execute to table[]
   then
 
   Operand[].pipeOut
@@ -61,8 +61,6 @@
 
   job[] locals| pJob_GenCsvOp |
   0 locals| pTable |
-
-  <tableNm> locals| sTableNm |
 
   // set topolgy in the op
   <topology> op.topology!

@@ -12,7 +12,7 @@
   "Operand:- ZK_PULSEMARKER" .verbose
   Operand[].pipeOut
 
-  nBuffers 0 do
+  <nBuffers> 0 do
     I "buffer# %v" .printf
 
     csvBuffer::new to Operand[]
@@ -44,9 +44,7 @@
 
   job[] locals| pJob_BufferGen |
 
-  <nBuffers> >int locals| nBuffers |
-
-  nBuffers "Number of buffers: %v" .printf
+  <nBuffers> "Number of buffers: %v" .printf
 
   // set topolgy in the op
   <topology> op.topology!
