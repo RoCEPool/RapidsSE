@@ -48,9 +48,11 @@
   0 locals| pTagSet |
 
   // attach a new ename set to the word being created
-  EnameSet::new to pTagSet
-  pTagSet compiler::current@ word.EnameSet!
-
+  //EnameSet::new to pTagSet
+  //pTagSet compiler::current@ word.EnameSet!
+  compiler::current@ word.EnsureEnameSet
+  compiler::current@ word.EnameSet@ to pTagSet
+  
   // add tag set name
   
   "<TagSetNm>" compiler::current@ word.name@ jobInfo::addEname
