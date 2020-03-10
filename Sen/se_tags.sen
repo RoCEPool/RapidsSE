@@ -89,9 +89,6 @@
   // drop the "}" from dstack
   drop
   
-  pTagSet enameSet.asStr .
-
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   compiler::current@ ,
