@@ -98,17 +98,33 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* the job info compiler                                                      */
+/* copy ename set of next-token and copy into word being compiled             */
 /*----------------------------------------------------------------------------*/
-: tagCopy immediate ( pEnameSetSrc -- )
+: tagCopy: immediate ( -- )
 
-  params| pEnamSetSrc |
+  0 0 0 0 locals| pEnamSetDst pEnamSetSrc pDstTagWord pSrcTagWord |
   
-  compiler::current@ locals| pWord |
+  // get the ename set of the word being compiled
+  compiler::current@ to pDstTagWord
+  
+  pDstTagWord word.EnsureEnameSet
 
-  pWord word.EnsureEnameSet
+  pDstTagWord word.enameset@ to pEnamSetDst
   
-  pEnamSetSrc pWord word.enameset@ enameSet.copy
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get the ename set to be copied
+  next-token find to pSrcTagWord
+  
+  pSrcTagWord not if
+  then
+    
+  pSrcTagWord execute to pEnamSetSrc
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  // copy source ename set into destination
+  pEnamSetSrc pEnamSetDst enameSet.copy
 ;
   
 /*============================================================================*/

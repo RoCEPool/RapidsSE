@@ -135,12 +135,14 @@ jobInfo: scanOp
 
 tags_localOp enameset.asStr .
 
-: scanOp
+: xyzOp tagCopy: tags_localOp
   tags{
     <a> = "value a"
-    <b> = DL_GRAB_READ
+    <b> = C_MAGIC
   }
 ;
+
+xyzOp enameset.asStr .
 
 /*============================================================================*/
 /* end                                                                        */
