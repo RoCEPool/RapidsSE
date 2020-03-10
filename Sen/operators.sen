@@ -4,6 +4,9 @@
 
 "-operators.sen" .verbose
 
+"op__common.sen"          include
+
+
 "OP_bufferGen.sen"        include
 "OP_burst.sen"            include
 
