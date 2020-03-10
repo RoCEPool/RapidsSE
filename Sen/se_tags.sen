@@ -5,25 +5,86 @@
 " se_tags.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* tag testing                                                                */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-: SenTag
+: jobInfo::addEname params| sEvalue sEname |
 
-  ~SenTag .
+  compiler::current@ word.EnameSet@ locals| pEnameSet |
 
+  sEvalue find locals| pEvalueWord |
+
+  pEvalueWord if
+    pEvalueWord word.category@ find: rootConstant eql if
+
+      // sEvalue "  %v is a constant" .printf
+       sEname pEvalueWord execute pEnameSet EnameSet.addInt
+      exit
+
+    then
+  then
+
+  // -- -- --
+  sEname sEvalue pEnameSet EnameSet.addStr
 ;
 
-"SenTag" word::find word.see
+/*----------------------------------------------------------------------------*/
+/* the job info compiler                                                      */
+/*----------------------------------------------------------------------------*/
+: tags{ immediate
+  
+  0 locals| pTagSet |
 
-"SEN_TAG_VALUE" "~SenTag" tag::set
+  // attach a new ename set to the word being created
+  EnameSet::new to pTagSet
+  pTagSet compiler::current@ word.EnameSet!
 
-//"~SenTag" tag::get .
+  // add tag set name
+  
+  "<TagSetNm>" compiler::current@ word.name@ jobInfo::addEname
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse each input token till "}", build ename set representing the syntax
 
-~SenTag .
+  0 0 locals| sTagName sTagValue |
 
-SenTag
+  begin
+  
+    next-token
+    
+    dup "}" str.equal not
+    
+  while
+  
+    // collect the tag name
+    to sTagName
+    
+    // skip the =
+    next-token drop
+    
+    // collect the tag value
+    next-token to sTagValue
+    
+    // add the decoded
+    sTagName sTagValue jobInfo::addEname
+  
+  repeat
 
-//debug::breakPoint
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // drop the "}" from dstack
+  drop
+  
+  pTagSet enameSet.asStr .
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  compiler::current@ ,
+  
+  POSTPONE word.enameset@
+;
+
+
 
 /*============================================================================*/
 /* end                                                                        */

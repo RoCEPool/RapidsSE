@@ -16,6 +16,7 @@
         "se_handlers.sen"   include
         "se_operators.sen"  include
         "se_procedures.sen" include
+        "se_tags.sen"       include
 3 .put  "se_requests.sen"   include
         "jobModel.sen"      include
         "operators.sen"     include
