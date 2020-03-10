@@ -50,6 +50,8 @@
   BM_TimerUpdate
 
   Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -63,6 +65,8 @@
 
   Operand[].newEosMarker
   Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,46 +82,24 @@
   BM_TimerNew
 
   Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for BM_InflateCrwOp                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BM_InflateCrwOp_req ( -- )
+: BM_InflateCrwOp_req\operator
  
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: BM_InflateCrwOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: BM_InflateCrwOp_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: BM_InflateCrwOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-    ZK_CRWBUFFER   of BM_InflateCrwOp_CrwBuffer   true endof
-
-    ZK_EOSMARKER   of BM_InflateCrwOp_EosMarker   true endof
-
-    ZK_STARTMARKER of BM_InflateCrwOp_StartMarker true endof
-
-    jobOperand::generic swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   "*** BM_InflateRowOp EXITS" .
   LogReqExit

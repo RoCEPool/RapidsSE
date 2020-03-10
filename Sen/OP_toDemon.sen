@@ -25,7 +25,6 @@
 
   LogReqEntry SEED_REQ
 
-  // set topology, next stage and op
   op__topology
 
   find: OP_toDemon_PulseMarker ZK_PULSEMARKER op[].handler!

@@ -55,13 +55,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute for periodicOp request                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : periodicOp_req ( -- )
+ : periodicOp_req \operator
  
   LogReqEntry SEED_REQ
 
   0 locals| hours   |
   0 locals| minutes |
-
 
   "<minutes>" job[] job.enameset@ enameset.hasName if
     <minutes> >int to minutes
@@ -83,39 +82,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: periodicOp_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: periodicOp_PulseMarker ZK_PULSEMARKER op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_ERRORMARKER of periodicOp_ErrorMarker endof
-
-      ZK_PULSEMARKER of periodicOp_PulseMarker endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

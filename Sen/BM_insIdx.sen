@@ -105,43 +105,19 @@
 /*----------------------------------------------------------------------------*/
 /* execute for insertOp                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BM_InsIdxOp_req ( -- )
+: BM_InsIdxOp_req \operator
  
   LogReqEntry SEED_REQ
-//
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
 
   true "BM_InsIdx_StartMarker" find word.breakPt!
 
-  begin
+  op__topology
 
-    // bide till next operand is available
-    Operand[].bide
+  find: BM_InsIdx_EntBuffer   ZK_ENTBUFFER   op[].handler!
+  find: BM_InsIdx_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: BM_InsIdx_StartMarker ZK_STARTMARKER op[].handler!
 
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-    ZK_ENTBUFFER   of BM_InsIdx_EntBuffer   true endof
-
-    ZK_EOSMARKER   of BM_InsIdx_EosMarker   true endof
-
-    ZK_STARTMARKER of BM_InsIdx_StartMarker true endof
-
-    jobOperand::generic swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   "*** BM_InsIdxOp EXITS" .
   LogReqExit

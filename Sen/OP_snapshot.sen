@@ -74,44 +74,16 @@
 /*----------------------------------------------------------------------------*/
 /* SnapshotOp request                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: SnapshotOp_req ( -- )
+: SnapshotOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  0 locals| pTable |
+  op__topology
 
-  // set topolgy in the op
-  <topology> op.topology!
+  find: SnapshotOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: SnapshotOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of SnapshotOp_PulseMarker endof
-
-      ZK_STARTMARKER of SnapshotOp_StartMarker endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

@@ -38,46 +38,18 @@
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BufferGenOp_req ( -- )
+: BufferGenOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  job[] locals| pJob_BufferGen |
-
   <nBuffers> "Number of buffers: %v" .printf
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: BufferGenOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: BufferGenOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of BufferGenOp_PulseMarker endof
-
-      ZK_STARTMARKER of BufferGenOp_StartMarker endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   "*** BufferGen EXITS" .
   LogReqExit

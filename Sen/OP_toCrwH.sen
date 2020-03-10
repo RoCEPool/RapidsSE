@@ -20,6 +20,8 @@
   // pipe out the stream def
   Operand[].newStreamDef
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +49,8 @@
   loop
 
   Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -73,6 +77,8 @@
   loader[].delete
 
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,54 +102,25 @@
   then
 
   Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for toCrwOp req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : toCrwH_req ( -- )
+ : toCrwH_req \operator
 
   LogReqEntry SEED_REQ
 
-  job[] locals| pJob_ToCrwOp |
+  op__topology
 
-  <tableNm> locals| sTableNm |
+  find: toCrwH_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toCrwH_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toCrwH_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toCrwH_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_CSVBUFFER of toCrwH_CsvBuffer true endof
-
-      ZK_EOSMARKER of toCrwH_EosMarker true endof
-
-      ZK_PULSEMARKER of toCrwH_PulseMarker true endof
-
-      ZK_STARTMARKER of toCrwH_StartMarker true endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

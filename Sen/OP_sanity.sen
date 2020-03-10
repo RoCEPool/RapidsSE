@@ -47,38 +47,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : SanityOp_req ( -- )
+ : SanityOp_req \operator
  
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: Sanity_InfoSet ZK_INFOSET op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_INFOSET of Sanity_InfoSet endof
-
-      // handle other operand as generic operands
-      jobOperand::generic swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

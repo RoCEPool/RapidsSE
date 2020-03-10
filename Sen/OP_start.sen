@@ -32,43 +32,16 @@
 /*----------------------------------------------------------------------------*/
 /* execute for startOp request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : startOp_req ( -- )
+ : startOp_req \operator
  
   LogReqEntry SEED_REQ
 
-  job[] job.enameSet@ enameSet.asStr .
+  op__topology
 
-  // set topolgy in the op
-  <topology> op.topology!
+  find: startOp_StartedMarker ZK_STARTEDMARKER op[].handler!
+  find: startOp_StoppedMarker ZK_STOPPEDMARKER op[].handler!
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_STARTEDMARKER of startOp_StartedMarker endof
-
-      ZK_STOPPEDMARKER of startOp_StoppedMarker endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

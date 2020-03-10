@@ -79,7 +79,6 @@
 
   LogReqEntry SEED_REQ
 
-  // set topology, next stage and op
   op__topology
 
   find: BM_GenEnt_PulseMarker ZK_PULSEMARKER op[].handler!

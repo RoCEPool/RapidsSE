@@ -7,40 +7,16 @@
 /*----------------------------------------------------------------------------*/
 /* execute for xmit request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : XmitOp_req ( -- )
+ : XmitOp_req \operator
 
   LogReqEntry SEED_REQ
-
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
 
   // set the xmit kind
   <xmitKind> >int op.xmitKind!
 
-  begin
+  op__topology
 
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

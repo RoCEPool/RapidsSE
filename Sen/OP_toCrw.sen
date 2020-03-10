@@ -91,47 +91,19 @@
 /*----------------------------------------------------------------------------*/
 /* execute for ToCrwOp req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToCrwOp_req ( -- )
+ : ToCrwOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: ToCrwOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: ToCrwOp_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: ToCrwOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: ToCrwOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: ToCrwOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_CSVBUFFER of ToCrwOp_CsvBuffer endof
-
-      ZK_EOSMARKER of ToCrwOp_EosMarker endof
-
-      ZK_PULSEMARKER of ToCrwOp_PulseMarker endof
-
-      ZK_STARTMARKER of ToCrwOp_StartMarker endof
-
-      ZK_STREAMDEF of ToCrwOp_StreamDef endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

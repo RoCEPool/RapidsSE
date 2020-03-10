@@ -63,43 +63,16 @@
 /*----------------------------------------------------------------------------*/
 /* execute for TruncateOp req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : TruncateOp_req ( -- )
+ : TruncateOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  job[] locals| pJob_TruncateOp |
+  op__topology
 
-  // set topolgy in the op
-  <topology> op.topology!
+  find: TruncateOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: TruncateOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of TruncateOp_PulseMarker endof
-
-      ZK_STARTMARKER of TruncateOp_StartMarker endof
-
-        // handle other operand as generic operands
-        jobOperand::generic
-        swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

@@ -60,42 +60,16 @@
 /*----------------------------------------------------------------------------*/
 /* scanOp request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: scanOp_req ( -- )
+: scanOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: scanOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: scanOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of scanOp_PulseMarker endof
-
-      ZK_STARTMARKER of scanOp_StartMarker endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

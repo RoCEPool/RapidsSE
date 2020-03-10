@@ -37,7 +37,6 @@
 
   LogReqEntry SEED_REQ
 
-  // set topology, next stage and op
   op__topology
 
   find: OP_burst_EntBuffer ZK_ENTBUFFER op[].handler!

@@ -40,41 +40,16 @@
 /*----------------------------------------------------------------------------*/
 /* execute for ToCsvOp req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToCsvOp_req ( -- )
+ : ToCsvOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: ToCsvOp_CrwBuffer  ZK_CRWBUFFER op[].handler!
+  find: ToCsvOp_StreamDef  ZK_STREAMDEF op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_CRWBUFFER of ToCsvOp_CrwBuffer  endof
-
-      ZK_STREAMDEF of ToCsvOp_StreamDef  endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

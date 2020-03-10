@@ -70,48 +70,18 @@
 /*----------------------------------------------------------------------------*/
 /* execute for insertOp                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : InsertOp_req ( -- )
+ : InsertOp_req \operator
  
   LogReqEntry SEED_REQ
-  job[] locals| pJob_InsertOp |
 
-  <tableNm> locals| sTableNm |
+  op__topology
 
-  // set topolgy in the op
-  <topology> op.topology!
+  find: InsertOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: InsertOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: InsertOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: InsertOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-    ZK_CRWBUFFER   of InsertOp_CrwBuffer   endof
-
-    ZK_STARTMARKER of InsertOp_StartMarker endof
-
-    ZK_STOPMARKER  of InsertOp_StopMarker  endof
-
-    ZK_STREAMDEF   of InsertOp_StreamDef   endof
-
-    // handle other operand as generic operands
-    jobOperand::generic
-    swap
-
-    endcase
-
-    while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

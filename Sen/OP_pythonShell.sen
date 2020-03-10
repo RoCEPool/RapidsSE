@@ -54,45 +54,18 @@
 /*----------------------------------------------------------------------------*/
 /* execute for pythonShellOp request                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: pythonShellOp_req ( -- )
+: pythonShellOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: pythonShellOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: pythonShellOp_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: pythonShellOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: pythonShellOp_StopMarker  ZK_STOPMARKER  op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_CSVBUFFER   of pythonShellOp_CsvBuffer   endof
-
-      ZK_ERRORMARKER of pythonShellOp_ErrorMarker endof
-
-      ZK_STARTMARKER of pythonShellOp_StartMarker endof
-
-      ZK_STOPMARKER  of pythonShellOp_StopMarker  endof
-
-      Operand[].delete
-      true
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

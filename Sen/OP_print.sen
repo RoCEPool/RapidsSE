@@ -32,42 +32,16 @@
 /*----------------------------------------------------------------------------*/
 /* printnOp request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: printOp_req ( -- )
+: printOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: printOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: printOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of printOp_PulseMarker endof
-
-      ZK_STARTMARKER of printOp_StartMarker endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

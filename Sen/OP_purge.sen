@@ -9,6 +9,21 @@
 /*----------------------------------------------------------------------------*/
 : PurgeOp_PulseMarker \handler
 
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Operand[].pipeOut
+
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+
+  // PURGE
+  tablePtn[].get tablePtnGrabWrite2
+  tablePtn[].purge
+  tablePtn[].get tablePtnDropWrite2
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -16,88 +31,41 @@
 /*----------------------------------------------------------------------------*/
 : PurgeOp_StartMarker \handler
 
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // check if we can scan the table
+  <tableNm> checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  else
+
+    // move to table folder and find the table and tablePtn
+    <tableNm> pushTable assert
+    <tableNm> find execute to table[]
+    table[].tablePtn@ to tablePtn[]
+  then
+
+  Operand[].pipeOut
+
+  true
+
 ;
 
 
 /*----------------------------------------------------------------------------*/
 /* PurgeOp request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: PurgeOp_req ( -- )
+: PurgeOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  0 locals| pTable |
+  op__topology
 
-  job[] locals| pJob_PurgeOp |
-  <tableNm> locals| sTableNm |
+  find: PurgeOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: PurgeOp_StartMarker ZK_STARTMARKER op[].handler!
 
-  // set topolgy in the op
-  <topology> op.topology!
-
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of
-
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-
-        // new a stream def
-        Operand[].newStreamDef
-        Operand[].pipeOut
-
-        // PURGE
-        tablePtn[].get tablePtnGrabWrite2
-        tablePtn[].purge
-        tablePtn[].get tablePtnDropWrite2
-        Operand[].newEosMarker
-        Operand[].pipeOut
-        true
-
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-
-        // check if we can scan the table
-        sTableNm checkIsValidTable not if
-          op.pipelineJob@ ERROR_JOB !!logError
-          Operand[].delete
-          Operand[].newErrorMarker
-        else
-
-          // move to table folder and find the table and tablePtn
-          sTableNm pushTable assert
-          sTableNm find execute to table[]
-          table[].tablePtn@ to tablePtn[]
-        then
-
-        Operand[].pipeOut
-        true
-      endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

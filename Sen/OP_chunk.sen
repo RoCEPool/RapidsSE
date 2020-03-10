@@ -76,44 +76,17 @@
 /*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : Chunk_req ( -- )
+ : Chunk_req \operator
  
   LogReqEntry SEED_REQ
 
-  job[] locals| pJob_ToFileOp |
+  op__topology
 
-  // set topolgy in the op
-  <topology> op.topology!
+  find: chunk_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: chunk_StartMarker ZK_STARTMARKER op[].handler!
+  find: chunk_StopMarker  ZK_STOPMARKER  op[].handler!
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
-
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_PULSEMARKER of chunk_PulseMarker endof
-
-      ZK_STARTMARKER of chunk_StartMarker endof
-
-      ZK_STOPMARKER  of chunk_StopMarker  endof
-
-      // handle other operand as generic operands
-      jobOperand::generic swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

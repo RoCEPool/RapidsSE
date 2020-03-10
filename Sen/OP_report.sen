@@ -128,53 +128,22 @@
 /*----------------------------------------------------------------------------*/
 /* execute for reportOp request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: reportOp_req ( -- )
+: reportOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: reportOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: reportOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: reportOp_EntBuffer   ZK_ENTBUFFER   op[].handler!
+  find: reportOp_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: reportOp_IrwBuffer   ZK_IRWBUFFER   op[].handler!
+  find: reportOp_SrtBuffer   ZK_SRTBUFFER   op[].handler!
+  find: reportOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: reportOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_CRWBUFFER of reportOp_CrwBuffer endof
-
-      ZK_CSVBUFFER of reportOp_CsvBuffer endof
-
-      ZK_ENTBUFFER of reportOp_EntBuffer endof
-
-      ZK_EOSMARKER of reportOp_EosMarker endof
-
-      ZK_IRWBUFFER of reportOp_IrwBuffer endof
-
-      ZK_SRTBUFFER of reportOp_SrtBuffer endof
-
-      ZK_STARTMARKER of reportOp_StartMarker endof
-
-      ZK_STREAMDEF of reportOp_StreamDef endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

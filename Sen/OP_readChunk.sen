@@ -18,6 +18,8 @@
     OperandB[].pipeout
   loop
   Operand[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +39,8 @@
     Operand[].newErrorMarker
   then
   Operand[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,48 +55,24 @@
   then
   Operand[].pipeOut
   Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for reachChunk req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : readChunk_req ( -- )
+ : readChunk_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: readChunk_InfoSet     ZK_INFOSET     op[].handler!
+  find: readChunk_StartMarker ZK_STARTMARKER op[].handler!
+  find: readChunk_StopMarker  ZK_STOPMARKER  op[].handler!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
-
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_STOPMARKER of readChunk_StopMarker false endof
-
-      ZK_INFOSET of readChunk_InfoSet true endof
-
-      ZK_STARTMARKER of readChunk_StartMarker true endof
-
-      // handle other operand as generic operands
-      jobOperand::generic
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis

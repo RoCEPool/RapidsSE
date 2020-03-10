@@ -42,47 +42,35 @@
   false
 ;
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_Xyz ...                                                     */
+/*----------------------------------------------------------------------------*/
+: sinkOp_Xyz \handler
+
+  // delete all operands
+  operand[].delete
+
+  true
+;
+
+
 
 /*----------------------------------------------------------------------------*/
 /* execute for sinkOp request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sinkOp_req ( -- )
+: sinkOp_req \operator
 
   LogReqEntry SEED_REQ
 
-  // set topolgy in the op
-  <topology> op.topology!
+  op__topology
 
-  // set nextStage in op
-  <nextStage> op.nextStage!
+  find: sinkOp_Xyz op[].handlerAll!
 
-  // set nextOp in op
-  <nextOp> op.nextOp!
+  find: sinkOp_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: sinkOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: sinkOp_StopMarker  ZK_STOPMARKER  op[].handler!
 
-  begin
-
-    // bide till next operand is available
-    Operand[].bide
-
-    // pop next operand from queue into Operand[]
-    Operand[].next
-
-    // decode kind
-    Operand[].kind case
-
-      ZK_ERRORMARKER of sinkOp_ErrorMarker endof
-
-      ZK_STARTMARKER of sinkOp_StartMarker endof
-
-      ZK_STOPMARKER  of sinkOp_StopMarker endof
-
-      Operand[].delete
-      true
-      swap
-
-    endcase
-
-  while assert::stack_0 repeat
+  op__loop
 
   LogReqExit
   job::deleteThis
