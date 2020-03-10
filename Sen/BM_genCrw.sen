@@ -60,7 +60,7 @@
   "*** BM_GenCrwOp EXITS" .
   LogReqExit
   job::deleteThis
-  DONE_RUN
+  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/
