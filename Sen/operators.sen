@@ -5,6 +5,7 @@
 "-operators.sen" .verbose
 
 "op__common.sen"          include
+"op__tagSets.sen"         include
 
 
 "OP_bufferGen.sen"        include
