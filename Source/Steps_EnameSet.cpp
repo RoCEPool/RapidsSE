@@ -9,16 +9,18 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_EnameSet(void)
 {
-  vAddStep("enameSet::new"_Stz,      &Step::vEnameSetNew);
+  vAddStep("enameSet::new"_Stz,       &Step::vEnameSetNew);
   
-  vAddStep("enameSet.addInt"_Stz,    &Step::vEnameSetAddInt);
-  vAddStep("enameSet.addStr"_Stz,    &Step::vEnameSetAddStr);
-  vAddStep("enameSet.asStr"_Stz,     &Step::vEnameSetAsStr);
-  vAddStep("enameSet.copy"_Stz,      &Step::vEnameSetCopy);
-  vAddStep("enameSet.getInt"_Stz,    &Step::vEnameSetGetInt);
-  vAddStep("enameSet.getStr"_Stz,    &Step::vEnameSetGetStr);
-  vAddStep("enameSet.hasName"_Stz,   &Step::vEnameSetHasName);
-  vAddStep("enameSet.upsertStr"_Stz, &Step::vEnameSetUpsertStr);
+  vAddStep("enameSet.addInt"_Stz,     &Step::vEnameSetAddInt);
+  vAddStep("enameSet.addStr"_Stz,     &Step::vEnameSetAddStr);
+  vAddStep("enameSet.asStr"_Stz,      &Step::vEnameSetAsStr);
+  vAddStep("enameSet.copy"_Stz,       &Step::vEnameSetCopy);
+  vAddStep("enameSet.getInt"_Stz,     &Step::vEnameSetGetInt);
+  vAddStep("enameSet.getStr"_Stz,     &Step::vEnameSetGetStr);
+  vAddStep("enameSet.hasName"_Stz,    &Step::vEnameSetHasName);
+  vAddStep("enameSet.replaceInt"_Stz, &Step::vEnameSetReplaceInt);
+  vAddStep("enameSet.replaceStr"_Stz, &Step::vEnameSetReplaceStr);
+  vAddStep("enameSet.upsertStr"_Stz,  &Step::vEnameSetUpsertStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,6 +177,47 @@ void Step::vEnameSetHasName(void)
   bool bHas = pEnameSet->bHasName(sName);
   
   m_pDataStack->vPushInt(bHas);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* EnameSet.replaceInt -- replace a name-integer pair to ename-set            */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetReplaceInt(void)
+{
+  ENTRY(); // ENTRY("vEnameSetReplaceInt"_Stz);
+  
+  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iValue = m_pDataStack->iPopInt(__func__);
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pEnameSet->vReplace(sName,iValue);
+  //pEnameSet->vPrint();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* EnameSet.replaceStr -- replace a name-string pair to ename-set             */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetReplaceStr(void)
+{
+  ENTRY(); // ENTRY("vEnameSetReplaceStr"_Stz);
+  
+  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+
+  s256 sValue;
+  m_pDataStack->vPopStr(sValue,__func__);
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pEnameSet->vReplace(sName,sValue);
+  //pEnameSet->vPrint();
   
   EXIT();
 }

@@ -271,6 +271,8 @@ public:
   void vEnameSetGetInt(void);
   void vEnameSetGetStr(void);
   void vEnameSetHasName(void);
+  void vEnameSetReplaceInt(void);
+  void vEnameSetReplaceStr(void);
   void vEnameSetUpsertStr(void);
   void vEnameSetNew(void);
 

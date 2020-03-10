@@ -41,6 +41,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: tagSet::addReplace params| sEvalue sEname |
+
+  compiler::current@ word.EnameSet@ locals| pEnameSet |
+
+  sEvalue find locals| pEvalueWord |
+
+  pEvalueWord if
+    pEvalueWord word.category@ find: rootConstant eql if
+
+      // sEvalue "  %v is a constant" .printf
+       sEname pEvalueWord execute pEnameSet EnameSet.replaceInt
+      exit
+
+    then
+  then
+
+  // -- -- --
+  sEname sEvalue pEnameSet EnameSet.replaceStr
+;
+
+/*----------------------------------------------------------------------------*/
 /* the job info compiler                                                      */
 /*----------------------------------------------------------------------------*/
 : tags{ immediate
@@ -80,7 +103,7 @@
     next-token to sTagValue
     
     // add the decoded
-    sTagName sTagValue jobInfo::addEname
+    sTagName sTagValue tagSet::addReplace
   
   repeat
 

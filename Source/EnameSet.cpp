@@ -184,10 +184,22 @@ void EnameSet::vCopy(EnameSet* pScrEnameSet)
     
     Stz* szName = pScrEnameSet->szName(i_Ename);
     
-    if (TN_STRING == pScrEnameSet->eToken(i_Ename))
-      vAdd(szName,pScrEnameSet->szValue(i_Ename));
-    else
-      vAdd(szName,pScrEnameSet->iValue(i_Ename));
+    if (bHasName(szName)) {
+      if (TN_STRING == pScrEnameSet->eToken(i_Ename)) {
+        vReplace(szName,pScrEnameSet->szValue(i_Ename));
+      }
+      else {
+        vReplace(szName,pScrEnameSet->iValue(i_Ename));
+      }
+    }
+    else {
+      if (TN_STRING == pScrEnameSet->eToken(i_Ename)) {
+        vAdd(szName,pScrEnameSet->szValue(i_Ename));
+      }
+      else {
+        vAdd(szName,pScrEnameSet->iValue(i_Ename));
+      }
+    }
   }
 }
 
@@ -336,37 +348,13 @@ void EnameSet::vPrintDetailed(void)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vReplace(Stz* szName, Stz* szValue)
-{
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
-  EnameSet xEnameSet;
-  
-  xEnameSet.vCopy(this);
-  vReset();
-  
-  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
-    
-    if (TN_STRING == xEnameSet.eToken(i_Ename)) {
-      
-      if (xEnameSet.szName(i_Ename)->bSame(szName))
-        vAdd(xEnameSet.szName(i_Ename),szValue);
-      else
-        vAdd(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
-    }
-    else
-      vAdd(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy source ename-set into this ename-set and replace an ename pair        */
-/*----------------------------------------------------------------------------*/
 void EnameSet::vReplace(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   EnameSet xEnameSet;
+  
+  bool bWasCopied = false;
   
   xEnameSet.vCopy(this);
   vReset();
@@ -377,12 +365,52 @@ void EnameSet::vReplace(Stz* szName, i8 iValue)
       vAdd(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
     }
     else {
-      if (xEnameSet.szName(i_Ename)->bSame(szName))
+      if (xEnameSet.szName(i_Ename)->bSame(szName)) {
         vAdd(xEnameSet.szName(i_Ename),iValue);
-      else
+        bWasCopied = true;
+      }
+      else {
         vAdd(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+      }
     }
   }
+  
+  if (! bWasCopied)
+    vAdd(szName,iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vReplace(Stz* szName, Stz* szValue)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  EnameSet xEnameSet;
+  
+  bool bWasCopied = false;
+  
+  xEnameSet.vCopy(this);
+  vReset();
+  
+  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
+    
+    if (TN_STRING == xEnameSet.eToken(i_Ename)) {
+      
+      if (xEnameSet.szName(i_Ename)->bSame(szName)) {
+        vAdd(xEnameSet.szName(i_Ename),szValue);
+        bWasCopied = true;
+      }
+      else {
+        vAdd(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
+      }
+    }
+    else
+      vAdd(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+  }
+  
+  if (! bWasCopied)
+    vAdd(szName,szValue);
 }
 
 /*----------------------------------------------------------------------------*/
