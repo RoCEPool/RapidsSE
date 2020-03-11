@@ -122,7 +122,8 @@
   sOpNm series-name "_syn" str.cat :create
 
   // set the word category to be jobSyntax
-  [ compiler::current@ , ] compiler::current@ word.category!
+  //[ compiler::current@ , ] compiler::current@ word.category!
+  find: jobSyntax: compiler::current@ word.category!
 
   // attach an ename set to the word being created
   EnameSet::new locals| pEnameSet |
@@ -193,7 +194,8 @@
   next-token "_cls" str.cat :create
 
   // set the word kind to be jobClass
-  [ compiler::current@ , ] compiler::current@ word.category!
+  //[ compiler::current@ , ] compiler::current@ word.category!
+  find: jobInfo: compiler::current@ word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet

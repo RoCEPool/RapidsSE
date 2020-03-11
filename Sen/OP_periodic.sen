@@ -97,9 +97,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: periodicOp :: periodicOp once ;
-jobSyntax: periodicOp :: periodicOp min <minutes> ;
-jobSyntax: periodicOp :: periodicOp hour <hours> ;
+opSyntax: periodicOp :: periodicOp once ;
+opSyntax: periodicOp :: periodicOp min <minutes> ;
+opSyntax: periodicOp :: periodicOp hour <hours> ;
 
 jobInfo: periodicOp
 {
