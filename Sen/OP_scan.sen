@@ -111,6 +111,9 @@ xyzOp enameset.asStr .
 /*----------------------------------------------------------------------------*/
 
 : abcOp opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc> = "--description of job--"
+  }
 ;
 
 abcOp_info enameset.asStr .

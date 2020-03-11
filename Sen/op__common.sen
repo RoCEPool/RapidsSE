@@ -260,8 +260,8 @@
   // add <jobNm> tag
   "<jobNm>" word::name_trunc pEnameSet EnameSet.addStr
 
-  compiler::current@ ,
-    POSTPONE word.enameset@
+//  compiler::current@ ,
+//    POSTPONE word.enameset@
 ;
 
 
