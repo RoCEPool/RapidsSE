@@ -356,10 +356,10 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 EnameSet* Job::pJobInfo_enameSet(Stz* szJobNm)
 {
-  s32 sJobNm_cls = szJobNm;
-  sJobNm_cls.vConcat("_cls"_Stz);
+  s32 sJobNm_info = szJobNm;
+  sJobNm_info.vConcat("_info"_Stz);
   
-  Word* pWord_jobInfo = AM::pRootDic()->pFindWord(sJobNm_cls);
+  Word* pWord_jobInfo = AM::pRootDic()->pFindWord(sJobNm_info);
   
   if (!pWord_jobInfo)
     return nullptr;
@@ -798,7 +798,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
   
   s32 sJobInfoNm(szJobNm);
   
-  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cls"_Stz);
+  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_info"_Stz);
   
   Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
   

@@ -11,7 +11,7 @@
 
   LogEntry SEED_REQ
 
-  <WordNm> "_cls" str.cat find dup if
+  <WordNm> "_info" str.cat find dup if
     word.EnameSet@ EnameSet.asStr .
   else
     drop
