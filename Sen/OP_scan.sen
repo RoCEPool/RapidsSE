@@ -93,18 +93,20 @@ opInfo: scanOp
   <preCheck> = bClusterStarted
 }
 ;
-
+    
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: xyzOp tagCopy: localOp_tags
+
+: abcOp opInfo tagCopy: localOp_tags
   tags{
-    <a> = "value a"
-    <b> = C_MAGIC
+    <jobDesc> = "--description of job--"
   }
+    
+  opFill
 ;
 
-xyzOp enameset.asStr .
+abcOp_info enameset.asStr .
 
 /*============================================================================*/
 /* end                                                                        */

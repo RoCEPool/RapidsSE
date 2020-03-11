@@ -119,7 +119,7 @@
 
   next-token locals| sOpNm |
 
-  sOpNm series-name "_syn" str.cat :create
+  sOpNm series-name "_syntax" str.cat :create
 
   // set the word category to be jobSyntax
   //[ compiler::current@ , ] compiler::current@ word.category!
@@ -191,7 +191,7 @@
   0 0 0 locals| sEname sEvalue pEnameSet |
 
   // create a word using next token from input source as the word name
-  next-token "_cls" str.cat :create
+  next-token "_info" str.cat :create
 
   // set the word kind to be jobClass
   //[ compiler::current@ , ] compiler::current@ word.category!
@@ -233,15 +233,47 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  //pEnameSet EnameSet.asStr .
-
   pEnameSet .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
-
-  job::isServiceCmd if .generateService then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* the op info compiler                                                       */
+/*----------------------------------------------------------------------------*/
+: opinfo immediate
+
+  0 0 0 locals| sEname sEvalue pEnameSet |
+
+  // set the word kind to be opInfo:
+  compiler::current@ word.name@
+    "_info" str.cat
+    compiler::current@ word.name!
+
+  // set the word kind to be opInfo:
+  find: opInfo: compiler::current@ word.category!
+
+  // attach an ename set to the word being created
+  EnameSet::new to pEnameSet
+    pEnameSet compiler::current@ word.EnameSet!
+
+  // add <jobNm> tag
+  "<jobNm>" word::name_trunc pEnameSet EnameSet.addStr
+
+  compiler::current@ ,
+    POSTPONE word.enameset@
+
+  //does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* the op info compiler                                                       */
+/*----------------------------------------------------------------------------*/
+: opFill immediate
+
+  compiler::current@ word.EnameSet@
+    .fillOutEnameSet
+;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

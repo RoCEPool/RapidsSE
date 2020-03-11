@@ -114,9 +114,9 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  compiler::current@ ,
+  //compiler::current@ ,
   
-  POSTPONE word.enameset@
+  //POSTPONE word.enameset@
 ;
 
 
@@ -142,7 +142,7 @@
   pSrcTagWord not if
   then
     
-  pSrcTagWord execute to pEnamSetSrc
+  pSrcTagWord word.enameSet@ to pEnamSetSrc
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

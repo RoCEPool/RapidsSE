@@ -208,14 +208,14 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     pEnameSet()->vCopy(pEnameSet_ji);
     
     
-//    s32 sJob_Cls = szJobNm;
-//    sJob_Cls.vConcat("_cls"_Stz);
+//    s32 sJob_info = szJobNm;
+//    sJob_info.vConcat("_info"_Stz);
 //
 //    Dic* pRootDic = AM::pRootDic();
 //
-//    Word* pJob_Cls = pRootDic->pFindWord(sJob_Cls);
-//    if (pJob_Cls) {
-//      EnameSet* pEnameSet_class = pJob_Cls->pEnameSet();
+//    Word* pJob_info = pRootDic->pFindWord(sJob_info);
+//    if (pJob_info) {
+//      EnameSet* pEnameSet_class = pJob_info->pEnameSet();
 //      pEnameSet()->vCopy(pEnameSet_class);
 //    }
   }
