@@ -238,6 +238,33 @@
   //pEnameSet EnameSet.asStr .
 ;
 
+/*----------------------------------------------------------------------------*/
+/* the op info compiler                                                       */
+/*----------------------------------------------------------------------------*/
+: opinfo immediate
+
+  0 0 0 locals| sEname sEvalue pEnameSet |
+
+  // set the word kind to be opInfo:
+  compiler::current@ word.name@
+    "_info" str.cat
+    compiler::current@ word.name!
+
+  // set the word kind to be opInfo:
+  find: opInfo: compiler::current@ word.category!
+
+  // attach an ename set to the word being created
+  EnameSet::new to pEnameSet
+    pEnameSet compiler::current@ word.EnameSet!
+
+  // add <jobNm> tag
+  "<jobNm>" word::name_trunc pEnameSet EnameSet.addStr
+
+  compiler::current@ ,
+    POSTPONE word.enameset@
+;
+
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
