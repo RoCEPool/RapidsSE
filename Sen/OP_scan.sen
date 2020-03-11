@@ -96,11 +96,9 @@ opSyntax: scanOp :: scanOp <tableNm> ;
 //
 
 : scanOp opInfo tagCopy: localOp_tags
-  tags{
-    <jobDesc> = "--description of job--"
-  }
-  opFill
+  tags{ <jobDesc> = "--description of operator--" }
 ;
+
 
 //find: scanOp_info word.dump
 //find: scanOp_info word.enameset@ enameset.asStr .

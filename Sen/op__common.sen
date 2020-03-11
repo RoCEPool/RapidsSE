@@ -243,18 +243,19 @@
 /*----------------------------------------------------------------------------*/
 /* the op info compiler                                                       */
 /*----------------------------------------------------------------------------*/
-: opinfo immediate
+: opInfo immediate
 
   0 0 0 0 locals| pWord sEname sEvalue pEnameSet |
 
   compiler::current@ to pWord
 
-  // set the word kind to be opInfo:
+  // set the name of the word to be _info
   pWord word.name@
     "_info" str.cat
     pWord word.name!
 
-  // set the word kind to be opInfo:
+  // set the word category to be opInfo:
+  // this should be opInfo
   find: opInfo: pWord word.category!
 
   // attach an ename set to the word being created
@@ -290,7 +291,7 @@
     //object@ word.category@ pOpInfo: eql if
     object@ word.name@  "scanOp_info" str.equal if
       object@ word.dump
-      //object@ word.EnameSet@ .fillOutEnameSet
+      object@ .fillOutEnameSet
     then
 
     object@ word.prev object!             // advance cursor backwards thru words
