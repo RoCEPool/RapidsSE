@@ -110,7 +110,7 @@ xyzOp enameset.asStr .
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: abcOp opInfo 
+: abcOp opInfo tagCopy: localOp_tags
 ;
 
 abcOp_info enameset.asStr .

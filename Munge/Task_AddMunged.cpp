@@ -8988,7 +8988,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*                                                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "\n"
-    ": abcOp opInfo \n"
+    ": abcOp opInfo tagCopy: localOp_tags\n"
     " ;\n"
     "\n"
     "abcOp_info enameset.asStr .\n"
