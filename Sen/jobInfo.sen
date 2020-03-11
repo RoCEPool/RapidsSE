@@ -171,7 +171,9 @@
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet params| pEnameSet |
+: .fillOutEnameSet params| pWord |
+
+  pWord word.enameSet@ locals| pEnameSet |
 
   // default for command kind
   "<cmdKind>" pEnameSet EnameSet.hasName not if
@@ -370,7 +372,7 @@
 
   //pEnameSet EnameSet.asStr .
 
-  pEnameSet .fillOutEnameSet
+  compiler::current@ .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
 

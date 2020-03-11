@@ -233,7 +233,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  pEnameSet .fillOutEnameSet
+  compiler::current@ .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
 ;
@@ -271,8 +271,7 @@
 /*----------------------------------------------------------------------------*/
 : opFill immediate
 
-  compiler::current@ word.EnameSet@
-    .fillOutEnameSet
+  compiler::current@ .fillOutEnameSet
 ;
 
 /*----------------------------------------------------------------------------*/
