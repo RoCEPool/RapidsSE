@@ -277,39 +277,39 @@ void Step::vRegOperandHandleAggEnd(void)
 {
   ENTRY(); // ENTRY("vOperandHandleAggEnd"_Stz);
   
-  ASSERT(*m_pRegSet->m_xpOperandA);
-  
-  i8 nCount = m_pDataStack->iPopInt(__func__);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
-  
-  if (pOp->nDecLeftEosMarkers() == 0) {
-    if (pOp->bIsCancelling()) {
-      AM::vDeleteOperand(*m_pRegSet->m_xpOperandA);
-      pOp->vPipeOut(new Marker(OM_CANCELMARKER));
-    }
-    else {
-      
-      // create an IrwBuffer
-      IrwBuffer* pIrwBuffer = new IrwBuffer();
-      
-      Row* pRow = pIrwBuffer->aAllotRow(*m_pRegSet->m_xpStreamDef);
-      pRow->m_waColVal[0] = nCount;
-      
-      // pipe out the streamdef
-      pOp->vPipeOut(*m_pRegSet->m_xpStreamDef);
-      
-      // pipe out the buffer with the count
-      pOp->vPipeOut(pIrwBuffer);
-      
-      pOp->vPipeOut(*m_pRegSet->m_xpOperandA);
-    }
-  
-    pOp->vAckJob();
-    
-  }
-  else
-    AM::vDeleteOperand(*m_pRegSet->m_xpOperandA);
+//  ASSERT(*m_pRegSet->m_xpOperandA);
+//  
+//  i8 nCount = m_pDataStack->iPopInt(__func__);
+//  
+//  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+//  
+//  if (pOp->nDecLeftEosMarkers() == 0) {
+//    if (pOp->bIsCancelling()) {
+//      AM::vDeleteOperand(*m_pRegSet->m_xpOperandA);
+//      pOp->vPipeOut(new Marker(OM_CANCELMARKER));
+//    }
+//    else {
+//      
+//      // create an IrwBuffer
+//      IrwBuffer* pIrwBuffer = new IrwBuffer();
+//      
+//      Row* pRow = pIrwBuffer->aAllotRow(*m_pRegSet->m_xpStreamDef);
+//      pRow->m_waColVal[0] = nCount;
+//      
+//      // pipe out the streamdef
+//      pOp->vPipeOut(*m_pRegSet->m_xpStreamDef);
+//      
+//      // pipe out the buffer with the count
+//      pOp->vPipeOut(pIrwBuffer);
+//      
+//      pOp->vPipeOut(*m_pRegSet->m_xpOperandA);
+//    }
+//  
+//    pOp->vAckJob();
+//    
+//  }
+//  else
+//    AM::vDeleteOperand(*m_pRegSet->m_xpOperandA);
   
   EXIT();
 }

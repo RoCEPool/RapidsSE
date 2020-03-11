@@ -5,52 +5,35 @@
 
 namespace Rows
 {
-  class RowSingle;
   
   class Row2 : public Object
   {
   public:
-    // - - - - - - - - - - - - - - - - - -
-    // meta data
-  
-    StreamDef* m_pStreamDef;     // stream def
-    i8         m_nColumns;       // no cols in stream def
-    i8         m_iSubSet;        // stream def subset
+    Datum m_iValue[0];
     
-    bool       m_bGetAll;        // get all crw columns?
-  
-    bool       m_abGetCol[C_MAX_COLUMNS];
-    i8         m_iLastCol;
-
-    // - - - - - - - - - - - - - - - - - -
-    // data
-  
-    t8  m_tPerspective;   // transaction perspective
-    i8  m_iHash;          // hash of partition column values
-    Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
-    Wsp_t<C_MAX_RECORD> m_xWsp;    // sz workspace
-
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
     Footer m_xFooter;
-  
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    Row2(StreamDef* pStreamDef, i8 iSubSet);
+    Row2(void);
     ~Row2(void) noexcept(false);
   
-    void vAdjustAddresses(RowSingle* pCopiedFromRow);
-    void vCopy(Row* pRow);
-    void vCopy(RowSingle* pRow);
-    void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
-    void vDontDecodeVch(void);
-    i8   iHashColumn(Column* pCol);
-    void vResetValues(void);
-    void vSetValue(Datum* pDatum, Column* pCol);
-    i8   nSizeBytes(void);
+    static i8 nSizeBytes(StreamDef* pStreamDef);
+    
+//    void vCopy(RowSingle* pRow);
+    
+//    void vAdjustAddresses(RowSingle* pCopiedFromRow);
+//    void vCopy(Row2* pRow);
+    
+//    void vCopy(Row2* pRow, i8 iFromCol, i8 iIntoCol);
+//    i8   iHashColumn(Column* pCol);
+//    void vSetValue(Datum* pDatum, Column* pCol);
+    
 
   private:
     Footer* aFooter(void);
