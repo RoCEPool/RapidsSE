@@ -233,13 +233,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  //pEnameSet EnameSet.asStr .
-
   pEnameSet .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
-
-  job::isServiceCmd if .generateService then
 ;
 
 
