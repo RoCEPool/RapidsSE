@@ -250,21 +250,21 @@
   compiler::current@ to pWord
 
   // set the word kind to be opInfo:
-  compiler::current@ word.name@
+  pWord word.name@
     "_info" str.cat
-    compiler::current@ word.name!
+    pWord word.name!
 
   // set the word kind to be opInfo:
-  find: opInfo: compiler::current@ word.category!
+  find: opInfo: pWord word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
-    pEnameSet compiler::current@ word.EnameSet!
+    pEnameSet pWord word.EnameSet!
 
   // add <jobNm> tag
   "<jobNm>" pWord word.name_trunc pEnameSet EnameSet.addStr
 
-  compiler::current@ ,
+  pWord ,
     POSTPONE word.enameset@
 
   //does>
