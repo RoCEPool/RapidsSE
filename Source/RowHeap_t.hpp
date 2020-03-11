@@ -30,7 +30,7 @@ namespace Structures
     ITEM*  aFirstItem(void);
     i8     nFreeBytes(void);
     void   vFreeItem(ITEM* aItem, i8 nBytes);
-    void   vGiveSpace(i8 nBytes);
+    //void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     void   vIncItems(void);
     ITEM*  aItemArea(void);
@@ -302,11 +302,11 @@ void RowHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* give space back to this buffer                                             */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void RowHeap_t<ITEM>::vGiveSpace(i8 nBytes)
-{
-  m_xWsp.vGive(nBytes);
-}
+//template <class ITEM>
+//void RowHeap_t<ITEM>::vGiveSpace(i8 nBytes)
+//{
+//  m_xWsp.vGive(nBytes);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
