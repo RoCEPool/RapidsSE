@@ -12,6 +12,14 @@
   "_" compiler::current@ word.name@ str.removeSuffix
 ;
 
+/*----------------------------------------------------------------------------*/
+/* return word name with any suffix removed                                   */
+/*----------------------------------------------------------------------------*/
+: word.name_trunc params| pWord |
+
+  "_" pWord word.name@ str.removeSuffix
+;
+
 
 /*============================================================================*/
 /* end                                                                        */
