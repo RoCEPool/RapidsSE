@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: genCsvOp :: genCsvOp <tableNm> ;
 
-jobInfo: genCsvOp
+opInfo: genCsvOp
 {
   <jobDesc>  = "--description of job--"
   

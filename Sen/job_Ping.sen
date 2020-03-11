@@ -45,7 +45,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: ping :: ping ;
+jobSyntax: ping :: ping ;
 
 jobInfo: ping
 {

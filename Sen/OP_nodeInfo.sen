@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: NodeInfo :: NodeInfo ;
 
-jobInfo: NodeInfo
+opInfo: NodeInfo
 {
   <jobDesc>  = "--description of job--"
   

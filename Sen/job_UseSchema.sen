@@ -80,7 +80,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: useSchema :: use schema <schemaNm> ;
+jobSyntax: useSchema :: use schema <schemaNm> ;
 
 jobInfo: useSchema
 {

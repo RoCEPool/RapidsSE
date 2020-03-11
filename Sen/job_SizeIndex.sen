@@ -118,8 +118,8 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: sizeIndex :: sizeIndex <tableNm> <indexNm> ;
-opSyntax: sizeIndex :: szIdx <tableNm> <indexNm> ;
+jobSyntax: sizeIndex :: sizeIndex <tableNm> <indexNm> ;
+jobSyntax: sizeIndex :: szIdx <tableNm> <indexNm> ;
 
 jobInfo: sizeIndex
 {

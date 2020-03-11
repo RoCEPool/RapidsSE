@@ -179,7 +179,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: outputOp :: outputOp ;
 
-jobInfo: outputOp
+opInfo: outputOp
 {
   <jobDesc>  = "--description of job--"
   

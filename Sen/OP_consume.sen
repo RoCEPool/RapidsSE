@@ -139,7 +139,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
 
-jobInfo: ConsumeOp
+opInfo: ConsumeOp
 {
   <jobDesc>  = "--description of job--"
   

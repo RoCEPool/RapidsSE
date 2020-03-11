@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
-jobInfo: BM_GenCrwOp
+opInfo: BM_GenCrwOp
 {
   <jobDesc>  = "--description of job--"
   

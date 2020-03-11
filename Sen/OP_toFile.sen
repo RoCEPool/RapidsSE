@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToFileOp :: ToFileOp <fileNm> ;
 
-jobInfo: ToFileOp
+opInfo: ToFileOp
 {
   <jobDesc>  = "--description of job--"
   

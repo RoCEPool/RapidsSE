@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: bufferGenOp :: bufferGenOp <nBuffers> ;
 
-jobInfo: bufferGenOp
+opInfo: bufferGenOp
 {
   <jobDesc>  = "--description of job--"
   

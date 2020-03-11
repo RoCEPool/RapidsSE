@@ -32,7 +32,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: alarm :: alarm ;
+jobSyntax: alarm :: alarm ;
 
 jobInfo: alarm
 {

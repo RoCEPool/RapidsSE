@@ -85,8 +85,8 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: verifyTable :: verifyTable <tableNm> ;
-opSyntax: verifyTable :: vfyTbl <tableNm> ;
+jobSyntax: verifyTable :: verifyTable <tableNm> ;
+jobSyntax: verifyTable :: vfyTbl <tableNm> ;
 
 jobInfo: verifyTable
 {

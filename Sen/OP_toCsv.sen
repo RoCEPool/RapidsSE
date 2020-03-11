@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToCsvOp :: ToCsvOp ;
 
-jobInfo: ToCsvOp
+opInfo: ToCsvOp
 {
   <jobDesc>  = "--description of job--"
   

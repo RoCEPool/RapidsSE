@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: XmitOp :: XmitOp <xmitKind> ;
 
-jobInfo: XmitOp
+opInfo: XmitOp
 {
   <jobDesc>  = "--description of job--"
   

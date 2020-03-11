@@ -120,10 +120,10 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: analyzeIndex :: analyzeIndex <tableNm> <indexNm> ;
-opSyntax: analyzeIndex :: analyzeIndex <tableNm> <indexNm> <detailed> ;
-opSyntax: analyzeIndex :: anidx <tableNm> <indexNm> ;
-opSyntax: analyzeIndex :: anidx <tableNm> <indexNm> <detailed> ;
+jobSyntax: analyzeIndex :: analyzeIndex <tableNm> <indexNm> ;
+jobSyntax: analyzeIndex :: analyzeIndex <tableNm> <indexNm> <detailed> ;
+jobSyntax: analyzeIndex :: anidx <tableNm> <indexNm> ;
+jobSyntax: analyzeIndex :: anidx <tableNm> <indexNm> <detailed> ;
 
 jobInfo: analyzeIndex
 {

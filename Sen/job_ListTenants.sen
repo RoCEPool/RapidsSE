@@ -39,7 +39,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: lsten :: lsten ;
+jobSyntax: lsten :: lsten ;
 
 jobInfo: lsten
 {

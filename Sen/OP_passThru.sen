@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: PassThruOp :: PassThruOp ;
 
-jobInfo: PassThruOp
+opInfo: PassThruOp
 {
   <jobDesc>  = "--description of job--"
   

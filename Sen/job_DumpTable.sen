@@ -81,8 +81,8 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: dumptable :: dumptable <tableNm> ;
-opSyntax: dumptable :: dumptbl <tableNm> ;
+jobSyntax: dumptable :: dumptable <tableNm> ;
+jobSyntax: dumptable :: dumptbl <tableNm> ;
 
 jobInfo: dumptable
 {

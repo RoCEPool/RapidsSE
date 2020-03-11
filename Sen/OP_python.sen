@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> ;
 
-jobInfo: pythonOp
+opInfo: pythonOp
 {
   <jobDesc>  = "--description of job--"
   

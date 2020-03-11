@@ -155,7 +155,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: reportOp :: reportOp <fileNm> ;
 
-jobInfo: reportOp
+opInfo: reportOp
 {
   <jobDesc>  = "--description of job--"
   

@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: eatAllOp :: eatAllOp ;
 
-jobInfo: eatAllOp
+opInfo: eatAllOp
 {
   <jobDesc>  = "--description of job--"
   

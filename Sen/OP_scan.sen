@@ -82,7 +82,7 @@
 opSyntax: scanOp :: scanOp <tableNm> ;
 
 
-jobInfo: scanOp
+opInfo: scanOp
 {
   <jobDesc>  = "--description of job--"
   

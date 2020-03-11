@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: startOp :: startOp ;
 
-jobInfo: startOp
+opInfo: startOp
 {
   <jobDesc>  = "--description of job--"
   

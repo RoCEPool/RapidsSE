@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: printOp :: printOp <string> ;
 
-jobInfo: printOp
+opInfo: printOp
 {
   <jobDesc>  = "--description of job--"
   

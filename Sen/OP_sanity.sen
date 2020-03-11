@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: SanityOp :: SanityOp ;
 
-jobInfo: SanityOp
+opInfo: SanityOp
 {
   <jobDesc>  = "--description of job--"
   

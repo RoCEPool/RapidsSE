@@ -30,7 +30,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: listPartitions :: lspart ;
+jobSyntax: listPartitions :: lspart ;
 
 jobInfo: listPartitions
 {

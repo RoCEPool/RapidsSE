@@ -116,7 +116,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: lsidx :: lsidx <tableNm> ;
+jobSyntax: lsidx :: lsidx <tableNm> ;
 
 jobInfo: lsidx
 {

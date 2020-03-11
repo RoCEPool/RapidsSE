@@ -42,7 +42,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: lscat :: lscat ;
+jobSyntax: lscat :: lscat ;
 
 jobInfo: lscat
 {

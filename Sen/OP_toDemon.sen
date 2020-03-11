@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toDemonOp :: toDemonOp ;
 
-jobInfo: toDemonOp
+opInfo: toDemonOp
 {
   <?jobDesc?>  = "--description of job--"
   

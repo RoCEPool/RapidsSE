@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
 
-jobInfo: BM_InflateCrwOp
+opInfo: BM_InflateCrwOp
 {
   <jobDesc>  = "--description of job--"
   

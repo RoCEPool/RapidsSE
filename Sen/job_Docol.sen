@@ -36,7 +36,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: docol :: docol <routineNm> ;
+jobSyntax: docol :: docol <routineNm> ;
 
 jobInfo: docol
 {

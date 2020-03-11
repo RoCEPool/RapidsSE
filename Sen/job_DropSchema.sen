@@ -65,7 +65,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: dropSchema :: drop schema <schemaNm> ;
+jobSyntax: dropSchema :: drop schema <schemaNm> ;
 
 jobInfo: dropSchema
 {

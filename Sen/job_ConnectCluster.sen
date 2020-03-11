@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: connectCluster :: connectCluster ;
+jobSyntax: connectCluster :: connectCluster ;
 
 jobInfo: connectCluster
 {
