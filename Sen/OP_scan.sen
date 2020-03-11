@@ -82,21 +82,30 @@
 opSyntax: scanOp :: scanOp <tableNm> ;
 
 
-opInfo: scanOp
-{
-  <jobDesc>  = "--description of job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
+//opInfo: scanOp
+//{
+//  <jobDesc>  = "--description of job--"
+//
+//  <jobKind>  = JK_LOCAL
+//  <rspKind>  = RS_PARTICIPANT_RESPONSE
+//  <ddlLock>  = DL_GRAB_READ
+//
+//  <preCheck> = bClusterStarted
+//}
+//;
+//
+
+: scanOp opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc> = "--description of job--"
+  }
+  opFill
 ;
-    
+
 find: scanOp_info word.dump
 find: scanOp_info word.enameset@ enameset.asStr .
   
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -108,7 +117,6 @@ find: scanOp_info word.enameset@ enameset.asStr .
   tags{
     <jobDesc> = "--description of job--"
   }
-    
   opFill
 ;
 
