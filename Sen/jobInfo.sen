@@ -334,12 +334,12 @@
   compiler::current@ to pWord
 
   // set the word kind to be jobClass
-  [ compiler::current@ , ] compiler::current@ word.category!
+  [ compiler::current@ , ] pWord word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
 
-  pEnameSet compiler::current@ word.EnameSet!
+  pEnameSet pWord word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -358,7 +358,7 @@
     to sEname
     next-token drop
     next-token to sEvalue
-    sEname sEvalue compiler::current@ jobInfo::addEname
+    sEname sEvalue pWord jobInfo::addEname
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -374,7 +374,7 @@
 
   //pEnameSet EnameSet.asStr .
 
-  compiler::current@ .fillOutEnameSet
+  pWord .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
 
