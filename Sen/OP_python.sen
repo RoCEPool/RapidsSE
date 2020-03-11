@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> ;
+opSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> ;
 
 jobInfo: pythonOp
 {

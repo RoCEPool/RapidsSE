@@ -66,7 +66,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
+opSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
 jobInfo: BM_GenCrwOp
 {

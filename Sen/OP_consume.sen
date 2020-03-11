@@ -137,7 +137,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
+opSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
 
 jobInfo: ConsumeOp
 {

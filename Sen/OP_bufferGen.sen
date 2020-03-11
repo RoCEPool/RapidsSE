@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: bufferGenOp :: bufferGenOp <nBuffers> ;
+opSyntax: bufferGenOp :: bufferGenOp <nBuffers> ;
 
 jobInfo: bufferGenOp
 {
