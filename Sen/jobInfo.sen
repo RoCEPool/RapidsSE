@@ -115,9 +115,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: seedExists?
+: seedExists? params| pWord sSuffix |
 
-  word::name_trunc swap str.cat
+  pWord word.name_trunc sSuffix str.cat
     find if true else false then
 ;
 
@@ -128,7 +128,7 @@
 
   pWord word.EnameSet@ locals| pEnameSet |
 
-  sSuffix seedExists?
+  sSuffix pWord seedExists?
     if pWord word.name_trunc else sDefaultSeed then
     sSuffix str.cat locals| pWordName |
 
