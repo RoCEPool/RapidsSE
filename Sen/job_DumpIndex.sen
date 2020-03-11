@@ -96,8 +96,8 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: dumpIndex :: dumpIndex <tableNm> <indexNm> ;
-opSyntax: dumpIndex :: dumpIdx <tableNm> <indexNm> ;
+jobSyntax: dumpIndex :: dumpIndex <tableNm> <indexNm> ;
+jobSyntax: dumpIndex :: dumpIdx <tableNm> <indexNm> ;
 
 jobInfo: dumpIndex
 {

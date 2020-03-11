@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: pythonShellOp :: pythonShellOp <pythonFile> ;
+jobSyntax: pythonShellOp :: pythonShellOp <pythonFile> ;
 
 jobInfo: pythonShellOp
 {

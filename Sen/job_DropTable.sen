@@ -112,7 +112,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: dropTable :: drop table <tableNm> ;
+jobSyntax: dropTable :: drop table <tableNm> ;
 
 jobInfo: dropTable
 {

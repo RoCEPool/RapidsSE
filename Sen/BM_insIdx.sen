@@ -128,7 +128,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
+jobSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
 jobInfo: BM_InsIdxOp
 {

@@ -135,7 +135,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: createTable :: create table <tableNm> etc ;
+jobSyntax: createTable :: create table <tableNm> etc ;
 
 jobInfo: createTable
 {

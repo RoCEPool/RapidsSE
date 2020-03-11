@@ -120,7 +120,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: _Cancelled :: _Cancelled ;
+jobSyntax: _Cancelled :: _Cancelled ;
 
 jobInfo: _Cancelled
 {

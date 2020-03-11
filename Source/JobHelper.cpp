@@ -14,13 +14,13 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
+  Word* pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
   
   Word* pSyntax = nullptr;
   
   while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
     
-    //vTrace("  opSyntax: %s\n"_Stz,pSyntax->szWordNm());
+    //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     
     if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pEnameSet())) {
       

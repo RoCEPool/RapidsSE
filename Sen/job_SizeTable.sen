@@ -86,8 +86,8 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: sizeTable :: sizeTable <tableNm> ;
-opSyntax: sizeTable :: szTbl <tableNm> ;
+jobSyntax: sizeTable :: sizeTable <tableNm> ;
+jobSyntax: sizeTable :: szTbl <tableNm> ;
 
 jobInfo: sizeTable
 {

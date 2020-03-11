@@ -83,7 +83,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: createTenant :: create tenant <tenantNm> ;
+jobSyntax: createTenant :: create tenant <tenantNm> ;
 
 jobInfo: createTenant
 {

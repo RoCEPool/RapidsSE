@@ -66,7 +66,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: dropTenant :: drop tenant <tenantNm> ;
+jobSyntax: dropTenant :: drop tenant <tenantNm> ;
 
 jobInfo: dropTenant
 {

@@ -95,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
+jobSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
 
 jobInfo: BM_GenEntOp
 {

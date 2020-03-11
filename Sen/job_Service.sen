@@ -44,7 +44,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: service :: service ;
+jobSyntax: service :: service ;
 
 jobInfo: service
 {

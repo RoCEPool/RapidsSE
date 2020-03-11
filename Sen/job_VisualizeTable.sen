@@ -81,7 +81,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: visualizeTable :: vistbl <tableNm> ;
+jobSyntax: visualizeTable :: vistbl <tableNm> ;
 
 jobInfo: visualizeTable
 {

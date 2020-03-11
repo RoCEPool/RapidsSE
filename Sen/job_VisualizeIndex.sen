@@ -94,8 +94,8 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: visualizeIndex :: visidx <tableNm> <indexNm> ;
-opSyntax: visualizeIndex :: visualizeIndex <tableNm> <indexNm> ;
+jobSyntax: visualizeIndex :: visidx <tableNm> <indexNm> ;
+jobSyntax: visualizeIndex :: visualizeIndex <tableNm> <indexNm> ;
 
 jobInfo: visualizeIndex
 {

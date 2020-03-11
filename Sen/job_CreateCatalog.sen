@@ -80,7 +80,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: createCatalog :: create catalog <catalogNm> ;
+jobSyntax: createCatalog :: create catalog <catalogNm> ;
 
 jobInfo: createCatalog
 {

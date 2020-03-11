@@ -83,7 +83,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: createSchema :: create schema <schemaNm> ;
+jobSyntax: createSchema :: create schema <schemaNm> ;
 
 jobInfo: createSchema
 {

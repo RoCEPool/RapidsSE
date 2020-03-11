@@ -84,7 +84,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: pipeline :: pipeline <pipelineNm> etc ;
+jobSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
 jobInfo: pipeline
 {

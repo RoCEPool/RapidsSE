@@ -117,7 +117,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: _Executed :: _Executed ;
+jobSyntax: _Executed :: _Executed ;
 
 jobInfo: _Executed
 {

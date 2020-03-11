@@ -104,7 +104,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-opSyntax: lscol :: lscol <tableNm> ;
+jobSyntax: lscol :: lscol <tableNm> ;
 
 jobInfo: lscol
 {

@@ -202,8 +202,8 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: createIndex :: create index <indexNm> on <tableNm> etc ;
-opSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
+jobSyntax: createIndex :: create index <indexNm> on <tableNm> etc ;
+jobSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
 
 jobInfo: createIndex
 {
