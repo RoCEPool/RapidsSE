@@ -94,6 +94,7 @@ opInfo: scanOp
 }
 ;
     
+find: scanOp_info word.dump
 find: scanOp_info word.enameset@ enameset.asStr .
   
 /*----------------------------------------------------------------------------*/
@@ -111,6 +112,7 @@ find: scanOp_info word.enameset@ enameset.asStr .
   opFill
 ;
 
+find: abcOp_info word.dump
 abcOp_info enameset.asStr .
 
 /*============================================================================*/
