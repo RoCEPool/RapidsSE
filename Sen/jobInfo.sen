@@ -124,9 +124,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: seedEnameAdd params| sDefaultSeed sSuffix sSeedEname |
+: seedEnameAdd params| pWord sDefaultSeed sSuffix sSeedEname |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  pWord word.EnameSet@ locals| pEnameSet |
 
   sSuffix seedExists?
     if word::name_trunc else sDefaultSeed then
@@ -140,15 +140,15 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_dist params| pWord |
 
-  "<SeedReq>" "_req" "defaultSeedDist" seedEnameAdd
+  "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
 
-  "<SeedRcv>" "_beg" "defaultSeedDist" seedEnameAdd
+  "<SeedRcv>" "_beg" "defaultSeedDist" pWord seedEnameAdd
 
-  "<SeedExe>" "_exe" "defaultSeedDist" seedEnameAdd
+  "<SeedExe>" "_exe" "defaultSeedDist" pWord seedEnameAdd
 
-  "<SeedEnd>" "_end" "defaultSeedDist" seedEnameAdd
+  "<SeedEnd>" "_end" "defaultSeedDist" pWord seedEnameAdd
 
-  "<SeedCan>" "_can" "defaultSeedDist" seedEnameAdd
+  "<SeedCan>" "_can" "defaultSeedDist" pWord seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_local params| pWord |
 
-  "<SeedReq>" "_req" "defaultSeedLocal" seedEnameAdd
+  "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_generic params| pWord |
 
-  "<SeedReq>" "_run" "defaultSeedLocal" seedEnameAdd
+  "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
