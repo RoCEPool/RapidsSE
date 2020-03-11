@@ -37,7 +37,7 @@ namespace Structures
     i8     nItems(void);
     void   vItems(i8 nItems);
     void   vResetUsed(void);
-    void   vSetUsed(ITEM* aUptil);
+    //void   vSetUsed(ITEM* aUptil);
     i4     iToOffset(ITEM* aItem);
     i8     nUsedBytes(void);
 
@@ -367,7 +367,8 @@ void RowHeap_t<ITEM>::vItems(i8 nItems)
 template <class ITEM>
 void RowHeap_t<ITEM>::vResetUsed(void)
 {
-  m_xWsp.vUsed(0);
+  m_xWsp.vUsedHead(0);
+  m_xWsp.vUsedTail(0);
   
   m_nItems = 0;
   
@@ -377,15 +378,15 @@ void RowHeap_t<ITEM>::vResetUsed(void)
 /*----------------------------------------------------------------------------*/
 /* set used space (typically after a compaction)                              */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void RowHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
-{
-  i8 nUsedBytes = nSub(aUptil,aItemArea());
-  
-  m_xWsp.vUsed(nUsedBytes);
-  
-  vSetWilderness();
-}
+//template <class ITEM>
+//void RowHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
+//{
+//  i8 nUsedBytes = nSub(aUptil,aItemArea());
+//
+//  m_xWsp.vUsed(nUsedBytes);
+//
+//  vSetWilderness();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
