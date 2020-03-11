@@ -95,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: SnapshotOp :: SnapshotOp <tableNm> ;
 
-jobInfo: SnapshotOp
+opInfo: SnapshotOp
 {
   <jobDesc>  = "--description of job--"
   

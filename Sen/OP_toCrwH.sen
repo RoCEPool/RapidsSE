@@ -132,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toCrwH :: toCrwH <tableNm> ;
 
-jobInfo: toCrwH
+opInfo: toCrwH
 {
   <jobDesc>  = "--description of job--"
   

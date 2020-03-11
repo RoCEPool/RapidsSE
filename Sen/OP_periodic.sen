@@ -101,7 +101,7 @@ opSyntax: periodicOp :: periodicOp once ;
 opSyntax: periodicOp :: periodicOp min <minutes> ;
 opSyntax: periodicOp :: periodicOp hour <hours> ;
 
-jobInfo: periodicOp
+opInfo: periodicOp
 {
   <jobDesc>  = "--description of job--"
   

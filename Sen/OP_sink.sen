@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: sinkOp :: sinkOp ;
 
-jobInfo: sinkOp
+opInfo: sinkOp
 {
   <jobDesc>  = "--description of job--"
   

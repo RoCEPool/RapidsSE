@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: UpsertOp :: UpsertOp <tableNm> ;
 
-jobInfo: UpsertOp
+opInfo: UpsertOp
 {
   <jobDesc>  = "--description of job--"
   

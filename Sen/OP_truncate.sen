@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: truncateOp :: truncateOp <tableNm> ;
 
-jobInfo: truncateOp
+opInfo: truncateOp
 {
   <jobDesc>  = "--description of job--"
   

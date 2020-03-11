@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Chunk :: Chunk <fileNm> ;
 
-jobInfo: Chunk
+opInfo: Chunk
 {
   <jobDesc>  = "--description of job--"
   

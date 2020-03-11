@@ -130,7 +130,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
-jobInfo: BM_InsIdxOp
+opInfo: BM_InsIdxOp
 {
   <jobDesc>  = "--description of job--"
   

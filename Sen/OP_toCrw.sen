@@ -116,7 +116,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToCrwOp :: ToCrwOp <tableNm> ;
 
-jobInfo: ToCrwOp
+opInfo: ToCrwOp
 {
   <jobDesc>  = "--description of job--"
   

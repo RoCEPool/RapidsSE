@@ -195,7 +195,7 @@
 
   // set the word kind to be jobClass
   //[ compiler::current@ , ] compiler::current@ word.category!
-  find: jobInfo: compiler::current@ word.category!
+  find: opInfo: compiler::current@ word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
