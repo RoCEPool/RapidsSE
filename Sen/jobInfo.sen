@@ -130,7 +130,7 @@
 
   sSuffix seedExists?
     if word::name_trunc else sDefaultSeed then
-      sSuffix str.cat  locals| pWordName |
+    sSuffix str.cat  locals| pWordName |
 
   sSeedEname pWordName pEnameSet EnameSet.addStr
 ;

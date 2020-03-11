@@ -94,10 +94,16 @@ opInfo: scanOp
 }
 ;
     
+find: scanOp_info word.dump
+find: scanOp_info word.enameset@ enameset.asStr .
+  
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
+: abcOp_req \operator
+;
+  
 : abcOp opInfo tagCopy: localOp_tags
   tags{
     <jobDesc> = "--description of job--"
@@ -106,6 +112,7 @@ opInfo: scanOp
   opFill
 ;
 
+find: abcOp_info word.dump
 abcOp_info enameset.asStr .
 
 /*============================================================================*/
