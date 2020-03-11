@@ -102,6 +102,8 @@ opInfo: scanOp
   tags{
     <jobDesc> = "--description of job--"
   }
+    
+  opFill
 ;
 
 abcOp_info enameset.asStr .
