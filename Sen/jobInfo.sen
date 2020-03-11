@@ -138,7 +138,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet_dist
+: .fillOutEnameSet_dist params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedDist" seedEnameAdd
 
@@ -154,7 +154,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a local job                                          */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet_local
+: .fillOutEnameSet_local params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedLocal" seedEnameAdd
 ;
@@ -162,7 +162,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a generic job                                        */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet_generic
+: .fillOutEnameSet_generic params| pWord |
 
   "<SeedReq>" "_run" "defaultSeedLocal" seedEnameAdd
 ;
@@ -209,12 +209,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   job::isgenericJob if
-    .fillOutEnameSet_generic
+    pWord .fillOutEnameSet_generic
   else
   job::isDistJob if
-    .fillOutEnameSet_dist
+    pWord .fillOutEnameSet_dist
   else
-    .fillOutEnameSet_local
+    pWord .fillOutEnameSet_local
   then then
 
   // pEnameSet EnameSet.asStr .
