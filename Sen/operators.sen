@@ -55,6 +55,11 @@
 "BM_inflateCrw.sen"       include
 "BM_insIdx.sen"           include
 
+fillOutOps
+
+//find: scanOp_info word.dump
+find: scanOp_info word.enameset@ enameset.asStr .
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

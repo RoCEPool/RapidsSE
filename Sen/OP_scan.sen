@@ -102,26 +102,26 @@ opSyntax: scanOp :: scanOp <tableNm> ;
   opFill
 ;
 
-find: scanOp_info word.dump
-find: scanOp_info word.enameset@ enameset.asStr .
+//find: scanOp_info word.dump
+//find: scanOp_info word.enameset@ enameset.asStr .
   
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: abcOp_req \operator
-;
-  
-: abcOp opInfo tagCopy: localOp_tags
-  tags{
-    <jobDesc> = "--description of job--"
-  }
-  opFill
-;
-
-find: abcOp_info word.dump
-abcOp_info enameset.asStr .
+//: abcOp_req \operator
+//;
+//
+//: abcOp opInfo tagCopy: localOp_tags
+//  tags{
+//    <jobDesc> = "--description of job--"
+//  }
+//  opFill
+//;
+//
+//find: abcOp_info word.dump
+//abcOp_info enameset.asStr .
 
 /*============================================================================*/
 /* end                                                                        */
