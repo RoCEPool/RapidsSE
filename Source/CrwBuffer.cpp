@@ -684,6 +684,7 @@ IrwBuffer* CrwBuffer::pToIrwBuffer(void)
   
   IrwBuffer* pIrwBuffer = new IrwBuffer;
   Row* pRow;
+  HV_Row pRowSingle(pStreamDef, C_ALL);
   
   i8 nRows = nRowCount();
   
@@ -691,18 +692,19 @@ IrwBuffer* CrwBuffer::pToIrwBuffer(void)
     // get compact row
     Crw* aCompactRow = (Crw*)aGetHead(i_Row);
     
-    pRow = pIrwBuffer->aAllotRow(pStreamDef);
-    if (! pRow) {
+    // inflate compact row into rowSingle
+    RowInflator::vInflateRow(pRowSingle,aCompactRow);
+    
+    if ( ! pIrwBuffer->bCopyRow(pRowSingle) ) {
+  
       IrwBuffer* pNewIrwBuffer = new IrwBuffer;
       pIrwBuffer->vNextBuffer(pNewIrwBuffer);
       pNewIrwBuffer->vPrevBuffer(pIrwBuffer);
       
       pIrwBuffer = pNewIrwBuffer;
-      pRow = pIrwBuffer->aAllotRow(pStreamDef);
+      bool bCopy = pIrwBuffer->bCopyRow(pRowSingle);
+      ASSERT(bCopy);
     }
-    
-    // inflate compact row into row
-    RowInflator::vInflateRow(pRow,aCompactRow);
   }
   
   return pIrwBuffer;

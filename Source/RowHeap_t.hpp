@@ -12,16 +12,17 @@ namespace Structures
     
   protected:
     
-    i8    m_nItems;                   // number of items in this row-heap
-    Wsp_t<C_WSP_ROWHEAP>  m_xWsp;     // workspace
+    i8    m_nItems;                           // number of items in this row-heap
+    WspConverge_t<C_WSP_ROWHEAP>  m_xWsp;     // workspace
     
   public:
     RowHeap_t(void);
     ~RowHeap_t(void) noexcept(false);
   
-    ITEM*  aAdjacentItem(ITEM* aItem);
+    //ITEM*  aAdjacentItem(ITEM* aItem);
     ITEM*  aAdjacentItem(ITEM* aItem, i8 nSizeBytes);
-    byte*  ayAllotBytes(i8 nBytes);
+    byte*  ayAllotHead(i8 nBytes);
+    byte*  ayAllotTail(i8 nBytes);
     ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
@@ -96,22 +97,22 @@ RowHeap_t<ITEM>::~RowHeap_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get item which is memory-wise the next item in the item area               */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
-{
-  ITEM* aAdjacent = nullptr;
-  
-  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
-                    ? ((FreeItem*)aItem)->nSizeBytes()
-                    : aItem->nSizeBytes();
-  
-  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
-  
-  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
-    return nullptr;
-  
-  return aAdjacent;
-}
+//template <class ITEM>
+//ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nBytes)
+//{
+//  ITEM* aAdjacent = nullptr;
+//
+//  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+//                    ? ((FreeItem*)aItem)->nSizeBytes()
+//                    : aItem->nSizeBytes();
+//
+//  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
+//
+//  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatterHead())
+//    return nullptr;
+//
+//  return aAdjacent;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get item which is memory-wise the next item in the item area               */
@@ -121,13 +122,13 @@ ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nSizeItem)
 {
   ITEM* aAdjacent = nullptr;
   
-  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
-  ? ((FreeItem*)aItem)->nSizeBytes()
-  : nSizeItem;
+//  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+//  ? ((FreeItem*)aItem)->nSizeBytes()
+//  : nSizeItem;
   
-  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
+  aAdjacent = aAdd<ITEM*>(aItem,nSizeItem);
   
-  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
+  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatterHead())
     return nullptr;
   
   return aAdjacent;
@@ -137,13 +138,30 @@ ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nSizeItem)
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-byte* RowHeap_t<ITEM>::ayAllotBytes(i8 nBytes)
+byte* RowHeap_t<ITEM>::ayAllotHead(i8 nBytes)
 {
   // test sufficient free space
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  byte* ayBytes = m_xWsp.ayAllot(nBytes);
+  byte* ayBytes = m_xWsp.ayAllotHead(nBytes);
+  
+  vSetWilderness();
+  
+  return ayBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot space for nBytes in this buffer                                      */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+byte* RowHeap_t<ITEM>::ayAllotTail(i8 nBytes)
+{
+  // test sufficient free space
+  if (nFreeBytes() < nBytes)
+    return nullptr;
+  
+  byte* ayBytes = m_xWsp.ayAllotTail(nBytes);
   
   vSetWilderness();
   
@@ -156,15 +174,16 @@ byte* RowHeap_t<ITEM>::ayAllotBytes(i8 nBytes)
 template <class ITEM>
 ITEM* RowHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
 {
-  ITEM* aItem = reinterpret_cast<ITEM*>(ayAllotBytes(nBytes));
-  if (! aItem)
-    return nullptr;
-  
-  new(aItem) ITEM(eClassNo,nBytes);
-  
-  m_nItems++;
-  
-  return aItem;
+//  ITEM* aItem = reinterpret_cast<ITEM*>(ayAllotBytes(nBytes));
+//  if (! aItem)
+//    return nullptr;
+//
+//  new(aItem) ITEM(eClassNo,nBytes);
+//
+//  m_nItems++;
+//
+//  return aItem;
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -405,7 +424,7 @@ void RowHeap_t<ITEM>::vSetWilderness(void)
   if (nFreeBytes() < (i8)sizeof(Wilderness))
     return;
   
-  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(m_xWsp.ayLatter());
+  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(m_xWsp.ayLatterHead());
   
   new(aWilderness) Wilderness;
 }

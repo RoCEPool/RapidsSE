@@ -126,7 +126,7 @@ void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vCopy(Row* pRow)
+void RowSingle::vCopy(Row2* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -165,7 +165,7 @@ void RowSingle::vCopy(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
+void RowSingle::vCopy(Row2* pRow, i8 i_FromCol, i8 i_IntoCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_)
     
@@ -307,6 +307,51 @@ i8 RowSingle::nSizeBytes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
   return sizeof(RowSingle);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of row data                                                       */
+/*----------------------------------------------------------------------------*/
+i8 RowSingle::nSizeRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  i8 nSizeBytes = m_pStreamDef->nColumns(C_ALL) * sizeof(i8);
+  
+  return nSizeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of row data                                                       */
+/*----------------------------------------------------------------------------*/
+i8 RowSingle::nSizeVch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  i8 nSizeVch = 0;
+  
+  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+    
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // vch
+    
+    if (DM_VCH == pCol->eDatum()) {
+      
+      if (m_waColVal[i_Col].bIsNull()) {
+        continue;
+      }
+      
+      char* acSrcString = (char*)m_waColVal[i_Col].m_szVch;
+      
+      nSizeVch += StrLib::iSize(acSrcString);
+      
+      continue;
+    }
+
+  }
+  
+  return nSizeVch;
 }
 
 /*----------------------------------------------------------------------------*/

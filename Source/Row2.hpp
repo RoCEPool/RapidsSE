@@ -6,14 +6,14 @@
 namespace Rows
 {
   
-  class Row2 : public Object
+  class Row2 : public Header
   {
   public:
-    Datum m_iValue[0];
+    Dtm m_waColVal[0];
     
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
-    Footer m_xFooter;
+    //Footer m_xFooter;
     
   public:
     void* operator new(size_t);
@@ -24,6 +24,7 @@ namespace Rows
     ~Row2(void) noexcept(false);
   
     static i8 nSizeBytes(StreamDef* pStreamDef);
+    void vDump(StreamDef* pStreamDef);
     
 //    void vCopy(RowSingle* pRow);
     
@@ -36,7 +37,7 @@ namespace Rows
     
 
   private:
-    Footer* aFooter(void);
+    //Footer* aFooter(void);
   };
   
   Row2* _pRow2(void* aAddr);

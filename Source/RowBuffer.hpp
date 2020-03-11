@@ -8,7 +8,7 @@ namespace DataBuffers
   typedef       HV <Record,StreamDef>                            HV_Rec;
   
   class RowBuffer : public DataBuffer,
-                    public RowHeap_t<Row>
+                    public RowHeap_t<Row2>
   {
   protected:
   
@@ -24,11 +24,11 @@ namespace DataBuffers
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    Row* aAllotRow(StreamDef* pStreamDef);
+    Row2* aAllotRow(i8 nBytes);
   
-    Row* aFirstRow(void);
-    Row* aLastRow(void);
-    Row* aNextRow(Row* aPriorRow);
+    Row2* aFirstRow(void);
+    Row2* aLastRow(i8 nRowBytes);
+    Row2* aNextRow(Row2* aPriorRow, i8 nRowBytes);
     void vPrintRows(StreamDef* pStreamDef);
     void vShow(StreamDef* pStreamDef);
   };

@@ -50,17 +50,17 @@ namespace CompactBuffers
   
     void vPackSamples(void);
     void vAnalyzeSamples(void);
-    void vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow);
+    void vCreateTail(Column* pCol, Row2* pOuterRow, Row2* pInnerRow);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing
   
     bool bAddCrw(RowSingle* pInflatedRow);
-    bool bAddCrw(Row* pInflatedRow);
+    bool bAddCrw(Row2* pInflatedRow);
     bool bAllotCrw(void);
-    void vEncodeHead(Row* pInflatedRow);
+    void vEncodeHead(Row2* pInflatedRow);
     void vEncodeHead(RowSingle* pInflatedRow);
-    void vEncodeTails(Row* pInflatedRow);
+    void vEncodeTails(Row2* pInflatedRow);
     void vEncodeTails(RowSingle* pInflatedRow);
     void vSplitOver(void);
 

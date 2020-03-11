@@ -41,13 +41,15 @@ namespace Rows
     ~RowSingle(void) noexcept(false);
   
     void vAdjustAddresses(RowSingle* pCopiedFromRow);
-    void vCopy(Row* pRow);
-    void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
+    void vCopy(Row2* pRow);
+    void vCopy(Row2* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
     void vResetValues(void);
     void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSizeBytes(void);
+    i8   nSizeRow(void);
+    i8   nSizeVch(void);
 
   private:
     Footer* aFooter(void);
