@@ -84,7 +84,7 @@ byte* WspConverge_t<LENGTH>::ayAllotHead(i8 nBytes)
 template<int LENGTH>
 byte* WspConverge_t<LENGTH>::ayAllotTail(i8 nBytes)
 {
-  byte* ayAllotted = ayLatterTail();
+  byte* ayAllotted = ayLatterTail() - nBytes;
   
   vTakeTail(nBytes);
   
@@ -290,7 +290,7 @@ i8 WspConverge_t<LENGTH>::nUsedHead(void)
 template<int LENGTH>
 i8 WspConverge_t<LENGTH>::nUsedTail(void)
 {
-  return nUsedTail;
+  return m_nUsedTail;
 }
 
 /*----------------------------------------------------------------------------*/
