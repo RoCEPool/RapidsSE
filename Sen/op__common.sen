@@ -219,7 +219,7 @@
     to sEname
     next-token drop
     next-token to sEvalue
-    sEname sEvalue jobInfo::addEname
+    sEname sEvalue compiler::current@ jobInfo::addEname
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

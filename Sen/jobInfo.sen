@@ -177,32 +177,32 @@
 
   // default for command kind
   "<cmdKind>" pEnameSet EnameSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" jobInfo::addEname
+    "<cmdKind>" "CK_COMMAND" pWord jobInfo::addEname
   then
 
   // default for ddl lock
   "<ddlLock>" pEnameSet EnameSet.hasName not if
-    "<ddlLock>" "DL_NONE" jobInfo::addEname
+    "<ddlLock>" "DL_NONE" pWord jobInfo::addEname
   then
 
   // default for job desc
   "<jobDesc>" pEnameSet EnameSet.hasName not if
-    "<jobDesc>" "--description of job--" jobInfo::addEname
+    "<jobDesc>" "--description of job--" pWord jobInfo::addEname
   then
 
   // default for job kind
   "<jobKind>" pEnameSet EnameSet.hasName not if
-    "<jobKind>" "JK_LOCAL" jobInfo::addEname
+    "<jobKind>" "JK_LOCAL" pWord jobInfo::addEname
   then
 
   // default for priority
   "<priority>" pEnameSet EnameSet.hasName not if
-    "<priority>" "PY_NORMAL" jobInfo::addEname
+    "<priority>" "PY_NORMAL" pWord jobInfo::addEname
   then
 
   // default for response kind
   "<rspKind>" pEnameSet EnameSet.hasName not if
-    "<rspKind>" "RS_NONE" jobInfo::addEname
+    "<rspKind>" "RS_NONE" pWord jobInfo::addEname
   then
 
 
@@ -356,7 +356,7 @@
     to sEname
     next-token drop
     next-token to sEvalue
-    sEname sEvalue jobInfo::addEname
+    sEname sEvalue compiler::current@ jobInfo::addEname
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -20,9 +20,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: jobInfo::addEname params| sEvalue sEname |
+: jobInfo::addEname params| pWord sEvalue sEname |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  pWord word.EnameSet@ locals| pEnameSet |
 
   sEvalue find locals| pEvalueWord |
 
@@ -78,7 +78,7 @@
   
   // add tag set name
   
-  "<TagSetNm>" compiler::current@ word.name@ jobInfo::addEname
+  "<TagSetNm>" compiler::current@ word.name@ compiler::current@ jobInfo::addEname
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
