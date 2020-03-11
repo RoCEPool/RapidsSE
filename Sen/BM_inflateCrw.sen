@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
+jobSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
 
 jobInfo: BM_InflateCrwOp
 {

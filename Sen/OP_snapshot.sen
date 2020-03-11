@@ -93,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: SnapshotOp :: SnapshotOp <tableNm> ;
+jobSyntax: SnapshotOp :: SnapshotOp <tableNm> ;
 
 jobInfo: SnapshotOp
 {

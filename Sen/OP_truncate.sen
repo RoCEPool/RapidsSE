@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: truncateOp :: truncateOp <tableNm> ;
+jobSyntax: truncateOp :: truncateOp <tableNm> ;
 
 jobInfo: truncateOp
 {
