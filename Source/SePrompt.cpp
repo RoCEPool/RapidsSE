@@ -605,6 +605,7 @@ void SePrompt::vGetCommand(void)
     Tokeniser::vTokenise(pTokenVec(),szCommand);
     pTokenVec()->vStripSemicolon();
     pTokenVec()->vSetTokens();
+    m_bOneCommand = false;
     return;
   }
   
