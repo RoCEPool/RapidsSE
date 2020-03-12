@@ -50,9 +50,10 @@ TableDef::TableDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
-  m_sTableNm   = C_NO_NAME;
-  m_eTableType = TT_NORMAL;
-
+  m_sTableNm    = C_NO_NAME;
+  m_eTableType  = TT_NORMAL;
+  m_bDefinition = false;
+  
   m_pStreamDef = new StreamDef;
   
   m_sCmd       = ""_Stz;
@@ -120,7 +121,6 @@ eEC TableDef::eParse(Stz* szCmd)
   
   // tokenise the command
   TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Table <tableNm>
@@ -135,13 +135,21 @@ eEC TableDef::eParse(Stz* szCmd)
   pTkn = pTknVec->pNextToken(); dPT();
   ASSERT(pTkn->bSame("table"_Stz));
   
+  // -- -- -- -- -- --
+  // table definition
+  // -- -- -- -- -- --
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (pTkn->bSame("definition"_Stz)) {
+    m_bDefinition = true;
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
   // -- -- -- --
   // table name
   // -- -- -- --
 
-  pTkn = pTknVec->pNextToken(); dPT();
+  //pTkn = pTknVec->pNextToken(); dPT();
   m_sTableNm = pTkn->szTerm();
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
@@ -244,11 +252,19 @@ eEC TableDef::eSyntax(Stz* szCmd)
   pTkn = pTknVec->pNextToken(); dPT();
   ASSERT(pTkn->bSame("table"_Stz));
   
+  // -- -- -- -- -- --
+  // table definition
+  // -- -- -- -- -- --
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (pTkn->bSame("definition"_Stz)) {
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
   // -- -- -- --
   // table name
   // -- -- -- --
   
-  pTkn = pTknVec->pNextToken(); dPT();
+  //pTkn = pTknVec->pNextToken(); dPT();
   if ( ! pTkn ) {
     eError = EC_INVALID_COMMAND;
     goto L_RETURN;

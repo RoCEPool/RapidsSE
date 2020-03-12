@@ -12,7 +12,8 @@ namespace MetaData
   private:
     s32 m_sTableNm;          // table name
     eTT m_eTableType;        // table type
-  
+    bool m_bDefinition;      // just a table definition
+    
     StreamDef* m_pStreamDef; // definition
   
     s4K m_sCmd;              // the command which created this def

@@ -33,7 +33,7 @@
   0 0 locals| pTable pIndex |
 
   args.tracepoint if
-  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   //----------------------------------------------------------------------------
@@ -136,6 +136,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 jobSyntax: createTable :: create table <tableNm> etc ;
+jobSyntax: createTable :: create table definition <tableNm> etc ;
 
 jobInfo: createTable
 {
