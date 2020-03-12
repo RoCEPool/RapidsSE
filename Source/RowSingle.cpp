@@ -256,6 +256,16 @@ void RowSingle::vResetValues(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* init the frequency distribution classes                                    */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vSet(i8 iDummy, ...)
+{
+  va_list args;
+  
+  va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set column value in row                                                    */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
