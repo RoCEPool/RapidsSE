@@ -101,15 +101,8 @@ opSyntax: periodicOp :: periodicOp once ;
 opSyntax: periodicOp :: periodicOp min <minutes> ;
 opSyntax: periodicOp :: periodicOp hour <hours> ;
 
-opInfo: periodicOp {
-  <jobDesc>  = "--description of job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
+: periodicOp opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of job--" }
 ;
 
 /*============================================================================*/

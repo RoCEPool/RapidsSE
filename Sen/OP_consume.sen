@@ -139,15 +139,8 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
 
-opInfo: ConsumeOp {
-  <jobDesc>  = "--description of job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
+: ConsumeOp opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of job--" }
 ;
 
 /*============================================================================*/

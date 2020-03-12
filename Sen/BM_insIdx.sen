@@ -130,15 +130,8 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
-opInfo: BM_InsIdxOp {
-  <jobDesc>  = "--description of job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
+: BM_InsIdxOp opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of job--" }
 ;
 
 /*============================================================================*/

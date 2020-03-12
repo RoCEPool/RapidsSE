@@ -108,15 +108,8 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Chunk :: Chunk <fileNm> ;
 
-opInfo: Chunk {
-  <jobDesc>  = "--description of job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
+: Chunk opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of job--" }
 ;
 
 /*============================================================================*/

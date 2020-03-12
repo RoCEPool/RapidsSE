@@ -19,9 +19,9 @@
 /*----------------------------------------------------------------------------*/
 /* test if the job is a generic job                                           */
 /*----------------------------------------------------------------------------*/
-: job::isGenericJob
+: job::isGenericJob params| pWord |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  pWord word.EnameSet@ locals| pEnameSet |
 
   "<jobKind>" pEnameSet EnameSet.getInt
 
@@ -43,9 +43,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: job::isLocalJob
+: job::isLocalJob params| pWord |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  pWord word.EnameSet@ locals| pEnameSet |
 
   "<jobKind>" pEnameSet EnameSet.getInt
 
@@ -67,9 +67,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: job::isDistJob
+: job::isDistJob params| pWord |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  pWord word.EnameSet@ locals| pEnameSet |
 
  "<jobKind>" pEnameSet EnameSet.getInt
 
@@ -91,9 +91,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: job::isServiceCmd
+: job::isServiceCmd params| pWord |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  pWord word.EnameSet@ locals| pEnameSet |
 
   "<cmdKind>" pEnameSet EnameSet.getInt
 
@@ -173,32 +173,46 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet params| pWord |
 
+  " ** 1" .
+
   pWord word.enameSet@ locals| pEnameSet |
+
+  " ** 2" .
 
   // default for command kind
   "<cmdKind>" pEnameSet EnameSet.hasName not if
     "<cmdKind>" "CK_COMMAND" pWord jobInfo::addEname
   then
 
+  " ** 3" .
+
   // default for ddl lock
   "<ddlLock>" pEnameSet EnameSet.hasName not if
     "<ddlLock>" "DL_NONE" pWord jobInfo::addEname
   then
+
+  " ** 4" .
 
   // default for job desc
   "<jobDesc>" pEnameSet EnameSet.hasName not if
     "<jobDesc>" "--description of job--" pWord jobInfo::addEname
   then
 
+  " ** 5" .
+
   // default for job kind
   "<jobKind>" pEnameSet EnameSet.hasName not if
     "<jobKind>" "JK_LOCAL" pWord jobInfo::addEname
   then
 
+  " ** 6" .
+
   // default for priority
   "<priority>" pEnameSet EnameSet.hasName not if
     "<priority>" "PY_NORMAL" pWord jobInfo::addEname
   then
+
+  " ** 7" .
 
   // default for response kind
   "<rspKind>" pEnameSet EnameSet.hasName not if
@@ -208,14 +222,21 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  job::isgenericJob if
+  " ** 8" .
+
+  pWord job::isgenericJob if
+    " ** 8a" .
     pWord .fillOutEnameSet_generic
   else
-  job::isDistJob if
+  pWord job::isDistJob if
+    " ** 8b" .
     pWord .fillOutEnameSet_dist
   else
+    " ** 8c" .
     pWord .fillOutEnameSet_local
   then then
+
+  " ** 9" .
 
   // pEnameSet EnameSet.asStr .
 ;
@@ -378,7 +399,7 @@
 
   //pEnameSet EnameSet.asStr .
 
-  job::isServiceCmd if .generateService then
+  pWord job::isServiceCmd if .generateService then
 ;
 
 /*============================================================================*/

@@ -42,15 +42,8 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toDemonOp :: toDemonOp ;
 
-opInfo: toDemonOp {
-  <?jobDesc?>  = "--description of job--"
-  
-  <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_PARTICIPANT_RESPONSE
-  <?ddlLock?>  = DL_GRAB_READ
-  
-  <?preCheck?> = bClusterStarted
-}
+: toDemonOp opInfo tagCopy: localOp_tags
+  tags{ <?jobDesc?>  = "--description of job--" }
 ;
 
 /*============================================================================*/

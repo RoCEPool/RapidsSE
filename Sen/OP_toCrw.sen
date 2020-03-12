@@ -116,15 +116,8 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToCrwOp :: ToCrwOp <tableNm> ;
 
-opInfo: ToCrwOp {
-  <jobDesc>  = "--description of job--"
-  
-  <jobKind>  = JK_LOCAL
-  <rspKind>  = RS_PARTICIPANT_RESPONSE
-  <ddlLock>  = DL_GRAB_READ
-  
-  <preCheck> = bClusterStarted
-}
+: ToCrwOp opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of job--" }
 ;
 
 /*============================================================================*/
