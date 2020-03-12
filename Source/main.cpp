@@ -95,7 +95,7 @@ int main(int argc, const char* argv[])
  
  b) start the cluster
  
-    se> startCluster;
+    se> _bootCluster;
  
  c) For debug, in ../Seth run (for example, to run all tests):
  
@@ -123,7 +123,7 @@ int main(int argc, const char* argv[])
  
  b) start the cluster
  
-    se> startCluster;
+    se> _bootCluster;
  
  c) For release, in ../Seth run (for example, to run all tests):
  

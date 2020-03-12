@@ -2,7 +2,7 @@
 /* _st -- schema stress test                                                  */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 
 //docol schemaTest;
 docol schemaTestAll;

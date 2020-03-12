@@ -2,7 +2,7 @@
 /* _testDTE -- test for date                                                  */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 indexEntries 50;
 docol epochTake;
 

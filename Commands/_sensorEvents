@@ -2,7 +2,7 @@
 /* _sensorEvents - create sensor events table                                 */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 
 create table sensorEvents (
   S_SENSOR INTEGER NOT NULL,

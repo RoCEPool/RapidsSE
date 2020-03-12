@@ -2,7 +2,7 @@
 /* _d -- duplicates test                                                      */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 
 create table d (
   d_int  INTEGER NOT NULL,
