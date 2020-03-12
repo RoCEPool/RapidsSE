@@ -54,7 +54,7 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 	$(CPP) $(LIBFLAGS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
 #Main target
-$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
+$(TARGET_EXE): version $(TARGET_LIBRARY) $(SHOCO)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
@@ -70,6 +70,13 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 #To generate dependency files
 %.d: %.cpp
 	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
+
+# Generate the Version.h file. Force it to run every time.
+version : FORCE
+	./generateVersion.sh
+
+# Necessary to make the version rule above run every time.
+FORCE : 
 
 #To remove generated files
 clean:
