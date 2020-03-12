@@ -2,7 +2,7 @@
 /* _li - create and load TPC-H Lineitem table for SF1                         */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 _lineitem
 

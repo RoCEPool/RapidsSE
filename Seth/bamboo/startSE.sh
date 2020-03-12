@@ -12,7 +12,7 @@ PIDFILE="${ROOT_DIR}/se.pid"
 EXE_PATH="${ROOT_DIR}/Linux/bin"
 EXE="${EXE_PATH}/rapidsse"
 START_PARAMS="--name NODE0 --node NODE0 127.0.0.1 5541 --size 4GB --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"
-START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands Commands --command _bootcluster --appendTrace"
+START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands Commands --command startcluster --appendTrace"
 
 
 #set the library path for the rapidsSE library
@@ -88,7 +88,7 @@ OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS} 2>&1)
 
 if [ $? -ne 0 ]
 then
-  >&2 echo "ERROR: Could not run the _bootCluster command on RapidsSE. Here is the output of the _bootCluster command:" 1>&2
+  >&2 echo "ERROR: Could not run the startcluster command on RapidsSE. Here is the output of the startcluster command:" 1>&2
   cat "${OUTPUT}"
 
   >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2

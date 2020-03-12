@@ -2,7 +2,7 @@
 /* _bm_insidx -- insert index entry benchmark                                 */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 heapmem;
 

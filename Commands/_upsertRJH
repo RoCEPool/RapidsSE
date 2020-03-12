@@ -2,7 +2,7 @@
 /* _upsertRJH -- create and generate T table                                  */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 pwf ;
 

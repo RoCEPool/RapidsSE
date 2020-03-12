@@ -9,13 +9,18 @@
 /*----------------------------------------------------------------------------*/
 : readChunk_InfoSet \handler
 
-  //"Operand:- ZK_INFOSET" .verbose
-
-  // get the infoset
+  //"Operand:- ZK_SEEKOFFSETS" .verbose
+/*
+  Operand[].get to InfoSet[]
+  InfoSet[].infoRows 0
+  do
+    I InfoSet[].readChunk to OperandB[]
+    OperandB[].pipeout
+  loop
+  Operand[].delete
+*/
   Operand[].get to InfoSet[]
   nullptr to Operand[]
-
-  // get the first row from the infoSet
   InfoSet[].firstRow to row[]
   begin
     row[].isNull
@@ -25,7 +30,6 @@
     InfoSet[].nextRow to row[]
   repeat
 
-  // delete the infoset
   InfoSet[].delete
 
   true

@@ -7,7 +7,7 @@
 
 print "Starting cluster..." ;
 
-_bootCluster;
+startCluster;
 
 print "Cluster started" ;
 

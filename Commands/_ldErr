@@ -2,7 +2,7 @@
 /* _ldErr -- test load errors using TPC-H Lineitem table                      */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 create table lineitem (
 

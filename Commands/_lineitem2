@@ -2,7 +2,7 @@
 /* _lineitem2 - create and load TPC-H LineItem2 table                         */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 time create table LineItem2 (
 
