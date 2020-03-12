@@ -1208,6 +1208,9 @@ public:
   void vSsnTraceSession(void);
 
   // steps
+  void vStatsLockStats(void);
+
+  // steps
   void vStepTimingReset(void);
   void vStepTimingStart(void);
   void vStepTimingWrite(void);

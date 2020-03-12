@@ -9,18 +9,18 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Stats(void)
 {
-  //vAddStep("stats::"_Stz,   &Step::vStatsXyz);
+  vAddStep("stats::lockStats"_Stz,   &Step::vStatsLockStats);
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tx! -- store tx of SE session                                      */
+/* stats::lockStats -- sample the lock stats                                  */
 /*----------------------------------------------------------------------------*/
-//void Step::vStatsXyz(void)
-//{
-//  ENTRY(); // ENTRY("vStatsXyz"_Stz);
-//    
-//  EXIT();
-//}
+void Step::vStatsLockStats(void)
+{
+  ENTRY(); // ENTRY("vStatsLockStats"_Stz);
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

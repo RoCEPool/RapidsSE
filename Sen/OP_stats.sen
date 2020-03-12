@@ -11,6 +11,9 @@
 
   Operand[].pipeOut
 
+  stats::lockStats // to operandC[]
+  //OperandC[].pipeOut
+
   true
 ;
 
@@ -18,6 +21,9 @@
 /* handler for ZK_STOPMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
 : statsOp_StopMarker \handler
+
+  stats::lockStats // to operandC[]
+  //OperandC[].pipeOut
 
   Operand[].pipeOut
 
