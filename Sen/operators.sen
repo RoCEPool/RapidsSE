@@ -38,6 +38,7 @@
 "OP_sink.sen"             include
 "OP_snapshot.sen"         include
 "OP_start.sen"            include
+"OP_stats.sen"            include
 
 "OP_toDemon.sen"          include
 "OP_toCrw.sen"            include
