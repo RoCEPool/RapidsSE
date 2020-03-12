@@ -9,6 +9,10 @@ create table definition __seekOffsets (
   size   INTEGER NOT NULL
 );
 
+create table definition __lockStats (
+  a INTEGER NOT NULL
+);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
