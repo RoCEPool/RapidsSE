@@ -244,7 +244,7 @@ void Step::vWordExitHookSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.find -- find word given its name                                      */
+/* word::find -- find word given its name                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vWordFind(void)
 {
