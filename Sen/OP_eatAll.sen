@@ -42,8 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: eatAllOp :: eatAllOp ;
 
-opInfo: eatAllOp
-{
+opInfo: eatAllOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

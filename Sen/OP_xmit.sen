@@ -28,8 +28,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: XmitOp :: XmitOp <xmitKind> ;
 
-opInfo: XmitOp
-{
+opInfo: XmitOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

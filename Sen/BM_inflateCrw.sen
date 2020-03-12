@@ -112,8 +112,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
 
-opInfo: BM_InflateCrwOp
-{
+opInfo: BM_InflateCrwOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

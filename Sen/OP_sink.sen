@@ -82,8 +82,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: sinkOp :: sinkOp ;
 
-opInfo: sinkOp
-{
+opInfo: sinkOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

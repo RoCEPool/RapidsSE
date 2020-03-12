@@ -77,8 +77,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: PurgeOp :: PurgeOp <tableNm> ;
 
-opInfo: PurgeOp
-{
+opInfo: PurgeOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

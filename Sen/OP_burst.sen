@@ -55,8 +55,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: burstOp :: burstOp ;
 
-opInfo: burstOp
-{
+opInfo: burstOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

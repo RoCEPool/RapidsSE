@@ -139,8 +139,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
 
-opInfo: ConsumeOp
-{
+opInfo: ConsumeOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

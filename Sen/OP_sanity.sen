@@ -67,8 +67,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: SanityOp :: SanityOp ;
 
-opInfo: SanityOp
-{
+opInfo: SanityOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

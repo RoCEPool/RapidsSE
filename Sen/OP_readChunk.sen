@@ -85,8 +85,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: readChunk :: readChunk <fileNm> ;
 
-opInfo: readChunk
-{
+opInfo: readChunk {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

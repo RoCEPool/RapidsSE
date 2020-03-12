@@ -53,8 +53,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: startOp :: startOp ;
 
-opInfo: startOp
-{
+opInfo: startOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

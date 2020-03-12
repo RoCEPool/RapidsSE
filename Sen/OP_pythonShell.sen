@@ -77,8 +77,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: pythonShellOp :: pythonShellOp <pythonFile> ;
 
-opInfo: pythonShellOp
-{
+opInfo: pythonShellOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

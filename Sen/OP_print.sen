@@ -53,8 +53,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: printOp :: printOp <string> ;
 
-opInfo: printOp
-{
+opInfo: printOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

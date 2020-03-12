@@ -95,8 +95,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: SnapshotOp :: SnapshotOp <tableNm> ;
 
-opInfo: SnapshotOp
-{
+opInfo: SnapshotOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

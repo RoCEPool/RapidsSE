@@ -79,8 +79,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToFileOp :: ToFileOp <fileNm> ;
 
-opInfo: ToFileOp
-{
+opInfo: ToFileOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

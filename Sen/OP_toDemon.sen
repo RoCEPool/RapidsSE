@@ -42,8 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toDemonOp :: toDemonOp ;
 
-opInfo: toDemonOp
-{
+opInfo: toDemonOp {
   <?jobDesc?>  = "--description of job--"
   
   <?jobKind?>  = JK_LOCAL

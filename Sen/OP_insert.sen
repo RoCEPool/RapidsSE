@@ -93,8 +93,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: InsertOp :: InsertOp <tableNm> ;
 
-opInfo: InsertOp
-{
+opInfo: InsertOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

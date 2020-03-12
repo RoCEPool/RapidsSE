@@ -58,8 +58,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: NodeInfo :: NodeInfo ;
 
-opInfo: NodeInfo
-{
+opInfo: NodeInfo {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

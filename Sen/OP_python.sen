@@ -77,8 +77,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> ;
 
-opInfo: pythonOp
-{
+opInfo: pythonOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

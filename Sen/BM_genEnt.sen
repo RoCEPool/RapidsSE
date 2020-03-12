@@ -97,8 +97,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
 
-opInfo: BM_GenEntOp
-{
+opInfo: BM_GenEntOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

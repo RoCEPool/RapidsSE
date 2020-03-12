@@ -179,8 +179,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: outputOp :: outputOp ;
 
-opInfo: outputOp
-{
+opInfo: outputOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

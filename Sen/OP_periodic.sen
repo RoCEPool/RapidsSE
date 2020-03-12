@@ -101,8 +101,7 @@ opSyntax: periodicOp :: periodicOp once ;
 opSyntax: periodicOp :: periodicOp min <minutes> ;
 opSyntax: periodicOp :: periodicOp hour <hours> ;
 
-opInfo: periodicOp
-{
+opInfo: periodicOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

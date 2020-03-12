@@ -98,8 +98,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Chunk :: Chunk <fileNm> ;
 
-opInfo: Chunk
-{
+opInfo: Chunk {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

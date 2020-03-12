@@ -116,8 +116,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToCrwOp :: ToCrwOp <tableNm> ;
 
-opInfo: ToCrwOp
-{
+opInfo: ToCrwOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

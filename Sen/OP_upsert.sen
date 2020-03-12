@@ -81,8 +81,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: UpsertOp :: UpsertOp <tableNm> ;
 
-opInfo: UpsertOp
-{
+opInfo: UpsertOp {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

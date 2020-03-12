@@ -132,8 +132,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toCrwH :: toCrwH <tableNm> ;
 
-opInfo: toCrwH
-{
+opInfo: toCrwH {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL
