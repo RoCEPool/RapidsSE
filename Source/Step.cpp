@@ -158,6 +158,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Slots();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SsnState();
+  Step::vAddSteps_Stats();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();
   Step::vAddSteps_StreamDef();
