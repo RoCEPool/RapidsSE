@@ -7,6 +7,32 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm>                                         */
 /*----------------------------------------------------------------------------*/
+: op__tableDef ( tableNm -- )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // table
+  sTableNm checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB
+    Operand[].delete
+    Operand[].newErrorMarker
+    exit
+  then
+
+  // move to table folder and find the table
+  sTableNm pushTable assert
+  sTableNm find execute to table[]
+
+  // cross-check
+  table[].get assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* set folder to given tableDef name                                          */
+/*----------------------------------------------------------------------------*/
 : op__table
 
   "op__table (Table A)" .
