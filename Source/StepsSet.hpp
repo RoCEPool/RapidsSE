@@ -1095,7 +1095,10 @@ public:
 
   // operandC
   void vRegOperandCCollect(void);
+  void vRegOperandCGet(void);
+  void vRegOperandCPipeOut(void);
   void vRegOperandCPipeOutSet(void);
+  void vRegOperandCSet(void);
   void vRegOperandCSetFirst(void);
 
   // reg task
