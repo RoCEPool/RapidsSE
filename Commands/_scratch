@@ -1,4 +1,4 @@
-sc;
+bc;
 
 create table bolTbl (
   bol_col1   BOOLEAN     NOT NULL,

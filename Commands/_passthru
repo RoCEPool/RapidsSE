@@ -2,7 +2,7 @@
 /* _passthru -- passthru benchmark                                            */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 
 pwf ;
 

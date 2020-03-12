@@ -28,7 +28,7 @@ print "pwf";
 pwf;
 
 print "starting the cluster...";
-startCluster;
+_bootCluster;
 
 
 print "cf tables";

@@ -2,7 +2,7 @@
 /* _bm_inflateRow -- inflate row benchmark                                    */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __BM_INFLATEROW_1;

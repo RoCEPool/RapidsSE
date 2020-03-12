@@ -2,7 +2,7 @@
 /* _lineitemRJH - create and load TPC-H LineItem table                        */
 /*============================================================================*/
 
-startCluster;
+_bootCluster;
 
 logSection createTable;
 

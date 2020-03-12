@@ -6,7 +6,7 @@ print "";
 print "=====================================================================";
 print "starting the cluster...";
 print "=====================================================================";
-startCluster;
+_bootCluster;
 
 docol epochTake;
 
