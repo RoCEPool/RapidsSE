@@ -431,6 +431,16 @@ IdxVec* Table::pIdxVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get if table is a definition only                                          */
+/*----------------------------------------------------------------------------*/
+bool Table::bIsDefinitionOnly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pTableDef->m_bDefinitionOnly;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get if table is loading                                                    */
 /*----------------------------------------------------------------------------*/
 bool Table::bIsLoading(void)

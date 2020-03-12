@@ -2,8 +2,12 @@
 /* _tableDefinitions -- create SE systemm table definitions                   */
 /*============================================================================*/
 
-Print "Creating system table definitions";
+Print "Creating System Table Definitions";
 
+create table definition __seekOffsets (
+  offset INTEGER NOT NULL,
+  size   INTEGER NOT NULL
+);
 
 /*============================================================================*/
 /* end                                                                        */

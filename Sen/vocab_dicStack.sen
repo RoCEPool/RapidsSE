@@ -215,6 +215,50 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string                 */
+/*----------------------------------------------------------------------------*/
+: listTableContents ( job -- )
+
+  params| pJob |
+  0 0 0 locals| iCount sTableNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  args.metadata if
+  "(name VARCHAR)" pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the row for each word
+  ""                               // initial contents string
+  pathCurrentFolder dic.lastWord dup
+  iterate                          // setup iteration of words
+
+    object@ word.name@ to sTableNm
+    sTableNm "pushTable" find execute  assert
+    sTableNm find execute to pTable
+
+    // skip definition only tables
+    pTable table.isDefinitionOnly not if
+      1 iCount + to iCount
+      "row: ('" str.cat
+      sTableNm str.cat      // add name of the word to contents string
+      "')\n" str.cat
+    then
+
+    object@ word.prev object!      // step backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in the job
+  pJob job.response!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sent rows Processed in the job
+  iCount pJob job.rowsProcessed!
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/
 : forgetAll ( dic -- )

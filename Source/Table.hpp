@@ -53,6 +53,7 @@ namespace MetaData
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
     i8   nIndexBuffers(i8 iIndexNo);
+    bool bIsDefinitionOnly(void);
     void vIsLoading(bool bIsLoading);
     bool bIsLoading(void);
     void vLazyBuildIndexes(i8 iSlot);

@@ -12,7 +12,7 @@ namespace MetaData
   private:
     s32 m_sTableNm;          // table name
     eTT m_eTableType;        // table type
-    bool m_bDefinition;      // just a table definition
+    bool m_bDefinitionOnly;  // a table definition only
     
     StreamDef* m_pStreamDef; // definition
   

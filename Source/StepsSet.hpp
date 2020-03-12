@@ -1264,6 +1264,7 @@ public:
   void vTableIndexCount(void);
   void vTableInit(void);
   void vTableIsColumn(void);
+  void vTableIsDefinitionOnly(void);
   void vTableIsLoadingStore(void);
   void vTableLazyBuildIndexes(void);
   void vTableList(void);

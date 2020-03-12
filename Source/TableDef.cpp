@@ -52,7 +52,7 @@ TableDef::TableDef(void)
   
   m_sTableNm    = C_NO_NAME;
   m_eTableType  = TT_NORMAL;
-  m_bDefinition = false;
+  m_bDefinitionOnly = false;
   
   m_pStreamDef = new StreamDef;
   
@@ -140,7 +140,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // -- -- -- -- -- --
   pTkn = pTknVec->pNextToken(); dPT();
   if (pTkn->bSame("definition"_Stz)) {
-    m_bDefinition = true;
+    m_bDefinitionOnly = true;
     pTkn = pTknVec->pNextToken(); dPT();
   }
   

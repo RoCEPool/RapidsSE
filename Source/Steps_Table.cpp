@@ -13,6 +13,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.analyze"_Stz,            &Step::vTableAnalyze);
   vAddStep("table.columnCount@"_Stz,       &Step::vTableColumnCountFetch);
   vAddStep("table.column@"_Stz,            &Step::vTableColumnFetch);
+  vAddStep("table.isDefinitionOnly"_Stz,   &Step::vTableIsDefinitionOnly);
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
   vAddStep("table.dump"_Stz,               &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
@@ -361,6 +362,20 @@ void Step::vTableIsColumn(void)
   }
   
   m_pDataStack->vPushInt(bFound);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isDefinitionOnly -- is the table a definition only                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsDefinitionOnly(void)
+{
+  ENTRY(); // ENTRY("vTableIsDefinitionOnly"_Stz);
+  
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
   
   EXIT();
 }
