@@ -4,11 +4,7 @@
 
 Print "Creating System Table Definitions";
 
-create table definition __seekOffsets (
-  offset INTEGER NOT NULL,
-  size   INTEGER NOT NULL
-);
-
+// this is C_TDEF_LOCKSTATS
 create table definition __lockStats (
   nodeNo         INTEGER     NOT NULL,
   takeNo         INTEGER     NOT NULL,
@@ -23,6 +19,12 @@ create table definition __lockStats (
   writeGrab      INTEGER     NOT NULL,
   writeCollision INTEGER     NOT NULL,
   WritePercent   INTEGER     NOT NULL
+);
+
+// this is C_TDEF_SEEKOFFSETS
+create table definition __seekOffsets (
+  offset INTEGER NOT NULL,
+  size   INTEGER NOT NULL
 );
 
 /*============================================================================*/

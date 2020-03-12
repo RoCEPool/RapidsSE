@@ -130,13 +130,18 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_1M"_Stz,    C_1M);
   vAddConstant("C_1G"_Stz,    C_1G);
   
+  vAddConstant("C_2KB"_Stz,   C_2KB);
   vAddConstant("C_4KB"_Stz,   C_4KB);
+  vAddConstant("C_8KB"_Stz,   C_8KB);
   vAddConstant("C_16KB"_Stz,  C_16KB);
+  vAddConstant("C_32KB"_Stz,  C_32KB);
   vAddConstant("C_64KB"_Stz,  C_64KB);
+  vAddConstant("C_128KB"_Stz, C_128KB);
   vAddConstant("C_256KB"_Stz, C_256KB);
-  
-  vAddConstant("C_MAX_INDEXES"_Stz, C_MAX_INDEXES);
-  vAddConstant("C_MAX_SLOTS"_Stz,    C_MAX_SLOTS);
+  vAddConstant("C_512KB"_Stz, C_512KB);
+
+  vAddConstant("C_MAX_INDEXES"_Stz,       C_MAX_INDEXES);
+  vAddConstant("C_MAX_SLOTS"_Stz,         C_MAX_SLOTS);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 
@@ -155,6 +160,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("OPEN_READ_WRITE_CREATE"_Stz, C_OPEN_READ_WRITE_CREATE);
   vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
   
+  // table definition
+  vAddConstant("C_TDEF_LOCKSTATS"_Stz,   C_TDEF_LOCKSTATS);
+  vAddConstant("C_TDEF_SEEKOFFSETS"_Stz, C_TDEF_SEEKOFFSETS);
+
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSecond());
   vAddConstant("HW_CORE_COUNT"_Stz,      Hardware::iCoreCount());
