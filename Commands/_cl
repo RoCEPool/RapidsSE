@@ -2,7 +2,7 @@
 /* _cl -- cache line test                                                     */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 create table EachType (
   bcd decimal,

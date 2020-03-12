@@ -2,7 +2,7 @@
 /* _select -- select test                                                     */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 select * from T ;
 

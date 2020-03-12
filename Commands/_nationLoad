@@ -2,7 +2,7 @@
 /* _nationLoad - create and load TPC-H Nation table for SF1                   */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,

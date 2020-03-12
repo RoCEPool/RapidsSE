@@ -2,7 +2,7 @@
 /* _jindex10 -- index entry testing                                           */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 docol epochTake;
 

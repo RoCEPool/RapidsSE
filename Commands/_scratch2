@@ -2,7 +2,7 @@
 /* _scratch2 -- scratch test 2                                                */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 create table G1 (
 id      integer,

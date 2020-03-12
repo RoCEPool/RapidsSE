@@ -2,7 +2,7 @@
 /* _customerLoad - create and load TPC-H Customer table for SF1               */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,

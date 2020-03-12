@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // strat cluster
-_bootCluster;
+startCluster;
 
 // begin tracking memory
 trackMemory;

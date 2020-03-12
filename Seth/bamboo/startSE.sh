@@ -88,7 +88,7 @@ OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS} 2>&1)
 
 if [ $? -ne 0 ]
 then
-  >&2 echo "ERROR: Could not run the _bootCluster command on RapidsSE. Here is the output of the _bootCluster command:" 1>&2
+  >&2 echo "ERROR: Could not run the startcluster command on RapidsSE. Here is the output of the startcluster command:" 1>&2
   cat "${OUTPUT}"
 
   >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2

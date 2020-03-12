@@ -2,7 +2,7 @@
 /* _j10 -- jtest creation and load etc                                        */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 //docol epochTake;
 //ping ;

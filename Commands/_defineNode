@@ -2,7 +2,7 @@
 /* _defineNode -- define node test                                            */
 /*============================================================================*/
 
-_bootCluster;
+startCluster;
 
 define node NODE9 { IPADDR="127.0.0.1" , PORTNO = 5449 };
 
