@@ -9,8 +9,21 @@
 /*----------------------------------------------------------------------------*/
 : chunk_PulseMarker \handler
 
+  0 locals| pStreamDef |
+
   //"Operand:- ZK_PULSEMARKER" .verbose
   Operand[].pipeOut
+
+  // create a new streamDef
+  Operand[].newStreamDef
+
+  CT_INTEGER "offset" Operand[].addColumnDef
+  CT_INTEGER "size"   Operand[].addColumnDef
+
+  Operand[].get to pStreamDef
+
+  // pipeout the streamDef
+  Operand[].pipeout
 
   // set eof location in counter0
   File0[].getEofLocation to counter1[]
@@ -22,7 +35,7 @@
     counter1[] counter0[] >
   while
     // create an infoSet operand
-    2 InfoSet[].newInfoSet
+    pStreamDef InfoSet[].newInfoSet
     InfoSet[].chunkFile
     InfoSet[].pipeOut
   repeat

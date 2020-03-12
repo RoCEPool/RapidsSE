@@ -7,36 +7,24 @@ namespace InfoData
 {
   static const i8 C_INFO_VALUES = 256;
   
-  class InfoSet : public Operand
+  class InfoSet : public RowBuffer
   {
   protected:
-
-    i8 m_nInfoRows;
-    i8 m_nValuesPerRow;
-    i8 m_nInfoValues;
-    
-    union {
-      i8 m_i_Name;
-      i8 m_i_Value;
-    } m_xInfo[C_INFO_VALUES];
-    
-    b4K  m_yxStrings;
+    i8  m_nRowSize;
+    i8  m_nInfoRows;
     
   public:
     void* operator new(size_t);
     void operator delete(void*);
   
-    InfoSet(i8 nValuesPerRow);
+    InfoSet(void);
+    InfoSet(i8 nRowSize);
     ~InfoSet(void) noexcept(false);
     
-    void vAddValue(i8 iValue);
-    void vAddValue(Stz* szValue);
-    bool bIncRows(void);
-    i8   nInfoRows(void);
-    void vPrint(StreamDef* pStreamDef);
-    i8   iValue(i8 iRow, i8 iCol);
-    Stz* szValue(i8 iRow, i8 iCol);
-    i8   nValues(void);
+    Row2* aAllotRow(void);
+    Row2* aFirstRow();
+    i8    nInfoRows(void);
+    Row2* aNextRow(Row2* pPrevRow);
   };
 
   InfoSet* _pInfoSet(void* aAddr);

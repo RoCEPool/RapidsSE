@@ -10,8 +10,11 @@
 void Step::vAddSteps_RegInfoSet(void)
 {
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
+  vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
+  vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
   vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
   vAddStep("InfoSet[].newInfoSet"_Stz,     &Step::vRegInfoSetNewInfoSet);
+  vAddStep("InfoSet[].nextRow"_Stz,        &Step::vRegInfoSetNextRow);
   vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vRegInfoSetPipeOut);
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
@@ -54,10 +57,11 @@ void Step::vRegInfoSetChunkFile(void)
       
       // compute the number of bytes which belong to the current chunk
       nChunkBytes = i_EofLoc - i_ChunkLoc;
+      Row2* pRow = pInfoSet->aAllotRow();
       
-      if ( pInfoSet->bIncRows() ) {
-        pInfoSet->vAddValue(i_ChunkLoc);
-        pInfoSet->vAddValue(nChunkBytes);
+      if (pRow) {
+        pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
+        pRow->m_waColVal[1].m_iWrd = nChunkBytes;
       }
       
       s32 sFileSize;
@@ -98,9 +102,11 @@ void Step::vRegInfoSetChunkFile(void)
     // compute end location of chunk
     i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
     
-    if ( pInfoSet->bIncRows() ) {
-      pInfoSet->vAddValue(i_ChunkLoc);
-      pInfoSet->vAddValue(nChunkBytes);
+    Row2* pRow = pInfoSet->aAllotRow();
+    
+    if (pRow) {
+      pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
+      pRow->m_waColVal[1].m_iWrd = nChunkBytes;
       
       // advance to start of next chunk
       i_ChunkLoc = i_EndChunkLoc + 1;
@@ -111,7 +117,7 @@ void Step::vRegInfoSetChunkFile(void)
       m_pRegSet->m_iCounter0 = i_ChunkLoc;
       
       // dump
-      //pInfoSet->vPrint();
+      //pInfoSet->vPrintRows();
       
       break;
     }
@@ -124,6 +130,32 @@ void Step::vRegInfoSetChunkFile(void)
   MemLib::vFreeBlock(pReadBlock, C_2K);
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].delete -- operand infoset                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetDelete(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetDelete"_Stz);
+  
+  AM::vDeleteOperand(*m_pRegSet->m_xpInfoSet);
+  
+  m_pRegSet->m_xpInfoSet = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].firstRow -- get first row from the infoset                       */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetFirstRow(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetFirstRow"_Stz);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  m_pDataStack->vPushPtr(pInfoSet->aFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,11 +182,27 @@ void Step::vRegInfoSetNewInfoSet(void)
   ENTRY(); // ENTRY("vRegInfoSetNewInfoSet"_Stz);
   
   ASSERT (m_pRegSet->m_xpInfoSet.bIsNull());
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  i8 nRowSize = Row2::nSizeBytes(pStreamDef);
   
-  i8 iValuesPerRow = m_pDataStack->iPopInt(__func__);
-  m_pRegSet->m_xpInfoSet = new InfoSet(iValuesPerRow);
+  m_pRegSet->m_xpInfoSet = new InfoSet(nRowSize);
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].nextRow -- get next row from the infoset                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetNextRow(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetNextRow"_Stz);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  Row2* pRow = _pRow2(*m_pRegSet->m_xpRow);
+  
+  ASSERT(pRow);
+  
+  m_pDataStack->vPushPtr(pInfoSet->aNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,10 +234,10 @@ void Step::vRegInfoSetReadChunk(void)
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
-  i8 iRow = m_pDataStack->iPopInt(__func__);
+  Row2* pRow = _pRow2(m_pDataStack->pPopPtr(__func__));
   
-  i8 iOffset = pInfoSet->iValue(iRow, 0);
-  i8 nBytes = pInfoSet->iValue(iRow, 1);
+  i8 iOffset = pRow->m_waColVal[0];
+  i8 nBytes = pRow->m_waColVal[1];
   
   vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   

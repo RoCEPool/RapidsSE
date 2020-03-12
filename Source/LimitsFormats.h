@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Version.h"
+//#include "Version.h"
 
 static const i8 C_MAX_COLUMNS    = 150;    // max columns per table
 static const i8 C_MAX_COLUMNVECS = 32;     // max column vectors per streamDef

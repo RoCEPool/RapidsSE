@@ -231,6 +231,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Row[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Row[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("StreamDef[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDef[].set"_Stz);
     EXIT();

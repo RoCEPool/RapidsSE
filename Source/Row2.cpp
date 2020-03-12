@@ -42,7 +42,7 @@ void* Row2::operator new(size_t, void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Row2::Row2(void)
-:Header(CN_ROW)
+  :Object(CN_ROW)
 {
   
 }

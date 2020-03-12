@@ -43,18 +43,29 @@ void InfoSet::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InfoSet::InfoSet(i8 nValuesPerRow)
-: Operand(CN_INFOSET)
+InfoSet::InfoSet(void)
+: RowBuffer(CN_INFOSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
+  m_nRowSize  = C_UNKNOWN;
   m_nInfoRows = 0;
-  m_nInfoValues = 0;
-  m_nValuesPerRow = nValuesPerRow;
   
-  for (i8 i_Set = 0; i_Set < C_INFO_VALUES; i_Set++) {
-   m_xInfo[i_Set].m_i_Value = C_UNKNOWN;
-  }
+  _checkInitialised_(CN_INFOSET);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+InfoSet::InfoSet(i8 nRowSize)
+: RowBuffer(CN_INFOSET)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_nRowSize  = nRowSize;
+  m_nInfoRows = 0;
   
   _checkInitialised_(CN_INFOSET);
   
@@ -71,42 +82,34 @@ InfoSet::~InfoSet(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add                                                                        */
+/* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vAddValue(i8 iValue)
+Row2* InfoSet::aAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  m_xInfo[m_nInfoValues++].m_i_Value = iValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add                                                                        */
-/*----------------------------------------------------------------------------*/
-void InfoSet::vAddValue(Stz* szName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  Row2* pRow = nullptr;
   
-  m_xInfo[m_nInfoValues++].m_i_Name = m_yxStrings.iAppend(szName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc rows in the set                                                        */
-/*----------------------------------------------------------------------------*/
-bool InfoSet::bIncRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  if (m_nInfoValues + m_nValuesPerRow < C_INFO_VALUES) {
+  if (nFreeBytes() >= m_nRowSize) {
+    pRow = RowBuffer::aAllotRow(m_nRowSize);
     m_nInfoRows++;
-    return true;
   }
   
-  return false;
+  return pRow;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get no of infoRows                                                         */
+/* get first row                                                              */
+/*----------------------------------------------------------------------------*/
+Row2* InfoSet::aFirstRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return RowBuffer::aFirstRow();
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
 i8 InfoSet::nInfoRows(void)
 {
@@ -116,72 +119,13 @@ i8 InfoSet::nInfoRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print the values as per the stream def                                     */
+/* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vPrint(StreamDef* pStreamDef)
+Row2* InfoSet::aNextRow(Row2* aPrevRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  // streamdef columns should match the rows/values
-  ASSERT(m_nInfoRows / m_nInfoValues == pStreamDef->nColumns(0));
-  
-  // for each infoset
-  for (i8 i_InfoRow = 0; i_InfoRow < m_nInfoRows; i_InfoRow++) {
-    
-    // for each column
-    for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(0); i_Col++) {
-      
-      Column* pColumn = pStreamDef->pGetColumn(i_Col);
-      i8 i_InfoSet = i_InfoRow + i_Col;
-      
-      if (pColumn->eColumnType() == CT_INTEGER)
-        vTrace("%s %slld\n"_Stz, pColumn->szColNm(),m_xInfo[i_InfoSet].m_i_Value);
-      else {
-        vTrace("%s %s\n"_Stz, pColumn->szColNm(),m_yxStrings.szGet(m_xInfo[i_InfoSet].m_i_Name));
-      }
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get int column value of row                                                */
-/*----------------------------------------------------------------------------*/
-i8 InfoSet::iValue(i8 iRow, i8 iCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  ASSERT(iRow < m_nInfoRows);
-  
-  i8 i_InfoSet = (iRow * m_nValuesPerRow) + iCol;
-  ASSERT(i_InfoSet < m_nInfoValues);
-  
-  return m_xInfo[i_InfoSet].m_i_Value;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get str column value of row                                                */
-/*----------------------------------------------------------------------------*/
-Stz* InfoSet::szValue(i8 iRow, i8 iCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  ASSERT(iRow < m_nInfoRows);
-  
-  i8 i_InfoSet = iRow + iCol;
-  ASSERT(i_InfoSet < m_nInfoValues);
-  
-  return m_yxStrings.szGet(m_xInfo[i_InfoSet].m_i_Name);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get no of values                                                           */
-/*----------------------------------------------------------------------------*/
-i8 InfoSet::nValues(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  return m_nInfoValues;
+  return RowBuffer::aNextRow(aPrevRow, m_nRowSize);
 }
 
 /*============================================================================*/

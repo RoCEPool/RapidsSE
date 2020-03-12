@@ -5,7 +5,7 @@
 
 namespace DataBuffers
 {
-  typedef       HV <Record,StreamDef>                            HV_Rec;
+  typedef       HV <Record,StreamDef>        HV_Rec;
   
   class RowBuffer : public DataBuffer,
                     public RowHeap_t<Row2>

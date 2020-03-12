@@ -48,9 +48,9 @@ IrwBuffer::IrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
-  
   _checkInitialised_(CN_IRWBUFFER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6,7 +6,7 @@
 namespace Rows
 {
   
-  class Row2 : public Header
+  class Row2 : public Object
   {
   public:
     Dtm m_waColVal[1];

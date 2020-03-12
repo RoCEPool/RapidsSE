@@ -1020,8 +1020,11 @@ public:
 
   // info set
   void vRegInfoSetChunkFile(void);
+  void vRegInfoSetDelete(void);
+  void vRegInfoSetFirstRow(void);
   void vRegInfoSetInfoRows(void);
   void vRegInfoSetNewInfoSet(void);
+  void vRegInfoSetNextRow(void);
   void vRegInfoSetPipeOut(void);
   void vRegInfoSetReadChunk(void);
   void vRegInfoSetSet(void);
@@ -1102,6 +1105,13 @@ public:
   void vRegTimerGet(void);
   void vRegTimerSet(void);
 
+  // register
+  void vRegister0Get(void);
+  void vRegister0Set(void);
+
+  // regset
+  void vRegSetFun(void);
+
   void vRowIntColumnFetch(void);
 
   // rowCursor
@@ -1118,12 +1128,10 @@ public:
   void vRowCursorTableFetch(void);
   void vRowCursorTableStore(void);
 
-  // register
-  void vRegister0Get(void);
-  void vRegister0Set(void);
-
-  // regset
-  void vRegSetFun(void);
+  // row
+  void vRowGet(void);
+  void vRowIsNull(void);
+  void vRowSet(void);
 
   // rstack
   void vRstackCsPick(void);

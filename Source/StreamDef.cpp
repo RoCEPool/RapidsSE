@@ -150,9 +150,6 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
   m_xaColumn[i_DefCol].vColumnType(eColumnType);
   
   m_nDefColumns[m_nDefSets]++;
-  
-  if ( m_nDefSets == 0)
-    m_nDefSets++;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -437,7 +437,7 @@ void Step::vSocketRecvObject(void)
     }
      
     case CN_INFOSET: {
-      InfoSet* pInfoSet = new InfoSet(2);
+      InfoSet* pInfoSet = new InfoSet;
       
       MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
       
