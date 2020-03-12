@@ -9,7 +9,7 @@ namespace Rows
   class Row2 : public Header
   {
   public:
-    Dtm m_waColVal[0];
+    Dtm m_waColVal[1];
     
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last

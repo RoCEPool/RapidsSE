@@ -66,11 +66,7 @@ Row2::~Row2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Row2::nSizeBytes(StreamDef* pStreamDef)
 {
-//  i8 i = sizeof(Row2);
-//  i8 j = pStreamDef->nColumns(0) - 1;
-//  i8 k = sizeof(Dtm);
-  
-  i8 nSize = sizeof(Row2) + pStreamDef->nColumns(0) * sizeof(Dtm);
+  i8 nSize = sizeof(Row2) + (pStreamDef->nColumns(0) - 1) * sizeof(Dtm);
   return nSize;
 }
 
