@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOperand(void)
 {
+  vAddStep("Operand[]"_Stz,                &Step::vRegOperandGet);
   vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);

@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegOperandB(void)
 {
+  vAddStep("OperandB[]"_Stz,                &Step::vRegOperandBGet);
   vAddStep("OperandB[].appendClose"_Stz,    &Step::vRegOperandBAppendClose);
   vAddStep("OperandB[].delete"_Stz,         &Step::vRegOperandBDelete);
   vAddStep("OperandB[].get"_Stz,            &Step::vRegOperandBGet);
