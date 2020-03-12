@@ -10,6 +10,7 @@ create table definition __seekOffsets (
 );
 
 create table definition __lockStats (
+  nodeNo         INTEGER     NOT NULL,
   takeNo         INTEGER     NOT NULL,
 
   lockNo         INTEGER     NOT NULL,
