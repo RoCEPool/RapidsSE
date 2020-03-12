@@ -12,6 +12,7 @@ shortcut a _lineitemay;
 
 shortcut ad article_dump;
 shortcut b  _bm_insidx;
+shortcut bc _bootCluster;
 shortcut i  _bm_inflateRow;
 shortcut ct /flow create table t (a integer);
 shortcut l _loadPipeline;
