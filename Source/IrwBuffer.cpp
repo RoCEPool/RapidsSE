@@ -96,6 +96,7 @@ bool IrwBuffer::bCopyRow(RowSingle* pRowSingle)
       
       char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
       i8 nSrcLength = StrLib::iSize(acSrcString);
+      
       char* acDstString = (char*)ayAllotTail(nSrcLength);
       i8 nCopyBytes = StrLib::nCopy(acDstString, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
