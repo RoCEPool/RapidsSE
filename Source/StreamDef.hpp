@@ -33,6 +33,7 @@ namespace MetaData
     
     void vAdd(StreamDef* pStreamDef);
     void vAddColumn(Stz* ColumnNm, eCT eColumnType);
+    void vAsString(String* pString);
     i8 nColumns(i8 iSubSet);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);

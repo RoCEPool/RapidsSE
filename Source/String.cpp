@@ -41,6 +41,35 @@ String::~String(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* copy arg into this string                                                  */
 /*----------------------------------------------------------------------------*/
+void String::vCatSprint(Stz* szFormat, ...)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+  
+  va_list vaArgs;
+  
+  char* aEnd = aAdd<char*>(m_caStr,nLength());
+  
+  va_start(vaArgs,szFormat);
+  vsprintf(aEnd,(char*)szFormat,vaArgs);
+  va_end(vaArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat argument                                                            */
+/*----------------------------------------------------------------------------*/
+void String::vConcat(Stz* szArg)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+  
+  StrLib::vConcat(m_caStr,szArg->azChar());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* copy arg into this string                                                  */
+/*----------------------------------------------------------------------------*/
 void String::vCopy(Stz* szArg)
 {
   m_xHeader.vAssertHeader();
@@ -54,12 +83,38 @@ void String::vCopy(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* get size of string                                                         */
 /*----------------------------------------------------------------------------*/
+i8 String::nLength(void)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  i8 nLen = StrLib::nLength(m_caStr);
+  
+  return nLen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of string                                                         */
+/*----------------------------------------------------------------------------*/
 i8 String::nSize(void)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
   return m_nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSprint: formatted sprint                                                  */
+/*----------------------------------------------------------------------------*/
+void String::vSprint(Stz* szFormat, ...)
+{
+  va_list args;
+  va_start(args,szFormat);
+  
+  vsprintf(m_caStr,szFormat->azChar(),args);
+  
+  va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/

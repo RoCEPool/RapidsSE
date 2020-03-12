@@ -128,6 +128,7 @@ namespace Steps
     static void vAddSteps_RegOperandB(void);
     static void vAddSteps_RegOperandC(void);
     static void vAddSteps_RegSet(void);
+    static void vAddSteps_RegStreamDef(void);
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_Rstack(void);
@@ -141,7 +142,6 @@ namespace Steps
     static void vAddSteps_Stats(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);
-    static void vAddSteps_StreamDef(void);
     static void vAddSteps_Subset(void);
   
     static void vAddSteps_Table(void);

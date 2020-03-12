@@ -1,0 +1,133 @@
+/*============================================================================*/
+/* Steps_StreamDef.cpp -- StreamDef step group                                */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_RegStreamDef(void)
+{
+  vAddStep("StreamDef[]"_Stz,                 &Step::vRegStreamDefGet);
+  vAddStep("StreamDef[].asStr"_Stz,           &Step::vRegStreamDefAsStr);
+  vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
+  vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
+  vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vRegStreamDefNewToCsv);
+  vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vRegStreamDefPipeOut);
+  vAddStep("StreamDef[].set"_Stz,             &Step::vRegStreamDefSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].asStr -- get streamDef as a string                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefAsStr(void)
+{
+  ENTRY(); // ENTRY("vStreamDefGet"_Stz);
+  
+  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
+  
+  s4K sStreamDef;
+  
+  pStreamDef->vAsString(sStreamDef.pString());
+  
+  m_pDataStack->vPushStr(sStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].get -- get streamDef                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefGet(void)
+{
+  ENTRY(); // ENTRY("vStreamDefGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].newCount -- new a countOp streamDef                            */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefNewCount(void)
+{
+  ENTRY(); // ENTRY("vStreamDefNewCountStream"_Stz);
+  
+  // create a new streamDef
+  StreamDef* pStreamDef = new StreamDef;
+  
+  // create an integer column
+  pStreamDef->m_xaColumn[0].vColumnNo(0);
+  pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
+  pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
+  pStreamDef->m_xaColumn[0].vDatum(DM_INT);
+  
+  pStreamDef->m_nDefSets++;
+  pStreamDef->m_nDefColumns[0] = 1;
+  pStreamDef->m_i_DefStart[0] = 0;
+  
+  m_pRegSet->m_xpStreamDef = pStreamDef;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].newToCsvStream -- new a ToCsvOp streamDef                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefNewToCsv(void)
+{
+  ENTRY(); // ENTRY("vStreamDefNewToCsvStream"_Stz);
+  
+  // create a new streamDef
+  StreamDef* pStreamDef = new StreamDef;
+  
+  // create an integer column
+  pStreamDef->m_xaColumn[0].vColumnNo(0);
+  pStreamDef->m_xaColumn[0].vColumnNm("row"_Stz);
+  pStreamDef->m_xaColumn[0].vColumnType(CT_VARCHAR);
+  pStreamDef->m_xaColumn[0].vDatum(DM_VCH);
+  
+  pStreamDef->m_nDefSets++;
+  pStreamDef->m_nDefColumns[0] = 1;
+  pStreamDef->m_i_DefStart[0] = 0;
+  
+  m_pRegSet->m_xpStreamDef = pStreamDef;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].pipeOut -- append streamDef onto next operator in pipeline     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefPipeOut(void)
+{
+  ENTRY(); // ENTRY("vStreamDefPipeOut"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpStreamDef);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
+  pOp->vPipeOut(*m_pRegSet->m_xpStreamDef);
+  
+  m_pRegSet->m_xpStreamDef = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].set -- set streamDef                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefSet(void)
+{
+  ENTRY(); // ENTRY("vStreamDefSet"_Stz);
+  
+  m_pRegSet->m_xpStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

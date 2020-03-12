@@ -153,6 +153,33 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert streamDef to a string                                              */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAsString(String* pString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  pString->vSprint("streamDef %s: ("_Stz,m_sName.szStz());
+  
+  for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
+    
+    if (i_DefSet != 0)
+      pString->vConcat(","_Stz);
+    
+    for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+        
+      if (i_DefColumn != 0)
+        pString->vConcat(","_Stz);
+      
+      pString->vCatSprint("%s %s"_Stz,
+                          m_xaColumn[i_DefColumn].szColNm(),
+                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+    }
+  }
+  pString->vConcat(")"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
 i8 StreamDef::nColumns(i8 iSubSet)
@@ -222,16 +249,15 @@ void StreamDef::vToMetadata(Stz* sMetadata)
     
     for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
         
-        if (i_DefColumn != 0)
-          sMetadata->vConcat(","_Stz);
-        
-        sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                              aCT[m_xaColumn[i_DefColumn].eColumnType()]);
-      }
+      if (i_DefColumn != 0)
+        sMetadata->vConcat(","_Stz);
+      
+      sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+                            aCT[m_xaColumn[i_DefColumn].eColumnType()]);
     }
-    sMetadata->vConcat(")"_Stz);
   }
-
+  sMetadata->vConcat(")"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

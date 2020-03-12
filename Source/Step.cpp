@@ -147,6 +147,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegOperandB();
   Step::vAddSteps_RegOperandC();
   Step::vAddSteps_RegSet();
+  Step::vAddSteps_RegStreamDef();
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_Row();
@@ -161,7 +162,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Stats();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();
-  Step::vAddSteps_StreamDef();
   Step::vAddSteps_Subset();
   
   Step::vAddSteps_Table();

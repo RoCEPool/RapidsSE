@@ -24,8 +24,12 @@ namespace Correctness
 
     void  vCopy(Stz* szArg);
   
+    void  vCatSprint(Stz* szFormat, ...);
+    void  vConcat(Stz* szArg);
+    i8    nLength(void);
     i8    nSize(void);
     i8    nStackUsage(void);
+    void  vSprint(Stz* szFormat, ...);
     char* azStr(void);
     Stz*  szStz(void);
   

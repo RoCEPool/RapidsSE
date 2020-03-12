@@ -1101,6 +1101,14 @@ public:
   void vRegOperandCSet(void);
   void vRegOperandCSetFirst(void);
 
+  // reg stream def
+  void vRegStreamDefAsStr(void);
+  void vRegStreamDefGet(void);
+  void vRegStreamDefNewCount(void);
+  void vRegStreamDefNewToCsv(void);
+  void vRegStreamDefPipeOut(void);
+  void vRegStreamDefSet(void);
+
   // reg task
   void vRegTaskGet(void);
 
@@ -1237,13 +1245,6 @@ public:
   void vStrSub(void);
   void vStrTailInt(void);
   void vStrToStrVec(void);
-
-  // stream def
-  void vStreamDefGet(void);
-  void vStreamDefNewCount(void);
-  void vStreamDefNewToCsv(void);
-  void vStreamDefPipeOut(void);
-  void vStreamDefSet(void);
 
   // sub loader
   void vSubLoaderDelete(void);
