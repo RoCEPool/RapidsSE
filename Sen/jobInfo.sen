@@ -173,46 +173,32 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet params| pWord |
 
-  " ** 1" .
-
   pWord word.enameSet@ locals| pEnameSet |
-
-  " ** 2" .
 
   // default for command kind
   "<cmdKind>" pEnameSet EnameSet.hasName not if
     "<cmdKind>" "CK_COMMAND" pWord jobInfo::addEname
   then
 
-  " ** 3" .
-
   // default for ddl lock
   "<ddlLock>" pEnameSet EnameSet.hasName not if
     "<ddlLock>" "DL_NONE" pWord jobInfo::addEname
   then
-
-  " ** 4" .
 
   // default for job desc
   "<jobDesc>" pEnameSet EnameSet.hasName not if
     "<jobDesc>" "--description of job--" pWord jobInfo::addEname
   then
 
-  " ** 5" .
-
   // default for job kind
   "<jobKind>" pEnameSet EnameSet.hasName not if
     "<jobKind>" "JK_LOCAL" pWord jobInfo::addEname
   then
 
-  " ** 6" .
-
   // default for priority
   "<priority>" pEnameSet EnameSet.hasName not if
     "<priority>" "PY_NORMAL" pWord jobInfo::addEname
   then
-
-  " ** 7" .
 
   // default for response kind
   "<rspKind>" pEnameSet EnameSet.hasName not if
@@ -222,21 +208,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  " ** 8" .
-
   pWord job::isgenericJob if
-    " ** 8a" .
     pWord .fillOutEnameSet_generic
   else
   pWord job::isDistJob if
-    " ** 8b" .
     pWord .fillOutEnameSet_dist
   else
-    " ** 8c" .
     pWord .fillOutEnameSet_local
   then then
-
-  " ** 9" .
 
   // pEnameSet EnameSet.asStr .
 ;
