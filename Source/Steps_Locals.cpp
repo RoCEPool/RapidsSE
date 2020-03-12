@@ -226,6 +226,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("OperandC[]"_Stz)) {
+    pCurrentWord->vEncodeCall("OperandC[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Register0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Register0[].set"_Stz);
     EXIT();
