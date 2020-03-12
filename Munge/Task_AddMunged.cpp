@@ -5021,7 +5021,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
-    "  <ddlLock>  = DL_GRAB_WRITE\n"
+    "  <ddlLock>  = DL_GRAB_READ\n"
     "  \n"
     "  <preCheck> = bClusterStarted\n"
     "}\n"
