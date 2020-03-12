@@ -19,6 +19,8 @@ void Step::vStatsLockStats(void)
 {
   ENTRY(); // ENTRY("vStatsLockStats"_Stz);
 
+  AM::pLockTracker()->vReport();
+  
   EXIT();
 }
 

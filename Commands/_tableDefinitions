@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _tableDefinitions -- create SE systemm table definitions                   */
+/* _tableDefinitions -- create SE system table definitions                    */
 /*============================================================================*/
 
 Print "Creating System Table Definitions";
@@ -10,7 +10,18 @@ create table definition __seekOffsets (
 );
 
 create table definition __lockStats (
-  a INTEGER NOT NULL
+  takeNo         INTEGER     NOT NULL,
+
+  lockNo         INTEGER     NOT NULL,
+  lockNm         VARCHAR(32) NOT NULL,
+
+  readGrab       INTEGER     NOT NULL,
+  readCollision  INTEGER     NOT NULL,
+  readPercent    INTEGER     NOT NULL,
+
+  writeGrab      INTEGER     NOT NULL,
+  writeCollision INTEGER     NOT NULL,
+  WritePercent   INTEGER     NOT NULL
 );
 
 /*============================================================================*/
