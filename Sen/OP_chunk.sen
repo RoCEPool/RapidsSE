@@ -14,12 +14,15 @@
   //"Operand:- ZK_PULSEMARKER" .verbose
   Operand[].pipeOut
 
-  // find the __seekOffsets table
-  "__seekOffsets" op__tableDef
+  // create a new streamDef
+  Operand[].newStreamDef
+
+  CT_INTEGER "offset" Operand[].addColumnDef
+  CT_INTEGER "size"   Operand[].addColumnDef
+
+  Operand[].get to pStreamDef
 
   // pipeout the streamDef
-  Operand[].newStreamDef
-  Operand[].get to pStreamDef
   Operand[].pipeout
 
   // set eof location in counter0
