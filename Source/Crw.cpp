@@ -319,8 +319,6 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //Row* pRow = new Row(pStreamDef, C_ALL);
-  
   HV_Row hRow(pStreamDef, C_ALL);
   RowInflator::vInflateRow(hRow,aHeadLine);
   

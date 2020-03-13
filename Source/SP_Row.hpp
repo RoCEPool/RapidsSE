@@ -18,10 +18,10 @@ namespace Rows
     SP_Row(void);
    ~SP_Row(void) noexcept(false);
 
-    void vRow(Row* pRow);
+    void vRow(RowSingle* pRow);
   
     Stz* sz(void);
-    Stz* sz(Row* pRow);
+    Stz* sz(RowSingle* pRow);
   
     Footer* aFooter(void);
   };

@@ -47,7 +47,7 @@ namespace CompactBuffers
     void       vPrintRows(StreamDef* pStreamDef);
     CsvBuffer* pToCsvBuffer(void);
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
-    IrwBuffer* pToIrwBuffer(void);
+    //IrwBuffer* pToIrwBuffer(void);
     void       vTruncate(void);
     
     ////////////////////////////////////////////////////////////////////////////

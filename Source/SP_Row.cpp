@@ -41,7 +41,7 @@ SP_Row::~SP_Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Row::vRow(Row* pRow)
+void SP_Row::vRow(RowSingle* pRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -151,7 +151,7 @@ Stz* SP_Row::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Row::sz(Row* pRow)
+Stz* SP_Row::sz(RowSingle* pRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
