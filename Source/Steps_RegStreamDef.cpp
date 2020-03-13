@@ -13,8 +13,10 @@ void Step::vAddSteps_RegStreamDef(void)
   vAddStep("StreamDef[].asStr"_Stz,           &Step::vRegStreamDefAsStr);
   vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
+  vAddStep("StreamDef[].new"_Stz,             &Step::vRegStreamDefNew);
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vRegStreamDefNewToCsv);
   vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vRegStreamDefPipeOut);
+  vAddStep("StreamDef[].rowSize"_Stz,         &Step::vRegStreamDefRowSize);
   vAddStep("StreamDef[].set"_Stz,             &Step::vRegStreamDefSet);
 }
 
@@ -44,6 +46,22 @@ void Step::vRegStreamDefGet(void)
   ENTRY(); // ENTRY("vStreamDefGet"_Stz);
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].new -- new a stream def from table[]                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefNew(void)
+{
+  ENTRY(); // ENTRY("vOperandNewStreamDef"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpStreamDef.bIsNull());
+  
+  ASSERT( ! m_pRegSet->m_xpTable.bIsNull());
+  
+  m_pRegSet->m_xpStreamDef = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
   
   EXIT();
 }
@@ -112,6 +130,21 @@ void Step::vRegStreamDefPipeOut(void)
   pOp->vPipeOut(*m_pRegSet->m_xpStreamDef);
   
   m_pRegSet->m_xpStreamDef = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].rowSize -- get row size from streamDef                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefRowSize(void)
+{
+  ENTRY(); // ENTRY("vOperandStreamDefFetch"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpStreamDef);
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpStreamDef);
+  
+  m_pDataStack->vPushInt(Row::nSizeBytes(pStreamDef));
   
   EXIT();
 }

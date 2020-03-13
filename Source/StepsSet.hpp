@@ -1105,9 +1105,11 @@ public:
   // reg stream def
   void vRegStreamDefAsStr(void);
   void vRegStreamDefGet(void);
+  void vRegStreamDefNew(void);
   void vRegStreamDefNewCount(void);
   void vRegStreamDefNewToCsv(void);
   void vRegStreamDefPipeOut(void);
+  void vRegStreamDefRowSize(void);
   void vRegStreamDefSet(void);
 
   // reg task
