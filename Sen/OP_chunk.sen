@@ -18,13 +18,13 @@
   C_TDEF_SEEKOFFSETS op__tableDef
 
   // create a new streamDef
-  Operand[].newStreamDef
+  StreamDef[].new
 
   // get row size from streamDef
-  Operand[].rowSize to iRowSize
+  StreamDef[].rowSize to iRowSize
 
   // pipeout the streamDef
-  Operand[].pipeout
+  StreamDef[].pipeout
 
   // set eof location in counter0
   File0[].getEofLocation to counter1[]
