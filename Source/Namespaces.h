@@ -58,6 +58,7 @@ namespace Load          {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class IdxColVec; class Index;          }
+namespace Metrics       {                                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operands      { class Operand;                                      }
 namespace Partitioning  { class BucketMap;  class TablePtn;                   }
@@ -132,6 +133,7 @@ using namespace Load;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
+using namespace Metrics;
 using namespace Oblique;
 using namespace Operands;
 using namespace Partitioning;
