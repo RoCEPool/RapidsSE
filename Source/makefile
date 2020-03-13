@@ -39,11 +39,22 @@ THIRDPARTY_LIBS = -llz4 -lbz2
 LIBS = -lrt -lpthread
 RAPIDS_LIBS = -lRapidsSEv0.4.1
 
-all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+#all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+all : post-build
+
+post-build : main-build
+	
+main-build : pre-build
+	@$(MAKE) -e --no-print-directory target
+
+pre-build : version
+
+target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 #Debug builds
-debug: CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
-debug: $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
+debug : all
+#debug: $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
 	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
@@ -54,7 +65,7 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 	$(CPP) $(LIBFLAGS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
 #Main target
-$(TARGET_EXE): version $(TARGET_LIBRARY) $(SHOCO)
+$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
@@ -68,7 +79,7 @@ $(TARGET_EXE): version $(TARGET_LIBRARY) $(SHOCO)
 	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 #To generate dependency files
-%.d: %.cpp
+%.d: %.cpp 
 	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
 
 # Generate the Version.h file. Force it to run every time.
