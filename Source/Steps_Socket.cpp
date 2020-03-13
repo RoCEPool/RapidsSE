@@ -849,7 +849,7 @@ void Step::vSocketSendObject(void)
               nObjectSize,
               m_pRegSet->m_pSendNode ?
                 m_pRegSet->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
-              C_ENDARGS);
+              C_ARGS_END);
 
     
   SysCall oSysCall;
@@ -861,13 +861,13 @@ void Step::vSocketSendObject(void)
                 "Object %s %lldB"_Stz, //!format-LogRes
                 aCN[eClass],
                 nObjectSize,
-                C_ENDARGS);
+                C_ARGS_END);
   else
     AM::vLogRes(SL_INF,pSocket,RA_SKT_ERROR,
                 "Error while sending object %s %lldB"_Stz, //!format-LogRes
                 aCN[eClass],
                 nObjectSize,
-                C_ENDARGS);
+                C_ARGS_END);
 
   m_pDataStack->vPushInt(bResult);
 

@@ -59,7 +59,7 @@ Stz* SP_Task::sz_log(Task* pTask)
                                   ? AM::iThreadId(pTask->pThread())
                                   : C_UNKNOWN),
 
-                  C_ENDARGS);
+                  C_ARGS_END);
 
   return (Stz*) &m_caResult[0];
 }

@@ -51,7 +51,7 @@ Stz* SP_Article::sz(Article* pArticle, i8 iDepth)
                   
                   pArticle->nItems(),
                   
-                  C_ENDARGS);
+                  C_ARGS_END);
   
   return (Stz*) &m_caResult[0];
 }

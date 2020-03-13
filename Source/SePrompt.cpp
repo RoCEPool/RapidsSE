@@ -67,6 +67,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pSession->m_pTokenStream->vUseStdin();
   
   m_bOneCommand = bOneCommand;
+  m_bOneRun     = false;
+
   m_bContinue   = true;
   m_bDumpTokens = true;
   
@@ -603,7 +605,8 @@ bool SePrompt::bGetCommand(void)
   
   TokenVec* pTknVec = pTokenVec();
   
-  if (m_bOneCommand) {
+  if (m_bOneCommand && ! m_bOneRun) {
+    m_bOneRun = true;
     s4K szCommand = AM::szCommand();
     Tokeniser::vTokenise(pTknVec,szCommand);
     pTknVec->vStripSemicolon();
@@ -702,7 +705,7 @@ void SePrompt::vJobUnlockMutex(void)
   
   AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
               "unlocks job mutex and resumes running"_Stz, //!format-LogPrm
-              C_ENDARGS);
+              C_ARGS_END);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -724,7 +727,7 @@ void SePrompt::vJobWaitCond(void)
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
               "for job mutex %s to be signaled (mutex is unlocked)"_Stz, //!format-LogPrm
               spId.sz(IK_JOB,m_pJob->m_iFocalId),
-              C_ENDARGS);
+              C_ARGS_END);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -867,7 +870,7 @@ void SePrompt::vPreJob(void)
   AM::vLogPrm(SL_INF,this,PA_PRM_NEW_JOB,
               "for request %s"_Stz, //!format-LogPrm
               spId.sz(EK_REQ,m_iRequestId),
-              C_ENDARGS);
+              C_ARGS_END);
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   

@@ -67,7 +67,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
            cHeap,
            aCN[i_Class],
            
-           C_ENDARGS
+           C_ARGS_END
            );
     
 //    if ('~' != cGroup)

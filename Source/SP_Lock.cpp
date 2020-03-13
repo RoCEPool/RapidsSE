@@ -51,7 +51,7 @@ Stz* SP_Lock::sz_log(Lock* pLock)
 
                   aLK[pLock->eLockKind()],
                   
-                  C_ENDARGS);
+                  C_ARGS_END);
 
   return (Stz*) &m_caResult[0];
 }

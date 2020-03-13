@@ -331,7 +331,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
   AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
               "pJob=%p"_Stz, //!format-LogPrm
               pJob,
-              C_ENDARGS);
+              C_ARGS_END);
   
   
   //Scheduler::vAddTaskGeneral(pTask);
@@ -384,7 +384,7 @@ bool Api::bSpawnJob(Job* pJob)
 //  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
 //              "pJob=%p"_Stz, //!format-LogPrm
 //              pJob,
-//              C_ENDARGS);
+//              C_ARGS_END);
 
   pJob->vTimerStart();
 

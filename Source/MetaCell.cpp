@@ -95,7 +95,7 @@ void MetaCell::vPrint(i8 i_Tab)
          m_sCellNm.azChar(),
          m_nSize,
          
-         C_ENDARGS);
+         C_ARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/

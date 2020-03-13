@@ -53,7 +53,7 @@ Stz* SP_Mutex::sz_log(Mutex* pMutex)
 
                   aMK[pMutex->m_eMutex],
                   
-                  C_ENDARGS);
+                  C_ARGS_END);
 
   return (Stz*) &m_caResult[0];
 }

@@ -49,7 +49,7 @@ Stz* SP_Word::sz(Word* pWord)
                   pWord->bImmediate() ? " immediate" : "",
                   pWord->bPrompt()    ? " prompt"    : "",
 
-                  C_ENDARGS
+                  C_ARGS_END
                   );
   
   if (* pWord->szExitHook()->azChar())
@@ -86,7 +86,7 @@ Stz* SP_Word::szSeeDoes(Word* pWord)
                   pWord->bImmediate() ? " immediate" : "",
                   pWord->bPrompt()    ? " prompt"    : "",
                   
-                  C_ENDARGS
+                  C_ARGS_END
                   );
   
   if (* pWord->szExitHook()->azChar())
@@ -123,7 +123,7 @@ Stz* SP_Word::szSeeWord(Word* pWord)
                   pWord->bImmediate() ? " immediate" : "",
                   pWord->bPrompt()    ? " prompt"    : "",
                   
-                  C_ENDARGS
+                  C_ARGS_END
                   );
   
   if (* pWord->szExitHook()->azChar())

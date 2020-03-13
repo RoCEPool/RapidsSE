@@ -43,7 +43,7 @@ void Step::vStatsLockStats(void)
                     0,       // write collision
                     0,       // write percent
                     
-                    C_ENDARGS);
+                    C_ARGS_END);
    
   InfoSet* pInfoSet = new InfoSet;
   Row* aLockStatRow = pInfoSet->aAllotRow();

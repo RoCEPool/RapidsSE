@@ -48,7 +48,7 @@ Stz* SP_Node::sz(Node* pNode)
                   pNode->pSendSocket(),
                   pNode->pRecvSocket(),
 
-                  C_ENDARGS
+                  C_ARGS_END
                   );
   
   return (Stz*) &m_caResult[0];

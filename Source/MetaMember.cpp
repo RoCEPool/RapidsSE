@@ -311,7 +311,7 @@ void MetaMember::vPrint(i8 i_Tab)
            m_sMemberNm.azChar(),
            m_nSize,
            
-           C_ENDARGS);
+           C_ARGS_END);
   else
     vTrace("%sMember %-16s %lldB : Type=%s Asters=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          
@@ -325,7 +325,7 @@ void MetaMember::vPrint(i8 i_Tab)
            m_nElements,
            m_nBits,
          
-           C_ENDARGS);
+           C_ARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/

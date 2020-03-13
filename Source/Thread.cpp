@@ -403,7 +403,7 @@ void Thread::vContentDump(void)
          aCN[m_eDedicated],
          m_nAssignedTasks,
          
-         C_ENDARGS );
+         C_ARGS_END );
 }
 
 /*----------------------------------------------------------------------------*/

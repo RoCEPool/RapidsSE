@@ -13,6 +13,7 @@ namespace Prompt
     Session*  m_pSession;   // rapidsse session
 
     bool      m_bOneCommand;// run one command only
+    bool      m_bOneRun;    // one command has been run?
     bool      m_bContinue;  // continue processing commands?
     bool      m_bDumpTokens;// dump tokens?
 

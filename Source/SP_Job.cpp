@@ -55,7 +55,7 @@ Stz* SP_Job::sz_log(Job* pJob)
 
                   spReqTuple.sz(&pJob->m_xReqTuple),
                   
-                  C_ENDARGS);
+                  C_ARGS_END);
   
   return (Stz*) &m_caResult[0];
 }

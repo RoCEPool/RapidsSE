@@ -210,7 +210,7 @@ void Mutex::vBroadcast(void)
               "Mutex -%s broadcast() |m_ixBroadcast=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
               * m_ixBroadcast,
-              C_ENDARGS);
+              C_ARGS_END);
 
   // mutex does not have to be locked (double-check this)
   
@@ -296,7 +296,7 @@ bool Mutex::bLock(Focal* pLockFor)
                 "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
                 * m_ixLock,
-                C_ENDARGS);
+                C_ARGS_END);
     return true;
   }
   
@@ -309,7 +309,7 @@ bool Mutex::bLock(Focal* pLockFor)
                 "Mutex -%s busy |m_ixBusy=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
                 * m_ixBusy,
-                C_ENDARGS);
+                C_ARGS_END);
     return false;
   }
   
@@ -343,7 +343,7 @@ void Mutex::vLock(Focal* pLockFor)
               "Mutex -%s lock() |m_ixLock=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
               * m_ixLock,
-              C_ENDARGS);
+              C_ARGS_END);
   
   
   // DO NOT TOUCH m_pLockedBy
@@ -368,7 +368,7 @@ void Mutex::vLock(Focal* pLockFor)
                   aMK[m_eMutex],
                   spId.sz(m_pIsFor->m_iFocalId),
                   * m_ixLocked,
-                  C_ENDARGS);
+                  C_ARGS_END);
     else
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
@@ -376,7 +376,7 @@ void Mutex::vLock(Focal* pLockFor)
                   spId.sz(m_pIsFor->m_iFocalId),
                   pLockFor,
                   * m_ixLocked,
-                  C_ENDARGS);
+                  C_ARGS_END);
     
     return;
   }
@@ -432,7 +432,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
               aMK[m_eMutex],
               iMicroSeconds,
               * m_ixWaitTimed,
-              C_ENDARGS);
+              C_ARGS_END);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -459,7 +459,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
                 "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
                 * m_ixSignaled,
-                C_ENDARGS);
+                C_ARGS_END);
     
     return;
   }
@@ -480,7 +480,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
                 "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
                 * m_ixTimedout,
-                C_ENDARGS);
+                C_ARGS_END);
     return;
   }
   
@@ -516,7 +516,7 @@ void Mutex::vSignal(Focal* pLockedBy)
               "Mutex -%s signal() |m_ixSignal=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
               * m_ixSignal,
-              C_ENDARGS);
+              C_ARGS_END);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_signal(&m_xCond);                    // non-blocking
@@ -573,7 +573,7 @@ void Mutex::vUnlock(Focal* pLockedBy)
                 aMK[m_eMutex],
                 (m_pIsFor == pLockedBy) ? "owner"_Stz : "non-owner"_Stz,
                 * m_ixUnlock,
-                C_ENDARGS);
+                C_ARGS_END);
     
     return;
   }
@@ -586,7 +586,7 @@ void Mutex::vUnlock(Focal* pLockedBy)
               "pthread_mutex_unlock() error; iRetVal=%lld |gixMutex_err=%lld|"_Stz, //!format-LogRes
               iRetVal,
               * gixMutex_err,
-              C_ENDARGS);
+              C_ARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -617,7 +617,7 @@ void Mutex::vWait(Focal* pLockedBy)
               "-%s wait for signal; mutex will be dropped |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
               * m_ixWaitIndef,
-              C_ENDARGS);
+              C_ARGS_END);
 
   // clear tracking of the mutex lock state
   m_pWaitedBy = m_pLockedBy;
@@ -642,7 +642,7 @@ void Mutex::vWait(Focal* pLockedBy)
                 "Mutex -%s owner was signaled; mutex reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
                 * m_ixSignaled,
-                C_ENDARGS);
+                C_ARGS_END);
     return;
   }
   

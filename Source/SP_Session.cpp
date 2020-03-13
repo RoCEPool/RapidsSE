@@ -51,7 +51,7 @@ Stz* SP_Session::sz_log(Session* pSession)
 
                   pSession->m_iPid,
                   
-                  C_ENDARGS);
+                  C_ARGS_END);
 
   return (Stz*) &m_caResult[0];
 }
