@@ -4,6 +4,9 @@
 
 #include "Oblique.h"
 
+#include "Version.h"
+
+
 extern Args  gxArgs;
 
 /*----------------------------------------------------------------------------*/
