@@ -103,7 +103,7 @@ Row* InfoSet::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
   return RowBuffer::aAllotRow(pRowSingle);
 }

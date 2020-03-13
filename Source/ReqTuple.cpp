@@ -79,7 +79,7 @@ void ReqTuple::vContentDump(void)
          m_iReqId,
          m_iForId,
          
-         C_ARGS_END
+         C_VARGS_END
          );
 
 }

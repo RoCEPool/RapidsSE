@@ -4,8 +4,8 @@
 #pragma once
 
 static const i8 C_ALL          = -1;
-static const i8 C_ARGS_BEGIN   = -1;
-static const i8 C_ARGS_END     = -1;
+static const i8 C_VARGS_BEGIN   = -1;
+static const i8 C_VARGS_END     = -1;
 static const i8 C_NEVER_THROWN = -1;
 static const i8 C_NIL          = -1;
 static const i8 C_UNKNOWN      = -1;

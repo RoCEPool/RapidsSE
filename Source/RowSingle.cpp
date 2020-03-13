@@ -124,6 +124,24 @@ void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set column value in row                                                    */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+      
+  char* acDstString = (char*)m_xWsp.ayLatter();
+  
+  char* acSrcString = (char*)szVal;
+  
+  i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
+  
+  m_waColVal[i_Col].m_iWrd = (i8)acDstString;
+  
+  m_xWsp.vTake(nSrcLength + 1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vCopy(Row* pRow)
@@ -256,16 +274,42 @@ void RowSingle::vResetValues(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init the frequency distribution classes                                    */
+/* set all the column of this row single                                      */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vSet(i8 iArgsBegin, ...)
+void RowSingle::vSet(i8 iVArgsBegin, ...)
 {
-  va_list args;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  va_start(args,iArgsBegin);
+  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,iVArgsBegin);
 
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+    
+    if (DM_VCH == pCol->eDatum()) {
+      Stz* szVal = va_arg(xVarArgs,Stz*);
+      if (szVal)
+        vAllotSetVarchar(i_Col,szVal);
+      else
+        m_waColVal[i_Col].vSetNull();
+    }
+    else {
+      i8 iVal = va_arg(xVarArgs,i8);
+      m_waColVal[i_Col].m_iWrd = iVal;
+    }
+    
+    if (pCol->bIsPtnKey())
+      m_iHash += iHashColumn(pCol);
+  }
   
-  va_end(args);
+  i8 iVArgsEnd = va_arg(xVarArgs,i8);
+  ASSERT(C_VARGS_END == iVArgsEnd);
+
+  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/

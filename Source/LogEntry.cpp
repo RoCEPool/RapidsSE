@@ -83,7 +83,7 @@ void LogEntry::vAsTxt(s4K& sString)
                m_caNode,
                spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
                m_pFocal,
-               C_ARGS_END
+               C_VARGS_END
                );
 
   sString.vCatSprint("%20s ⬜️ %s:%s#%03lld"_Stz,
@@ -92,7 +92,7 @@ void LogEntry::vAsTxt(s4K& sString)
                spForId.sz(m_iForId),
                spId.sz(m_eKind,m_iFocalId),
                m_iAct,
-               C_ARGS_END
+               C_VARGS_END
                );
   
   sString.vCatSprint("%-16s"_Stz,
@@ -400,7 +400,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                m_caNode,
                spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
                m_pFocal,
-               C_ARGS_END
+               C_VARGS_END
                );
 
   sMid.vSprint("%20s ⬜️ %s:%s#%03lld"_Stz,
@@ -409,7 +409,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                spForId.sz(m_iForId),
                spId.sz(m_eKind,m_iFocalId),
                m_iAct,
-               C_ARGS_END
+               C_VARGS_END
                );
   
   sInf.vSprint("%-16s"_Stz,

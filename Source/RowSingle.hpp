@@ -41,6 +41,7 @@ namespace Rows
     ~RowSingle(void) noexcept(false);
   
     void vAdjustAddresses(RowSingle* pCopiedFromRow);
+    void vAllotSetVarchar(i8 i_Col,Stz* szVal);
     void vCopy(Row* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);

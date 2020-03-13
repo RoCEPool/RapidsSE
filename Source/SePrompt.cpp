@@ -708,7 +708,7 @@ void SePrompt::vJobUnlockMutex(void)
   
   AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
               "unlocks job mutex and resumes running"_Stz, //!format-LogPrm
-              C_ARGS_END);
+              C_VARGS_END);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -730,7 +730,7 @@ void SePrompt::vJobWaitCond(void)
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
               "for job mutex %s to be signaled (mutex is unlocked)"_Stz, //!format-LogPrm
               spId.sz(IK_JOB,m_pJob->m_iFocalId),
-              C_ARGS_END);
+              C_VARGS_END);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -873,7 +873,7 @@ void SePrompt::vPreJob(void)
   AM::vLogPrm(SL_INF,this,PA_PRM_NEW_JOB,
               "for request %s"_Stz, //!format-LogPrm
               spId.sz(EK_REQ,m_iRequestId),
-              C_ARGS_END);
+              C_VARGS_END);
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   

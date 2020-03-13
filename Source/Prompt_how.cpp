@@ -37,7 +37,7 @@ bool Prompt::bPrompt_how(SePrompt* pPrompt)
          
          iReqId,
          
-         C_ARGS_END);
+         C_VARGS_END);
   
   AM::vLogHow(iReqId,iDetail);
   

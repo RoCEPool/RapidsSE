@@ -46,7 +46,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
                   pGrid->nSlotsPerNode(),
                   pGrid->nPartitions(),
 
-                  C_ARGS_END
+                  C_VARGS_END
                   );
   
   return (Stz*) &m_caResult[0];

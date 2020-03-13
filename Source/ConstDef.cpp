@@ -116,7 +116,7 @@ void ConstDef::vPrint(i8 i_Tab)
          m_sConstNm.azChar(),
          m_iConst,
          
-         C_ARGS_END);
+         C_VARGS_END);
   
   MetaGraph::vPrintTermSeq(m_oTerms);
   

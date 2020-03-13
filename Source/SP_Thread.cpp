@@ -61,7 +61,7 @@ Stz* SP_Thread::sz_log(Thread* pThread)
                     ? ""_Stz
                     : " dedicated"_Stz,
 
-                  C_ARGS_END);
+                  C_VARGS_END);
   
   return (Stz*) &m_caResult[0];
 }

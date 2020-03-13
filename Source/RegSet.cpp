@@ -107,7 +107,7 @@ void RegSet::vContentDump(void)
          m_pSendNode,
          m_pSendNode ? m_pSendNode->szNodeNm() : ""_Stz,
          
-         C_ARGS_END
+         C_VARGS_END
          );
 
 }

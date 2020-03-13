@@ -1225,7 +1225,7 @@ void Step::vJobReseed(void)
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
               aCN[m_pTask->m_pJob->eClass()],
-              C_ARGS_END);
+              C_VARGS_END);
   
   pJob->vSeed((eSS)i_Seed);
   IGNORE_RETURN(Api::bReseedJob(nullptr,pJob));
@@ -1422,7 +1422,7 @@ void Step::vJobSeedStore(void)
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
               aCN[m_pTask->m_pJob->eClass()],
-              C_ARGS_END);
+              C_VARGS_END);
   
   pJob->vSeed((eSS)i_Seed);
   
@@ -1573,7 +1573,7 @@ void Step::vJobSpawn(void)
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
               aCN[m_pTask->m_pJob->eClass()],
-              C_ARGS_END);
+              C_VARGS_END);
 
   
   IGNORE_RETURN(Api::bSpawnJob(pJob));
@@ -1596,7 +1596,7 @@ void Step::vJobSpawnDedicated(void)
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
               aCN[m_pTask->m_pJob->eClass()],
-              C_ARGS_END);
+              C_VARGS_END);
 
   pJob->vSeed((eSS)i_Seed);
   IGNORE_RETURN(Api::bSpawnJobDedicated(pJob));

@@ -124,7 +124,7 @@ void StepAccum::vPrint(File* pFile)
                nNanosecondsPerInvoke,   // 4
                nMaxNanosecondsForInvoke,// 5
                
-              C_ARGS_END);
+              C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +278,7 @@ void StepAccum::vShow(void)
          
            AM::szBuild(),
 
-          C_ARGS_END);
+          C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/

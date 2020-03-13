@@ -29,7 +29,7 @@ InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
 
   for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
 
-    hvRowSingle->vSet(C_ARGS_BEGIN,
+    hvRowSingle->vSet(C_VARGS_BEGIN,
                       
       pGrid->iThisNode(),                      // node no
       0,                                       // take no
@@ -49,10 +49,12 @@ InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
         *pLckTrk->m_ixWriteCollisions[i_Lock],
         *pLckTrk->m_ixWriteGrabs[i_Lock]),
 
-      C_ARGS_END);
+      C_VARGS_END);
 
     // add single row into InfoSet
-    //pInfoSet->vAllotRow(hvRowSingle);
+    Row* aRow = pInfoSet->aAllotRow(hvRowSingle);
+    
+    hvRowSingle->vResetValues();
   }
   
   return pInfoSet;

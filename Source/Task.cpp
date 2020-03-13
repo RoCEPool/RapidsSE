@@ -421,7 +421,7 @@ void Task::vContentDump(void)
          aSA[m_eScheduler]->azChar(),
          aQK[m_eQueue]->azChar(),
 
-         C_ARGS_END
+         C_VARGS_END
          );
   
 }

@@ -522,7 +522,7 @@ void Job::vContentDump(void)
          nReferences(),
          m_xResult.m_pOriginBufferQueue,
          m_pPipeline,
-         C_ARGS_END
+         C_VARGS_END
          );
   
   if ( ! m_sJobNm.bSame("pipeline"_Stz) && m_pPipeline) {
@@ -1038,7 +1038,7 @@ void Job::vPrint(Stz* szFormat, ...)
          
          sFormatted.szStz(),
          
-         C_ARGS_END);
+         C_VARGS_END);
 
   va_end(args);
 }

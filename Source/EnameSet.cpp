@@ -303,7 +303,7 @@ void EnameSet::vPrint(void)
              m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
              m_xEname[i_Ename].m_i_Value,
              
-             C_ARGS_END
+             C_VARGS_END
              );
       continue;
     }
@@ -313,7 +313,7 @@ void EnameSet::vPrint(void)
            m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
            m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value),
            
-           C_ARGS_END
+           C_VARGS_END
            );
   }
  
@@ -340,7 +340,7 @@ void EnameSet::vPrintDetailed(void)
            
            aTN[m_xEname[i_Ename].m_eToken],
            
-           C_ARGS_END
+           C_VARGS_END
            );
   }
 }

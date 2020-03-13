@@ -72,7 +72,7 @@ Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
               "@%s %s"_Stz, //!format-LogReq
               oNow.sz(),
               spReqTuple.sz(&m_xReqTuple),
-              C_ARGS_END);
+              C_VARGS_END);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -97,7 +97,7 @@ Request::~Request(void) noexcept(false)
               "@%s %s"_Stz, //!format-LogReq
               oNow.sz(),
               spReqTuple.sz(&m_xReqTuple),
-              C_ARGS_END);
+              C_VARGS_END);
 }
 
 

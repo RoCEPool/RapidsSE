@@ -2591,7 +2591,7 @@ void Vortex::vTraceEnter(char* azFunc)
     m_bInTemplate  ? m_sTplSpec.azChar() : "",
     m_bInTemplate  ? "`" : "",
   
-    C_ARGS_END
+    C_VARGS_END
   );
 }
 
@@ -2615,7 +2615,7 @@ void Vortex::vTraceEnter_short(char* azFunc)
     m_oCurTkn.iLineNo(),
     m_oCurTkn.iColNo(),
 
-    C_ARGS_END
+    C_VARGS_END
   );
 }
 

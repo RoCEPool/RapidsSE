@@ -50,7 +50,7 @@ Stz* SP_EnmSet::sz(EnameSet* pEnameSet)
                          pEnameSet->szName(i_Ename),
                          pEnameSet->iValue(i_Ename),
              
-                         C_ARGS_END
+                         C_VARGS_END
                         );
       continue;
     }
@@ -60,7 +60,7 @@ Stz* SP_EnmSet::sz(EnameSet* pEnameSet)
                        pEnameSet->szName(i_Ename),
                        pEnameSet->szValue(i_Ename),
 
-                       C_ARGS_END
+                       C_VARGS_END
                       );
   }
   
