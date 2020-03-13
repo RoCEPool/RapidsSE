@@ -7289,7 +7289,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // list tables folder contents\n"
-    "  pJob_ListTables listContents\n"
+    "  pJob_ListTables listTableContents\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // return\n"
