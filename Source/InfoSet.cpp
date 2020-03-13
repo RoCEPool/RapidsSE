@@ -105,8 +105,12 @@ Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  return RowBuffer::aAllotRow(pRowSingle);
+  Row* pRow = RowBuffer::aAllotRow(pRowSingle);
+  m_nInfoRows++;
+  
+  return pRow;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get first row                                                              */
