@@ -100,7 +100,8 @@ namespace Steps
   
     static void vAddSteps_Magnitude(void);
     static void vAddSteps_Memory(void);
-  
+    static void vAddSteps_Metrics(void);
+
     static void vAddSteps_Node(void);
     static void vAddSteps_Now(void);
 
@@ -139,7 +140,6 @@ namespace Steps
     static void vAddSteps_Slots(void);
     static void vAddSteps_Socket(void);
     static void vAddSteps_SsnState(void);
-    static void vAddSteps_Stats(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);
     static void vAddSteps_Subset(void);

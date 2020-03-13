@@ -119,7 +119,8 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_Memory();
-  
+  Step::vAddSteps_Metrics();
+
   Step::vAddSteps_Node();
   Step::vAddSteps_Now();
 
@@ -159,7 +160,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Slots();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SsnState();
-  Step::vAddSteps_Stats();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();
   Step::vAddSteps_Subset();
