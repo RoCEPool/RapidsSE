@@ -14,11 +14,11 @@
   //"Operand:- ZK_PULSEMARKER" .verbose
   Operand[].pipeOut
 
+  // find the __seekOffsets table
+  C_TDEF_SEEKOFFSETS op__tableDef
+
   // create a new streamDef
   Operand[].newStreamDef
-
-  CT_INTEGER "offset" Operand[].addColumnDef
-  CT_INTEGER "size"   Operand[].addColumnDef
 
   // get row size from streamDef
   Operand[].rowSize to iRowSize
