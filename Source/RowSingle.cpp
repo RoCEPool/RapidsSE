@@ -126,7 +126,7 @@ void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vCopy(Row2* pRow)
+void RowSingle::vCopy(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -165,7 +165,7 @@ void RowSingle::vCopy(Row2* pRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vCopy(Row2* pRow, i8 i_FromCol, i8 i_IntoCol)
+void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_)
     

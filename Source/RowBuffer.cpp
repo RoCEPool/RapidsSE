@@ -58,7 +58,7 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-Row2* RowBuffer::aAllotRow(i8 nBytes)
+Row* RowBuffer::aAllotRow(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -70,7 +70,7 @@ Row2* RowBuffer::aAllotRow(i8 nBytes)
   
   vIncItems();
   
-  Row2* aRow = new(ayRow) Row2();
+  Row* aRow = new(ayRow) Row();
   
   return aRow;
 }
@@ -78,11 +78,11 @@ Row2* RowBuffer::aAllotRow(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* return first ref set in this buffer                                        */
 /*----------------------------------------------------------------------------*/
-Row2* RowBuffer::aFirstRow(void)
+Row* RowBuffer::aFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Row2* aRow = aFirstItem();
+  Row* aRow = aFirstItem();
   
   return aRow;
 }
@@ -90,12 +90,12 @@ Row2* RowBuffer::aFirstRow(void)
 /*----------------------------------------------------------------------------*/
 /* return last ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-Row2* RowBuffer::aLastRow(i8 nRowBytes)
+Row* RowBuffer::aLastRow(i8 nRowBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Row2* aRow = aFirstItem();
-  Row2* aLastRow = nullptr;
+  Row* aRow = aFirstItem();
+  Row* aLastRow = nullptr;
   
   while (aRow) {
     aLastRow = aRow;
@@ -108,11 +108,11 @@ Row2* RowBuffer::aLastRow(i8 nRowBytes)
 /*----------------------------------------------------------------------------*/
 /* return next ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-Row2* RowBuffer::aNextRow(Row2* aPriorRow, i8 nRowBytes)
+Row* RowBuffer::aNextRow(Row* aPriorRow, i8 nRowBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Row2* aRow = aAdjacentItem(aPriorRow, nRowBytes);
+  Row* aRow = aAdjacentItem(aPriorRow, nRowBytes);
   
   return aRow;
 }
@@ -130,7 +130,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   // as the limitOp may have truncated the rows via setting the nItems()
   
   // get the first row
-  Row2* pRow = aFirstRow();
+  Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
   i8 nRowHeadSize = pStreamDef->nColumns(C_ALL)* sizeof(i8);
   
@@ -161,7 +161,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
-  Row2* pRow = aFirstRow();
+  Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
   i8 nRowHeadSize = pStreamDef->nColumns(C_ALL)* sizeof(i8);
   

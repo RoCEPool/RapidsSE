@@ -70,13 +70,13 @@ bool IrwBuffer::bCopyRow(RowSingle* pRowSingle)
   
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
-  i8 nHeadSize = Row2::nSizeBytes(pStreamDef);
+  i8 nHeadSize = Row::nSizeBytes(pStreamDef);
   i8 nTailSize = pRowSingle->nSizeVch();
   
   if (nFreeBytes() < nHeadSize + nTailSize)
     return false;
   
-  Row2* pRow = aAllotRow(nHeadSize);
+  Row* pRow = aAllotRow(nHeadSize);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy single row into this buffer

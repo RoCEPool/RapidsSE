@@ -31,7 +31,7 @@ namespace Registers
     REG<IndexPtn>    m_xpIndexPtn;
     REG<Operand>     m_xpInfoSet;
     REG<Loader>      m_xpLoader;
-    REG<Row2>        m_xpRow;
+    REG<Row>        m_xpRow;
     REG<StreamDef>   m_xpStreamDef;
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;

@@ -84,11 +84,11 @@ InfoSet::~InfoSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
-Row2* InfoSet::aAllotRow(void)
+Row* InfoSet::aAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  Row2* pRow = nullptr;
+  Row* pRow = nullptr;
   
   if (nFreeBytes() >= m_nRowSize) {
     pRow = RowBuffer::aAllotRow(m_nRowSize);
@@ -101,7 +101,7 @@ Row2* InfoSet::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* get first row                                                              */
 /*----------------------------------------------------------------------------*/
-Row2* InfoSet::aFirstRow(void)
+Row* InfoSet::aFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
@@ -121,7 +121,7 @@ i8 InfoSet::nInfoRows(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
-Row2* InfoSet::aNextRow(Row2* aPrevRow)
+Row* InfoSet::aNextRow(Row* aPrevRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   

@@ -135,7 +135,7 @@ void Encoding::vEncodeRow(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeRow(Row2* pRow)
+void Encoding::vEncodeRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -279,7 +279,7 @@ void Encoding::vInitialEncoding(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding::vInitialEncoding(Row2* pRow)
+void Encoding::vInitialEncoding(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   

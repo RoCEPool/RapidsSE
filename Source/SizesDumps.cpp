@@ -571,8 +571,8 @@ i8 giClassSize[]
   /* */ sizeof(ResponseVec),        // CN_RESPONSEVEC
   /* */ sizeof(Result),             // CN_RESULT
   /* */ sizeof(Rand),               // CN_RN_RAND
-  /* */ sizeof(Row2),               // CN_ROW
-  /* */ sizeof(Row2),  //correct    // CN_ROWAGG
+  /* */ sizeof(Row),                // CN_ROW
+  /* */ sizeof(Row),  //correct     // CN_ROWAGG
   /* */ sizeof(RowCompactor),       // CN_ROWCOMPACTOR
   /* */ sizeof(RowOnce),            // CN_ROWONCE
   /* */ sizeof(RowSingle),          // CN_ROWSINGLE

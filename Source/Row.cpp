@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Row2.cpp -- Computable form of Row2                                        */
+/* Row.cpp -- Computable form of Row                                        */
 /*============================================================================*/
 
 #include "Rows.h"
@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Row2* Rows::_pRow2(void* aAddr)
+Row* Rows::_pRow2(void* aAddr)
 {
-  Row2* pRow = reinterpret_cast<Row2*>(aAddr);
+  Row* pRow = reinterpret_cast<Row*>(aAddr);
   
   return pRow;
 }
@@ -22,10 +22,10 @@ Row2* Rows::_pRow2(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Row2::operator new(size_t)
+void* Row::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: Row2 class cannot be new'd\n"_Stz);
+         "fatal: Row class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -33,7 +33,7 @@ void* Row2::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* perform new of row buffer for given address                                */
 /*----------------------------------------------------------------------------*/
-void* Row2::operator new(size_t, void* aAddress)
+void* Row::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -41,7 +41,7 @@ void* Row2::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Row2::Row2(void)
+Row::Row(void)
   :Object(CN_ROW)
 {
   
@@ -50,7 +50,7 @@ Row2::Row2(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Row2::~Row2(void) noexcept(false)
+Row::~Row(void) noexcept(false)
 {
   
 }
@@ -59,21 +59,19 @@ Row2::~Row2(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
 /*----------------------------------------------------------------------------*/
 /* get size of row (needed for MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem))  */
 /*----------------------------------------------------------------------------*/
-i8 Row2::nSizeBytes(StreamDef* pStreamDef)
+i8 Row::nSizeBytes(StreamDef* pStreamDef)
 {
-  i8 nSize = sizeof(Row2) + (pStreamDef->nColumns(0) - 1) * sizeof(Dtm);
+  i8 nSize = sizeof(Row) + (pStreamDef->nColumns(0) - 1) * sizeof(Dtm);
   return nSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump the row                                                               */
 /*----------------------------------------------------------------------------*/
-void Row2::vDump(StreamDef* pStreamDef)
+void Row::vDump(StreamDef* pStreamDef)
 {
   
   vTrace("ROW: %p"_Stz, this);
@@ -106,20 +104,6 @@ void Row2::vDump(StreamDef* pStreamDef)
 
   vTrace("\n"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-//Footer* Row2::aFooter(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-//
-//  return &m_xFooter;
-//}
 
 /*============================================================================*/
 /* end                                                                        */
