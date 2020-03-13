@@ -21,32 +21,34 @@ void Step::vStatsLockStats(void)
 
   StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
   
-  LockTracker* pLockTracker = AM::pLockTracker();
+//  LockTracker* pLockTracker = AM::pLockTracker();
+//
+//  pLockTracker->vReport();
+//
+//  HV_Row hvRowSingle(pStreamDef,C_ALL);
+//
+//  hvRowSingle->vSet(C_ARGS_BEGIN,
+//
+//                    0,       // node no
+//                    0,       // take no
+//
+//                    0,       // lock no
+//                    ""_Stz,  // lock name
+//
+//                    0,       // read grab
+//                    0,       // read collision
+//                    0,       // read percent
+//
+//                    0,       // write grab
+//                    0,       // write collision
+//                    0,       // write percent
+//
+//                    C_ARGS_END);
+//
+//  InfoSet* pInfoSet = new InfoSet;
+//  Row* aLockStatRow = pInfoSet->aAllotRow();
   
-  pLockTracker->vReport();
-  
-  HV_Row hvRowSingle(pStreamDef,C_ALL);
-    
-  hvRowSingle->vSet(C_ARGS_BEGIN,
-                    
-                    0,       // node no
-                    0,       // take no
-                    
-                    0,       // lock no
-                    ""_Stz,  // lock name
-                    
-                    0,       // read grab
-                    0,       // read collision
-                    0,       // read percent
-                    
-                    0,       // write grab
-                    0,       // write collision
-                    0,       // write percent
-                    
-                    C_ARGS_END);
-   
-  InfoSet* pInfoSet = new InfoSet;
-  Row* aLockStatRow = pInfoSet->aAllotRow();
+  InfoSet* pInfoSet = LockMetrics::pCapture(pStreamDef);
   
   delete pInfoSet;
   

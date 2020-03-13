@@ -14,9 +14,6 @@ namespace MetaData
 
 //------------------------------------------------------------------------------
 
-static Stz* C_TDEF_LOCKSTATS   = "__lockStats"_Stz;
-static Stz* C_TDEF_SEEKOFFSETS = "__seekOffsets"_Stz;
-
 #include "StreamDef.hpp"
 #include "TableDef.hpp"
 #include "IndexDef.hpp"
