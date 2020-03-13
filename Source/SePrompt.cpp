@@ -68,7 +68,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_bOneCommand = bOneCommand;
   m_bContinue   = true;
-  m_bDumpTokens = false;
+  m_bDumpTokens = true;
   
   m_iCmdNo      = 0;
   m_aJobClass   = nullptr;
@@ -144,7 +144,8 @@ void SePrompt::vPromptLoop(void)
 
     L_Get_Command:
     
-    vGetCommand();
+    if (! bGetCommand())
+      break;
     
     if (m_bDumpTokens)
       Correctness::vDebugPoint();
@@ -596,25 +597,27 @@ void SePrompt::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vGetCommand(void)
+bool SePrompt::bGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  TokenVec* pTknVec = pTokenVec();
+  
   if (m_bOneCommand) {
     s4K szCommand = AM::szCommand();
-    Tokeniser::vTokenise(pTokenVec(),szCommand);
-    pTokenVec()->vStripSemicolon();
-    pTokenVec()->vSetTokens();
-    return;
+    Tokeniser::vTokenise(pTknVec,szCommand);
+    pTknVec->vStripSemicolon();
+    pTknVec->vSetTokens();
+    return true;
   }
   
   if (* m_pSession->m_sToDo.azChar()) {
-    Tokeniser::vTokenise(pTokenVec(),m_pSession->m_sToDo);
-    pTokenVec()->vStripSemicolon();
-    pTokenVec()->vSetTokens();
+    Tokeniser::vTokenise(pTknVec,m_pSession->m_sToDo);
+    pTknVec->vStripSemicolon();
+    pTknVec->vSetTokens();
 
     m_pSession->m_sToDo = ""_Stz;
-    return;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -623,7 +626,9 @@ void SePrompt::vGetCommand(void)
   if (pTokenStream->bStdIn())
     vDebugPoint();
     
-  pTokenStream->vGetCommand(m_pSession->pTokenVec());
+  pTokenStream->vGetCommand(pTknVec);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

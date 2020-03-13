@@ -27,9 +27,9 @@ void Step::vStatsLockStats(void)
   
   HV_Row hvRowSingle(pStreamDef,C_ALL);
     
-  hvRowSingle->vSet(-1,
+  hvRowSingle->vSet(C_ARGS_BEGIN,
                     
-                    0,       // nodeno
+                    0,       // node no
                     0,       // take no
                     
                     0,       // lock no

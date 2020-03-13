@@ -46,7 +46,7 @@ namespace Rows
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
     void vResetValues(void);
-    void vSet(i8 iDummy, ...);
+    void vSet(i8 iArgsBegin, ...);
     void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSizeBytes(void);
     i8   nSizeRow(void);

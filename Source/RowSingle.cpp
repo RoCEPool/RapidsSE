@@ -258,9 +258,12 @@ void RowSingle::vResetValues(void)
 /*----------------------------------------------------------------------------*/
 /* init the frequency distribution classes                                    */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vSet(i8 iDummy, ...)
+void RowSingle::vSet(i8 iArgsBegin, ...)
 {
   va_list args;
+  
+  va_start(args,iArgsBegin);
+
   
   va_end(args);
 }
