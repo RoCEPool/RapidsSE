@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : chunk_PulseMarker \handler
 
-  0 locals| pStreamDef |
+  0 locals| iRowSize |
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Operand[].pipeOut
@@ -20,7 +20,8 @@
   CT_INTEGER "offset" Operand[].addColumnDef
   CT_INTEGER "size"   Operand[].addColumnDef
 
-  Operand[].get to pStreamDef
+  // get row size from streamDef
+  Operand[].rowSize to iRowSize
 
   // pipeout the streamDef
   Operand[].pipeout
@@ -35,10 +36,12 @@
     counter1[] counter0[] >
   while
     // create an infoSet operand
-    pStreamDef InfoSet[].newInfoSet
+    iRowSize InfoSet[].newInfoSet
     InfoSet[].chunkFile
     InfoSet[].pipeOut
   repeat
+
+  nullptr to Operand[]
 
   // send EOSMARKER
   Operand[].newEosMarker

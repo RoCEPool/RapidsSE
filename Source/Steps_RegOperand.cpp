@@ -46,6 +46,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].readChunk"_Stz,      &Step::vRegOperandReadChunk);
   vAddStep("Operand[].report"_Stz,         &Step::vRegOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vRegOperandRowCountFetch);
+  vAddStep("Operand[].rowSize"_Stz,        &Step::vRegOperandRowSize);
   vAddStep("Operand[].seekSets@"_Stz,      &Step::vRegOperandSeekSetsFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
@@ -788,6 +789,21 @@ void Step::vRegOperandRowCountFetch(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
   
   m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].rowSize -- get row size from streamDef                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandRowSize(void)
+{
+  ENTRY(); // ENTRY("vOperandRowCountFetch"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpOperandA);
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpOperandA);
+  
+  m_pDataStack->vPushInt(Row::nSizeBytes(pStreamDef));
   
   EXIT();
 }

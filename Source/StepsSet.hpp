@@ -1076,6 +1076,7 @@ public:
   void vRegOperandReadChunk(void);
   void vRegOperandReport(void);
   void vRegOperandRowCountFetch(void);
+  void vRegOperandRowSize(void);
   void vRegOperandSeekSetsFetch(void);
   void vRegOperandSet(void);
   void vRegOperandUpsertIntoTable(void);
