@@ -70,7 +70,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneRun     = false;
 
   m_bContinue   = true;
-  m_bDumpTokens = true;
+  m_bDumpTokens = false;
   
   m_iCmdNo      = 0;
   m_aJobClass   = nullptr;
@@ -149,10 +149,10 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       break;
     
-    if (m_bDumpTokens)
-      Correctness::vDebugPoint();
-    vDumpTokenVec(false);
-
+    if (m_bDumpTokens) {
+      vDumpTokenVec(false);
+    }
+    
     if (bBlankLine()) {
       //if (AM::bDeveloper())
       //  vDumpTokenVec(false);
