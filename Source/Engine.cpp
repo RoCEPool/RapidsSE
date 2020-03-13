@@ -248,11 +248,12 @@ void Engine::vClosePool(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCloseTrace(void)
 {
+  if (gxArgs.m_bVerbose)
+    vInfo("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
   gpTraceFile->vClose();
   delete gpTraceFile;
   
-  if (gxArgs.m_bVerbose)
-    vInfo("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
+  gpTraceFile = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

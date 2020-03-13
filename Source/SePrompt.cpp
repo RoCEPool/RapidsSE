@@ -250,10 +250,6 @@ void SePrompt::vPromptLoop(void)
     vEndRequest();
 
     vLogFreeSpace();
-
-    if (m_bOneCommand)
-      break;
-    
   } // while
 }
 
@@ -618,6 +614,8 @@ bool SePrompt::bGetCommand(void)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (* m_pSession->m_sToDo.azChar()) {
     Tokeniser::vTokenise(pTknVec,m_pSession->m_sToDo);
     pTknVec->vStripSemicolon();
@@ -629,9 +627,11 @@ bool SePrompt::bGetCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  if (pTokenStream->bStdIn())
+  if (m_bOneCommand && pTokenStream->bStdIn()) {
     vDebugPoint();
-    
+    return false;
+  }
+  
   pTokenStream->vGetCommand(pTknVec);
   
   return true;
