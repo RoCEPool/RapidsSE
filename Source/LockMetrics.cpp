@@ -23,7 +23,7 @@ InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  InfoSet* pInfoSet = new InfoSet;
+  InfoSet* pInfoSet = new InfoSet(Row::nSizeBytes(pStreamDef));
 
   HV_Row hvRowSingle(pStreamDef,C_ALL);
 
