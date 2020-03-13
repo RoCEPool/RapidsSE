@@ -22,8 +22,9 @@ namespace InfoData
     ~InfoSet(void) noexcept(false);
     
     Row* aAllotRow(void);
+    Row* aAllotRow(RowSingle* pRowSingle);
     Row* aFirstRow();
-    i8    nInfoRows(void);
+    i8   nInfoRows(void);
     Row* aNextRow(Row* pPrevRow);
   };
 

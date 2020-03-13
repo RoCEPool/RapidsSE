@@ -25,7 +25,8 @@ namespace DataBuffers
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     Row* aAllotRow(i8 nBytes);
-  
+    Row* aAllotRow(RowSingle* pRowSingle);
+    
     Row* aFirstRow(void);
     Row* aLastRow(i8 nRowBytes);
     Row* aNextRow(Row* aPriorRow, i8 nRowBytes);

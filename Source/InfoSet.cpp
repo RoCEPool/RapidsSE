@@ -87,15 +87,25 @@ InfoSet::~InfoSet(void) noexcept(false)
 Row* InfoSet::aAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
+
   Row* pRow = nullptr;
-  
+
   if (nFreeBytes() >= m_nRowSize) {
     pRow = RowBuffer::aAllotRow(m_nRowSize);
     m_nInfoRows++;
   }
-  
+
   return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a row copying the rowSingle into it                                  */
+/*----------------------------------------------------------------------------*/
+Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
+  
+  return RowBuffer::aAllotRow(pRowSingle);
 }
 
 /*----------------------------------------------------------------------------*/

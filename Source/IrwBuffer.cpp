@@ -68,6 +68,14 @@ bool IrwBuffer::bCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
+  Row* pRow = aAllotRow(pRowSingle);
+  
+  if ( ! pRow )
+    return false;
+  else
+    return true;
+  
+  /*
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
   i8 nHeadSize = Row::nSizeBytes(pStreamDef);
@@ -118,8 +126,7 @@ bool IrwBuffer::bCopyRow(RowSingle* pRowSingle)
 #endif
 
   //pRow->vDump(pStreamDef);
-  
-  return true;
+  */
 }
 
 /*----------------------------------------------------------------------------*/
