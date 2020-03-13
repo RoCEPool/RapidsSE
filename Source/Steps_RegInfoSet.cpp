@@ -57,7 +57,7 @@ void Step::vRegInfoSetChunkFile(void)
       
       // compute the number of bytes which belong to the current chunk
       nChunkBytes = i_EofLoc - i_ChunkLoc;
-      Row2* pRow = pInfoSet->aAllotRow();
+      Row* pRow = pInfoSet->aAllotRow();
       
       if (pRow) {
         pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
@@ -102,7 +102,7 @@ void Step::vRegInfoSetChunkFile(void)
     // compute end location of chunk
     i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
     
-    Row2* pRow = pInfoSet->aAllotRow();
+    Row* pRow = pInfoSet->aAllotRow();
     
     if (pRow) {
       pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
@@ -183,7 +183,7 @@ void Step::vRegInfoSetNewInfoSet(void)
   
   ASSERT (m_pRegSet->m_xpInfoSet.bIsNull());
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  i8 nRowSize = Row2::nSizeBytes(pStreamDef);
+  i8 nRowSize = Row::nSizeBytes(pStreamDef);
   
   m_pRegSet->m_xpInfoSet = new InfoSet(nRowSize);
   
@@ -198,7 +198,7 @@ void Step::vRegInfoSetNextRow(void)
   ENTRY(); // ENTRY("vRegInfoSetNextRow"_Stz);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  Row2* pRow = _pRow2(*m_pRegSet->m_xpRow);
+  Row* pRow = _pRow2(*m_pRegSet->m_xpRow);
   
   ASSERT(pRow);
   
@@ -234,7 +234,7 @@ void Step::vRegInfoSetReadChunk(void)
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
-  Row2* pRow = _pRow2(m_pDataStack->pPopPtr(__func__));
+  Row* pRow = _pRow2(m_pDataStack->pPopPtr(__func__));
   
   i8 iOffset = pRow->m_waColVal[0];
   i8 nBytes = pRow->m_waColVal[1];

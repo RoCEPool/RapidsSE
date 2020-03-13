@@ -21,10 +21,10 @@ namespace InfoData
     InfoSet(i8 nRowSize);
     ~InfoSet(void) noexcept(false);
     
-    Row2* aAllotRow(void);
-    Row2* aFirstRow();
+    Row* aAllotRow(void);
+    Row* aFirstRow();
     i8    nInfoRows(void);
-    Row2* aNextRow(Row2* pPrevRow);
+    Row* aNextRow(Row* pPrevRow);
   };
 
   InfoSet* _pInfoSet(void* aAddr);

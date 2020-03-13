@@ -46,7 +46,7 @@ void Step::vStatsLockStats(void)
                     C_ENDARGS);
    
   InfoSet* pInfoSet = new InfoSet;
-  Row2* aLockStatRow = pInfoSet->aAllotRow();
+  Row* aLockStatRow = pInfoSet->aAllotRow();
   
   delete pInfoSet;
   

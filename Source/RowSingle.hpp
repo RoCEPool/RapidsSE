@@ -41,8 +41,8 @@ namespace Rows
     ~RowSingle(void) noexcept(false);
   
     void vAdjustAddresses(RowSingle* pCopiedFromRow);
-    void vCopy(Row2* pRow);
-    void vCopy(Row2* pRow, i8 iFromCol, i8 iIntoCol);
+    void vCopy(Row* pRow);
+    void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
     void vResetValues(void);

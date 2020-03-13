@@ -202,7 +202,7 @@ bool Calculator::bCompileTest(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Calculator::iEvaluate(Row* pRow)
+i8 Calculator::iEvaluate(RowSingle* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   

@@ -16,7 +16,6 @@ namespace CompactBuffers
     static void vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve);
     
     static void vInflateRow(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow(Row* pRow, HeadLine* aHeadLine);
   };
 }
 

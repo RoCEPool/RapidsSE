@@ -213,9 +213,9 @@ void RowCompactor::vPackSamples(void)
   
   SP_Row spRow;
   
-  i8 nRowSize = Row2::nSizeBytes(m_pStreamDef);
+  i8 nRowSize = Row::nSizeBytes(m_pStreamDef);
   
-  Row2* pSampleRow = m_pRowSamples->aFirstRow();
+  Row* pSampleRow = m_pRowSamples->aFirstRow();
   while (pSampleRow) {
     
     //pSampleRow->vDump(m_pStreamDef);
@@ -246,9 +246,9 @@ void RowCompactor::vAnalyzeSamples(void)
     if (DM_VCH != eDatum)
       continue;
     
-    i8 nRowHeadSize = Row2::nSizeBytes(m_pStreamDef);
+    i8 nRowHeadSize = Row::nSizeBytes(m_pStreamDef);
     
-    for (Row2* pOuterRow = m_pRowSamples->aFirstRow();
+    for (Row* pOuterRow = m_pRowSamples->aFirstRow();
          pOuterRow;
          pOuterRow = m_pRowSamples->aNextRow(pOuterRow, nRowHeadSize)) {
       
@@ -262,7 +262,7 @@ void RowCompactor::vAnalyzeSamples(void)
       if (nLength < 8)
         continue;
       
-      for (Row2* pInnerRow = m_pRowSamples->aNextRow(pOuterRow, nRowHeadSize);
+      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow, nRowHeadSize);
            pInnerRow;
            pInnerRow = m_pRowSamples->aNextRow(pInnerRow, nRowHeadSize)) {
         
@@ -280,7 +280,7 @@ void RowCompactor::vAnalyzeSamples(void)
 /*----------------------------------------------------------------------------*/
 /* potentially create a tail for vch column value                             */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCreateTail(Column* pCol, Row2* pOuterRow, Row2* pInnerRow)
+void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -349,7 +349,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row2* pOuterRow, Row2* pInnerRow)
 /*----------------------------------------------------------------------------*/
 /* add given row into current crw buffer                                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddCrw(Row2* pInflatedRow)
+bool RowCompactor::bAddCrw(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -493,7 +493,7 @@ bool RowCompactor::bAllotCrw(void)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHead(Row2* pInflatedRow)
+void RowCompactor::vEncodeHead(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -523,7 +523,7 @@ void RowCompactor::vEncodeHead(RowSingle* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTails(Row2* pInflatedRow)
+void RowCompactor::vEncodeTails(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

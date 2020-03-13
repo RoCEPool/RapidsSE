@@ -30,7 +30,7 @@ namespace Utilities
     bool bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn, i8 iEndTkn);
     bool bCompileTest(TokenVec* pTknVec);
 
-    i8   iEvaluate(Row* pRow);
+    i8   iEvaluate(RowSingle* pRow);
 
     Footer* aFooter(void);
   };
