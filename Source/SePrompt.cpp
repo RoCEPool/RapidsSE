@@ -603,10 +603,14 @@ bool SePrompt::bGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = pTokenVec();
-  
+  TokenVec*     pTknVec      = pTokenVec();
+  TokenStream*  pTokenStream = this->pTokenStream();
+  Tokeniser*    pTokeniser   = pTokenStream->pTokeniser();
+  Characterise* pCharser     = pTokeniser->pCharser();
+
   if (m_bOneCommand && ! m_bOneRun) {
     m_bOneRun = true;
+    
     s4K szCommand = AM::szCommand();
     Tokeniser::vTokenise(pTknVec,szCommand);
     pTknVec->vStripSemicolon();
@@ -625,7 +629,6 @@ bool SePrompt::bGetCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  TokenStream* pTokenStream = this->pTokenStream();
   if (pTokenStream->bStdIn())
     vDebugPoint();
     

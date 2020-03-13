@@ -280,6 +280,16 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get current charser                                                        */
+/*----------------------------------------------------------------------------*/
+Characterise* Tokeniser::pCharser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_pCharser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
