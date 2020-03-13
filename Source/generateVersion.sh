@@ -20,4 +20,7 @@ rm -f ${VERSION_FILE}
   echo "static const Stz* C_BUILD_USERNAME = \"${BUILD_USERNAME}\"_Stz;"
   echo "static const Stz* C_BUILD_BRANCH   = \"${BUILD_BRANCH}\"_Stz;"
   echo ""
+  echo "/*============================================================================*/"
+  echo "/* end                                                                        */"
+  echo "/*============================================================================*/"
 } >> ${VERSION_FILE}

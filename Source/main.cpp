@@ -6,6 +6,11 @@
 
 #include "Version.h"
 
+extern Stz* gsBuildGitHash;
+extern Stz* gsBuildDate;
+extern Stz* gsBuildHostName;
+extern Stz* gsBuildUserName;
+extern Stz* gsBuildBranch;
 
 extern Args  gxArgs;
 
@@ -33,6 +38,12 @@ int main(int argc, const char* argv[])
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  gsBuildGitHash  = (Stz*)C_BUILD_GIT_HASH;
+  gsBuildDate     = (Stz*)C_BUILD_DATE;
+  gsBuildHostName = (Stz*)C_BUILD_HOSTNAME;
+  gsBuildUserName = (Stz*)C_BUILD_USERNAME;
+  gsBuildBranch   = (Stz*)C_BUILD_BRANCH;
+
   try {
     
     // force bamboo build

@@ -14,6 +14,11 @@ extern File*        gpTraceFile;
 
 extern bool         gbSHM;
 
+extern Stz* gsBuildGitHash;
+extern Stz* gsBuildDate;
+extern Stz* gsBuildHostName;
+extern Stz* gsBuildUserName;
+extern Stz* gsBuildBranch;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -841,6 +846,11 @@ void Engine::vPrintWelcome(void)
   if (gxArgs.m_bWelcome && ! gxArgs.m_bStatus) {
     vInfo("%s\n"_Stz,sWelcome.szStz());
     vInfo("%s\n"_Stz,sCopyright.szStz());
+    vInfo("Build Git Hash: %s\n"_Stz,gsBuildGitHash);
+    vInfo("Build Date: %s\n"_Stz,gsBuildDate);
+    vInfo("Build Host Name: %s\n"_Stz,gsBuildHostName);
+    vInfo("Build User Name: %s\n"_Stz,gsBuildUserName);
+    vInfo("Build Branch: %s\n"_Stz,gsBuildBranch);
   }
 }
 
