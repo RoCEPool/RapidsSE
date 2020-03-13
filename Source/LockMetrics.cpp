@@ -15,32 +15,45 @@ InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
 {
   _static_
   
-  LockTracker* pLockTracker = AM::pLockTracker();
+  LockTracker* pLckTrk = AM::pLockTracker();
   
-  pLockTracker->vReport();
+  pLckTrk->vReport();
   
-  HV_Row hvRowSingle(pStreamDef,C_ALL);
-    
-  hvRowSingle->vSet(C_ARGS_BEGIN,
-                    
-                    0,       // node no
-                    0,       // take no
-                    
-                    0,       // lock no
-                    ""_Stz,  // lock name
-                    
-                    0,       // read grab
-                    0,       // read collision
-                    0,       // read percent
-                    
-                    0,       // write grab
-                    0,       // write collision
-                    0,       // write percent
-                    
-                    C_ARGS_END);
-
+  Grid* pGrid = AM::pGrid();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   InfoSet* pInfoSet = new InfoSet;
-  Row* aLockStatRow = pInfoSet->aAllotRow();
+
+  HV_Row hvRowSingle(pStreamDef,C_ALL);
+
+  for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
+
+    hvRowSingle->vSet(C_ARGS_BEGIN,
+                      
+      pGrid->iThisNode(),                      // node no
+      0,                                       // take no
+      
+      i_Lock,                                  // lock no
+      aLK[i_Lock],                             // lock name
+      
+      *pLckTrk->m_ixReadGrabs[i_Lock],         // read grab
+      *pLckTrk->m_ixReadCollisions[i_Lock],    // read collision
+      IntLib::iPercent(                        // read percent
+        *pLckTrk->m_ixReadCollisions[i_Lock],
+        *pLckTrk->m_ixReadGrabs[i_Lock]),
+      
+      *pLckTrk->m_ixWriteGrabs[i_Lock],        // write grab
+      *pLckTrk->m_ixWriteCollisions[i_Lock],   // write collision
+      IntLib::iPercent(                        // write percent
+        *pLckTrk->m_ixWriteCollisions[i_Lock],
+        *pLckTrk->m_ixWriteGrabs[i_Lock]),
+
+      C_ARGS_END);
+
+    // add single row into InfoSet
+    //pInfoSet->vAllotRow(hvRowSingle);
+  }
   
   return pInfoSet;
 }
