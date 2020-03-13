@@ -1,0 +1,33 @@
+/*============================================================================*/
+/* Steps_Metrics.cpp - Metrics step group                                     */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_Metrics(void)
+{
+  vAddStep("metrics::lockSample"_Stz,   &Step::vMetricsLockSample);
+}
+
+/*----------------------------------------------------------------------------*/
+/* metrics::lockSample -- sample the lock stats                               */
+/*----------------------------------------------------------------------------*/
+void Step::vMetricsLockSample(void)
+{
+  ENTRY(); // ENTRY("vMetricsLockSample"_Stz);
+
+  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
+    
+  InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
+  
+  delete pInfoSet;
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

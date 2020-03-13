@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* capture current lock metrics                                               */
+/* sample current lock metrics                                                */
 /*----------------------------------------------------------------------------*/
-InfoSet* LockMetrics::pCapture(StreamDef* pStreamDef)
+InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
 {
   _static_
   

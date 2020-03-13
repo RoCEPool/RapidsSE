@@ -23,7 +23,7 @@
     nullptr to Operand[]
   then
 
-  stats::lockStats // to operandC[]
+  metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
 
   true
@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 : statsOp_StopMarker \handler
 
-  stats::lockStats // to operandC[]
+  metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
 
   Operand[].pipeOut

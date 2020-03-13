@@ -8,7 +8,7 @@ namespace Metrics
   class LockMetrics
   {
   public:
-    static InfoSet* pCapture(StreamDef* pStreamDef);
+    static InfoSet* pSample(StreamDef* pStreamDef);
   };
 
 }

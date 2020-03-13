@@ -1222,7 +1222,7 @@ public:
   void vSsnTraceSession(void);
 
   // steps
-  void vStatsLockStats(void);
+  void vMetricsLockSample(void);
 
   // steps
   void vStepTimingReset(void);
