@@ -2,26 +2,9 @@
 /* _demon -- demon pipeline test                                              */
 /*============================================================================*/
 
-print "-- Demon Pipeline Test --" ;
+print "-- Demon Pipeline Test --";
 
-startCluster;
-
-//dumptokens true;
-
-// -- -- -- -- -- -- -- --
-/nowait pipeline anyDemon
-
-  tag "<pre_execute>" = "demon::install" endTag
-
-begin
-
-  stage stageA on origin:
-    eatAllOp | stageA
-
-end;
-
-// -- -- -- -- -- -- -- --
-/nowait pipeline anyDemon2
+/nowait pipeline statD
 
   tag "<pre_execute>" = "demon::install" endTag
 
