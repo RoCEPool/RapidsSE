@@ -19,9 +19,14 @@
   //infoset[].delete
 
   infoset[]
-    "__statD" find word.object@
-    pipeline.pipeout
-   
+    "__statD" find dup if
+      word.object@
+      pipeline.pipeout
+    else
+      drop drop
+      infoset[].delete
+    then
+
   true
 ;
 
