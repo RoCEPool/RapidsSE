@@ -319,7 +319,9 @@ bool Lock::bGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_ixReadGrabs;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
+#endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
@@ -328,7 +330,9 @@ bool Lock::bGrabRead(void)
   }
   
   ++m_ixReadCollisions;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
+#endif
   
   return false;
 }
@@ -346,7 +350,9 @@ void Lock::vGrabRead(void)
   // attempt to grab the lock for read
   
   ++m_ixReadGrabs;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
+#endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
@@ -358,7 +364,9 @@ void Lock::vGrabRead(void)
   // collision with a writer; spin till read lock is acquired
 
   ++m_ixReadCollisions;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
+#endif
   
   Timer oTimer;
   oTimer.vStart();
@@ -459,8 +467,10 @@ bool Lock::bGrabWrite(void)
   ASSERT(m_eLockKind);
 
   ++m_ixWriteGrabs;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
-
+#endif
+  
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
     vAssertWrite();
@@ -468,7 +478,9 @@ bool Lock::bGrabWrite(void)
   }
   
   ++m_ixWriteCollisions;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
+#endif
   
   return false;
 }
@@ -486,7 +498,9 @@ void Lock::vGrabWrite(void)
   // attempt to grab the lock for write
   
   ++m_ixWriteGrabs;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
+#endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
@@ -498,7 +512,9 @@ void Lock::vGrabWrite(void)
   // collision with another writer; spin till write lock is acquired
   
   ++m_ixWriteCollisions;
+#ifdef WITH_LOCK_TRACKING
   ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
+#endif
   
   Timer oTimer;
   oTimer.vStart();
