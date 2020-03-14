@@ -13,6 +13,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
   vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
+  vAddStep("InfoSet[].name"_Stz,           &Step::vRegInfoSetName);
   vAddStep("InfoSet[].newInfoSet"_Stz,     &Step::vRegInfoSetNewInfoSet);
   vAddStep("InfoSet[].nextRow"_Stz,        &Step::vRegInfoSetNextRow);
   vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vRegInfoSetPipeOut);
@@ -171,6 +172,22 @@ void Step::vRegInfoSetInfoRows(void)
   
   m_pDataStack->vPushInt(pInfoSet->nInfoRows());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].name -- get infoset name                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetName(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetName"_Stz);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+
+  Stz* szInfoSetNm = pInfoSet->szInfoSetNm();
+  
+  m_pDataStack->vPushStz(szInfoSetNm);
+
   EXIT();
 }
 

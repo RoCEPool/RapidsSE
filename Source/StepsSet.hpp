@@ -1023,6 +1023,7 @@ public:
   void vRegInfoSetDelete(void);
   void vRegInfoSetFirstRow(void);
   void vRegInfoSetInfoRows(void);
+  void vRegInfoSetName(void);
   void vRegInfoSetNewInfoSet(void);
   void vRegInfoSetNextRow(void);
   void vRegInfoSetPipeOut(void);
