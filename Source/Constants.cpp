@@ -6,6 +6,12 @@
 
 extern Args  gxArgs;
 
+extern Stz* gsBuildGitHash;
+extern Stz* gsBuildDate;
+extern Stz* gsBuildHostName;
+extern Stz* gsBuildUserName;
+extern Stz* gsBuildBranch;
+
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
@@ -100,16 +106,14 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);
   
-  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz,  (Stz*)RAPIDSSE_VERSION_STRING);
+  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
   
-#ifdef WITH_DEBUG_VERSION
-  vAddConstant("WITH_DEBUG_VERSION"_Stz,1);
-  vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)0);
-#else
-  vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)0);
-  vAddConstant("WITH_RELEASE_VERSION"_Stz,1);
-#endif
-  
+  vAddConstant("C_BUILD_GIT_HASH"_Stz, gsBuildGitHash);
+  vAddConstant("C_BUILD_DATE"_Stz,     gsBuildDate);
+  vAddConstant("C_BUILD_HOSTNAME"_Stz, gsBuildHostName);
+  vAddConstant("C_BUILD_USERNAME"_Stz, gsBuildUserName);
+  vAddConstant("C_BUILD_BRANCH"_Stz,   gsBuildBranch);
+
   vAddConstant("C_SIZE_JUMBO_OBJECT"_Stz,  C_SIZE_JUMBO_OBJECT);
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,   C_SIZE_POOL_BUFFER);
   vAddConstant("C_SIZE_MEDIUM_OBJECT"_Stz, C_SIZE_MEDIUM_OBJECT);
@@ -174,8 +178,8 @@ void Constants::vAddConstantsCpp(void)
   
   // AN_ : action numbers
   /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
-  /*  0 */ vAddConstant("AN_CONSTRUCT"_Stz,        AN_CONSTRUCT);
-  /*  0 */ vAddConstant("AN_DESTRUCT"_Stz,         AN_DESTRUCT);
+  /*  0 */ vAddConstant("AN_CONSTRUCT"_Stz,          AN_CONSTRUCT);
+  /*  0 */ vAddConstant("AN_DESTRUCT"_Stz,           AN_DESTRUCT);
   /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
   /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
   /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
