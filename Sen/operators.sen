@@ -39,6 +39,7 @@
 "OP_snapshot.sen"         include
 "OP_start.sen"            include
 "OP_stats.sen"            include
+"OP_statWrite.sen"        include
 
 "OP_toDemon.sen"          include
 "OP_toCrw.sen"            include

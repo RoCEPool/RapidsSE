@@ -1,0 +1,62 @@
+/*============================================================================*/
+/* OP_statWrite.sen -- Operator statWrite                                     */
+/*============================================================================*/
+
+" OP_statWrite.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: statWriteOp_InfoSet \handler
+
+  File0[].isNull not if
+    "File not null" .
+    process::quit
+  then
+
+  // open the file for writing
+  file::new to File0[]
+  "/tmp/SE_Stats.txt" OPEN_WRITE File0[].get file.open
+  not if
+    File0[].get file.delete assert::stack_0 EC_INVALID_FILE
+    op.pipelineJob@ ERROR_JOB !!logError
+    Operand[].delete
+    Operand[].newErrorMarker
+  then
+
+  File0[].get file.close
+  File0[].get file.delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for statWriteOp req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : statWriteOp_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: statWriteOp_InfoSet ZK_INFOSET op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: statWriteOp :: statWriteOp ;
+
+: statWriteOp opInfo tagCopy: localOp_tags
+  tags{ <jobDesc>  = "--description of operator--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
