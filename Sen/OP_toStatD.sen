@@ -18,8 +18,9 @@
 
   infoset[].delete
 
-    //"__statD" find word.object@
-    //pipeline.pipeout
+//  infoset[]
+//    "__statD" find word.object@
+//    pipeline.pipeout
    
   true
 ;

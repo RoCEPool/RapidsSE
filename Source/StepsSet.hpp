@@ -1022,6 +1022,7 @@ public:
   void vRegInfoSetChunkFile(void);
   void vRegInfoSetDelete(void);
   void vRegInfoSetFirstRow(void);
+  void vRegInfoSetGet(void);
   void vRegInfoSetInfoRows(void);
   void vRegInfoSetName(void);
   void vRegInfoSetNewInfoSet(void);

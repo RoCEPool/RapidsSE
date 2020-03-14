@@ -9,9 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegInfoSet(void)
 {
+  vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
+  vAddStep("InfoSet[].get"_Stz,            &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
   vAddStep("InfoSet[].name"_Stz,           &Step::vRegInfoSetName);
   vAddStep("InfoSet[].newInfoSet"_Stz,     &Step::vRegInfoSetNewInfoSet);
@@ -157,6 +159,20 @@ void Step::vRegInfoSetFirstRow(void)
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
   m_pDataStack->vPushPtr(pInfoSet->aFirstRow());
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].get -- get infoset                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetGet(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetGet"_Stz);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+
+  m_pDataStack->vPushPtr(pInfoSet);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
