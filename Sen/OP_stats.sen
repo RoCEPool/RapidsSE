@@ -13,15 +13,23 @@
 
   "+++ +++ +++" .
 
-  C_TDEF_LOCKSTATS word::find if
-    C_TDEF_LOCKSTATS pushTable assert
-    folderPath.str .
-    C_TDEF_LOCKSTATS find execute to table[]
-    Operand[].newStreamDef
-    Operand[] to StreamDef[]
-    StreamDef[].asStr .
-    nullptr to Operand[]
-  then
+//  C_TDEF_LOCKSTATS word::find if
+//    C_TDEF_LOCKSTATS pushTable assert
+//    folderPath.str .
+//    C_TDEF_LOCKSTATS find execute to table[]
+//    Operand[].newStreamDef
+//    Operand[] to StreamDef[]
+//    StreamDef[].asStr .
+//    nullptr to Operand[]
+//  then
+
+  // find the __lockStats table
+  C_TDEF_LOCKSTATS op__tableDef
+
+  // create a new streamDef
+  StreamDef[].new
+
+  StreamDef[].asStr .
 
   metrics::lockSample // to operandC[]
   //OperandC[].pipeOut

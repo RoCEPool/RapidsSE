@@ -51,7 +51,7 @@ void Step::vRegStreamDefGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].new -- new a stream def from table[]                             */
+/* StreamDef[].new -- new a stream def from table[]                           */
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNew(void)
 {
