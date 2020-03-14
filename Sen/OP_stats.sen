@@ -31,8 +31,8 @@
 
   StreamDef[].asStr .
 
-  metrics::lockSample // to operandC[]
-  //OperandC[].pipeOut
+  metrics::lockSample to operandC[]
+  OperandC[].pipeOut
 
   true
 ;

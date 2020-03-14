@@ -9,11 +9,19 @@
 /*----------------------------------------------------------------------------*/
 : OP_toStatD_InfoSet \handler
 
-  "OP_toStatD_InfoSet" .
+  "OP_toStatD_InfoSet +++ +++ +++" .
 
-  operand[].get
-    "__statD" find word.object@
-    pipeline.pipeout
+  operand[].get to infoset[]
+  nullptr to operand[]
+
+  infoset[].name .
+
+  infoset[].delete
+
+    //"__statD" find word.object@
+    //pipeline.pipeout
+   
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

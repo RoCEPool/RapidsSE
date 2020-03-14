@@ -23,7 +23,7 @@ void Step::vMetricsLockSample(void)
     
   InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   
-  delete pInfoSet;
+  m_pDataStack->vPushPtr(pInfoSet);
   
   EXIT();
 }

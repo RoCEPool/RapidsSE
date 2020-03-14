@@ -17,7 +17,7 @@ InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
   
   LockTracker* pLckTrk = AM::pLockTracker();
   
-  pLckTrk->vReport();
+  //pLckTrk->vReport();
   
   Grid* pGrid = AM::pGrid();
   
@@ -30,7 +30,9 @@ InfoSet* LockMetrics::pSample(StreamDef* pStreamDef)
 
   for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
 
-    hvRowSingle->vSet(C_VARGS_BEGIN,
+    hvRowSingle->vSet(
+                      
+      C_VARGS_BEGIN,
                       
       pGrid->iThisNode(),                      // node no
       0,                                       // take no
