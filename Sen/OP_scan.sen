@@ -84,7 +84,7 @@ opSyntax: scanOp :: scanOp <tableNm> ;
 
 //opInfo: scanOp
 //{
-//  <jobDesc>  = "--description of job--"
+//  <jobDesc>  = "--description of operator--"
 //
 //  <jobKind>  = JK_LOCAL
 //  <rspKind>  = RS_PARTICIPANT_RESPONSE
@@ -113,7 +113,7 @@ opSyntax: scanOp :: scanOp <tableNm> ;
 //
 //: abcOp opInfo tagCopy: localOp_tags
 //  tags{
-//    <jobDesc> = "--description of job--"
+//    <jobDesc> = "--description of operator--"
 //  }
 //  opFill
 //;

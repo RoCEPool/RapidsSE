@@ -94,7 +94,7 @@
 opSyntax: InsertOp :: InsertOp <tableNm> ;
 
 : InsertOp opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of job--" }
+  tags{ <jobDesc> = "--description of operator--" }
 ;
 
 /*============================================================================*/

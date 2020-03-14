@@ -69,7 +69,7 @@
 opSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
 : BM_GenCrwOp opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of job--" }
+  tags{ <jobDesc> = "--description of operator--" }
 ;
 
 /*============================================================================*/
