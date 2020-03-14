@@ -48,8 +48,9 @@ InfoSet::InfoSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  m_nRowSize  = C_UNKNOWN;
-  m_nInfoRows = 0;
+  m_sInfoSetNm = C_NO_NAME;
+  m_nRowSize   = C_UNKNOWN;
+  m_nInfoRows  = 0;
   
   _checkInitialised_(CN_INFOSET);
   
@@ -130,6 +131,26 @@ i8 InfoSet::nInfoRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
   return m_nInfoRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of info set                                                       */
+/*----------------------------------------------------------------------------*/
+Stz* InfoSet::szInfoSetNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return m_sInfoSetNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name of info set                                                       */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vInfoSetNm(Stz* szInfoSetNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_sInfoSetNm = szInfoSetNm;
 }
 
 /*----------------------------------------------------------------------------*/

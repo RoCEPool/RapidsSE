@@ -10,6 +10,7 @@ namespace InfoData
   class InfoSet : public RowBuffer
   {
   protected:
+    s32 m_sInfoSetNm;
     i8  m_nRowSize;
     i8  m_nInfoRows;
     
@@ -25,6 +26,8 @@ namespace InfoData
     Row* aAllotRow(RowSingle* pRowSingle);
     Row* aFirstRow();
     i8   nInfoRows(void);
+    Stz* szInfoSetNm(void);
+    void vInfoSetNm(Stz* szInfoSetNm);
     Row* aNextRow(Row* pPrevRow);
   };
 
