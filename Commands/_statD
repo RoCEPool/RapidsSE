@@ -9,7 +9,7 @@
 begin
 
   stage stageA on origin:
-    eatAllOp | stageA
+    statWriteOp | eatAllOp | stageA
 
 end;
 

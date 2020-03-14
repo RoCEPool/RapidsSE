@@ -113,7 +113,7 @@ void Step::vLoaderHandleDangling(void)
     if (pCrwBuffer) {
       // close the append
       pCrwBuffer->vAppendClose();
-      pOp->vPipeOut(pCrwBuffer);
+      pOp->vPipeOut_nextOp(pCrwBuffer);
     }
     pLoader->vCrwBuffer(i_Ptn, nullptr);
     

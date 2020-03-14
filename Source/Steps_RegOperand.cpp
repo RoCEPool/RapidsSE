@@ -692,7 +692,7 @@ void Step::vRegOperandPipeOut(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
 
-  pOp->vPipeOut(*m_pRegSet->m_xpOperandA);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandA);
   
   m_pRegSet->m_xpOperandA = nullptr;
   
@@ -710,7 +710,7 @@ void Step::vRegOperandPipeOutSet(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
-  pOp->vPipeOut(*m_pRegSet->m_xpOperandA, true);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandA, true);
   
   m_pRegSet->m_xpOperandA = nullptr;
   
@@ -891,7 +891,7 @@ void Step::vRegOperandCsvToCrw(void)
       vTrace("Warning: Skipping row (invalid value)\n"_Stz);
       if (pCrwBuffer) {
         pCrwBuffer->vAppendClose();
-        pOp->vPipeOut(_pOperand(pCrwBuffer));
+        pOp->vPipeOut_nextOp(_pOperand(pCrwBuffer));
         pCrwBuffer = nullptr;
       }
       goto L_Exit;
@@ -916,7 +916,7 @@ void Step::vRegOperandCsvToCrw(void)
     
     if (pCrwBuffer) {
       pCrwBuffer->vAppendClose();
-      pOp->vPipeOut(_pOperand(pCrwBuffer));
+      pOp->vPipeOut_nextOp(_pOperand(pCrwBuffer));
       pCrwBuffer = nullptr;
     }
     

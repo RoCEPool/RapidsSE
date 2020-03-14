@@ -7,7 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: statWriteOp_InfoSet \handler
+: OP_statWriteOp_InfoSet \handler
+
+  "statWriteOp_InfoSet --- --- ---" .
 
   File0[].isNull not if
     "File not null" .
@@ -27,6 +29,8 @@
   File0[].get file.close
   File0[].get file.delete
 
+  Operand[].pipeOut
+
   true
 ;
 
@@ -39,7 +43,14 @@
 
   op__topology
 
-  find: statWriteOp_InfoSet ZK_INFOSET op[].handler!
+  find: OP_statWriteOp_InfoSet if
+    "Found OP_statWriteOp_InfoSet" .
+  else
+    "Did not find OP_statWriteOp_InfoSet" .
+    process::quit
+  then
+
+  find: OP_statWriteOp_InfoSet ZK_INFOSET op[].handler!
 
   op__loop
 

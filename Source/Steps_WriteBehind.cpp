@@ -68,7 +68,7 @@ void Step::vWriteBehindHandleDangling(void)
     if (pCrwBuffer) {
       // close the append
       pCrwBuffer->vAppendClose();
-      pOp->vPipeOut(pCrwBuffer);
+      pOp->vPipeOut_nextOp(pCrwBuffer);
     }
     pWriteBehind->vCrwBuffer(i_Ptn, nullptr);
     

@@ -570,7 +570,7 @@ Pipeline* Op::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeOut(Operand* pOperand, bool bSet)
+void Op::vPipeOut_nextOp(Operand* pOperand, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -614,6 +614,37 @@ void Op::vPipeOut(Operand* pOperand, bool bSet)
                 aCN[pOp->eClass()]);
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to specific operand                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeOut_thisOp(Operand* pOperand, bool bSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  if (AM::bVerbose())
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+           m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
+           m_nNode,
+           m_nPartition,
+           m_pPipelineJob,
+           "vPipeOut :"_Stz,
+           pOperand->eClass() == CN_MARKER ?
+             aOM[(_pMarker(pOperand))->eOpMarker()] :
+             aCN[pOperand->eClass()],
+           pOperand);
+  
+  vAppendLeft(pOperand, bSet);
+    
+  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+              "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+              pOperand->eClass() == CN_MARKER ?
+              aOM[(_pMarker(pOperand))->eOpMarker()] :
+              aCN[pOperand->eClass()],
+              m_bAppendRight ? "right"_Stz : "left"_Stz,
+              aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/

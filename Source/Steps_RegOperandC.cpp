@@ -73,7 +73,7 @@ void Step::vRegOperandCPipeOut(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
 
-  pOp->vPipeOut(*m_pRegSet->m_xpOperandC);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandC);
   
   m_pRegSet->m_xpOperandA = nullptr;
   
@@ -92,7 +92,7 @@ void Step::vRegOperandCPipeOutSet(void)
     
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  pOp->vPipeOut(*m_pRegSet->m_xpOperandC, true);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandC, true);
   
   m_pRegSet->m_xpOperandC = nullptr;
   

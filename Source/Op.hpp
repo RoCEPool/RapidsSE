@@ -87,7 +87,8 @@ namespace Pipelines
     i8   nPartition(void);
     bool bPause(void);
     Pipeline* pPipeline(void);
-    void vPipeOut(Operand* pOperand, bool bSet = false);
+    void vPipeOut_nextOp(Operand* pOperand, bool bSet = false);
+    void vPipeOut_thisOp(Operand* pOperand, bool bSet = false);
     void vPipeToJob(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
