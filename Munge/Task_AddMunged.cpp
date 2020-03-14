@@ -18937,7 +18937,7 @@ void Task::vAddMunged(Forth* pForth)
     "  end\n"
     " ;\n"
     "\n"
-    "find: myCollect word.see\n"
+    "//find: myCollect word.see\n"
     "\n"
     "//debug::breakPoint\n"
     "/*============================================================================*/\n"
