@@ -2,7 +2,7 @@
 /* _seprompt -- seprompt initialisation                                       */
 /*============================================================================*/
 
-print "_seprompt" ;
+//print "_seprompt" ;
 
 _shortcuts
 

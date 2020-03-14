@@ -2,9 +2,7 @@
 /* _procedures -- initial set of stored procedures                            */
 /*============================================================================*/
 
-print "_procedures" ;
-
-//print "  (no initial set of procedures yet)" ;
+//print "_procedures" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // stored procedure syntax test
