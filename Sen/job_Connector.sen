@@ -39,7 +39,9 @@
 
   0 locals| pSocket |
 
-  pNode node.no grid::thisNode@ "Node %v connecting to node %v" .printf
+  args.verbose if
+    pNode node.no grid::thisNode@ "Node %v connecting to node %v" .printf
+  then
 
   // get the nodes port and IP address
   pNode node.port ( port )
@@ -59,9 +61,9 @@
   grid::incConnectedNodes
 
   // print connection message
-  //args.verbose if
+  args.verbose if
     pNode node.no grid::thisNode@ "Node %v connected to node %v" .printf
-  //then
+  then
 
   // send this node's info to the node we just connected to
   pSocket .sendNodeInfo
@@ -109,7 +111,9 @@
 
   //"connector_run" .
 
-  grid::thisNode@ job[] "Connector %v on node %v running" .printf
+  args.verbose if
+    grid::thisNode@ job[] "Connector %v on node %v running" .printf
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
