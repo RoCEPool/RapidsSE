@@ -191,43 +191,8 @@ traceon
   POSTPONE exit_rt
 ;
 
-/*----------------------------------------------------------------------------*/
-
-: storeProcedure
-
-  next-token locals| sWordNm |
-
-  "" locals| sSmt |
-  begin
-    next-token dup ";" str.equal not
-    while
-    sSmt swap str.cat " " str.cat to sSmt
-  repeat
-  drop
-
-  // -- -- -- -- -- --
-  1 sWordNm :NestedWord
-
-    sSmt ,
-
-    [[ . ]]
-  ;NestedWord
-
-;
-
-/*----------------------------------------------------------------------------*/
-
-storeProcedure myCollect
-
-  pipeline EXPORT parameters <tableNm> <fileNm>
-  begin
-
-  end
-;
-
-//find: myCollect word.see
-
 //debug::breakPoint
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
