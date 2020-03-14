@@ -271,7 +271,7 @@
   // -- encode the service spawning word -- -- -- -- -- --
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  sServiceNm , "++ this is service spawner for: %v" , POSTPONE .printf
+  // sServiceNm , "++ this is service spawner for: %v" , POSTPONE .printf
 
   sServiceNm , POSTPONE job::spawnUniversal
 

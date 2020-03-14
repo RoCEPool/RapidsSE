@@ -4,7 +4,7 @@
 
 "se_boot.sen" .verbose
 
-"SEN: " .put
+"se_boot progress: " .put
 9 .put
 8 .put  "vocab.sen"         include
 7 .put  "tasks.sen"         include
@@ -17,10 +17,10 @@
         "se_operators.sen"  include
         "se_procedures.sen" include
         "se_tags.sen"       include
-3 .put  "se_requests.sen"   include
-        "jobModel.sen"      include
-        "operators.sen"     include
-2 .put  "testing.sen"       include
+        "se_requests.sen"   include
+3 .put  "jobModel.sen"      include
+2 .put  "operators.sen"     include
+        "testing.sen"       include
 1 .put  "se.sen"            include  // last
 0 .put
 
