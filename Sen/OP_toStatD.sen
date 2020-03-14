@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* OP_toStatD.sen -- To StatD Operator                                        */
+/*============================================================================*/
+
+" OP_toStatD.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: OP_toStatD_PulseMarker \handler
+
+  "OP_toStatD_PulseMarker" .
+
+  ZK_PULSEMARKER_handler
+
+  Operand[].newPulseMarker operand[].get 
+    "__statD" find word.object@
+    pipeline.pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/* toStatD request                                    (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: toStatDOp_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: OP_toStatD_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  "*** toStatDOp_req EXITS" .
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: toStatDOp :: toStatDOp ;
+
+: toStatDOp opInfo tagCopy: localOp_tags
+  tags{ <?jobDesc?>  = "--description of job--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
