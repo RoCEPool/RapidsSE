@@ -1076,7 +1076,7 @@ void SePrompt::vSetJob(void)
     //m_pJob->pEnameSet()->vPrint();
   }
   
-  m_pJob->pEnameSet()->vContentDump();
+  //m_pJob->pEnameSet()->vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/

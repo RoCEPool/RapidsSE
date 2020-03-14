@@ -315,9 +315,8 @@
   dic::root dic.lastWord dup
   iterate                                 // iterate word cursor
     object@ word.category@ pOpInfo: eql if
-    //object@ word.name@  "scanOp_info" str.equal if
-      object@ word.dump
-      object@ word.enameSet@ enameSet.asStr .
+      // object@ word.dump
+      // object@ word.enameSet@ enameSet.asStr .
       object@ .fillOutEnameSet
     then
 
