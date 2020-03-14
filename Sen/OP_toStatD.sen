@@ -5,15 +5,13 @@
 " OP_toStatD.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* on ZK_INFOSET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: OP_toStatD_PulseMarker \handler
+: OP_toStatD_InfoSet \handler
 
-  "OP_toStatD_PulseMarker" .
+  "OP_toStatD_InfoSet" .
 
-  ZK_PULSEMARKER_handler
-
-  Operand[].newPulseMarker operand[].get 
+  operand[].get
     "__statD" find word.object@
     pipeline.pipeout
 ;
@@ -27,7 +25,7 @@
 
   op__topology
 
-  find: OP_toStatD_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: OP_toStatD_InfoSet ZK_INFOSET op[].handler!
 
   op__loop
 
