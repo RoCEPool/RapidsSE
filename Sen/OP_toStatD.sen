@@ -16,11 +16,11 @@
 
   infoset[].name .
 
-  infoset[].delete
+  //infoset[].delete
 
-//  infoset[]
-//    "__statD" find word.object@
-//    pipeline.pipeout
+  infoset[]
+    "__statD" find word.object@
+    pipeline.pipeout
    
   true
 ;
