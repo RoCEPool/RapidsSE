@@ -755,6 +755,12 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_LINUX"_Stz,false);
   #endif
     
+  #ifdef WITH_LOCK_TRACKING
+  vAddConstant("WITH_LOCK_TRACKING"_Stz,true);
+  #else
+  vAddConstant("WITH_LOCK_TRACKING"_Stz,false);
+  #endif
+    
   #ifdef WITH_MUNGED_SEN
   vAddConstant("WITH_MUNGED_SEN"_Stz,true);
   #else

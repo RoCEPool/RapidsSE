@@ -109,6 +109,11 @@ bool Correctness::bTraceWith(Stz* szWith)
     return true;
 #endif
   
+#ifdef WITH_LOCK_TRACKING
+  if (szWith->bSame("WITH_LOCK_TRACKING"_Stz))
+    return true;
+#endif
+  
 #ifdef WITH_MUNGED_SEN
   if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
     return true;
@@ -242,6 +247,10 @@ void Correctness::vTraceWith(void)
   
 #ifdef WITH_LINUX
   vTrace("  WITH_LINUX\n"_Stz);
+#endif
+  
+#ifdef WITH_LOCK_TRACKING
+  vTrace("  WITH_LOCK_TRACKING\n"_Stz);
 #endif
   
 #ifdef WITH_MUNGED_SEN
@@ -378,6 +387,11 @@ bool Correctness::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
+#ifndef WITH_LOCK_TRACKING
+  if (szWith->bSame("WITH_LOCK_TRACKING"_Stz))
+    return true;
+#endif
+  
 #ifndef WITH_MUNGED_SEN
   if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
     return true;
@@ -511,6 +525,10 @@ void Correctness::vTraceWithout(void)
   
 #ifndef WITH_LINUX
   vTrace("  WITH_LINUX\n"_Stz);
+#endif
+  
+#ifndef WITH_LOCK_TRACKING
+  vTrace("  WITH_LOCK_TRACKING\n"_Stz);
 #endif
   
 #ifndef WITH_MUNGED_SEN
