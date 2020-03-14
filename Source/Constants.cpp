@@ -560,7 +560,7 @@ void Constants::vAddConstantsCpp(void)
   /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
-
+  
   // WK_ : word type
   /*  0 */ vAddConstant("WK_NONE"_Stz,      WK_NONE);
   /*  0 */ vAddConstant("WK_LOCAL"_Stz,     WK_LOCAL);
@@ -663,6 +663,175 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
+  
+
+  #ifdef WITH_ACTION_SEQUENCE
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,true);
+  #else
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_ADDRESS_CHECKING
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,true);
+  #else
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_APPLE
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,true);
+  #else
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_ANALYSE_FREE
+  vAddConstant("WITH_ANALYSE_FREE"_Stz,true);
+  #else
+  vAddConstant("WITH_ANALYSE_FREE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_ASSERT_MACRO
+  vAddConstant("WITH_ASSERT_MACRO"_Stz,true);
+  #else
+  vAddConstant("WITH_ASSERT_MACRO"_Stz,false);
+  #endif
+    
+  #ifdef WITH_BUCKET_HASHING
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,true);
+  #else
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,false);
+  #endif
+    
+  #ifdef WITH_CHECK_INITIALISED
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,true);
+  #else
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,false);
+  #endif
+    
+  #ifdef WITH_CORECTNESS_ALGEBRA
+  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,true);
+  #else
+  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,false);
+  #endif
+      
+  #ifdef WITH_DEBUG_VERSION
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,true);
+  #else
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,false);
+  #endif
+    
+  #ifdef WITH_EB_LAZY_CHAIN
+  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,true);
+  #else
+  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,false);
+  #endif
+    
+  #ifdef WITH_ENCODING_TRACE
+  vAddConstant("WITH_ENCODING_TRACE"_Stz,true);
+  #else
+  vAddConstant("WITH_ENCODING_TRACE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_ENTRY_EXIT
+  vAddConstant("WITH_ENTRY_EXIT"_Stz,true);
+  #else
+  vAddConstant("WITH_ENTRY_EXIT"_Stz,false);
+  #endif
+      
+  #ifdef WITH_INFLATE_TRACE
+  vAddConstant("WITH_INFLATE_TRACE"_Stz,true);
+  #else
+  vAddConstant("WITH_INFLATE_TRACE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_IT_COMPACT_TRACE
+  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,true);
+  #else
+  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,false);
+  #endif
+    
+  #ifdef WITH_LINUX
+  vAddConstant("WITH_LINUX"_Stz,true);
+  #else
+  vAddConstant("WITH_LINUX"_Stz,false);
+  #endif
+    
+  #ifdef WITH_MUNGED_SEN
+  vAddConstant("WITH_MUNGED_SEN"_Stz,true);
+  #else
+  vAddConstant("WITH_MUNGED_SEN"_Stz,false);
+  #endif
+    
+  #ifdef WITH_PREPOST_CHECKING
+  vAddConstant("WITH_PREPOST_CHECKING"_Stz,true);
+  #else
+  vAddConstant("WITH_PREPOST_CHECKING"_Stz,false);
+  #endif
+    
+  #ifdef WITH_PULSING
+  vAddConstant("WITH_PULSING"_Stz,true);
+  #else
+  vAddConstant("WITH_PULSING"_Stz,false);
+  #endif
+    
+  #ifdef WITH_PYTHON_SUPPORT
+  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,true);
+  #else
+  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,false);
+  #endif
+    
+  #ifdef WITH_RELEASE_VERSION
+  vAddConstant("WITH_RELEASE_VERSION"_Stz,true);
+  #else
+  vAddConstant("WITH_RELEASE_VERSION"_Stz,false);
+  #endif
+    
+  #ifdef WITH_SEN_TAGS
+  vAddConstant("WITH_SEN_TAGS"_Stz,true);
+  #else
+  vAddConstant("WITH_SEN_TAGS"_Stz,false);
+  #endif
+    
+  #ifdef WITH_SETH_SUPPORT
+  vAddConstant("WITH_SETH_SUPPORT"_Stz,true);
+  #else
+  vAddConstant("WITH_SETH_SUPPORT"_Stz,false);
+  #endif
+    
+  #ifdef WITH_SHARED_LOG
+  vAddConstant("WITH_SHARED_LOG"_Stz,true);
+  #else
+  vAddConstant("WITH_SHARED_LOG"_Stz,false);
+  #endif
+    
+  #ifdef WITH_SHOCO_DUPLICATES
+  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,true);
+  #else
+  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,false);
+  #endif
+    
+  #ifdef WITH_STATISTICS_COUNTERS
+  vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,true);
+  #else
+  vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,false);
+  #endif
+    
+  #ifdef WITH_TRACE_API
+  vAddConstant("WITH_TRACE_API"_Stz,true);
+  #else
+  vAddConstant("WITH_TRACE_API"_Stz,false);
+  #endif
+    
+  #ifdef WITH_TRACE_DYNAMO
+  vAddConstant("WITH_TRACE_DYNAMO"_Stz,true);
+  #else
+  vAddConstant("WITH_TRACE_DYNAMO"_Stz,false);
+  #endif
+    
+  #ifdef WITH_TRACE_PURGING
+  vAddConstant("WITH_TRACE_PURGING"_Stz,true);
+  #else
+  vAddConstant("WITH_TRACE_PURGING"_Stz,false);
+  #endif
 }
 
 /*============================================================================*/
