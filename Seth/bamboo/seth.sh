@@ -15,10 +15,11 @@ TESTLIST_FILE="${DIR}/allTestsBamboo"
 SETH_TIMEOUT="900"
 
 #SE_PATH="../OS X/Build/Products/Debug/SE"
+NODE="NODE0"
 SE_DIR="${ROOT_DIR}/Linux/bin"
 SE_PATH="${SE_DIR}/rapidsse"
 SE_NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
-SE_ARGS="--name NODE0 --node NODE0 127.0.0.1 5541 --munged --commands ./Commands --appendTrace"  # in addition to --metadata and --script
+SE_ARGS="--name ${NODE} --node ${NODE} 127.0.0.1 5541 --munged --commands ./Commands --appendTrace"  # in addition to --metadata and --script
 
 export LD_LIBRARY_PATH="${SE_DIR}:${LD_LIBRARY_PATH}"
 
@@ -53,7 +54,7 @@ fi
 SETH_START_TIME="$(date +%s)"
 
 # Run the SE Test Harness in the background so we can monitor both it and SE.
-java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS} $@ &
+java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS} "$@" &
 
 SETH_PID=$!
 
@@ -87,7 +88,7 @@ do
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
     kill -9 "${SETH_PID}" &>/dev/null
-    echo ${SE_PROMPT_PID} | xargs -r kill -9 
+    echo "${SE_PROMPT_PID}" | xargs -r kill -9 
     exit 1
   fi
 
