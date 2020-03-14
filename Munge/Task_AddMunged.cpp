@@ -11900,7 +11900,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
     "\n"
     "  // in : <serviceNm> add call(.printf)\n"
-    "  sServiceNm , \\\"++ this is the service parser for: %v\\\" , POSTPONE .printf\n"
+    "  // sServiceNm , \\\"++ this is the service parser for: %v\\\" , POSTPONE .printf\n"
     "\n"
     "  // in : <serviceNm> add call(.consumeArgs)\n"
     "  POSTPONE .consumeArgs\n"
