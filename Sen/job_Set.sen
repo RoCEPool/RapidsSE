@@ -92,7 +92,7 @@
 "job_WriteBuffer.sen"     include
 "job_WriteRow.sen"        include
 
-"otherJobs"               include-subdir
+//"otherJobs"               include-subdir
 
 "job_Start.sen"           include // last
 
