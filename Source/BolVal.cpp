@@ -51,7 +51,7 @@ i8 BolVal::nStackUsage(void)
 void BolVal::vToStz(Stz* szDst)
 {
   if (m_wBol.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

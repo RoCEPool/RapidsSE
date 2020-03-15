@@ -304,7 +304,7 @@ void CsvValue::vInto(Stz *szTgt, void *avSrc, Column *pCol)
   // null processing
   
   if (C_DATUM_NULL == iValue) {
-    StrLib::vCopy(az,(char*)"null"_Stz);
+    StrLib::vCopy(az,(char*)C_NULL);
     return;
   }
   

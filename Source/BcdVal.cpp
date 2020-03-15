@@ -51,7 +51,7 @@ i8 BcdVal::nStackUsage(void)
 void BcdVal::vToStz(Stz* szDst)
 {
   if (m_wBcd.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

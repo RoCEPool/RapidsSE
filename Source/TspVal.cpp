@@ -51,7 +51,7 @@ i8 TspVal::nStackUsage(void)
 void TspVal::vToStz(Stz* szDst)
 {
   if (m_wTsp.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

@@ -105,7 +105,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendPad(&szCrs,caLine,67);
     
     if (aColEnc->m_wDataCode.bIsNull()) {
-      StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
+      StrLib::vAppendString(&szCrs,(char*)C_NULL);
     }
     else {
       switch (eDatum) {

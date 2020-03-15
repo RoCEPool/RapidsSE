@@ -149,7 +149,7 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 #define API_PARAM(p1) \
-  TRACE_API_PARAM("param"_Stz,(p1? p1 : "null"_Stz)); \
+  TRACE_API_PARAM("param"_Stz,(p1? p1 : C_NULL)); \
 EndDefine
 
 #else

@@ -51,7 +51,7 @@ i8 FltVal::nStackUsage(void)
 void FltVal::vToStz(Stz* szDst)
 {
   if (m_wFlt.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

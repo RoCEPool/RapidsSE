@@ -61,7 +61,7 @@ void SP_Row::vRow(RowSingle* pRow)
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     
     if (pRow->m_waColVal[i_Col].bIsNull()) {
-      StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
+      StrLib::vAppendString(&szCrs,(char*)C_NULL);
       continue;
     }
       

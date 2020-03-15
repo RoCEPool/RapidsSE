@@ -130,7 +130,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
       i_Code += sizeof(i8);
       continue;
     }
-    if (pTkn->bSame("null"_Stz)) {
+    if (pTkn->bSame(C_NULL)) {
       m_eaCode[i_Code++] = EO_INTEGER;
       iArg = C_DATUM_NULL;
       piArg = (i8*) & m_eaCode[i_Code];

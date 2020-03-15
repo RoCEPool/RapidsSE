@@ -51,7 +51,7 @@ i8 TmeVal::nStackUsage(void)
 void TmeVal::vToStz(Stz* szDst)
 {
   if (m_wTme.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

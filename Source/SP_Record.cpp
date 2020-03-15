@@ -107,7 +107,7 @@ void SP_Record::vAddCol(Column* pCol, i8 iVal)
   _precondition_(_MAGIC_,_FOOTER_);
   
   if (C_DATUM_NULL == iVal) {
-    StrLib::vAppendString(&m_azCursor,(char*)"null"_Stz);
+    StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
     return;
   }
   
@@ -434,7 +434,7 @@ void SP_Record::vToRecord(RowSingle* pRowSingle)
       StrLib::vAppendString(&m_azCursor,",");
     
     if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
-      StrLib::vAppendString(&m_azCursor,(char*)"null"_Stz);
+      StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
       continue;
     }
     

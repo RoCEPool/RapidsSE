@@ -51,7 +51,7 @@ i8 IvlVal::nStackUsage(void)
 void IvlVal::vToStz(Stz* szDst)
 {
   if (m_wIvl.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

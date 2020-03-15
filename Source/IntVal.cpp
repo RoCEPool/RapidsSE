@@ -70,7 +70,7 @@ i8 IntVal::nStackUsage(void)
 void IntVal::vToStz(Stz* szDst)
 {
   if (m_wInt.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

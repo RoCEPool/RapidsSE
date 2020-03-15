@@ -51,7 +51,7 @@ i8 EdtVal::nStackUsage(void)
 void EdtVal::vToStz(Stz* szDst)
 {
   if (m_wEdt.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

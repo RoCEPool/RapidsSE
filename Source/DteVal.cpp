@@ -51,7 +51,7 @@ i8 DteVal::nStackUsage(void)
 void DteVal::vToStz(Stz* szDst)
 {
   if (m_wDte.bIsNull()) {
-    szDst->vConcat("null"_Stz);
+    szDst->vConcat(C_NULL);
     return;
   }
   

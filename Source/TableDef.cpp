@@ -861,7 +861,7 @@ eEC TableDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
-  if (! pTkn->bSame("null"_Stz))
+  if (! pTkn->bSame(C_NULL))
     return EC_INVALID_COMMAND;
   
   pCol->vIsNullable(false);
@@ -1123,7 +1123,7 @@ eEC TableDef::eSyntaxColumnClauses(TokenVec* pTknVec)
         break;
       }
       
-      if (! pTkn->bSame("null"_Stz)){
+      if (! pTkn->bSame(C_NULL)){
         eError = EC_INVALID_COMMAND;
         break;
       }
