@@ -94,21 +94,6 @@ void Engine::vConcluding(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* unrecoverable fatal error                                                  */
-/*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Engine::vUnrecoverableError(Stz* szErrorMessage,
-                                                Stz* szInfoText)
-{
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-  printf("RapidsSE Unrecoverable Error\n");
-  printf("  %s\n",szErrorMessage->azChar());
-  printf("  %s\n",szInfoText->azChar());
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-
-  Process::vExitFailure();
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
@@ -229,8 +214,8 @@ void Engine::vChangeDirectory(void)
   bool bResult = Dir::bChangeCurrent(gxArgs.m_sCommandsDir);
   
   if (! bResult)
-    vUnrecoverableError("Unable to change to command dir"_Stz,
-                        gxArgs.m_sCommandsDir);
+    Process::vUnrecoverableError("Unable to change to command dir"_Stz,
+                                 gxArgs.m_sCommandsDir);
 
   s256 sCurrent;
   if (Dir::bGetCurrent(sCurrent) && gxArgs.m_bVerbose)

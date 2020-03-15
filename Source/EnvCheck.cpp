@@ -30,17 +30,17 @@ void EnvCheck::vCheckDir(Stz* szDirPath,  i8 iExist, i8 iPermissions)
   
   if (iExist == C_EXIST_EXISTS) {
     if (! Dir::bExists(szDirPath))
-      Engine::vUnrecoverableError("Mandatory dir missing"_Stz, szDirPath);
+      Process::vUnrecoverableError("Mandatory dir missing"_Stz, szDirPath);
   }
   
   if (iExist == C_EXIST_NOTEXISTS) {
     if (Dir::bExists(szDirPath))
-      Engine::vUnrecoverableError("Non-existant dir exists"_Stz, szDirPath);
+      Process::vUnrecoverableError("Non-existant dir exists"_Stz, szDirPath);
   }
   
   if (C_ACCESS_NOCHECK != iPermissions) {
     if (! Dir::bAccess(szDirPath,iPermissions))
-      Engine::vUnrecoverableError("Insufficient dir permissions"_Stz, szDirPath);
+      Process::vUnrecoverableError("Insufficient dir permissions"_Stz, szDirPath);
   }
 }
 
@@ -54,17 +54,17 @@ void EnvCheck::vCheckFile(Stz* szFilePath, i8 iExist, i8 iPermissions)
   
   if (iExist == C_EXIST_EXISTS) {
     if (! File::bExists(szFilePath))
-      Engine::vUnrecoverableError("Mandatory file missing"_Stz, szFilePath);
+      Process::vUnrecoverableError("Mandatory file missing"_Stz, szFilePath);
   }
 
   if (iExist == C_EXIST_NOTEXISTS) {
     if (File::bExists(szFilePath))
-      Engine::vUnrecoverableError("Non-existant file exists"_Stz, szFilePath);
+      Process::vUnrecoverableError("Non-existant file exists"_Stz, szFilePath);
   }
 
   if (C_ACCESS_NOCHECK != iPermissions) {
     if (! File::bAccess(szFilePath,iPermissions))
-      Engine::vUnrecoverableError("Insufficient file permissions"_Stz, szFilePath);
+      Process::vUnrecoverableError("Insufficient file permissions"_Stz, szFilePath);
   }
 }
 

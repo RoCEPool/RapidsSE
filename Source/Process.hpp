@@ -13,6 +13,9 @@ namespace Host
     [[ noreturn ]] static void vExitFailure(void);
     [[ noreturn ]] static void vExitSuccess(void);
   
+    [[ noreturn ]] static void vUnrecoverableError(Stz* szErrorMessage,
+                                                   Stz* szInfoText);
+
     static i8   iGetPid(void);
     static bool bIsSeProcess(void);
     static bool bKillPid(i8 iPid);

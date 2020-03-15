@@ -44,6 +44,22 @@ void Process::vEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* unrecoverable fatal error                                                  */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Process::vUnrecoverableError(Stz* szErrorMessage,
+                                                 Stz* szInfoText)
+{
+  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  printf("RapidsSE Unrecoverable Error\n");
+  printf("  %s\n",szErrorMessage->azChar());
+  printf("  %s\n",szInfoText->azChar());
+  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+  Process::vExitFailure();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get process id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Process::iGetPid(void)
