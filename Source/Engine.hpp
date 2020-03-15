@@ -13,7 +13,8 @@ namespace StorageEngine
     static void vPreliminary(void);
     static void vRunCommandLine(void);
     static void vConcluding(void);
-    [[ noreturn ]] static void vUnrecoverableError(Stz* szErrorText);
+    [[ noreturn ]] static void vUnrecoverableError(Stz* szErrorMessage,
+                                                   Stz* szInfoText);
 
     static void vAttachRegion(void);
     static void vBootCheck(void);

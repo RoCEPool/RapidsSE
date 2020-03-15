@@ -3,9 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_ACCESS_READ  = R_OK;
-static const i8 C_ACCESS_WRITE = W_OK;
+static const i8 C_ACCESS_READ      = R_OK;
+static const i8 C_ACCESS_WRITE     = W_OK;
 static const i8 C_ACCESS_READWRITE = R_OK | W_OK;
+static const i8 C_ACCESS_NOCHECK   = -1;
+
+static const i8 C_EXIST_NOCHECK   = -1;
+static const i8 C_EXIST_EXISTS    = 1;
+static const i8 C_EXIST_NOTEXISTS = 2;
 
 namespace Resources
 {
