@@ -12,6 +12,7 @@ namespace Host
     [[ noreturn ]] static void vExit(i8 iExitStatus);
     [[ noreturn ]] static void vExitFailure(void);
     [[ noreturn ]] static void vExitSuccess(void);
+  
     static i8   iGetPid(void);
     static bool bIsSeProcess(void);
     static bool bKillPid(i8 iPid);

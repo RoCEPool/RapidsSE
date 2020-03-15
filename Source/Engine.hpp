@@ -13,6 +13,7 @@ namespace StorageEngine
     static void vPreliminary(void);
     static void vRunCommandLine(void);
     static void vConcluding(void);
+    [[ noreturn ]] static void vUnrecoverableError(Stz* szErrorText);
 
     static void vAttachRegion(void);
     static void vBootCheck(void);
@@ -51,6 +52,7 @@ namespace StorageEngine
     static void vUnlinkSystem(void);
     static void vWaitStop(void);
     static void vWriteRegionName(void);
+  
   };
 }
 
