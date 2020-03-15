@@ -53,10 +53,11 @@ namespace Resources
     File(Focal* pIsFor);
    ~File(void) noexcept(false);
     
-    static bool bExists(Stz* aFilePath);
-    static bool bModTime(Stz* aFilePath, time_t& tTime);
+    static bool bAccess(Stz* szFilePath, i8 iPermission);
+    static bool bExists(Stz* szFilePath);
+    static bool bModTime(Stz* szFilePath, time_t& tTime);
     static void vMonitorPortrait(s48K& sPortrait);
-    static bool bRemove(Stz* aFilePath);
+    static bool bRemove(Stz* szFilePath);
     static void vStatistics(void);
   
     void vClose(void);
@@ -69,13 +70,13 @@ namespace Resources
     bool bIsOpen(void);
     bool bIsStdin(void);
     bool bIsStdout(void);
-    bool bOpenAppend(Stz* aFilePath);
-    bool bOpenMode(Stz* aFilePath, Stz* aOpenMode);
-    bool bOpenRead(Stz* aFilePath);
-    bool bOpenWrite(Stz* aFilePath);
-    void vPrint(Stz* aFormat,...);
+    bool bOpenAppend(Stz* szFilePath);
+    bool bOpenMode(Stz* szFilePath, Stz* aOpenMode);
+    bool bOpenRead(Stz* szFilePath);
+    bool bOpenWrite(Stz* szFilePath);
+    void vPrint(Stz* szFormat,...);
     i8   nReadBytes(void* aDst, i8 nBytes);
-    bool bReadLine(Stz* aDst);
+    bool bReadLine(Stz* szDst);
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekStart(void);

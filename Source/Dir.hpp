@@ -3,6 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+static const i8 C_ACCESS_READ  = R_OK;
+static const i8 C_ACCESS_WRITE = W_OK;
+static const i8 C_ACCESS_READWRITE = R_OK | W_OK;
+
 namespace Resources
 {
   class Dir : public Resource
@@ -27,6 +31,7 @@ namespace Resources
     Dir(Focal* pIsFor);
    ~Dir(void) noexcept(false);
 
+    static bool bAccess(Stz* szDirPath, i8 iPermission);
     static bool bChangeCurrent(Stz* szDirPath);
     static bool bGetCurrent(Stz* szDirPath);
     static bool bExists(Stz* szDirPath);

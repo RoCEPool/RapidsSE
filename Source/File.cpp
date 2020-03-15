@@ -90,13 +90,26 @@ File::~File(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------*/
+/* test if given file has access permissions                                 */
+/*---------------------------------------------------------------------------*/
+bool File::bAccess(Stz* szFilePath, i8 iPermission)
+{
+  int iResult = access(szFilePath->azChar(),(int)iPermission);
+
+  if (0 == iResult)
+    return true;
+  else
+    return false;
+}
+
+/*---------------------------------------------------------------------------*/
 /* test if given file exists in file system                                  */
 /*---------------------------------------------------------------------------*/
-bool File::bExists(Stz* aFilePath)
+bool File::bExists(Stz* szFilePath)
 {
   struct stat xStat;
   
-  int iResult = stat(aFilePath->azChar(),&xStat);
+  int iResult = stat(szFilePath->azChar(),&xStat);
   
   if (0 == iResult && (xStat.st_mode & S_IFREG))
     return true;
@@ -104,7 +117,7 @@ bool File::bExists(Stz* aFilePath)
   if (iResult && ENOENT == errno)
     return false;
   
-  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, aFilePath->azChar(), errno);
+  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
   
   return false;
 }
@@ -112,11 +125,11 @@ bool File::bExists(Stz* aFilePath)
 /*---------------------------------------------------------------------------*/
 /* get the modification time of the file                                     */
 /*---------------------------------------------------------------------------*/
-bool File::bModTime(Stz* aFilePath, time_t& tTime)
+bool File::bModTime(Stz* szFilePath, time_t& tTime)
 {
   struct stat xStat;
   
-  int iResult = stat(aFilePath->azChar(),&xStat);
+  int iResult = stat(szFilePath->azChar(),&xStat);
   
   if (0 == iResult) {
     tTime = xStat.st_mtime;
@@ -126,7 +139,7 @@ bool File::bModTime(Stz* aFilePath, time_t& tTime)
   if (iResult && ENOENT == errno)
     return false;
   
-  vWarn("File::bModTime: %s stat() error; errno=%d"_Stz, aFilePath->azChar(), errno);
+  vWarn("File::bModTime: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
   
   return false;
 }
@@ -180,9 +193,9 @@ void File::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* remove given file from file system                                         */
 /*----------------------------------------------------------------------------*/
-bool File::bRemove(Stz* aFilePath)
+bool File::bRemove(Stz* szFilePath)
 {
-  int iResult = unlink(aFilePath->azChar());
+  int iResult = unlink(szFilePath->azChar());
   
   if (-1 == iResult) {
     vWarn("File::bRemove: unlink() error; errno=%d"_Stz,errno);
@@ -408,11 +421,11 @@ bool File::bIsStdout(void)
 /*----------------------------------------------------------------------------*/
 /* open file for append                                                       */
 /*----------------------------------------------------------------------------*/
-bool File::bOpenAppend(Stz* aFilePath)
+bool File::bOpenAppend(Stz* szFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  bool bOpened = bOpenMode(aFilePath,C_OPEN_APPEND);
+  bool bOpened = bOpenMode(szFilePath,C_OPEN_APPEND);
   
   return bOpened;
 }
@@ -420,7 +433,7 @@ bool File::bOpenAppend(Stz* aFilePath)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
+bool File::bOpenMode(Stz* szFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
@@ -428,12 +441,12 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nOpens++;
 #endif
   
-  if (aFilePath->bSame("stdin"_Stz)) {
+  if (szFilePath->bSame("stdin"_Stz)) {
     vUseStdin();
     return true;
   }
 
-  if (aFilePath->bSame("stdout"_Stz)) {
+  if (szFilePath->bSame("stdout"_Stz)) {
     vUseStdout();
     return true;
   }
@@ -447,7 +460,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_sFilePath   = aFilePath;
+  m_sFilePath   = szFilePath;
   m_sOpenMode   = aOpenMode;
 
   m_aFile = fopen(m_sFilePath.azChar(),m_sOpenMode.azChar());
@@ -465,7 +478,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   
   AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
               "File opened: path=%s; mode=%s"_Stz, //!format-LogRes
-              aFilePath,aOpenMode);
+              szFilePath,aOpenMode);
 
   return true;
 }
@@ -473,11 +486,11 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
 /*----------------------------------------------------------------------------*/
 /* open file for read                                                         */
 /*----------------------------------------------------------------------------*/
-bool File::bOpenRead(Stz* aFilePath)
+bool File::bOpenRead(Stz* szFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  bool bOpened = bOpenMode(aFilePath,C_OPEN_READ);
+  bool bOpened = bOpenMode(szFilePath,C_OPEN_READ);
   
   return bOpened;
 }
@@ -485,11 +498,11 @@ bool File::bOpenRead(Stz* aFilePath)
 /*----------------------------------------------------------------------------*/
 /* open file for write                                                        */
 /*----------------------------------------------------------------------------*/
-bool File::bOpenWrite(Stz* aFilePath)
+bool File::bOpenWrite(Stz* szFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  bool bOpened = bOpenMode(aFilePath,C_OPEN_WRITE);
+  bool bOpened = bOpenMode(szFilePath,C_OPEN_WRITE);
   
   return bOpened;
 }
