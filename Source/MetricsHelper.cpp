@@ -11,10 +11,15 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, File* pFile)
+void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pFile)
 {
   _static_
   
+  for (Row* aInfoRow = pInfoSet->aFirstRow();
+       aInfoRow;
+       aInfoRow = pInfoSet->aNextRow(aInfoRow)) {
+    
+  }
 }
 
 /*============================================================================*/

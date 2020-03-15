@@ -8,7 +8,7 @@ namespace Metrics
   class MetricsHelper
   {
   public:
-    static void vWriteCsv(InfoSet* pInfoSet, File* pFile);
+    static void vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pFile);
   };
 
 }

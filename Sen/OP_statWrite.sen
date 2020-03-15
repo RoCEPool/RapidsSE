@@ -53,14 +53,9 @@
  
   LogReqEntry SEED_REQ
 
-  op__topology
+  C_TDEF_LOCKSTATS op__tableDef StreamDef[].new
 
-  find: OP_statWriteOp_InfoSet if
-    "Found OP_statWriteOp_InfoSet" .
-  else
-    "Did not find OP_statWriteOp_InfoSet" .
-    process::quit
-  then
+  op__topology
 
   find: OP_statWriteOp_InfoSet ZK_INFOSET op[].handler!
 

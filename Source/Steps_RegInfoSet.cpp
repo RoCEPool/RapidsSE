@@ -307,11 +307,14 @@ void Step::vRegInfoSetWriteCsv(void)
   ENTRY(); // ENTRY("vRegInfoSetWriteCsv"_Stz);
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
+  
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
+  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
+
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
 
-  MetricsHelper::vWriteCsv(pInfoSet,pFile);
+  MetricsHelper::vWriteCsv(pInfoSet,pStreamDef,pFile);
   
   EXIT();
 }
