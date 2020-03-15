@@ -311,6 +311,8 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
              pJob->m_iFocalId,
              pJob->iParticipantNode(),
              pNode->m_nRight);
+      
+      pJob->pEnameSet()->vPrint();
              
       pNode = pSkipList->pNext(pNode, iLevel);
     }
