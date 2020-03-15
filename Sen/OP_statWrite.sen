@@ -26,6 +26,18 @@
     Operand[].newErrorMarker
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  operand[].get to infoset[]
+  nullptr to operand[]
+
+  File0[].get InfoSet[].writeCsv
+
+  infoset[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
   File0[].get file.close
   File0[].get file.delete
 

@@ -1030,6 +1030,7 @@ public:
   void vRegInfoSetPipeOut(void);
   void vRegInfoSetReadChunk(void);
   void vRegInfoSetSet(void);
+  void vRegInfoSetWriteCsv(void);
 
   // reg job
   void vRegJobGet(void);

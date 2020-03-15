@@ -21,6 +21,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vRegInfoSetPipeOut);
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
+  vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vRegInfoSetWriteCsv);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,6 +295,22 @@ void Step::vRegInfoSetSet(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpInfoSet.bIsNull());
   m_pRegSet->m_xpInfoSet = _pOperand(pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].writeCsv -- write InfoSet to file as csv                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetWriteCsv(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetWriteCsv"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
+
   
   EXIT();
 }
