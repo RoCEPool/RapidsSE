@@ -304,8 +304,9 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
       Job* pJob = (Job*)(pNode->m_pObject);
-      vTrace("Job %p %s id %lld partNode %lld (L%lld)\n"_Stz,
+      vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
              pJob,
+             pJob->szJobNm(),
              aCN[pJob->eClass()],
              pJob->m_iFocalId,
              pJob->iParticipantNode(),
