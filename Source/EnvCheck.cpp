@@ -25,7 +25,7 @@ void EnvCheck::vCheckManifest(void)
 /*----------------------------------------------------------------------------*/
 void EnvCheck::vCheckDir(Stz* szDirPath,  i8 iExist, i8 iPermissions)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("Checking dir: %s\n"_Stz,szDirPath);
   
   if (iExist == C_EXIST_EXISTS) {
@@ -49,7 +49,7 @@ void EnvCheck::vCheckDir(Stz* szDirPath,  i8 iExist, i8 iPermissions)
 /*----------------------------------------------------------------------------*/
 void EnvCheck::vCheckFile(Stz* szFilePath, i8 iExist, i8 iPermissions)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("Checking file: %s\n"_Stz,szFilePath);
   
   if (iExist == C_EXIST_EXISTS) {

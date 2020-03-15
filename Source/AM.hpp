@@ -118,7 +118,8 @@ namespace Oblique
     static TxSet* pTxSet(void);
     static void vXmitNode(Op* pOp, i8 i_XmitNde);
     static bool bVerbose(void);
-  
+    static bool bVerboseProgress(void);
+
     //
     static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddConstant(Stz* szName,Stz* szValue);

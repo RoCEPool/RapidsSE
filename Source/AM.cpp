@@ -121,6 +121,12 @@ void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
   pOp->vXmitNode(i_XmitNde);
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
+bool AM::bVerboseProgress(void)  {
+  if (gxArgs.m_bVerbose || gxArgs.m_bProgress)
+    return true;
+  else
+    return false;
+}
 
 //
 void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {

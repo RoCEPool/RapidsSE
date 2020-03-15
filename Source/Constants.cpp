@@ -99,7 +99,7 @@ void Constants::vAddConstantsArgs(void)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstantsCpp(void)
 {
-  if (AM::bVerbose())
+  if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
   // true / flase

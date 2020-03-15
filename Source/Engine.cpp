@@ -109,7 +109,7 @@ void Engine::vAttachRegion(void)
   // get pointers to global objects from attach map
   pAttachMap->vGetGlobals();
   
-  if (AM::bVerbose())
+  if (AM::bVerboseProgress())
     AttachMap::vDump(CN_ATTACHMAP, pAttachMap, Stz::szTab(1));
 }
 
@@ -165,7 +165,7 @@ void Engine::vCallBoot(void)
 
   pBootTask->vAddBaseWords();
   
-  if (AM::bVerbose())
+  if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
   
@@ -207,7 +207,7 @@ void Engine::vCallPrompt(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vChangeDirectory(void)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("\n*\n* Change Working Directory\n*\n"_Stz);
   
   // change working directory to commands dir
@@ -236,7 +236,7 @@ void Engine::vCheckPort(void)
     return;
   
   iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
   
   pSocket = new Socket(gpAttachMap);
@@ -273,7 +273,7 @@ void Engine::vClosePool(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCloseTrace(void)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
   gpTraceFile->vClose();
   delete gpTraceFile;
@@ -289,7 +289,7 @@ void Engine::vCreateAttachMap(void)
   // create the attach map (which records global pointers)
   new AttachMap;
 
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
           sizeof(AttachMap));
 
@@ -421,7 +421,7 @@ void Engine::vKillPrev(void)
   if (! gxArgs.m_bKillPrev)
     return;
   
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("\n*\n* Kill Previous Occurences\n*\n"_Stz);
   
   // an assumption is that regions will be /SE_<node>
@@ -701,7 +701,7 @@ void Engine::vOpenPool(void)
       return;
     }
     
-    if (gxArgs.m_bVerbose)
+    if (AM::bVerboseProgress())
       vInfo("\n*\n* Create Region\n*\n"_Stz);
     
     Region::vCreate(gxArgs.m_sRegionName,
@@ -716,7 +716,7 @@ void Engine::vOpenPool(void)
                     gxArgs.m_bDontFree,
                     gxArgs.m_bFreeCB);
     
-    if (gxArgs.m_bVerbose)
+    if (AM::bVerboseProgress())
       vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
     vCreateAttachMap();
     
@@ -734,7 +734,7 @@ void Engine::vOpenPool(void)
       Process::vExitFailure();
       return;
     }
-    if (gxArgs.m_bVerbose)
+    if (AM::bVerboseProgress())
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
     bResult = Region::bAttach(gxArgs.m_sRegionName,
                               gxArgs.m_bVerbose,
@@ -750,7 +750,7 @@ void Engine::vOpenPool(void)
       Process::vExitFailure();
       return;
     }
-    if (gxArgs.m_bVerbose)
+    if (AM::bVerboseProgress())
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
     bResult = Region::bAttach(gxArgs.m_sRegionName,
                               gxArgs.m_bVerbose,
@@ -765,7 +765,7 @@ void Engine::vOpenPool(void)
     return;
   }
   
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("\n*\n* Attach Region\n*\n"_Stz);
   bResult = Region::bAttach(gxArgs.m_sRegionName,
                             gxArgs.m_bVerbose,
@@ -805,7 +805,7 @@ void Engine::vOpenTrace(void)
     bOpened = gpTraceFile->bOpenWrite(gpAttachMap->m_sTraceFile.szStz());
   RASSERT(bOpened);
   
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("** trace file opened: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
 }
 
@@ -814,7 +814,7 @@ void Engine::vOpenTrace(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintExit(void)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("Engine exits\n"_Stz);
 }
 
@@ -881,7 +881,7 @@ void Engine::vRunCommandLine(void)
   
   eBO eBootOption = eDecodeCommandLine();
 
-  if (gxArgs.m_bVerbose) {
+  if (AM::bVerboseProgress()) {
     vInfo("\n*\n* Run Command Line\n*\n"_Stz);
     switch (eBootOption) {
         
@@ -935,7 +935,7 @@ void Engine::vRunCommandLine(void)
 /*----------------------------------------------------------------------------*/
 //void Engine::vRunCommandLine(void)
 //{
-//  if (gxArgs.m_bVerbose)
+//  if (AM::bVerboseProgress())
 //    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
 //
 //  eBO eBootOption = eDecodeCommandLine();
@@ -1008,7 +1008,7 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void Engine::vSpawnJobStart(void)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("\n*\n* Start System Jobs\n*\n"_Stz);
   
   PsxThd::vMarkNonSeThread();
@@ -1034,7 +1034,7 @@ void Engine::vSpawnJobStart(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("\n*\n* System Start\n*\n"_Stz);
   
   //ASSERT( ! AM::pRootDic()->bHasWords() );
@@ -1166,7 +1166,7 @@ void Engine::vStartSystem(void)
               "instance %s started"_Stz,
               gxArgs.m_sRegionName.azChar()); //!format-LogSys
   
-  if (gxArgs.m_bVerbose) {
+  if (AM::bVerboseProgress()) {
     vInfo("Engine instance %s started\n"_Stz,gxArgs.m_sRegionName.azChar());
     AM::pGrid()->vDumpPartitioning();
   }
@@ -1218,7 +1218,7 @@ void Engine::vUnlinkSystem(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vWaitStop(void)
 {
-  if (AM::bVerbose())
+  if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);
   
   // this primary thread waits for flag indicationg systems is to stop
@@ -1231,7 +1231,7 @@ void Engine::vWaitStop(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vWriteRegionName(void)
 {
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("\n*\n* Write Region Name\n*\n"_Stz);
  
   s256 sFileName;
@@ -1247,7 +1247,7 @@ void Engine::vWriteRegionName(void)
     oFile.vClose();
   }
   
-  if (gxArgs.m_bVerbose)
+  if (AM::bVerboseProgress())
     vInfo("REGION NAME: %s\n"_Stz,gxArgs.m_sRegionName.azChar());
 }
 

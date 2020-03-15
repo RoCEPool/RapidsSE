@@ -264,7 +264,7 @@ void AttachMap::vRecordArguments(
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  if (m_bVerbose)
+  if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
   m_iPid = Process::iGetPid();
