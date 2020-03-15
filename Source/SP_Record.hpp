@@ -19,6 +19,7 @@ namespace Records
     
   public:
     SP_Record(void);
+    SP_Record(StreamDef* pStreamDef);
     SP_Record(RowSingle* pRow);
    ~SP_Record(void) noexcept(false);
   
@@ -37,6 +38,7 @@ namespace Records
     char* azRecord(void);
     void vReset(void);
     Stz* sz(void);
+    Stz* sz(Row* aRow);
     Stz* sz(RowSingle* pRow);
   
     void vToRecord(RowSingle* pRow);
