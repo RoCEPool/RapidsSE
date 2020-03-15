@@ -10,6 +10,7 @@
 void Step::vAddSteps_RegInfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
+  vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
@@ -23,6 +24,49 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vRegInfoSetWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addGridSanity -- add a row to the infoset with the gridSanity    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddGridSanity(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetDelete"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Grid* pGrid = AM::pGrid();
+  
+  // get regionSize on this node
+  bool bRegionSize = false;
+  i8 iRegionSize = AM::iRegionSize();
+  if (pNodeInfo->m_waColVal[1] == iRegionSize)
+    bRegionSize = true;
+  
+  // get slots per node for this node
+  bool bPartitions = false;
+  i8 nSlotsPerNode = pGrid->nSlotsPerNode();
+  if (pNodeInfo->m_waColVal[2] == nSlotsPerNode)
+    bPartitions = true;
+  
+  // check if the regionSize and partitions match
+  bool bHomogenous = false;
+  if ( bRegionSize && bPartitions )
+    bHomogenous = true;
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  pNodeInfo->m_waColVal[0].m_szVch,
+                                  bHomogenous,
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +88,7 @@ void Step::vRegInfoSetAddNodeInfo(void)
                                   pGrid->nSlotsPerNode(),
                                   C_VARGS_END);
   ASSERT(pRow);
+  pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   EXIT();
@@ -255,7 +300,7 @@ void Step::vRegInfoSetNextRow(void)
   ENTRY(); // ENTRY("vRegInfoSetNextRow"_Stz);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  Row* pRow = _pRow2(*m_pRegSet->m_xpRow);
+  Row* pRow = _pRow(*m_pRegSet->m_xpRow);
   
   ASSERT(pRow);
   
@@ -291,7 +336,7 @@ void Step::vRegInfoSetReadChunk(void)
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
-  Row* pRow = _pRow2(m_pDataStack->pPopPtr(__func__));
+  Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
   
   i8 iOffset = pRow->m_waColVal[0];
   i8 nBytes = pRow->m_waColVal[1];

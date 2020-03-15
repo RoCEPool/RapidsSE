@@ -7,53 +7,60 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_INFOSET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: Sanity_InfoSet \handler
-/*
-  //"Operand:- ZK_INFOSET" .verbose
-  0 locals| node |
+: GridSanity_InfoSet \handler
 
-  Operand[].get to OperandB[]
-  nullptr to Operand[]
+  //"Operand:- ZK_INFOSET" .verbose
+  0 0 locals| iRowSize nodeInfo |
+
+  Operand[] to InfoSet[]
+  InfoSet[].firstRow to row[]
+  InfoSet[].delete
+
+  // find the __nodeInfo table
+  C_TDEF_GRIDSANITY op__tableDef
 
   // create a new stream defnition as per the nodeinfo being sent
-  Operand[].newStreamDef
-  CT_VARCHAR "name" Operand[].addColumnDef
-  CT_VARCHAR "status" Operand[].addColumnDef
+  StreamDef[].new
+
+  // get row size from streamDef
+  StreamDef[].rowSize to iRowSize
+
+  // create an infoSet operand
+  iRowSize InfoSet[].newInfoSet
+
+  // add nodeInfo to the infoSet
+  row[].get StreamDef[] InfoSet[].addGridSanity assert
 
   // pipeout the streamDef
-  Operand[].pipeout
+  StreamDef[].pipeout
 
-  OperandB[].getStrValue to node
+  // pipeout the infoset
+  InfoSet[].pipeout
 
-  // check region size
-  OperandB[].getIntValue
-  AttachMap::regionSize@ ==  if
-    node "matched for %v" str.format
-  else
-    node "mismatched for %v" str.format
-  then
-  OperandB[].delete
-  OperandB[].newInfoSet
-  OperandB[].incInfoSet
-  OperandB[].addStrValue
+  true
+;
 
-  OperandB[].pipeout
- */
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                                        */
+/*----------------------------------------------------------------------------*/
+: GridSanity_StreamDef \handler
 
-
+  //"Operand:- ZK_STREAMDEF" .verbose
+  Operand[].delete
   true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : SanityOp_req \operator
+ : GridSanity_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: Sanity_InfoSet ZK_INFOSET op[].handler!
+  find: GridSanity_InfoSet ZK_INFOSET op[].handler!
+  find: GridSanity_StreamDef ZK_STREAMDEF op[].handler!
 
   op__loop
 
@@ -65,9 +72,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: SanityOp :: SanityOp ;
+opSyntax: GridSanity :: GridSanity ;
 
-: SanityOp opInfo tagCopy: localOp_tags
+: GridSanity opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

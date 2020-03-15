@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Row* Rows::_pRow2(void* aAddr)
+Row* Rows::_pRow(void* aAddr)
 {
   Row* pRow = reinterpret_cast<Row*>(aAddr);
   
@@ -99,7 +99,7 @@ void Row::vDump(StreamDef* pStreamDef)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    vTrace(" %d "_Stz, m_waColVal[i_Col].m_iWrd);
+    vTrace(" %ld "_Stz, m_waColVal[i_Col].m_iWrd);
   }
 
   vTrace("\n"_Stz);

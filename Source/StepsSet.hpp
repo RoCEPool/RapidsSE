@@ -1019,6 +1019,7 @@ public:
   void vRegCounter2Set(void);
 
   // info set
+  void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddNodeInfo(void);
   void vRegInfoSetChunkFile(void);
   void vRegInfoSetDelete(void);

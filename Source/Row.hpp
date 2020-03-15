@@ -23,7 +23,7 @@ namespace Rows
     void vDump(StreamDef* pStreamDef);
   };
   
-  Row* _pRow2(void* aAddr);
+  Row* _pRow(void* aAddr);
 }
 
 /*============================================================================*/

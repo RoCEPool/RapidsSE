@@ -24,17 +24,16 @@
   // get row size from streamDef
   StreamDef[].rowSize to iRowSize
 
-  StreamDef[] to Operand[]
-
-  // pipeout the streamDef
-  StreamDef[].pipeout
-
   // create an infoSet operand
   iRowSize InfoSet[].newInfoSet
 
   // add nodeInfo to the infoSet
-  Operand[] InfoSet[].addNodeInfo assert
+  StreamDef[] InfoSet[].addNodeInfo assert
 
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
   InfoSet[].pipeout
 
   true

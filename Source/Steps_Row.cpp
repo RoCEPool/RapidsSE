@@ -45,7 +45,7 @@ void Step::vRowSet(void)
 {
   ENTRY(); // ENTRY("vRowSet"_Stz);
   
-  m_pRegSet->m_xpRow = _pRow2(m_pDataStack->pPopPtr(__func__));
+  m_pRegSet->m_xpRow = _pRow(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

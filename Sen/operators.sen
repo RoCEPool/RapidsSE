@@ -18,6 +18,7 @@
 "OP_exemplar.sen"         include
 
 "OP_genCsv.sen"           include
+"OP_gridSanity.sen"       include
 
 "OP_insert.sen"           include
 "OP_nodeinfo.sen"         include
@@ -33,7 +34,6 @@
 "OP_readChunk.sen"        include
 "OP_report.sen"           include
 
-"OP_sanity.sen"           include
 "OP_scan.sen"             include
 "OP_sink.sen"             include
 "OP_snapshot.sen"         include

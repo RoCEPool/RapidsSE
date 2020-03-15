@@ -161,14 +161,8 @@ void RowSingle::vCopy(Row* pRow)
         continue;
       }
       
-      char* acDstString = (char*)m_xWsp.ayLatter();
-      char* acSrcString = (char*)pRow->m_waColVal[i_Col].m_szVch;
-      
-      i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
-      
-      m_waColVal[i_Col].m_iWrd = (i8)acDstString;
-      
-      m_xWsp.vTake(nSrcLength + 1);
+      char* acSrcString = (char*)pRow->m_waColVal[i_Col].m_azStr;
+      vAllotSetVarchar(i_Col, (Stz*)acSrcString);
       
       continue;
     }
@@ -198,14 +192,8 @@ void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
         return;
       }
       
-      char* acDstString = (char*)m_xWsp.ayLatter();
-      char* acSrcString = (char*)pRow->m_waColVal[i_FromCol].m_szVch;
-      
-      i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
-      
-      m_waColVal[i_IntoCol].m_iWrd = (i8)acDstString;
-      
-      m_xWsp.vTake(nSrcLength + 1);
+      char* acSrcString = (char*)pRow->m_waColVal[i_FromCol].m_azStr;
+      vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
       
       return;
     }
