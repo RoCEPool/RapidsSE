@@ -676,177 +676,177 @@ void Constants::vAddConstantsCpp(void)
   
 
   #ifdef WITH_ACTION_SEQUENCE
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,true);
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,false);
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_ADDRESS_CHECKING
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,true);
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,false);
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_APPLE
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,true);
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,false);
+  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_ANALYSE_FREE
-  vAddConstant("WITH_ANALYSE_FREE"_Stz,true);
+  vAddConstant("WITH_ANALYSE_FREE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ANALYSE_FREE"_Stz,false);
+  vAddConstant("WITH_ANALYSE_FREE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_ASSERT_MACRO
-  vAddConstant("WITH_ASSERT_MACRO"_Stz,true);
+  vAddConstant("WITH_ASSERT_MACRO"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ASSERT_MACRO"_Stz,false);
+  vAddConstant("WITH_ASSERT_MACRO"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_BUCKET_HASHING
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,true);
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,false);
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_CHECK_INITIALISED
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,true);
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,false);
+  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_CORECTNESS_ALGEBRA
-  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,true);
+  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,false);
+  vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)false);
   #endif
       
   #ifdef WITH_DEBUG_VERSION
-  vAddConstant("WITH_DEBUG_VERSION"_Stz,true);
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_DEBUG_VERSION"_Stz,false);
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_EB_LAZY_CHAIN
-  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,true);
+  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,false);
+  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_ENCODING_TRACE
-  vAddConstant("WITH_ENCODING_TRACE"_Stz,true);
+  vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ENCODING_TRACE"_Stz,false);
+  vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_ENTRY_EXIT
-  vAddConstant("WITH_ENTRY_EXIT"_Stz,true);
+  vAddConstant("WITH_ENTRY_EXIT"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ENTRY_EXIT"_Stz,false);
+  vAddConstant("WITH_ENTRY_EXIT"_Stz,(i8)false);
   #endif
       
   #ifdef WITH_INFLATE_TRACE
-  vAddConstant("WITH_INFLATE_TRACE"_Stz,true);
+  vAddConstant("WITH_INFLATE_TRACE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_INFLATE_TRACE"_Stz,false);
+  vAddConstant("WITH_INFLATE_TRACE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_IT_COMPACT_TRACE
-  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,true);
+  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,false);
+  vAddConstant("WITH_IT_COMPACT_TRACE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_LINUX
-  vAddConstant("WITH_LINUX"_Stz,true);
+  vAddConstant("WITH_LINUX"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_LINUX"_Stz,false);
+  vAddConstant("WITH_LINUX"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_LOCK_TRACKING
-  vAddConstant("WITH_LOCK_TRACKING"_Stz,true);
+  vAddConstant("WITH_LOCK_TRACKING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_LOCK_TRACKING"_Stz,false);
+  vAddConstant("WITH_LOCK_TRACKING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_MUNGED_SEN
-  vAddConstant("WITH_MUNGED_SEN"_Stz,true);
+  vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_MUNGED_SEN"_Stz,false);
+  vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_PREPOST_CHECKING
-  vAddConstant("WITH_PREPOST_CHECKING"_Stz,true);
+  vAddConstant("WITH_PREPOST_CHECKING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_PREPOST_CHECKING"_Stz,false);
+  vAddConstant("WITH_PREPOST_CHECKING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_PULSING
-  vAddConstant("WITH_PULSING"_Stz,true);
+  vAddConstant("WITH_PULSING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_PULSING"_Stz,false);
+  vAddConstant("WITH_PULSING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_PYTHON_SUPPORT
-  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,true);
+  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,false);
+  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_RELEASE_VERSION
-  vAddConstant("WITH_RELEASE_VERSION"_Stz,true);
+  vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_RELEASE_VERSION"_Stz,false);
+  vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_SEN_TAGS
-  vAddConstant("WITH_SEN_TAGS"_Stz,true);
+  vAddConstant("WITH_SEN_TAGS"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_SEN_TAGS"_Stz,false);
+  vAddConstant("WITH_SEN_TAGS"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_SETH_SUPPORT
-  vAddConstant("WITH_SETH_SUPPORT"_Stz,true);
+  vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_SETH_SUPPORT"_Stz,false);
+  vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_SHARED_LOG
-  vAddConstant("WITH_SHARED_LOG"_Stz,true);
+  vAddConstant("WITH_SHARED_LOG"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_SHARED_LOG"_Stz,false);
+  vAddConstant("WITH_SHARED_LOG"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_SHOCO_DUPLICATES
-  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,true);
+  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,false);
+  vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_STATISTICS_COUNTERS
-  vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,true);
+  vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,false);
+  vAddConstant("WITH_STATISTICS_COUNTERS"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_TRACE_API
-  vAddConstant("WITH_TRACE_API"_Stz,true);
+  vAddConstant("WITH_TRACE_API"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_TRACE_API"_Stz,false);
+  vAddConstant("WITH_TRACE_API"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_TRACE_DYNAMO
-  vAddConstant("WITH_TRACE_DYNAMO"_Stz,true);
+  vAddConstant("WITH_TRACE_DYNAMO"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_TRACE_DYNAMO"_Stz,false);
+  vAddConstant("WITH_TRACE_DYNAMO"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_TRACE_PURGING
-  vAddConstant("WITH_TRACE_PURGING"_Stz,true);
+  vAddConstant("WITH_TRACE_PURGING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_TRACE_PURGING"_Stz,false);
+  vAddConstant("WITH_TRACE_PURGING"_Stz,(i8)false);
   #endif
 }
 
