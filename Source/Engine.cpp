@@ -398,20 +398,19 @@ void Engine::vGetCopyright(s256& sCopyright)
 /*----------------------------------------------------------------------------*/
 void Engine::vGetWelcome(s256& sWelcome)
 {
-  Stz* aRelDbg;
+  Stz* szRelDbg;
 #ifdef WITH_DEBUG_VERSION
-  aRelDbg = "debug"_Stz;
+  szRelDbg = "debug"_Stz;
 #else
-  aRelDbg = "release"_Stz;
+  szRelDbg = "release"_Stz;
 #endif
   
-  sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld"_Stz,
-                     RAPIDSSE_VERSION_STRING,
-                     __DATE__,
-                     __TIME__,
-                     aRelDbg,
-                     Process::iGetPid()
-                     );
+  sWelcome.vSprint("RapidsSE %s (%s version, pid %lld)"_Stz,
+                   
+                   RAPIDSSE_VERSION_STRING,
+                   szRelDbg,
+                   Process::iGetPid()
+                  );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -866,11 +865,14 @@ void Engine::vPrintWelcome(void)
   if (gxArgs.m_bWelcome && ! gxArgs.m_bStatus) {
     vInfo("%s\n"_Stz,sWelcome.szStz());
     vInfo("%s\n"_Stz,sCopyright.szStz());
-    vInfo("Build Git Hash: %s\n"_Stz,gsBuildGitHash);
-    vInfo("Build Date: %s\n"_Stz,gsBuildDate);
-    vInfo("Build Host Name: %s\n"_Stz,gsBuildHostName);
-    vInfo("Build User Name: %s\n"_Stz,gsBuildUserName);
-    vInfo("Build Branch: %s\n"_Stz,gsBuildBranch);
+    
+    vInfo("\n"_Stz);
+    vInfo("Build:\n"_Stz);
+    vInfo("  Git Hash : %s\n"_Stz,gsBuildGitHash);
+    vInfo("  Date     : %s\n"_Stz,gsBuildDate);
+    vInfo("  Host Name: %s\n"_Stz,gsBuildHostName);
+    vInfo("  User Name: %s\n"_Stz,gsBuildUserName);
+    vInfo("  Branch   : %s\n"_Stz,gsBuildBranch);
   }
 }
 
