@@ -311,6 +311,7 @@ void Step::vRegInfoSetWriteCsv(void)
   
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
 
+  MetricsHelper::vWriteCsv(pInfoSet,pFile);
   
   EXIT();
 }

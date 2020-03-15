@@ -18,6 +18,7 @@ static Stz* C_TDEF_LOCKSTATS   = "__lockStats"_Stz;
 static Stz* C_TDEF_SEEKOFFSETS = "__seekOffsets"_Stz;
 
 #include "LockMetrics.hpp"
+#include "MetricsHelper.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
