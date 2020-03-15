@@ -22,6 +22,8 @@ void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pF
        aInfoRow = pInfoSet->aNextRow(aInfoRow)) {
   
     vTrace("MetricsHelper: %s\n"_Stz,spRec.sz(aInfoRow));
+    
+    pFile->vPrint("%s\n"_Stz,spRec.sz(aInfoRow));
   }
 }
 
