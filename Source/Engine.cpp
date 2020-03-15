@@ -25,6 +25,18 @@ extern Stz* gsBuildBranch;
 /*----------------------------------------------------------------------------*/
 void Engine::vMainEntry(void)
 {
+  vPreliminary();
+
+  vRunCommandLine();
+  
+  vConcluding();
+}
+
+/*----------------------------------------------------------------------------*/
+/* preliminary activity                                                       */
+/*----------------------------------------------------------------------------*/
+void Engine::vPreliminary(void)
+{
   //OpSys::vGetInfo();
   // OpSys::vTraceInfo();
   
@@ -66,9 +78,13 @@ void Engine::vMainEntry(void)
   vCheckPort();
   
   //gpAttachMap->vPrintAttachMap();
-  
-  vRunCommandLine();
-  
+}
+
+/*----------------------------------------------------------------------------*/
+/* concluding activities                                                      */
+/*----------------------------------------------------------------------------*/
+void Engine::vConcluding(void)
+{
   vCloseTrace();
   
   vClosePool();
@@ -196,6 +212,9 @@ void Engine::vChangeDirectory(void)
   
   // change working directory to commands dir
   bool bResult = Dir::bChangeCurrent(gxArgs.m_sCommandsDir);
+  
+  if (! bResult)
+    Correctness::vDebugPoint();
 
   s256 sCurrent;
   if (Dir::bGetCurrent(sCurrent) && gxArgs.m_bVerbose)

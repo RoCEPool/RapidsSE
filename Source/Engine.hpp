@@ -10,6 +10,9 @@ namespace StorageEngine
   public:
   
     static void vMainEntry(void);
+    static void vPreliminary(void);
+    static void vRunCommandLine(void);
+    static void vConcluding(void);
 
     static void vAttachRegion(void);
     static void vBootCheck(void);
@@ -39,7 +42,6 @@ namespace StorageEngine
     static void vPrintExit(void);
     static void vPrintStatus(void);
     static void vPrintWelcome(void);
-    static void vRunCommandLine(void);
     static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSanityCheck(void);
     static void vSignalHandler(int iSignal);
