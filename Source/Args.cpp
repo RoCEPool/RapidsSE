@@ -765,7 +765,7 @@ void Args::vPrintStartupInfo(void)
 #endif
   }
   
-  vTrace("Args:\n"_Stz);
+  vTrace("\nArgs:\n"_Stz);
   
 #ifdef WITH_DEBUG_VERSION
   if (m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);

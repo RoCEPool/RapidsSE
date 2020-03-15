@@ -357,7 +357,7 @@ void AttachMap::vPrintStartupInfo(void)
 {
   _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
-  vTrace("Args:\n"_Stz);
+  vTrace("\nArgs:\n"_Stz);
   
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
   vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.azChar());
