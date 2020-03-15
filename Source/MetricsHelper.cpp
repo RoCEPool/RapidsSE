@@ -15,10 +15,13 @@ void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pF
 {
   _static_
   
+  SP_Record spRec(pStreamDef);
+  
   for (Row* aInfoRow = pInfoSet->aFirstRow();
        aInfoRow;
        aInfoRow = pInfoSet->aNextRow(aInfoRow)) {
-    
+  
+    vTrace("MetricsHelper: %s\n"_Stz,spRec.sz(aInfoRow));
   }
 }
 

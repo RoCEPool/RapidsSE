@@ -86,10 +86,10 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp lineitem | statsOp | stageC
+    scanOp lineitem | statsOp | toStatDOp | stageC
 
   stage stageC on origin:
-    toStatDOp | outputOp | sinkOp | stageA
+    outputOp | sinkOp | stageA
 
 end;
 

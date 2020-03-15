@@ -100,6 +100,81 @@ SP_Record::~SP_Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a value                                                                */
+/*----------------------------------------------------------------------------*/
+void SP_Record::vAddCol(Column* pCol, i8 iVal)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  if (C_DATUM_NULL == iVal) {
+    StrLib::vAppendString(&m_azCursor,(char*)"null"_Stz);
+    return;
+  }
+  
+  eDM eDatum = pCol->eDatum();
+  
+  switch (eDatum) {
+    case DM_BCD: {
+      SP_Bcd spBcd;
+      StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal));
+      break;
+    }
+      
+    case DM_BOL: {
+      SP_Bol spBol;
+      StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(iVal));
+      break;
+    }
+      
+    case DM_DTE: {
+      SP_Dte spDte;
+      StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(iVal));
+      break;
+    }
+      
+    case DM_FLT: {
+      SP_Flt spFlt;
+      StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(*(d8*)&iVal));
+      break;
+    }
+      
+    case DM_INT: {
+      SP_Int spInt;
+      StrLib::vAppendString(&m_azCursor,(char*)spInt.sz(iVal));
+      break;
+    }
+      
+    case DM_IVL: {
+      SP_Ivl spIvl;
+      StrLib::vAppendString(&m_azCursor,(char*)spIvl.sz(iVal));
+      break;
+    }
+      
+    case DM_TME: {
+      SP_Tme spTme;
+      StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));
+      break;
+    }
+      
+    case DM_TSP: {
+      SP_Tsp spTsp;
+      StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(iVal));
+      break;
+    }
+      
+    case DM_VCH: {
+      SP_Vch spVch;
+      StrLib::vAppendString(&m_azCursor,(char*)spVch.sz((char*)iVal));
+      break;
+    }
+      
+    default:
+      NEVER_REACH;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
@@ -309,11 +384,20 @@ Stz* SP_Record::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Record::sz(Row* pRow)
+Stz* SP_Record::sz(Row* aRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  //vToRecord(pRow);
+  vReset();
+
+  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+
+    if (i_Col)
+      StrLib::vAppendString(&m_azCursor,",");
+
+    vAddCol(pCol, aRow->m_waColVal[i_Col]);
+  }
   
   return (Stz*) &m_caRecord[0];
 }

@@ -23,6 +23,8 @@ namespace Records
     SP_Record(RowSingle* pRow);
    ~SP_Record(void) noexcept(false);
   
+    void vAddCol(Column* pCol, i8 iVal);
+  
     void vAppendCol(Column* pCol, RowSingle* pRow);
     void vAppendDtm(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
@@ -34,7 +36,7 @@ namespace Records
     void vAppendTme(Column* pCol, Datum* pDatum);
     void vAppendTsp(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
-
+  
     char* azRecord(void);
     void vReset(void);
     Stz* sz(void);
