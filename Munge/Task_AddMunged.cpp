@@ -2658,7 +2658,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // open the file for writing\n"
     "  file::new to File0[]\n"
-    "  \\\"/tmp/SE_Stats.txt\\\" OPEN_WRITE File0[].get file.open\n"
+    "  \\\"/tmp/SE_Stats.txt\\\" OPEN_APPEND File0[].get file.open\n"
     "  not if\n"
     "    File0[].get file.delete assert::stack_0 EC_INVALID_FILE\n"
     "    op.pipelineJob@ ERROR_JOB !!logError\n"
