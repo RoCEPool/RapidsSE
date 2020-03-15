@@ -1,21 +1,21 @@
 /*============================================================================*/
-/* Prompt_semantic.cpp -- semantic context report                             */
+/* Prompt_tags.cpp -- session tags report                                     */
 /*============================================================================*/
 
 #include "Prompt.h"
 
 
-PromptFun __Prompt_semantic (
-  PF_SEMANTIC,            // prompt function
-  "Prompt_semantic"_Stz,  // name of the prompt function
+PromptFun __Prompt_tags (
+  PF_TAGS,                // prompt function
+  "Prompt_tags"_Stz,      // name of the prompt function
   "comment"_Stz,          // comment about the function
-  "semantic"_Stz,         // the prompt command
+  "tags"_Stz,             // the prompt command
   nullptr,                // the second word
-  bPrompt_semantic,       // prompt function
+  bPrompt_tags,           // prompt function
   true,                   // enabled
 
   true,                   // visible
-  "semantic"_Stz,         // help
+  "tags"_Stz,             // help
   ""_Stz                  // description
 );
 
@@ -23,13 +23,13 @@ PromptFun __Prompt_semantic (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_semantic(SePrompt* pPrompt)
+bool Prompt::bPrompt_tags(SePrompt* pPrompt)
 {
   Session*  pSession  = pPrompt->pSession();
 
   Semantic* pSemantic = pSession->m_pSemantic;
   
-  vTrace("Semantic:\n"_Stz);
+  vTrace("Session Tags:\n"_Stz);
 
   EnameSet* pEnameSet = pSemantic->pEnameSet();
 

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_semantic.hpp -- semantic context report                             */
+/* Prompt_tags.hpp -- session tags report                                     */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_semantic(SePrompt* pPrompt);
+  bool bPrompt_tags(SePrompt* pPrompt);
 }
 
 /*============================================================================*/
