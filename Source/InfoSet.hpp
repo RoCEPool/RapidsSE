@@ -24,6 +24,7 @@ namespace InfoData
     
     Row* aAllotRow(void);
     Row* aAllotRow(RowSingle* pRowSingle);
+    Row* aAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...);
     Row* aFirstRow();
     i8   nInfoRows(void);
     Stz* szInfoSetNm(void);

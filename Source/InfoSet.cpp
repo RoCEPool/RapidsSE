@@ -114,6 +114,61 @@ Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
 
 
 /*----------------------------------------------------------------------------*/
+/* allot a row copying the rowSingle into it                                  */
+/*----------------------------------------------------------------------------*/
+ Row* InfoSet::aAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
+ {
+   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+   
+   // allot a row
+   Row* ayRow = RowBuffer::aAllotRow(Row::nSizeBytes(pStreamDef));
+   m_nInfoRows++;
+   
+   Stz* ayTail;
+   
+   if ( ! ayRow )
+     return nullptr;
+   
+   ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+   
+   va_list xVarArgs;
+   
+   va_start(xVarArgs,iVArgsBegin);
+   
+   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(0); i_Col++) {
+   
+     Column* pCol = pStreamDef->pGetColumn(i_Col);
+     
+     if (DM_VCH == pCol->eDatum()) {
+     Stz* szVal = va_arg(xVarArgs,Stz*);
+     if (szVal) {
+       ayTail = (Stz*)ayAllotTail(StrLib::nLength(szVal->azChar()));
+       
+       // return early if no more space for the string
+       if ( ! ayTail )
+         return nullptr;
+       
+       StrLib::vCopy((char*)ayTail, szVal->azChar());
+       ayRow->m_waColVal[i_Col].m_iWrd = (i8)ayTail;
+     }
+     else
+       ayRow->m_waColVal[i_Col].vSetNull();
+     }
+     else {
+       i8 iVal = va_arg(xVarArgs,i8);
+       ayRow->m_waColVal[i_Col].m_iWrd = iVal;
+     }
+   }
+   
+   i8 iVArgsEnd = va_arg(xVarArgs,i8);
+   ASSERT(C_VARGS_END == iVArgsEnd);
+   
+   va_end(xVarArgs);
+   
+   return ayRow;
+ }
+
+/*----------------------------------------------------------------------------*/
 /* get first row                                                              */
 /*----------------------------------------------------------------------------*/
 Row* InfoSet::aFirstRow(void)

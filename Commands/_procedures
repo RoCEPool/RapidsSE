@@ -113,7 +113,7 @@ begin
   nodeInfo | stageC
 
   stage stageC on origin:
-  sanityOp | outputOp | sinkOp | stageA
+  outputOp | sinkOp | stageA
 
 end
 ;

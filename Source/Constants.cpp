@@ -156,6 +156,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
   
+  // var args
+  vAddConstant("C_VARGS_BEGIN"_Stz,       C_VARGS_BEGIN);
+  vAddConstant("C_VARGS_END"_Stz,         C_VARGS_END);
+  
   // OPEN_ : file open argument
   vAddConstant("OPEN_READ"_Stz,              C_OPEN_READ);
   vAddConstant("OPEN_WRITE"_Stz,             C_OPEN_WRITE);
@@ -166,6 +170,8 @@ void Constants::vAddConstantsCpp(void)
   
   // table definition
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,   C_TDEF_LOCKSTATS);
+  vAddConstant("C_TDEF_NODEINFO"_Stz,    C_TDEF_NODEINFO);
+  vAddConstant("C_TDEF_GRIDSANITY"_Stz,  C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_SEEKOFFSETS"_Stz, C_TDEF_SEEKOFFSETS);
 
   // hardware

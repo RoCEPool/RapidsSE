@@ -21,6 +21,19 @@ create table definition __lockStats (
   WritePercent   INTEGER     NOT NULL
 );
 
+// this is C_TDEF_NODEINFO
+create table definition __nodeInfo (
+  nodeName       VARCHAR NOT NULL,
+  regionSize     INTEGER NOT NULL,
+  partitionCount INTEGER NOT NULL
+);
+
+// this is C_TDEF_GRIDSANITY
+create table definition __gridSanity (
+  nodeName   VARCHAR NOT NULL,
+  homogenous BOOLEAN NOT NULL
+);
+
 // this is C_TDEF_SEEKOFFSETS
 create table definition __seekOffsets (
   offset INTEGER NOT NULL,

@@ -10,6 +10,7 @@
 void Step::vAddSteps_RegInfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
+  vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
@@ -22,6 +23,30 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vRegInfoSetWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddNodeInfo(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetDelete"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+
+  Grid* pGrid = AM::pGrid();
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  pGrid->pThisNode()->szNodeNm(),
+                                  AM::iRegionSize(),
+                                  pGrid->nSlotsPerNode(),
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  
+  m_pDataStack->vPushPtr(pRow);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

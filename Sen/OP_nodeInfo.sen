@@ -8,28 +8,34 @@
 /* on ZK_STARTMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : nodeInfo_StartMarker \handler
-/*
   "Operand:- ZK_STARTMARKER" .verbose
+
+  0 locals| iRowSize |
 
   // pipeout the start marker
   Operand[].pipeout
 
-  // create a new stream defnition as per the nodeinfo being sent
-  Operand[].newStreamDef
-  CT_INTEGER "regionSize" Operand[].addColumnDef
+  // find the __nodeInfo table
+  C_TDEF_NODEINFO op__tableDef
+
+  // create a new streamDef
+  StreamDef[].new
+
+  // get row size from streamDef
+  StreamDef[].rowSize to iRowSize
+
+  StreamDef[] to Operand[]
 
   // pipeout the streamDef
-  Operand[].pipeout
+  StreamDef[].pipeout
 
-  // craete a new info set and add node info
-  OperandB[].newInfoSet
-  OperandB[].incInfoSet
+  // create an infoSet operand
+  iRowSize InfoSet[].newInfoSet
 
-  attachMap::regionSize@ OperandB[].addIntValue
-  grid::thisNodeName@ OperandB[].addStrValue
+  // add nodeInfo to the infoSet
+  Operand[] InfoSet[].addNodeInfo assert
 
-  OperandB[].pipeout
- */
+  InfoSet[].pipeout
 
   true
 ;
