@@ -267,8 +267,14 @@ void Engine::vCallPrompt(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vChangeDirectory(void)
 {
+  s256 sOriginal;
+  s256 sCurrent;
+
   if (AM::bVerboseProgress())
     vInfo("\n*\n* Change Working Directory\n*\n"_Stz);
+  
+  if (Dir::bGetCurrent(sOriginal) && AM::bVerboseProgress())
+    vInfo("Original working directory: %s\n"_Stz,sOriginal.szStz());
   
   // change working directory to commands dir
   bool bResult = Dir::bChangeCurrent(gxArgs.m_sCommandsDir);
@@ -277,7 +283,6 @@ void Engine::vChangeDirectory(void)
     Process::vUnrecoverableError("Unable to change to command dir"_Stz,
                                  gxArgs.m_sCommandsDir);
 
-  s256 sCurrent;
   if (Dir::bGetCurrent(sCurrent) && AM::bVerboseProgress())
     vInfo("Current working directory: %s\n"_Stz,sCurrent.szStz());
 }
@@ -774,7 +779,7 @@ void Engine::vOpenPool(void)
     }
     
     if (AM::bVerboseProgress())
-      vInfo("\n*\n* Create Region\n*\n"_Stz);
+      vInfo("\n*\n* Create Shared Memory Region\n*\n"_Stz);
     
     Region::vCreate(gxArgs.m_sRegionName,
                     gxArgs.m_bVerbose,
