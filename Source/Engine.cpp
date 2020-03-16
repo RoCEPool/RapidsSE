@@ -113,11 +113,25 @@ void Engine::vRunCommandLine(void)
   try {
     switch (eBootOption) {
         
-      case BO_ADD_NODE:     vStartSystem();   vWaitStop();                break;
+      case BO_ADD_NODE:
+        vStartSystem();
+        vWaitStop();
+        break;
         
-      case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
-      case BO_SETH_PROMPT:  vCallPrompt();                                break;
-      case BO_START:        vStartSystem();   vWaitStop();                break;
+      case BO_PROMPT:
+        vOpenLog();
+        vCallPrompt();
+        break;
+        
+      case BO_SETH_PROMPT:
+        vCallPrompt();
+        break;
+        
+      case BO_START:
+        vStartSystem();
+        vWaitStop();
+        break;
+        
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
@@ -127,9 +141,17 @@ void Engine::vRunCommandLine(void)
         vCallPrompt();
         break;
         
-      case BO_STATUS:       vPrintStatus();                               break;
-      case BO_STOP:         vStopSystem();                                break;
-      case BO_UNLINK:       vStopSystem();                                break;
+      case BO_STATUS:
+        vPrintStatus();
+        break;
+        
+      case BO_STOP:
+        vStopSystem();
+        break;
+        
+      case BO_UNLINK:
+        vStopSystem();
+        break;
         
       default:
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -1182,6 +1204,9 @@ void Engine::vStartSystem(void)
   MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
 
   if (AM::bVerboseProgress()) {
+
+    vInfo("\n*\n* Net Starting Position\n*\n"_Stz);
+
     vTrace("Process resident size %s Virtual Size %s\n"_Stz,
             sResident_magn.szStz(),
             sVirtual_magn.szStz()
@@ -1191,6 +1216,11 @@ void Engine::vStartSystem(void)
            Process::iSystemUsec(),
            Process::iUserUsec()
            );
+    
+    BufferPool::vReport();
+    
+    vInfo("\n*\n* System Started\n*\n"_Stz);
+    vInfo("\n"_Stz);
   }
 
 }

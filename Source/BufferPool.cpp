@@ -96,10 +96,9 @@ void BufferPool::vReport(void)
   s32 sSum;
   MagLib::vByteMag(iSum, sSum);
 
-  vTrace("  %16s %p size %s"
+  vTrace("Buffer Pool %p: size %s"
          " buffers %lld alloc %lld free %lld (sum=%s)\n"_Stz,
          
-         aCN[gpBufferPool->eClass()],
          gpBufferPool,
          sRegionMag.azChar(),
          
