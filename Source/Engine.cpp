@@ -972,8 +972,8 @@ void Engine::vOpenTrace(void)
                        "SEgrid"_Stz,
                        gxArgs.m_sNodeName.szStz());
   #endif
-  if (AM::bVerboseProgress())
-    vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
+  //if (AM::bVerboseProgress())
+  //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
   gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
   
