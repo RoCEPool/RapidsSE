@@ -50,6 +50,8 @@ void Engine::vPreliminary(void)
 
   vPrintWelcome();
   
+  vPrintMachine();
+  
   gxArgs.vPrintStartupInfo();
 
   vSetSignalHandlers();
@@ -1019,6 +1021,37 @@ void Engine::vPrintStatus(void)
   vTrace("Engine instance %s not running\n"_Stz,
          gxArgs.m_sRegionName.azChar());
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* print welcome                                                              */
+/*----------------------------------------------------------------------------*/
+void Engine::vPrintMachine(void)
+{
+  if (! AM::bVerboseProgress())
+    return;
+  
+  s32 sHostName;
+  s32 sLoginName;
+
+  Hardware::vHostName(sHostName);
+  Hardware::vLoginName(sLoginName);
+
+  s32 sMemory_magn;
+  MagLib::vByteMag(Hardware::iPhysicalMemory(),sMemory_magn);
+
+  s32 sFreq_magn;
+  MagLib::vHzMag(Hardware::iCpuFrequency(),sFreq_magn);
+
+  vInfo("\n"_Stz);
+  vInfo("Machine:\n"_Stz);
+  
+  vInfo("  Host Name  : %s\n"_Stz,sHostName.szStz());
+  vInfo("  User Name  : %s\n"_Stz,sLoginName.szStz());
+
+  vInfo("  Core Count : %lld\n"_Stz,Hardware::iCoreCount());
+  vInfo("  Cpu Freq   : %s\n"_Stz,sFreq_magn.szStz());
+  vInfo("  Memory     : %s\n"_Stz,sMemory_magn.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
