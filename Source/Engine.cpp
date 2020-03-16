@@ -105,7 +105,7 @@ void Engine::vRunCommandLine(void)
   eBO eBootOption = eDecodeCommandLine();
 
   if (AM::bVerboseProgress()) {
-    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
+    vInfo("\n+\n+ Run Command Line\n+\n"_Stz);
     switch (eBootOption) {
         
       case BO_ADD_NODE:     vInfo("BO_ADD_NODE\n"_Stz);     break;
@@ -351,10 +351,12 @@ void Engine::vCheckGrid(void)
                                     gxArgs.m_xNodes[i_Node].m_sIPAddress);
      
      if (AM::bVerboseProgress())
-       vInfo("Valid loopback %s\n"_Stz,
-             gxArgs.m_xNodes[i_Node].m_sIPAddress.szStz());
+       vInfo("Loopback %s for %s is valid\n"_Stz,
+             gxArgs.m_xNodes[i_Node].m_sIPAddress.szStz(),
+             gxArgs.m_xNodes[i_Node].m_sNodeName.szStz());
 
-     vTestPort(gxArgs.m_xNodes[i_Node].m_iPortNo);
+     if (gxArgs.m_bGridTest)
+       vTestPort(gxArgs.m_xNodes[i_Node].m_iPortNo);
    }
 
 }
@@ -1046,12 +1048,12 @@ void Engine::vPrintMachine(void)
   vInfo("\n"_Stz);
   vInfo("Machine:\n"_Stz);
   
-  vInfo("  Host Name  : %s\n"_Stz,sHostName.szStz());
-  vInfo("  User Name  : %s\n"_Stz,sLoginName.szStz());
+  vInfo("  Host Name : %s\n"_Stz,sHostName.szStz());
+  vInfo("  User Name : %s\n"_Stz,sLoginName.szStz());
 
-  vInfo("  Core Count : %lld\n"_Stz,Hardware::iCoreCount());
-  vInfo("  Cpu Freq   : %s\n"_Stz,sFreq_magn.szStz());
-  vInfo("  Memory     : %s\n"_Stz,sMemory_magn.szStz());
+  vInfo("  Core Count: %lld\n"_Stz,Hardware::iCoreCount());
+  vInfo("  Cpu Freq  : %s\n"_Stz,sFreq_magn.szStz());
+  vInfo("  Memory    : %s\n"_Stz,sMemory_magn.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1071,11 +1073,11 @@ void Engine::vPrintWelcome(void)
     
     vInfo("\n"_Stz);
     vInfo("Build:\n"_Stz);
-    vInfo("  Git Hash : %s\n"_Stz,gsBuildGitHash);
-    vInfo("  Date     : %s\n"_Stz,gsBuildDate);
-    vInfo("  Host Name: %s\n"_Stz,gsBuildHostName);
-    vInfo("  User Name: %s\n"_Stz,gsBuildUserName);
-    vInfo("  Branch   : %s\n"_Stz,gsBuildBranch);
+    vInfo("  Git Hash  : %s\n"_Stz,gsBuildGitHash);
+    vInfo("  Date      : %s\n"_Stz,gsBuildDate);
+    vInfo("  Host Name : %s\n"_Stz,gsBuildHostName);
+    vInfo("  User Name : %s\n"_Stz,gsBuildUserName);
+    vInfo("  Branch    : %s\n"_Stz,gsBuildBranch);
   }
 }
 
@@ -1117,7 +1119,7 @@ void Engine::vSignalHandler(int iSignal)
 void Engine::vSpawnJobStart(void)
 {
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Start System Jobs\n*\n"_Stz);
+    vInfo("\n+\n+ Start System Jobs\n+\n"_Stz);
   
   PsxThd::vMarkNonSeThread();
   
@@ -1143,7 +1145,7 @@ void Engine::vSpawnJobStart(void)
 void Engine::vStartSystem(void)
 {
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* System Start\n*\n"_Stz);
+    vInfo("\n+\n+ System Start\n+\n"_Stz);
   
   //ASSERT( ! AM::pRootDic()->bHasWords() );
     
@@ -1286,7 +1288,7 @@ void Engine::vStartSystem(void)
 
   if (AM::bVerboseProgress()) {
 
-    vInfo("\n*\n* Net Starting Position\n*\n"_Stz);
+    vInfo("\n+\n+ Net Starting Position\n+\n"_Stz);
 
     vTrace("Process resident size %s Virtual Size %s\n"_Stz,
             sResident_magn.szStz(),
@@ -1309,7 +1311,7 @@ void Engine::vStartSystem(void)
            );
 
     
-    vInfo("\n*\n* System Started\n*\n"_Stz);
+    vInfo("\n++\n++ System Started\n++\n"_Stz);
     vInfo("\n"_Stz);
   }
 
