@@ -1037,10 +1037,10 @@ void Engine::vPrintMachine(void)
     return;
   
   s32 sHostName;
-  s32 sLoginName;
+  //s32 sLoginName;
 
   Hardware::vHostName(sHostName);
-  Hardware::vLoginName(sLoginName);
+  //Hardware::vLoginName(sLoginName);
 
   s32 sMemory_magn;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMemory_magn);
@@ -1052,7 +1052,7 @@ void Engine::vPrintMachine(void)
   vInfo("Machine:\n"_Stz);
   
   vInfo("  Host Name : %s\n"_Stz,sHostName.szStz());
-  vInfo("  User Name : %s\n"_Stz,sLoginName.szStz());
+  //vInfo("  User Name : %s\n"_Stz,sLoginName.szStz());
 
   vInfo("  Core Count: %lld\n"_Stz,Hardware::iCoreCount());
   vInfo("  Cpu Freq  : %s\n"_Stz,sFreq_magn.szStz());
