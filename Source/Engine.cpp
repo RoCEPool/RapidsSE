@@ -236,8 +236,9 @@ void Engine::vCheckPort(void)
     return;
   
   iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
+  
   if (AM::bVerboseProgress())
-    vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
+    vInfo("\n*\n* Testing Listening Port\n*\n"_Stz);
   
   pSocket = new Socket(gpAttachMap);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
@@ -257,7 +258,15 @@ void Engine::vCheckPort(void)
     Process::vExitFailure();
   }
   
+  if (AM::bVerboseProgress())
+    vInfo("Able to open port %lld\n"_Stz, iPort);
+  
   pSocket->bClose(oSysCall);
+  
+  if (AM::bVerboseProgress())
+    vInfo("Closed port %lld\n"_Stz, iPort);
+
+  delete pSocket;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,6 +297,9 @@ void Engine::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
   new AttachMap;
+
+  if (AM::bVerboseProgress())
+    vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
 
   if (AM::bVerboseProgress())
     vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
@@ -717,7 +729,11 @@ void Engine::vOpenPool(void)
                     gxArgs.m_bFreeCB);
     
     if (AM::bVerboseProgress())
-      vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
+       vInfo("Created region %p: %s size %lld\n"_Stz,
+            gxArgs.m_aRegionAddr,
+            gxArgs.m_sRegionName.szStz(),
+            gxArgs.m_iRegionSize);
+    
     vCreateAttachMap();
     
     return;
@@ -795,10 +811,13 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenTrace(void)
 {
+  if (AM::bVerboseProgress())
+    vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
+  
   gpTraceFile = new File(nullptr);
   
   bool bOpened;
-  
+
   if (gxArgs.m_bAppendTrace)
     bOpened = gpTraceFile->bOpenAppend(gpAttachMap->m_sTraceFile.szStz());
   else
@@ -806,7 +825,7 @@ void Engine::vOpenTrace(void)
   RASSERT(bOpened);
   
   if (AM::bVerboseProgress())
-    vInfo("** trace file opened: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
+    vInfo("Trace file opened: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

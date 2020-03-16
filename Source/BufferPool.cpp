@@ -475,10 +475,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   pLastBuffer->vBufferNo(iBufferLast());
   pLastBuffer->vNextFree(C_NIL);
 
-  
-  if (bProgress)
-    vInfo("\n"_Stz);
-  
+    
   //vDump();
 }
 
