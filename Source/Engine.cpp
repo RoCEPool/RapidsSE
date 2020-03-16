@@ -297,6 +297,9 @@ void Engine::vCallPrompt(void)
 //
 //  delete pSePrompt;
   
+  if (AM::bVerboseProgress())
+    vInfo("\n>\n> Calling Prompt\n>\n"_Stz);
+
   AM::vPromptCall();
 }
 
@@ -1312,7 +1315,6 @@ void Engine::vStartSystem(void)
 
     
     vInfo("\n++\n++ System Started\n++\n"_Stz);
-    vInfo("\n"_Stz);
   }
 
 }
