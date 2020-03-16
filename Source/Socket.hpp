@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+static Stz* C_LOOPBACK_IP  = "127.0.0.1"_Stz;
+
 namespace Resources
 {
   class Socket : public Resource

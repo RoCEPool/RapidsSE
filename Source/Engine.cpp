@@ -84,8 +84,14 @@ void Engine::vPreliminary(void)
   //vOpenTrace();
   
   vCheckPort();
-  
+
+  vCheckGrid();
+
   //gpAttachMap->vPrintAttachMap();
+  
+  if (AM::bVerboseProgress()) {
+     vInfo("\n**\n** Preliminaries Complete \n**\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,6 +324,35 @@ void Engine::vChangeDirectory(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check grid configuration                                                   */
+/*----------------------------------------------------------------------------*/
+void Engine::vCheckGrid(void)
+{
+  // nothing to check if not running a grid test
+  if ( ! gxArgs.m_bStart)
+    return;
+  
+  if (AM::bVerboseProgress())
+    vInfo("\n*\n* Checking GridTest Configuration\n*\n"_Stz);
+  
+   for (i8 i_Node = 0; i_Node < gxArgs.m_nNodes; i_Node++) {
+     
+     if (AM::bVerboseProgress())
+       vInfo("Checking %s %s %lld\n"_Stz,
+             gxArgs.m_xNodes[i_Node].m_sNodeName.szStz(),
+             gxArgs.m_xNodes[i_Node].m_sIPAddress.szStz(),
+             gxArgs.m_xNodes[i_Node].m_iPortNo
+             );
+     
+     if (! gxArgs.m_xNodes[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
+       Process::vUnrecoverableError("Invalid loopback IP for grid test"_Stz,
+                                    gxArgs.m_xNodes[i_Node].m_sIPAddress);
+     
+   }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* check and see if the port has other listeneters                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vCheckPort(void)
@@ -330,10 +365,10 @@ void Engine::vCheckPort(void)
   if ( ! gxArgs.m_bStart)
     return;
   
-  iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
-  
   if (AM::bVerboseProgress())
     vInfo("\n*\n* Testing Listening Port\n*\n"_Stz);
+  
+  iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
   
   pSocket = new Socket(gpAttachMap);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);

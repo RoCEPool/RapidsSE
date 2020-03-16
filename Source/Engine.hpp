@@ -20,6 +20,7 @@ namespace StorageEngine
     static void vCallImmmediate(Task* pTask);
     static void vCallPrompt(void);
     static void vChangeDirectory(void);
+    static void vCheckGrid(void);
     static void vCheckPort(void);
     static void vClosePool(void);
     static void vCloseTrace(void);
