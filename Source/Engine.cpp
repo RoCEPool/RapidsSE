@@ -20,6 +20,12 @@ extern Stz* gsBuildHostName;
 extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
+extern Atomic gixDir;
+extern Atomic gixFile;
+extern Atomic gixMutex;
+extern Atomic gixPsxThd;
+extern Atomic gixSocket;
+
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -1218,6 +1224,15 @@ void Engine::vStartSystem(void)
            );
     
     BufferPool::vReport();
+    
+    vTrace("Open: dirs %lld files %lld mutexes %lld threads %lld sockets %lld\n"_Stz,
+           *gixDir,
+           *gixFile,
+           *gixMutex,
+           *gixPsxThd,
+           *gixSocket
+           );
+
     
     vInfo("\n*\n* System Started\n*\n"_Stz);
     vInfo("\n"_Stz);
