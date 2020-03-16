@@ -37,6 +37,7 @@ namespace Resources
   class File : public Resource
   {
   private:
+    i8      m_iViaMalloc;  // is this object in malloc heap (or small heap)?
     s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
     FILE*   m_aFile;       // the os/lib file pointer
@@ -48,6 +49,7 @@ namespace Resources
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, i8 iViaMalloc);
     void operator delete(void* pFileAddress);
   
     File(Focal* pIsFor);

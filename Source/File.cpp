@@ -24,9 +24,28 @@ File* Resources::_pFile(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_FILE);
+  File* pFile = (File*)HeapMem::pAllocate(CN_FILE);
   
-  return pObject;
+  pFile->m_iViaMalloc = 0;
+  
+  return pFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* File::operator new(size_t, i8 iViaMalloc)
+{
+  File* pFile;
+  
+  if (iViaMalloc)
+    pFile = (File*)MemLib::aMallocBlock(sizeof(File));
+  else
+    pFile = (File*)HeapMem::pAllocate(CN_FILE);
+
+  pFile->m_iViaMalloc = iViaMalloc;
+  
+  return pFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,9 +53,13 @@ void* File::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void File::operator delete(void* pFileAddress)
 {
-  Object* pObject = reinterpret_cast<Object*>(pFileAddress);
+  File* pFile = (File*)pFileAddress;
   
-  HeapMem::vFree(pObject);
+  if (pFile->m_iViaMalloc)
+    MemLib::vFreeBlock(pFile,sizeof(File));
+  else
+    HeapMem::vFree(pFile);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,6 +69,9 @@ File::File(Focal* bIsFor)
 : Resource(CN_FILE,bIsFor)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  if ( ! (0 == m_iViaMalloc || 1 == m_iViaMalloc) )
+    m_iViaMalloc = 0;
   
   //m_sFilePath
   //m_sOpenMode

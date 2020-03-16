@@ -22,16 +22,16 @@ Characterise* Characterise::_pParser(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Characterise::operator new(size_t, bool bMalloc)
+void* Characterise::operator new(size_t, i8 iViaMalloc)
 {
   Characterise* pParser;
   
-  if (bMalloc)
+  if (iViaMalloc)
     pParser = reinterpret_cast<Characterise*>(MemLib::aMallocBlock(sizeof(Characterise)));
   else
     pParser = reinterpret_cast<Characterise*>(HeapMem::pAllocate(CN_CHARACTERISE));
   
-  pParser->m_bMalloc = bMalloc;
+  pParser->m_iViaMalloc = iViaMalloc;
   
   return pParser;
 }
@@ -43,7 +43,7 @@ void Characterise::operator delete(void* pParserAddress)
 {
   Characterise* pParser = reinterpret_cast<Characterise*>(pParserAddress);
   
-  if (pParser->m_bMalloc)
+  if (pParser->m_iViaMalloc)
     MemLib::vFreeBlock(pParser,sizeof(Characterise));
   else
     HeapMem::vFree(pParser);
@@ -89,7 +89,7 @@ void Characterise::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Characterise* pParser = _pParser(pObject);
   
   vTrace("%s depth %lld next %p\n"_Stz,
-         pParser->m_bMalloc == true ? "malloc"_Stz : "pool"_Stz,
+         pParser->m_iViaMalloc ? "malloc"_Stz : "pool"_Stz,
          pParser->m_iDepth,
          pParser->m_pNext);
 }

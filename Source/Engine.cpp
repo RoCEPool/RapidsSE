@@ -38,8 +38,10 @@ void Engine::vMainEntry(void)
 void Engine::vPreliminary(void)
 {
   //OpSys::vGetInfo();
-  // OpSys::vTraceInfo();
+  //OpSys::vTraceInfo();
   
+  vOpenTrace();
+
   vPrintWelcome();
   
   gxArgs.vPrintStartupInfo();
@@ -73,7 +75,7 @@ void Engine::vPreliminary(void)
   
   vCreateFileNames();
   
-  vOpenTrace();
+  //vOpenTrace();
   
   vCheckPort();
   
@@ -111,11 +113,25 @@ void Engine::vRunCommandLine(void)
   try {
     switch (eBootOption) {
         
-      case BO_ADD_NODE:     vStartSystem();   vWaitStop();                break;
+      case BO_ADD_NODE:
+        vStartSystem();
+        vWaitStop();
+        break;
         
-      case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
-      case BO_SETH_PROMPT:  vCallPrompt();                                break;
-      case BO_START:        vStartSystem();   vWaitStop();                break;
+      case BO_PROMPT:
+        vOpenLog();
+        vCallPrompt();
+        break;
+        
+      case BO_SETH_PROMPT:
+        vCallPrompt();
+        break;
+        
+      case BO_START:
+        vStartSystem();
+        vWaitStop();
+        break;
+        
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
@@ -125,9 +141,17 @@ void Engine::vRunCommandLine(void)
         vCallPrompt();
         break;
         
-      case BO_STATUS:       vPrintStatus();                               break;
-      case BO_STOP:         vStopSystem();                                break;
-      case BO_UNLINK:       vStopSystem();                                break;
+      case BO_STATUS:
+        vPrintStatus();
+        break;
+        
+      case BO_STOP:
+        vStopSystem();
+        break;
+        
+      case BO_UNLINK:
+        vStopSystem();
+        break;
         
       default:
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -267,8 +291,14 @@ void Engine::vCallPrompt(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vChangeDirectory(void)
 {
+  s256 sOriginal;
+  s256 sCurrent;
+
   if (AM::bVerboseProgress())
     vInfo("\n*\n* Change Working Directory\n*\n"_Stz);
+  
+  if (Dir::bGetCurrent(sOriginal) && AM::bVerboseProgress())
+    vInfo("Original working directory: %s\n"_Stz,sOriginal.szStz());
   
   // change working directory to commands dir
   bool bResult = Dir::bChangeCurrent(gxArgs.m_sCommandsDir);
@@ -277,7 +307,6 @@ void Engine::vChangeDirectory(void)
     Process::vUnrecoverableError("Unable to change to command dir"_Stz,
                                  gxArgs.m_sCommandsDir);
 
-  s256 sCurrent;
   if (Dir::bGetCurrent(sCurrent) && AM::bVerboseProgress())
     vInfo("Current working directory: %s\n"_Stz,sCurrent.szStz());
 }
@@ -359,10 +388,11 @@ void Engine::vCreateAttachMap(void)
   new AttachMap;
 
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
+    vInfo("\n*\n* Create Attach Map\n*\n"_Stz);
 
   if (AM::bVerboseProgress())
-    vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
+    vInfo("Created attachMap %p: sizeof(AttachMap)=%lldB\n"_Stz,
+          gpAttachMap,
           sizeof(AttachMap));
 
 }
@@ -774,7 +804,7 @@ void Engine::vOpenPool(void)
     }
     
     if (AM::bVerboseProgress())
-      vInfo("\n*\n* Create Region\n*\n"_Stz);
+      vInfo("\n*\n* Create Shared Memory Region\n*\n"_Stz);
     
     Region::vCreate(gxArgs.m_sRegionName,
                     gxArgs.m_bVerbose,
@@ -788,11 +818,16 @@ void Engine::vOpenPool(void)
                     gxArgs.m_bDontFree,
                     gxArgs.m_bFreeCB);
     
-    if (AM::bVerboseProgress())
-       vInfo("Created region %p: %s size %lld\n"_Stz,
+    if (AM::bVerboseProgress()) {
+      
+      s32 sRegionSize_magn;
+      MagLib::vByteMag(gxArgs.m_iRegionSize,3,sRegionSize_magn);
+      
+       vInfo("Created region %p: %s size %s\n"_Stz,
             gxArgs.m_aRegionAddr,
             gxArgs.m_sRegionName.szStz(),
-            gxArgs.m_iRegionSize);
+            sRegionSize_magn.szStz());
+    }
     
     vCreateAttachMap();
     
@@ -871,21 +906,32 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenTrace(void)
 {
+  s256 sTracePath;
+  
+  #ifdef WITH_DEBUG_VERSION
+    sTracePath.vSprint("/tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
+                       "SEgrid"_Stz,
+                       gxArgs.m_sNodeName.szStz());
+  #else
+    sTracePath.vSprint("/tmp/SE_Trace_%s_%s.txt"_Stz,
+                       "SEgrid"_Stz,
+                       gxArgs.m_sNodeName.szStz());
+  #endif
   if (AM::bVerboseProgress())
     vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
-  gpTraceFile = new File(nullptr);
+  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
   
   bool bOpened;
 
   if (gxArgs.m_bAppendTrace)
-    bOpened = gpTraceFile->bOpenAppend(gpAttachMap->m_sTraceFile.szStz());
+    bOpened = gpTraceFile->bOpenAppend(sTracePath);
   else
-    bOpened = gpTraceFile->bOpenWrite(gpAttachMap->m_sTraceFile.szStz());
+    bOpened = gpTraceFile->bOpenWrite(sTracePath);
   RASSERT(bOpened);
   
   if (AM::bVerboseProgress())
-    vInfo("Trace file opened: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
+    vInfo("Opened trace file: %s\n"_Stz,sTracePath.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1157,15 +1203,25 @@ void Engine::vStartSystem(void)
   s32 sVirtual_magn;
   MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
 
-  vTrace("PROCESS RESIDENT SIZE %s VIRTUAL SIZE %s\n"_Stz,
-         sResident_magn.szStz(),
-         sVirtual_magn.szStz()
-         );
+  if (AM::bVerboseProgress()) {
+
+    vInfo("\n*\n* Net Starting Position\n*\n"_Stz);
+
+    vTrace("Process resident size %s Virtual Size %s\n"_Stz,
+            sResident_magn.szStz(),
+            sVirtual_magn.szStz()
+          );
   
-  vTrace("SYSTEM TIME %lldus USER TIME %lldus\n"_Stz,
-         Process::iSystemUsec(),
-         Process::iUserUsec()
-         );
+    vTrace("System time %lldus User Time %lldus\n"_Stz,
+           Process::iSystemUsec(),
+           Process::iUserUsec()
+           );
+    
+    BufferPool::vReport();
+    
+    vInfo("\n*\n* System Started\n*\n"_Stz);
+    vInfo("\n"_Stz);
+  }
 
 }
 
