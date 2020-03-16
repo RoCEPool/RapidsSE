@@ -11,8 +11,8 @@ namespace LexicalAnalysis
   class Characterise : public Object
   {
   private:
-    bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
-    i8      m_iDepth;    // depth of this parser
+    i8      m_iViaMalloc; // is this object in malloc heap (or small heap)?
+    i8      m_iDepth;     // depth of this parser
     Characterise* m_pNext;     // next parser in stack
     
     // source definition
@@ -42,7 +42,7 @@ namespace LexicalAnalysis
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, bool bMalloc);
+    void* operator new(size_t, i8 iViaMalloc);
     void operator delete(void* pDirAddress);
     
     Characterise(Characterise* pNext);

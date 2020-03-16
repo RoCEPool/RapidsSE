@@ -164,10 +164,12 @@ void Grid::vDumpPartitioning(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (i8 i_Index = 0; i_Index < nPartitions(); i_Index++)
-    vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
-           TablePtn::iPartitionToNode(i_Index));
-  vTrace("\n"_Stz);
+  if (nPartitions()) {
+    for (i8 i_Index = 0; i_Index < nPartitions(); i_Index++)
+      vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
+             TablePtn::iPartitionToNode(i_Index));
+    vTrace("\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

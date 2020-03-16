@@ -38,8 +38,10 @@ void Engine::vMainEntry(void)
 void Engine::vPreliminary(void)
 {
   //OpSys::vGetInfo();
-  // OpSys::vTraceInfo();
+  //OpSys::vTraceInfo();
   
+  vOpenTrace();
+
   vPrintWelcome();
   
   gxArgs.vPrintStartupInfo();
@@ -73,7 +75,7 @@ void Engine::vPreliminary(void)
   
   vCreateFileNames();
   
-  vOpenTrace();
+  //vOpenTrace();
   
   vCheckPort();
   
@@ -794,11 +796,16 @@ void Engine::vOpenPool(void)
                     gxArgs.m_bDontFree,
                     gxArgs.m_bFreeCB);
     
-    if (AM::bVerboseProgress())
-       vInfo("Created region %p: %s size %lld\n"_Stz,
+    if (AM::bVerboseProgress()) {
+      
+      s32 sRegionSize_magn;
+      MagLib::vByteMag(gxArgs.m_iRegionSize,3,sRegionSize_magn);
+      
+       vInfo("Created region %p: %s size %s\n"_Stz,
             gxArgs.m_aRegionAddr,
             gxArgs.m_sRegionName.szStz(),
-            gxArgs.m_iRegionSize);
+            sRegionSize_magn.szStz());
+    }
     
     vCreateAttachMap();
     
@@ -877,21 +884,32 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenTrace(void)
 {
+  s256 sTracePath;
+  
+  #ifdef WITH_DEBUG_VERSION
+    sTracePath.vSprint("/tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
+                       "SEgrid"_Stz,
+                       gxArgs.m_sNodeName.szStz());
+  #else
+    sTracePath.vSprint("/tmp/SE_Trace_%s_%s.txt"_Stz,
+                       "SEgrid"_Stz,
+                       gxArgs.m_sNodeName.szStz());
+  #endif
   if (AM::bVerboseProgress())
     vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
-  gpTraceFile = new File(nullptr);
+  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
   
   bool bOpened;
 
   if (gxArgs.m_bAppendTrace)
-    bOpened = gpTraceFile->bOpenAppend(gpAttachMap->m_sTraceFile.szStz());
+    bOpened = gpTraceFile->bOpenAppend(sTracePath);
   else
-    bOpened = gpTraceFile->bOpenWrite(gpAttachMap->m_sTraceFile.szStz());
+    bOpened = gpTraceFile->bOpenWrite(sTracePath);
   RASSERT(bOpened);
   
   if (AM::bVerboseProgress())
-    vInfo("Opened trace file: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
+    vInfo("Opened trace file: %s\n"_Stz,sTracePath.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1163,15 +1181,17 @@ void Engine::vStartSystem(void)
   s32 sVirtual_magn;
   MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
 
-  vTrace("PROCESS RESIDENT SIZE %s VIRTUAL SIZE %s\n"_Stz,
-         sResident_magn.szStz(),
-         sVirtual_magn.szStz()
-         );
+  if (AM::bVerboseProgress()) {
+    vTrace("Process resident size %s Virtual Size %s\n"_Stz,
+            sResident_magn.szStz(),
+            sVirtual_magn.szStz()
+          );
   
-  vTrace("SYSTEM TIME %lldus USER TIME %lldus\n"_Stz,
-         Process::iSystemUsec(),
-         Process::iUserUsec()
-         );
+    vTrace("System time %lldus User Time %lldus\n"_Stz,
+           Process::iSystemUsec(),
+           Process::iUserUsec()
+           );
+  }
 
 }
 
