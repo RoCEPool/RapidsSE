@@ -348,6 +348,11 @@ void Engine::vCheckGrid(void)
        Process::vUnrecoverableError("Invalid loopback IP for grid test"_Stz,
                                     gxArgs.m_xNodes[i_Node].m_sIPAddress);
      
+     if (AM::bVerboseProgress())
+       vInfo("Valid loopback %s\n"_Stz,
+             gxArgs.m_xNodes[i_Node].m_sIPAddress.szStz());
+
+     vTestPort(gxArgs.m_xNodes[i_Node].m_iPortNo);
    }
 
 }
@@ -370,33 +375,35 @@ void Engine::vCheckPort(void)
   
   iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
   
-  pSocket = new Socket(gpAttachMap);
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
+  vTestPort(iPort);
   
-  if ( ! bResult ) {
-    if (oSysCall.iError() == EADDRINUSE) {
-      vTrace("Address in use (port: %lld). "
-             "CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
-             iPort);
-      
-    }
-    else {
-      vTrace("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
-             iPort, oSysCall.iError());
-    }
-    //Engine::vStopSystem();
-    Process::vExitFailure();
-  }
-  
-  if (AM::bVerboseProgress())
-    vInfo("Able to open port %lld\n"_Stz, iPort);
-  
-  pSocket->bClose(oSysCall);
-  
-  if (AM::bVerboseProgress())
-    vInfo("Closed port %lld\n"_Stz, iPort);
-
-  delete pSocket;
+//  pSocket = new Socket(gpAttachMap);
+//  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
+//
+//  if ( ! bResult ) {
+//    if (oSysCall.iError() == EADDRINUSE) {
+//      vTrace("Address in use (port: %lld). "
+//             "CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
+//             iPort);
+//
+//    }
+//    else {
+//      vTrace("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
+//             iPort, oSysCall.iError());
+//    }
+//    //Engine::vStopSystem();
+//    Process::vExitFailure();
+//  }
+//
+//  if (AM::bVerboseProgress())
+//    vInfo("Able to open port %lld\n"_Stz, iPort);
+//
+//  pSocket->bClose(oSysCall);
+//
+//  if (AM::bVerboseProgress())
+//    vInfo("Closed port %lld\n"_Stz, iPort);
+//
+//  delete pSocket;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1290,6 +1297,40 @@ void Engine::vStopSystem(void)
          gxArgs.m_sRegionName.azChar());
   
   // the system is now stopped
+}
+
+/*----------------------------------------------------------------------------*/
+/* check and see if the port has other listeneters                            */
+/*----------------------------------------------------------------------------*/
+void Engine::vTestPort(i8 iPort)
+{
+  SysCall oSysCall;
+  Socket* pSocket;
+    
+  pSocket = new Socket(gpAttachMap);
+  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
+  
+  if ( ! bResult ) {
+    if (oSysCall.iError() == EADDRINUSE) {
+      vTrace("Address in use (port: %lld). "
+             "CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
+             iPort);
+      
+    }
+    else {
+      vTrace("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
+             iPort, oSysCall.iError());
+    }
+    //Engine::vStopSystem();
+    Process::vExitFailure();
+  }
+    
+  pSocket->bClose(oSysCall);
+  
+  if (AM::bVerboseProgress())
+    vInfo("Able to open and close port %lld on this machine\n"_Stz, iPort);
+
+  delete pSocket;
 }
 
 /*----------------------------------------------------------------------------*/

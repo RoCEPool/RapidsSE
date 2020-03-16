@@ -49,6 +49,7 @@ namespace StorageEngine
     static void vSpawnJobStart(void);
     static void vStartSystem(void);
     static void vStopSystem(void);
+    static void vTestPort(i8 iPort);
     static void vUnlinkSystem(void);
     static void vWaitStop(void);
     static void vWriteRegionName(void);
