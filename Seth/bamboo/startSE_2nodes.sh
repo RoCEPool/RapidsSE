@@ -24,7 +24,7 @@ declare -a PIDS_ARR
 NODES=("NODE0" "NODE1")
 
 ### Common / Base commands ###
-BASE_START_PARAMS="--size 4GB --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"
+BASE_START_PARAMS="--size 4GB --start --progress --munged --script --metadata --commands ${ROOT_DIR}/Commands"
 BASE_START_CLUSTER_PARAMS="--munged --script --commands ${ROOT_DIR}/Commands --command _connectCluster --appendTrace"
 
 i=0
