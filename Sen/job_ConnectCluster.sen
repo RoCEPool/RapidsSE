@@ -7,14 +7,28 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: node.isConnected ( pNode -- t|f )
+
+  params| pNode |
+
+  pNode node.sendSocket@ if
+    true
+  else
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : grid::connected ( -- t|f )
 
   grid::definedNodes 0
   do
     I grid::node node.isConnected not if
-    args.verbose if
-      I "Node no %v not connected" .printf
-    then
+      args.verbose if
+        I "Node no %v not connected" .printf
+      then
       unloop
       false
       exit
@@ -41,17 +55,6 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: gridConnected prompt ( -- )
-
-  "gridConnected" .
-
-  grid::pause
-  true grid::started!
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 : gridTest
 
   grid::definedNodes 0
@@ -70,21 +73,59 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* request to connect the cluster (on originating node)                       */
+/* request to wait for cluster to connect (on originating node)               */
 /*----------------------------------------------------------------------------*/
 : connectCluster_req ( -- <R> )
 
 
+  task::seedInitially
 
-  //"grid::setStartNode..." .
-  grid::setStartNode
+  // [ compiler::current@ word.name@ , ] .
+  // <jobNm> .
 
-  //"connector::spawn..." .
-  connector ;&
+  job::becomeOriginator
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait till all nodes connected
+  // has cluster already been started?
+
+  grid::started@ if
+                                             //! how do we set an error message?
+    DONE_REQ
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn all other nodes
+
+  grid::setStartNode
+
+  //grid::spawnOtherNodes
+
+  //connector::spawn
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pause till all nodes connected
+
   grid::pause
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the start cluster job
+
+  job::distributeConnected
+
+  // wait for the signal from deciding job__ended/cancelled
+  task::wait
+
+  // set grid as started
+  true grid::started!
+  "Cluster started" .
+
+  task::doneFinally
+
+  //"Signalling waiting thread" .
+  job[] job.signalWaiter
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,18 +137,17 @@
   // wait till all nodes connected
   grid::pause
 
+  true grid::started!
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
+
 jobSyntax: connectCluster :: connectCluster ;
 
 jobInfo: connectCluster
 {
-  <jobDesc>  = "--description of job--"
-  
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_NONE
   <ddlLock>  = DL_NONE
