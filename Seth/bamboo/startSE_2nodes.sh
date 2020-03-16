@@ -30,7 +30,7 @@ BASE_START_CLUSTER_PARAMS="--munged --script --commands ${ROOT_DIR}/Commands --c
 i=0
 for NODE in "${NODES[@]}"
 do
-  START_PARAMS_ARR+=("--name ${NODE} --node NODE0 128.0.0.1 5541 --node NODE1 128.0.0.1 5551 ${BASE_START_PARAMS}")
+  START_PARAMS_ARR+=("--name ${NODE} --node NODE0 127.0.0.1 5541 --node NODE1 127.0.0.1 5551 ${BASE_START_PARAMS}")
   START_CLUSTER_PARAMS_ARR+=("--name ${NODE} ${BASE_START_CLUSTER_PARAMS}")
   NOHUP_FILE_ARR+=("${ROOT_DIR}/nohupSE-${NODE}.out")
   PIDFILE_ARR+=("${ROOT_DIR}/se-${NODE}.pid")
@@ -90,6 +90,7 @@ do
   NODE="${NODES[${i}]}"
 
   echo "Starting SE (${NODE})."  | tee -a "${NOHUP_FILE_ARR[${i}]}"
+  echo "nohup ${EXE} ${START_PARAMS_ARR[${i}]} $@"
   nohup ${EXE} ${START_PARAMS_ARR[${i}]} $@ >> "${NOHUP_FILE_ARR[${i}]}" 2>&1 &
 
   # get the last pid and save it to a file
