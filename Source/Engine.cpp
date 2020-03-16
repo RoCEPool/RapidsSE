@@ -26,6 +26,9 @@ extern Atomic gixMutex;
 extern Atomic gixPsxThd;
 extern Atomic gixSocket;
 
+extern i8     giProgressPoint;
+extern i8     giProgressSubPoint;
+
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -111,7 +114,7 @@ void Engine::vRunCommandLine(void)
   eBO eBootOption = eDecodeCommandLine();
 
   if (AM::bVerboseProgress()) {
-    vInfo("\n+\n+ Run Command Line\n+\n"_Stz);
+    vInfo("\n+\n+ %lld) Run Command Line\n+\n"_Stz,giProgressPoint++);
     switch (eBootOption) {
         
       case BO_ADD_NODE:     vInfo("BO_ADD_NODE\n"_Stz);     break;
@@ -304,7 +307,7 @@ void Engine::vCallPrompt(void)
 //  delete pSePrompt;
   
   if (AM::bVerboseProgress())
-    vInfo("\n>\n> Calling Prompt\n>\n"_Stz);
+    vInfo("\n>\n> %lld) Calling Prompt\n>\n"_Stz,giProgressPoint++);
 
   AM::vPromptCall();
 }
@@ -318,7 +321,7 @@ void Engine::vChangeDirectory(void)
   s256 sCurrent;
 
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Change Working Directory\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Change Working Directory\n*\n"_Stz,giProgressPoint++);
   
   if (Dir::bGetCurrent(sOriginal) && AM::bVerboseProgress())
     vInfo("Original working directory: %s\n"_Stz,sOriginal.szStz());
@@ -344,7 +347,7 @@ void Engine::vCheckGrid(void)
     return;
   
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Checking GridTest Configuration\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Checking GridTest Configuration\n*\n"_Stz,giProgressPoint++);
   
    for (i8 i_Node = 0; i_Node < gxArgs.m_nNodes; i_Node++) {
      
@@ -377,11 +380,15 @@ void Engine::vCheckNodes(void)
 {
   
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Checking Node Configurations\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
 
   if (C_UNKNOWN == gxArgs.m_iThisNode)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
                                  gxArgs.m_sNodeName.szStz());
+
+  vInfo("This is node %lld of %lld nodes\n"_Stz,
+        gxArgs.m_iThisNode,
+        gxArgs.m_nNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,7 +405,7 @@ void Engine::vCheckPort(void)
     return;
   
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Testing Listening Port\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Testing Listening Port\n*\n"_Stz,giProgressPoint++);
   
   iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
   
@@ -463,7 +470,7 @@ void Engine::vCreateAttachMap(void)
   new AttachMap;
 
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Create Attach Map\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Create Attach Map\n*\n"_Stz,giProgressPoint++);
 
   if (AM::bVerboseProgress())
     vInfo("Created attachMap %p: sizeof(AttachMap)=%lldB\n"_Stz,
@@ -599,7 +606,7 @@ void Engine::vKillPrev(void)
     return;
   
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Kill Previous Occurences\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Kill Previous Occurences\n*\n"_Stz,giProgressPoint++);
   
   // an assumption is that regions will be /SE_<node>
   
@@ -879,7 +886,7 @@ void Engine::vOpenPool(void)
     }
     
     if (AM::bVerboseProgress())
-      vInfo("\n*\n* Create Shared Memory Region\n*\n"_Stz);
+      vInfo("\n*\n* %lld) Create Shared Memory Region\n*\n"_Stz,giProgressPoint++);
     
     Region::vCreate(gxArgs.m_sRegionName,
                     gxArgs.m_bVerbose,
@@ -1172,7 +1179,7 @@ void Engine::vSignalHandler(int iSignal)
 void Engine::vSpawnJobStart(void)
 {
   if (AM::bVerboseProgress())
-    vInfo("\n+\n+ Start System Jobs\n+\n"_Stz);
+    vInfo("\n+\n+ %lld) Start System Jobs\n+\n"_Stz,giProgressPoint++);
   
   PsxThd::vMarkNonSeThread();
   
@@ -1198,7 +1205,7 @@ void Engine::vSpawnJobStart(void)
 void Engine::vStartSystem(void)
 {
   if (AM::bVerboseProgress())
-    vInfo("\n+\n+ System Start\n+\n"_Stz);
+    vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
   
   //ASSERT( ! AM::pRootDic()->bHasWords() );
     
@@ -1341,7 +1348,7 @@ void Engine::vStartSystem(void)
 
   if (AM::bVerboseProgress()) {
 
-    vInfo("\n+\n+ Net Starting Position\n+\n"_Stz);
+    vInfo("\n+\n+ %lld) Net Starting Position\n+\n"_Stz,giProgressPoint++);
 
     vTrace("Process resident size %s Virtual Size %s\n"_Stz,
             sResident_magn.szStz(),

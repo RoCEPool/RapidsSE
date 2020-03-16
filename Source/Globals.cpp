@@ -21,6 +21,9 @@ Stz* gsBuildHostName;
 Stz* gsBuildUserName;
 Stz* gsBuildBranch;
 
+char giProgressPoint    = 1;
+i8   giProgressSubPoint = 0;
+
 pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
 
 /*============================================================================*/

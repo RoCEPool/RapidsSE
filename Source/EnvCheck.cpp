@@ -6,13 +6,15 @@
 
 extern Args gxArgs;
 
+extern char giProgressPoint;
+
 /*----------------------------------------------------------------------------*/
 /* check mainfest list                                                        */
 /*----------------------------------------------------------------------------*/
 void EnvCheck::vCheckManifest(void)
 {
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Checking Resource Manifest\n*\n"_Stz);
+    vInfo("\n*\n* %lld) Checking Resource Manifest\n*\n"_Stz,giProgressPoint++);
   
   vCheckDir("."_Stz,          C_EXIST_EXISTS,C_ACCESS_READ);
   vCheckDir("../Commands"_Stz,C_EXIST_EXISTS,C_ACCESS_READ);
