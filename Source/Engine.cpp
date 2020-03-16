@@ -89,6 +89,8 @@ void Engine::vPreliminary(void)
   
   //vOpenTrace();
   
+  vCheckNodes();
+  
   vCheckPort();
 
   vCheckGrid();
@@ -366,6 +368,20 @@ void Engine::vCheckGrid(void)
        vTestPort(gxArgs.m_xNodes[i_Node].m_iPortNo);
    }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* check and see if the port has other listeneters                            */
+/*----------------------------------------------------------------------------*/
+void Engine::vCheckNodes(void)
+{
+  
+  if (AM::bVerboseProgress())
+    vInfo("\n*\n* Checking Node Configurations\n*\n"_Stz);
+
+  if (C_UNKNOWN == gxArgs.m_iThisNode)
+    Process::vUnrecoverableError("This node is not in node list"_Stz,
+                                 gxArgs.m_sNodeName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

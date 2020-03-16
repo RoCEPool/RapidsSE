@@ -85,7 +85,7 @@ Args::Args(void)
   m_bRestart         = true;
   m_nSubIngesters    = 4;
   m_nSubLoaders      = 4;
-  m_iThisNode        = -1;
+  m_iThisNode        = C_UNKNOWN;
   m_nThreads         = 12;
   m_nPeriodicSleep   = 10;
   m_nSupervisorSleep = 10;
@@ -175,7 +175,7 @@ bool Args::bParse(int argc, Stz* argv[])
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   
-  i8 iNode = 0;
+  i8 i_Node = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
@@ -351,10 +351,10 @@ bool Args::bParse(int argc, Stz* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--node"_Stz)) {
-      m_xNodes[iNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
-      m_xNodes[iNode].m_sIPAddress = (Stz*)argv[++i_Arg];
-      m_xNodes[iNode].m_iPortNo    = argv[++i_Arg]->iToI8();
-      iNode++;
+      m_xNodes[i_Node].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xNodes[i_Node].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xNodes[i_Node].m_iPortNo    = argv[++i_Arg]->iToI8();
+      i_Node++;
       
       if (m_nNodes > C_MAX_NODES) {
         vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
@@ -673,10 +673,10 @@ bool Args::bParse(int argc, Stz* argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // if --node was defined just set the m_nNodes
-  if (iNode) {
+  if (i_Node) {
     
     // set no. of nodes
-    m_nNodes = iNode;
+    m_nNodes = i_Node;
     
     // some basic cluster validations
     
@@ -688,18 +688,19 @@ bool Args::bParse(int argc, Stz* argv[])
     
     // the current node should have been specfied in the --node
     bool bFound = false;
-    for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
-      if (m_xNodes[i_Index].m_sNodeName.bSame(m_sNodeName)) {
+    for (i8 i_Test = 0; i_Test < m_nNodes; i_Test++) {
+      if (m_xNodes[i_Test].m_sNodeName.bSame(m_sNodeName)) {
         bFound = true;
-        m_iThisNode = i_Index;
+        m_iThisNode = i_Test;
         break;
       }
     }
-    
-    if ( ! bFound ) {
-      vWarn("Add argument --name with name of this node from the --node definitions\n"_Stz);
-      return false;
-    }
+
+// RJH: moved this into Engine::vCheckNodes() 17 Mar 2020
+//    if ( ! bFound ) {
+//      vWarn("Add argument --name with name of this node from the --node definitions\n"_Stz);
+//      return false;
+//    }
     
   } else {
     // add a single node
