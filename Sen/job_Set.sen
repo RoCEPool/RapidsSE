@@ -20,6 +20,8 @@
 "job_AnalyzeIndex.sen"    include
 "job_AnalyzeTable.sen"    include
 
+"job_BootCluster.sen"     include
+
 "job_CancelQuery.sen"     include
 "job_Cf.sen"              include
 "job_CompactIndex.sen"    include
@@ -70,7 +72,6 @@
 "Job_SizeIndex.sen"       include
 "Job_SizeTable.sen"       include
 "job_Space.sen"           include
-"job_StartCluster.sen"    include
 "job_StartNode.sen"       include
 "job_Status.sen"          include
 "job_SubFetch.sen"        include

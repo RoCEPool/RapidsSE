@@ -2,7 +2,7 @@
 /* _pln -- test pipeline plans                                                */
 /*============================================================================*/
 
-startCluster;
+bc;
 
 pipeline dyn
 begin

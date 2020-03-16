@@ -2,7 +2,7 @@
 /*  _lineitemLoad - create and load TPC-H Lineitem table for SF1              */
 /*============================================================================*/
 
-startCluster;
+bc;
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B

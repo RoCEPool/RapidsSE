@@ -5,7 +5,7 @@
 markjob _subpurger on;
 markjob;
 
-startCluster;
+bc;
 
 _sensorEvents
 

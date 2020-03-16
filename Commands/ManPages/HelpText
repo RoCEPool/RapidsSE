@@ -97,7 +97,7 @@ sz             - Show the size of a table
 .br 
 space          - Show information about memory usage
 .br 
-startCluster   - Start the cluster
+bootCluster    - Boot the cluster
 .br 
 status         - Show the system status
 .br 

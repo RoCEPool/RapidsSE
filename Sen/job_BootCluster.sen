@@ -73,9 +73,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* request to wait for cluster to start (on originating node)                 */
+/* request to wait for cluster to boot (on originating node)                  */
 /*----------------------------------------------------------------------------*/
-: startCluster_req ( -- <R> )
+: bootCluster_req ( -- <R> )
 
 
   task::seedInitially
@@ -129,9 +129,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute job_StartCluster (on participating node)                           */
+/* execute job_BootCluster (on participating node)                            */
 /*----------------------------------------------------------------------------*/
-: startCluster::execute _eeh ( -- )
+: bootCluster::execute _eeh ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
@@ -144,9 +144,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: startCluster :: startCluster ;
+jobSyntax: bootCluster :: bootCluster ;
 
-jobInfo: startCluster
+jobInfo: bootCluster
 {
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_NONE

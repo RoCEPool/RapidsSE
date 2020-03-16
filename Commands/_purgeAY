@@ -2,7 +2,7 @@
 /* _purgeAY -- create and generate T table and purge old data                 */
 /*============================================================================*/
 
-startCluster;
+bc;
 
 pwf ;
 

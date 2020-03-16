@@ -2,7 +2,7 @@
 /* _tpch -- create and load TPC-H tables for SF1                              */
 /*============================================================================*/
 
-startCluster;
+bc;
 
 _customer
 _lineitem

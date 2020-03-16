@@ -2,7 +2,7 @@
 /* _nw walk nation test                                                       */
 /*============================================================================*/
 
-startCluster;
+bc;
 
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,

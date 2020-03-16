@@ -2,7 +2,7 @@
 /* _bootCluster -- boot the SE cluster                                        */
 /*============================================================================*/
 
-startCluster;
+bootCluster;
 
 _tableDefinitions
 
