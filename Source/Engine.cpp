@@ -278,8 +278,8 @@ void Engine::vChangeDirectory(void)
                                  gxArgs.m_sCommandsDir);
 
   s256 sCurrent;
-  if (Dir::bGetCurrent(sCurrent) && gxArgs.m_bVerbose)
-    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.szStz());
+  if (Dir::bGetCurrent(sCurrent) && AM::bVerboseProgress())
+    vInfo("Current working directory: %s\n"_Stz,sCurrent.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

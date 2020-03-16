@@ -11,6 +11,9 @@ extern Args gxArgs;
 /*----------------------------------------------------------------------------*/
 void EnvCheck::vCheckManifest(void)
 {
+  if (AM::bVerboseProgress())
+    vInfo("\n*\n* Checking Resource Manifest\n*\n"_Stz);
+  
   vCheckDir("."_Stz,          C_EXIST_EXISTS,C_ACCESS_READ);
   vCheckDir("../Commands"_Stz,C_EXIST_EXISTS,C_ACCESS_READ);
   vCheckDir("/tmp"_Stz,       C_EXIST_EXISTS,C_ACCESS_READWRITE);
