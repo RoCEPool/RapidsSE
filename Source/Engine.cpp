@@ -50,6 +50,10 @@ void Engine::vPreliminary(void)
 
   vPrintWelcome();
   
+  vPrintTime();
+
+  vPrintBuild();
+  
   vPrintMachine();
   
   gxArgs.vPrintStartupInfo();
@@ -990,6 +994,23 @@ void Engine::vOpenTrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print build                                                                */
+/*----------------------------------------------------------------------------*/
+void Engine::vPrintBuild(void)
+{
+  if (! AM::bVerboseProgress())
+    return;
+    
+  vInfo("\n"_Stz);
+  vInfo("Build:\n"_Stz);
+  vInfo("  Git Hash  : %s\n"_Stz,gsBuildGitHash);
+  vInfo("  Date      : %s\n"_Stz,gsBuildDate);
+  vInfo("  Host Name : %s\n"_Stz,gsBuildHostName);
+  vInfo("  User Name : %s\n"_Stz,gsBuildUserName);
+  vInfo("  Branch    : %s\n"_Stz,gsBuildBranch);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print exit                                                                 */
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintExit(void)
@@ -1060,6 +1081,27 @@ void Engine::vPrintMachine(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print time                                                                */
+/*----------------------------------------------------------------------------*/
+void Engine::vPrintTime(void)
+{
+  if (! AM::bVerboseProgress())
+    return;
+  
+  Now spNow;
+  Now spNowUTC;
+  spNowUTC.vSetNowUTC();
+  
+  if (AM::bVerboseProgress()) {
+    vInfo("\n"_Stz);
+    vInfo("Time:\n"_Stz);
+    vInfo("  %s (local)\n"_Stz,spNow.sz());
+    vInfo("  %s (utc)\n"_Stz,spNowUTC.sz());
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* print welcome                                                              */
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintWelcome(void)
@@ -1073,14 +1115,6 @@ void Engine::vPrintWelcome(void)
   if (gxArgs.m_bWelcome && ! gxArgs.m_bStatus) {
     vInfo("%s\n"_Stz,sWelcome.szStz());
     vInfo("%s\n"_Stz,sCopyright.szStz());
-    
-    vInfo("\n"_Stz);
-    vInfo("Build:\n"_Stz);
-    vInfo("  Git Hash  : %s\n"_Stz,gsBuildGitHash);
-    vInfo("  Date      : %s\n"_Stz,gsBuildDate);
-    vInfo("  Host Name : %s\n"_Stz,gsBuildHostName);
-    vInfo("  User Name : %s\n"_Stz,gsBuildUserName);
-    vInfo("  Branch    : %s\n"_Stz,gsBuildBranch);
   }
 }
 
