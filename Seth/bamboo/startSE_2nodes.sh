@@ -24,13 +24,13 @@ declare -a PIDS_ARR
 NODES=("NODE0" "NODE1")
 
 ### Common / Base commands ###
-BASE_START_PARAMS="--size 4GB --start --progress --munged --script --metadata --commands ${ROOT_DIR}/Commands"
+BASE_START_PARAMS="--size 4GB --start --progress --munged --script --metadata --commands ${ROOT_DIR}/Commands --progress"
 BASE_START_CLUSTER_PARAMS="--munged --script --commands ${ROOT_DIR}/Commands --command _connectCluster --appendTrace"
 
 i=0
 for NODE in "${NODES[@]}"
 do
-  START_PARAMS_ARR+=("--name ${NODE} --node ${NODE} 128.0.0.1 $((5541 + (i*10))) ${BASE_START_PARAMS}")
+  START_PARAMS_ARR+=("--name ${NODE} --node NODE0 128.0.0.1 5541 --node NODE1 128.0.0.1 5551 ${BASE_START_PARAMS}")
   START_CLUSTER_PARAMS_ARR+=("--name ${NODE} ${BASE_START_CLUSTER_PARAMS}")
   NOHUP_FILE_ARR+=("${ROOT_DIR}/nohupSE-${NODE}.out")
   PIDFILE_ARR+=("${ROOT_DIR}/se-${NODE}.pid")
