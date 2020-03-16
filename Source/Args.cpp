@@ -70,6 +70,7 @@ Args::Args(void)
   m_nDummyLoop       = 0;
   m_nEntries         = 0;
   m_bFreeCB          = false;
+  m_bGridTest        = false;
   m_bLock            = false;
   m_bHugePages       = false;
   m_bKillPrev        = false;
@@ -258,6 +259,12 @@ bool Args::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--freeCB"_Stz)) {
       m_bFreeCB = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--gridTest"_Stz)) {
+      m_bGridTest = true;
       continue;
     }
     
