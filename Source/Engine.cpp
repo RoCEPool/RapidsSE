@@ -364,10 +364,11 @@ void Engine::vCreateAttachMap(void)
   new AttachMap;
 
   if (AM::bVerboseProgress())
-    vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
+    vInfo("\n*\n* Create Attach Map\n*\n"_Stz);
 
   if (AM::bVerboseProgress())
-    vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
+    vInfo("Created attachMap %p: sizeof(AttachMap)=%lldB\n"_Stz,
+          gpAttachMap,
           sizeof(AttachMap));
 
 }
@@ -890,7 +891,7 @@ void Engine::vOpenTrace(void)
   RASSERT(bOpened);
   
   if (AM::bVerboseProgress())
-    vInfo("Trace file opened: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
+    vInfo("Opened trace file: %s\n"_Stz,gpAttachMap->m_sTraceFile.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
