@@ -79,7 +79,7 @@ Args::Args(void)
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
-  m_bProgress        = false;
+  m_bProgress        = true;
   m_bReload          = false;
   m_bRestart         = true;
   m_nSubIngesters    = 4;
