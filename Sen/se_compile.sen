@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* se_boot.sen -- compile the dictionary                                      */
+/* se_compile.sen -- compile the dictionary                                      */
 /*============================================================================*/
 
-"se_boot.sen" .verbose
+"se_compile.sen" .verbose
 
-"se_boot progress: " .put
+"Compilation progress: " .put
 9 .put
 8 .put  "vocab.sen"         include
 7 .put  "tasks.sen"         include
