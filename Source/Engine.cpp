@@ -81,6 +81,66 @@ void Engine::vPreliminary(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* run command line                                                           */
+/*----------------------------------------------------------------------------*/
+void Engine::vRunCommandLine(void)
+{
+  
+  eBO eBootOption = eDecodeCommandLine();
+
+  if (AM::bVerboseProgress()) {
+    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
+    switch (eBootOption) {
+        
+      case BO_ADD_NODE:     vInfo("BO_ADD_NODE\n"_Stz);     break;
+      case BO_PROMPT:       vInfo("BO_PROMPT\n"_Stz);       break;
+      case BO_SETH_PROMPT:  vInfo("BO_SETH_PROMPT\n"_Stz);  break;
+      case BO_START:        vInfo("BO_START\n"_Stz);        break;
+      case BO_START_PROMPT: vInfo("BO_START_PROMPT\n"_Stz); break;
+      case BO_STATUS:       vInfo("BO_STATUS\n"_Stz);       break;
+      case BO_STOP:         vInfo("BO_STOP\n"_Stz);         break;
+      case BO_UNLINK:       vInfo("BO_UNLINK\n"_Stz);       break;
+        
+      default:
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+               "Unknown command line argument\n"_Stz);
+    }
+
+  }
+  
+  try {
+    switch (eBootOption) {
+        
+      case BO_ADD_NODE:     vStartSystem();   vWaitStop();                break;
+        
+      case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
+      case BO_SETH_PROMPT:  vCallPrompt();                                break;
+      case BO_START:        vStartSystem();   vWaitStop();                break;
+      case BO_START_PROMPT:
+        vStartSystem();
+#ifdef WITH_APPLE
+        if (! gxArgs.m_bNoMunge )
+          vMungeCheck();
+#endif
+        vCallPrompt();
+        break;
+        
+      case BO_STATUS:       vPrintStatus();                               break;
+      case BO_STOP:         vStopSystem();                                break;
+      case BO_UNLINK:       vStopSystem();                                break;
+        
+      default:
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+               "Unknown command line argument\n"_Stz);
+    }
+  }
+  
+  catch (Error* pError) {
+    vErrorHandler(pError);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* concluding activities                                                      */
 /*----------------------------------------------------------------------------*/
 void Engine::vConcluding(void)
@@ -891,104 +951,6 @@ void Engine::vPrintWelcome(void)
     vInfo("  Branch   : %s\n"_Stz,gsBuildBranch);
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* run command line                                                           */
-/*----------------------------------------------------------------------------*/
-void Engine::vRunCommandLine(void)
-{
-  
-  eBO eBootOption = eDecodeCommandLine();
-
-  if (AM::bVerboseProgress()) {
-    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
-    switch (eBootOption) {
-        
-      case BO_ADD_NODE:     vInfo("BO_ADD_NODE\n"_Stz);     break;
-      case BO_PROMPT:       vInfo("BO_PROMPT\n"_Stz);       break;
-      case BO_SETH_PROMPT:  vInfo("BO_SETH_PROMPT\n"_Stz);  break;
-      case BO_START:        vInfo("BO_START\n"_Stz);        break;
-      case BO_START_PROMPT: vInfo("BO_START_PROMPT\n"_Stz); break;
-      case BO_STATUS:       vInfo("BO_STATUS\n"_Stz);       break;
-      case BO_STOP:         vInfo("BO_STOP\n"_Stz);         break;
-      case BO_UNLINK:       vInfo("BO_UNLINK\n"_Stz);       break;
-        
-      default:
-        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-               "Unknown command line argument\n"_Stz);
-    }
-
-  }
-  
-  try {
-    switch (eBootOption) {
-        
-      case BO_ADD_NODE:     vStartSystem();   vWaitStop();                break;
-        
-      case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
-      case BO_SETH_PROMPT:  vCallPrompt();                                break;
-      case BO_START:        vStartSystem();   vWaitStop();                break;
-      case BO_START_PROMPT:
-        vStartSystem();
-#ifdef WITH_APPLE
-        if (! gxArgs.m_bNoMunge )
-          vMungeCheck();
-#endif
-        vCallPrompt();
-        break;
-        
-      case BO_STATUS:       vPrintStatus();                               break;
-      case BO_STOP:         vStopSystem();                                break;
-      case BO_UNLINK:       vStopSystem();                                break;
-        
-      default:
-        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-               "Unknown command line argument\n"_Stz);
-    }
-  }
-  
-  catch (Error* pError) {
-    vErrorHandler(pError);
-  }
-}
-/*----------------------------------------------------------------------------*/
-//void Engine::vRunCommandLine(void)
-//{
-//  if (AM::bVerboseProgress())
-//    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
-//
-//  eBO eBootOption = eDecodeCommandLine();
-//
-//  try {
-//
-//    if (gxArgs.m_bStart) {
-//
-//      vStartSystem();
-//
-//      if (gxArgs.m_bPrompt)
-//        vCallPrompt();
-//      else
-//        vWaitStop();
-//    }
-//
-//    else if (gxArgs.m_bPrompt) {
-//      vOpenLog();
-//      vCallPrompt();
-//    }
-//    else if (gxArgs.m_bStatus)  vPrintStatus();
-//    else if (gxArgs.m_bStop)    vStopSystem();
-//    else if (gxArgs.m_bUnlink)  vUnlinkSystem();
-//    else if (gxArgs.m_bSethScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
-//    else {
-//      THROW_FATAL("Unknown command line argument\n"_Stz);
-//    }
-//
-//  }
-//
-//  catch (Error* pError) {
-//    vErrorHandler(pError);
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* run utilities                                                              */
