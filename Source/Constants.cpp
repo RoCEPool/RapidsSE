@@ -150,7 +150,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 
   vAddConstant("C_LOW_BUFFERS"_Stz,       C_LOW_BUFFERS);
-  vAddConstant("C_MAX_PRECISION_BCD"_Stz, C_MAX_PRECISION_BCD);
+  vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);

@@ -25,21 +25,24 @@ PromptFun __Prompt_constants (
 bool Prompt::bPrompt_constants(SePrompt* pPrompt)
 {
   vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
-  vTrace("  C_MAX_PRECISION_BCD = %lld\n"_Stz,C_MAX_PRECISION_BCD);
+  vTrace("  C_MAX_BCD_PRECISION = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
+  vTrace("  C_MAX_FLT_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
+  vTrace("  C_MAX_INT_PRECISION = %lld\n"_Stz,C_MAX_INT_PRECISION);
   vTrace("  C_MAX_NODES         = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_PARTITIONS    = %lld\n"_Stz,C_MAX_PARTITIONS);
   vTrace("  C_MAX_RECORD        = %lld\n"_Stz,C_MAX_RECORD);
-  vTrace("  C_MAX_SESSION       = %lld\n"_Stz,C_MAX_SESSIONS);
+  vTrace("  C_MAX_SESSIONS      = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PRECENT   = %lld\n"_Stz,C_MAX_SHM_PRECENT);
   vTrace("  C_MAX_PATH          = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_SLOTS         = %lld\n"_Stz,C_MAX_SLOTS);
+  vTrace("  C_MAX_THREADS       = %lld\n"_Stz,C_MAX_THREADS);
+  vTrace("  C_MAX_TOKENS        = %lld\n"_Stz,C_MAX_TOKENS);
+  vTrace("  C_MAX_VCH_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MIN_SHM_REGION    = %lld\n"_Stz,C_MIN_SHM_REGION);
   vTrace("  C_WSP_DATACHUNK     = %lld\n"_Stz,C_WSP_DATACHUNK);
   vTrace("  C_WSP_STACK         = %lld\n"_Stz,C_WSP_STACK);
-  vTrace("  C_MAX_TOKENS        = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("\n"_Stz);
-
 
   vTrace("  C_SIZE_SMALL_OBJECT  = %lld\n"_Stz,C_SIZE_SMALL_OBJECT);
   vTrace("  C_SIZE_MEDIUM_OBJECT = %lld\n"_Stz,C_SIZE_MEDIUM_OBJECT);

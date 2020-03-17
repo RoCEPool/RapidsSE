@@ -462,7 +462,7 @@ eEC TableDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   // set default precision and scale
-  i8 iPrecision = C_MAX_PRECISION_BCD;
+  i8 iPrecision = C_MAX_BCD_PRECISION;
   i8 iScale = 0;
   
   // set column type in column
@@ -525,7 +525,7 @@ eEC TableDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   // set default size
-  i8 iSize = C_MAX_PRECISION_FLT;
+  i8 iSize = C_MAX_FLT_PRECISION;
   
   // set column type
   pCol->vColumnType(CT_FLOAT);
@@ -577,7 +577,7 @@ eEC TableDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
   
   pCol->vColumnType(CT_INTEGER);
   pCol->vDatum(DM_INT);
-  pCol->vColumnLength(C_MAX_PRECISION_INT);
+  pCol->vColumnLength(C_MAX_INT_PRECISION);
 
   return EC_NONE;
 }

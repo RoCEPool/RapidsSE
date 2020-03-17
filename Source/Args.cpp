@@ -33,7 +33,7 @@ Args::Args(void)
   m_sCommandsDir  = "../../Commands"_Stz;
 #endif
   m_sNodeName     = "node"_Stz;
-  m_aRegionAddr   = (void*)C_ADDR_POOL;
+  m_aRegionAddr   = (void*)C_ADR_REGION;
   m_sRegionName   = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
   m_iRegionSize   = (4 * 1_GB) + m_iJumboSize;

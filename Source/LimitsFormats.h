@@ -37,10 +37,10 @@ static const i8 C_MAX_NESTED_WORDS  = 16;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-static const i8 C_MAX_PRECISION_BCD = 19;
-static const i8 C_MAX_PRECISION_FLT = 19;
-static const i8 C_MAX_PRECISION_INT = 19;
-static const i8 C_MAX_PRECISION_VCH = C_64KB; // max defined length of a vch col
+static const i8 C_MAX_BCD_PRECISION = 19;
+static const i8 C_MAX_FLT_PRECISION = 19;
+static const i8 C_MAX_INT_PRECISION = 19;
+static const i8 C_MAX_VCH_PRECISION = C_64KB; // max defined length of a vch col
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

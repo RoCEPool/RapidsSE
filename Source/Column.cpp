@@ -95,13 +95,13 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Column::bValidBcd(i8 iPrecision, i8 iScale)
 {
-  if (iPrecision > C_MAX_PRECISION_BCD)
+  if (iPrecision > C_MAX_BCD_PRECISION)
     return false;
   
   if (iScale > iPrecision)
     return false;
   
-  if (iScale > C_MAX_PRECISION_BCD)
+  if (iScale > C_MAX_BCD_PRECISION)
     return false;
   
   return true;
@@ -112,7 +112,7 @@ bool Column::bValidBcd(i8 iPrecision, i8 iScale)
 /*----------------------------------------------------------------------------*/
 bool Column::bValidFlt(i8 iPrecision)
 {
-  if (iPrecision > C_MAX_PRECISION_FLT)
+  if (iPrecision > C_MAX_FLT_PRECISION)
     return false;
   
   return true;
@@ -123,7 +123,7 @@ bool Column::bValidFlt(i8 iPrecision)
 /*----------------------------------------------------------------------------*/
 bool Column::bValidVch(i8 iSize)
 {
-  if (iSize > C_MAX_PRECISION_VCH)
+  if (iSize > C_MAX_VCH_PRECISION)
     return false;
   
   return true;
