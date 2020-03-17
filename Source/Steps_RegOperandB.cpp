@@ -19,7 +19,7 @@ void Step::vAddSteps_RegOperandB(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* OperandB[].get -- fetch operand                                             */
+/* OperandB[].appendClose -- append close                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBAppendClose(void)
 {

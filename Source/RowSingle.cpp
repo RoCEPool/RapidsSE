@@ -161,7 +161,7 @@ void RowSingle::vCopy(Row* pRow)
         continue;
       }
       
-      char* acSrcString = (char*)pRow->m_waColVal[i_Col].m_azStr;
+      char* acSrcString = (char*)pRow->szStzGet(i_Col);
       vAllotSetVarchar(i_Col, (Stz*)acSrcString);
       
       continue;

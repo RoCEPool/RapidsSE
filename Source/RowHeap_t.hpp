@@ -19,26 +19,21 @@ namespace Structures
     RowHeap_t(void);
     ~RowHeap_t(void) noexcept(false);
   
-    //ITEM*  aAdjacentItem(ITEM* aItem);
     ITEM*  aAdjacentItem(ITEM* aItem, i8 nSizeBytes);
-    byte*  ayAllotHead(i8 nBytes);
-    byte*  ayAllotTail(i8 nBytes);
-    ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
+    ITEM*  ayAllotHead(i8 nBytes);
+    Stz*   ayAllotTail(i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
-    void   vDumpItems(void);
     ITEM*  aFirstItem(void);
     i8     nFreeBytes(void);
     void   vFreeItem(ITEM* aItem, i8 nBytes);
-    //void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     void   vIncItems(void);
     ITEM*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
     void   vResetUsed(void);
-    //void   vSetUsed(ITEM* aUptil);
-    i4     iToOffset(ITEM* aItem);
+    i8     iToOffset(Object* Buffer, Stz* aItem);
     i8     nUsedBytes(void);
 
   private:
@@ -138,52 +133,34 @@ ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nSizeItem)
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-byte* RowHeap_t<ITEM>::ayAllotHead(i8 nBytes)
+ITEM* RowHeap_t<ITEM>::ayAllotHead(i8 nBytes)
 {
   // test sufficient free space
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  byte* ayBytes = m_xWsp.ayAllotHead(nBytes);
+  ITEM* aItem = (ITEM*)m_xWsp.ayAllotHead(nBytes);
   
   vSetWilderness();
   
-  return ayBytes;
+  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-byte* RowHeap_t<ITEM>::ayAllotTail(i8 nBytes)
+Stz* RowHeap_t<ITEM>::ayAllotTail(i8 nBytes)
 {
   // test sufficient free space
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  byte* ayBytes = m_xWsp.ayAllotTail(nBytes);
+  Stz* ayStz = (Stz*)m_xWsp.ayAllotTail(nBytes);
   
   vSetWilderness();
   
-  return ayBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot an item of nBytes in this buffer                                     */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* RowHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
-{
-//  ITEM* aItem = reinterpret_cast<ITEM*>(ayAllotBytes(nBytes));
-//  if (! aItem)
-//    return nullptr;
-//
-//  new(aItem) ITEM(eClassNo,nBytes);
-//
-//  m_nItems++;
-//
-//  return aItem;
-  ASSERT(0);
+  return ayStz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,56 +183,6 @@ template <class ITEM>
 void RowHeap_t<ITEM>::vDecItems(void)
 {
   m_nItems--;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump items in heap                                                         */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-void RowHeap_t<ITEM>::vDumpItems(void)
-{
-  i8 iItem = 0;
-  
-  ITEM* aItem = aFirstItem();
-  //  if (m_i4aItemOffsets)
-  //    aItem = aAdd<ITEM*>(aItem,sizeof(i4) * C_MAX_ITEMS);
-  
-  for (;
-       aItem;
-       aItem = aAdjacentItem(aItem)) {
-    
-    i8 iOffset = iToOffset(aItem);
-    eCN eClass = aItem->eClass();
-    switch (eClass) {
-        
-      case CN_ENT: {
-        ITEM* aEntry = _aItem(aItem);
-        vTrace("[%04lld:%06lld] CN_ENT: %lldB\n"_Stz,
-               iItem,iOffset,aEntry->nSizeData());
-        break;
-      }
-        
-      case CN_FREEITEM: {
-        FreeItem* aFreeItem = _aFreeItem(aItem);
-        vTrace("[%04lld:%06lld] CN_FREEITEM: %lldB\n"_Stz,
-               iItem,iOffset,aFreeItem->nSizeBytes());
-        break;
-      }
-        
-      case CN_WILDERNESS: {
-        Wilderness* aWilderness = _aWilderness(aItem);
-        vTrace("[%04lld:%06lld] CN_WILDERNESS: %lldB\n"_Stz,
-               iItem,iOffset,aWilderness->nSizeBytes());
-        break;
-      }
-      default:
-        vTrace("Unknown class in item heap\n"_Stz);
-        vTrace("Unknown class %lld\n"_Stz,eClass);
-    }
-    
-    iItem++;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,11 +319,11 @@ void RowHeap_t<ITEM>::vResetUsed(void)
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-i4 RowHeap_t<ITEM>::iToOffset(ITEM* aItem)
+i8 RowHeap_t<ITEM>::iToOffset(Object* pBuffer, Stz* aItem)
 {
-  i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.ayArea()));
+  i4 iOffset = static_cast<i4>(nSub(aItem,pBuffer));
   
-  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
+  //ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
   return iOffset;
 }

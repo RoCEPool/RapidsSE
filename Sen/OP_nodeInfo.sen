@@ -36,6 +36,10 @@
   // pipeout the infoset
   InfoSet[].pipeout
 
+  // send EOSMARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
   true
 ;
 

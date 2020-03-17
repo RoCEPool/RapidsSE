@@ -89,7 +89,7 @@ void Row::vDump(StreamDef* pStreamDef)
         continue;
       }
       
-      char* acSrcString = (char*)m_waColVal[i_Col].m_szVch;
+      Stz* acSrcString = szStzGet(i_Col);
       
       vTrace(" %s "_Stz, acSrcString);
       
@@ -103,6 +103,29 @@ void Row::vDump(StreamDef* pStreamDef)
   }
 
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get string column                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Row::szStzGet(i8 i_Col)
+{
+  // get the poolBuffer from the row address
+  PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(pPoolBuffer);
+  
+  Object* pRowBuffer =
+  reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
+  
+  // get the offset of the string
+  i8 i_Offset = m_waColVal[i_Col].m_iWrd;
+  
+  // get address of string within pool buffer
+  Stz* pStz = pAdd<Stz*>(pRowBuffer,i_Offset);
+  
+  return pStz;
 }
 
 /*============================================================================*/

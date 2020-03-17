@@ -14,13 +14,6 @@
 
   Operand[] to InfoSet[]
   InfoSet[].firstRow to row[]
-  InfoSet[].delete
-
-  // find the __nodeInfo table
-  C_TDEF_GRIDSANITY op__tableDef
-
-  // create a new stream defnition as per the nodeinfo being sent
-  StreamDef[].new
 
   // get row size from streamDef
   StreamDef[].rowSize to iRowSize
@@ -31,13 +24,47 @@
   // add nodeInfo to the infoSet
   row[].get StreamDef[] InfoSet[].addGridSanity assert
 
-  // pipeout the streamDef
-  StreamDef[].pipeout
-
   // pipeout the infoset
   InfoSet[].pipeout
 
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: GridSanity_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  Operand[].pipeOut
+
+  // find the __nodeInfo table
+  C_TDEF_GRIDSANITY op__tableDef
+
+  // create a new stream defnition as per the nodeinfo being sent
+  StreamDef[].new
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  StreamDef[].new
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                        */
+/*----------------------------------------------------------------------------*/
+: GridSanity_EosMarker \handler
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+
+  Operand[].pipeout
+
+  StreamDef[].delete
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +74,7 @@
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Operand[].delete
+
   true
 ;
 
@@ -59,8 +87,10 @@
 
   op__topology
 
-  find: GridSanity_InfoSet ZK_INFOSET op[].handler!
-  find: GridSanity_StreamDef ZK_STREAMDEF op[].handler!
+  find: GridSanity_InfoSet     ZK_INFOSET op[].handler!
+  find: GridSanity_StartMarker ZK_STARTMARKER op[].handler!
+  find: GridSanity_EosMarker   ZK_EOSMARKER op[].handler!
+  find: GridSanity_StreamDef   ZK_STREAMDEF op[].handler!
 
   op__loop
 

@@ -52,7 +52,7 @@ static CAST pAdd(Object* pObject, i8 nBytes)
   
   CAST pOtherObject = reinterpret_cast<CAST>(aAddr1);
   
-  ASSERT(pOtherObject->bValidMagic());
+  ASSERT(pObject->bValidMagic());
   
   return pOtherObject;
 }

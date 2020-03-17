@@ -257,8 +257,8 @@ void RowCompactor::vAnalyzeSamples(void)
       if (pOuterRow->m_waColVal[i_Col].bIsNull())
         continue;
       
-      char* azOuterStr = pOuterRow->m_waColVal[i_Col].m_azStr;
-      i8 nLength = StrLib::nLength(azOuterStr);
+      Stz* azOuterStr = pOuterRow->szStzGet(i_Col);
+      i8 nLength = StrLib::nLength((char*)azOuterStr);
       if (nLength < 8)
         continue;
       
@@ -295,15 +295,15 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) does the inner vch equal the outer vch?
   
-  char* azInnerStr = pInnerRow->m_waColVal[i_Col].m_azStr;
-  char* azOuterStr = pOuterRow->m_waColVal[i_Col].m_azStr;
+  char* azInnerStr = (char*)pInnerRow->szStzGet(i_Col);
+  char* azOuterStr = (char*)pOuterRow->szStzGet(i_Col);
   if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) is there already a tail for the vch?
   
-  TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
+  TailStr xFindTail(pOuterRow->szStzGet(i_Col));
   
   if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
     return;
@@ -330,7 +330,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // **********************************
   //
   
-  aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
+  aTail->vAssign(pOuterRow->szStzGet(i_Col));
  
   m_pCrwNub->vSetLastStr(i_Tail);
   
@@ -547,14 +547,14 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     
     // -- non-null vch column --
     
-    char* azStr = aColVal->m_azStr;
-    if (StrLib::nLength(azStr) < 8)
+    Stz* azStr = pInflatedRow->szStzGet(i_Col);
+    if (StrLib::nLength((char*)azStr) < 8)
       continue;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
-    TailStr xFindTail(aColVal->m_szVch);
+    TailStr xFindTail(azStr);
     
 #ifdef WITH_ENCODING_TRACE
     vDumpTails();

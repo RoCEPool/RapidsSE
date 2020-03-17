@@ -35,6 +35,9 @@ void Step::vRegInfoSetAddGridSanity(void)
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
+  //StreamDef* pStreamDefNI = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  
+  //pNodeInfo->vDump(pStreamDefNI);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
@@ -59,7 +62,7 @@ void Step::vRegInfoSetAddGridSanity(void)
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
-                                  pNodeInfo->m_waColVal[0].m_szVch,
+                                  pNodeInfo->szStzGet(0),
                                   bHomogenous,
                                   C_VARGS_END);
   ASSERT(pRow);

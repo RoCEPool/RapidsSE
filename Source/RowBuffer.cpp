@@ -63,7 +63,7 @@ Row* RowBuffer::aAllotRow(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // allot using bytes as we don't know the size of the item
-  byte* ayRow = ayAllotHead(nBytes);
+  Row* ayRow = ayAllotHead(nBytes);
   
   if (! ayRow)
     return nullptr;
@@ -111,11 +111,11 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
       i8 nSrcLength = StrLib::iSize(acSrcString);
       
-      char* acDstString = (char*)ayAllotTail(nSrcLength);
-      i8 nCopyBytes = StrLib::nCopy(acDstString, acSrcString);
+      Stz* acDstString = ayAllotTail(nSrcLength);
+      i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
       
-      pRow->m_waColVal[i_Col].m_azStr = acDstString;
+      pRow->m_waColVal[i_Col].m_iWrd = iToOffset(this, acDstString);
       
       continue;
     }

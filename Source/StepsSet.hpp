@@ -1108,6 +1108,7 @@ public:
 
   // reg stream def
   void vRegStreamDefAsStr(void);
+  void vRegStreamDefDelete(void);
   void vRegStreamDefGet(void);
   void vRegStreamDefNew(void);
   void vRegStreamDefNewCount(void);

@@ -21,7 +21,7 @@ namespace Rows
     static i8 nSizeBytes(StreamDef* pStreamDef);
     void vDump(StreamDef* pStreamDef);
   
-    Stz* szStzGet(i8 i_Offset);
+    Stz* szStzGet(i8 i_Col);
   };
   
   Row* _pRow(void* aAddr);

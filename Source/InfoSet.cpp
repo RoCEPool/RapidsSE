@@ -149,7 +149,7 @@ Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
          return nullptr;
        
        StrLib::vCopy((char*)ayTail, szVal->azChar());
-       ayRow->m_waColVal[i_Col].m_szVch = ayTail;
+       ayRow->m_waColVal[i_Col].m_iWrd = iToOffset(this, ayTail);
      }
      else
        ayRow->m_waColVal[i_Col].vSetNull();

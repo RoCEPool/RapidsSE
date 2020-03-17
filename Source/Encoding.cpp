@@ -304,7 +304,12 @@ void Encoding::vInitialEncoding(Row* pRow)
       case DM_IVL: vEncodeIvl(xrColEnc,wColVal);  break;
       case DM_TME: vEncodeTme(xrColEnc,wColVal);  break;
       case DM_TSP: vEncodeTsp(xrColEnc,wColVal);  break;
-      case DM_VCH: vEncodeVch(xrColEnc,wColVal);  break;
+      case DM_VCH:
+        // get the stz from the row
+        if ( ! wColVal.bIsNull() )
+          wColVal.m_szVch = pRow->szStzGet(i_Col);
+        vEncodeVch(xrColEnc,wColVal);
+        break;
         
       default:
         NEVER_REACH;

@@ -11,6 +11,7 @@ void Step::vAddSteps_RegStreamDef(void)
 {
   vAddStep("StreamDef[]"_Stz,                 &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].asStr"_Stz,           &Step::vRegStreamDefAsStr);
+  vAddStep("StreamDef[].delete"_Stz,          &Step::vRegStreamDefDelete);
   vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
   vAddStep("StreamDef[].new"_Stz,             &Step::vRegStreamDefNew);
@@ -34,6 +35,20 @@ void Step::vRegStreamDefAsStr(void)
   pStreamDef->vAsString(sStreamDef.pString());
   
   m_pDataStack->vPushStr(sStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].delete -- delete streamDef                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefDelete(void)
+{
+  ENTRY(); // ENTRY("vRegStreamDefDelete"_Stz);
+
+  AM::vDeleteOperand(*m_pRegSet->m_xpStreamDef);
+  
+  m_pRegSet->m_xpStreamDef = nullptr;
   
   EXIT();
 }
