@@ -60,7 +60,7 @@ void Engine::vPreliminary(void)
   
   if (AM::bVerboseProgress()) {
     vTrace("\n"_Stz);
-    vTrace("CommandLine:\n"_Stz);
+    vTrace("argv[]:\n"_Stz);
     for (i8 i = 0; i < gi_argc; i++)
       vTrace("  argv[%lld] %s\n"_Stz,i,gi_argv[i]);
   }
@@ -114,6 +114,8 @@ void Engine::vPreliminary(void)
 //  gpAttachMap->m_bMarkResource[RK_FILE] = true;
 //  gpAttachMap->m_bMarkResource[RK_DIR] = true;
   
+  if (AM::bVerboseProgress())
+     vInfo("\n*\n* %lld) Synthesise Names\n*\n"_Stz,giProgressPoint++);
   vCreateFileNames();
   
   //vOpenTrace();
@@ -527,6 +529,14 @@ void Engine::vCreateFileNames(void)
   gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
 #endif
+  
+  if (AM::bVerboseProgress()) {
+    vInfo("Trace file path: %s\n"_Stz,gpAttachMap->m_sTraceFile.szStz());
+    vInfo("Log file path (csv): %s\n"_Stz,gpAttachMap->m_sLogCsvFile.szStz());
+    vInfo("Log file path (text): %s\n"_Stz,gpAttachMap->m_sLogTxtFile.szStz());
+
+    vInfo("Log region name: %s\n"_Stz,gpAttachMap->m_sLogRegion.szStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
