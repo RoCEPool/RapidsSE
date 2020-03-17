@@ -825,6 +825,14 @@ void Args::vPrintStartupInfo(void)
   
   if (m_bDeveloper) vTrace("  --developer\n"_Stz);
   
+  for (i8 i_Node = 0; i_Node < m_nNodes; i_Node++)
+    vTrace("  --node %s ip %s port %lld\n"_Stz,
+           m_xNodes[i_Node].m_sNodeName.szStz(),
+           m_xNodes[i_Node].m_sIPAddress.szStz(),
+           m_xNodes[i_Node].m_iPortNo);
+    
+
+  
   Correctness::vTraceWith();
 }
 
