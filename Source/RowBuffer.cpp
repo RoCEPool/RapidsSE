@@ -46,9 +46,7 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RowBuffer* pRowBuffer = _pRowBuffer(pObject);
-  
-  //pIrwBuffer->vShow();
+  //RowBuffer* pRowBuffer = _pRowBuffer(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,18 +101,22 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
     
     if (DM_VCH == pCol->eDatum()) {
       
+      // check for null
       if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
         pRow->m_waColVal[i_Col].vSetNull();
         continue;
       }
       
+      // get src string
       char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
       i8 nSrcLength = StrLib::iSize(acSrcString);
       
+      // allocate a string from the tail
       Stz* acDstString = ayAllotTail(nSrcLength);
       i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
       
+      // set offset of tail string
       pRow->m_waColVal[i_Col].m_iWrd = iToOffset(this, acDstString);
       
       continue;

@@ -74,59 +74,6 @@ bool IrwBuffer::bCopyRow(RowSingle* pRowSingle)
     return false;
   else
     return true;
-  
-  /*
-  StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
-  
-  i8 nHeadSize = Row::nSizeBytes(pStreamDef);
-  i8 nTailSize = pRowSingle->nSizeVch();
-  
-  if (nFreeBytes() < nHeadSize + nTailSize)
-    return false;
-  
-  Row* pRow = aAllotRow(nHeadSize);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy single row into this buffer
-  
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(C_ALL); i_Col++) {
-    
-    Column* pCol = pStreamDef->pGetColumn(i_Col);
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // vch
-    
-    if (DM_VCH == pCol->eDatum()) {
-      
-      if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
-        pRow->m_waColVal[i_Col].vSetNull();
-        continue;
-      }
-      
-      char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
-      i8 nSrcLength = StrLib::iSize(acSrcString);
-      
-      char* acDstString = (char*)ayAllotTail(nSrcLength);
-      i8 nCopyBytes = StrLib::nCopy(acDstString, acSrcString);
-      ASSERT(nCopyBytes + 1 == nSrcLength);
-      
-      pRow->m_waColVal[i_Col].m_azStr = acDstString;
-      
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // all others
-    
-    pRow->m_waColVal[i_Col].m_iWrd = pRowSingle->m_waColVal[i_Col].m_iWrd;
-  }
-  
-#ifdef WITH_ENCODING_TRACE
-  SP_Row spRow;
-  vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pRowSingle));
-#endif
-
-  //pRow->vDump(pStreamDef);
-  */
 }
 
 /*----------------------------------------------------------------------------*/

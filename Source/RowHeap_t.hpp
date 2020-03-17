@@ -92,26 +92,6 @@ RowHeap_t<ITEM>::~RowHeap_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get item which is memory-wise the next item in the item area               */
 /*----------------------------------------------------------------------------*/
-//template <class ITEM>
-//ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nBytes)
-//{
-//  ITEM* aAdjacent = nullptr;
-//
-//  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
-//                    ? ((FreeItem*)aItem)->nSizeBytes()
-//                    : aItem->nSizeBytes();
-//
-//  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
-//
-//  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatterHead())
-//    return nullptr;
-//
-//  return aAdjacent;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get item which is memory-wise the next item in the item area               */
-/*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* RowHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nSizeItem)
 {
@@ -227,15 +207,6 @@ void RowHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* give space back to this buffer                                             */
-/*----------------------------------------------------------------------------*/
-//template <class ITEM>
-//void RowHeap_t<ITEM>::vGiveSpace(i8 nBytes)
-//{
-//  m_xWsp.vGive(nBytes);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
@@ -301,19 +272,6 @@ void RowHeap_t<ITEM>::vResetUsed(void)
   
   vSetWilderness();
 }
-
-/*----------------------------------------------------------------------------*/
-/* set used space (typically after a compaction)                              */
-/*----------------------------------------------------------------------------*/
-//template <class ITEM>
-//void RowHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
-//{
-//  i8 nUsedBytes = nSub(aUptil,aItemArea());
-//
-//  m_xWsp.vUsed(nUsedBytes);
-//
-//  vSetWilderness();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
