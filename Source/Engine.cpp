@@ -1090,10 +1090,10 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_PARTITIONS    = %lld\n"_Stz,C_MAX_PARTITIONS);
   vTrace("  C_MAX_RECORD        = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SESSIONS      = %lld\n"_Stz,C_MAX_SESSIONS);
-  vTrace("  C_MEMORY_PERCENT    = %lld\n"_Stz,C_MEMORY_PERCENT);
-  vTrace("  C_MIN_REGION        = %lld\n"_Stz,C_MIN_REGION);
+  vTrace("  C_MAX_SHM_PRECENT   = %lld\n"_Stz,C_MAX_SHM_PRECENT);
   vTrace("  C_MAX_PATH          = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_SLOTS         = %lld\n"_Stz,C_MAX_SLOTS);
+  vTrace("  C_MIN_SHM_REGION    = %lld\n"_Stz,C_MIN_SHM_REGION);
   vTrace("  C_WSP_DATACHUNK     = %lld\n"_Stz,C_WSP_DATACHUNK);
   vTrace("  C_WSP_STACK         = %lld\n"_Stz,C_WSP_STACK);
   vTrace("  C_MAX_TOKENS        = %lld\n"_Stz,C_MAX_TOKENS);

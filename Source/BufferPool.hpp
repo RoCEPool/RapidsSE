@@ -5,11 +5,10 @@
 
 namespace Pool
 {
-  static const i8 C_MIN_REGION = 1024 * C_1MB;
-  static const i8 C_MEMORY_PERCENT = 95;
-  static const void* C_ADDR_POOL = (void*)0x204800000000;
+  static const void* C_ADDR_POOL    = (void*)0x204800000000;
 
-  class PoolBuffer;
+  static const i8 C_MIN_SHM_REGION  = 1024 * C_1MB;
+  static const i8 C_MAX_SHM_PRECENT = 95;
 
   class BufferPool : public Object
   {

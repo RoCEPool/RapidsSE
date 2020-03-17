@@ -504,23 +504,23 @@ bool Args::bParse(int argc, Stz* argv[])
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
-      if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
+      if (m_iRegionSize > DIV(C_MAX_SHM_PRECENT * iTotalMemory, 100)) {
         vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         s32 sMag;
         MagLib::vByteMag(iTotalMemory,sMag);
         vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
-              C_MEMORY_PERCENT,
+              C_MAX_SHM_PRECENT,
               sMag.azChar());
         return false;
       }
       
       s32 sMinSize;
-      MagLib::vByteMag(C_MIN_REGION, sMinSize);
+      MagLib::vByteMag(C_MIN_SHM_REGION, sMinSize);
       
       s32 sSize;
       MagLib::vByteMag(m_iRegionSize, sSize);
       
-      if (m_iRegionSize < C_MIN_REGION) {
+      if (m_iRegionSize < C_MIN_SHM_REGION) {
         vWarn("Insufficient region size: %s. At least %s is required\n"_Stz,
               sSize.szStz(),
               sMinSize.szStz());
