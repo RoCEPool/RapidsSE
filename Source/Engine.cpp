@@ -29,6 +29,10 @@ extern Atomic gixSocket;
 extern i8     giProgressPoint;
 extern i8     giProgressSubPoint;
 
+extern int    gi_argc;
+extern char** gi_argv;
+
+
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -52,6 +56,14 @@ void Engine::vPreliminary(void)
   vOpenTrace();
 
   vPrintWelcome();
+  
+  
+  if (AM::bVerboseProgress()) {
+    vTrace("\n"_Stz);
+    vTrace("CommandLine:\n"_Stz);
+    for (i8 i = 0; i < gi_argc; i++)
+      vTrace("  argv[%lld] %s\n"_Stz,i,gi_argv[i]);
+  }
   
   vPrintTime();
 
