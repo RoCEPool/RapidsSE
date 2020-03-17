@@ -73,17 +73,31 @@ void Engine::vPreliminary(void)
   
   gxArgs.vPrintStartupInfo();
 
+  if (AM::bVerboseProgress())
+     vInfo("\n*\n* %lld) Internal Initialisation\n*\n"_Stz,giProgressPoint++);
+
+  if (AM::bVerboseProgress())
+     vInfo("Setting signal handlers...\n"_Stz);
   vSetSignalHandlers();
   
-  // init the tls keys
+  if (AM::bVerboseProgress())
+     vInfo("Init TLS keys...\n"_Stz);
   TlsKeys::vInit();
   
+  if (AM::bVerboseProgress())
+     vInfo("Init H/W counters...\n"_Stz);
   HwCounters::bInit();
   
+  if (AM::bVerboseProgress())
+     vInfo("Checking assumptions...\n"_Stz);
   StorageEngine::vCheckAllAssumptions();
 
+  if (AM::bVerboseProgress())
+     vInfo("Boot check...\n"_Stz);
   AM::vBootCheck();
   
+  if (AM::bVerboseProgress())
+     vInfo("Sanity check...\n"_Stz);
   vSanityCheck();
   
   //vWriteRegionName();
@@ -390,6 +404,8 @@ void Engine::vCheckGrid(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCheckNodes(void)
 {
+  if (gxArgs.m_nNodes < 1)
+    return;
   
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
