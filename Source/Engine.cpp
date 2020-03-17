@@ -519,13 +519,13 @@ void Engine::vCreateFileNames(void)
 #ifdef WITH_DEBUG_VERSION
   gpAttachMap->m_sTraceFile.vSprint("/tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
                                     "SEgrid"_Stz, gxArgs.m_sNodeName.szStz());
-  gpAttachMap->m_sLogRegion.vSprint("/tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
+  gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
 #else
   gpAttachMap->m_sTraceFile.vSprint("/tmp/SE_Trace_%s_%s.txt"_Stz,
                                     "SEgrid"_Stz, gxArgs.m_sNodeName.szStz());
-  gpAttachMap->m_sLogRegion.vSprint("/tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
+  gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("/tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("/tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
 #endif
