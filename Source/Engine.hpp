@@ -41,8 +41,9 @@ namespace StorageEngine
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTrace(void);
-    static void vPrintExit(void);
     static void vPrintBuild(void);
+    static void vPrintConstants(void);
+    static void vPrintExit(void);
     static void vPrintMachine(void);
     static void vPrintStatus(void);
     static void vPrintTime(void);
