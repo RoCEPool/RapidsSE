@@ -761,8 +761,7 @@ void Args::vPrintStartupInfo(void)
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   // print startup information
-  if ( ! (gxArgs.m_bWelcome && gxArgs.m_bStart) ||
-       ! m_bDeveloper)
+  if (! AM::bVerboseProgress())
     return;
   
   if (gxArgs.m_bVerbose) {
