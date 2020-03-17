@@ -55,6 +55,11 @@ AttachMap::AttachMap(void)
   
   gpAttachMap = this;
   
+  if (AM::bVerboseProgress())
+    vInfo("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
+          gpAttachMap,
+          sizeof(AttachMap));
+
   // the attach map must always be the first buffer in the buffer pool
   //ASSERT(nPoolBufferNo() == 1_bn);
   
@@ -84,14 +89,14 @@ AttachMap::AttachMap(void)
   AM::vRootConstant(m_pRootDic->pFindWord("rootConstant"_Stz));
   
   // create the persistent heaps
-  m_xHeapMem.Persistent.m_pJumbo  =
-    new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
-  m_xHeapMem.Persistent.m_pLarge  =
-    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  m_xHeapMem.Persistent.m_pMedium =
-    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
   m_xHeapMem.Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
+  m_xHeapMem.Persistent.m_pMedium =
+    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
+  m_xHeapMem.Persistent.m_pLarge  =
+    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
+  m_xHeapMem.Persistent.m_pJumbo  =
+    new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
   

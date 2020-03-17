@@ -20,6 +20,16 @@ void HeapMem::vInit(void)
   Transient.m_pLarge  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
   Transient.m_pMedium = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
   Transient.m_pSmall  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
+  if (AM::bVerboseProgress()) {
+    vInfo("Created jumbo heap %p: %lldB objects\n"_Stz,
+          Transient.m_pJumbo, C_SIZE_JUMBO_OBJECT);
+    vInfo("Created large heap %p: %lldB objects\n"_Stz,
+          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
+    vInfo("Created medium heap %p: %lldB objects\n"_Stz,
+          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    vInfo("Created small heap %p: %lldB objects\n"_Stz,
+          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
+  }
   
   // set up the jumbo heap
   Transient.m_pJumbo->vFixedHeap(true);

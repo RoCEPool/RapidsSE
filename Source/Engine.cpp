@@ -504,10 +504,6 @@ void Engine::vCreateAttachMap(void)
   // create the attach map (which records global pointers)
   new AttachMap;
 
-  if (AM::bVerboseProgress())
-    vInfo("Created attachMap %p: sizeof(AttachMap)=%lldB\n"_Stz,
-          gpAttachMap,
-          sizeof(AttachMap));
 
 }
 
