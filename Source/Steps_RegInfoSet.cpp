@@ -288,6 +288,8 @@ void Step::vRegInfoSetNewInfoSet(void)
 {
   ENTRY(); // ENTRY("vRegInfoSetNewInfoSet"_Stz);
   
+  ASSERT(m_pRegSet->m_xpInfoSet.bIsNull());
+  
   i8 nRowSize = m_pDataStack->iPopInt(__func__);
   
   m_pRegSet->m_xpInfoSet = new InfoSet(nRowSize);

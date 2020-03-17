@@ -18,6 +18,8 @@
   // get row size from streamDef
   StreamDef[].rowSize to iRowSize
 
+  nullptr to InfoSet[]
+
   // create an infoSet operand
   iRowSize InfoSet[].newInfoSet
 
@@ -26,6 +28,8 @@
 
   // pipeout the infoset
   InfoSet[].pipeout
+
+  Operand[].delete
 
   true
 ;
@@ -64,7 +68,7 @@
 
   StreamDef[].delete
 
-  false
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

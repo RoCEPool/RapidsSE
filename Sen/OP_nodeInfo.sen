@@ -5,18 +5,15 @@
 " OP_nodeInfo.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
+/* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: nodeInfo_StartMarker \handler
-  "Operand:- ZK_STARTMARKER" .verbose
+: nodeInfo_PulseMarker \handler
+  "Operand:- ZK_PULSEMARKER" .verbose
 
   0 locals| iRowSize |
 
   // pipeout the start marker
   Operand[].pipeout
-
-  // find the __nodeInfo table
-  C_TDEF_NODEINFO op__tableDef
 
   // create a new streamDef
   StreamDef[].new
@@ -43,6 +40,22 @@
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: nodeInfo_StartMarker \handler
+  "Operand:- ZK_STARTMARKER" .verbose
+
+  0 locals| iRowSize |
+
+  // pipeout the start marker
+  Operand[].pipeout
+
+  // find the __nodeInfo table
+  C_TDEF_NODEINFO op__tableDef
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* execute for chunk req                              (on node where spawned) */
@@ -53,6 +66,7 @@
 
   op__topology
 
+  find: nodeInfo_PulseMarker  ZK_PULSEMARKER op[].handler!
   find: nodeInfo_StartMarker  ZK_STARTMARKER op[].handler!
 
   op__loop
