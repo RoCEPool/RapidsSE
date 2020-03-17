@@ -943,7 +943,7 @@ void Engine::vOpenPool(void)
       s32 sRegionSize_magn;
       MagLib::vByteMag(gxArgs.m_iRegionSize,3,sRegionSize_magn);
       
-       vInfo("Created region %p: %s size %s\n"_Stz,
+       vInfo("Created new buffer pool region %p: %s size %s\n"_Stz,
             gxArgs.m_aRegionAddr,
             gxArgs.m_sRegionName.szStz(),
             sRegionSize_magn.szStz());

@@ -83,6 +83,7 @@ Log* Log::pAttachCreate(void)
 
   s32 sLogRegionNm((Stz*)AM::szLogRegion());
   
+  
   // unlink the name of any previous segment
   IGNORE_RETURN( ShmLib::bUnlink(sLogRegionNm,oSysCall) );
   
@@ -102,16 +103,25 @@ Log* Log::pAttachCreate(void)
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = ShmLib::aMap(iRegionFd,
-                             nullptr,
-                             sizeof(Log),
-                             C_NO_HUGE_PAGES,
-                             oSysCall);
+                                nullptr,
+                                sizeof(Log),
+                                C_NO_HUGE_PAGES,
+                                oSysCall);
   if (! aSegment)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenCreate: failed to map region!\n"_Stz);
   
   Log* pLog = static_cast<Log*>(aSegment);
   
+  s32 sLogRegionSize_magn;
+  MagLib::vByteMag(sizeof(Log),sLogRegionSize_magn);
+
+  if (AM::bVerboseProgress())
+    vTrace("Created new shared log region %p: name %s size %s\n"_Stz,
+           aSegment,
+           sLogRegionNm.szStz(),
+           sLogRegionSize_magn.szStz());
+
   return pLog;
 }
 
