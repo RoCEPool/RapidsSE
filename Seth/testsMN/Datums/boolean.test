@@ -80,6 +80,10 @@ dumpidx bolTbl bol_idx1;
 // dump index bol_idx2
 dumpidx bolTbl bol_idx2;
 
+// export the table
+export bolTbl "/tmp/bolTbl.csv";
+success
+
 // truncate the table
 truncate bolTbl;
 success
@@ -98,6 +102,37 @@ rows: 0
 
 partitionFetch bolTbl 3;
 rows: 0
+
+partitionFetch bolTbl 4;
+rows: 0
+
+partitionFetch bolTbl 5;
+rows: 0
+
+partitionFetch bolTbl 6;
+rows: 0
+
+partitionFetch bolTbl 7;
+rows: 0
+
+load bolTbl "/tmp/bolTbl.csv" ;
+success
+
+// check no of rows
+tableFetch bolTbl;
+rows: 101
+
+partitionFetch bolTbl 0;
+rows: 0
+
+partitionFetch bolTbl 1;
+rows: 88
+
+partitionFetch bolTbl 2;
+rows: 0
+
+partitionFetch bolTbl 3;
+rows: 13
 
 partitionFetch bolTbl 4;
 rows: 0
