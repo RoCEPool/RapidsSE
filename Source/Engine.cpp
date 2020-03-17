@@ -404,11 +404,15 @@ void Engine::vCheckGrid(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCheckNodes(void)
 {
-  if (gxArgs.m_nNodes < 1)
+  if (! gxArgs.m_bStart)
     return;
   
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
+
+  if (gxArgs.m_nNodes < 1)
+    Process::vUnrecoverableError("No nodelist was supplied (via --node)"_Stz,
+                                 gxArgs.m_sNodeName.szStz());
 
   if (C_UNKNOWN == gxArgs.m_iThisNode)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
@@ -494,11 +498,11 @@ void Engine::vCloseTrace(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCreateAttachMap(void)
 {
-  // create the attach map (which records global pointers)
-  new AttachMap;
-
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Create Attach Map\n*\n"_Stz,giProgressPoint++);
+  
+  // create the attach map (which records global pointers)
+  new AttachMap;
 
   if (AM::bVerboseProgress())
     vInfo("Created attachMap %p: sizeof(AttachMap)=%lldB\n"_Stz,

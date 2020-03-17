@@ -708,10 +708,10 @@ bool Args::bParse(int argc, Stz* argv[])
     // m_xNodes[0].m_sNodeName = m_sNodeName;
     // m_xNodes[0].m_sIPAddress = ""_Stz;
     // m_xNodes[0].m_iPortNo =  -1;
-    if ( m_bStart ) {
-      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.azChar());
-      return false;
-    }
+//    if ( m_bStart ) {
+//      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.azChar());
+//      return false;
+//    }
   }
 
   // if no regionName then form region name using regionPrefix and node name
