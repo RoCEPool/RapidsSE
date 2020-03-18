@@ -44,6 +44,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   i8 i_Tkn = 0;
   Token* pTkn;
 
+  s32  sName;
   s32  sTagNm;
   s256 sTagValue;
   
@@ -52,12 +53,21 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   
   if (pTkn->bSame("<"_Stz)) {
     TKNpf();
+    sName = pTkn->szTerm();
     TKNpf();
   }
-
+  else {
+    sName = pTkn->szTerm();
+  }
+  
+  sTagNm.vSprint("<%s>"_Stz,sName.szStz());
+  
   TKNpf();
   TKNpf();
 
+  sTagValue = pTkn->szTerm();
+
+  pEnameSet->vAdd(sTagNm,sTagValue);
   
   return true;
 }
