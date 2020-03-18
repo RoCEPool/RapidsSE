@@ -82,7 +82,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   //else
   m_pSession->m_sToDo = "_seprompt"_Stz;
   
-  m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
     m_nObjectsInPool[i_enum] = 0;
   
@@ -1256,22 +1255,24 @@ bool SePrompt::bTrackingMemory(void)
   
   if (m_oSettings.bHasName(C_PMT_MEMTRACK))
     return true;
-  
-  return m_bTrackingMemory;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vTrackingMemory(bool bTrackingMemory)
+void SePrompt::vTrackingMemory(bool bTrackMemory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bTrackingMemory = bTrackingMemory;
-  
-  if (bTrackingMemory) {
+
+  if (bTrackMemory)
+    m_oSettings.vAdd(C_PMT_MEMTRACK,1);
+  else
+    m_oSettings.vDelete(C_PMT_MEMTRACK);
+
+  if (bTrackingMemory())
     PoolHelper::vObjectSnapshot(m_nObjectsInPool);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

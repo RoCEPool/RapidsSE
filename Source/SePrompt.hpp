@@ -8,7 +8,7 @@
 namespace Prompt
 {
   static Stz* C_PMT_OBJDELTA = "<reportObjectDelta>"_Stz;
-  static Stz* C_PMT_MEMTRACK = "<trackingMemory>"_Stz;
+  static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
 
   class SePrompt : public Focal
   {
@@ -32,7 +32,6 @@ namespace Prompt
 
     ShortCutVec m_oShortCutVec; // vector of short cuts
     
-    bool      m_bTrackingMemory; // tracking memory ?
     i8        m_nObjectsInPool[CN_ENUMS];
     
     EnameSet  m_oJobCtl;
