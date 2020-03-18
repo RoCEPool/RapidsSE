@@ -128,7 +128,10 @@ void Engine::vPreliminary(void)
 
   vCheckGrid();
 
-  //gpAttachMap->vPrintAttachMap();
+  if (AM::bVerboseProgress()) {
+    vInfo("\n*\n* %lld) Attach Map Contents\n*\n"_Stz,giProgressPoint++);
+    gpAttachMap->vPrintAttachMap();
+  }
   
   if (AM::bVerboseProgress()) {
      vInfo("\n**\n** Preliminaries Complete \n**\n"_Stz);
