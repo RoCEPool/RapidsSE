@@ -284,7 +284,32 @@ void JobList::vContentDump(void)
 {
   Stz* aTab = Stz::szTab(1);
   
-  vDump(CN_JOBLIST, this, aTab);
+  //vDump(CN_JOBLIST, this, aTab);
+  
+  SkipListNL* pSkipList = m_pJobsSkipList;
+  
+  i8 iLevel = 0;
+    
+  SkipNode* pNode = pSkipList->pFirst(iLevel);
+  while (pNode) {
+    i8 i = (i8)pNode->m_pObject;
+    Job* pJob = (Job*)(pNode->m_pObject);
+    vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           aCN[pJob->eClass()],
+           pJob->m_iFocalId,
+           pJob->iParticipantNode(),
+           pNode->m_nRight);
+    
+    pJob->pEnameSet()->vPrint();
+    
+    pNode = pSkipList->pNext(pNode, iLevel);
+  }
+  
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -295,7 +320,11 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
   JobList* pJobs = _pJobs(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
   SkipListNL* pSkipList = pJobs->m_pJobsSkipList;
-  //vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
+  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
+  for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
+    if (pSkipList->m_pHead->m_pRight[i_Level])
+      vTrace("Level %lld: Node %p : %p (L%lld)\n"_Stz,i_Level, pSkipList->m_pHead->m_pRight[i_Level]);
+  
   i8 iLevel = pSkipList->m_iHeight;
   do {
     //vTrace("LEVEL %lld\n"_Stz, iLevel);

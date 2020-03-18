@@ -519,6 +519,10 @@ void Structures::vSkipListDump(SkipListNL* pSkipList)
   vTrace("----------------------------\n"_Stz);
   
   vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
+  for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
+    if (pSkipList->m_pHead->m_pRight[i_Level])
+      vTrace("Level %lld: Node %p : %p (L%lld)\n"_Stz,i_Level, pSkipList->m_pHead->m_pRight[i_Level]);
+           
   i8 iLevel = pSkipList->m_iHeight;
   do {
     vTrace("LEVEL %lld\n"_Stz, iLevel);
@@ -561,6 +565,8 @@ void Structures::vSkipListTest(void)
   pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
   pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
   pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
+  
+  vSkipListDump(pSkipList);
   
   return;
 }
