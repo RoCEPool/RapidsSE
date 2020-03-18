@@ -1,0 +1,25 @@
+/*----------------------------------------------------------------------------*/
+/* _cancelPipeline.test -- cancel pipeline tests                              */
+/*----------------------------------------------------------------------------*/
+
+// boot cluster
+bc;
+
+// begin tracking memory
+trackMemory;
+
+pipeline forever
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp 1 min | stageB
+
+  stage stageB on origin:
+    sinkOp | stageA
+
+end
+;
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
