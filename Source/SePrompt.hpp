@@ -99,6 +99,7 @@ namespace Prompt
     i8   iRequestId(void);
     Session* pSession(void);
     void vSetJob(void);
+    EnameSet* pSettings(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     void vSpawnJob(void);

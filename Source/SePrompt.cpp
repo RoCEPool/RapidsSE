@@ -1085,6 +1085,16 @@ void SePrompt::vSetJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the prompt settings tag set                                            */
+/*----------------------------------------------------------------------------*/
+EnameSet* SePrompt::pSettings(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_oSettings;
+}
+
+/*----------------------------------------------------------------------------*/
 /* possible shortcut?                                                         */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bShortCut(void)
