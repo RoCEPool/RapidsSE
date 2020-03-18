@@ -1254,6 +1254,9 @@ bool SePrompt::bTrackingMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  if (m_oSettings.bHasName(C_PMT_MEMTRACK))
+    return true;
+  
   return m_bTrackingMemory;
 }
 

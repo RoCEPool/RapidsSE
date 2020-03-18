@@ -8,6 +8,7 @@
 namespace Prompt
 {
   static Stz* C_PMT_OBJDELTA = "<reportObjectDelta>"_Stz;
+  static Stz* C_PMT_MEMTRACK = "<trackingMemory>"_Stz;
 
   class SePrompt : public Focal
   {
