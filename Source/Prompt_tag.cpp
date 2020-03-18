@@ -41,15 +41,22 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   Semantic* pSemantic = pSession->m_pSemantic;
   EnameSet* pEnameSet = pSemantic->pEnameSet();
   
-  i8 i_Tkn = 0;
   Token* pTkn;
+  i8 i_Tkn = 0;
 
   s32  sName;
   s32  sTagNm;
   s256 sTagValue;
+
+  TKNpf();
+  TKNpf();
+
+  bool bDelete = false;
   
-  TKNpf();
-  TKNpf();
+  if (pTkn->bSame("delete"_Stz))
+    bDelete = true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pTkn->bSame("<"_Stz)) {
     TKNpf();
@@ -62,6 +69,15 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   
   sTagNm.vSprint("<%s>"_Stz,sName.szStz());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (bDelete) {
+    vTrace("Would delete tag: %s\n"_Stz,sTagNm.szStz());
+    return true;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   TKNpf();
   TKNpf();
 
