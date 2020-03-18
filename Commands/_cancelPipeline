@@ -12,7 +12,7 @@ pipeline forever
 begin
 
   stage stageA on origin:
-    startOp | periodicOp 1 min | stageB
+    startOp | periodicOp min 1 | stageB
 
   stage stageB on origin:
     sinkOp | stageA
