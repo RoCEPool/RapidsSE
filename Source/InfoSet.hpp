@@ -30,6 +30,9 @@ namespace InfoData
     Stz* szInfoSetNm(void);
     void vInfoSetNm(Stz* szInfoSetNm);
     Row* aNextRow(Row* pPrevRow);
+    
+  private:
+    i8   iToOffset(Stz* aItem);
   };
 
   InfoSet* _pInfoSet(void* aAddr);

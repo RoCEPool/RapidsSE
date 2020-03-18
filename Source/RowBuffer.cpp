@@ -117,7 +117,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       ASSERT(nCopyBytes + 1 == nSrcLength);
       
       // set offset of tail string
-      pRow->m_waColVal[i_Col].m_iWrd = iToOffset(this, acDstString);
+      pRow->m_waColVal[i_Col].m_iWrd = iToOffset(acDstString);
       
       continue;
     }
@@ -233,6 +233,16 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate the absolute offset within buffer for given item                 */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iToOffset(Stz* aItem)
+{
+  i4 iOffset = static_cast<i4>(nSub(aItem,this));
+  
+  return iOffset;
 }
 
 /*============================================================================*/

@@ -149,7 +149,7 @@ Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
          return nullptr;
        
        StrLib::vCopy((char*)ayTail, szVal->azChar());
-       ayRow->m_waColVal[i_Col].m_iWrd = iToOffset(this, ayTail);
+       ayRow->m_waColVal[i_Col].m_iWrd = iToOffset(ayTail);
      }
      else
        ayRow->m_waColVal[i_Col].vSetNull();
@@ -216,6 +216,16 @@ Row* InfoSet::aNextRow(Row* aPrevRow)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
   return RowBuffer::aNextRow(aPrevRow, m_nRowSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate the absolute offset within buffer for given item                 */
+/*----------------------------------------------------------------------------*/
+i8 InfoSet::iToOffset(Stz* aItem)
+{
+  i4 iOffset = static_cast<i4>(nSub(aItem,this));
+  
+  return iOffset;
 }
 
 /*============================================================================*/

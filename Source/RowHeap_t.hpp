@@ -33,7 +33,6 @@ namespace Structures
     i8     nItems(void);
     void   vItems(i8 nItems);
     void   vResetUsed(void);
-    i8     iToOffset(Object* Buffer, Stz* aItem);
     i8     nUsedBytes(void);
 
   private:
@@ -271,19 +270,6 @@ void RowHeap_t<ITEM>::vResetUsed(void)
   m_nItems = 0;
   
   vSetWilderness();
-}
-
-/*----------------------------------------------------------------------------*/
-/* calculate the absolute offset within workspace for given item              */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-i8 RowHeap_t<ITEM>::iToOffset(Object* pBuffer, Stz* aItem)
-{
-  i4 iOffset = static_cast<i4>(nSub(aItem,pBuffer));
-  
-  //ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
-  
-  return iOffset;
 }
 
 /*----------------------------------------------------------------------------*/

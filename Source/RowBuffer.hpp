@@ -32,6 +32,9 @@ namespace DataBuffers
     Row* aNextRow(Row* aPriorRow, i8 nRowBytes);
     void vPrintRows(StreamDef* pStreamDef);
     void vShow(StreamDef* pStreamDef);
+    
+  private:
+    i8   iToOffset(Stz* aItem);
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);
