@@ -70,7 +70,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneRun     = false;
 
   m_bContinue   = true;
-  m_bDumpTokens = false;
   
   m_iCmdNo      = 0;
   m_aJobClass   = nullptr;
@@ -150,7 +149,7 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       break;
     
-    if (m_bDumpTokens) {
+    if (bDumpTokens()) {
       vDumpTokenVec(false);
     }
     
@@ -218,7 +217,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
-    if (m_bDumpTokens)
+    if (bDumpTokens())
       Correctness::vDebugPoint();
     
     vSetJob();
@@ -441,7 +440,10 @@ bool SePrompt::bDumpTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_bDumpTokens;
+  if (m_oSettings.bHasName(C_PMT_TKNDUMP))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,8 +452,11 @@ bool SePrompt::bDumpTokens(void)
 void SePrompt::vDumpTokens(bool bDumpTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bDumpTokens = bDumpTokens;
+
+  if (bDumpTokens)
+    m_oSettings.vAdd(C_PMT_TKNDUMP,1);
+  else
+    m_oSettings.vDelete(C_PMT_TKNDUMP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,7 +468,7 @@ void SePrompt::vDumpTokenVec(bool bForce)
   
   TokenVec* pTknVec = this->pTokenVec();
   
-  if (! m_bDumpTokens && ! bForce)
+  if (! bDumpTokens() && ! bForce)
     return;
 
   if (! pTknVec->nTokens() && ! bForce)

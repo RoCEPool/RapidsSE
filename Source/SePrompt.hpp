@@ -7,6 +7,7 @@
 
 namespace Prompt
 {
+  static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_OBJDELTA = "<reportObjectDelta>"_Stz;
   static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
 
@@ -18,27 +19,23 @@ namespace Prompt
     bool      m_bOneCommand;// run one command only
     bool      m_bOneRun;    // one command has been run?
     bool      m_bContinue;  // continue processing commands?
-    bool      m_bDumpTokens;// dump tokens?
 
     i8        m_iCmdNo;     // command no
     JobClass* m_aJobClass;  // job class
+    EnameSet  m_oJobCtl;    // job control tags
     Job*      m_pJob;       // job
-    Timer     m_oTimer;     // the timer
 
-    Request*  m_pRequest;   // current request being executed by SE
-  
+    Request*  m_pRequest;       // current request being executed by SE
     i8        m_i_RequestFocal; // focal subscript of last request
     i8        m_iRequestId;     // id of last command
 
-    ShortCutVec m_oShortCutVec; // vector of short cuts
-    
+    BPA*      m_pBPA;           // object delta reporting
     i8        m_nObjectsInPool[CN_ENUMS];
-    
-    EnameSet  m_oJobCtl;
     EnameSet  m_oSettings;
+    ShortCutVec m_oShortCutVec; // vector of short cuts
+    Timer     m_oTimer;         // the timer
 
-    BPA*      m_pBPA;         // object delta reporting
-  
+
     // must be last
     Footer m_xFooter;
   
