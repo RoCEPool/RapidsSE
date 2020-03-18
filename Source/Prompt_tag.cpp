@@ -25,7 +25,6 @@ PromptFun __Prompt_tag (
     return false; \
   } \
   pTkn = pTknVec->pGet(i_Tkn); \
-  vTrace("Tkn[%lld] %s\n"_Stz,i_Tkn,pTkn->szTerm()); \
   i_Tkn++; \
 }
 
@@ -53,8 +52,10 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
 
   bool bDelete = false;
   
-  if (pTkn->bSame("delete"_Stz))
+  if (pTkn->bSame("delete"_Stz)) {
     bDelete = true;
+    TKNpf();
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -72,7 +73,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bDelete) {
-    vTrace("Would delete tag: %s\n"_Stz,sTagNm.szStz());
+    pEnameSet->vDelete(sTagNm);
     return true;
   }
     

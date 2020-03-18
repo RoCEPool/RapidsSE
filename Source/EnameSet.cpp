@@ -204,6 +204,32 @@ void EnameSet::vCopy(EnameSet* pScrEnameSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vDelete(Stz* szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  EnameSet xEnameSet;
+  
+  bool bWasCopied = false;
+  
+  xEnameSet.vCopy(this);
+  vReset();
+  
+  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
+    
+    if (xEnameSet.szName(i_Ename)->bSame(szName))
+      continue;
+    
+    if (TN_STRING == xEnameSet.eToken(i_Ename))
+      vAdd(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
+    else
+      vAdd(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get nEnames                                                                */
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::nEnames(void)
