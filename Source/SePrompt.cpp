@@ -93,13 +93,10 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pBPA = nullptr;
 //  if (AM::bDeveloper())
 //    m_pBPA = new BPA;
-  
-  if (gxArgs.m_bDeveloper)
-    m_oSettings.vAdd(C_PMT_OBJDELTA);
-  
-
 
   _checkInitialised_(CN_SEPROMPT);
+  
+  vInitialSettings();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -643,13 +640,14 @@ bool SePrompt::bGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command input processor                                                */
+/* initise prompt settings tags                                               */
 /*----------------------------------------------------------------------------*/
-TokenStream* SePrompt::pTokenStream(void)
+void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pTokenStream;
+  if (gxArgs.m_bDeveloper)
+    m_oSettings.vAdd(C_PMT_OBJDELTA);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1213,6 +1211,16 @@ bool SePrompt::bSubLet(void)
   }
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command input processor                                                */
+/*----------------------------------------------------------------------------*/
+TokenStream* SePrompt::pTokenStream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSession->m_pTokenStream;
 }
 
 /*----------------------------------------------------------------------------*/

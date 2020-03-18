@@ -77,7 +77,7 @@ namespace Prompt
     bool bFindMatch_procedure(void);
     void vFocalOutline(s4K& sOutline);
     bool bGetCommand(void);
-    TokenStream* pTokenStream(void);
+    void vInitialSettings(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
@@ -105,6 +105,7 @@ namespace Prompt
     void vSpawnJob(void);
     bool bStdIn(void);
     bool bSubLet(void);
+    TokenStream* pTokenStream(void);
     TokenVec* pTokenVec(void);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
