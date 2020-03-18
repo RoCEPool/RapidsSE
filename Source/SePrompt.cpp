@@ -299,7 +299,7 @@ BPA* SePrompt::pBPA(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for job control options                                              */
+/* check for job control tags (such as /nowait)                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCheckJobCtl(void)
 {
