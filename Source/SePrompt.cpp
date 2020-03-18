@@ -93,6 +93,11 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pBPA = nullptr;
 //  if (AM::bDeveloper())
 //    m_pBPA = new BPA;
+  
+  if (gxArgs.m_bDeveloper)
+    m_oSettings.vAdd(C_PMT_OBJDELTA);
+  
+
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -995,9 +1000,9 @@ void SePrompt::vReportObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! gxArgs.m_bDeveloper)
+  if (! m_oSettings.bHasName(C_PMT_OBJDELTA))
     return;
-  
+
   if (m_pBPA) {
     i8 nObjectDelta = m_pBPA->nObjectDelta();
     vTrace("object delta: %lld objects\n"_Stz,nObjectDelta);

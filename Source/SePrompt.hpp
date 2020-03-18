@@ -7,6 +7,8 @@
 
 namespace Prompt
 {
+  static Stz* C_PMT_OBJDELTA = "<reportObjectDelta>"_Stz;
+
   class SePrompt : public Focal
   {
   private:
@@ -33,7 +35,8 @@ namespace Prompt
     i8        m_nObjectsInPool[CN_ENUMS];
     
     EnameSet  m_oJobCtl;
-  
+    EnameSet  m_oSettings;
+
     BPA*      m_pBPA;         // object delta reporting
   
     // must be last
