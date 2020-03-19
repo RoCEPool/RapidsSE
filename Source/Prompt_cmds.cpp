@@ -30,8 +30,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_FETCHROWS);
   
   // dist2pc
-  JobClass::vCmds(CN_JOB_INSERTROW);
-  //JobClass::vCmds(CN_JOB_INSERTTABLE);
   JobClass::vCmds(CN_JOB_LOADTABLE);
   
   return true;

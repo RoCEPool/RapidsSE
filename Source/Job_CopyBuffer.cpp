@@ -154,14 +154,14 @@ void Job_CopyBuffer::vCopy(void)
   //MemLib::vHexDump(m_pRecordBuffer, 500);
   
   // for each record in the record buffer
-  char* aRecord = nullptr;
-  
-  for (aRecord = m_pRecordBuffer->aFirstRecord();
-       aRecord;
-       aRecord = m_pRecordBuffer->aNextRecord(aRecord)) {
-    
-    // get the length of the record
-    u4 uRecordLength = *((u4*)aRecord);
+//  char* aRecord = nullptr;
+//  
+//  for (aRecord = m_pRecordBuffer->aFirstRecord();
+//       aRecord;
+//       aRecord = m_pRecordBuffer->aNextRecord(aRecord)) {
+//    
+//    // get the length of the record
+//    u4 uRecordLength = *((u4*)aRecord);
   /*
     // check length of record
     if (uRecordLength > C_MAX_RECORD) {
@@ -195,22 +195,22 @@ void Job_CopyBuffer::vCopy(void)
    m_pJob_SubInserter->vDropWrite();
 */
 
-    Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
-    
-    // process that record into write behind
-    m_pJob_SubInserter->vGrabWrite();
-    eEC eError = m_pJob_SubInserter->eProcessRecord(szRecStr, uRecordLength);
-    m_pJob_SubInserter->vDropWrite();
-    
-    // is the record invalid ?
-    if (eError == EC_INVALID_VALUE) {
-      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, szRecStr);
-      continue;
-    }
-    
-  }
-  
-  ++m_pJob_SubInserter->m_ixCopiedBuffers;
+//    Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
+//
+//    // process that record into write behind
+//    m_pJob_SubInserter->vGrabWrite();
+//    eEC eError = m_pJob_SubInserter->eProcessRecord(szRecStr, uRecordLength);
+//    m_pJob_SubInserter->vDropWrite();
+//
+//    // is the record invalid ?
+//    if (eError == EC_INVALID_VALUE) {
+//      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, szRecStr);
+//      continue;
+//    }
+//
+//  }
+//
+//  ++m_pJob_SubInserter->m_ixCopiedBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

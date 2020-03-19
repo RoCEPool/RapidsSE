@@ -46,8 +46,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB__FIND);
 
   // dist2pc
-  nJobs++; JobClass::vJobCat(CN_JOB_INSERTROW);
-  nJobs++; JobClass::vJobCat(CN_JOB_INSERTTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_LOADTABLE);
   
   // child
@@ -55,7 +53,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINFLATE);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);
-  nJobs++; JobClass::vJobCat(CN_JOB_SUBINSERTER);
 
   // grankid
   nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);

@@ -209,46 +209,46 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
   API_NOTNULL(aaJob);
   API_BEGIN();
   
-  try {
- 
-    // create Job_InsertTable
-    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
-    ASSERT(pJobClass_InsertTable);
-    API_LOC(310);
-    
-    ReqTuple xReqTuple("!!BEGIN_INSERT"_Stz,false);
-    
-    Job_InsertTable* pJob_InsertTable =
-      static_cast<Job_InsertTable*>
-        (pJobClass_InsertTable->pPreJob(&xReqTuple,pSession));
-    API_LOC(320);
-
-    // find the table in the session dictionary stack
-    Table* pTable = Table::pFindTable(pSession->pPathStack(), szTable);
-    API_LOC(330);
-
-    // set the table in the InsertTable job
-    pJob_InsertTable->m_pTable = pTable;
-    API_LOC(340);
-
-    // return the insertTable job
-    *aaJob = pJob_InsertTable;
-    API_LOC(350);
-
-    // set subInserters in the TblPtb
-    AM::vSubInserters(nSubInserters);   //! Is this right? (ray)
-    API_LOC(360);
-
-    // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushPtr(pJob_InsertTable);
-    API_LOC(370);
-
-    SessionArray::vMarkJob(pSession,pJob_InsertTable);
-    API_LOC(380);
-  }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
-  
+//  try {
+// 
+//    // create Job_InsertTable
+//    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
+//    ASSERT(pJobClass_InsertTable);
+//    API_LOC(310);
+//    
+//    ReqTuple xReqTuple("!!BEGIN_INSERT"_Stz,false);
+//    
+//    Job_InsertTable* pJob_InsertTable =
+//      static_cast<Job_InsertTable*>
+//        (pJobClass_InsertTable->pPreJob(&xReqTuple,pSession));
+//    API_LOC(320);
+//
+//    // find the table in the session dictionary stack
+//    Table* pTable = Table::pFindTable(pSession->pPathStack(), szTable);
+//    API_LOC(330);
+//
+//    // set the table in the InsertTable job
+//    pJob_InsertTable->m_pTable = pTable;
+//    API_LOC(340);
+//
+//    // return the insertTable job
+//    *aaJob = pJob_InsertTable;
+//    API_LOC(350);
+//
+//    // set subInserters in the TblPtb
+//    AM::vSubInserters(nSubInserters);   //! Is this right? (ray)
+//    API_LOC(360);
+//
+//    // push the InsertTable job onto the jobstack
+//    pSession->m_pJobStack->vPushPtr(pJob_InsertTable);
+//    API_LOC(370);
+//
+//    SessionArray::vMarkJob(pSession,pJob_InsertTable);
+//    API_LOC(380);
+//  }
+//  catch (Error* pError) { API_CATCH(pError); }
+//  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+//  
   API_RETURN();
 }
 
@@ -339,65 +339,65 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
   API_NOTNULL(szRecord);
   API_BEGIN();
   
-  try {
-    
-    // create Job_InsertTable
-    JobClass* pJobClass_InsertRow = JobClass::pFind(CN_JOB_INSERTROW);
-    ASSERT(pJobClass_InsertRow);
-    API_LOC(310);
-    
-    ReqTuple xReqTuple("!!INSERT_ROW"_Stz,false);
-    
-    Job_InsertRow* pJob_InsertRow =
-      static_cast<Job_InsertRow*>
-        (pJobClass_InsertRow->pPreJob(&xReqTuple,pSession));
-    API_LOC(320);
-    
-    // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushPtr(pJob_InsertRow);
-    API_LOC(330);
-    
-    SessionArray::vMarkJob(pSession,pJob_InsertRow);
-    API_LOC(340);
-    
-    // get the length of the record
-    i8 iRawDataLength = StrLib::iSize(szRecord->azChar());
-    API_LOC(350);
-    
-    // check length of record
-    if (iRawDataLength > C_MAX_RECORD)
-      API_RETURN_ERROR(EC_MAX_ROW_LENGTH);
-    API_LOC(360);
-    
-    // set the row in the insertRow job
-    pJob_InsertRow->pEnameSet()->vAdd(C_TAG_TABLENM, szTableNm);
-    pJob_InsertRow->m_pRecord->vRecStr(szRecord);
-    
-    //pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
-    API_LOC(370);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // spawn and wait for the job
-    Api::vSpawnJobAndWait(pJob_InsertRow);
-    API_LOC(380);
-    
-    // check if job had an error
-    if (pJob_InsertRow->bParticipantHasError()) {
-      
-      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
-      
-      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
-        
-        if (eError != EC_NONE)
-          API_RETURN_ERROR(eError);
-      }
-      NEVER_REACH;
-    }
-    API_LOC(390);
-  }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+//  try {
+//
+//    // create Job_InsertTable
+//    JobClass* pJobClass_InsertRow = JobClass::pFind(CN_JOB_INSERTROW);
+//    ASSERT(pJobClass_InsertRow);
+//    API_LOC(310);
+//
+//    ReqTuple xReqTuple("!!INSERT_ROW"_Stz,false);
+//
+//    Job_InsertRow* pJob_InsertRow =
+//      static_cast<Job_InsertRow*>
+//        (pJobClass_InsertRow->pPreJob(&xReqTuple,pSession));
+//    API_LOC(320);
+//
+//    // push the InsertTable job onto the jobstack
+//    pSession->m_pJobStack->vPushPtr(pJob_InsertRow);
+//    API_LOC(330);
+//
+//    SessionArray::vMarkJob(pSession,pJob_InsertRow);
+//    API_LOC(340);
+//
+//    // get the length of the record
+//    i8 iRawDataLength = StrLib::iSize(szRecord->azChar());
+//    API_LOC(350);
+//
+//    // check length of record
+//    if (iRawDataLength > C_MAX_RECORD)
+//      API_RETURN_ERROR(EC_MAX_ROW_LENGTH);
+//    API_LOC(360);
+//
+//    // set the row in the insertRow job
+//    pJob_InsertRow->pEnameSet()->vAdd(C_TAG_TABLENM, szTableNm);
+//    pJob_InsertRow->m_pRecord->vRecStr(szRecord);
+//
+//    //pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
+//    API_LOC(370);
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // spawn and wait for the job
+//    Api::vSpawnJobAndWait(pJob_InsertRow);
+//    API_LOC(380);
+//
+//    // check if job had an error
+//    if (pJob_InsertRow->bParticipantHasError()) {
+//
+//      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
+//
+//      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+//        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
+//
+//        if (eError != EC_NONE)
+//          API_RETURN_ERROR(eError);
+//      }
+//      NEVER_REACH;
+//    }
+//    API_LOC(390);
+//  }
+//  catch (Error* pError) { API_CATCH(pError); }
+//  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
   
   API_RETURN();
 }
@@ -445,45 +445,45 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
   API_NOTNULL(aaJob);
   API_BEGIN();
   
-  try {
-    
-    // get the insertTable job
-    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
-    API_LOC(310);
-
-    ReqTuple* aReqTuple = &pJob_InsertTable->m_xReqTuple;
-    
-    // create Job_SubInserter
-    JobClass* pJobClass_SubInserter = JobClass::pFind(CN_JOB_SUBINSERTER);
-    ASSERT(pJobClass_SubInserter);
-    API_LOC(320);
-
-    Job_SubInserter* pJob_SubInserter =
-      static_cast<Job_SubInserter*>
-        (pJobClass_SubInserter->pPreJob(aReqTuple,pSession));
-    API_LOC(330);
-
-    // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushPtr(pJob_SubInserter);
-    SessionArray::vMarkJob(pSession,pJob_SubInserter);
-    API_LOC(340);
-
-    // set the insertTable in the subInserter
-    pJob_SubInserter->m_pJob_InsertTable = pJob_InsertTable;
-    pJob_SubInserter->m_pParentJob = pJob_InsertTable;
-    API_LOC(350);
-
-    // set the table pointer (THIS CAN GO ????)
-    pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
-    API_LOC(360);
-
-    // return the sub_inserter job
-    *aaJob = pJob_SubInserter;
-    API_LOC(370);
-  }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
-  
+//  try {
+//
+//    // get the insertTable job
+//    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
+//    API_LOC(310);
+//
+//    ReqTuple* aReqTuple = &pJob_InsertTable->m_xReqTuple;
+//
+//    // create Job_SubInserter
+//    JobClass* pJobClass_SubInserter = JobClass::pFind(CN_JOB_SUBINSERTER);
+//    ASSERT(pJobClass_SubInserter);
+//    API_LOC(320);
+//
+//    Job_SubInserter* pJob_SubInserter =
+//      static_cast<Job_SubInserter*>
+//        (pJobClass_SubInserter->pPreJob(aReqTuple,pSession));
+//    API_LOC(330);
+//
+//    // push the InsertTable job onto the jobstack
+//    pSession->m_pJobStack->vPushPtr(pJob_SubInserter);
+//    SessionArray::vMarkJob(pSession,pJob_SubInserter);
+//    API_LOC(340);
+//
+//    // set the insertTable in the subInserter
+//    pJob_SubInserter->m_pJob_InsertTable = pJob_InsertTable;
+//    pJob_SubInserter->m_pParentJob = pJob_InsertTable;
+//    API_LOC(350);
+//
+//    // set the table pointer (THIS CAN GO ????)
+//    pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
+//    API_LOC(360);
+//
+//    // return the sub_inserter job
+//    *aaJob = pJob_SubInserter;
+//    API_LOC(370);
+//  }
+//  catch (Error* pError) { API_CATCH(pError); }
+//  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+//
   API_RETURN();
 }
 
@@ -496,61 +496,61 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
   API_ENTER(AC_CopyBuffer);
   API_BEGIN();
   
-  try {
-    
-    // get the insertRow job
-    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
-    API_LOC(310);
-
-    ReqTuple* aReqTuple = &pJob_SubInserter->m_xReqTuple;
-    
-    // get the record buffer
-    RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
-    API_LOC(320);
-
-    //pJob_SubInserter->m_pRecordBuffer->vShow();
-    
-    if (! pRecordBuffer)
-      API_RETURN();
-    API_LOC(330);
-
-    // create Job_CopyBuffer
-    JobClass* pJobClass_CopyBuffer = JobClass::pFind(CN_JOB_COPYBUFFER);
-    ASSERT(pJobClass_CopyBuffer);
-    API_LOC(340);
-
-    Job_CopyBuffer* pJob_CopyBuffer =
-      static_cast<Job_CopyBuffer*>
-        (pJobClass_CopyBuffer->pPreJob(aReqTuple,pSession));
-    API_LOC(350);
-
-    // set the pJob_SubInserter and table in the pJob_CopyBuffer
-    pJob_CopyBuffer->m_pJob_SubInserter = pJob_SubInserter;
-    pJob_CopyBuffer->m_pTable = pJob_SubInserter->m_pTable;
-    API_LOC(360);
-
-    // move the recordBuffer from the subInsert into CopyBuffer
-    pJob_CopyBuffer->m_pRecordBuffer = pRecordBuffer;
-    API_LOC(370);
-    
-    ++pJob_SubInserter->m_ixRecordBuffers;
-    pJob_SubInserter->m_pRecordBuffer = nullptr;
-    API_LOC(380);
-
-    // push the InsertTable job onto the jobstack
-    //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
-    //ApiState::vMarkJob(pSession,pJob_CopyBuffer);
-    
-    pJob_CopyBuffer->vSeed(SS_SEED_REQ);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // spawn the job
-    //vTrace("Spawning copyBuffer job\n"_Stz);
-    IGNORE_RETURN(Api::bSpawnJob(pJob_CopyBuffer));
-    API_LOC(390);
-  }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+//  try {
+//
+//    // get the insertRow job
+//    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
+//    API_LOC(310);
+//
+//    ReqTuple* aReqTuple = &pJob_SubInserter->m_xReqTuple;
+//
+//    // get the record buffer
+//    RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
+//    API_LOC(320);
+//
+//    //pJob_SubInserter->m_pRecordBuffer->vShow();
+//
+//    if (! pRecordBuffer)
+//      API_RETURN();
+//    API_LOC(330);
+//
+//    // create Job_CopyBuffer
+//    JobClass* pJobClass_CopyBuffer = JobClass::pFind(CN_JOB_COPYBUFFER);
+//    ASSERT(pJobClass_CopyBuffer);
+//    API_LOC(340);
+//
+//    Job_CopyBuffer* pJob_CopyBuffer =
+//      static_cast<Job_CopyBuffer*>
+//        (pJobClass_CopyBuffer->pPreJob(aReqTuple,pSession));
+//    API_LOC(350);
+//
+//    // set the pJob_SubInserter and table in the pJob_CopyBuffer
+//    pJob_CopyBuffer->m_pJob_SubInserter = pJob_SubInserter;
+//    pJob_CopyBuffer->m_pTable = pJob_SubInserter->m_pTable;
+//    API_LOC(360);
+//
+//    // move the recordBuffer from the subInsert into CopyBuffer
+//    pJob_CopyBuffer->m_pRecordBuffer = pRecordBuffer;
+//    API_LOC(370);
+//
+//    ++pJob_SubInserter->m_ixRecordBuffers;
+//    pJob_SubInserter->m_pRecordBuffer = nullptr;
+//    API_LOC(380);
+//
+//    // push the InsertTable job onto the jobstack
+//    //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
+//    //ApiState::vMarkJob(pSession,pJob_CopyBuffer);
+//
+//    pJob_CopyBuffer->vSeed(SS_SEED_REQ);
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // spawn the job
+//    //vTrace("Spawning copyBuffer job\n"_Stz);
+//    IGNORE_RETURN(Api::bSpawnJob(pJob_CopyBuffer));
+//    API_LOC(390);
+//  }
+//  catch (Error* pError) { API_CATCH(pError); }
+//  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
   
   API_RETURN();
 }
@@ -564,72 +564,72 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
   API_ENTER(AC_EndInsert);
   API_BEGIN();
   
-  try {
-    
-    // get the insertTable job
-    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
-    API_LOC(310);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // spawn and wait for job
-    Api::vSpawnJobAndWait(pJob_InsertTable);
-    API_LOC(320);
-
-    // check if job had an error
-    if (pJob_InsertTable->bParticipantHasError()) {
-      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
-      
-      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
-        if (eError != EC_NONE)
-          API_RETURN_ERROR(eError);
-      }
-      NEVER_REACH;
-    }
-    API_LOC(330);
-
-    // delete all jobs in the ssession
-    Api::vDeleteJobs(pSession);
-    API_LOC(340);
-  }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
-  
-  API_RETURN();
-}
-
-/*----------------------------------------------------------------------------*/
-/* end subinserter and all session jobs                                       */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
-{
-  API_JOB_LEVEL();
-  API_ENTER(AC_EndSubInserter);
-  API_BEGIN();
-  
-  try {
-    
-    // get the insertRows job
-    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
-    API_LOC(310);
-
-    // wait for all record buffers to be copied across
-    while (*pJob_SubInserter->m_ixRecordBuffers !=
-           *pJob_SubInserter->m_ixCopiedBuffers) {
-      //vTrace("Waiting %lld %lld\n"_Stz, *pJob_SubInserter->m_ixRecordBuffers, *pJob_SubInserter->m_ixCopiedBuffers);
-    }
-    API_LOC(320);
-
-    pJob_SubInserter->vEnd();
-    API_LOC(330);
-
-    // delete all jobs in the ssession
-    Api::vDeleteJobs(pSession);
-    API_LOC(340);
-  }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
-  
+//  try {
+//
+//    // get the insertTable job
+//    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
+//    API_LOC(310);
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // spawn and wait for job
+//    Api::vSpawnJobAndWait(pJob_InsertTable);
+//    API_LOC(320);
+//
+//    // check if job had an error
+//    if (pJob_InsertTable->bParticipantHasError()) {
+//      i8 iResponses = pJob->m_xResult.m_pOriginResponseVec->nItems();
+//
+//      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+//        eEC eError = pJob->m_xResult.m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode;
+//        if (eError != EC_NONE)
+//          API_RETURN_ERROR(eError);
+//      }
+//      NEVER_REACH;
+//    }
+//    API_LOC(330);
+//
+//    // delete all jobs in the ssession
+//    Api::vDeleteJobs(pSession);
+//    API_LOC(340);
+//  }
+//  catch (Error* pError) { API_CATCH(pError); }
+//  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+//
+//  API_RETURN();
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* end subinserter and all session jobs                                       */
+///*----------------------------------------------------------------------------*/
+//eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
+//{
+//  API_JOB_LEVEL();
+//  API_ENTER(AC_EndSubInserter);
+//  API_BEGIN();
+//
+//  try {
+//
+//    // get the insertRows job
+//    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
+//    API_LOC(310);
+//
+//    // wait for all record buffers to be copied across
+//    while (*pJob_SubInserter->m_ixRecordBuffers !=
+//           *pJob_SubInserter->m_ixCopiedBuffers) {
+//      //vTrace("Waiting %lld %lld\n"_Stz, *pJob_SubInserter->m_ixRecordBuffers, *pJob_SubInserter->m_ixCopiedBuffers);
+//    }
+//    API_LOC(320);
+//
+//    pJob_SubInserter->vEnd();
+//    API_LOC(330);
+//
+//    // delete all jobs in the ssession
+//    Api::vDeleteJobs(pSession);
+//    API_LOC(340);
+//  }
+//  catch (Error* pError) { API_CATCH(pError); }
+//  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+//
   API_RETURN();
 }
 
@@ -822,15 +822,15 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
   API_NOTNULL(aaRecordBuffer);
   API_BEGIN();
   
-  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
-  API_LOC(310);
-
-  RASSERT(! pJob_SubInserter->m_pRecordBuffer);
-  pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
-  API_LOC(320);
-
-  *aaRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
-  API_LOC(330);
+//  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
+//  API_LOC(310);
+//
+//  RASSERT(! pJob_SubInserter->m_pRecordBuffer);
+//  pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
+//  API_LOC(320);
+//
+//  *aaRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
+//  API_LOC(330);
 
   API_RETURN();
 }

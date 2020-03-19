@@ -85,7 +85,7 @@ JobClass xJobClass_FetchRetrieveRows =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_FetchRows_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertRow_class;
+  *pNextFun = (pFUN*)pJob_LoadTable_class;
   
   return &xJobClass_FetchRows;
 }

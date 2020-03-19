@@ -40,9 +40,6 @@ namespace Jobs
 
 #include "Job_FetchRows.hpp"
 
-#include "Job_InsertRow.hpp"
-#include "Job_InsertTable.hpp"
-
 #include "Job_LoadTable.hpp"
 
 #include "Job_NodeInfo.hpp"
@@ -54,7 +51,6 @@ namespace Jobs
 #include "Job_Start.hpp"
 
 #include "Job_SubFetch.hpp"
-#include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
 
 #include "Job_Universal.hpp"

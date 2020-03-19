@@ -141,8 +141,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_JOB_BOOT
   /* */ &Dump::vDummy,           // CN_JOB_COPYBUFFER
   /* */ &Dump::vDummy,           // CN_JOB_FETCHROWS
-  /* */ &Dump::vDummy,           // CN_JOB_INSERTROW
-  /* */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
   /* */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /* */ &Dump::vDummy,           // CN_JOB_NODEINFO
   /* */ &Dump::vDummy,           // CN_JOB_OPERAND
@@ -151,7 +149,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_JOB_SUBFETCH
   /* */ &Dump::vDummy,           // CN_JOB_SUBINFLATE
   /* */ &Dump::vDummy,           // CN_JOB_SUBINGESTER
-  /* */ &Dump::vDummy,           // CN_JOB_SUBINSERTER
   /* */ &Dump::vDummy,           // CN_JOB_SUBLOADER
   /* */ &Dump::vDummy,           // CN_JOB_UNIVERSAL
   /* */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
@@ -474,8 +471,6 @@ i8 giClassSize[]
   /* */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /* */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
   /* */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
-  /* */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
-  /* */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /* */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /* */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
   /* */ sizeof(Job_Operand),        // CN_JOB_OPERAND
@@ -484,7 +479,6 @@ i8 giClassSize[]
   /* */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
   /* */ sizeof(Job_SubFetch),       // CN_JOB_SUBINFLATE
   /* */ sizeof(Job_SubFetch),       // CN_JOB_SUBINGESTER
-  /* */ sizeof(Job_SubInserter),    // CN_JOB_SUBINSERTER
   /* */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
   /* */ sizeof(Job_Universal),      // CN_JOB_UNIVERSAL
   /* */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
@@ -807,8 +801,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
-  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
-  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
@@ -817,7 +809,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBFETCH
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINFLATE
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINGESTER
-  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINSERTER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBLOADER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_UNIVERSAL
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER

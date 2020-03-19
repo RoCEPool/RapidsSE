@@ -137,8 +137,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
   /*    */ &Finalize::vUndefined,         // CN_JOB_COPYBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
-  /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
@@ -147,7 +145,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBFETCH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINFLATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINGESTER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINSERTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
   /*    */ &Finalize::vUndefined,         // CN_JOB_UNIVERSAL
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER

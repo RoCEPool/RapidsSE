@@ -791,11 +791,8 @@ public:
   void vJob_WriteBufferTableStore(void);
 
   // Job WriteRow
-  void vJob_WriteRowParentJobIdFetch(void);
   void vJob_WriteRowEncodeRow(void);
   void vJob_WriteRowInsertRow(void);
-  void vJob_WriteRowPartitionFetch(void);
-  void vJob_WriteRowTableStore(void);
 
   // loader
   void vLoaderCreate(void);

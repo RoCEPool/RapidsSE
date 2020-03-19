@@ -271,8 +271,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
   /*    */ vAddConstant("CN_JOB_COPYBUFFER"_Stz,     CN_JOB_COPYBUFFER);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
-  /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
-  /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_NODEINFO"_Stz,       CN_JOB_NODEINFO);
   /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);
@@ -281,7 +279,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_JOB_SUBFETCH"_Stz,       CN_JOB_SUBFETCH);
   /*    */ vAddConstant("CN_JOB_SUBINFLATE"_Stz,     CN_JOB_SUBINFLATE);
   /*    */ vAddConstant("CN_JOB_SUBINGESTER"_Stz,    CN_JOB_SUBINGESTER);
-  /*    */ vAddConstant("CN_JOB_SUBINSERTER"_Stz,    CN_JOB_SUBINSERTER);
   /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);
   /*    */ vAddConstant("CN_JOB_UNIVERSAL"_Stz,      CN_JOB_UNIVERSAL);
 
