@@ -11,7 +11,9 @@
 
   //"ZK_CANCELMARKER_handler" .verbose
   Operand[].pipeOut
-  true
+  Op.ackPipelineJob
+  false
+
 ;
 
 /*----------------------------------------------------------------------------*/

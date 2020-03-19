@@ -5,18 +5,6 @@
 " OP_scan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: scanOp_CancelMarker \handler
-
-  "SCANOP: Operand:- ZK_CANCELMARKER" .
-  Operand[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : scanOp_PulseMarker \handler
@@ -49,14 +37,23 @@
       "ScanOp awake" .
     then
 
-    Operand[].peek not if
+    Operand[].peek
+
+    // anything there ?
+    Operand[].isNull if
+      "nothing: getting next" .
       Subset[].nextBuffer to Operand[]
-      //Operand[].isNull if
-      // "Got null buffer" .
-      //else
-      // "Got another buffer" .
-      //then
+    else
+      // exit early if CancelMarker
+      Operand[].kind ZK_CANCELMARKER == if
+        nullptr to Operand[]
+      else
+        "getting next" .
+        nullptr to Operand[]
+        Subset[].nextBuffer to Operand[]
+      then
     then
+
   repeat
 
   Operand[].newEosMarker
@@ -99,7 +96,6 @@
 
   op__topology
 
-  find: scanOp_CancelMarker ZK_CANCELMARKER op[].handler!
   find: scanOp_PulseMarker ZK_PULSEMARKER op[].handler!
   find: scanOp_StartMarker ZK_STARTMARKER op[].handler!
 

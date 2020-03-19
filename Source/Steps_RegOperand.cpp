@@ -588,8 +588,7 @@ void Step::vRegOperandPeek(void)
 {
   ENTRY(); // ENTRY("vRegOperandPeek"_Stz);
   
-  m_pDataStack->vPushInt(
-    m_pTask->m_pJob->m_pOp->pPeekQueue() ? true : false);
+  m_pRegSet->m_xpOperandA = m_pTask->m_pJob->m_pOp->pPeekQueue();
   
   EXIT();
 }

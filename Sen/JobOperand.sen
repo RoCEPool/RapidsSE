@@ -35,7 +35,8 @@
       "jobOperand::generic:- ZK_CANCELMARKER" .
       "Pipeline being cancelled\n" .
       Operand[].pipeOut
-      true
+      Op.ackPipelineJob
+      false
     endof
 
     ZK_CRWBUFFER of

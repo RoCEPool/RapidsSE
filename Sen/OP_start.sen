@@ -5,6 +5,16 @@
 " OP_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: startOp_CancelMarker \handler
+
+  //"Operand:- ZK_CANCELMARKER" .verbose
+  Operand[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTEDMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : startOp_StartedMarker \handler
@@ -38,6 +48,7 @@
 
   op__topology
 
+  find: startOp_CancelMarker  ZK_CANCELMARKER op[].handler!
   find: startOp_StartedMarker ZK_STARTEDMARKER op[].handler!
   find: startOp_StoppedMarker ZK_STOPPEDMARKER op[].handler!
 

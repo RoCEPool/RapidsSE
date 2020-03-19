@@ -97,7 +97,7 @@
 
   op__topology
 
-  find: periodicCancel_ErrorMarker ZK_CANCELMARKER op[].handler!
+  find: periodicCancel_CancelMarker ZK_CANCELMARKER op[].handler!
   find: periodicCancel_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: periodicCancel_PulseMarker ZK_PULSEMARKER op[].handler!
 

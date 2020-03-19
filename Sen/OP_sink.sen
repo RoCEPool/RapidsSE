@@ -5,6 +5,20 @@
 " OP_sink.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: sinkOp_CancelMarker \handler
+
+  //"Operand:- ZK_CANCELMARKER" .verbose
+  Operand[].pipeToJob
+  Operand[].newStoppedMarker
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : sinkOp_ErrorMarker \handler
@@ -53,8 +67,6 @@
   true
 ;
 
-
-
 /*----------------------------------------------------------------------------*/
 /* execute for sinkOp request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
@@ -66,6 +78,7 @@
 
   find: sinkOp_Xyz op[].handlerAll!
 
+  find: sinkOp_CancelMarker ZK_CANCELMARKER op[].handler!
   find: sinkOp_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: sinkOp_StartMarker ZK_STARTMARKER op[].handler!
   find: sinkOp_StopMarker  ZK_STOPMARKER  op[].handler!
