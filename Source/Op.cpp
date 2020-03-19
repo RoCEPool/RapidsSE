@@ -558,6 +558,24 @@ bool Op::bPause(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* peek operand queue                                                         */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPeekQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperand = pQueueLeft()->pPeekOperand();
+  
+  vDropTaskLock();
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline from op                                                       */
 /*----------------------------------------------------------------------------*/
 Pipeline* Op::pPipeline(void)

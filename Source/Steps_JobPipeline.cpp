@@ -10,7 +10,6 @@
 void Step::vAddSteps_JobPipeline(void)
 {
   vAddStep("Job_Pipeline.begin"_Stz,         &Step::vJob_PipelineBegin);
-  vAddStep("Job_Pipeline.cancel"_Stz,        &Step::vJob_PipelineCancel);
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
   vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
   vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
@@ -74,24 +73,6 @@ void Step::vJob_PipelineDeleteDynamo(void)
   
   delete *m_pRegSet->m_xpDynamo;
   m_pRegSet->m_xpDynamo = nullptr;
-  
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-/* Job_Pipeline.cancel -- cancel the Pipeline job                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineCancel(void)
-{
-  ENTRY(); // ENTRY("vJob_PipelineCancel"_Stz);
-  
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // get the first stage of the pipeline
-  Stage* pStage = pJob_Pipeline->m_pPipeline->pGet(0);
-  
-  // send cancelMarker to the startOps of the first stage of the pipeline
-  i8 iThisNode = AM::pGrid()->iThisNode();
-  pStage->vCancelOperators(iThisNode);
   
   EXIT();
 }

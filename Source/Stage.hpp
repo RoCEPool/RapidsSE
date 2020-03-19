@@ -24,7 +24,7 @@ namespace Pipelines
   
     void vDump(Pipeline* pPipeline);
     
-    void    vCancelOperators(i8 iThisNode);
+    void    vCancelPipeline(void);
     Strand* pGetPartitionStrand(i8 i_Ptn);
     Strand* pGetNodeStrand(i8 i_Nde);
     i8      nOpsOnNode(i8 iNode);

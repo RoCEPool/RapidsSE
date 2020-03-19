@@ -677,7 +677,6 @@ public:
 
   // job Pipeline
   void vJob_PipelineBegin(void);
-  void vJob_PipelineCancel(void);
   void vJob_PipelineDeleteDynamo(void);
   void vJob_PipelineExecute(void);
   void vJob_PipelineCompile(void);
@@ -1075,6 +1074,7 @@ public:
   void vRegOperandNewStoppedMarker(void);
   void vRegOperandNewStreamDef(void);
   void vRegOperandNext(void);
+  void vRegOperandPeek(void);
   void vRegOperandPipeOut(void);
   void vRegOperandPipeOutSet(void);
   void vRegOperandPipeToJob(void);

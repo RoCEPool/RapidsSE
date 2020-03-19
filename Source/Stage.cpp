@@ -47,29 +47,27 @@ Stage::~Stage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* send cancel marker to startops of the stage                                */
 /*----------------------------------------------------------------------------*/
-void Stage::vCancelOperators(i8 iThisNode)
+void Stage::vCancelPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  for (i8 i_Nde = 0; i_Nde < nItems(); i_Nde++) {
-    Strand* pStrand = pGet(i_Nde);
+  // would the start marker always be on ORIGIN???
+  
+  // get first stage from stageNdeVec
+  Strand*  pStrand = pGet(0);
+  StageSpec* pStageSpec = pStrand->pStageSpec();
+  
+  if (pStageSpec->bNodeTopo() &&
+      pStrand->i_Nde() == AM::pGrid()->iThisNode()) {
     
-    if (m_pStageSpec->bNodeTopo()) {
+    // get first operator of this first stage
+    Op* pOp = pStrand->pGet(0);
+    if (! AM::szJobName(pOp->pOpJob())->bSame("eatAllOp"_Stz) &&
+        ! AM::szJobName(pOp->pOpJob())->bSame("statWriteOp"_Stz)) {
       
-      if (pStrand->i_Nde() == iThisNode) {
-        Op* pOp = pStrand->pGet(0);
-        RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
-        pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
-      }
-    }
-    else {
-      i8 iPtnNode = TablePtn::iPartitionToNode(pStrand->i_Ptn());
-      
-      if (iPtnNode == iThisNode) {
-        Op* pOp = pStrand->pGet(0);
-        RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
-        pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
-      }
+      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
+      // append a CANCELMARKER onto first operator
+      pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
   }
 }

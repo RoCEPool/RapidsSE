@@ -51,6 +51,20 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* cancel the pipeline                                                        */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vCancel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  // get the first stage of the pipeline
+  Stage* pStage = pGet(0);
+  
+  // send cancelMarker to the startOp of the first stage of the pipeline
+  pStage->vCancelPipeline();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set cancelling                                                             */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vCancelling(bool bCancelling)

@@ -33,17 +33,19 @@ bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
   // find the pipeline job
   Job* pJob_Pipeline = Scheduler::pFindParticipatingJob(iJobId);
   
-  if ( ! pJob_Pipeline )
+  if ( ! pJob_Pipeline ) {
     vTrace("job %lld not found\n"_Stz, iJobId);
+    Scheduler::vDumpParticipatingJobs();
+    return false;
+  }
   else
     vTrace("Cancelling job %lld\n"_Stz, iJobId);
   
-  // get the first stage of the pipeline
-  Stage* pStage = pJob_Pipeline->m_pPipeline->pGet(0);
+  // get the pipeline from the job
+  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   
-  // send cancelMarker to the startOps of the first stage of the pipeline
-  i8 iThisNode = AM::pGrid()->iThisNode();
-  pStage->vCancelOperators(iThisNode);
+  // cancel the pipeline
+  pPipeline->vCancel();
   
   return true;
 }
