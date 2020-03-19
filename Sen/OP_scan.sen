@@ -41,14 +41,12 @@
 
     // anything there ?
     Operand[].isNull if
-      "nothing: getting next" .
       Subset[].nextBuffer to Operand[]
     else
       // exit early if CancelMarker
       Operand[].kind ZK_CANCELMARKER == if
         nullptr to Operand[]
       else
-        "getting next" .
         nullptr to Operand[]
         Subset[].nextBuffer to Operand[]
       then
