@@ -213,7 +213,7 @@ void OpSpec::vPrint(void)
   
   vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
     
-  m_oEnameSet.vPrint();
+  m_oEnameSet.vDumpSet();
 }
 
 /*----------------------------------------------------------------------------*/

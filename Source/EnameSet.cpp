@@ -170,7 +170,7 @@ void EnameSet::vContentDump(void)
   vTrace("Ename Set\n"_Stz);
   vTrace("---------\n"_Stz);
   
-  vPrint();
+  vDumpSet();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,6 +226,68 @@ void EnameSet::vDelete(Stz* szName)
       vAdd(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
     else
       vAdd(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vDumpSet(void)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  vTrace("{ "_Stz);
+  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
+    
+    if (i_Ename)
+      vTrace(", "_Stz);
+    
+    if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
+      
+      vTrace("%s=%lld"_Stz,
+             
+             m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
+             m_xEname[i_Ename].m_i_Value,
+             
+             C_VARGS_END
+             );
+      continue;
+    }
+    
+    vTrace("%s=%s"_Stz,
+    
+           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
+           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value),
+           
+           C_VARGS_END
+           );
+  }
+ 
+  vTrace(" }\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vDumpSetDetailed(void)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
+    vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
+           
+           i_Ename,
+           
+           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
+           m_xEname[i_Ename].m_i_Name,
+           
+           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value),
+           m_xEname[i_Ename].m_i_Value,
+           
+           aTN[m_xEname[i_Ename].m_eToken],
+           
+           C_VARGS_END
+           );
   }
 }
 
@@ -306,68 +368,6 @@ void EnameSet::vNamesString(String* pString)
       StrLib::vAppendChar(&azCrs,' ');
     char* azName = szName(i_Ename)->azChar();
     StrLib::vAppendString(&azCrs,azName);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void EnameSet::vPrint(void)
-{
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
-  vTrace("{ "_Stz);
-  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
-    
-    if (i_Ename)
-      vTrace(", "_Stz);
-    
-    if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
-      
-      vTrace("%s=%lld"_Stz,
-             
-             m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
-             m_xEname[i_Ename].m_i_Value,
-             
-             C_VARGS_END
-             );
-      continue;
-    }
-    
-    vTrace("%s=%s"_Stz,
-    
-           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
-           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value),
-           
-           C_VARGS_END
-           );
-  }
- 
-  vTrace(" }\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void EnameSet::vPrintDetailed(void)
-{
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
-  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
-    vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
-           
-           i_Ename,
-           
-           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Name),
-           m_xEname[i_Ename].m_i_Name,
-           
-           m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value),
-           m_xEname[i_Ename].m_i_Value,
-           
-           aTN[m_xEname[i_Ename].m_eToken],
-           
-           C_VARGS_END
-           );
   }
 }
 

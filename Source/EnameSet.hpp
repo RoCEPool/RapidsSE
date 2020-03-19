@@ -39,14 +39,14 @@ namespace Gadgets
     void vContentDump(void);
     void vCopy(EnameSet* pSrcEnameSet);
     void vDelete(Stz* szName);
+    void vDumpSet(void);
+    void vDumpSetDetailed(void);
     i8   nEnames(void);
     i8   i_Find(Stz* szName);
     bool bHasName(Stz* szName);
     i8   nItems(void);
     Stz* szName(i8 i_Ename);
     void vNamesString(String* pString);
-    void vPrint(void);
-    void vPrintDetailed(void);
     void vReplace(Stz* szName, Stz* szValue);
     void vReplace(Stz* szName, i8 iValue);
     void vReset(void);

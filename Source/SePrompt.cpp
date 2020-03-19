@@ -922,7 +922,7 @@ void SePrompt::vPrepareSpawn(void)
   m_pJob->vSeed(SS_SEED_REQ);
   
   if (m_pJob->bHasEnameTag(C_TAG_JE))
-    m_pJob->pEnameSet()->vPrint();
+    m_pJob->pEnameSet()->vDumpSet();
   
   //! ALKA: Come back to this : 3 feb 2020
   m_pJob->vJobClass(nullptr, (char*)__func__);
@@ -1094,7 +1094,7 @@ void SePrompt::vSetJob(void)
     
     EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
     if (pJobInfo_es)
-      pJobInfo_es->vPrint();
+      pJobInfo_es->vDumpSet();
   }
 
   m_pJob->pEnameSet()->vCopy(&m_oJobCtl);

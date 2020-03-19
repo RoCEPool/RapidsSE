@@ -33,7 +33,7 @@ bool Prompt::bPrompt_tags(SePrompt* pPrompt)
 
   EnameSet* pEnameSet = pSemantic->pEnameSet();
 
-  pEnameSet->vPrint();
+  pEnameSet->vDumpSet();
 
   return true;
 }

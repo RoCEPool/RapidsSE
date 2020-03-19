@@ -41,7 +41,7 @@ bool Prompt::bPrompt_prompt(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (1 == nTokens) {
-    pSettings->vPrint();
+    pSettings->vDumpSet();
     return true;
   }
   
