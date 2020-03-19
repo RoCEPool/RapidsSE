@@ -48,7 +48,7 @@ void Step::vJob__BegunNew(void)
   pJobBegun->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   pJobBegun->pEnameSet()->vAdd(C_TAG_SEEDRUN,"_begun_run"_Stz);
 
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobBegun->pEnameSet()->vAdd(C_TAG_FLOW,1);
 
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
@@ -85,7 +85,7 @@ void Step::vJob__CancelNew(void)
   pJobCancel->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   pJobCancel->pEnameSet()->vAdd(C_TAG_SEEDRUN,"_cancel_run"_Stz);
 
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancel->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
@@ -125,7 +125,7 @@ void Step::vJob__CancelledNew(void)
   pJobCancelled->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   pJobCancelled->pEnameSet()->vAdd(C_TAG_SEEDRUN,"_cancelled_run"_Stz);
 
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancelled->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
   m_pDataStack->vPushPtr(pJobCancelled);
@@ -162,7 +162,7 @@ void Step::vJob__EndNew(void)
   pJobEnd->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   pJobEnd->pEnameSet()->vAdd(C_TAG_SEEDRUN,"_end_run"_Stz);
 
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnd->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
   m_pDataStack->vPushPtr(pJobEnd);
@@ -198,7 +198,7 @@ void Step::vJob__EndedNew(void)
   pJobEnded->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   pJobEnded->pEnameSet()->vAdd(C_TAG_SEEDRUN,"_ended_run"_Stz);
 
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnded->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
@@ -237,7 +237,7 @@ void Step::vJob__ExecuteNew(void)
   pJobExecute->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   pJobExecute->pEnameSet()->vAdd(C_TAG_SEEDRUN,"_execute_run"_Stz);
 
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecute->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
   m_pDataStack->vPushPtr(pJobExecute);
@@ -275,7 +275,7 @@ void Step::vJob__ExecutedNew(void)
 
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
   
-  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+  if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecuted->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
   m_pDataStack->vPushPtr(pJobExecuted);

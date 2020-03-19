@@ -225,7 +225,7 @@ Job::~Job(void) noexcept(false)
   
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
-//  if (bHasEnameTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
+//  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
 //    SP_EnmSet spEnameSet;
 //    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oEnameSet));
@@ -457,7 +457,7 @@ bool Job::bByPromptTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bByPrompt = bHasEnameTag(C_TAG_BYPROMPT);
+  bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
   
   return bByPrompt;
 }
@@ -586,7 +586,7 @@ void Job::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* test if this job has given ename tag                                       */
 /*----------------------------------------------------------------------------*/
-bool Job::bHasEnameTag(Stz* szEnameTag)
+bool Job::bHasTag(Stz* szEnameTag)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -877,7 +877,7 @@ bool Job::bNoWaitTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bNoWait = bHasEnameTag(C_TAG_NOWAIT);
+  bool bNoWait = bHasTag(C_TAG_NOWAIT);
   
   return bNoWait;
 }
@@ -1321,7 +1321,7 @@ bool Job::bTimeTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bTime = bHasEnameTag(C_TAG_TIME);
+  bool bTime = bHasTag(C_TAG_TIME);
   
   return bTime;
 }

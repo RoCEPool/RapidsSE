@@ -445,10 +445,10 @@ bool SePrompt::bDontSpawn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! m_pJob->bHasEnameTag(C_TAG_NOSPAWN))
+  if (! m_pJob->bHasTag(C_TAG_NOSPAWN))
     return false;
   
-  if (m_pJob->bHasEnameTag(C_TAG_TAGS))
+  if (m_pJob->bHasTag(C_TAG_TAGS))
     m_pJob->pEnameSet()->vDumpSet();
   
   vCompletedTask();
@@ -939,7 +939,7 @@ void SePrompt::vPrepareSpawn(void)
   
   m_pJob->vSeed(SS_SEED_REQ);
   
-//  if (m_pJob->bHasEnameTag(C_TAG_TAGS))
+//  if (m_pJob->bHasTag(C_TAG_TAGS))
 //    m_pJob->pEnameSet()->vDumpSet();
   
   //! ALKA: Come back to this : 3 feb 2020
@@ -1168,7 +1168,7 @@ void SePrompt::vSetJob(void)
 
   m_pJob->pEnameSet()->vCopy(&m_oJobCtl);
   
-  if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
+  if (m_pJob->bHasTag(C_TAG_LIFE)) {
     SP_EnmSet spEnameSet;
     m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(m_pJob->pEnameSet()));
     //m_pJob->pEnameSet()->vPrint();

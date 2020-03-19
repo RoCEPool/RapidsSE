@@ -184,15 +184,15 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubLoaders);
 
   vInfo("\n"_Stz);
-  vInfo("Epoch          : %lld \n"_Stz, gpAttachMap->m_iEpoch);
-  vInfo("BootError      : %lld \n"_Stz, gpAttachMap->m_bBootError);
-  vInfo("IndexEntries   : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
-  vInfo("IndexOffsets   : %lld \n"_Stz, C_INDEX_LEVELS);
+  vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
+  vInfo("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
+  vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
+  vInfo("IndexOffsets : %lld \n"_Stz, C_INDEX_LEVELS);
   
-  vInfo("Verbose        : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
-  vInfo("Tracepoint     : %s \n"_Stz, gpAttachMap->m_bTracepoint ? "true"_Stz : "false"_Stz);
-  vInfo("Progress       : %s \n"_Stz, gpAttachMap->m_bProgress ? "true"_Stz : "false"_Stz);
-  vInfo("Metadata       : %s \n"_Stz, gpAttachMap->m_bMetadata ? "true"_Stz : "false"_Stz);
+  vInfo("Verbose      : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
+  vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->m_bTracepoint ? "true"_Stz : "false"_Stz);
+  vInfo("Progress     : %s \n"_Stz, gpAttachMap->m_bProgress ? "true"_Stz : "false"_Stz);
+  vInfo("Metadata     : %s \n"_Stz, gpAttachMap->m_bMetadata ? "true"_Stz : "false"_Stz);
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
@@ -219,7 +219,7 @@ void AttachMap::vPrintAttachMap(void)
   */
 
   vInfo("\n"_Stz);
-  vInfo("Enclosed_by_Leading  : %c\n"_Stz,
+  vInfo("Enclosed_by_leading  : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading ? gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading : '0');
   vInfo("Enclosed_by_trailing : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing ? gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing : '0');
@@ -232,9 +232,9 @@ void AttachMap::vPrintAttachMap(void)
         gpAttachMap->m_oFormatters.m_cRecordTerminator ? gpAttachMap->m_oFormatters.m_cRecordTerminator : '0');
   vInfo("Record_end           : %s\n"_Stz, aRE[gpAttachMap->m_oFormatters.m_eRecordEnd]);
   
-  vInfo("Date component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[0]]);
-  vInfo("Date component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[1]]);
-  vInfo("Date component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[2]]);
+  vInfo("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[0]]);
+  vInfo("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[1]]);
+  vInfo("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[2]]);
   
   vInfo("Date_separator       : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cDateSeparator ? gpAttachMap->m_oFormatters.m_cDateSeparator : '0');

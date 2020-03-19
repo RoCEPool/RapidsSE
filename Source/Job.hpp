@@ -98,7 +98,7 @@ namespace Jobs
     void vCopyTags(JobClass* aJobClass);
     EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
-    bool bHasEnameTag(Stz* szEnameTag);
+    bool bHasTag(Stz* szEnameTag);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);
