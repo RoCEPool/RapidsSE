@@ -9,7 +9,7 @@ namespace StorageEngine
   {
   friend class Oblique::AM;
   friend class Engine;
-  friend class Prompt;
+  friend class Prompt::SePrompt;
 
   private:
     i8    m_iPid;

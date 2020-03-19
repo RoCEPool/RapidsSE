@@ -93,9 +93,11 @@ namespace Prompt
     i8   iPromptId(void);
     void vPromptUser(void);
     void vReformatCommand(void);
-    void vRestateCommand(void);
     void vReportObjects();
+    void vReportOther(void);
+    void vReportTrace();
     void vReportTime(void);
+    void vRestateCommand(void);
     i8   iRequestId(void);
     Session* pSession(void);
     void vSetJob(void);

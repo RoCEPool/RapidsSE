@@ -140,7 +140,7 @@ void SePrompt::vPromptLoop(void)
   while (bContinue()) {
     
     if (bStdIn()) {
-      vReportObjects();
+      vReportOther();
       vPromptUser();
     }
 
@@ -686,8 +686,10 @@ void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (gxArgs.m_bDeveloper)
+  if (gxArgs.m_bDeveloper) {
     m_oSettings.vAdd(C_PMT_OBJDELTA);
+    m_oSettings.vAdd(C_PMT_TRCFILE);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1046,12 +1048,41 @@ void SePrompt::vReportObjects(void)
 
   if (m_pBPA) {
     i8 nObjectDelta = m_pBPA->nObjectDelta();
-    vTrace("object delta: %lld objects\n"_Stz,nObjectDelta);
+    vTrace("[Object Delta: %lld objects]\n"_Stz,nObjectDelta);
   }
   else {
     m_pBPA = new BPA;
     m_pBPA->vEpochTake();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* report others                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReportOther(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  vReportObjects();
+  vReportTrace();
+}
+
+/*----------------------------------------------------------------------------*/
+/* report size of trace file                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReportTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! m_oSettings.bHasName(C_PMT_TRCFILE))
+    return;
+
+  i8 iSizeTrace = File::iSize(gpAttachMap->m_sTraceFile);
+  
+  s32 sTrace_magn;
+  MagLib::vByteMag(iSizeTrace,sTrace_magn);
+
+  vTrace("[Trace File  : %s]\n"_Stz,sTrace_magn.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

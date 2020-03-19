@@ -1056,7 +1056,9 @@ void Engine::vOpenTrace(void)
   RASSERT(bOpened);
   
   if (AM::bVerboseProgress())
-    vInfo("Opened trace file: %s\n"_Stz,sTracePath.szStz());
+    vInfo("Opened trace file for %s: %s\n"_Stz,
+          (gxArgs.m_bAppendTrace) ? "append" : "write",
+          sTracePath.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
