@@ -1050,7 +1050,6 @@ public:
   void vRegOperandAddColumnDef(void);
   void vRegOperandCsvAppend(void);
   void vRegOperandBide(void);
-  void vRegOperandChunkFile(void);
   void vRegOperandCsvData(void);
   void vRegOperandDelete(void);
   void vRegOperandFirstRowFetch(void);
@@ -1067,7 +1066,6 @@ public:
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewErrorMarker(void);
   void vRegOperandNewPulseMarker(void);
-  void vRegOperandNewSeekOffsets(void);
   void vRegOperandNewStartMarker(void);
   void vRegOperandNewStartedMarker(void);
   void vRegOperandNewStopMarker(void);
@@ -1078,10 +1076,8 @@ public:
   void vRegOperandPipeOut(void);
   void vRegOperandPipeOutSet(void);
   void vRegOperandPipeToJob(void);
-  void vRegOperandReadChunk(void);
   void vRegOperandReport(void);
   void vRegOperandRowCountFetch(void);
-  void vRegOperandSeekSetsFetch(void);
   void vRegOperandSet(void);
   void vRegOperandUpsertIntoTable(void);
   void vRegOperandCrwToCsv(void);

@@ -200,9 +200,6 @@ void Step::vRegInfoSetChunkFile(void)
     }
   }
   
-  // dump
-  //pSeekOffsets->vDump();
-  
   // free the read block
   MemLib::vFreeBlock(pReadBlock, C_2K);
   

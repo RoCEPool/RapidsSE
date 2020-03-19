@@ -87,12 +87,6 @@
       true
     endof
 
-    ZK_SEEKOFFSETS of
-      //"jobOperand::generic: ZK_SEEKOFFSETS" .verbose
-      Operand[].pipeOut
-      true
-    endof
-
     ZK_SRTBUFFER of
       //"jobOperand::generic: ZK_SRTBUFFER" .verbose
       Operand[].pipeOut

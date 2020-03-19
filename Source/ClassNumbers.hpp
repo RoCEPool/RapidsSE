@@ -245,7 +245,6 @@ enum eCN : u2 // Class Number
   /* 198 0x0C6       19B Heap:I */ CN__S__,
   /* 199 0x0C7       16B Heap:S */ CN_SCHEMA,
   /* 200 0x0C8    50336B Heap:L */ CN_SCHEMATEST,
-  /* 201 0x0C9        8B Heap:I */ CN_SEEKOFFSETS,
   /* 201 0x0C9        8B Heap:I */ CN_SEEME,
   /* 202 0x0CA     5600B Heap:M */ CN_SEMANTIC,
   /* 203 0x0CB     6280B Heap:L */ CN_SEPROMPT,
@@ -579,7 +578,6 @@ static Stz* aCN[]
   /* 198 0x0C6 */ "_S__"_Stz,                // CN__S__
   /* 199 0x0C7 */ "SCHEMA"_Stz,              // CN_SCHEMA
   /* 200 0x0C8 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
-  /* 201 0x0C9 */ "SEEKOFFSETS"_Stz,               // CN_SEEKOFFSETS
   /* 201 0x0C9 */ "SEEME"_Stz,               // CN_SEEME
   /* 202 0x0CA */ "SEMANTIC"_Stz,            // CN_SEMANTIC
   /* 203 0x0CB */ "SEPROMPT"_Stz,            // CN_SEPROMPT

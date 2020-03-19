@@ -478,27 +478,6 @@ void Step::vSocketRecvObject(void)
       return;
     }
       
-    case CN_SEEKOFFSETS: {
-      SeekOffsets* pSeekOffsets = new SeekOffsets();
-      
-      MemLib::vCopy(pSeekOffsets,pObject,sizeof(Object),CN_SEEKOFFSETS);
-      
-      aBody = aAdd<void*>(pSeekOffsets,sizeof(Object));
-      nRemainingBytes = giClassSize[CN_SEEKOFFSETS] - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      m_pDataStack->vPushPtr(pSeekOffsets);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
-      
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = new StreamDef();
       

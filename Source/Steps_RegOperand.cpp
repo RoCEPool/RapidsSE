@@ -13,7 +13,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
-  vAddStep("Operand[].chunkFile"_Stz,      &Step::vRegOperandChunkFile);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
   vAddStep("Operand[].csvToCrw"_Stz,       &Step::vRegOperandCsvToCrw);
@@ -33,7 +32,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vRegOperandNewPulseMarker);
-  vAddStep("Operand[].newSeekOffsets"_Stz, &Step::vRegOperandNewSeekOffsets);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vRegOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vRegOperandNewStopMarker);
@@ -44,10 +42,8 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vRegOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vRegOperandPipeOutSet);
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
-  vAddStep("Operand[].readChunk"_Stz,      &Step::vRegOperandReadChunk);
   vAddStep("Operand[].report"_Stz,         &Step::vRegOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vRegOperandRowCountFetch);
-  vAddStep("Operand[].seekSets@"_Stz,      &Step::vRegOperandSeekSetsFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
   vAddStep("Operand[].workDone"_Stz,       &Step::vRegOperandWorkDone);
@@ -87,113 +83,6 @@ void Step::vRegOperandBide(void)
     ASSERT(m_pTask->bIsLocked());
     m_pTask->vSchedulerAct(SA_BIDE);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].chunkFile -- operand chunk file                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandChunkFile(void)
-{
-  ENTRY(); // ENTRY("vOperandChunkFile"_Stz);
-  
-  // get the seekOffsets
-  SeekOffsets* pSeekOffsets = _pSeekOffsets(*m_pRegSet->m_xpOperandA);
-  
-  // get the file we are chunking
-  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
-  
-  // get the last chunk location
-  i8 i_ChunkLoc = m_pRegSet->m_iCounter0;
-  
-  // get the Eof location
-  i8 i_EofLoc = m_pRegSet->m_iCounter1;
-  
-  char* pReadBlock = (char*)MemLib::aMallocBlock(C_CHUNKBLOCK);
-  
-  i8 nChunkBytes;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process chunks till eof or till we get C_SET_SEEKOFFSETS
-  
-  while (true) {
-    
-    // compute the location of the final block of the current chunk
-    i8 i_FinalBlockLoc = i_ChunkLoc + C_LOAD_READCHUNK - C_CHUNKBLOCK;
-    
-    // the final block will be past the eof if the chunk is
-    // less than maximum chunk size
-    if (i_FinalBlockLoc > i_EofLoc) {
-      
-      // compute the number of bytes which belong to the current chunk
-      nChunkBytes = i_EofLoc - i_ChunkLoc;
-      
-      bool bAddOffset = pSeekOffsets->bAddOffset(i_ChunkLoc, nChunkBytes);
-      ASSERT(bAddOffset);
-    
-      s32 sFileSize;
-      MagLib::vByteMag(i_EofLoc, 3, sFileSize);
-      vTrace("Loading %s %s in %lld chunks by %lld nodes %lld partitions\n"_Stz,
-             pFile->sFilePath().szStz(),sFileSize.szStz(),
-             pSeekOffsets->nOffsets(),
-             AM::nDefinedNodes(),
-             AM::nPartitions());
-      
-      // set the chunk location
-      m_pRegSet->m_iCounter0 = i_ChunkLoc + nChunkBytes;
-      
-      break;
-    }
-    
-    // read next block of the chunk
-    pFile->vSeek(i_FinalBlockLoc);
-    
-    i8 nBytesRead = pFile->nReadBytes(pReadBlock,C_CHUNKBLOCK);
-    
-    // compute last actual byte of final block just read in
-    char *aLastByte = &pReadBlock[nBytesRead - 1];
-    
-    // find the final end of line for the block (and therefore the chunk)
-    char *aFinalEol = aLastByte;
-    bool bFoundEol = StrLib::bBackward(&aFinalEol,pReadBlock,'\n');
-    if (!bFoundEol)
-      bFoundEol = StrLib::bBackward(&aFinalEol,pReadBlock,'\r');
-    RASSERT(bFoundEol);
-    
-    // compute the number of bytes which belong to the current chunk
-    i8 nPartialBytes = Correctness::nSub((void*)aFinalEol,pReadBlock) + 1;
-    
-    // compute the total chunk bytes
-    nChunkBytes = nPartialBytes + C_WSP_DATACHUNK - 2048;
-    
-    // compute end location of chunk
-    i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
-    
-    bool bAddOffset = pSeekOffsets->bAddOffset(i_ChunkLoc, nChunkBytes);
-    ASSERT(bAddOffset);
-    
-    // advance to start of next chunk
-    i_ChunkLoc = i_EndChunkLoc + 1;
-    
-    // have we reached C_SET_OFFSETS ?
-    if (pSeekOffsets->bIsFull()) {
-      
-      // save the current chunk location
-      m_pRegSet->m_iCounter0 = i_ChunkLoc;
-      
-      // dump
-      //pSeekOffsets->vDump();
-      
-      break;
-    }
-  }
-  
-  // dump
-  //pSeekOffsets->vDump();
-  
-  // free the read block
-  MemLib::vFreeBlock(pReadBlock, C_2K);
   
   EXIT();
 }
@@ -511,7 +400,6 @@ void Step::vRegOperandKind(void)
        }
       break;
     }
-    case CN_SEEKOFFSETS :    eOperand = ZK_SEEKOFFSETS;     break;
     case CN_SRTBUFFER:       eOperand = ZK_SRTBUFFER;       break;
     case CN_STREAMDEF:       eOperand = ZK_STREAMDEF;       break;
       
@@ -603,20 +491,6 @@ void Step::vRegOperandNewPulseMarker(void)
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
   m_pRegSet->m_xpOperandA = new Marker(OM_PULSEMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newSeekOffsets -- new a seek offset operand                      */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandNewSeekOffsets(void)
-{
-  ENTRY(); // ENTRY("vOperandNewSeekOffset"_Stz);
-  
-  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
-  
-  m_pRegSet->m_xpOperandA = new SeekOffsets;
   
   EXIT();
 }
@@ -749,35 +623,6 @@ void Step::vRegOperandPipeToJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].readChunk -- reach a chunk from file given the seekOffsets       */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandReadChunk(void)
-{
-  ENTRY(); // ENTRY("vOperandReadChunk"_Stz);
-  
-  ASSERT(*m_pRegSet->m_xpOperandA);
-  SeekOffsets* pSeekOffsets = _pSeekOffsets(*m_pRegSet->m_xpOperandA);
-  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
-  
-  i8 iEntry = m_pDataStack->iPopInt(__func__);
-  
-  i8 nBytes = pSeekOffsets->nBytes(iEntry);
-  i8 iOffset = pSeekOffsets->iOffset(iEntry);
-  
-  //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
-  
-  CsvBuffer* pCsvBuffer = new CsvBuffer;
-  pFile->vSeek(iOffset);
-  pCsvBuffer->vTake(nBytes);
-  i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
-  ASSERT(nBytesRead == nBytes);
-  
-  m_pRegSet->m_xpOperandB = pCsvBuffer;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].report -- mark operand for report processing ?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandReport(void)
@@ -801,21 +646,6 @@ void Step::vRegOperandRowCountFetch(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
   
   m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].rowCount@ -- fetch the operand row count                         */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandSeekSetsFetch(void)
-{
-  ENTRY(); // ENTRY("vOperandSeekSetsFetch"_Stz);
-  
-  ASSERT(*m_pRegSet->m_xpOperandA);
-  SeekOffsets* pSeekOffsets = _pSeekOffsets(*m_pRegSet->m_xpOperandA);
-  
-  m_pDataStack->vPushInt(pSeekOffsets->nOffsets());
   
   EXIT();
 }
@@ -992,10 +822,6 @@ void Step::vRegOperandWorkDone(void)
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperandA);
       pOp->vAddWorkDone(pIrwBuffer->nItems());
-      break;
-    }
-      
-    case CN_SEEKOFFSETS: {
       break;
     }
       

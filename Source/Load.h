@@ -17,7 +17,6 @@ namespace Load
 #include "RecordData.hpp"
 #include "WriteHash.hpp"
 #include "Loader.hpp"
-#include "SeekOffsets.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
