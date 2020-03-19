@@ -56,7 +56,6 @@ namespace Jobs
 #include "Job_Universal.hpp"
 
 #include "Job_WriteBuffer.hpp"
-#include "Job_WriteRow.hpp"
 
 #include "JobList.hpp"
 

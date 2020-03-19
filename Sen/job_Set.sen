@@ -85,7 +85,6 @@
 
 "job_Waker.sen"           include
 "job_WriteBuffer.sen"     include
-"job_WriteRow.sen"        include
 
 //"otherJobs"               include-subdir
 
