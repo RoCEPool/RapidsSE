@@ -579,6 +579,18 @@ void BufferPool::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return free space in bytes                                                 */
+/*----------------------------------------------------------------------------*/
+i8 BufferPool::iTotalSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  i8 iTotalSpace = m_nBuffers * C_SIZE_POOL_BUFFER;
+  
+  return iTotalSpace;
+}
+
+/*----------------------------------------------------------------------------*/
 /* translate buffer number to allocated buffer                                */
 /*----------------------------------------------------------------------------*/
 PoolBuffer* BufferPool::pToPoolBuffer(i8 i_Buffer)
@@ -615,6 +627,18 @@ FreeBuffer* BufferPool::pToFreeBuffer(PoolBuffer* pBuffer)
   FreeBuffer* pBufferFree = static_cast<FreeBuffer*>(pBuffer);
   
   return pPoolCheck<FreeBuffer*>(pBufferFree);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return free space in bytes                                                 */
+/*----------------------------------------------------------------------------*/
+i8 BufferPool::iUsedSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  i8 iUsedSpace = m_nAllocCount * C_SIZE_POOL_BUFFER;
+  
+  return iUsedSpace;
 }
 
 /*----------------------------------------------------------------------------*/

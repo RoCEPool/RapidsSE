@@ -7,9 +7,10 @@
 
 namespace Prompt
 {
-  static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
-  static Stz* C_PMT_OBJDELTA = "<reportObjectDelta>"_Stz;
+  static Stz* C_PMT_BUFPOOL  = "<bufferPool>"_Stz;
+  static Stz* C_PMT_OBJDELTA = "<objectDelta>"_Stz;
   static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
+  static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
   class SePrompt : public Focal
@@ -95,6 +96,7 @@ namespace Prompt
     void vReformatCommand(void);
     void vReportObjects();
     void vReportOther(void);
+    void vReportPool(void);
     void vReportTrace();
     void vReportTime(void);
     void vRestateCommand(void);

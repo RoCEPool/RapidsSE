@@ -687,6 +687,7 @@ void SePrompt::vInitialSettings(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   if (gxArgs.m_bDeveloper) {
+    m_oSettings.vAdd(C_PMT_BUFPOOL);
     m_oSettings.vAdd(C_PMT_OBJDELTA);
     m_oSettings.vAdd(C_PMT_TRCFILE);
   }
@@ -1063,8 +1064,30 @@ void SePrompt::vReportOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  vReportPool();
   vReportObjects();
   vReportTrace();
+}
+
+/*----------------------------------------------------------------------------*/
+/* report others                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReportPool(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  if (! m_oSettings.bHasName(C_PMT_BUFPOOL))
+    return;
+  
+  i8 iTotalSpace  = gpBufferPool->iTotalSpace();
+  i8 iFreePercent = gpBufferPool->iFreePercent();
+
+  s32 sTotal_magn;
+  MagLib::vByteMag(iTotalSpace,sTotal_magn);
+
+  vTrace("[BufferPool  : size %s free %lld%%]\n"_Stz,
+         sTotal_magn.szStz(),
+         iFreePercent);
 }
 
 /*----------------------------------------------------------------------------*/

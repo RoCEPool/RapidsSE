@@ -76,9 +76,11 @@ namespace Pool
     void vMonitorPortrait(s48K& sPortrait);
     PoolBuffer* pNextJumbo(PoolBuffer* pPrev);
     void vPoolDump(void);
+    i8   iTotalSpace(void);
     PoolBuffer* pToPoolBuffer(i8 i_Buffer);
     FreeBuffer* pToFreeBuffer(i8 i_Buffer);
     FreeBuffer* pToFreeBuffer(PoolBuffer* pBuffer);
+    i8   iUsedSpace(void);
     bool bValidAddress(const void* aAddress);
     bool bVerifyBoundaries(void);
     void vVerifyPool(void);
