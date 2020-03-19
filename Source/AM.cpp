@@ -19,11 +19,12 @@ extern i8            giClassSize[];
 extern pFINALIZE*    gpFinalize[];
 
 // Arg
-Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();        }
+Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }
 i8   AM::nDummyThreads(void)  { return gpAttachMap->Arg.m_nDummyThreads;      }
+Stz* AM::szInitial(void)      { return gxArgs.m_sInitial.szStz();             }
 i8   AM::iJumboSize(void)     { return gpAttachMap->Arg.m_iJumboSize;         }
 bool AM::bLog(void)           { return gpAttachMap->Arg.m_bLog;               }
 i8   AM::nMaxLoadErrors(void) { return gpAttachMap->Arg.m_nMaxLoadErrors;     }
@@ -52,7 +53,7 @@ Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_okDdlLock;            }
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
-Format* AM::pFmt(void) { return & gpAttachMap->m_oFormatters;      }
+Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormatters;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }

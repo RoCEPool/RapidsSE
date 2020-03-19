@@ -7,13 +7,13 @@ namespace Arguments
 {
   class Args : public Object
   {
-    friend class       Oblique::AM;
+    friend class Oblique::AM;
     friend class StorageEngine::Engine;
-    friend class   LexicalAnalysis::TokenStream;
-    friend class   LexicalAnalysis::Characterise;
-    friend class   LexicalAnalysis::Tokeniser;
+    friend class LexicalAnalysis::TokenStream;
+    friend class LexicalAnalysis::Characterise;
+    friend class LexicalAnalysis::Tokeniser;
 
-    friend class   Prompt::SePrompt;
+    friend class Prompt::SePrompt;
 
   public:
   
@@ -36,13 +36,13 @@ namespace Arguments
       i8  m_iPortNo;       // port number
     } m_xNodes[C_MAX_NODES];
   
-    s256 m_sCommand;    // command to run
     
     // commands
     bool m_bAddNode;    // add node
     bool m_bAppendTrace; // append to trace file
     bool m_bCommand;    // run command
     bool m_bHelp;       // display help
+    bool m_bInitial;    // run command is an initial command
     bool m_bPrompt;     // run the se> prompt
     bool m_bSethScript; // run in scripting mode (like prompt but no prompt)
     bool m_bStart;      // start system
@@ -53,6 +53,7 @@ namespace Arguments
     bool m_bUnlink;     // unlink shm region only
 
     // options
+    s256 m_sCommand;         // command to run
     bool m_bConfig;          // print configuration information
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap
@@ -62,9 +63,10 @@ namespace Arguments
     i8   m_nEntries;         // no of entries per buffer
     bool m_bFreeCB;          // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
-    bool m_bLock;            // lock shared memory pages in memory
     bool m_bHugePages;       // to use huge pages
+    s256 m_sInitial;         // initial to run
     bool m_bKillPrev;        // kill previous se's (temporary)
+    bool m_bLock;            // lock shared memory pages in memory
     bool m_bLog;             // use shared log
     bool m_bNoMunge;         // prompt not to munge
     i8   m_nMaxLoadErrors;   // maximum load errors

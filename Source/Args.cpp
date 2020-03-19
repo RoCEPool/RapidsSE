@@ -47,19 +47,21 @@ Args::Args(void)
   // node configuration
   m_nNodes = 0;
   
-  m_sCommand    = ""_Stz;
-  
+  m_sCommand = ""_Stz;
+  m_sInitial = ""_Stz;
+
   // commands
-  m_bAddNode    = false;
+  m_bAddNode     = false;
   m_bAppendTrace = false;
-  m_bCommand    = false;
-  m_bHelp       = false;
-  m_bPrompt     = false;
-  m_bSethScript = false;
-  m_bStart      = false;
-  m_bStatus     = false;
-  m_bStop       = false;
-  m_bUnlink     = false;
+  m_bCommand     = false;
+  m_bHelp        = false;
+  m_bInitial     = false;
+  m_bPrompt      = false;
+  m_bSethScript  = false;
+  m_bStart       = false;
+  m_bStatus      = false;
+  m_bStop        = false;
+  m_bUnlink      = false;
 
   // options
   m_bConfig          = true;
@@ -284,6 +286,13 @@ bool Args::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--hugepages"_Stz)) {
       m_bHugePages = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--initial"_Stz)) {
+      m_bInitial = true;
+      m_sInitial = (Stz*)argv[++i_Arg];
       continue;
     }
     

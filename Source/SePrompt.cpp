@@ -612,6 +612,17 @@ bool SePrompt::bGetCommand(void)
   Tokeniser*    pTokeniser   = pTokenStream->pTokeniser();
   Characterise* pCharser     = pTokeniser->pCharser();
 
+  if (gxArgs.m_bInitial) {
+    gxArgs.m_bInitial = false;
+    
+    s4K szInitial = AM::szInitial();
+    Tokeniser::vTokenise(pTknVec,szInitial);
+    pTknVec->vStripSemicolon();
+    pTknVec->vSetTokens();
+    return true;
+  }
+  
+  
   if (m_bOneCommand && ! m_bOneRun) {
     m_bOneRun = true;
     
