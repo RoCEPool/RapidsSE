@@ -5,9 +5,27 @@
 " OP_scan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: scanOp_CancelMarker \handler
+
+  "SCANOP: Operand:- ZK_CANCELMARKER" .
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : scanOp_PulseMarker \handler
+
+  0 locals| rateSecs |
+
+  "<rateSecs>" job[] job.enameset@ enameset.hasName if
+    <rateSecs> >int to rateSecs
+  then
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Operand[].pipeOut
@@ -23,7 +41,22 @@
     Operand[].isNull
   not while
     Operand[].pipeOut
-    Subset[].nextBuffer to Operand[]
+
+    // check for rate
+    rateSecs if
+      rateSecs "ScanOp Pausing for %v secs" str.format .
+      rateSecs task::sleepSsec
+      "ScanOp awake" .
+    then
+
+    Operand[].peek not if
+      Subset[].nextBuffer to Operand[]
+      //Operand[].isNull if
+      // "Got null buffer" .
+      //else
+      // "Got another buffer" .
+      //then
+    then
   repeat
 
   Operand[].newEosMarker
@@ -66,6 +99,7 @@
 
   op__topology
 
+  find: scanOp_CancelMarker ZK_CANCELMARKER op[].handler!
   find: scanOp_PulseMarker ZK_PULSEMARKER op[].handler!
   find: scanOp_StartMarker ZK_STARTMARKER op[].handler!
 
@@ -80,7 +114,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 opSyntax: scanOp :: scanOp <tableNm> ;
-
+opSyntax: scanOp :: scanOp <tableNm> <rateSecs> ;
 
 //opInfo: scanOp
 //{
