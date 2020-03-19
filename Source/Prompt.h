@@ -103,6 +103,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_prefixes.hpp"
 #include "Prompt_print.hpp"
 #include "Prompt_procedure.hpp"
+#include "Prompt_prompt.hpp"
 #include "Prompt_pwd.hpp"
 
 #include "Prompt_question.hpp"

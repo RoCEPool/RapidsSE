@@ -70,7 +70,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneRun     = false;
 
   m_bContinue   = true;
-  m_bDumpTokens = false;
   
   m_iCmdNo      = 0;
   m_aJobClass   = nullptr;
@@ -82,7 +81,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   //else
   m_pSession->m_sToDo = "_seprompt"_Stz;
   
-  m_bTrackingMemory = false;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
     m_nObjectsInPool[i_enum] = 0;
   
@@ -95,6 +93,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 //    m_pBPA = new BPA;
 
   _checkInitialised_(CN_SEPROMPT);
+  
+  vInitialSettings();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       break;
     
-    if (m_bDumpTokens) {
+    if (bDumpTokens()) {
       vDumpTokenVec(false);
     }
     
@@ -217,7 +217,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
-    if (m_bDumpTokens)
+    if (bDumpTokens())
       Correctness::vDebugPoint();
     
     vSetJob();
@@ -299,7 +299,7 @@ BPA* SePrompt::pBPA(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for job control options                                              */
+/* check for job control tags (such as /nowait)                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCheckJobCtl(void)
 {
@@ -440,7 +440,10 @@ bool SePrompt::bDumpTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_bDumpTokens;
+  if (m_oSettings.bHasName(C_PMT_TKNDUMP))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,8 +452,11 @@ bool SePrompt::bDumpTokens(void)
 void SePrompt::vDumpTokens(bool bDumpTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bDumpTokens = bDumpTokens;
+
+  if (bDumpTokens)
+    m_oSettings.vAdd(C_PMT_TKNDUMP,1);
+  else
+    m_oSettings.vDelete(C_PMT_TKNDUMP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,7 +468,7 @@ void SePrompt::vDumpTokenVec(bool bForce)
   
   TokenVec* pTknVec = this->pTokenVec();
   
-  if (! m_bDumpTokens && ! bForce)
+  if (! bDumpTokens() && ! bForce)
     return;
 
   if (! pTknVec->nTokens() && ! bForce)
@@ -638,13 +644,14 @@ bool SePrompt::bGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command input processor                                                */
+/* initise prompt settings tags                                               */
 /*----------------------------------------------------------------------------*/
-TokenStream* SePrompt::pTokenStream(void)
+void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pTokenStream;
+  if (gxArgs.m_bDeveloper)
+    m_oSettings.vAdd(C_PMT_OBJDELTA);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -995,9 +1002,9 @@ void SePrompt::vReportObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! gxArgs.m_bDeveloper)
+  if (! m_oSettings.bHasName(C_PMT_OBJDELTA))
     return;
-  
+
   if (m_pBPA) {
     i8 nObjectDelta = m_pBPA->nObjectDelta();
     vTrace("object delta: %lld objects\n"_Stz,nObjectDelta);
@@ -1077,6 +1084,16 @@ void SePrompt::vSetJob(void)
   }
   
   //m_pJob->pEnameSet()->vContentDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the prompt settings tag set                                            */
+/*----------------------------------------------------------------------------*/
+EnameSet* SePrompt::pSettings(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_oSettings;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1201,6 +1218,16 @@ bool SePrompt::bSubLet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get command input processor                                                */
+/*----------------------------------------------------------------------------*/
+TokenStream* SePrompt::pTokenStream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSession->m_pTokenStream;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
 TokenVec* SePrompt::pTokenVec(void)
@@ -1231,21 +1258,26 @@ bool SePrompt::bTrackingMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_bTrackingMemory;
+  if (m_oSettings.bHasName(C_PMT_MEMTRACK))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vTrackingMemory(bool bTrackingMemory)
+void SePrompt::vTrackingMemory(bool bTrackMemory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bTrackingMemory = bTrackingMemory;
-  
-  if (bTrackingMemory) {
+
+  if (bTrackMemory)
+    m_oSettings.vAdd(C_PMT_MEMTRACK,1);
+  else
+    m_oSettings.vDelete(C_PMT_MEMTRACK);
+
+  if (bTrackingMemory())
     PoolHelper::vObjectSnapshot(m_nObjectsInPool);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

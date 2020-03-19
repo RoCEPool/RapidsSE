@@ -7,6 +7,10 @@
 
 namespace Prompt
 {
+  static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
+  static Stz* C_PMT_OBJDELTA = "<reportObjectDelta>"_Stz;
+  static Stz* C_PMT_MEMTRACK = "<trackMemory>"_Stz;
+
   class SePrompt : public Focal
   {
   private:
@@ -15,27 +19,23 @@ namespace Prompt
     bool      m_bOneCommand;// run one command only
     bool      m_bOneRun;    // one command has been run?
     bool      m_bContinue;  // continue processing commands?
-    bool      m_bDumpTokens;// dump tokens?
 
     i8        m_iCmdNo;     // command no
     JobClass* m_aJobClass;  // job class
+    EnameSet  m_oJobCtl;    // job control tags
     Job*      m_pJob;       // job
-    Timer     m_oTimer;     // the timer
 
-    Request*  m_pRequest;   // current request being executed by SE
-  
+    Request*  m_pRequest;       // current request being executed by SE
     i8        m_i_RequestFocal; // focal subscript of last request
     i8        m_iRequestId;     // id of last command
 
-    ShortCutVec m_oShortCutVec; // vector of short cuts
-    
-    bool      m_bTrackingMemory; // tracking memory ?
+    BPA*      m_pBPA;           // object delta reporting
     i8        m_nObjectsInPool[CN_ENUMS];
-    
-    EnameSet  m_oJobCtl;
-  
-    BPA*      m_pBPA;         // object delta reporting
-  
+    EnameSet  m_oSettings;
+    ShortCutVec m_oShortCutVec; // vector of short cuts
+    Timer     m_oTimer;         // the timer
+
+
     // must be last
     Footer m_xFooter;
   
@@ -74,7 +74,7 @@ namespace Prompt
     bool bFindMatch_procedure(void);
     void vFocalOutline(s4K& sOutline);
     bool bGetCommand(void);
-    TokenStream* pTokenStream(void);
+    void vInitialSettings(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
@@ -96,11 +96,13 @@ namespace Prompt
     i8   iRequestId(void);
     Session* pSession(void);
     void vSetJob(void);
+    EnameSet* pSettings(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     void vSpawnJob(void);
     bool bStdIn(void);
     bool bSubLet(void);
+    TokenStream* pTokenStream(void);
     TokenVec* pTokenVec(void);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);

@@ -4,23 +4,19 @@
 
 //print "_shortcuts";
 
-// alka's  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-shortcut a _lineitemay;
-
-// ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+shortcut a  _lineitemay;
 shortcut ad article_dump;
 shortcut b  _bm_insidx;
 shortcut bc _bootCluster;
 shortcut i  _bm_inflateRow;
 shortcut cp _cancelPipeline;
 shortcut ct /flow create table t (a integer);
-shortcut l _loadPipeline;
+shortcut l  _loadPipeline;
 shortcut d  _pipeline;
 shortcut dl _pipelineLineItem;
+shortcut f  _fetchLineItemRJH;
 shortcut gs gridSanity;
-shortcut p _purgeAY;
+shortcut p  _purgeAY;
 shortcut dn _defineNode;
 shortcut en semantic;
 shortcut fn forget node node9 abc def;

@@ -173,7 +173,7 @@ void AttachMap::vNextTempName(s32& sName)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vPrintAttachMap(void)
 {
-  vInfo("\n****ATTACH MAP****\n\n"_Stz);
+  vInfo("\n-- ATTACH MAP --\n\n"_Stz);
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
   vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
@@ -201,6 +201,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pLarge);
   vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
   
+  /*
   vInfo("\n"_Stz);
   vInfo("Total Nodes      : %lld \n"_Stz, AM::pGrid()->nDefinedNodes());
   vInfo("This node        : %lld \n"_Stz, AM::pGrid()->m_iThisNode);
@@ -211,11 +212,12 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("Slots per node   : %lld \n"_Stz, AM::pGrid()->nSlotsPerNode());
   vInfo("Total Partitions : %lld \n"_Stz, AM::pGrid()->nPartitions());
-
+  
   vInfo("Partitions on this node : %lld \n"_Stz, AM::pGrid()->nPartitions());
   for (i8 iIndex = 0; iIndex < AM::pGrid()->nSlotsPerNode(); iIndex++)
     vInfo("Slot#%lld      : partition %lld \n"_Stz, iIndex, AM::pGrid()->m_iPartition[iIndex]);
-  
+  */
+
   vInfo("\n"_Stz);
   vInfo("Enclosed_by_Leading  : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading ? gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading : '0');
@@ -237,7 +239,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Date_separator       : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cDateSeparator ? gpAttachMap->m_oFormatters.m_cDateSeparator : '0');
 
-  vInfo("\n****ATTACH MAP END****\n\n"_Stz);
+  vInfo("\n-- ATTACH MAP END --\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
