@@ -33,6 +33,24 @@
       // decode kind
       Operand[].kind case
 
+      ZK_CANCELMARKER of
+        "CONSUMEOP: Operand:- ZK_CANCELMARKER" .verbose
+        stop 1 - to stop
+        stop 0 == if
+          Operand[].pipeOut
+          Op.ackPipelineJob
+          false
+        else
+          Operand[].delete
+        true
+        then
+
+        stop Counter0[] > if
+        Counter0[] Counter0[] stop - "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
+        then
+
+      endof
+
         ZK_EOSMARKER of
           //"Operand:- ZK_EOSMARKER" .verbose
           eos 1 - to eos
