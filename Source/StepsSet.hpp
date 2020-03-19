@@ -530,7 +530,6 @@ public:
   void vJobParticipantStore(void);
   void vJobParticipantResponseStore(void);
   void vJobParticipantHasError(void);
-  void vJobPartitionsFetch(void);
   void vJobPhaseFetch(void);
   void vJobPhaseStore(void);
   void vJobPostRecv(void);
@@ -538,7 +537,6 @@ public:
   void vJobPrintMember(void);
 
   void vJobRecv(void);
-  void vJobRegionSizeFetch(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobReseed(void);

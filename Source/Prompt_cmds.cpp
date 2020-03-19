@@ -33,7 +33,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_INSERTROW);
   //JobClass::vCmds(CN_JOB_INSERTTABLE);
   JobClass::vCmds(CN_JOB_LOADTABLE);
-  JobClass::vCmds(CN_JOB_SANITY);
   
   return true;
 }

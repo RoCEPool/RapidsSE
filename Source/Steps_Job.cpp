@@ -69,7 +69,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
   vAddStep("job.participantResponse!"_Stz, &Step::vJobParticipantResponseStore);
   vAddStep("job.participantHasError"_Stz,  &Step::vJobParticipantHasError);
-  vAddStep("job.partitions@"_Stz,      &Step::vJobPartitionsFetch);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
@@ -77,7 +76,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.recv"_Stz,             &Step::vJobRecv);
-  vAddStep("job.regionSize@"_Stz,      &Step::vJobRegionSizeFetch);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.reseed"_Stz,           &Step::vJobReseed);
@@ -1001,20 +999,6 @@ void Step::vJobParticipantResponseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.partitions@ -- fetch partitions from job_sanity                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobPartitionsFetch(void)
-{
-  ENTRY(); // ENTRY("vJobPartitionsFetch"_Stz);
-  
-  Job_Sanity* pJob_Sanity = _pJob_Sanity(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.phase@ -- fetch the job phase                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPhaseFetch(void)
@@ -1193,20 +1177,6 @@ void Step::vJobRemoveParticipant(void)
     AM::pParticipatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.regionSize@ -- fetch region size from job_sanity                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRegionSizeFetch(void)
-{
-  ENTRY(); // ENTRY("vJobRegionSizeFetch"_Stz);
-  
-  Job_Sanity* pJob_Sanity = _pJob_Sanity(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob_Sanity->m_iRegionSize);
-  
   EXIT();
 }
 
