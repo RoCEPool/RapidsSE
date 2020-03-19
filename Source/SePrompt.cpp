@@ -896,25 +896,6 @@ void SePrompt::vPreJob(void)
               C_VARGS_END);
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
-  
-//  if (! m_pJob)
-//    return;
-//
-//  s32 sJobNm = m_pJob->pEnameSet()->szValue(C_TAG_JOBNM);
-//
-//  m_pJob->m_sJobNm = sJobNm;
-//
-//  m_pJob->pEnameSet()->vAdd(C_TAG_BYPROMPT,1);
-//
-//  m_pJob->pEnameSet()->vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
-//  m_pJob->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
-//
-//  if (m_oJobCtl.bHasName(C_TAG_JI)) {
-//
-//    EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
-//    if (pJobInfo_es)
-//      pJobInfo_es->vPrint();
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -932,8 +913,8 @@ void SePrompt::vPrepareSpawn(void)
   
   m_pJob->vSeed(SS_SEED_REQ);
   
-  if (m_pJob->bHasEnameTag(C_TAG_JE))
-    m_pJob->pEnameSet()->vDumpSet();
+//  if (m_pJob->bHasEnameTag(C_TAG_TAGS))
+//    m_pJob->pEnameSet()->vDumpSet();
   
   //! ALKA: Come back to this : 3 feb 2020
   m_pJob->vJobClass(nullptr, (char*)__func__);
@@ -1101,7 +1082,7 @@ void SePrompt::vSetJob(void)
   m_pJob->pEnameSet()->vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
   m_pJob->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   
-  if (m_oJobCtl.bHasName(C_TAG_JI)) {
+  if (m_oJobCtl.bHasName(C_TAG_INFO)) {
     
     EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
     if (pJobInfo_es)
@@ -1109,8 +1090,6 @@ void SePrompt::vSetJob(void)
   }
 
   m_pJob->pEnameSet()->vCopy(&m_oJobCtl);
-  
-  m_pJob->vTimerStart();
   
   if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
     SP_EnmSet spEnameSet;

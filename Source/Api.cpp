@@ -386,6 +386,9 @@ bool Api::bSpawnJob(Job* pJob)
 //              pJob,
 //              C_VARGS_END);
 
+  if (pJob->bHasEnameTag(C_TAG_TAGS))
+    pJob->pEnameSet()->vDumpSet();
+
   pJob->vTimerStart();
 
   Scheduler::vAddTaskGeneral(pJob->pTask());
