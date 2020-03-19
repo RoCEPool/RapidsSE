@@ -495,7 +495,7 @@ void Engine::vCloseTrace(void)
   if (AM::bVerboseProgress())
     vInfo("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
   gpTraceFile->vClose();
-  delete gpTraceFile;
+  //delete gpTraceFile;
   
   gpTraceFile = nullptr;
 }
