@@ -232,6 +232,23 @@ bool File::bRemove(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of named file                                                     */
+/*----------------------------------------------------------------------------*/
+i8 File::iSize(Stz* szFilePath)
+{
+  struct stat xStat;
+  
+  int iResult = stat(szFilePath->azChar(),&xStat);
+  
+  if (0 == iResult)
+    return xStat.st_size;
+  
+  vWarn("File::iSize: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print file statistics                                                      */
 /*----------------------------------------------------------------------------*/
 void File::vStatistics(void)
