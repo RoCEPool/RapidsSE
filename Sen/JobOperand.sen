@@ -32,8 +32,8 @@
   Operand[].kind case
 
     ZK_CANCELMARKER of
-      //"jobOperand::generic:- ZK_CANCELMARKER" .verbose
-      "Query being cancelled\n" .verbose
+      "jobOperand::generic:- ZK_CANCELMARKER" .
+      "Pipeline being cancelled\n" .
       Operand[].pipeOut
       true
     endof

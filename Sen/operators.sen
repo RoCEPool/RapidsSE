@@ -26,6 +26,7 @@
 
 "OP_passThru.sen"         include
 "OP_periodic.sen"         include
+"OP_periodicCancel.sen"   include
 "OP_print.sen"            include
 "OP_purge.sen"            include
 "OP_python.sen"           include
