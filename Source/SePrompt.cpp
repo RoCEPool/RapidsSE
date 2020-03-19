@@ -226,6 +226,8 @@ void SePrompt::vPromptLoop(void)
     
     m_oTimer.vStart();
     
+    vPrepareSpawn();
+    
     vSpawnJob();
     
     if (bNoWait()) {
@@ -905,6 +907,28 @@ void SePrompt::vPreJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* prepare to spawn job                                                       */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPrepareSpawn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  RASSERT(JS_LOCKED == m_pJob->eJobState());
+  
+  TokenStream* pTokenStream = this->pTokenStream();
+  
+  m_pSession->pTokenVec()->vSetTokens();
+  
+  m_pJob->vSeed(SS_SEED_REQ);
+  
+  if (m_pJob->bHasEnameTag(C_TAG_JE))
+    m_pJob->pEnameSet()->vPrint();
+  
+  //! ALKA: Come back to this : 3 feb 2020
+  m_pJob->vJobClass(nullptr, (char*)__func__);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get prompt id                                                              */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iPromptId(void)
@@ -1128,19 +1152,7 @@ void SePrompt::vSpawnJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RASSERT(JS_LOCKED == m_pJob->eJobState());
-  
-  TokenStream* pTokenStream = this->pTokenStream();
-  
-  m_pSession->pTokenVec()->vSetTokens();
-  
-  m_pJob->vSeed(SS_SEED_REQ);
-  
-  if (m_pJob->bHasEnameTag(C_TAG_JE))
-    m_pJob->pEnameSet()->vPrint();
-  
-  //! ALKA: Come back to this : 3 feb 2020
-  m_pJob->vJobClass(nullptr, (char*)__func__);
-  
+    
   bool bSpawned = Api::bSpawnJob(m_pJob);
   RASSERT(bSpawned);
 }

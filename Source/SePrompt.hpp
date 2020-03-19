@@ -87,6 +87,7 @@ namespace Prompt
     bool bPassesLowMem(void);
     void vPostJob(void);
     void vPreJob(void);
+    void vPrepareSpawn(void);
     i8   iPromptId(void);
     void vPromptUser(void);
     void vReformatCommand(void);
