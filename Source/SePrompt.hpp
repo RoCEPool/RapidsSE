@@ -62,6 +62,7 @@ namespace Prompt
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);
     void vDeleteJob(void);
+    bool bDontSpawn(void);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpTokenVec(bool bForce);

@@ -221,20 +221,23 @@ void SePrompt::vPromptLoop(void)
       Correctness::vDebugPoint();
     
     vSetJob();
-        
-    vJobLockMutex();
-    
-    m_oTimer.vStart();
     
     vPrepareSpawn();
     
+    if (bDontSpawn())
+      continue;
+    
+    m_oTimer.vStart();
+    
+    vJobLockMutex();
+
     vSpawnJob();
     
     if (bNoWait()) {
       vJobUnlockMutex();
       continue;
     }
-    
+
     if (bExecutePipeline()) {
       // start the buffer queue processing while the pipeline ops are running
       m_pJob->m_xResult.vProcessBufferQueue();
@@ -433,6 +436,26 @@ void SePrompt::vDeleteJob(void)
   
   // call the job delete function
   m_aJobClass->vDeleteJob(m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dont actually spawn?                                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bDontSpawn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  if (! m_pJob->bHasEnameTag(C_TAG_NOSPAWN))
+    return false;
+  
+  if (m_pJob->bHasEnameTag(C_TAG_TAGS))
+    m_pJob->pEnameSet()->vDumpSet();
+  
+  vCompletedTask();
+  vDeleteJob();
+  vEndRequest();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -905,7 +928,7 @@ void SePrompt::vPrepareSpawn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RASSERT(JS_LOCKED == m_pJob->eJobState());
+  RASSERT(JS_LOCKED != m_pJob->eJobState());
   
   TokenStream* pTokenStream = this->pTokenStream();
   
