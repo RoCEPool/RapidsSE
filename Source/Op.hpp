@@ -101,7 +101,7 @@ namespace Pipelines
     i8   nRightEosMarkers(void);
     void vRightEosMarkers(i8 nEosMarkers);
     void vSendJobOperand(Operand* pOperand, bool bSet);
-    bool bSpawnJob(i8 iSessionId);
+    bool bSpawnOperatorJob(i8 iSessionId);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
     EnameSet* pTopologyEnameSet(void);

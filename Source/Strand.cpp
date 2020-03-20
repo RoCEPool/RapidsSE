@@ -129,7 +129,7 @@ StageSpec* Strand::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void Strand::vSpawnOperators(i8 iSessionId, i8 iNode)
+void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
@@ -145,7 +145,7 @@ void Strand::vSpawnOperators(i8 iSessionId, i8 iNode)
       
       Op* pOp = pGet(i_Op);
       
-      bool bSpawned = pOp->bSpawnJob(iSessionId);
+      bool bSpawned = pOp->bSpawnOperatorJob(iSessionId);
       
       ASSERT(bSpawned);
     }
