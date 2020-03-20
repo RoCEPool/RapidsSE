@@ -1250,7 +1250,9 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
 
+
   m_pOpJob = AM::pNewJobUniversal(m_pPipelineJob, this, &xReqTuple);
+
   
   // form the command string using the parameter ename pairs
   s4K szCmdStr;

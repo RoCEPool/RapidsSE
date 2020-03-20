@@ -1139,6 +1139,8 @@ Job* AM::pNewJobUniversal( Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
+  RASSERT(pParentJob == pOp->pPipeline()->pJob());
+  
   Job_Universal* pJobUniversal = new Job_Universal(pOp->pPipeline()->pJob(), pJobClass_Universal,pReqTuple,pParentJob->m_iFocalId);
   
   pJobUniversal->m_pOp = pOp;
