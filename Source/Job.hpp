@@ -4,6 +4,7 @@
 #pragma once
 
 // job control tags
+static Stz* C_TAG_API      = "</api>"_Stz;
 static Stz* C_TAG_BYPROMPT = "</byPrompt>"_Stz;
 static Stz* C_TAG_FLOW     = "</flow>"_Stz;
 static Stz* C_TAG_INFO     = "</info>"_Stz;

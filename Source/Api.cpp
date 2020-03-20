@@ -386,6 +386,9 @@ bool Api::bSpawnJob(Job* pJob)
 //              pJob,
 //              C_VARGS_END);
 
+  if (pJob->bHasTag(C_TAG_API))
+    vTrace("Spawn: job %p\n"_Stz,pJob);
+
   if (pJob->bHasTag(C_TAG_TAGS))
     pJob->pEnameSet()->vDumpSet();
 
