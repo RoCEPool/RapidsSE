@@ -1135,22 +1135,21 @@ void AM::vSetOperand(Job_Operand* pJob_Operand, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new a universal job                                                        */
 /*----------------------------------------------------------------------------*/
-Job* AM::pNewJobUniversal( Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)
+Job* AM::pNewJobUniversal(Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
   RASSERT(pParentJob == pOp->pPipeline()->pJob());
   
-  Job_Universal* pJobUniversal = new Job_Universal(pOp->pPipeline()->pJob(), pJobClass_Universal,pReqTuple,pParentJob->m_iFocalId);
+  Job_Universal* pJobUniversal =
+    new Job_Universal(pParentJob,
+                      pJobClass_Universal,
+                      pReqTuple,
+                      pParentJob->m_iFocalId);
   
   pJobUniversal->m_pOp = pOp;
-  pJobUniversal->pEnameSet()->vAdd(C_TAG_PATH,
-                       pOp->pPipeline()->pJob()->pEnameSet()->szValue(C_TAG_PATH));
-  pJobUniversal->pEnameSet()->vAdd(C_TAG_JOBNM,pOp->szOpNm());
   pJobUniversal->vSeed(SS_SEED_REQ);
 
-  //pJobUniversal->pEnameSet()->vPrint();
-  
   return pJobUniversal;
 }
 
