@@ -1098,6 +1098,16 @@ public:
   void vRegOperandCSet(void);
   void vRegOperandCSetFirst(void);
 
+  // OperandOoO
+  void vRegOperandOoODelete(void);
+  void vRegOperandOoOGet(void);
+  void vRegOperandOoOIsNull(void);
+  void vRegOperandOoOKind(void);
+  void vRegOperandOoOPeek(void);
+  void vRegOperandOoOPipeOut(void);
+  void vRegOperandOoOPipeToJob(void);
+  void vRegOperandOoOSet(void);
+
   // Pipein
   void vRegPipeinBide(void);
   void vRegPipeinDelete(void);
