@@ -1078,7 +1078,10 @@ void SePrompt::vReportPool(void)
 
   if (! m_oSettings.bHasName(C_PMT_BUFPOOL))
     return;
-  
+
+  if (! gpBufferPool)
+    return;
+
   i8 iTotalSpace  = gpBufferPool->iTotalSpace();
   i8 iFreePercent = gpBufferPool->iFreePercent();
 
