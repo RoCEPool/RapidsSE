@@ -32,6 +32,24 @@ SP_Job::~SP_Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
+Stz* SP_Job::sz_api(Job* pJob)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+    
+  StrLib::vSprint(m_caResult,
+                  "Job %p: name %s "_Stz,
+                  
+                  pJob,
+                  pJob->szJobNm()
+                  
+                  );
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
 Stz* SP_Job::sz_log(Job* pJob)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);

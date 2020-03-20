@@ -16,6 +16,7 @@ namespace Jobs
     SP_Job(void);
    ~SP_Job(void) noexcept(false);
   
+    Stz* sz_api(Job* pJob);
     Stz* sz_log(Job* pJob);
     Stz* sz_recv(Job* pJob);
 
