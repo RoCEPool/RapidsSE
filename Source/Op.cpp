@@ -1250,7 +1250,7 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
 
-  m_pOpJob = AM::pNewJobUniversal(m_pPipelineJob, this, &xReqTuple);
+  m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
 
   EnameSet* pOpJobEnameSet = AM::pEnameSet(m_pOpJob);
   EnameSet* pPipeLineJobEnameSet = AM::pEnameSet(m_pPipelineJob);
