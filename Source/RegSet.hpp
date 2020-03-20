@@ -47,7 +47,10 @@ namespace Registers
     REG<Operand>     m_xpOperandA;  // operand A
     REG<Operand>     m_xpOperandB;  // operand B
     REG<Operand>     m_xpOperandC;  // operand C
-
+    REG<Operand>     m_xpOperandOoO; // operand OoO
+    
+    REG<Operand>     m_xpPipein;    // Pipein
+    
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter

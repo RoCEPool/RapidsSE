@@ -67,7 +67,6 @@ namespace Steps
   
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
-    static void vAddSteps_RegIndex(void);
     static void vAddSteps_IndexPtn(void);
     static void vAddSteps_RegIndexPtn(void);
     static void vAddSteps_Input(void);
@@ -121,12 +120,14 @@ namespace Steps
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegJob(void);
+    static void vAddSteps_RegIndex(void);
     static void vAddSteps_RegInfoSet(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegOp(void);
     static void vAddSteps_RegOperand(void);
     static void vAddSteps_RegOperandB(void);
     static void vAddSteps_RegOperandC(void);
+    static void vAddSteps_RegPipein(void);
     static void vAddSteps_RegSet(void);
     static void vAddSteps_RegStreamDef(void);
     static void vAddSteps_RegTask(void);

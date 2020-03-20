@@ -1098,6 +1098,18 @@ public:
   void vRegOperandCSet(void);
   void vRegOperandCSetFirst(void);
 
+  // Pipein
+  void vRegPipeinBide(void);
+  void vRegPipeinDelete(void);
+  void vRegPipeinGet(void);
+  void vRegPipeinIsNull(void);
+  void vRegPipeinKind(void);
+  void vRegPipeinNext(void);
+  void vRegPipeinPeek(void);
+  void vRegPipeinPipeOut(void);
+  void vRegPipeinPipeToJob(void);
+  void vRegPipeinSet(void);
+
   // reg stream def
   void vRegStreamDefAsStr(void);
   void vRegStreamDefDelete(void);
