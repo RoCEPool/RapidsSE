@@ -274,6 +274,12 @@ void AM::vAppendEnameSet(Job* pJob, EnameSet* pEnameSet)
   pJob->pEnameSet()->vCopy(pEnameSet);
 }
 
+EnameSet* AM::pEnameSet(Job* pJob)
+{
+  return pJob->pEnameSet();
+}
+
+
 void AM::vDumpApi(void) {
   pSessionArray()->vDump();
 }

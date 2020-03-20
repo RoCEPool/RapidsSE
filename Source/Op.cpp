@@ -1270,6 +1270,9 @@ bool Op::bSpawnJob(i8 iSessionId)
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
+  //AM::pEnameSet(m_pOpJob)->vAdd(C_TAG_API);
+  //AM::pEnameSet(m_pOpJob)->vAdd(C_TAG_TAGS);
+
   bool bSpawned = AM::bSpawnJob(m_pOpJob);
   
   return bSpawned;

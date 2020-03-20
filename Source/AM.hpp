@@ -183,6 +183,9 @@ namespace Oblique
     static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static EnameSet* pEnameSet(Job* pJob);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vFocalAdd(Focal* pFocal);
     static void vFocalOutline(s4K& sString, Focal* pFocal);
     static void vFocalRemove(Focal* pFocal);
