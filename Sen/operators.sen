@@ -38,6 +38,7 @@
 "OP_scan.sen"             include
 "OP_sink.sen"             include
 "OP_snapshot.sen"         include
+"OP_space.sen"            include
 "OP_start.sen"            include
 "OP_stats.sen"            include
 "OP_statWrite.sen"        include

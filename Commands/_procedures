@@ -107,13 +107,47 @@ procedure gridSanity
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+    startOp | periodicOp once | stageB
 
   stage stageB on all nodes:
-  nodeInfo | stageC
+    nodeInfo | stageC
 
   stage stageC on origin:
-  gridSanity | outputOp | sinkOp | stageA
+    gridSanity | outputOp | sinkOp | stageA
+
+end
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// check sanity of the grid
+procedure nodeInfo
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all nodes:
+    nodeInfo | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+
+end
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// get space on each node
+procedure space
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all nodes:
+    space | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
 
 end
 ;

@@ -1015,6 +1015,7 @@ public:
   // info set
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddNodeInfo(void);
+  void vRegInfoSetAddSpaceInfo(void);
   void vRegInfoSetChunkFile(void);
   void vRegInfoSetDelete(void);
   void vRegInfoSetFirstRow(void);

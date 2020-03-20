@@ -173,6 +173,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_NODEINFO"_Stz,    C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,  C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_SEEKOFFSETS"_Stz, C_TDEF_SEEKOFFSETS);
+  vAddConstant("C_TDEF_SPACE"_Stz,       C_TDEF_SPACE);
 
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSecond());

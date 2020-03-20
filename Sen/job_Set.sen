@@ -66,7 +66,6 @@
 "Job_ShowCluster.sen"     include
 "Job_SizeIndex.sen"       include
 "Job_SizeTable.sen"       include
-"job_Space.sen"           include
 "job_StartNode.sen"       include
 "job_Status.sen"          include
 "job_SubFetch.sen"        include
