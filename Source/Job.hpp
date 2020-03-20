@@ -3,25 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-// job control tags
-static Stz* C_TAG_BYPROMPT = "</byPrompt>"_Stz;
-static Stz* C_TAG_FLOW     = "</flow>"_Stz;
-static Stz* C_TAG_INFO     = "</info>"_Stz;
-static Stz* C_TAG_LIFE     = "</life>"_Stz;
-static Stz* C_TAG_NOWAIT   = "</noWait>"_Stz;
-static Stz* C_TAG_NOSPAWN  = "</noSpawn>"_Stz;
-static Stz* C_TAG_TAGS     = "</tags>"_Stz;
-static Stz* C_TAG_TIME     = "</time>"_Stz;
-static Stz* C_TAG_XFER     = "</xfer>"_Stz;
-
-// job info tags
-static Stz* C_TAG_SEEDCAN  = "<seedCan>"_Stz;
-static Stz* C_TAG_SEEDEND  = "<seedEnd>"_Stz;
-static Stz* C_TAG_SEEDEXE  = "<seedExe>"_Stz;
-static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
-static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
-static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
-
 namespace Jobs
 {
   class Job : public Focal,

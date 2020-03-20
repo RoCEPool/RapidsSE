@@ -34,7 +34,7 @@ namespace Pipelines
     i8     i_Slt(void);
   
     StageSpec* pStageSpec(void);
-    void   vSpawnOperators(i8 iSessionId, i8 iNode);
+    void   vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
     void   vSynthesiseName(void);
 
     Footer* aFooter(void);

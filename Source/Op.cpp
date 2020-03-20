@@ -1244,7 +1244,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
 /*----------------------------------------------------------------------------*/
 /* spawn a job for this operator                                              */
 /*----------------------------------------------------------------------------*/
-bool Op::bSpawnJob(i8 iSessionId)
+bool Op::bSpawnOperatorJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1270,6 +1270,9 @@ bool Op::bSpawnJob(i8 iSessionId)
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
+  //AM::pEnameSet(m_pOpJob)->vAdd(C_TAG_API);
+  //AM::pEnameSet(m_pOpJob)->vAdd(C_TAG_TAGS);
+
   bool bSpawned = AM::bSpawnJob(m_pOpJob);
   
   return bSpawned;

@@ -2,7 +2,7 @@
 /* _fetchLineitemRJH - fetch TPC-H LineItem table                             */
 /*============================================================================*/
 
-/flow pipeline lineitem_fetch
+/api /tags pipeline lineitem_fetch
 begin
 
   stage stageA on origin:
