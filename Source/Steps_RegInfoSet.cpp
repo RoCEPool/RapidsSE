@@ -12,6 +12,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
+  vAddStep("InfoSet[].addSpaceInfo"_Stz,   &Step::vRegInfoSetAddSpaceInfo);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
@@ -89,6 +90,48 @@ void Step::vRegInfoSetAddNodeInfo(void)
                                   pGrid->pThisNode()->szNodeNm(),
                                   AM::iRegionSize(),
                                   pGrid->nSlotsPerNode(),
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addNSpaceInfo -- add a row to the infoset with the spaceInfo     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddSpaceInfo(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddSpaceInfo"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Grid* pGrid = AM::pGrid();
+  
+  i8 iTotalSpace = AM::iRegionSize()
+  - AM::iJumboSize();
+  
+  i8 iInUseSpace = AM::iRegionSize()
+    - AM::iJumboSize()
+    - gpBufferPool->iFreeSpace()
+    - PoolHelper::iPoolFree();
+  
+  i8 iFreeSpace = gpBufferPool->iFreeSpace();
+  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
+  i8 iTotalFreeSpace = iFreeSpace + iFreeSpaceInPool;
+  
+//  s256 s;
+//
+//  MagLib::vByteMag(iTotalSpace, iScale, s);
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  pGrid->pThisNode()->szNodeNm(),
+                                  iTotalSpace,
+                                  iInUseSpace,
+                                  iTotalFreeSpace,
                                   C_VARGS_END);
   ASSERT(pRow);
   pRow->vDump(pStreamDef);

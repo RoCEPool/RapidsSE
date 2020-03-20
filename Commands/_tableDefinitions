@@ -40,6 +40,14 @@ create table definition __seekOffsets (
   size   INTEGER NOT NULL
 );
 
+// this is C_TDEF_SPACE
+create table definition __space (
+  nodeName   VARCHAR NOT NULL,
+  totalSpace INTEGER NOT NULL,
+  inUseSpace INTEGER NOT NULL,
+  freeSpace  INTEGER NOT NULL
+);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

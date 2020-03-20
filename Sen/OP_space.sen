@@ -1,0 +1,88 @@
+/*============================================================================*/
+/* OP_space.sen -- Operator space                                             */
+/*============================================================================*/
+
+" OP_space.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: space_PulseMarker \handler
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  0 locals| iRowSize |
+
+  // pipeout the start marker
+  Operand[].pipeout
+
+  // create a new streamDef
+  StreamDef[].new
+
+  // get row size from streamDef
+  StreamDef[].rowSize to iRowSize
+
+  // create an infoSet operand
+  iRowSize InfoSet[].newInfoSet
+
+  // add nodeInfo to the infoSet
+  StreamDef[] InfoSet[].addSpaceInfo assert
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  // send EOSMARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: space_StartMarker \handler
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // pipeout the start marker
+  Operand[].pipeout
+
+  // find the __nodeInfo table
+  C_TDEF_SPACE op__tableDef
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for space req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : space_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: space_PulseMarker  ZK_PULSEMARKER op[].handler!
+  find: space_StartMarker  ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: space :: space ;
+
+: space opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of operator--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
