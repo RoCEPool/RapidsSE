@@ -70,7 +70,70 @@ EnameSet::~EnameSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append enameset to cmd string                                              */
+/* append name only                                                           */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vAppend(Stz* szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+
+  i8 i_Ename = m_nEnames;
+
+  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
+  m_xEname[i_Ename].m_eToken  = TN_STRING;
+
+  m_nEnames++;
+
+  //vDumpSet();
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append name = int                                                          */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vAppend(Stz* szName, i8 iValue)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+
+  i8 i_Ename = m_nEnames;
+
+  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = iValue;
+  m_xEname[i_Ename].m_eToken  = TN_INTEGER;
+
+  m_nEnames++;
+
+  //vDumpSet();
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append name = str                                                          */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vAppend(Stz* szName, Stz* szValue)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+
+  i8 i_Ename = m_nEnames;
+
+  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = m_yxStrings.iAppend(szValue);
+  m_xEname[i_Ename].m_eToken  = TN_STRING;
+
+  m_nEnames++;
+
+  //vDumpSet();
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat enameset to cmd string                                              */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vConcat(Stz* szCmd)
 {
@@ -317,7 +380,7 @@ void EnameSet::vInsert(Stz* szName)
 //{
 //  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 //
-//  i8 i_Ename = i_AddPoint(szName);
+//  i8 i_Ename = i_InsertPoint(szName);
 //  vShiftDown(i_Ename);
 //
 //  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
@@ -357,7 +420,7 @@ void EnameSet::vInsert(Stz* szName, i8 iValue)
 //{
 //  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 //
-//  i8 i_Ename = i_AddPoint(szName);
+//  i8 i_Ename = i_InsertPoint(szName);
 //  vShiftDown(i_Ename);
 //
 //  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
@@ -397,7 +460,7 @@ void EnameSet::vInsert(Stz* szName, Stz* szValue)
 //{
 //  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 //
-//  i8 i_Ename = i_AddPoint(szName);
+//  i8 i_Ename = i_InsertPoint(szName);
 //  vShiftDown(i_Ename);
 //
 //  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
@@ -644,7 +707,7 @@ Stz* EnameSet::szValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* find where to add the given name                                           */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::i_AddPoint(Stz* szNewName)
+i8 EnameSet::i_InsertPoint(Stz* szNewName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   

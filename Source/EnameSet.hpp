@@ -31,6 +31,9 @@ namespace Gadgets
     EnameSet(void);
    ~EnameSet() noexcept(false);
   
+    void vAppend(Stz* szName);
+    void vAppend(Stz* szName, i8 iValue);
+    void vAppend(Stz* szName, Stz* szValue);
     void vConcat(Stz* szCmd);
     void vConcat(Stz* szCmd, i8 i_Ename);
     void vContentDump(void);
@@ -58,7 +61,7 @@ namespace Gadgets
     Stz* szValue(Stz* szName);
   
   private:
-    i8   i_AddPoint(Stz* szName);
+    i8   i_InsertPoint(Stz* szName);
     void vShiftDown(i8 i_From);
 
     Footer* aFooter(void);
