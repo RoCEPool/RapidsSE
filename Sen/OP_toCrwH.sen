@@ -96,7 +96,7 @@
   // check if we can scan the table
   sTableNm checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
   else
