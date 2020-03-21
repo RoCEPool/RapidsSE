@@ -1250,7 +1250,18 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
 
-  m_pOpJob = AM::pNewJobUniversal(m_pPipelineJob, this, &xReqTuple);
+  m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
+
+  EnameSet* pOpJobEnameSet = AM::pEnameSet(m_pOpJob);
+  EnameSet* pPipeLineJobEnameSet = AM::pEnameSet(m_pPipelineJob);
+
+  pOpJobEnameSet->vAdd(C_TAG_PATH,
+                       pPipeLineJobEnameSet->szValue(C_TAG_PATH));
+  pOpJobEnameSet->vAdd(C_TAG_JOBNM,
+                       m_sOpNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   
   // form the command string using the parameter ename pairs
   s4K szCmdStr;

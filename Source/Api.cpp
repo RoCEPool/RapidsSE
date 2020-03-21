@@ -385,15 +385,28 @@ bool Api::bSpawnJob(Job* pJob)
 //              "pJob=%p"_Stz, //!format-LogPrm
 //              pJob,
 //              C_VARGS_END);
+  
+  Job* pThisJob = AM::pThisTLSJob();
+//  if (pThisJob) {
+//    SP_Job spJob;
+//    vTrace("+ + + + + + + + + + + + + + + + + + \n"_Stz);
+//    vTrace("Api Spawn: spawning job %s\n"_Stz,spJob.sz_api(pThisJob));
+//    pThisJob->pEnameSet()->vDumpSet();
+//  }
 
-  if (pJob->bHasTag(C_TAG_API)) {
+  if (pJob->bHasTag(C_TAG_API) ||
+      (pThisJob && pThisJob->bHasTag(C_TAG_TAGS))) {
     SP_Job spJob;
-    vTrace("Api Spawn: job %s\n"_Stz,spJob.sz_api(pJob));
+    vTrace("Api Spawn: spawned job %s\n"_Stz,spJob.sz_api(pJob));
   }
   
-  if (pJob->bHasTag(C_TAG_TAGS))
+  if (pJob->bHasTag(C_TAG_TAGS) ||
+      (pThisJob && pThisJob->bHasTag(C_TAG_TAGS)))
     pJob->pEnameSet()->vDumpSet();
 
+  if (! pJob->bHasTag(C_TAG_TAGS))
+    Correctness::vDebugPoint();
+  
   pJob->vTimerStart();
 
   Scheduler::vAddTaskGeneral(pJob->pTask());

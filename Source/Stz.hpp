@@ -26,6 +26,7 @@ namespace Strings
   
     void  vCatSprint(Stz* szFormat, ...);
     char* azChar(void);
+    i8    iCompare(Stz* szArg);
     void  vConcat(Stz* szArg);
     void  vCopy(Stz* szArg);
     void  vCopyLen(Stz* szArg, i8 nBytes);
