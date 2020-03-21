@@ -39,7 +39,7 @@ namespace Gadgets
     void vContentDump(void);
     void vCopy(EnameSet* pSrcEnameSet);
     void vDelete(Stz* szName);
-    void vDumpSet(void);
+    void vDumpSet(bool bCarriageReturns=false);
     void vDumpSetDetailed(void);
     i8   nEnames(void);
     i8   i_Find(Stz* szName);

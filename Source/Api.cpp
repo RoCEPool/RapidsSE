@@ -387,12 +387,12 @@ bool Api::bSpawnJob(Job* pJob)
 //              C_VARGS_END);
   
   Job* pThisJob = AM::pThisTLSJob();
-  if (pThisJob) {
-    SP_Job spJob;
-    vTrace("+ + + + + + + + + + + + + + + + + + \n"_Stz);
-    vTrace("Api Spawn: spawning job %s\n"_Stz,spJob.sz_api(pThisJob));
-    pThisJob->pEnameSet()->vDumpSet();
-  }
+//  if (pThisJob) {
+//    SP_Job spJob;
+//    vTrace("+ + + + + + + + + + + + + + + + + + \n"_Stz);
+//    vTrace("Api Spawn: spawning job %s\n"_Stz,spJob.sz_api(pThisJob));
+//    pThisJob->pEnameSet()->vDumpSet();
+//  }
 
   if (pJob->bHasTag(C_TAG_API) ||
       (pThisJob && pThisJob->bHasTag(C_TAG_TAGS))) {

@@ -232,16 +232,22 @@ void EnameSet::vDelete(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vDumpSet(void)
+void EnameSet::vDumpSet(bool bCarriageReturns)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   vTrace("{ "_Stz);
+  if (bCarriageReturns)
+    vTrace("\n"_Stz);
+
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     
     if (i_Ename)
       vTrace(", "_Stz);
     
+    if (i_Ename && bCarriageReturns)
+      vTrace("\n  "_Stz);
+
     if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
       
       vTrace("%s=%lld"_Stz,
@@ -263,7 +269,10 @@ void EnameSet::vDumpSet(void)
            );
   }
  
-  vTrace(" }\n"_Stz);
+  if (bCarriageReturns)
+    vTrace("\n}\n"_Stz);
+  else
+    vTrace(" }\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
