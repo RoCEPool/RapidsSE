@@ -44,7 +44,7 @@
   // check if we can scan the table
   <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
   else
