@@ -358,11 +358,30 @@ bool EnameSet::bHasName(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* add name only                                                              */
 /*----------------------------------------------------------------------------*/
+//void EnameSet::vInsert(Stz* szName)
+//{
+//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//
+//  i8 i_Ename = m_nEnames;
+//
+//  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+//  m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
+//  m_xEname[i_Ename].m_eToken  = TN_STRING;
+//
+//  m_nEnames++;
+//
+//  //vDumpSet();
+//  if (! bHasName(szName)) {
+//    RASSERT(0);
+//  }
+//}
+/*----------------------------------------------------------------------------*/
 void EnameSet::vInsert(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 
-  i8 i_Ename = m_nEnames;
+  i8 i_Ename = i_InsertPoint(szName);
+  vShiftDown(i_Ename);
 
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
@@ -371,38 +390,36 @@ void EnameSet::vInsert(Stz* szName)
   m_nEnames++;
 
   //vDumpSet();
-  if (! bHasName(szName)) {
-    RASSERT(0);
-  }
+  ASSERT(bHasName(szName));
 }
+
 /*----------------------------------------------------------------------------*/
-//void EnameSet::vInsert(Stz* szName)
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+//void EnameSet::vInsert(Stz* szName, i8 iValue)
 //{
 //  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 //
-//  i8 i_Ename = i_InsertPoint(szName);
-//  vShiftDown(i_Ename);
+//  i8 i_Ename = m_nEnames;
 //
 //  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
-//  m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
-//  m_xEname[i_Ename].m_eToken  = TN_STRING;
+//  m_xEname[i_Ename].m_i_Value = iValue;
+//  m_xEname[i_Ename].m_eToken  = TN_INTEGER;
 //
 //  m_nEnames++;
 //
-//  vDumpSet();
+//  //vDumpSet();
 //  if (! bHasName(szName)) {
 //    RASSERT(0);
 //  }
 //}
-
-/*----------------------------------------------------------------------------*/
-/* add                                                                        */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vInsert(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 
-  i8 i_Ename = m_nEnames;
+  i8 i_Ename = i_InsertPoint(szName);
+  vShiftDown(i_Ename);
 
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = iValue;
@@ -411,38 +428,36 @@ void EnameSet::vInsert(Stz* szName, i8 iValue)
   m_nEnames++;
 
   //vDumpSet();
-  if (! bHasName(szName)) {
-    RASSERT(0);
-  }
+  ASSERT(bHasName(szName));
 }
+
 /*----------------------------------------------------------------------------*/
-//void EnameSet::vInsert(Stz* szName, i8 iValue)
+/* add name and value                                                         */
+/*----------------------------------------------------------------------------*/
+//void EnameSet::vInsert(Stz* szName, Stz* szValue)
 //{
 //  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 //
-//  i8 i_Ename = i_InsertPoint(szName);
-//  vShiftDown(i_Ename);
+//  i8 i_Ename = m_nEnames;
 //
 //  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
-//  m_xEname[i_Ename].m_i_Value = iValue;
-//  m_xEname[i_Ename].m_eToken  = TN_INTEGER;
+//  m_xEname[i_Ename].m_i_Value = m_yxStrings.iAppend(szValue);
+//  m_xEname[i_Ename].m_eToken  = TN_STRING;
 //
 //  m_nEnames++;
 //
-//  vDumpSet();
+//  //vDumpSet();
 //  if (! bHasName(szName)) {
 //    RASSERT(0);
 //  }
 //}
-
-/*----------------------------------------------------------------------------*/
-/* add name and value                                                         */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vInsert(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 
-  i8 i_Ename = m_nEnames;
+  i8 i_Ename = i_InsertPoint(szName);
+  vShiftDown(i_Ename);
 
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = m_yxStrings.iAppend(szValue);
@@ -451,30 +466,8 @@ void EnameSet::vInsert(Stz* szName, Stz* szValue)
   m_nEnames++;
 
   //vDumpSet();
-  if (! bHasName(szName)) {
-    RASSERT(0);
-  }
+  ASSERT(bHasName(szName));
 }
-/*----------------------------------------------------------------------------*/
-//void EnameSet::vInsert(Stz* szName, Stz* szValue)
-//{
-//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-//
-//  i8 i_Ename = i_InsertPoint(szName);
-//  vShiftDown(i_Ename);
-//
-//  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
-//  m_xEname[i_Ename].m_i_Value = m_yxStrings.iAppend(szValue);
-//  m_xEname[i_Ename].m_eToken  = TN_STRING;
-//
-//  m_nEnames++;
-//
-//  vDumpSet();
-//  if (! bHasName(szName)) {
-//    RASSERT(0);
-//  }
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get nItems                                                                 */

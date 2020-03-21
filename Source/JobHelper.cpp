@@ -21,6 +21,7 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
   while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
     
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
+    //pSyntax->pEnameSet()->vDumpSet();
     
     if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pEnameSet())) {
       
