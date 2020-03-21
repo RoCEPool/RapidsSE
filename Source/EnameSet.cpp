@@ -569,6 +569,24 @@ Stz* EnameSet::szValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* find where to add the given name                                           */
+/*----------------------------------------------------------------------------*/
+i8 EnameSet:: i_AddPoint(Stz* szNewName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  if (! m_nEnames)
+    return 0;
+  
+  for (i8 i_Scan = 0; i_Scan < m_nEnames; i_Scan++)
+    if (szName(i_Scan)->iCompare(szNewName))
+      return i_Scan;
+  
+  return m_nEnames;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* shift sub set down so as to open up i_From                                 */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vShiftDown(i8 i_From)

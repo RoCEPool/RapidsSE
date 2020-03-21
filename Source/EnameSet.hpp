@@ -58,6 +58,7 @@ namespace Gadgets
     Stz* szValue(Stz* szName);
   
   private:
+    i8   i_AddPoint(Stz* szName);
     void vShiftDown(i8 i_From);
 
     Footer* aFooter(void);
