@@ -86,7 +86,7 @@ void Step::vJobClassNew(void)
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
   Job* pJob = pJobClass->pNewJob(nullptr);
-  pJob->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
+  pJob->pEnameSet()->vInsert(C_TAG_PATH,"/"_Stz);
 
   m_pDataStack->vPushPtr(pJob);
   

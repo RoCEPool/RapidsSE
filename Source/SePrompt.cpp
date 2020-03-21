@@ -321,7 +321,7 @@ void SePrompt::vCheckJobCtl(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("</%s>"_Stz,pTkn1->szTerm());
     
-    m_oJobCtl.vAdd(sTag,1);
+    m_oJobCtl.vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
@@ -343,7 +343,7 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_oJobCtl.vAdd(C_TAG_TIME,1);
+  m_oJobCtl.vInsert(C_TAG_TIME,1);
 
   vCutToken(0);
 }
@@ -479,7 +479,7 @@ void SePrompt::vDumpTokens(bool bDumpTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   if (bDumpTokens)
-    m_oSettings.vAdd(C_PMT_TKNDUMP,1);
+    m_oSettings.vInsert(C_PMT_TKNDUMP,1);
   else
     m_oSettings.vDelete(C_PMT_TKNDUMP);
 }
@@ -687,9 +687,9 @@ void SePrompt::vInitialSettings(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   if (gxArgs.m_bDeveloper) {
-    m_oSettings.vAdd(C_PMT_BUFPOOL);
-    m_oSettings.vAdd(C_PMT_OBJDELTA);
-    m_oSettings.vAdd(C_PMT_TRCFILE);
+    m_oSettings.vInsert(C_PMT_BUFPOOL);
+    m_oSettings.vInsert(C_PMT_OBJDELTA);
+    m_oSettings.vInsert(C_PMT_TRCFILE);
   }
 }
 
@@ -1157,10 +1157,10 @@ void SePrompt::vSetJob(void)
   
   m_pJob->vJobNm(sJobNm);
   
-  m_pJob->pEnameSet()->vAdd(C_TAG_BYPROMPT,1);
+  m_pJob->pEnameSet()->vInsert(C_TAG_BYPROMPT,1);
   
-  m_pJob->pEnameSet()->vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
-  m_pJob->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+  m_pJob->pEnameSet()->vInsert(C_TAG_DISTID,m_pJob->m_iFocalId);
+  m_pJob->pEnameSet()->vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   
   if (m_oJobCtl.bHasName(C_TAG_INFO)) {
     
@@ -1354,7 +1354,7 @@ void SePrompt::vTrackingMemory(bool bTrackMemory)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   if (bTrackMemory)
-    m_oSettings.vAdd(C_PMT_MEMTRACK,1);
+    m_oSettings.vInsert(C_PMT_MEMTRACK,1);
   else
     m_oSettings.vDelete(C_PMT_MEMTRACK);
 

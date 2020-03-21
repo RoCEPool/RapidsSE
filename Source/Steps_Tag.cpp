@@ -71,7 +71,7 @@ void Step::vTagSet(void)
       
   EnameSet* pEnameSet = pJob->pEnameSet();
 
-  pEnameSet->vAdd(sTagNm,sTagValue);
+  pEnameSet->vInsert(sTagNm,sTagValue);
 }
 
 /*============================================================================*/

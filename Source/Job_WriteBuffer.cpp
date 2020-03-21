@@ -379,7 +379,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   RASSERT(DS_INGEST == eDataSource || C_UNKNOWN != iParentJobId);
   
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
-  pJob_WriteBuffer->pEnameSet()->vAdd(C_TAG_TABLENM, sTableName);
+  pJob_WriteBuffer->pEnameSet()->vInsert(C_TAG_TABLENM, sTableName);
   pJob_WriteBuffer->m_iPartitionId  = iPartition;
   pJob_WriteBuffer->m_pOperand      = pCrwBuffer;
   pJob_WriteBuffer->m_nRows         = pCrwBuffer->nRowCount();

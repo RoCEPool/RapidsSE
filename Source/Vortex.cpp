@@ -1369,7 +1369,7 @@ void Vortex::vVarFun_Type(void)
       break;
     
     // we have an asterisk
-    m_oTypeSpec.vAdd(m_oCurTkn.szTerm());
+    m_oTypeSpec.vInsert(m_oCurTkn.szTerm());
     m_nAsterisks++;
   
     vGetNextToken();
@@ -1509,7 +1509,7 @@ void Vortex::vVarFun_Name(void)
     
     vGetExpectedToken("*"_Stz);
     vGetNextToken();
-    m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
+    m_oFunVarNm.vInsert(m_oCurTkn.szTerm());
     vGetExpectedToken(")"_Stz);
     
     vGetExpectedToken("("_Stz);
@@ -1540,7 +1540,7 @@ void Vortex::vVarFun_Name(void)
   }
   
   // we have a <name>
-  m_oFunVarNm.vAdd(m_oCurTkn.szTerm());
+  m_oFunVarNm.vInsert(m_oCurTkn.szTerm());
   vTraceFunVarNm();
   vCppPartSaw(VP_FUNVAR_NAME);
   
@@ -1657,7 +1657,7 @@ void Vortex::vVarFun_Array(void)
      if (m_oCurTkn.bSame("]"_Stz))
        break;
      
-    m_oArraySpec.vAdd(m_oCurTkn.szTerm());
+    m_oArraySpec.vInsert(m_oCurTkn.szTerm());
   }
 
   vGetNextToken();
@@ -1733,7 +1733,7 @@ void Vortex::vVarFun_FunBody(void)
       if (m_oCurTkn.bSame("("_Stz))
         nParenthesis++;
       
-      m_oFunSpec.vAdd(m_oCurTkn.szTerm());
+      m_oFunSpec.vInsert(m_oCurTkn.szTerm());
     }
   }
   
@@ -1836,7 +1836,7 @@ void Vortex::vVarFun_Constructor(void)
 
   vGetNextToken();
 
-  m_oFunVarNm.vAdd(m_sClassNm);
+  m_oFunVarNm.vInsert(m_sClassNm);
 
   vVarFun_FunBody();
 }
@@ -1860,7 +1860,7 @@ void Vortex::vVarFun_Destructor(void)
     vGetNextToken();
   }
 
-  m_oFunVarNm.vAdd(m_sClassNm);
+  m_oFunVarNm.vInsert(m_sClassNm);
 
   vVarFun_FunBody();
 }
@@ -2089,7 +2089,7 @@ void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
   for (;;) {
     
     vGetNextToken();
-    roTerms.vAdd(m_oCurTkn.szTerm());
+    roTerms.vInsert(m_oCurTkn.szTerm());
     
     // test for close
     if (m_oCurTkn.bSame(szClose))
@@ -2152,7 +2152,7 @@ void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
   for (;;) {
     
     vGetNextToken();
-    roTerms.vAdd(m_oCurTkn.szTerm());
+    roTerms.vInsert(m_oCurTkn.szTerm());
 
     // test for terminating ;
     if (m_oCurTkn.bSame(";"_Stz))
@@ -2185,7 +2185,7 @@ void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
   while (bGetNextToken()) {
     if (m_oCurTkn.bSame(">"_Stz))
       break;
-    roTplSepc.vAdd(m_oCurTkn.szTerm());
+    roTplSepc.vInsert(m_oCurTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2214,7 +2214,7 @@ void Vortex::vCollectTypeArgs(EnameSet& roTypeArgs)
   while (bGetNextToken()) {
     if (m_oCurTkn.bSame(">"_Stz))
       break;
-    roTypeArgs.vAdd(m_oCurTkn.szTerm());
+    roTypeArgs.vInsert(m_oCurTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

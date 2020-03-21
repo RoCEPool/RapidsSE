@@ -84,7 +84,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
 
   sTagValue = pTkn->szTerm();
 
-  pEnameSet->vAdd(sTagNm,sTagValue);
+  pEnameSet->vInsert(sTagNm,sTagValue);
   
   return true;
 }

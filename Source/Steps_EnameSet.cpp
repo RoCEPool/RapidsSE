@@ -54,7 +54,7 @@ void Step::vEnameSetAddInt(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vAdd(sName,iValue);
+  pEnameSet->vInsert(sName,iValue);
   // pEnameSet->vPrint();
   
   EXIT();
@@ -75,7 +75,7 @@ void Step::vEnameSetAddStr(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vAdd(sName,sValue);
+  pEnameSet->vInsert(sName,sValue);
   //pEnameSet->vPrint();
   
   EXIT();
@@ -243,7 +243,7 @@ void Step::vEnameSetUpsertStr(void)
     pEnameSet->vReplace(sName,sValue);
   }
   else {
-    pEnameSet->vAdd(sName,sValue);
+    pEnameSet->vInsert(sName,sValue);
   }
   
   //pEnameSet->vPrint();

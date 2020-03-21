@@ -359,7 +359,7 @@ bool Dynamo::bCollectTag(void)
   
   EnameSet* pEnameSet = m_p_Job->pEnameSet();
   
-  pEnameSet->vAdd(sTagNm,sTagValue);
+  pEnameSet->vInsert(sTagNm,sTagValue);
   
   return true;
 }

@@ -68,7 +68,7 @@ void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnameSet.vAdd(sName, sValue);
+  m_oEnameSet.vInsert(sName, sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnameSet.vAdd(sName, iValue);
+  m_oEnameSet.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTopologyEnameSet.vAdd(sName, iValue);
+  m_oTopologyEnameSet.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/

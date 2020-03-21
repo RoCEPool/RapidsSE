@@ -545,22 +545,22 @@ void Job::vCopyTags(JobClass* pJobClass)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (pJobClass->m_aSeedCan)
-    pEnameSet()->vAdd(C_TAG_SEEDCAN,pJobClass->m_aSeedCan);
+    pEnameSet()->vInsert(C_TAG_SEEDCAN,pJobClass->m_aSeedCan);
   
   if (pJobClass->m_aSeedEnd)
-    pEnameSet()->vAdd(C_TAG_SEEDEND,pJobClass->m_aSeedEnd);
+    pEnameSet()->vInsert(C_TAG_SEEDEND,pJobClass->m_aSeedEnd);
   
   if (pJobClass->m_aSeedExe)
-    pEnameSet()->vAdd(C_TAG_SEEDEXE,pJobClass->m_aSeedExe);
+    pEnameSet()->vInsert(C_TAG_SEEDEXE,pJobClass->m_aSeedExe);
   
   if (pJobClass->m_aSeedRcv)
-    pEnameSet()->vAdd(C_TAG_SEEDRCV,pJobClass->m_aSeedRcv);
+    pEnameSet()->vInsert(C_TAG_SEEDRCV,pJobClass->m_aSeedRcv);
   
   if (pJobClass->m_aSeedReq)
-    pEnameSet()->vAdd(C_TAG_SEEDREQ,pJobClass->m_aSeedReq);
+    pEnameSet()->vInsert(C_TAG_SEEDREQ,pJobClass->m_aSeedReq);
   
   if (pJobClass->m_aSeedRun)
-    pEnameSet()->vAdd(C_TAG_SEEDRUN,pJobClass->m_aSeedRun);
+    pEnameSet()->vInsert(C_TAG_SEEDRUN,pJobClass->m_aSeedRun);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1208,7 +1208,7 @@ void Job::vSeed(eSS eSeed)
   if (m_oEnameSet.bHasName("<seed>"_Stz))
     m_oEnameSet.vReplace("<seed>"_Stz,aSS[eSeed]);
   else
-    m_oEnameSet.vAdd("<seed>"_Stz,aSS[eSeed]);
+    m_oEnameSet.vInsert("<seed>"_Stz,aSS[eSeed]);
 
   m_aJobClass->m_bSeedsSpawned[eSeed] = true;
 }
