@@ -1262,6 +1262,14 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Job* pJob_pipeline = AM::pThisTLSJob();
+  EnameSet* pEnameSet_pipeline = AM::pEnameSet(pJob_pipeline);
+ 
+  EnameSet* pEnameSet_op = AM::pEnameSet(m_pOpJob);
+
+  pEnameSet_op->vCopy(pEnameSet_pipeline);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // form the command string using the parameter ename pairs
   s4K szCmdStr;
