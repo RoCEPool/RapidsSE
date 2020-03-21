@@ -11,6 +11,8 @@ void Step::vAddSteps_EnameSet(void)
 {
   vAddStep("enameSet::new"_Stz,       &Step::vEnameSetNew);
   
+  vAddStep("enameSet.appendInt"_Stz,  &Step::vEnameSetInsertInt);
+  vAddStep("enameSet.appendStr"_Stz,  &Step::vEnameSetInsertStr);
   vAddStep("enameSet.asStr"_Stz,      &Step::vEnameSetAsStr);
   vAddStep("enameSet.copy"_Stz,       &Step::vEnameSetCopy);
   vAddStep("enameSet.getInt"_Stz,     &Step::vEnameSetGetInt);
@@ -40,6 +42,46 @@ void Step::vEnameSetNew(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* enameSet.appendInt -- append a name-integer pair to ename-set              */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetAppendInt(void)
+{
+  ENTRY(); // ENTRY("vEnameSetAppendInt"_Stz);
+  
+  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iValue = m_pDataStack->iPopInt(__func__);
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pEnameSet->vInsert(sName,iValue);
+  // pEnameSet->vPrint();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enameSet.AppendStr -- append a name-string pair to ename-set               */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetAppendStr(void)
+{
+  ENTRY(); // ENTRY("vEnameSetAppendStr"_Stz);
+  
+  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+
+  s256 sValue;
+  m_pDataStack->vPopStr(sValue,__func__);
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pEnameSet->vInsert(sName,sValue);
+  //pEnameSet->vPrint();
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* EnameSet.asStr -- get ename-set as a single string                         */
 /*----------------------------------------------------------------------------*/

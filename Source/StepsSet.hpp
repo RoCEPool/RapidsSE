@@ -264,6 +264,8 @@ public:
   void vEncodeUntil(void);
 
   // ename-set
+  void vEnameSetAppendInt(void);
+  void vEnameSetAppendStr(void);
   void vEnameSetAsStr(void);
   void vEnameSetCopy(void);
   void vEnameSetGetInt(void);
