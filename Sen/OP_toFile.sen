@@ -13,6 +13,7 @@
   Pipein[] to Operand[]
   nullptr to Pipein[]
   Operand[].writeToFile0
+  Operand[].delete
 
   true
 ;

@@ -863,7 +863,7 @@ void Step::vRegOperandWriteToFile0(void)
   m_pRegSet->m_xpFile0->vFlush();
   
   // delete the buffer 
-  delete pCsvBuffer;
+  //delete pCsvBuffer;
   
 }
 /*============================================================================*/

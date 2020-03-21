@@ -16009,6 +16009,7 @@ void Task::vAddMunged(Forth* pForth)
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
     "  Operand[].writeToFile0\n"
+    "  Operand[].delete\n"
     "\n"
     "  true\n"
     " ;\n"
