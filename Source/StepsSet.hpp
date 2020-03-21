@@ -264,13 +264,13 @@ public:
   void vEncodeUntil(void);
 
   // ename-set
-  void vEnameSetAddInt(void);
-  void vEnameSetAddStr(void);
   void vEnameSetAsStr(void);
   void vEnameSetCopy(void);
   void vEnameSetGetInt(void);
   void vEnameSetGetStr(void);
   void vEnameSetHasName(void);
+  void vEnameSetInsertInt(void);
+  void vEnameSetInsertStr(void);
   void vEnameSetReplaceInt(void);
   void vEnameSetReplaceStr(void);
   void vEnameSetUpsertStr(void);

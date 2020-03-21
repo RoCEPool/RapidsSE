@@ -30,14 +30,14 @@
     pEvalueWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
-       sEname pEvalueWord execute pEnameSet EnameSet.addInt
+       sEname pEvalueWord execute pEnameSet enameSet.insertInt
       exit
 
     then
   then
 
   // -- -- --
-  sEname sEvalue pEnameSet EnameSet.addStr
+  sEname sEvalue pEnameSet enameSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/

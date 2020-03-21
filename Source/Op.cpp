@@ -1255,10 +1255,10 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   EnameSet* pOpJobEnameSet = AM::pEnameSet(m_pOpJob);
   EnameSet* pPipeLineJobEnameSet = AM::pEnameSet(m_pPipelineJob);
 
-  pOpJobEnameSet->vAdd(C_TAG_PATH,
-                       pPipeLineJobEnameSet->szValue(C_TAG_PATH));
-  pOpJobEnameSet->vAdd(C_TAG_JOBNM,
-                       m_sOpNm);
+  pOpJobEnameSet->vInsert(C_TAG_PATH,
+                          pPipeLineJobEnameSet->szValue(C_TAG_PATH));
+  pOpJobEnameSet->vInsert(C_TAG_JOBNM,
+                          m_sOpNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1317,7 +1317,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sOpNm);
-  m_oEnameSet.vAppend(szCmdStr);
+  m_oEnameSet.vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 

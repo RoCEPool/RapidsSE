@@ -184,7 +184,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__name__" sOpNm
-    pEnameSet EnameSet.addStr
+    pEnameSet enameSet.insertStr
 
   // skip the :: token from input source
   next-token drop
@@ -192,7 +192,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__job__" "CN_JOB_UNIVERSAL"
-  pEnameSet EnameSet.addStr
+  pEnameSet enameSet.insertStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
@@ -204,20 +204,20 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" .printf
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap pEnameSet EnameSet.addStr
+        "__meta__" swap pEnameSet enameSet.insertStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" .printf
         // add ("*",json,TN_STRING) in ename set
-        "__json__" swap pEnameSet EnameSet.addStr
+        "__json__" swap pEnameSet enameSet.insertStr
 
       else dup "__etc__" str.equal if
-        "__etc__"  swap pEnameSet EnameSet.addStr
+        "__etc__"  swap pEnameSet enameSet.insertStr
 
       else
         // dup "%v is a normal token" .printf
         // add (word,"",TN_STRING) in ename set
-        dup pEnameSet EnameSet.addStr
+        dup pEnameSet enameSet.insertStr
 
       then then then
   repeat
@@ -257,7 +257,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pEnameSet EnameSet.addStr
+  "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
 
   // skip the "{" token from input source
   next-token drop
@@ -314,7 +314,7 @@
     pEnameSet pWord word.EnameSet!
 
   // add <jobNm> tag
-  "<jobNm>" pWord word.name_trunc pEnameSet EnameSet.addStr
+  "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
 
   pWord ,
     POSTPONE word.enameset@

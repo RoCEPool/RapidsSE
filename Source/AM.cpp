@@ -1457,7 +1457,7 @@ DicStack* AM::pTaskDicStack(void) {
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
-  pJob->pEnameSet()->vAdd(C_TAG_TABLENM,szObjectName);
+  pJob->pEnameSet()->vInsert(C_TAG_TABLENM,szObjectName);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

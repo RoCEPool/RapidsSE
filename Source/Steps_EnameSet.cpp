@@ -11,13 +11,13 @@ void Step::vAddSteps_EnameSet(void)
 {
   vAddStep("enameSet::new"_Stz,       &Step::vEnameSetNew);
   
-  vAddStep("enameSet.addInt"_Stz,     &Step::vEnameSetAddInt);
-  vAddStep("enameSet.addStr"_Stz,     &Step::vEnameSetAddStr);
   vAddStep("enameSet.asStr"_Stz,      &Step::vEnameSetAsStr);
   vAddStep("enameSet.copy"_Stz,       &Step::vEnameSetCopy);
   vAddStep("enameSet.getInt"_Stz,     &Step::vEnameSetGetInt);
   vAddStep("enameSet.getStr"_Stz,     &Step::vEnameSetGetStr);
   vAddStep("enameSet.hasName"_Stz,    &Step::vEnameSetHasName);
+  vAddStep("enameSet.insertInt"_Stz,  &Step::vEnameSetInsertInt);
+  vAddStep("enameSet.insertStr"_Stz,  &Step::vEnameSetInsertStr);
   vAddStep("enameSet.replaceInt"_Stz, &Step::vEnameSetReplaceInt);
   vAddStep("enameSet.replaceStr"_Stz, &Step::vEnameSetReplaceStr);
   vAddStep("enameSet.upsertStr"_Stz,  &Step::vEnameSetUpsertStr);
@@ -39,47 +39,6 @@ void Step::vEnameSetNew(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* EnameSet.addInt -- add a name-integer pair to ename-set                    */
-/*----------------------------------------------------------------------------*/
-void Step::vEnameSetAddInt(void)
-{
-  ENTRY(); // ENTRY("vEnameSetAddInt"_Stz);
-  
-  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iValue = m_pDataStack->iPopInt(__func__);
-  
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  pEnameSet->vAdd(sName,iValue);
-  // pEnameSet->vPrint();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* EnameSet.addStr -- add a name-string pair to ename-set                     */
-/*----------------------------------------------------------------------------*/
-void Step::vEnameSetAddStr(void)
-{
-  ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
-  
-  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
-
-  s256 sValue;
-  m_pDataStack->vPopStr(sValue,__func__);
-  
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  pEnameSet->vAdd(sName,sValue);
-  //pEnameSet->vPrint();
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* EnameSet.asStr -- get ename-set as a single string                         */
@@ -182,6 +141,47 @@ void Step::vEnameSetHasName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* enameSet.insertInt -- add a name-integer pair to ename-set                    */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetInsertInt(void)
+{
+  ENTRY(); // ENTRY("vEnameSetAddInt"_Stz);
+  
+  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iValue = m_pDataStack->iPopInt(__func__);
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pEnameSet->vInsert(sName,iValue);
+  // pEnameSet->vPrint();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enameSet.insertStr -- add a name-string pair to ename-set                     */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetInsertStr(void)
+{
+  ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
+  
+  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+
+  s256 sValue;
+  m_pDataStack->vPopStr(sValue,__func__);
+  
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pEnameSet->vInsert(sName,sValue);
+  //pEnameSet->vPrint();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* EnameSet.replaceInt -- replace a name-integer pair to ename-set            */
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetReplaceInt(void)
@@ -243,7 +243,7 @@ void Step::vEnameSetUpsertStr(void)
     pEnameSet->vReplace(sName,sValue);
   }
   else {
-    pEnameSet->vAdd(sName,sValue);
+    pEnameSet->vInsert(sName,sValue);
   }
   
   //pEnameSet->vPrint();

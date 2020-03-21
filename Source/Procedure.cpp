@@ -63,7 +63,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 
   vParseParameters(pProcWord,pTokenVec);
 
-  pProcWord->pEnameSet()->vAdd("procText"_Stz,sProcText);
+  pProcWord->pEnameSet()->vInsert("procText"_Stz,sProcText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +281,7 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
     vTrace("%s: adding parameter %s\n"_Stz,pProcWord->szWordNm(),pTkn->szTerm());
 #endif
     
-    pEnameSet->vAdd(pTkn->szTerm());
+    pEnameSet->vInsert(pTkn->szTerm());
   }
 
 }

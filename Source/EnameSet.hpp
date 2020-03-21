@@ -31,11 +31,8 @@ namespace Gadgets
     EnameSet(void);
    ~EnameSet() noexcept(false);
   
-    void vAdd(Stz* szName);
-    void vAdd(Stz* szName, i8 iValue);
-    void vAdd(Stz* szName, Stz* szValue);
-    void vAppend(Stz* szCmd);
-    void vAppend(Stz* szCmd, i8 i_Ename);
+    void vConcat(Stz* szCmd);
+    void vConcat(Stz* szCmd, i8 i_Ename);
     void vContentDump(void);
     void vCopy(EnameSet* pSrcEnameSet);
     void vDelete(Stz* szName);
@@ -44,6 +41,9 @@ namespace Gadgets
     i8   nEnames(void);
     i8   i_Find(Stz* szName);
     bool bHasName(Stz* szName);
+    void vInsert(Stz* szName);
+    void vInsert(Stz* szName, i8 iValue);
+    void vInsert(Stz* szName, Stz* szValue);
     i8   nItems(void);
     Stz* szName(i8 i_Ename);
     void vNamesString(String* pString);
