@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnameSet.cpp -- ename-value set                                              */
+/* EnameSet.cpp -- ename-value set                                            */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -70,22 +70,6 @@ EnameSet::~EnameSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add                                                                        */
-/*----------------------------------------------------------------------------*/
-void EnameSet::vAdd(Stz* szName, i8 iValue)
-{
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
-  i8 i_Ename = m_nEnames;
-  
-  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
-  m_xEname[i_Ename].m_i_Value = iValue;
-  m_xEname[i_Ename].m_eToken  = TN_INTEGER;
-  
-  m_nEnames++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add name only                                                              */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vAdd(Stz* szName)
@@ -97,6 +81,22 @@ void EnameSet::vAdd(Stz* szName)
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
   m_xEname[i_Ename].m_eToken  = TN_STRING;
+  
+  m_nEnames++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vAdd(Stz* szName, i8 iValue)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  i8 i_Ename = m_nEnames;
+  
+  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = iValue;
+  m_xEname[i_Ename].m_eToken  = TN_INTEGER;
   
   m_nEnames++;
 }
@@ -562,6 +562,24 @@ Stz* EnameSet::szValue(Stz *szName)
   Stz* szValue = m_yxStrings.szGet(m_xEname[i_Ename].m_i_Value);
   
   return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* shift sub set down so as to open up i_From                                 */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vShiftDown(i8 i_From)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  for (i8 i_Dst = m_nEnames; i_Dst > i_From; i_Dst--) {
+    m_xEname[i_Dst].m_i_Name  = m_xEname[i_Dst - 1].m_i_Name;
+    m_xEname[i_Dst].m_i_Value = m_xEname[i_Dst - 1].m_i_Value;
+    m_xEname[i_Dst].m_eToken  = m_xEname[i_Dst - 1].m_eToken;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

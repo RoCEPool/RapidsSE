@@ -31,8 +31,8 @@ namespace Gadgets
     EnameSet(void);
    ~EnameSet() noexcept(false);
   
-    void vAdd(Stz* szName, i8 iValue);
     void vAdd(Stz* szName);
+    void vAdd(Stz* szName, i8 iValue);
     void vAdd(Stz* szName, Stz* szValue);
     void vAppend(Stz* szCmd);
     void vAppend(Stz* szCmd, i8 i_Ename);
@@ -47,8 +47,8 @@ namespace Gadgets
     i8   nItems(void);
     Stz* szName(i8 i_Ename);
     void vNamesString(String* pString);
-    void vReplace(Stz* szName, Stz* szValue);
     void vReplace(Stz* szName, i8 iValue);
+    void vReplace(Stz* szName, Stz* szValue);
     void vReset(void);
     void vSprint(Stz* sArgs);
     eTN  eToken(i8 i_Ename);
@@ -56,6 +56,9 @@ namespace Gadgets
     i8   iValue(Stz* szName);
     Stz* szValue(i8 i_Ename);
     Stz* szValue(Stz* szName);
+  
+  private:
+    void vShiftDown(i8 i_From);
 
     Footer* aFooter(void);
   };
