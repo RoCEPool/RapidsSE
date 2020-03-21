@@ -38,7 +38,7 @@
 
   "<detailed>" job[] job.enameset@ enameset.hasName not if
 
-    "<detailed>" "0" job[] job.enameset@ enameset.addStr
+    "<detailed>" "0" job[] job.enameset@ enameSet.insertStr
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +65,7 @@
 
   "<detailed>" job[] job.enameset@ enameset.hasName not if
 
-    "<detailed>" "0" job[] job.enameset@ enameset.addStr
+    "<detailed>" "0" job[] job.enameset@ enameSet.insertStr
   then
 
 
@@ -97,7 +97,7 @@
 
   "<detailed>" job[] job.enameset@ enameset.hasName not if
 
-    "<detailed>" "0" job[] job.enameset@ enameset.addStr
+    "<detailed>" "0" job[] job.enameset@ enameSet.insertStr
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

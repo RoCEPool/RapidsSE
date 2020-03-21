@@ -132,7 +132,7 @@
     if pWord word.name_trunc else sDefaultSeed then
     sSuffix str.cat locals| pWordName |
 
-  sSeedEname pWordName pEnameSet EnameSet.addStr
+  sSeedEname pWordName pEnameSet enameSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -343,7 +343,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pEnameSet EnameSet.addStr
+  "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
 
   // skip the "{" token from input source
   next-token drop
