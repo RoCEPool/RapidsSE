@@ -11,8 +11,8 @@ void Step::vAddSteps_EnameSet(void)
 {
   vAddStep("enameSet::new"_Stz,       &Step::vEnameSetNew);
   
-  vAddStep("enameSet.appendInt"_Stz,  &Step::vEnameSetInsertInt);
-  vAddStep("enameSet.appendStr"_Stz,  &Step::vEnameSetInsertStr);
+  vAddStep("enameSet.appendInt"_Stz,  &Step::vEnameSetAppendInt);
+  vAddStep("enameSet.appendStr"_Stz,  &Step::vEnameSetAppendStr);
   vAddStep("enameSet.asStr"_Stz,      &Step::vEnameSetAsStr);
   vAddStep("enameSet.copy"_Stz,       &Step::vEnameSetCopy);
   vAddStep("enameSet.getInt"_Stz,     &Step::vEnameSetGetInt);
@@ -56,7 +56,7 @@ void Step::vEnameSetAppendInt(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vInsert(sName,iValue);
+  pEnameSet->vAppend(sName,iValue);
   // pEnameSet->vPrint();
   
   EXIT();
@@ -77,7 +77,7 @@ void Step::vEnameSetAppendStr(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vInsert(sName,sValue);
+  pEnameSet->vAppend(sName,sValue);
   //pEnameSet->vPrint();
   
   EXIT();
