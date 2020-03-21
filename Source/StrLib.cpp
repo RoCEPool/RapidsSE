@@ -300,7 +300,7 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
+i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 {
   i8 iDiff;
   
@@ -315,7 +315,7 @@ bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
+i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
 {
   i8 iDiff;
   

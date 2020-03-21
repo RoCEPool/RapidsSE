@@ -128,7 +128,7 @@ char* Stz::azChar(void)
 /*----------------------------------------------------------------------------*/
 i8 Stz::iCompare(Stz* szArg)
 {
-  i8 iCmp = StrLib::iCompare(azChar(),szArg->azChar());
+  i8 iCmp = StrLib::iCompare(azChar(),szArg->azChar(),C_NO_CASE);
   
   return iCmp;
 }

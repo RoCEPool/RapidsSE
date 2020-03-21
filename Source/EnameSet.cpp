@@ -75,15 +75,39 @@ EnameSet::~EnameSet(void) noexcept(false)
 void EnameSet::vAdd(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
+
   i8 i_Ename = m_nEnames;
-  
+
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
   m_xEname[i_Ename].m_eToken  = TN_STRING;
-  
+
   m_nEnames++;
+
+  //vDumpSet();
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
 }
+/*----------------------------------------------------------------------------*/
+//void EnameSet::vAdd(Stz* szName)
+//{
+//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//
+//  i8 i_Ename = i_AddPoint(szName);
+//  vShiftDown(i_Ename);
+//
+//  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+//  m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
+//  m_xEname[i_Ename].m_eToken  = TN_STRING;
+//
+//  m_nEnames++;
+//
+//  vDumpSet();
+//  if (! bHasName(szName)) {
+//    RASSERT(0);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
@@ -91,15 +115,39 @@ void EnameSet::vAdd(Stz* szName)
 void EnameSet::vAdd(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
+
   i8 i_Ename = m_nEnames;
-  
+
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = iValue;
   m_xEname[i_Ename].m_eToken  = TN_INTEGER;
-  
+
   m_nEnames++;
+
+  //vDumpSet();
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
 }
+/*----------------------------------------------------------------------------*/
+//void EnameSet::vAdd(Stz* szName, i8 iValue)
+//{
+//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//
+//  i8 i_Ename = i_AddPoint(szName);
+//  vShiftDown(i_Ename);
+//
+//  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+//  m_xEname[i_Ename].m_i_Value = iValue;
+//  m_xEname[i_Ename].m_eToken  = TN_INTEGER;
+//
+//  m_nEnames++;
+//
+//  vDumpSet();
+//  if (! bHasName(szName)) {
+//    RASSERT(0);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add name and value                                                         */
@@ -107,15 +155,40 @@ void EnameSet::vAdd(Stz* szName, i8 iValue)
 void EnameSet::vAdd(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
+
   i8 i_Ename = m_nEnames;
-  
+
   m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = m_yxStrings.iAppend(szValue);
   m_xEname[i_Ename].m_eToken  = TN_STRING;
-  
+
   m_nEnames++;
+
+  //vDumpSet();
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
 }
+/*----------------------------------------------------------------------------*/
+//void EnameSet::vAdd(Stz* szName, Stz* szValue)
+//{
+//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//
+//  i8 i_Ename = i_AddPoint(szName);
+//  vShiftDown(i_Ename);
+//
+//  m_xEname[i_Ename].m_i_Name  = m_yxStrings.iAppend(szName);
+//  m_xEname[i_Ename].m_i_Value = m_yxStrings.iAppend(szValue);
+//  m_xEname[i_Ename].m_eToken  = TN_STRING;
+//
+//  m_nEnames++;
+//
+//  vDumpSet();
+//  if (! bHasName(szName)) {
+//    RASSERT(0);
+//  }
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append enameset to cmd string                                              */
@@ -571,7 +644,7 @@ Stz* EnameSet::szValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* find where to add the given name                                           */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet:: i_AddPoint(Stz* szNewName)
+i8 EnameSet::i_AddPoint(Stz* szNewName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -579,7 +652,7 @@ i8 EnameSet:: i_AddPoint(Stz* szNewName)
     return 0;
   
   for (i8 i_Scan = 0; i_Scan < m_nEnames; i_Scan++)
-    if (szName(i_Scan)->iCompare(szNewName))
+    if (szName(i_Scan)->iCompare(szNewName) >= 0)
       return i_Scan;
   
   return m_nEnames;
