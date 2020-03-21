@@ -10,7 +10,7 @@
 : BufferGenOp_PulseMarker \handler
 
   "Operand:- ZK_PULSEMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   <nBuffers> 0 do
     I "buffer# %v" .printf
@@ -31,7 +31,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 

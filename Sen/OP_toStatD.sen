@@ -11,8 +11,8 @@
 
   "OP_toStatD_InfoSet +++ +++ +++" .
 
-  operand[].get to infoset[]
-  nullptr to operand[]
+  Pipein[] to infoset[]
+  nullptr to Pipein[]
 
   infoset[].name .
 

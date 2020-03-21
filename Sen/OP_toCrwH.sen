@@ -15,7 +15,7 @@
   Loader[].create
 
   // pipe out the pulsemarker
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   // pipe out the stream def
   Operand[].newStreamDef
@@ -30,6 +30,9 @@
 : toCrwH_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
+
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
 
   // use extractRow from register0 and convert csvtoCrw
   Operand[].csvToCrwH
@@ -76,7 +79,7 @@
   // delete loader
   loader[].delete
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
@@ -95,13 +98,13 @@
     op.pipelineJob@ ERROR_JOB !!logError
     Operand[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
   else
     // move to table folder and find the table and tablePtn
     sTableNm pushTable assert
     sTableNm find execute to table[]
+    Pipein[].pipeout
   then
-
-  Operand[].pipeout
 
   true
 ;

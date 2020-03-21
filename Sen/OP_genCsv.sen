@@ -10,7 +10,7 @@
 : genCsvOp_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   // new a stream def
   Operand[].newStreamDef
@@ -38,15 +38,15 @@
   // check if table exits
   <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeOut
   else
     // move to table folder and find the table
     <tableNm> pushTable assert
     <tableNm> find execute to table[]
+    Pipein[].pipeOut
   then
-
-  Operand[].pipeOut
 
   true
 ;

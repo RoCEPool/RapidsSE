@@ -38,7 +38,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vRegOperandNewStoppedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vRegOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vRegOperandNext);
-  vAddStep("Operand[].peek"_Stz,         &Step::vRegOperandPeek);
+  vAddStep("Operand[].peek"_Stz,           &Step::vRegOperandPeek);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vRegOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vRegOperandPipeOutSet);
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
@@ -262,6 +262,8 @@ void Step::vRegOperandInsertIntoTable(void)
   // ste the table in the crwBuffer
   pCrwBuffer->vTable(*m_pRegSet->m_xpTable);
   m_pRegSet->m_xpTable->vAppendBufferInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
+  
+  m_pRegSet->m_xpOperandA = nullptr;
   
   EXIT();
 }

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : statsOp_StartMarker \handler
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   "+++ +++ +++" .
 
@@ -45,7 +45,7 @@
   metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   Op.ackPipelineJob
   false

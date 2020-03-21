@@ -10,7 +10,7 @@
 : ZK_CANCELMARKER_handler \handler
 
   //"ZK_CANCELMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   Op.ackPipelineJob
   false
 
@@ -22,7 +22,7 @@
 : ZK_CRWBUFFER_handler \handler
 
   //"ZK_CRWBUFFER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -32,7 +32,7 @@
 : ZK_CSVBUFFER_handler \handler
 
   //"ZK_CSVBUFFER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -42,7 +42,7 @@
 : ZK_ENTBUFFER_handler \handler
 
   //"ZK_ENTBUFFER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -52,7 +52,7 @@
 : ZK_EOSMARKER_handler \handler
 
   //"ZK_EOSMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -62,7 +62,7 @@
 : ZK_ERRORMARKER_handler \handler
 
   //"ZK_ERRORMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -72,7 +72,7 @@
 : ZK_INFOSET_handler \handler
 
   //"ZK_INFOSET" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -82,7 +82,7 @@
 : ZK_IRWBUFFER_handler \handler
 
   //"ZK_IRWBUFFER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -92,7 +92,7 @@
 : ZK_PULSEMARKER_handler \handler
 
   //"ZK_PULSEMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -102,7 +102,7 @@
 : ZK_SRTBUFFER_handler \handler
 
   //"ZK_SRTBUFFER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -112,7 +112,7 @@
 : ZK_STARTMARKER_handler \handler
 
   //"ZK_STARTMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -122,7 +122,7 @@
 : ZK_STARTEDMARKER_handler \handler
 
   //"ZK_STARTEDMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -132,7 +132,7 @@
 : ZK_STOPMARKER_handler \handler
 
   //"jobOperand::generic:- ZK_STOPMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   Op.ackPipelineJob
   false
 ;
@@ -143,7 +143,7 @@
 : ZK_STOPPEDMARKER_handler \handler
 
   //"ZK_STOPPEDMARKER_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 
@@ -153,7 +153,7 @@
 : ZK_STREAMDEF_handler \handler
 
   //"ZK_STREAMDEF_handler" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   true
 ;
 

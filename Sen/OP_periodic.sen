@@ -10,7 +10,7 @@
 : periodicOp_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  Operand[].delete
+  Pipein[].delete
   Operand[].newStopMarker
   Operand[].pipeOut
   Op.ackPipelineJob
@@ -24,7 +24,7 @@
 : periodicOp_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
    Counter1[] if
     begin

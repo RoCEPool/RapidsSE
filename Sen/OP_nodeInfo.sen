@@ -13,7 +13,7 @@
   0 locals| iRowSize |
 
   // pipeout the start marker
-  Operand[].pipeout
+  Pipein[].pipeout
 
   // create a new streamDef
   StreamDef[].new
@@ -49,7 +49,7 @@
   0 locals| iRowSize |
 
   // pipeout the start marker
-  Operand[].pipeout
+  Pipein[].pipeout
 
   // find the __nodeInfo table
   C_TDEF_NODEINFO op__tableDef

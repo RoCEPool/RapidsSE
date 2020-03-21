@@ -11,6 +11,9 @@
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   // use extractRow from register0 and convert csvtoCrw
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
+
   Operand[].csvToCrw
   Operand[].delete
 
@@ -31,7 +34,7 @@
   // deelete extractRow from reister0
   extractRow.delete
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
@@ -48,7 +51,7 @@
   // create an extractRow and put it in register 0
   extractRow.create to register0[]
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
@@ -64,13 +67,13 @@
     op.pipelineJob@ ERROR_JOB !!logError
     Operand[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
   else
     // move to table folder and find the table and tablePtn
     <tableNm> pushTable assert
     <tableNm> find execute to table[]
+    Pipein[].pipeout
   then
-
-  Operand[].pipeout
   
   true
 ;
@@ -81,7 +84,7 @@
 : ToCrwOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Operand[].delete
+  Pipein[].delete
   Operand[].newStreamDef
   Operand[].pipeOut
 

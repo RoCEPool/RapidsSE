@@ -10,7 +10,7 @@
 : printOp_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
   <string> .
 
   true
@@ -23,7 +23,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;

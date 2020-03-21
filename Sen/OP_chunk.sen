@@ -12,7 +12,7 @@
   0 locals| iRowSize |
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   // find the __seekOffsets table
   C_TDEF_SEEKOFFSETS op__tableDef
@@ -63,10 +63,12 @@
   not if
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
+  else
+    Pipein[].pipeout
   then
-  Operand[].pipeout
 
   true
 ;
@@ -82,7 +84,7 @@
     File0[].get file.delete
   then
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
   Op.ackPipelineJob
 
   false

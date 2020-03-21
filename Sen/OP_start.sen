@@ -10,7 +10,7 @@
 : startOp_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  Operand[].pipeout
+  Pipein[].pipeout
   true
 ;
 
@@ -20,7 +20,7 @@
 : startOp_StartedMarker \handler
 
   //"Operand:- ZK_STARTEDMARKER" .verbose
-  Operand[].delete
+  Pipein[].delete
   Operand[].newPulseMarker
   Operand[].pipeout
 
@@ -33,7 +33,7 @@
 : startOp_StoppedMarker \handler
 
   //"Operand:- ZK_STOPPEDMARKER" .verbose
-  Operand[].delete
+  Pipein[].delete
   Op.ackPipelineJob
 
   false

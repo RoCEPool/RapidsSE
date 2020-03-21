@@ -5,9 +5,22 @@
 " OP_scan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: scanOp_PulseMarker \handler
+: ScanOp_CancelMarker \handler
+
+  //"ZK_CANCELMARKER_handler" .verbose
+  nullptr to Operand[]
+  Pipein[].pipeOut
+  Op.ackPipelineJob
+  false
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: scanOp_CrwBuffer \handler
 
   0 locals| rateSecs |
 
@@ -15,8 +28,35 @@
     <rateSecs> >int to rateSecs
   then
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_CRWBUFFER" .verbose
   Operand[].pipeOut
+
+  // check for rate
+  rateSecs if
+    rateSecs "ScanOp Pausing for %v secs" str.format .
+    rateSecs task::sleepSsec
+    "ScanOp awake" .
+  then
+
+  Subset[].nextBuffer to Operand[]
+
+  Operand[].isNull if
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: scanOp_PulseMarker \handler
+
+  0 locals| rateSecs |
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Pipein[].pipeOut
 
   // new a stream def
   Operand[].newStreamDef
@@ -25,37 +65,6 @@
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
   Subset[]@ to Operand[]
-  begin
-    Operand[].isNull
-  not while
-    Operand[].pipeOut
-
-    // check for rate
-    rateSecs if
-      rateSecs "ScanOp Pausing for %v secs" str.format .
-      rateSecs task::sleepSsec
-      "ScanOp awake" .
-    then
-
-    Operand[].peek
-
-    // anything there ?
-    Operand[].isNull if
-      Subset[].nextBuffer to Operand[]
-    else
-      // exit early if CancelMarker
-      Operand[].kind ZK_CANCELMARKER == if
-        nullptr to Operand[]
-      else
-        nullptr to Operand[]
-        Subset[].nextBuffer to Operand[]
-      then
-    then
-
-  repeat
-
-  Operand[].newEosMarker
-  Operand[].pipeOut
 
   true
 ;
@@ -70,17 +79,18 @@
   // check if we can scan the table
   <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeOut
+
   else
 
     // move to table folder and find the table and tablePtn
     <tableNm> pushTable assert
     <tableNm> find execute to table[]
     table[].tablePtn@ to tablePtn[]
+    Pipein[].pipeOut
   then
-
-  Operand[].pipeOut
 
   true
 ;
@@ -94,8 +104,10 @@
 
   op__topology
 
-  find: scanOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: scanOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: scanOp_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: scanOp_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: scanOp_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: scanOp_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
 

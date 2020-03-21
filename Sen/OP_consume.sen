@@ -25,23 +25,23 @@
   begin
 
     // bide till next operand is available
-    Operand[].bide
+    Pipein[].bide
 
     // pop next operand from queue into Operand[]
-    Operand[].next
+    Pipein[].next
 
       // decode kind
-      Operand[].kind case
+      Pipein[].kind case
 
       ZK_CANCELMARKER of
         "CONSUMEOP: Operand:- ZK_CANCELMARKER" .verbose
         stop 1 - to stop
         stop 0 == if
-          Operand[].pipeOut
+          Pipein[].pipeOut
           Op.ackPipelineJob
           false
         else
-          Operand[].delete
+          Pipein[].delete
         true
         then
 
@@ -56,10 +56,10 @@
           eos 1 - to eos
           eos 0 == if
             Counter0[] to eos
-            Operand[].pipeOut
+            Pipein[].pipeOut
           else
             Counter0[] to eos
-            Operand[].delete
+            Pipein[].delete
           then
 
           true
@@ -70,9 +70,9 @@
           eos 1 - to eos
           eos 0 == if
             Counter0[] to eos
-            Operand[].pipeOut
+            Pipein[].pipeOut
           else
-            Operand[].delete
+            Pipein[].delete
           then
 
           true
@@ -81,9 +81,9 @@
         ZK_PULSEMARKER of
           //"Operand:- ZK_PULSEMARKER" .verbose
           pulse 0 == if
-            Operand[].pipeOut
+            Pipein[].pipeOut
           else
-            Operand[].delete
+            Pipein[].delete
           then
           pulse 1 + to pulse
           // reset pulse to allow fow periodic pulses to come
@@ -97,10 +97,10 @@
           //"Operand:- ZK_STARTMARKER" .verbose
           // pipeout first STARTMARKER
           start 0 == if
-            Operand[].pipeOut
+            Pipein[].pipeOut
           else
             // drop other STARTMARKERS
-            Operand[].delete
+            Pipein[].delete
           then
           start 1 + to start
           start Counter0[] > if
@@ -114,11 +114,11 @@
         //"Operand:- ZK_STOPMARKER" .verbose
         stop 1 - to stop
         stop 0 == if
-          Operand[].pipeOut
+          Pipein[].pipeOut
           Op.ackPipelineJob
           false
         else
-          Operand[].delete
+          Pipein[].delete
           true
         then
 
@@ -131,9 +131,9 @@
         ZK_STREAMDEF of
           //"Operand:- ZK_STREAMDEF" .verbose
           def 0 == if
-            Operand[].pipeOut
+            Pipein[].pipeOut
           else
-            Operand[].delete
+            Pipein[].delete
           then
           def 1 + to def
           true

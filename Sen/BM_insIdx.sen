@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : BM_InsIdx_EosMarker \handler
 
-  Operand[].delete
+  Pipein[].delete
 
   BM_InsIdx_Report
 
@@ -99,7 +99,7 @@
 
   //Task_Interpreter
 
-  Operand[].pipeout
+  Pipein[].pipeout
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -41,7 +41,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   // find the __nodeInfo table
   C_TDEF_GRIDSANITY op__tableDef
@@ -64,7 +64,7 @@
 
   //"Operand:- ZK_EOSMARKER" .verbose
 
-  Operand[].pipeout
+  Pipein[].pipeout
 
   StreamDef[].delete
 

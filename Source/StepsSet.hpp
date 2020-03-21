@@ -1103,7 +1103,6 @@ public:
   void vRegOperandOoOGet(void);
   void vRegOperandOoOIsNull(void);
   void vRegOperandOoOKind(void);
-  void vRegOperandOoOPeek(void);
   void vRegOperandOoOPipeOut(void);
   void vRegOperandOoOPipeToJob(void);
   void vRegOperandOoOSet(void);
@@ -1115,7 +1114,7 @@ public:
   void vRegPipeinIsNull(void);
   void vRegPipeinKind(void);
   void vRegPipeinNext(void);
-  void vRegPipeinPeek(void);
+  void vRegPipeinPeekOoO(void);
   void vRegPipeinPipeOut(void);
   void vRegPipeinPipeToJob(void);
   void vRegPipeinSet(void);

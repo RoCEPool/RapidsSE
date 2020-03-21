@@ -124,14 +124,39 @@
 
   begin
 
-    // bide till next operand is available
-    Operand[].bide
+    Operand[].isNull if
 
-    // pop next operand from queue into Operand[]
-    Operand[].next
+      // bide till next operand is available
+      Pipein[].bide
 
-    // execute the operator's handler for the operand
-    Operand[].kind op[].handler@ execute
+      // pop next operand from queue into Operand[]
+      Pipein[].next
+
+      // execute the operator's handler for the operand
+      Pipein[].kind op[].handler@ execute
+
+    else
+
+      //executed for sequences
+      Pipein[].peekOoO if
+
+        // get the Out-of_Order Operand
+        Pipein[].next
+        Pipein[] to OperandOoO[]
+
+        // execute the operator's handler for the Out-of_Order operand
+        OperandOoO[].kind op[].handler@ execute
+
+        // assert Operand is null
+        Operand[].isNull assert
+
+      else
+        // execure operand handler
+        Operand[].kind op[].handler@ execute
+
+      then
+
+    then
 
   while assert::stack_0 repeat
 ;

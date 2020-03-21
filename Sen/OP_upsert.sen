@@ -10,6 +10,9 @@
 : UpsertOp_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
+
   tx[].begin
   tablePtn[].get tablePtnGrabWrite2
   Operand[].upsertIntoTable
@@ -31,14 +34,14 @@
     op.pipelineJob@ ERROR_JOB !!logError
     Operand[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
   else
     // move to table folder and find the table and tablePtn
     <tableNm> pushTable assert
     <tableNm> find execute to table[]
     table[].tablePtn@ to tablePtn[]
+    Pipein[].pipeout
   then
-
-  Operand[].pipeout
 
   true
 ;
@@ -49,7 +52,7 @@
 : UpsertOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Operand[].delete
+  Pipein[].delete
   Operand[].newStreamDef
   Operand[].pipeOut
 

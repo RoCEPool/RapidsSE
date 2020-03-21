@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 : BM_InflateCrwOp_EosMarker \handler
 
-  Operand[].delete
+  Pipein[].delete
 
   BM_InflateCrwOp_Report
 

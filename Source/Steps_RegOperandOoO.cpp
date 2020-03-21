@@ -13,7 +13,6 @@ void Step::vAddSteps_RegOperandOoO(void)
   vAddStep("OperandOoO[].delete"_Stz,      &Step::vRegOperandOoODelete);
   vAddStep("OperandOoO[].isNull"_Stz,      &Step::vRegOperandOoOIsNull);
   vAddStep("OperandOoO[].kind"_Stz,        &Step::vRegOperandOoOKind);
-  vAddStep("OperandOoO[].peek"_Stz,        &Step::vRegOperandOoOPeek);
   vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vRegOperandOoOPipeOut);
   vAddStep("OperandOoO[].pipeToJob"_Stz,   &Step::vRegOperandOoOPipeToJob);
   vAddStep("OperandOoO[].set"_Stz,         &Step::vRegOperandOoOSet);
@@ -100,18 +99,6 @@ void Step::vRegOperandOoOKind(void)
   }
   
   m_pDataStack->vPushInt(eOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* OperandOoO[].peek -- peek and see if there is another operand              */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoOPeek(void)
-{
-  ENTRY(); // ENTRY("vRegOperandOoOPeek"_Stz);
-  
-  m_pRegSet->m_xpOperandOoO = m_pTask->m_pJob->m_pOp->pPeekQueue();
   
   EXIT();
 }

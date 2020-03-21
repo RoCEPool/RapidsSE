@@ -9,8 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : readChunk_InfoSet \handler
 
-  Operand[].get to InfoSet[]
-  nullptr to Operand[]
+  Pipein[] to InfoSet[]
+  nullptr to Pipein[]
+
   InfoSet[].firstRow to row[]
   begin
     row[].isNull
@@ -38,10 +39,12 @@
   not if
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
+  else
+    Pipein[].pipeout
   then
-  Operand[].pipeout
 
   true
 ;
@@ -56,7 +59,7 @@
     File0[].get file.close
     File0[].get file.delete
   then
-  Operand[].pipeOut
+  Pipein[].pipeOut
   Op.ackPipelineJob
 
   false

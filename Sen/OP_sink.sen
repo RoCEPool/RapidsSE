@@ -10,7 +10,7 @@
 : sinkOp_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  Operand[].pipeToJob
+  Pipein[].pipeToJob
   Operand[].newStoppedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
@@ -24,7 +24,7 @@
 : sinkOp_ErrorMarker \handler
 
   //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
@@ -35,7 +35,7 @@
 : sinkOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  Operand[].delete
+  Pipein[].delete
   Operand[].newStartedMarker
   Operand[].pipeOut
 
@@ -48,7 +48,7 @@
 : sinkOp_StopMarker \handler
 
   //"Operand:- ZK_STOPMARKER" .verbose
-  Operand[].pipeToJob
+  Pipein[].pipeToJob
   Operand[].newStoppedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
@@ -62,7 +62,7 @@
 : sinkOp_Xyz \handler
 
   // delete all operands
-  operand[].delete
+  Pipein[].delete
 
   true
 ;
