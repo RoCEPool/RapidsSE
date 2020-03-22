@@ -999,7 +999,7 @@ void SePrompt::vPromptUser(void)
   #else
         'r',
   #endif
-        bHasStarted           ? "has" : "not"
+        bHasStarted           ? "booted" : "not-booted"
         );
 
   fflush(stdin);

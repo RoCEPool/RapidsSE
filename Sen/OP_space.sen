@@ -12,8 +12,11 @@
 
   0 locals| iRowSize |
 
-  // pipeout the start marker
+  // pipeout the pulse marker
   Pipein[].pipeout
+
+  // find the __nodeInfo table
+  C_TDEF_SPACE op__tableDef
 
   // create a new streamDef
   StreamDef[].new
@@ -41,21 +44,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: space_StartMarker \handler
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  // pipeout the start marker
-  Pipein[].pipeout
-
-  // find the __nodeInfo table
-  C_TDEF_SPACE op__tableDef
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for space req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : space_req \operator
@@ -65,7 +53,6 @@
   op__topology
 
   find: space_PulseMarker  ZK_PULSEMARKER op[].handler!
-  find: space_StartMarker  ZK_STARTMARKER op[].handler!
 
   op__loop
 
