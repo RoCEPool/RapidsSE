@@ -5,21 +5,27 @@
 " OP_space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* preliminary setup                                                          */
 /*----------------------------------------------------------------------------*/
-: space_PulseMarker \handler
-  //"Operand:- ZK_PULSEMARKER" .verbose
+: space_setup
 
-  0 locals| iRowSize |
-
-  // pipeout the pulse marker
-  Pipein[].pipeout
+  job[] job.enameSet@ enameSet.asStr .
 
   // find the __nodeInfo table
-  C_TDEF_SPACE op__tableDef
+  <streamDef> op__tableDef
 
   // create a new streamDef
   StreamDef[].new
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: space_action
+
+  0 locals| iRowSize |
 
   // get row size from streamDef
   StreamDef[].rowSize to iRowSize
@@ -36,7 +42,24 @@
   // pipeout the infoset
   InfoSet[].pipeout
 
-  // send EOSMARKER
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: space_PulseMarker \handler
+  //"Operand:- ZK_PULSEMARKER" .verbose
+
+  0 locals| iRowSize |
+
+  // pipeout the pulse marker
+  Pipein[].pipeout
+
+  space_setup  assert
+  space_action assert
+
+  // pipe out a EOS marker
   Operand[].newEosMarker
   Operand[].pipeOut
 
@@ -67,7 +90,10 @@
 opSyntax: space :: space ;
 
 : space opInfo tagCopy: liteOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <streamDef> = __space
+  }
 ;
 
 /*============================================================================*/
