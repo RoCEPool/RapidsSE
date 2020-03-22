@@ -18,7 +18,11 @@
   }
 ;
 
-//tags_localOp enameset.asStr .
+: liteOp_tags tagCopy: localOp_tags
+  tags{
+    <liteOp>   = 1
+  }
+;
 
 /*============================================================================*/
 /* end                                                                        */
