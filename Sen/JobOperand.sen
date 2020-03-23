@@ -71,6 +71,19 @@
       true
     endof
 
+    ZK_EXITMARKER of
+      //"jobOperand::generic:- ZK_EXITMARKER" .verbose
+      Pipein[].pipeOut
+      Op.ackPipelineJob
+      false
+    endof
+
+    ZK_EXITEDMARKER of
+      //"jobOperand::generic:- ZK_EXITEDMARKER" .verbose
+      Pipein[].pipeOut
+      true
+    endof
+
     ZK_ERRORMARKER of
       //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
       Pipein[].pipeOut
@@ -111,20 +124,6 @@
       "jobOperand::generic:- ZK_STARTMARKER" .
       Pipein[].pipeOut
       true
-    endof
-
-    ZK_EXITMARKER of
-      //"jobOperand::generic:- ZK_EXITMARKER" .verbose
-      Pipein[].pipeOut
-      Op.ackPipelineJob
-      false
-    endof
-
-    ZK_EXITEDMARKER of
-      //"jobOperand::generic:- ZK_EXITEDMARKER" .verbose
-      Pipein[].pipeOut
-      Op.ackPipelineJob
-      false
     endof
 
     ZK_STREAMDEF of

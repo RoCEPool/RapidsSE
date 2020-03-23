@@ -77,6 +77,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITMARKER_handler \handler
+
+  //"ZK_EXITMARKER_handler" .verbose
+  Pipein[].pipeOut
+  Op.ackPipelineJob
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITEDMARKER_handler \handler
+
+  //"ZK_EXITEDMARKER_handler" .verbose
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_INFOSET ...                                                 */
 /*----------------------------------------------------------------------------*/
 : ZK_INFOSET_handler \handler
@@ -142,27 +163,6 @@
 : ZK_STARTEDMARKER_handler \handler
 
   //"ZK_STARTEDMARKER_handler" .verbose
-  Pipein[].pipeOut
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: ZK_EXITMARKER_handler \handler
-
-  //"ZK_EXITMARKER_handler" .verbose
-  Pipein[].pipeOut
-  Op.ackPipelineJob
-  false
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEDMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: ZK_EXITEDMARKER_handler \handler
-
-  //"ZK_EXITEDMARKER_handler" .verbose
   Pipein[].pipeOut
   true
 ;

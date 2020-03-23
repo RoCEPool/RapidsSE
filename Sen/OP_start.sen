@@ -5,12 +5,37 @@
 " OP_start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                           */
+/* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : startOp_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
   Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: startOp_ExitedMarker \handler
+
+  //"Operand:- ZK_EXITEDMARKER" .verbose
+  Pipein[].delete
+  Op.ackPipelineJob
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: startOp_PulsedMarker \handler
+
+  //"Operand:- ZK_PULSEDMARKER" .verbose
+  Pipein[].delete
+  Operand[].newExitMarker
+  Operand[].pipeout
+
   true
 ;
 
@@ -28,18 +53,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEDMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: startOp_ExitedMarker \handler
-
-  //"Operand:- ZK_EXITEDMARKER" .verbose
-  Pipein[].delete
-  Op.ackPipelineJob
-
-  false
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for startOp request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : startOp_req \operator
@@ -48,8 +61,9 @@
 
   op__topology
 
-  find: startOp_ExitedMarker  ZK_EXITEDMARKER  op[].handler!
   find: startOp_CancelMarker  ZK_CANCELMARKER  op[].handler!
+  find: startOp_ExitedMarker  ZK_EXITEDMARKER  op[].handler!
+  find: startOp_PulsedMarker  ZK_PULSEDMARKER  op[].handler!
   find: startOp_StartedMarker ZK_STARTEDMARKER op[].handler!
 
   op__loop

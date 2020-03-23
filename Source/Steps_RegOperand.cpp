@@ -34,6 +34,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newExitMarker"_Stz,  &Step::vRegOperandNewExitMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vRegOperandNewExitedMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vRegOperandNewPulseMarker);
+  vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vRegOperandNewPulsedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vRegOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vRegOperandNewStreamDef);
@@ -527,7 +528,7 @@ void Step::vRegOperandNewPulseMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newPulsedMarker -- new a pulsed marker                             */
+/* Operand[].newPulsedMarker -- new a pulsed marker                           */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewPulsedMarker(void)
 {

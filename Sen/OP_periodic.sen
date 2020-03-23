@@ -45,11 +45,11 @@
     while assert::stack_0 repeat
   then
 
-  Operand[].newExitMarker
+  Operand[].newPulsedMarker
   Operand[].pipeOut
-  Op.ackPipelineJob
+  //Op.ackPipelineJob
 
-  false
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
