@@ -7,6 +7,28 @@
 /*----------------------------------------------------------------------------*/
 /* preliminary setup                                                          */
 /*----------------------------------------------------------------------------*/
+: __liteOp_SetUp
+
+"
+: /liteOp/_setup
+
+  job[] job.enameSet@ enameSet.asStr .
+
+  // find the __ table
+  <streamDef> op__tableDef
+
+  // create a new streamDef
+  StreamDef[].new
+
+  true
+"
+;
+
+// "/liteOp/" "space" __liteop_setup str.replace .
+
+/*----------------------------------------------------------------------------*/
+/* preliminary setup                                                          */
+/*----------------------------------------------------------------------------*/
 : space_setup
 
   job[] job.enameSet@ enameSet.asStr .
