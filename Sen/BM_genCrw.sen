@@ -10,7 +10,7 @@
 : BM_GenCrw_PulseMarker \handler
 
   // pipe out the pulse marker to the next operator
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -40,7 +40,7 @@
   folderPath.str     "Folder path: %v" .printf
   folderContents.str "contains: %v" .printf
 
-  Operand[].pipeOut
+  Pipein[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/

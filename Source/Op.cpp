@@ -558,21 +558,21 @@ bool Op::bPause(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek operand queue                                                         */
+/* peek for OoO operand from operand queue                                    */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPeekQueue(void)
+bool Op::bPeekQueueOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
+  bool bOperandOoO;
   
   vGrabTaskLock();
   
-  pOperand = pQueueLeft()->pPeekOperand();
+  bOperandOoO = pQueueLeft()->bPeekQueueOoO();
   
   vDropTaskLock();
   
-  return pOperand;
+  return bOperandOoO;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -736,6 +736,51 @@ Operand* Op::pPopQueue(void)
            pOperand->eClass() == CN_MARKER ?
              aOM[(_pMarker(pOperand))->eOpMarker()] :
              aCN[pOperand->eClass()],
+           pOperand);
+  }
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop operand OoO off the queue                                              */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopQueueOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperand = pQueueLeft()->pPopQueueOoO();
+  
+  if (pOperand)
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
+                pOperand->eClass() == CN_MARKER ?
+                aOM[(_pMarker(pOperand))->eOpMarker()] :
+                aCN[pOperand->eClass()]);
+  else
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
+  
+  if (pOperand)
+    vDropTaskLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (AM::bVerbose() && pOperand) {
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+           m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
+           m_nNode,
+           m_nPartition,
+           m_pPipelineJob,
+           "pPopQueue :"_Stz,
+           pOperand->eClass() == CN_MARKER ?
+           aOM[(_pMarker(pOperand))->eOpMarker()] :
+           aCN[pOperand->eClass()],
            pOperand);
   }
   

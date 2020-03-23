@@ -81,7 +81,7 @@
 
   BM_TimerNew
 
-  Operand[].pipeout
+  Pipein[].pipeout
 
   true
 ;

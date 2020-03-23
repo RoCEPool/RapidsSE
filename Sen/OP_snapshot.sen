@@ -10,7 +10,7 @@
 : SnapshotOp_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   // new a stream def
   Operand[].newStreamDef
@@ -55,17 +55,17 @@
   // check if we can scan the table
   <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeOut
   else
 
     // move to table folder and find the table and tablePtn
     <tableNm> pushTable assert
     <tableNm> find execute to table[]
     table[].tablePtn@ to tablePtn[]
+    Pipein[].pipeOut
   then
-
-  Operand[].pipeOut
 
   true
 ;

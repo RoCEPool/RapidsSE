@@ -20,8 +20,9 @@ namespace Operands
     ~OperandQueue(void) noexcept(false);
     
     void vAppendOperand(Operand* pOperand);
-    Operand*  pPeekOperand(void);
+    bool      bPeekQueueOoO(void);
     Operand*  pPopQueue(void);
+    Operand*  pPopQueueOoO(void);
     i8   nQueuedOperands(void);
       
     Footer* aFooter(void);

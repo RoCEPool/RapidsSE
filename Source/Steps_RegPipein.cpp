@@ -15,6 +15,7 @@ void Step::vAddSteps_RegPipein(void)
   vAddStep("Pipein[].isNull"_Stz,         &Step::vRegPipeinIsNull);
   vAddStep("Pipein[].kind"_Stz,           &Step::vRegPipeinKind);
   vAddStep("Pipein[].next"_Stz,           &Step::vRegPipeinNext);
+  vAddStep("Pipein[].nextOoO"_Stz,        &Step::vRegPipeinNextOoO);
   vAddStep("Pipein[].peekOoO"_Stz,        &Step::vRegPipeinPeekOoO);
   vAddStep("Pipein[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
   vAddStep("Pipein[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
@@ -139,28 +140,30 @@ void Step::vRegPipeinNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Pipein[].NextOoO -- get next OoO operand                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPipeinNextOoO(void)
+{
+  ENTRY(); // ENTRY("vRegPipeinNextOoO"_Stz);
+  
+  if (m_pRegSet->m_xpPipein.bIsNull())
+    m_pRegSet->m_xpPipein = m_pTask->m_pJob->m_pOp->pPopQueueOoO();
+  ASSERT(*m_pRegSet->m_xpPipein);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Pipein[].peekOoO -- peek and see if there is an Out-of-Order operand       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinPeekOoO(void)
 {
   ENTRY(); // ENTRY("vRegPipeinPeekOoO"_Stz);
   
-  Operand* pOperand = _pOperand(m_pTask->m_pJob->m_pOp->pPeekQueue());
+  bool bOperandOoO = m_pTask->m_pJob->m_pOp->bPeekQueueOoO();
   
-  // did we get a marker ?
-  if ( pOperand && pOperand->bIsMarker() ) {
-    
-    Marker* pMarker = _pMarker(pOperand);
-    
-    // is it a CANCELMARKER ?
-    if (pMarker->eOpMarker() == OM_CANCELMARKER)
-      m_pDataStack->vPushInt(true);
-    else
-      m_pDataStack->vPushInt(false);
-  }
-  else {
-    m_pDataStack->vPushInt(false);
-  }
+  m_pDataStack->vPushInt(bOperandOoO);
+
   EXIT();
 }
 

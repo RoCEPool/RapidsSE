@@ -1072,7 +1072,6 @@ public:
   void vRegOperandNewStartedMarker(void);
   void vRegOperandNewStreamDef(void);
   void vRegOperandNext(void);
-  void vRegOperandPeek(void);
   void vRegOperandPipeOut(void);
   void vRegOperandPipeOutSet(void);
   void vRegOperandPipeToJob(void);
@@ -1118,6 +1117,7 @@ public:
   void vRegPipeinIsNull(void);
   void vRegPipeinKind(void);
   void vRegPipeinNext(void);
+  void vRegPipeinNextOoO(void);
   void vRegPipeinPeekOoO(void);
   void vRegPipeinPipeOut(void);
   void vRegPipeinPipeToJob(void);

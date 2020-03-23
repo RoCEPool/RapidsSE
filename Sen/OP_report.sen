@@ -10,6 +10,9 @@
 : reportOp_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Operand[]
+
   Operand[].isReport if
     Operand[].writeToFile0
   else
@@ -25,6 +28,9 @@
 : reportOp_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Operand[]
+
   Operand[].isReport if
     Operand[].writeToFile0
   else
@@ -40,6 +46,9 @@
 : reportOp_EntBuffer \handler
 
   //"Operand:- ZK_ENTBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Operand[]
+
   Operand[].isReport if
     Operand[].writeToFile0
   else
@@ -57,7 +66,7 @@
   //"Operand:- ZK_EOSMARKER" .verbose
   File0[].get file.close
   File0[].get file.delete
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
@@ -68,6 +77,9 @@
 : reportOp_IrwBuffer \handler
 
   //"Operand:- ZK_IRWBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Operand[]
+
   Operand[].isReport if
     Operand[].writeToFile0
   else
@@ -83,6 +95,9 @@
 : reportOp_SrtBuffer \handler
 
   //"Operand:- ZK_SRTBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Operand[]
+
   Operand[].isReport if
     Operand[].writeToFile0
   else
@@ -105,11 +120,12 @@
   not if
     File0[].get file.delete assert::stack_0 EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
+  else
+    Pipein[].pipeout
   then
-
-  Operand[].pipeout
 
   true
 ;
@@ -120,7 +136,7 @@
 : reportOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
