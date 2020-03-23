@@ -7,11 +7,30 @@
 /*----------------------------------------------------------------------------*/
 /* preliminary setup                                                          */
 /*----------------------------------------------------------------------------*/
-: space_setup
+//: space_setup
+//
+//  job[] job.enameSet@ enameSet.asStr .
+//
+//  // find the __nodeInfo table
+//  <streamDef> op__tableDef
+//
+//  // create a new streamDef
+//  StreamDef[].new
+//
+//  true
+//;
+
+/*----------------------------------------------------------------------------*/
+/* preliminary setup                                                          */
+/*----------------------------------------------------------------------------*/
+: __liteOp_SetUp
+
+"
+: /liteOp/_setup
 
   job[] job.enameSet@ enameSet.asStr .
 
-  // find the __nodeInfo table
+  // find the __ table
   <streamDef> op__tableDef
 
   // create a new streamDef
@@ -19,6 +38,11 @@
 
   true
 ;
+"
+;
+    
+
+"/liteOp/" "space" __liteop_Setup str.replace compile
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
@@ -62,6 +86,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+//: __liteOp_PulseMarker
+//
+//"
+//: /liteOp/_PulseMarker \\handler
+//
+//  Pipein[].pipeout
+//
+//  /liteOp/_setup  assert
+//  /liteOp/_action assert
+//
+//  Operand[].newEosMarker
+//  Operand[].pipeOut
+//
+//  true
+//;
+//"
+//;
+
+//"/liteOp/" "space" __liteOp_PulseMarker str.replace .
+//"/liteOp/" "space" __liteOp_PulseMarker str.replace compile
+
+/*----------------------------------------------------------------------------*/
 /* execute for space req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : space_req \operator
@@ -98,45 +146,6 @@ opSyntax: space :: space ;
 /*----------------------------------------------------------------------------*/
 
     
-/*----------------------------------------------------------------------------*/
-/* preliminary setup                                                          */
-/*----------------------------------------------------------------------------*/
-: __liteOp_SetUp
-
-"
-: /liteOp/_setup
-
-  job[] job.enameSet@ enameSet.asStr .
-
-  // find the __ table
-  <streamDef> op__tableDef
-
-  // create a new streamDef
-  StreamDef[].new
-
-  true
-"
-;
-    
-/*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: __liteOp_PulseMarker
-
-"
-: /liteOp/_PulseMarker \\handler
-
-  Pipein[].pipeout
-
-  /liteOp/_setup  assert
-  /liteOp/_action assert
- 
-  Operand[].newEosMarker
-  Operand[].pipeOut
-
-  true
-"
-;
     
 /*----------------------------------------------------------------------------*/
 /* execute for space req                              (on node where spawned) */
@@ -161,8 +170,7 @@ opSyntax: space :: space ;
 ;
 
 
-
-// "/liteOp/" "space" __liteop_Setup       str.replace .
+// "/liteOp/" "space" __liteop_Setup       str.replace compile
 // "/liteOp/" "space" __liteOp_PulseMarker str.replace .
 // "/liteOp/" "space" __liteOp_req         str.replace .
 

@@ -336,6 +336,7 @@ public:
   // forth
   void vColon(void);
   void vComma(void);
+  void vCompile(void);
   void vCompileComma(void);
   void vCreateFromInRoot(void);
   void vCreateFromPersistent(void);
