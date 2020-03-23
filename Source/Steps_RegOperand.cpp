@@ -396,6 +396,7 @@ void Step::vRegOperandKind(void)
          case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
          case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
+         case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
          default:  ASSERT(0);
@@ -521,6 +522,20 @@ void Step::vRegOperandNewPulseMarker(void)
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
   m_pRegSet->m_xpOperandA = new Marker(OM_PULSEMARKER);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newPulsedMarker -- new a pulsed marker                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewPulsedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewPulsedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
+  
+  m_pRegSet->m_xpOperandA = new Marker(OM_PULSEDMARKER);
   
   EXIT();
 }

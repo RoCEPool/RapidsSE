@@ -1066,6 +1066,7 @@ public:
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewErrorMarker(void);
   void vRegOperandNewPulseMarker(void);
+  void vRegOperandNewPulsedMarker(void);
   void vRegOperandNewStartMarker(void);
   void vRegOperandNewStartedMarker(void);
   void vRegOperandNewStreamDef(void);

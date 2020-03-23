@@ -370,6 +370,12 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_PULSEDMARKER: {
+            //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
           case OM_STARTMARKER: {
             //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);

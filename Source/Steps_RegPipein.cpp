@@ -104,6 +104,7 @@ void Step::vRegPipeinKind(void)
          case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
          case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
+         case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
          default:  ASSERT(0);
