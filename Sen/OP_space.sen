@@ -72,42 +72,45 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: space_PulseMarker \handler
-
-  Pipein[].pipeout
-
-  space_setup  assert
-  space_action assert
- 
-  Operand[].newEosMarker
-  Operand[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-//: __liteOp_PulseMarker
-//
-//"
-//: /liteOp/_PulseMarker \\handler
+//: space_PulseMarker \handler
 //
 //  Pipein[].pipeout
 //
-//  /liteOp/_setup  assert
-//  /liteOp/_action assert
-//
+//  space_setup  assert
+//  space_action assert
+// 
 //  Operand[].newEosMarker
 //  Operand[].pipeOut
 //
 //  true
 //;
-//"
-//;
+//
+//find: space_PulseMarker word.see
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: __liteOp_PulseMarker
+
+"
+: /liteOp/_PulseMarker \\handler
+
+  Pipein[].pipeout
+
+  /liteOp/_setup  assert
+  /liteOp/_action assert
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+;
+"
+;
 
 //"/liteOp/" "space" __liteOp_PulseMarker str.replace .
-//"/liteOp/" "space" __liteOp_PulseMarker str.replace compile
+"/liteOp/" "space" __liteOp_PulseMarker str.replace >interpret
+find: space_PulseMarker word.see
 
 /*----------------------------------------------------------------------------*/
 /* execute for space req                              (on node where spawned) */
