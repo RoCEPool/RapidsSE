@@ -39,6 +39,14 @@
       false
     endof
 
+    ZK_CANCELLEDMARKER of
+      "jobOperand::generic:- ZK_CANCELLEDMARKER" .
+      "Pipeline being cancelled\n" .
+      Pipein[].pipeOut
+      Op.ackPipelineJob
+      false
+    endof
+
     ZK_CRWBUFFER of
       //"jobOperand::generic: ZK_CRWBUFFER" .verbose
       Pipein[].pipeOut
@@ -59,6 +67,19 @@
 
     ZK_EOSMARKER of
       //"jobOperand::generic:- ZK_EOSMARKER" .verbose
+      Pipein[].pipeOut
+      true
+    endof
+
+    ZK_EXITMARKER of
+      //"jobOperand::generic:- ZK_EXITMARKER" .verbose
+      Pipein[].pipeOut
+      Op.ackPipelineJob
+      false
+    endof
+
+    ZK_EXITEDMARKER of
+      //"jobOperand::generic:- ZK_EXITEDMARKER" .verbose
       Pipein[].pipeOut
       true
     endof
@@ -87,6 +108,12 @@
       true
     endof
 
+    ZK_PULSEDMARKER of
+      //"jobOperand::generic:- ZK_PULSEDMARKER" .verbose
+      Pipein[].pipeOut
+      true
+    endof
+
     ZK_SRTBUFFER of
       //"jobOperand::generic: ZK_SRTBUFFER" .verbose
       Pipein[].pipeOut
@@ -97,13 +124,6 @@
       "jobOperand::generic:- ZK_STARTMARKER" .
       Pipein[].pipeOut
       true
-    endof
-
-    ZK_STOPMARKER of
-      //"jobOperand::generic:- ZK_STOPMARKER" .verbose
-      Pipein[].pipeOut
-      Op.ackPipelineJob
-      false
     endof
 
     ZK_STREAMDEF of

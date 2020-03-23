@@ -1062,13 +1062,14 @@ public:
   void vRegOperandInvokePythonShell(void);
   void vRegOperandKind(void);
   void vRegOperandNewEosMarker(void);
+  void vRegOperandNewExitMarker(void);
+  void vRegOperandNewExitedMarker(void);
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewErrorMarker(void);
   void vRegOperandNewPulseMarker(void);
+  void vRegOperandNewPulsedMarker(void);
   void vRegOperandNewStartMarker(void);
   void vRegOperandNewStartedMarker(void);
-  void vRegOperandNewStopMarker(void);
-  void vRegOperandNewStoppedMarker(void);
   void vRegOperandNewStreamDef(void);
   void vRegOperandNext(void);
   void vRegOperandPeek(void);

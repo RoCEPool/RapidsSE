@@ -101,11 +101,12 @@ void Step::vRegPipeinKind(void)
         case OM_CANCELMARKER:     eOperand = ZK_CANCELMARKER;    break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
+         case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
+         case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
+         case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
-         case OM_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
-         case OM_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
          default:  ASSERT(0);
        }
       break;

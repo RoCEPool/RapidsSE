@@ -47,11 +47,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
+/* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: InsertOp_StopMarker \handler
+: InsertOp_ExitMarker \handler
 
-  //"Operand:- ZK_STOPMARKER" .verbose
+  //"Operand:- ZK_EXITMARKER" .verbose
   popTable
   Pipein[].pipeOut
   Op.ackPipelineJob
@@ -83,7 +83,7 @@
 
   find: InsertOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: InsertOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: InsertOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: InsertOp_ExitMarker  ZK_EXITMARKER  op[].handler!
   find: InsertOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop

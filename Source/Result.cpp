@@ -370,14 +370,20 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_PULSEDMARKER: {
+            //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
           case OM_STARTMARKER: {
             //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
             break;
           }
             
-          case OM_STOPMARKER: {
-            //vTrace("Pipeline Job: STOPMARKER\n"_Stz);
+          case OM_EXITMARKER: {
+            //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
             //if ( ! bHasError )
             //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);

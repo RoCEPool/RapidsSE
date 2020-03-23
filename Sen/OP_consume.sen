@@ -13,8 +13,8 @@
 
   <consumeXmits> >int to Counter0[]
 
-  0 0 0 locals| start pulse def |
-  Counter0[] Counter0[] locals| stop eos |
+  0 0 0 0 locals| start pulse pulsed def |
+  Counter0[] Counter0[] locals| exit eos |
 
   <consumeXmits> >int op.leftEosMarkers!
 
@@ -35,8 +35,8 @@
 
       ZK_CANCELMARKER of
         "CONSUMEOP: Operand:- ZK_CANCELMARKER" .verbose
-        stop 1 - to stop
-        stop 0 == if
+        exit 1 - to exit
+        exit 0 == if
           Pipein[].pipeOut
           Op.ackPipelineJob
           false
@@ -45,8 +45,8 @@
         true
         then
 
-        stop Counter0[] > if
-        Counter0[] Counter0[] stop - "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
+        exit Counter0[] > if
+        Counter0[] Counter0[] exit - "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
         then
 
       endof
@@ -93,6 +93,17 @@
           true
         endof
 
+      ZK_PULSEDMARKER of
+        //"Operand:- ZK_PULSEDMARKER" .verbose
+        pulsed 0 == if
+          Pipein[].pipeOut
+        else
+          Pipein[].delete
+        then
+          pulsed 1 + to pulsed
+        true
+      endof
+
         ZK_STARTMARKER of
           //"Operand:- ZK_STARTMARKER" .verbose
           // pipeout first STARTMARKER
@@ -110,10 +121,10 @@
           true
         endof
 
-        ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        stop 1 - to stop
-        stop 0 == if
+        ZK_EXITMARKER of
+        //"Operand:- ZK_EXITMARKER" .verbose
+        exit 1 - to exit
+        exit 0 == if
           Pipein[].pipeOut
           Op.ackPipelineJob
           false
@@ -122,8 +133,8 @@
           true
         then
 
-        stop Counter0[] > if
-          Counter0[] Counter0[] stop - "Warning: ConsumeOp ZK_STOPMARKER received %v; expected %v" str.format .
+        exit Counter0[] > if
+          Counter0[] Counter0[] exit - "Warning: ConsumeOp ZK_EXITMARKER received %v; expected %v" str.format .
         then
 
         endof

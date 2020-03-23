@@ -9,14 +9,15 @@ enum eOM // operator markers
   
   /*    */ OM_EOSMARKER,
   /*    */ OM_ERRORMARKER,
+  /*    */ OM_EXITMARKER,
+  /*    */ OM_EXITEDMARKER,
   /*    */ OM_CANCELMARKER,
   /*    */ OM_COMMENCEMARKER,
   /*    */ OM_COMMENCEDMARKER,
   /*    */ OM_PULSEMARKER,
+  /*    */ OM_PULSEDMARKER,
   /*    */ OM_STARTMARKER,
   /*    */ OM_STARTEDMARKER,
-  /*    */ OM_STOPMARKER,
-  /*    */ OM_STOPPEDMARKER,
 
   /*    */ OM_ENUMS,
 };
@@ -27,14 +28,15 @@ static Stz* aOM[]
   
   /*    */ "EOSMARKER"_Stz,
   /*    */ "ERRORMARKER"_Stz,
+  /*    */ "EXITMARKER"_Stz,
+  /*    */ "EXITEDMARKER"_Stz,
   /*    */ "CANCELMARKER"_Stz,
   /*    */ "COMMENCEMARKER"_Stz,
   /*    */ "COMMENCEDMARKER"_Stz,
   /*    */ "PULSEMARKER"_Stz,
+  /*    */ "PULSEDMARKER"_Stz,
   /*    */ "STARTMARKER"_Stz,
   /*    */ "STARTEDMARKER"_Stz,
-  /*    */ "STOPMARKER"_Stz,
-  /*    */ "STOPPEDMARKER"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

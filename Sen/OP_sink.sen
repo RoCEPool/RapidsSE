@@ -11,7 +11,7 @@
 
   //"Operand:- ZK_CANCELMARKER" .verbose
   Pipein[].pipeToJob
-  Operand[].newStoppedMarker
+  Operand[].newExitedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
 
@@ -23,9 +23,33 @@
 /*----------------------------------------------------------------------------*/
 : sinkOp_ErrorMarker \handler
 
-  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+  //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].pipeOut
 
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: sinkOp_ExitMarker \handler
+
+  //"Operand:- ZK_EXITMARKER" .verbose
+  Pipein[].pipeToJob
+  Operand[].newExitedMarker
+  Operand[].pipeOut
+  Op.ackPipelineJob
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: sinkOp_PulsedMarker \handler
+
+  //"Operand:- ZK_PULSEDMARKER" .verbose
+  Pipein[].pipeOut
   true
 ;
 
@@ -40,20 +64,6 @@
   Operand[].pipeOut
 
   true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: sinkOp_StopMarker \handler
-
-  //"Operand:- ZK_STOPMARKER" .verbose
-  Pipein[].pipeToJob
-  Operand[].newStoppedMarker
-  Operand[].pipeOut
-  Op.ackPipelineJob
-
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,9 +89,10 @@
   find: sinkOp_Xyz op[].handlerAll!
 
   find: sinkOp_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: sinkOp_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: sinkOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: sinkOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: sinkOp_ErrorMarker  ZK_ERRORMARKER op[].handler!
+  find: sinkOp_ExitMarker   ZK_EXITMARKER  op[].handler!
+  find: sinkOp_PulsedMarker ZK_PULSEDMARKER  op[].handler!
+  find: sinkOp_StartMarker  ZK_STARTMARKER op[].handler!
 
   op__loop
 

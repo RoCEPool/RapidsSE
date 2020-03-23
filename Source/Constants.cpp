@@ -590,19 +590,21 @@ void Constants::vAddConstantsCpp(void)
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
   /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
+  /*  0 */ vAddConstant("ZK_CANCELLEDMARKER"_Stz, ZK_CANCELLEDMARKER);
   /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,       ZK_CRWBUFFER);
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
+  /*  0 */ vAddConstant("ZK_EXITMARKER"_Stz,      ZK_EXITMARKER);
+  /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
   /*  0 */ vAddConstant("ZK_INFOSET"_Stz,         ZK_INFOSET);
   /*  0 */ vAddConstant("ZK_IRWBUFFER"_Stz,       ZK_IRWBUFFER);
   /*  0 */ vAddConstant("ZK_PULSEMARKER"_Stz,     ZK_PULSEMARKER);
+  /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
   /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,       ZK_SRTBUFFER);
   /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,     ZK_STARTMARKER);
   /*  0 */ vAddConstant("ZK_STARTEDMARKER"_Stz,   ZK_STARTEDMARKER);
-  /*  0 */ vAddConstant("ZK_STOPMARKER"_Stz,      ZK_STOPMARKER);
-  /*  0 */ vAddConstant("ZK_STOPPEDMARKER"_Stz,   ZK_STOPPEDMARKER);
   /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,       ZK_STREAMDEF);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 

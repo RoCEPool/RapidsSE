@@ -10,6 +10,9 @@
 : pythonShellOp_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
+
   Operand[].csvData
   <pythonFile> Operand[].invokePythonShell
 
@@ -21,8 +24,8 @@
 /*----------------------------------------------------------------------------*/
 : pythonShellOp_ErrorMarker \handler
 
-  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
-  Operand[].pipeOut
+  //"Operand:- ZK_ERRORMARKER" .verbose
+  Pipein[].pipeOut
 
   true
 ;
@@ -33,23 +36,10 @@
 : pythonShellOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: pythonShellOp_StopMarker \handler
-
-  //"Operand:- ZK_STOPMARKER" .verbose
-  Operand[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
 
 /*----------------------------------------------------------------------------*/
 /* execute for pythonShellOp request                  (on node where spawned) */
@@ -63,7 +53,6 @@
   find: pythonShellOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: pythonShellOp_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: pythonShellOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: pythonShellOp_StopMarker  ZK_STOPMARKER  op[].handler!
 
   op__loop
 

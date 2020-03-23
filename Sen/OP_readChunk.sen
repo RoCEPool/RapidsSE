@@ -50,11 +50,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STOPMARKER ...                                                        */
+/* on ZK_EXITMARKER ...                                                       */
 /*----------------------------------------------------------------------------*/
-: readChunk_StopMarker \handler
+: readChunk_ExitMarker \handler
 
-  //"Operand:- ZK_STOPMARKER" .verbose
+  //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
     File0[].get file.close
     File0[].get file.delete
@@ -76,7 +76,7 @@
 
   find: readChunk_InfoSet     ZK_INFOSET     op[].handler!
   find: readChunk_StartMarker ZK_STARTMARKER op[].handler!
-  find: readChunk_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: readChunk_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 

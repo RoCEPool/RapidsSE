@@ -151,6 +151,7 @@
         Operand[].isNull assert
 
       else
+
         // execure operand handler
         Operand[].kind op[].handler@ execute
 

@@ -31,11 +31,12 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
+  vAddStep("Operand[].newExitMarker"_Stz,  &Step::vRegOperandNewExitMarker);
+  vAddStep("Operand[].newExitedMarker"_Stz,&Step::vRegOperandNewExitedMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vRegOperandNewPulseMarker);
+  vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vRegOperandNewPulsedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vRegOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
-  vAddStep("Operand[].newStopMarker"_Stz,  &Step::vRegOperandNewStopMarker);
-  vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vRegOperandNewStoppedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vRegOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vRegOperandNext);
   vAddStep("Operand[].peek"_Stz,           &Step::vRegOperandPeek);
@@ -393,11 +394,12 @@ void Step::vRegOperandKind(void)
         case OM_CANCELMARKER:     eOperand = ZK_CANCELMARKER;    break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
+         case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
+         case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
+         case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
-         case OM_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
-         case OM_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
          default:  ASSERT(0);
        }
       break;
@@ -472,6 +474,34 @@ void Step::vRegOperandNewErrorMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newExitMarker -- new an exit marker                              */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewExitMarker(void)
+{
+  ENTRY(); // ENTRY("vRegOperandNewExitMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
+  
+  m_pRegSet->m_xpOperandA = new Marker(OM_EXITMARKER);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newExitedMarker -- new an exited marker                          */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewExitedMarker(void)
+{
+  ENTRY(); // ENTRY("vRegOperandNewExitedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
+  
+  m_pRegSet->m_xpOperandA = new Marker(OM_EXITEDMARKER);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].peek -- peek and see if there is another operand                 */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandPeek(void)
@@ -493,6 +523,20 @@ void Step::vRegOperandNewPulseMarker(void)
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
   m_pRegSet->m_xpOperandA = new Marker(OM_PULSEMARKER);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newPulsedMarker -- new a pulsed marker                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewPulsedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewPulsedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
+  
+  m_pRegSet->m_xpOperandA = new Marker(OM_PULSEDMARKER);
   
   EXIT();
 }
@@ -521,34 +565,6 @@ void Step::vRegOperandNewStartedMarker(void)
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
   m_pRegSet->m_xpOperandA = new Marker(OM_STARTEDMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newStopMarker -- new a stop marker                               */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandNewStopMarker(void)
-{
-  ENTRY(); // ENTRY("vOperandNewStopMarker"_Stz);
-  
-  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
-  
-  m_pRegSet->m_xpOperandA = new Marker(OM_STOPMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newStopppedMarker -- new a stopped marker                        */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandNewStoppedMarker(void)
-{
-  ENTRY(); // ENTRY("vOperandNewStoppedMarker"_Stz);
-  
-  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
-  
-  m_pRegSet->m_xpOperandA = new Marker(OM_STOPPEDMARKER);
   
   EXIT();
 }
