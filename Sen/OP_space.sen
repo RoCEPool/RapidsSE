@@ -49,17 +49,12 @@
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : space_PulseMarker \handler
-  //"Operand:- ZK_PULSEMARKER" .verbose
 
-  0 locals| iRowSize |
-
-  // pipeout the pulse marker
   Pipein[].pipeout
 
   space_setup  assert
   space_action assert
-
-  // pipe out a EOS marker
+ 
   Operand[].newEosMarker
   Operand[].pipeOut
 
