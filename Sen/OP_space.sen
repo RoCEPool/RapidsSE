@@ -21,30 +21,6 @@
 //;
 
 /*----------------------------------------------------------------------------*/
-/* preliminary setup                                                          */
-/*----------------------------------------------------------------------------*/
-: __liteOp_SetUp
-
-"
-: /liteOp/_setup
-
-  job[] job.enameSet@ enameSet.asStr .
-
-  // find the __ table
-  <streamDef> op__tableDef
-
-  // create a new streamDef
-  StreamDef[].new
-
-  true
-;
-"
-;
-    
-
-"/liteOp/" "space" __liteop_Setup str.replace compile
-
-/*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
 : space_action
@@ -78,7 +54,7 @@
 //
 //  space_setup  assert
 //  space_action assert
-// 
+//
 //  Operand[].newEosMarker
 //  Operand[].pipeOut
 //
@@ -86,6 +62,65 @@
 //;
 //
 //find: space_PulseMarker word.see
+
+/*----------------------------------------------------------------------------*/
+/* execute for space req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+//: space_req \operator
+//
+//  LogReqEntry SEED_REQ
+//
+//  op__topology
+//
+//  find: space_PulseMarker  ZK_PULSEMARKER op[].handler!
+//
+//  op__loop
+//
+//  LogReqExit
+//  job::deleteThis
+//  DONE_REQ_OP
+//;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: space :: space ;
+
+: space opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __space
+  }
+;
+    
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+    
+/*----------------------------------------------------------------------------*/
+/* preliminary setup                                                          */
+/*----------------------------------------------------------------------------*/
+: __liteOp_SetUp
+
+"
+: /liteOp/_setup
+
+  job[] job.enameSet@ enameSet.asStr .
+
+  // find the __ table
+  <streamDef> op__tableDef
+
+  // create a new streamDef
+  StreamDef[].new
+
+  true
+;
+"
+;
+    
+"/liteOp/" "space" __liteop_Setup str.replace >interpret
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
@@ -110,53 +145,15 @@
 
 //"/liteOp/" "space" __liteOp_PulseMarker str.replace .
 "/liteOp/" "space" __liteOp_PulseMarker str.replace >interpret
-find: space_PulseMarker word.see
+//find: space_PulseMarker word.see
 
-/*----------------------------------------------------------------------------*/
-/* execute for space req                              (on node where spawned) */
-/*----------------------------------------------------------------------------*/
- : space_req \operator
- 
-  LogReqEntry SEED_REQ
-
-  op__topology
-
-  find: space_PulseMarker  ZK_PULSEMARKER op[].handler!
-
-  op__loop
-
-  LogReqExit
-  job::deleteThis
-  DONE_REQ_OP
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-opSyntax: space :: space ;
-
-: space opInfo tagCopy: liteOp_tags
-  tags{
-    <jobDesc>   = "--description of operator--"
-    <liteOp>    = true
-    <streamDef> = __space
-  }
-;
-    
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-    
-    
 /*----------------------------------------------------------------------------*/
 /* execute for space req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : __liteOp_req
 
 "
- : /liteOp/_req \\operator
+: /liteOp/_req \\operator
  
   LogReqEntry SEED_REQ
 
@@ -169,8 +166,13 @@ opSyntax: space :: space ;
   LogReqExit
   job::deleteThis
   DONE_REQ_OP
+;
 "
 ;
+
+"/liteOp/" "space" __liteOp_req str.replace >interpret
+find: space_Req word.see
+
 
 
 // "/liteOp/" "space" __liteop_Setup       str.replace compile
