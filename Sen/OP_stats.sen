@@ -38,9 +38,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
+/* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: statsOp_StopMarker \handler
+: statsOp_ExitMarker \handler
 
   metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
@@ -61,7 +61,7 @@
   op__topology
 
   find: statsOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: statsOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: statsOp_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 

@@ -13,7 +13,17 @@
   Pipein[].pipeOut
   Op.ackPipelineJob
   false
+;
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLEDMARKER ...                                         */
+/*----------------------------------------------------------------------------*/
+: ZK_CANCELLEDMARKER_handler \handler
+
+  //"ZK_CANCELLEDMARKER_handler" .verbose
+  Pipein[].pipeOut
+  Op.ackPipelineJob
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -127,22 +137,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
+/* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: ZK_STOPMARKER_handler \handler
+: ZK_EXITMARKER_handler \handler
 
-  //"jobOperand::generic:- ZK_STOPMARKER" .verbose
+  //"ZK_EXITMARKER_handler" .verbose
   Pipein[].pipeOut
   Op.ackPipelineJob
   false
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPPEDMARKER ...                                           */
+/* handler for ZK_EXITEDMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: ZK_STOPPEDMARKER_handler \handler
+: ZK_EXITEDMARKER_handler \handler
 
-  //"ZK_STOPPEDMARKER_handler" .verbose
+  //"ZK_EXITEDMARKER_handler" .verbose
   Pipein[].pipeOut
   true
 ;

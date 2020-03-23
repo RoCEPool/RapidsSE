@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : pythonShellOp_ErrorMarker \handler
 
-  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+  //"Operand:- ZK_ERRORMARKER" .verbose
   Operand[].pipeOut
 
   true
@@ -39,11 +39,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
+/* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: pythonShellOp_StopMarker \handler
+: pythonShellOp_ExitMarker \handler
 
-  //"Operand:- ZK_STOPMARKER" .verbose
+  //"Operand:- ZK_EXITMARKER" .verbose
   Operand[].pipeOut
   Op.ackPipelineJob
 
@@ -63,7 +63,7 @@
   find: pythonShellOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: pythonShellOp_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: pythonShellOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: pythonShellOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: pythonShellOp_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 

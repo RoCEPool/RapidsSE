@@ -28,11 +28,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPPEDMARKER ...                                           */
+/* handler for ZK_EXITEDMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: startOp_StoppedMarker \handler
+: startOp_ExitedMarker \handler
 
-  //"Operand:- ZK_STOPPEDMARKER" .verbose
+  //"Operand:- ZK_EXITEDMARKER" .verbose
   Pipein[].delete
   Op.ackPipelineJob
 
@@ -48,9 +48,9 @@
 
   op__topology
 
-  find: startOp_CancelMarker  ZK_CANCELMARKER op[].handler!
+  find: startOp_ExitedMarker  ZK_EXITEDMARKER  op[].handler!
+  find: startOp_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: startOp_StartedMarker ZK_STARTEDMARKER op[].handler!
-  find: startOp_StoppedMarker ZK_STOPPEDMARKER op[].handler!
 
   op__loop
 

@@ -11,7 +11,7 @@
 
   //"Operand:- ZK_CANCELMARKER" .verbose
   Pipein[].pipeToJob
-  Operand[].newStoppedMarker
+  Operand[].newExitedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
 
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : sinkOp_ErrorMarker \handler
 
-  //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+  //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].pipeOut
 
   true
@@ -43,13 +43,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
+/* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: sinkOp_StopMarker \handler
+: sinkOp_ExitMarker \handler
 
-  //"Operand:- ZK_STOPMARKER" .verbose
+  //"Operand:- ZK_EXITMARKER" .verbose
   Pipein[].pipeToJob
-  Operand[].newStoppedMarker
+  Operand[].newExitedMarker
   Operand[].pipeOut
   Op.ackPipelineJob
 
@@ -79,9 +79,9 @@
   find: sinkOp_Xyz op[].handlerAll!
 
   find: sinkOp_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: sinkOp_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: sinkOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: sinkOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: sinkOp_ErrorMarker  ZK_ERRORMARKER op[].handler!
+  find: sinkOp_StartMarker  ZK_STARTMARKER op[].handler!
+  find: sinkOp_ExitMarker   ZK_EXITMARKER  op[].handler!
 
   op__loop
 

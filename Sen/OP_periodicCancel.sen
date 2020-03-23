@@ -11,7 +11,7 @@
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].delete
-  Operand[].newStopMarker
+  Operand[].newExitMarker
   Operand[].pipeOut
   Op.ackPipelineJob
 
@@ -57,7 +57,7 @@
     while assert::stack_0 repeat
   then
 
-  //Operand[].newStopMarker
+  //Operand[].newExitMarker
   //Operand[].pipeOut
   //Op.ackPipelineJob
 

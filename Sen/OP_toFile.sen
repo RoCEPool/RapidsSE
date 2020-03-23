@@ -42,11 +42,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STOPMARKER ...                                              */
+/* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: ToFileOp_StopMarker \handler
+: ToFileOp_ExitMarker \handler
 
-  //"Operand:- ZK_STOPMARKER" .verbose
+  //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
     File0[].get file.close
     File0[].get file.delete
@@ -70,7 +70,7 @@
 
   find: ToFileOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: ToFileOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: ToFileOp_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: ToFileOp_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 

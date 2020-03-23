@@ -74,11 +74,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STOPMARKER ...                                                        */
+/* on ZK_EXITMARKER ...                                                        */
 /*----------------------------------------------------------------------------*/
-: chunk_StopMarker \handler
+: chunk_ExitMarker \handler
 
-  //"Operand:- ZK_STOPMARKER" .verbose
+  //"Operand:- ZK_EXITMARKER" .verbose
   File0[].isNull not if
     File0[].get file.close
     File0[].get file.delete
@@ -102,7 +102,7 @@
 
   find: chunk_PulseMarker ZK_PULSEMARKER op[].handler!
   find: chunk_StartMarker ZK_STARTMARKER op[].handler!
-  find: chunk_StopMarker  ZK_STOPMARKER  op[].handler!
+  find: chunk_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 
