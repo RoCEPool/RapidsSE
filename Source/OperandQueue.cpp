@@ -68,19 +68,29 @@ void OperandQueue::vAppendOperand(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at first thread at top of queue                                       */
+/* peek at operands and see if any OoO Operand                                */
 /*----------------------------------------------------------------------------*/
-Operand* OperandQueue::pPeekOperand(void)
+bool OperandQueue::bPeekQueueOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   Operand* pOperand = ListNL_t<Operand>::pHead();
+  
+  while (pOperand) {
+    
+    // is it an Out-of_Order Operand ?
+    if (AM::bIsOperandOoO(pOperand)) {
+      return true;
+    }
+    
+    pOperand = pOperand->pNextItem();
+  }
 
-  return pOperand;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop first thread from top of queue                                         */
+/* pop first operand from top of queue                                        */
 /*----------------------------------------------------------------------------*/
 Operand* OperandQueue::pPopQueue(void)
 {
@@ -88,6 +98,29 @@ Operand* OperandQueue::pPopQueue(void)
   
   Operand* pOperand = ListNL_t<Operand>::pPop();
 
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop first OoO operand from top of queue                                    */
+/*----------------------------------------------------------------------------*/
+Operand* OperandQueue::pPopQueueOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Operand* pOperand = ListNL_t<Operand>::pHead();
+  
+  while (pOperand) {
+    
+    // is it a CANCELMARKER ?
+    if (AM::bIsOperandOoO(pOperand)) {
+      vRemove(pOperand);
+      return pOperand;
+    }
+    
+    pOperand = pOperand->pNextItem();
+  }
+  
   return pOperand;
 }
 

@@ -141,7 +141,7 @@
       Pipein[].peekOoO if
 
         // get the Out-of_Order Operand
-        Pipein[].next
+        Pipein[].nextOoO
         Pipein[] to OperandOoO[]
 
         // execute the operator's handler for the Out-of_Order operand

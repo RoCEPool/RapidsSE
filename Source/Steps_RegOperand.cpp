@@ -39,7 +39,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vRegOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vRegOperandNext);
-  vAddStep("Operand[].peek"_Stz,           &Step::vRegOperandPeek);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vRegOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vRegOperandPipeOutSet);
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
@@ -497,18 +496,6 @@ void Step::vRegOperandNewExitedMarker(void)
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
   m_pRegSet->m_xpOperandA = new Marker(OM_EXITEDMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].peek -- peek and see if there is another operand                 */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandPeek(void)
-{
-  ENTRY(); // ENTRY("vRegOperandPeek"_Stz);
-  
-  m_pRegSet->m_xpOperandA = m_pTask->m_pJob->m_pOp->pPeekQueue();
   
   EXIT();
 }

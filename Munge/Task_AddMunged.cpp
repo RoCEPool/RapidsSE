@@ -12183,7 +12183,7 @@ void Task::vAddMunged(Forth* pForth)
     "      Pipein[].peekOoO if\n"
     "\n"
     "        // get the Out-of_Order Operand\n"
-    "        Pipein[].next\n"
+    "        Pipein[].nextOoO\n"
     "        Pipein[] to OperandOoO[]\n"
     "\n"
     "        // execute the operator's handler for the Out-of_Order operand\n"

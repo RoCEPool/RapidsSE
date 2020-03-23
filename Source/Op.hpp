@@ -86,12 +86,13 @@ namespace Pipelines
     void vPartition(i8 iPartition);
     i8   nPartition(void);
     bool bPause(void);
-    Operand* pPeekQueue(void);
+    bool bPeekQueueOoO(void);
     Pipeline* pPipeline(void);
     void vPipeOut_nextOp(Operand* pOperand, bool bSet = false);
     void vPipeOut_thisOp(Operand* pOperand, bool bSet = false);
     void vPipeToJob(Operand* pOperand);
     Operand* pPopQueue(void);
+    Operand* pPopQueueOoO(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
     bool bPulsed(void);

@@ -1400,6 +1400,19 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
 i8 AM::iRdTimePoint(void) { return TickingDevice::iGetTick();                  }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
+bool AM::bIsOperandOoO(Operand* pOperand)   {
+  
+  // is it a marker ?
+  if ( ! pOperand->bIsMarker() )
+    return false;
+  
+  Marker* pMarker = _pMarker(pOperand);
+  if (pMarker->eOpMarker() == OM_CANCELMARKER)
+    return true;
+  
+  return false;
+}
+
 void AM::vIncRowsInvalid(Job* pJob)   { pJob->vIncRowsInvalid();               }
 void AM::vIncRowsProcessed(Job* pJob) { pJob->vIncRowsProcessed();             }
 bool AM::bInBufferPool(Object* pObject) {
