@@ -174,8 +174,9 @@ opSyntax: space :: space ;
 find: space_Req word.see
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// get space on each node
+/*----------------------------------------------------------------------------*/
+/* get space on each node                                                     */
+/*----------------------------------------------------------------------------*/
 : __liteOp_procedure
 
 "
@@ -196,7 +197,8 @@ end
 "
 ;
     
-    
+//"/liteOp/" "space" __liteOp_procedure str.replace >interpret
+
     
 
 // "/liteOp/" "space" __liteop_Setup       str.replace compile
