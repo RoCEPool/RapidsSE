@@ -95,6 +95,12 @@
       true
     endof
 
+    ZK_PULSEDMARKER of
+      //"jobOperand::generic:- ZK_PULSEDMARKER" .verbose
+      Pipein[].pipeOut
+      true
+    endof
+
     ZK_SRTBUFFER of
       //"jobOperand::generic: ZK_SRTBUFFER" .verbose
       Pipein[].pipeOut
