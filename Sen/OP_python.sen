@@ -35,23 +35,10 @@
 : pythonOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  Operand[].pipeOut
+  Pipein[].pipeOut
 
   true
 ;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: pythonOp_ExitMarker \handler
-
-  //"Operand:- ZK_EXITMARKER" .verbose
-  Operand[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
 
 /*----------------------------------------------------------------------------*/
 /* execute for pythonOp request                       (on node where spawned) */
@@ -65,7 +52,6 @@
   find: pythonOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: pythonOp_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: pythonOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: pythonOp_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 

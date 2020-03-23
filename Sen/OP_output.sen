@@ -123,18 +123,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: outputOp_ExitMarker \handler
-
-  //"Operand:- ZK_EXITMARKER" .verbose
-  Pipein[].pipeOut
-  Op.ackPipelineJob
-
-  false
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
 : outputOp_StreamDef \handler
@@ -164,7 +152,6 @@
   find: outputOp_PulseMarker ZK_PULSEMARKER op[].handler!
   find: outputOp_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: outputOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: outputOp_ExitMarker  ZK_EXITMARKER  op[].handler!
   find: outputOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
