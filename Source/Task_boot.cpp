@@ -266,6 +266,8 @@ Word* Task::pCompileColon(s48K& sDefinition)
   Word* pCalledWord;
   Datum xVariable;
   
+  vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
+  
   m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get :
@@ -297,7 +299,8 @@ Word* Task::pCompileColon(s48K& sDefinition)
     if (m_pForth->m_pCompiler->szToken()->bEqual(";"_Stz))
       break;
     
-    switch (m_pForth->m_pCompiler->pTokeniser()->eToken()) {
+    eTN eToken = m_pForth->m_pCompiler->pTokeniser()->eToken();
+    switch (eToken) {
         
       case TN_INTEGER:
         xVariable = m_pForth->m_pCompiler->szToken()->iToI8();
@@ -330,10 +333,21 @@ Word* Task::pCompileColon(s48K& sDefinition)
         break;
       }
         
+      case TN_TAG: {
+        xVariable = m_pForth->m_pCompiler->szToken();
+        pNewWord->vEncodePush(xVariable);
+        
+        pCalledWord = m_pForth->m_oDicStack.pFindWord("tag::get"_Stz);
+        pNewWord->vAppend(pCalledWord->afpEntryStep());
+        break;
+      }
+        
       default:
         vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-               "Invalid m_eToken %lld"_Stz,
-               m_pForth->m_pCompiler->pTokeniser()->eToken());
+               "Invalid m_eToken %lld %s"_Stz,
+               m_pForth->m_pCompiler->pTokeniser()->eToken(),
+               m_pForth->m_pCompiler->szToken()
+               );
     }
     
     m_pForth->m_pCompiler->vNextToken();
