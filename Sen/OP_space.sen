@@ -91,6 +91,80 @@ opSyntax: space :: space ;
     <streamDef> = __space
   }
 ;
+    
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+    
+/*----------------------------------------------------------------------------*/
+/* preliminary setup                                                          */
+/*----------------------------------------------------------------------------*/
+: __liteOp_SetUp
+
+"
+: /liteOp/_setup
+
+  job[] job.enameSet@ enameSet.asStr .
+
+  // find the __ table
+  <streamDef> op__tableDef
+
+  // create a new streamDef
+  StreamDef[].new
+
+  true
+"
+;
+    
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: __liteOp_PulseMarker
+
+"
+: /liteOp/_PulseMarker \\handler
+
+  Pipein[].pipeout
+
+  /liteOp/_setup  assert
+  /liteOp/_action assert
+ 
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+"
+;
+    
+/*----------------------------------------------------------------------------*/
+/* execute for space req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: __liteOp_req
+
+"
+ : /liteOp/_req \\operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: /liteOp/_PulseMarker  ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+"
+;
+
+
+
+// "/liteOp/" "space" __liteop_Setup       str.replace .
+// "/liteOp/" "space" __liteOp_PulseMarker str.replace .
+// "/liteOp/" "space" __liteOp_req         str.replace .
 
 /*============================================================================*/
 /* end                                                                        */
