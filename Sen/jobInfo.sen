@@ -215,6 +215,11 @@
     pWord .fillOutEnameSet_dist
   else
     pWord .fillOutEnameSet_local
+
+    "<liteOp>" pEnameSet EnameSet.hasName if
+      pWord word.name@ "LiteOP: %v\n" .printf
+    then
+
   then then
 
   // pEnameSet EnameSet.asStr .
