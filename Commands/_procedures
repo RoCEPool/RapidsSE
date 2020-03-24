@@ -4,42 +4,49 @@
 
 //print "_procedures" ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// stored procedure syntax test
-procedure sp_TEST
-  parameters $Table
+/*----------------------------------------------------------------------------*/
+/* export table into csv file                                                 */
+/*----------------------------------------------------------------------------*/
+procedure export
+  parameters $Table $File
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+    startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-  scanOp $Table | stageC
+    scanOp $Table | toCsvOp | stageC
 
   stage stageC on origin:
-  outputOp | sinkOp | stageA
+    toFileOp $File | stageD
 
-end;
+  stage stageD on origin:
+    sinkOp | stageA
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// stored procedure with two-part name syntax test
-procedure Select Table
-  parameters $Table
+end
+;
+
+/*----------------------------------------------------------------------------*/
+/* check sanity of the grid                                                   */
+/*----------------------------------------------------------------------------*/
+procedure gridSanity
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+    startOp | periodicOp once | stageB
 
-  stage stageB on all partitions:
-  scanOp $Table | stageC
+  stage stageB on all nodes:
+    nodeInfo | stageC
 
   stage stageC on origin:
-  outputOp | sinkOp | stageA
+    gridSanity | outputOp | sinkOp | stageA
 
-end;
+end
+;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load data into a table from a csv file
+/*----------------------------------------------------------------------------*/
+/* load data into a table from a csv file                                     */
+/*----------------------------------------------------------------------------*/
 procedure load
   parameters $table $file
 begin
@@ -62,29 +69,27 @@ begin
 end
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// export table into csv file
-procedure export
-  parameters $Table $File
+/*----------------------------------------------------------------------------*/
+/* check sanity of the grid                                                   */
+/*----------------------------------------------------------------------------*/
+procedure nodeInfo
 begin
 
   stage stageA on origin:
     startOp | periodicOp once | stageB
 
-  stage stageB on all partitions:
-    scanOp $Table | toCsvOp | stageC
+  stage stageB on all nodes:
+    nodeInfo | stageC
 
   stage stageC on origin:
-    toFileOp $File | stageD
-
-  stage stageD on origin:
-    sinkOp | stageA
+    outputOp | sinkOp | stageA
 
 end
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// fetch rows from a partition of a table
+/*----------------------------------------------------------------------------*/
+/* fetch rows from a partition of a table                                     */
+/*----------------------------------------------------------------------------*/
 procedure partitionFetch
   parameters $table $partition
 begin
@@ -101,59 +106,45 @@ begin
 end
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// check sanity of the grid
-procedure gridSanity
+/*----------------------------------------------------------------------------*/
+/* stored procedure with two-part name syntax test                            */
+/*----------------------------------------------------------------------------*/
+procedure Select Table
+  parameters $Table
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+  startOp | periodicOp once | stageB
 
-  stage stageB on all nodes:
-    nodeInfo | stageC
-
-  stage stageC on origin:
-    gridSanity | outputOp | sinkOp | stageA
-
-end
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// check sanity of the grid
-procedure nodeInfo
-begin
-
-  stage stageA on origin:
-    startOp | periodicOp once | stageB
-
-  stage stageB on all nodes:
-    nodeInfo | stageC
+  stage stageB on all partitions:
+  scanOp $Table | stageC
 
   stage stageC on origin:
-    outputOp | sinkOp | stageA
+  outputOp | sinkOp | stageA
 
-end
-;
+end;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// get space on each node
-procedure space
-begin
+/*----------------------------------------------------------------------------*/
+/* get space on each node                                                     */
+/*----------------------------------------------------------------------------*/
+//procedure space
+//begin
+//
+//  stage stageA on origin:
+//    startOp | periodicOp once | stageB
+//
+//  stage stageB on all nodes:
+//    space | stageC
+//
+//  stage stageC on origin:
+//    outputOp | sinkOp | stageA
+//
+//end
+//;
 
-  stage stageA on origin:
-    startOp | periodicOp once | stageB
-
-  stage stageB on all nodes:
-    space | stageC
-
-  stage stageC on origin:
-    outputOp | sinkOp | stageA
-
-end
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// fetch rows from a table (all nodes)
+/*----------------------------------------------------------------------------*/
+/* fetch rows from a table (all nodes)                                        */
+/*----------------------------------------------------------------------------*/
 procedure tableFetch
 parameters $table
 begin
@@ -170,8 +161,9 @@ begin
 end
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// table truncate
+/*----------------------------------------------------------------------------*/
+/* table truncate                                                             */
+/*----------------------------------------------------------------------------*/
 procedure truncate
   parameters $table
 begin
@@ -187,6 +179,29 @@ begin
 
 end
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* stored procedure syntax test                                               */
+/*----------------------------------------------------------------------------*/
+procedure sp_TEST
+  parameters $Table
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp $Table | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end;
+
 
 /*
 procedure sp_dropTable

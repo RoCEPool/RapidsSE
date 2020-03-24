@@ -954,6 +954,9 @@ public:
   // plist (participant list)
   void vPlistFindJob(void);
 
+  // procedure
+  void vProcedureAdd(void);
+
   // process
   void vProcessGetPid(void);
   void vProcessQuit(void);
