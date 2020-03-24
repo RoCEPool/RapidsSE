@@ -5,9 +5,6 @@
 " jobInfo.sen" .verbose
 
 
-
-
-
 /*----------------------------------------------------------------------------*/
 /* preliminary setup                                                          */
 /*----------------------------------------------------------------------------*/
@@ -271,8 +268,8 @@ end
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet params| pWord |
 
-  pWord word.name@     locals| sWordNm |
-  pWord word.enameSet@ locals| pEnameSet |
+  pWord word.name_trunc locals| sWordNm_trunc |
+  pWord word.enameSet@  locals| pEnameSet |
 
 
   // default for command kind
@@ -314,17 +311,18 @@ end
   pWord job::isDistJob if
     pWord .fillOutEnameSet_dist
   else
-    pWord .fillOutEnameSet_local
 
     "<liteOp>" pEnameSet EnameSet.hasName if
-      sWordNm "LiteOP: %v\n" .printf
+      sWordNm_trunc "LiteOP: %v\n" .printf
 
-      // "/liteOp/" sWordNm __liteop_Setup       str.replace >interpret
-      // "/liteOp/" sWordNm __liteOp_PulseMarker str.replace >interpret
-      // "/liteOp/" sWordNm __liteOp_req         str.replace >interpret
-      // "/liteOp/" sWordNm __liteOp_procedure   str.replace procedure::add
+      "/liteOp/" sWordNm_trunc __liteop_Setup       str.replace >interpret
+      "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
+      "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
+      "/liteOp/" sWordNm_trunc __liteOp_procedure   str.replace procedure::add
 
     then
+
+    pWord .fillOutEnameSet_local
 
   then then
 
