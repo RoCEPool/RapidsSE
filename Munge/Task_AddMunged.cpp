@@ -12427,14 +12427,9 @@ void Task::vAddMunged(Forth* pForth)
     "3 .put  \\\"jobModel.sen\\\"      include\n"
     "2 .put  \\\"operators.sen\\\"     include\n"
     "        \\\"testing.sen\\\"       include\n"
-    "1 .put\n"
-    "\n"
-    "        //\\\"se_categories.sen\\\" include\n"
-    "        \\\"se_docols.sen\\\"     include\n"
+    "1 .put  \\\"se_docols.sen\\\"     include\n"
     "        \\\"se_folders.sen\\\"    include\n"
-    "        //\\\"se_handlers.sen\\\"   include\n"
     "        \\\"se_munge.sen\\\"      include\n"
-    "        //\\\"se_procedures.sen\\\" include\n"
     "        \\\"se_vortex.sen\\\"     include\n"
     "0 .put\n"
     "\n"
@@ -15922,29 +15917,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT OP_toFile.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se.sen -- se                                                               */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-se.sen\\\" .verbose\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);

@@ -21,14 +21,9 @@
 3 .put  "jobModel.sen"      include
 2 .put  "operators.sen"     include
         "testing.sen"       include
-1 .put
-
-        //"se_categories.sen" include
-        "se_docols.sen"     include
+1 .put  "se_docols.sen"     include
         "se_folders.sen"    include
-        //"se_handlers.sen"   include
         "se_munge.sen"      include
-        //"se_procedures.sen" include
         "se_vortex.sen"     include
 0 .put
 
