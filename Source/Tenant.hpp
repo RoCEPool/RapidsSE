@@ -5,7 +5,7 @@
 
 namespace Folders
 {
-  class Tenant : public Object
+  class Tenant : public Folder
   {
   private:
   

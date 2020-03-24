@@ -45,7 +45,7 @@ void Catalog::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Catalog::Catalog(void)
-: Object(CN_CATALOG)
+: Folder(CN_CATALOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
   

@@ -45,7 +45,7 @@ void Schema::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Schema::Schema(void)
-: Object(CN_SCHEMA)
+: Folder(CN_SCHEMA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMA,_FOOTER_);
   

@@ -5,7 +5,7 @@
 
 namespace Folders
 {
-  class Catalog : public Object
+  class Catalog : public Folder
   {
   private:
   

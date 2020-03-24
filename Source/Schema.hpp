@@ -5,7 +5,7 @@
 
 namespace Folders
 {
-  class Schema : public Object
+  class Schema : public Folder
   {
   private:
   

@@ -45,7 +45,7 @@ void Tenants::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tenants::Tenants(void)
-: Object(CN_TENANTS)
+: Folder(CN_TENANTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
   

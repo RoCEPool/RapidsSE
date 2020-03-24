@@ -14,6 +14,7 @@ namespace Folders
 
 //------------------------------------------------------------------------------
 
+#include "Folder.hpp"
 #include "Schema.hpp"
 #include "Catalog.hpp"
 #include "Tenant.hpp"
