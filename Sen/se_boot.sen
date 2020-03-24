@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* se_compile.sen -- compile the dictionary                                   */
+/* se_boot.sen -- compile the dictionary                                      */
 /*============================================================================*/
 
-"se_compile.sen" .verbose
+"se_boot.sen" .verbose
 
 "Compilation progress: " .put
 9 .put

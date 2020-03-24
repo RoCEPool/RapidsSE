@@ -237,7 +237,7 @@ void Task::vAddRoutines(void)
   ": boot_run"
   "  \"boot_run\" .verbose"
   "  args.munged if \"compiling munged dictionary...\" . then"
-  "  \"se_compile.sen\" include"
+  "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
   "  task::delete"
   "  ;"_Stz;
@@ -245,7 +245,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": boot_run"
   "  \"boot_run\" .verbose"
-  "  \"se_compile.sen\" include"
+  "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
   "  task::delete"
   "  ;"_Stz;

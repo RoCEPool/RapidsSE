@@ -12399,67 +12399,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se_compile.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se_compile.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_compile.sen -- compile the dictionary                                   */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"se_compile.sen\\\" .verbose\n"
-    "\n"
-    "\\\"Compilation progress: \\\" .put\n"
-    "9 .put\n"
-    "8 .put  \\\"vocab.sen\\\"         include\n"
-    "7 .put  \\\"tasks.sen\\\"         include\n"
-    "6 .put  \\\"gridModel.sen\\\"     include\n"
-    "5 .put  \\\"dbObjects.sen\\\"     include\n"
-    "4 .put  \\\"prompt.sen\\\"        include\n"
-    "        \\\"se_categories.sen\\\" include\n"
-    "        \\\"se_demons.sen\\\"     include\n"
-    "        \\\"se_handlers.sen\\\"   include\n"
-    "        \\\"se_operators.sen\\\"  include\n"
-    "        \\\"se_procedures.sen\\\" include\n"
-    "        \\\"se_tags.sen\\\"       include\n"
-    "        \\\"se_requests.sen\\\"   include\n"
-    "3 .put  \\\"jobModel.sen\\\"      include\n"
-    "2 .put  \\\"operators.sen\\\"     include\n"
-    "        \\\"testing.sen\\\"       include\n"
-    "1 .put  \\\"se_docols.sen\\\"     include\n"
-    "        \\\"se_folders.sen\\\"    include\n"
-    "        \\\"se_munge.sen\\\"      include\n"
-    "        \\\"se_vortex.sen\\\"     include\n"
-    "0 .put\n"
-    "\n"
-    ".\\\\n\n"
-    "\n"
-    "\\\"Creating folders\\\" .\n"
-    "\n"
-    "// create /tenants/boray/catalogs/rapidsse/schemas/public\n"
-    "\n"
-    "// create the default folder hierarchy if not reloading\n"
-    "// args.reload not if\n"
-    "//   createDefaultFolders\n"
-    "// then\n"
-    "\n"
-    "createDefaultFolders\n"
-    "\n"
-    "\n"
-    "assert::stack_0\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_compile.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Execute.sen
 
   sFileContents =
@@ -17736,6 +17675,67 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT task.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_boot.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_boot.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_boot.sen -- compile the dictionary                                      */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\"se_boot.sen\\\" .verbose\n"
+    "\n"
+    "\\\"Compilation progress: \\\" .put\n"
+    "9 .put\n"
+    "8 .put  \\\"vocab.sen\\\"         include\n"
+    "7 .put  \\\"tasks.sen\\\"         include\n"
+    "6 .put  \\\"gridModel.sen\\\"     include\n"
+    "5 .put  \\\"dbObjects.sen\\\"     include\n"
+    "4 .put  \\\"prompt.sen\\\"        include\n"
+    "        \\\"se_categories.sen\\\" include\n"
+    "        \\\"se_demons.sen\\\"     include\n"
+    "        \\\"se_handlers.sen\\\"   include\n"
+    "        \\\"se_operators.sen\\\"  include\n"
+    "        \\\"se_procedures.sen\\\" include\n"
+    "        \\\"se_tags.sen\\\"       include\n"
+    "        \\\"se_requests.sen\\\"   include\n"
+    "3 .put  \\\"jobModel.sen\\\"      include\n"
+    "2 .put  \\\"operators.sen\\\"     include\n"
+    "        \\\"testing.sen\\\"       include\n"
+    "1 .put  \\\"se_docols.sen\\\"     include\n"
+    "        \\\"se_folders.sen\\\"    include\n"
+    "        \\\"se_munge.sen\\\"      include\n"
+    "        \\\"se_vortex.sen\\\"     include\n"
+    "0 .put\n"
+    "\n"
+    ".\\\\n\n"
+    "\n"
+    "\\\"Creating folders\\\" .\n"
+    "\n"
+    "// create /tenants/boray/catalogs/rapidsse/schemas/public\n"
+    "\n"
+    "// create the default folder hierarchy if not reloading\n"
+    "// args.reload not if\n"
+    "//   createDefaultFolders\n"
+    "// then\n"
+    "\n"
+    "createDefaultFolders\n"
+    "\n"
+    "\n"
+    "assert::stack_0\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_boot.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
