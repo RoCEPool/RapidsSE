@@ -5,6 +5,8 @@
 // boot cluster
 bc;
 
+trackMemory;
+
 time create table LineItem                 // SF * 6,000,000 rows
 (
 L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
@@ -28,16 +30,22 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 );
 
 // create indexes
-create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+//create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
 //load lineitem "/TPCH/SF1/lineitem.csv";
 load lineitem "/DATA/TPCH/lineitem20K.csv";
+
+//drop table lineitem;
+
+//memoryLeaks;
 /*
+
+ 
  pipeline cancelTest
  begin
  
  stage stageA on origin:
- startOp | periodicCancel once | stageB
+ startOp | periodic once | stageB
  
  stage stageB on all partitions:
  scanOp lineitem 60 | stageC

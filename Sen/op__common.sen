@@ -129,7 +129,7 @@
       // bide till next operand is available
       Pipein[].bide
 
-      // pop next operand from queue into Operand[]
+      // pop next operand from queue into Pipein[]
       Pipein[].next
 
       // execute the operator's handler for the operand
