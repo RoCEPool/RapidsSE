@@ -153,6 +153,7 @@ namespace Steps
     static void vAddSteps_TableReg(void);
     static void vAddSteps_Tag(void);
     static void vAddSteps_Task(void);
+    static void vAddSteps_Tenants(void);
     static void vAddSteps_Test(void);
     static void vAddSteps_Thread(void);
     static void vAddSteps_Timer(void);

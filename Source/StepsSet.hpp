@@ -1379,6 +1379,9 @@ public:
   void vTaskWait(void);
   void vTaskYield(void);
 
+  // tenants
+  void vTenantsNew(void);
+
   // test
   void vTestTest0(void);
   void vTestTest1(void);

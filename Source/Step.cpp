@@ -173,6 +173,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TableReg();
   Step::vAddSteps_Tag();
   Step::vAddSteps_Task();
+  Step::vAddSteps_Tenants();
   Step::vAddSteps_Test();
   Step::vAddSteps_Thread();
   Step::vAddSteps_Timer();
