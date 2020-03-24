@@ -17823,6 +17823,8 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  assert::stack_0\n"
     "\n"
+    "  //tenants::new tenants.delete\n"
+    "  //dic::new dic.delete\n"
     "\n"
     "  // push tenants folder\n"
     "  //\\\"tenants\\\" find execute\n"

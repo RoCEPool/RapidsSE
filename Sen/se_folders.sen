@@ -22,6 +22,7 @@ createTenantsFolder
   assert::stack_0
 
   //tenants::new tenants.delete
+  //dic::new dic.delete
 
   // push tenants folder
   //"tenants" find execute

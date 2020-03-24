@@ -174,11 +174,13 @@ public:
   void vDebugTrap(void);
 
   // dic
+  void vDicDelete(void);
   void vDicInit(void);
   void vDicKindGet(void);
   void vDicKindSet(void);
   void vDicLastWord(void);
   void vDicName(void);
+  void vDicNew(void);
   void vDicRef(void);
   void vDicRoot(void);
   void vDicWordCount(void);

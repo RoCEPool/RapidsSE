@@ -9,8 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dic(void)
 {
-  vAddStep("dic::root"_Stz,        &Step::vDicRoot);
+  vAddStep("dic::new"_Stz,        &Step::vDicNew);
+  vAddStep("dic::root"_Stz,       &Step::vDicRoot);
   
+  vAddStep("dic.delete"_Stz,      &Step::vDicDelete);
   vAddStep("dic.init"_Stz,        &Step::vDicInit);
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
@@ -18,6 +20,20 @@ void Step::vAddSteps_Dic(void)
   vAddStep("dic.name"_Stz,        &Step::vDicName);
   vAddStep("dic.ref"_Stz,         &Step::vDicRef);
   vAddStep("dic.wordCount"_Stz,   &Step::vDicWordCount);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.delete -- delete a dictionary                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vDicDelete(void)
+{
+  ENTRY(); // ENTRY("vDicDelete"_Stz);
+  
+  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+
+  delete pDic;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,6 +114,20 @@ void Step::vDicName(void)
   s32 sName(pDic->szName());
   
   m_pDataStack->vPushStr(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic::new -- create new dictionary                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vDicNew(void)
+{
+  ENTRY(); // ENTRY("vDicNew"_Stz);
+  
+  Dic* pRootDic = new Dic;
+  
+  m_pDataStack->vPushPtr(pRootDic);
   
   EXIT();
 }
