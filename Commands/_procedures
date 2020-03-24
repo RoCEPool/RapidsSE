@@ -127,20 +127,20 @@ end;
 /*----------------------------------------------------------------------------*/
 /* get space on each node                                                     */
 /*----------------------------------------------------------------------------*/
-procedure space
-begin
-
-  stage stageA on origin:
-    startOp | periodicOp once | stageB
-
-  stage stageB on all nodes:
-    space | stageC
-
-  stage stageC on origin:
-    outputOp | sinkOp | stageA
-
-end
-;
+//procedure space
+//begin
+//
+//  stage stageA on origin:
+//    startOp | periodicOp once | stageB
+//
+//  stage stageB on all nodes:
+//    space | stageC
+//
+//  stage stageC on origin:
+//    outputOp | sinkOp | stageA
+//
+//end
+//;
 
 /*----------------------------------------------------------------------------*/
 /* fetch rows from a table (all nodes)                                        */

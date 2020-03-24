@@ -183,21 +183,20 @@ find: space_Req word.see
 procedure /liteOp/
 begin
 
-  stage stageA on origin:
+  stage stageA on origin :
     startOp | periodicOp once | stageB
 
-  stage stageB on all nodes:
+  stage stageB on all nodes :
     /liteOp/ | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
     outputOp | sinkOp | stageA
 
 end
-;
 "
 ;
     
-//"/liteOp/" "space" __liteOp_procedure str.replace >interpret
+"/liteOp/" "space" __liteOp_procedure str.replace procedure::add
 
     
 

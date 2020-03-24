@@ -805,7 +805,10 @@ bool Dynamo::bPhase2_staging(void)
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
         
 #ifdef WITH_TRACE_DYNAMO
-        vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_FoundStage, aPX[eTopologyX]);
+        vTrace("  op %s is a stage %lld %s\n"_Stz,
+               pOpSpec->szOpNm(),
+               i_FoundStage,
+               aPX[eTopologyX]);
 #endif
         
         if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
