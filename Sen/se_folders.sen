@@ -11,6 +11,9 @@
 
   assert::stack_0
 
+  // create the root /tenants folder
+  createTenantsFolder
+
   // push tenants folder
   //"tenants" find execute
   attachmap::tenants@ execute

@@ -28,9 +28,6 @@
 
 "Creating folders" .
 
-// create the root /tenants folder
-createTenantsFolder
-
 // create /tenants/boray/catalogs/rapidsse/schemas/public
 
 // create the default folder hierarchy if not reloading
