@@ -120,7 +120,7 @@ opSyntax: space :: space ;
 //"
 //;
     
-"/liteOp/" "space" __liteop_Setup str.replace >interpret
+//"/liteOp/" "space" __liteop_Setup str.replace >interpret
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
@@ -144,7 +144,7 @@ opSyntax: space :: space ;
 //;
 
 //"/liteOp/" "space" __liteOp_PulseMarker str.replace .
-"/liteOp/" "space" __liteOp_PulseMarker str.replace >interpret
+//"/liteOp/" "space" __liteOp_PulseMarker str.replace >interpret
 //find: space_PulseMarker word.see
 
 /*----------------------------------------------------------------------------*/
@@ -170,8 +170,8 @@ opSyntax: space :: space ;
 //"
 //;
 
-"/liteOp/" "space" __liteOp_req str.replace >interpret
-find: space_Req word.see
+//"/liteOp/" "space" __liteOp_req str.replace >interpret
+//find: space_Req word.see
 
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +196,7 @@ find: space_Req word.see
 //"
 //;
     
-"/liteOp/" "space" __liteOp_procedure str.replace procedure::add
+//"/liteOp/" "space" __liteOp_procedure str.replace procedure::add
 
     
 
