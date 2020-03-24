@@ -28,8 +28,8 @@
 
 "Creating folders" .
 
-// create the root /tenants dictionary
-dicTenants: tenants
+// create the root /tenants folder
+createTenantsFolder
 
 // create /tenants/boray/catalogs/rapidsse/schemas/public
 

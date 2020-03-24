@@ -198,12 +198,10 @@ void Step::vCreateFromInRoot(void)
 void Step::vCreateTenants(void)
 {
   ENTRY(); // ENTRY("vCreateTenants"_Stz);
-  
-  m_pCompiler->vNextToken();
-    
+      
   Dic* pDic = AM::pRootDic();
 
-  Word* pNewWord = new(pDic) Word(m_pCompiler->szToken());
+  Word* pNewWord = new(pDic) Word("tenants"_Stz);
   
   m_pCompiler->vCurrentWord(pNewWord);
   
