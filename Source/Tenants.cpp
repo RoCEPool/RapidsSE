@@ -29,7 +29,7 @@ Tenants* Folders::_pTenants(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Tenants::operator new(size_t)
 {
-  Tenants* pTenants = nullptr;
+  Tenants* pTenants = (Tenants*)(HeapMem::pAllocate(CN_TENANTS));
   
   return pTenants;
 }
@@ -37,8 +37,11 @@ void* Tenants::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Tenants::operator delete(void*)
+void Tenants::operator delete(void* aAddr)
 {
+   Tenants* pTenants = reinterpret_cast<Tenants*>(aAddr);
+  
+   HeapMem::vFree(pTenants);
 }
 
 /*----------------------------------------------------------------------------*/

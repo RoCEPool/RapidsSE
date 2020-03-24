@@ -21,6 +21,7 @@ createTenantsFolder
 
   assert::stack_0
 
+  //tenants::new tenants.delete
 
   // push tenants folder
   //"tenants" find execute

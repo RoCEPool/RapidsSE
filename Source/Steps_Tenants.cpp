@@ -9,7 +9,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tenants(void)
 {
-  vAddStep("tenants::new"_Stz, &Step::vTenantsNew);
+  vAddStep("tenants::new"_Stz,   &Step::vTenantsNew);
+  
+  vAddStep("tenants.delete"_Stz, &Step::vTenantsDelete);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tenants.delete -- delete a tenant                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTenantsDelete(void)
+{
+  ENTRY(); // ENTRY("vTenantsDelete"_Stz);
+  
+  Tenants* pTenants = _pTenants(m_pDataStack->pPopPtr(__func__));
+  
+  delete pTenants;
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -18,7 +34,11 @@ void Step::vAddSteps_Tenants(void)
 void Step::vTenantsNew(void)
 {
   ENTRY(); // ENTRY("vTenantsNew"_Stz);
-    
+  
+  Tenants* pTenants = new Tenants;
+  
+  m_pDataStack->vPushPtr(pTenants);
+
   EXIT();
 }
 

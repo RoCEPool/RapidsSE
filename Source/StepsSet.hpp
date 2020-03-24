@@ -1380,6 +1380,7 @@ public:
   void vTaskYield(void);
 
   // tenants
+  void vTenantsDelete(void);
   void vTenantsNew(void);
 
   // test
