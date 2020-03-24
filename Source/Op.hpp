@@ -68,7 +68,6 @@ namespace Pipelines
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
-    bool bIsCancelling(void);
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);
     i8   nLeftEosMarkers(void);

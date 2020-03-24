@@ -140,8 +140,11 @@
       // get the Out-of_Order Operand
       OperandOoO[].next if
 
+        OperandOoO[] to Pipein[]
+        nullptr to OperandOoO[]
+
         // execute the operator's handler for the Out-of_Order operand
-        OperandOoO[].kind op[].handler@ execute
+        Pipein[].kind op[].handler@ execute
 
         // assert Operand is null
         Operand[].isNull assert

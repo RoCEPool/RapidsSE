@@ -18,7 +18,7 @@ namespace Pipelines
     bool          m_bPulsed;
     bool          m_bPulsedLimit;
     Op*           m_pOpToPulse;
-    bool          m_bCancelling;
+    bool          m_bCancelled;
       
   private:
   
@@ -33,9 +33,9 @@ namespace Pipelines
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
-    void     vCancel(void);
-    void     vCancelling(bool bCancelling);
-    bool     bCancelling(void);
+    bool     bCancel(void);
+    void     vCancelled(bool bCancelled);
+    bool     bCancelled(void);
     i8       iOriginatingNode(void);
     Job*     pJob(void);
     i8       nOpsOnNode(i8 iNode);

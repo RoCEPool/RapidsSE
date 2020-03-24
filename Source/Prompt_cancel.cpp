@@ -45,7 +45,10 @@ bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   
   // cancel the pipeline
-  pPipeline->vCancel();
+  if ( ! pPipeline->bCancel() ) {
+    vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, iJobId);
+    return false;
+  }
   
   return true;
 }

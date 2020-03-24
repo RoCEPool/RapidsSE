@@ -10,11 +10,13 @@
 void Step::vAddSteps_JobPipeline(void)
 {
   vAddStep("Job_Pipeline.begin"_Stz,         &Step::vJob_PipelineBegin);
+  vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
   vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
   vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
-  vAddStep("Job_Pipeline.isPulsed"_Stz,      &Step::vJob_PipelineIsPulsed);
-  vAddStep("Job_Pipeline.pulsed"_Stz,        &Step::vJob_PipelinePulsed);
+  vAddStep("Job_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
+  vAddStep("Job_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
+  vAddStep("Job_Pipeline::isPulsed"_Stz,     &Step::vJob_PipelineIsPulsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,17 +66,17 @@ void Step::vJob_PipelineBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::deleteDynamo -- delete the dynamo                            */
+/* Job_Pipeline::cancelled -- set pipeline as being cancelled                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineDeleteDynamo(void)
+void Step::vJob_PipelineCancelled(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineDeleteDynamo"_Stz);
+  ENTRY(); // ENTRY("vJob_PipelineCancelled"_Stz);
   
-  PipelineSpec* pPipelineSpec = m_pRegSet->m_xpDynamo->pPipelineSpec();
-  delete pPipelineSpec;
+  Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  delete *m_pRegSet->m_xpDynamo;
-  m_pRegSet->m_xpDynamo = nullptr;
+  Pipeline* pPipeline = pOp->pPipeline();
+  
+  pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -107,6 +109,22 @@ void Step::vJob_PipelineCompile(void)
       m_pRegSet->m_xpDynamo->vShow();
     }
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::deleteDynamo -- delete the dynamo                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineDeleteDynamo(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineDeleteDynamo"_Stz);
+  
+  PipelineSpec* pPipelineSpec = m_pRegSet->m_xpDynamo->pPipelineSpec();
+  delete pPipelineSpec;
+  
+  delete *m_pRegSet->m_xpDynamo;
+  m_pRegSet->m_xpDynamo = nullptr;
   
   EXIT();
 }
@@ -150,15 +168,32 @@ void Step::vJob_PipelineExecute(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline.IsPulsed -- has the pipeline been pulsed                      */
+/* Job_Pipeline::IsCancelled -- has the pipeline been cancelled               */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineIsCancelled(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineIsCancelled"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  Pipeline* pPipeline = pOp->pPipeline();
+  
+  // return if pipeline has been cancelled
+  m_pDataStack->vPushInt(pPipeline->bCancelled());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::IsPulsed -- has the pipeline been pulsed                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsPulsed(void)
 {
   ENTRY(); // ENTRY("vJob_PipelineIsPulsed"_Stz);
   
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+  Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  Pipeline* pPipeline = pOp->pPipeline();
   
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pPipeline->bPulsed());
@@ -167,17 +202,17 @@ EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline.pulsed -- set pipeline as being pulsed                        */
+/* Job_Pipeline::pulsed -- set pipeline as being pulsed                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelinePulsed(void)
 {
   ENTRY(); // ENTRY("vJob_PipelinePulsed"_Stz);
   
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+  Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  Pipeline* pPipeline = pOp->pPipeline();
   
-  pPipeline->vPulsed(true);
+  pPipeline->vPulsed(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

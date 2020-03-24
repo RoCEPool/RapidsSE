@@ -678,9 +678,11 @@ public:
 
   // job Pipeline
   void vJob_PipelineBegin(void);
+  void vJob_PipelineCancelled(void);
+  void vJob_PipelineCompile(void);
   void vJob_PipelineDeleteDynamo(void);
   void vJob_PipelineExecute(void);
-  void vJob_PipelineCompile(void);
+  void vJob_PipelineIsCancelled(void);
   void vJob_PipelineIsPulsed(void);
   void vJob_PipelinePulsed(void);
 

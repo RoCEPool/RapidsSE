@@ -28,9 +28,9 @@ Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
   
   m_bPulsed       = false;
   m_bPulsedLimit  = false;
-  m_pOpToPulse = nullptr;
+  m_pOpToPulse    = nullptr;
   
-  m_bCancelling = false;
+  m_bCancelled    = false;
     
   _checkInitialised_(CN_PIPELINE);
 
@@ -54,38 +54,44 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vCancel(void)
+bool Pipeline::bCancel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  // check if pipeline has already been pusled
+  if (m_bPulsed)
+    return false;
   
   // get the first stage of the pipeline
   Stage* pStage = pGet(0);
   
   // send cancelMarker to the startOp of the first stage of the pipeline
   pStage->vCancelPipeline();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set cancelling                                                             */
+/* pipeline has been  cancelled                                               */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vCancelling(bool bCancelling)
+void Pipeline::vCancelled(bool bCancelled)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_bCancelling = bCancelling;
+  m_bCancelled = bCancelled;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cancelling                                                             */
+/* is pipeline being cancelled                                                */
 /*----------------------------------------------------------------------------*/
-bool Pipeline::bCancelling(void)
+bool Pipeline::bCancelled(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  if (m_bCancelling)
+  if (m_bCancelled)
     vDebugPoint();
   
-  return m_bCancelling;
+  return m_bCancelled;
 }
 
 /*----------------------------------------------------------------------------*/
