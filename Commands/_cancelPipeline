@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // boot cluster
-bc;
+//bc;
 
 trackMemory;
 
@@ -48,7 +48,7 @@ load lineitem "/DATA/TPCH/lineitem20K.csv";
  startOp | periodicOp once | stageB
  
  stage stageB on all partitions:
- scanOp lineitem 10 | stageC
+ scanOp lineitem 30 | stageC
  
  stage stageC on origin:
  outputOp | sinkOp | stageA
