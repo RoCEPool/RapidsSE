@@ -765,8 +765,7 @@ Operand* Op::pPopQueueOoO(void)
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue no operand on left queue"_Stz); //!format-LogOpr
   
-  if (pOperand)
-    vDropTaskLock();
+  vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

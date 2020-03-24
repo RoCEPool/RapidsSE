@@ -13,6 +13,7 @@ void Step::vAddSteps_RegOperandOoO(void)
   vAddStep("OperandOoO[].delete"_Stz,      &Step::vRegOperandOoODelete);
   vAddStep("OperandOoO[].isNull"_Stz,      &Step::vRegOperandOoOIsNull);
   vAddStep("OperandOoO[].kind"_Stz,        &Step::vRegOperandOoOKind);
+  vAddStep("OperandOoO[].next"_Stz,        &Step::vRegOperandNextOoO);
   vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vRegOperandOoOPipeOut);
   vAddStep("OperandOoO[].pipeToJob"_Stz,   &Step::vRegOperandOoOPipeToJob);
   vAddStep("OperandOoO[].set"_Stz,         &Step::vRegOperandOoOSet);
@@ -101,6 +102,24 @@ void Step::vRegOperandOoOKind(void)
   
   m_pDataStack->vPushInt(eOperand);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandOoO[].Next -- get next OoO operand                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNextOoO(void)
+{
+  ENTRY(); // ENTRY("vRegOperandNextOoO"_Stz);
+  
+  ASSERT(m_pRegSet->m_xpOperandOoO.bIsNull());
+  
+  m_pRegSet->m_xpOperandOoO = m_pTask->m_pJob->m_pOp->pPopQueueOoO();
+  
+  if (m_pRegSet->m_xpOperandOoO.bIsNull())
+    m_pDataStack->vPushInt(false);
+  else
+    m_pDataStack->vPushInt(true);
   EXIT();
 }
 

@@ -137,12 +137,8 @@
 
     else
 
-      //executed for sequences
-      Pipein[].peekOoO if
-
-        // get the Out-of_Order Operand
-        Pipein[].nextOoO
-        Pipein[] to OperandOoO[]
+      // get the Out-of_Order Operand
+      OperandOoO[].next if
 
         // execute the operator's handler for the Out-of_Order operand
         OperandOoO[].kind op[].handler@ execute

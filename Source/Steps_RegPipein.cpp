@@ -15,8 +15,6 @@ void Step::vAddSteps_RegPipein(void)
   vAddStep("Pipein[].isNull"_Stz,         &Step::vRegPipeinIsNull);
   vAddStep("Pipein[].kind"_Stz,           &Step::vRegPipeinKind);
   vAddStep("Pipein[].next"_Stz,           &Step::vRegPipeinNext);
-  vAddStep("Pipein[].nextOoO"_Stz,        &Step::vRegPipeinNextOoO);
-  vAddStep("Pipein[].peekOoO"_Stz,        &Step::vRegPipeinPeekOoO);
   vAddStep("Pipein[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
   vAddStep("Pipein[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
   vAddStep("Pipein[].set"_Stz,            &Step::vRegPipeinSet);
@@ -136,34 +134,6 @@ void Step::vRegPipeinNext(void)
     m_pRegSet->m_xpPipein = m_pTask->m_pJob->m_pOp->pPopQueue();
   ASSERT(*m_pRegSet->m_xpPipein);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipein[].NextOoO -- get next OoO operand                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vRegPipeinNextOoO(void)
-{
-  ENTRY(); // ENTRY("vRegPipeinNextOoO"_Stz);
-  
-  if (m_pRegSet->m_xpPipein.bIsNull())
-    m_pRegSet->m_xpPipein = m_pTask->m_pJob->m_pOp->pPopQueueOoO();
-  ASSERT(*m_pRegSet->m_xpPipein);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipein[].peekOoO -- peek and see if there is an Out-of-Order operand       */
-/*----------------------------------------------------------------------------*/
-void Step::vRegPipeinPeekOoO(void)
-{
-  ENTRY(); // ENTRY("vRegPipeinPeekOoO"_Stz);
-  
-  bool bOperandOoO = m_pTask->m_pJob->m_pOp->bPeekQueueOoO();
-  
-  m_pDataStack->vPushInt(bOperandOoO);
-
   EXIT();
 }
 
