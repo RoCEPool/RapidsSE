@@ -16,6 +16,7 @@ namespace Pipelines
     i8            m_iOriginatingNode;
 
     bool          m_bPulsed;
+    bool          m_bPulsedLimit;
     Op*           m_pOpToPulse;
     bool          m_bCancelling;
       
@@ -43,6 +44,8 @@ namespace Pipelines
     PipelineSpec* pPipelineSpec(void);
     void     vPopulateOpVec(PipelineSpec* pPipelineSpec);
     bool     bPulsed(void);
+    void     vPulsed(bool bPulsed);
+    bool     bPulsedLimit(void);
     void     vSetupJob(void);
     void     vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
 

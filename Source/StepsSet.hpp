@@ -681,6 +681,8 @@ public:
   void vJob_PipelineDeleteDynamo(void);
   void vJob_PipelineExecute(void);
   void vJob_PipelineCompile(void);
+  void vJob_PipelineIsPulsed(void);
+  void vJob_PipelinePulsed(void);
 
   // job publish
   void vJob_PublishSpawnSub(void);

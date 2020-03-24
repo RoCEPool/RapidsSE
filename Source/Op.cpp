@@ -64,7 +64,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
   
-  m_bPulsed       = false;
+  m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
@@ -548,7 +548,7 @@ bool Op::bPause(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (! m_bPulsed)
+  if (! m_bPulsedLimit)
     return false;
   
   if (0 == m_iWorkDone % m_iWorkQuanta)
@@ -875,21 +875,21 @@ Operand* Op::pPopQueueRight(void)
 /*----------------------------------------------------------------------------*/
 /* is pulsed operator?                                                        */
 /*----------------------------------------------------------------------------*/
-bool Op::bPulsed(void)
+bool Op::bPulsedLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_bPulsed;
+  return m_bPulsedLimit;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set pulsed operator                                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vPulsed(bool bPulsed)
+void Op::vPulsedLimit(bool bPulsedLimit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_bPulsed = bPulsed;
+  m_bPulsedLimit = bPulsedLimit;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,6 +13,8 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
   vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
   vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
+  vAddStep("Job_Pipeline.isPulsed"_Stz,      &Step::vJob_PipelineIsPulsed);
+  vAddStep("Job_Pipeline.pulsed"_Stz,        &Step::vJob_PipelinePulsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +145,39 @@ void Step::vJob_PipelineExecute(void)
     // pipeline job has no operators to wait for
     m_pDataStack->vPushInt(false);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline.IsPulsed -- has the pipeline been pulsed                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineIsPulsed(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineIsPulsed"_Stz);
+  
+  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  
+  // return if pipeline has been pulsed
+  m_pDataStack->vPushInt(pPipeline->bPulsed());
+
+EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline.pulsed -- set pipeline as being pulsed                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelinePulsed(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelinePulsed"_Stz);
+  
+  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  
+  pPipeline->vPulsed(true);
   
   EXIT();
 }

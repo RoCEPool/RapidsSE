@@ -19,7 +19,7 @@ namespace Pipelines
     EnameSet       m_oEnameSet;         // ename set of cmd
     EnameSet       m_oTopologyEnameSet; // topology enameset
     
-    bool           m_bPulsed;        // is this a pulsed operand?
+    bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
@@ -95,8 +95,8 @@ namespace Pipelines
     Operand* pPopQueueOoO(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
-    bool bPulsed(void);
-    void vPulsed(bool bPulsed);
+    bool bPulsedLimit(void);
+    void vPulsedLimit(bool bPulsedLimit);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
     i8   nRightEosMarkers(void);

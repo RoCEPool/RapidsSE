@@ -26,7 +26,8 @@ Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
   m_pPipelineSpec = pPipelineSpec;
   m_iOriginatingNode = iOriginatingNode;
   
-  m_bPulsed    = false;
+  m_bPulsed       = false;
+  m_bPulsedLimit  = false;
   m_pOpToPulse = nullptr;
   
   m_bCancelling = false;
@@ -206,6 +207,26 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* get pulsed                                                                 */
 /*----------------------------------------------------------------------------*/
+bool Pipeline::bPulsedLimit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_bPulsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pulsed                                                                 */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vPulsed(bool bPulsed)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_bPulsed = bPulsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pulsed                                                                 */
+/*----------------------------------------------------------------------------*/
 bool Pipeline::bPulsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -231,7 +252,7 @@ void Pipeline::vSetupJob(void)
       Op* pOp = pStrand->pGet(i_Op);
       
       if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
-        m_bPulsed = true;
+        m_bPulsedLimit = true;
         break;
       }
     }
@@ -248,7 +269,7 @@ void Pipeline::vSetupJob(void)
 
       if (AM::szJobName(pOp->pOpJob())->bSame("scanOp"_Stz)) {
         m_pOpToPulse = pOp;
-        pOp->vPulsed(true);
+        pOp->vPulsedLimit(true);
         break;
       }
     }
