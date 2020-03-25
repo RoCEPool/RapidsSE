@@ -219,10 +219,8 @@ void Step::vCreateTenants2(void)
 
   Word* pNewWord = new(pDic) Word("tenants"_Stz);
   
-  m_pCompiler->vCurrentWord(pNewWord);
-  
   AM::vTenants(pNewWord);
-  
+      
   EXIT();
 }
 

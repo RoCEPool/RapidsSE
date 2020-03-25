@@ -97,6 +97,7 @@ public:
 
   // attachmap
   void vAttachMapTenantsFetch(void);
+  void vAttachMapTenantsStore(void);
   void vAttachMapRegionSizeFetch(void);
 
   // bp

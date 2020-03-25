@@ -11,6 +11,7 @@ void Step::vAddSteps_AttachMap(void)
 {
   vAddStep("attachmap::regionSize@"_Stz,  &Step::vAttachMapRegionSizeFetch);
   vAddStep("attachmap::tenants@"_Stz,     &Step::vAttachMapTenantsFetch);
+  vAddStep("attachmap::tenants!"_Stz,     &Step::vAttachMapTenantsStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,6 +22,18 @@ void Step::vAttachMapTenantsFetch(void)
   ENTRY(); // ENTRY("vAttachMapTenantsFetch"_Stz);
   
   m_pDataStack->vPushPtr(AM::pTenants());
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::tenants! -- store word tenants into attachmap                   */
+/*----------------------------------------------------------------------------*/
+void Step::vAttachMapTenantsStore(void)
+{
+  ENTRY(); // ENTRY("vAttachMapTenantsFetch"_Stz);
+  
+  Word *pWord_tenants = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  AM::vTenants(pWord_tenants);
 }
 
 /*----------------------------------------------------------------------------*/

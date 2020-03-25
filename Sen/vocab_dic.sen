@@ -36,14 +36,56 @@ diclock.dropwrite
   does>
 ;
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 : createTenantsFolder2
 
 diclock.grabwrite
 
+  "tenants" word::new locals| pTenants |
+
+  WK_OBJECT pTenants word.kind!
+
+  sizeof_dic pTenants word.allotObject drop
+
+  pTenants word.embObject object.magic!
+
+  CN_DIC pTenants word.embObject object.class!
+
+  pTenants word.embObject dic.init
+
+  true pTenants word.embObject object.wordbody!
+
+  find: folder pTenants word.category!
   
 diclock.dropwrite
-;
 
+  pTenants compiler::current!
+
+  does>
+;
+/*----------------------------------------------------------------------------*/
+: createTenantsFolder3
+
+diclock.grabwrite
+
+  createTenants
+  WK_OBJECT compiler::current@ word.kind!
+  sizeof_dic allot
+
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+
+  compiler::current@ word.embObject dic.init
+
+  true compiler::current@ word.embObject object.wordbody!
+  find: folder compiler::current@ word.category!
+
+  //compiler::current@ word.name@ "  dic: %v" str.format .
+
+diclock.dropwrite
+  does>
+;
 
 /*----------------------------------------------------------------------------*/
 /* create a dictionary using name from input stream (doesnt leave dic on stk) */
