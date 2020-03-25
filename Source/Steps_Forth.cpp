@@ -14,6 +14,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep("compile"_Stz,           &Step::vCompile);
   vAddStep("compile,"_Stz,          &Step::vCompileComma);
   vAddStep("createTenants"_Stz,     &Step::vCreateTenants);
+  vAddStep("createTenants2"_Stz,    &Step::vCreateTenants2);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
@@ -196,6 +197,21 @@ void Step::vCreateFromInRoot(void)
 /* createTenants -- create tenant word in dictionary                          */
 /*----------------------------------------------------------------------------*/
 void Step::vCreateTenants(void)
+{
+  ENTRY(); // ENTRY("vCreateTenants"_Stz);
+      
+  Dic* pDic = AM::pRootDic();
+
+  Word* pNewWord = new(pDic) Word("tenants"_Stz);
+  
+  m_pCompiler->vCurrentWord(pNewWord);
+  
+  AM::vTenants(pNewWord);
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+void Step::vCreateTenants2(void)
 {
   ENTRY(); // ENTRY("vCreateTenants"_Stz);
       

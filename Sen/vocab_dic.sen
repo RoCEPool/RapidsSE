@@ -35,6 +35,14 @@ diclock.grabwrite
 diclock.dropwrite
   does>
 ;
+/*----------------------------------------------------------------------------*/
+: createTenantsFolder2
+
+diclock.grabwrite
+
+  
+diclock.dropwrite
+;
 
 
 /*----------------------------------------------------------------------------*/

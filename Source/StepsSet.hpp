@@ -344,6 +344,7 @@ public:
   void vCreateFromPersistent(void);
   void vCreatePersistent(void);
   void vCreateTenants(void);
+  void vCreateTenants2(void);
   void vDoes(void);
   void vDoes_RT(void);
   void vExit_RT(void);
