@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
 /*----------------------------------------------------------------------------*/
-: createTenantsFolder2_a
+: createTenantsFolder_proper
 
 diclock.grabwrite
 
@@ -36,9 +36,9 @@ diclock.grabwrite
 diclock.dropwrite
 ;
 
-: createTenantsFolder2
+: createTenantsFolder
 
-  createTenantsFolder2_a
+  createTenantsFolder_proper
 
   attachMap::tenants@ compiler::current! does>
 ;
