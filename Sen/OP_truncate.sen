@@ -13,9 +13,21 @@
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
 
+  // new a stream def
+  //Operand[].newStreamDef
+  //Operand[].pipeOut
+
   // truncate the buffers of the tablePtn
   tablePtn[].truncate
-
+/*
+  Subset[]@ to Operand[]
+  begin
+    Operand[].isNull
+  not while
+    Operand[].pipeOut
+    Subset[].nextBuffer to Operand[]
+  repeat
+*/
   Operand[].newEosMarker
   Operand[].pipeOut
 

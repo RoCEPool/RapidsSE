@@ -44,6 +44,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: sinkOp_PulsedMarker \handler
+
+  //"Operand:- ZK_PULSEDMARKER" .verbose
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : sinkOp_StartMarker \handler
@@ -81,6 +91,7 @@
   find: sinkOp_CancelMarker ZK_CANCELMARKER op[].handler!
   find: sinkOp_ErrorMarker  ZK_ERRORMARKER op[].handler!
   find: sinkOp_ExitMarker   ZK_EXITMARKER  op[].handler!
+  find: sinkOp_PulsedMarker ZK_PULSEDMARKER  op[].handler!
   find: sinkOp_StartMarker  ZK_STARTMARKER op[].handler!
 
   op__loop
