@@ -5,7 +5,9 @@
 "se_boot.sen" .verbose
 
 "Compilation progress: " .put
+
 9 .put
+        "se_categories.sen" include
 8 .put  "vocab.sen"         include
 7 .put  "tasks.sen"         include
 6 .put  "gridModel.sen"     include

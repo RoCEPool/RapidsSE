@@ -5,13 +5,6 @@
 " vocab_dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* folder is used as a kind of word to identify folders                       */
-/*----------------------------------------------------------------------------*/
-: folder ;
-
-: isFolder word.category@ find: folder eql ;
-
-/*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
 /*----------------------------------------------------------------------------*/
 : createTenantsFolder_proper
