@@ -18,7 +18,8 @@
 
 diclock.grabwrite
 
-  createTenants2 locals| pTenants |
+  //createTenants2 locals| pTenants |
+  "tenants" word::new locals| pTenants |
 
   pTenants attachMap::tenants!
 
