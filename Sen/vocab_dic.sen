@@ -40,20 +40,20 @@ diclock.dropwrite
 
   createTenants2 locals| pTenants |
 
+  pTenants compiler::current!
+
   pTenants attachMap::tenants!
 
-  WK_OBJECT compiler::current@ word.kind!
+  WK_OBJECT pTenants word.kind!
   sizeof_dic allot
 
-  compiler::current@ word.embObject object.magic!
-  CN_DIC compiler::current@ word.embObject object.class!
+  pTenants word.embObject object.magic!
+  CN_DIC pTenants word.embObject object.class!
 
-  compiler::current@ word.embObject dic.init
+  pTenants word.embObject dic.init
 
-  true compiler::current@ word.embObject object.wordbody!
-  find: folder compiler::current@ word.category!
-
-  //compiler::current@ word.name@ "  dic: %v" str.format .
+  true pTenants word.embObject object.wordbody!
+  find: folder pTenants word.category!
 ;
 
 : createTenantsFolder2
