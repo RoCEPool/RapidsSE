@@ -142,7 +142,7 @@ Row* InfoSet::aAllotRow(RowSingle* pRowSingle)
      if (DM_VCH == pCol->eDatum()) {
      Stz* szVal = va_arg(xVarArgs,Stz*);
      if (szVal) {
-       ayTail = (Stz*)ayAllotTail(StrLib::nLength(szVal->azChar()));
+       ayTail = (Stz*)ayAllotTail(StrLib::iSize(szVal->azChar()));
        
        // return early if no more space for the string
        if ( ! ayTail )

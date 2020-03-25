@@ -16,10 +16,10 @@
 
   // table
   sTableNm checkIsValidTable not if
-  op.pipelineJob@ ERROR_JOB
-  Operand[].delete
-  Operand[].newErrorMarker
-  exit
+    op.pipelineJob@ ERROR_JOB
+    Operand[].delete
+    Operand[].newErrorMarker
+    exit
   then
 
   // move to table folder and find the table

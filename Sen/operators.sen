@@ -21,6 +21,7 @@
 "OP_gridSanity.sen"       include
 
 "OP_insert.sen"           include
+"OP_listColumns.sen"      include
 "OP_nodeinfo.sen"         include
 "OP_output.sen"           include
 

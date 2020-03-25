@@ -11,7 +11,6 @@ void Step::vAddSteps_Table(void)
 {
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
   vAddStep("table.analyze"_Stz,            &Step::vTableAnalyze);
-  vAddStep("table.columnCount@"_Stz,       &Step::vTableColumnCountFetch);
   vAddStep("table.column@"_Stz,            &Step::vTableColumnFetch);
   vAddStep("table.isDefinitionOnly"_Stz,   &Step::vTableIsDefinitionOnly);
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
@@ -129,23 +128,6 @@ void Step::vTableColumnFetch(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.columnCount@ -- get column count                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vTableColumnCountFetch(void)
-{
-  ENTRY(); // ENTRY("vTableColumnCountFetch"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  i8 nColumns = pStreamDef->nColumns(C_ALL);
-  
-  m_pDataStack->vPushInt(nColumns);
   
   EXIT();
 }

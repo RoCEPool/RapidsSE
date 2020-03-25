@@ -9,9 +9,25 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TableReg(void)
 {
+  vAddStep("table[].columnCount"_Stz,        &Step::vTableColumnCount);
   vAddStep("table[].get"_Stz,                &Step::vTableRegGet);
   vAddStep("table[].set"_Stz,                &Step::vTableRegSet);
   vAddStep("table[].tablePtn@"_Stz,          &Step::vTableRegPtnFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.columnCount -- get column count                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTableColumnCount(void)
+{
+  ENTRY(); // ENTRY("vTableColumnCount"_Stz);
+  
+  StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
+  
+  m_pDataStack->vPushInt(nColumns);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
