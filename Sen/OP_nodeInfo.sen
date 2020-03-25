@@ -5,18 +5,11 @@
 " OP_nodeInfo.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: nodeInfo_PulseMarker \handler
-  "Operand:- ZK_PULSEMARKER" .verbose
+: nodeInfo_action
 
   0 locals| iRowSize |
-
-  // pipeout the start marker
-  Pipein[].pipeout
-
-  // create a new streamDef
-  StreamDef[].new
 
   // get row size from streamDef
   StreamDef[].rowSize to iRowSize
@@ -33,47 +26,7 @@
   // pipeout the infoset
   InfoSet[].pipeout
 
-  // send EOSMARKER
-  Operand[].newEosMarker
-  Operand[].pipeOut
-
   true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: nodeInfo_StartMarker \handler
-  "Operand:- ZK_STARTMARKER" .verbose
-
-  0 locals| iRowSize |
-
-  // pipeout the start marker
-  Pipein[].pipeout
-
-  // find the __nodeInfo table
-  C_TDEF_NODEINFO op__tableDef
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute for chunk req                              (on node where spawned) */
-/*----------------------------------------------------------------------------*/
- : nodeInfo_req \operator
- 
-  LogReqEntry SEED_REQ
-
-  op__topology
-
-  find: nodeInfo_PulseMarker  ZK_PULSEMARKER op[].handler!
-  find: nodeInfo_StartMarker  ZK_STARTMARKER op[].handler!
-
-  op__loop
-
-  LogReqExit
-  job::deleteThis
-  DONE_REQ_OP
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -81,10 +34,14 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: NodeInfo :: NodeInfo ;
 
-: NodeInfo opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+: nodeInfo opInfo tagCopy: liteOp_tags
+tags{
+  <jobDesc>   = "--description of operator--"
+  <liteOp>    = true
+  <streamDef> = __nodeInfo
+  }
 ;
-
+  
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
