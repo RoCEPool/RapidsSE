@@ -1026,6 +1026,7 @@ public:
   void vRegCounter2Set(void);
 
   // info set
+  void vRegInfoSetAddColumnDef(void);
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddNodeInfo(void);
   void vRegInfoSetAddSpaceInfo(void);
@@ -1293,7 +1294,6 @@ public:
   void vTableAddIndex(void);
   void vTableAnalyze(void);
   void vTableBufferGenCsv(void);
-  void vTableColumnCountFetch(void);
   void vTableDrop(void);
   void vTableDump(void);
   void vTableFindColumn(void);
@@ -1346,6 +1346,7 @@ public:
   void vTablePtnTruncate(void);
 
   // table reg
+  void vTableColumnCount(void);
   void vTableRegGet(void);
   void vTableRegSet(void);
   void vTableRegPtnFetch(void);

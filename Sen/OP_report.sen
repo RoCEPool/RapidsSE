@@ -131,17 +131,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
-/*----------------------------------------------------------------------------*/
-: reportOp_StreamDef \handler
-
-  //"Operand:- ZK_STREAMDEF" .verbose
-  Pipein[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for reportOp request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : reportOp_req \operator
@@ -157,7 +146,6 @@
   find: reportOp_IrwBuffer   ZK_IRWBUFFER   op[].handler!
   find: reportOp_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: reportOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: reportOp_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 

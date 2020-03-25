@@ -70,6 +70,19 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
+/* list columns of a table                                                    */
+/*----------------------------------------------------------------------------*/
+procedure lscol
+  parameters $table
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | listColumns $table |
+      outputOp | sinkOp | stageA
+end
+;
+
+/*----------------------------------------------------------------------------*/
 /* check sanity of the grid                                                   */
 /*----------------------------------------------------------------------------*/
 procedure nodeInfo

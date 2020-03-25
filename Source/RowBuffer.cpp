@@ -190,7 +190,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   // get the first row
   Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = pStreamDef->nColumns(C_ALL)* sizeof(i8);
+  i8 nRowHeadSize = Row::nSizeBytes(pStreamDef);
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     hvRowSingle->vCopy(pRow);

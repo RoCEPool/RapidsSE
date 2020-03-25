@@ -34,6 +34,17 @@ create table definition __gridSanity (
   homogenous BOOLEAN NOT NULL
 );
 
+// this is C_TDEF_LISTCOLUMNS
+create table definition __listColumns (
+  columnNo       INTEGER NOT NULL,
+  columnName     VARCHAR NOT NULL,
+  columnType     VARCHAR NOT NULL,
+  columnLength   INTEGER NOT NULL,
+  columnScale    INTEGER NOT NULL,
+  isNull         BOOLEAN NOT NULL,
+  isPartitionKey BOOLEAN NOT NULL
+);
+
 // this is C_TDEF_SEEKOFFSETS
 create table definition __seekOffsets (
   offset INTEGER NOT NULL,

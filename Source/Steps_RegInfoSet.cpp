@@ -10,6 +10,7 @@
 void Step::vAddSteps_RegInfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
+  vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vRegInfoSetAddColumnDef);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addSpaceInfo"_Stz,   &Step::vRegInfoSetAddSpaceInfo);
@@ -25,6 +26,38 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vRegInfoSetWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addColumnDef -- add a row to the infoset with the column def     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddColumnDef(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddColumnDef"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Column* pColumn = pTable->pStreamDef()->pGetColumn(iColumnNo);
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  pColumn->iColumnNo(),
+                                  pColumn->szColNm(),
+                                  aCT[pColumn->eColumnType()],
+                                  pColumn->iColumnLength(),
+                                  pColumn->iColumnScale(),
+                                  pColumn->bIsNullable(),
+                                  pColumn->bIsPtnKey(),
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
