@@ -69,7 +69,10 @@ diclock.dropwrite
 
 diclock.grabwrite
 
-  createTenants
+  createTenants2 locals| pTenants |
+  pTenants compiler::current!
+  pTenants attachMap::tenants!
+
   WK_OBJECT compiler::current@ word.kind!
   sizeof_dic allot
 
