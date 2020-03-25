@@ -1408,7 +1408,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pTenants attachMap::tenants!\n"
     "\n"
     "  WK_OBJECT pTenants word.kind!\n"
-    "  sizeof_dic allot\n"
+    "  sizeof_dic pTenants word.allotObject drop\n"
     "\n"
     "  pTenants word.embObject object.magic!\n"
     "  CN_DIC pTenants word.embObject object.class!\n"

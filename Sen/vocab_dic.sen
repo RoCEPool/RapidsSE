@@ -45,7 +45,7 @@ diclock.dropwrite
   pTenants attachMap::tenants!
 
   WK_OBJECT pTenants word.kind!
-  sizeof_dic allot
+  sizeof_dic pTenants word.allotObject drop
 
   pTenants word.embObject object.magic!
   CN_DIC pTenants word.embObject object.class!
