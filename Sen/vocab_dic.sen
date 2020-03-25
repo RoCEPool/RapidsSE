@@ -36,41 +36,10 @@ diclock.dropwrite
   does>
 ;
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-: createTenantsFolder2
-
-diclock.grabwrite
-
-  "tenants" word::new locals| pTenants |
-
-  WK_OBJECT pTenants word.kind!
-
-  sizeof_dic pTenants word.allotObject drop
-
-  pTenants word.embObject object.magic!
-
-  CN_DIC pTenants word.embObject object.class!
-
-  pTenants word.embObject dic.init
-
-  true pTenants word.embObject object.wordbody!
-
-  find: folder pTenants word.category!
-  
-diclock.dropwrite
-
-  pTenants compiler::current!
-
-  does>
-;
-/*----------------------------------------------------------------------------*/
-: createTenantsFolder3
-
-diclock.grabwrite
+: createTenantsFolder2_a
 
   createTenants2 locals| pTenants |
-  pTenants compiler::current!
+
   pTenants attachMap::tenants!
 
   WK_OBJECT compiler::current@ word.kind!
@@ -85,8 +54,14 @@ diclock.grabwrite
   find: folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
+;
 
+: createTenantsFolder2
+
+diclock.grabwrite
+  createTenantsFolder2_a
 diclock.dropwrite
+
   does>
 ;
 
