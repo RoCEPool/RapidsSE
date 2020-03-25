@@ -14,33 +14,11 @@
 /*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
 /*----------------------------------------------------------------------------*/
-: createTenantsFolder
+: createTenantsFolder2_a
 
 diclock.grabwrite
 
-  createTenants
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_dic allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_DIC compiler::current@ word.embObject object.class!
-
-  compiler::current@ word.embObject dic.init
-
-  true compiler::current@ word.embObject object.wordbody!
-  find: folder compiler::current@ word.category!
-
-  //compiler::current@ word.name@ "  dic: %v" str.format .
-
-diclock.dropwrite
-  does>
-;
-/*----------------------------------------------------------------------------*/
-: createTenantsFolder2_a
-
   createTenants2 locals| pTenants |
-
-  pTenants compiler::current!
 
   pTenants attachMap::tenants!
 
@@ -54,15 +32,15 @@ diclock.dropwrite
 
   true pTenants word.embObject object.wordbody!
   find: folder pTenants word.category!
+
+diclock.dropwrite
 ;
 
 : createTenantsFolder2
 
-diclock.grabwrite
   createTenantsFolder2_a
-diclock.dropwrite
 
-  does>
+  attachMap::tenants@ compiler::current! does>
 ;
 
 /*----------------------------------------------------------------------------*/
