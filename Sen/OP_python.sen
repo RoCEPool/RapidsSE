@@ -30,17 +30,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: pythonOp_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
-  Pipein[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for pythonOp request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : pythonOp_req \operator
@@ -51,7 +40,6 @@
 
   find: pythonOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: pythonOp_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: pythonOp_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 

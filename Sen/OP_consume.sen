@@ -21,7 +21,6 @@
   // set topology, next stage and op
   op__topology
 
-
   begin
 
     // bide till next operand is available

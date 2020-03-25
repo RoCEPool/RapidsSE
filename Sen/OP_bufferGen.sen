@@ -25,17 +25,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: BufferGenOp_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  Pipein[].pipeOut
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* BufferGen request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : BufferGenOp_req \operator
@@ -47,7 +36,6 @@
   op__topology
 
   find: BufferGenOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: BufferGenOp_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 

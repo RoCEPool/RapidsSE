@@ -17,19 +17,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: printOp_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  Pipein[].pipeOut
-
-  true
-;
-
-
-/*----------------------------------------------------------------------------*/
 /* printnOp request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : printOp_req \operator
@@ -39,7 +26,6 @@
   op__topology
 
   find: printOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: printOp_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
