@@ -11,10 +11,6 @@
 
   LogReqEntry SEED_REQ
 
-  <consumeXmits> >int to Counter0[]
-
-  0 0 0 0 0 0 locals| start pulse pulsed def exit eos |
-
   <consumeXmits> >int op.leftEosMarkers!
   consumeXmits[].new
 
@@ -43,21 +39,7 @@
           Pipein[].delete
           true
         then
-/*
-        exit 1 + to exit
-        exit Counter0[] == if
-          Pipein[].pipeOut
-          Op.ackPipelineJob
-          false
-        else
-          Pipein[].delete
-          true
-        then
 
-        exit Counter0[] > if
-          Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
-        then
-*/
       endof
 
       ZK_EOSMARKER of
@@ -88,24 +70,6 @@
           Pipein[].delete
         then
         true
-/*
-        pulse 0 == if
-          Pipein[].pipeOut
-        else
-          Pipein[].delete
-        then
-        pulse 1 + to pulse
-
-        pulse Counter0[] > if
-          Counter0[] start "Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v" str.format .
-        then
-
-        // reset pulse to allow for periodic pulses to come
-        pulse Counter0[] == if
-          0 to pulse
-        then
-        true
- */
       endof
 
       ZK_PULSEDMARKER of
@@ -116,19 +80,7 @@
           Pipein[].delete
         then
         true
-/*
-        pulsed 0 == if
-          Pipein[].pipeOut
-        else
-          Pipein[].delete
-        then
-        pulsed 1 + to pulsed
 
-        pulsed Counter0[] > if
-          Counter0[] start "Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v" str.format .
-        then
-        true
- */
       endof
 
       ZK_STARTMARKER of
@@ -140,20 +92,7 @@
           Pipein[].delete
         then
         true
-/*
-        start 0 == if
-          Pipein[].pipeOut
-        else
-          Pipein[].delete
-        then
-        start 1 + to start
 
-        start Counter0[] > if
-          Counter0[] start "Warning: ConsumeOp ZK_STARTMARKER received %v; expected %v" str.format .
-        then
-
-        true
-*/
       endof
 
       ZK_EXITMARKER of
@@ -167,21 +106,7 @@
           Pipein[].delete
           true
         then
-/*
-        exit 1 + to exit
-        exit Counter0[] == if
-          Pipein[].pipeOut
-          Op.ackPipelineJob
-          false
-        else
-          Pipein[].delete
-          true
-        then
 
-        exit Counter0[] > if
-          Counter0[] exit "Warning: ConsumeOp ZK_EXITMARKER received %v; expected %v" str.format .
-        then
-*/
       endof
 
         ZK_STREAMDEF of
@@ -193,20 +118,6 @@
           then
           true
         endof
-/*
-          def 0 == if
-            Pipein[].pipeOut
-          else
-            Pipein[].delete
-          then
-          def 1 + to def
-          true
-        endof
-
-        exit Counter0[] > if
-          Counter0[] def "Warning: ConsumeOp ZK_STREAMDEF received %v; expected %v" str.format .
-        then
-*/
         // handle other operand as generic operands
         jobOperand::generic
         swap
