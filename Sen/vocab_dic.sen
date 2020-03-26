@@ -69,31 +69,6 @@ diclock.dropwrite
   does>
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-: dicPersistent:
-
-diclock.grabwrite
-
-  createPersistent
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_dic allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_DIC compiler::current@ word.embObject object.class!
-
-  compiler::current@ word.embObject dic.init
-
-  true compiler::current@ word.embObject object.wordbody!
-  find: \folder compiler::current@ word.category!
-
-  //compiler::current@ word.name@ "  dic: %v" str.format .
-
-diclock.dropwrite
-
-  does>
-;
-
 /*----------------------------------------------------------------------------*/
 /* create a dictionary using name on the stack (leaves dic on stack)          */
 /*----------------------------------------------------------------------------*/
@@ -121,31 +96,6 @@ diclock.dropwrite
   does>
 ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-: :dicPersistent
-
-diclock.grabwrite
-
-  >createPersistent
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_dic allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_DIC compiler::current@ word.embObject object.class!
-
-  find: \folder compiler::current@ word.category!
-
-  true compiler::current@ word.embObject object.wordbody!
-  compiler::current@ word.embObject dic.init
-
-  compiler::current@
-
-  //compiler::current@ word.name@ "  :dic %v" str.format .
-
-diclock.dropwrite
-  does>
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
