@@ -7,31 +7,35 @@
 /*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
 /*----------------------------------------------------------------------------*/
-: createTenantsFolder_proper
+
+: createFolder_proper params| sFolderNm |
 
 diclock.grabwrite
 
-  "tenants" word::new locals| pTenants |
+  sFolderNm word::new locals| pFolder |
 
-  pTenants attachMap::tenants!
+  WK_OBJECT pFolder word.kind!
 
-  WK_OBJECT pTenants word.kind!
-  sizeof_dic pTenants word.allotObject drop
+  sizeof_dic pFolder word.allotObject drop
 
-  pTenants word.embObject object.magic!
-  CN_DIC pTenants word.embObject object.class!
+  pFolder word.embObject object.magic!
 
-  pTenants word.embObject dic.init
+  CN_DIC pFolder word.embObject object.class!
 
-  true pTenants word.embObject object.wordbody!
-  find: \folder pTenants word.category!
+  pFolder word.embObject dic.init
+
+  true pFolder word.embObject object.wordbody!
+
+  find: \folder pFolder word.category!
 
 diclock.dropwrite
+
+  pFolder
 ;
 
 : createTenantsFolder
 
-  createTenantsFolder_proper
+  "tenants" createFolder_proper attachMap::tenants!
 
   attachMap::tenants@ compiler::current! does>
 ;
