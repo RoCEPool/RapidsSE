@@ -426,12 +426,12 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* create a sub-folder under given dic                                        */
 /*----------------------------------------------------------------------------*/
-: :subfolder params| pDic sSubDicNm |
+: :subfolder params| pDic sSubFolderNm |
 
   pDic pathPush
 
     find: \folder
-    sSubDicNm :dic3 execute dic.kind!
+    sSubFolderNm createFolder execute dic.kind!
 
   pathDrop
 ;
