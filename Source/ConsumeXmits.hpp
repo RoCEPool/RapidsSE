@@ -8,6 +8,8 @@ namespace Pipelines
   class ConsumeXmits : public Focal
   {
   private:
+    i8             m_iConsumeXmits;   // consume xmits
+    
     i8             m_iExitMarkers;    // exit / cancel markers received by consumeOp
     i8             m_iEosMarkers;     // eos / error markers received by consumeOp
     i8             m_iPulseMarkers;   // pulse markers received by consumeOp
@@ -22,9 +24,15 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    ConsumeXmits(void);
+    ConsumeXmits(i8 iConsumeXmits);
     ~ConsumeXmits(void) noexcept(false);
-  
+    
+    bool bCancelDone(void);
+    bool bExitDone(void);
+    
+    void vIncCancel(void);
+    void vIncExit(void);
+    
     Footer* aFooter(void);
     
   };

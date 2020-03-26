@@ -1018,6 +1018,8 @@ public:
 
   // ConsumeXmits
   void vRegConsumeXmitsDelete(void);
+  void vRegConsumeXmitsCancel(void);
+  void vRegConsumeXmitsExit(void);
   void vRegConsumeXmitsGet(void);
   void vRegConsumeXmitsIsNull(void);
   void vRegConsumeXmitsNew(void);

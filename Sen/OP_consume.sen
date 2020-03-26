@@ -33,6 +33,16 @@
 
       ZK_CANCELMARKER of
         "CONSUMEOP: Operand:- ZK_CANCELMARKER" .verbose
+        consumeXmits[].cancel if
+          Pipein[].pipeOut
+          Op.ackPipelineJob
+          consumeXmits[].delete
+          false
+        else
+          Pipein[].delete
+          true
+        then
+/*
         exit 1 + to exit
         exit Counter0[] == if
           Pipein[].pipeOut
@@ -46,7 +56,7 @@
         exit Counter0[] > if
           Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
         then
-
+*/
       endof
 
       ZK_EOSMARKER of
@@ -122,6 +132,7 @@
         //"Operand:- ZK_STARTMARKER" .verbose
         // pipeout first STARTMARKER
         start 0 == if
+          consumeXmits[].new
           Pipein[].pipeOut
         else
           Pipein[].delete
@@ -137,6 +148,16 @@
 
       ZK_EXITMARKER of
         //"Operand:- ZK_EXITMARKER" .verbose
+        consumeXmits[].exit if
+          Pipein[].pipeOut
+          Op.ackPipelineJob
+          consumeXmits[].delete
+          false
+        else
+          Pipein[].delete
+          true
+        then
+/*
         exit 1 + to exit
         exit Counter0[] == if
           Pipein[].pipeOut
@@ -150,7 +171,7 @@
         exit Counter0[] > if
           Counter0[] exit "Warning: ConsumeOp ZK_EXITMARKER received %v; expected %v" str.format .
         then
-
+*/
       endof
 
         ZK_STREAMDEF of

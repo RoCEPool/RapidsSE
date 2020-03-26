@@ -10,9 +10,27 @@
 void Step::vAddSteps_RegConsumeXmits(void)
 {
   vAddStep("ConsumeXmits[]"_Stz,          &Step::vRegConsumeXmitsGet);
+  vAddStep("ConsumeXmits[].cancel"_Stz,   &Step::vRegConsumeXmitsCancel);
   vAddStep("ConsumeXmits[].delete"_Stz,   &Step::vRegConsumeXmitsDelete);
+  vAddStep("ConsumeXmits[].exit"_Stz,     &Step::vRegConsumeXmitsExit);
   vAddStep("ConsumeXmits[].isNull"_Stz,   &Step::vRegConsumeXmitsIsNull);
   vAddStep("ConsumeXmits[].new"_Stz,      &Step::vRegConsumeXmitsNew);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ConsumeXmits[].cancel -- handle consume of cancel marker                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRegConsumeXmitsCancel(void)
+{
+  ENTRY(); // ENTRY("vRegConsumeXmitsCancel"_Stz);
+  
+  ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
+ 
+  pConsumeXmits->vIncExit();
+  
+  m_pDataStack->vPushInt(pConsumeXmits->bExitDone());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,11 +43,26 @@ void Step::vRegConsumeXmitsDelete(void)
   ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
   delete pConsumeXmits;
   
-  m_pRegSet->m_xpOperandOoO = nullptr;
+  m_pRegSet->m_xpConsumeXmits = nullptr;
   
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* ConsumeXmits[].exit -- handle consume of exit marker                       */
+/*----------------------------------------------------------------------------*/
+void Step::vRegConsumeXmitsExit(void)
+{
+  ENTRY(); // ENTRY("vRegConsumeXmitsExit"_Stz);
+  
+  ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
+  
+  pConsumeXmits->vIncExit();
+  
+  m_pDataStack->vPushInt(pConsumeXmits->bExitDone());
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* ConsumeXmits[].get -- fetch operand                                        */
 /*----------------------------------------------------------------------------*/
@@ -63,7 +96,8 @@ void Step::vRegConsumeXmitsNew(void)
   
   ASSERT (m_pRegSet->m_xpConsumeXmits.bIsNull());
   
-  m_pRegSet->m_xpConsumeXmits = new ConsumeXmits;
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  m_pRegSet->m_xpConsumeXmits = new ConsumeXmits(pOp->nLeftEosMarkers());
   
   EXIT();
 }
