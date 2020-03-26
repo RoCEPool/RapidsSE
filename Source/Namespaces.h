@@ -63,7 +63,7 @@ namespace Oblique       { class AM;                                           }
 namespace Operands      { class Operand;                                      }
 namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
-namespace Pipelines     { class Op; class Pipeline;
+namespace Pipelines     { class ConsumeXmits; class Op; class Pipeline;
                           class Stage; class StageVec;                        }
 namespace PipelineSpecs { class OpSpec; class PipelineSpec; class StageSpec;  }
 namespace Plans         {                                                     }

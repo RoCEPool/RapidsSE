@@ -48,7 +48,7 @@ static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
 static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
 static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
-
+#include "ConsumeXmits.hpp"
 #include "Op.hpp"
 #include "Strand.hpp"
 #include "Stage.hpp"

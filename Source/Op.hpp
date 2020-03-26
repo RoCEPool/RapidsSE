@@ -39,14 +39,6 @@ namespace Pipelines
     eXK            m_eXmitKind;       // xmit kind
     i8             m_iRobin;          // xmit Round Robin partition/node/thread
   
-    // ConsumeOP specific counters
-    i8             m_iExitMarkers;    // exit / cancel markers received by consumeOp
-    i8             m_iEosMarkers;     // eos / error markers received by consumeOp
-    i8             m_iPulseMarkers;   // pulse markers received by consumeOp
-    i8             m_iPulsedMarkers;  // pulsed markers received by consumeOp
-    i8             m_iStartMarkers;   // start markers received by consumeOp
-    i8             m_iStreamDefs;     // stream def's received by consumeOp
-    
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     
     // must be last

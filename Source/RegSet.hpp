@@ -51,6 +51,8 @@ namespace Registers
     
     REG<Operand>     m_xpPipein;    // Pipein
     
+    REG<ConsumeXmits> m_xpConsumeXmits; // consume xmits
+    
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter

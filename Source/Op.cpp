@@ -83,13 +83,6 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_iXmitNode  = C_UNKNOWN;
   m_iRobin     = 0;
   
-  m_iExitMarkers   = 0;
-  m_iEosMarkers    = 0;
-  m_iPulseMarkers  = 0;
-  m_iPulsedMarkers = 0;
-  m_iStartMarkers  = 0;
-  m_iStreamDefs    = 0;
-  
   vInitOperandHandlers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
