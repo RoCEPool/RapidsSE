@@ -1678,7 +1678,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": :subfolder ( \\\"<subDicNm>\\\" dic -- )\n"
     "\n"
-    "  pathPush :dic3 find: \\\\folder swap execute dic.kind! pathDrop\n"
+    "  pathPush :dic2 find: \\\\folder swap execute dic.kind! pathDrop\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

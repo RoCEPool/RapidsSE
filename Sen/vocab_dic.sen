@@ -428,7 +428,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :subfolder ( "<subDicNm>" dic -- )
 
-  pathPush :dic3 find: \folder swap execute dic.kind! pathDrop
+  pathPush :dic2 find: \folder swap execute dic.kind! pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
