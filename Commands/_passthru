@@ -18,7 +18,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on origin:
-    bufferGenOp 10 | passThruOp | stageC
+    bufferGen 10 | passThru | stageC
 
   stage stageC on origin:
     reportOp "/tmp/passThru.rep" | outputOp | sinkOp | stageA

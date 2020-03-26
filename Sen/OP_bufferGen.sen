@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: BufferGenOp_PulseMarker \handler
+: BufferGen_PulseMarker \handler
 
   "Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* BufferGen request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: BufferGenOp_req \operator
+: BufferGen_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -35,7 +35,7 @@
 
   op__topology
 
-  find: BufferGenOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: BufferGen_PulseMarker ZK_PULSEMARKER op[].handler!
 
   op__loop
 
@@ -48,9 +48,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: bufferGenOp :: bufferGenOp <nBuffers> ;
+opSyntax: bufferGen :: bufferGen <nBuffers> ;
 
-: bufferGenOp opInfo tagCopy: localOp_tags
+: bufferGen opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

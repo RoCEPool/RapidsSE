@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: PassThruOp_CsvBuffer \handler
+: PassThru_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   Counter0[] 1 + to  Counter0[]
@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
-: PassThruOp_EosMarker \handler
+: PassThru_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
   Pipein[].delete
@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: PassThruOp_PulseMarker \handler
+: PassThru_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: PassThruOp_StartMarker \handler
+: PassThru_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for passThru req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : PassThruOp_req \operator
+ : PassThru_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -83,10 +83,10 @@
 
   op__topology
 
-  find: PassThruOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: PassThruOp_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: PassThruOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: PassThruOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: PassThru_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: PassThru_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: PassThru_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: PassThru_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -98,9 +98,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: PassThruOp :: PassThruOp ;
+opSyntax: PassThru :: PassThru ;
 
-: PassThruOp opInfo tagCopy: localOp_tags
+: PassThru opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

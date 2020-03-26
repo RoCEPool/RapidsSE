@@ -117,7 +117,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on origin:
-    GenCsvOp T | passThruOp | stageC
+    GenCsvOp T | passThru | stageC
 
   stage stageC on origin:
     sinkOp | stageA
