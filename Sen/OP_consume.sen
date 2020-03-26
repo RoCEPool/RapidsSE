@@ -16,6 +16,7 @@
   0 0 0 0 0 0 locals| start pulse pulsed def exit eos |
 
   <consumeXmits> >int op.leftEosMarkers!
+  consumeXmits[].new
 
   // set topology, next stage and op
   op__topology
@@ -132,7 +133,6 @@
         //"Operand:- ZK_STARTMARKER" .verbose
         // pipeout first STARTMARKER
         start 0 == if
-          consumeXmits[].new
           Pipein[].pipeOut
         else
           Pipein[].delete
