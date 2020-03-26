@@ -426,9 +426,14 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* create a sub-folder under given dic                                        */
 /*----------------------------------------------------------------------------*/
-: :subfolder ( "<subDicNm>" dic -- )
+: :subfolder params| pDic sSubDicNm |
 
-  pathPush :dic2 find: \folder swap execute dic.kind! pathDrop
+  pDic pathPush
+
+    find: \folder
+    sSubDicNm :dic2 execute dic.kind!
+
+  pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
