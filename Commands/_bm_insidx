@@ -47,7 +47,7 @@ begin
 
   stage stageB on all partitions:
       BM_GenEntOp ALLCOLS_TABLE ALLCOLS_INDEX_int 10
-    | burstOp
+    | burst
     | BM_InsIdxOp ALLCOLS_TABLE ALLCOLS_INDEX_int
     | stageC
 

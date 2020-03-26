@@ -31,9 +31,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* burstOp request                                    (on node where spawned) */
+/* burst request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: burstOp_req \operator
+: burst_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -53,9 +53,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: burstOp :: burstOp ;
+opSyntax: burst :: burst ;
 
-: burstOp opInfo tagCopy: localOp_tags
+: burst opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

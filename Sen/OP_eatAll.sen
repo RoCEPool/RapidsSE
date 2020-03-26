@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* eatAll request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: eatAllOp_req \operator
+: eatAll_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -31,7 +31,7 @@
 
   op__loop
 
-  "*** eatAllOp_req EXITS" .
+  "*** eatAll_req EXITS" .
   LogReqExit
   job::deleteThis
   DONE_REQ_OP
@@ -40,9 +40,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: eatAllOp :: eatAllOp ;
+opSyntax: eatAll :: eatAll ;
 
-: eatAllOp opInfo tagCopy: localOp_tags
+: eatAll opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
