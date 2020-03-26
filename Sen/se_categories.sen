@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */
 /*----------------------------------------------------------------------------*/
-: folder \\category ;
+: folder ;
 
 : isFolder word.category@ find: folder eql ;
 

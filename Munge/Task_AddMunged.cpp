@@ -8988,7 +8988,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* folder is used as a kind of word to identify folders                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": folder \\\\\\\\category ;\n"
+    ": folder ;\n"
     "\n"
     ": isFolder word.category@ find: folder eql ;\n"
     "\n"
