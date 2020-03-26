@@ -186,7 +186,7 @@ void ReadApi::vPurgePriorVersions(t8 tOldestPsp)
   
 #ifdef WITH_TRACE_PURGING
   vTrace("-----------------------------------\n"_Stz);
-  vTrace("PURGEOP OldestPsp: (t%lld)\n"_Stz, tOldestPsp);
+  vTrace("PURGE OldestPsp: (t%lld)\n"_Stz, tOldestPsp);
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Purge RC INDEX entry buffers

@@ -74,7 +74,7 @@ CREATE 1 THREADS {
         startOp | periodicOp once | stageB
       
       stage stageB on all partitions:
-        purgeOp T | stageC
+        purge T | stageC
       
       stage stageC on origin:
         output | sinkOp | stageA
@@ -172,7 +172,7 @@ begin
   startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-  purgeOp T | stageC
+  purge T | stageC
 
   stage stageC on origin:
   output | sinkOp | stageA

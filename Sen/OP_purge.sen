@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: PurgeOp_PulseMarker \handler
+: Purge_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: PurgeOp_StartMarker \handler
+: Purge_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -54,16 +54,16 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* PurgeOp request                                    (on node where spawned) */
+/* Purge request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: PurgeOp_req \operator
+: Purge_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: PurgeOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: PurgeOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: Purge_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: Purge_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -75,9 +75,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: PurgeOp :: PurgeOp <tableNm> ;
+opSyntax: Purge :: Purge <tableNm> ;
 
-: PurgeOp opInfo tagCopy: localOp_tags
+: Purge opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

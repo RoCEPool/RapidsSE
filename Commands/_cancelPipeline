@@ -63,7 +63,7 @@ pipeline forever
 begin
 
   stage stageA on origin:
-    startOp | periodicOp min 1 | printOp "hello" | stageB
+    startOp | periodicOp min 1 | print "hello" | stageB
 
   stage stageB on origin:
     sinkOp | stageA

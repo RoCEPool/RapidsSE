@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: printOp_PulseMarker \handler
+: print_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -17,15 +17,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* printnOp request                                   (on node where spawned) */
+/* printn request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: printOp_req \operator
+: print_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: printOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: print_PulseMarker ZK_PULSEMARKER op[].handler!
 
   op__loop
 
@@ -37,9 +37,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: printOp :: printOp <string> ;
+opSyntax: print :: print <string> ;
 
-: printOp opInfo tagCopy: localOp_tags
+: print opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
