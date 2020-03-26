@@ -19,9 +19,9 @@
   then
 
   find execute ( dic )
-  "indexes"     ( dic "indexes" )
+  "indexes"    ( dic "indexes" )
   swap         ( "indexes" dic )
-  :folder      ( )
+  :subFolder   ( )
 ;
 
 : isIndex word.category@ find: index eql ;

@@ -45,7 +45,7 @@
   find execute ( dic )
   "schemas"    ( dic "schemas" )
   swap         ( "schemas" dic )
-  :folder      ( )
+  :subFolder   ( )
 ;
 
 

@@ -39,7 +39,7 @@
   find execute ( dic )
   "catalogs"   ( dic "catalogs" )
   swap         ( "catalogs" dic )
-  :folder      ( )
+  :subFolder   ( )
 ;
 
 /*============================================================================*/

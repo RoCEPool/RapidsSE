@@ -279,9 +279,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a subdictionary under given dic                                     */
+/* create a sub-folder under given dic                                        */
 /*----------------------------------------------------------------------------*/
-: :folder ( "<subDicNm>" dic -- )
+: :subfolder ( "<subDicNm>" dic -- )
 
   pathPush :dic find: \folder swap execute dic.kind! pathDrop
 ;

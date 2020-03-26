@@ -18,7 +18,7 @@
   tableNm find execute ( dic )
   "partitions" ( dic "partitions" )
   swap         ( "partitions" dic )
-  :folder      ( )
+  :subFolder   ( )
 ;
 
 /*----------------------------------------------------------------------------*/
