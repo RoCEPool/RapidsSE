@@ -283,7 +283,7 @@
 /*----------------------------------------------------------------------------*/
 : :folder ( "<subDicNm>" dic -- )
 
-  pathPush :dic find: folder swap execute dic.kind! pathDrop
+  pathPush :dic find: \folder swap execute dic.kind! pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/

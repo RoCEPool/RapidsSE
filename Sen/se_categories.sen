@@ -33,9 +33,9 @@
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */
 /*----------------------------------------------------------------------------*/
-: folder \\category ;
+: \folder \\category ;
 
-: isFolder word.category@ find: folder eql ;
+: isFolder word.category@ find: \folder eql ;
 
 /*============================================================================*/
 /* end                                                                        */
