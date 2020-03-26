@@ -1020,6 +1020,7 @@ public:
   void vRegConsumeXmitsDelete(void);
   void vRegConsumeXmitsGet(void);
   void vRegConsumeXmitsIsNull(void);
+  void vRegConsumeXmitsNew(void);
  
   // reg counter
   void vRegCounter0Get(void);
