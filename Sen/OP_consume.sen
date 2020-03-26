@@ -13,8 +13,7 @@
 
   <consumeXmits> >int to Counter0[]
 
-  0 0 0 0 0 locals| start pulse pulsed def exit |
-  Counter0[] locals| eos |
+  0 0 0 0 0 0 locals| start pulse pulsed def exit eos |
 
   <consumeXmits> >int op.leftEosMarkers!
 
@@ -52,13 +51,16 @@
 
       ZK_EOSMARKER of
         //"Operand:- ZK_EOSMARKER" .verbose
-        eos 1 - to eos
-        eos 0 == if
-          Counter0[] to eos
+        eos 1 + to eos
+        eos Counter0[] == if
+          0 to eos
           Pipein[].pipeOut
         else
-          Counter0[] to eos
           Pipein[].delete
+        then
+
+        exit Counter0[] > if
+          Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
         then
 
         true
@@ -66,12 +68,16 @@
 
       ZK_ERRORMARKER of
         //"Operand:- ZK_ERRORMARKER" .verbose
-        eos 1 - to eos
-        eos 0 == if
-          Counter0[] to eos
+        eos 1 + to eos
+        eos Counter0[] == if
+          0 to eos
           Pipein[].pipeOut
         else
           Pipein[].delete
+        then
+
+        exit Counter0[] > if
+          Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
         then
 
         true
