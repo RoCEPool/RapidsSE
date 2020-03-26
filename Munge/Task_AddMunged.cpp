@@ -1681,7 +1681,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pDic pathPush\n"
     "\n"
     "    find: \\\\folder\n"
-    "    sSubDicNm :dic2 execute dic.kind!\n"
+    "    sSubDicNm :dic3 execute dic.kind!\n"
     "\n"
     "  pathDrop\n"
     " ;\n"
