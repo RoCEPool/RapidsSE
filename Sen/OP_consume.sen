@@ -59,7 +59,7 @@
           Pipein[].delete
         then
 
-        exit Counter0[] > if
+        eos Counter0[] > if
           Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
         then
 
@@ -76,7 +76,7 @@
           Pipein[].delete
         then
 
-        exit Counter0[] > if
+        eos Counter0[] > if
           Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
         then
 
