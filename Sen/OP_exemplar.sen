@@ -15,9 +15,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* exemplarOp request                                 (on node where spawned) */
+/* exemplar request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: exemplarOp_req \operator
+: exemplar_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -37,9 +37,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: exemplarOp :: exemplarOp ;
+opSyntax: exemplar :: exemplar ;
 
-: exemplarOp opInfo tagCopy: localOp_tags
+: exemplar opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

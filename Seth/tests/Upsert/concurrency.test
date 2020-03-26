@@ -29,7 +29,7 @@ LOOP 6 {
       startOp | periodicOp once | stageB
 
     stage stageB on all partitions:
-      genCsvOp T | toCrwOp T | upsertOp T | stageC
+      genCsv T | toCrwOp T | upsertOp T | stageC
 
     stage stageC on origin:
       outputOp | sinkOp | stageA

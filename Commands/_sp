@@ -29,7 +29,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    genCsvOp $Table | toCrwOp $Table | upsertOp $Table | stageC
+    genCsv $Table | toCrwOp $Table | upsertOp $Table | stageC
 
   stage stageC on origin:
     outputOp | sinkOp | stageA

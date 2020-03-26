@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: genCsvOp_PulseMarker \handler
+: genCsv_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: genCsvOp_StartMarker \handler
+: genCsv_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if table exits
@@ -53,20 +53,20 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* genCsvOp request                                   (on node where spawned) */
+/* genCsv request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: genCsvOp_req \operator
+: genCsv_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: genCsvOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: genCsvOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: genCsv_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: genCsv_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
-  "*** GENCSVOP EXITS" .
+  "*** GENCSV EXITS" .
   LogReqExit
   job::deleteThis
   DONE_REQ_OP
@@ -75,9 +75,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: genCsvOp :: genCsvOp <tableNm> ;
+opSyntax: genCsv :: genCsv <tableNm> ;
 
-: genCsvOp opInfo tagCopy: localOp_tags
+: genCsv opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
