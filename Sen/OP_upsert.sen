@@ -60,7 +60,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for insertOp                               (on node where spawned) */
+/* execute for upsert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : UpsertOp_req \operator
  

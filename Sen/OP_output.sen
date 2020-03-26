@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_CrwBuffer \handler
+: output_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
   Pipein[].pipeToJob
@@ -18,7 +18,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_CsvBuffer \handler
+: output_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   Pipein[].pipeToJob
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ENTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_EntBuffer \handler
+: output_EntBuffer \handler
 
   //"Operand:- ZK_ENTBUFFER" .verbose
   Pipein[].pipeToJob
@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_EosMarker \handler
+: output_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
   Pipein[].pipeToJob
@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: outputOp_ErrorMarker \handler
+: output_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].pipeToJob
@@ -66,7 +66,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_INFOSET ...                                                 */
 /*----------------------------------------------------------------------------*/
-: outputOp_InfoSet \handler
+: output_InfoSet \handler
 
   //"Operand:- ZK_INFOSET" .verbose
   Pipein[].pipeToJob
@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_IRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_IrwBuffer \handler
+: output_IrwBuffer \handler
 
   //"Operand:- ZK_IRWBUFFER" .verbose
   Pipein[].pipeToJob
@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: outputOp_PulseMarker \handler
+: output_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -101,7 +101,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_SRTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_SrtBuffer \handler
+: output_SrtBuffer \handler
 
   //"Operand:- ZK_SRTBUFFER" .verbose
   Pipein[].pipeToJob
@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: outputOp_StartMarker \handler
+: output_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
   Pipein[].pipeToJob
@@ -125,7 +125,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: outputOp_StreamDef \handler
+: output_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].pipeToJob
@@ -134,25 +134,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for outputOp request                       (on node where spawned) */
+/* execute for output request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: outputOp_req \operator
+: output_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: outputOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: outputOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: outputOp_EntBuffer   ZK_ENTBUFFER   op[].handler!
-  find: outputOp_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: outputOp_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: outputOp_InfoSet     ZK_INFOSET     op[].handler!
-  find: outputOp_IrwBuffer   ZK_IRWBUFFER   op[].handler!
-  find: outputOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: outputOp_SrtBuffer   ZK_SRTBUFFER   op[].handler!
-  find: outputOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: outputOp_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: output_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: output_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: output_EntBuffer   ZK_ENTBUFFER   op[].handler!
+  find: output_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: output_InfoSet     ZK_INFOSET     op[].handler!
+  find: output_IrwBuffer   ZK_IRWBUFFER   op[].handler!
+  find: output_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
+  find: output_StartMarker ZK_STARTMARKER op[].handler!
+  find: output_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -164,9 +164,9 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: outputOp :: outputOp ;
+opSyntax: output :: output ;
 
-: outputOp opInfo tagCopy: localOp_tags
+: output opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

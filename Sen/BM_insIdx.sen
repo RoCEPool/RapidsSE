@@ -103,7 +103,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for insertOp                               (on node where spawned) */
+/* execute for insIdx                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : BM_InsIdxOp_req \operator
  
