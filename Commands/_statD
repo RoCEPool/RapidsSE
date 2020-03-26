@@ -21,7 +21,7 @@ end;
 //    startOp | periodicOp once | stageB
 //
 //  stage stageB on origin:
-//    outputOp | sinkOp | stageA
+//    output | sinkOp | stageA
 //end;
 
 /*============================================================================*/

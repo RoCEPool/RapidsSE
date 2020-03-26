@@ -36,7 +36,7 @@ begin
     BM_InflateCrwOp ALLCOLS_TABLE | stageC
 
   stage stageC on origin:
-    reportOp "/tmp/bm_inflateRow_rep.csv" | outputOp | sinkOp | stageA
+    reportOp "/tmp/bm_inflateRow_rep.csv" | output | sinkOp | stageA
 end;
 
 stepTiming write "/tmp/StepTiming.csv";

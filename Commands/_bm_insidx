@@ -52,7 +52,7 @@ begin
     | stageC
 
   stage stageC on origin:
-    reportOp "/tmp/bm_insidx_rep.csv" | outputOp | sinkOp | stageA
+    reportOp "/tmp/bm_insidx_rep.csv" | output | sinkOp | stageA
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

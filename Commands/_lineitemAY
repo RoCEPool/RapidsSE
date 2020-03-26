@@ -170,7 +170,7 @@ stage stageB on all partitions:
 scanOp lineitem | stageC
 
 stage stageC on origin:
-outputOp | sinkOp | stageA
+output | sinkOp | stageA
 
 end
 ;
@@ -200,7 +200,7 @@ stage stageB on all partitions:
 scanOp lineitem | stageC
 
 stage stageC on origin:
-outputOp | sinkOp | stageA
+output | sinkOp | stageA
 
 end
 ;
@@ -215,7 +215,7 @@ stage stageB on all partitions:
 scanOp lineitem | stageC
 
 stage stageC on origin:
-outputOp | stageD
+output | stageD
 
 stage stageD on origin:
 sinkOp | stageA
@@ -233,10 +233,10 @@ stage stageB on all partitions:
 scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
 
 stage stageC on all partitions:
-insertOp lineitem2  | stageD
+insert lineitem2  | stageD
 
 stage stageD on origin:
-outputOp | sinkOp | stageA
+output | sinkOp | stageA
 
 end
 ;
@@ -265,7 +265,7 @@ docol epochDump;
  scanOp lineitem2 |  countOp | stageB
  
  stage stageB on origin:
- superCountOp | outputOp | sinkOp
+ superCountOp | output | sinkOp
  
  end
  ;
@@ -279,7 +279,7 @@ begin
     scanOp lineitem | stageB
 
   stage stageB on origin:
-    outputOp | sinkOp
+    output | sinkOp
 
 end
 ;
@@ -293,7 +293,7 @@ time pipeline export
 begin
 
 stage stageA on all partitions:
-scanOp lineitem | outputOp
+scanOp lineitem | output
 
 end
 ;
@@ -319,23 +319,12 @@ docol epochTake;
  begin
  
  stage stageA on all partitions:
- scanOp lineitem |  outputOp
+ scanOp lineitem |  output
  
  end
  ;
 
 docol epochDump;
-
-
- pipeline export
- begin
- 
- stage stageA on all partitions:
- scanOp lineitem |  stageB
- stage stageB on origin:
-  outputOp
- end
- ;
 
  docol epochDump;
  create table orders (
@@ -358,19 +347,7 @@ docol epochDump;
 
  
 //docol epochTake;
-pipeline lineItem_dyn
-begin
 
-stage stageA on all partitions:
-  scanOp lineitem | stageB
-stage stageB on origin:
-  outputOp
-
-end;
-
-
- 
- 
  pipeline lineItem_dyn
  begin
  
