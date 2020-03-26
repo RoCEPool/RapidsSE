@@ -134,6 +134,13 @@
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
         // pipeout first STARTMARKER
+        consumeXmits[].start if
+          Pipein[].pipeOut
+        else
+          Pipein[].delete
+        then
+        true
+/*
         start 0 == if
           Pipein[].pipeOut
         else
@@ -146,6 +153,7 @@
         then
 
         true
+*/
       endof
 
       ZK_EXITMARKER of
@@ -178,6 +186,14 @@
 
         ZK_STREAMDEF of
           //"Operand:- ZK_STREAMDEF" .verbose
+          consumeXmits[].streamDef if
+            Pipein[].pipeOut
+          else
+            Pipein[].delete
+          then
+          true
+        endof
+/*
           def 0 == if
             Pipein[].pipeOut
           else
@@ -190,7 +206,7 @@
         exit Counter0[] > if
           Counter0[] def "Warning: ConsumeOp ZK_STREAMDEF received %v; expected %v" str.format .
         then
-
+*/
         // handle other operand as generic operands
         jobOperand::generic
         swap

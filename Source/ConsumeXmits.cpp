@@ -182,6 +182,42 @@ bool ConsumeXmits::bPulsedDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* start done ?                                                               */
+/*----------------------------------------------------------------------------*/
+bool ConsumeXmits::bStartDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  if (m_iStartMarkers > m_iConsumeXmits)
+    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
+           m_iStartMarkers, m_iConsumeXmits);
+  
+  if (m_iStartMarkers == 0) {
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* streamDef done ?                                                           */
+/*----------------------------------------------------------------------------*/
+bool ConsumeXmits::bStreamDefDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  if (m_iStreamDefs > m_iConsumeXmits)
+    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
+           m_iStreamDefs, m_iConsumeXmits);
+  
+  if (m_iStreamDefs == 0) {
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc cancel                                                                 */
 /*----------------------------------------------------------------------------*/
 void ConsumeXmits::vIncCancel(void)
@@ -241,6 +277,25 @@ void ConsumeXmits::vIncPulsed(void)
   m_iPulsedMarkers++;
 }
 
+/*----------------------------------------------------------------------------*/
+/* inc start                                                                  */
+/*----------------------------------------------------------------------------*/
+void ConsumeXmits::vIncStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  m_iStartMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc streamDef                                                              */
+/*----------------------------------------------------------------------------*/
+void ConsumeXmits::vIncStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  m_iStreamDefs++;
+}
 
 /*----------------------------------------------------------------------------*/
 

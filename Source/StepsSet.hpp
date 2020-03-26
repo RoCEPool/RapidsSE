@@ -1027,6 +1027,8 @@ public:
   void vRegConsumeXmitsNew(void);
   void vRegConsumeXmitsPulse(void);
   void vRegConsumeXmitsPulsed(void);
+  void vRegConsumeXmitsStart(void);
+  void vRegConsumeXmitsStreamDef(void);
 
   // reg counter
   void vRegCounter0Get(void);

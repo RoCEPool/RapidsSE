@@ -33,6 +33,8 @@ namespace Pipelines
     bool bExitDone(void);
     bool bPulseDone(void);
     bool bPulsedDone(void);
+    bool bStartDone(void);
+    bool bStreamDefDone(void);
     
     void vIncCancel(void);
     void vIncEos(void);
@@ -40,6 +42,8 @@ namespace Pipelines
     void vIncExit(void);
     void vIncPulse(void);
     void vIncPulsed(void);
+    void vIncStart(void);
+    void vIncStreamDef(void);
     
     Footer* aFooter(void);
     

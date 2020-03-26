@@ -19,6 +19,8 @@ void Step::vAddSteps_RegConsumeXmits(void)
   vAddStep("ConsumeXmits[].new"_Stz,      &Step::vRegConsumeXmitsNew);
   vAddStep("ConsumeXmits[].pulse"_Stz,    &Step::vRegConsumeXmitsPulse);
   vAddStep("ConsumeXmits[].pulsed"_Stz,   &Step::vRegConsumeXmitsPulsed);
+  vAddStep("ConsumeXmits[].start"_Stz,    &Step::vRegConsumeXmitsStart);
+  vAddStep("ConsumeXmits[].streamDef"_Stz,&Step::vRegConsumeXmitsStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,6 +168,41 @@ void Step::vRegConsumeXmitsPulsed(void)
   pConsumeXmits->vIncPulsed();
   
   m_pDataStack->vPushInt(pConsumeXmits->bPulsedDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ConsumeXmits[].start -- handle consume of start marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegConsumeXmitsStart(void)
+{
+  ENTRY(); // ENTRY("vRegConsumeXmitsStart"_Stz);
+  
+  ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
+  
+  bool bStartDone = pConsumeXmits->bStartDone();
+  pConsumeXmits->vIncStart();
+  
+  m_pDataStack->vPushInt(bStartDone);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ConsumeXmits[].pulsed -- handle consume of pulsed marker                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRegConsumeXmitsStreamDef(void)
+{
+  ENTRY(); // ENTRY("vRegConsumeXmitsStreamDef"_Stz);
+  
+  ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
+  
+  bool bStreamDefDone = pConsumeXmits->bStreamDefDone();
+  
+  pConsumeXmits->vIncStreamDef();
+  
+  m_pDataStack->vPushInt(bStreamDefDone);
   
   EXIT();
 }
