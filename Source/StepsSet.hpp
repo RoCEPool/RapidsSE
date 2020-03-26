@@ -1023,6 +1023,8 @@ public:
   void vRegConsumeXmitsGet(void);
   void vRegConsumeXmitsIsNull(void);
   void vRegConsumeXmitsNew(void);
+  void vRegConsumeXmitsError(void);
+  void vRegConsumeXmitsEos(void);
  
   // reg counter
   void vRegCounter0Get(void);

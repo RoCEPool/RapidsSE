@@ -28,9 +28,13 @@ namespace Pipelines
     ~ConsumeXmits(void) noexcept(false);
     
     bool bCancelDone(void);
+    bool bEosDone(void);
+    bool bErrorDone(void);
     bool bExitDone(void);
     
     void vIncCancel(void);
+    void vIncEos(void);
+    void vIncError(void);
     void vIncExit(void);
     
     Footer* aFooter(void);

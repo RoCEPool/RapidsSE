@@ -78,7 +78,50 @@ bool ConsumeXmits::bCancelDone(void)
   vTrace("Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v"_Stz,
          m_iExitMarkers, m_iConsumeXmits);
   
-  return (m_iExitMarkers == m_iConsumeXmits ? true : false);
+  if (m_iExitMarkers == m_iConsumeXmits) {
+    m_iExitMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* eos done ?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool ConsumeXmits::bEosDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  if (m_iEosMarkers > m_iConsumeXmits)
+    vTrace("Warning: ConsumeOp ZK_EOSMARKER received %v; expected %v"_Stz,
+           m_iEosMarkers, m_iConsumeXmits);
+  
+  if (m_iEosMarkers == m_iConsumeXmits) {
+    m_iEosMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* exit done ?                                                                */
+/*----------------------------------------------------------------------------*/
+bool ConsumeXmits::bErrorDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  if (m_iExitMarkers > m_iConsumeXmits)
+    vTrace("Warning: ConsumeOp ZK_ERRORMARKER received %v; expected %v"_Stz,
+           m_iEosMarkers, m_iConsumeXmits);
+  
+  if (m_iEosMarkers == m_iConsumeXmits) {
+    m_iEosMarkers = 0;
+    return true;
+  }
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +135,12 @@ bool ConsumeXmits::bExitDone(void)
     vTrace("Warning: ConsumeOp ZK_EXITMARKER received %v; expected %v"_Stz,
       m_iExitMarkers, m_iConsumeXmits);
   
-  return (m_iExitMarkers == m_iConsumeXmits ? true : false);
+  if (m_iExitMarkers == m_iConsumeXmits) {
+    m_iExitMarkers = 0;
+    return true;
+  }
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,6 +151,26 @@ void ConsumeXmits::vIncCancel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
   
   m_iExitMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc eos                                                                    */
+/*----------------------------------------------------------------------------*/
+void ConsumeXmits::vIncEos(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  m_iEosMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc error                                                                  */
+/*----------------------------------------------------------------------------*/
+void ConsumeXmits::vIncError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  m_iEosMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

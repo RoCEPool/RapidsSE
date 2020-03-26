@@ -62,35 +62,21 @@
 
       ZK_EOSMARKER of
         //"Operand:- ZK_EOSMARKER" .verbose
-        eos 1 + to eos
-        eos Counter0[] == if
-          0 to eos
+        consumeXmits[].eos if
           Pipein[].pipeOut
         else
           Pipein[].delete
         then
-
-        eos Counter0[] > if
-          Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
-        then
-
         true
       endof
 
       ZK_ERRORMARKER of
         //"Operand:- ZK_ERRORMARKER" .verbose
-        eos 1 + to eos
-        eos Counter0[] == if
-          0 to eos
+        consumeXmits[].eos if
           Pipein[].pipeOut
         else
           Pipein[].delete
         then
-
-        eos Counter0[] > if
-          Counter0[] exit "Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v" str.format .
-        then
-
         true
       endof
 
