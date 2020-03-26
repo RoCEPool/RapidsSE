@@ -33,11 +33,15 @@ diclock.dropwrite
   pFolder
 ;
 
+: createFolder ( sFolderNm -- pFolder )
+
+  createFolder_proper dup compiler::current!
+  does>
+;
+
 : createTenantsFolder
 
-  "tenants" createFolder_proper attachMap::tenants!
-
-  attachMap::tenants@ compiler::current! does>
+  "tenants" createFolder attachMap::tenants!
 ;
 
 /*----------------------------------------------------------------------------*/
