@@ -70,6 +70,37 @@ diclock.grabwrite
 diclock.dropwrite
   does>
 ;
+/*----------------------------------------------------------------------------*/
+: :dic2
+
+diclock.grabwrite
+
+  word::new compiler::current!
+
+  WK_OBJECT compiler::current@ word.kind!
+  sizeof_dic allot
+
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+
+  compiler::current@ word.embObject dic.init
+
+  true compiler::current@ word.embObject object.wordbody!
+  find: \folder compiler::current@ word.category!
+
+  compiler::current@
+
+  //compiler::current@ word.name@ "  :dic %v" str.format .
+
+diclock.dropwrite
+  does>
+;
+/*----------------------------------------------------------------------------*/
+: :dic3
+
+  createFolder
+;
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -397,7 +428,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :subfolder ( "<subDicNm>" dic -- )
 
-  pathPush :dic find: \folder swap execute dic.kind! pathDrop
+  pathPush :dic3 find: \folder swap execute dic.kind! pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
