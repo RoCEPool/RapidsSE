@@ -1019,13 +1019,15 @@ public:
   // ConsumeXmits
   void vRegConsumeXmitsDelete(void);
   void vRegConsumeXmitsCancel(void);
+  void vRegConsumeXmitsEos(void);
+  void vRegConsumeXmitsError(void);
   void vRegConsumeXmitsExit(void);
   void vRegConsumeXmitsGet(void);
   void vRegConsumeXmitsIsNull(void);
   void vRegConsumeXmitsNew(void);
-  void vRegConsumeXmitsError(void);
-  void vRegConsumeXmitsEos(void);
- 
+  void vRegConsumeXmitsPulse(void);
+  void vRegConsumeXmitsPulsed(void);
+
   // reg counter
   void vRegCounter0Get(void);
   void vRegCounter1Get(void);

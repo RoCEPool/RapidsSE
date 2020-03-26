@@ -31,11 +31,15 @@ namespace Pipelines
     bool bEosDone(void);
     bool bErrorDone(void);
     bool bExitDone(void);
+    bool bPulseDone(void);
+    bool bPulsedDone(void);
     
     void vIncCancel(void);
     void vIncEos(void);
     void vIncError(void);
     void vIncExit(void);
+    void vIncPulse(void);
+    void vIncPulsed(void);
     
     Footer* aFooter(void);
     

@@ -82,6 +82,13 @@
 
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
+        consumeXmits[].pulse if
+          Pipein[].pipeOut
+        else
+          Pipein[].delete
+        then
+        true
+/*
         pulse 0 == if
           Pipein[].pipeOut
         else
@@ -98,10 +105,18 @@
           0 to pulse
         then
         true
+ */
       endof
 
       ZK_PULSEDMARKER of
         //"Operand:- ZK_PULSEDMARKER" .verbose
+        consumeXmits[].pulsed if
+          Pipein[].pipeOut
+        else
+          Pipein[].delete
+        then
+        true
+/*
         pulsed 0 == if
           Pipein[].pipeOut
         else
@@ -113,6 +128,7 @@
           Counter0[] start "Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v" str.format .
         then
         true
+ */
       endof
 
       ZK_STARTMARKER of

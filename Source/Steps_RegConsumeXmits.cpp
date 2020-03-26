@@ -12,11 +12,13 @@ void Step::vAddSteps_RegConsumeXmits(void)
   vAddStep("ConsumeXmits[]"_Stz,          &Step::vRegConsumeXmitsGet);
   vAddStep("ConsumeXmits[].cancel"_Stz,   &Step::vRegConsumeXmitsCancel);
   vAddStep("ConsumeXmits[].delete"_Stz,   &Step::vRegConsumeXmitsDelete);
+  vAddStep("ConsumeXmits[].eos"_Stz,      &Step::vRegConsumeXmitsEos);
+  vAddStep("ConsumeXmits[].error"_Stz,    &Step::vRegConsumeXmitsError);
   vAddStep("ConsumeXmits[].exit"_Stz,     &Step::vRegConsumeXmitsExit);
   vAddStep("ConsumeXmits[].isNull"_Stz,   &Step::vRegConsumeXmitsIsNull);
   vAddStep("ConsumeXmits[].new"_Stz,      &Step::vRegConsumeXmitsNew);
-  vAddStep("ConsumeXmits[].eos"_Stz,      &Step::vRegConsumeXmitsEos);
-  vAddStep("ConsumeXmits[].error"_Stz,    &Step::vRegConsumeXmitsError);
+  vAddStep("ConsumeXmits[].pulse"_Stz,    &Step::vRegConsumeXmitsPulse);
+  vAddStep("ConsumeXmits[].pulsed"_Stz,   &Step::vRegConsumeXmitsPulsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,6 +48,38 @@ void Step::vRegConsumeXmitsDelete(void)
   delete pConsumeXmits;
   
   m_pRegSet->m_xpConsumeXmits = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ConsumeXmits[].eos -- handle consume of eos marker                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegConsumeXmitsEos(void)
+{
+  ENTRY(); // ENTRY("vRegConsumeXmitsEos"_Stz);
+  
+  ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
+  
+  pConsumeXmits->vIncEos();
+  
+  m_pDataStack->vPushInt(pConsumeXmits->bEosDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ConsumeXmits[].error -- handle consume of error marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegConsumeXmitsError(void)
+{
+  ENTRY(); // ENTRY("vRegConsumeXmitsError"_Stz);
+  
+  ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
+  
+  pConsumeXmits->vIncError();
+  
+  m_pDataStack->vPushInt(pConsumeXmits->bErrorDone());
   
   EXIT();
 }
@@ -105,33 +139,33 @@ void Step::vRegConsumeXmitsNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ConsumeXmits[].error -- handle consume of error marker                     */
+/* ConsumeXmits[].pulse -- handle consume of pulse marker                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegConsumeXmitsError(void)
+void Step::vRegConsumeXmitsPulse(void)
 {
-  ENTRY(); // ENTRY("vRegConsumeXmitsError"_Stz);
+  ENTRY(); // ENTRY("vRegConsumeXmitsPulse"_Stz);
   
   ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
   
-  pConsumeXmits->vIncError();
+  pConsumeXmits->vIncPulse();
   
-  m_pDataStack->vPushInt(pConsumeXmits->bErrorDone());
+  m_pDataStack->vPushInt(pConsumeXmits->bPulseDone());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ConsumeXmits[].eos -- handle consume of eos marker                         */
+/* ConsumeXmits[].pulsed -- handle consume of pulsed marker                   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegConsumeXmitsEos(void)
+void Step::vRegConsumeXmitsPulsed(void)
 {
-  ENTRY(); // ENTRY("vRegConsumeXmitsEos"_Stz);
+  ENTRY(); // ENTRY("vRegConsumeXmitsPulsed"_Stz);
   
   ConsumeXmits* pConsumeXmits = _pConsumeXmits(*m_pRegSet->m_xpConsumeXmits);
   
-  pConsumeXmits->vIncEos();
+  pConsumeXmits->vIncPulsed();
   
-  m_pDataStack->vPushInt(pConsumeXmits->bEosDone());
+  m_pDataStack->vPushInt(pConsumeXmits->bPulsedDone());
   
   EXIT();
 }

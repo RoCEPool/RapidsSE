@@ -144,6 +144,44 @@ bool ConsumeXmits::bExitDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pulse done ?                                                               */
+/*----------------------------------------------------------------------------*/
+bool ConsumeXmits::bPulseDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  if (m_iPulseMarkers > m_iConsumeXmits)
+    vTrace("Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v"_Stz,
+           m_iPulseMarkers, m_iConsumeXmits);
+  
+  if (m_iPulseMarkers == m_iConsumeXmits) {
+    m_iPulseMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pulsed done ?                                                               */
+/*----------------------------------------------------------------------------*/
+bool ConsumeXmits::bPulsedDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  if (m_iPulsedMarkers > m_iConsumeXmits)
+    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
+           m_iPulsedMarkers, m_iConsumeXmits);
+  
+  if (m_iPulsedMarkers == m_iConsumeXmits) {
+    m_iPulsedMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc cancel                                                                 */
 /*----------------------------------------------------------------------------*/
 void ConsumeXmits::vIncCancel(void)
@@ -182,6 +220,27 @@ void ConsumeXmits::vIncExit(void)
   
   m_iExitMarkers++;
 }
+
+/*----------------------------------------------------------------------------*/
+/* inc pulse                                                                  */
+/*----------------------------------------------------------------------------*/
+void ConsumeXmits::vIncPulse(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  m_iPulseMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc pulsed                                                                 */
+/*----------------------------------------------------------------------------*/
+void ConsumeXmits::vIncPulsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  
+  m_iPulsedMarkers++;
+}
+
 
 /*----------------------------------------------------------------------------*/
 
