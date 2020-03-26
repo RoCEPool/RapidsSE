@@ -144,7 +144,6 @@
 
   op__loop
 
-  "*** CONSUMEOP EXITS" .
   LogReqExit
   job::deleteThis
   DONE_REQ_OP
