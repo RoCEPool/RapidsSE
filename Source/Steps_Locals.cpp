@@ -181,6 +181,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("ConsumeXmits[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ConsumeXmits[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Counter0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Counter0[].set"_Stz);
     EXIT();

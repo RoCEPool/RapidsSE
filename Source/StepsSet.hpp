@@ -1016,6 +1016,11 @@ public:
   void vRegAggTimerGet(void);
   void vRegAggTimerSet(void);
 
+  // ConsumeXmits
+  void vRegConsumeXmitsDelete(void);
+  void vRegConsumeXmitsGet(void);
+  void vRegConsumeXmitsIsNull(void);
+ 
   // reg counter
   void vRegCounter0Get(void);
   void vRegCounter1Get(void);
