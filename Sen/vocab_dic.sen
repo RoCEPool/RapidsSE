@@ -431,7 +431,7 @@ diclock.dropwrite
   pDic pathPush
 
     find: \folder
-    sSubFolderNm :dic3 execute dic.kind!
+    sSubFolderNm createFolder execute dic.kind!
 
   pathDrop
 ;
