@@ -11,7 +11,6 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
   vAddStep("task::delete"_Stz,        &Step::vTaskDelete);
-  vAddStep(" task::dicStack"_Stz,      &Step::vTaskDicStackGet);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,          &Step::vTaskDump);
   vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
@@ -23,7 +22,6 @@ void Step::vAddSteps_Task(void)
 
   vAddStep("task.ack"_Stz,         &Step::vTaskAck);
   vAddStep("task.acks!"_Stz,       &Step::vTaskAcksStore);
-  vAddStep("task.dicStack"_Stz,    &Step::vTaskDicStack);
   vAddStep("task.dropLock"_Stz,    &Step::vTaskDropLock);
   vAddStep("task.grabLock"_Stz,    &Step::vTaskGrabLock);
   vAddStep("task.isAckSet"_Stz,    &Step::vTaskIsAckSet);
@@ -92,37 +90,6 @@ void Step::vTaskBreakPoint(void)
 {
   ENTRY(); // ENTRY("vTaskBreakPoint"_Stz);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.dicStack -- push task dictionary onto data stack                      */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskDicStack(void)
-{
-  ENTRY(); // ENTRY("vTaskDicStack"_Stz);
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  Object* pPtrDicStack = &pThatTask->m_pForth->m_oDicStack;
-  
-  m_pDataStack->vPushPtr(pPtrDicStack);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.dicStack -- push task dictionary onto data stack                      */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskDicStackGet(void)
-{
-  ENTRY(); // ENTRY("vTaskDicStackGet"_Stz);
-    
-  Object* pPtrDicStack = &m_oDicStack;
-  
-  m_pDataStack->vPushPtr(pPtrDicStack);
-  
   EXIT();
 }
 
