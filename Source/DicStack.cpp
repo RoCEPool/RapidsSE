@@ -248,6 +248,19 @@ Dic* DicStack::pPick(i8 iPick)
 /*----------------------------------------------------------------------------*/
 /* pop top dictionary                                                         */
 /*----------------------------------------------------------------------------*/
+//void DicStack::vPop(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+//
+//  ASSERT(m_iTop >= 0);
+//  ASSERT(m_iTop <  C_DIC_PATHDEPTH);
+//
+//  // just pop the top
+//  m_pDic[m_iTop] = nullptr;
+//
+//  m_iTop--;
+//}
+/*----------------------------------------------------------------------------*/
 void DicStack::vPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
@@ -255,7 +268,11 @@ void DicStack::vPop(void)
   ASSERT(m_iTop >= 0);
   ASSERT(m_iTop <  C_DIC_PATHDEPTH);
   
-  // just pop the top
+  Dic* pDic = m_pDic[m_iTop];
+
+  if (pDic)
+    pDic->vRefDec();
+
   m_pDic[m_iTop] = nullptr;
   
   m_iTop--;
