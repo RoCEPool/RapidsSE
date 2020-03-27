@@ -65,6 +65,21 @@ void Correctness::vThreadCallStackDump(void)
                                         i8    iLineNo,
                                         Stz*  szFormat,...)
 {
+  fprintf(stderr,
+          "eKind = %lld\n"
+          "eSeverity = %lld\n"
+          "azFunc = %s\n"
+          "azFilePath = %s\n"
+          "iLineNo = %lld\n"
+          "szFormat = %s\n",
+          (i8)eKind,
+          (i8)eSeverity,
+          azFunc,
+          azFilePath,
+          (i8)iLineNo,
+          szFormat->azChar()
+          );
+  
   // put a breakpoint here to trap throws
   sleep(0);
   
