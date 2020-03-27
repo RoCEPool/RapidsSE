@@ -924,7 +924,7 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  pOpSpec->vOpNm("xmitOp"_Stz);
+  pOpSpec->vOpNm("xmit"_Stz);
   
   vAddTopologyParams(pOpSpec, eTopologyX, i_Stage, 0);
 }

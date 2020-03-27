@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for xmit request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : XmitOp_req \operator
+ : Xmit_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -26,9 +26,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: XmitOp :: XmitOp <xmitKind> ;
+opSyntax: Xmit :: Xmit <xmitKind> ;
 
-: XmitOp opInfo tagCopy: localOp_tags
+: Xmit opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
