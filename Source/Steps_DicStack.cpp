@@ -10,7 +10,7 @@
 void Step::vAddSteps_DicStack(void)
 {
   vAddStep("dicStack.depth"_Stz,     &Step::vDicStackDepth);
-  vAddStep("dicStack.drop"_Stz,      &Step::vDicStackDrop);
+  vAddStep("dicStack.discard"_Stz,   &Step::vDicStackDiscard);
   vAddStep("dicStack.dump"_Stz,      &Step::vDicStackDump);
   vAddStep("dicStack.pick"_Stz,      &Step::vDicStackPick);
   vAddStep("dicStack.pop"_Stz,       &Step::vDicStackPop);
@@ -35,11 +35,11 @@ void Step::vDicStackDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.drop -- discard top of dictionary stack                           */
+/* dicStack.discard -- discard top of dictionary stack                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDrop(void)
+void Step::vDicStackDiscard(void)
 {
-  ENTRY(); // ENTRY("vDicStackDrop"_Stz);
+  ENTRY(); // ENTRY("vDicStackDiscard"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
