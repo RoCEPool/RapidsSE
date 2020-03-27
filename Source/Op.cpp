@@ -129,35 +129,35 @@ void Op::vDump(i8 i_Op)
   
   s256 sArgs;
   
-  EnameSet* pEnameSet = this->pTopologyEnameSet();
+  EnameSet* pTopologyEnameSet = this->pTopologyEnameSet();
   
-  pEnameSet->vSprint(sArgs);
+  pTopologyEnameSet->vSprint(sArgs);
   
   // get the next stage
-  i8 iNextStage = pEnameSet->iValue(C_TAG_NEXTSTAGE);
+  i8 iNextStage = pTopologyEnameSet->iValue(C_TAG_NEXTSTAGE);
   Stage* pNextStage = m_pPipeline->pGet(iNextStage);
   
   // get the next op
-  i8 iNextOp = pEnameSet->iValue(C_TAG_NEXTOP);
+  i8 iNextOp = pTopologyEnameSet->iValue(C_TAG_NEXTOP);
   Strand* pNextStrand = pNextStage->pGet(0);
   Op* pNextOp = pNextStrand->pGet(iNextOp);
 
   // get the cross topology
-  ePX eTopology = (ePX)(pEnameSet->iValue(C_TAG_TOPOLOGY));
+  ePX eTopology = (ePX)(pTopologyEnameSet->iValue(C_TAG_TOPOLOGY));
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
+  EnameSet* pEnameSet = this->pEnameSet();
   i8 iConsumeXmits =  pEnameSet->iValue("<consumeXmits>"_Stz);
-  i8 iLeftEosMarkers = iConsumeXmits ? iConsumeXmits : nLeftEosMarkers();
+  i8 iLeftMarkers = iConsumeXmits ? iConsumeXmits : 1;
   
-  vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { EosMarkers(L%lld R%lld) :%-10s %s %s }\n"_Stz,
+  vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R1) :%-10s %s %s }\n"_Stz,
          i_Op,
          this->nNode(),
          this->nPartition(),
          this->szOpNm(),
          sArgs.szStz(),
-         iLeftEosMarkers,
-         this->nRightEosMarkers(),
+         iLeftMarkers,
          pNextOp->szOpNm(),
          this->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
          aPX[eTopology]

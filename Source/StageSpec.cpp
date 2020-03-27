@@ -220,6 +220,7 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
   }
   
   pOpSpec->vAddEnamePair("<consumeXmits>"_Stz,iConsumeArg,TN_INTEGER);
+  pOpSpec->pEnameSet()->vDumpSet();
   
   vInsert(pOpSpec);
   
