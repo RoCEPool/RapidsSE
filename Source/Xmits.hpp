@@ -10,7 +10,8 @@ namespace Pipelines
   private:
     i8             m_iXmits;   // consume xmits
     
-    i8             m_iExitMarkers;    // exit / cancel markers received by consumeOp
+    i8             m_iCancelMarkers;  // cancel markers received by consumeOp
+    i8             m_iExitMarkers;    // exit markers received by consumeOp
     i8             m_iEosMarkers;     // eos / error markers received by consumeOp
     i8             m_iPulseMarkers;   // pulse markers received by consumeOp
     i8             m_iPulsedMarkers;  // pulsed markers received by consumeOp

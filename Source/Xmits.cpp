@@ -49,6 +49,8 @@ Xmits::Xmits(i8 iXmits)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
 
   m_iXmits  = iXmits;
+  
+  m_iCancelMarkers = 0;
   m_iExitMarkers   = 0;
   m_iEosMarkers    = 0;
   m_iPulseMarkers  = 0;
@@ -76,10 +78,10 @@ bool Xmits::bCancelDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   vTrace("Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v"_Stz,
-         m_iExitMarkers, m_iXmits);
+         m_iCancelMarkers, m_iXmits);
   
-  if (m_iExitMarkers == m_iXmits) {
-    m_iExitMarkers = 0;
+  if (m_iCancelMarkers == m_iXmits) {
+    m_iCancelMarkers = 0;
     return true;
   }
   else
@@ -224,7 +226,7 @@ void Xmits::vIncCancel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  m_iExitMarkers++;
+  m_iCancelMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/
