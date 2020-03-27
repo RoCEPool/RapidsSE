@@ -824,7 +824,9 @@ bool Dynamo::bPhase2_staging(void)
         else {
           pOpSpec->vAddEnamePair("<XmitKind>"_Stz,(i8)pOpSpec->eXmitKind(),TN_INTEGER);
           vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
-          pStageSpecFound->vPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
+          OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
+          vAddConsumeParams(pConsumeOpSpec, eTopologyX);
+
         }
       }
       else {
@@ -853,6 +855,48 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 
   // arg-2 is the op of the next stage for the xmit
   pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
   //pOpSpec->pEnameSet()->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add the ConsumeXmits parameter                                             */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  i8 iConsumeXmits = C_UNKNOWN;
+  
+  // add argument to the consumeOp depending on the topology
+  switch (eTopologyX) {
+    case PX_ALL_NODES_TO_ORIGIN:
+      iConsumeXmits = AM::pGrid()->nConnectedNodes();
+      break;
+      
+    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+      iConsumeXmits = AM::pGrid()->nSlotsPerNode();
+      break;
+      
+    case PX_ALL_PARTITIONS_TO_ORIGIN:
+      iConsumeXmits = AM::pGrid()->nPartitions();
+      break;
+      
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case PX_ORIGIN_TO_ORIGIN:
+    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ORIGIN_TO_ALL_NODES:
+    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+      iConsumeXmits = 1;
+      break;
+      
+    default:
+      RASSERT(0);
+  }
+  
+  // arg-0 is the cross topology of the xmit op
+  pOpSpec->vAddEnamePair(C_TAG_CONSUMEXMITS,iConsumeXmits,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
