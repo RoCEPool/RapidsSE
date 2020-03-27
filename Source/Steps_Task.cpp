@@ -11,6 +11,7 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
   vAddStep("task::delete"_Stz,        &Step::vTaskDelete);
+  vAddStep("task::dicStack"_Stz,      &Step::vTaskDicStackGet);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,          &Step::vTaskDump);
   vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
@@ -105,6 +106,20 @@ void Step::vTaskDicStack(void)
   ASSERT(CN_TASK == pThatTask->eClass());
   
   Object* pPtrDicStack = &pThatTask->m_pForth->m_oDicStack;
+  
+  m_pDataStack->vPushPtr(pPtrDicStack);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.dicStack -- push task dictionary onto data stack                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskDicStackGet(void)
+{
+  ENTRY(); // ENTRY("vTaskDicStackGet"_Stz);
+    
+  Object* pPtrDicStack = &m_oDicStack;
   
   m_pDataStack->vPushPtr(pPtrDicStack);
   
