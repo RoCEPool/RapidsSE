@@ -147,7 +147,7 @@ LOOP 10 {
       startOp | periodicOp once | stageB
 
     stage stageB on all partitions:
-      snapshotOp T | stageC
+      snapshot T | stageC
 
     stage stageC on origin:
       output | sink | stageA

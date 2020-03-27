@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: SnapshotOp_PulseMarker \handler
+: Snapshot_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: SnapshotOp_StartMarker \handler
+: Snapshot_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -72,16 +72,16 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* SnapshotOp request                                 (on node where spawned) */
+/* Snapshot request                                   (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: SnapshotOp_req \operator
+: Snapshot_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: SnapshotOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: SnapshotOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: Snapshot_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: Snapshot_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -93,9 +93,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: SnapshotOp :: SnapshotOp <tableNm> ;
+opSyntax: Snapshot :: Snapshot <tableNm> ;
 
-: SnapshotOp opInfo tagCopy: localOp_tags
+: Snapshot opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
