@@ -118,7 +118,7 @@ diclock.dropwrite
   task[] task.dicStack
 
   // pop the top dictionary
-  dicStack.pop
+  dicStack.discard
 ;
 
 /*----------------------------------------------------------------------------*/
