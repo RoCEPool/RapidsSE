@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables pathPush "tables" :dic find: folder swap execute dic.kind! pathDrop ;
+//: makeTables pathPush "tables" :dic find: folder swap execute dic.kind! pathPop ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 : popTable
 
-  pathDrop
+  pathPop
 ;
 
 /*----------------------------------------------------------------------------*/

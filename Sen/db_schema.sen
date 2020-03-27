@@ -6,7 +6,7 @@
 
 : schema ;
 
-//: makeSchemas pathPush "schemas" :dic find: folder swap execute dic.kind! pathDrop ;
+//: makeSchemas pathPush "schemas" :dic find: folder swap execute dic.kind! pathPop ;
 
 
 : :schema
