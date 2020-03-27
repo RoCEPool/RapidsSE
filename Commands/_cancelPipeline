@@ -48,7 +48,7 @@ load lineitem "/DATA/TPCH/lineitem20K.csv";
  startOp | periodicOp once | stageB
  
  stage stageB on all partitions:
- scanOp lineitem 30 | stageC
+ scan lineitem 30 | stageC
  
  stage stageC on origin:
  output | sinkOp | stageA

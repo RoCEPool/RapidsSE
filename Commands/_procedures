@@ -15,7 +15,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp $Table | toCsvOp | stageC
+    scan $Table | toCsvOp | stageC
 
   stage stageC on origin:
     toFileOp $File | stageD
@@ -111,7 +111,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on partition $partition:
-    scanOp $table | stageC
+    scan $table | stageC
 
   stage stageC on origin:
     output | sinkOp | stageA
@@ -130,7 +130,7 @@ begin
   startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-  scanOp $Table | stageC
+  scan $Table | stageC
 
   stage stageC on origin:
   output | sinkOp | stageA
@@ -166,7 +166,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp $table | stageC
+    scan $table | stageC
 
   stage stageC on origin:
     output | sinkOp | stageA
@@ -208,7 +208,7 @@ begin
   startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-  scanOp $Table | stageC
+  scan $Table | stageC
 
   stage stageC on origin:
   output | sinkOp | stageA

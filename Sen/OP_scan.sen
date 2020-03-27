@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: ScanOp_CancelMarker \handler
+: Scan_CancelMarker \handler
 
   //"ZK_CANCELMARKER_handler" .verbose
   nullptr to Operand[]
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: scanOp_CrwBuffer \handler
+: scan_CrwBuffer \handler
 
   0 locals| rateSecs |
 
@@ -33,9 +33,9 @@
 
   // check for rate
   rateSecs if
-    rateSecs "ScanOp Pausing for %v secs" str.format .
+    rateSecs "Scan Pausing for %v secs" str.format .
     rateSecs task::sleepSsec
-    "ScanOp awake" .
+    "Scan awake" .
   then
 
   Subset[].nextBuffer to Operand[]
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: scanOp_PulseMarker \handler
+: scan_PulseMarker \handler
 
   0 locals| rateSecs |
 
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: scanOp_StartMarker \handler
+: scan_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -96,18 +96,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scanOp request                                     (on node where spawned) */
+/* scan request                                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: scanOp_req \operator
+: scan_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: scanOp_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: scanOp_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: scanOp_PulseMarker  ZK_PULSEMARKER  op[].handler!
-  find: scanOp_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: scan_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: scan_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: scan_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
 
@@ -119,10 +119,10 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: scanOp :: scanOp <tableNm> ;
-opSyntax: scanOp :: scanOp <tableNm> <rateSecs> ;
+opSyntax: scan :: scan <tableNm> ;
+opSyntax: scan :: scan <tableNm> <rateSecs> ;
 
-//opInfo: scanOp
+//opInfo: scan
 //{
 //  <jobDesc>  = "--description of operator--"
 //
@@ -135,13 +135,13 @@ opSyntax: scanOp :: scanOp <tableNm> <rateSecs> ;
 //;
 //
 
-: scanOp opInfo tagCopy: localOp_tags
+: scan opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
 
-//find: scanOp_info word.dump
-//find: scanOp_info word.enameset@ enameset.asStr .
+//find: scan_info word.dump
+//find: scan_info word.enameset@ enameset.asStr .
   
 
 /*----------------------------------------------------------------------------*/

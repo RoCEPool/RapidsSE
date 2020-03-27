@@ -72,7 +72,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scanOp OpTableXXX | stageC
+scan OpTableXXX | stageC
 
 stage stageC on origin:
 output | sinkOp | stageA
@@ -90,7 +90,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scanOp OpTableXXX | stageC
+scan OpTableXXX | stageC
 
 stage stageC on origin:
 output | stageD
@@ -110,7 +110,7 @@ pipeline scan1
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp OpTable1 | stageC
+    scan OpTable1 | stageC
 
   stage stageC on origin:
     output | sinkOp | stageA
@@ -153,7 +153,7 @@ pipeline scan2
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp OpTable1 | stageC
+    scan OpTable1 | stageC
 
   stage stageC on origin:
     output | stageD
@@ -200,7 +200,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp OpTable1 | stageC
+    scan OpTable1 | stageC
 
   stage stageC on origin:
     sinkOp | stageA
@@ -210,7 +210,7 @@ begin
 affected: 0
 
 /*
-// scanOp (CrwBuffer->SrtBuffer->SrtBuffer)
+// scan (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | limit 1 | output;
 rows: 1
 
@@ -247,7 +247,7 @@ rows:
 dynamic fetch OpTable1 OpTable1_idx | limit 10 | output;
 rows: 10
 
-// scanOp (CrwBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// scan (CrwBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | output;
 unordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -290,19 +290,19 @@ unordered rows:
 dynamic fetch OpTable1 OpTable1_idx | project jidx_100, jidx_key | limit 5 | output;
 rows: 5
 
-// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | project jidx_100, jidx_key | limit 5 | output;
 rows: 5
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_key | limit 5 | output;
 rows: 5
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_key | project jidx_100 | limit 5 | output;
 rows: 5
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_name | project jidx_name | limit 5 | output;
 rows: 5
 
@@ -322,19 +322,19 @@ rows: (26)
 dynamic fetch OpTable1 OpTable1_idx | limit 10 | count | output;
 rows: (10)
 
-// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | count | output;
 rows: (26)
 
-// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | project jidx_100 | count | output;
 rows: (26)
 
-// ScanOp (EntBuffer->SrtBuffer->IrwBuffer)
+// Scan (EntBuffer->SrtBuffer->IrwBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | output;
 rows: 41
 
-// ScanOp (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
+// Scan (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | count | output;
 rows: (41)
 
@@ -350,19 +350,19 @@ rows: (3826)
 dynamic fetch OpTable1 OpTable1_idx | limit 10 | agg jidx_100 | output;
 rows: 1
 
-// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | agg jidx_100 | output;
 rows: (3826)
 
-// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | project jidx_100 | agg jidx_100 | output;
 rows: (3826)
 
-// ScanOp (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
+// Scan (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | agg jidx_100 | output;
 rows: (4441)
 
-// ScanOp (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
+// Scan (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | agg jidx_100_2 | output;
 rows: (2655)
 
@@ -382,19 +382,19 @@ rows: 10
 dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 50 | output;
 rows: 26
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | output;
 rows: 26
 
-// ScanOp (CrwBuffer->IrwBuffer->SrtBuffer)
+// Scan (CrwBuffer->IrwBuffer->SrtBuffer)
 //dynamic scan OpTable1 | project jidx_100 | getKey jidx_100 | output;
 //rows: (3826)
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | output;
 rows: 41
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | output;
 rows: 41
 
@@ -410,19 +410,19 @@ rows: 26
 dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 10 | output;
 rows: 10
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | output;
 rows: 26
 
-// ScanOp (CrwBuffer->IrwBuffer->SrtBuffer)
+// Scan (CrwBuffer->IrwBuffer->SrtBuffer)
 //dynamic scan OpTable1 | project jidx_100 | getKey jidx_100 | output;
 //rows: (3826)
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | output;
 rows: 41
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | output;
 rows: 41
 
@@ -438,19 +438,19 @@ rows: 26
 dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | limit 10 | output;
 rows: 10
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | merge | output;
 rows: 26
 
-// ScanOp (CrwBuffer->IrwBuffer->SrtBuffer)
+// Scan (CrwBuffer->IrwBuffer->SrtBuffer)
 //dynamic scan OpTable1 | project jidx_100 | getKey jidx_100 | output;
 //rows: (3826)
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | output;
 rows: 41
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | output;
 rows: 41
 
@@ -503,7 +503,7 @@ ordered rows:
   (10,'onezero', 110, 0, 10,1.010010e+03, TIMESTAMP '1910-01-01 00:00:00.0', DATE '1910-01-01' )
 
 
-// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
+// Scan (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | merge | superMerge | output;
 ordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -534,11 +534,11 @@ ordered rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
 
-// ScanOp (CrwBuffer->CrwBuffer(T)->SrtBuffer)
+// Scan (CrwBuffer->CrwBuffer(T)->SrtBuffer)
 //dynamic scan OpTable1 | project jidx_100 | getKey jidx_100 | output;
 //rows: (3826)
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | superMerge | output;
 rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   29, 'twonine'   ,  129,    9,   29, 1.029030e+03, TIMESTAMP '1929-01-01 00:00:00.0', DATE '1929-01-01' )
@@ -583,7 +583,7 @@ rows:
   (   25, 'twofive' ,  125,    5,   25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01',   25, 'twofive'   ,  125,    5,   25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
   (    0, 'zero'    , 1001,    0,    0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
 
-// ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+// Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | superMerge | output;
 rows:
   (   13, 'onethree',  113,    3,   13, 1.013010e+03, TIMESTAMP '1913-01-01 00:00:00.0', DATE '1913-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
@@ -629,7 +629,7 @@ rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   35, 'threefive' ,  135,    5,   35, 1.035040e+03, TIMESTAMP '1935-01-01 00:00:00.0', DATE '1935-01-01' )
 
 
-// ScanOP (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | project jidx_100 | filter jidx_100 120 >  | output;
 rows:
   (1001)
@@ -639,7 +639,7 @@ rows:
   (124)
   (125)
 
-// ScanOP (CrwBuffer->IrwBuffer->IrwBuffer)
+// Scan (CrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | filter jidx_100 120 <  | output;
 rows:
   (10,'onezero',110,0,10,1010.01,TIMESTAMP '1910-01-01 00:00:00',1910-01-01)

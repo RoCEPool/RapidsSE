@@ -133,7 +133,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scanOp lineitem | toCsvOp | stageC
+scan lineitem | toCsvOp | stageC
 
 stage stageC on origin:
 pythonShell "/Users/alka/rapidsse/Python/shellSample.py" | sinkOp | stageA
@@ -149,7 +149,7 @@ begin
   startOp | periodicOponce | stageB
 
   stage stageB on all partitions:
-  scanOp lineitem | toCsvOp | stageC
+  scan lineitem | toCsvOp | stageC
 
   stage stageC on origin:
   python "sample" "printString" | sinkOp | stageA
@@ -158,70 +158,7 @@ end
 ;
 
 
- python "sample" "printString" | sinkOp | stageA
-docol epochTake;
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | stageC
-
-stage stageC on origin:
-output | sinkOp | stageA
-
-end
-;
-
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | stageC
-
-stage stageC on origin:
-sinkOp | stageA
-
-end
-;
-
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | stageC
-
-stage stageC on origin:
-output | sinkOp | stageA
-
-end
-;
-
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | stageC
-
-stage stageC on origin:
-output | stageD
-
-stage stageD on origin:
-sinkOp | stageA
-
-end
-;
+python "sample" "printString" | sinkOp | stageA
 
 time pipeline insert
 begin
@@ -230,7 +167,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
+scan lineitem | toCsvOP | toCrwOp lineitem2 | stageC
 
 stage stageC on all partitions:
 insert lineitem2  | stageD
@@ -248,7 +185,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scanOp lineitem | toCsvOp | stageC
+scan lineitem | toCsvOp | stageC
 
 stage stageC on origin:
 toFileOp "/tmp/xxx.csv" | sinkOp | stageA
@@ -262,64 +199,10 @@ docol epochDump;
  begin
  
  stage stageA on all partitions:
- scanOp lineitem2 |  countOp | stageB
+ scan lineitem2 |  countOp | stageB
  
  stage stageB on origin:
  superCountOp | output | sinkOp
- 
- end
- ;
-
- 
-docol epochTake;
-time pipeline fetch
-begin
-
-  stage stageA on all partitions:
-    scanOp lineitem | stageB
-
-  stage stageB on origin:
-    output | sinkOp
-
-end
-;
-
-docol epochDump;
-
- 
-docol epochTake;
-
-time pipeline export
-begin
-
-stage stageA on all partitions:
-scanOp lineitem | output
-
-end
-;
-
-
-
-
->>>>>>> Stashed changes
-docol epochTake;
-
-
-
-
-docol epochDump;
-
-
-docol epochDump;
-
-
-docol epochTake;
-
- time pipeline export
- begin
- 
- stage stageA on all partitions:
- scanOp lineitem |  output
  
  end
  ;
@@ -344,34 +227,6 @@ docol epochDump;
  time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
  //time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
  //time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
-
- 
-//docol epochTake;
-
- pipeline lineItem_dyn
- begin
- 
- stage stageA on all partitions:
- scanOp lineitem |  toCsvOp | stageB
- 
- stage stageB on origin:
- toFileOp "/tmp/xxx.csv" | endOp
- 
- end
- ;
-
-pipeline lineItem_dyn
-begin
-
-stage stageA on all partitions:
-scan lineitem | stageB
-
-stage stageB on origin:
-output
-
-end
-;
-*/
 
 //docol epochDump;
 /*
@@ -619,7 +474,7 @@ print "*************************************************************************
 
 end
 ;
-*/
+
 
 //time dynamic fetch lineitem LineItem_Idx1 | output;
 //time dynamic scan lineitem | toCsv | toFile "/tmp/x.csv" | output;

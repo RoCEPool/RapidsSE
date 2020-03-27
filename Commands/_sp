@@ -12,7 +12,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp $Table | stageC
+    scan $Table | stageC
 
   stage stageC on origin:
     output | sinkOp | stageA

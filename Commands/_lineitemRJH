@@ -87,7 +87,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp lineitem | statsOp | toStatDOp | stageC
+    scan lineitem | statsOp | toStatDOp | stageC
 
   stage stageC on origin:
     output | sinkOp | stageA

@@ -62,8 +62,8 @@
 
 fillOutOps
 
-//find: scanOp_info word.dump
-//find: scanOp_info word.enameset@ enameset.asStr .
+//find: scan_info word.dump
+//find: scan_info word.enameset@ enameset.asStr .
 
 /*============================================================================*/
 /* end                                                                        */
