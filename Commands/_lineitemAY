@@ -167,7 +167,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scan lineitem | toCsvOP | toCrwOp lineitem2 | stageC
+scan lineitem | toCsvOP | toCrw lineitem2 | stageC
 
 stage stageC on all partitions:
 insert lineitem2  | stageD

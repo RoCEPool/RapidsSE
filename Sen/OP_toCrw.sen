@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCrwOp_CsvBuffer \handler
+: ToCrw_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   // use extractRow from register0 and convert csvtoCrw
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCrwOp_EosMarker \handler
+: ToCrw_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
   writeBehind[].handleDangling
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: ToCrwOp_PulseMarker \handler
+: ToCrw_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   // create a write behind
@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: ToCrwOp_StartMarker \handler
+: ToCrw_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if we can scan the table
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCrwOp_StreamDef \handler
+: ToCrw_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].delete
@@ -92,19 +92,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for ToCrwOp req                            (on node where spawned) */
+/* execute for ToCrw req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToCrwOp_req \operator
+ : ToCrw_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: ToCrwOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: ToCrwOp_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: ToCrwOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: ToCrwOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: ToCrwOp_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: ToCrw_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: ToCrw_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: ToCrw_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: ToCrw_StartMarker ZK_STARTMARKER op[].handler!
+  find: ToCrw_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -117,9 +117,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ToCrwOp :: ToCrwOp <tableNm> ;
+opSyntax: ToCrw :: ToCrw <tableNm> ;
 
-: ToCrwOp opInfo tagCopy: localOp_tags
+: ToCrw opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

@@ -68,7 +68,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    genCsv T | toCrwOp T | upsertOp T | stageC
+    genCsv T | toCrw T | upsertOp T | stageC
 
   stage stageC on origin:
     output | sink | stageA

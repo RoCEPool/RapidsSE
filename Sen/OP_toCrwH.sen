@@ -110,7 +110,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for toCrwOp req                            (on node where spawned) */
+/* execute for toCrw req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : toCrwH_req \operator
 
