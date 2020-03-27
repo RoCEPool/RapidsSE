@@ -110,6 +110,18 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
+/* discard top dictionary from path                                           */
+/*----------------------------------------------------------------------------*/
+: pathDiscard ( -- )
+
+  // push the dic stack of this task
+  task[] task.dicStack
+
+  // pop the top dictionary
+  dicStack.pop
+;
+
+/*----------------------------------------------------------------------------*/
 /* dump the path                                                              */
 /*----------------------------------------------------------------------------*/
 : pathDump ( -- )
@@ -131,18 +143,6 @@ diclock.dropwrite
 
   // pick the dictionary from dic stack
   dicStack.pick
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop top dictionary from path                                                */
-/*----------------------------------------------------------------------------*/
-: pathPop ( -- )
-
-  // push the dic stack of this task
-  task[] task.dicStack
-
-  // pop the top dictionary
-  dicStack.pop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -354,7 +354,7 @@ diclock.dropwrite
 
     dup dic.lastWord not until
 
-  pathPop
+  pathDiscard
 
   drop
 ;
@@ -369,7 +369,7 @@ diclock.dropwrite
     find: \folder
     sSubFolderNm :createFolder execute dic.kind!
 
-  pathPop
+  pathDiscard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +378,7 @@ diclock.dropwrite
 : task::dicStack.clear
 
   pathDepth 0 ?do
-    pathPop
+    pathDiscard
   loop
 ;
 

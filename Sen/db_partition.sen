@@ -48,7 +48,7 @@
 /* pop the partitions folder                                                  */
 /*----------------------------------------------------------------------------*/
 : popPartitions
-  pathPop
+  pathDiscard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@
 /* pop the partition sub folder                                               */
 /*----------------------------------------------------------------------------*/
 : popPartitionSub
-  pathPop
+  pathDiscard
 ;
 
 
@@ -87,7 +87,7 @@
    dup table.slots slots.subDic
    pathPush
    "columns" find execute forgetAll
-   pathPop
+   pathDiscard
 
   // forget the sub dictionary
   table.slots slots.subDic forgetAll
