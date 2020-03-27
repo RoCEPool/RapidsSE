@@ -107,7 +107,7 @@ void Step::vRegStreamDefNewCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].newToCsvStream -- new a ToCsvOp streamDef                      */
+/* StreamDef[].newToCsvStream -- new a ToCsv streamDef                        */
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNewToCsv(void)
 {

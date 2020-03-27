@@ -133,7 +133,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scan lineitem | toCsvOp | stageC
+scan lineitem | toCsv | stageC
 
 stage stageC on origin:
 pythonShell "/Users/alka/rapidsse/Python/shellSample.py" | sink | stageA
@@ -149,7 +149,7 @@ begin
   startOp | periodicOponce | stageB
 
   stage stageB on all partitions:
-  scan lineitem | toCsvOp | stageC
+  scan lineitem | toCsv | stageC
 
   stage stageC on origin:
   python "sample" "printString" | sink | stageA
@@ -167,7 +167,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scan lineitem | toCsvOP | toCrw lineitem2 | stageC
+scan lineitem | toCsv | toCrw lineitem2 | stageC
 
 stage stageC on all partitions:
 insert lineitem2  | stageD
@@ -185,7 +185,7 @@ stage stageA on origin:
 startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
-scan lineitem | toCsvOp | stageC
+scan lineitem | toCsv | stageC
 
 stage stageC on origin:
 toFileOp "/tmp/xxx.csv" | sink | stageA

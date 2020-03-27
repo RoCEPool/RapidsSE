@@ -15,7 +15,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scan $Table | toCsvOp | stageC
+    scan $Table | toCsv | stageC
 
   stage stageC on origin:
     toFileOp $File | stageD

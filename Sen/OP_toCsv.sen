@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCsvOp_CrwBuffer \handler
+: ToCsv_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
   Pipein[] to Operand[]
@@ -30,7 +30,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: ToCsvOp_StreamDef \handler
+: ToCsv_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].delete
@@ -41,16 +41,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for ToCsvOp req                            (on node where spawned) */
+/* execute for ToCsv req                              (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToCsvOp_req \operator
+ : ToCsv_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: ToCsvOp_CrwBuffer  ZK_CRWBUFFER op[].handler!
-  find: ToCsvOp_StreamDef  ZK_STREAMDEF op[].handler!
+  find: ToCsv_CrwBuffer  ZK_CRWBUFFER op[].handler!
+  find: ToCsv_StreamDef  ZK_STREAMDEF op[].handler!
 
   op__loop
 
@@ -63,9 +63,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ToCsvOp :: ToCsvOp ;
+opSyntax: ToCsv :: ToCsv ;
 
-: ToCsvOp opInfo tagCopy: localOp_tags
+: ToCsv opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

@@ -96,7 +96,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scan T | toCsvOp |stageC
+    scan T | toCsv |stageC
 
   stage stageC on origin:
     output | sink | stageA

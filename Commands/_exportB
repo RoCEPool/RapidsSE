@@ -12,7 +12,7 @@ begin
  
   stage scanBuffers on all partitions:
 
-    scan LineItem | toCsvOp | outputCsv
+    scan LineItem | toCsv | outputCsv
 
 
   stage outputCsv on origin:
