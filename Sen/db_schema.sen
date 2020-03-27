@@ -10,7 +10,7 @@
 
 
 : :schema
-    :dic
+    :createFolder
          //dup find: schema swap word.category!
          dup find: schema swap execute dic.kind!
 ;

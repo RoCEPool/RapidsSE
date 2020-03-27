@@ -1,14 +1,13 @@
 /*============================================================================*/
-/* vocab_dic.sen -- dictionary related words                                */
+/* vocab_dic.sen -- dictionary related words                                  */
 /*============================================================================*/
 
 " vocab_dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
+/* create a new folder (leave pFolder on stack)                                /
 /*----------------------------------------------------------------------------*/
-
-: createFolder_proper params| sFolderNm |
+: :createFolder_proper params| sFolderNm |
 
 diclock.grabwrite
 
@@ -33,72 +32,21 @@ diclock.dropwrite
   pFolder
 ;
 
-: createFolder ( sFolderNm -- pFolder )
+/*----------------------------------------------------------------------------*/
+/* create new folder given name (create does> rtn and leave pFolder on stack) */
+/*----------------------------------------------------------------------------*/
+: :createFolder ( sFolderNm -- pFolder )
 
-  createFolder_proper dup compiler::current!
+  :createFolder_proper dup compiler::current!
   does>
 ;
 
-: createTenantsFolder
-
-  "tenants" createFolder attachMap::tenants!
-;
-
 /*----------------------------------------------------------------------------*/
-/* create a dictionary using name on the stack (leaves dic on stack)          */
+/* create the tenants folder and set AM::tenants                              */
 /*----------------------------------------------------------------------------*/
-: :dic
+: :createTenantsFolder
 
-diclock.grabwrite
-
-  :create
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_dic allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_DIC compiler::current@ word.embObject object.class!
-
-  compiler::current@ word.embObject dic.init
-
-  true compiler::current@ word.embObject object.wordbody!
-  find: \folder compiler::current@ word.category!
-
-  compiler::current@
-
-  //compiler::current@ word.name@ "  :dic %v" str.format .
-
-diclock.dropwrite
-  does>
-;
-/*----------------------------------------------------------------------------*/
-: :dic2
-
-diclock.grabwrite
-
-  word::new compiler::current!
-
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_dic allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_DIC compiler::current@ word.embObject object.class!
-
-  compiler::current@ word.embObject dic.init
-
-  true compiler::current@ word.embObject object.wordbody!
-  find: \folder compiler::current@ word.category!
-
-  compiler::current@
-
-  //compiler::current@ word.name@ "  :dic %v" str.format .
-
-diclock.dropwrite
-  does>
-;
-/*----------------------------------------------------------------------------*/
-: :dic3
-
-  createFolder
+  "tenants" :createFolder attachMap::tenants!
 ;
 
 
@@ -431,7 +379,7 @@ diclock.dropwrite
   pDic pathPush
 
     find: \folder
-    sSubFolderNm createFolder execute dic.kind!
+    sSubFolderNm :createFolder execute dic.kind!
 
   pathDrop
 ;
