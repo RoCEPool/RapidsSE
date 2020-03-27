@@ -33,7 +33,7 @@ namespace Pipelines
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology
     i8             m_iNextOp;         // next Op in the stage
-    i8             m_iXmitNode;       // xmit node (for xmitOp)
+    i8             m_iXmitNode;       // xmit node (for xmit)
     eXK            m_eXmitKind;       // xmit kind
     i8             m_iRobin;          // xmit Round Robin partition/node/thread
   

@@ -563,7 +563,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, bool bSet)
              aCN[pOperand->eClass()],
            pOperand);
   
-  if (AM::szJobName(m_pOpJob)->bSame("xmitop"_Stz)) {
+  if (AM::szJobName(m_pOpJob)->bSame("xmit"_Stz)) {
     vSendJobOperand(pOperand, bSet);
   }
   else {
