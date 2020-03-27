@@ -134,8 +134,9 @@ void Step::vRegConsumeXmitsNew(void)
   
   ASSERT (m_pRegSet->m_xpConsumeXmits.bIsNull());
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  m_pRegSet->m_xpConsumeXmits = new ConsumeXmits(pOp->nLeftEosMarkers());
+  i8 iConsumeXmits = m_pDataStack->iPopInt(__func__);
+  
+  m_pRegSet->m_xpConsumeXmits = new ConsumeXmits(iConsumeXmits);
   
   EXIT();
 }

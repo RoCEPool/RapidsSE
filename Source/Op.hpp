@@ -29,8 +29,6 @@ namespace Pipelines
     
     i8             m_nNode;            // node no
     i8             m_nPartition;       // partition no
-    i8             m_nLeftEosMarkers;  // expected left end markers
-    i8             m_nRightEosMarkers; // expected left end markers
     
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology
@@ -61,7 +59,6 @@ namespace Pipelines
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
-    i8   nDecLeftEosMarkers(void);
     void vDropTaskLock(void);
     EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
@@ -70,8 +67,6 @@ namespace Pipelines
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);
-    i8   nLeftEosMarkers(void);
-    void vLeftEosMarkers(i8 nEosMarkers);
     i8   iNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
@@ -98,8 +93,6 @@ namespace Pipelines
     void vPulsedLimit(bool bPulsedLimit);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
-    i8   nRightEosMarkers(void);
-    void vRightEosMarkers(i8 nEosMarkers);
     void vSendJobOperand(Operand* pOperand, bool bSet);
     bool bSpawnOperatorJob(i8 iSessionId);
     Task* pTask(void);

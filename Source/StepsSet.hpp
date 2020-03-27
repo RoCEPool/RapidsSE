@@ -906,7 +906,6 @@ public:
 
   // operator
   void vOpAckPipelineJob(void);
-  void vOpLeftEosMarkersStore(void);
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpPartitionFetch(void);

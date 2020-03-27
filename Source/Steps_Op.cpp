@@ -12,7 +12,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
   
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
-  vAddStep("Op.leftEosMarkers!"_Stz,  &Step::vOpLeftEosMarkersStore);
   vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
@@ -30,17 +29,6 @@ void Step::vOpAckPipelineJob(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   pOp->vAckJob();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.leftEosMarkers! -- store left end markers in op                         */
-/*----------------------------------------------------------------------------*/
-void Step::vOpLeftEosMarkersStore(void)
-{
-  ENTRY(); // ENTRY("vOpLeftEosMarkersStore"_Stz);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  pOp->vLeftEosMarkers(m_pDataStack->iPopInt(__func__));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -127,8 +127,7 @@
 
   LogReqEntry SEED_REQ
 
-  <consumeXmits> >int op.leftEosMarkers!
-  consumeXmits[].new
+  <consumeXmits> >int consumeXmits[].new
 
   // set topology, next stage and op
   op__topology
