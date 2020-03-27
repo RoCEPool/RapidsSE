@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: statsOp_StartMarker \handler
+: stats_StartMarker \handler
 
   Pipein[].pipeOut
 
@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: statsOp_ExitMarker \handler
+: stats_ExitMarker \handler
 
   metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
@@ -52,20 +52,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* statsOp request                                    (on node where spawned) */
+/* stats request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: statsOp_req \operator
+: stats_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: statsOp_StartMarker ZK_STARTMARKER op[].handler!
-  find: statsOp_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: stats_StartMarker ZK_STARTMARKER op[].handler!
+  find: stats_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
 
-  "*** statsOP EXITS" .
+  "*** stats EXITS" .
   LogReqExit
   job::deleteThis
   DONE_REQ_OP
@@ -74,9 +74,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: statsOp :: statsOp ;
+opSyntax: stats :: stats ;
 
-: statsOp opInfo tagCopy: localOp_tags
+: stats opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

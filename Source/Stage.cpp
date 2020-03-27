@@ -63,7 +63,7 @@ void Stage::vCancelPipeline(void)
     // get first operator of this first stage
     Op* pOp = pStrand->pGet(0);
     if (! AM::szJobName(pOp->pOpJob())->bSame("eatAll"_Stz) &&
-        ! AM::szJobName(pOp->pOpJob())->bSame("statWriteOp"_Stz)) {
+        ! AM::szJobName(pOp->pOpJob())->bSame("statWrite"_Stz)) {
       
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       // append a CANCELMARKER onto first operator
@@ -255,7 +255,7 @@ void Stage::vStartPipeline(void)
     // get first operator of this first stage
     Op* pOp = pStrand->pGet(0);
     if (! AM::szJobName(pOp->pOpJob())->bSame("eatAll"_Stz) &&
-        ! AM::szJobName(pOp->pOpJob())->bSame("statWriteOp"_Stz)) {
+        ! AM::szJobName(pOp->pOpJob())->bSame("statWrite"_Stz)) {
 
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
       // append a STARTMARKER onto first operator

@@ -24,7 +24,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scan lineitem | statsOp | toStatDOp | stageC
+    scan lineitem | stats | toStatDOp | stageC
 
   stage stageC on origin:
     output | sink | stageA
