@@ -1,14 +1,13 @@
 /*============================================================================*/
-/* vocab_dic.sen -- dictionary related words                                */
+/* vocab_dic.sen -- dictionary related words                                  */
 /*============================================================================*/
 
 " vocab_dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
+/* create a new folder (leave pFolder on stack)                                /
 /*----------------------------------------------------------------------------*/
-
-: createFolder_proper params| sFolderNm |
+: :createFolder_proper params| sFolderNm |
 
 diclock.grabwrite
 
@@ -33,15 +32,21 @@ diclock.dropwrite
   pFolder
 ;
 
-: createFolder ( sFolderNm -- pFolder )
+/*----------------------------------------------------------------------------*/
+/* create new folder given name (create does> rtn and leave pFolder on stack) */
+/*----------------------------------------------------------------------------*/
+: :createFolder ( sFolderNm -- pFolder )
 
-  createFolder_proper dup compiler::current!
+  :createFolder_proper dup compiler::current!
   does>
 ;
 
-: createTenantsFolder
+/*----------------------------------------------------------------------------*/
+/* create the tenants folder and set AM::tenants                              */
+/*----------------------------------------------------------------------------*/
+: :createTenantsFolder
 
-  "tenants" createFolder attachMap::tenants!
+  "tenants" :createFolder attachMap::tenants!
 ;
 
 
@@ -374,7 +379,7 @@ diclock.dropwrite
   pDic pathPush
 
     find: \folder
-    sSubFolderNm createFolder execute dic.kind!
+    sSubFolderNm :createFolder execute dic.kind!
 
   pathDrop
 ;

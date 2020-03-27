@@ -7,7 +7,7 @@
 : tenant ;
 
 : :tenant
-    createFolder
+    :createFolder
          //dup find: tenant swap word.category!
          dup find: tenant swap execute dic.kind!
 ;
