@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: reportOp_CrwBuffer \handler
+: report_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
   Pipein[] to Operand[]
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: reportOp_CsvBuffer \handler
+: report_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   Pipein[] to Operand[]
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ENTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: reportOp_EntBuffer \handler
+: report_EntBuffer \handler
 
   //"Operand:- ZK_ENTBUFFER" .verbose
   Pipein[] to Operand[]
@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
-: reportOp_EosMarker \handler
+: report_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
   File0[].get file.close
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_IRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: reportOp_IrwBuffer \handler
+: report_IrwBuffer \handler
 
   //"Operand:- ZK_IRWBUFFER" .verbose
   Pipein[] to Operand[]
@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_SRTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: reportOp_SrtBuffer \handler
+: report_SrtBuffer \handler
 
   //"Operand:- ZK_SRTBUFFER" .verbose
   Pipein[] to Operand[]
@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: reportOp_StartMarker \handler
+: report_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -131,21 +131,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for reportOp request                       (on node where spawned) */
+/* execute for report request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: reportOp_req \operator
+: report_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: reportOp_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: reportOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: reportOp_EntBuffer   ZK_ENTBUFFER   op[].handler!
-  find: reportOp_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: reportOp_IrwBuffer   ZK_IRWBUFFER   op[].handler!
-  find: reportOp_SrtBuffer   ZK_SRTBUFFER   op[].handler!
-  find: reportOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: report_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: report_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: report_EntBuffer   ZK_ENTBUFFER   op[].handler!
+  find: report_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: report_IrwBuffer   ZK_IRWBUFFER   op[].handler!
+  find: report_SrtBuffer   ZK_SRTBUFFER   op[].handler!
+  find: report_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -157,9 +157,9 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: reportOp :: reportOp <fileNm> ;
+opSyntax: report :: report <fileNm> ;
 
-: reportOp opInfo tagCopy: localOp_tags
+: report opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

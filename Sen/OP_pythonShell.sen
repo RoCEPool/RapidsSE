@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: pythonShellOp_CsvBuffer \handler
+: pythonShell_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   Pipein[] to Operand[]
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: pythonShellOp_ErrorMarker \handler
+: pythonShell_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].pipeOut
@@ -31,16 +31,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for pythonShellOp request                  (on node where spawned) */
+/* execute for pythonShell request                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: pythonShellOp_req \operator
+: pythonShell_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: pythonShellOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: pythonShellOp_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: pythonShell_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: pythonShell_ErrorMarker ZK_ERRORMARKER op[].handler!
 
   op__loop
 
@@ -52,9 +52,9 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: pythonShellOp :: pythonShellOp <pythonFile> ;
+opSyntax: pythonShell :: pythonShell <pythonFile> ;
 
-: pythonShellOp opInfo tagCopy: localOp_tags
+: pythonShell opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

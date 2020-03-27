@@ -136,7 +136,7 @@ stage stageB on all partitions:
 scanOp lineitem | toCsvOp | stageC
 
 stage stageC on origin:
-pythonShellOp "/Users/alka/rapidsse/Python/shellSample.py" | sinkOp | stageA
+pythonShell "/Users/alka/rapidsse/Python/shellSample.py" | sinkOp | stageA
 
 end
 ;
