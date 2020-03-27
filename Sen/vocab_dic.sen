@@ -387,10 +387,10 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : dicStack.discardAll ( dicStack -- )
 
-  0 locals| dicStack |
+  params| pDicStack |
 
-  dicStack dicStack.depth 0 ?do
-    dicStack dicStack.discard
+  pDicStack dicStack.depth 0 ?do
+    pDicStack dicStack.discard
   loop
 ;
 
