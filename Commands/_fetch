@@ -45,7 +45,7 @@ begin
   scan T1 "jidx_key 1 >= jidx_key 2 <= and " | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;
@@ -63,7 +63,7 @@ begin
  scan T1 "jidx_key 1 = " || scan T1 "jidx_key 2 = " | rowOnceOp | stageC
 
  stage stageC on origin:
- output | sinkOp | stageA
+ output | sink | stageA
  
 end
 ;
@@ -80,7 +80,7 @@ begin
   scan T1 | projectOp jidx_name | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;
@@ -97,7 +97,7 @@ begin
   scan T1 | limitOp 10 | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;

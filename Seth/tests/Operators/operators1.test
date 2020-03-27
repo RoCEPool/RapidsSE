@@ -75,7 +75,7 @@ stage stageB on all partitions:
 scan OpTableXXX | stageC
 
 stage stageC on origin:
-output | sinkOp | stageA
+output | sink | stageA
 
 end
 ;
@@ -96,7 +96,7 @@ stage stageC on origin:
 output | stageD
 
 stage stageD on origin:
-sinkOp | stageA
+sink | stageA
 
 end
 ;
@@ -113,7 +113,7 @@ pipeline scan1
     scan OpTable1 | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
   end
 ;
@@ -159,7 +159,7 @@ pipeline scan2
     output | stageD
 
   stage stageD on origin:
-    sinkOp | stageA
+    sink | stageA
 
   end
 ;
@@ -203,7 +203,7 @@ begin
     scan OpTable1 | stageC
 
   stage stageC on origin:
-    sinkOp | stageA
+    sink | stageA
 
   end
 ;

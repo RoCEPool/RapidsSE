@@ -15,7 +15,7 @@ begin
     scan $Table | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 end;
 
 //sp_fetch lineitem;
@@ -32,7 +32,7 @@ begin
     genCsv $Table | toCrwOp $Table | upsertOp $Table | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 */

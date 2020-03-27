@@ -21,8 +21,8 @@ begin
     bufferGen 10 | passThru | stageC
 
   stage stageC on origin:
-    report "/tmp/passThru.rep" | output | sinkOp | stageA
-    //output | sinkOp | stageA
+    report "/tmp/passThru.rep" | output | sink | stageA
+    //output | sink | stageA
 
 end;
 

@@ -51,7 +51,7 @@ load lineitem "/DATA/TPCH/lineitem20K.csv";
  scan lineitem 30 | stageC
  
  stage stageC on origin:
- output | sinkOp | stageA
+ output | sink | stageA
  
  end
  ;
@@ -66,7 +66,7 @@ begin
     startOp | periodicOp min 1 | print "hello" | stageB
 
   stage stageB on origin:
-    sinkOp | stageA
+    sink | stageA
 
 end
 ;

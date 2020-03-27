@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: sinkOp_CancelMarker \handler
+: sink_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
   Pipein[].pipeToJob
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: sinkOp_ErrorMarker \handler
+: sink_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].pipeOut
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
-: sinkOp_ExitMarker \handler
+: sink_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
   Pipein[].pipeToJob
@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEDMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: sinkOp_PulsedMarker \handler
+: sink_PulsedMarker \handler
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
   Pipein[].pipeOut
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: sinkOp_StartMarker \handler
+: sink_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
   Pipein[].delete
@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_Xyz ...                                                     */
 /*----------------------------------------------------------------------------*/
-: sinkOp_Xyz \handler
+: sink_Xyz \handler
 
   // delete all operands
   Pipein[].delete
@@ -78,21 +78,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for sinkOp request                         (on node where spawned) */
+/* execute for sink request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: sinkOp_req \operator
+: sink_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: sinkOp_Xyz op[].handlerAll!
+  find: sink_Xyz op[].handlerAll!
 
-  find: sinkOp_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: sinkOp_ErrorMarker  ZK_ERRORMARKER op[].handler!
-  find: sinkOp_ExitMarker   ZK_EXITMARKER  op[].handler!
-  find: sinkOp_PulsedMarker ZK_PULSEDMARKER  op[].handler!
-  find: sinkOp_StartMarker  ZK_STARTMARKER op[].handler!
+  find: sink_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: sink_ErrorMarker  ZK_ERRORMARKER op[].handler!
+  find: sink_ExitMarker   ZK_EXITMARKER  op[].handler!
+  find: sink_PulsedMarker ZK_PULSEDMARKER  op[].handler!
+  find: sink_StartMarker  ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -104,9 +104,9 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: sinkOp :: sinkOp ;
+opSyntax: sink :: sink ;
 
-: sinkOp opInfo tagCopy: localOp_tags
+: sink opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

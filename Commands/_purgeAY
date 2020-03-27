@@ -73,7 +73,7 @@ begin
     genCsv T | toCrwOp T | upsertOp T | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 
@@ -101,7 +101,7 @@ begin
     scan T | toCsvOp |stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 
@@ -119,7 +119,7 @@ begin
     snapshotOp T | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 
@@ -138,7 +138,7 @@ begin
     purge T | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 

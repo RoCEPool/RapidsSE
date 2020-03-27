@@ -32,7 +32,7 @@ LOOP 6 {
       genCsv T | toCrwOp T | upsertOp T | stageC
 
     stage stageC on origin:
-      output | sinkOp | stageA
+      output | sink | stageA
 
   end;
   success
@@ -77,7 +77,7 @@ CREATE 1 THREADS {
         purge T | stageC
       
       stage stageC on origin:
-        output | sinkOp | stageA
+        output | sink | stageA
     
     end;
     success
@@ -150,7 +150,7 @@ LOOP 10 {
       snapshotOp T | stageC
 
     stage stageC on origin:
-      output | sinkOp | stageA
+      output | sink | stageA
 
   end;
   success
@@ -175,7 +175,7 @@ begin
   purge T | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end;
 success

@@ -12,7 +12,7 @@ begin
     scan lineitem | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 
@@ -27,7 +27,7 @@ begin
     scan lineitem | statsOp | toStatDOp | stageC
 
   stage stageC on origin:
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end;
 */

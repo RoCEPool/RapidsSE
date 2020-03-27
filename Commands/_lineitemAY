@@ -120,7 +120,7 @@ begin
     GenCsv T | passThru | stageC
 
   stage stageC on origin:
-    sinkOp | stageA
+    sink | stageA
 
 end
 ;
@@ -136,7 +136,7 @@ stage stageB on all partitions:
 scan lineitem | toCsvOp | stageC
 
 stage stageC on origin:
-pythonShell "/Users/alka/rapidsse/Python/shellSample.py" | sinkOp | stageA
+pythonShell "/Users/alka/rapidsse/Python/shellSample.py" | sink | stageA
 
 end
 ;
@@ -152,13 +152,13 @@ begin
   scan lineitem | toCsvOp | stageC
 
   stage stageC on origin:
-  python "sample" "printString" | sinkOp | stageA
+  python "sample" "printString" | sink | stageA
 
 end
 ;
 
 
-python "sample" "printString" | sinkOp | stageA
+python "sample" "printString" | sink | stageA
 
 time pipeline insert
 begin
@@ -173,7 +173,7 @@ stage stageC on all partitions:
 insert lineitem2  | stageD
 
 stage stageD on origin:
-output | sinkOp | stageA
+output | sink | stageA
 
 end
 ;
@@ -188,7 +188,7 @@ stage stageB on all partitions:
 scan lineitem | toCsvOp | stageC
 
 stage stageC on origin:
-toFileOp "/tmp/xxx.csv" | sinkOp | stageA
+toFileOp "/tmp/xxx.csv" | sink | stageA
 
 end
 ;
@@ -202,7 +202,7 @@ docol epochDump;
  scan lineitem2 |  countOp | stageB
  
  stage stageB on origin:
- superCountOp | output | sinkOp
+ superCountOp | output | sink
  
  end
  ;

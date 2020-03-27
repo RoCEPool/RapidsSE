@@ -88,7 +88,7 @@ begin
     /liteOp/ | stageC
 
   stage stageC on origin :
-    output | sinkOp | stageA
+    output | sink | stageA
 
 end
 "

@@ -17,7 +17,7 @@ begin
   scan OpTable | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;
@@ -33,7 +33,7 @@ pipeline testPipeline
   scan OpTable | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
   end
 ;
@@ -49,7 +49,7 @@ begin
   scan OpTable | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;
@@ -65,7 +65,7 @@ begin
   scan OpTable | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;
@@ -81,7 +81,7 @@ begin
   scan OpTable | stageC
 
   stage stageC on origin:
-  output | sinkOp | stageA
+  output | sink | stageA
 
 end
 ;
