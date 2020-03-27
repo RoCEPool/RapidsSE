@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : dicStackToPathStr ( -- "path" )
 
-  task[] task.dicStack dicStack.toPathStr
+  task::dicStack dicStack.toPathStr
 ;
 
 /*============================================================================*/

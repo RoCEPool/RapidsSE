@@ -12,7 +12,7 @@
   0 0 locals| pDicStackTask |
 
   // get task dic stack
-  task[] task.dicStack to pDicStackTask
+  task::dicStack to pDicStackTask
 
   // copy the path from task dic stack onto data stack
   pDicStackTask dicStack.depth 0 ?do
