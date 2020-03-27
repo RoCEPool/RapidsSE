@@ -51,7 +51,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_CONSTDEF
   /*    */ &Finalize::vUndefined,         // CN_CONSTSET
-  /*    */ &Finalize::vUndefined,         // CN_CONSUMEXMITS
   /*    */ &Finalize::vUndefined,         // CN_CRVBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
@@ -327,6 +326,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_WRITEBEHIND
   
   /*    */ &Finalize::vUndefined,         // CN__X__
+  /*    */ &Finalize::vUndefined,         // CN_XMITS
   
   /*    */ &Finalize::vUndefined,         // CN__Y__
   

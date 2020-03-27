@@ -1015,19 +1015,19 @@ public:
   void vRegAggTimerGet(void);
   void vRegAggTimerSet(void);
 
-  // ConsumeXmits
-  void vRegConsumeXmitsDelete(void);
-  void vRegConsumeXmitsCancel(void);
-  void vRegConsumeXmitsEos(void);
-  void vRegConsumeXmitsError(void);
-  void vRegConsumeXmitsExit(void);
-  void vRegConsumeXmitsGet(void);
-  void vRegConsumeXmitsIsNull(void);
-  void vRegConsumeXmitsNew(void);
-  void vRegConsumeXmitsPulse(void);
-  void vRegConsumeXmitsPulsed(void);
-  void vRegConsumeXmitsStart(void);
-  void vRegConsumeXmitsStreamDef(void);
+  // Consume
+  void vRegXmitsDelete(void);
+  void vRegXmitsGet(void);
+  void vRegXmitsHandleCancel(void);
+  void vRegXmitsHandleEos(void);
+  void vRegXmitsHandleError(void);
+  void vRegXmitsHandleExit(void);
+  void vRegXmitsHandlePulse(void);
+  void vRegXmitsHandlePulsed(void);
+  void vRegXmitsHandleStart(void);
+  void vRegXmitsHandleStreamDef(void);
+  void vRegXmitsIsNull(void);
+  void vRegXmitsNew(void);
 
   // reg counter
   void vRegCounter0Get(void);

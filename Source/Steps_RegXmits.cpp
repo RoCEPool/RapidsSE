@@ -1,0 +1,214 @@
+/*============================================================================*/
+/* Steps_RegXmits.cpp -- Register Xmits step group                            */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_RegXmits(void)
+{
+  vAddStep("Xmits[]"_Stz,                &Step::vRegXmitsGet);
+  vAddStep("Xmits[].delete"_Stz,         &Step::vRegXmitsDelete);
+  vAddStep("Xmits[].handleCancel"_Stz,   &Step::vRegXmitsHandleCancel);
+  vAddStep("Xmits[].handleEos"_Stz,      &Step::vRegXmitsHandleEos);
+  vAddStep("Xmits[].handleError"_Stz,    &Step::vRegXmitsHandleError);
+  vAddStep("Xmits[].handleExit"_Stz,     &Step::vRegXmitsHandleExit);
+  vAddStep("Xmits[].handlePulse"_Stz,    &Step::vRegXmitsHandlePulse);
+  vAddStep("Xmits[].handlePulsed"_Stz,   &Step::vRegXmitsHandlePulsed);
+  vAddStep("Xmits[].handleStart"_Stz,    &Step::vRegXmitsHandleStart);
+  vAddStep("Xmits[].handleStreamDef"_Stz,&Step::vRegXmitsHandleStreamDef);
+  vAddStep("Xmits[].isNull"_Stz,         &Step::vRegXmitsIsNull);
+  vAddStep("Xmits[].new"_Stz,            &Step::vRegXmitsNew);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].delete -- operand delete                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsDelete(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsDelete"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  delete pXmits;
+  
+  m_pRegSet->m_xpXmits = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].get -- fetch operand                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsGet(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpXmits);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleCancel -- handle consume of cancel marker                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleCancel(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsHandleCancel"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+ 
+  pXmits->vIncExit();
+  
+  m_pDataStack->vPushInt(pXmits->bExitDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleEos -- handle consume of eos marker                          */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleEos(void)
+{
+  ENTRY(); // ENTRY("vRegXmitssHandleEos"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  pXmits->vIncEos();
+  
+  m_pDataStack->vPushInt(pXmits->bEosDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleError -- handle consume of error marker                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleError(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsHandleError"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  pXmits->vIncError();
+  
+  m_pDataStack->vPushInt(pXmits->bErrorDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleExit -- handle consume of exit marker                        */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleExit(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsHandleExit"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  pXmits->vIncExit();
+  
+  m_pDataStack->vPushInt(pXmits->bExitDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handlePulse -- handle consume of pulse marker                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandlePulse(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsHandlePulse"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  pXmits->vIncPulse();
+  
+  m_pDataStack->vPushInt(pXmits->bPulseDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handlePulsed -- handle consume of pulsed marker                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandlePulsed(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsHandlePulsed"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  pXmits->vIncPulsed();
+  
+  m_pDataStack->vPushInt(pXmits->bPulsedDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleStart -- handle consume of start marker                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleStart(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsXmitsHandleStart"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  bool bStartDone = pXmits->bStartDone();
+  pXmits->vIncStart();
+  
+  m_pDataStack->vPushInt(bStartDone);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleStreamDef -- handle consume of streamDef                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleStreamDef(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsHandleStreamDef"_Stz);
+  
+  Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
+  
+  bool bStreamDefDone = pXmits->bStreamDefDone();
+  
+  pXmits->vIncStreamDef();
+  
+  m_pDataStack->vPushInt(bStreamDefDone);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].isNull -- is operand null ?                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsIsNull(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsIsNull"_Stz);
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpXmits.bIsNull() ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].new -- new a consume xmits                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsNew(void)
+{
+  ENTRY(); // ENTRY("vRegXmitsNew"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpXmits.bIsNull());
+  
+  i8 iXmits = m_pDataStack->iPopInt(__func__);
+  
+  m_pRegSet->m_xpXmits = new Xmits(iXmits);
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

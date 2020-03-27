@@ -119,7 +119,6 @@ namespace Steps
   
     static void vAddSteps_Register(void);
     static void vAddSteps_RegAggTimer(void);
-    static void vAddSteps_RegConsumeXmits(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegJob(void);
     static void vAddSteps_RegIndex(void);
@@ -135,6 +134,7 @@ namespace Steps
     static void vAddSteps_RegStreamDef(void);
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
+    static void vAddSteps_RegXmits(void);
     static void vAddSteps_Rstack(void);
     static void vAddSteps_Row(void);
   

@@ -181,11 +181,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("ConsumeXmits[]"_Stz)) {
-    pCurrentWord->vEncodeCall("ConsumeXmits[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Counter0[]"_Stz)) {
     pCurrentWord->vEncodeCall("Counter0[].set"_Stz);
     EXIT();
@@ -283,6 +278,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("WriteBehind[]"_Stz)) {
     pCurrentWord->vEncodeCall("WriteBehind[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Xmits[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Xmits[].set"_Stz);
     EXIT();
     return;
   }

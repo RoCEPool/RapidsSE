@@ -858,27 +858,27 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 
 }
 
 /*----------------------------------------------------------------------------*/
-/* add the ConsumeXmits parameter                                             */
+/* add the Xmits parameter                                             */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  i8 iConsumeXmits = C_UNKNOWN;
+  i8 iXmits = C_UNKNOWN;
   
   // add argument to the consumeOp depending on the topology
   switch (eTopologyX) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iConsumeXmits = AM::pGrid()->nConnectedNodes();
+      iXmits = AM::pGrid()->nConnectedNodes();
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iConsumeXmits = AM::pGrid()->nSlotsPerNode();
+      iXmits = AM::pGrid()->nSlotsPerNode();
       break;
       
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iConsumeXmits = AM::pGrid()->nPartitions();
+      iXmits = AM::pGrid()->nPartitions();
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
@@ -888,7 +888,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      iConsumeXmits = 1;
+      iXmits = 1;
       break;
       
     default:
@@ -896,7 +896,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
   }
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddEnamePair(C_TAG_CONSUMEXMITS,iConsumeXmits,TN_INTEGER);
+  pOpSpec->vAddEnamePair(C_TAG_Xmits,iXmits,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/

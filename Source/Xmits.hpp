@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* ConsumeXmits.hpp -- consume xmit counters                                  */
+/* Xmits.hpp -- consume xmit counters                                  */
 /*============================================================================*/
 #pragma once
 
 namespace Pipelines
 {
-  class ConsumeXmits : public Focal
+  class Xmits : public Focal
   {
   private:
-    i8             m_iConsumeXmits;   // consume xmits
+    i8             m_iXmits;   // consume xmits
     
     i8             m_iExitMarkers;    // exit / cancel markers received by consumeOp
     i8             m_iEosMarkers;     // eos / error markers received by consumeOp
@@ -24,8 +24,8 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    ConsumeXmits(i8 iConsumeXmits);
-    ~ConsumeXmits(void) noexcept(false);
+    Xmits(i8 iXmits);
+    ~Xmits(void) noexcept(false);
     
     bool bCancelDone(void);
     bool bEosDone(void);
@@ -51,7 +51,7 @@ namespace Pipelines
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ConsumeXmits* _pConsumeXmits(void* aAddr);
+  Xmits* _pXmits(void* aAddr);
 }
 
 /*============================================================================*/

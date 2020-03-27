@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ConsumeXmits.cpp -- Consume xmits counters                                 */
+/* Xmits.cpp -- Consume xmits counters                                        */
 /*============================================================================*/
 
 #include "Pipelines.h"
@@ -11,28 +11,28 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ConsumeXmits* Pipelines::_pConsumeXmits(void* aAddr)
+Xmits* Pipelines::_pXmits(void* aAddr)
 {
-  ConsumeXmits* pConsumeXmits = reinterpret_cast<ConsumeXmits*>(aAddr);
+  Xmits* pXmits = reinterpret_cast<Xmits*>(aAddr);
   
-  return pConsumeXmits;
+  return pXmits;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* ConsumeXmits::operator new(size_t)
+void* Xmits::operator new(size_t)
 {
-  ConsumeXmits* pConsumeXmits =
-  static_cast<ConsumeXmits*>(HeapMem::pAllocate(CN_CONSUMEXMITS));
+  Xmits* pXmits =
+  static_cast<Xmits*>(HeapMem::pAllocate(CN_XMITS));
   
-  return pConsumeXmits;
+  return pXmits;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::operator delete(void* aAddress)
+void Xmits::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
@@ -42,13 +42,13 @@ void ConsumeXmits::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ConsumeXmits::ConsumeXmits(i8 iConsumeXmits)
-: Focal(CN_CONSUMEXMITS)
+Xmits::Xmits(i8 iXmits)
+: Focal(CN_XMITS)
 
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
 
-  m_iConsumeXmits  = iConsumeXmits;
+  m_iXmits  = iXmits;
   m_iExitMarkers   = 0;
   m_iEosMarkers    = 0;
   m_iPulseMarkers  = 0;
@@ -56,29 +56,29 @@ ConsumeXmits::ConsumeXmits(i8 iConsumeXmits)
   m_iStartMarkers  = 0;
   m_iStreamDefs    = 0;
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ConsumeXmits::~ConsumeXmits(void) noexcept(false)
+Xmits::~Xmits(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* cancel done ?                                                              */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bCancelDone(void)
+bool Xmits::bCancelDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   vTrace("Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v"_Stz,
-         m_iExitMarkers, m_iConsumeXmits);
+         m_iExitMarkers, m_iXmits);
   
-  if (m_iExitMarkers == m_iConsumeXmits) {
+  if (m_iExitMarkers == m_iXmits) {
     m_iExitMarkers = 0;
     return true;
   }
@@ -89,15 +89,15 @@ bool ConsumeXmits::bCancelDone(void)
 /*----------------------------------------------------------------------------*/
 /* eos done ?                                                                 */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bEosDone(void)
+bool Xmits::bEosDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iEosMarkers > m_iConsumeXmits)
+  if (m_iEosMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_EOSMARKER received %v; expected %v"_Stz,
-           m_iEosMarkers, m_iConsumeXmits);
+           m_iEosMarkers, m_iXmits);
   
-  if (m_iEosMarkers == m_iConsumeXmits) {
+  if (m_iEosMarkers == m_iXmits) {
     m_iEosMarkers = 0;
     return true;
   }
@@ -108,15 +108,15 @@ bool ConsumeXmits::bEosDone(void)
 /*----------------------------------------------------------------------------*/
 /* exit done ?                                                                */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bErrorDone(void)
+bool Xmits::bErrorDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iExitMarkers > m_iConsumeXmits)
+  if (m_iExitMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_ERRORMARKER received %v; expected %v"_Stz,
-           m_iEosMarkers, m_iConsumeXmits);
+           m_iEosMarkers, m_iXmits);
   
-  if (m_iEosMarkers == m_iConsumeXmits) {
+  if (m_iEosMarkers == m_iXmits) {
     m_iEosMarkers = 0;
     return true;
   }
@@ -127,15 +127,15 @@ bool ConsumeXmits::bErrorDone(void)
 /*----------------------------------------------------------------------------*/
 /* exit done ?                                                                */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bExitDone(void)
+bool Xmits::bExitDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iExitMarkers > m_iConsumeXmits)
+  if (m_iExitMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_EXITMARKER received %v; expected %v"_Stz,
-      m_iExitMarkers, m_iConsumeXmits);
+      m_iExitMarkers, m_iXmits);
   
-  if (m_iExitMarkers == m_iConsumeXmits) {
+  if (m_iExitMarkers == m_iXmits) {
     m_iExitMarkers = 0;
     return true;
   }
@@ -146,15 +146,15 @@ bool ConsumeXmits::bExitDone(void)
 /*----------------------------------------------------------------------------*/
 /* pulse done ?                                                               */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bPulseDone(void)
+bool Xmits::bPulseDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iPulseMarkers > m_iConsumeXmits)
+  if (m_iPulseMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v"_Stz,
-           m_iPulseMarkers, m_iConsumeXmits);
+           m_iPulseMarkers, m_iXmits);
   
-  if (m_iPulseMarkers == m_iConsumeXmits) {
+  if (m_iPulseMarkers == m_iXmits) {
     m_iPulseMarkers = 0;
     return true;
   }
@@ -165,15 +165,15 @@ bool ConsumeXmits::bPulseDone(void)
 /*----------------------------------------------------------------------------*/
 /* pulsed done ?                                                               */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bPulsedDone(void)
+bool Xmits::bPulsedDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iPulsedMarkers > m_iConsumeXmits)
+  if (m_iPulsedMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
-           m_iPulsedMarkers, m_iConsumeXmits);
+           m_iPulsedMarkers, m_iXmits);
   
-  if (m_iPulsedMarkers == m_iConsumeXmits) {
+  if (m_iPulsedMarkers == m_iXmits) {
     m_iPulsedMarkers = 0;
     return true;
   }
@@ -184,13 +184,13 @@ bool ConsumeXmits::bPulsedDone(void)
 /*----------------------------------------------------------------------------*/
 /* start done ?                                                               */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bStartDone(void)
+bool Xmits::bStartDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iStartMarkers > m_iConsumeXmits)
+  if (m_iStartMarkers > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
-           m_iStartMarkers, m_iConsumeXmits);
+           m_iStartMarkers, m_iXmits);
   
   if (m_iStartMarkers == 0) {
     return true;
@@ -202,13 +202,13 @@ bool ConsumeXmits::bStartDone(void)
 /*----------------------------------------------------------------------------*/
 /* streamDef done ?                                                           */
 /*----------------------------------------------------------------------------*/
-bool ConsumeXmits::bStreamDefDone(void)
+bool Xmits::bStreamDefDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  if (m_iStreamDefs > m_iConsumeXmits)
+  if (m_iStreamDefs > m_iXmits)
     vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
-           m_iStreamDefs, m_iConsumeXmits);
+           m_iStreamDefs, m_iXmits);
   
   if (m_iStreamDefs == 0) {
     return true;
@@ -220,9 +220,9 @@ bool ConsumeXmits::bStreamDefDone(void)
 /*----------------------------------------------------------------------------*/
 /* inc cancel                                                                 */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncCancel(void)
+void Xmits::vIncCancel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iExitMarkers++;
 }
@@ -230,9 +230,9 @@ void ConsumeXmits::vIncCancel(void)
 /*----------------------------------------------------------------------------*/
 /* inc eos                                                                    */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncEos(void)
+void Xmits::vIncEos(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iEosMarkers++;
 }
@@ -240,9 +240,9 @@ void ConsumeXmits::vIncEos(void)
 /*----------------------------------------------------------------------------*/
 /* inc error                                                                  */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncError(void)
+void Xmits::vIncError(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iEosMarkers++;
 }
@@ -250,9 +250,9 @@ void ConsumeXmits::vIncError(void)
 /*----------------------------------------------------------------------------*/
 /* inc exit                                                                   */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncExit(void)
+void Xmits::vIncExit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iExitMarkers++;
 }
@@ -260,9 +260,9 @@ void ConsumeXmits::vIncExit(void)
 /*----------------------------------------------------------------------------*/
 /* inc pulse                                                                  */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncPulse(void)
+void Xmits::vIncPulse(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iPulseMarkers++;
 }
@@ -270,9 +270,9 @@ void ConsumeXmits::vIncPulse(void)
 /*----------------------------------------------------------------------------*/
 /* inc pulsed                                                                 */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncPulsed(void)
+void Xmits::vIncPulsed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iPulsedMarkers++;
 }
@@ -280,9 +280,9 @@ void ConsumeXmits::vIncPulsed(void)
 /*----------------------------------------------------------------------------*/
 /* inc start                                                                  */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncStart(void)
+void Xmits::vIncStart(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iStartMarkers++;
 }
@@ -290,9 +290,9 @@ void ConsumeXmits::vIncStart(void)
 /*----------------------------------------------------------------------------*/
 /* inc streamDef                                                              */
 /*----------------------------------------------------------------------------*/
-void ConsumeXmits::vIncStreamDef(void)
+void Xmits::vIncStreamDef(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEXMITS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iStreamDefs++;
 }
@@ -306,7 +306,7 @@ void ConsumeXmits::vIncStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(ConsumeXmits);
+__aFooterFunction(Xmits);
 
 /*============================================================================*/
 /* end                                                                        */

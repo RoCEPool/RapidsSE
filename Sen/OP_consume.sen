@@ -10,10 +10,10 @@
 : consumeOp_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  consumeXmits[].cancel if
+  xmits[].handleCancel if
     Pipein[].pipeOut
     Op.ackPipelineJob
-    consumeXmits[].delete
+    Xmits[].delete
     false
   else
     Pipein[].delete
@@ -27,7 +27,7 @@
 : consumeOp_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
-  consumeXmits[].eos if
+  xmits[].handleEos if
     Pipein[].pipeOut
   else
     Pipein[].delete
@@ -40,7 +40,7 @@
 : consumeOp_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  consumeXmits[].error if
+  xmits[].handleError if
     Pipein[].pipeOut
   else
     Pipein[].delete
@@ -54,10 +54,10 @@
 : consumeOp_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
-  consumeXmits[].exit if
+  xmits[].handleExit if
     Pipein[].pipeOut
     Op.ackPipelineJob
-    consumeXmits[].delete
+    Xmits[].delete
     false
   else
     Pipein[].delete
@@ -71,7 +71,7 @@
 : consumeOp_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
-  consumeXmits[].pulse if
+  xmits[].handlePulse if
     Pipein[].pipeOut
   else
     Pipein[].delete
@@ -84,7 +84,7 @@
 : consumeOp_PulsedMarker \handler
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
-  consumeXmits[].pulsed if
+  xmits[].handlePulsed if
     Pipein[].pipeOut
   else
     Pipein[].delete
@@ -98,7 +98,7 @@
 : consumeOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  consumeXmits[].start if
+  xmits[].handleStart if
     Pipein[].pipeOut
   else
     Pipein[].delete
@@ -112,7 +112,7 @@
 : consumeOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  consumeXmits[].streamDef if
+  xmits[].handleStreamDef if
     Pipein[].pipeOut
   else
     Pipein[].delete
@@ -127,7 +127,7 @@
 
   LogReqEntry SEED_REQ
 
-  <consumeXmits> >int consumeXmits[].new
+  <Xmits> >int Xmits[].new
 
   // set topology, next stage and op
   op__topology
@@ -151,7 +151,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
+opSyntax: ConsumeOp :: ConsumeOp <Xmits> ;
 
 : ConsumeOp opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }

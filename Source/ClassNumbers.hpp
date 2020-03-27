@@ -54,7 +54,6 @@ enum eCN : u2 // Class Number
   /*  33 0x021      176B Heap:M */ CN_COMPILER,
   /*  33 0x021      176B Heap:M */ CN_CONSTDEF,
   /*  33 0x021      176B Heap:M */ CN_CONSTSET,
-  /*  33 0x021      176B Heap:S */ CN_CONSUMEXMITS,
   /*  34 0x022  1044008B Heap:L */ CN_CRVBUFFER,
   /*  34 0x022  1044008B Heap:L */ CN_CRWBUFFER,
   /*  35 0x023  1040784B Heap:L */ CN_CSVBUFFER,
@@ -330,6 +329,7 @@ enum eCN : u2 // Class Number
   /*     0x11D    64808B Heap:M */ CN_WRITEBEHIND,
   
   /* 286 0x11E       24B Heap:I */ CN__X__,
+  /*  33 0x021      176B Heap:S */ CN_XMITS,
   
   /* 287 0x11F       25B Heap:I */ CN__Y__,
   
@@ -383,7 +383,6 @@ static Stz* aCN[]
   /*  33 0x021 */ "COMPILER"_Stz,            // CN_COMPILER
   /*  33 0x021 */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /*  33 0x021 */ "CONSTSET"_Stz,            // CN_CONSTSET
-  /*  33 0x021 */ "CONSUMEXMITS"_Stz,        // CN_CONSUMEXMITS
   /*  34 0x022 */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /*  34 0x022 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
@@ -659,6 +658,7 @@ static Stz* aCN[]
   /*     0x11D */ "WRITEBEHIND"_Stz,         // CN_WRITEBEHIND
   
   /* 286 0x11E */ "_X__"_Stz,                // CN__X__
+  /*     0x021 */ "Xmits"_Stz,               // CN_XMITS
   
   /* 287 0x11F */ "_Y__"_Stz,                // CN__Y__
   

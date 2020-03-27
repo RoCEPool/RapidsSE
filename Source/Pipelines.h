@@ -16,7 +16,7 @@ namespace Pipelines
 
 // tags
 static Stz* C_TAG_CMD          = "<cmd>"_Stz;
-static Stz* C_TAG_CONSUMEXMITS = "<consumeXmits>"_Stz;
+static Stz* C_TAG_Xmits = "<Xmits>"_Stz;
 static Stz* C_TAG_DISTID       = "<distId>"_Stz;
 static Stz* C_TAG_JOBCLASS     = "<jobClass>"_Stz;
 static Stz* C_TAG_JOBKIND      = "<jobKind>"_Stz;
@@ -50,7 +50,7 @@ static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
 static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
 static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
-#include "ConsumeXmits.hpp"
+#include "Xmits.hpp"
 #include "Op.hpp"
 #include "Strand.hpp"
 #include "Stage.hpp"
