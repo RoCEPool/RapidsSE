@@ -375,7 +375,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* clear task dictionary stack                                                */
 /*----------------------------------------------------------------------------*/
-: task::dicStack.clear
+: dicStack.clear
 
   pathDepth 0 ?do
     pathDiscard
@@ -397,19 +397,19 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* set task dictionary stack                                                  */
 /*----------------------------------------------------------------------------*/
-: task::dicStack.set ( ... #dics -- )
+: dicStack.set ( ... #dics -- )
 
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 
-  task::dicStack.clear
+  dicStack.clear
 
   dup not if drop exit_rt then
 
   0 do
 
-    // dup "task::dicStack.set %v" .printf
+    // dup "dicStack.set %v" .printf
 
     dup "__dicRoot" str.equal if
       drop
