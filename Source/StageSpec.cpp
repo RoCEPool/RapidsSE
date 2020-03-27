@@ -160,67 +160,13 @@ void StageSpec::vPartition(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* prepend a consumeOp spec                                                   */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
+OpSpec* StageSpec::pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   OpSpec* pOpSpec;
-  i8 iConsumeArg = C_UNKNOWN;
   
   pOpSpec = new OpSpec("consumeOp"_Stz,this);
-  
-  // add argument to the consumeOp depending on the topology
-  switch (eTopologyX) {
-    case PX_ALL_NODES_TO_ORIGIN:
-      iConsumeArg = AM::pGrid()->nConnectedNodes();
-      break;
-      
-    case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iConsumeArg = AM::pGrid()->nSlotsPerNode();
-      break;
-      
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      iConsumeArg = 1;
-      break;
-     
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iConsumeArg = AM::pGrid()->nSlotsPerNode();
-      break;
-      
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iConsumeArg = AM::pGrid()->nPartitions();
-      break;
-      
-    case PX_ORIGIN_TO_ORIGIN:
-      iConsumeArg = 1;
-      break;
-      
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-      iConsumeArg = 1;
-      break;
-      
-    case PX_ORIGIN_TO_ALL_NODES:
-      iConsumeArg = 1;
-      break;
-      
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-      iConsumeArg = 1;
-      break;
-      
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
-      iConsumeArg = 1;
-      break;
-      
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      iConsumeArg = 1;
-      break;
-      
-    default:
-      RASSERT(0);
-  }
-  
-  pOpSpec->vAddEnamePair("<consumeXmits>"_Stz,iConsumeArg,TN_INTEGER);
-  pOpSpec->pEnameSet()->vDumpSet();
   
   vInsert(pOpSpec);
   
@@ -230,6 +176,7 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
     pOpSpec->v_OpSpec(i_Op);
   }
   
+  return pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
