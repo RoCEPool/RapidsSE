@@ -66,6 +66,7 @@ void Correctness::vThreadCallStackDump(void)
                                         Stz*  szFormat,...)
 {
   fprintf(stderr,
+          "Correctness::vThrow:\n"
           "eKind = %lld\n"
           "eSeverity = %lld\n"
           "azFunc = %s\n"

@@ -1248,6 +1248,13 @@ void Engine::vSanityCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vSignalHandler(int iSignal)
 {
+  fprintf(stderr,
+          "Engine::vSignalHandler:\n"
+          "iSignal = %lld\n",
+          (i8)iSignal);
+  
+  vThreadCallStackDump();
+  
   // print out all the frames to stderr
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "Error: signal %d:\n"_Stz, iSignal);
