@@ -28,6 +28,7 @@ static Stz* C_TAG_PATH         = "<path>"_Stz;
 static Stz* C_TAG_STMT         = "<stmt>"_Stz;
 static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
 static Stz* C_TAG_TOPOLOGY     = "<topology>"_Stz;
+static Stz* C_TAG_XMITKIND     = "<xmitKind>"_Stz;
 
 // job control tags
 static Stz* C_TAG_API      = "</api>"_Stz;

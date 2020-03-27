@@ -822,7 +822,7 @@ bool Dynamo::bPhase2_staging(void)
           delete pOpSpec;
         }
         else {
-          pOpSpec->vAddEnamePair("<XmitKind>"_Stz,(i8)pOpSpec->eXmitKind(),TN_INTEGER);
+          pOpSpec->vAddEnamePair(C_TAG_XMITKIND,(i8)pOpSpec->eXmitKind(),TN_INTEGER);
           vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
           OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
           vAddConsumeParams(pConsumeOpSpec, eTopologyX);
