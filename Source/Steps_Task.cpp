@@ -11,7 +11,7 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
   vAddStep("task::delete"_Stz,        &Step::vTaskDelete);
-  vAddStep("task::dicStack"_Stz,      &Step::vTaskDicStackGet);
+  vAddStep(" task::dicStack"_Stz,      &Step::vTaskDicStackGet);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,          &Step::vTaskDump);
   vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);

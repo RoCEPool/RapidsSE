@@ -148,6 +148,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegOperandB();
   Step::vAddSteps_RegOperandC();
   Step::vAddSteps_RegOperandOoO();
+  Step::vAddSteps_RegPath();
   Step::vAddSteps_RegPipein();
   Step::vAddSteps_RegSet();
   Step::vAddSteps_RegStreamDef();

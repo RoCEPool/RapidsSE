@@ -1133,7 +1133,10 @@ public:
   void vRegOperandOoOPipeToJob(void);
   void vRegOperandOoOSet(void);
 
-  // Pipein
+  // reg Path
+  void vRegPathGet(void);
+
+  // reg Pipein
   void vRegPipeinBide(void);
   void vRegPipeinDelete(void);
   void vRegPipeinGet(void);
