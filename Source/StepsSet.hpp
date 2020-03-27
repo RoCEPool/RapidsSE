@@ -200,7 +200,6 @@ public:
   void vDicStackDiscard(void);
   void vDicStackDump(void);
   void vDicStackPick(void);
-  void vDicStackPop(void);
   void vDicStackPush(void);
   void vDicStackToPathStr(void);
 
