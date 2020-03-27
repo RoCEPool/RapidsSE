@@ -385,12 +385,12 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* drop all dictionaries from given stack                                     */
 /*----------------------------------------------------------------------------*/
-: dicStack.dropAll ( dicStack -- )
+: dicStack.discardAll ( dicStack -- )
 
   0 locals| dicStack |
 
   dicStack dicStack.depth 0 ?do
-    dicStack dicStack.drop
+    dicStack dicStack.discard
   loop
 ;
 
@@ -446,7 +446,7 @@ diclock.dropwrite
   task[] task.dicStack
 
   // drop the top dictionary
-  dicStack.dropAll
+  dicStack.discardAll
 ;
 
 

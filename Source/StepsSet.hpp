@@ -197,7 +197,7 @@ public:
 
   // dicStack
   void vDicStackDepth(void);
-  void vDicStackDrop(void);
+  void vDicStackDiscard(void);
   void vDicStackDump(void);
   void vDicStackPick(void);
   void vDicStackPop(void);
