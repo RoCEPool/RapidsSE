@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CSVBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: pythonOp_CsvBuffer \handler
+: python_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
   Pipein[] to Operand[]
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: pythonOp_ErrorMarker \handler
+: python_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].pipeOut
@@ -30,16 +30,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for pythonOp request                       (on node where spawned) */
+/* execute for python request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: pythonOp_req \operator
+: python_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: pythonOp_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: pythonOp_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: python_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: python_ErrorMarker ZK_ERRORMARKER op[].handler!
 
   op__loop
 
@@ -51,9 +51,9 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: pythonOp :: pythonOp <pythonFile> <pythonFunction> ;
+opSyntax: python :: python <pythonFile> <pythonFunction> ;
 
-: pythonOp opInfo tagCopy: localOp_tags
+: python opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

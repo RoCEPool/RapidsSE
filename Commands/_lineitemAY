@@ -152,13 +152,13 @@ begin
   scanOp lineitem | toCsvOp | stageC
 
   stage stageC on origin:
-  pythonOp "sample" "printString" | sinkOp | stageA
+  python "sample" "printString" | sinkOp | stageA
 
 end
 ;
 
 
- pythonOp "sample" "printString" | sinkOp | stageA
+ python "sample" "printString" | sinkOp | stageA
 docol epochTake;
 time pipeline scan
 begin
