@@ -54,7 +54,7 @@
 
   // clear dic path and push tenants
   sFolderNm "tenants" str.equal if
-    pathDropAll
+    pathDiscardAll
     attachmap::tenants@ execute pathPush
     setPath
     LogExit DONE_REQ
