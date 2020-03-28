@@ -36,15 +36,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if table exits
-  <tableNm> checkIsValidTable not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
-  else
-    // move to table folder and find the table
-    <tableNm> pushTable assert
-    <tableNm> find execute to table[]
+  op__table if
     Pipein[].pipeOut
   then
 

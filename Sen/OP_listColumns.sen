@@ -23,7 +23,7 @@
   popTable
 
   // find the __listColumns table
-  C_TDEF_LISTCOLUMNS op__tableDef
+  C_TDEF_LISTCOLUMNS op__tableDef assert
 
   // create a new streamDef
   StreamDef[].new

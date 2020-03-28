@@ -34,13 +34,14 @@
 
   "BM_GenEnt_StartMarker" .
 
-  op__table
-  table[].tablePtn@ to tablePtn[]
+  op__table if
+    table[].tablePtn@ to tablePtn[]
 
-  folderPath.str     "Folder path: %v" .printf
-  folderContents.str "contains: %v" .printf
+    folderPath.str     "Folder path: %v" .printf
+    folderContents.str "contains: %v" .printf
 
-  Pipein[].pipeOut
+    Pipein[].pipeOut
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -94,15 +94,7 @@
   <tableNm> locals| sTableNm |
 
   // check if we can scan the table
-  sTableNm checkIsValidTable not if
-    op.pipelineJob@ ERROR_JOB !!logError
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-  else
-    // move to table folder and find the table and tablePtn
-    sTableNm pushTable assert
-    sTableNm find execute to table[]
+  op__table if
     Pipein[].pipeout
   then
 
