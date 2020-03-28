@@ -132,7 +132,7 @@
   CN_STZVAL assert::class_0
 
   // assert dictionary path
-  task::dicStack dicStack.depth assert
+  path[] dicStack.depth assert
 
   pathCurrentFolder dic.name str.equal
 ;

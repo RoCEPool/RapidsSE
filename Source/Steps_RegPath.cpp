@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegPath(void)
 {
-  vAddStep("task::dicStack"_Stz,      &Step::vRegPathGet);
+  vAddStep("path[]"_Stz,      &Step::vRegPathGet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::dicStack -- push task dictionary onto data stack                     */
+/* path[] -- push task dictionary onto data stack                             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathGet(void)
 {

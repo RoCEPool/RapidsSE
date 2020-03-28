@@ -103,7 +103,7 @@ diclock.dropwrite
 : pathDepth ( -- )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   // get depth
   dicStack.depth
@@ -115,7 +115,7 @@ diclock.dropwrite
 : pathDiscard ( -- )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   // pop the top dictionary
   dicStack.discard
@@ -127,7 +127,7 @@ diclock.dropwrite
 : pathDump ( -- )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   // dump the dic stack
   dicStack.dump
@@ -139,7 +139,7 @@ diclock.dropwrite
 : pathPick ( i -- dic )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   // pick the dictionary from dic stack
   dicStack.pick
@@ -151,7 +151,7 @@ diclock.dropwrite
 : pathPush ( dic -- )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   // push the dictionary onto dic stack
   dicStack.push
@@ -186,7 +186,7 @@ diclock.dropwrite
 : pathCurrentFolder ( -- )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   dicStack.depth 1 - pathPick
 ;
@@ -443,7 +443,7 @@ diclock.dropwrite
 : pathDiscardAll ( -- )
 
   // push the dic stack of this task
-  task::dicStack
+  path[]
 
   // drop the top dictionary
   dicStack.discardAll
