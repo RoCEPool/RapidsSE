@@ -9836,7 +9836,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": setPath ( -- )\n"
     "\n"
-    "  0 0 locals| pDicStackTask |\n"
+    "  0 locals| pDicStackTask |\n"
     "\n"
     "  // get task dic stack\n"
     "  path[] to pDicStackTask\n"
