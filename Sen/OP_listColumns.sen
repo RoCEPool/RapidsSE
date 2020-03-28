@@ -47,6 +47,8 @@
   Operand[].newEosMarker
   Operand[].pipeOut
 
+  assert::stack_0
+
   true
 ;
 
@@ -57,8 +59,12 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  op__table
-  Pipein[].pipeout
+  op__table if
+    Pipein[].pipeout
+  then
+
+  assert::stack_0
+
   true
 ;
 

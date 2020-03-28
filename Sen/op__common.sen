@@ -38,11 +38,13 @@
 : op__table
 
   "op__table (Table A)" .
+stk
 
   // check in tables folder
   checkInTables not if false exit then
 
   "op__table (Table B)" .
+stk
 
   // table
   <tableNm> checkIsValidTable not if
@@ -55,12 +57,14 @@
   then
 
   "op__table (Table C)" .
+stk
 
   // move to table folder and find the table
   <tableNm> pushTable assert
   <tableNm> find execute to table[]
 
   "op__table (Table D)" .
+stk
 
   // cross-check
   table[].get assert
