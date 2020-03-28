@@ -77,10 +77,8 @@
   //"Operand:- ZK_STARTMARKER" .verbose
 
   op__table if
-
     table[].tablePtn@ to tablePtn[]
     Pipein[].pipeOut
-
   then
 
   true
