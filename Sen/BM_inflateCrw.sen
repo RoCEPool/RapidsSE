@@ -75,13 +75,14 @@
 : BM_InflateCrwOp_StartMarker \handler
 
   // table folder push
-  op__table
+  op__table if
 
-  folderPath.str "Folder path: %v" .printf
+    folderPath.str "Folder path: %v" .printf
 
-  BM_TimerNew
+    BM_TimerNew
 
-  Pipein[].pipeout
+    Pipein[].pipeout
+  then
 
   true
 ;

@@ -91,15 +91,16 @@
   now[] now.sinceEpoch "SinceEpoch: %vs" .printf
 
   // table index folder push
-  op__table_index
+  op__table_index if
 
-  folderPath.str "Folder path: %v" .printf
+    folderPath.str "Folder path: %v" .printf
 
-  BM_TimerNew
+    BM_TimerNew
 
-  //Task_Interpreter
+    //Task_Interpreter
 
-  Pipein[].pipeout
+    Pipein[].pipeout
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -45,8 +45,10 @@
   // table
   <tableNm> checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
+    false
     exit
   then
 
@@ -60,7 +62,7 @@
 
   // cross-check
   table[].get assert
-
+  true
 ;
 
 
@@ -83,8 +85,10 @@
 
   <indexNm> checkIsIndex not if
     op.pipelineJob@ ERROR_JOB
-    Operand[].delete
+    Pipein[].delete
     Operand[].newErrorMarker
+    Operand[].pipeout
+    false
     exit
   then
 
@@ -98,6 +102,7 @@
   index[].get assert
 
   //pathStr .
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

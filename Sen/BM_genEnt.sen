@@ -62,12 +62,13 @@
 
   "BM_GenEnt_StartMarker" .
 
-  op__table_index
+  op__table_index if
 
-  folderPath.str     "Folder path: %v" .printf
-  folderContents.str "contains: %v" .printf
+    folderPath.str     "Folder path: %v" .printf
+    folderContents.str "contains: %v" .printf
 
-  Pipein[].pipeOut
+    Pipein[].pipeOut
+  then
 
   true
 ;
