@@ -11,12 +11,12 @@ void Step::vAddSteps_RegPath(void)
 {
   vAddStep("path[]"_Stz,             &Step::vRegPathGet);
   
-  vAddStep("dicStack.depth"_Stz,     &Step::vDicStackDepth);
-  vAddStep("dicStack.discard"_Stz,   &Step::vDicStackDiscard);
-  vAddStep("dicStack.dump"_Stz,      &Step::vDicStackDump);
-  vAddStep("dicStack.pick"_Stz,      &Step::vDicStackPick);
-  vAddStep("dicStack.push"_Stz,      &Step::vDicStackPush);
-  vAddStep("dicStack.toPathStr"_Stz, &Step::vDicStackToPathStr);
+  vAddStep("dicStack.depth"_Stz,     &Step::vRegPathDepth);
+  vAddStep("dicStack.discard"_Stz,   &Step::vRegPathDiscard);
+  vAddStep("dicStack.dump"_Stz,      &Step::vRegPathDump);
+  vAddStep("dicStack.pick"_Stz,      &Step::vRegPathPick);
+  vAddStep("dicStack.push"_Stz,      &Step::vRegPathPush);
+  vAddStep("dicStack.toPathStr"_Stz, &Step::vRegPathToPathStr);
 
 }
 
@@ -37,9 +37,9 @@ void Step::vRegPathGet(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.depth -- get number of dictionaries on dictionary stack           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDepth(void)
+void Step::vRegPathDepth(void)
 {
-  ENTRY(); // ENTRY("vDicStackDepth"_Stz);
+  ENTRY(); // ENTRY("vRegPathDepth"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
@@ -53,9 +53,9 @@ void Step::vDicStackDepth(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.discard -- discard top of dictionary stack                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDiscard(void)
+void Step::vRegPathDiscard(void)
 {
-  ENTRY(); // ENTRY("vDicStackDiscard"_Stz);
+  ENTRY(); // ENTRY("vRegPathDiscard"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
@@ -67,9 +67,9 @@ void Step::vDicStackDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.dump -- dump dictionary stack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDump(void)
+void Step::vRegPathDump(void)
 {
-  ENTRY(); // ENTRY("vDicStackDump"_Stz);
+  ENTRY(); // ENTRY("vRegPathDump"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
@@ -81,9 +81,9 @@ void Step::vDicStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPick(void)
+void Step::vRegPathPick(void)
 {
-  ENTRY(); // ENTRY("vDicStackPick"_Stz);
+  ENTRY(); // ENTRY("vRegPathPick"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -100,9 +100,9 @@ void Step::vDicStackPick(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.push -- push a dictionary onto given dictionary stack             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPush(void)
+void Step::vRegPathPush(void)
 {
-  ENTRY(); // ENTRY("vDicStackPush"_Stz);
+  ENTRY(); // ENTRY("vRegPathPush"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
@@ -116,9 +116,9 @@ void Step::vDicStackPush(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.toPathStr -- convert dictionary stack to path string              */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackToPathStr(void)
+void Step::vRegPathToPathStr(void)
 {
-  ENTRY(); // ENTRY("vDicStackToPathStr"_Stz);
+  ENTRY(); // ENTRY("vRegPathToPathStr"_Stz);
   
   DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
   

@@ -195,13 +195,6 @@ public:
   void vDicPathDump(void);
   void vDicPathPick(void);
 
-  // dicStack
-  void vDicStackDepth(void);
-  void vDicStackDiscard(void);
-  void vDicStackDump(void);
-  void vDicStackPick(void);
-  void vDicStackPush(void);
-  void vDicStackToPathStr(void);
 
   // dir
   void vDirChangeCurrent(void);
@@ -1135,6 +1128,14 @@ public:
 
   // reg Path
   void vRegPathGet(void);
+
+  // dicStack
+  void vRegPathDepth(void);
+  void vRegPathDiscard(void);
+  void vRegPathDump(void);
+  void vRegPathPick(void);
+  void vRegPathPush(void);
+  void vRegPathToPathStr(void);
 
   // reg Pipein
   void vRegPipeinBide(void);
