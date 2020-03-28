@@ -19,6 +19,7 @@
     op.pipelineJob@ ERROR_JOB
     Operand[].delete
     Operand[].newErrorMarker
+    false
     exit
   then
 
@@ -28,6 +29,7 @@
 
   // cross-check
   table[].get assert
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

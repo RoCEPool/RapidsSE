@@ -12,7 +12,7 @@
   //"Operand:- ZK_INFOSET" .verbose
   0 0 locals| iRowSize nodeInfo |
 
-  Operand[] to InfoSet[]
+  Pipein[] to InfoSet[]
   InfoSet[].firstRow to row[]
 
   // get row size from streamDef
@@ -29,7 +29,7 @@
   // pipeout the infoset
   InfoSet[].pipeout
 
-  Operand[].delete
+  Pipein[].delete
 
   true
 ;
@@ -44,7 +44,7 @@
   Pipein[].pipeOut
 
   // find the __nodeInfo table
-  C_TDEF_GRIDSANITY op__tableDef
+  C_TDEF_GRIDSANITY op__tableDef assert
 
   // create a new stream defnition as per the nodeinfo being sent
   StreamDef[].new
@@ -77,7 +77,7 @@
 : GridSanity_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  Operand[].delete
+  Pipein[].delete
 
   true
 ;

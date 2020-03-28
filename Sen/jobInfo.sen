@@ -16,7 +16,7 @@
   job[] job.enameSet@ enameSet.asStr .
 
   // find the __ table
-  <streamDef> op__tableDef
+  <streamDef> op__tableDef assert
 
   // create a new streamDef
   StreamDef[].new

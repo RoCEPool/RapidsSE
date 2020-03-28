@@ -24,7 +24,7 @@
 //  then
 
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef
+  C_TDEF_LOCKSTATS op__tableDef assert
 
   // create a new streamDef
   StreamDef[].new

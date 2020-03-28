@@ -15,7 +15,7 @@
   Pipein[].pipeOut
 
   // find the __seekOffsets table
-  C_TDEF_SEEKOFFSETS op__tableDef
+  C_TDEF_SEEKOFFSETS op__tableDef assert
 
   // create a new streamDef
   StreamDef[].new
