@@ -354,7 +354,8 @@ void Dic::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_pArticle->vRefInc();
+  if (m_pArticle)
+    m_pArticle->vRefInc();
 }
 
 /*----------------------------------------------------------------------------*/
