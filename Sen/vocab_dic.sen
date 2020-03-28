@@ -102,11 +102,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathDepth ( -- )
 
-  // push the dic stack of this task
-  path[]
-
-  // get depth
-  path[].depth
+  path[] path[].depth
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -114,11 +110,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathDiscard ( -- )
 
-  // push the dic stack of this task
-  path[]
-
-  // pop the top dictionary
-  path[].discard
+  path[] path[].discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,11 +118,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathDump ( -- )
 
-  // push the dic stack of this task
-  path[]
-
-  // dump the dic stack
-  path[].dump
+  path[] path[].dump
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -138,11 +126,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathPick ( i -- dic )
 
-  // push the dic stack of this task
-  path[]
-
-  // pick the dictionary from dic stack
-  path[].pick
+  path[] path[].pick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -150,11 +134,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathPush ( dic -- )
 
-  // push the dic stack of this task
-  path[]
-
-  // push the dictionary onto dic stack
-  path[].push
+  path[] path[].push
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,10 +165,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathCurrentFolder ( -- )
 
-  // push the dic stack of this task
-  path[]
-
-  path[].depth 1 - pathPick
+  path[] path[].depth 1 - pathPick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -442,11 +419,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathDiscardAll ( -- )
 
-  // push the dic stack of this task
-  path[]
-
-  // drop the top dictionary
-  path[].discardAll
+  path[] path[].discardAll
 ;
 
 

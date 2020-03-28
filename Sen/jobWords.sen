@@ -9,19 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : setPath ( -- )
 
-  0 locals| pDicStackTask |
-
-  // get task dic stack
-  path[] to pDicStackTask
-
   // copy the path from task dic stack onto data stack
-  pDicStackTask path[].depth 0 ?do
-    pDicStackTask path[].depth 1 - I - pDicStackTask path[].pick dic.name
+  path[] path[].depth 0 ?do
+    path[] path[].depth 1 - I - path[] path[].pick dic.name
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
-  pDicStackTask path[].depth strVec::toPath to /session <path>
+  path[] path[].depth strVec::toPath to /session <path>
 ;
 
 
