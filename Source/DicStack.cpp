@@ -290,7 +290,8 @@ void DicStack::vPush(Dic* pDic)
   
   ASSERT(CN_DIC == pDic->eClass());
   
-  pDic->vRefInc();
+  if (pDic)
+    pDic->vRefInc();
   
   m_iTop++;
   
