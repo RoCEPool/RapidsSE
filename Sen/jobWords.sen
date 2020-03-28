@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : setPath ( -- )
 
-  0 0 locals| pDicStackTask |
+  0 locals| pDicStackTask |
 
   // get task dic stack
   path[] to pDicStackTask
