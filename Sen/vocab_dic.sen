@@ -106,7 +106,7 @@ diclock.dropwrite
   path[]
 
   // get depth
-  dicStack.depth
+  path[].depth
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ diclock.dropwrite
   path[]
 
   // pop the top dictionary
-  dicStack.discard
+  path[].discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ diclock.dropwrite
   path[]
 
   // dump the dic stack
-  dicStack.dump
+  path[].dump
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ diclock.dropwrite
   path[]
 
   // pick the dictionary from dic stack
-  dicStack.pick
+  path[].pick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +154,7 @@ diclock.dropwrite
   path[]
 
   // push the dictionary onto dic stack
-  dicStack.push
+  path[].push
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -188,7 +188,7 @@ diclock.dropwrite
   // push the dic stack of this task
   path[]
 
-  dicStack.depth 1 - pathPick
+  path[].depth 1 - pathPick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -385,12 +385,12 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* drop all dictionaries from given stack                                     */
 /*----------------------------------------------------------------------------*/
-: dicStack.discardAll ( dicStack -- )
+: path[].discardAll ( dicStack -- )
 
   params| pDicStack |
 
-  pDicStack dicStack.depth 0 ?do
-    pDicStack dicStack.discard
+  pDicStack path[].depth 0 ?do
+    pDicStack path[].discard
   loop
 ;
 
@@ -446,7 +446,7 @@ diclock.dropwrite
   path[]
 
   // drop the top dictionary
-  dicStack.discardAll
+  path[].discardAll
 ;
 
 

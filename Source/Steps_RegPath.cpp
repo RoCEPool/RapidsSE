@@ -9,14 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegPath(void)
 {
-  vAddStep("path[]"_Stz,             &Step::vRegPathGet);
+  vAddStep("path[]"_Stz,           &Step::vRegPathGet);
   
-  vAddStep("dicStack.depth"_Stz,     &Step::vRegPathDepth);
-  vAddStep("dicStack.discard"_Stz,   &Step::vRegPathDiscard);
-  vAddStep("dicStack.dump"_Stz,      &Step::vRegPathDump);
-  vAddStep("dicStack.pick"_Stz,      &Step::vRegPathPick);
-  vAddStep("dicStack.push"_Stz,      &Step::vRegPathPush);
-  vAddStep("dicStack.toPathStr"_Stz, &Step::vRegPathToPathStr);
+  vAddStep("path[].depth"_Stz,     &Step::vRegPathDepth);
+  vAddStep("path[].discard"_Stz,   &Step::vRegPathDiscard);
+  vAddStep("path[].dump"_Stz,      &Step::vRegPathDump);
+  vAddStep("path[].pick"_Stz,      &Step::vRegPathPick);
+  vAddStep("path[].push"_Stz,      &Step::vRegPathPush);
+  vAddStep("path[].toPathStr"_Stz, &Step::vRegPathToPathStr);
 
 }
 
@@ -35,7 +35,7 @@ void Step::vRegPathGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.depth -- get number of dictionaries on dictionary stack           */
+/* path[].depth -- get number of dictionaries on dictionary stack             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDepth(void)
 {
@@ -51,7 +51,7 @@ void Step::vRegPathDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.discard -- discard top of dictionary stack                        */
+/* path[].discard -- discard top of dictionary stack                          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDiscard(void)
 {
@@ -65,7 +65,7 @@ void Step::vRegPathDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.dump -- dump dictionary stack                                     */
+/* path[].dump -- dump dictionary stack                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDump(void)
 {
@@ -79,7 +79,7 @@ void Step::vRegPathDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
+/* path[].pick -- pick a dic from dic stack and push onto data stack          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPick(void)
 {
@@ -98,7 +98,7 @@ void Step::vRegPathPick(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.push -- push a dictionary onto given dictionary stack             */
+/* path[].push -- push a dictionary onto given dictionary stack               */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPush(void)
 {
@@ -114,7 +114,7 @@ void Step::vRegPathPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.toPathStr -- convert dictionary stack to path string              */
+/* path[].toPathStr -- convert dictionary stack to path string                */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathToPathStr(void)
 {
