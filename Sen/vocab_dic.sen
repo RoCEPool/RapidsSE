@@ -49,7 +49,18 @@ diclock.dropwrite
   "tenants" :createFolder attachMap::tenants!
 ;
 
+/*----------------------------------------------------------------------------*/
+/* create a sub-folder under given folder                                     */
+/*----------------------------------------------------------------------------*/
+: :subfolder params| pFolder sSubFolderNm |
 
+  pFolder path[].push
+
+    find: \folder
+    sSubFolderNm :createFolder execute dic.kind!
+
+  path[].discard
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -325,19 +336,6 @@ diclock.dropwrite
   path[].discard
 
   drop
-;
-
-/*----------------------------------------------------------------------------*/
-/* create a sub-folder under given dic                                        */
-/*----------------------------------------------------------------------------*/
-: :subfolder params| pDic sSubFolderNm |
-
-  pDic path[].push
-
-    find: \folder
-    sSubFolderNm :createFolder execute dic.kind!
-
-  path[].discard
 ;
 
 /*============================================================================*/
