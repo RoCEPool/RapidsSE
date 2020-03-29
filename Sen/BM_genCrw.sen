@@ -34,7 +34,7 @@
 
   "BM_GenEnt_StartMarker" .
 
-  op__table if
+  <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
 
     folderPath.str     "Folder path: %v" .printf

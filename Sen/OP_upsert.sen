@@ -30,7 +30,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if we can insert into the table
-  op__table if
+  <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
     Pipein[].pipeout
   then

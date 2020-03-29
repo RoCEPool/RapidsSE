@@ -75,7 +75,7 @@
 : BM_InflateCrwOp_StartMarker \handler
 
   // table folder push
-  op__table if
+  <tableNm> op__table if
 
     folderPath.str "Folder path: %v" .printf
 

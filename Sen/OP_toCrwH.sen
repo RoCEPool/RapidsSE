@@ -94,7 +94,7 @@
   <tableNm> locals| sTableNm |
 
   // check if we can scan the table
-  op__table if
+  <tableNm> op__table if
     Pipein[].pipeout
   then
 

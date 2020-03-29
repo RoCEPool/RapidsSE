@@ -62,7 +62,7 @@
 
   "BM_GenEnt_StartMarker" .
 
-  op__table_index if
+  <tableNm> <indexNm> op__table_index if
 
     folderPath.str     "Folder path: %v" .printf
     folderContents.str "contains: %v" .printf

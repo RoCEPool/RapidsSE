@@ -42,7 +42,7 @@
   //"Operand:- ZK_STARTMARKER" .verbose
 
   // check if we can scan the table
-  op__table if
+  <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
     Pipein[].pipeOut
   then

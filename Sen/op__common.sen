@@ -57,16 +57,12 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm>                                         */
 /*----------------------------------------------------------------------------*/
-: op__table
+: op__table ( tableNm -- )
 
-  "op__table (Table A)" .
-stk
+  params| sTableNm |
 
   // check in tables folder
   checkInTables not if false exit then
-
-  "op__table (Table B)" .
-stk
 
   // table
   <tableNm> checkIsValidTable not if
@@ -78,15 +74,9 @@ stk
     exit
   then
 
-  "op__table (Table C)" .
-stk
-
   // move to table folder and find the table
   <tableNm> pushTable assert
   <tableNm> find execute to table[]
-
-  "op__table (Table D)" .
-stk
 
   // cross-check
   table[].get assert
@@ -96,21 +86,18 @@ stk
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm>, then to <indexNm>                      */
 /*----------------------------------------------------------------------------*/
-: op__table_index
+: op__table_index ( tableNm indexNm )
 
-  "op__table_index (Table A)" .
-  op__table
+  params| sTableNm |
+
+  sTableNm op__table
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  "op__table_index (Index A)" .
 
   // move to indexes folder
   pushIndexes assert
 
-  "op__table_index (Index B)" .
-
-  <indexNm> checkIsIndex not if
+  indexNm checkIsIndex not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -119,11 +106,7 @@ stk
     exit
   then
 
-  "op__table_index (Index C)" .
-
-  <IndexNm> find execute to index[]
-
-  "op__table_index (Index D)" .
+  indexNm find execute to index[]
 
   // cross-check
   index[].get assert

@@ -63,7 +63,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if we can scan the table
-  op__table if
+  <tableNm> op__table if
     // move to table folder and find the table and tablePtn
     Pipein[].pipeout
   then

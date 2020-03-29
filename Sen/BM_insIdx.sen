@@ -91,7 +91,7 @@
   now[] now.sinceEpoch "SinceEpoch: %vs" .printf
 
   // table index folder push
-  op__table_index if
+  <tableNm> <indexNm> op__table_index if
 
     folderPath.str "Folder path: %v" .printf
 
