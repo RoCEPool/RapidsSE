@@ -185,7 +185,7 @@
 
   JP_BEGINNING job[] job.phase!
 
-  <path> str.toStrVec dicStack.set
+  <path> str.toStrVec path[].set
 
   Seed_Initially
 
@@ -232,7 +232,7 @@
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
 
-  <path> str.toStrVec dicStack.set
+  <path> str.toStrVec path[].set
   //task::dump
 
   Seed_Initially
@@ -260,7 +260,7 @@
   SS_SEED_REQ log::jobSeed
 
   // use the <path> from <ename-set>
-  <path> str.toStrVec dicStack.set
+  <path> str.toStrVec path[].set
 
   Seed_Initially
 
@@ -274,7 +274,7 @@
 
   SS_SEED_RUN log::jobSeed
 
-  <path> str.toStrVec dicStack.set
+  <path> str.toStrVec path[].set
 
   Seed_Initially
 

@@ -38,7 +38,7 @@
     table[].tablePtn@ to tablePtn[]
 
     path[].toStr     "Folder path: %v" .printf
-    folderContents.str "contains: %v" .printf
+    folder[].contentStr "contains: %v" .printf
 
     Pipein[].pipeOut
   then

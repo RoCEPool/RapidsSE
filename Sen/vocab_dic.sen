@@ -105,12 +105,73 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get current folder contents                                                */
+/*----------------------------------------------------------------------------*/
+: folder[].contentStr ( -- s )
+
+  ""
+  path[].currentFolder dic.lastWord dup iterate
+
+    object@ word.name@ str.cat
+
+    " " str.cat
+
+    object@ word.prev object!
+
+  next
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* drop all folders from path stack                                           */
 /*----------------------------------------------------------------------------*/
 : path[].discardAll ( -- )
 
   path[].depth 0 ?do
     path[].discard
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* set task folder stack                                                      */
+/*----------------------------------------------------------------------------*/
+: path[].set ( ... #dics -- )
+
+  // this word puts the folder path on the stack into task dictionary stack
+  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
+
+
+  path[].discardAll
+
+  dup not if drop exit_rt then
+
+  0 do
+
+    // dup "path[].set %v" .printf
+
+    dup "__dicRoot" str.equal if
+      drop
+      dic::root
+      path[].push
+    else
+
+      dup "session" str.equal if
+        drop
+      else
+
+        dup "tenants" str.equal if
+          drop attachmap::tenants@ execute path[].push
+        else
+
+          find
+          execute
+          path[].push
+        then
+
+      then
+
+    then
+
   loop
 ;
 
@@ -141,24 +202,6 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* get current folder contents                                                */
-/*----------------------------------------------------------------------------*/
-: folderContents.str ( -- s )
-
-  ""
-  path[].currentFolder dic.lastWord dup iterate
-
-    object@ word.name@ str.cat
-
-    " " str.cat
-
-    object@ word.prev object!
-
-  next
-
-;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -299,49 +342,6 @@ diclock.dropwrite
     sSubFolderNm :createFolder execute dic.kind!
 
   path[].discard
-;
-
-/*----------------------------------------------------------------------------*/
-/* set task dictionary stack                                                  */
-/*----------------------------------------------------------------------------*/
-: dicStack.set ( ... #dics -- )
-
-  // this word puts the folder path on the stack into task dictionary stack
-  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
-
-
-  path[].discardAll
-
-  dup not if drop exit_rt then
-
-  0 do
-
-    // dup "dicStack.set %v" .printf
-
-    dup "__dicRoot" str.equal if
-      drop
-      dic::root
-      path[].push
-    else
-
-      dup "session" str.equal if
-        drop
-      else
-
-        dup "tenants" str.equal if
-          drop attachmap::tenants@ execute path[].push
-        else
-
-          find
-          execute
-          path[].push
-        then
-
-      then
-
-    then
-
-  loop
 ;
 
 /*============================================================================*/

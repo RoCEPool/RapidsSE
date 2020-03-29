@@ -12,7 +12,7 @@
 
   "/tenants/boray/catalogs/rapidsse/schemas/public/tables/T"
 
-  str.toStrVec dicStack.set
+  str.toStrVec path[].set
 
   "T" find execute to pTable
 
