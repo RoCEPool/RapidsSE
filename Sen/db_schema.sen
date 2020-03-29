@@ -16,7 +16,7 @@
 ;
 
 : withinSchemas
-    path[].currentFolder dic.name "schemas" str.equal
+    folder[] dic.name "schemas" str.equal
 ;
 
 : checkInSchemas

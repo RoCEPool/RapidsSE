@@ -14,7 +14,7 @@
 
   // pop path till we get to tenants
   begin
-    path[].currentFolder dic.name "tenants" str.equal not while path[].discard
+    folder[] dic.name "tenants" str.equal not while path[].discard
   repeat
 
   // find the boray folder

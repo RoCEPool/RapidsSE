@@ -32,7 +32,7 @@
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
-    path[].currentFolder dic.name "tenants" str.equal not if path[].discard then
+    folder[] dic.name "tenants" str.equal not if path[].discard then
     setPath
     LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
@@ -43,7 +43,7 @@
 
   // pop up to tenants
   sFolderNm "~" str.equal if
-    begin path[].currentFolder dic.name "tenants" str.equal not while path[].discard repeat
+    begin folder[] dic.name "tenants" str.equal not while path[].discard repeat
     setPath
     LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*

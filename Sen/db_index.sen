@@ -71,7 +71,7 @@
 /* check within indexes folder                                                */
 /*----------------------------------------------------------------------------*/
 : withinIndexes
-  path[].currentFolder dic.name "indexes" str.equal
+  folder[] dic.name "indexes" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/

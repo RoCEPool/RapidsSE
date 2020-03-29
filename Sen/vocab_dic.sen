@@ -99,7 +99,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* get current folder                                                         */
 /*----------------------------------------------------------------------------*/
-: path[].currentFolder ( -- )
+: folder[] ( -- )
 
   path[].depth 1 - path[].pick
 ;
@@ -110,7 +110,7 @@ diclock.dropwrite
 : folder[].contentStr ( -- s )
 
   ""
-  path[].currentFolder dic.lastWord dup iterate
+  folder[] dic.lastWord dup iterate
 
     object@ word.name@ str.cat
 
@@ -203,16 +203,12 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
 : words prompt
 
-  //path[].currentFolder dic.lastWord dup
+  //folder[] dic.lastWord dup
   dic::root dic.lastWord dup
   iterate                        // iterate word cursor
     object@ word.name@ .         // print the name of the word
@@ -225,7 +221,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : symbols
 
-  path[].currentFolder dic.lastWord
+  folder[] dic.lastWord
   begin dup while
     dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
     word.prev
@@ -249,7 +245,7 @@ diclock.dropwrite
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the row for each word
   ""                               // initial contents string
-  path[].currentFolder dic.lastWord dup
+  folder[] dic.lastWord dup
   iterate                          // setup iteration of words
     1 iCount + to iCount
     "row: ('" str.cat
@@ -283,7 +279,7 @@ diclock.dropwrite
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the row for each word
   ""                               // initial contents string
-  path[].currentFolder dic.lastWord dup
+  folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm

@@ -35,7 +35,7 @@
     dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  path[].currentFolder
+  folder[]
   :subFolder    ( )
 ;
 
@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 : withinTables ( -- t|f )
 
-  path[].currentFolder dic.name "tables" str.equal
+  folder[] dic.name "tables" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@
   // assert dictionary path
   path[].depth assert
 
-  path[].currentFolder dic.name str.equal
+  folder[] dic.name str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
