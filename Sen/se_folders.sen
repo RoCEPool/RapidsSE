@@ -60,10 +60,10 @@
           // create schema public (and tables sub-folder)
           "public" "makeSchema" find execute
 
-          pathDiscard
-      pathDiscard
-    pathDiscard
-  pathDiscard
+          path[].discard
+      path[].discard
+    path[].discard
+  path[].discard
 
   assert::stack_0
 ;

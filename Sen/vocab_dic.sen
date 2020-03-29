@@ -98,38 +98,6 @@ diclock.dropwrite
 
 
 /*----------------------------------------------------------------------------*/
-/* get depth of path                                                          */
-/*----------------------------------------------------------------------------*/
-: pathDepth ( -- )
-
-  path[].depth
-;
-
-/*----------------------------------------------------------------------------*/
-/* discard top dictionary from path                                           */
-/*----------------------------------------------------------------------------*/
-: pathDiscard ( -- )
-
-  path[].discard
-;
-
-/*----------------------------------------------------------------------------*/
-/* dump the path                                                              */
-/*----------------------------------------------------------------------------*/
-: pathDump ( -- )
-
-  path[].dump
-;
-
-/*----------------------------------------------------------------------------*/
-/* pick a dictionary from path                                                */
-/*----------------------------------------------------------------------------*/
-: pathPick ( i -- dic )
-
-  path[].pick
-;
-
-/*----------------------------------------------------------------------------*/
 /* push a dictionary onto path                                                */
 /*----------------------------------------------------------------------------*/
 : pathPush ( dic -- )
@@ -146,10 +114,10 @@ diclock.dropwrite
   //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
   // note: it should not push "__dicRoot"
 
-  pathDepth 0 ?do
+  path[].depth 0 ?do
 
     // get dictionary[I]
-    I pathPick  ( dic )
+    I path[].pick  ( dic )
 
     // push dictionary name
     dic.name ( ... dicNm )
@@ -157,7 +125,7 @@ diclock.dropwrite
   loop
 
   // push number of dictionary names
-  pathDepth ( ... #dics )
+  path[].depth ( ... #dics )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +133,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : pathCurrentFolder ( -- )
 
-  path[].depth 1 - pathPick
+  path[].depth 1 - path[].pick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -176,16 +144,16 @@ diclock.dropwrite
   "/"
 
   // iterate thru each folder in path and concat to end
-  pathDepth 0 do
+  path[].depth 0 do
 
     I if "/" str.cat then
 
     // compute the path subscript
-    //pathDepth 1 - I -
+    //path[].depth 1 - I -
     I
 
     // pick the path, get its name and concat name to working string
-    pathPick dic.name str.cat
+    path[].pick dic.name str.cat
 
   loop
 ;
@@ -331,7 +299,7 @@ diclock.dropwrite
 
     dup dic.lastWord not until
 
-  pathDiscard
+  path[].discard
 
   drop
 ;
@@ -346,7 +314,7 @@ diclock.dropwrite
     find: \folder
     sSubFolderNm :createFolder execute dic.kind!
 
-  pathDiscard
+  path[].discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -354,8 +322,8 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : dicStack.clear
 
-  pathDepth 0 ?do
-    pathDiscard
+  path[].depth 0 ?do
+    path[].discard
   loop
 ;
 
@@ -411,15 +379,6 @@ diclock.dropwrite
 
   loop
 ;
-
-/*----------------------------------------------------------------------------*/
-/* drop top dictionary from path                                              */
-/*----------------------------------------------------------------------------*/
-: pathDiscardAll ( -- )
-
-  path[].discardAll
-;
-
 
 /*============================================================================*/
 /* end                                                                        */

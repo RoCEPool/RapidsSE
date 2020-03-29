@@ -177,14 +177,14 @@
 
   // push table dictionary
   sTableNm pushTable assert
-  //pathDump
+  //path[].dump
 
   // check it is a table
   sTableNm checkIsTable not if popTable pJob_LoadTable ERROR_JOB !!logError exit then
 
   // pop table dictionary
   popTable
-  //pathDump
+  //path[].dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers

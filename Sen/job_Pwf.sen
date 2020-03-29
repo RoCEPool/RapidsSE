@@ -36,11 +36,11 @@
   "row: ('/"
 
   // iterate thru each folder in path and concat to end
-  pathDepth 0 do
+  path[].depth 0 do
     // compute the path subscript
-    pathDepth 1 - I -
+    path[].depth 1 - I -
     // pick the path, get its name and concat name to working string
-    pathPick dic.name str.cat
+    path[].pick dic.name str.cat
     // concat "/" to end of working string
     "/" str.cat
   loop
