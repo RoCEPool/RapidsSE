@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 : op__table_index ( tableNm indexNm )
 
-  params| sTableNm |
+  params| sIndexNm sTableNm |
 
   sTableNm op__table
 
@@ -97,7 +97,7 @@
   // move to indexes folder
   pushIndexes assert
 
-  indexNm checkIsIndex not if
+  sIndexNm checkIsIndex not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -106,7 +106,7 @@
     exit
   then
 
-  indexNm find execute to index[]
+  sIndexNm find execute to index[]
 
   // cross-check
   index[].get assert
