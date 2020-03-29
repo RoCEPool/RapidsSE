@@ -16,8 +16,6 @@ void Step::vAddSteps_RegPath(void)
   vAddStep("path[].dump"_Stz,      &Step::vRegPathDump);
   vAddStep("path[].pick"_Stz,      &Step::vRegPathPick);
   vAddStep("path[].push"_Stz,      &Step::vRegPathPush);
-  vAddStep("path[].toPathStr"_Stz, &Step::vRegPathToPathStr);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,22 +97,6 @@ void Step::vRegPathPush(void)
   
   m_oDicStack.vPush(pDic);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* path[].toPathStr -- convert dictionary stack to path string                */
-/*----------------------------------------------------------------------------*/
-void Step::vRegPathToPathStr(void)
-{
-  ENTRY(); // ENTRY("vRegPathToPathStr"_Stz);
-    
-  s256 sPath;
-  
-  m_oDicStack.vToPathStr(sPath);
-  
-  m_pDataStack->vPushStr(sPath);
-
   EXIT();
 }
 
