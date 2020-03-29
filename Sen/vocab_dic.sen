@@ -64,12 +64,12 @@ diclock.dropwrite
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: checkIsDic ( word )
-
-  params| pWord |
+: word.isFolder params| pWord |
 
   pWord not if EC_NO_SUCH_FOLDER false exit_rt then
+
   pWord word.category@ find: \folder eql if true exit_rt then
+
   EC_NOT_A_FOLDER false
 ;
 
@@ -144,7 +144,7 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set task folder stack                                                      */
+/* set path from string vector                                                */
 /*----------------------------------------------------------------------------*/
 : path[].set ( ... #dics -- )
 
