@@ -58,12 +58,7 @@
 
   "__REPORT" locals| sReportTable |
 
-  sReportTable checkIsValidTable not if
-    op.pipelineJob@ ERROR_JOB !!logError
-    Operand[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
-  else
+  sReportTable op__table if
     sReportTable pushTable assert
     sReportTable find execute to table[]
     Pipein[].pipeOut
