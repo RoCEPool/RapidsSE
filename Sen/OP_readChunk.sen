@@ -34,15 +34,7 @@
   //"Operand:- ZK_STARTMARKER" .verbose
 
   // open the file for reading
-  file::new to File0[]
-  <fileNm> OPEN_READ File0[].get file.open
-  not if
-    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
-    op.pipelineJob@ ERROR_JOB !!logError
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-  else
+  <fileNm> OPEN_READ op__file if
     Pipein[].pipeout
   then
 

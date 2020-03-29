@@ -7,6 +7,28 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
+: op__file ( fileNm mode -- )
+
+  params| mode sFileNm |
+
+  // open the file for reading
+  file::new to File0[]
+  sfileNm mode File0[].get file.open
+  if
+    true
+  else
+    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
+    op.pipelineJob@ ERROR_JOB !!logError
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+  then
+  ;
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef                             */
+/*----------------------------------------------------------------------------*/
 : op__tableDef ( tableNm -- )
 
   params| sTableNm |
@@ -70,7 +92,6 @@ stk
   table[].get assert
   true
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm>, then to <indexNm>                      */

@@ -15,8 +15,7 @@
     "File not null" .
     process::quit
   then
-
-  // open the file for writing
+/*
   file::new to File0[]
   "/tmp/SE_Stats.csv" OPEN_APPEND File0[].get file.open
   not if
@@ -37,9 +36,23 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+ File0[].get file.close
+ File0[].get file.delete
+ */
 
-  File0[].get file.close
-  File0[].get file.delete
+  // open the file for writing
+  "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
+
+    Pipein[] to infoset[]
+    nullptr to Pipein[]
+
+    InfoSet[].writeCsv
+
+    infoset[].delete
+
+    File0[].get file.close
+    File0[].get file.delete
+  then
 
   true
 
