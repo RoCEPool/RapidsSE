@@ -81,11 +81,9 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check dic not in use                                                       */
+/* check folder is not in use                                                 */
 /*----------------------------------------------------------------------------*/
-: checkNotUsed ( dic -- true | error false )
-
-  //dicHasRef " dic ref " .put .put .\n
+: folder.notUsed ( pFolder -- true | error false )
 
   dicHasRef if EC_FOLDER_IN_USE false exit_rt then
 

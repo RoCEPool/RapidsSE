@@ -15,7 +15,7 @@
   sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA false exit then
   checkIsSchema  not if false exit then
   checkIsEmpty   not if false exit then
-  checkNotUsed   not if false exit then
+  folder.notUsed   not if false exit then
 
   true
 ;

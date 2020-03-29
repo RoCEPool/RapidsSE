@@ -15,7 +15,7 @@
   sTenantNm checkIsWord  not if EC_NO_SUCH_Tenant false exit then ( "<tenantNm>" word )
   checkIsTenant   not if false exit then ( "<tenantNm>" word )
   checkIsEmpty    not if false exit then ( "<tenantNm>" word )
-  checkNotUsed    not if false exit then ( "<tenantNm>" word )
+  folder.notUsed    not if false exit then ( "<tenantNm>" word )
 
   true
 ;
