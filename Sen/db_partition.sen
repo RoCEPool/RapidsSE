@@ -75,25 +75,7 @@
   withinPartitions assert
 ;
 
-/*----------------------------------------------------------------------------*/
-/* tidy up of the partition                                                   */
-/*----------------------------------------------------------------------------*/
-/*
-: partitionTidyUp ( "<tableNm>" -- )
-
-   find execute ( ^tablePtr )
-   
-   // forget all column names
-   dup table.slots slots.subDic
-   path[].push
-   "columns" find execute forgetAll
-   path[].discard
-
-  // forget the sub dictionary
-  table.slots slots.subDic forgetAll
-;
-*/
-/*----------------------------------------------------------------------------*/
+//*----------------------------------------------------------------------------*/
 /* grab read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
 : tablePtnGrabRead ( i_Partition pTable -- )

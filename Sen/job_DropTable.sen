@@ -60,7 +60,7 @@
 
   //----------------------------------------------------------------------------
   // forget the indexes in the indexes dictionary
-  "indexes" find execute forgetAll
+  "indexes" find execute folder.forgetAll
 
   //----------------------------------------------------------------------------
   // forget the indexes dictionary itself

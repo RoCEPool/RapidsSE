@@ -75,7 +75,7 @@ diclock.dropwrite
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: dicHasRef ( word )
+: folder.hasRef ( word )
 
   dup execute dic.ref
 ;
@@ -85,7 +85,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : folder.notUsed ( pFolder -- true | error false )
 
-  dicHasRef if EC_FOLDER_IN_USE false exit_rt then
+  folder.hasRef if EC_FOLDER_IN_USE false exit_rt then
 
   true
 ;
@@ -93,7 +93,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* check dic is empty                                                         */
 /*----------------------------------------------------------------------------*/
-: checkIsEmpty ( dic -- true | error false )
+: folder.isEmpty ( pFolder -- true | error false )
 
   dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
 
@@ -213,32 +213,6 @@ diclock.dropwrite
 
 
 /*----------------------------------------------------------------------------*/
-/* list all words in the current dictionary                                   */
-/*----------------------------------------------------------------------------*/
-: words prompt
-
-  //folder[] dic.lastWord dup
-  dic::root dic.lastWord dup
-  iterate                        // iterate word cursor
-    object@ word.name@ .         // print the name of the word
-    object@ word.prev object!    // advance cursor backwards thru words
-  next
-;
-
-/*----------------------------------------------------------------------------*/
-/* list all words (long form) in the current dictionary                       */
-/*----------------------------------------------------------------------------*/
-: symbols
-
-  folder[] dic.lastWord
-  begin dup while
-    dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
-    word.prev
-  repeat
-  drop
-;
-
-/*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string                 */
 /*----------------------------------------------------------------------------*/
 : listContents ( job -- )
@@ -319,7 +293,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/
-: forgetAll ( dic -- )
+: folder.forgetAll ( dic -- )
 
   dup dic.lastWord not if drop exit_rt then
 
@@ -333,6 +307,36 @@ diclock.dropwrite
 
   path[].discard
 
+  drop
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* list all words in the current dictionary                                   */
+/*----------------------------------------------------------------------------*/
+: words prompt
+
+  //folder[] dic.lastWord dup
+  dic::root dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ word.name@ .         // print the name of the word
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/* list all words (long form) in the current dictionary                       */
+/*----------------------------------------------------------------------------*/
+: symbols
+
+  folder[] dic.lastWord
+  begin dup while
+    dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
+    word.prev
+  repeat
   drop
 ;
 

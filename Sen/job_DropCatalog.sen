@@ -17,7 +17,7 @@
 
   sCatalogNm checkIsCatalog  not if false exit then
 
-  checkIsEmpty    not if false exit then
+  folder.isEmpty    not if false exit then
   folder.notUsed    not if false exit then
 
   true 
