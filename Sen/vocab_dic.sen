@@ -121,29 +121,6 @@ diclock.dropwrite
 
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary path                                                        */
-/*----------------------------------------------------------------------------*/
-: pathGet ( -- ... #dics )
-
-  // this word puts the dictionary path onto the stack as a series of names
-  //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
-  // note: it should not push "__dicRoot"
-
-  path[].depth 0 ?do
-
-    // get dictionary[I]
-    I path[].pick  ( dic )
-
-    // push dictionary name
-    dic.name ( ... dicNm )
-
-  loop
-
-  // push number of dictionary names
-  path[].depth ( ... #dics )
-;
-
-/*----------------------------------------------------------------------------*/
 /* get current folder path as string                                          */
 /*----------------------------------------------------------------------------*/
 : folderPath.str ( -- s )
