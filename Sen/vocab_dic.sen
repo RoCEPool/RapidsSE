@@ -96,14 +96,29 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
-/* push a dictionary onto path                                                */
+/* getcurrent folder                                                          */
 /*----------------------------------------------------------------------------*/
-: pathPush ( dic -- )
+: path[].currentFolder ( -- )
 
-  path[].push
+  path[].depth 1 - path[].pick
 ;
+
+/*----------------------------------------------------------------------------*/
+/* drop all folders from path stack                                           */
+/*----------------------------------------------------------------------------*/
+: path[].discardAll ( -- )
+
+  path[].depth 0 ?do
+    path[].discard
+  loop
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
@@ -126,14 +141,6 @@ diclock.dropwrite
 
   // push number of dictionary names
   path[].depth ( ... #dics )
-;
-
-/*----------------------------------------------------------------------------*/
-/* getcurrent folder                                                          */
-/*----------------------------------------------------------------------------*/
-: pathCurrentFolder ( -- )
-
-  path[].depth 1 - path[].pick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +171,7 @@ diclock.dropwrite
 : folderContents.str ( -- s )
 
   ""
-  pathCurrentFolder dic.lastWord dup iterate
+  path[].currentFolder dic.lastWord dup iterate
 
     object@ word.name@ str.cat
 
@@ -185,7 +192,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : words prompt
 
-  //pathCurrentFolder dic.lastWord dup
+  //path[].currentFolder dic.lastWord dup
   dic::root dic.lastWord dup
   iterate                        // iterate word cursor
     object@ word.name@ .         // print the name of the word
@@ -198,7 +205,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : symbols
 
-  pathCurrentFolder dic.lastWord
+  path[].currentFolder dic.lastWord
   begin dup while
     dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
     word.prev
@@ -222,7 +229,7 @@ diclock.dropwrite
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the row for each word
   ""                               // initial contents string
-  pathCurrentFolder dic.lastWord dup
+  path[].currentFolder dic.lastWord dup
   iterate                          // setup iteration of words
     1 iCount + to iCount
     "row: ('" str.cat
@@ -256,7 +263,7 @@ diclock.dropwrite
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the row for each word
   ""                               // initial contents string
-  pathCurrentFolder dic.lastWord dup
+  path[].currentFolder dic.lastWord dup
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm
@@ -291,7 +298,7 @@ diclock.dropwrite
 
   dup dic.lastWord not if drop exit_rt then
 
-  dup pathPush
+  dup path[].push
 
   begin
 
@@ -309,32 +316,12 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :subfolder params| pDic sSubFolderNm |
 
-  pDic pathPush
+  pDic path[].push
 
     find: \folder
     sSubFolderNm :createFolder execute dic.kind!
 
   path[].discard
-;
-
-/*----------------------------------------------------------------------------*/
-/* clear task dictionary stack                                                */
-/*----------------------------------------------------------------------------*/
-: dicStack.clear
-
-  path[].depth 0 ?do
-    path[].discard
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop all dictionaries from given stack                                     */
-/*----------------------------------------------------------------------------*/
-: path[].discardAll ( -- )
-
-  path[].depth 0 ?do
-    path[].discard
-  loop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -346,7 +333,7 @@ diclock.dropwrite
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 
-  dicStack.clear
+  path[].discardAll
 
   dup not if drop exit_rt then
 
@@ -357,7 +344,7 @@ diclock.dropwrite
     dup "__dicRoot" str.equal if
       drop
       dic::root
-      pathPush
+      path[].push
     else
 
       dup "session" str.equal if
@@ -365,12 +352,12 @@ diclock.dropwrite
       else
 
         dup "tenants" str.equal if
-          drop attachmap::tenants@ execute pathPush
+          drop attachmap::tenants@ execute path[].push
         else
 
           find
           execute
-          pathPush
+          path[].push
         then
 
       then

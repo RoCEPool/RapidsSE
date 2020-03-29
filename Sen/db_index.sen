@@ -71,7 +71,7 @@
 /* check within indexes folder                                                */
 /*----------------------------------------------------------------------------*/
 : withinIndexes
-  pathCurrentFolder dic.name "indexes" str.equal
+  path[].currentFolder dic.name "indexes" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +126,7 @@
 /*
 : pushIndexSub ( "<indexNm>" -- )
   dup checkIsIndex not if EC_NO_SUCH_INDEX false exit then
-  find execute index.subDic pathPush
+  find execute index.subDic path[].push
   true
 ;
 */
@@ -141,7 +141,7 @@
 /* find the indexes folder and push it onto task dictionary                   */
 /*----------------------------------------------------------------------------*/
 : pushIndexes ( -- )
-  "indexes" find execute pathPush
+  "indexes" find execute path[].push
   true
 ;
 

@@ -14,24 +14,24 @@
 
   // pop path till we get to tenants
   begin
-    pathCurrentFolder dic.name "tenants" str.equal not while path[].discard
+    path[].currentFolder dic.name "tenants" str.equal not while path[].discard
   repeat
 
   // find the boray folder
   "boray" findInCurrent
-  execute pathPush
+  execute path[].push
 
   // find the catalogs folder
   "catalogs" findInCurrent
-  execute pathPush
+  execute path[].push
 
   // find the rapidssecatalogs folder
   "rapidsse" findInCurrent
-  execute pathPush
+  execute path[].push
 
   // find the schemas folder
   "schemas" findInCurrent
-  execute pathPush
+  execute path[].push
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get schema name from job
@@ -39,11 +39,11 @@
 
   <schemaNm> checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema ERROR_JOB !!logError exit then
   checkIsSchema not if pJob_UseSchema ERROR_JOB !!logError exit then
-  execute pathPush
+  execute path[].push
 
   // find the tables folder
   "tables" findInCurrent
-  execute pathPush
+  execute path[].push
 
   // save the path
   setPath

@@ -32,7 +32,7 @@
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
-    pathCurrentFolder dic.name "tenants" str.equal not if path[].discard then
+    path[].currentFolder dic.name "tenants" str.equal not if path[].discard then
     setPath
     LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
@@ -43,7 +43,7 @@
 
   // pop up to tenants
   sFolderNm "~" str.equal if
-    begin pathCurrentFolder dic.name "tenants" str.equal not while path[].discard repeat
+    begin path[].currentFolder dic.name "tenants" str.equal not while path[].discard repeat
     setPath
     LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
@@ -55,7 +55,7 @@
   // clear dic path and push tenants
   sFolderNm "tenants" str.equal if
     path[].discardAll
-    attachmap::tenants@ execute pathPush
+    attachmap::tenants@ execute path[].push
     setPath
     LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
@@ -67,7 +67,7 @@
 
   sFolderNm findInCurrent to pCurrentFolder
   pCurrentFolder checkIsDic not if pJob_Cf ERROR_REQUEST !!logError exit then
-  pCurrentFolder execute pathPush
+  pCurrentFolder execute path[].push
   setPath
   LogExit DONE_REQ
 

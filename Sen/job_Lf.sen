@@ -25,7 +25,7 @@
   then
 
   ""
-  pathCurrentFolder dic.lastWord dup iterate
+  path[].currentFolder dic.lastWord dup iterate
   1 iCount + to iCount
   "row: ('" str.cat
 

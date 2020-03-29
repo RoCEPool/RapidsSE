@@ -13,7 +13,7 @@
 ;
 
 : withinTenants
-    pathCurrentFolder dic.name "tenants" str.equal
+    path[].currentFolder dic.name "tenants" str.equal
 ;
 
 : checkInTenants

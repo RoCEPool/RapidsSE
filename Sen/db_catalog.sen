@@ -13,7 +13,7 @@
 ;
 
 : withinCatalogs
-    pathCurrentFolder dic.name "catalogs" str.equal
+    path[].currentFolder dic.name "catalogs" str.equal
 ;
 
 : checkInCatalogs

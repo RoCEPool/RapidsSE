@@ -25,7 +25,7 @@
 /* check within partitions folder                                             */
 /*----------------------------------------------------------------------------*/
 : withinPartitions
-  pathCurrentFolder dic.name "partitions" str.equal
+  path[].currentFolder dic.name "partitions" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@
 /* find the partitions folder and push it onto task dictionary                */
 /*----------------------------------------------------------------------------*/
 : pushPartitions ( -- )
-  "partitions" find execute pathPush
+  "partitions" find execute path[].push
   true
 ;
 
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 /*
 : pushPartitionSub ( "<tableNm>" -- )
-  find execute table.slots slots.subDic pathPush
+  find execute table.slots slots.subDic path[].push
   true
 ;
 */
@@ -85,7 +85,7 @@
    
    // forget all column names
    dup table.slots slots.subDic
-   pathPush
+   path[].push
    "columns" find execute forgetAll
    path[].discard
 

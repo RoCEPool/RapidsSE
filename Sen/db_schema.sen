@@ -6,7 +6,7 @@
 
 : schema ;
 
-//: makeSchemas pathPush "schemas" :dic find: folder swap execute dic.kind! path[].discard ;
+//: makeSchemas path[].push "schemas" :dic find: folder swap execute dic.kind! path[].discard ;
 
 
 : :schema
@@ -16,7 +16,7 @@
 ;
 
 : withinSchemas
-    pathCurrentFolder dic.name "schemas" str.equal
+    path[].currentFolder dic.name "schemas" str.equal
 ;
 
 : checkInSchemas

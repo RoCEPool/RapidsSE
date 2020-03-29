@@ -33,29 +33,29 @@
   // push tenants folder
   //"tenants" find execute
   attachmap::tenants@ execute
-  pathPush
+  path[].push
 
     // create tenant boray (and catalogs sub-folder)
     "boray" "makeTenant" find execute
 
     // push boray folder
     "boray" findInCurrent execute
-    pathPush
+    path[].push
 
       // push catalogs folder
       "catalogs" findInCurrent execute
-      pathPush
+      path[].push
 
         // create catalog rapidsse (and schemas sub-folder)
         "rapidsse" "makeCatalog" find execute
 
           // push rapidsse folder
           "rapidsse" findInCurrent execute
-          pathPush
+          path[].push
 
           // push schemas folder
           "schemas" findInCurrent execute
-          pathPush
+          path[].push
 
           // create schema public (and tables sub-folder)
           "public" "makeSchema" find execute
