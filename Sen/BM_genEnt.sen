@@ -64,7 +64,7 @@
 
   <tableNm> <indexNm> op__table_index if
 
-    folderPath.str     "Folder path: %v" .printf
+    path[].toStr     "Folder path: %v" .printf
     folderContents.str "contains: %v" .printf
 
     Pipein[].pipeOut

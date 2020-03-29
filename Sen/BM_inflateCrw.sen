@@ -77,7 +77,7 @@
   // table folder push
   <tableNm> op__table if
 
-    folderPath.str "Folder path: %v" .printf
+    path[].toStr "Folder path: %v" .printf
 
     BM_TimerNew
 

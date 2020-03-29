@@ -37,7 +37,7 @@
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
 
-    folderPath.str     "Folder path: %v" .printf
+    path[].toStr     "Folder path: %v" .printf
     folderContents.str "contains: %v" .printf
 
     Pipein[].pipeOut
