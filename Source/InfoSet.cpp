@@ -65,6 +65,7 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
+  m_sInfoSetNm = pStreamDef->szName();
   m_nRowSize  = Row::nSizeBytes(pStreamDef);
   m_nInfoRows = 0;
   
