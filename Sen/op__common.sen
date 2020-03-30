@@ -50,7 +50,7 @@
   sTableNm find execute to table[]
 
   // cross-check
-  table[].get assert
+  table[] assert
   true
 ;
 
@@ -79,7 +79,7 @@
   <tableNm> find execute to table[]
 
   // cross-check
-  table[].get assert
+  table[] assert
   true
 ;
 

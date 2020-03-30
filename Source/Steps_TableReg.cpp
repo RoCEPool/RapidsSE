@@ -10,7 +10,7 @@
 void Step::vAddSteps_TableReg(void)
 {
   vAddStep("table[].columnCount"_Stz,        &Step::vTableColumnCount);
-  vAddStep("table[].get"_Stz,                &Step::vTableRegGet);
+  vAddStep("table[]"_Stz,                    &Step::vTableRegGet);
   vAddStep("table[].set"_Stz,                &Step::vTableRegSet);
   vAddStep("table[].tablePtn@"_Stz,          &Step::vTableRegPtnFetch);
 }
@@ -31,7 +31,7 @@ void Step::vTableColumnCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].get -- get table                                                   */
+/* table[] -- get table                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vTableRegGet(void)
 {

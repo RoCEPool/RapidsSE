@@ -19,7 +19,7 @@
   <streamDef> op__tableDef assert
 
   // create a new streamDef
-  StreamDef[].new
+  table[] StreamDef[].new
 
   true
 ;

@@ -74,9 +74,9 @@ void Step::vRegStreamDefNew(void)
   
   ASSERT (m_pRegSet->m_xpStreamDef.bIsNull());
   
-  ASSERT( ! m_pRegSet->m_xpTable.bIsNull());
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  m_pRegSet->m_xpStreamDef = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
+  m_pRegSet->m_xpStreamDef = new StreamDef(pTable->pStreamDef());
   
   EXIT();
 }

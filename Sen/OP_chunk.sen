@@ -16,12 +16,12 @@
   C_TDEF_SEEKOFFSETS op__tableDef assert
 
   // create a new streamDef and save it in Operand
-  StreamDef[].new
+  table[] StreamDef[].new
   StreamDef[] to Operand[]
   nullptr to StreamDef[]
 
   // create the streamDef to be piped out
-  StreamDef[].new
+  table[] StreamDef[].new
 
   // pipeout the streamDef
   StreamDef[].pipeout

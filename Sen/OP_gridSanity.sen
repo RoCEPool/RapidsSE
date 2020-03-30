@@ -43,12 +43,12 @@
   C_TDEF_GRIDSANITY op__tableDef assert
 
   // create a new stream defnition as per the nodeinfo being sent
-  StreamDef[].new
+  table[] StreamDef[].new
 
   // pipeout the streamDef
   StreamDef[].pipeout
 
-  StreamDef[].new
+  table[] StreamDef[].new
 
   true
 ;

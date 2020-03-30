@@ -18,7 +18,7 @@
   table[].columnCount to iColumns
 
   // save the table of the base table
-  table[].get to OperandB[]
+  table[] to OperandB[]
 
   popTable
 
@@ -26,7 +26,7 @@
   C_TDEF_LISTCOLUMNS op__tableDef assert
 
   // create a new streamDef
-  StreamDef[].new
+  table[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new

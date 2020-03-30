@@ -18,7 +18,7 @@
 
   // pipeout a single generated csv buffer
   //begin
-  table[].get table.genCsvBuffer to Operand[]
+  table[] table.genCsvBuffer to Operand[]
   Operand[].pipeOut
   //false
   //while repeat
