@@ -55,7 +55,6 @@ TableDef::TableDef(void)
   m_bDefinitionOnly = false;
   
   m_pStreamDef = new StreamDef();
-  m_pStreamDef->vName(m_sTableNm);
   
   m_sCmd       = ""_Stz;
   
@@ -151,6 +150,7 @@ eEC TableDef::eParse(Stz* szCmd)
 
   //pTkn = pTknVec->pNextToken(); dPT();
   m_sTableNm = pTkn->szTerm();
+  m_pStreamDef->vName(m_sTableNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
