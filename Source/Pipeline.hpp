@@ -16,6 +16,8 @@ namespace Pipelines
     i8            m_iOriginatingNode;
 
     bool          m_bPulsed;
+    bool          m_bErrored;
+    
     bool          m_bPulsedLimit;
     Op*           m_pOpToPulse;
     bool          m_bCancelled;
@@ -36,6 +38,8 @@ namespace Pipelines
     bool     bCancel(void);
     void     vCancelled(bool bCancelled);
     bool     bCancelled(void);
+    bool     bErrored(void);
+    void     vErrored(bool bErrored);
     i8       iOriginatingNode(void);
     Job*     pJob(void);
     i8       nOpsOnNode(i8 iNode);

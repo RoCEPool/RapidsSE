@@ -24,7 +24,9 @@
 : sink_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  Pipein[].pipeOut
+  Pipein[].delete
+  Operand[].newErroredMarker
+  Operand[].pipeOut
 
   true
 ;

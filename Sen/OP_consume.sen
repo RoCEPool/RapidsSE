@@ -37,6 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
+/*
 : consumeOp_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
@@ -47,6 +48,7 @@
   then
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                              */
@@ -134,7 +136,7 @@
 
   find: consumeOp_CancelMarker ZK_CANCELMARKER op[].handler!
   find: consumeOp_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: consumeOp_ErrorMarker  ZK_ERRORMARKER  op[].handler!
+  //find: consumeOp_ErrorMarker  ZK_ERRORMARKER  op[].handler!
   find: consumeOp_ExitMarker   ZK_EXITMARKER   op[].handler!
   find: consumeOp_PulseMarker  ZK_PULSEMARKER  op[].handler!
   find: consumeOp_PulsedMarker ZK_PULSEDMARKER op[].handler!

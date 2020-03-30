@@ -13,8 +13,10 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
   vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
+  vAddStep("Job_Pipeline::errored"_Stz,      &Step::vJob_PipelineErrored);
   vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
   vAddStep("Job_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
+  vAddStep("Job_Pipeline::isErrored"_Stz,    &Step::vJob_PipelineIsErrored);
   vAddStep("Job_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
   vAddStep("Job_Pipeline::isPulsed"_Stz,     &Step::vJob_PipelineIsPulsed);
 }
@@ -130,6 +132,22 @@ void Step::vJob_PipelineDeleteDynamo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Job_Pipeline::errored -- set pipeline as being errored                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineErrored(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineErrored"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  Pipeline* pPipeline = pOp->pPipeline();
+  
+  pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job_Pipeline.execute -- execute                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineExecute(void)
@@ -180,6 +198,23 @@ void Step::vJob_PipelineIsCancelled(void)
   
   // return if pipeline has been cancelled
   m_pDataStack->vPushInt(pPipeline->bCancelled());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::IsErrored -- has the pipeline been errored                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineIsErrored(void)
+{
+  ENTRY(); // ENTRY("vJob_PipelineIsErrored"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  Pipeline* pPipeline = pOp->pPipeline();
+  
+  // return if pipeline has been errored
+  m_pDataStack->vPushInt(pPipeline->bErrored());
   
   EXIT();
 }

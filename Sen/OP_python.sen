@@ -21,6 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
+/*
 : python_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
@@ -28,6 +29,7 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* execute for python request                         (on node where spawned) */
@@ -39,7 +41,7 @@
   op__topology
 
   find: python_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: python_ErrorMarker ZK_ERRORMARKER op[].handler!
+  //find: python_ErrorMarker ZK_ERRORMARKER op[].handler!
 
   op__loop
 

@@ -26,6 +26,7 @@ Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
   m_pPipelineSpec = pPipelineSpec;
   m_iOriginatingNode = iOriginatingNode;
   
+  m_bErrored      = false;
   m_bPulsed       = false;
   m_bPulsedLimit  = false;
   m_pOpToPulse    = nullptr;
@@ -125,6 +126,26 @@ void Pipeline::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set errored                                                                */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vErrored(bool bErrored)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_bErrored = bErrored;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get errored                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bErrored(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_bErrored;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iOriginatingNode(void)
@@ -221,7 +242,7 @@ bool Pipeline::bPulsedLimit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pulsed                                                                 */
+/* set pulsed                                                                 */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vPulsed(bool bPulsed)
 {

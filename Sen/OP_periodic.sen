@@ -7,6 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
+/*
 : periodicOp_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
@@ -17,7 +18,7 @@
 
   false
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
@@ -84,7 +85,7 @@
 
   op__topology
 
-  find: periodicOp_ErrorMarker ZK_ERRORMARKER op[].handler!
+  //find: periodicOp_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: periodicOp_PulseMarker ZK_PULSEMARKER op[].handler!
 
   op__loop
