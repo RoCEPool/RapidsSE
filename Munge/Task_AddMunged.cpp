@@ -6956,6 +6956,7 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"vocab_path.sen\\\"     include\n"
     "\\\"vocab_object.sen\\\"   include\n"
     "\\\"vocab_socket.sen\\\"   include\n"
+    "\\\"vocab_prompt.sen\\\"   include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
@@ -12136,77 +12137,16 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of OP_exemplar.sen
+  // munge of vocab_prompt.sen
 
   sFileContents =
     "\""
-    "\\\"munged OP_exemplar.sen \\\" .verbose \n"
+    "\\\"munged vocab_prompt.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_exemplar.sen -- exemplar Operator                                       */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" OP_exemplar.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* on ZK_EOSMARKER ...                                                        */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": OP_exemplar_EosMarker \\\\handler\n"
-    "\n"
-    "  \\\"OP_exemplar_EosMarker\\\" .\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* exemplar request                                   (on node where spawned) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": exemplar_req \\\\operator\n"
-    "\n"
-    "  LogReqEntry SEED_REQ\n"
-    "\n"
-    "  // set topology, next stage and op\n"
-    "  op__topology\n"
-    "\n"
-    "  //find: OP_exemplar_EosMarker ZK_EOSMARKER op[].handler!\n"
-    "\n"
-    "  op__loop\n"
-    "\n"
-    "  \\\"*** OP_exemplar_req EXITS\\\" .\n"
-    "  LogReqExit\n"
-    "  job::deleteThis\n"
-    "  DONE_REQ_OP\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "opSyntax: exemplar :: exemplar ;\n"
-    "\n"
-    ": exemplar opInfo tagCopy: localOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--description of operator--\\\" }\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_exemplar.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of prompt.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged prompt.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* prompt.sen -- prompt related words                                         */\n"
+    "/* vocab_prompt.sen -- prompt related words                                   */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\"-prompt.sen\\\" .verbose\n"
+    "\\\"-vocab_prompt.sen\\\" .verbose\n"
     "\n"
     ": article_dump prompt article::dump ;\n"
     "\n"
@@ -12348,7 +12288,68 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT prompt.sen"_Stz
+  " CONSTANT vocab_prompt.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_exemplar.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_exemplar.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_exemplar.sen -- exemplar Operator                                       */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_exemplar.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* on ZK_EOSMARKER ...                                                        */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": OP_exemplar_EosMarker \\\\handler\n"
+    "\n"
+    "  \\\"OP_exemplar_EosMarker\\\" .\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* exemplar request                                   (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": exemplar_req \\\\operator\n"
+    "\n"
+    "  LogReqEntry SEED_REQ\n"
+    "\n"
+    "  // set topology, next stage and op\n"
+    "  op__topology\n"
+    "\n"
+    "  //find: OP_exemplar_EosMarker ZK_EOSMARKER op[].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  \\\"*** OP_exemplar_req EXITS\\\" .\n"
+    "  LogReqExit\n"
+    "  job::deleteThis\n"
+    "  DONE_REQ_OP\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: exemplar :: exemplar ;\n"
+    "\n"
+    ": exemplar opInfo tagCopy: localOp_tags\n"
+    "  tags{ <jobDesc> = \\\"--description of operator--\\\" }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_exemplar.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
@@ -17232,7 +17233,7 @@ void Task::vAddMunged(Forth* pForth)
     "7 .put  \n"
     "6 .put  \\\"gridModel.sen\\\"     include\n"
     "5 .put  \\\"dbObjects.sen\\\"     include\n"
-    "4 .put  \\\"prompt.sen\\\"        include\n"
+    "4 .put  \n"
     "        \\\"se_categories.sen\\\" include\n"
     "        \\\"se_demons.sen\\\"     include\n"
     "        \\\"se_handlers.sen\\\"   include\n"

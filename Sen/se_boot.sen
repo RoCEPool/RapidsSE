@@ -12,7 +12,7 @@
 7 .put  
 6 .put  "gridModel.sen"     include
 5 .put  "dbObjects.sen"     include
-4 .put  "prompt.sen"        include
+4 .put  
         "se_categories.sen" include
         "se_demons.sen"     include
         "se_handlers.sen"   include

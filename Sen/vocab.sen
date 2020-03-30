@@ -13,6 +13,7 @@
 "vocab_path.sen"     include
 "vocab_object.sen"   include
 "vocab_socket.sen"   include
+"vocab_prompt.sen"   include
 
 /*============================================================================*/
 /* end                                                                        */
