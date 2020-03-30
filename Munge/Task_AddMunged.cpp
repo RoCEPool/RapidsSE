@@ -17229,7 +17229,7 @@ void Task::vAddMunged(Forth* pForth)
     "9 .put\n"
     "        \\\"se_categories.sen\\\" include\n"
     "8 .put  \\\"vocab.sen\\\"         include\n"
-    "7 .put  \\\"tasks.sen\\\"         include\n"
+    "7 .put  \n"
     "6 .put  \\\"gridModel.sen\\\"     include\n"
     "5 .put  \\\"dbObjects.sen\\\"     include\n"
     "4 .put  \\\"prompt.sen\\\"        include\n"
@@ -19176,29 +19176,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_CreateTenant.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of tasks.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged tasks.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* tasks.sen -- tasks group                                                   */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-tasks.sen\\\" .verbose\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT tasks.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
