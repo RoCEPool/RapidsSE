@@ -317,7 +317,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* list all words (long form) in the current dictionary                       */
 /*----------------------------------------------------------------------------*/
-: symbols
+: symbols prompt
 
   folder[] dic.lastWord
   begin dup while

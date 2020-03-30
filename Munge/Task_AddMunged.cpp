@@ -1579,7 +1579,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* list all words (long form) in the current dictionary                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": symbols\n"
+    ": symbols prompt\n"
     "\n"
     "  folder[] dic.lastWord\n"
     "  begin dup while\n"
