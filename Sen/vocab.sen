@@ -12,7 +12,7 @@
 
 "vocab_log.sen"      include
 "vocab_debug.sen"    include
-"vocab_dic.sen"      include
+"vocab_path.sen"      include
 "vocab_object.sen"   include
 "vocab_useful.sen"   include
 

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* vocab_dic.sen -- dictionary related words                                  */
+/* vocab_path.sen -- dictionary related words                                  */
 /*============================================================================*/
 
-" vocab_dic.sen" .verbose
+" vocab_path.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a new folder (leave pFolder on stack)                                /
