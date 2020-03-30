@@ -60,7 +60,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
-    assertStackDepthZero
+    trap::stackDepthZero
 
     // -- -- -- -- -- -- -- --
     // recv job

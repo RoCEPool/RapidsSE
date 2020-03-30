@@ -39,7 +39,7 @@
 
   std_entryHook
 
-  assertStackDepthZero
+  trap::stackDepthZero
 
   0 locals| iPort |
   0 locals| pListeningSocket |
@@ -68,7 +68,7 @@
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // wait for next socket
 
-    assertStackDepthZero
+    trap::stackDepthZero
 
     pListeningSocket socket.accept to pAcceptedSocket
 

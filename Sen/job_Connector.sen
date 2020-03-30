@@ -104,7 +104,7 @@
 
   std_entryHook
 
-  assertStackDepthZero
+  trap::stackDepthZero
 
   0 locals| pThisTask |
   0 locals| pJob_Connector |
@@ -127,7 +127,7 @@
 
   begin
     _connectorTake
-    assertStackDepthZero
+    trap::stackDepthZero
 
     3 thread::sleepSsec
   again
