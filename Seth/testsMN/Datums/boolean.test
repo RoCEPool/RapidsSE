@@ -80,6 +80,18 @@ dumpidx bolTbl bol_idx1;
 // dump index bol_idx2
 dumpidx bolTbl bol_idx2;
 
+// export to non-existent dir
+export bolTbl "/noDir/bolTbl.csv";
+failure contains: 'invalid file'
+
+// export a non-existent table
+export bolTbl1 "/tmp/bolTbl.csv";
+failure contains: 'no such table'
+
+// export a non-existent table to a non-existent dir
+export bolTbl1 "/noDir/bolTbl.csv";
+failure contains: 'no such table'
+
 // export the table
 export bolTbl "/tmp/bolTbl.csv";
 success

@@ -35,11 +35,11 @@ export OpTable1 "/noDir/opTable1.csv";
 failure contains: 'invalid file'
 
 // export a non-existent table
-export OpTable2 "/tmp/opTable1";
+export OpTable2 "/tmp/opTable1.csv";
 failure contains: 'no such table'
 
 // export a non-existent table to a non-existent dir
-export OpTable2 "/noDir/opTable1";
+export OpTable2 "/noDir/opTable1.csv";
 failure contains: 'no such table'
 
 export OpTable1 "/tmp/opTable1.csv";
