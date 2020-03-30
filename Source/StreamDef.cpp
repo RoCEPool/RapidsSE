@@ -234,6 +234,26 @@ Column* StreamDef::pGetColumn(i8 iColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stream name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* StreamDef::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column at index                                                        */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vName(Stz* sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  m_sName = sName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vToMetadata(Stz* sMetadata)

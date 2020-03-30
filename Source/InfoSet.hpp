@@ -19,7 +19,7 @@ namespace InfoData
     void operator delete(void*);
   
     InfoSet(void);
-    InfoSet(i8 nRowSize);
+    InfoSet(StreamDef* pStreamDef);
     ~InfoSet(void) noexcept(false);
     
     Row* aAllotRow(void);

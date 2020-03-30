@@ -60,12 +60,12 @@ InfoSet::InfoSet(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InfoSet::InfoSet(i8 nRowSize)
+InfoSet::InfoSet(StreamDef* pStreamDef)
 : RowBuffer(CN_INFOSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  m_nRowSize  = nRowSize;
+  m_nRowSize  = Row::nSizeBytes(pStreamDef);
   m_nInfoRows = 0;
   
   _checkInitialised_(CN_INFOSET);

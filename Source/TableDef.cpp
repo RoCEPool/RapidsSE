@@ -54,7 +54,8 @@ TableDef::TableDef(void)
   m_eTableType  = TT_NORMAL;
   m_bDefinitionOnly = false;
   
-  m_pStreamDef = new StreamDef;
+  m_pStreamDef = new StreamDef();
+  m_pStreamDef->vName(m_sTableNm);
   
   m_sCmd       = ""_Stz;
   

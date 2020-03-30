@@ -37,6 +37,8 @@ namespace MetaData
     i8 nColumns(i8 iSubSet);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
+    void vName(Stz* sName);
+    Stz* szName(void);
     void vToMetadata(Stz* sMetaData);
     
     Footer* aFooter(void);
