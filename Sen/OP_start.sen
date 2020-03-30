@@ -32,17 +32,9 @@
   //"Operand:- ZK_ERROREDMARKER" .verbose
   Pipein[].delete
 
-  // check if startOp has already been errored
-  Job_Pipeline::isErrored not if
-
-    // mark pipeline as being errored
-    true Job_Pipeline::errored
-
-    // now pipeout an exit marker
-    Operand[].newExitMarker
-    Operand[].pipeout
-
-  then
+  // now pipeout an exit marker
+  Operand[].newExitMarker
+  Operand[].pipeout
 
   true
 ;
