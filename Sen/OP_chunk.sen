@@ -16,11 +16,12 @@
   C_TDEF_SEEKOFFSETS op__tableDef assert
 
   // create a new streamDef and save it in Operand
-  dup StreamDef[].new
+  StreamDef[].new
   StreamDef[] to Operand[]
+  nullptr to StreamDef[]
 
-  // create the streamDef
-  StreamDef[].new to Operand[]
+  // create the streamDef to be piped out
+  StreamDef[].new
 
   // pipeout the streamDef
   StreamDef[].pipeout
@@ -35,7 +36,7 @@
     counter1[] counter0[] >
   while
     // create an infoSet operand
-    Operand[] InfoSet[].newInfoSet
+    Operand[] InfoSet[].new
     InfoSet[].chunkFile
     InfoSet[].pipeOut
   repeat

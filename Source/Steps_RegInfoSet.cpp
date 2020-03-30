@@ -22,7 +22,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].get"_Stz,            &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
   vAddStep("InfoSet[].name"_Stz,           &Step::vRegInfoSetName);
-  vAddStep("InfoSet[].newInfoSet"_Stz,     &Step::vRegInfoSetNewInfoSet);
+  vAddStep("InfoSet[].new"_Stz,            &Step::vRegInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,        &Step::vRegInfoSetNextRow);
   vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vRegInfoSetPipeOut);
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
@@ -403,11 +403,11 @@ void Step::vRegInfoSetName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSet[].newInfoSet -- new an infoset operand                             */
+/* InfoSet[].new -- new an infoset operand                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetNewInfoSet(void)
+void Step::vRegInfoSetNew(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetNewInfoSet"_Stz);
+  ENTRY(); // ENTRY("vRegInfoSetNew"_Stz);
   
   ASSERT(m_pRegSet->m_xpInfoSet.bIsNull());
   

@@ -10,7 +10,7 @@
 : nodeInfo_action
 
   // create an infoSet operand
-  StreamDef[] InfoSet[].newInfoSet
+  StreamDef[] InfoSet[].new
 
   // add nodeInfo to the infoSet
   StreamDef[] InfoSet[].addNodeInfo assert

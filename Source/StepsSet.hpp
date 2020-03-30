@@ -1044,7 +1044,7 @@ public:
   void vRegInfoSetGet(void);
   void vRegInfoSetInfoRows(void);
   void vRegInfoSetName(void);
-  void vRegInfoSetNewInfoSet(void);
+  void vRegInfoSetNew(void);
   void vRegInfoSetNextRow(void);
   void vRegInfoSetPipeOut(void);
   void vRegInfoSetReadChunk(void);
