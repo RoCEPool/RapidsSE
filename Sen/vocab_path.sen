@@ -64,6 +64,23 @@ diclock.dropwrite
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+: folder.hasRef ( word )
+
+  dup execute dic.ref
+;
+
+/*----------------------------------------------------------------------------*/
+/* check dic is empty                                                         */
+/*----------------------------------------------------------------------------*/
+: folder.isEmpty ( pFolder -- true | error false )
+
+  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : word.isFolder params| pWord |
 
   pWord not if EC_NO_SUCH_FOLDER false exit_rt then
@@ -74,28 +91,11 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-: folder.hasRef ( word )
-
-  dup execute dic.ref
-;
-
-/*----------------------------------------------------------------------------*/
 /* check folder is not in use                                                 */
 /*----------------------------------------------------------------------------*/
 : folder.notUsed ( pFolder -- true | error false )
 
   folder.hasRef if EC_FOLDER_IN_USE false exit_rt then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* check dic is empty                                                         */
-/*----------------------------------------------------------------------------*/
-: folder.isEmpty ( pFolder -- true | error false )
-
-  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
 
   true
 ;
