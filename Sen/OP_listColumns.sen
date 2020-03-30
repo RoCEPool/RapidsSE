@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : ListColumns_PulseMarker \handler
 
-  0 0 locals| iColumns iRowSize |
+  0 locals| iColumns |
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -28,11 +28,8 @@
   // create a new streamDef
   StreamDef[].new
 
-  // get row size from streamDef
-  StreamDef[].rowSize to iRowSize
-
   // create an infoSet operand
-  iRowSize InfoSet[].newInfoSet
+  StreamDef[] InfoSet[].newInfoSet
 
   iColumns 0 do
     I OperandB[] StreamDef[] InfoSet[].addColumnDef assert

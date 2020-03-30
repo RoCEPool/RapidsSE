@@ -411,7 +411,8 @@ void Step::vRegInfoSetNewInfoSet(void)
   
   ASSERT(m_pRegSet->m_xpInfoSet.bIsNull());
   
-  i8 nRowSize = m_pDataStack->iPopInt(__func__);
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  i8 nRowSize = Row::nSizeBytes(pStreamDef);
   
   m_pRegSet->m_xpInfoSet = new InfoSet(nRowSize);
   

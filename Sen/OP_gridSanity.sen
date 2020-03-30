@@ -10,18 +10,14 @@
 : GridSanity_InfoSet \handler
 
   //"Operand:- ZK_INFOSET" .verbose
-  0 0 locals| iRowSize nodeInfo |
 
   Pipein[] to InfoSet[]
   InfoSet[].firstRow to row[]
 
-  // get row size from streamDef
-  StreamDef[].rowSize to iRowSize
-
   nullptr to InfoSet[]
 
   // create an infoSet operand
-  iRowSize InfoSet[].newInfoSet
+  StreamDef[] InfoSet[].newInfoSet
 
   // add nodeInfo to the infoSet
   row[].get StreamDef[] InfoSet[].addGridSanity assert

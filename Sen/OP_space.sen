@@ -9,13 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : space_action
 
-  0 locals| iRowSize |
-
-  // get row size from streamDef
-  StreamDef[].rowSize to iRowSize
-
   // create an infoSet operand
-  iRowSize InfoSet[].newInfoSet
+  StreamDef[] InfoSet[].newInfoSet
 
   // add nodeInfo to the infoSet
   StreamDef[] InfoSet[].addSpaceInfo assert

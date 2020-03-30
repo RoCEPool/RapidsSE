@@ -9,19 +9,18 @@
 /*----------------------------------------------------------------------------*/
 : chunk_PulseMarker \handler
 
-  0 locals| iRowSize |
-
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
 
   // find the __seekOffsets table
   C_TDEF_SEEKOFFSETS op__tableDef assert
 
-  // create a new streamDef
-  StreamDef[].new
+  // create a new streamDef and save it in Operand
+  dup StreamDef[].new
+  StreamDef[] to Operand[]
 
-  // get row size from streamDef
-  StreamDef[].rowSize to iRowSize
+  // create the streamDef
+  StreamDef[].new to Operand[]
 
   // pipeout the streamDef
   StreamDef[].pipeout
@@ -36,12 +35,12 @@
     counter1[] counter0[] >
   while
     // create an infoSet operand
-    iRowSize InfoSet[].newInfoSet
+    Operand[] InfoSet[].newInfoSet
     InfoSet[].chunkFile
     InfoSet[].pipeOut
   repeat
 
-  nullptr to Operand[]
+  Operand[].delete
 
   // send EOSMARKER
   Operand[].newEosMarker
