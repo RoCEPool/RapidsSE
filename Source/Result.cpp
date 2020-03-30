@@ -329,6 +329,7 @@ void Result::vProcessBufferQueue(void)
         
       case CN_INFOSET: {
         InfoSet* pInfoSet = _pInfoSet(pOperand);
+        ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
         m_xJobResponse.m_ixRowsProcessed += pInfoSet->nInfoRows();
         pInfoSet->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
