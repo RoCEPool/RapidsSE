@@ -158,13 +158,13 @@
 
   params| pJob |
 
-  task::sendSocket@ locals| pSocket |
+  socket[] locals| pSocket |
 
   pJob job.preSend
 
   job::</seeXfer/>
 
-  task::socketLock
+  socket[].lock
 
     pJob pSocket socket.sendObject drop
 
@@ -173,7 +173,7 @@
        pJob job.operand@ pSocket socket.sendObject drop
     then
 
-  task::socketUnlock
+  socket[].unlock
 ;
 
 /*----------------------------------------------------------------------------*/
