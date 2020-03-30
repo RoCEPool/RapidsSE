@@ -5,7 +5,6 @@
 "-vocab.sen" .verbose
 
 "vocab_core.sen"     include
-"vocab_corePlus.sen" include
 "vocab_word.sen"     include
 
 "vocab_str.sen"      include
