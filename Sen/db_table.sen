@@ -216,7 +216,7 @@
   checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWord not if drop EC_NO_SUCH_TABLE false exit then
+  sTableNm word::isKnown not if drop EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm pushTable assert

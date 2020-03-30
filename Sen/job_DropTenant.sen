@@ -12,7 +12,7 @@
   params| sTenantNm |
 
   checkInTenants  not if false exit then ( "<tenantNm>" word )
-  sTenantNm checkIsWord  not if EC_NO_SUCH_Tenant false exit then ( "<tenantNm>" word )
+  sTenantNm word::isKnown  not if EC_NO_SUCH_Tenant false exit then ( "<tenantNm>" word )
   checkIsTenant   not if false exit then ( "<tenantNm>" word )
   folder.isEmpty    not if false exit then ( "<tenantNm>" word )
   folder.notUsed    not if false exit then ( "<tenantNm>" word )

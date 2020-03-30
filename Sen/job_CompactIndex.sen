@@ -17,7 +17,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+  sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder

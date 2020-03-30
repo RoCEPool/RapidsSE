@@ -13,7 +13,7 @@
 
   checkInCatalogs not if false exit then
 
-  sCatalogNm checkIsWord not if EC_NO_SUCH_CATALOG false exit then
+  sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
 
   sCatalogNm checkIsCatalog  not if false exit then
 

@@ -31,7 +31,8 @@
 /*----------------------------------------------------------------------------*/
 : index:
 
-  create
+  create:
+
   WK_OBJECT compiler::current@ word.kind!
   sizeof_index allot
 

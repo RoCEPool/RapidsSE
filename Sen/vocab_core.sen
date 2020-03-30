@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a new word using next token as name                                 */
 /*----------------------------------------------------------------------------*/
-: CREATE
+: CREATE:
 
   input::next input::token word::new compiler::current!
 ;
@@ -120,7 +120,7 @@
 /*----------------------------------------------------------------------------*/
 : CONSTANT
 
-  create           // create a word using the next token in the input stream
+  CREATE:          // create a word using the next token in the input stream
   ,                // encode a push value of the value currently on the stack
   POSTPONE exit_rt // encode an exit into the created word
 ;
