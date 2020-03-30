@@ -3975,6 +3975,52 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of vocab_socket.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged vocab_socket.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* vocab_socket.sen -- socket primitives                                      */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" vocab_socket.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* get this tasks send socket                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": task::sendSocket@\n"
+    "\n"
+    "  task[] task.sendNode@ node.sendSocket@\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* grab lock on the tasks send socket                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": task::socketLock ( -- )\n"
+    "\n"
+    "  task[] task.sendNode@ node.sendSocket@ socket.grabWrite\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* drop lock on the tasks send socket                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": task::socketUnlock ( -- )\n"
+    "\n"
+    "  task[] task.sendNode@ node.sendSocket@ socket.dropWrite\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT vocab_socket.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_docols.sen
 
   sFileContents =
@@ -6909,6 +6955,7 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"vocab_log.sen\\\"      include\n"
     "\\\"vocab_path.sen\\\"     include\n"
     "\\\"vocab_object.sen\\\"   include\n"
+    "\\\"vocab_socket.sen\\\"   include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
@@ -17166,52 +17213,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of task.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged task.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* task.sen -- task ipc primitives                                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" task.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* get this tasks send socket                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": task::sendSocket@\n"
-    "\n"
-    "  task[] task.sendNode@ node.sendSocket@\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* grab lock on the tasks send socket                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": task::socketLock ( -- )\n"
-    "\n"
-    "  task[] task.sendNode@ node.sendSocket@ socket.grabWrite\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* drop lock on the tasks send socket                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": task::socketUnlock ( -- )\n"
-    "\n"
-    "  task[] task.sendNode@ node.sendSocket@ socket.dropWrite\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT task.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_boot.sen
 
   sFileContents =
@@ -19192,7 +19193,6 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "\\\"-tasks.sen\\\" .verbose\n"
     "\n"
-    "\\\"task.sen\\\" include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
