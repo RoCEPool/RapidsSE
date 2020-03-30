@@ -137,8 +137,9 @@ void Result::vPrintLoadResponse(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Errors
   if ( m_bPartHasError ) {
+    vTrace("error: "_Stz);
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
-      vTrace("error: (node%lld) %s; "_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("node%lld: %s; "_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     vTrace("\n"_Stz);
     return;
   }
@@ -180,8 +181,9 @@ void Result::vPrintParticipantErrors(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Errors
   if (m_bPartHasError) {
+    vTrace("error: "_Stz);
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s; "_Stz,
+      vTrace("node%lld: %s; "_Stz,
              m_pOriginResponseVec->pGet(i_Node)->m_iNode,
              aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
@@ -229,8 +231,9 @@ void Result::vPrintParticipantResponses(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Errors
   if (m_bPartHasError) {
+    vTrace("error: "_Stz);
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s; "_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
+      vTrace("node%lld: %s; "_Stz, i_Node, aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
     vTrace("\n"_Stz);
     return;
