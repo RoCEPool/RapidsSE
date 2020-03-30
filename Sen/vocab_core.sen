@@ -363,6 +363,39 @@ true find: CASE word.immediate!
   0 compiler::nested@ compiler::current!
 ;
 
+/*----------------------------------------------------------------------------*/
+/* dump the return stack                                                      */
+/*----------------------------------------------------------------------------*/
+: rstk_w
+
+  "return stack" .
+  rdepth dup not if drop exit_rt then
+  0 do
+    I 2 + rpick
+    dup .put
+    " ".put
+    locate
+    dup if .put else drop then
+    .\n
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* interpret string on stack                                                  */
+/*----------------------------------------------------------------------------*/
+: >interpret input::push input::text interpret input::pop ;
+
+/*----------------------------------------------------------------------------*/
+/* test type of top stack value                                               */
+/*----------------------------------------------------------------------------*/
+: isType ( CN_ -- bool )
+
+  // false if stack empty
+  depth 2 >= not if drop false exit_rt then
+
+  // no more if not indirect
+  1 stack.class ==
+;
 
 /*============================================================================*/
 /* end                                                                        */
