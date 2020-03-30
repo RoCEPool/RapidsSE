@@ -215,7 +215,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string                 */
 /*----------------------------------------------------------------------------*/
-: listContents ( job -- )
+: folder[].listContents ( job -- )
 
   params| pJob |
   0 locals| iCount |

@@ -29,7 +29,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list catalogs folder contents
-  pJob_ListCatalogs listContents
+  pJob_ListCatalogs folder[].listContents
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
