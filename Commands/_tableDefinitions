@@ -4,6 +4,23 @@
 
 Print "Creating System Table Definitions";
 
+// this is C_TDEF_GRIDSANITY
+create table definition __gridSanity (
+  nodeName   VARCHAR NOT NULL,
+  homogenous BOOLEAN NOT NULL
+);
+
+// this is C_TDEF_LISTCOLUMNS
+create table definition __listColumns (
+  columnNo       INTEGER NOT NULL,
+  columnName     VARCHAR NOT NULL,
+  columnType     VARCHAR NOT NULL,
+  columnLength   INTEGER NOT NULL,
+  columnScale    INTEGER NOT NULL,
+  isNull         BOOLEAN NOT NULL,
+  isPartitionKey BOOLEAN NOT NULL
+);
+
 // this is C_TDEF_LOCKSTATS
 create table definition __lockStats (
   nodeNo         INTEGER     NOT NULL,
@@ -28,21 +45,9 @@ create table definition __nodeInfo (
   partitionCount INTEGER NOT NULL
 );
 
-// this is C_TDEF_GRIDSANITY
-create table definition __gridSanity (
-  nodeName   VARCHAR NOT NULL,
-  homogenous BOOLEAN NOT NULL
-);
-
-// this is C_TDEF_LISTCOLUMNS
-create table definition __listColumns (
-  columnNo       INTEGER NOT NULL,
-  columnName     VARCHAR NOT NULL,
-  columnType     VARCHAR NOT NULL,
-  columnLength   INTEGER NOT NULL,
-  columnScale    INTEGER NOT NULL,
-  isNull         BOOLEAN NOT NULL,
-  isPartitionKey BOOLEAN NOT NULL
+// this is C_TDEF_PROGRESSUNITS
+create table definition __progressUnits (
+  UNITS      INTEGER NOT NULL
 );
 
 // this is C_TDEF_SEEKOFFSETS
@@ -57,6 +62,11 @@ create table definition __space (
   totalSpace INTEGER NOT NULL,
   inUseSpace INTEGER NOT NULL,
   freeSpace  INTEGER NOT NULL
+);
+
+// this is C_TDEF_TOTALUNITS
+create table definition __totalUnits (
+  UNITS      INTEGER NOT NULL
 );
 
 /*============================================================================*/

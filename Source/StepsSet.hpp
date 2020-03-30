@@ -1035,7 +1035,9 @@ public:
   void vRegInfoSetAddColumnDef(void);
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddNodeInfo(void);
+  void vRegInfoSetAddProgressUnits(void);
   void vRegInfoSetAddSpaceInfo(void);
+  void vRegInfoSetAddTotalUnits(void);
   void vRegInfoSetChunkFile(void);
   void vRegInfoSetDelete(void);
   void vRegInfoSetFirstRow(void);

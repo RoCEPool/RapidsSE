@@ -169,12 +169,14 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
   
   // table definition
-  vAddConstant("C_TDEF_LOCKSTATS"_Stz,   C_TDEF_LOCKSTATS);
-  vAddConstant("C_TDEF_NODEINFO"_Stz,    C_TDEF_NODEINFO);
-  vAddConstant("C_TDEF_GRIDSANITY"_Stz,  C_TDEF_GRIDSANITY);
-  vAddConstant("C_TDEF_LISTCOLUMNS"_Stz, C_TDEF_LISTCOLUMNS);
-  vAddConstant("C_TDEF_SEEKOFFSETS"_Stz, C_TDEF_SEEKOFFSETS);
-  vAddConstant("C_TDEF_SPACE"_Stz,       C_TDEF_SPACE);
+  vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
+  vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,  C_TDEF_LISTCOLUMNS);
+  vAddConstant("C_TDEF_LOCKSTATS"_Stz,    C_TDEF_LOCKSTATS);
+  vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
+  vAddConstant("C_TDEF_PROGRESSUNITS"_Stz,C_TDEF_PROGRESSUNITS);
+  vAddConstant("C_TDEF_SEEKOFFSETS"_Stz,  C_TDEF_SEEKOFFSETS);
+  vAddConstant("C_TDEF_SPACE"_Stz,        C_TDEF_SPACE);
+  vAddConstant("C_TDEF_TOTALUNITS"_Stz,   C_TDEF_TOTALUNITS);
 
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSecond());
