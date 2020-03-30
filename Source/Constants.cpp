@@ -597,6 +597,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
+  /*  0 */ vAddConstant("ZK_ERROREDMARKER"_Stz,   ZK_ERROREDMARKER);
   /*  0 */ vAddConstant("ZK_EXITMARKER"_Stz,      ZK_EXITMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
   /*  0 */ vAddConstant("ZK_INFOSET"_Stz,         ZK_INFOSET);

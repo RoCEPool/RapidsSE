@@ -31,6 +31,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
+  vAddStep("Operand[].newErroredMarker"_Stz,&Step::vRegOperandNewErroredMarker);
   vAddStep("Operand[].newExitMarker"_Stz,  &Step::vRegOperandNewExitMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vRegOperandNewExitedMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vRegOperandNewPulseMarker);
@@ -393,6 +394,7 @@ void Step::vRegOperandKind(void)
         case OM_CANCELMARKER:     eOperand = ZK_CANCELMARKER;    break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
+         case OM_ERROREDMARKER:   eOperand = ZK_ERROREDMARKER;   break;
          case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
          case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
@@ -468,6 +470,20 @@ void Step::vRegOperandNewErrorMarker(void)
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
   m_pRegSet->m_xpOperandA = new Marker(OM_ERRORMARKER);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newErroredMarker -- new an errored marker                        */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewErroredMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewErroredMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
+  
+  m_pRegSet->m_xpOperandA = new Marker(OM_ERROREDMARKER);
   
   EXIT();
 }

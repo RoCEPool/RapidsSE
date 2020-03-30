@@ -363,6 +363,11 @@ void Result::vProcessBufferQueue(void)
             bHasError = true;
             break;
           }
+           
+          case OM_ERROREDMARKER: {
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
             
           case OM_PULSEMARKER: {
             //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);

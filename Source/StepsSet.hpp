@@ -1081,6 +1081,7 @@ public:
   void vRegOperandNewExitedMarker(void);
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewErrorMarker(void);
+  void vRegOperandNewErroredMarker(void);
   void vRegOperandNewPulseMarker(void);
   void vRegOperandNewPulsedMarker(void);
   void vRegOperandNewStartMarker(void);
