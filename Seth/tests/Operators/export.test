@@ -1,0 +1,87 @@
+/*----------------------------------------------------------------------------*/
+/* operators.test -- OPERATORS tests                                          */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+// (1) create a table
+create table OpTable1 (
+  jidx_key   INTEGER     NOT NULL,
+  jidx_name  VARCHAR(32) NOT NULL,
+  jidx_100   INTEGER     NOT NULL,
+  jidx_10    INTEGER     NOT NULL,
+  jidx_int   INTEGER     NOT NULL,
+  jidx_flt   FLOAT       NOT NULL,
+  jidx_tsp   TIMESTAMP   NOT NULL,
+  jidx_dte   DATE        NOT NULL
+);
+success
+
+// create indexes
+create index OpTable1_idx on OpTable1 (jidx_key);
+success
+
+load OpTable1 "../DATA/Operators/operators1_1.csv" ;
+success
+
+// check no of rows
+tableFetch OpTable1;
+rows: 26
+
+// export to non-existent dir
+export OpTable1 "/noDir/opTable1.csv";
+failure contains: 'invalid file'
+
+// export a non-existent table
+export OpTable2 "/tmp/opTable1";
+failure contains: 'no such table'
+
+// export a non-existent table to a non-existent dir
+export OpTable2 "/noDir/opTable1";
+failure contains: 'no such table'
+
+export OpTable1 "/tmp/opTable1.csv";
+success
+
+truncate OpTable1;
+success
+
+load OpTable1 "/tmp/opTable1.csv" ;
+success
+
+// check no of rows
+tableFetch OpTable1;
+rows: 26
+
+// drop the table
+drop table OpTable1;
+success
+
+
+// check existence of table
+lstbl;
+rows: 0
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table OpTable1;
+  mute
+
+  // drop the table
+  drop table OpTable2;
+  mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

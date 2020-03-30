@@ -68,14 +68,14 @@ rows: 21
 pipeline scan1
 begin
 
-stage stageA on origin:
-startOp | periodicOp once | stageB
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
 
-stage stageB on all partitions:
-scan OpTableXXX | stageC
+  stage stageB on all partitions:
+  scan OpTableXXX | stageC
 
-stage stageC on origin:
-output | sink | stageA
+  stage stageC on origin:
+  output | sink | stageA
 
 end
 ;
