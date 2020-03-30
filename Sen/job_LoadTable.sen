@@ -31,7 +31,7 @@
 
   task[] task.grabLock
 
-  grid::slots task::acks!
+  grid::slots task[] task.acks!
 
   args.subLoaders 0
   do
@@ -81,7 +81,7 @@
 : LoadTable_waitOnly ( pJob_LoadTable --  )
 
   task[] task.grabLock
-  grid::slots task::acks!
+  grid::slots task[] task.acks!
   task::wait
 ;
 
