@@ -21,7 +21,7 @@
   find execute ( dic )
   "indexes"    ( dic "indexes" )
   swap         ( "indexes" dic )
-  :subFolder   ( )
+  :createSubFolder   ( )
 ;
 
 : isIndex word.category@ find: index eql ;
