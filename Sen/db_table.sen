@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if this task dic path ends in tables                                  */
 /*----------------------------------------------------------------------------*/
-: withinTables ( -- t|f )
+: folder[].isTables ( -- t|f )
 
   folder[] dic.name "tables" str.equal
 ;
@@ -96,7 +96,7 @@
 /*----------------------------------------------------------------------------*/
 : assertInTables ( -- t|f )
 
-  withinTables assert
+  folder[].isTables assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@
 /*----------------------------------------------------------------------------*/
 : checkInTables ( -- t|f )
 
-  withinTables if true exit then
+  folder[].isTables if true exit then
 
   EC_NOT_IN_TABLES false
 ;
@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if this task dic path is same name as argument                        */
 /*----------------------------------------------------------------------------*/
-: withinTable ( "<tableNm>" -- t|f )
+: folder[].isTable ( "<tableNm>" -- t|f )
 
   assert::stack_1+
   CN_STZVAL assert::class_0
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 : checkInTable ( "<tableNm>" -- t|f )
 
-  withinTable if true exit then
+  folder[].isTable if true exit then
 
   EC_NOT_IN_TABLE false
 ;

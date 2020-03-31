@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* check within partitions folder                                             */
 /*----------------------------------------------------------------------------*/
-: withinPartitions
+: folder[].isPartitions
   folder[] dic.name "partitions" str.equal
 ;
 
@@ -32,7 +32,7 @@
 /* check in partitions folder                                                 */
 /*----------------------------------------------------------------------------*/
 : checkInPartitions
-  withinPartitions if true exit then
+  folder[].isPartitions if true exit then
   EC_NOT_IN_PARTITIONS false
 ;
 
@@ -72,7 +72,7 @@
 /* assert top of task dictionary stack is partitions                          */
 /*----------------------------------------------------------------------------*/
 : assertInPartitions ( -- t|f )
-  withinPartitions assert
+  folder[].isPartitions assert
 ;
 
 //*----------------------------------------------------------------------------*/

@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 /* check within indexes folder                                                */
 /*----------------------------------------------------------------------------*/
-: withinIndexes
+: folder[].isIndexes
   folder[] dic.name "indexes" str.equal
 ;
 
@@ -79,7 +79,7 @@
 /* check in indexes folder                                                    */
 /*----------------------------------------------------------------------------*/
 : checkInIndexes
-  withinIndexes if true exit then
+  folder[].isIndexes if true exit then
   EC_NOT_IN_INDEXES false
 ;
 
@@ -87,7 +87,7 @@
 /* assert top of task dictionary stack is indexes                             */
 /*----------------------------------------------------------------------------*/
 : assertInIndexes ( -- t|f )
-  withinIndexes assert
+  folder[].isIndexes assert
 ;
 
 /*----------------------------------------------------------------------------*/
