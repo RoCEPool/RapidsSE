@@ -14,10 +14,6 @@
 5 .put  "dbObjects.sen"     include
 4 .put  
         "se_categories.sen" include
-        "se_demons.sen"     include
-        "se_handlers.sen"   include
-        "se_operators.sen"  include
-        "se_procedures.sen" include
         "se_tags.sen"       include
         "se_requests.sen"   include
 3 .put  "jobModel.sen"      include

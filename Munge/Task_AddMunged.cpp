@@ -519,28 +519,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se_procedures.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se_procedures.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_procedures.sen -- procedures                                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" se_procedures.sen\\\" .verbose\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_procedures.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_stats.sen
 
   sFileContents =
@@ -5477,28 +5455,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se_handlers.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se_handlers.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_handlers.sen -- handlers                                                */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" se_handlers.sen\\\" .verbose\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_handlers.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SizeTable.sen
 
   sFileContents =
@@ -8459,15 +8415,14 @@ void Task::vAddMunged(Forth* pForth)
     ": \\\\handler \\\\\\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* procedure category                                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\procedure \\\\\\\\category ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
     "/* operator category                                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": \\\\operator \\\\\\\\category ;\n"
     "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* procedure category                                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": \\\\procedure \\\\\\\\category ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
@@ -12536,29 +12491,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se_demons.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se_demons.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_demons.sen -- demons                                                    */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" se_demons.sen\\\" .verbose\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_demons.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_output.sen
 
   sFileContents =
@@ -13370,28 +13302,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job__Begun.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se_operators.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se_operators.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_roperators.sen -- operators                                             */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" se_operators.sen\\\" .verbose\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_operators.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
@@ -17367,10 +17277,6 @@ void Task::vAddMunged(Forth* pForth)
     "5 .put  \\\"dbObjects.sen\\\"     include\n"
     "4 .put  \n"
     "        \\\"se_categories.sen\\\" include\n"
-    "        \\\"se_demons.sen\\\"     include\n"
-    "        \\\"se_handlers.sen\\\"   include\n"
-    "        \\\"se_operators.sen\\\"  include\n"
-    "        \\\"se_procedures.sen\\\" include\n"
     "        \\\"se_tags.sen\\\"       include\n"
     "        \\\"se_requests.sen\\\"   include\n"
     "3 .put  \\\"jobModel.sen\\\"      include\n"
