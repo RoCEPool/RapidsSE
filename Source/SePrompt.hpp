@@ -36,6 +36,8 @@ namespace Prompt
     EnameSet  m_oSettings;
     ShortCutVec m_oShortCutVec; // vector of short cuts
     Timer     m_oTimer;         // the timer
+   
+    i8        m_iSectionNo;  // section numbering
 
 
     // must be last
@@ -84,6 +86,7 @@ namespace Prompt
     void vJobWaitCond(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
+    i8   iNextSectionNo(void);
     bool bNoWait(void);
     i8*  iaObjectsInPool(void);
     bool bPassesCheck(void);
@@ -99,6 +102,7 @@ namespace Prompt
     void vReportPool(void);
     void vReportTrace();
     void vReportTime(void);
+    void vResetSectionNo(void);
     void vRestateCommand(void);
     i8   iRequestId(void);
     Session* pSession(void);

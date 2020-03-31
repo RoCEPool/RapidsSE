@@ -27,11 +27,32 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("print"_Stz));
   
-  if (pTokenVec->nTokens() > 1)
-    vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szTerm());
-  else
+  //
+  if (pTokenVec->nTokens() == 1) {
     vInfo("\n"_Stz);
+    return true;
 
+  }
+  
+  if (pTokenVec->nTokens() == 2) {
+    vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szTerm());
+    return true;
+  }
+  
+  if (pTokenVec->nTokens() == 3) {
+    vInfo("\n"_Stz);
+    vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+          "/\n"_Stz);
+    vInfo("Section §%lld) %s:\n"_Stz,
+          pPrompt->iNextSectionNo(),
+          pTokenVec->pGet(2)->szTerm());
+    vInfo("\n"_Stz);
+    return true;
+  }
+  
+  vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szTerm());
   return true;
 }
 

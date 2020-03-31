@@ -6,8 +6,7 @@ _bootCluster
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createTable;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 1/n) Create Tables";
+print section "Create Tables";
 
 //dumptokens true;
 
@@ -59,16 +58,14 @@ time create table LineItem2                // SF * 6,000,000 rows
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection listColumns;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 2/n) List Columns";
+print section "List Columns";
 
 lscol lineitem;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createIndex;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 3/n) Create Index";
+print section "Create Index";
 // sample data:
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
@@ -81,8 +78,7 @@ lsidx lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection load;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 4/n) Load Table";
+print section "Load Table";
 
 // /nowait monitor 3;
 
@@ -102,8 +98,7 @@ sztbl lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection pipelineFetch;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 5/n) Pipeline Fetch";
+print section "Pipeline Fetch";
 
 pipeline lineitem_fetch
 begin
@@ -122,60 +117,53 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection dumpTable;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 6/n) Dump Table";
+print section "Dump Table";
 
 dumptable lineitem;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection filteredFetch;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 7/n) Filtered Fetch";
+print section "Filtered Fetch";
 
 time fetch lineitem "l_orderKey 20 <" ;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection dumpIndex;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 8/n) Dump Index";
+print section "Dump Index";
 
 dumpindex LineItem LineItem_Idx1;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection ping;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-
-print "** 9/n) Ping";
+print section "Ping";
 
 ping;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection logWrite;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 10/n) Log Write";
+print section "Log Write";
 
 logWrite;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection storedProcedure;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 11/n) Stored Procedue";
+print section "** 11/n) Stored Procedue";
 
-print "\nsp_TEST lineitem $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
 sp_TEST lineitem;
-print "\nselect_table lineitem $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
+
+print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$";
+
 Select Table lineItem;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-logSection storedProcedure;
-print "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-";
-print "** 12/n) Stored Procedue";
+logSection exportTable;
+print section "Export Table";
 
 export lineitem "/tmp/lineitem_export.csv" ;
 

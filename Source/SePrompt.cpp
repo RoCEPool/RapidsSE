@@ -91,6 +91,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pBPA = nullptr;
 //  if (AM::bDeveloper())
 //    m_pBPA = new BPA;
+  
+  m_iSectionNo = 0;
 
   _checkInitialised_(CN_SEPROMPT);
   
@@ -832,6 +834,16 @@ void SePrompt::vLogFreeSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* next section number                                                        */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iNextSectionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return ++m_iSectionNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* no wait                                                                    */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bNoWait(void)
@@ -1019,6 +1031,16 @@ void SePrompt::vReformatCommand(void)
 
   // -- -- -- -- -- --
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset section numbering                                                    */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vResetSectionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_iSectionNo = 0;
 }
 
 /*----------------------------------------------------------------------------*/
