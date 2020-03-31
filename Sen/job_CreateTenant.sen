@@ -37,7 +37,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the tenant
-  sTenantNm :tenant ( ^tenant )
+  sTenantNm :createTenant ( ^tenant )
   drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
