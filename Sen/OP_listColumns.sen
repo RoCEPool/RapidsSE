@@ -14,16 +14,26 @@
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
 
+  "ListColumns_PulseMarker A" .
+
   // get the table column count
   table[].columnCount to iColumns
 
   // save the table of the base table
   table[] to OperandB[]
 
-  popTable
+  //popTable
+ 
+  "ListColumns_PulseMarker B" .
+
+path[].toStr .
+folder[].contentStr .
 
   // find the __listColumns table
-  C_TDEF_LISTCOLUMNS op__tableDef assert
+  C_TDEF_LISTCOLUMNS op__tableDef stk assert
+
+  "ListColumns_PulseMarker C" .
+
 
   // create a new streamDef
   table[] StreamDef[].new
@@ -31,9 +41,13 @@
   // create an infoSet operand
   StreamDef[] InfoSet[].new
 
+  "ListColumns_PulseMarker D" .
+
   iColumns 0 do
     I OperandB[] StreamDef[] InfoSet[].addColumnDef assert
   loop
+
+  "ListColumns_PulseMarker E" .
 
   // pipeout the streamDef
   StreamDef[].pipeout
@@ -44,7 +58,12 @@
   Operand[].newEosMarker
   Operand[].pipeOut
 
+  "ListColumns_PulseMarker F" .
+
   assert::stack_0
+
+  "ListColumns_PulseMarker G" .
+
 
   true
 ;
