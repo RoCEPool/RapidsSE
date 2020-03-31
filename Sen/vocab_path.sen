@@ -266,7 +266,7 @@ diclock.dropwrite
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm
-    sTableNm "pushTable" find execute  assert
+    sTableNm "path[].pushTable" find execute  assert
     sTableNm find execute to pTable
 
     // skip definition only tables

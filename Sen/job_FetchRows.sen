@@ -82,21 +82,21 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable false exit then
+  sTableNm checkIsTable not if path[].popTable false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if retrieving column, check it is a valid column
   "" sColumnNm str.equal not if
-    sColumnNm sTableNm checkIsColumn not if popTable false exit then
+    sColumnNm sTableNm checkIsColumn not if path[].popTable false exit then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  popTable
+  path[].popTable
 
   // assert in tables
   assertInTables
@@ -146,7 +146,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
   sTableNm find execute to pTable
   pTable pJob_FetchRows job_fetchRows.table!
 
@@ -194,7 +194,7 @@
     I pPlanner pJob_FetchRows spawnSub
   loop
 
-  popTable
+  path[].popTable
 
   pJob_FetchRows job.notice
 

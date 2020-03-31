@@ -33,7 +33,7 @@
   //pJob_WriteBuffer job.objectName@ to sTableNm
   <tableNm> to sTableNm
 
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |

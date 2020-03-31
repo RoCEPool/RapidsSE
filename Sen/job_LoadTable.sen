@@ -58,7 +58,7 @@
 
   // set table dictionary
   <tableNm> to sTableNm
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // get table
   sTableNm find execute to pTable
@@ -176,14 +176,14 @@
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
   //path[].dump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_LoadTable ERROR_JOB !!logError exit then
+  sTableNm checkIsTable not if path[].popTable pJob_LoadTable ERROR_JOB !!logError exit then
 
   // pop table dictionary
-  popTable
+  path[].popTable
   //path[].dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

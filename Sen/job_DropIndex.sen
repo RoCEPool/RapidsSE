@@ -48,11 +48,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
@@ -66,11 +66,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes folder
-  popIndexes
+  path[].popIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  popTable
+  path[].popTable
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -111,16 +111,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-  popIndexes popTable assertInTables job[] ERROR_JOB !!logError exit
+  path[].popIndexes path[].popTable assertInTables job[] ERROR_JOB !!logError exit
   then
 ;
 

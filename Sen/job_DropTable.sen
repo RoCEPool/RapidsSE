@@ -18,13 +18,13 @@
   sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if popTable false exit then
-  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+  sTableNm checkIsTable not if path[].popTable false exit then
+  //sTableNm tableInUse if path[].popTable EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  popTable
+  path[].popTable
 
   // assert in tables
   assertInTables
@@ -45,7 +45,7 @@
 
   //----------------------------------------------------------------------------
   // move to table folder
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   //----------------------------------------------------------------------------
   // find the table
@@ -76,7 +76,7 @@
 
   //----------------------------------------------------------------------------
   // pop table
-  popTable
+  path[].popTable
 
   sTableNm :forget
 

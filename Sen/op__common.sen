@@ -48,13 +48,13 @@
 
   // move to table folder and find the table
 
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
   sTableNm find execute to table[]
 
   // cross-check
   table[] assert
 
-  popTable
+  path[].popTable
   true
 ;
 
@@ -79,9 +79,9 @@
   then
 
   // move to table folder and find the table
-  <tableNm> pushTable assert
+  <tableNm> path[].pushTable assert
   <tableNm> find execute to table[]
-  popTable
+  path[].popTable
 
   // cross-check
   table[] assert
@@ -110,7 +110,7 @@
   then
 
   // move to table folder and find the table
-  <tableNm> pushTable assert
+  <tableNm> path[].pushTable assert
   <tableNm> find execute to table[]
 
   // cross-check
@@ -119,15 +119,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // move to indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   sIndexNm checkIsIndex not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    popTable
-    popIndexes
+    path[].popTable
+    path[].popIndexes
     false
     exit
   then
@@ -137,8 +137,8 @@
   // cross-check
   index[].get assert
 
-  popTable
-  popIndexes
+  path[].popTable
+  path[].popIndexes
 
   //pathStr .
   true

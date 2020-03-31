@@ -42,7 +42,7 @@
 
   //----------------------------------------------------------------------------
   // make the indexes dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
   sTableNm "makeIndexes" find execute
 
   //----------------------------------------------------------------------------
@@ -102,7 +102,7 @@
 
   //----------------------------------------------------------------------------
   // move back to tables
-  popTable
+  path[].popTable
 
   //----------------------------------------------------------------------------
   // should be in tables

@@ -18,12 +18,12 @@
   sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if popTable false exit then
+  sTableNm checkIsTable not if path[].popTable false exit then
 
   // pop table folder
-  popTable
+  path[].popTable
 
   // assert in tables
   assertInTables
@@ -72,7 +72,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
   <tableNm> to sTableNm
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table
@@ -85,7 +85,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  popTable
+  path[].popTable
 ;
 
 /*----------------------------------------------------------------------------*/

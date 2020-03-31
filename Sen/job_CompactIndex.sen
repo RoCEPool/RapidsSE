@@ -21,25 +21,25 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if popTable false exit then
-  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+  sTableNm checkIsTable not if path[].popTable false exit then
+  //sTableNm tableInUse if path[].popTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    popIndexes popTable assertInTables false exit
+    path[].popIndexes path[].popTable assertInTables false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
-  popIndexes
-  popTable
+  path[].popIndexes
+  path[].popTable
 
   // assert in tables
   assertInTables
@@ -59,16 +59,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
-  <tableNm> pushTable assert
-  pushIndexes assert
+  <tableNm> path[].pushTable assert
+  path[].pushIndexes assert
 
   <indexNm> find execute to pIndex
   pIndex index.compact
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
-  popIndexes
-  popTable
+  path[].popIndexes
+  path[].popTable
 ;
 
 /*----------------------------------------------------------------------------*/

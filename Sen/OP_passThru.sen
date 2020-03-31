@@ -59,7 +59,7 @@
   "__REPORT" locals| sReportTable |
 
   sReportTable op__table if
-    sReportTable pushTable assert
+    sReportTable path[].pushTable assert
     sReportTable find execute to table[]
     Pipein[].pipeOut
   then

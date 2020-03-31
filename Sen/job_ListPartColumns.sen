@@ -70,11 +70,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_ListPartColumns ERROR_REQUEST !!logError exit then
+  sTableNm checkIsTable not if path[].popTable pJob_ListPartColumns ERROR_REQUEST !!logError exit then
 
   args.metadata if
     "(columnName VARCHAR)" pJob_ListPartColumns job.metadata!
@@ -86,7 +86,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  popTable
+  path[].popTable
   assertInTables
 
   LogExit DONE_REQ

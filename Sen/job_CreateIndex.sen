@@ -36,29 +36,29 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
   sTableNm find execute to pTable
   pTable table.indexCount
-  C_MAX_INDEXES == if EC_MAX_INDEXES popTable assertInTables false exit then
+  C_MAX_INDEXES == if EC_MAX_INDEXES path[].popTable assertInTables false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check index already exists
-  sIndexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
+  sIndexNm checkIsNotIndex not if path[].popIndexes path[].popTable assertInTables false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
-  popIndexes
+  path[].popIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  popTable
+  path[].popTable
 
   assertInTables
 
@@ -80,11 +80,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
@@ -104,7 +104,7 @@
   // check for error while creating indexdef
   grid::thisNode@ pJob_CreateIndex job.hasError if
     pJob_CreateIndex DdlLock[].testDrop !!logError
-    sIndexNm :forget popIndexes popTable exit
+    sIndexNm :forget path[].popIndexes path[].popTable exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -123,24 +123,24 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex
     not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
-      popIndexes popTable exit
+      path[].popIndexes path[].popTable exit
     then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
-  not if pJob_CreateIndex ERROR_JOB popIndexes popTable
+  not if pJob_CreateIndex ERROR_JOB path[].popIndexes path[].popTable
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
-  popIndexes
+  path[].popIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  popTable
+  path[].popTable
 ;
 
 /*----------------------------------------------------------------------------*/

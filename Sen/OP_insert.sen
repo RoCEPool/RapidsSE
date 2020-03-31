@@ -68,7 +68,7 @@
 : Insert_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
-  popTable
+  path[].popTable
   Pipein[].pipeOut
   Op.ackPipelineJob
 

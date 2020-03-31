@@ -14,7 +14,7 @@
   "+++ +++ +++" .
 
 //  C_TDEF_LOCKSTATS word::find if
-//    C_TDEF_LOCKSTATS pushTable assert
+//    C_TDEF_LOCKSTATS path[].pushTable assert
 //    path[].toStr .
 //    C_TDEF_LOCKSTATS find execute to table[]
 //    Operand[].newStreamDef

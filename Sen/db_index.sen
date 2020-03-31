@@ -122,26 +122,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* find the index sub folder and push it onto task dictionary                 */
-/*----------------------------------------------------------------------------*/
-/*
-: pushIndexSub ( "<indexNm>" -- )
-  dup checkIsIndex not if EC_NO_SUCH_INDEX false exit then
-  find execute index.subDic path[].push
-  true
-;
-*/
-/*----------------------------------------------------------------------------*/
-/* pop the index sub folder                                                   */
-/*----------------------------------------------------------------------------*/
-: popIndexSub
-  path[].discard
-;
-
-/*----------------------------------------------------------------------------*/
 /* find the indexes folder and push it onto task dictionary                   */
 /*----------------------------------------------------------------------------*/
-: pushIndexes ( -- )
+: path[].pushIndexes ( -- )
   "indexes" find execute path[].push
   true
 ;
@@ -149,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 /* pop the indexes folder                                                     */
 /*----------------------------------------------------------------------------*/
-: popIndexes
+: path[].popIndexes
   path[].discard
 ;
 
@@ -162,7 +145,7 @@
 
   0 0 locals| indexPtr tablePtr indexNm tableNm |
 
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // create the index
   indexNm ( "<indexNm>" )
@@ -193,7 +176,7 @@
   // add the index in the table
   indexPtr tablePtr table.addIndex
 
-  popIndexes
+  path[].popIndexes
 ;
 
 /*----------------------------------------------------------------------------*/

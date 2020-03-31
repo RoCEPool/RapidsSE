@@ -26,7 +26,7 @@
     "', '" str.cat
 
     // push table dictionary
-    sTableNm pushTable assert
+    sTableNm path[].pushTable assert
 
     // check it is a table
     sTableNm checkIsTable not if drop pJob_TableSizes ERROR_JOB !!logError exit then
@@ -37,7 +37,7 @@
     str.cat
 
     // pop table folder
-    popTable
+    path[].popTable
 
     "')\n" str.cat
 

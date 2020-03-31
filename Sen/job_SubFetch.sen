@@ -24,7 +24,7 @@
   // push table
   //pJob_SubFetch job.objectName@ to sTableNm
   <tableNm> to sTableNm
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
@@ -32,7 +32,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push into indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   iPhrase pPlanner Planner.fetchTechnique@
   case
@@ -111,11 +111,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  popTable
+  path[].popTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
-  popIndexes
+  path[].popIndexes
 ;
 
 /*----------------------------------------------------------------------------*/

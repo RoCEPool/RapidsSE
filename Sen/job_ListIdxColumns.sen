@@ -78,15 +78,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm pushTable assert
+  sTableNm path[].pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_ListIdxColumns ERROR_REQUEST !!logError exit then
+  sTableNm checkIsTable not if path[].popTable pJob_ListIdxColumns ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  pushIndexes assert
+  path[].pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index name from job
@@ -97,7 +97,7 @@
   // check it is an index
   sIndexNm checkIsIndex
   not if
-    popIndexes popTable assertInTables pJob_ListIdxColumns ERROR_REQUEST !!logError exit
+    path[].popIndexes path[].popTable assertInTables pJob_ListIdxColumns ERROR_REQUEST !!logError exit
   then
 
   args.metadata if
@@ -111,11 +111,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes folder
-  popIndexes
+  path[].popIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  popTable
+  path[].popTable
   assertInTables
 
   LogExit DONE_REQ
