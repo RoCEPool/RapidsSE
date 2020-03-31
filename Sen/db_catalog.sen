@@ -6,21 +6,30 @@
 
 : catalog ;
 
-: :catalog
+/*----------------------------------------------------------------------------*/
+/* create a new catalog folder                                                */
+/*----------------------------------------------------------------------------*/
+: :createCatalog
     :createFolder
          //dup find: catalog swap word.category!
          dup find: catalog swap execute dic.kind!
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : withinCatalogs
     folder[] dic.name "catalogs" str.equal
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : checkInCatalogs
     withinCatalogs if true exit then
     EC_NOT_IN_CATALOGS false
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : checkIsCatalog ( word )
     dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
     dup execute dic.kind@ find: catalog eql if true exit then

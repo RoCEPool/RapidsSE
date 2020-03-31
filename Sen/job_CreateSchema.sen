@@ -37,7 +37,7 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make the schema
- sSchemaNm :schema ( ^schema )
+ sSchemaNm :createSchema ( ^schema )
  drop
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

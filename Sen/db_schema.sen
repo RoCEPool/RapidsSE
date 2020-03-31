@@ -9,21 +9,30 @@
 //: makeSchemas path[].push "schemas" :dic find: folder swap execute dic.kind! path[].discard ;
 
 
-: :schema
+/*----------------------------------------------------------------------------*/
+/* create a new schema folder                                                  */
+/*----------------------------------------------------------------------------*/
+: :createSchema
     :createFolder
          //dup find: schema swap word.category!
          dup find: schema swap execute dic.kind!
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : withinSchemas
     folder[] dic.name "schemas" str.equal
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : checkInSchemas
     withinSchemas if true exit then
     EC_NOT_IN_SCHEMAS false
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : checkIsSchema ( word )
 
     dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then

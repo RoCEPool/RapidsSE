@@ -37,7 +37,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
-  sCatalogNm :catalog ( ^catalog )
+  sCatalogNm :createCatalog ( ^catalog )
   drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
