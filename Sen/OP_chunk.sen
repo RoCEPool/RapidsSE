@@ -63,7 +63,7 @@
   <fileNm> OPEN_READ op__file if
     Pipein[].pipeout
   then
-
+/*
   // get size of file
   //File0[].getSize to iFileSize
   10 to iFileSize
@@ -81,7 +81,7 @@
 
   // pipeout the infoset
   InfoSet[].pipeout
-
+*/
   true
 ;
 

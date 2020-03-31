@@ -19,7 +19,60 @@
   Operand[].insertIntoTable
   tablePtn[].get tablePtnDropWrite2
 
+  // increement no of buffers inserted
+  Counter0[] 1 + to Counter0[]
+/*
+  Counter0[] 10 % 0 == if
+
+    C_TDEF_PROGRESSUNITS op__tableDef assert
+    table[] StreamDef[].new
+
+    // create an infoSet operand
+    StreamDef[] InfoSet[].new
+
+    StreamDef[] Counter0[] InfoSet[].addTotalUnits assert
+
+    StreamDef[].pipeout
+    InfoSet[].pipeout
+  then
+*/
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: Insert_EosMarker \handler
+
+  //"Operand:- ZK_EOSMARKER" .verbose
+  Pipein[].pipeout
+/*
+  // send out final progress units
+  C_TDEF_PROGRESSUNITS op__tableDef assert
+  table[] StreamDef[].new
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  StreamDef[] Counter0[] InfoSet[].addTotalUnits assert
+
+  StreamDef[].pipeout
+  InfoSet[].pipeout
+*/
+  true
+  ;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: Insert_ExitMarker \handler
+
+  //"Operand:- ZK_EXITMARKER" .verbose
+  popTable
+  Pipein[].pipeOut
+  Op.ackPipelineJob
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,19 +88,6 @@
   then
 
   true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
-/*----------------------------------------------------------------------------*/
-: Insert_ExitMarker \handler
-
-  //"Operand:- ZK_EXITMARKER" .verbose
-  popTable
-  Pipein[].pipeOut
-  Op.ackPipelineJob
-
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,10 +110,14 @@
  
   LogReqEntry SEED_REQ
 
+  // init the counter to be used for progress
+  0 to Counter0[]
+
   op__topology
 
   find: Insert_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: Insert_StartMarker ZK_STARTMARKER op[].handler!
+  find: Insert_EosMarker   ZK_EOSMARKER  op[].handler!
   find: Insert_ExitMarker  ZK_EXITMARKER  op[].handler!
   find: Insert_StreamDef   ZK_STREAMDEF   op[].handler!
 
