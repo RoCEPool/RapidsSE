@@ -91,6 +91,14 @@ static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
 static const i8 C_LOG_ENTRIES = C_256K * 1;
 static const i8 C_LOG_NOTE    = C_1K;
 
+static Stz* C_TDEF_GRIDSANITY    = "__gridSanity"_Stz;
+static Stz* C_TDEF_LISTCOLUMNS   = "__listColumns"_Stz;
+static Stz* C_TDEF_LOCKSTATS     = "__lockStats"_Stz;
+static Stz* C_TDEF_NODEINFO      = "__nodeInfo"_Stz;
+static Stz* C_TDEF_PROGRESSUNITS = "__progressUnits"_Stz;
+static Stz* C_TDEF_SEEKOFFSETS   = "__seekOffsets"_Stz;
+static Stz* C_TDEF_SPACE         = "__space"_Stz;
+static Stz* C_TDEF_TOTALUNITS    = "__totalUnits"_Stz;
 
 /*============================================================================*/
 /* end                                                                        */

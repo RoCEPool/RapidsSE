@@ -77,7 +77,7 @@ bool Xmits::bCancelDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
-  vTrace("Warning: ConsumeOp ZK_CANCELMARKER received %v; expected %v"_Stz,
+  vTrace("Warning: ConsumeOp received ZK_CANCELMARKER %lld; expected %lld\n"_Stz,
          m_iCancelMarkers, m_iXmits);
   
   if (m_iCancelMarkers == m_iXmits) {
@@ -96,7 +96,7 @@ bool Xmits::bEosDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iEosMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_EOSMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp received ZK_EOSMARKER %lld; expected %lld\n"_Stz,
            m_iEosMarkers, m_iXmits);
   
   if (m_iEosMarkers == m_iXmits) {
@@ -115,7 +115,7 @@ bool Xmits::bErrorDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iExitMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_ERRORMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp received ZK_ERRORMARKER %lld; expected %lld\n"_Stz,
            m_iEosMarkers, m_iXmits);
   
   if (m_iEosMarkers == m_iXmits) {
@@ -134,7 +134,7 @@ bool Xmits::bExitDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iExitMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_EXITMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp received ZK_EXITMARKER %lld; expected %lld\n"_Stz,
       m_iExitMarkers, m_iXmits);
   
   if (m_iExitMarkers == m_iXmits) {
@@ -153,7 +153,7 @@ bool Xmits::bPulseDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iPulseMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp ZK_PULSEMARKER received %lld; expected %lld\n"_Stz,
            m_iPulseMarkers, m_iXmits);
   
   if (m_iPulseMarkers == m_iXmits) {
@@ -165,14 +165,14 @@ bool Xmits::bPulseDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pulsed done ?                                                               */
+/* pulsed done ?                                                              */
 /*----------------------------------------------------------------------------*/
 bool Xmits::bPulsedDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iPulsedMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %lld; expected %lld\n"_Stz,
            m_iPulsedMarkers, m_iXmits);
   
   if (m_iPulsedMarkers == m_iXmits) {
@@ -191,7 +191,7 @@ bool Xmits::bStartDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iStartMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp ZK_STARTMARKER received %lld; expected %lld\n"_Stz,
            m_iStartMarkers, m_iXmits);
   
   if (m_iStartMarkers == 0) {
@@ -209,7 +209,7 @@ bool Xmits::bStreamDefDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iStreamDefs > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_PULSEDMARKER received %v; expected %v"_Stz,
+    vTrace("Warning: ConsumeOp ZK_STREAMDEF received %lld; expected %lld\n"_Stz,
            m_iStreamDefs, m_iXmits);
   
   if (m_iStreamDefs == 0) {

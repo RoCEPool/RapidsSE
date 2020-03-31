@@ -48,6 +48,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                                        */
+/*----------------------------------------------------------------------------*/
+: readChunk_StreamDef \handler
+
+  //"Operand:- ZK_STREAMDEF" .verbose
+
+  Pipein[].delete
+
+  true
+;
+/*----------------------------------------------------------------------------*/
 /* on ZK_EXITMARKER ...                                                       */
 /*----------------------------------------------------------------------------*/
 : readChunk_ExitMarker \handler
@@ -74,6 +85,7 @@
 
   find: readChunk_InfoSet     ZK_INFOSET     op[].handler!
   find: readChunk_StartMarker ZK_STARTMARKER op[].handler!
+  find: readChunk_StreamDef   ZK_STREAMDEF   op[].handler!
   find: readChunk_ExitMarker  ZK_EXITMARKER  op[].handler!
 
   op__loop
