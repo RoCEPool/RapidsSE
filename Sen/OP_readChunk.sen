@@ -12,16 +12,22 @@
   Pipein[] to InfoSet[]
   nullptr to Pipein[]
 
-  InfoSet[].firstRow to row[]
-  begin
-    row[].isNull
-  not while
-    row[].get InfoSet[].readChunk to Operand[]
-    Operand[].pipeout
-    InfoSet[].nextRow to row[]
-  repeat
+  infoSet[].IsProgress if
+    InfoSet[].pipeout
 
-  InfoSet[].delete
+  else
+
+    InfoSet[].firstRow to row[]
+    begin
+      row[].isNull
+    not while
+      row[].get InfoSet[].readChunk to Operand[]
+      Operand[].pipeout
+      InfoSet[].nextRow to row[]
+    repeat
+
+    InfoSet[].delete
+  then
 
   true
 ;

@@ -1043,6 +1043,7 @@ public:
   void vRegInfoSetFirstRow(void);
   void vRegInfoSetGet(void);
   void vRegInfoSetInfoRows(void);
+  void vRegInfoSetIsProgress(void);
   void vRegInfoSetName(void);
   void vRegInfoSetNew(void);
   void vRegInfoSetNextRow(void);

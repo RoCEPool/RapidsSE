@@ -21,6 +21,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
   vAddStep("InfoSet[].get"_Stz,            &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
+  vAddStep("InfoSet[].isProgress"_Stz,     &Step::vRegInfoSetIsProgress);
   vAddStep("InfoSet[].name"_Stz,           &Step::vRegInfoSetName);
   vAddStep("InfoSet[].new"_Stz,            &Step::vRegInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,        &Step::vRegInfoSetNextRow);
@@ -153,6 +154,7 @@ void Step::vRegInfoSetAddProgressUnits(void)
   pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
+  
   EXIT();
 }
 
@@ -195,6 +197,7 @@ void Step::vRegInfoSetAddSpaceInfo(void)
   pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
+  
   EXIT();
 }
 
@@ -218,6 +221,7 @@ void Step::vRegInfoSetAddTotalUnits(void)
   pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
+  
   EXIT();
 }
 
@@ -382,6 +386,24 @@ void Step::vRegInfoSetInfoRows(void)
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
   m_pDataStack->vPushInt(pInfoSet->nInfoRows());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].isProgress --is infor set a progress info set ?                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetIsProgress(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetIsProgress"_Stz);
+  
+  ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  bool bIsProgress = pInfoSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
+                       pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
+  m_pDataStack->vPushInt(bIsProgress);
   
   EXIT();
 }

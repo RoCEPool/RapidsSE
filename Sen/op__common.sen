@@ -34,10 +34,11 @@
   params| sTableNm |
 
   // check in tables folder
-  checkInTables not if false exit then
+  checkInTables not if op.pipelineJob@ ERROR_JOB false stk exit then
 
   // table
   sTableNm checkIsValidTable not if
+
     op.pipelineJob@ ERROR_JOB
     Operand[].delete
     Operand[].newErrorMarker
@@ -46,11 +47,14 @@
   then
 
   // move to table folder and find the table
+
   sTableNm pushTable assert
   sTableNm find execute to table[]
 
   // cross-check
   table[] assert
+
+  popTable
   true
 ;
 
@@ -65,7 +69,7 @@
   checkInTables not if false exit then
 
   // table
-  <tableNm> checkIsValidTable not if
+  sTableNm checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -77,9 +81,11 @@
   // move to table folder and find the table
   <tableNm> pushTable assert
   <tableNm> find execute to table[]
+  popTable
 
   // cross-check
   table[] assert
+
   true
 ;
 
@@ -90,7 +96,25 @@
 
   params| sIndexNm sTableNm |
 
-  sTableNm op__table
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // table
+  sTableNm checkIsValidTable not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+  exit
+  then
+
+  // move to table folder and find the table
+  <tableNm> pushTable assert
+  <tableNm> find execute to table[]
+
+  // cross-check
+  table[] assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -102,6 +126,8 @@
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
+    popTable
+    popIndexes
     false
     exit
   then
@@ -110,6 +136,9 @@
 
   // cross-check
   index[].get assert
+
+  popTable
+  popIndexes
 
   //pathStr .
   true
