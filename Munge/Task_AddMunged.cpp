@@ -18376,42 +18376,19 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "\\\"-dbObjects.sen\\\" .verbose\n"
     "\n"
-    "\\\"db_folder.sen\\\" include\n"
-    "\\\"db_table.sen\\\" include\n"
+    "\\\"db_table.sen\\\"     include\n"
     "\\\"db_partition.sen\\\" include\n"
-    "\\\"db_index.sen\\\" include\n"
+    "\\\"db_index.sen\\\"     include\n"
     "\n"
-    "\\\"db_schema.sen\\\" include\n"
-    "\\\"db_catalog.sen\\\" include\n"
-    "\\\"db_tenant.sen\\\" include\n"
+    "\\\"db_schema.sen\\\"    include\n"
+    "\\\"db_catalog.sen\\\"   include\n"
+    "\\\"db_tenant.sen\\\"    include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
   " CONSTANT dbobjects.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of db_folder.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged db_folder.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* db_folder.sen -- folder related words                                      */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" db_folder.sen\\\" .verbose\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_folder.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);

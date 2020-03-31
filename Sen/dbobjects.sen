@@ -4,14 +4,13 @@
 
 "-dbObjects.sen" .verbose
 
-"db_folder.sen" include
-"db_table.sen" include
+"db_table.sen"     include
 "db_partition.sen" include
-"db_index.sen" include
+"db_index.sen"     include
 
-"db_schema.sen" include
-"db_catalog.sen" include
-"db_tenant.sen" include
+"db_schema.sen"    include
+"db_catalog.sen"   include
+"db_tenant.sen"    include
 
 /*============================================================================*/
 /* end                                                                        */
