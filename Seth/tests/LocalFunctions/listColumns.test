@@ -1,0 +1,70 @@
+/*----------------------------------------------------------------------------*/
+/* listColumns.test -- list columns                                           */
+/*----------------------------------------------------------------------------*/
+
+// list columns of a non-existent table
+lscol lstTbl;
+failure contains: 'no such table'
+
+// list all the functions
+create table lstTbl (
+  bol_col1   BOOLEAN     NOT NULL,
+  vch_col2   VARCHAR(32) NOT NULL,
+  int_col3   INTEGER     NOT NULL,
+  int_col4   INTEGER     NOT NULL,
+  dec_col5   DECIMAL(10,2) NOT NULL,
+  flt_col6   FLOAT       NOT NULL,
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
+);
+success
+
+// list columns of the table
+lscol lstTbl;
+rows:
+  (0,'bol_col1','BOOLEAN',0,0,true,true)
+  (1,'vch_col2','VARCHAR',32,0,true,true)
+  (2,'int_col3','INTEGER',19,0,true,true)
+  (3,'int_col4','INTEGER',19,0,true,true)
+  (4,'dec_col5','DECIMAL',10,2,true,true)
+  (5,'flt_col6','FLOAT',19,0,true,true)
+  (6,'tsp_col7','TIMESTAMP',0,0,true,true)
+  (7,'bol_col8','BOOLEAN',0,0,true,true)
+
+// change folder
+cf ..;
+success
+
+// list columns
+lscol lstTbl;
+failure contains: 'not in tables'
+
+// change folder
+cf tables;
+success
+
+// list columns of the table
+lscol lstTbl;
+rows:
+  (0,'bol_col1','BOOLEAN',0,0,true,true)
+  (1,'vch_col2','VARCHAR',32,0,true,true)
+  (2,'int_col3','INTEGER',19,0,true,true)
+  (3,'int_col4','INTEGER',19,0,true,true)
+  (4,'dec_col5','DECIMAL',10,2,true,true)
+  (5,'flt_col6','FLOAT',19,0,true,true)
+  (6,'tsp_col7','TIMESTAMP',0,0,true,true)
+  (7,'bol_col8','BOOLEAN',0,0,true,true)
+
+// drop the table
+drop table lstTbl;
+success
+
+CLEANUP {
+  
+  drop table lstTbl;
+  mute
+  
+  bye;
+  mute
+}
+

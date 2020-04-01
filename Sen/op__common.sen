@@ -34,7 +34,14 @@
   params| sTableNm |
 
   // check in tables folder
-  checkInTables not if op.pipelineJob@ ERROR_JOB false stk exit then
+  checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
 
   // table
   sTableNm checkIsValidTable not if
@@ -66,7 +73,14 @@
   params| sTableNm |
 
   // check in tables folder
-  checkInTables not if false exit then
+  checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
 
   // table
   sTableNm checkIsValidTable not if
@@ -97,7 +111,14 @@
   params| sIndexNm sTableNm |
 
   // check in tables folder
-  checkInTables not if false exit then
+  checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
 
   // table
   sTableNm checkIsValidTable not if

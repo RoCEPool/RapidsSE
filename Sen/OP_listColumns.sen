@@ -30,7 +30,7 @@ path[].toStr .
 folder[].contentStr .
 
   // find the __listColumns table
-  C_TDEF_LISTCOLUMNS op__tableDef stk assert
+  C_TDEF_LISTCOLUMNS op__tableDef not if exit then
 
   "ListColumns_PulseMarker C" .
 
