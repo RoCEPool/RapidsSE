@@ -119,6 +119,7 @@ namespace Steps
     static void vAddSteps_Register(void);
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
+    static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegJob(void);
     static void vAddSteps_RegIndex(void);
     static void vAddSteps_RegInfoSet(void);

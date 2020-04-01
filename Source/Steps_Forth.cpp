@@ -19,7 +19,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("does>"_Stz,             &Step::vDoes,             true);
   vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
-  vAddStep("findInCurrent"_Stz,     &Step::vFindInCurrent);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
   vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
   vAddStep("prompt"_Stz,            &Step::vPrompt,           true);
@@ -242,27 +241,6 @@ void Step::vExit_RT(void)
   Cell* aCell = m_pReturnStack->aPopFip(__func__);
   
   m_aInxPtr = aCell;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* findInCurrent -- find and push word named on stack withinin curr dic       */
-/*----------------------------------------------------------------------------*/
-void Step::vFindInCurrent(void)
-{
-  ENTRY(); // ENTRY("vFindInCurrent"_Stz);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  if (m_pTask->m_iTraceMask) {
-    i8 i = 0; i++;
-  }
-  
-  Word* pWord = m_oDicStack.pFindInCurrent(sName);
-  
-  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }

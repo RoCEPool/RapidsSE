@@ -340,7 +340,6 @@ public:
   void vDoes(void);
   void vDoes_RT(void);
   void vExit_RT(void);
-  void vFindInCurrent(void);
   void vImmediate(void);
   void vPostpone(void);
   void vPrompt(void);
@@ -1033,7 +1032,10 @@ public:
   void vRegCounter1Set(void);
   void vRegCounter2Set(void);
 
-  // info set
+  // reg folder
+  void vRegFolderFindSymbol(void);
+
+  // reg info set
   void vRegInfoSetAddColumnDef(void);
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddNodeInfo(void);
