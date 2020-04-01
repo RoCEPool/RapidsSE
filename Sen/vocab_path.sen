@@ -28,9 +28,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* create a new folder (leave pFolder on stack)                                /
+/* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :createFolder_proper params| sFolderNm |
+: :makeFolder_proper params| sFolderNm |
 
 diclock.grabwrite
 
@@ -60,31 +60,23 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create new folder given name (create does> rtn and leave pFolder on stack) */
+/* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-: :createFolder ( sFolderNm -- pFolder )
+: :makeFolder ( sFolderNm -- pFolder )
 
-  :createFolder_proper dup compiler::current!
+  :makeFolder_proper dup compiler::current!
   does>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the tenants folder and set AM::tenants                              */
+/* make a sub-folder under given folder                                       */
 /*----------------------------------------------------------------------------*/
-: :createTenantsFolder
-
-  "tenants" :createFolder attachMap::tenants!
-;
-
-/*----------------------------------------------------------------------------*/
-/* create a sub-folder under given folder                                     */
-/*----------------------------------------------------------------------------*/
-: :createSubFolder params| pFolder sSubFolderNm |
+: :makeSubFolder params| pFolder sSubFolderNm |
 
   pFolder path[].push
 
     find: \folder
-    sSubFolderNm :createFolder execute dic.kind!
+    sSubFolderNm :makeFolder execute dic.kind!
 
   path[].discard
 ;

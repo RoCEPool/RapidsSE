@@ -38,7 +38,7 @@
   find execute ( dic )
   "schemas"    ( dic "schemas" )
   swap         ( "schemas" dic )
-  :createSubFolder   ( )
+  :makeSubFolder   ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@
   find execute ( dic )
   "catalogs"   ( dic "catalogs" )
   swap         ( "catalogs" dic )
-  :createSubFolder   ( )
+  :makeSubFolder   ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +108,7 @@
   assert::stack_0
 
   // make the tenants root folder
-  "tenants" :createFolder attachMap::tenants!
+  "tenants" :makeFolder attachMap::tenants!
 
   attachmap::tenants@ execute
   path[].push

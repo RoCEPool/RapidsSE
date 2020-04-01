@@ -23,7 +23,7 @@
   find execute ( dic )
   "tables"     ( dic "tables" )
   swap         ( "tables" dic )
-  :createSubFolder   ( )
+  :makeSubFolder   ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@
   then
 
   folder[]
-  :createSubFolder    ( )
+  :makeSubFolder    ( )
 ;
 
 

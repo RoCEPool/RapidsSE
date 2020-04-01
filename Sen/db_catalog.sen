@@ -10,7 +10,7 @@
 /* create a new catalog folder                                                */
 /*----------------------------------------------------------------------------*/
 : :createCatalog
-    :createFolder
+    :makeFolder
          //dup find: catalog swap word.category!
          dup find: catalog swap execute dic.kind!
 ;

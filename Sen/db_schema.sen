@@ -13,7 +13,7 @@
 /* create a new schema folder                                                  */
 /*----------------------------------------------------------------------------*/
 : :createSchema
-    :createFolder
+    :makeFolder
          //dup find: schema swap word.category!
          dup find: schema swap execute dic.kind!
 ;

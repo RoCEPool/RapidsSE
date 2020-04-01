@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : :createTenant
 
-  :createFolder
+  :makeFolder
      dup find: tenant swap execute dic.kind!
 ;
 
