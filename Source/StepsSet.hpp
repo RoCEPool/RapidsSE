@@ -308,6 +308,7 @@ public:
   void vFile0GetEofLocation(void);
   void vFile0IsNull(void);
   void vFile0Set(void);
+  void vFile0Size(void);
   void vFileClose(void);
   void vFileDelete(void);
   void vFileNew(void);

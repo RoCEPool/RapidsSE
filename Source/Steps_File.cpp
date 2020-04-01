@@ -11,8 +11,9 @@ void Step::vAddSteps_File(void)
 {
   vAddStep("file0[].get"_Stz,            &Step::vFile0Get);
   vAddStep("file0[].getEofLocation"_Stz, &Step::vFile0GetEofLocation);
-  vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   vAddStep("file0[].isNull"_Stz,         &Step::vFile0IsNull);
+  vAddStep("file0[].size"_Stz,           &Step::vFile0Size);
+  vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
   vAddStep("file::new"_Stz,       &Step::vFileNew);
   vAddStep("file.close"_Stz,      &Step::vFileClose);
@@ -76,6 +77,20 @@ void Step::vFile0Set(void)
 
   m_pRegSet->m_xpFile0 = pFile;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].size -- gett size of file0                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vFile0Size(void)
+{
+  ENTRY(); // ENTRY("vFile0Size"_Stz);
+  
+  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
+  
+  m_pDataStack->vPushInt(File::iSize(pFile->sFilePath()));
+                         
   EXIT();
 }
 
