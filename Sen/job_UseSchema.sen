@@ -18,19 +18,19 @@
   repeat
 
   // find the boray folder
-  "boray" findInCurrent
+  "boray" folder[].findSymbol
   execute path[].push
 
   // find the catalogs folder
-  "catalogs" findInCurrent
+  "catalogs" folder[].findSymbol
   execute path[].push
 
   // find the rapidssecatalogs folder
-  "rapidsse" findInCurrent
+  "rapidsse" folder[].findSymbol
   execute path[].push
 
   // find the schemas folder
-  "schemas" findInCurrent
+  "schemas" folder[].findSymbol
   execute path[].push
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,7 +42,7 @@
   execute path[].push
 
   // find the tables folder
-  "tables" findInCurrent
+  "tables" folder[].findSymbol
   execute path[].push
 
   // save the path

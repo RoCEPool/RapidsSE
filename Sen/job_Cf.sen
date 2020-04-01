@@ -65,7 +65,7 @@
   // otherwise we expect a name of a sub-folder to which we push path to
   //  push sub-folder
 
-  sFolderNm findInCurrent to pCurrentFolder
+  sFolderNm folder[].findSymbol to pCurrentFolder
   pCurrentFolder word.isFolder not if pJob_Cf ERROR_REQUEST !!logError exit then
   pCurrentFolder execute path[].push
   setPath

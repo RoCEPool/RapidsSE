@@ -21,22 +21,22 @@
     "boray" "makeTenant" find execute
 
     // push boray folder
-    "boray" findInCurrent execute
+    "boray" folder[].findSymbol execute
     path[].push
 
       // push catalogs folder
-      "catalogs" findInCurrent execute
+      "catalogs" folder[].findSymbol execute
       path[].push
 
         // create catalog rapidsse (and schemas sub-folder)
         "rapidsse" "makeCatalog" find execute
 
           // push rapidsse folder
-          "rapidsse" findInCurrent execute
+          "rapidsse" folder[].findSymbol execute
           path[].push
 
           // push schemas folder
-          "schemas" findInCurrent execute
+          "schemas" folder[].findSymbol execute
           path[].push
 
           // create schema public (and tables sub-folder)

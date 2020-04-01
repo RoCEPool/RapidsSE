@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegFolder(void)
 {
-  vAddStep("findInCurrent"_Stz,     &Step::vRegFolderFindSymbol);
+  vAddStep("folder[].findSymbol"_Stz,     &Step::vRegFolderFindSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

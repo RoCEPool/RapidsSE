@@ -18,7 +18,7 @@
   iterate                         // setup iteration of words
 
     // get the index ptr
-    object@ word.name@ findInCurrent execute to pIndex
+    object@ word.name@ folder[].findSymbol execute to pIndex
 
     // increment count
     1 iCount + to iCount

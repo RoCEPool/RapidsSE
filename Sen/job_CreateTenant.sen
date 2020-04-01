@@ -8,7 +8,7 @@
 /* check word is not already a tenant                                         */
 /*----------------------------------------------------------------------------*/
 : checkIsNotTenant ( word )
-  findInCurrent not if true exit then
+  folder[].findSymbol not if true exit then
   EC_TENANT_EXISTS false
 ;
 

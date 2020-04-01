@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsTableFolder  ( "<tableName>" -- )
 
-  findInCurrent not if EC_NO_SUCH_TABLE false exit then
+  folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
   true
 ;
 

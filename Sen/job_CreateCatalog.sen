@@ -8,7 +8,7 @@
 /* check if word is not a catalog                                             */
 /*----------------------------------------------------------------------------*/
 : checkIsNotCatalog ( word )
-  findInCurrent not if true exit then
+  folder[].findSymbol not if true exit then
   EC_CATALOG_EXISTS false
 ;
 

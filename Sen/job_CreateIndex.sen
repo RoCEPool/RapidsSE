@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsNotIndex ( "<word>" )
 
-  findInCurrent not if true exit then
+  folder[].findSymbol not if true exit then
   EC_INDEX_EXISTS false
 ;
 

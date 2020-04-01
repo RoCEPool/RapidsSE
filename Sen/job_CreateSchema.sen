@@ -8,7 +8,7 @@
 /* check if word is not a schema                                              */
 /*----------------------------------------------------------------------------*/
 : checkIsNotSchema ( word )
-  findInCurrent not if true exit then
+  folder[].findSymbol not if true exit then
   EC_SCHEMA_EXISTS false
 ;
 
