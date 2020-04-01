@@ -114,7 +114,7 @@
   path[].push
 
     // create tenant boray (and catalogs sub-folder)
-    "boray" "makeTenant" find execute
+    "boray" makeTenant
 
     // push boray folder
     "boray" folder[].findSymbol execute
@@ -125,23 +125,23 @@
       path[].push
 
         // create catalog rapidsse (and schemas sub-folder)
-        "rapidsse" "makeCatalog" find execute
+        "rapidsse" makeCatalog
 
           // push rapidsse folder
           "rapidsse" folder[].findSymbol execute
           path[].push
 
-          // push schemas folder
-          "schemas" folder[].findSymbol execute
-          path[].push
+            // push schemas folder
+            "schemas" folder[].findSymbol execute
+            path[].push
 
-          // create schema public (and tables sub-folder)
-          "public" "makeSchema" find execute
+              // create schema public (and tables sub-folder)
+              "public" makeSchema
 
-          path[].discard
+            path[].discard
+        path[].discard
       path[].discard
     path[].discard
-  path[].discard
 
   assert::stack_0
 ;
