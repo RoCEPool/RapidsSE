@@ -27,17 +27,9 @@
 
 .\n
 
-"Creating folders" .
-
-// create /tenants/boray/catalogs/rapidsse/schemas/public
-
-// create the default folder hierarchy if not reloading
-// args.reload not if
-//   createDefaultFolders
-// then
+"Creating folders" .verbose
 
 createDefaultFolders
-
 
 assert::stack_0
 
