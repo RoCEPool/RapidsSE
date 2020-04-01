@@ -80,6 +80,7 @@ namespace Enums
 
 #include "eOA.h"
 #include "eOC.h"
+#include "eOI.h"
 #include "eOK.h"
 #include "eOM.h"
 #include "eOP.h"

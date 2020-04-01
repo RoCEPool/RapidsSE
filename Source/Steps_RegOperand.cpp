@@ -391,7 +391,7 @@ void Step::vRegOperandKind(void)
 
        switch(pMarker->eOpMarker()) {
        
-        case OM_CANCELMARKER:     eOperand = ZK_CANCELMARKER;    break;
+         case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
          case OM_ERROREDMARKER:   eOperand = ZK_ERROREDMARKER;   break;
