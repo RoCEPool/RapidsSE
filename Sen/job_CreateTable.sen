@@ -47,7 +47,7 @@
 
   //----------------------------------------------------------------------------
   // create the table
-  sTableNm :table ( ^table ) drop
+  sTableNm :createTable ( ^table ) drop
   sTableNm find execute to pTable
 
   // return table pointer

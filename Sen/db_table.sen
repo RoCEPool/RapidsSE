@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
-: :table
+: :createTable
 
   >createPersistent
   WK_OBJECT compiler::current@ word.kind!
