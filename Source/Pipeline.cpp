@@ -66,7 +66,7 @@ bool Pipeline::bCancel(void)
   // get the first stage of the pipeline
   Stage* pStage = pGet(0);
   
-  // send cancelMarker to the startOp of the first stage of the pipeline
+  // send cancelMarker to the start Op of the first stage of the pipeline
   pStage->vCancelPipeline();
   
   return true;

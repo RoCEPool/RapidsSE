@@ -45,7 +45,7 @@ Stage::~Stage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* send cancel marker to startops of the stage                                */
+/* send cancel marker to start ops of the stage                               */
 /*----------------------------------------------------------------------------*/
 void Stage::vCancelPipeline(void)
 {
@@ -65,7 +65,7 @@ void Stage::vCancelPipeline(void)
     if (! AM::szJobName(pOp->pOpJob())->bSame("eatAll"_Stz) &&
         ! AM::szJobName(pOp->pOpJob())->bSame("statWrite"_Stz)) {
       
-      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
+      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
       // append a CANCELMARKER onto first operator
       pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
@@ -237,7 +237,7 @@ Stz* Stage::szStageNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send startMarker to startop of the stage                                   */
+/* send startMarker to start op of the stage                                  */
 /*----------------------------------------------------------------------------*/
 void Stage::vStartPipeline(void)
 {
@@ -257,7 +257,7 @@ void Stage::vStartPipeline(void)
     if (! AM::szJobName(pOp->pOpJob())->bSame("eatAll"_Stz) &&
         ! AM::szJobName(pOp->pOpJob())->bSame("statWrite"_Stz)) {
 
-      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("startOp"_Stz));
+      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
       // append a STARTMARKER onto first operator
       pOp->vAppendLeft(new Marker(OM_STARTMARKER));
     }

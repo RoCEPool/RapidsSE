@@ -114,7 +114,7 @@ time pipeline passThru
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on origin:
     GenCsv T | passThru | stageC
@@ -130,7 +130,7 @@ time pipeline python
 begin
 
 stage stageA on origin:
-startOp | periodicOp once | stageB
+start | periodicOp once | stageB
 
 stage stageB on all partitions:
 scan lineitem | toCsv | stageC
@@ -146,7 +146,7 @@ time pipeline python
 begin
 
   stage stageA on origin:
-  startOp | periodicOponce | stageB
+  start | periodicOponce | stageB
 
   stage stageB on all partitions:
   scan lineitem | toCsv | stageC
@@ -160,11 +160,11 @@ end
 
 python "sample" "printString" | sink | stageA
 
-time pipeline insert
+time pipeline insertSelect
 begin
 
 stage stageA on origin:
-startOp | periodicOp once | stageB
+start | periodicOp once | stageB
 
 stage stageB on all partitions:
 scan lineitem | toCsv | toCrw lineitem2 | stageC
@@ -178,20 +178,6 @@ output | sink | stageA
 end
 ;
 
-time pipeline export
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scan lineitem | toCsv | stageC
-
-stage stageC on origin:
-toFileOp "/tmp/xxx.csv" | sink | stageA
-
-end
-;
 docol epochDump;
 
 --------

@@ -82,7 +82,7 @@ procedure /liteOp/
 begin
 
   stage stageA on origin :
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all nodes :
     /liteOp/ | stageC

@@ -45,7 +45,7 @@ load lineitem "/DATA/TPCH/lineitem20K.csv";
  begin
  
  stage stageA on origin:
- startOp | periodicOp once | stageB
+ start | periodicOp once | stageB
  
  stage stageB on all partitions:
  scan lineitem 30 | stageC
@@ -63,7 +63,7 @@ pipeline forever
 begin
 
   stage stageA on origin:
-    startOp | periodicOp min 1 | print "hello" | stageB
+    start | periodicOp min 1 | print "hello" | stageB
 
   stage stageB on origin:
     sink | stageA
