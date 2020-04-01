@@ -57,31 +57,32 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  0 locals| iFileSize |
+  0 locals| iFileSizeMb |
 
   // open the file for reading
   <fileNm> OPEN_READ op__file if
     Pipein[].pipeout
   then
-/*
-  // get size of file
-  //File0[].getSize to iFileSize
-  10 to iFileSize
 
+  // get size of file
+  File0[].size C_1Mb / to iFileSizeMb
+
+  // create a streamDef for C_TDEF_TOTALUNITS
   C_TDEF_TOTALUNITS op__tableDef assert
   table[] StreamDef[].new
 
-  // create an infoSet operand
+  // create an infoSet operand for C_TDEF_TOTALUNITS
   StreamDef[] InfoSet[].new
 
-  StreamDef[] C_1Mb iFileSize / InfoSet[].addTotalUnits assert
-
-  // pipeout the streamDef
-  StreamDef[].pipeout
+  // add fileSize to the infoset
+  StreamDef[] iFileSizeMb InfoSet[].addTotalUnits assert
 
   // pipeout the infoset
   InfoSet[].pipeout
-*/
+
+  // delete the streamDef
+  StreamDef[].delete
+
   true
 ;
 

@@ -33,7 +33,7 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 //create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
 //load lineitem "/TPCH/SF1/lineitem.csv";
-load lineitem "/DATA/TPCH/lineitem10.csv";
+load lineitem "/DATA/TPCH/lineitem20K.csv";
 
 //drop table lineitem;
 

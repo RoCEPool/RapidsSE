@@ -57,7 +57,7 @@ void Step::vRegInfoSetAddColumnDef(void)
                                   pColumn->bIsPtnKey(),
                                   C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   EXIT();
@@ -128,7 +128,7 @@ void Step::vRegInfoSetAddNodeInfo(void)
                                   pGrid->nSlotsPerNode(),
                                   C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   EXIT();
@@ -151,7 +151,7 @@ void Step::vRegInfoSetAddProgressUnits(void)
                                   iProgressUnits,
                                   C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   
@@ -194,7 +194,7 @@ void Step::vRegInfoSetAddSpaceInfo(void)
                                   iTotalFreeSpace,
                                   C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   
@@ -218,7 +218,7 @@ void Step::vRegInfoSetAddTotalUnits(void)
                                   iTotalUnits,
                                   C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   
@@ -489,7 +489,7 @@ void Step::vRegInfoSetReadChunk(void)
   i8 iOffset = pRow->m_waColVal[0];
   i8 nBytes = pRow->m_waColVal[1];
   
-  vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
+  //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
   pFile->vSeek(iOffset);

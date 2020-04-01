@@ -10,32 +10,36 @@
 : Insert_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
-  tablePtn[].get tablePtnGrabWrite2
 
   // to go
   Pipein[] to Operand[]
   nullptr to Pipein[]
 
+  // insert the buffer into the table ptn
+  tablePtn[].get tablePtnGrabWrite2
   Operand[].insertIntoTable
   tablePtn[].get tablePtnDropWrite2
 
   // increement no of buffers inserted
   Counter0[] 1 + to Counter0[]
-/*
-  Counter0[] 10 % 0 == if
 
-    C_TDEF_PROGRESSUNITS op__tableDef assert
-    table[] StreamDef[].new
+  // send out an infoSet of ProgressUnits every 10 buffers
+  Counter0[] 10 % 0 == if
 
     // create an infoSet operand
     StreamDef[] InfoSet[].new
 
-    StreamDef[] Counter0[] InfoSet[].addTotalUnits assert
+    // insert progressUnits to the infoset
+    StreamDef[] Counter0[] InfoSet[].addProgressUnits assert
 
-    StreamDef[].pipeout
+    // pipeout the infoset
     InfoSet[].pipeout
+
+    // reset the counter
+    0 to Counter0[]
+
   then
-*/
+
   true
 ;
 
@@ -46,19 +50,21 @@
 
   //"Operand:- ZK_EOSMARKER" .verbose
   Pipein[].pipeout
-/*
+
   // send out final progress units
-  C_TDEF_PROGRESSUNITS op__tableDef assert
-  table[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new
 
+  // insert progressUnits to the infoset
   StreamDef[] Counter0[] InfoSet[].addTotalUnits assert
 
-  StreamDef[].pipeout
+  // pipeout the infoset
   InfoSet[].pipeout
-*/
+
+  // delete the C_TDEF_PROGRESSUNITS StreamDef
+  StreamDef[].delete
+
   true
   ;
 
@@ -82,6 +88,14 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
+  // create the streamDef for C_TDEF_PROGRESSUNITS
+  C_TDEF_PROGRESSUNITS op__tableDef assert
+  table[] StreamDef[].new
+
+  // clear the table[] to be used next
+  nullptr to table[]
+
+  // get table[] to be inserted into
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
     Pipein[].pipeout
@@ -116,10 +130,10 @@
   op__topology
 
   find: Insert_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: Insert_StartMarker ZK_STARTMARKER op[].handler!
-  find: Insert_EosMarker   ZK_EOSMARKER  op[].handler!
+  find: Insert_EosMarker   ZK_EOSMARKER   op[].handler!
   find: Insert_ExitMarker  ZK_EXITMARKER  op[].handler!
   find: Insert_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: Insert_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
