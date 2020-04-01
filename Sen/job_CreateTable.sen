@@ -43,7 +43,7 @@
   //----------------------------------------------------------------------------
   // make the indexes dictionary
   sTableNm path[].pushTable assert
-  sTableNm "makeIndexes" find execute
+  sTableNm "createIndexesSubFolder" find execute
 
   //----------------------------------------------------------------------------
   // create the table

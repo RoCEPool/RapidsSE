@@ -42,7 +42,7 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make tables folder
- sSchemaNm makeTables 
+ sSchemaNm :createTablesSubFolder 
 
 ;
 

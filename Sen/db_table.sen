@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables path[].push "tables" :dic find: folder swap execute dic.kind! path[].discard ;
+//: :createTablesSubFolder path[].push "tables" :dic find: folder swap execute dic.kind! path[].discard ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
 /*----------------------------------------------------------------------------*/
-: makeTables ( "<schemaNm>" -- )
+: :createTablesSubFolder ( "<schemaNm>" -- )
 
   args.tracepoint if
     dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
