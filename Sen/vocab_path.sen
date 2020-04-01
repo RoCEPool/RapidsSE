@@ -5,6 +5,29 @@
 " vocab_path.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* get current folder path as string                                          */
+/*----------------------------------------------------------------------------*/
+: path[].toStr ( -- s )
+
+  "/"
+
+  // iterate thru each folder in path and concat to end
+  path[].depth 0 ?do
+
+    I if "/" str.cat then
+
+    // compute the path subscript
+    //path[].depth 1 - I -
+    I
+
+    // pick the path, get its name and concat name to working string
+    path[].pick dic.name str.cat
+
+  loop
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* create a new folder (leave pFolder on stack)                                /
 /*----------------------------------------------------------------------------*/
 : :createFolder_proper params| sFolderNm |
@@ -28,6 +51,10 @@ diclock.grabwrite
   find: \folder pFolder word.category!
 
 diclock.dropwrite
+
+  args.verbose if
+    sFolderNm path[].toStr "Created folder %v/%v" .printf
+  then
 
   pFolder
 ;
@@ -180,28 +207,6 @@ diclock.dropwrite
       then
 
     then
-
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
-/* get current folder path as string                                          */
-/*----------------------------------------------------------------------------*/
-: path[].toStr ( -- s )
-
-  "/"
-
-  // iterate thru each folder in path and concat to end
-  path[].depth 0 do
-
-    I if "/" str.cat then
-
-    // compute the path subscript
-    //path[].depth 1 - I -
-    I
-
-    // pick the path, get its name and concat name to working string
-    path[].pick dic.name str.cat
 
   loop
 ;
