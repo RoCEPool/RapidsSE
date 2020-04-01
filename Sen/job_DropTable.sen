@@ -27,7 +27,7 @@
   path[].popTable
 
   // assert in tables
-  assertInTables
+  folder[].isTables assert
 
   true
 ;

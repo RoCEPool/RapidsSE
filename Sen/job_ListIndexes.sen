@@ -107,7 +107,7 @@
   //----------------------------------------------------------------------------
   // pop table dictionary
   path[].popTable
-  assertInTables
+  folder[].isTables assert
 
   LogExit DONE_REQ
 ;

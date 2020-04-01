@@ -27,7 +27,8 @@
 
   sIndexNm checkIsIndex not if
     path[].popIndexes path[].popTable                                            // ../tables
-    assertInTables false exit
+    folder[].isTables assert
+    false exit
   then
 
   //pop indexes folder
@@ -37,7 +38,7 @@
   path[].popTable
 
   // assert in tables
-  assertInTables
+  folder[].isTables assert
 
   true
 ;

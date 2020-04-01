@@ -33,7 +33,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    path[].popIndexes path[].popTable assertInTables false exit
+    path[].popIndexes path[].popTable
+    folder[].isTables assert
+    false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,7 +44,7 @@
   path[].popTable
 
   // assert in tables
-  assertInTables
+  folder[].isTables assert
 
   true
 ;

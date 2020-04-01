@@ -42,7 +42,12 @@
   // check if max indexes already on table
   sTableNm find execute to pTable
   pTable table.indexCount
-  C_MAX_INDEXES == if EC_MAX_INDEXES path[].popTable assertInTables false exit then
+  C_MAX_INDEXES == if
+    EC_MAX_INDEXES
+    path[].popTable
+    folder[].isTables assert
+    false exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes
@@ -50,7 +55,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check index already exists
-  sIndexNm checkIsNotIndex not if path[].popIndexes path[].popTable assertInTables false exit then
+  sIndexNm checkIsNotIndex not if
+    path[].popIndexes
+    path[].popTable
+    folder[].isTables assert
+    false exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
@@ -60,7 +70,7 @@
   // pop table
   path[].popTable
 
-  assertInTables
+  folder[].isTables assert
 
   true
 ;
@@ -172,8 +182,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
-  assertInTables
-
+  folder[].isTables assert
 ;
 
 /*----------------------------------------------------------------------------*/

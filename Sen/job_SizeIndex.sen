@@ -20,7 +20,10 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].popTable false exit then
+  sTableNm checkIsTable not if
+    path[].popTable
+    false exit
+  then
   //sTableNm tableInUse if path[].popTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -30,7 +33,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    path[].popIndexes path[].popTable assertInTables false exit
+    path[].popIndexes
+    path[].popTable
+    folder[].isTables assert
+    false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,7 +45,7 @@
   path[].popTable
 
   // assert in tables
-  assertInTables
+  folder[].isTables assert
 
   true
 ;

@@ -72,14 +72,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* assert top of task dictionary stack is tables                              */
-/*----------------------------------------------------------------------------*/
-: assertInTables ( -- t|f )
-
-  folder[].isTables assert
-;
-
-/*----------------------------------------------------------------------------*/
 /* check top of task dictionary stack is tables                               */
 /*----------------------------------------------------------------------------*/
 : checkInTables ( -- t|f )
@@ -208,7 +200,7 @@
   path[].popTable
 
   // assert in tables
-  assertInTables
+  folder[].isTables assert
 
   true
 ;

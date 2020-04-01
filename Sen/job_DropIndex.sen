@@ -84,8 +84,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
   pJob_DropIndex removeIndex
-  assertInTables
-
+  folder[].isTables assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +119,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-  path[].popIndexes path[].popTable assertInTables job[] ERROR_JOB !!logError exit
+    path[].popIndexes
+    path[].popTable
+    folder[].isTables assert
+    job[] ERROR_JOB !!logError exit
   then
 ;
 

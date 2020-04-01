@@ -97,7 +97,11 @@
   // check it is an index
   sIndexNm checkIsIndex
   not if
-    path[].popIndexes path[].popTable assertInTables pJob_ListIdxColumns ERROR_REQUEST !!logError exit
+    path[].popIndexes
+    path[].popTable
+    folder[].isTables assert
+    pJob_ListIdxColumns ERROR_REQUEST !!logError
+    exit
   then
 
   args.metadata if
@@ -116,7 +120,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   path[].popTable
-  assertInTables
+  folder[].isTables assert
 
   LogExit DONE_REQ
 
