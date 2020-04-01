@@ -43,7 +43,7 @@
       // print the Load %
       iPercent 0 > if
         iPercent 100 > not if
-          iPercent "Load Progress: %v" str.format
+          iPercent <string> "%v Progress: %v" str.format
           "%" str.cat .
         then
       then
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: progress :: progress ;
+opSyntax: progress :: progress <string> ;
 
 : progress opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }

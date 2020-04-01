@@ -64,7 +64,7 @@ begin
     insert $table | stageE
 
   stage stageE on origin:
-    progress | sink | stageA
+    progress "Load" | sink | stageA
 
 end
 ;
