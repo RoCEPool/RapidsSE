@@ -1069,6 +1069,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       }
       
       // check the XmitKind
+      
       switch (eXmitKind) {
           
         case XK_ROBIN : {
@@ -1097,7 +1098,10 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           
         case XK_HASHED : {
           DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-          i_Ptn = pDataBuffer->iPartitionNo();
+          if (pDataBuffer->eClass() == CN_INFOSET)
+            i_Ptn = 0;
+          else
+            i_Ptn = pDataBuffer->iPartitionNo();
           
           // xmitNode is the partition node
           m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
