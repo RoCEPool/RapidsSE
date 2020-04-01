@@ -23,6 +23,7 @@ void Step::vAddSteps_Int(void)
   vAddStep("neg"_Stz,             &Step::vIntNeg);
   vAddStep("!="_Stz,              &Step::vIntNotEqual);
   vAddStep("-"_Stz,               &Step::vIntSubtract);
+  vAddStep("int.percent"_Stz,     &Step::vIntPercent);
   vAddStep("int.random"_Stz,      &Step::vIntRandom);
   vAddStep("uint.random"_Stz,     &Step::vUnsignedIntRandom);
 }
@@ -256,6 +257,24 @@ void Step::vIntNotEqual(void)
   i8 r = i != j;
   
   m_pDataStack->vPushInt(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* int.percent -- canculate the percentage given two numbers                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIntPercent(void)
+{
+  ENTRY(); // ENTRY("vIntPercent"_Stz);
+  
+  i8 j = m_pDataStack->iPopInt(__func__);
+  
+  i8 i = m_pDataStack->iPopInt(__func__);
+  
+  i8 iPercent = IntLib::iPercent(i,j);
+  
+  m_pDataStack->vPushInt(iPercent);
   
   EXIT();
 }

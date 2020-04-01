@@ -61,27 +61,29 @@
 
   // open the file for reading
   <fileNm> OPEN_READ op__file if
+
     Pipein[].pipeout
+
+    // get size of file
+    File0[].size C_1Mb / to iFileSizeMb
+
+    // create a streamDef for C_TDEF_TOTALUNITS
+    C_TDEF_TOTALUNITS op__tableDef assert
+    table[] StreamDef[].new
+
+    // create an infoSet operand for C_TDEF_TOTALUNITS
+    StreamDef[] InfoSet[].new
+
+    // add fileSize to the infoset
+    StreamDef[] iFileSizeMb InfoSet[].addTotalUnits assert
+
+    // pipeout the infoset
+    InfoSet[].pipeout
+
+    // delete the streamDef
+    StreamDef[].delete
+
   then
-
-  // get size of file
-  File0[].size C_1Mb / to iFileSizeMb
-
-  // create a streamDef for C_TDEF_TOTALUNITS
-  C_TDEF_TOTALUNITS op__tableDef assert
-  table[] StreamDef[].new
-
-  // create an infoSet operand for C_TDEF_TOTALUNITS
-  StreamDef[] InfoSet[].new
-
-  // add fileSize to the infoset
-  StreamDef[] iFileSizeMb InfoSet[].addTotalUnits assert
-
-  // pipeout the infoset
-  InfoSet[].pipeout
-
-  // delete the streamDef
-  StreamDef[].delete
 
   true
 ;

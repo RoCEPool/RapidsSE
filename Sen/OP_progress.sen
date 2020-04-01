@@ -1,0 +1,93 @@
+/*============================================================================*/
+/* OP_progress.sen -- Operator progress                                       */
+/*============================================================================*/
+
+" OP_progress.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_INFOSET...                                                           */
+/*----------------------------------------------------------------------------*/
+: progress_Infoset \handler
+
+  0 locals| iPercent |
+
+  //"Operand:- ZK_INFOSET" .verbose
+
+  // get operand into InfoSet[]
+  Pipein[] to InfoSet[]
+  nullptr to Pipein[]
+
+  // is it a progress operand ?
+  Infoset[].isProgress if
+
+    // is it totalUnits ?
+    Infoset[].isTotalUnits if
+
+      // get first row of infoSet[]
+      Infoset[].firstRow to row[]
+
+      // get 0th column (totalUnits)
+      0 row[].getIntColumn to Counter0[]
+
+    else
+
+      // get first row of InfoSet[]
+      Infoset[].firstRow to row[]
+
+      // get 0th Column (ProgressUnits) add to Counter
+      0 row[].getIntColumn Counter1[] + to Counter1[]
+
+      // calculat the Load %
+      Counter1[] Counter0[] Int.percent to iPercent
+
+      // print the Load %
+      iPercent 0 > if
+        iPercent 100 > not if
+          iPercent "Load Progress: %v" str.format
+          "%" str.cat .
+        then
+      then
+
+    then
+
+    // now delete the InfoSet[]
+    InfoSet[].delete
+
+  else
+    // not a progress InfoSet, just pipeout
+    Infoset[].pipeout
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for progress req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : progress_req \operator
+ 
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: Progress_Infoset ZK_INFOSET op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: progress :: progress ;
+
+: progress opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of operator--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

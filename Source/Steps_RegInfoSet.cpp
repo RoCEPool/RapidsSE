@@ -22,6 +22,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].get"_Stz,            &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
   vAddStep("InfoSet[].isProgress"_Stz,     &Step::vRegInfoSetIsProgress);
+  vAddStep("InfoSet[].isTotalUnits"_Stz,   &Step::vRegInfoSetIsTotalUnits);
   vAddStep("InfoSet[].name"_Stz,           &Step::vRegInfoSetName);
   vAddStep("InfoSet[].new"_Stz,            &Step::vRegInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,        &Step::vRegInfoSetNextRow);
@@ -404,6 +405,23 @@ void Step::vRegInfoSetIsProgress(void)
   bool bIsProgress = pInfoSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
                        pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
   m_pDataStack->vPushInt(bIsProgress);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].isTotalUnits --is infor set a totalUnits info set ?              */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetIsTotalUnits(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetIsTotalUnits"_Stz);
+  
+  ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  bool bIsTotalUnits = pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
+  m_pDataStack->vPushInt(bIsTotalUnits);
   
   EXIT();
 }

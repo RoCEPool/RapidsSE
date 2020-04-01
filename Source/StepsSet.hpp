@@ -453,6 +453,7 @@ public:
   void vIntMultiply(void);
   void vIntNeg(void);
   void vIntNotEqual(void);
+  void vIntPercent(void);
   void vIntRandom(void);
   void vIntSubtract(void);
   void vUnsignedIntRandom(void);
@@ -1045,6 +1046,7 @@ public:
   void vRegInfoSetGet(void);
   void vRegInfoSetInfoRows(void);
   void vRegInfoSetIsProgress(void);
+  void vRegInfoSetIsTotalUnits(void);
   void vRegInfoSetName(void);
   void vRegInfoSetNew(void);
   void vRegInfoSetNextRow(void);
@@ -1197,6 +1199,7 @@ public:
 
   // row
   void vRowGet(void);
+  void vRowGetIntColumn(void);
   void vRowIsNull(void);
   void vRowSet(void);
 
