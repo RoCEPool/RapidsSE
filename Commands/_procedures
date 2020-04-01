@@ -12,7 +12,7 @@ procedure export
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all partitions:
     scan $Table | toCsv | stageC
@@ -33,7 +33,7 @@ procedure gridSanity
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all nodes:
     nodeInfo | stageC
@@ -52,7 +52,7 @@ procedure load
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on origin:
     chunk $file | stageC Robin
@@ -77,7 +77,7 @@ procedure lscol
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | listColumns $table |
+    start | periodicOp once | listColumns $table |
       output | sink | stageA
 end
 ;
@@ -89,7 +89,7 @@ procedure nodeInfo
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all nodes:
     nodeInfo | stageC
@@ -108,7 +108,7 @@ procedure partitionFetch
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on partition $partition:
     scan $table | stageC
@@ -127,7 +127,7 @@ procedure Select Table
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+  start | periodicOp once | stageB
 
   stage stageB on all partitions:
   scan $Table | stageC
@@ -144,7 +144,7 @@ end;
 //begin
 //
 //  stage stageA on origin:
-//    startOp | periodicOp once | stageB
+//    start | periodicOp once | stageB
 //
 //  stage stageB on all nodes:
 //    space | stageC
@@ -163,7 +163,7 @@ parameters $table
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all partitions:
     scan $table | stageC
@@ -182,7 +182,7 @@ procedure truncate
 begin
 
   stage stageA on origin:
-    startOp | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all partitions:
     truncateOp $table | stageC
@@ -205,7 +205,7 @@ procedure sp_TEST
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+  start | periodicOp once | stageB
 
   stage stageB on all partitions:
   scan $Table | stageC
@@ -222,7 +222,7 @@ parameters $table
 begin
 
   stage stageA on origin: // one
-  startOp | periodicOp once | stageB
+  start | periodicOp once | stageB
 
   stage stageB on all partitions: //many many
   truncateOp $table | stageC
@@ -241,7 +241,7 @@ procedure sp_createTable
 begin
 
   stage stageA on origin: // one
-  startOp | periodicOp once | stageB
+  start | periodicOp once | stageB
 
   stage stageB on all nodes: // many
   createTableOp $cmd | stagec

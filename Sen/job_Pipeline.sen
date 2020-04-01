@@ -52,7 +52,7 @@
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // execute the pipeline job (send startmarker to startOp)
+  // execute the pipeline job (send startmarker to start)
   <pipelineNm> "%v execute" .printf
   pJob_pipeline job_Pipeline.execute if
 

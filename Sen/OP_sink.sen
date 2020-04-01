@@ -26,7 +26,7 @@
   //"Operand:- ZK_ERRORMARKER" .verbose
   Pipein[].delete
 
-  // check if startOp has already been errored
+  // check if start has already been errored
   Job_Pipeline::isErrored not if
 
     // mark pipeline as being errored

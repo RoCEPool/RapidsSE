@@ -171,7 +171,7 @@ void Step::vJob_PipelineExecute(void)
     // get the first stage of the pipeline
     Stage* pStage = pPipeline->pGet(0);
     
-    // send startMarker to the startOp of the first stage of the pipeline
+    // send startMarker to the start Op of the first stage of the pipeline
     pStage->vStartPipeline();
     
     // pipeline job to wait for acks
