@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a schema folder                                                       */
 /*----------------------------------------------------------------------------*/
-: makeSchema ( "<schemaNm>" --  )
+: :makeSchemaFolder ( "<schemaNm>" --  )
  
 
   params| sSchemaNm |
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a schemas folder under given named catalog                            */
 /*----------------------------------------------------------------------------*/
-: makeSchemas ( "<catalogNm>" -- )
+: :makeSchemasFolder ( "<catalogNm>" -- )
 
   args.tracepoint if
     dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named catalog folder (run by participant)                           */
 /*----------------------------------------------------------------------------*/
-: makeCatalog ( "<catalogNm>" -- )
+: :makeCatalogFolder ( "<catalogNm>" -- )
 
 
   params| sCatalogNm |
@@ -60,13 +60,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make schemas folder
-  sCatalogNm makeSchemas ( )
+  sCatalogNm :makeSchemasFolder ( )
 ;
 
 /*----------------------------------------------------------------------------*/
 /* make a catalogs folder under given named tenant                            */
 /*----------------------------------------------------------------------------*/
-: makeCatalogs ( "<tenantNm>" -- )
+: :makeCatalogsFolder ( "<tenantNm>" -- )
 
   args.tracepoint if
     dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeTenant ( "<tenantNm>" -- )
+: :makeTenantFolder ( "<tenantNm>" -- )
 
 
   params| sTenantNm |
@@ -97,46 +97,48 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make catalogs folder
-  sTenantNm makeCatalogs ( )
+  sTenantNm :makeCatalogsFolder ( )
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create /tenants/boray/catalogs/rapidsse                                    */
+/* make /tenants/boray/catalogs/rapidsse/schemas/public/tables                */
 /*----------------------------------------------------------------------------*/
-: createDefaultFolders ( )
+: makeDefaultFolders ( )
 
   assert::stack_0
 
-  // create the tenants root folder
+  // make the tenants root folder
   "tenants" :createFolder attachMap::tenants!
 
   attachmap::tenants@ execute
   path[].push
 
-    // create tenant boray (and catalogs sub-folder)
-    "boray" makeTenant
+    // make tenant folder:
+    //  /tenants/boray
+    //  /tenants/boray/catalogs
+    "boray" :makeTenantFolder
 
-    // push boray folder
     "boray" folder[].findSymbol execute
     path[].push
 
-      // push catalogs folder
       "catalogs" folder[].findSymbol execute
       path[].push
 
-        // create catalog rapidsse (and schemas sub-folder)
-        "rapidsse" makeCatalog
+        // make catalog folder:
+        //  /tenants/boray/catalogs/rapidsse
+        //  /tenants/boray/catalogs/rapidsse/schemas
+        "rapidsse" :makeCatalogFolder
 
-          // push rapidsse folder
           "rapidsse" folder[].findSymbol execute
           path[].push
 
-            // push schemas folder
             "schemas" folder[].findSymbol execute
             path[].push
 
-              // create schema public (and tables sub-folder)
-              "public" makeSchema
+              // make schema folder:
+              //  /tenants/boray/catalogs/rapidsse/schemas/public
+              //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
+              "public" :makeSchemaFolder
 
             path[].discard
         path[].discard
