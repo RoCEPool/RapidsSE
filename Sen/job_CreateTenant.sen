@@ -24,28 +24,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a tenant folder (run by participant)                                  */
-/*----------------------------------------------------------------------------*/
-: makeTenant ( "<tenantNm>" -- )
-
-
-  params| sTenantNm |
-
-  args.tracepoint if
-    sTenantNm "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the tenant
-  sTenantNm :createTenant ( ^tenant )
-  drop
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make catalogs folder
-  sTenantNm makeCatalogs ( )
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job on a node                                     */
 /*----------------------------------------------------------------------------*/
 : createTenant::execute _eeh ( -- )

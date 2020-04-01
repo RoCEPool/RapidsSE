@@ -36,21 +36,6 @@
     EC_NOT_A_CATALOG false
 ;
 
-/*----------------------------------------------------------------------------*/
-/* make a catalogs folder under given named tenant                            */
-/*----------------------------------------------------------------------------*/
-: makeCatalogs ( "<tenantNm>" -- )
-
-  args.tracepoint if
-    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  find execute ( dic )
-  "catalogs"   ( dic "catalogs" )
-  swap         ( "catalogs" dic )
-  :createSubFolder   ( )
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

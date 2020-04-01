@@ -42,20 +42,6 @@
 
 
 
-/*----------------------------------------------------------------------------*/
-/* make a schemas folder under given named catalog                            */
-/*----------------------------------------------------------------------------*/
-: makeSchemas ( "<catalogNm>" -- )
-
-  args.tracepoint if
-    dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  find execute ( dic )
-  "schemas"    ( dic "schemas" )
-  swap         ( "schemas" dic )
-  :createSubFolder   ( )
-;
 
 
 

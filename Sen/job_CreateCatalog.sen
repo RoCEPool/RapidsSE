@@ -24,28 +24,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a named catalog folder (run by participant)                           */
-/*----------------------------------------------------------------------------*/
-: makeCatalog ( "<catalogNm>" -- )
-
-
-  params| sCatalogNm |
-
-  args.tracepoint if
-   sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the catalog
-  sCatalogNm :createCatalog ( ^catalog )
-  drop
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make schemas folder
-  sCatalogNm makeSchemas ( )
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
 : createCatalog::execute _eeh ( -- )

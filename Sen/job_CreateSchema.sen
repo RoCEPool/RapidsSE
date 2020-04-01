@@ -24,29 +24,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a schema folder                                                       */
-/*----------------------------------------------------------------------------*/
-: makeSchema ( "<schemaNm>" --  )
- 
-
-  params| sSchemaNm |
-
-  args.tracepoint if
-    sSchemaNm "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- // make the schema
- sSchemaNm :createSchema ( ^schema )
- drop
-
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- // make tables folder
- sSchemaNm :createTablesSubFolder 
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
 : createSchema::execute _eeh ( -- )

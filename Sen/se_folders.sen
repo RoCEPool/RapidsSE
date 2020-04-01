@@ -5,6 +5,102 @@
 " se_folders.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* make a schema folder                                                       */
+/*----------------------------------------------------------------------------*/
+: makeSchema ( "<schemaNm>" --  )
+ 
+
+  params| sSchemaNm |
+
+  args.tracepoint if
+    sSchemaNm "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // make the schema
+ sSchemaNm :createSchema ( ^schema )
+ drop
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // make tables folder
+ sSchemaNm :createTablesSubFolder
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a schemas folder under given named catalog                            */
+/*----------------------------------------------------------------------------*/
+: makeSchemas ( "<catalogNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "schemas"    ( dic "schemas" )
+  swap         ( "schemas" dic )
+  :createSubFolder   ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named catalog folder (run by participant)                           */
+/*----------------------------------------------------------------------------*/
+: makeCatalog ( "<catalogNm>" -- )
+
+
+  params| sCatalogNm |
+
+  args.tracepoint if
+   sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the catalog
+  sCatalogNm :createCatalog ( ^catalog )
+  drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make schemas folder
+  sCatalogNm makeSchemas ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a catalogs folder under given named tenant                            */
+/*----------------------------------------------------------------------------*/
+: makeCatalogs ( "<tenantNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "catalogs"   ( dic "catalogs" )
+  swap         ( "catalogs" dic )
+  :createSubFolder   ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a tenant folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeTenant ( "<tenantNm>" -- )
+
+
+  params| sTenantNm |
+
+  args.tracepoint if
+    sTenantNm "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the tenant
+  sTenantNm :createTenant ( ^tenant )
+  drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make catalogs folder
+  sTenantNm makeCatalogs ( )
+;
+
+/*----------------------------------------------------------------------------*/
 /* create /tenants/boray/catalogs/rapidsse                                    */
 /*----------------------------------------------------------------------------*/
 : createDefaultFolders ( )
