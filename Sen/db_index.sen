@@ -27,27 +27,6 @@
 : isIndex word.category@ find: index eql ;
 
 /*----------------------------------------------------------------------------*/
-/* create an index using name from input stream (doesnt leave index on stk)   */
-/*----------------------------------------------------------------------------*/
-: index:
-
-  create:
-
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_index allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_INDEX compiler::current@ word.embObject object.class!
-
-  compiler::current@ word.embObject index.init
-
-  true compiler::current@ word.embObject object.wordbody!
-  find: index compiler::current@ word.category!
-
-  does>
-;
-
-/*----------------------------------------------------------------------------*/
 /* create an index using name on the stack (leaves index on stack)            */
 /*----------------------------------------------------------------------------*/
 : :index

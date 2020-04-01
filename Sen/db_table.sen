@@ -43,26 +43,6 @@
 : isTable word.category@ find: table eql ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table using name from input stream (doesnt leave table on stk)    */
-/*----------------------------------------------------------------------------*/
-: table:
-
-  createPersistent
-  WK_OBJECT compiler::current@ word.kind!
-  sizeof_table allot
-
-  compiler::current@ word.embObject object.magic!
-  CN_TABLE compiler::current@ word.embObject object.class!
-
-  compiler::current@ word.embObject table.init
-
-  true compiler::current@ word.embObject object.wordbody!
-  find: table compiler::current@ word.category!
-
-  does>
-;
-
-/*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
 : :table
