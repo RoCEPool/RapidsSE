@@ -332,7 +332,7 @@ void Result::vProcessBufferQueue(void)
       case CN_INFOSET: {
         InfoSet* pInfoSet = _pInfoSet(pOperand);
         ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
-        
+ /*
         // progress ?
         if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS)) {
           Row* aRow = pInfoSet->aFirstRow();
@@ -349,6 +349,7 @@ void Result::vProcessBufferQueue(void)
             vTrace("Load Progress: %lld%% (free %lld%%)\n"_Stz,iPercentComplete,iPercentFree);
           break;
         }
+  */
         m_xJobResponse.m_ixRowsProcessed += pInfoSet->nInfoRows();
         pInfoSet->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
