@@ -23,7 +23,7 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make tables folder
- sSchemaNm :createTablesSubFolder
+ sSchemaNm :makeTablesSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/

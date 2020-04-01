@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* make an indexes folder under given named table                             */
 /*----------------------------------------------------------------------------*/
-: createIndexesSubFolder ( "<tableNm>" -- )
+: :makeIndexesSubFolder ( "<tableNm>" -- )
 
   args.tracepoint if
     dup "MAKING INDEXES FOR TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .

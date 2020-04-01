@@ -9,12 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: :createTablesSubFolder path[].push "tables" :dic find: folder swap execute dic.kind! path[].discard ;
-
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
 /*----------------------------------------------------------------------------*/
-: :createTablesSubFolder ( "<schemaNm>" -- )
+: :makeTablesSubFolder ( "<schemaNm>" -- )
 
   args.tracepoint if
     dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -29,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a tableNm folder under tables                                         */
 /*----------------------------------------------------------------------------*/
-: makeTableDic ( "<tableNm>" -- )
+: :makeTableDic ( "<tableNm>" -- )
 
   args.tracepoint if
     dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .

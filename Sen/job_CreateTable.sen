@@ -38,12 +38,12 @@
 
   //----------------------------------------------------------------------------
   // make the table dictionary
-  sTableNm makeTableDic
+  sTableNm :makeTableDic
 
   //----------------------------------------------------------------------------
   // make the indexes dictionary
   sTableNm path[].pushTable assert
-  sTableNm "createIndexesSubFolder" find execute
+  sTableNm ":makeIndexesSubFolder" find execute
 
   //----------------------------------------------------------------------------
   // create the table
