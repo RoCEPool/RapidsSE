@@ -37,6 +37,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   i8 nTokens = pTknVec->nTokens();
 
   Session*  pSession  = pPrompt->pSession();
+  
   Semantic* pSemantic = pSession->m_pSemantic;
   EnameSet* pEnameSet = pSemantic->pEnameSet();
   

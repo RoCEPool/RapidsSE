@@ -38,16 +38,21 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": interpret"
     
+  //" \"((a))\" . "
   // -- -- -- -- -- -- --
   // get next input token
   "  input::next"
   
+  
+  //" \"((b))\" .put input::token . "
   // -- -- -- -- -- -- --
   // test for end of input?
   "  input::type TN_EOF == if"
   "    exit_rt"
   "  then"
   
+  
+  //" \"((c))\" . "
   // -- -- -- -- -- -- --
   // is token an integer?
   "  input::type TN_INTEGER == if"
@@ -69,6 +74,8 @@ void Task::vAddRoutines(void)
 
   "  then"
   
+  
+  //" \"((d))\" . "
   // -- -- -- -- -- -- --
   // is token a string?
   "  input::type TN_STRING == if"
@@ -89,6 +96,8 @@ void Task::vAddRoutines(void)
 
   "  then"
   
+  
+  //" \"((e))\" . "
   // -- -- -- -- -- -- --
   // is token a tag?
   "  input::type TN_TAG == if"
@@ -114,6 +123,8 @@ void Task::vAddRoutines(void)
 
   "  then"
 
+  
+  //" \"((f))\" . "
   //
   // -- token should be a name --
   //
@@ -127,9 +138,15 @@ void Task::vAddRoutines(void)
 
   // find word using name on stack
   "  word::find"
-
+  "  dup not if "
+  "    \"Unable to find: \" .put input::token ."
+  "    process::quit "
+  "  then "
+  
   // pointer to word on stack
 
+  
+  //" \"((g))\" . "
   // -- -- -- -- -- -- --
   // is token a known word?
   "  dup not if"
@@ -140,6 +157,8 @@ void Task::vAddRoutines(void)
 
   // pointer to word on stack
 
+  
+  //" \"((h))\" . "
   // -- -- -- -- -- -- --
   // is it an immediate word?
   "  dup word.isImmediate if"
@@ -149,6 +168,8 @@ void Task::vAddRoutines(void)
   
   // pointer to word on stack
   
+  
+  //" \"((i))\" . "
   // -- -- -- -- -- -- --
   // postponing mode?
   "  compiler::isPostponing if"
@@ -160,6 +181,8 @@ void Task::vAddRoutines(void)
 
   // pointer to word on stack
   
+  
+  //" \"((j))\" . "
   // -- -- -- -- -- -- --
   // compiling mode?
   "  compiler::isCompiling if "
@@ -169,10 +192,14 @@ void Task::vAddRoutines(void)
   
   // pointer to word on stack
 
+  
+  //" \"((k))\" . "
   // -- -- -- -- -- -- --
   // we are interpreting
   "  execute"                    // interpret: execute word on stack
 
+  
+  //" \"((l))\" . "
   // -- -- -- -- -- -- --
   // loop over
   "  reenter"
@@ -215,7 +242,7 @@ void Task::vAddRoutines(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include"
-//  "  traceon"
+  //"  traceon"
   "  args.munged if"
   "    dup word::find if"
   "      word::find execute include-string"

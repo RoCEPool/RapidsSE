@@ -132,6 +132,11 @@ void Step::vPushStzVal(void)
   
   StzVal* aStzVal = _aStzVal(& m_aInxPtr->m_xEmbVal);
   
+//  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
+//    vTrace("vPushStzVal: %s"_Stz,aStzVal->szStz());
+//    Correctness::vDebugPoint();
+//  }
+  
   m_pDataStack->vPushStz(aStzVal->szStz());
   
   m_pTask->vAdjustFIP(aStzVal->nStackUsage());

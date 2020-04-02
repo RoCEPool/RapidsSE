@@ -28,6 +28,7 @@ namespace Strings
     char* azChar(void);
     i8    iCompare(Stz* szArg);
     void  vConcat(Stz* szArg);
+    bool  bContains(Stz* szArg);
     void  vCopy(Stz* szArg);
     void  vCopyLen(Stz* szArg, i8 nBytes);
     bool  bEqual(Stz* szArg);
