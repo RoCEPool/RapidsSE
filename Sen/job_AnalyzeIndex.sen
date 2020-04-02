@@ -20,22 +20,22 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].popTable false exit then
+  sTableNm checkIsTable not if path[].discardTable false exit then
 
   // push indexes folder
   path[].pushIndexes assert                               // ../tables/sTableNm/indexes
 
   sIndexNm checkIsIndex not if
-    path[].popIndexes path[].popTable                                            // ../tables
+    path[].discardIndexes path[].discardTable                                            // ../tables
     folder[].isTables assert
     false exit
   then
 
   //pop indexes folder
-  path[].popIndexes
+  path[].discardIndexes
 
   // pop table folder
-  path[].popTable
+  path[].discardTable
 
   // assert in tables
   folder[].isTables assert
@@ -91,7 +91,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].popTable
+  path[].discardTable
 ;
 
 /*----------------------------------------------------------------------------*/

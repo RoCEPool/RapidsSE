@@ -20,12 +20,12 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].popTable false exit then
-  //sTableNm tableInUse if path[].popTable EC_TABLE_IN_USE false exit then
+  sTableNm checkIsTable not if path[].discardTable false exit then
+  //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].popTable
+  path[].discardTable
 
   // assert in tables
   folder[].isTables assert
@@ -70,7 +70,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].popTable
+  path[].discardTable
 
   pjob_VisualizeTable job.notice
 

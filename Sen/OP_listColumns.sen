@@ -22,7 +22,7 @@
   // save the table of the base table
   table[] to OperandB[]
 
-  //path[].popTable
+  //path[].discardTable
  
   "ListColumns_PulseMarker B" .
 

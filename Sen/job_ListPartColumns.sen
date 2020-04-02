@@ -74,7 +74,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if path[].popTable pJob_ListPartColumns ERROR_REQUEST !!logError exit then
+  sTableNm checkIsTable not if path[].discardTable pJob_ListPartColumns ERROR_REQUEST !!logError exit then
 
   args.metadata if
     "(columnName VARCHAR)" pJob_ListPartColumns job.metadata!
@@ -86,7 +86,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  path[].popTable
+  path[].discardTable
   folder[].isTables assert
 
   LogExit DONE_REQ

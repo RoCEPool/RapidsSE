@@ -33,11 +33,11 @@
 
   "', " str.cat
 
-  object@ isTable if
+  object@ word.isTable if
     "'table'" str.cat
   then
 
-  object@ isIndex if
+  object@ word.isIndex if
     "'index'" str.cat
   then
 

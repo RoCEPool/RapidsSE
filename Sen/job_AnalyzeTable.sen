@@ -20,10 +20,10 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].popTable false exit then
+  sTableNm checkIsTable not if path[].discardTable false exit then
 
   // pop table folder
-  path[].popTable
+  path[].discardTable
 
   // assert in tables
   folder[].isTables assert
@@ -85,7 +85,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].popTable
+  path[].discardTable
 ;
 
 /*----------------------------------------------------------------------------*/

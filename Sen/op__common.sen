@@ -61,7 +61,7 @@
   // cross-check
   table[] assert
 
-  path[].popTable
+  path[].discardTable
   true
 ;
 
@@ -95,7 +95,7 @@
   // move to table folder and find the table
   <tableNm> path[].pushTable assert
   <tableNm> find execute to table[]
-  path[].popTable
+  path[].discardTable
 
   // cross-check
   table[] assert
@@ -147,8 +147,8 @@
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    path[].popTable
-    path[].popIndexes
+    path[].discardTable
+    path[].discardIndexes
     false
     exit
   then
@@ -158,8 +158,8 @@
   // cross-check
   index[].get assert
 
-  path[].popTable
-  path[].popIndexes
+  path[].discardTable
+  path[].discardIndexes
 
   //pathStr .
   true

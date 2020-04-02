@@ -10,6 +10,62 @@
 : table ;
 
 /*----------------------------------------------------------------------------*/
+/* test if word is a table                                                    */
+/*----------------------------------------------------------------------------*/
+: word.isTable
+
+  word.category@ find: table eql
+;
+
+/*----------------------------------------------------------------------------*/
+/* find the table folder and push it onto task dictionary                     */
+/*----------------------------------------------------------------------------*/
+: path[].pushTable ( "<tableName>" -- )
+
+  find execute path[].push
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the table folder                                                       */
+/*----------------------------------------------------------------------------*/
+: path[].discardTable
+
+  path[].discard
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if this task dic path ends in tables                                  */
+/*----------------------------------------------------------------------------*/
+: folder[].isTables ( -- t|f )
+
+  folder[] dic.name "tables" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check top of task dictionary stack is tables                               */
+/*----------------------------------------------------------------------------*/
+: folder[].CheckInTables ( -- t|f )
+
+  folder[].isTables if true exit then
+
+  EC_NOT_IN_TABLES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check there is a table folder                                              */
+/*----------------------------------------------------------------------------*/
+: folder[].checkIsTablesFolder  ( "<tableName>" -- )
+
+  folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
 /*----------------------------------------------------------------------------*/
 : :makeTablesSubFolder ( "<schemaNm>" -- )
@@ -37,9 +93,6 @@
   :makeSubFolder    ( )
 ;
 
-
-: isTable word.category@ find: table eql ;
-
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
@@ -59,24 +112,6 @@
 
   compiler::current@
   does>
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if this task dic path ends in tables                                  */
-/*----------------------------------------------------------------------------*/
-: folder[].isTables ( -- t|f )
-
-  folder[] dic.name "tables" str.equal
-;
-
-/*----------------------------------------------------------------------------*/
-/* check top of task dictionary stack is tables                               */
-/*----------------------------------------------------------------------------*/
-: folder[].CheckInTables ( -- t|f )
-
-  folder[].isTables if true exit then
-
-  EC_NOT_IN_TABLES false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,32 +161,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check there is a table folder                                              */
-/*----------------------------------------------------------------------------*/
-: folder[].checkIsTablesFolder  ( "<tableName>" -- )
-
-  folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* find the table folder and push it onto task dictionary                     */
-/*----------------------------------------------------------------------------*/
-: path[].pushTable ( "<tableName>" -- )
-
-  find execute path[].push
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop the table folder                                                       */
-/*----------------------------------------------------------------------------*/
-: path[].popTable
-
-  path[].discard
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a table                                                   */
 /*----------------------------------------------------------------------------*/
 : checkIsValidTable ( "<tableNm>" -- true | errorCode false )
@@ -167,11 +176,11 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].popTable false exit then
-  //sTableNm tableInUse if path[].popTable EC_TABLE_IN_USE false exit then
+  sTableNm checkIsTable not if path[].discardTable false exit then
+  //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  path[].popTable
+  path[].discardTable
 
   // assert in tables
   folder[].isTables assert

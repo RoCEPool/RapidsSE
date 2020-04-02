@@ -44,7 +44,7 @@
   pTable table.indexCount
   C_MAX_INDEXES == if
     EC_MAX_INDEXES
-    path[].popTable
+    path[].discardTable
     folder[].isTables assert
     false exit
   then
@@ -56,19 +56,19 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check index already exists
   sIndexNm checkIsNotIndex not if
-    path[].popIndexes
-    path[].popTable
+    path[].discardIndexes
+    path[].discardTable
     folder[].isTables assert
     false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
-  path[].popIndexes
+  path[].discardIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].popTable
+  path[].discardTable
 
   folder[].isTables assert
 
@@ -114,7 +114,7 @@
   // check for error while creating indexdef
   grid::thisNode@ pJob_CreateIndex job.hasError if
     pJob_CreateIndex DdlLock[].testDrop !!logError
-    sIndexNm :forget path[].popIndexes path[].popTable exit
+    sIndexNm :forget path[].discardIndexes path[].discardTable exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,24 +133,24 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex
     not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
-      path[].popIndexes path[].popTable exit
+      path[].discardIndexes path[].discardTable exit
     then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
-  not if pJob_CreateIndex ERROR_JOB path[].popIndexes path[].popTable
+  not if pJob_CreateIndex ERROR_JOB path[].discardIndexes path[].discardTable
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
-  path[].popIndexes
+  path[].discardIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].popTable
+  path[].discardTable
 ;
 
 /*----------------------------------------------------------------------------*/

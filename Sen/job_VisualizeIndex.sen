@@ -20,8 +20,8 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].popTable false exit then
-  //sTableNm tableInUse if path[].popTable EC_TABLE_IN_USE false exit then
+  sTableNm checkIsTable not if path[].discardTable false exit then
+  //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
@@ -30,16 +30,16 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    path[].popIndexes
-    path[].popTable
+    path[].discardIndexes
+    path[].discardTable
     folder[].isTables assert
     false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
-  path[].popIndexes
-  path[].popTable
+  path[].discardIndexes
+  path[].discardTable
 
   // assert in tables
   folder[].isTables assert
@@ -85,8 +85,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
-  path[].popIndexes
-  path[].popTable
+  path[].discardIndexes
+  path[].discardTable
 
   pJob_VisualizeIndex job.notice
 
