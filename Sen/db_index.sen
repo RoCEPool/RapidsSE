@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* index is used as a kind of word to identify indexes                        */
 /*----------------------------------------------------------------------------*/
-: index ;
+: \index ;
 
 /*----------------------------------------------------------------------------*/
 /* test if word is a table                                                    */
 /*----------------------------------------------------------------------------*/
 : word.isIndex
 
-  word.category@ find: index eql
+  word.category@ find: \index eql
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@
 
   indexPtr ( indexPtr )
   word.category@ ( ^word )
-  find: index ( ^word ^word )
+  find: \index ( ^word ^word )
   eql ( bool )
   if
     true ( true )
@@ -117,7 +117,7 @@
   compiler::current@ word.embObject index.init
 
   true compiler::current@ word.embObject object.wordbody!
-  find: index compiler::current@ word.category!
+  find: \index compiler::current@ word.category!
 
   compiler::current@
   does>
