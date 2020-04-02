@@ -29,7 +29,7 @@
     sTableNm path[].pushTable assert
 
     // check it is a table
-    sTableNm checkIsTable not if drop pJob_TableSizes ERROR_JOB !!logError exit then
+    sTableNm name::checkIsTable not if drop pJob_TableSizes ERROR_JOB !!logError exit then
 
     // get size ofthe table
     sTableNm find execute table.space 0 swap number.magnitude to iSize

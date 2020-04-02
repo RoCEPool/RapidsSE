@@ -74,7 +74,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if path[].discardTable pJob_ListPartColumns ERROR_REQUEST !!logError exit then
+  sTableNm name::checkIsTable not if path[].discardTable pJob_ListPartColumns ERROR_REQUEST !!logError exit then
 
   args.metadata if
     "(columnName VARCHAR)" pJob_ListPartColumns job.metadata!

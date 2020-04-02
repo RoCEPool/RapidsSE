@@ -118,7 +118,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
-  sIndexNm checkIsIndex not if
+  sIndexNm name::checkIsIndex not if
     path[].discardIndexes
     path[].discardTable
     folder[].isTables assert

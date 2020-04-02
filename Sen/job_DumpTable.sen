@@ -20,7 +20,7 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].discardTable false exit then
+  sTableNm name::checkIsTable not if path[].discardTable false exit then
   //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

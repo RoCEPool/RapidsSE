@@ -18,6 +18,72 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* find the indexes folder and push it onto task dictionary                   */
+/*----------------------------------------------------------------------------*/
+: path[].pushIndexes ( -- )
+
+  "indexes" find execute path[].push
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the indexes folder                                                     */
+/*----------------------------------------------------------------------------*/
+: path[].discardIndexes
+
+  path[].discard
+;
+
+/*----------------------------------------------------------------------------*/
+/* check within indexes folder                                                */
+/*----------------------------------------------------------------------------*/
+: folder[].isIndexes
+
+  folder[] dic.name "indexes" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check in indexes folder                                                    */
+/*----------------------------------------------------------------------------*/
+: folder[].checkInIndexes
+
+  folder[].isIndexes if true exit then
+
+  EC_NOT_IN_INDEXES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check word is an index                                                     */
+/*----------------------------------------------------------------------------*/
+: name::checkIsIndex ( "<indexNm>" -- true | errorCode false )
+
+  0 locals| indexPtr indexNm |
+
+  indexNm find ( indexPtr )
+  to indexPtr
+
+  indexPtr
+  not ( indexPtr bool )
+
+  if
+    EC_NO_SUCH_INDEX false ( errorCode false )
+  exit
+  then
+
+  indexPtr ( indexPtr )
+  word.category@ ( ^word )
+  find: index ( ^word ^word )
+  eql ( bool )
+  if
+    true ( true )
+    exit
+  then
+
+
+  EC_NOT_AN_INDEX false ( errorCode false )
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -56,73 +122,6 @@
   compiler::current@
   does>
 ;
-
-/*----------------------------------------------------------------------------*/
-/* check within indexes folder                                                */
-/*----------------------------------------------------------------------------*/
-: folder[].isIndexes
-
-  folder[] dic.name "indexes" str.equal
-;
-
-/*----------------------------------------------------------------------------*/
-/* check in indexes folder                                                    */
-/*----------------------------------------------------------------------------*/
-: checkInIndexes
-
-  folder[].isIndexes if true exit then
-
-  EC_NOT_IN_INDEXES false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check word is an index                                                     */
-/*----------------------------------------------------------------------------*/
-: checkIsIndex ( "<indexNm>" -- true | errorCode false )
-
-  0 locals| indexPtr indexNm |
-
-  indexNm find ( indexPtr )
-  to indexPtr
-
-  indexPtr
-  not ( indexPtr bool )
-
-  if
-    EC_NO_SUCH_INDEX false ( errorCode false )
-  exit
-  then
-
-  indexPtr ( indexPtr )
-  word.category@ ( ^word )
-  find: index ( ^word ^word )
-  eql ( bool )
-  if
-    true ( true )
-    exit
-  then
-
-
-  EC_NOT_AN_INDEX false ( errorCode false )
-;
-
-/*----------------------------------------------------------------------------*/
-/* find the indexes folder and push it onto task dictionary                   */
-/*----------------------------------------------------------------------------*/
-: path[].pushIndexes ( -- )
-  "indexes" find execute path[].push
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop the indexes folder                                                     */
-/*----------------------------------------------------------------------------*/
-: path[].discardIndexes
-
-  path[].discard
-;
-
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* make_index (invoked from makeIndex)                                        */
@@ -164,6 +163,10 @@
 
   path[].discardIndexes
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get size of index                                                          */

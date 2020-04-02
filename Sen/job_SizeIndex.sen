@@ -20,7 +20,7 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if
+  sTableNm name::checkIsTable not if
     path[].discardTable
     false exit
   then
@@ -32,7 +32,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
-  sIndexNm checkIsIndex not if
+  sIndexNm name::checkIsIndex not if
     path[].discardIndexes
     path[].discardTable
     folder[].isTables assert

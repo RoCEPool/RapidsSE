@@ -20,12 +20,12 @@
   // push table folder
   sTableNm path[].pushTable assert
 
-  sTableNm checkIsTable not if path[].discardTable false exit then
+  sTableNm name::checkIsTable not if path[].discardTable false exit then
 
   // push indexes folder
   path[].pushIndexes assert                               // ../tables/sTableNm/indexes
 
-  sIndexNm checkIsIndex not if
+  sIndexNm name::checkIsIndex not if
     path[].discardIndexes path[].discardTable                                            // ../tables
     folder[].isTables assert
     false exit

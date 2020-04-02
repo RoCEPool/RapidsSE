@@ -86,12 +86,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if path[].discardTable false exit then
+  sTableNm name::checkIsTable not if path[].discardTable false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if retrieving column, check it is a valid column
   "" sColumnNm str.equal not if
-    sColumnNm sTableNm checkIsColumn not if path[].discardTable false exit then
+    sColumnNm sTableNm name::checkIsColumn not if path[].discardTable false exit then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

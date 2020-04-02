@@ -44,7 +44,7 @@
   then
 
   // table
-  sTableNm checkIsValidTable not if
+  sTableNm name::checkIsValidTable not if
 
     op.pipelineJob@ ERROR_JOB
     Operand[].delete
@@ -83,7 +83,7 @@
   then
 
   // table
-  sTableNm checkIsValidTable not if
+  sTableNm name::checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -121,7 +121,7 @@
   then
 
   // table
-  sTableNm checkIsValidTable not if
+  sTableNm name::checkIsValidTable not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -142,7 +142,7 @@
   // move to indexes folder
   path[].pushIndexes assert
 
-  sIndexNm checkIsIndex not if
+  sIndexNm name::checkIsIndex not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
