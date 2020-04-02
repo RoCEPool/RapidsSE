@@ -71,6 +71,7 @@
 : checkInIndexes
 
   folder[].isIndexes if true exit then
+
   EC_NOT_IN_INDEXES false
 ;
 

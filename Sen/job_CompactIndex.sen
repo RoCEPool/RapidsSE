@@ -13,7 +13,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check in tables folder
-  folder[].CheckInTables not if false exit then
+  folder[].checkInTables not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if tableNm is a word in tables folder

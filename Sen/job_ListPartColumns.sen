@@ -57,7 +57,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  folder[].CheckInTables not if pJob_ListPartColumns ERROR_REQUEST !!logError exit then
+  folder[].checkInTables not if pJob_ListPartColumns ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job

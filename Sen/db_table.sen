@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* check top of task dictionary stack is tables                               */
 /*----------------------------------------------------------------------------*/
-: folder[].CheckInTables ( -- t|f )
+: folder[].checkInTables ( -- t|f )
 
   folder[].isTables if true exit then
 
@@ -168,7 +168,7 @@
   params| sTableNm |
 
   // check in tables folder
-  folder[].CheckInTables not if false exit then
+  folder[].checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
   sTableNm word::isKnown not if drop EC_NO_SUCH_TABLE false exit then

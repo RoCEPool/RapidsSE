@@ -31,7 +31,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  folder[].CheckInTables not if pJob_ListTables ERROR_REQUEST !!logError exit then
+  folder[].checkInTables not if pJob_ListTables ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

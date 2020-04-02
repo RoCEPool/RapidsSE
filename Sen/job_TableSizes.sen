@@ -62,7 +62,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  folder[].CheckInTables not if job[] ERROR_JOB !!logError exit then
+  folder[].checkInTables not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

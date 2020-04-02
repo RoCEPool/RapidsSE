@@ -28,7 +28,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check in tables folder
-  folder[].CheckInTables not if false exit then
+  folder[].checkInTables not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is a table folder
