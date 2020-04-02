@@ -27,10 +27,13 @@ namespace Load
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     bool bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes);
+    bool bSetFormat(EnameSet* pEnameSet);
     bool bTerminate(void);
     
     Footer* aFooter(void);
     
+  private:
+    bool bExtractDateFormat(Stz* dateFormat);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

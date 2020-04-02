@@ -45,7 +45,11 @@ create index idx on T1 (col_id);
 success
 
 // load table T1 with enclosed_by_leading '
-ld T1 "../DATA/Load/emptyString1.csv" enclosed_by_leading "'";
+//ld T1 "../DATA/Load/emptyString1.csv" enclosed_by_leading "'";
+tag <enclosedby_leading> = "'";
+success
+
+load T1 "../DATA/Load/emptyString1.csv";
 success
 
 // fetch rows
@@ -76,7 +80,13 @@ create index idx on T1 (col_id);
 success
 
 // load table T1 with enclosed_by_leading '
-ld T1 "../DATA/Load/emptyString2.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
+tag <enclosedby_leading> = "{";
+success
+
+tag <enclosedby_trailing> = "}";
+success
+
+load T1 "../DATA/Load/emptyString2.csv";
 success
 
 // fetch rows

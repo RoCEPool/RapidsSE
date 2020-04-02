@@ -26,9 +26,22 @@ void Step::vLoaderCreate(void)
 {
   ENTRY(); // ENTRY("vLoaderGet"_Stz);
   
-  Loader* pLoader = new Loader(*m_pRegSet->m_xpTable);
+  Job* pJob = m_pTask->pJob();
   
-  m_pRegSet->m_xpLoader = pLoader;
+  EnameSet* pEnameSet = pJob->pEnameSet();
+  pEnameSet->vContentDump();
+  
+  Loader* pLoader = new Loader(*m_pRegSet->m_xpTable);
+  bool bResult = pLoader->bSetFormat(pEnameSet);
+  
+  if (bResult) {
+    m_pDataStack->vPushInt(true);
+    m_pRegSet->m_xpLoader = pLoader;
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+    delete pLoader;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

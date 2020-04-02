@@ -15,7 +15,9 @@ flt     float,
 status  boolean
 );
 
-ld G1 "/DATA/Load/dataTypes.csv" enclosed_by_leading "'" ;
+tag <enclosedby_leading> = "'";
+load G1 "/DATA/Load/dataTypes.csv";
+//ld G1 "/DATA/Load/dataTypes.csv" enclosed_by_leading "'";
 
 /*============================================================================*/
 /* end                                                                        */

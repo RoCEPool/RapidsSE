@@ -109,7 +109,7 @@ bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
       return true;
 
     // process that record into write behind
-    eEC eError = eProcessRecord(aRecord, nRecordBytes);
+    eEC eError = eProcessRecord(&m_oFormatter, aRecord, nRecordBytes);
 
     if (EC_NONE == eError) {
       //vTrace(aRecord);
@@ -167,6 +167,163 @@ bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* set the formatter from the tags in the ename set                           */
+/*----------------------------------------------------------------------------*/
+bool Loader::bSetFormat(EnameSet* pEnameSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  s32 sTagValue;
+  i8 iTagValue;
+  i8 i_Tag;
+
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_RECORD_TERMINATOR
+  i_Tag = pEnameSet->i_Find(C_TAG_RECORD_TERMINATOR);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    m_oFormatter.m_cRecordTerminator = *sTagValue.azChar();
+    if (m_oFormatter.m_cRecordTerminator == '0')
+      m_oFormatter.m_cRecordTerminator = '\0';
+
+    m_oFormatter.m_bDefault = false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_RECORD_ENDS
+  i_Tag = pEnameSet->i_Find(C_TAG_RECORD_ENDS);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    char cRecordEnds = *sTagValue.azChar();
+    
+    // is record_ends 1 character ?
+    if (sTagValue.nLength() == 1) {
+      if (cRecordEnds == '0') {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+      else if (cRecordEnds == '\n') {
+        m_oFormatter.m_eRecordEnd = RE_NL;
+      }
+      else if (cRecordEnds == '\r') {
+        m_oFormatter.m_bDefault = false;
+        m_oFormatter.m_eRecordEnd = RE_CR;
+      }
+      else {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+    }
+    // record_ends is 2 characters
+    else if (sTagValue.nLength() == 2) {
+      
+      if (sTagValue.bSame("\r\n"_Stz)) {
+        m_oFormatter.m_bDefault = false;
+        m_oFormatter.m_eRecordEnd = RE_CRNL;
+      }
+      else {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+    }
+    else {
+      vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+      return false;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_FIELD_DELIMITER
+  i_Tag = pEnameSet->i_Find(C_TAG_FIELD_DELIMITER);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    if (sTagValue.bSame("\\t"_Stz))
+      m_oFormatter.m_cFieldDelimiter = '\t';
+    else
+      m_oFormatter.m_cFieldDelimiter = *sTagValue.azChar();
+    if (m_oFormatter.m_cFieldDelimiter == '0')
+      m_oFormatter.m_cFieldDelimiter = '\0';
+    m_oFormatter.m_bDefault = false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_ENCLOSED_BY_LEADING
+  i_Tag = pEnameSet->i_Find(C_TAG_ENCLOSED_BY_LEADING);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    m_oFormatter.m_cEnclosedBy_Leading = *sTagValue.azChar();
+    if (m_oFormatter.m_cEnclosedBy_Leading == '0')
+      m_oFormatter.m_cEnclosedBy_Leading = '\0';
+    
+    m_oFormatter.m_bDefault = false;
+    
+    // default set trailing same as leading
+    m_oFormatter.m_cEnclosedBy_Trailing =
+    m_oFormatter.m_cEnclosedBy_Leading;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_ENCLOSED_BY_TRAILING
+  i_Tag = pEnameSet->i_Find(C_TAG_ENCLOSED_BY_TRAILING);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    // if trailing is specified, leading should also have been specified
+    if (m_oFormatter.m_cEnclosedBy_Trailing == '\0') {
+      if (! AM::bMetadata())
+        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+      return false;
+    }
+    m_oFormatter.m_cEnclosedBy_Trailing = *sTagValue.azChar();
+    if (m_oFormatter.m_cEnclosedBy_Trailing == '0')
+      m_oFormatter.m_cEnclosedBy_Trailing = '\0';
+    
+    m_oFormatter.m_bDefault = false;
+  }
+  //
+  //    DATE_FORMAT='YYYY.MM.DD’
+  //
+  //
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_DATE_FORMAT
+  i_Tag = pEnameSet->i_Find(C_TAG_DATE_FORMAT);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    // extract date format
+    if ( ! bExtractDateFormat(sTagValue.szStz()) ) {
+      if ( ! AM::bMetadata())
+        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+      return false;
+    }
+    m_oFormatter.m_bDefault = false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_ESCAPE_CHAR
+  i_Tag = pEnameSet->i_Find(C_TAG_ESCAPE_CHAR);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pEnameSet->szValue(i_Tag);
+    m_oFormatter.m_cEscapeChar = *sTagValue.azChar();
+    if (m_oFormatter.m_cEscapeChar == '0')
+      m_oFormatter.m_cEscapeChar = '\0';
+    
+    m_oFormatter.m_bDefault = false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_MAX_ERRORS
+  i_Tag = pEnameSet->i_Find(C_TAG_MAX_ERRORS);
+  if (i_Tag != C_UNKNOWN) {
+    iTagValue = pEnameSet->iValue(i_Tag);
+    
+    m_oFormatter.m_nMaxErrors = iTagValue;
+    
+    m_oFormatter.m_bDefault = false;
+  }
+        
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* terminate loading early?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Loader::bTerminate(void)
@@ -189,6 +346,205 @@ bool Loader::bTerminate(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+        
+/*----------------------------------------------------------------------------*/
+/* extract the date separator                                                 */
+/*----------------------------------------------------------------------------*/
+bool Loader::bExtractDateFormat(Stz* dateFormat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  i8 iIndex = 0;
+  
+  // leading YYYY
+  if (*dateFormat->azChar() == 'Y') {
+    
+    // expect YYYY
+    if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+         (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+         (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+         (*(dateFormat + iIndex++)->azChar() != 'Y') )
+      return false;
+    
+    // extract format separator
+    Stz* pSeparator= dateFormat + iIndex++;
+    m_oFormatter.m_cDateSeparator = *pSeparator->azChar();
+    
+    // is next character 'M' ?
+    if (*(dateFormat + iIndex)->azChar() == 'M') {
+      
+      // FORMAT should be YYYY-MM-DD
+      // expect another M
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+           (*(dateFormat + iIndex++)->azChar() != 'M'))
+        return false;
+      
+      // expect format separator
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatter.m_cDateSeparator) )
+        return false;
+      
+      // expect DD
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+           (*(dateFormat + iIndex++)->azChar() != 'D') )
+        return false;
+      
+      m_oFormatter.m_eDateComponent[0] = DC_YYYY;
+      m_oFormatter.m_eDateComponent[1] = DC_MM;
+      m_oFormatter.m_eDateComponent[2] = DC_DD;
+      
+      
+    }
+    else {
+      // FORMAT should be YYYY-DD-MM
+      // expect DD
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+           (*(dateFormat + iIndex++)->azChar() != 'D'))
+        return false;
+      
+      // expect format separator
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatter.m_cDateSeparator) )
+        return false;
+      
+      // expect MM
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+           (*(dateFormat + iIndex++)->azChar() != 'M') )
+        return false;
+      
+      m_oFormatter.m_eDateComponent[0] = DC_YYYY;
+      m_oFormatter.m_eDateComponent[1] = DC_DD;
+      m_oFormatter.m_eDateComponent[2] = DC_MM;
+      
+    }
+  }
+  // leading MM
+  else if (*dateFormat->azChar() == 'M') {
+    
+    // expect MM
+    if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+        (*(dateFormat + iIndex++)->azChar() != 'M') )
+      return false;
+    
+    // extract format separator
+    Stz* pSeparator= dateFormat + iIndex++;
+    m_oFormatter.m_cDateSeparator = *pSeparator->azChar();
+    
+    // is next character 'Y' ?
+    if (*(dateFormat + iIndex)->azChar() == 'Y') {
+      
+      // FORMAT should be MM-YYYY-DD
+      // expect YYY
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') )
+        return false;
+      
+      // expect format separator
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatter.m_cDateSeparator) )
+        return false;
+      
+      // expect DD
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+          (*(dateFormat + iIndex++)->azChar() != 'D') )
+        return false;
+      
+      m_oFormatter.m_eDateComponent[0] = DC_MM;
+      m_oFormatter.m_eDateComponent[1] = DC_YYYY;
+      m_oFormatter.m_eDateComponent[2] = DC_DD;
+    }
+    else {
+      // FORMAT should be MM-DD-YYYY
+      // expect DD
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+          (*(dateFormat + iIndex++)->azChar() != 'D'))
+        return false;
+      
+      // expect format separator
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatter.m_cDateSeparator) )
+        return false;
+      
+      // expect YYYY
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') )
+        return false;
+      
+      m_oFormatter.m_eDateComponent[0] = DC_MM;
+      m_oFormatter.m_eDateComponent[1] = DC_DD;
+      m_oFormatter.m_eDateComponent[2] = DC_YYYY;
+      
+    }
+  }
+  // leading DD
+  else if (*dateFormat->azChar() == 'D') {
+    
+    // expect DD
+    if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+         (*(dateFormat + iIndex++)->azChar() != 'D') )
+      return false;
+    
+    // extract format separator
+    Stz* pSeparator= dateFormat + iIndex++;
+    m_oFormatter.m_cDateSeparator = *pSeparator->azChar();
+    
+    // is next character 'M' ?
+    if (*(dateFormat + iIndex)->azChar() == 'M') {
+      
+      // FORMAT should be DD-MM-YYYY
+      // expect another M
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+           (*(dateFormat + iIndex++)->azChar() != 'M') )
+        return false;
+      
+      // expect format separator
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatter.m_cDateSeparator) )
+        return false;
+      
+      // expect YYYY
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->azChar() != 'Y') )
+        return false;
+      
+      m_oFormatter.m_eDateComponent[0] = DC_DD;
+      m_oFormatter.m_eDateComponent[1] = DC_MM;
+      m_oFormatter.m_eDateComponent[2] = DC_YYYY;
+      
+    }
+    else {
+      
+      // expect YYYY
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->azChar() != 'Y') )
+        return false;
+      
+      // expect format separator
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatter.m_cDateSeparator) )
+        return false;
+      
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+           (*(dateFormat + iIndex++)->azChar() != 'M'))
+        return false;
+      
+      m_oFormatter.m_eDateComponent[0] = DC_DD;
+      m_oFormatter.m_eDateComponent[1] = DC_YYYY;
+      m_oFormatter.m_eDateComponent[2] = DC_MM;
+      
+    }
+  }
+  else
+    return false;
+  
+  return true;
+}
+        
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

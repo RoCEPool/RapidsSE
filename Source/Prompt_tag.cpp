@@ -84,7 +84,11 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
 
   sTagValue = pTkn->szTerm();
 
-  pEnameSet->vInsert(sTagNm,sTagValue);
+  if (pEnameSet->bHasName(sTagNm))
+    pEnameSet->vReplace(sTagNm,sTagValue);
+  else
+    pEnameSet->vInsert(sTagNm,sTagValue);
+  vTrace("success: 0 rows affected\n"_Stz);
   
   return true;
 }

@@ -174,7 +174,7 @@ CrwBuffer* WriteHash::pFullCrwBuffer(i8 iPtn)
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC WriteHash::eProcessRecord(Stz* szRecStr, i8 nBytes)
+eEC WriteHash::eProcessRecord(Format* pFormatter, Stz* szRecStr, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -191,7 +191,7 @@ eEC WriteHash::eProcessRecord(Stz* szRecStr, i8 nBytes)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bValid = bExtractRow(szRecStr, bBlankLine);
+  bool bValid = bExtractRow(pFormatter, szRecStr, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
@@ -218,7 +218,7 @@ eEC WriteHash::eProcessRecord(Stz* szRecStr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-bool WriteHash::bExtractRow(Stz* szRecStr, bool &bBlankLine)
+bool WriteHash::bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -231,7 +231,7 @@ bool WriteHash::bExtractRow(Stz* szRecStr, bool &bBlankLine)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bResult = CsvCursor::bExtractNext(m_pRow,pStreamDef,
-                                         &acRecCrs,&m_oFormatters,
+                                         &acRecCrs,pFormatter,
                                          bBlankLine);
   if (! bResult)
     return false;

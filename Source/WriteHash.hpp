@@ -12,7 +12,6 @@ namespace Load
     Table*        m_pTable;                           // table
     CrwBuffer*    m_pCrwBuffer[C_MAX_PARTITIONS];     // row buffers
     RowCompactor* m_paRowCompactor[C_MAX_PARTITIONS]; // row compactors
-    Format        m_oFormatters;                      // formatters
     
     // must be last
     Footer m_xFooter;
@@ -27,10 +26,10 @@ namespace Load
     CrwBuffer* pCrwBuffer(i8 iPtn);
     void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
     CrwBuffer* pFullCrwBuffer(i8 iPtn);
-    eEC        eProcessRecord(Stz* aRecord,  i8 nBytes);
+    eEC        eProcessRecord(Format* pFormatter, Stz* aRecord,  i8 nBytes);
     
   private:
-    bool       bExtractRow(Stz* szRecStr, bool &bBlankLine);
+    bool       bExtractRow(Format* pFormatter, Stz* szRecStr, bool &bBlankLine);
     CrwBuffer* pNewCrwBuffer(i8 iPartition);
   };
   
