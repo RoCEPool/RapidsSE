@@ -66,11 +66,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes folder
-  path[].discardIndexes
+  path[].discardIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].discardTable
+  path[].discardTableFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -119,8 +119,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm name::checkIsIndex not if
-    path[].discardIndexes
-    path[].discardTable
+    path[].discardIndexesFolder
+    path[].discardTableFolder
     folder[].isTables assert
     job[] ERROR_JOB !!logError exit
   then

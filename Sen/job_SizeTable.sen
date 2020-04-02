@@ -20,11 +20,11 @@
   // push table folder
   sTableNm path[].pushTableFolder assert
 
-  sTableNm name::checkIsTable not if path[].discardTable false exit then
-  //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
+  sTableNm name::checkIsTable not if path[].discardTableFolder false exit then
+  //sTableNm tableInUse if path[].discardTableFolder EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  path[].discardTable
+  path[].discardTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -57,7 +57,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].discardTable
+  path[].discardTableFolder
 
   pJob_SizeTable job.response!
   1 pJob_SizeTable job.rowsProcessed!

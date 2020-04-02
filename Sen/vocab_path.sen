@@ -78,7 +78,7 @@ diclock.dropwrite
     find: \folder
     sSubFolderNm :makeFolder execute dic.kind!
 
-  path[].discard
+  path[].discardFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -153,10 +153,10 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* drop all folders from path stack                                           */
 /*----------------------------------------------------------------------------*/
-: path[].discardAll ( -- )
+: path[].discardFolderAll ( -- )
 
   path[].depth 0 ?do
-    path[].discard
+    path[].discardFolder
   loop
 ;
 
@@ -169,7 +169,7 @@ diclock.dropwrite
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 
-  path[].discardAll
+  path[].discardFolderAll
 
   dup not if drop exit_rt then
 
@@ -302,7 +302,7 @@ diclock.dropwrite
 
     dup dic.lastWord not until
 
-  path[].discard
+  path[].discardFolder
 
   drop
 ;

@@ -140,10 +140,10 @@
               //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
               "public" :makeSchemaFolder
 
-            path[].discard
-        path[].discard
-      path[].discard
-    path[].discard
+            path[].discardFolder
+        path[].discardFolder
+      path[].discardFolder
+    path[].discardFolder
 
   assert::stack_0
 ;

@@ -37,7 +37,7 @@
     str.cat
 
     // pop table folder
-    path[].discardTable
+    path[].discardTableFolder
 
     "')\n" str.cat
 

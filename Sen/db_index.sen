@@ -29,9 +29,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the indexes folder                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].discardIndexes
+: path[].discardIndexesFolder
 
-  path[].discard
+  path[].discardFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +161,7 @@
   // add the index in the table
   indexPtr tablePtr table.addIndex
 
-  path[].discardIndexes
+  path[].discardIndexesFolder
 ;
 
 /*----------------------------------------------------------------------------*/

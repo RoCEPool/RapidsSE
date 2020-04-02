@@ -6,7 +6,7 @@
 
 : schema ;
 
-//: :makeSchemasFolder path[].pushFolder "schemas" :dic find: folder swap execute dic.kind! path[].discard ;
+//: :makeSchemasFolder path[].pushFolder "schemas" :dic find: folder swap execute dic.kind! path[].discardFolder ;
 
 
 /*----------------------------------------------------------------------------*/

@@ -20,22 +20,22 @@
   // push table folder
   sTableNm path[].pushTableFolder assert
 
-  sTableNm name::checkIsTable not if path[].discardTable false exit then
+  sTableNm name::checkIsTable not if path[].discardTableFolder false exit then
 
   // push indexes folder
   path[].pushIndexesFolder assert                               // ../tables/sTableNm/indexes
 
   sIndexNm name::checkIsIndex not if
-    path[].discardIndexes path[].discardTable                                            // ../tables
+    path[].discardIndexesFolder path[].discardTableFolder                                            // ../tables
     folder[].isTables assert
     false exit
   then
 
   //pop indexes folder
-  path[].discardIndexes
+  path[].discardIndexesFolder
 
   // pop table folder
-  path[].discardTable
+  path[].discardTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -91,7 +91,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].discardTable
+  path[].discardTableFolder
 ;
 
 /*----------------------------------------------------------------------------*/

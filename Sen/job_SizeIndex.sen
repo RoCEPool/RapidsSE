@@ -21,10 +21,10 @@
   sTableNm path[].pushTableFolder assert
 
   sTableNm name::checkIsTable not if
-    path[].discardTable
+    path[].discardTableFolder
     false exit
   then
-  //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
+  //sTableNm tableInUse if path[].discardTableFolder EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
@@ -33,16 +33,16 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm name::checkIsIndex not if
-    path[].discardIndexes
-    path[].discardTable
+    path[].discardIndexesFolder
+    path[].discardTableFolder
     folder[].isTables assert
     false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
-  path[].discardIndexes
-  path[].discardTable
+  path[].discardIndexesFolder
+  path[].discardTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -92,8 +92,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
-  path[].discardIndexes
-  path[].discardTable
+  path[].discardIndexesFolder
+  path[].discardTableFolder
 
   pJob_SizeIndex job.response!
   1 pJob_SizeIndex job.rowsProcessed!

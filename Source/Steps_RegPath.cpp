@@ -12,7 +12,7 @@ void Step::vAddSteps_RegPath(void)
   vAddStep("path[]"_Stz,           &Step::vRegPathGet);
   
   vAddStep("path[].depth"_Stz,     &Step::vRegPathDepth);
-  vAddStep("path[].discard"_Stz,   &Step::vRegPathDiscard);
+  vAddStep("path[].discardFolder"_Stz,   &Step::vRegPathDiscard);
   vAddStep("path[].dump"_Stz,      &Step::vRegPathDump);
   vAddStep("path[].pick"_Stz,      &Step::vRegPathPick);
   vAddStep("path[].pushFolder"_Stz,      &Step::vRegPathPush);
@@ -47,7 +47,7 @@ void Step::vRegPathDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].discard -- discard top of dictionary stack                          */
+/* path[].discardFolder -- discard top of dictionary stack                          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDiscard(void)
 {

@@ -111,11 +111,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].discardTable
+  path[].discardTableFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
-  path[].discardIndexes
+  path[].discardIndexesFolder
 ;
 
 /*----------------------------------------------------------------------------*/

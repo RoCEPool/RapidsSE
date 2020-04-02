@@ -48,7 +48,7 @@
 /* pop the partitions folder                                                  */
 /*----------------------------------------------------------------------------*/
 : popPartitions
-  path[].discard
+  path[].discardFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@
 /* pop the partition sub folder                                               */
 /*----------------------------------------------------------------------------*/
 : popPartitionSub
-  path[].discard
+  path[].discardFolder
 ;
 
 

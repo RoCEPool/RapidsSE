@@ -87,7 +87,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm name::checkIsTable not if path[].discardTable pJob_ListIndexes ERROR_REQUEST !!logError exit then
+  sTableNm name::checkIsTable not if path[].discardTableFolder pJob_ListIndexes ERROR_REQUEST !!logError exit then
 
   args.metadata if
     "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)"
@@ -102,11 +102,11 @@
   pJob_ListIndexes listIndexes
 
   // pop indexes folder
-  path[].discardIndexes
+  path[].discardIndexesFolder
 
   //----------------------------------------------------------------------------
   // pop table dictionary
-  path[].discardTable
+  path[].discardTableFolder
   folder[].isTables assert
 
   LogExit DONE_REQ
