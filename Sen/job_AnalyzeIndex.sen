@@ -12,7 +12,7 @@
   params| sIndexNm sTableNm |
 
   // check in tables folder
-  checkInTables not if false exit then
+  folder[].CheckInTables not if false exit then
 
   // check if tableNm is a word in tables folder
   sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then

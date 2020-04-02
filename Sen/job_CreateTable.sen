@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : checkMakeTable ( "<tableNm>" -- true | errorCode false )
 
-  checkInTables   not if false exit then
+  folder[].CheckInTables   not if false exit then
   checkIsNotTable not if false exit then
 
   true

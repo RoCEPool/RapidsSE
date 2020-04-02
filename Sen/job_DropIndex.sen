@@ -27,10 +27,10 @@
   params| sTableNm |
 
   // should be in the tables folder
-  checkInTables not if false exit then
+  folder[].CheckInTables not if false exit then
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if false exit then
+  sTableNm folder[].checkIsTablesFolder not if false exit then
 
   true 
 ;

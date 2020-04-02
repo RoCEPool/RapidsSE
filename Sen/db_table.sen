@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* check top of task dictionary stack is tables                               */
 /*----------------------------------------------------------------------------*/
-: checkInTables ( -- t|f )
+: folder[].CheckInTables ( -- t|f )
 
   folder[].isTables if true exit then
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if column is a valid column of the table                             */
 /*----------------------------------------------------------------------------*/
-: checkIsColumn ( "<columnNm>" "<tableNm>"-- t|f )
+: checkIsColumn ( "<columnNm>" "<tableNm>" -- t|f )
 
   params| sTableNm sColumnNm |
   0 locals| pTable |
@@ -105,16 +105,6 @@
   path[].depth assert
 
   folder[] dic.name str.equal
-;
-
-/*----------------------------------------------------------------------------*/
-/* check top of task dictionary stack is given table name                     */
-/*----------------------------------------------------------------------------*/
-: checkInTable ( "<tableNm>" -- t|f )
-
-  folder[].isTable if true exit then
-
-  EC_NOT_IN_TABLE false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 /* check there is a table folder                                              */
 /*----------------------------------------------------------------------------*/
-: checkIsTableFolder  ( "<tableName>" -- )
+: folder[].checkIsTablesFolder  ( "<tableName>" -- )
 
   folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
   true
@@ -183,7 +173,7 @@
   params| sTableNm |
 
   // check in tables folder
-  checkInTables not if false exit then
+  folder[].CheckInTables not if false exit then
 
   // check if tableNm is a word in tables folder
   sTableNm word::isKnown not if drop EC_NO_SUCH_TABLE false exit then
