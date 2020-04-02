@@ -5,16 +5,16 @@
 " db_table.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* table is used as a kind of word to identify tables                         */
+/* the table category                                                         */
 /*----------------------------------------------------------------------------*/
-: table ;
+: \table \\category ;
 
 /*----------------------------------------------------------------------------*/
 /* test if word is a table                                                    */
 /*----------------------------------------------------------------------------*/
 : word.isTable
 
-  word.category@ find: table eql
+  word.category@ find: \table eql
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@
   dup ( "<tableNm>" ^w:table ^w:table )
 
   word.category@ ( "<tableNm>" ^w:table ^word )
-  find: table ( "<tableNm>" ^w:table ^word ^word )
+  find: \table ( "<tableNm>" ^w:table ^word ^word )
   eql ( "<tableNm>" ^w:table bool )
   if
     drop ( "<tableNm>" )
@@ -183,7 +183,7 @@
   compiler::current@ word.embObject table.init
 
   true compiler::current@ word.embObject object.wordbody!
-  find: table compiler::current@ word.category!
+  find: \table compiler::current@ word.category!
 
   compiler::current@
   does>
