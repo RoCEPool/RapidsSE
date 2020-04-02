@@ -94,20 +94,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if this task dic path is same name as argument                        */
-/*----------------------------------------------------------------------------*/
-: folder[].isTable ( "<tableNm>" -- t|f )
-
-  assert::stack_1+
-  CN_STZVAL assert::class_0
-
-  // assert dictionary path
-  path[].depth assert
-
-  folder[] dic.name str.equal
-;
-
-/*----------------------------------------------------------------------------*/
 /* check given name is a table                                                */
 /*----------------------------------------------------------------------------*/
 : checkIsTable ( "<tableNm>" -- true | errorCode false )
