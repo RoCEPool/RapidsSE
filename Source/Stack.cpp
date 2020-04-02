@@ -309,6 +309,11 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   
   pString->vCopy(aStzVal->szStz());
   
+//  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
+//    vTrace("vPopStr: %s"_Stz,aStzVal->szStz());
+//    Correctness::vDebugPoint();
+//  }
+  
   vDiscardTop();
   
   _hazard_();

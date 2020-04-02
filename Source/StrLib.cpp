@@ -2521,6 +2521,8 @@ NextIteration:
     bReplaced = true;
   }
   
+  *pDst = '\0';
+  
   return bReplaced;
 }
 
