@@ -42,7 +42,9 @@
 
       // print the Load %
       iPercent 0 > if
-        iPercent 100 > not if
+        iPercent 100 > if
+          <string> "%v Progress: 100%" str.format .
+        else
           iPercent <string> "%v Progress: %v" str.format
           "%" str.cat .
         then

@@ -13956,7 +13956,9 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "      // print the Load %\n"
     "      iPercent 0 > if\n"
-    "        iPercent 100 > not if\n"
+    "        iPercent 100 > if\n"
+    "          <string> \\\"%v Progress: 100%\\\" str.format .\n"
+    "        else\n"
     "          iPercent <string> \\\"%v Progress: %v\\\" str.format\n"
     "          \\\"%\\\" str.cat .\n"
     "        then\n"
@@ -16218,6 +16220,56 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT OP_xmit.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_xmitP.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_xmitP.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_xmit.sen -- Operator xmit                                               */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_xmit.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for xmit request                           (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : Xmit_req \\\\operator\n"
+    "\n"
+    "  LogReqEntry SEED_REQ\n"
+    "\n"
+    "  // set the xmit kind\n"
+    "  <xmitKind> >int op.xmitKind!\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  LogReqExit\n"
+    "  job::deleteThis\n"
+    "  DONE_REQ_OP\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: Xmit :: Xmit <xmitKind> ;\n"
+    "\n"
+    ": Xmit opInfo tagCopy: localOp_tags\n"
+    "  tags{ <jobDesc> = \\\"--description of operator--\\\" }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_xmitP.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
