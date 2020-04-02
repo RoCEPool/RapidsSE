@@ -21,14 +21,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   sTableNm name::checkIsTable not if path[].discardTable false exit then
   //sTableNm tableInUse if path[].discardTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
@@ -61,8 +61,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
-  <tableNm> path[].pushTable assert
-  path[].pushIndexes assert
+  <tableNm> path[].pushTableFolder assert
+  path[].pushIndexesFolder assert
 
   <indexNm> find execute to pIndex
   pIndex index.compact

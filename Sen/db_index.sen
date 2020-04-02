@@ -20,9 +20,9 @@
 /*----------------------------------------------------------------------------*/
 /* find the indexes folder and push it onto task dictionary                   */
 /*----------------------------------------------------------------------------*/
-: path[].pushIndexes ( -- )
+: path[].pushIndexesFolder ( -- )
 
-  "indexes" find execute path[].push
+  "indexes" find execute path[].pushFolder
   true
 ;
 
@@ -130,7 +130,7 @@
 
   0 0 locals| indexPtr tablePtr indexNm tableNm |
 
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // create the index
   indexNm ( "<indexNm>" )

@@ -73,7 +73,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :makeSubFolder params| pFolder sSubFolderNm |
 
-  pFolder path[].push
+  pFolder path[].pushFolder
 
     find: \folder
     sSubFolderNm :makeFolder execute dic.kind!
@@ -180,7 +180,7 @@ diclock.dropwrite
     dup "__dicRoot" str.equal if
       drop
       dic::root
-      path[].push
+      path[].pushFolder
     else
 
       dup "session" str.equal if
@@ -188,12 +188,12 @@ diclock.dropwrite
       else
 
         dup "tenants" str.equal if
-          drop attachmap::tenants@ execute path[].push
+          drop attachmap::tenants@ execute path[].pushFolder
         else
 
           find
           execute
-          path[].push
+          path[].pushFolder
         then
 
       then
@@ -263,7 +263,7 @@ diclock.dropwrite
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm
-    sTableNm "path[].pushTable" find execute  assert
+    sTableNm "path[].pushTableFolder" find execute  assert
     sTableNm find execute to pTable
 
     // skip definition only tables
@@ -294,7 +294,7 @@ diclock.dropwrite
 
   dup dic.lastWord not if drop exit_rt then
 
-  dup path[].push
+  dup path[].pushFolder
 
   begin
 

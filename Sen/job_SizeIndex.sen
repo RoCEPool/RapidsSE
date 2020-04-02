@@ -18,7 +18,7 @@
   sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   sTableNm name::checkIsTable not if
     path[].discardTable
@@ -28,7 +28,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
@@ -82,8 +82,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
-  sTableNm path[].pushTable assert
-  path[].pushIndexes assert
+  sTableNm path[].pushTableFolder assert
+  path[].pushIndexesFolder assert
 
   sIndexNm find execute to pIndex
   pIndex index.space 0 swap number.magnitude to iSize

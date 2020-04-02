@@ -55,7 +55,7 @@
 
   // move to table folder and find the table
 
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
   sTableNm find execute to table[]
 
   // cross-check
@@ -93,7 +93,7 @@
   then
 
   // move to table folder and find the table
-  <tableNm> path[].pushTable assert
+  <tableNm> path[].pushTableFolder assert
   <tableNm> find execute to table[]
   path[].discardTable
 
@@ -131,7 +131,7 @@
   then
 
   // move to table folder and find the table
-  <tableNm> path[].pushTable assert
+  <tableNm> path[].pushTableFolder assert
   <tableNm> find execute to table[]
 
   // cross-check
@@ -140,7 +140,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // move to indexes folder
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   sIndexNm name::checkIsIndex not if
     op.pipelineJob@ ERROR_JOB

@@ -78,7 +78,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
@@ -86,7 +86,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index name from job

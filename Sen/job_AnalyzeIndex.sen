@@ -18,12 +18,12 @@
   sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   sTableNm name::checkIsTable not if path[].discardTable false exit then
 
   // push indexes folder
-  path[].pushIndexes assert                               // ../tables/sTableNm/indexes
+  path[].pushIndexesFolder assert                               // ../tables/sTableNm/indexes
 
   sIndexNm name::checkIsIndex not if
     path[].discardIndexes path[].discardTable                                            // ../tables
@@ -74,11 +74,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  <tableNm> path[].pushTable assert
+  <tableNm> path[].pushTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table

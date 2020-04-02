@@ -111,7 +111,7 @@
   "tenants" :makeFolder attachMap::tenants!
 
   attachmap::tenants@ execute
-  path[].push
+  path[].pushFolder
 
     // make tenant folder:
     //  /tenants/boray
@@ -119,10 +119,10 @@
     "boray" :makeTenantFolder
 
     "boray" folder[].findSymbol execute
-    path[].push
+    path[].pushFolder
 
       "catalogs" folder[].findSymbol execute
-      path[].push
+      path[].pushFolder
 
         // make catalog folder:
         //  /tenants/boray/catalogs/rapidsse
@@ -130,10 +130,10 @@
         "rapidsse" :makeCatalogFolder
 
           "rapidsse" folder[].findSymbol execute
-          path[].push
+          path[].pushFolder
 
             "schemas" folder[].findSymbol execute
-            path[].push
+            path[].pushFolder
 
               // make schema folder:
               //  /tenants/boray/catalogs/rapidsse/schemas/public

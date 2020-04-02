@@ -40,7 +40,7 @@
 /* find the partitions folder and push it onto task dictionary                */
 /*----------------------------------------------------------------------------*/
 : pushPartitions ( -- )
-  "partitions" find execute path[].push
+  "partitions" find execute path[].pushFolder
   true
 ;
 
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 /*
 : pushPartitionSub ( "<tableNm>" -- )
-  find execute table.slots slots.subDic path[].push
+  find execute table.slots slots.subDic path[].pushFolder
   true
 ;
 */

@@ -42,7 +42,7 @@
 
   //----------------------------------------------------------------------------
   // make the indexes dictionary
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
   sTableNm ":makeIndexesSubFolder" find execute
 
   //----------------------------------------------------------------------------

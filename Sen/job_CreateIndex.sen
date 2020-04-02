@@ -36,7 +36,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
@@ -51,7 +51,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check index already exists
@@ -90,11 +90,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  path[].pushIndexes assert
+  path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index

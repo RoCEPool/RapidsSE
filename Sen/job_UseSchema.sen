@@ -19,19 +19,19 @@
 
   // find the boray folder
   "boray" folder[].findSymbol
-  execute path[].push
+  execute path[].pushFolder
 
   // find the catalogs folder
   "catalogs" folder[].findSymbol
-  execute path[].push
+  execute path[].pushFolder
 
   // find the rapidssecatalogs folder
   "rapidsse" folder[].findSymbol
-  execute path[].push
+  execute path[].pushFolder
 
   // find the schemas folder
   "schemas" folder[].findSymbol
-  execute path[].push
+  execute path[].pushFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get schema name from job
@@ -39,11 +39,11 @@
 
   <schemaNm> word::isKnown not if EC_NO_SUCH_SCHEMA pJob_UseSchema ERROR_JOB !!logError exit then
   checkIsSchema not if pJob_UseSchema ERROR_JOB !!logError exit then
-  execute path[].push
+  execute path[].pushFolder
 
   // find the tables folder
   "tables" folder[].findSymbol
-  execute path[].push
+  execute path[].pushFolder
 
   // save the path
   setPath

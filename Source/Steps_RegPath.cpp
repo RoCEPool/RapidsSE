@@ -15,7 +15,7 @@ void Step::vAddSteps_RegPath(void)
   vAddStep("path[].discard"_Stz,   &Step::vRegPathDiscard);
   vAddStep("path[].dump"_Stz,      &Step::vRegPathDump);
   vAddStep("path[].pick"_Stz,      &Step::vRegPathPick);
-  vAddStep("path[].push"_Stz,      &Step::vRegPathPush);
+  vAddStep("path[].pushFolder"_Stz,      &Step::vRegPathPush);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@ void Step::vRegPathPick(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].push -- push a dictionary onto given dictionary stack               */
+/* path[].pushFolder -- push a dictionary onto given dictionary stack               */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPush(void)
 {

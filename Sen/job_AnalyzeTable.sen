@@ -18,7 +18,7 @@
   sTableNm word::isKnown not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   sTableNm name::checkIsTable not if path[].discardTable false exit then
 
@@ -72,7 +72,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
   <tableNm> to sTableNm
-  sTableNm path[].pushTable assert
+  sTableNm path[].pushTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table

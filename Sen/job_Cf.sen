@@ -55,7 +55,7 @@
   // clear dic path and push tenants
   sFolderNm "tenants" str.equal if
     path[].discardAll
-    attachmap::tenants@ execute path[].push
+    attachmap::tenants@ execute path[].pushFolder
     setPath
     LogExit DONE_REQ
     exit                                                         // *EARLY EXIT*
@@ -67,7 +67,7 @@
 
   sFolderNm folder[].findSymbol to pCurrentFolder
   pCurrentFolder word.isFolder not if pJob_Cf ERROR_REQUEST !!logError exit then
-  pCurrentFolder execute path[].push
+  pCurrentFolder execute path[].pushFolder
   setPath
   LogExit DONE_REQ
 
