@@ -160,18 +160,24 @@
 /*----------------------------------------------------------------------------*/
 /* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :CREATEOBJECT
+: :CREATEOBJECT ( pCatg eClass nBytes sObjectNM -- )
 
-  swap
+  :create ( pCatg eClass nBytes )
 
-  :create
+  WK_OBJECT compiler::current@ word.kind! ( pCatg eClass nBytes )
 
-  WK_OBJECT compiler::current@ word.kind!
+  allot ( pCatg eClass )
 
-  allot
+  compiler::current@ word.embObject object.class! ( pCatg )
+
+  compiler::current@ word.category! ( )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   compiler::current@ word.embObject object.magic!
   true compiler::current@ word.embObject object.wordbody!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   compiler::current@
   does>
@@ -180,16 +186,11 @@
 /*----------------------------------------------------------------------------*/
 /* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :createFolder
+: :createFolder params| sFolderNm |
 
-  sizeof_dic :createObject
-
-  CN_DIC compiler::current@ word.embObject object.class!
-
-  find: \folder compiler::current@ word.category!
+  find: \folder CN_DIC sizeof_dic sFolderNm :createObject
 
   compiler::current@ word.embObject dic.init
-
 ;
 
 /*----------------------------------------------------------------------------*/

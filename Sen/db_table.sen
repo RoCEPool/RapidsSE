@@ -172,13 +172,9 @@
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
-: :createTable
+: :createTable params| sTableNm |
 
-  sizeof_table :createObject
-
-  CN_TABLE compiler::current@ word.embObject object.class!
-
-  find: \table compiler::current@ word.category!
+  find: \table CN_TABLE sizeof_table sTableNm :createObject
 
   compiler::current@ word.embObject table.init
 ;

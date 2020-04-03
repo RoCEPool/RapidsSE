@@ -106,13 +106,9 @@
 /*----------------------------------------------------------------------------*/
 /* create an index using name on the stack (leaves index on stack)            */
 /*----------------------------------------------------------------------------*/
-: :createIndex
+: :createIndex params| sIndexNm |
 
-  sizeof_index :createObject
-
-  CN_INDEX compiler::current@ word.embObject object.class!
-
-  find: \index compiler::current@ word.category!
+  find: \index CN_INDEX sizeof_index sIndexNm :createObject
 
   compiler::current@ word.embObject index.init
 ;
