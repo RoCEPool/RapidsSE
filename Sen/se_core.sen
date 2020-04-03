@@ -31,19 +31,45 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create a new word using string on stack as name                            */
+/*----------------------------------------------------------------------------*/
+: :CREATE ( sWordNM -- )
+
+  word::new compiler::current!
+;
+
+/*----------------------------------------------------------------------------*/
 /* create a new word using next token as name                                 */
 /*----------------------------------------------------------------------------*/
 : CREATE:
 
-  input::next input::token word::new compiler::current!
+  input::next input::token :create
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a new word using string on stack as name                            */
+/* make a new object-word                                                     */
 /*----------------------------------------------------------------------------*/
-: :CREATE
+: :CREATEOBJECT ( pCatg eClass nBytes sObjectNM -- )
 
-  word::new compiler::current!
+  :create ( pCatg eClass nBytes )
+
+  WK_OBJECT compiler::current@ word.kind! ( pCatg eClass nBytes )
+
+  allot ( pCatg eClass )
+
+  compiler::current@ word.embObject object.class! ( pCatg )
+
+  compiler::current@ word.category! ( )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  compiler::current@ word.embObject object.magic!
+  true compiler::current@ word.embObject object.wordbody!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  compiler::current@
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -160,32 +160,6 @@
 /*----------------------------------------------------------------------------*/
 /* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :CREATEOBJECT ( pCatg eClass nBytes sObjectNM -- )
-
-  :create ( pCatg eClass nBytes )
-
-  WK_OBJECT compiler::current@ word.kind! ( pCatg eClass nBytes )
-
-  allot ( pCatg eClass )
-
-  compiler::current@ word.embObject object.class! ( pCatg )
-
-  compiler::current@ word.category! ( )
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  compiler::current@ word.embObject object.magic!
-  true compiler::current@ word.embObject object.wordbody!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  compiler::current@
-  does>
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a new folder (leave pFolder on stack)                                 */
-/*----------------------------------------------------------------------------*/
 : :createFolder params| sFolderNm |
 
   find: \folder CN_DIC sizeof_dic sFolderNm :createObject
