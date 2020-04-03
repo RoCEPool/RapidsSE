@@ -173,7 +173,7 @@
 /*----------------------------------------------------------------------------*/
 : :createTable
 
-  >createPersistent
+  :create
   WK_OBJECT compiler::current@ word.kind!
   sizeof_table allot
 
@@ -197,7 +197,8 @@
   0 0 locals| pTable pIndex |
 
   args.tracepoint if
-    sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    sTableNm "MAKING TABLE " swap str.cat
+    " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
