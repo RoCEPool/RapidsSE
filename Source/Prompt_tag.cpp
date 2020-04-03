@@ -75,6 +75,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   
   if (bDelete) {
     pEnameSet->vDelete(sTagNm);
+    vTrace("success: 0 rows affected\n"_Stz);
     return true;
   }
     

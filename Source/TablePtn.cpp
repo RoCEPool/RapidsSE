@@ -899,6 +899,12 @@ void TablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  // first truncate all indexes for this table ptn
+  for (i8 iIdxPtn = 0; iIdxPtn < m_pIndexPtnVec->nItems(); iIdxPtn++) {
+    IndexPtn* pIndexPtn = m_pIndexPtnVec->pGet(iIdxPtn);
+    pIndexPtn->vTruncate();
+  }
+  
   if (m_pRootCrwBuffer)
     m_pRootCrwBuffer->vTruncate();
   

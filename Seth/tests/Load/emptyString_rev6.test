@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
 /* emptyString -- empty string tests                                          */
 /*----------------------------------------------------------------------------*/
-
+/*
 create table T1 (
   col_id       INTEGER,
   col_vch      VARCHAR(15),
@@ -52,6 +52,10 @@ success
 load T1 "../DATA/Load/emptyString1.csv";
 success
 
+// delete the tag
+tag delete <enclosedby_leading>;
+success
+
 // fetch rows
 tableFetch T1;
 rows: 2
@@ -67,6 +71,7 @@ rows:
 // drop the table
 drop table T1;
 success
+*/
 
 create table T1 (
 col_id       INTEGER,
@@ -76,7 +81,7 @@ col_int      INTEGER
 success
 
 // create an ndex
-create index idx on T1 (col_id);
+create index idx on T1 (col_id) ;
 success
 
 // load table T1 with enclosed_by_leading '
@@ -87,6 +92,13 @@ tag <enclosedby_trailing> = "}";
 success
 
 load T1 "../DATA/Load/emptyString2.csv";
+success
+
+// delete the tags
+tag delete <enclosedby_leading>;
+success
+
+tag delete <enclosedby_trailing>;
 success
 
 // fetch rows
@@ -115,6 +127,15 @@ success
 
 tableFetch T1;
 rows: 2
+
+//! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed
+//fetch T1 "col_id 1 =";
+//rows:
+//  (1,'',3)
+
+//fetch T1 "col_id 2 =";
+//rows:
+//  (2,null,3)
 
 // drop the table
 drop table T1;
