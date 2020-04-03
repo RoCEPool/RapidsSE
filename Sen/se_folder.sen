@@ -169,10 +169,10 @@
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
 
-  compiler::current@ word.embObject dic.init
-
   true compiler::current@ word.embObject object.wordbody!
   find: \folder compiler::current@ word.category!
+
+  compiler::current@ word.embObject dic.init
 
   compiler::current@
   does>

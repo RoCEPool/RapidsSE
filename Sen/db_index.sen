@@ -115,10 +115,10 @@
   compiler::current@ word.embObject object.magic!
   CN_INDEX compiler::current@ word.embObject object.class!
 
-  compiler::current@ word.embObject index.init
-
   true compiler::current@ word.embObject object.wordbody!
   find: \index compiler::current@ word.category!
+
+  compiler::current@ word.embObject index.init
 
   compiler::current@
   does>
