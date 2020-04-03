@@ -37,13 +37,31 @@
         "se_requests.sen"    include
 
 4 .put
-        "jobModel.sen"       include
+        "jobInfo.sen"        include
+        "jobOperand.sen"     include
+        "OPERAND__handlers.sen"   include
+        "jobSyntax.sen"      include
+        "jobWords.sen"       include
+        "job2pc.sen"         include
+
+        "jobMarkers.sen"     include
+
+        "jobHooks.sen"       include
+        "jobSuffix.sen"      include
+
+        "jobSeeds.sen"       include
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        "job_Set.sen"        include
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 3 .put
         "operators.sen"      include
 
 2 .put
         "test_encodingData.sen" include
+
         "test_jData.sen"     include
         "test_misc.sen"      include
         "test_str.sen"       include

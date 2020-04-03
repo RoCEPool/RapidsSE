@@ -7129,43 +7129,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of jobModel.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged jobModel.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* jobModel.sen -- Job model                                                  */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-jobModel.sen\\\" .verbose\n"
-    "\n"
-    "\\\"jobInfo.sen\\\"      include\n"
-    "\\\"jobOperand.sen\\\"   include\n"
-    "\\\"OPERAND__handlers.sen\\\"   include\n"
-    "\\\"jobSyntax.sen\\\"    include\n"
-    "\\\"jobWords.sen\\\"     include\n"
-    "\\\"job2pc.sen\\\"       include\n"
-    "\n"
-    "\\\"jobMarkers.sen\\\"   include\n"
-    "\n"
-    "\\\"jobHooks.sen\\\"     include\n"
-    "\\\"jobSuffix.sen\\\"    include\n"
-    "\n"
-    "\\\"jobSeeds.sen\\\"     include\n"
-    "\\\"job_Set.sen\\\"      include\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT jobModel.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_gGen.sen
 
   sFileContents =
@@ -13380,29 +13343,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of testing.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged testing.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* testing.sen -- testing related words                                       */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-testing.sen\\\" .verbose\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT testing.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of op__common.sen
 
   sFileContents =
@@ -16819,7 +16759,8 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"se_prompt.sen\\\"      include\n"
     "\n"
     "7 .put\n"
-    "        \\\"gridModel.sen\\\"      include\n"
+    "        \\\"grid_grid.sen\\\"      include\n"
+    "        \\\"grid_node.sen\\\"      include\n"
     "\n"
     "6 .put\n"
     "        \\\"db_table.sen\\\"       include\n"
@@ -16835,13 +16776,31 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"se_requests.sen\\\"    include\n"
     "\n"
     "4 .put\n"
-    "        \\\"jobModel.sen\\\"       include\n"
+    "        \\\"jobInfo.sen\\\"        include\n"
+    "        \\\"jobOperand.sen\\\"     include\n"
+    "        \\\"OPERAND__handlers.sen\\\"   include\n"
+    "        \\\"jobSyntax.sen\\\"      include\n"
+    "        \\\"jobWords.sen\\\"       include\n"
+    "        \\\"job2pc.sen\\\"         include\n"
+    "\n"
+    "        \\\"jobMarkers.sen\\\"     include\n"
+    "\n"
+    "        \\\"jobHooks.sen\\\"       include\n"
+    "        \\\"jobSuffix.sen\\\"      include\n"
+    "\n"
+    "        \\\"jobSeeds.sen\\\"       include\n"
+    "\n"
+    "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "        \\\"job_Set.sen\\\"        include\n"
+    "\n"
+    "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "3 .put\n"
     "        \\\"operators.sen\\\"      include\n"
     "\n"
     "2 .put\n"
     "        \\\"test_encodingData.sen\\\" include\n"
+    "\n"
     "        \\\"test_jData.sen\\\"     include\n"
     "        \\\"test_misc.sen\\\"      include\n"
     "        \\\"test_str.sen\\\"       include\n"
@@ -18927,31 +18886,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_Pwf.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of gridModel.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged gridModel.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* gridModel.sen -- grid model group                                          */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-gridModel.sen\\\" .verbose\n"
-    "\n"
-    "\\\"grid_grid.sen\\\" include\n"
-    "\\\"grid_node.sen\\\" include\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT gridModel.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
