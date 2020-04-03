@@ -40,10 +40,46 @@
     EC_NOT_A_SCHEMA false
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* make a schema folder                                                       */
+/*----------------------------------------------------------------------------*/
+: :makeSchemaFolder ( "<schemaNm>" --  )
+ 
 
+  params| sSchemaNm |
 
+  args.tracepoint if
+    sSchemaNm "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
 
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // make the schema
+ sSchemaNm :createSchema ( ^schema )
+ drop
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // make tables folder
+ sSchemaNm :makeTablesSubFolder
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a schemas folder under given named catalog                            */
+/*----------------------------------------------------------------------------*/
+: :makeSchemasFolder ( "<catalogNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "schemas"    ( dic "schemas" )
+  swap         ( "schemas" dic )
+  :makeSubFolder   ( )
+;
 
 /*============================================================================*/
 /* end                                                                        */

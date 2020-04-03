@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* vocab_path.sen -- dictionary related words                                  */
+/* se_path.sen -- dictionary related words                                    */
 /*============================================================================*/
 
-" vocab_path.sen" .verbose
+" se_path.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* get current folder path as string                                          */

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* vocab_object.sen -- object words                                         */
+/* se_object.sen -- object words                                              */
 /*============================================================================*/
 
-" vocab_object.sen" .verbose
+" se_object.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* assert that the object is of a particular class                           */
+/* assert that the object is of a particular class                            */
 /*----------------------------------------------------------------------------*/
 : object.assertClass ( eClassNo pObject -- )
 
