@@ -16835,7 +16835,13 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "6 .put  \\\"gridModel.sen\\\"      include\n"
     "\n"
-    "5 .put  \\\"dbObjects.sen\\\"      include\n"
+    "5 .put\n"
+    "        \\\"db_table.sen\\\"       include\n"
+    "        \\\"db_partition.sen\\\"   include\n"
+    "        \\\"db_index.sen\\\"       include\n"
+    "        \\\"db_schema.sen\\\"      include\n"
+    "        \\\"db_catalog.sen\\\"     include\n"
+    "        \\\"db_tenant.sen\\\"      include\n"
     "\n"
     "4 .put  \n"
     "        \\\"se_categories.sen\\\"  include\n"
@@ -17949,36 +17955,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT test_flow.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of dbobjects.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged dbobjects.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* dbObjects.sen -- dbObjects group                                           */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-dbObjects.sen\\\" .verbose\n"
-    "\n"
-    "\\\"db_table.sen\\\"     include\n"
-    "\\\"db_partition.sen\\\" include\n"
-    "\\\"db_index.sen\\\"     include\n"
-    "\n"
-    "\\\"db_schema.sen\\\"    include\n"
-    "\\\"db_catalog.sen\\\"   include\n"
-    "\\\"db_tenant.sen\\\"    include\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT dbobjects.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
