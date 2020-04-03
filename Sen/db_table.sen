@@ -174,8 +174,7 @@
 /*----------------------------------------------------------------------------*/
 : :createTable
 
-  :create
-  WK_OBJECT compiler::current@ word.kind!
+  :createObject
   sizeof_table allot
 
   compiler::current@ word.embObject object.magic!

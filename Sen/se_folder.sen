@@ -160,10 +160,19 @@
 /*----------------------------------------------------------------------------*/
 /* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :createFolder
+: :CREATEOBJECT
 
   :create
+
   WK_OBJECT compiler::current@ word.kind!
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a new folder (leave pFolder on stack)                                 */
+/*----------------------------------------------------------------------------*/
+: :createFolder
+
+  :createObject
   sizeof_dic allot
 
   compiler::current@ word.embObject object.magic!

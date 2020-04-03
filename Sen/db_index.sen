@@ -108,8 +108,7 @@
 /*----------------------------------------------------------------------------*/
 : :createIndex
 
-  :create
-  WK_OBJECT compiler::current@ word.kind!
+  :createObject
   sizeof_index allot
 
   compiler::current@ word.embObject object.magic!
