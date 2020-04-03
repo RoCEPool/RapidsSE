@@ -243,43 +243,41 @@ fillOutOps
 
   assert::stack_0
 
-  // make the tenants root folder
+  // make the tenants root folder"
+  //  /tenants
   "tenants" :makeFolder attachMap::tenants!
-
   attachmap::tenants@ execute
   path[].pushFolder
 
-    // make tenant folder:
+    // make 'boray' tenant folder:
     //  /tenants/boray
     //  /tenants/boray/catalogs
     "boray" :makeTenantFolder
-
     "boray" folder[].findSymbol execute
     path[].pushFolder
 
       "catalogs" folder[].findSymbol execute
       path[].pushFolder
 
-        // make catalog folder:
+        // make 'rapidsse' catalog folder:
         //  /tenants/boray/catalogs/rapidsse
         //  /tenants/boray/catalogs/rapidsse/schemas
         "rapidsse" :makeCatalogFolder
+        "rapidsse" folder[].findSymbol execute
+        path[].pushFolder
 
-          "rapidsse" folder[].findSymbol execute
+          "schemas" folder[].findSymbol execute
           path[].pushFolder
 
-            "schemas" folder[].findSymbol execute
-            path[].pushFolder
+            // make 'public' schema folder:
+            //  /tenants/boray/catalogs/rapidsse/schemas/public
+            //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
+            "public" :makeSchemaFolder
 
-              // make schema folder:
-              //  /tenants/boray/catalogs/rapidsse/schemas/public
-              //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
-              "public" :makeSchemaFolder
-
-            path[].discardFolder
-        path[].discardFolder
+          path[].discardFolder
       path[].discardFolder
     path[].discardFolder
+  path[].discardFolder
 
   assert::stack_0
 ;

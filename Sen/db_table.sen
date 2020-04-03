@@ -189,6 +189,36 @@
   does>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* make a table (run by all participants)                                     */
+/*----------------------------------------------------------------------------*/
+: makeTable params| sTableNm |
+
+  0 0 locals| pTable pIndex |
+
+  args.tracepoint if
+    sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the table dictionary
+  sTableNm :makeTableDic
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the indexes dictionary
+  sTableNm path[].pushTableFolder assert
+  sTableNm ":makeIndexesSubFolder" find execute
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the table
+  sTableNm :createTable ( ^table ) drop
+  sTableNm find execute to pTable
+
+  // return table pointer
+  pTable
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
