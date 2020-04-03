@@ -5,8 +5,9 @@
 " db_tenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* the tenant category                                                         */
 /*----------------------------------------------------------------------------*/
-: tenant ;
+: \tenant \\category ;
 
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +31,7 @@
 : checkIsTenant ( word )
 
   dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ find: tenant eql if true exit then
+  dup execute dic.kind@ find: \tenant eql if true exit then
   EC_NOT_A_TENANT false
 ;
 
@@ -50,7 +51,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the tenant
   sTenantNm :makeFolder
-    find: tenant swap execute dic.kind!
+    find: \tenant swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make catalogs folder

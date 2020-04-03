@@ -4,7 +4,10 @@
 
 " db_catalog.sen" .verbose
 
-: catalog ;
+/*----------------------------------------------------------------------------*/
+/* the catalog category                                                         */
+/*----------------------------------------------------------------------------*/
+: \catalog \\category ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -23,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsCatalog ( word )
     dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-    dup execute dic.kind@ find: catalog eql if true exit then
+    dup execute dic.kind@ find: \catalog eql if true exit then
     EC_NOT_A_CATALOG false
 ;
 
@@ -43,7 +46,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
   sCatalogNm :makeFolder
-    find: catalog swap execute dic.kind!
+    find: \catalog swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make schemas folder

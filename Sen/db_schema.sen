@@ -4,7 +4,10 @@
 
 " db_schema.sen" .verbose
 
-: schema ;
+/*----------------------------------------------------------------------------*/
+/* the schema category                                                        */
+/*----------------------------------------------------------------------------*/
+: \schema \\category ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -24,7 +27,7 @@
 : checkIsSchema ( word )
 
     dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-    dup execute dic.kind@ find: schema eql if true exit then
+    dup execute dic.kind@ find: \schema eql if true exit then
     EC_NOT_A_SCHEMA false
 ;
 
@@ -44,7 +47,7 @@
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make the schema
  sSchemaNm :makeFolder
-   find: schema swap execute dic.kind!
+   find: \schema swap execute dic.kind!
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make tables folder
