@@ -15,10 +15,10 @@
 
 8 .put
         "se_path.sen"             include
+        "se_folder.sen"           include
         "se_object.sen"           include
         "se_socket.sen"           include
-        "se_prompt.sen"           include
-
+ 
 7 .put
         "grid_grid.sen"           include
         "grid_node.sen"           include
@@ -32,7 +32,6 @@
         "db_tenant.sen"           include
 
 5 .put
-        "se_categories.sen"       include
         "se_tags.sen"             include
         "se_requests.sen"         include
 
@@ -222,6 +221,7 @@ fillOutOps
         "test_rjh.sen"            include
 
 1 .put
+        "se_prompt.sen"           include
         "se_docols.sen"           include
         "se_munge.sen"            include
         "se_vortex.sen"           include
@@ -284,9 +284,9 @@ fillOutOps
   assert::stack_0
 ;
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+//............................................................................//
+//............................................................................//
+//............................................................................//
 
 "Creating default folders" .verbose
 
