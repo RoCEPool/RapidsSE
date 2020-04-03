@@ -160,29 +160,22 @@
 /*----------------------------------------------------------------------------*/
 /* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :createFolder params| sFolderNm |
+: :createFolder
 
-diclock.grabwrite
+  :create
+  WK_OBJECT compiler::current@ word.kind!
+  sizeof_dic allot
 
-  sFolderNm word::new locals| pFolder |
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
 
-  WK_OBJECT pFolder word.kind!
+  compiler::current@ word.embObject dic.init
 
-  sizeof_dic pFolder word.allotObject drop
+  true compiler::current@ word.embObject object.wordbody!
+  find: \folder compiler::current@ word.category!
 
-  pFolder word.embObject object.magic!
-
-  CN_DIC pFolder word.embObject object.class!
-
-  pFolder word.embObject dic.init
-
-  true pFolder word.embObject object.wordbody!
-
-  find: \folder pFolder word.category!
-
-diclock.dropwrite
-
-  pFolder
+  compiler::current@
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -190,15 +183,17 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :makeFolder
 
+diclock.grabwrite
+
   :createFolder dup compiler::current!
+
+diclock.dropwrite
 
   args.verbose if
     compiler::current@ word.name@
     path[].toStr
     "Created folder %v/%v" .printf
   then
-
-  does>
 ;
 
 /*----------------------------------------------------------------------------*/
