@@ -166,9 +166,31 @@
 
   compiler::current@ word.embObject dic.init
 ;
+/*----------------------------------------------------------------------------*/
+//: :createFolder params| sFolderNm pDic |
+//
+//   pDic sFolderNm :createCppObject
+//;
 
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
+/*----------------------------------------------------------------------------*/
+//: :makeFolder params| sFolderNm |
+//
+//  dic::new locals| pDic |
+//
+//diclock.grabwrite
+//
+//  find: \folder pDic sFolderNm :createFolder dup compiler::current!
+//
+//diclock.dropwrite
+//
+//  args.verbose if
+//    compiler::current@ word.name@
+//    path[].toStr
+//    "Created folder %v/%v" .printf
+//  then
+//;
 /*----------------------------------------------------------------------------*/
 : :makeFolder
 
