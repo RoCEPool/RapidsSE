@@ -11,9 +11,9 @@
 
  params| sSchemaNm |
 
-  checkInSchemas not if false exit then
+  path[].checkInSchemas not if false exit then
   sSchemaNm word::isKnown not if EC_NO_SUCH_SCHEMA false exit then
-  checkIsSchema  not if false exit then
+  path[].checkIsSchema  not if false exit then
   folder.isEmpty   not if false exit then
   folder.notUsed   not if false exit then
 

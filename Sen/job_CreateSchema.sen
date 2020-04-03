@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : checkMakeSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
 
-  checkInSchemas   not if false exit then
+  path[].checkInSchemas   not if false exit then
   checkIsNotSchema not if false exit then
 
   true

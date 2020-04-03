@@ -24,7 +24,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
-  checkInSchemas not if pJob_ListSchemas ERROR_REQUEST !!logError exit then
+  path[].checkInSchemas not if pJob_ListSchemas ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

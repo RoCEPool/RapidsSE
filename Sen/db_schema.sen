@@ -10,25 +10,31 @@
 : \schema \\category ;
 
 /*----------------------------------------------------------------------------*/
+/* test if current folder is ../tables                                        */
 /*----------------------------------------------------------------------------*/
 : folder[].isSchemas
-    folder[] dic.name "schemas" str.equal
+
+  folder[] dic.name "schemas" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check current folder is ../schemas                                         */
 /*----------------------------------------------------------------------------*/
-: checkInSchemas
-    folder[].isSchemas if true exit then
-    EC_NOT_IN_SCHEMAS false
+: path[].checkInSchemas
+
+  folder[].isSchemas if true exit then
+  
+  EC_NOT_IN_SCHEMAS false
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check word is a schema                                                     */
 /*----------------------------------------------------------------------------*/
-: checkIsSchema ( word )
+: path[].checkIsSchema ( word )
 
-    dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-    dup execute dic.kind@ find: \schema eql if true exit then
-    EC_NOT_A_SCHEMA false
+  dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ find: \schema eql if true exit then
+  EC_NOT_A_SCHEMA false
 ;
 
 /*----------------------------------------------------------------------------*/
