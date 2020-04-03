@@ -6971,39 +6971,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of vocab.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged vocab.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* vocab.sen -- additional high-level words                                   */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-vocab.sen\\\" .verbose\n"
-    "\n"
-    "\\\"vocab_core.sen\\\"     include\n"
-    "\\\"vocab_word.sen\\\"     include\n"
-    "\n"
-    "\\\"vocab_str.sen\\\"      include\n"
-    "\n"
-    "\\\"vocab_log.sen\\\"      include\n"
-    "\\\"vocab_path.sen\\\"     include\n"
-    "\\\"vocab_object.sen\\\"   include\n"
-    "\\\"vocab_socket.sen\\\"   include\n"
-    "\\\"vocab_prompt.sen\\\"   include\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT vocab.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_1m.sen
 
   sFileContents =
@@ -17415,21 +17382,32 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"Compilation progress: \\\" .put\n"
     "\n"
     "9 .put\n"
-    "        \\\"se_categories.sen\\\" include\n"
-    "8 .put  \\\"vocab.sen\\\"         include\n"
+    "        \\\"se_categories.sen\\\"  include\n"
+    "8 .put\n"
+    "        \\\"vocab_core.sen\\\"     include\n"
+    "        \\\"vocab_word.sen\\\"     include\n"
+    "\n"
+    "        \\\"vocab_str.sen\\\"      include\n"
+    "\n"
+    "        \\\"vocab_log.sen\\\"      include\n"
+    "        \\\"vocab_path.sen\\\"     include\n"
+    "        \\\"vocab_object.sen\\\"   include\n"
+    "        \\\"vocab_socket.sen\\\"   include\n"
+    "        \\\"vocab_prompt.sen\\\"   include\n"
+    "\n"
     "7 .put  \n"
-    "6 .put  \\\"gridModel.sen\\\"     include\n"
-    "5 .put  \\\"dbObjects.sen\\\"     include\n"
+    "6 .put  \\\"gridModel.sen\\\"      include\n"
+    "5 .put  \\\"dbObjects.sen\\\"      include\n"
     "4 .put  \n"
-    "        \\\"se_categories.sen\\\" include\n"
-    "         \\\"se_tags.sen\\\"       include\n"
-    "        \\\"se_requests.sen\\\"   include\n"
-    "3 .put  \\\"jobModel.sen\\\"      include\n"
-    "2 .put  \\\"operators.sen\\\"     include\n"
-    "        \\\"testing.sen\\\"       include\n"
-    "1 .put  \\\"se_docols.sen\\\"     include\n"
-    "        \\\"se_munge.sen\\\"      include\n"
-    "        \\\"se_vortex.sen\\\"     include\n"
+    "        \\\"se_categories.sen\\\"  include\n"
+    "        \\\"se_tags.sen\\\"        include\n"
+    "        \\\"se_requests.sen\\\"    include\n"
+    "3 .put  \\\"jobModel.sen\\\"       include\n"
+    "2 .put  \\\"operators.sen\\\"      include\n"
+    "        \\\"testing.sen\\\"        include\n"
+    "1 .put  \\\"se_docols.sen\\\"      include\n"
+    "        \\\"se_munge.sen\\\"       include\n"
+    "        \\\"se_vortex.sen\\\"      include\n"
     "0 .put\n"
     "\n"
     ".\\\\n\n"

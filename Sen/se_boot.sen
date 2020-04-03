@@ -7,21 +7,32 @@
 "Compilation progress: " .put
 
 9 .put
-        "se_categories.sen" include
-8 .put  "vocab.sen"         include
+        "se_categories.sen"  include
+8 .put
+        "vocab_core.sen"     include
+        "vocab_word.sen"     include
+
+        "vocab_str.sen"      include
+
+        "vocab_log.sen"      include
+        "vocab_path.sen"     include
+        "vocab_object.sen"   include
+        "vocab_socket.sen"   include
+        "vocab_prompt.sen"   include
+
 7 .put  
-6 .put  "gridModel.sen"     include
-5 .put  "dbObjects.sen"     include
+6 .put  "gridModel.sen"      include
+5 .put  "dbObjects.sen"      include
 4 .put  
-        "se_categories.sen" include
-         "se_tags.sen"       include
-        "se_requests.sen"   include
-3 .put  "jobModel.sen"      include
-2 .put  "operators.sen"     include
-        "testing.sen"       include
-1 .put  "se_docols.sen"     include
-        "se_munge.sen"      include
-        "se_vortex.sen"     include
+        "se_categories.sen"  include
+        "se_tags.sen"        include
+        "se_requests.sen"    include
+3 .put  "jobModel.sen"       include
+2 .put  "operators.sen"      include
+        "testing.sen"        include
+1 .put  "se_docols.sen"      include
+        "se_munge.sen"       include
+        "se_vortex.sen"      include
 0 .put
 
 .\n
