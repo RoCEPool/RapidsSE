@@ -36,6 +36,48 @@
     EC_NOT_A_CATALOG false
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* make a named catalog folder (run by participant)                           */
+/*----------------------------------------------------------------------------*/
+: :makeCatalogFolder ( "<catalogNm>" -- )
+
+
+  params| sCatalogNm |
+
+  args.tracepoint if
+   sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the catalog
+  sCatalogNm :createCatalog ( ^catalog )
+  drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make schemas folder
+  sCatalogNm :makeSchemasFolder ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a catalogs folder under given named tenant                            */
+/*----------------------------------------------------------------------------*/
+: :makeCatalogsFolder ( "<tenantNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "catalogs"   ( dic "catalogs" )
+  swap         ( "catalogs" dic )
+  :makeSubFolder   ( )
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
