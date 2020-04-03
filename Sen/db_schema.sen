@@ -6,18 +6,6 @@
 
 : schema ;
 
-//: :makeSchemasFolder path[].pushFolder "schemas" :dic find: folder swap execute dic.kind! path[].discardFolder ;
-
-
-/*----------------------------------------------------------------------------*/
-/* create a new schema folder                                                  */
-/*----------------------------------------------------------------------------*/
-: :createSchema
-    :makeFolder
-         //dup find: schema swap word.category!
-         dup find: schema swap execute dic.kind!
-;
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 : folder[].isSchemas
@@ -47,10 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a schema folder                                                       */
 /*----------------------------------------------------------------------------*/
-: :makeSchemaFolder ( "<schemaNm>" --  )
- 
-
-  params| sSchemaNm |
+: :makeSchemaFolder params| sSchemaNm |
 
   args.tracepoint if
     sSchemaNm "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -58,8 +43,8 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make the schema
- sSchemaNm :createSchema ( ^schema )
- drop
+ sSchemaNm :makeFolder
+   find: schema swap execute dic.kind!
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make tables folder

@@ -7,15 +7,6 @@
 : catalog ;
 
 /*----------------------------------------------------------------------------*/
-/* create a new catalog folder                                                */
-/*----------------------------------------------------------------------------*/
-: :createCatalog
-    :makeFolder
-         //dup find: catalog swap word.category!
-         dup find: catalog swap execute dic.kind!
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 : folder[].isCatalogs
     folder[] dic.name "catalogs" str.equal
@@ -43,10 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named catalog folder (run by participant)                           */
 /*----------------------------------------------------------------------------*/
-: :makeCatalogFolder ( "<catalogNm>" -- )
-
-
-  params| sCatalogNm |
+: :makeCatalogFolder params| sCatalogNm |
 
   args.tracepoint if
    sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -54,8 +42,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
-  sCatalogNm :createCatalog ( ^catalog )
-  drop
+  sCatalogNm :makeFolder
+    find: catalog swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make schemas folder
