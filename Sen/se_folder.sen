@@ -162,9 +162,13 @@
 /*----------------------------------------------------------------------------*/
 : :CREATEOBJECT
 
+  swap
+
   :create
 
   WK_OBJECT compiler::current@ word.kind!
+
+  allot
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -172,8 +176,7 @@
 /*----------------------------------------------------------------------------*/
 : :createFolder
 
-  :createObject
-  sizeof_dic allot
+  sizeof_dic :createObject
 
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!

@@ -108,8 +108,7 @@
 /*----------------------------------------------------------------------------*/
 : :createIndex
 
-  :createObject
-  sizeof_index allot
+  sizeof_index :createObject
 
   compiler::current@ word.embObject object.magic!
   CN_INDEX compiler::current@ word.embObject object.class!

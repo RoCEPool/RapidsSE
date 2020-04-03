@@ -174,8 +174,7 @@
 /*----------------------------------------------------------------------------*/
 : :createTable
 
-  :createObject
-  sizeof_table allot
+  sizeof_table :createObject
 
   compiler::current@ word.embObject object.magic!
   CN_TABLE compiler::current@ word.embObject object.class!
