@@ -169,6 +169,12 @@
   WK_OBJECT compiler::current@ word.kind!
 
   allot
+
+  compiler::current@ word.embObject object.magic!
+  true compiler::current@ word.embObject object.wordbody!
+
+  compiler::current@
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -178,16 +184,12 @@
 
   sizeof_dic :createObject
 
-  compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
 
-  true compiler::current@ word.embObject object.wordbody!
   find: \folder compiler::current@ word.category!
 
   compiler::current@ word.embObject dic.init
 
-  compiler::current@
-  does>
 ;
 
 /*----------------------------------------------------------------------------*/

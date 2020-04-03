@@ -176,16 +176,11 @@
 
   sizeof_table :createObject
 
-  compiler::current@ word.embObject object.magic!
   CN_TABLE compiler::current@ word.embObject object.class!
 
-  true compiler::current@ word.embObject object.wordbody!
   find: \table compiler::current@ word.category!
 
   compiler::current@ word.embObject table.init
-
-  compiler::current@
-  does>
 ;
 
 /*----------------------------------------------------------------------------*/
