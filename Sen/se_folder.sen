@@ -160,7 +160,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: :makeFolder_proper params| sFolderNm |
+: :createFolder params| sFolderNm |
 
 diclock.grabwrite
 
@@ -182,19 +182,21 @@ diclock.grabwrite
 
 diclock.dropwrite
 
-  args.verbose if
-    sFolderNm path[].toStr "Created folder %v/%v" .printf
-  then
-
   pFolder
 ;
 
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-: :makeFolder ( sFolderNm -- pFolder )
+: :makeFolder
 
-  :makeFolder_proper dup compiler::current!
+  :createFolder dup compiler::current!
+
+  args.verbose if
+    compiler::current@ word.name@
+    path[].toStr
+    "Created folder %v/%v" .printf
+  then
 
   does>
 ;

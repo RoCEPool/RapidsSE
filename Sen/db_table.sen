@@ -161,7 +161,8 @@
 : :makeTableDic ( "<tableNm>" -- )
 
   args.tracepoint if
-    dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    dup "MAKING TABLE DIC " swap str.cat
+     " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   folder[]
