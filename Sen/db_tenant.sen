@@ -8,14 +8,6 @@
 /*----------------------------------------------------------------------------*/
 : tenant ;
 
-/*----------------------------------------------------------------------------*/
-/* create a new tenant folder                                                 */
-/*----------------------------------------------------------------------------*/
-: :createTenant
-
-  :makeFolder
-     dup find: tenant swap execute dic.kind!
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -49,10 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: :makeTenantFolder ( "<tenantNm>" -- )
-
-
-  params| sTenantNm |
+: :makeTenantFolder params| sTenantNm |
 
   args.tracepoint if
     sTenantNm "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -60,14 +49,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the tenant
-  sTenantNm :createTenant ( ^tenant )
-  drop
+  sTenantNm :makeFolder
+    dup find: tenant swap execute dic.kind! drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make catalogs folder
   sTenantNm :makeCatalogsFolder ( )
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
