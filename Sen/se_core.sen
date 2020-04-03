@@ -73,6 +73,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create a new C++ object-word                                               */
+/*----------------------------------------------------------------------------*/
+: :CREATECPPOBJECT ( pCatg pObject sObjectNM -- )
+
+  :create ( pCatg eClass nBytes )
+
+  WK_OBJECT compiler::current@ word.kind! ( pCatg pObject )
+
+  compiler::current@ word.object! ( pCatg )
+
+  compiler::current@ word.category! ( )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  compiler::current@
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
 /* find a word using its name                                                 */
 /*----------------------------------------------------------------------------*/
 : FIND
