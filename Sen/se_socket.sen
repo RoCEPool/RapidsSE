@@ -1,37 +1,31 @@
 /*============================================================================*/
-/* vocab_word.sen -- additional word related words                          */
+/* se_socket.sen -- socket primitives                                         */
 /*============================================================================*/
 
-" vocab_word.sen" .verbose
+" se_socket.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check for known word                                                       */
+/* get this tasks send socket                                                 */
 /*----------------------------------------------------------------------------*/
-: word::isKnown ( <"wordNm"> )
-  find
-  not if EC_NO_SUCH_WORD false exit_rt then
-  true
+: socket[]
+
+  task[] task.sendNode@ node.sendSocket@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* return word name with any suffix removed                                   */
+/* grab lock on the tasks send socket                                         */
 /*----------------------------------------------------------------------------*/
-: word.name_trunc params| pWord |
+: socket[].lock ( -- )
 
-  "_" pWord word.name@ str.removeSuffix
+  task[] task.sendNode@ node.sendSocket@ socket.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
-/* list all words in the current dictionary                                   */
+/* drop lock on the tasks send socket                                         */
 /*----------------------------------------------------------------------------*/
-: words prompt
+: socket[].unlock ( -- )
 
-  //folder[] dic.lastWord dup
-  dic::root dic.lastWord dup
-  iterate                        // iterate word cursor
-    object@ word.name@ .         // print the name of the word
-    object@ word.prev object!    // advance cursor backwards thru words
-  next
+  task[] task.sendNode@ node.sendSocket@ socket.dropWrite
 ;
 
 /*============================================================================*/
