@@ -5,152 +5,6 @@
 " se_path.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* get current folder path as string                                          */
-/*----------------------------------------------------------------------------*/
-: path[].toStr ( -- s )
-
-  "/"
-
-  // iterate thru each folder in path and concat to end
-  path[].depth 0 ?do
-
-    I if "/" str.cat then
-
-    // compute the path subscript
-    //path[].depth 1 - I -
-    I
-
-    // pick the path, get its name and concat name to working string
-    path[].pick dic.name str.cat
-
-  loop
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* make a new folder (leave pFolder on stack)                                 */
-/*----------------------------------------------------------------------------*/
-: :makeFolder_proper params| sFolderNm |
-
-diclock.grabwrite
-
-  sFolderNm word::new locals| pFolder |
-
-  WK_OBJECT pFolder word.kind!
-
-  sizeof_dic pFolder word.allotObject drop
-
-  pFolder word.embObject object.magic!
-
-  CN_DIC pFolder word.embObject object.class!
-
-  pFolder word.embObject dic.init
-
-  true pFolder word.embObject object.wordbody!
-
-  find: \folder pFolder word.category!
-
-diclock.dropwrite
-
-  args.verbose if
-    sFolderNm path[].toStr "Created folder %v/%v" .printf
-  then
-
-  pFolder
-;
-
-/*----------------------------------------------------------------------------*/
-/* make new folder given name (create does> rtn and leave pFolder on stack)   */
-/*----------------------------------------------------------------------------*/
-: :makeFolder ( sFolderNm -- pFolder )
-
-  :makeFolder_proper dup compiler::current!
-  does>
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a sub-folder under given folder                                       */
-/*----------------------------------------------------------------------------*/
-: :makeSubFolder params| pFolder sSubFolderNm |
-
-  pFolder path[].pushFolder
-
-    find: \folder
-    sSubFolderNm :makeFolder execute dic.kind!
-
-  path[].discardFolder
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-: folder.hasRef ( word )
-
-  dup execute dic.ref
-;
-
-/*----------------------------------------------------------------------------*/
-/* check dic is empty                                                         */
-/*----------------------------------------------------------------------------*/
-: folder.isEmpty ( pFolder -- true | error false )
-
-  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-: word.isFolder params| pWord |
-
-  pWord not if EC_NO_SUCH_FOLDER false exit_rt then
-
-  pWord word.category@ find: \folder eql if true exit_rt then
-
-  EC_NOT_A_FOLDER false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check folder is not in use                                                 */
-/*----------------------------------------------------------------------------*/
-: folder.notUsed ( pFolder -- true | error false )
-
-  folder.hasRef if EC_FOLDER_IN_USE false exit_rt then
-
-  true
-;
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get current folder                                                         */
-/*----------------------------------------------------------------------------*/
-: folder[] ( -- )
-
-  path[].depth 1 - path[].pick
-;
-
-/*----------------------------------------------------------------------------*/
-/* get current folder contents                                                */
-/*----------------------------------------------------------------------------*/
-: folder[].contentStr ( -- s )
-
-  ""
-  folder[] dic.lastWord dup iterate
-
-    object@ word.name@ str.cat
-
-    " " str.cat
-
-    object@ word.prev object!
-
-  next
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* drop all folders from path stack                                           */
 /*----------------------------------------------------------------------------*/
 : path[].discardFolderAll ( -- )
@@ -203,11 +57,99 @@ diclock.dropwrite
   loop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* get current folder path as string                                          */
+/*----------------------------------------------------------------------------*/
+: path[].toStr ( -- s )
+
+  "/"
+
+  // iterate thru each folder in path and concat to end
+  path[].depth 0 ?do
+
+    I if "/" str.cat then
+
+    // compute the path subscript
+    //path[].depth 1 - I -
+    I
+
+    // pick the path, get its name and concat name to working string
+    path[].pick dic.name str.cat
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+: folder.forgetAll ( dic -- )
+
+  dup dic.lastWord not if drop exit_rt then
+
+  dup path[].pushFolder
+
+  begin
+
+    dup dic.lastWord word.name@ :forget
+
+    dup dic.lastWord not until
+
+  path[].discardFolder
+
+  drop
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+: folder.hasRef ( word )
 
+  dup execute dic.ref
+;
+
+/*----------------------------------------------------------------------------*/
+/* check dic is empty                                                         */
+/*----------------------------------------------------------------------------*/
+: folder.isEmpty ( pFolder -- true | error false )
+
+  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check folder is not in use                                                 */
+/*----------------------------------------------------------------------------*/
+: folder.notUsed ( pFolder -- true | error false )
+
+  folder.hasRef if EC_FOLDER_IN_USE false exit_rt then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* get current folder                                                         */
+/*----------------------------------------------------------------------------*/
+: folder[] ( -- )
+
+  path[].depth 1 - path[].pick
+;
+
+/*----------------------------------------------------------------------------*/
+/* get current folder contents                                                */
+/*----------------------------------------------------------------------------*/
+: folder[].contentStr ( -- s )
+
+  ""
+  folder[] dic.lastWord dup iterate
+
+    object@ word.name@ str.cat
+
+    " " str.cat
+
+    object@ word.prev object!
+
+  next
+;
 
 /*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string                 */
@@ -286,30 +228,87 @@ diclock.dropwrite
   iCount pJob job.rowsProcessed!
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* forget all words in given dictionary                                       */
+/* make a new folder (leave pFolder on stack)                                 */
 /*----------------------------------------------------------------------------*/
-: folder.forgetAll ( dic -- )
+: :makeFolder_proper params| sFolderNm |
 
-  dup dic.lastWord not if drop exit_rt then
+diclock.grabwrite
 
-  dup path[].pushFolder
+  sFolderNm word::new locals| pFolder |
 
-  begin
+  WK_OBJECT pFolder word.kind!
 
-    dup dic.lastWord word.name@ :forget
+  sizeof_dic pFolder word.allotObject drop
 
-    dup dic.lastWord not until
+  pFolder word.embObject object.magic!
 
-  path[].discardFolder
+  CN_DIC pFolder word.embObject object.class!
 
-  drop
+  pFolder word.embObject dic.init
+
+  true pFolder word.embObject object.wordbody!
+
+  find: \folder pFolder word.category!
+
+diclock.dropwrite
+
+  args.verbose if
+    sFolderNm path[].toStr "Created folder %v/%v" .printf
+  then
+
+  pFolder
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make new folder given name (create does> rtn and leave pFolder on stack)   */
+/*----------------------------------------------------------------------------*/
+: :makeFolder ( sFolderNm -- pFolder )
+
+  :makeFolder_proper dup compiler::current!
+
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a sub-folder under given folder                                       */
+/*----------------------------------------------------------------------------*/
+: :makeSubFolder params| pFolder sSubFolderNm |
+
+  pFolder path[].pushFolder
+
+    find: \folder
+    sSubFolderNm :makeFolder execute dic.kind!
+
+  path[].discardFolder
+;
+
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: word.isFolder params| pWord |
+
+  pWord not if EC_NO_SUCH_FOLDER false exit_rt then
+
+  pWord word.category@ find: \folder eql if true exit_rt then
+
+  EC_NOT_A_FOLDER false
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* list all words (long form) in the current dictionary                       */
