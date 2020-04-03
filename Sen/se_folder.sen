@@ -175,6 +175,21 @@
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
+: :makeFolder params| sFolderNm |
+
+diclock.grabwrite
+
+  sFolderNm :createFolder dup compiler::current!
+
+diclock.dropwrite
+
+  args.verbose if
+    compiler::current@ word.name@
+    path[].toStr
+    "Created folder %v/%v" .printf
+  then
+;
+/*----------------------------------------------------------------------------*/
 //: :makeFolder params| sFolderNm |
 //
 //  dic::new locals| pDic |
@@ -191,21 +206,6 @@
 //    "Created folder %v/%v" .printf
 //  then
 //;
-/*----------------------------------------------------------------------------*/
-: :makeFolder
-
-diclock.grabwrite
-
-  :createFolder dup compiler::current!
-
-diclock.dropwrite
-
-  args.verbose if
-    compiler::current@ word.name@
-    path[].toStr
-    "Created folder %v/%v" .printf
-  then
-;
 
 /*----------------------------------------------------------------------------*/
 /* make a sub-folder under given folder                                       */
