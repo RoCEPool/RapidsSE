@@ -5,29 +5,35 @@
 " db_catalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* the catalog category                                                         */
+/* the catalog category                                                       */
 /*----------------------------------------------------------------------------*/
 : \catalog \\category ;
 
 /*----------------------------------------------------------------------------*/
+/* test if current folder is ../catalogs                                      */
 /*----------------------------------------------------------------------------*/
 : folder[].isCatalogs
-    folder[] dic.name "catalogs" str.equal
+
+  folder[] dic.name "catalogs" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check current folder is ../catalogs                                        */
 /*----------------------------------------------------------------------------*/
-: checkInCatalogs
-    folder[].isCatalogs if true exit then
-    EC_NOT_IN_CATALOGS false
+: path[].checkInCatalogs
+
+  folder[].isCatalogs if true exit then
+  EC_NOT_IN_CATALOGS false
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check word is a catalog                                                    */
 /*----------------------------------------------------------------------------*/
-: checkIsCatalog ( word )
-    dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
-    dup execute dic.kind@ find: \catalog eql if true exit then
-    EC_NOT_A_CATALOG false
+: path[].checkIsCatalog ( word )
+
+  dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ find: \catalog eql if true exit then
+  EC_NOT_A_CATALOG false
 ;
 
 /*----------------------------------------------------------------------------*/
