@@ -7,79 +7,163 @@
 "Compilation progress: " .put
 
 9 .put
-        "se_categories.sen"  include
-        "se_core.sen"        include
-        "se_word.sen"        include
-        "se_str.sen"         include
-        "se_log.sen"         include
+        "se_categories.sen"       include
+        "se_core.sen"             include
+        "se_word.sen"             include
+        "se_str.sen"              include
+        "se_log.sen"              include
 
 8 .put
-        "se_path.sen"        include
-        "se_object.sen"      include
-        "se_socket.sen"      include
-        "se_prompt.sen"      include
+        "se_path.sen"             include
+        "se_object.sen"           include
+        "se_socket.sen"           include
+        "se_prompt.sen"           include
 
 7 .put
-        "grid_grid.sen"      include
-        "grid_node.sen"      include
+        "grid_grid.sen"           include
+        "grid_node.sen"           include
 
 6 .put
-        "db_table.sen"       include
-        "db_partition.sen"   include
-        "db_index.sen"       include
-        "db_schema.sen"      include
-        "db_catalog.sen"     include
-        "db_tenant.sen"      include
+        "db_table.sen"            include
+        "db_partition.sen"        include
+        "db_index.sen"            include
+        "db_schema.sen"           include
+        "db_catalog.sen"          include
+        "db_tenant.sen"           include
 
 5 .put
-        "se_categories.sen"  include
-        "se_tags.sen"        include
-        "se_requests.sen"    include
+        "se_categories.sen"       include
+        "se_tags.sen"             include
+        "se_requests.sen"         include
 
 4 .put
-        "jobInfo.sen"        include
-        "jobOperand.sen"     include
+        "jobInfo.sen"             include
+        "jobOperand.sen"          include
         "OPERAND__handlers.sen"   include
-        "jobSyntax.sen"      include
-        "jobWords.sen"       include
-        "job2pc.sen"         include
+        "jobSyntax.sen"           include
+        "jobWords.sen"            include
+        "job2pc.sen"              include
 
-        "jobMarkers.sen"     include
+        "jobMarkers.sen"          include
 
-        "jobHooks.sen"       include
-        "jobSuffix.sen"      include
+        "jobHooks.sen"            include
+        "jobSuffix.sen"           include
 
-        "jobSeeds.sen"       include
+        "jobSeeds.sen"            include
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        "job_Set.sen"        include
+        "job_Set.sen"             include
+
+        "job__Ended.sen"          include
+        "job__End.sen"            include
+        "job__Cancelled.sen"      include
+        "job__Cancel.sen"         include
+        "job__Executed.sen"       include
+        "job__Execute.sen"        include
+        "job__Begun.sen"          include
+
+        "job_Receiver.sen"        include
+        "job_Connector.sen"       include
+        "Job_Answer.sen"          include
+
+        "job_Alarm.sen"           include
+        "job_AnalyzeIndex.sen"    include
+        "job_AnalyzeTable.sen"    include
+
+        "job_BootCluster.sen"     include
+
+        "job_Cf.sen"              include
+        "job_CompactIndex.sen"    include
+        "job_ConnectCluster.sen"  include
+        "Job_CopyBuffer.sen"      include
+        "job_CreateCatalog.sen"   include
+        "job_CreateIndex.sen"     include
+        "job_CreateSchema.sen"    include
+        "job_CreateTenant.sen"    include
+        "job_CreateTable.sen"     include
+
+        "job_DefineNode.sen"      include
+        "job_Docol.sen"           include
+        "job_DropCatalog.sen"     include
+        "job_DropIndex.sen"       include
+        "job_DropSchema.sen"      include
+        "job_DropTable.sen"       include
+        "job_DropTenant.sen"      include
+        "job_DumpIndex.sen"       include
+        "job_DumpTable.sen"       include
+
+        "job_FetchRows.sen"       include
+        "job_ForgetNode.sen"      include
+
+        "Job_Lf.sen"              include
+        "Job_ListCatalogs.sen"    include
+        "Job_ListIdxColumns.sen"  include
+        "Job_ListIndexes.sen"     include
+        "Job_ListPartColumns.sen" include
+        "Job_ListPartitions.sen"  include
+        "Job_ListSchemas.sen"     include
+        "Job_ListTables.sen"      include
+        "Job_ListTenants.sen"     include
+        "Job_LoadTable.sen"       include
+
+        "Job_Periodic.sen"        include
+        "Job_Ping.sen"            include
+        "Job_Pipeline.sen"        include
+        "Job_Pwf.sen"             include
+
+        "Job_Service.sen"         include
+        "Job_ShowCluster.sen"     include
+        "Job_SizeIndex.sen"       include
+        "Job_SizeTable.sen"       include
+        "job_StartNode.sen"       include
+        "job_Status.sen"          include
+        "job_SubFetch.sen"        include
+        "job_SubLoader.sen"       include
+        "job_Supervisor.sen"      include
+
+        "job_TableSizes.sen"      include
+
+        "job_Universal.sen"       include
+        "job_UseSchema.sen"       include
+
+        "job_VerifyIndex.sen"     include
+        "job_VisualizeIndex.sen"  include
+        "job_VisualizeTable.sen"  include
+        "job_VerifyTable.sen"     include
+
+        "job_Waker.sen"           include
+        "job_WriteBuffer.sen"     include
+
+      //"otherJobs"               include-subdir
+
+        "job_Start.sen"           include // last
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 3 .put
-        "operators.sen"      include
+        "operators.sen"           include
 
 2 .put
-        "test_encodingData.sen" include
+        "test_encodingData.sen"   include
 
-        "test_jData.sen"     include
-        "test_misc.sen"      include
-        "test_str.sen"       include
-        "test_unit.sen"      include
-        "test_tData.sen"     include
+        "test_jData.sen"          include
+        "test_misc.sen"           include
+        "test_str.sen"            include
+        "test_unit.sen"           include
+        "test_tData.sen"          include
 
-        "test_gGen.sen"      include
-        "test_iData.sen"     include
-        "test_dData.sen"     include
-        "test_1m.sen"        include
-        "test_sleep.sen"     include
+        "test_gGen.sen"           include
+        "test_iData.sen"          include
+        "test_dData.sen"          include
+        "test_1m.sen"             include
+        "test_sleep.sen"          include
 
-        "test_rjh.sen"       include
+        "test_rjh.sen"            include
 
 1 .put
-        "se_docols.sen"      include
-        "se_munge.sen"       include
-        "se_vortex.sen"      include
+        "se_docols.sen"           include
+        "se_munge.sen"            include
+        "se_vortex.sen"           include
 
 0 .put
 
