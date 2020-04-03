@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : checkMakeTenant ( "<tenantNm>" -- true | errorCode false )
 
-  checkInTenants    not if false exit then
+  path[].checkInTenants    not if false exit then
   checkIsNotTenant  not if false exit then
 
   true

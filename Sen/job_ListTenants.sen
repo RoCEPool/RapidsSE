@@ -24,7 +24,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tenants folder
-  checkInTenants not if pJob_ListTenants ERROR_REQUEST !!logError exit then
+  path[].checkInTenants not if pJob_ListTenants ERROR_REQUEST !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

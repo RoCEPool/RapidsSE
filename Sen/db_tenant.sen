@@ -5,30 +5,31 @@
 " db_tenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* the tenant category                                                         */
+/* the tenant category                                                        */
 /*----------------------------------------------------------------------------*/
 : \tenant \\category ;
 
-
 /*----------------------------------------------------------------------------*/
+/* test if current folder is ../tennants                                      */
 /*----------------------------------------------------------------------------*/
 : folder[].isTenants
 
-    folder[] dic.name "tenants" str.equal
+  folder[] dic.name "tenants" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check current folder is ../tenants                                         */
 /*----------------------------------------------------------------------------*/
-: checkInTenants
+: path[].checkInTenants
 
-    folder[].isTenants if true exit then
-    EC_NOT_IN_TENANTS false
+  folder[].isTenants if true exit then
+  EC_NOT_IN_TENANTS false
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a tenant folder                                            */
+/* check if word is a tenant folder                                           */
 /*----------------------------------------------------------------------------*/
-: checkIsTenant ( word )
+: path[].checkIsTenant ( word )
 
   dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
   dup execute dic.kind@ find: \tenant eql if true exit then
