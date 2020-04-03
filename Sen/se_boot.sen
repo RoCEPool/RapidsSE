@@ -20,7 +20,8 @@
         "se_prompt.sen"      include
 
 7 .put
-        "gridModel.sen"      include
+        "grid_grid.sen"      include
+        "grid_node.sen"      include
 
 6 .put
         "db_table.sen"       include
