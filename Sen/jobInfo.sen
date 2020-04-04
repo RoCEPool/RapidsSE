@@ -99,7 +99,93 @@ end
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* preliminary setup                                                          */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_SetUp
 
+"
+: /localLiteOp/_setup
+
+  job[] job.enameSet@ enameSet.asStr .
+
+  // find the __ table
+  <streamDef> op__tableDef assert
+
+  // create a new streamDef
+  table[] StreamDef[].new
+
+  true
+  ;
+"
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_PulseMarker
+
+"
+  : /localLiteOp/_PulseMarker \\handler
+
+    Pipein[].pipeout
+
+    /localLiteOp/_setup  assert
+    /localLiteOp/_action assert
+
+    Operand[].newEosMarker
+    Operand[].pipeOut
+
+    true
+  ;
+"
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* execute for space req                              (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_req
+
+"
+  : /localLiteOp/_req \\operator
+
+    LogReqEntry SEED_REQ
+
+    op__topology
+
+    find: /localLiteOp/_PulseMarker  ZK_PULSEMARKER op[].handler!
+
+    op__loop
+
+    LogReqExit
+    job::deleteThis
+    DONE_REQ_OP
+  ;
+"
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* get space on each node                                                     */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_procedure
+
+"
+  procedure /localLiteOp/
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | /localLiteOp/ |
+      output | sink | stageA
+
+  end
+"
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -320,11 +406,21 @@ end
       "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_procedure   str.replace procedure::add
 
+    else
+
+    "<localLiteOp>" pEnameSet EnameSet.hasName if
+      sWordNm_trunc "LocalLiteOP: %v\n" .printf
+
+      "/localLiteOp/" sWordNm_trunc __localLiteop_Setup       str.replace >interpret
+      "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
+      "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
+      "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure   str.replace procedure::add
+
     then
 
     pWord .fillOutEnameSet_local
 
-  then then
+  then then then
 
   // pEnameSet EnameSet.asStr .
 ;

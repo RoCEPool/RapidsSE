@@ -45,6 +45,11 @@ create table definition __nodeInfo (
   partitionCount INTEGER NOT NULL
 );
 
+// this is C_TDEF_PINGINFO
+create table definition __pingInfo (
+  PONG      VARCHAR NOT NULL
+);
+
 // this is C_TDEF_PROGRESSUNITS
 create table definition __progressUnits (
   UNITS      INTEGER NOT NULL

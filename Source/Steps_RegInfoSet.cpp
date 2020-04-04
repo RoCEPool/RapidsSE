@@ -13,6 +13,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vRegInfoSetAddColumnDef);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
+  vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vRegInfoSetAddPingInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addSpaceInfo"_Stz,   &Step::vRegInfoSetAddSpaceInfo);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vRegInfoSetAddTotalUnits);
@@ -132,6 +133,28 @@ void Step::vRegInfoSetAddNodeInfo(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addPingInfo -- add a row to infoset with the ping response       */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddPingInfo(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddPingInfo"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  "pong"_Stz,
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
   EXIT();
 }
 

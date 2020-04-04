@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* ping requests (on originating node)                                        */
 /*----------------------------------------------------------------------------*/
-: ping_req ( -- <R> )
+: ping2_req ( -- <R> )
 
   LogEntry SEED_REQ
 
@@ -45,9 +45,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: ping :: ping ;
+jobSyntax: ping2 :: ping2 ;
 
-jobInfo: ping
+jobInfo: ping2
 {
   <jobDesc>  = "--description of job--"
   

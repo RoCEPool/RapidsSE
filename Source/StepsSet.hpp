@@ -1040,6 +1040,7 @@ public:
   void vRegInfoSetAddColumnDef(void);
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddNodeInfo(void);
+  void vRegInfoSetAddPingInfo(void);
   void vRegInfoSetAddProgressUnits(void);
   void vRegInfoSetAddSpaceInfo(void);
   void vRegInfoSetAddTotalUnits(void);

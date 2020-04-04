@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* OP_ping.sen -- Operator space                                             */
+/*============================================================================*/
+
+" OP_ping.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: ping_action
+
+  "ping sleeps" .
+  1 thread::sleepSsec
+  "ping wakes" .
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // add nodeInfo to the infoSet
+  StreamDef[] InfoSet[].addPingInfo assert
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: ping :: ping ;
+
+: ping opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>    = "--description of operator--"
+    <locaLiteOp> = true
+    <streamDef>  = __pingInfo
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
