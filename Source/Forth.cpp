@@ -152,6 +152,9 @@ void Forth::vContentDump(void)
   m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
 
   m_oDicStack.vContentDump();
+  
+  if (pWord)
+    AM::vWordSee(pWord,&m_oDicStack);
 }
 
 /*----------------------------------------------------------------------------*/

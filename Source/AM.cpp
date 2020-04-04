@@ -1503,7 +1503,9 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   s48K sString;
   
   SP_Word spWord;
-  vTrace("%s\n"_Stz,spWord.szSeeWord(pWord));
+  vTrace("\n"_Stz);
+  vTrace("See: %s\n"_Stz,spWord.szSeeWord(pWord));
+  vTrace("=========================================\n"_Stz);
 
   Cell* aFip = pWord->aEntryCell();
   

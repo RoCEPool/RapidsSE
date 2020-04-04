@@ -101,7 +101,7 @@ void Correctness::vThreadCallStackDump(void)
   
   // dump the call stack
   
-   if (AM::bDeveloper()) {
+  if (AM::bDeveloper()) {
     xException.vPrint();
     AM::vTaskDump();
     vThreadCallStackDump();
