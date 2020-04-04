@@ -16,7 +16,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
-  vAddStep("does>"_Stz,             &Step::vDoes,             true);
+  vAddStep("TBR does>"_Stz,             &Step::vDoes,             true);
   vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
