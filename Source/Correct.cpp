@@ -148,8 +148,8 @@ void Correctness::vThreadCallStackDump(void)
   //  }
   
   //if (AM::bDeveloper()) {
-    AM::vTaskDump();
-    vThreadCallStackDump();
+  //  AM::vTaskDump();
+  //  vThreadCallStackDump();
   //}
 
   vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
