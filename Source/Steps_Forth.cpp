@@ -11,7 +11,6 @@ void Step::vAddSteps_Forth(void)
 {
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep(","_Stz,                 &Step::vComma);
-  vAddStep("compile"_Stz,           &Step::vCompile);
   vAddStep("compile,"_Stz,          &Step::vCompileComma);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
@@ -73,27 +72,6 @@ void Step::vComma(void)
   
   pCurrentWord->vEncodePush(xValue);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile -- compile source string on stack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vCompile(void)
-{
-  ENTRY(); // ENTRY("vCompile"_Stz);
-  
-  s48K sSource;
-  m_pDataStack->vPopStr(sSource,__func__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_pTask->pCompiler()->pTokeniser()->vPushParser();
-
-  m_pTask->pCompileColon(sSource);
-  
-  m_pTask->pCompiler()->pTokeniser()->bPopParser();
-
   EXIT();
 }
 
