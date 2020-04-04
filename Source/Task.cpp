@@ -153,7 +153,10 @@ Task::~Task(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Task* Task::pThisTLSTask(void)
 {
-  Task* pTask = AM::pThisTLSTask();
+  if (C_UNKNOWN == (i8)giTLS_TaskKey)
+    return nullptr;
+  
+  Task* pTask = static_cast<Task*>(PsxThd::pTlsGet(giTLS_TaskKey));
   
   return pTask;
 }
@@ -181,6 +184,7 @@ void Task::vTaskLoop(void)
   if (! bSeeded())
     vSeedTask();
   
+  vThisTLSTask();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

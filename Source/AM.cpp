@@ -358,13 +358,18 @@ t8 AM::tThisTLSPespective(void)
   return tPerspective;
 }
 
+//Tasks::Task* AM::pThisTLSTask(void) {
+//  Thread* pThread = Thread::pThisTLSThread();
+//  if (! pThread)
+//    return nullptr;
+//  Task* pTask = pThread->pTask();
+//  return pTask;
+//}
 Tasks::Task* AM::pThisTLSTask(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  if (! pThread)
-    return nullptr;
-  Task* pTask = pThread->pTask();
+  Task* pTask = Task::pThisTLSTask();
   return pTask;
 }
+
 Thread* AM::pThisTLSThread(void) {
   Thread* pThread = Thread::pThisTLSThread();
   return pThread;

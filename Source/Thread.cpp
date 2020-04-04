@@ -288,7 +288,7 @@ Thread* Thread::pThisTLSThread(void)
   if (C_UNKNOWN == (i8)giTLS_ThreadKey)
     return nullptr;
   
-  Thread *pThread = static_cast<Thread*>(PsxThd::pTlsGet(giTLS_ThreadKey));
+  Thread* pThread = static_cast<Thread*>(PsxThd::pTlsGet(giTLS_ThreadKey));
   
   return pThread;
 }
