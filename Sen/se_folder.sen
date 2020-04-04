@@ -185,15 +185,17 @@
 
 diclock.grabwrite
 
-  sFolderNm :createFolder dup compiler::current!
+  sFolderNm :createFolder locals| pFolder |
 
 diclock.dropwrite
 
   args.verbose if
-    compiler::current@ word.name@
+    pFolder word.name@
     path[].toStr
-    "Created folder %v/%v" .printf
+      "Created folder %v/%v" .printf
   then
+
+  pFolder // returns:
 ;
 /*----------------------------------------------------------------------------*/
 //: :makeFolder params| sFolderNm |
