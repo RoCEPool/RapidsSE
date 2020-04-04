@@ -66,7 +66,7 @@ void Task::vAddRoutines(void)
   "    >int"                     // convert to int, leave on stack
 
   "    compiler::isCompiling if"
-  "      ,"                      // compile : encode push int
+  "      encode::push"           // compile : encode push int
   "      reenter"
   "    then"
   
@@ -88,7 +88,7 @@ void Task::vAddRoutines(void)
   "    input::token"             // push str token onto stack
   
   "    compiler::isCompiling if"
-  "      ,"                      // compile : encode push str
+  "      encode::push"           // compile : encode push str
   "      reenter"
   "    then"
   
@@ -110,10 +110,10 @@ void Task::vAddRoutines(void)
 
   "    compiler::isCompiling if"
   "      input::token"           // compile : encode push "<tagNm>"
-  "      ,"                      //         :
+  "      encode::push"           //         :
   "      \"tag::get\""           //         : encode tag::get
   "        word::find"           //         :
-  "        encode::call"             //         :
+  "        encode::call"         //         :
   "      reenter"
   "    then"
   
@@ -175,7 +175,7 @@ void Task::vAddRoutines(void)
   // postponing mode?
   "  compiler::isPostponing if"
   "    \"POSTPONING\" ."
-  "    , "
+  "    encode::call "
   "    \"encode::call\" word::find encode::call"
   "    reenter"
   "  then"

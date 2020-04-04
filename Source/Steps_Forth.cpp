@@ -39,6 +39,8 @@ void Step::vColon(void)
   m_pCompiler->vNextToken();
   sName = m_pCompiler->szToken();
   
+  vTrace("Colon: %s\n"_Stz,sName.szStz());
+  
   Dic* pDic;
   if (m_oDicStack.iCount())
     pDic = m_oDicStack.pTop();
