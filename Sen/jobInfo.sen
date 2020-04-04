@@ -477,9 +477,9 @@ end
   // -- encode the service spawning word -- -- -- -- -- --
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  // sServiceNm , "++ this is service spawner for: %v" , POSTPONE .printf
+  // sServiceNm encode::push "++ this is service spawner for: %v" encode::push POSTPONE .printf
 
-  sServiceNm , POSTPONE job::spawnUniversal
+  sServiceNm encode::push POSTPONE job::spawnUniversal
 
   POSTPONE exit
 
@@ -506,13 +506,13 @@ end
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   // in : <serviceNm> add call(.printf)
-  // sServiceNm , "++ this is the service parser for: %v" , POSTPONE .printf
+  // sServiceNm encode::push "++ this is the service parser for: %v" encode::push POSTPONE .printf
 
   // in : <serviceNm> add call(.consumeArgs)
   POSTPONE .consumeArgs
 
   // in : <serviceNm> add code which adds call(` pSpawnerWd) in caller of service
-  pSpawnerWd , POSTPONE encode::call
+  pSpawnerWd encode::push POSTPONE encode::call
 
   // in : <serviceNm> add exit
   POSTPONE exit
@@ -540,7 +540,7 @@ end
   compiler::current@ to pWord
 
   // set the word kind to be jobClass
-  [ compiler::current@ , ] pWord word.category!
+  [ compiler::current@ encode::push ] pWord word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
