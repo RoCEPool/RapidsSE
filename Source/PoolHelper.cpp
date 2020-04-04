@@ -65,7 +65,7 @@ void PoolHelper::vHeapDump(Heap* pHeap)
         Word* pWord = _pWord(aChunk);
       
         // dump only the objects
-        if (WK_OBJECT != pWord->eKind())
+        if (WK_EMBOBJECT != pWord->eKind())
           continue;
       }
       
@@ -112,7 +112,7 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
       Word* pWord = _pWord(aChunk);
       
       // dump only the objects
-      if (WK_OBJECT != pWord->eKind())
+      if (WK_EMBOBJECT != pWord->eKind())
         continue;
       
       // dump only object created in last epoch

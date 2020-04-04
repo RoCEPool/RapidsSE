@@ -120,7 +120,7 @@ Word::~Word(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   // invoke the finalize function for embedded objects
-  if (m_eKind == WK_OBJECT) {
+  if (m_eKind == WK_EMBOBJECT) {
     Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.ayArea());
     eCN eClass = pEmbObject->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
@@ -153,7 +153,7 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Word* pWord = _pWord(pObject);
   
   // dump only the objects
-  if (WK_OBJECT == pWord->m_eKind)
+  if (WK_EMBOBJECT == pWord->m_eKind)
     pWord->vObjectDump(aTab);
 }
 

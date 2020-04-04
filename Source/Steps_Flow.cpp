@@ -33,7 +33,7 @@ void Step::vFlowExecute(void)
     StepFp fpStep = pWord->fpEntryStep();
     ((Step*)this->*fpStep)();
   }
-  else if (WK_OBJECT == pWord->eKind()) {
+  else if (WK_EMBOBJECT == pWord->eKind()) {
     m_pReturnStack->vPushFip(m_aInxPtr);
     m_aInxPtr = pWord->aEntryCell();
     

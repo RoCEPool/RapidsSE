@@ -1515,10 +1515,11 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoes));
 
   
-  AM::vWordSeeInx(pDoes,pDoes->aFirstCell(), pDicStack);
-  
-  if (pWord != pDoes)
-    AM::vWordSeeInx(pWord,pWord->aFirstCell(),pDicStack);
+  //M::vWordSeeInx(pDoes,pDoes->aFirstCell(), pDicStack);
+  AM::vWordSeeInx(pDoes,pDoes->aEntryCell(), pDicStack);
+
+//  if (pWord != pDoes)
+//    AM::vWordSeeInx(pWord,pWord->aFirstCell(),pDicStack);
   
   vTrace("=========================================\n"_Stz);
 }

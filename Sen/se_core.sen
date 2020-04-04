@@ -71,7 +71,7 @@
 
   :create ( pCatg eClass nBytes )
 
-  WK_OBJECT compiler::current@ word.kind! ( pCatg eClass nBytes )
+  WK_EMBOBJECT compiler::current@ word.kind! ( pCatg eClass nBytes )
 
   allot ( pCatg eClass )
 
@@ -97,7 +97,7 @@
 
   :create ( pCatg pObject )
 
-  WK_OBJECT compiler::current@ word.kind! ( pCatg pObject )
+  WK_EMBOBJECT compiler::current@ word.kind! ( pCatg pObject )
 
   compiler::current@ word.object! ( pCatg )
 
