@@ -4,8 +4,9 @@
 
 #include "Tasks.h"
 
-
 Atomic gixTask;
+
+extern pthread_key_t giTLS_TaskKey;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -947,6 +948,17 @@ i8 Task::iTaskId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_iFocalId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this task into TLS of current pthread                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vThisTLSTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  PsxThd::vTlsSet(giTLS_TaskKey,this);
+  ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
 }
 
 /*----------------------------------------------------------------------------*/
