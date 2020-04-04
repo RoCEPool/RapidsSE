@@ -82,7 +82,7 @@ print section "Load Table";
 
 // /nowait monitor 3;
 
-//space;
+space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
@@ -91,7 +91,7 @@ time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-//space;
+space;
 sztbl lineitem;
 //fetch lineitem limit 10;
 
