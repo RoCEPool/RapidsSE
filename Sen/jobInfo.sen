@@ -408,19 +408,20 @@ end
 
     else
 
-    "<localLiteOp>" pEnameSet EnameSet.hasName if
-      sWordNm_trunc "LocalLiteOP: %v\n" .printf
+      "<localLiteOp>" pEnameSet EnameSet.hasName if
+        sWordNm_trunc "LocalLiteOP: %v\n" .printf
 
-      "/localLiteOp/" sWordNm_trunc __localLiteop_Setup       str.replace >interpret
-      "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
-      "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
-      "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure   str.replace procedure::add
+        "/localLiteOp/" sWordNm_trunc __localLiteop_Setup       str.replace >interpret
+        "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
+        "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
+        "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure   str.replace procedure::add
+      then
 
     then
 
     pWord .fillOutEnameSet_local
 
-  then then then
+  then then
 
   // pEnameSet EnameSet.asStr .
 ;
