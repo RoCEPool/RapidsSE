@@ -10,7 +10,6 @@
 void Step::vAddSteps_Forth(void)
 {
   vAddStep(":"_Stz,                 &Step::vColon);
-  vAddStep(" ,"_Stz,                 &Step::vComma);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
@@ -39,7 +38,7 @@ void Step::vColon(void)
   m_pCompiler->vNextToken();
   sName = m_pCompiler->szToken();
   
-  vTrace("Colon: %s\n"_Stz,sName.szStz());
+  //vTrace("Colon: %s\n"_Stz,sName.szStz());
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -47,32 +46,12 @@ void Step::vColon(void)
   else
     pDic = AM::pRootDic();
   
-  
-  //vTrace(": %s\n"_Stz,sName.azChar());
-  
   Word* pNewWord = new(pDic) Word(sName);
   
   m_pCompiler->vCurrentWord(pNewWord);
   
   m_pCompiler->vNestedWord(0,pNewWord);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* comma -- encode push of value on stack into word being compiled            */
-/*----------------------------------------------------------------------------*/
-void Step::vComma(void)
-{
-  ENTRY(); // ENTRY("vComma"_Stz);
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  Datum xValue;
-  m_pDataStack->vPopVal(xValue,__func__);
-  
-  pCurrentWord->vEncodePush(xValue);
-    
   EXIT();
 }
 
