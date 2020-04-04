@@ -3,9 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Threads.h"
-
-namespace Threads
+namespace Resources
 {
   class TlsKeys
   {

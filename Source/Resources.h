@@ -23,6 +23,7 @@ namespace Resources
 #include "Mutex.hpp"
 #include "PsxThd.hpp"
 #include "Socket.hpp"
+#include "TlsKeys.hpp"
 
 #include "SP_Mutex.hpp"
 

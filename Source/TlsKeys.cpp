@@ -2,8 +2,9 @@
 /* TlsKeys.hpp -- Thread Local Storage Keys                                   */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Resources.h"
 
+extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
@@ -11,7 +12,14 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 void TlsKeys::vInit(void)
 {
-  bool b = PsxThd::bTlsCreate(&giTLS_ThreadKey);
+  bool b;
+  
+  ASSERT(C_UNKNOWN == (i8)giTLS_TaskKey);
+  b = PsxThd::bTlsCreate(&giTLS_TaskKey);
+  ASSERT(b);
+  
+  ASSERT(C_UNKNOWN == (i8)giTLS_ThreadKey);
+  b = PsxThd::bTlsCreate(&giTLS_ThreadKey);
   ASSERT(b);
 }
 
