@@ -32,22 +32,30 @@ namespace SenVM
     bool      m_bPrompt;      // can be executed by prompt?
     i8        m_iTrace;       // trace level
   
-    // the following three must be together
-    //struct {
-
+    //*
+    //* the following two must be together in this order
+    //
     StepFp    m_fpIntrinsic;  // intrinsic function for this word
-                              //  the address of this member (and not
-                              //  the value of the member) gets encoded
-                              //  into another words routine
+                              //  IMPORTANT:
+                              //  the address of this member
+                              //    (and *not* the value of the member)
+                              //    gets encoded into calling words routine
+                              //  this allows the address of m_aInxPtr
+                              //  to be computed, so as to support does>
       
-    Cell*     m_aInxPtr;      // the cell to start executing from
-                              //   for normal words this will be the first cell
-                              //     in the routine
-                              //   for objects this will be the cell after
-                              //     does in the defining word
-                              //   for primitives this will be null
+    Cell*     m_aInxPtr;      // the cell to start executing from for
+                              //   - normal words: this will be the
+                              //       first cell in the routine
+                              //   - future words: this will be
+                              //      the cell after the does>
+                              //      in the defining word
+                              //   - steps: this will be null
+                              //   IMPORTANT:
+                              //   m_aInxPtr must be immediately after
+                              //     m_fpIntrinsic
+  
+    // the encoded routine
     Routine   m_xRoutine;
-    //};
   
     // must be last
     Footer m_xFooter;
