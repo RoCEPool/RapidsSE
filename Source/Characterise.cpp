@@ -59,8 +59,8 @@ Characterise::Characterise(Characterise* pNext)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   //m_bMalloc set in new
-  m_iDepth  = 0;
   m_pNext   = pNext;
+  m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
   m_sSource = C_NO_NAME;
   
   vResetParser();
@@ -102,6 +102,26 @@ Stz* Characterise::szSource(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
   
   return m_sSource;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_iLineRaw                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Characterise::iLineRaw(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  
+  return m_iLineRaw;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_iColRaw                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Characterise::iLineCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  
+  return m_iColRaw;
 }
 
 

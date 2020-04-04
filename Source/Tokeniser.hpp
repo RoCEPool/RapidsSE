@@ -39,6 +39,7 @@ namespace LexicalAnalysis
     Characterise* pCharser(void);
     void vCollectStatement(TokenVec* pTokenVec_arg);
     i8   iDepth(void);
+    void vDump(void);
     bool bEOF(void);
     Stz* szSource(void);
     void vLineMode(bool bLineMode);

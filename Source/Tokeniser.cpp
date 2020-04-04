@@ -347,6 +347,43 @@ i8 Tokeniser::iDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the tokeniser                                                         */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  vTrace("\n"_Stz);
+  vTrace("Tokeniser::vDump\n"_Stz);
+  vTrace("----------------\n"_Stz);
+
+  vTrace("Current Token: '%s' : %s @%lld,%lld\n"_Stz,
+         m_oToken.szTerm(),
+         aTN[m_oToken.eToken()],
+         m_oToken.iLineNo(),
+         m_oToken.iColNo()
+         );
+  
+  vTrace("Charser Stack:\n"_Stz);
+         
+  Characterise* pCharser = m_pCharser;
+  while (pCharser) {
+    
+    vTrace("[%lld] %s @%lld,%lld\n"_Stz,
+           pCharser->iDepth(),
+           pCharser->szSource(),
+           pCharser->iLineRaw(),
+           pCharser->iLineCol()
+           );
+    
+    pCharser = pCharser->pNext();
+  }
+  
+  vTrace("----------------\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get EOF?                                                                   */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEOF(void)

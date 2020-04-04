@@ -52,7 +52,9 @@ namespace LexicalAnalysis
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
     Stz* szSource(void);
-  
+    i8   iLineRaw(void);
+    i8   iLineCol(void);
+
     // Options
     void vLineMode(bool bLineMode);
     

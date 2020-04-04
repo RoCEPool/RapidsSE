@@ -139,7 +139,8 @@ void Task::vAddRoutines(void)
   // find word using name on stack
   "  word::find"
   "  dup not if "
-  "    \"Unable to find: \" .put input::token ."
+  "    \"Unable to find: \" . input::token ."
+  "    input::dump"
   "    process::quit "
   "  then "
   

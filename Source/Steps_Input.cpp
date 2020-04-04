@@ -11,6 +11,7 @@ void Step::vAddSteps_Input(void)
 {
   vAddStep("input::close"_Stz,     &Step::vInputClose);
   vAddStep("input::depth"_Stz,     &Step::vInputDepth);
+  vAddStep("input::dump"_Stz,      &Step::vInputDump);
   vAddStep("input::next"_Stz,      &Step::vInputNext);
   vAddStep("input::open"_Stz,      &Step::vInputOpen);
   vAddStep("input::pop"_Stz,       &Step::vInputPop);
@@ -46,6 +47,20 @@ void Step::vInputDepth(void)
   i8 iDepth = m_pCompiler->pTokeniser()->iDepth();
   
   m_pDataStack->vPushInt(iDepth);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::dump -- dump input                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vInputDump(void)
+{
+  ENTRY(); // ENTRY("vInputDump"_Stz);
+  
+  Tokeniser* pTokeniser = m_pCompiler->pTokeniser();
+  
+  pTokeniser->vDump();
   
   EXIT();
 }
