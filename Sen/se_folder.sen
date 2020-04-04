@@ -162,15 +162,9 @@
 /*----------------------------------------------------------------------------*/
 : :createFolder params| sFolderNm |
 
-  find: \folder
-  CN_DIC
-  sizeof_dic
-  sFolderNm
-    :createObject locals| pFolder |
+  find: \folder CN_DIC sizeof_dic sFolderNm :createObject
 
-  pFolder word.embObject dic.init
-
-  pFolder // returns:
+  compiler::current@ word.embObject dic.init
 ;
 /*----------------------------------------------------------------------------*/
 //: :createFolder params| sFolderNm pDic |
