@@ -158,27 +158,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* make a new folder (leave pFolder on stack)                                 */
-/*----------------------------------------------------------------------------*/
-: :createFolder params| sFolderNm |
-
-  find: \folder
-  CN_DIC
-  sizeof_dic
-    sFolderNm :createObject
-      locals| pFolder |
-
-  pFolder word.embObject dic.init
-
-  pFolder // returns:
-;
-/*----------------------------------------------------------------------------*/
-//: :createFolder params| sFolderNm pDic |
-//
-//   pDic sFolderNm :createCppObject
-//;
-
-/*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
 : :makeFolder params| sFolderNm |
@@ -203,6 +182,30 @@ diclock.dropwrite
 
   pFolder // returns:
 ;
+/*----------------------------------------------------------------------------*/
+//: :makeFolder params| sFolderNm |
+//
+//diclock.grabwrite
+//
+//  find: \folder
+//  CN_DIC
+//  sizeof_dic
+//    sFolderNm :createObject
+//      locals| pFolder |
+//
+//  pFolder word.embObject dic.init
+//
+//diclock.dropwrite
+//
+//  args.verbose if
+//    pFolder word.name@
+//    path[].toStr
+//      "Created folder %v/%v" .printf
+//  then
+//
+//  pFolder // returns:
+//;
+
 /*----------------------------------------------------------------------------*/
 //: :makeFolder params| sFolderNm |
 //
