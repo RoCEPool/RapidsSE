@@ -11,14 +11,12 @@ void Step::vAddSteps_Forth(void)
 {
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
-  vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
-  vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
   vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("find:"_Stz,             &Step::vFind,             true);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
   vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
-  vAddStep("prompt"_Stz,            &Step::vPrompt,           true);
+  vAddStep(" prompt"_Stz,            &Step::vPrompt,           true);
   vAddStep("see"_Stz,               &Step::vSee,              true);
   vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
   vAddStep("series-name"_Stz,       &Step::vSeriesName);
@@ -51,54 +49,6 @@ void Step::vColon(void)
   m_pCompiler->vCurrentWord(pNewWord);
   
   m_pCompiler->vNestedWord(0,pNewWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* createPersistent -- create word in dictionary (persistent heap)            */
-/*----------------------------------------------------------------------------*/
-void Step::vCreatePersistent(void)
-{
-  ENTRY(); // ENTRY("vCreate"_Stz);
-  
-  m_pCompiler->vNextToken();
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  //vTrace(": %s\n"_Stz,m_pCompiler->szToken()->azChar());
-  
-  Word* pNewWord = new(pDic,true) Word(m_pCompiler->szToken());
-  
-  m_pCompiler->vCurrentWord(pNewWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >createPersistent -- create word in dic using string on stack (persistent) */
-/*----------------------------------------------------------------------------*/
-void Step::vCreateFromPersistent(void)
-{
-  ENTRY(); // ENTRY("vCreateFrom"_Stz);
-  
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  //vTrace(": %s\n"_Stz,sName.azChar());
-  Word* pNewWord = new(pDic,true) Word(sName);
-  
-  m_pCompiler->vCurrentWord(pNewWord);
   
   EXIT();
 }

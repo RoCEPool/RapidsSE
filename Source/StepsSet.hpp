@@ -332,8 +332,6 @@ public:
   // forth
   void vColon(void);
   void vCreateFromInRoot(void);
-  void vCreateFromPersistent(void);
-  void vCreatePersistent(void);
   void vDoes_RT(void);
   void vExit_RT(void);
   void vFind(void);
