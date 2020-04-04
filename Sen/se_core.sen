@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : :CREATECPPOBJECT ( pCatg pObject sObjectNM -- )
 
-  :create ( pCatg eClass nBytes )
+  :create ( pCatg pObject )
 
   WK_OBJECT compiler::current@ word.kind! ( pCatg pObject )
 
