@@ -36,7 +36,7 @@
     then
 
     compiler::isCompiling if
-      ,                      // compile encodes push intval
+      encode::push           // compile encodes push intval
       reenter
     then
 
@@ -57,7 +57,7 @@
     then
 
     compiler::isCompiling if
-      ,                      // compile encodes push stzVal
+      encode::push           // compile encodes push stzVal
       reenter
     then
 
@@ -101,7 +101,7 @@
   // postponing mode?
   compiler::isPostponing if
     "POSTPONING" .put
-    ,
+    encode::push
     "encode::call" word::find encode::call
     reenter
   then

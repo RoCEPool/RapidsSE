@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_can immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_CAN
 
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_end immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_END
 
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_exe immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_EXE
 
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_rcv immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_RCV
 
@@ -57,9 +57,9 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_req immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
-  AN_SEED_REQ ,
+  AN_SEED_REQ encode::push
 
   POSTPONE Log::markSeed
 ;
@@ -69,9 +69,9 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_run immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
-  AN_SEED_RCV ,
+  AN_SEED_RCV encode::push
 
   POSTPONE Log::markSeed
 ;
@@ -81,9 +81,9 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_checked immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
-  AN_RESOURCES_CHECKED ,
+  AN_RESOURCES_CHECKED encode::push
 
   POSTPONE Log::markWord
 ;
@@ -93,9 +93,9 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_released immediate
 
-  compiler::current@ word.name@ ,
+  compiler::current@ word.name@ encode::push
 
-  AN_RESOURCES_RELEASED ,
+  AN_RESOURCES_RELEASED encode::push
 
   POSTPONE Log::markWord
 ;
@@ -111,7 +111,7 @@
   compiler::current@ word.name@ ">>%v" str.format
 
   // encode push of that string
-  ,
+  encode::push
 
   // encode call to markEntry
   POSTPONE Log::markEntry
@@ -122,7 +122,7 @@
 //  POSTPONE job[]
 //  POSTPONE job.class
 //  POSTPONE class::name
-//  ">>%v %v" ,
+//  ">>%v %v" encode::push
 //
 //  POSTPONE str.format
 //
@@ -139,7 +139,7 @@
   compiler::current@ word.name@ "<<%v" str.format
 
   // encode push of that string
-  ,
+  encode::push
 
   // encode call to markExit
   POSTPONE Log::markExit
@@ -154,7 +154,7 @@
   compiler::current@ word.name@ "!!%v" str.format
 
   // encode push of that string
-  ,
+  encode::push
 
   // encode call to markExit
   POSTPONE Log::markExit
@@ -179,7 +179,7 @@
 
   "tp"
 
-  ,
+  encode::push
 
   find: tracepoint encode::call
 ;
@@ -191,7 +191,7 @@
 
   next-token
 
-  ,
+  encode::push
 
   find: tracepoint encode::call
 ;

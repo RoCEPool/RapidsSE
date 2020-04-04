@@ -13,7 +13,7 @@
   compiler::current@ word.name@ ">>%v" str.format
 
   // encode push of that string
-  ,
+  encode::push
 
   // encode call to markEntry
   POSTPONE Log::markEntry
@@ -28,7 +28,7 @@
   compiler::current@ word.name@ "<<%v" str.format
 
   // encode push of that string
-  ,
+  encode::push
 
   // encode call to markExit
   POSTPONE Log::markExit

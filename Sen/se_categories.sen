@@ -25,7 +25,7 @@
 
   // add code into the catgWord so that when catgWord ised used while compiling
   // the target word, the category of the target word is set to be catgWord
-  compiler::current@ ,
+  compiler::current@ encode::push
   POSTPONE compiler::current@
   POSTPONE word.category!
 ;

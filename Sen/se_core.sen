@@ -175,7 +175,7 @@
 : CONSTANT
 
   CREATE:          // create a word using the next token in the input stream
-  ,                // encode a push value of the value currently on the stack
+  encode::push     // encode a push value of the value currently on the stack
   POSTPONE exit_rt // encode an exit into the created word
 ;
 
@@ -328,7 +328,7 @@ true find: CASE word.immediate!
   :create
 
   // encode a push value of the value currently on the stack
-  ,
+  encode::push
 
   // encode a push value of the value currently on the stack
   POSTPONE exit_rt
