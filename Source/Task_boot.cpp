@@ -113,7 +113,7 @@ void Task::vAddRoutines(void)
   "      ,"                      //         :
   "      \"tag::get\""           //         : encode tag::get
   "        word::find"           //         :
-  "        compile,"             //         :
+  "        encode::call"             //         :
   "      reenter"
   "    then"
   
@@ -176,7 +176,7 @@ void Task::vAddRoutines(void)
   "  compiler::isPostponing if"
   "    \"POSTPONING\" ."
   "    , "
-  "    \"compile,\" word::find compile,"
+  "    \"encode::call\" word::find encode::call"
   "    reenter"
   "  then"
 
@@ -187,7 +187,7 @@ void Task::vAddRoutines(void)
   // -- -- -- -- -- -- --
   // compiling mode?
   "  compiler::isCompiling if "
-  "    compile,"                 // compile : encode call to word on stack
+  "    encode::call"                 // compile : encode call to word on stack
   "    reenter"
   "  then"
   

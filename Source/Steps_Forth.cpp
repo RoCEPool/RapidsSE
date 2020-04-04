@@ -11,7 +11,6 @@ void Step::vAddSteps_Forth(void)
 {
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep(","_Stz,                 &Step::vComma);
-  vAddStep("compile,"_Stz,          &Step::vCompileComma);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
@@ -72,28 +71,6 @@ void Step::vComma(void)
   
   pCurrentWord->vEncodePush(xValue);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile, -- encode call to word on stack into word being compiled          */
-/*----------------------------------------------------------------------------*/
-void Step::vCompileComma(void)
-{
-  ENTRY(); // ENTRY("vCompileComma"_Stz);
-  
-  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  pCurrentWord->vEncodeCall(afpCalledEntryStep);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   EXIT();
 }
 
@@ -291,7 +268,7 @@ void Step::vPostpone(void)
     
     // copy indirect pointer into the current word
     pCurrentWord->vEncodePush(xVar);
-    pCurrentWord->vEncodeCall("compile,"_Stz);
+    pCurrentWord->vEncodeCall("encode::call"_Stz);
   }
   
   EXIT();

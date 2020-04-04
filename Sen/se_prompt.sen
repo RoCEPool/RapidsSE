@@ -102,14 +102,14 @@
   compiler::isPostponing if
     "POSTPONING" .put
     ,
-    "compile," word::find compile,
+    "encode::call" word::find encode::call
     reenter
   then
 
   // -- -- -- -- -- -- --
   // compiling mode?
   compiler::isCompiling if
-    compile,                 // compile, encodes call to word
+    encode::call                 // encode::call encodes call to word
     reenter
   then
 

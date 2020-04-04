@@ -90,9 +90,9 @@ jobInfo: service
 
   "service" ,
 
-  find: job::spawnUniversal compile,
+  find: job::spawnUniversal encode::call
 
-  //find: drop compile,
+  //find: drop encode::call
 
   assert::stack_0
 ;

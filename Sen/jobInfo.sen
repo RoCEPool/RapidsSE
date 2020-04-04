@@ -512,7 +512,7 @@ end
   POSTPONE .consumeArgs
 
   // in : <serviceNm> add code which adds call(` pSpawnerWd) in caller of service
-  pSpawnerWd , POSTPONE compile,
+  pSpawnerWd , POSTPONE encode::call
 
   // in : <serviceNm> add exit
   POSTPONE exit

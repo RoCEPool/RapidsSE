@@ -181,7 +181,7 @@
 
   ,
 
-  find: tracepoint compile,
+  find: tracepoint encode::call
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -193,7 +193,7 @@
 
   ,
 
-  find: tracepoint compile,
+  find: tracepoint encode::call
 ;
 
 

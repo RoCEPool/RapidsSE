@@ -35,8 +35,8 @@
 /*----------------------------------------------------------------------------*/
 : DOES> immediate
  
-  FIND: does_rt COMPILE,
-  FIND: exit_rt COMPILE,
+  FIND: does_rt encode::call
+  FIND: exit_rt encode::call
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +273,7 @@ true find: CASE word.immediate!
 : EXIT immediate
 
   compiler::current@ word.exitHook@ word::find dup if
-    compile,
+    encode::call
   else
     drop
   then
