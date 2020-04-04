@@ -16,7 +16,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("find:"_Stz,             &Step::vFind,             true);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
   vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
-  vAddStep(" prompt"_Stz,            &Step::vPrompt,           true);
   vAddStep("see"_Stz,               &Step::vSee,              true);
   vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
   vAddStep("series-name"_Stz,       &Step::vSeriesName);
@@ -201,20 +200,6 @@ void Step::vPostpone(void)
     pCurrentWord->vEncodePush(xVar);
     pCurrentWord->vEncodeCall("encode::call"_Stz);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt -- make the word being compiled directly runnable by prompt         */
-/*----------------------------------------------------------------------------*/
-void Step::vPrompt(void)
-{
-  ENTRY(); // ENTRY("vImmediate"_Stz);
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  pCurrentWord->vPrompt(true);
   
   EXIT();
 }
