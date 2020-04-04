@@ -185,7 +185,13 @@
 
 diclock.grabwrite
 
-  sFolderNm :createFolder locals| pFolder |
+  find: \folder
+  CN_DIC
+  sizeof_dic
+    sFolderNm :createObject
+      locals| pFolder |
+
+  pFolder word.embObject dic.init
 
 diclock.dropwrite
 
