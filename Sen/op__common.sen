@@ -313,7 +313,7 @@
 
   // set the word kind to be jobClass
   //[ compiler::current@ , ] compiler::current@ word.category!
-  [ compiler::current@ , ] pWord word.category!
+  [ compiler::current@ encode::push ] pWord word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
@@ -381,7 +381,7 @@
   // add <jobNm> tag
   "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
 
-  pWord ,
+  pWord encode::call
     POSTPONE word.enameset@
 
   //does>

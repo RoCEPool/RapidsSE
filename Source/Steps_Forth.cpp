@@ -10,7 +10,7 @@
 void Step::vAddSteps_Forth(void)
 {
   vAddStep(":"_Stz,                 &Step::vColon);
-  vAddStep(","_Stz,                 &Step::vComma);
+  vAddStep(" ,"_Stz,                 &Step::vComma);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
