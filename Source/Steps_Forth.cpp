@@ -16,16 +16,15 @@ void Step::vAddSteps_Forth(void)
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,  &Step::vCreatePersistent);
-  vAddStep("TBR does>"_Stz,             &Step::vDoes,             true);
   vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
+  vAddStep("find:"_Stz,             &Step::vFind,             true);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
   vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
   vAddStep("prompt"_Stz,            &Step::vPrompt,           true);
   vAddStep("see"_Stz,               &Step::vSee,              true);
   vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
   vAddStep("series-name"_Stz,       &Step::vSeriesName);
-  vAddStep("find:"_Stz,             &Step::vTick,             true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,23 +190,6 @@ void Step::vCreateFromInRoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does> -- routine does                                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vDoes(void)
-{
-  ENTRY(); // ENTRY("vDoes"_Stz);
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  pCurrentWord->vEncodeCall("does_rt"_Stz);
-  pCurrentWord->vEncodeCall("exit_rt"_Stz);
-  
-  //pCurrentWord->vEncode("pushBody");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* does_rt -- runtime for does>                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vDoes_RT(void)
@@ -245,6 +227,37 @@ void Step::vExit_RT(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* find -- find and push word named by next token                             */
+/*----------------------------------------------------------------------------*/
+void Step::vFind(void)
+{
+  ENTRY(); // ENTRY("vTick"_Stz);
+  
+  m_pCompiler->vNextToken();
+    
+  s32 sWordNm;
+  sWordNm = m_pCompiler->szToken();
+  
+  Word* pWord = m_oDicStack.pFindWord(sWordNm);
+  
+  if (! pWord)
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "No word: %s "_Stz,sWordNm.azChar());
+  
+  Datum xVar;
+  xVar = pWord;
+
+  if (m_pCompiler->bCompiling()) {
+    Word* pCurrentWord = m_pCompiler->pCurrentWord();
+    pCurrentWord->vEncodePush(xVar);
+  }
+  else {
+    m_pDataStack->vPushPtr(pWord);
+  }
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
@@ -422,37 +435,6 @@ void Step::vSeriesName(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* tick -- find and push word named by next token                             */
-/*----------------------------------------------------------------------------*/
-void Step::vTick(void)
-{
-  ENTRY(); // ENTRY("vTick"_Stz);
-  
-  m_pCompiler->vNextToken();
-    
-  s32 sWordNm;
-  sWordNm = m_pCompiler->szToken();
-  
-  Word* pWord = m_oDicStack.pFindWord(sWordNm);
-  
-  if (! pWord)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No word: %s "_Stz,sWordNm.azChar());
-  
-  Datum xVar;
-  xVar = pWord;
-
-  if (m_pCompiler->bCompiling()) {
-    Word* pCurrentWord = m_pCompiler->pCurrentWord();
-    pCurrentWord->vEncodePush(xVar);
-  }
-  else {
-    m_pDataStack->vPushPtr(pWord);
-  }
-  
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

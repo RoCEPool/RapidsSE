@@ -337,16 +337,15 @@ public:
   void vCreateFromInRoot(void);
   void vCreateFromPersistent(void);
   void vCreatePersistent(void);
-  void vDoes(void);
   void vDoes_RT(void);
   void vExit_RT(void);
+  void vFind(void);
   void vImmediate(void);
   void vPostpone(void);
   void vPrompt(void);
   void vSee(void);
   void vSemicolon(void);
   void vSeriesName(void);
-  void vTick(void);
 
   // grid
   void vGridConnectedNodes(void);
