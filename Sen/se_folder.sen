@@ -167,7 +167,8 @@ diclock.grabwrite
   find: \folder
   CN_DIC
   sizeof_dic
-    sFolderNm :createObject
+  sFolderNm
+    :createObject
       locals| pFolder |
 
   pFolder word.embObject dic.init
@@ -188,12 +189,10 @@ diclock.dropwrite
 //diclock.grabwrite
 //
 //  find: \folder
-//  CN_DIC
-//  sizeof_dic
-//    sFolderNm :createObject
+//  dic::new
+//  sFolderNm
+//    :createCppObject
 //      locals| pFolder |
-//
-//  pFolder word.embObject dic.init
 //
 //diclock.dropwrite
 //
@@ -204,24 +203,6 @@ diclock.dropwrite
 //  then
 //
 //  pFolder // returns:
-//;
-
-/*----------------------------------------------------------------------------*/
-//: :makeFolder params| sFolderNm |
-//
-//  dic::new locals| pDic |
-//
-//diclock.grabwrite
-//
-//  find: \folder pDic sFolderNm :createFolder dup compiler::current!
-//
-//diclock.dropwrite
-//
-//  args.verbose if
-//    compiler::current@ word.name@
-//    path[].toStr
-//    "Created folder %v/%v" .printf
-//  then
 //;
 
 /*----------------------------------------------------------------------------*/
