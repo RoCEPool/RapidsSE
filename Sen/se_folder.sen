@@ -158,53 +158,51 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* make a new folder (leave pFolder on stack)                                 */
-/*----------------------------------------------------------------------------*/
-: :createFolder params| sFolderNm |
-
-  find: \folder CN_DIC sizeof_dic sFolderNm :createObject
-
-  compiler::current@ word.embObject dic.init
-;
-/*----------------------------------------------------------------------------*/
-//: :createFolder params| sFolderNm pDic |
-//
-//   pDic sFolderNm :createCppObject
-//;
-
-/*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
 : :makeFolder params| sFolderNm |
 
 diclock.grabwrite
 
-  sFolderNm :createFolder dup compiler::current!
+  find: \folder
+  CN_DIC
+  sizeof_dic
+  sFolderNm
+    :createObject
+      locals| pFolder |
+
+  pFolder word.embObject dic.init
 
 diclock.dropwrite
 
   args.verbose if
-    compiler::current@ word.name@
+    pFolder word.name@
     path[].toStr
-    "Created folder %v/%v" .printf
+      "Created folder %v/%v" .printf
   then
+
+  pFolder // returns:
 ;
 /*----------------------------------------------------------------------------*/
 //: :makeFolder params| sFolderNm |
 //
-//  dic::new locals| pDic |
-//
 //diclock.grabwrite
 //
-//  find: \folder pDic sFolderNm :createFolder dup compiler::current!
+//  find: \folder
+//  dic::new
+//  sFolderNm
+//    :createCppObject
+//      locals| pFolder |
 //
 //diclock.dropwrite
 //
 //  args.verbose if
-//    compiler::current@ word.name@
+//    pFolder word.name@
 //    path[].toStr
-//    "Created folder %v/%v" .printf
+//      "Created folder %v/%v" .printf
 //  then
+//
+//  pFolder // returns:
 //;
 
 /*----------------------------------------------------------------------------*/
