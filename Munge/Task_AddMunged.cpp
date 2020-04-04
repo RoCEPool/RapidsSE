@@ -7127,83 +7127,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_Ping.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_Ping.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_Ping.sen -- Job Ping                                                   */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_Ping.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* ping requests (on originating node)                                        */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": ping2_req ( -- <R> )\n"
-    "\n"
-    "  LogEntry SEED_REQ\n"
-    "\n"
-    "  0 0 locals| pJob_Ping pTask |\n"
-    "\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  \\\"ping sleeps\\\" .\n"
-    "  1 thread::sleepSsec\n"
-    "  \\\"ping wakes\\\" .\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get the task\n"
-    "  task[] to pTask\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get the job from the task\n"
-    "  pTask task.job@ to pJob_Ping\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // set the metadata\n"
-    "  args.metadata if\n"
-    "    \\\"(string VARCHAR)\\\" pJob_Ping job.metadata!\n"
-    "  then\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // set response in job\n"
-    "  \\\"row: ( 'pong' )\\\\n\\\" pJob_Ping job.response!\n"
-    "  1 pJob_Ping job.rowsProcessed!\n"
-    "\n"
-    "  LogExit DONE_REQ\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/***                            - Definition -                              ***/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "jobSyntax: ping2 :: ping2 ;\n"
-    "\n"
-    "jobInfo: ping2\n"
-    "{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
-    "  \n"
-    "  <jobKind>  = JK_LOCAL\n"
-    "  <rspKind>  = RS_JOB_RESPONSE\n"
-    "  <ddlLock>  = DL_GRAB_READ\n"
-    "  \n"
-    "  <preCheck> = bClusterStarted\n"
-    "}\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Ping.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Pipeline.sen
 
   sFileContents =
@@ -16627,7 +16550,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"Job_LoadTable.sen\\\"       include\n"
     "\n"
     "        \\\"Job_Periodic.sen\\\"        include\n"
-    "        \\\"Job_Ping.sen\\\"            include\n"
     "        \\\"Job_Pipeline.sen\\\"        include\n"
     "        \\\"Job_Pwf.sen\\\"             include\n"
     "\n"
