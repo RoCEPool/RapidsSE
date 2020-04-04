@@ -246,8 +246,8 @@ fillOutOps
   // make the tenants root folder"
   //  /tenants
   "tenants" :makeFolder attachMap::tenants!
-  attachmap::tenants@ execute
-  //attachmap::tenants@ dup word.see execute
+  //attachmap::tenants@ execute
+  attachmap::tenants@ dup word.see execute
   path[].pushFolder
 
     // make 'boray' tenant folder:
