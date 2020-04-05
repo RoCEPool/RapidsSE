@@ -238,21 +238,21 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forget the indexes folder itself
-  "indexes" :forget
+  "indexes" folder::remove // :forget
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forget the partitions dictionary itself
-  "partitions" :forget
+  "partitions" folder::remove // :forget
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forget the table dictionary itself
-  sTableNm :forget
+  sTableNm folder::remove // :forget
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   path[].discardTableFolder
 
-  sTableNm :forget
+  sTableNm folder::remove // :forget
 ;
 
 /*============================================================================*/

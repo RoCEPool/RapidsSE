@@ -227,6 +227,8 @@ diclock.dropwrite
 
   sFolderNm find locals| pWord |
 
+  pWord not if exit_rt then
+
   pWord word.object@ locals| pDic |
   0 pWord word.object!
 
