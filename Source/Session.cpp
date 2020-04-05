@@ -243,6 +243,8 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
+  Dic* pDic = nullptr;
+  Cell* aCell =  nullptr;
   //m_oDicStack.vContentDump();
   
   // first discard whatever is there on the DicStack
@@ -255,20 +257,35 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   //Word* pTenants = gpAttachMap->m_oRootDic.pFindWord("tenants"_Stz);
   Word* pTenants = AM::pTenants();
   ASSERT(pTenants);
-  Cell* aCell = pTenants->aFirstCell();
+#ifdef WITH_CPP_DIC
+  pDic = _pDic(pTenants->pObject());
+  m_oDicStack.vPush(pDic);
+#else
+  aCell = pTenants->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
-
+#endif
+  
   // /tenants/boray
   Word* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
+  #ifdef WITH_CPP_DIC
+  pDic = _pDic(pTenant->pObject());
+  m_oDicStack.vPush(pDic);
+  #else
   aCell = pTenant->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
-  
+  #endif
+
   // /tenants/boray/catalogs
   Word* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
+  #ifdef WITH_CPP_DIC
+  pDic = _pDic(pCatalogs->pObject());
+  m_oDicStack.vPush(pDic);
+  #else
   aCell = pCatalogs->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
+  #endif
 
   if ( ! pCatalogName)
     return EC_NONE;
@@ -278,15 +295,25 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
+  #ifdef WITH_CPP_DIC
+  pDic = _pDic(pCatalog->pObject());
+  m_oDicStack.vPush(pDic);
+  #else
   aCell = pCatalog->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
-  
+  #endif
+
   // /tenants/boray/catalogs/rapidsse/schemas
   Word* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
+  #ifdef WITH_CPP_DIC
+  pDic = _pDic(pSchemas->pObject());
+  m_oDicStack.vPush(pDic);
+  #else
   aCell = pSchemas->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
-  
+  #endif
+
   if ( ! pSchemaName )
     return EC_NONE;
   
@@ -295,16 +322,26 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
+  #ifdef WITH_CPP_DIC
+  pDic = _pDic(pSchema->pObject());
+  m_oDicStack.vPush(pDic);
+  #else
   aCell = pSchema->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
+  #endif
 
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
   Word* pTables = m_oDicStack.pFindInCurrent("tables"_Stz);
   ASSERT(pTables);
   
+  #ifdef WITH_CPP_DIC
+  pDic = _pDic(pTables->pObject());
+  m_oDicStack.vPush(pDic);
+  #else
   aCell = pTables->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
-  
+  #endif
+
   return EC_NONE;
 }
 
