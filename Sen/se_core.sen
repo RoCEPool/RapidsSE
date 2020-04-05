@@ -97,7 +97,7 @@
 
   :create ( pCatg pObject )
 
-  WK_EMBOBJECT compiler::current@ word.kind! ( pCatg pObject )
+  WK_CPPOBJECT compiler::current@ word.kind! ( pCatg pObject )
 
   compiler::current@ word.object! ( pCatg )
 

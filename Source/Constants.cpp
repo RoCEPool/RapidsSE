@@ -573,12 +573,13 @@ void Constants::vAddConstantsCpp(void)
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
   
   // WK_ : word type
-  /*  0 */ vAddConstant("WK_NONE"_Stz,      WK_NONE);
-  /*  0 */ vAddConstant("WK_LOCAL"_Stz,     WK_LOCAL);
-  /*  0 */ vAddConstant("WK_EMBOBJECT"_Stz,    WK_EMBOBJECT);
-  /*  0 */ vAddConstant("WK_INTRINSIC"_Stz, WK_INTRINSIC);
-  /*  0 */ vAddConstant("WK_ROUTINE"_Stz,   WK_ROUTINE);
-  /*  0 */ vAddConstant("WK_ENUMS"_Stz,     WK_ENUMS);
+  /*  0 */ vAddConstant("WK_NONE"_Stz,       WK_NONE);
+  /*  0 */ vAddConstant("WK_CPPOBJECT"_Stz,  WK_CPPOBJECT);
+  /*  0 */ vAddConstant("WK_EMBOBJECT"_Stz,  WK_EMBOBJECT);
+  /*  0 */ vAddConstant("WK_INTRINSIC"_Stz,  WK_INTRINSIC);
+  /*  0 */ vAddConstant("WK_LOCAL"_Stz,      WK_LOCAL);
+  /*  0 */ vAddConstant("WK_ROUTINE"_Stz,    WK_ROUTINE);
+  /*  0 */ vAddConstant("WK_ENUMS"_Stz,      WK_ENUMS);
   
   // XP_ : transaction phase
   /*  0 */ vAddConstant("XP_NONE"_Stz,        XP_NONE);

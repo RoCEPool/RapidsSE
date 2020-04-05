@@ -19221,7 +19221,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  :create ( pCatg pObject )\n"
     "\n"
-    "  WK_EMBOBJECT compiler::current@ word.kind! ( pCatg pObject )\n"
+    "  WK_CPPOBJECT compiler::current@ word.kind! ( pCatg pObject )\n"
     "\n"
     "  compiler::current@ word.object! ( pCatg )\n"
     "\n"
