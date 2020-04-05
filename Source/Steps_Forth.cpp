@@ -97,26 +97,65 @@ void Step::vFlowExecute(void)
 {
   ENTRY(); // ENTRY("vFlowExecute"_Stz);
   
+  StepFp fpStep;
+  Object* pObject;
+
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  if (WK_INTRINSIC == pWord->eKind()) {
-    StepFp fpStep = pWord->fpEntryStep();
-    ((Step*)this->*fpStep)();
+  eWK eWord = pWord->eKind();
+  
+  switch(eWord) {
+    case WK_CPPOBJECT:
+      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_aInxPtr = pWord->aEntryCell();
+      
+      pObject = pWord->pObject();
+      m_pDataStack->vPushPtr(pObject);
+      break;
+          
+    case WK_EMBOBJECT:
+      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_aInxPtr = pWord->aEntryCell();
+      
+      pObject = (Object*)pWord->aFirstCell();
+      m_pDataStack->vPushPtr(pObject);
+      break;
+          
+    case WK_INTRINSIC:
+      fpStep = pWord->fpEntryStep();
+      ((Step*)this->*fpStep)();
+      break;
+          
+    case WK_LOCAL:
+      NEVER_REACH;
+      break;
+          
+    case WK_ROUTINE:
+      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_aInxPtr = pWord->aEntryCell();
+      break;
+          
+    default:
+      NEVER_REACH;
   }
-  else if (WK_EMBOBJECT == pWord->eKind()) {
-    m_pReturnStack->vPushFip(m_aInxPtr);
-    m_aInxPtr = pWord->aEntryCell();
-    
-    Object* pObject = (Object*)pWord->aFirstCell();
-    m_pDataStack->vPushPtr(pObject);
-  }
-  else if (WK_ROUTINE == pWord->eKind()){
-    m_pReturnStack->vPushFip(m_aInxPtr);
-    m_aInxPtr = pWord->aEntryCell();
-  }
-  else {
-    NEVER_REACH;
-  }
+//  if (WK_INTRINSIC == pWord->eKind()) {
+//    StepFp fpStep = pWord->fpEntryStep();
+//    ((Step*)this->*fpStep)();
+//  }
+//  else if (WK_EMBOBJECT == pWord->eKind()) {
+//    m_pReturnStack->vPushFip(m_aInxPtr);
+//    m_aInxPtr = pWord->aEntryCell();
+//
+//    Object* pObject = (Object*)pWord->aFirstCell();
+//    m_pDataStack->vPushPtr(pObject);
+//  }
+//  else if (WK_ROUTINE == pWord->eKind()){
+//    m_pReturnStack->vPushFip(m_aInxPtr);
+//    m_aInxPtr = pWord->aEntryCell();
+//  }
+//  else {
+//    NEVER_REACH;
+//  }
   
   EXIT();
 }
