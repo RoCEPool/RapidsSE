@@ -171,6 +171,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* delete all index objects                                                   */
+/*----------------------------------------------------------------------------*/
+: deleteIndexObjects
+
+  "indexes" find execute locals| pFolder |
+
+  pFolder path[].pushFolder
+
+  folder[] dic.lastWord dup
+  iterate
+    object@ drop
+
+    object@ word.prev object!
+  next
+
+  path[].discardFolder
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
 : removeIndex ( Job_DropIndex )

@@ -272,6 +272,8 @@ void Step::vWordDelete(void)
   Word* pRemovedWord = m_oDicStack.pRemoveWord(pWord->szWordNm());
   ASSERT(pRemovedWord);
   
+  m_pReturnStack->vDump(&m_oDicStack,"ReturnStack:"_Stz);
+  
   delete pRemovedWord;
   
   EXIT();

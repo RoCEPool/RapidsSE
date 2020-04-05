@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/
-: folder.forgetAll ( dic -- )
+: folder.forgetAllWords ( dic -- )
 
   dup dic.lastWord not if drop exit_rt then
 
