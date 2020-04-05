@@ -217,42 +217,51 @@
 
   0 locals| pTable |
 
+//"A" . symbols
+  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to table folder
   sTableNm path[].pushTableFolder assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the table
-  sTableNm find execute to pTable
+//"B" . symbols
+  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate the table
+  sTableNm find execute to pTable
   args.partitionsPerNode 0
   do
     I pTable table.truncate
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // forget the words in the indexes folder
   "indexes" find execute folder.forgetAllWords
+//"C1" . symbols
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forget the indexes folder itself
-  "indexes" folder::remove // :forget
+  "indexes" folder::remove
+//"C2" . symbols
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // forget the partitions dictionary itself
-  "partitions" folder::remove // :forget
+  // forget the partitions folder itself
+  "partitions" folder::remove
+//"C3" . symbols
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // forget the table dictionary itself
-  sTableNm folder::remove // :forget
+  // forget the table folder itself
+  sTableNm folder::remove
+//"C4" . symbols
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   path[].discardTableFolder
 
-  sTableNm folder::remove // :forget
+//"D" . symbols
+  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+
+  sTableNm folder::remove
+
+//"E" . symbols
 ;
 
 /*============================================================================*/
