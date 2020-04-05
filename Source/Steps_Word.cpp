@@ -336,7 +336,7 @@ void Step::vWordIsIntrinsic(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  i8 iIsPrimitive = WK_INTRINSIC == pWord->eKind() ? 1 : 0;
+  i8 iIsPrimitive = WK_INTRINSIC == pWord->eWord() ? 1 : 0;
   
   m_pDataStack->vPushInt(iIsPrimitive);
   
@@ -352,9 +352,9 @@ void Step::vWordKindFetch(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  eWK eKind = pWord->eKind();
+  eWK eWord = pWord->eWord();
   
-  m_pDataStack->vPushInt(eKind);
+  m_pDataStack->vPushInt(eWord);
   
   EXIT();
 }
@@ -368,9 +368,9 @@ void Step::vWordKindStore(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  i8 iKind = m_pDataStack->iPopInt(__func__);
+  i8 iWordKind = m_pDataStack->iPopInt(__func__);
   
-  pWord->vKind((eWK)iKind);
+  pWord->vWord((eWK)iWordKind);
   
   EXIT();
 }

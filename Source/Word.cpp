@@ -88,7 +88,7 @@ Word::Word(Stz* szWordNm)
   m_pEnameSet  = nullptr;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
-  m_eKind      = WK_ROUTINE;
+  m_eWord      = WK_ROUTINE;
   m_iLocalNo   = 0;
   m_pObject    = nullptr;
   m_iParams    = 0;
@@ -120,7 +120,7 @@ Word::~Word(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   // invoke the finalize function for embedded objects
-  if (m_eKind == WK_EMBOBJECT) {
+  if (m_eWord == WK_EMBOBJECT) {
     Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.ayArea());
     eCN eClass = pEmbObject->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
@@ -157,7 +157,7 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Word* pWord = _pWord(pObject);
   
   // dump only the objects
-  if (WK_EMBOBJECT == pWord->m_eKind)
+  if (WK_EMBOBJECT == pWord->m_eWord)
     pWord->vObjectDump(aTab);
 }
 
@@ -331,7 +331,7 @@ void Word::vContentDump(void)
          "Step %p %s ..Rows.. %p\n"_Stz,
          m_sWordNm.azChar(),
          this,
-         aWK[m_eKind]->azChar(),
+         aWK[m_eWord]->azChar(),
          m_pCategory->m_sWordNm.azChar(),
          m_bImmediate ? "immediate" : "not-immediate",
          m_xRoutine.nUsed(),
@@ -593,26 +593,6 @@ bool Word::bIsName(s32& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get word kind                                                              */
-/*----------------------------------------------------------------------------*/
-eWK Word::eKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_eKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set word kind                                                              */
-/*----------------------------------------------------------------------------*/
-void Word::vKind(eWK eKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_eKind = eKind;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get pointer to last cell                                                   */
 /*----------------------------------------------------------------------------*/
 Cell* Word::aLastCell(void)
@@ -676,7 +656,7 @@ void Word::vObjectDump(Stz* aTab)
          m_iEpoch,
          m_sWordNm.azChar(),
          m_pDic ? m_pDic->szName() : C_NO_NAME,
-         aWK[m_eKind]->azChar(),
+         aWK[m_eWord]->azChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xRoutine.nUsed(),
          m_fpIntrinsic,
@@ -748,6 +728,26 @@ void Word::vResetRoutine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_xRoutine.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get word kind                                                              */
+/*----------------------------------------------------------------------------*/
+eWK Word::eWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_eWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set word kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Word::vWord(eWK eWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_eWord = eWord;
 }
 
 /*----------------------------------------------------------------------------*/

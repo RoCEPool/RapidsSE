@@ -95,7 +95,7 @@ void Step::vLocalsBar(void)
     // ** do not set as current word **
     
     // set word as local variable
-    pWordLocal->vKind(WK_LOCAL);
+    pWordLocal->vWord(WK_LOCAL);
     pWordLocal->vLocalNo(nLcl);
     
     // encode the word

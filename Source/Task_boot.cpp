@@ -337,7 +337,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         
       case TN_NAME:
         pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->m_pCompiler->szToken());
-        if (WK_INTRINSIC == pCalledWord->eKind()) {
+        if (WK_INTRINSIC == pCalledWord->eWord()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
             ((Step*)(*m_pForth)->*fpStep)();
@@ -345,13 +345,13 @@ Word* Task::pCompileColon(s48K& sDefinition)
             pNewWord->vAppend(pCalledWord->afpEntryStep());
           }
         }
-        else if (WK_ROUTINE == pCalledWord->eKind()) {
+        else if (WK_ROUTINE == pCalledWord->eWord()) {
           StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
           pNewWord->vEncodeCall(afpCalledEntryStep);
         }
         else {
           vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "Invalid eWordType %lld"_Stz,pCalledWord->eKind());
+                 "Invalid eWordType %lld"_Stz,pCalledWord->eWord());
         }
         break;
         

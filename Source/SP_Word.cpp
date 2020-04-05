@@ -42,7 +42,7 @@ Stz* SP_Word::sz(Word* pWord)
                   
                   pWord->szWordNm(),
                   pWord,
-                  aWK[pWord->eKind()],
+                  aWK[pWord->eWord()],
                   pWord->pCategory()->szWordNm(),
                   
 
@@ -79,7 +79,7 @@ Stz* SP_Word::szSeeDoes(Word* pWord)
                   
                   pWord,
                   pWord->szWordNm(),
-                  aWK[pWord->eKind()],
+                  aWK[pWord->eWord()],
                   pWord->pCategory()->szWordNm(),
                   
                   
@@ -116,7 +116,7 @@ Stz* SP_Word::szSeeWord(Word* pWord)
                   
                   pWord,
                   pWord->szWordNm(),
-                  aWK[pWord->eKind()],
+                  aWK[pWord->eWord()],
                   pWord->pCategory()->szWordNm(),
                   
                   

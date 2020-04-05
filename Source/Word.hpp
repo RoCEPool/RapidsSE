@@ -24,7 +24,7 @@ namespace SenVM
     s32       m_sExitHook;    // routine to be called on exit
     s32       m_sExceptionHook;    // routine to be called on exception
     bool      m_bImmediate;   // immediate execution during compile?
-    eWK       m_eKind;        // kind of word
+    eWK       m_eWord;        // kind of word
     i8        m_iLocalNo;     // local number (for a local variable)
     Object*   m_pObject;      // optional associated object
     i8        m_iParams;      // number of parameters
@@ -107,8 +107,6 @@ namespace SenVM
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
     bool  bIsName(s32& sName);
-    eWK   eKind(void);
-    void  vKind(eWK eKind);
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
@@ -122,6 +120,8 @@ namespace SenVM
     void  vPrompt(bool bImmediate);
     void  vResetRoutine(void);
     i8    iSize(void);
+    eWK   eWord(void);
+    void  vWord(eWK eWord);
     Stz*  szWordNm(void);
     void  vWordNm(Stz* szWordNm);
     char* aWspArea(void);

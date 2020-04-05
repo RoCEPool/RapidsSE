@@ -102,7 +102,7 @@ void Step::vFlowExecute(void)
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  eWK eWord = pWord->eKind();
+  eWK eWord = pWord->eWord();
   
   switch(eWord) {
     case WK_CPPOBJECT:
@@ -138,24 +138,6 @@ void Step::vFlowExecute(void)
     default:
       NEVER_REACH;
   }
-//  if (WK_INTRINSIC == pWord->eKind()) {
-//    StepFp fpStep = pWord->fpEntryStep();
-//    ((Step*)this->*fpStep)();
-//  }
-//  else if (WK_EMBOBJECT == pWord->eKind()) {
-//    m_pReturnStack->vPushFip(m_aInxPtr);
-//    m_aInxPtr = pWord->aEntryCell();
-//
-//    Object* pObject = (Object*)pWord->aFirstCell();
-//    m_pDataStack->vPushPtr(pObject);
-//  }
-//  else if (WK_ROUTINE == pWord->eKind()){
-//    m_pReturnStack->vPushFip(m_aInxPtr);
-//    m_aInxPtr = pWord->aEntryCell();
-//  }
-//  else {
-//    NEVER_REACH;
-//  }
   
   EXIT();
 }

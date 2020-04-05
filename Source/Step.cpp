@@ -19,7 +19,7 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
   
   //m_pCompiler->vCurrentWord(pNewWord);
   
-  pNewWord->vKind(WK_INTRINSIC);
+  pNewWord->vWord(WK_INTRINSIC);
   pNewWord->vEntryStep(fpStep);
   pNewWord->vImmediate(bImmediate);
 }

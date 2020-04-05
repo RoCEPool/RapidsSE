@@ -216,7 +216,7 @@ Word* DicStack::pLocateWord(StepFp fpHasStep)
     Dic* pDic = m_pDic[i_Dic];
     
     for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (WK_INTRINSIC == pWord->eKind() &&
+      if (WK_INTRINSIC == pWord->eWord() &&
           fpHasStep == pWord->fpEntryStep())
         return pWord;
   }
@@ -225,7 +225,7 @@ Word* DicStack::pLocateWord(StepFp fpHasStep)
   for (pWord = pRootDic->pLastWord();
        pWord;
        pWord = pWord->pPrevWord())
-    if (WK_INTRINSIC == pWord->eKind() &&
+    if (WK_INTRINSIC == pWord->eWord() &&
         fpHasStep == pWord->fpEntryStep())
       return pWord;
   
