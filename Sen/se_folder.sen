@@ -194,6 +194,8 @@ diclock.dropwrite
 //    :createCppObject
 //      locals| pFolder |
 //
+//  sFolderNm pFolder word.object@ dic.name!
+//
 //diclock.dropwrite
 //
 //  args.verbose if
