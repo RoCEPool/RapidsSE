@@ -168,8 +168,6 @@ print section "Export Table";
 export lineitem "/tmp/lineitem_export.csv" ;
 
 
-
-
 //dynamic pipeline lineItem_dyn
 //begin
 //  stage stageA on all partitions:
