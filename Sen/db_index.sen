@@ -156,6 +156,59 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* tidy up of the index                                                       */
+/*----------------------------------------------------------------------------*/
+: indexTidyUp ( "<indexNm>" -- )
+
+  params| sIndexNm |
+  0 locals| pIndex |
+
+  // find the index
+  sIndexNm find execute to pIndex
+
+  // truncate the index
+  pIndex index.truncate
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeIndex ( Job_DropIndex )
+
+  params| pJob_DropIndex |
+  0 0 0 locals| pIndex sIndexNm sTableNm |
+
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm path[].pushTableFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  path[].pushIndexesFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index from the table
+  sIndexNm find execute to pIndex
+  pIndex pIndex index.table@ table.removeIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tidy up the index and forget it
+  sIndexNm indexTidyUp
+  sIndexNm :forget
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes folder
+  path[].discardIndexesFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table folder
+  path[].discardTableFolder
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

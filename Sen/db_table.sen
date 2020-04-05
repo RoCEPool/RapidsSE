@@ -210,6 +210,56 @@
   pTable
 ;
 
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable ( "<tableNm>" )
+
+  //test::test7
+
+  params| sTableNm |
+  0 locals| pTable |
+
+  //----------------------------------------------------------------------------
+  // move to table folder
+  sTableNm path[].pushTableFolder assert
+
+  //----------------------------------------------------------------------------
+  // find the table
+  sTableNm find execute to pTable
+
+  //----------------------------------------------------------------------------
+  // truncate the table
+  args.partitionsPerNode 0
+  do
+    I pTable table.truncate
+  loop
+
+  //----------------------------------------------------------------------------
+  // forget the indexes in the indexes dictionary
+  "indexes" find execute folder.forgetAll
+
+  //----------------------------------------------------------------------------
+  // forget the indexes dictionary itself
+  "indexes" :forget
+
+  //----------------------------------------------------------------------------
+  // forget the partitions dictionary itself
+  "partitions" :forget
+
+  //----------------------------------------------------------------------------
+  // forget the table dictionary itself
+  sTableNm :forget
+
+  //----------------------------------------------------------------------------
+  // pop table
+  path[].discardTableFolder
+
+  sTableNm :forget
+
+;
+
+
 
 /*============================================================================*/
 /* end                                                                        */
