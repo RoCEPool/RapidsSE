@@ -727,6 +727,12 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)false);
   #endif
       
+  #ifdef WITH_CPP_DIC
+  vAddConstant("WITH_CPP_DIC"_Stz,(i8)true);
+  #else
+  vAddConstant("WITH_CPP_DIC"_Stz,(i8)false);
+  #endif
+    
   #ifdef WITH_DEBUG_VERSION
   vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)true);
   #else

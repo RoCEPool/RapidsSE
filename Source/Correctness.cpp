@@ -74,6 +74,11 @@ bool Correctness::bTraceWith(Stz* szWith)
     return true;
 #endif
     
+#ifdef WITH_CPP_DIC
+  if (szWith->bSame("WITH_CPP_DIC"_Stz))
+    return true;
+#endif
+  
 #ifdef WITH_DEBUG_VERSION
   if (szWith->bSame("WITH_DEBUG_VERSION"_Stz))
     return true;
@@ -221,6 +226,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
 #endif
     
+#ifdef WITH_CPP_DIC
+  vTrace("  WITH_CPP_DIC\n"_Stz);
+#endif
+  
 #ifdef WITH_DEBUG_VERSION
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
@@ -352,6 +361,11 @@ bool Correctness::bTraceWithout(Stz* szWith)
     return true;
 #endif
     
+#ifndef WITH_CPP_DIC
+  if (szWith->bSame("WITH_CPP_DIC"_Stz))
+    return true;
+#endif
+  
 #ifndef WITH_DEBUG_VERSION
   if (szWith->bSame("WITH_DEBUG_VERSION"_Stz))
     return true;
@@ -499,6 +513,10 @@ void Correctness::vTraceWithout(void)
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
 #endif
     
+#ifndef WITH_CPP_DIC
+  vTrace("  WITH_CPP_DIC\n"_Stz);
+#endif
+  
 #ifndef WITH_DEBUG_VERSION
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif

@@ -96,6 +96,7 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 #define WITH_SEN_TAGS EndDefine              // code for sen tags
 
+#define WITH_CPP_DIC EndDefine               // code for sdic being a c++ obj
 
 /*============================================================================*/
 /* end                                                                        */
