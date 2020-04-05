@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropTenan::execute _eeh ( -- )
+: dropTenant::execute _eeh ( -- )
 
   job[] locals| pJob_DropTenant |
 

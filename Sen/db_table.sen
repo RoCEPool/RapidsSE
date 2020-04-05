@@ -177,6 +177,7 @@
   find: \table CN_TABLE sizeof_table sTableNm :createObject
 
   compiler::current@ word.embObject table.init
+  true compiler::current@ word.embObject object.wordbody!
 ;
 
 /*----------------------------------------------------------------------------*/

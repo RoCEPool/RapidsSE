@@ -4,11 +4,17 @@
 
 bc;
 
-_lineItem
+trackMemory;
 
-ld lineitem "/tpch/SF1/lineitem.csv" ;
+create table t (a integer);
 
-publish lineitem "/tmp/lineitem.rowAgg" ;
+symbols;
+
+drop table t;
+
+symbols;
+
+memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

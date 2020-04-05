@@ -111,6 +111,7 @@
   find: \index CN_INDEX sizeof_index sIndexNm :createObject
 
   compiler::current@ word.embObject index.init
+  true compiler::current@ word.embObject object.wordbody!
 ;
 
 /*----------------------------------------------------------------------------*/

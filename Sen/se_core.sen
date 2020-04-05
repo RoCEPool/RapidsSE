@@ -82,7 +82,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   compiler::current@ word.embObject object.magic!
-  true compiler::current@ word.embObject object.wordbody!
+  //true compiler::current@ word.embObject object.wordbody!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
