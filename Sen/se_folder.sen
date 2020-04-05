@@ -160,41 +160,18 @@
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-: :makeFolder params| sFolderNm |
-
-diclock.grabwrite
-
-  find: \folder
-  CN_DIC
-  sizeof_dic
-  sFolderNm
-    :createObject
-      locals| pFolder |
-
-  pFolder word.embObject dic.init
-
-diclock.dropwrite
-
-  args.verbose if
-    pFolder word.name@
-    path[].toStr
-      "Created folder %v/%v" .printf
-  then
-
-  pFolder // returns:
-;
-/*----------------------------------------------------------------------------*/
 //: :makeFolder params| sFolderNm |
 //
 //diclock.grabwrite
 //
 //  find: \folder
-//  dic::new
+//  CN_DIC
+//  sizeof_dic
 //  sFolderNm
-//    :createCppObject
+//    :createObject
 //      locals| pFolder |
 //
-//  sFolderNm pFolder word.object@ dic.name!
+//  pFolder word.embObject dic.init
 //
 //diclock.dropwrite
 //
@@ -206,6 +183,29 @@ diclock.dropwrite
 //
 //  pFolder // returns:
 //;
+/*----------------------------------------------------------------------------*/
+: :makeFolder params| sFolderNm |
+
+diclock.grabwrite
+
+  find: \folder
+  dic::new
+  sFolderNm
+    :createCppObject
+      locals| pFolder |
+
+  sFolderNm pFolder word.object@ dic.name!
+
+diclock.dropwrite
+
+  args.verbose if
+    pFolder word.name@
+    path[].toStr
+      "Created folder %v/%v" .printf
+  then
+
+  pFolder // returns:
+;
 
 /*----------------------------------------------------------------------------*/
 /* make a sub-folder under given folder                                       */
