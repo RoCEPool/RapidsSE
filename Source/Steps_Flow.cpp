@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Flow(void)
 {
-  vAddStep("execute"_Stz,         &Step::vFlowExecute);
   vAddStep("hazard"_Stz,          &Step::vFlowHazard);
   vAddStep("jump"_Stz,            &Step::vFlowJump);
   vAddStep("jumpFalse"_Stz,       &Step::vFlowJumpFalse);
@@ -18,37 +17,6 @@ void Step::vAddSteps_Flow(void)
   vAddStep("reenter"_Stz,         &Step::vFlowReenter);
   vAddStep("test"_Stz,            &Step::vFlowTest);
   vAddStep("throw"_Stz,           &Step::vFlowThrow);
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute -- execute word on data stack                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vFlowExecute(void)
-{
-  ENTRY(); // ENTRY("vFlowExecute"_Stz);
-  
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  if (WK_INTRINSIC == pWord->eKind()) {
-    StepFp fpStep = pWord->fpEntryStep();
-    ((Step*)this->*fpStep)();
-  }
-  else if (WK_EMBOBJECT == pWord->eKind()) {
-    m_pReturnStack->vPushFip(m_aInxPtr);
-    m_aInxPtr = pWord->aEntryCell();
-    
-    Object* pObject = (Object*)pWord->aFirstCell();
-    m_pDataStack->vPushPtr(pObject);
-  }
-  else if (WK_ROUTINE == pWord->eKind()){
-    m_pReturnStack->vPushFip(m_aInxPtr);
-    m_aInxPtr = pWord->aEntryCell();
-  }
-  else {
-    NEVER_REACH;
-  }
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1507,19 +1507,13 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   vTrace("See: %s\n"_Stz,spWord.szSeeWord(pWord));
   vTrace("-------------------------------------------------------------\n"_Stz);
 
-  Cell* aFip = pWord->aEntryCell();
+  Cell* aDoes = pWord->aEntryCell();
   
-  Word* pDoesWord = (Word*)( ((u8)aFip & (u8)~0xFFFF)
-                            + sizeof(HeapBuffer));
+  Word* pDoesWord = Word::pToWord(aDoes);
   
   vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
 
-  
-  //M::vWordSeeInx(pDoes,pDoes->aFirstCell(), pDicStack);
-  AM::vWordSeeDoes(pWord,pDoesWord,pDoesWord->aEntryCell(), pDicStack);
-
-//  if (pWord != pDoes)
-//    AM::vWordSeeInx(pWord,pWord->aFirstCell(),pDicStack);
+  AM::vWordSeeDoes(pWord,pDoesWord,aDoes, pDicStack);
   
   vTrace("=============================================================\n"_Stz);
 }
@@ -1527,30 +1521,32 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicStack)
+void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
+                      DicStack* pDicStack)
 {
   vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
 
-  for (Cell* aLastCell = pDoesWord->aLastCell(); aFip < aLastCell; /*none*/ ) {
+  Cell* aLastCell = pDoesWord->aLastCell();
+  while (aDoes < aLastCell) {
     
-    StepFp fpHasStep = *aFip->m_afpStep;
+    StepFp fpHasStep = *aDoes->m_afpStep;
     
     Word* pCallsWord = pDicStack->pLocateWord(fpHasStep);
     
     // -- -- -- -- -- -- -- -- -- --
     // jump / jump false / jump true
     
-    if (*aFip->m_afpStep == &Step::vFlowJump ||
-        *aFip->m_afpStep == &Step::vFlowJumpFalse ||
-        *aFip->m_afpStep == &Step::vFlowJumpTrue ) {
+    if (*aDoes->m_afpStep == &Step::vFlowJump ||
+        *aDoes->m_afpStep == &Step::vFlowJumpFalse ||
+        *aDoes->m_afpStep == &Step::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Stz,aFip,pCallsWord->szWordNm());
+      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
       
-      aFip++;
+      aDoes++;
       
-      vTrace(" %p\n"_Stz,aFip->m_aJumpTo);
+      vTrace(" %p\n"_Stz,aDoes->m_aJumpTo);
       
-      aFip++;
+      aDoes++;
       
       continue;
     }
@@ -1558,18 +1554,18 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicSt
     // -- -- -- -- -- -- -- -- -- --
     // push intval
     
-    if ( *aFip->m_afpStep == &Step::vPushIntVal ) {
+    if ( *aDoes->m_afpStep == &Step::vPushIntVal ) {
       
-      vTrace("%p: %s"_Stz,aFip,pCallsWord->szWordNm());
+      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
       
-      aFip++;
+      aDoes++;
       
-      IntVal* aIntVal = _aIntVal(aFip);
+      IntVal* aIntVal = _aIntVal(aDoes);
       
       vTrace(" %lld\n"_Stz,aIntVal->iInt());
       
       i8 iBytes = aIntVal->nStackUsage();
-      aFip = aAdd<Cell*>(aFip,iBytes);
+      aDoes = aAdd<Cell*>(aDoes,iBytes);
       
       continue;
     }
@@ -1577,13 +1573,13 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicSt
     // -- -- -- -- -- -- -- -- -- --
     // push ptrval
     
-    if ( *aFip->m_afpStep == &Step::vPushPtrVal ) {
+    if ( *aDoes->m_afpStep == &Step::vPushPtrVal ) {
       
-      vTrace("%p: %s"_Stz,aFip,pCallsWord->szWordNm());
+      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
       
-      aFip++;
+      aDoes++;
       
-      PtrVal* aPtrVal = _aPtrVal(aFip);
+      PtrVal* aPtrVal = _aPtrVal(aDoes);
       
       eCN eClassNo_obj = aPtrVal->pObj()->eClass();
       
@@ -1596,7 +1592,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicSt
       }
       
       i8 iBytes = aPtrVal->nStackUsage();
-      aFip = aAdd<Cell*>(aFip,iBytes);
+      aDoes = aAdd<Cell*>(aDoes,iBytes);
       
       continue;
     }
@@ -1604,40 +1600,39 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicSt
     // -- -- -- -- -- -- -- -- -- --
     // push stzval
     
-    if ( *aFip->m_afpStep == &Step::vPushStzVal ) {
+    if ( *aDoes->m_afpStep == &Step::vPushStzVal ) {
       
-      vTrace("%p: %s"_Stz,aFip,pCallsWord->szWordNm());
+      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
       
-      aFip++;
+      aDoes++;
       
-      StzVal* aStzVal = _aStzVal(aFip);
+      StzVal* aStzVal = _aStzVal(aDoes);
       
       vTrace(" \"%s\"\n"_Stz,aStzVal->szStz());
       
       i8 iBytes = aStzVal->nStackUsage();
-      aFip = aAdd<Cell*>(aFip,iBytes);
+      aDoes = aAdd<Cell*>(aDoes,iBytes);
       
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
     // enter routine
-    if ( *aFip->m_afpStep == &Step::vEnterRoutine ) {
+    if ( *aDoes->m_afpStep == &Step::vEnterRoutine ) {
       
-      Word* pCallsWord = (Word*)( ((u8)aFip->m_afpStep & (u8)~0xFFFF)
-                                 + sizeof(HeapBuffer));
+      Word* pCallsWord = Word::pToWord(aDoes->m_afpStep);
       
-      vTrace("%p: %s\n"_Stz,aFip,pCallsWord->szWordNm());
-      aFip++;
+      vTrace("%p: %s\n"_Stz,aDoes,pCallsWord->szWordNm());
+      aDoes++;
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
     // call step
     
-    vTrace("%p: %s\n"_Stz,aFip,pCallsWord->szWordNm());
+    vTrace("%p: %s\n"_Stz,aDoes,pCallsWord->szWordNm());
     
-    aFip++;
+    aDoes++;
   }
   
 }

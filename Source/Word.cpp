@@ -140,6 +140,8 @@ Word::~Word(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Word::vArtFun(Object* pObject, SP& spObject)
 {
+  _static_
+  
   SP_Word spWord;
   
   spObject.vResult(spWord.sz(_pWord(pObject)));
@@ -150,6 +152,8 @@ void Word::vArtFun(Object* pObject, SP& spObject)
 /*----------------------------------------------------------------------------*/
 void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  _static_
+  
   Word* pWord = _pWord(pObject);
   
   // dump only the objects
@@ -160,35 +164,14 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of this cell ptr                                        */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(Cell* aFip)
+Word* Word::pToWord(void* aAddrWithinWord)
 {
-  // static function
-  
-//  Word* pWord = (Word*)aAdd<Word*>(aAddr,
-//                                   -( sizeof(Word)
-//                                      - sizeof(Wsp_t<C_WSP_WORD>)
-//                                      - sizeof(Footer)
-//                                    )
-//                                  );
-  
-  u8    uWord = ((u8)aFip & (u8)~0xFFFF) + sizeof(HeapBuffer);
+  _static_
+    
+  u8    uWord = ((u8)aAddrWithinWord & (u8)~0xFFFF) + sizeof(HeapBuffer);
   
   Word* pWord = _pWord((void*)uWord);
   
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the outer word of this embedded object                                 */
-/*----------------------------------------------------------------------------*/
-Word* Word::pToWord(Object* pEmbObject)
-{
-  // static function
-
-  u8    uWord = ((u8)pEmbObject & (u8)~0xFFFF) + sizeof(HeapBuffer);
-  
-  Word* pWord = _pWord((void*)uWord);
-
   return pWord;
 }
 

@@ -12,6 +12,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
+  vAddStep("execute"_Stz,           &Step::vFlowExecute);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("find:"_Stz,             &Step::vFind,             true);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
@@ -85,6 +86,37 @@ void Step::vDoes_RT(void)
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
   pCurrentWord->vEntryCell(m_aInxPtr + 1);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute -- execute word on data stack                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vFlowExecute(void)
+{
+  ENTRY(); // ENTRY("vFlowExecute"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  if (WK_INTRINSIC == pWord->eKind()) {
+    StepFp fpStep = pWord->fpEntryStep();
+    ((Step*)this->*fpStep)();
+  }
+  else if (WK_EMBOBJECT == pWord->eKind()) {
+    m_pReturnStack->vPushFip(m_aInxPtr);
+    m_aInxPtr = pWord->aEntryCell();
+    
+    Object* pObject = (Object*)pWord->aFirstCell();
+    m_pDataStack->vPushPtr(pObject);
+  }
+  else if (WK_ROUTINE == pWord->eKind()){
+    m_pReturnStack->vPushFip(m_aInxPtr);
+    m_aInxPtr = pWord->aEntryCell();
+  }
+  else {
+    NEVER_REACH;
+  }
   
   EXIT();
 }
