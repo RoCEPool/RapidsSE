@@ -11,7 +11,7 @@
 
   // copy the path from task dic stack onto data stack
   path[].depth 0 ?do
-    path[].depth 1 - I - path[].pick dic.name
+    path[].depth 1 - I - path[].pick dic.name@
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

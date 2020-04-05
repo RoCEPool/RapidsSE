@@ -17,7 +17,8 @@ void Step::vAddSteps_Dic(void)
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
   vAddStep("dic.lastWord"_Stz,    &Step::vDicLastWord);
-  vAddStep("dic.name"_Stz,        &Step::vDicName);
+  vAddStep("dic.name@"_Stz,       &Step::vDicNameFetch);
+  vAddStep("dic.name!"_Stz,       &Step::vDicNameStore);
   vAddStep("dic.ref"_Stz,         &Step::vDicRef);
   vAddStep("dic.wordCount"_Stz,   &Step::vDicWordCount);
 }
@@ -105,7 +106,7 @@ void Step::vDicLastWord(void)
 /*----------------------------------------------------------------------------*/
 /* dic.name -- push name of dictionary onto stack                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicName(void)
+void Step::vDicNameFetch(void)
 {
   ENTRY(); // ENTRY("vDicName"_Stz);
  
@@ -117,6 +118,24 @@ void Step::vDicName(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* dic.name! -- set dictionary name                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vDicNameStore(void)
+{
+  ENTRY(); // ENTRY("vDicNameStore"_Stz);
+  
+  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  
+  pDic->vName(sName);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* dic::new -- create new dictionary                                          */

@@ -40,7 +40,7 @@
     // compute the path subscript
     path[].depth 1 - I -
     // pick the path, get its name and concat name to working string
-    path[].pick dic.name str.cat
+    path[].pick dic.name@ str.cat
     // concat "/" to end of working string
     "/" str.cat
   loop

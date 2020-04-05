@@ -180,7 +180,8 @@ public:
   void vDicKindGet(void);
   void vDicKindSet(void);
   void vDicLastWord(void);
-  void vDicName(void);
+  void vDicNameFetch(void);
+  void vDicNameStore(void);
   void vDicNew(void);
   void vDicRef(void);
   void vDicRoot(void);

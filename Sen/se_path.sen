@@ -74,7 +74,7 @@
     I
 
     // pick the path, get its name and concat name to working string
-    path[].pick dic.name str.cat
+    path[].pick dic.name@ str.cat
 
   loop
 ;
