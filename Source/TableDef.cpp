@@ -735,8 +735,10 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
     if (pTkn->bSame("not"_Stz)) {
     
       eError = eParseNotNull(pTknVec,pCol);
-      if (EC_NONE != eError)
+      if (EC_NONE != eError) {
+        pCol->vIsNullable(false);
         return eError;
+      }
 
       continue;
     }
