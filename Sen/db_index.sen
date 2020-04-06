@@ -119,11 +119,13 @@
 /*----------------------------------------------------------------------------*/
 : :createIndexObject params| sIndexNm |
 
-//  find: \index
-//  index::new
-//  sIndexNm
-//    :createCppObject
-//      locals| pIndex |
+  find: \index
+  index::new
+  sIndexNm
+    :createCppObject
+      locals| pIndex |
+
+  pIndex // returns:
 ;
 
 /*----------------------------------------------------------------------------*/

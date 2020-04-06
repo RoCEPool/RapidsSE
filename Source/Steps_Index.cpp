@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Index(void)
 {
+  vAddStep("index::delete"_Stz,         &Step::vIndexDelete);
+  vAddStep("index::new"_Stz,            &Step::vIndexNew);
+
   vAddStep("index.analyze"_Stz,         &Step::vIndexAnalyze);
   vAddStep("index.columnCount@"_Stz,    &Step::vIndexColumnCountFetch);
   vAddStep("index.column@"_Stz,         &Step::vIndexColumnFetch);
@@ -147,6 +150,20 @@ void Step::vIndexCompact(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->pTable()->vCompactIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index::new -- delete an instance of index                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDelete(void)
+{
+  ENTRY(); // ENTRY("vIndexDelete"_Stz);
+  
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+  delete pIndex;
   
   EXIT();
 }
@@ -649,6 +666,20 @@ void Step::vIndexNameFetch(void)
   s32 sIndexName = pIndex->szIndexNm();
   
   m_pDataStack->vPushStr(sIndexName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index::new -- create a new instance of index                               */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexNew(void)
+{
+  ENTRY(); // ENTRY("vIndexNew"_Stz);
+  
+  Index* pIndex = new Index;
+  
+  m_pDataStack->vPushPtr(pIndex);
   
   EXIT();
 }

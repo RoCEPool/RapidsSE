@@ -380,6 +380,7 @@ public:
   void vIndexColumnName(void);
   void vIndexColumnType(void);
   void vIndexCompact(void);
+  void vIndexDelete(void);
   void vIndexDump(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
@@ -394,6 +395,7 @@ public:
   void vIndexIsValidUniqueIndex(void);
   void vIndexLowerBound(void);
   void vIndexNameFetch(void);
+  void vIndexNew(void);
   void vIndexPopulate(void);
   void vIndexRange(void);
   void vIndexSpace(void);
