@@ -25,7 +25,6 @@
   // pipeout the infoset
   InfoSet[].pipeout
 
-
   true
 ;
 
@@ -36,9 +35,10 @@ opSyntax: ping :: ping ;
 
 : ping opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>    = "--description of operator--"
-    <locaLiteOp> = true
-    <streamDef>  = __pingInfo
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <params>      = 0
+    <streamDef>   = __pingInfo
   }
 ;
     

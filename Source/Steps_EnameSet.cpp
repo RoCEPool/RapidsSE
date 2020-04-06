@@ -183,7 +183,7 @@ void Step::vEnameSetHasName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* enameSet.insertInt -- add a name-integer pair to ename-set                    */
+/* enameSet.insertInt -- add a name-integer pair to ename-set                 */
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetInsertInt(void)
 {

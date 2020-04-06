@@ -70,7 +70,7 @@
 
         "job_BootCluster.sen"     include
 
-        "job_Cf.sen"              include
+        //"job_Cf.sen"              include
         "job_CompactIndex.sen"    include
         "job_ConnectCluster.sen"  include
         "Job_CopyBuffer.sen"      include
@@ -145,8 +145,11 @@
         "OP_bufferGen.sen"        include
         "OP_burst.sen"            include
 
+        "OP_cf.sen"               include
         "OP_chunk.sen"            include
         "OP_consume.sen"          include
+
+        //"OP_docol.sen"            include
 
         "OP_eatAll.sen"           include
         "OP_exemplar.sen"         include

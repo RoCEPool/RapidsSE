@@ -128,9 +128,28 @@ end
 "
   : /localLiteOp/_PulseMarker \\handler
 
-    Pipein[].pipeout
-
     /localLiteOp/_setup  assert
+    /localLiteOp/_action if
+      Pipein[].pipeout
+      Operand[].newEosMarker
+      Operand[].pipeOut
+    else
+      Pipein[].delete
+    then
+
+    true
+  ;
+"
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PULSEMARKER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_PulseMarker_noSetup
+
+"
+  : /localLiteOp/_PulseMarker \\handler
+
     /localLiteOp/_action assert
 
     Operand[].newEosMarker
@@ -140,7 +159,6 @@ end
   ;
 "
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* execute for space req                              (on node where spawned) */
@@ -167,9 +185,9 @@ end
 
 
 /*----------------------------------------------------------------------------*/
-/* get space on each node                                                     */
+/* local liteOp procedure with 0 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: __localLiteOp_procedure
+: __localLiteOp_procedure0
 
 "
   procedure /localLiteOp/
@@ -181,6 +199,42 @@ end
 
   end
 "
+;
+
+/*----------------------------------------------------------------------------*/
+/* local liteOp procedure with 1 parameter                                    */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_procedure1
+
+"
+  procedure /localLiteOp/
+    parameters $param
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | /localLiteOp/ $param |
+      output | sink | stageA
+
+  end
+"
+;
+
+/*----------------------------------------------------------------------------*/
+/* local liteOp procedure with 2 parameters                                   */
+/*----------------------------------------------------------------------------*/
+: __localLiteOp_procedure2
+
+  "
+    procedure /localLiteOp/
+      parameters $param0 $param1
+    begin
+
+    stage stageA on origin :
+      start | periodicOp once | /localLiteOp/ $param0 $param1 |
+        output | sink | stageA
+
+    end
+  "
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -356,7 +410,7 @@ end
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.enameSet@  locals| pEnameSet |
-
+  0 0 locals| iParams sStreamDef |
 
   // default for command kind
   "<cmdKind>" pEnameSet EnameSet.hasName not if
@@ -411,10 +465,28 @@ end
       "<localLiteOp>" pEnameSet EnameSet.hasName if
         sWordNm_trunc "LocalLiteOP: %v\n" .printf
 
-        "/localLiteOp/" sWordNm_trunc __localLiteop_Setup       str.replace >interpret
-        "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
+        "<streamDef>" pEnameSet EnameSet.hasName if
+          "/localLiteOp/" sWordNm_trunc __localLiteop_Setup       str.replace >interpret
+          "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
+        else
+          "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker_noSetup str.replace >interpret
+        then
+
         "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
-        "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure   str.replace procedure::add
+
+        // add procedure depending on no of parameters
+        "<params>" pEnameSet EnameSet.hasName assert
+        "<params>" pEnameSet EnameSet.getStr >int to iParams
+        iParams 2 == if
+          "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
+        else
+          iParams 1 == if
+            "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1   str.replace procedure::add
+        else
+          iParams 0 == assert
+          "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
+        then then
+
       then
 
     then

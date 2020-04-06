@@ -3,3 +3,4 @@
 # This is a recursive testList file.
 
 ../testsMN/Datums/testList
+../tests/LocalFunctions/testList

@@ -8,7 +8,7 @@ rows:
  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // change folder
-"cf ..";
+cf "..";
 mute;
 
 // present working folder
@@ -17,7 +17,7 @@ rows:
   ('/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // change folder
-cf tables;
+cf "tables";
 mute;
 
 // present working folder
