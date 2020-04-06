@@ -13,8 +13,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // get the folderNm from the job
-  //pJob_Cf job.folderName@ to sFolderNm
+  // get the folderNm from the the tag
   <folderNm> to sFolderNm
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

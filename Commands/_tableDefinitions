@@ -38,6 +38,11 @@ create table definition __lockStats (
   WritePercent   INTEGER     NOT NULL
 );
 
+// this is C_TDEF_LSTBL
+create table definition __lstbl (
+  tableName       VARCHAR NOT NULL
+);
+
 // this is C_TDEF_NODEINFO
 create table definition __nodeInfo (
   nodeName       VARCHAR NOT NULL,
