@@ -2,6 +2,10 @@
 /* folder.test -- folder functions                                            */
 /*----------------------------------------------------------------------------*/
 
+// change folder
+cf "noFolder";
+failure contains: 'no such folder'
+
 // present working folder
 pwf;
 rows:
@@ -24,6 +28,16 @@ mute;
 pwf;
 rows:
   ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// change folder
+cf "tenants";
+mute;
+
+// present working folder
+pwf;
+rows:
+  ('/tenants/')
+
 
 CLEANUP {
   bye;

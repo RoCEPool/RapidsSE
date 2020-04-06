@@ -62,12 +62,17 @@
   // check if start has already been cancelled
   Job_Pipeline::isCancelled not if
 
-    // mark pipeline as being pulsed
-    true Job_Pipeline::pulsed
+    // check if start has already been exited
+    Job_Pipeline::isErrored not if
 
-    // now pipeout an exit marker
-    Operand[].newExitMarker
-    Operand[].pipeout
+      // mark pipeline as being pulsed
+      true Job_Pipeline::pulsed
+
+      // now pipeout an exit marker
+      Operand[].newExitMarker
+      Operand[].pipeout
+
+    then
 
   then
 
