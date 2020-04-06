@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 /* create an index using name on the stack (leaves index on stack)            */
 /*----------------------------------------------------------------------------*/
-: :createIndex params| sIndexNm |
+: :createIndexEmbObj params| sIndexNm |
 
   find: \index CN_INDEX sizeof_index sIndexNm :createObject
 
@@ -115,45 +115,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make_index (invoked from makeIndex)                                        */
+/* create the c++ index object given its name (returns pIndex)                */
 /*----------------------------------------------------------------------------*/
-//: make_index ( "<tableNm>" "<indexNm>" -- )
-//
-//  0 0 locals| indexPtr tablePtr indexNm tableNm |
-//
-//  path[].pushIndexesFolder assert
-//
-//  // create the index
-//  indexNm ( "<indexNm>" )
-//  :createIndex ( ^index )
-//
-//  // drop the index word
-//  drop (  )
-//
-//  // make index columns
-//  //indexNm "makeIndexColumns" find execute
-//
-//  indexNm ( "<indexNm>" )
-//
-//  // find the index
-//  find execute ( ^index )
-//  to indexPtr
-//
-//  // find the table
-//  tableNm find execute
-//  to tablePtr
-//
-//  // push the table and index
-//  tablePtr indexPtr ( ^index ^table )
-//
-//  // set the table in the index
-//  index.table! (  )
-//
-//  // add the index in the table
-//  indexPtr tablePtr table.addIndex
-//
-//  path[].discardIndexesFolder
-//;
+: :createIndexObject params| sIndexNm |
+
+//  find: \index
+//  index::new
+//  sIndexNm
+//    :createCppObject
+//      locals| pIndex |
+;
 
 /*----------------------------------------------------------------------------*/
 /* tidy up of the index                                                       */

@@ -98,7 +98,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
-  sIndexNm :createIndex drop
+  sIndexNm :createIndexEmbObj drop
 
   // find the index
   sIndexNm find execute to pIndex
