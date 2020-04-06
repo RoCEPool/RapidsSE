@@ -397,6 +397,8 @@ void Task::vCompileConstant(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  vTrace("vCompileConstant :\n%s\n"_Stz,sDefinition.szStz());
+  
   s48K sValue;
   
   m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
