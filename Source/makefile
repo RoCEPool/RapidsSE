@@ -52,7 +52,7 @@ pre-build : version
 target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 #Debug builds
-debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
+debug : export CPPFLAGS = -std=c++11 —D_DEBUG -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
 debug : all
 #debug: $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
