@@ -117,43 +117,43 @@
 /*----------------------------------------------------------------------------*/
 /* make_index (invoked from makeIndex)                                        */
 /*----------------------------------------------------------------------------*/
-: make_index ( "<tableNm>" "<indexNm>" -- )
-
-  0 0 locals| indexPtr tablePtr indexNm tableNm |
-
-  path[].pushIndexesFolder assert
-
-  // create the index
-  indexNm ( "<indexNm>" )
-  :createIndex ( ^index )
-
-  // drop the index word
-  drop (  )
-
-  // make index columns
-  //indexNm "makeIndexColumns" find execute
-
-  indexNm ( "<indexNm>" )
-
-  // find the index
-  find execute ( ^index )
-  to indexPtr
-
-  // find the table
-  tableNm find execute
-  to tablePtr
-
-  // push the table and index
-  tablePtr indexPtr ( ^index ^table )
-
-  // set the table in the index
-  index.table! (  )
-
-  // add the index in the table
-  indexPtr tablePtr table.addIndex
-
-  path[].discardIndexesFolder
-;
+//: make_index ( "<tableNm>" "<indexNm>" -- )
+//
+//  0 0 locals| indexPtr tablePtr indexNm tableNm |
+//
+//  path[].pushIndexesFolder assert
+//
+//  // create the index
+//  indexNm ( "<indexNm>" )
+//  :createIndex ( ^index )
+//
+//  // drop the index word
+//  drop (  )
+//
+//  // make index columns
+//  //indexNm "makeIndexColumns" find execute
+//
+//  indexNm ( "<indexNm>" )
+//
+//  // find the index
+//  find execute ( ^index )
+//  to indexPtr
+//
+//  // find the table
+//  tableNm find execute
+//  to tablePtr
+//
+//  // push the table and index
+//  tablePtr indexPtr ( ^index ^table )
+//
+//  // set the table in the index
+//  index.table! (  )
+//
+//  // add the index in the table
+//  indexPtr tablePtr table.addIndex
+//
+//  path[].discardIndexesFolder
+//;
 
 /*----------------------------------------------------------------------------*/
 /* tidy up of the index                                                       */
