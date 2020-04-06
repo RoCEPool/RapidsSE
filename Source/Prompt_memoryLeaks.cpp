@@ -71,6 +71,9 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "fatal: memory leaks detected"_Stz);
   
+  if (! iRowsProcessed)
+    vTrace("No memory leaks detected\n"_Stz);
+  
   pPrompt->vTrackingMemory(false);
   
   return true;

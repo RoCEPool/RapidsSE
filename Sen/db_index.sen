@@ -193,39 +193,52 @@
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeIndex ( Job_DropIndex )
+: removeIndex params| sTableNm sIndexNm |
 
-  params| pJob_DropIndex |
-  0 0 0 locals| pIndex sIndexNm sTableNm |
+"in removeIndex" .
 
-  <indexNm> to sIndexNm
-  <tableNm> to sTableNm
+symbols
+
+sTableNm .
+sIndexNm .
+
+"A" .
+
+  0 locals| pIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
   sTableNm path[].pushTableFolder assert
+"B" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
   path[].pushIndexesFolder assert
+"C" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
   sIndexNm find execute to pIndex
+"D" .
   pIndex pIndex index.table@ table.removeIndex
+"E" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
   sIndexNm indexTidyUp
+"F" .
   sIndexNm :forget
+"G" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes folder
   path[].discardIndexesFolder
+"H" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
   path[].discardTableFolder
+"I" .
 ;
 
 /*----------------------------------------------------------------------------*/

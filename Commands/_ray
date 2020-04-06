@@ -14,7 +14,7 @@ create index idx on t (a);
 symbols;
 
 //drop table t;
-drop table t idx;
+drop index t idx;
 symbols;
 
 memoryLeaks;

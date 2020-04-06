@@ -25,12 +25,8 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex::execute _eeh ( -- )
 
-  job[] locals| pJob_DropIndex |
+  <indexNm> <tableNm> removeIndex
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove the table
-  pJob_DropIndex removeIndex
   folder[].isTables assert
 ;
 
