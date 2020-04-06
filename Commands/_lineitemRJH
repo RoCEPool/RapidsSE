@@ -93,6 +93,7 @@ time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
+sizeIndex lineitem LineItem_Idx1;
 //fetch lineitem limit 10;
 
 

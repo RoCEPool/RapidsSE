@@ -248,11 +248,34 @@ sIndexNm .
 /*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
-: sizeIndex ( "<indexNm>" -- "<size>" )
+: index::magn ( "<indexNm>" -- "<magn>" )
 
   find execute ( index^ )
 
   index.space 0 swap number.magnitude >str
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of named index                                                    */
+/*----------------------------------------------------------------------------*/
+: index::size params| sTableNm sIndexNm |
+
+  // push table and indexes folder
+  sTableNm path[].pushTableFolder assert
+
+  path[].pushIndexesFolder assert
+
+  // get pointer to c++ index object
+  sIndexNm find execute locals| pIndex |
+
+  // get size (in bytes) of index
+  pIndex index.space locals| iSize |
+
+  // pop indexes and table folder
+  path[].discardIndexesFolder
+  path[].discardTableFolder
+
+  iSize // returns:
 ;
 
 /*============================================================================*/
