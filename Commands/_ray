@@ -4,14 +4,17 @@
 
 bc;
 
-trackMemory;
 
 create table t (a integer);
 
+trackMemory;
 symbols;
 
-drop table t;
+create index idx on t (a);
+symbols;
 
+//drop table t;
+drop table t idx;
 symbols;
 
 memoryLeaks;
