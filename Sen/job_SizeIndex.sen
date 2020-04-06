@@ -69,34 +69,14 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex::execute _eeh ( -- )
 
-  //params| pJob_SizeIndex |
-  job[] locals| pJob_SizeIndex |
+  <indexNm> <tableNm> index::size locals| iSize |
 
-  0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
+  0 iSize number.magnitude >str locals| sSize |
 
+  sSize grid::thisNodeName@ "row: ('%v', '%v')" str.format
+    job[] job.response!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table and index names
-  <indexNm> to sIndexNm
-  <tableNm> to sTableNm
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table and indexes folder
-  sTableNm path[].pushTableFolder assert
-  path[].pushIndexesFolder assert
-
-  sIndexNm find execute to pIndex
-  pIndex index.space 0 swap number.magnitude to iSize
-
-  iSize grid::thisNodeName@ "row: ('%v', '%v')" str.format
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop indexes and table folder
-  path[].discardIndexesFolder
-  path[].discardTableFolder
-
-  pJob_SizeIndex job.response!
-  1 pJob_SizeIndex job.rowsProcessed!
+  1 job[] job.rowsProcessed!
 ;
 
 /*----------------------------------------------------------------------------*/
