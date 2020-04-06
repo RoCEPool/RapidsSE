@@ -21,7 +21,8 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // debug behaviours
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
+#if defined (_DEBUG) || defined (WITH_DEBUG_VERSION)
 
 #define WITH_DEBUG_VERSION EndDefine         // compile as debug version
 
