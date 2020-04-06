@@ -22,9 +22,9 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 // debug behaviours
 
 //#ifdef _DEBUG
-#if defined (_DEBUG) || defined (WITH_DEBUG_VERSION)
+#if defined (_DEBUG) // || defined (WITH_DEBUG_VERSION)
 
-//#define WITH_DEBUG_VERSION EndDefine         // compile as debug version
+#define WITH_DEBUG_VERSION EndDefine         // compile as debug version
 
 #define WITH_ACTION_SEQUENCE EndDefine       // code for ActionLog compiled in
 #define WITH_ADDRESS_CHECKING EndDefine      // check that address is in pool
