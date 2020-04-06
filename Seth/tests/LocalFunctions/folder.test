@@ -13,7 +13,7 @@ rows:
 
 // change folder
 cf "..";
-mute;
+success
 
 // present working folder
 pwf;
@@ -22,7 +22,7 @@ rows:
 
 // change folder
 cf "tables";
-mute;
+success
 
 // present working folder
 pwf;
@@ -31,13 +31,60 @@ rows:
 
 // change folder
 cf "tenants";
-mute;
+success
 
 // present working folder
 pwf;
 rows:
   ('/tenants/')
 
+cf "boray";
+success
+
+// present working folder
+pwf;
+rows:
+  ('/boray/tenants/')
+
+cf "catalogs";
+success
+
+// present working folder
+pwf;
+rows:
+  ('/catalogs/boray/tenants/')
+
+cf "rapidsse";
+success
+
+// present working folder
+pwf;
+rows:
+('/rapidsse/catalogs/boray/tenants/')
+
+cf "schemas";
+success
+
+// present working folder
+pwf;
+rows:
+('/schemas/rapidsse/catalogs/boray/tenants/')
+
+cf "public";
+success
+
+// present working folder
+pwf;
+rows:
+  ('/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+cf "tables";
+success
+
+// present working folder
+pwf;
+rows:
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 CLEANUP {
   bye;
