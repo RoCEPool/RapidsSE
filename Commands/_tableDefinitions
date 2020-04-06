@@ -17,7 +17,7 @@ create table definition __listColumns (
   columnType     VARCHAR NOT NULL,
   columnLength   INTEGER NOT NULL,
   columnScale    INTEGER NOT NULL,
-  isNull         BOOLEAN NOT NULL,
+  isNullable     BOOLEAN NOT NULL,
   isPartitionKey BOOLEAN NOT NULL
 );
 
