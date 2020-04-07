@@ -1,0 +1,84 @@
+/*----------------------------------------------------------------------------*/
+/* lstbl.test -- list tables                                                  */
+/*----------------------------------------------------------------------------*/
+
+// list columns of a non-existent table
+lstbl;
+rows: 0
+
+// create a table
+create table lstTbl1 (
+  bol_col1   BOOLEAN     NOT NULL,
+  vch_col2   VARCHAR(32) NOT NULL,
+  int_col3   INTEGER     NOT NULL,
+  int_col4   INTEGER     NOT NULL,
+  dec_col5   DECIMAL(10,2) NOT NULL,
+  flt_col6   FLOAT       NOT NULL,
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
+);
+success
+
+// list tables
+lstbl;
+rows:
+  ('lstTbl1')
+
+// create aanother table
+create table lstTbl2 (
+  bol_col1   BOOLEAN     NOT NULL,
+  vch_col2   VARCHAR(32) NOT NULL,
+  int_col3   INTEGER     NOT NULL,
+  int_col4   INTEGER     NOT NULL,
+  dec_col5   DECIMAL(10,2) NOT NULL,
+  flt_col6   FLOAT       NOT NULL,
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
+  );
+success
+
+// list tables
+lstbl;
+rows:
+  ('lstTbl1')
+  ('lstTbl2')
+
+/*
+// change folder
+cf ..;
+success
+
+// list tables
+lstbl;
+failure contains: 'not in tables'
+
+// change folder
+cf "tables";
+success
+
+// list columns of the table
+lstbl;
+rows:
+  ('lstTbl1')
+  ('lstTbl2')
+*/
+// drop the tables
+drop table lstTbl1;
+success
+
+// drop the tables
+drop table lstTbl2;
+success
+
+CLEANUP {
+  
+  drop table lstTbl1;
+  mute
+
+  drop table lstTbl12;
+  mute
+  
+  bye;
+  mute
+}
+
