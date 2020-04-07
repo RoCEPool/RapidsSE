@@ -131,13 +131,19 @@
 /*----------------------------------------------------------------------------*/
 /* tidy up of the index                                                       */
 /*----------------------------------------------------------------------------*/
-: indexTidyUp ( "<indexNm>" -- )
-
-  params| sIndexNm |
-  0 locals| pIndex |
-
-  // find the index
-  sIndexNm find execute to pIndex
+//: indexTidyUp ( "<indexNm>" -- )
+//
+//  params| sIndexNm |
+//  0 locals| pIndex |
+//
+//  // find the index
+//  sIndexNm find execute to pIndex
+//
+//  // truncate the index
+//  pIndex index.truncate
+//;
+/*----------------------------------------------------------------------------*/
+: index.tidyUp params| pIndex |
 
   // truncate the index
   pIndex index.truncate
@@ -198,7 +204,7 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
-  sIndexNm indexTidyUp
+  pIndex index.tidyUp
 "F" .
   sIndexNm :forget
 "G" .
