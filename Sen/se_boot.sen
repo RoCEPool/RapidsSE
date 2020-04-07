@@ -158,6 +158,7 @@
         "OP_insert.sen"           include
         "OP_listColumns.sen"      include
         "OP_lstbl.sen"            include
+        "OP_lstbldef.sen"         include
         "OP_nodeinfo.sen"         include
         "OP_output.sen"           include
 

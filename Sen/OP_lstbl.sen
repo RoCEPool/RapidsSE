@@ -1,0 +1,76 @@
+/*============================================================================*/
+/* OP_lstbl.sen -- Operator list tables                                       */
+/*============================================================================*/
+
+" OP_lstbl.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lstbl_action
+
+  0 0 0 locals| iCount sTableNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  folder[].checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in teh infoSet for each word
+
+  folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+
+    object@ word.name@ to sTableNm
+    sTableNm "path[].pushTableFolder" find execute  assert
+    sTableNm find execute to pTable
+
+    // skip definition only tables
+    pTable table.isDefinitionOnly not if
+      1 iCount + to iCount
+
+      sTableNm StreamDef[] InfoSet[].addLstblInfo assert
+
+    then
+
+    "path[].discardTableFolder" find execute
+
+    object@ word.prev object!      // step backwards thru words
+  next
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: lstbl :: lstbl ;
+
+: lstbl opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __lstbl
+    <params>      = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
