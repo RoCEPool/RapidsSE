@@ -13097,11 +13097,11 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of OP_listColumns.sen
+  // munge of OP_lscol.sen
 
   sFileContents =
     "\""
-    "\\\"munged OP_listColumns.sen \\\" .verbose \n"
+    "\\\"munged OP_lscol.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listColumns.sen -- Operator list columns                                */\n"
     "/*============================================================================*/\n"
@@ -13224,7 +13224,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\n"
     "\""
-  " CONSTANT OP_listColumns.sen"_Stz
+  " CONSTANT OP_lscol.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
@@ -16843,7 +16843,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"OP_gridSanity.sen\\\"       include\n"
     "\n"
     "        \\\"OP_insert.sen\\\"           include\n"
-    "        \\\"OP_listColumns.sen\\\"      include\n"
+    "        \\\"OP_lscol.sen\\\"            include\n"
     "        \\\"OP_lstbl.sen\\\"            include\n"
     "        \\\"OP_lstbldef.sen\\\"         include\n"
     "        \\\"OP_nodeinfo.sen\\\"         include\n"
