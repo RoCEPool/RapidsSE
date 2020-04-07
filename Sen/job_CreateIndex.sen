@@ -78,30 +78,31 @@
 /*----------------------------------------------------------------------------*/
 /* make an index (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: makeIndex ( Job_CreateIndex -- <R> )
+: makeIndex params| pJob_CreateIndex |
 
-  params| pJob_CreateIndex |
-  0 0 0 0 locals| pTable pIndex sTableNm sIndexNm |
+  0 0 0 0 locals| pTable sTableNm sIndexNm |
 
-  //pJob_CreateIndex job.indexName@ to sIndexNm
-  //pJob_CreateIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table folder
-  sTableNm path[].pushTableFolder assert
-  path[].pushIndexesFolder assert
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // push table folder
+//  sTableNm path[].pushTableFolder assert
+//  path[].pushIndexesFolder assert
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // create the name index (word & object)
+//  sIndexNm :createIndexEmbObj locals| pwIndexTest |
+//
+//  // get the c++ object from word
+//  pwIndexTest execute to pIndex
+//
+//  path[].discardIndexesFolder
+//  path[].discardTableFolder
+//
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the name index (word & object)
-  sIndexNm :createIndexEmbObj locals| pwIndexTest |
-
-  // get the c++ object from word
-  pwIndexTest execute to pIndex
-
-  path[].discardIndexesFolder
-  path[].discardTableFolder
+  sIndexNm sTableNm index::make locals| pwIndexTest |
+  pwIndexTest execute locals| pIndex |
 
   //----------------------------------------------------------------------------
 
