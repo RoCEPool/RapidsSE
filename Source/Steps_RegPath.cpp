@@ -109,6 +109,7 @@ void Step::vRegPathSave(void)
 {
   ENTRY(); // ENTRY("vRegPathSave"_Stz);
   
+  m_oSaveDicStack.vCopy(&m_oDicStack);
   
   EXIT();
 }
@@ -120,7 +121,8 @@ void Step::vRegPathRestore(void)
 {
   ENTRY(); // ENTRY("vRegPathRestore"_Stz);
   
-  
+  m_oDicStack.vCopy(&m_oSaveDicStack);
+
   EXIT();
 }
 
