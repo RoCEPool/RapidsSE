@@ -85,22 +85,6 @@
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // push table folder
-//  sTableNm path[].pushTableFolder assert
-//  path[].pushIndexesFolder assert
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // create the name index (word & object)
-//  sIndexNm :createIndexEmbObj locals| pwIndexTest |
-//
-//  // get the c++ object from word
-//  pwIndexTest execute to pIndex
-//
-//  path[].discardIndexesFolder
-//  path[].discardTableFolder
-//
-
   sIndexNm sTableNm index::make locals| pwIndexTest |
   pwIndexTest execute locals| pIndex |
 

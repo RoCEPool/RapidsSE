@@ -54,7 +54,8 @@ Forth::Forth(Task* pTask, RegSet* pRegSet)
   m_bDoneFinally    = false;
 
   // m_oDicStack
-  
+  // m_oSaveDicStack
+
   m_aInxPtr      = nullptr;
   
   m_pAuxStack    = new Stack(KK_AUX_STACK);
@@ -187,6 +188,16 @@ void Forth::vReset(void)
   }
   
   m_aInxPtr = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get save path stack                                                       */
+/*----------------------------------------------------------------------------*/
+DicStack* Forth::pSaveDicStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  return & m_oSaveDicStack;
 }
 
 /*----------------------------------------------------------------------------*/

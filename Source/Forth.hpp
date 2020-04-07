@@ -18,6 +18,7 @@ namespace SenVM
     bool      m_bDoneFinally;   // done_finally sentinel has been executed
 
     DicStack  m_oDicStack;      // dictionary stack
+    DicStack  m_oSaveDicStack;  // save dictionary stack
 
     Cell*     m_aInxPtr;      // instruction/cell pointer
   
@@ -44,6 +45,7 @@ namespace SenVM
     bool bCorrectLayout(void);
     DicStack* pDicStack(void);
     void vReset(void);
+    DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
 
   private:
