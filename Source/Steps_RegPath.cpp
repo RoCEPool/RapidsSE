@@ -9,13 +9,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegPath(void)
 {
-  vAddStep("path[]"_Stz,           &Step::vRegPathGet);
+  vAddStep("path[]"_Stz,               &Step::vRegPathGet);
   
-  vAddStep("path[].depth"_Stz,     &Step::vRegPathDepth);
-  vAddStep("path[].discardFolder"_Stz,   &Step::vRegPathDiscard);
-  vAddStep("path[].dump"_Stz,      &Step::vRegPathDump);
-  vAddStep("path[].pick"_Stz,      &Step::vRegPathPick);
-  vAddStep("path[].pushFolder"_Stz,      &Step::vRegPathPush);
+  vAddStep("path[].depth"_Stz,         &Step::vRegPathDepth);
+  vAddStep("path[].discardFolder"_Stz, &Step::vRegPathDiscard);
+  vAddStep("path[].dump"_Stz,          &Step::vRegPathDump);
+  vAddStep("path[].pick"_Stz,          &Step::vRegPathPick);
+  vAddStep("path[].pushFolder"_Stz,    &Step::vRegPathPush);
+  vAddStep("path[].save"_Stz,          &Step::vRegPathSave);
+  vAddStep("path[].restore"_Stz,       &Step::vRegPathRestore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +89,7 @@ void Step::vRegPathPick(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].pushFolder -- push a dictionary onto given dictionary stack               */
+/* path[].pushFolder -- push a dictionary onto given dictionary stack         */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPush(void)
 {
@@ -96,6 +98,28 @@ void Step::vRegPathPush(void)
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
   m_oDicStack.vPush(pDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* path[].save -- save path onto save stack                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPathSave(void)
+{
+  ENTRY(); // ENTRY("vRegPathSave"_Stz);
+  
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* path[].restore -- retore path from save stack                              */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPathRestore(void)
+{
+  ENTRY(); // ENTRY("vRegPathRestore"_Stz);
+  
   
   EXIT();
 }

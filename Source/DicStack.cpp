@@ -4,7 +4,6 @@
 
 #include "SenVM.h"
 
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -91,6 +90,22 @@ void DicStack::vContentDump(void)
 
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
     vTrace("[%02lld] %s\n"_Stz,i_Dic,m_pDic[i_Dic]->szName());
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given stack into this one                                             */
+/*----------------------------------------------------------------------------*/
+void DicStack::vCopy(DicStack* pDicStackSrc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  vReset();
+  
+  for (i8 i_Dic = pDicStackSrc->m_iTop; i_Dic >= 0; i_Dic--) {
+    m_pDic[i_Dic] = pDicStackSrc->m_pDic[i_Dic];
+  }
+  
+  m_iTop = pDicStackSrc->m_iTop;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,6 +335,16 @@ Word* DicStack::pRemoveWord(Stz* szName)
     return pRemovedWord;
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this dic stack                                                       */
+/*----------------------------------------------------------------------------*/
+void DicStack::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  m_iTop = -1;
 }
 
 /*----------------------------------------------------------------------------*/

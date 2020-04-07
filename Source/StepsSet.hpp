@@ -1146,6 +1146,8 @@ public:
   void vRegPathDump(void);
   void vRegPathPick(void);
   void vRegPathPush(void);
+  void vRegPathSave(void);
+  void vRegPathRestore(void);
 
   // reg Pipein
   void vRegPipeinBide(void);
