@@ -97,16 +97,15 @@
   path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the index
+  // create the name index (word & object)
   sIndexNm :createIndexEmbObj locals| pwIndexTest |
 
-  //
+  // get the c++ object from word
   pwIndexTest execute to pIndex
 
   // find the table in the path (even though we are in ../tables/t/indexes)
   sTableNm find execute to pTable
 
-//dbg>
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |
@@ -114,10 +113,13 @@
 
   //----------------------------------------------------------------------------
   // check for error while creating indexdef
-  grid::thisNode@ pJob_CreateIndex job.hasError if
+  //grid::thisNode@
+  pJob_CreateIndex job.hasError if
     pJob_CreateIndex DdlLock[].testDrop !!logError
     sIndexNm :forget path[].discardIndexesFolder path[].discardTableFolder exit
   then
+
+//dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the index
@@ -142,7 +144,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
-  not if pJob_CreateIndex ERROR_JOB path[].discardIndexesFolder path[].discardTableFolder
+  not if pJob_CreateIndex
+    ERROR_JOB
+    path[].discardIndexesFolder
+    path[].discardTableFolder
     exit
   then
 
