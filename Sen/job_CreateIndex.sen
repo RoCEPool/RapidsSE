@@ -91,9 +91,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder
   sTableNm path[].pushTableFolder assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push indexes folder
   path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,6 +100,15 @@
   // get the c++ object from word
   pwIndexTest execute to pIndex
 
+  path[].discardIndexesFolder
+  path[].discardTableFolder
+
+  //----------------------------------------------------------------------------
+
+  sTableNm path[].pushTableFolder assert
+  path[].pushIndexesFolder assert
+
+
   // find the table in the path (even though we are in ../tables/t/indexes)
   sTableNm find execute to pTable
 
@@ -111,7 +117,7 @@
   <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error while creating indexdef
   //grid::thisNode@
   pJob_CreateIndex job.hasError if
@@ -142,7 +148,9 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex
     not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
-      path[].discardIndexesFolder path[].discardTableFolder exit
+      path[].discardIndexesFolder
+      path[].discardTableFolder
+      exit
     then
   then
 
@@ -157,11 +165,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop indexes
   path[].discardIndexesFolder
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table folder
   path[].discardTableFolder
 ;
 
