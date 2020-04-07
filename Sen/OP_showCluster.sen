@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* OP_showCuster.sen -- Operator show cluster                                 */
+/*============================================================================*/
+
+" OP_showCluster.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: showCluster_action
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  grid::definedNodes 0 do
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert a row in the infoSet for the defined node
+    I StreamDef[] InfoSet[].addShowCluster assert
+
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: showCluster :: showCluster ;
+
+: showCluster opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __showCluster
+    <params>      = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
