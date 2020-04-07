@@ -52,18 +52,27 @@ create table definition __nodeInfo (
 
 // this is C_TDEF_PINGINFO
 create table definition __pingInfo (
-  PONG      VARCHAR NOT NULL
+  pong      VARCHAR NOT NULL
 );
 
 // this is C_TDEF_PROGRESSUNITS
 create table definition __progressUnits (
-  UNITS      INTEGER NOT NULL
+  units      INTEGER NOT NULL
 );
 
 // this is C_TDEF_SEEKOFFSETS
 create table definition __seekOffsets (
   offset INTEGER NOT NULL,
   size   INTEGER NOT NULL
+);
+
+// this is C_TDEF_SHOWCLUSTER
+create table definition __showCluster (
+  NodeNo    INTEGER NOT NULL,
+  NodeName  VARCHAR NOT NULL,
+  IPAddress VARCHAR NOT NULL,
+  PortNo    INTEGER NOT NULL,
+  Connected BOOLEAN NOT NULL
 );
 
 // this is C_TDEF_SPACE

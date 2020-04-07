@@ -107,7 +107,6 @@
         "Job_Pwf.sen"             include
 
         "Job_Service.sen"         include
-        "Job_ShowCluster.sen"     include
         "Job_SizeIndex.sen"       include
         "Job_SizeTable.sen"       include
         "job_StartNode.sen"       include
@@ -176,6 +175,7 @@
         "OP_report.sen"           include
 
         "OP_scan.sen"             include
+        "OP_showcluster.sen"      include
         "OP_sink.sen"             include
         "OP_snapshot.sen"         include
         "OP_space.sen"            include

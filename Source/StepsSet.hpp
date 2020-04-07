@@ -1038,6 +1038,7 @@ public:
   void vRegInfoSetAddNodeInfo(void);
   void vRegInfoSetAddPingInfo(void);
   void vRegInfoSetAddProgressUnits(void);
+  void vRegInfoSetAddShowCluster(void);
   void vRegInfoSetAddSpaceInfo(void);
   void vRegInfoSetAddTotalUnits(void);
   void vRegInfoSetChunkFile(void);

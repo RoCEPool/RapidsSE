@@ -99,6 +99,7 @@ static Stz* C_TDEF_NODEINFO      = "__nodeInfo"_Stz;
 static Stz* C_TDEF_PING          = "__ping"_Stz;
 static Stz* C_TDEF_PROGRESSUNITS = "__progressUnits"_Stz;
 static Stz* C_TDEF_SEEKOFFSETS   = "__seekOffsets"_Stz;
+static Stz* C_TDEF_SHOWCLUSTER   = "__cluster"_Stz;
 static Stz* C_TDEF_SPACE         = "__space"_Stz;
 static Stz* C_TDEF_TOTALUNITS    = "__totalUnits"_Stz;
 

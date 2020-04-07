@@ -358,7 +358,7 @@ void Step::vTaskThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.wait -- this task waits for signal                                    */
+/* task::wait -- this task waits for signal                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskWait(void)
 {

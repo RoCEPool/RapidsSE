@@ -16,7 +16,8 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vRegInfoSetAddPingInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
-  vAddStep("InfoSet[].addSpaceInfo"_Stz,   &Step::vRegInfoSetAddSpaceInfo);
+  vAddStep("InfoSet[].addShowCluster"_Stz,   &Step::vRegInfoSetAddShowCluster);
+  vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vRegInfoSetAddSpaceInfo);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vRegInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
@@ -200,6 +201,35 @@ void Step::vRegInfoSetAddProgressUnits(void)
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addShowCluster -- add a row to infoset with the cluster info     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddShowCluster(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddShowCluster"_Stz);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  i8 i_Node = m_pDataStack->iPopInt(__func__);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Node* pNode = AM::pGrid()->m_pNodes[i_Node];
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  pNode->iNodeNo(),
+                                  pNode->szNodeNm(),
+                                  pNode->szIPAddr(),
+                                  pNode->iPortNo(),
+                                  (i8)(pNode->pSendSocket() ? true : false),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
