@@ -99,7 +99,6 @@
         "Job_ListPartColumns.sen" include
         "Job_ListPartitions.sen"  include
         "Job_ListSchemas.sen"     include
-        "Job_ListTables.sen"      include
         "Job_ListTenants.sen"     include
         "Job_LoadTable.sen"       include
 
@@ -158,6 +157,7 @@
 
         "OP_insert.sen"           include
         "OP_listColumns.sen"      include
+        "OP_lstbl.sen"            include
         "OP_nodeinfo.sen"         include
         "OP_output.sen"           include
 
