@@ -10,13 +10,14 @@
 void Step::vAddSteps_TableReg(void)
 {
   vAddStep("table[].columnCount"_Stz,        &Step::vTableColumnCount);
+  vAddStep("table[].dump"_Stz,               &Step::vTableDump);
   vAddStep("table[]"_Stz,                    &Step::vTableRegGet);
   vAddStep("table[].set"_Stz,                &Step::vTableRegSet);
   vAddStep("table[].tablePtn@"_Stz,          &Step::vTableRegPtnFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.columnCount -- get column count                                      */
+/* table[].columnCount -- get column count                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnCount(void)
 {
@@ -26,6 +27,26 @@ void Step::vTableColumnCount(void)
   i8 nColumns = pStreamDef->nColumns(C_ALL);
   
   m_pDataStack->vPushInt(nColumns);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].dump                                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDump(void)
+{
+  ENTRY(); // ENTRY("vTableDump"_Stz);
+  
+  vTrace("TableDump\n"_Stz);
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
+    TablePtn* pPartition = pTable->pPartition(iPartition);
+    vTrace("Partition %lld\n"_Stz, iPartition);
+    pPartition->vDump();
+  }
   
   EXIT();
 }

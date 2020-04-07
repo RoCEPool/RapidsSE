@@ -14,7 +14,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.column@"_Stz,            &Step::vTableColumnFetch);
   vAddStep("table.isDefinitionOnly"_Stz,   &Step::vTableIsDefinitionOnly);
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
-  vAddStep("table.dump"_Stz,               &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
   vAddStep("table.genCsvBuffer"_Stz,       &Step::vTableGenCsvBuffer);
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
@@ -140,26 +139,6 @@ void Step::vTableDrop(void)
   ENTRY(); // ENTRY("vTableDrop"_Stz);
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.dump                                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTableDump(void)
-{
-  ENTRY(); // ENTRY("vTableDump"_Stz);
-  
-  vTrace("TableDump\n"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
-    TablePtn* pPartition = pTable->pPartition(iPartition);
-    vTrace("Partition %lld\n"_Stz, iPartition);
-    pPartition->vDump();
-  }
   
   EXIT();
 }

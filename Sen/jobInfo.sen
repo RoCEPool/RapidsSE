@@ -133,8 +133,6 @@ end
       Pipein[].pipeout
       Operand[].newEosMarker
       Operand[].pipeOut
-    else
-      Pipein[].delete
     then
 
     true
@@ -150,10 +148,11 @@ end
 "
   : /localLiteOp/_PulseMarker \\handler
 
-    /localLiteOp/_action assert
-
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    /localLiteOp/_action if
+      Pipein[].pipeout
+      Operand[].newEosMarker
+      Operand[].pipeOut
+    then
 
     true
   ;

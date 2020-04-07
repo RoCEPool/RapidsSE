@@ -7440,59 +7440,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_ShowCluster.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_ShowCluster.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_ShowCluster.sen -- Show Cluster                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_ShowCLuster.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* show cluster command request                                               */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": showCluster_req ( -- )\n"
-    "\n"
-    "  LogEntry SEED_REQ\n"
-    "\n"
-    "  \\\"ShowCluster ...\\\" .\n"
-    "\n"
-    "  grid::show\n"
-    "\n"
-    "  LogExit DONE_REQ\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/***                            - Definition -                              ***/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "jobSyntax: showCluster :: showCluster ;\n"
-    "\n"
-    "jobInfo: showCluster\n"
-    "{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
-    "  \n"
-    "  <jobKind>  = JK_LOCAL\n"
-    "  <rspKind>  = RS_NONE\n"
-    "  <ddlLock>  = DL_NONE\n"
-    "  \n"
-    "  <preCheck> = bClusterStarted\n"
-    "}\n"
-    " ;\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_ShowCluster.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SizeIndex.sen
 
   sFileContents =
@@ -9751,8 +9698,6 @@ void Task::vAddMunged(Forth* pForth)
     "      Pipein[].pipeout\n"
     "      Operand[].newEosMarker\n"
     "      Operand[].pipeOut\n"
-    "    else\n"
-    "      Pipein[].delete\n"
     "    then\n"
     "\n"
     "    true\n"
@@ -9768,10 +9713,11 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"\n"
     "  : /localLiteOp/_PulseMarker \\\\\\\\handler\n"
     "\n"
-    "    /localLiteOp/_action assert\n"
-    "\n"
-    "    Operand[].newEosMarker\n"
-    "    Operand[].pipeOut\n"
+    "    /localLiteOp/_action if\n"
+    "      Pipein[].pipeout\n"
+    "      Operand[].newEosMarker\n"
+    "      Operand[].pipeOut\n"
+    "    then\n"
     "\n"
     "    true\n"
     "  ;\n"
@@ -12586,6 +12532,118 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_dumpIdx.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_dumpIdx.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_showCuster.sen -- Operator show cluster                                 */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_showCluster.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": showCluster_action\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // create an infoSet operand\n"
+    "  StreamDef[] InfoSet[].new\n"
+    "\n"
+    "  grid::definedNodes 0 do\n"
+    "\n"
+    "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "    // insert a row in the infoSet for the defined node\n"
+    "    I StreamDef[] InfoSet[].addShowCluster assert\n"
+    "\n"
+    "  loop\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // pipeout the streamDef\n"
+    "  StreamDef[].pipeout\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // pipeout the infoset\n"
+    "  InfoSet[].pipeout\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: showCluster :: showCluster ;\n"
+    "\n"
+    ": showCluster opInfo tagCopy: localLiteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>     = \\\"--description of operator--\\\"\n"
+    "    <localLiteOp> = true\n"
+    "    <streamDef>   = __showCluster\n"
+    "    <params>      = 0\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_dumpIdx.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_dumpTbl.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_dumpTbl.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_dumptbl.sen -- Operator dump table                                      */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_dumpTbl.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": dumpTbl_action\n"
+    "\n"
+    "  <tableNm> op__table if\n"
+    "    table[].dump\n"
+    "    true\n"
+    "  else\n"
+    "    false\n"
+    "  then\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: dumpTbl :: dumpTbl <tableNm> ;\n"
+    "\n"
+    ": dumpTbl opInfo tagCopy: localLiteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>     = \\\"--description of operator--\\\"\n"
+    "    <localLiteOp> = true\n"
+    "    <params>      = 1\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_dumpTbl.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_eatAll.sen
 
   sFileContents =
@@ -14045,7 +14103,8 @@ void Task::vAddMunged(Forth* pForth)
     "      // print the Load %\n"
     "      iPercent 0 > if\n"
     "        iPercent 100 > if\n"
-    "          <string> \\\"%v Progress: 100%\\\" str.format .\n"
+    "          <string> \\\"%v Progress: 100\\\" str.format\n"
+    "          \\\"%\\\" str.cat .\n"
     "        else\n"
     "          iPercent <string> \\\"%v Progress: %v\\\" str.format\n"
     "          \\\"%\\\" str.cat .\n"
@@ -16819,7 +16878,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_DropTable.sen\\\"       include\n"
     "        \\\"job_DropTenant.sen\\\"      include\n"
     "        \\\"job_DumpIndex.sen\\\"       include\n"
-    "        \\\"job_DumpTable.sen\\\"       include\n"
     "\n"
     "        \\\"job_FetchRows.sen\\\"       include\n"
     "        \\\"job_ForgetNode.sen\\\"      include\n"
@@ -16879,6 +16937,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"OP_consume.sen\\\"          include\n"
     "\n"
     "        //\\\"OP_docol.sen\\\"            include\n"
+    "        \\\"OP_dumpTbl.sen\\\"          include\n"
     "\n"
     "        \\\"OP_eatAll.sen\\\"           include\n"
     "        \\\"OP_exemplar.sen\\\"         include\n"

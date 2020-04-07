@@ -1321,7 +1321,6 @@ public:
   void vTableAnalyze(void);
   void vTableBufferGenCsv(void);
   void vTableDrop(void);
-  void vTableDump(void);
   void vTableFindColumn(void);
   void vTableFirstBuffer(void);
   void vTableGenCsvBuffer(void);
@@ -1373,6 +1372,7 @@ public:
 
   // table reg
   void vTableColumnCount(void);
+  void vTableDump(void);
   void vTableRegGet(void);
   void vTableRegSet(void);
   void vTableRegPtnFetch(void);
