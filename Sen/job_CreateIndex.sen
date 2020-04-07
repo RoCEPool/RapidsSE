@@ -115,8 +115,13 @@
   // check for error while creating indexdef
   //grid::thisNode@
   pJob_CreateIndex job.hasError if
-    pJob_CreateIndex DdlLock[].testDrop !!logError
-    sIndexNm :forget path[].discardIndexesFolder path[].discardTableFolder exit
+    //pJob_CreateIndex
+    DdlLock[].testDrop
+    !!logError
+    sIndexNm :forget
+    path[].discardIndexesFolder
+    path[].discardTableFolder
+    exit
   then
 
 //dbg>
