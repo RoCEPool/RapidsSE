@@ -141,6 +141,8 @@
       "')\n" str.cat
     then
 
+    "path[].discardTableFolder" find execute
+
     object@ word.prev object!      // step backwards thru words
   next
 
