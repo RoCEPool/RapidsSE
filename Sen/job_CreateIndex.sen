@@ -89,7 +89,7 @@
   <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table dictionary
+  // push table folder
   sTableNm path[].pushTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -98,13 +98,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
-  sIndexNm :createIndexEmbObj drop
+  sIndexNm :createIndexEmbObj locals| pwIndexTest |
 
-  // find the index
-  sIndexNm find execute to pIndex
+  //
+  pwIndexTest execute to pIndex
 
-  // find the table
+  // find the table in the path (even though we are in ../tables/t/indexes)
   sTableNm find execute to pTable
+
+//dbg>
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |

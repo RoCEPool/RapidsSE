@@ -12,6 +12,7 @@
         "se_word.sen"             include
         "se_str.sen"              include
         "se_log.sen"              include
+        "se_prompt.sen"           include
 
 8 .put
         "se_path.sen"             include
@@ -224,7 +225,6 @@ fillOutOps
         "test_rjh.sen"            include
 
 1 .put
-        "se_prompt.sen"           include
         "se_docols.sen"           include
         "se_munge.sen"            include
         "se_vortex.sen"           include
