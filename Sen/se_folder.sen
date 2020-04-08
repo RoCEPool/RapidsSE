@@ -248,7 +248,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : symbols prompt
 
-  path[].toStr .put ":" .put .\n
+  path[].toStr .put "::" .put .\n
 
   folder[] dic.lastWord
   begin dup while

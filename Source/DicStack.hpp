@@ -27,6 +27,7 @@ namespace SenVM
 
     i8    iCount(void);
     void  vContentDump(void);
+    void  vCopy(DicStack* pDicStackSrc);
     void  vDiscard(void);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
@@ -36,6 +37,7 @@ namespace SenVM
     Dic*  pPick(i8 iDic);
     void  vPop(void);
     void  vPush(Dic* pDic);
+    void  vReset(void);
     void  vSetStack(DicPath* pDicPath);
     Dic*  pTop(void);
     void  vToPathStr(Stz* szPath);

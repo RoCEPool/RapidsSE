@@ -123,21 +123,15 @@
   index::new
   sIndexNm
     :createCppObject
-      locals| pIndex |
+      locals| pwIndex |
 
-  pIndex // returns:
+  pwIndex // returns:
 ;
 
 /*----------------------------------------------------------------------------*/
 /* tidy up of the index                                                       */
 /*----------------------------------------------------------------------------*/
-: indexTidyUp ( "<indexNm>" -- )
-
-  params| sIndexNm |
-  0 locals| pIndex |
-
-  // find the index
-  sIndexNm find execute to pIndex
+: index.tidyUp params| pIndex |
 
   // truncate the index
   pIndex index.truncate
@@ -162,6 +156,23 @@
   path[].discardFolder
 ;
 
+/*----------------------------------------------------------------------------*/
+/* make an index (run by all participants)                                     */
+/*----------------------------------------------------------------------------*/
+: index::make params| sTableNm sIndexNm |
+
+  // push folders to ../t/indexes
+  sTableNm path[].pushTableFolder assert
+  path[].pushIndexesFolder assert
+
+  // create the name index (word & object)
+  sIndexNm :createIndexEmbObj locals| pwIndexTest |
+
+  path[].discardIndexesFolder
+  path[].discardTableFolder
+
+  pwIndexTest // return:
+;
 
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
@@ -198,7 +209,7 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
-  sIndexNm indexTidyUp
+  pIndex index.tidyUp
 "F" .
   sIndexNm :forget
 "G" .

@@ -78,44 +78,44 @@
 /*----------------------------------------------------------------------------*/
 /* make an index (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: makeIndex ( Job_CreateIndex -- <R> )
+: makeIndex params| pJob_CreateIndex |
 
-  params| pJob_CreateIndex |
-  0 0 0 0 locals| pTable pIndex sTableNm sIndexNm |
+  0 0 0 0 locals| pTable sTableNm sIndexNm |
 
-  //pJob_CreateIndex job.indexName@ to sIndexNm
-  //pJob_CreateIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table dictionary
-  sTableNm path[].pushTableFolder assert
+  sIndexNm sTableNm index::make locals| pwIndexTest |
+  pwIndexTest execute locals| pIndex |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push indexes folder
+  //----------------------------------------------------------------------------
+
+  sTableNm path[].pushTableFolder assert
   path[].pushIndexesFolder assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the index
-  sIndexNm :createIndexEmbObj drop
 
-  // find the index
-  sIndexNm find execute to pIndex
-
-  // find the table
+  // find the table in the path (even though we are in ../tables/t/indexes)
   sTableNm find execute to pTable
+
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error while creating indexdef
-  grid::thisNode@ pJob_CreateIndex job.hasError if
-    pJob_CreateIndex DdlLock[].testDrop !!logError
-    sIndexNm :forget path[].discardIndexesFolder path[].discardTableFolder exit
+  //grid::thisNode@
+  pJob_CreateIndex job.hasError if
+    //pJob_CreateIndex
+    DdlLock[].testDrop
+    !!logError
+    sIndexNm :forget
+    path[].discardIndexesFolder
+    path[].discardTableFolder
+    exit
   then
+
+//dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the index
@@ -133,23 +133,24 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex
     not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
-      path[].discardIndexesFolder path[].discardTableFolder exit
+      path[].discardIndexesFolder
+      path[].discardTableFolder
+      exit
     then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
-  not if pJob_CreateIndex ERROR_JOB path[].discardIndexesFolder path[].discardTableFolder
+  not if pJob_CreateIndex
+    ERROR_JOB
+    path[].discardIndexesFolder
+    path[].discardTableFolder
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop indexes
   path[].discardIndexesFolder
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table folder
   path[].discardTableFolder
 ;
 
