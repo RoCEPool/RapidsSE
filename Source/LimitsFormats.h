@@ -93,6 +93,7 @@ static const i8 C_LOG_NOTE    = C_1K;
 
 static Stz* C_TDEF_GRIDSANITY    = "__gridSanity"_Stz;
 static Stz* C_TDEF_LISTCOLUMNS   = "__listColumns"_Stz;
+static Stz* C_TDEF_LISTCONTENTS  = "__listContents"_Stz;
 static Stz* C_TDEF_LISTFOLDER    = "__listFolder"_Stz;
 static Stz* C_TDEF_LOCKSTATS     = "__lockStats"_Stz;
 static Stz* C_TDEF_NODEINFO      = "__nodeInfo"_Stz;

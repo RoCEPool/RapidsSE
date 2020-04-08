@@ -38,9 +38,15 @@ create table definition __lockStats (
   WritePercent   INTEGER     NOT NULL
 );
 
+// this is C_TDEF_LISTCONTENTS
+create table definition __listContents (
+  Name       VARCHAR NOT NULL
+);
+
 // this is C_TDEF_LISTFOLDER
 create table definition __listFolder (
-  Name       VARCHAR NOT NULL
+  Name       VARCHAR NOT NULL,
+  Type       VARCHAR NOT NULL
 );
 
 // this is C_TDEF_NODEINFO

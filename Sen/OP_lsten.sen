@@ -50,7 +50,7 @@ opSyntax: lsten :: lsten ;
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listFolder
+    <streamDef>   = __listContents
     <params>      = 0
   }
 ;
