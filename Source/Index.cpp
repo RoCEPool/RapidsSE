@@ -36,7 +36,7 @@ Index* MetaData::_pIndex(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Index::operator new(size_t)
 {
-  Index* pIndex = nullptr;
+  Index* pIndex = (Index*)(HeapMem::pAllocate(CN_INDEX));
   
   return pIndex;
 }
@@ -52,8 +52,12 @@ void* Index::operator new(size_t, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Index::operator delete(void*)
+void Index::operator delete(void* aAddrIndex)
 {
+  Index* pIndex = reinterpret_cast<Index*>(aAddrIndex);
+
+  HeapMem::vFree(pIndex);
+
 }
 
 /*----------------------------------------------------------------------------*/
