@@ -6251,76 +6251,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_ListSchemas.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_ListSchemas.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_ListSchemas.sen -- Job List Schemas                                    */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_ListSchemas.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* List Schemas requests (on the originating node)                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": lssch_req ( -- <R> )\n"
-    "\n"
-    "  LogEntry SEED_REQ\n"
-    "\n"
-    "  0 0 locals| pJob_ListSchemas pTask |\n"
-    "\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get the task\n"
-    "  task[] to pTask\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get the job from the task\n"
-    "  pTask task.job@ to pJob_ListSchemas\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // should be in the schemas folder\n"
-    "  path[].checkInSchemas not if pJob_ListSchemas ERROR_REQUEST !!logError exit then\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // list tables folder contents\n"
-    "  pJob_ListSchemas folder[].listContents\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // return\n"
-    "  LogExit DONE_REQ\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/***                            - Definition -                              ***/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "jobSyntax: lssch :: lssch ;\n"
-    "\n"
-    "jobInfo: lssch\n"
-    "{\n"
-    "  <jobKind> = JK_LOCAL\n"
-    "  <rspKind> = RS_JOB_RESPONSE\n"
-    "  ddlLock = DL_GRAB_READ\n"
-    "  \n"
-    "  <preCheck> = bClusterStarted\n"
-    "}\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\""
-  " CONSTANT job_ListSchemas.sen"_Stz
-  ;
-
-  vCompileConstant(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListTenants.sen
 
   sFileContents =
@@ -12119,8 +12049,6 @@ void Task::vAddMunged(Forth* pForth)
     "/* OP_dumpIdx.sen -- Operator dump index                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_showCluster.sen\\\" .verbose\n"
-    "\n"
     "\\\" OP_dumpTbl.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -12714,6 +12642,79 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT OP_insert.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_lscat.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_lscat.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_lssch.sen -- Operator list schemas                                      */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_lssch.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": lssch_action\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // should be in the schemas folder\n"
+    "  path[].checkInSchemas not if\n"
+    "    op.pipelineJob@ ERROR_JOB\n"
+    "    Pipein[].delete\n"
+    "    Operand[].newErrorMarker\n"
+    "    Operand[].pipeout\n"
+    "    false\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  // create an infoSet operand\n"
+    "  StreamDef[] InfoSet[].new\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // insert a row in teh infoSet for each word\n"
+    "\n"
+    "  folder[] dic.lastWord dup\n"
+    "  iterate                          // setup iteration of words\n"
+    "    StreamDef[] object@ word.name@ InfoSet[].addString assert\n"
+    "    object@ word.prev object!      // step backwards thru words\n"
+    "  next\n"
+    "\n"
+    "  // pipeout the streamDef\n"
+    "  StreamDef[].pipeout\n"
+    "\n"
+    "  // pipeout the infoset\n"
+    "  InfoSet[].pipeout\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: lssch :: lssch ;\n"
+    "\n"
+    ": lssch opInfo tagCopy: localLiteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>     = \\\"--description of operator--\\\"\n"
+    "    <localLiteOp> = true\n"
+    "    <streamDef>   = __listFolder\n"
+    "    <params>      = 0\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_lscat.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
@@ -16713,6 +16714,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_Universal.sen\\\"       include\n"
     "        \\\"job_UseSchema.sen\\\"       include\n"
     "\n"
+    "        \\\"job_VerifyIndex.sen\\\"     include\n"
     "        \\\"job_VerifyTable.sen\\\"     include\n"
     "\n"
     "        \\\"job_Waker.sen\\\"           include\n"
