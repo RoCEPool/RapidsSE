@@ -118,8 +118,6 @@
         "job_Universal.sen"       include
         "job_UseSchema.sen"       include
 
-        "job_VerifyIndex.sen"     include
-        "job_VisualizeIndex.sen"  include
         "job_VerifyTable.sen"     include
 
         "job_Waker.sen"           include
@@ -193,6 +191,7 @@
 
         "OP_upsert.sen"           include
 
+        "OP_visidx.sen"           include
         "OP_vistbl.sen"           include
         "OP_xmit.sen"             include
 

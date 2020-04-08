@@ -16029,6 +16029,55 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_visidx.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_visidx.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_visidx.sen -- Operator visualize index                                  */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_visidx.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": visidx_action\n"
+    "\n"
+    "  <tableNm> <indexNm> op__table_index if\n"
+    "    index[].visualize\n"
+    "    true\n"
+    "  else\n"
+    "    false\n"
+    "  then\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: visidx :: visidx <tableNm> <indexNm> ;\n"
+    "\n"
+    ": visidx opInfo tagCopy: localLiteOp_tags\n"
+    "tags{\n"
+    "  <jobDesc>     = \\\"--description of operator--\\\"\n"
+    "  <localLiteOp> = true\n"
+    "  <params>      = 2\n"
+    "  }\n"
+    " ;\n"
+    "  \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\""
+  " CONSTANT OP_visidx.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_vistbl.sen
 
   sFileContents =
@@ -16522,8 +16571,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_Universal.sen\\\"       include\n"
     "        \\\"job_UseSchema.sen\\\"       include\n"
     "\n"
-    "        \\\"job_VerifyIndex.sen\\\"     include\n"
-    "        \\\"job_VisualizeIndex.sen\\\"  include\n"
     "        \\\"job_VerifyTable.sen\\\"     include\n"
     "\n"
     "        \\\"job_Waker.sen\\\"           include\n"
@@ -16597,6 +16644,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "        \\\"OP_upsert.sen\\\"           include\n"
     "\n"
+    "        \\\"OP_visidx.sen\\\"           include\n"
     "        \\\"OP_vistbl.sen\\\"           include\n"
     "        \\\"OP_xmit.sen\\\"             include\n"
     "\n"

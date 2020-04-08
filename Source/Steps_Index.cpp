@@ -39,7 +39,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
   vAddStep("index.upperBound"_Stz,      &Step::vIndexUpperBound);
   vAddStep("index.verify"_Stz,          &Step::vIndexVerify);
-  vAddStep("index.visualize"_Stz,       &Step::vIndexVisualize);
+  vAddStep("index[].visualize"_Stz,     &Step::vIndexVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1181,7 +1181,7 @@ void Step::vIndexVisualize(void)
 {
   ENTRY(); // ENTRY("vIndexVisualize"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndexNo = pIndex->iIndexNo();
