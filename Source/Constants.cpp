@@ -171,8 +171,7 @@ void Constants::vAddConstantsCpp(void)
   // table definition
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,  C_TDEF_LISTCOLUMNS);
-  vAddConstant("C_TDEF_LSTBL"_Stz,        C_TDEF_LSTBL);
-  vAddConstant("C_TDEF_LSTEN"_Stz,        C_TDEF_LSTEN);
+  vAddConstant("C_TDEF_LISTFOLDER"_Stz,   C_TDEF_LISTFOLDER);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,    C_TDEF_LOCKSTATS);
   vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PING"_Stz,         C_TDEF_PING);

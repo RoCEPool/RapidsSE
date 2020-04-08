@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* OP_lssch.sen -- Operator list schemas                                      */
+/*============================================================================*/
+
+" OP_lssch.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lssch_action
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the schemas folder
+  path[].checkInSchemas not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in teh infoSet for each word
+
+  folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+    StreamDef[] object@ word.name@ InfoSet[].addString assert
+    object@ word.prev object!      // step backwards thru words
+  next
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: lssch :: lssch ;
+
+: lssch opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listFolder
+    <params>      = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

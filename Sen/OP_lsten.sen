@@ -10,7 +10,7 @@
 : lsten_action
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
+  // should be in the tenants folder
   path[].checkInTenants not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
@@ -50,7 +50,7 @@ opSyntax: lsten :: lsten ;
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __lsten
+    <streamDef>   = __listFolder
     <params>      = 0
   }
 ;

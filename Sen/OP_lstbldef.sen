@@ -65,7 +65,7 @@ opSyntax: lstbldef :: lstbldef ;
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __lstbl
+    <streamDef>   = __listFolder
     <params>      = 0
   }
 ;

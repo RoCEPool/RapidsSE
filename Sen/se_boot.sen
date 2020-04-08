@@ -97,7 +97,6 @@
         "Job_ListIndexes.sen"     include
         "Job_ListPartColumns.sen" include
         "Job_ListPartitions.sen"  include
-        "Job_ListSchemas.sen"     include
         "Job_LoadTable.sen"       include
 
         "Job_Periodic.sen"        include
@@ -153,6 +152,7 @@
         "OP_insert.sen"           include
 
         "OP_lscol.sen"            include
+        "OP_lssch.sen"            include
         "OP_lstbl.sen"            include
         "OP_lstbldef.sen"         include
         "OP_lsten.sen"            include
