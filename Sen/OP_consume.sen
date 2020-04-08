@@ -13,7 +13,6 @@
   xmits[].handleCancel if
     Pipein[].pipeOut
     Op.ackPipelineJob
-    Xmits[].delete
     false
   else
     Pipein[].delete
@@ -59,7 +58,6 @@
   xmits[].handleExit if
     Pipein[].pipeOut
     Op.ackPipelineJob
-    Xmits[].delete
     false
   else
     Pipein[].delete
@@ -144,6 +142,8 @@
   find: consumeOp_StreamDef    ZK_STREAMDEF    op[].handler!
 
   op__loop
+
+  Xmits[].delete
 
   LogReqExit
   job::deleteThis
