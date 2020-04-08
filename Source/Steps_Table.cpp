@@ -36,7 +36,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
   vAddStep("table.verify"_Stz,             &Step::vTableVerify);
-  vAddStep("table.visualize"_Stz,          &Step::vTableVisualize);
+  vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -624,13 +624,13 @@ void Step::vTableVerify(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.visualize -- visualize the table                                     */
+/* table[].visualize -- visualize the table                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTableVisualize(void)
 {
   ENTRY(); // ENTRY("vTableVisualize"_Stz);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);

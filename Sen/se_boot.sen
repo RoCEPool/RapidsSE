@@ -120,7 +120,6 @@
 
         "job_VerifyIndex.sen"     include
         "job_VisualizeIndex.sen"  include
-        "job_VisualizeTable.sen"  include
         "job_VerifyTable.sen"     include
 
         "job_Waker.sen"           include
@@ -194,6 +193,7 @@
 
         "OP_upsert.sen"           include
 
+        "OP_vistbl.sen"           include
         "OP_xmit.sen"             include
 
         "BM_genEnt.sen"           include
