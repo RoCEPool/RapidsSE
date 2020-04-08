@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : lstbl_action
 
-  0 0 0 locals| iCount sTableNm pTable |
+  0 0 locals| sTableNm pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
@@ -37,7 +37,6 @@
 
     // skip definition only tables
     pTable table.isDefinitionOnly not if
-      1 iCount + to iCount
 
       sTableNm StreamDef[] InfoSet[].addLstblInfo assert
 
