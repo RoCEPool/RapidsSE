@@ -176,6 +176,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PING"_Stz,         C_TDEF_PING);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz,C_TDEF_PROGRESSUNITS);
+  vAddConstant("C_TDEF_PWF"_Stz,          C_TDEF_PWF);
   vAddConstant("C_TDEF_SEEKOFFSETS"_Stz,  C_TDEF_SEEKOFFSETS);
   vAddConstant("C_TDEF_SHOWCLUSTER"_Stz,  C_TDEF_SHOWCLUSTER);
   vAddConstant("C_TDEF_SPACE"_Stz,        C_TDEF_SPACE);

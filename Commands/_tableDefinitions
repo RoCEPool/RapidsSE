@@ -60,6 +60,11 @@ create table definition __progressUnits (
   units      INTEGER NOT NULL
 );
 
+// this is C_TDEF_PWF
+create table definition __pwf (
+  folder   VARCHAR NOT NULL
+);
+
 // this is C_TDEF_SEEKOFFSETS
 create table definition __seekOffsets (
   offset INTEGER NOT NULL,

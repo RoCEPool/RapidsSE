@@ -18,6 +18,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addShowCluster"_Stz,   &Step::vRegInfoSetAddShowCluster);
   vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vRegInfoSetAddSpaceInfo);
+  vAddStep("InfoSet[].addString"_Stz,        &Step::vRegInfoSetAddString);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vRegInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
@@ -273,6 +274,31 @@ void Step::vRegInfoSetAddSpaceInfo(void)
                                   iTotalSpace,
                                   iInUseSpace,
                                   iTotalFreeSpace,
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addStr -- add a row to infoset with a string response            */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddString(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddString"_Stz);
+  
+  s256 sString;
+  m_pDataStack->vPopStr(sString, __func__);
+  
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  sString.azChar(),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);

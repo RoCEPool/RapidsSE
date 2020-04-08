@@ -1040,6 +1040,7 @@ public:
   void vRegInfoSetAddProgressUnits(void);
   void vRegInfoSetAddShowCluster(void);
   void vRegInfoSetAddSpaceInfo(void);
+  void vRegInfoSetAddString(void);
   void vRegInfoSetAddTotalUnits(void);
   void vRegInfoSetChunkFile(void);
   void vRegInfoSetDelete(void);

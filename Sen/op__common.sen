@@ -33,15 +33,12 @@
 
   params| sTableNm |
 
-  // check in tables folder
-  folder[].checkInTables not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-    false
-    exit
-  then
+  // save current path
+  path[].save
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
 
   // table
   sTableNm name::checkIsValidTable not if
@@ -62,6 +59,10 @@
   table[] assert
 
   path[].discardTableFolder
+
+  // restore path
+  path[].restore
+
   true
 ;
 

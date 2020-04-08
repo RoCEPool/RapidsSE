@@ -103,7 +103,6 @@
 
         "Job_Periodic.sen"        include
         "Job_Pipeline.sen"        include
-        "Job_Pwf.sen"             include
 
         "Job_Service.sen"         include
         "Job_SizeIndex.sen"       include
@@ -169,6 +168,7 @@
         "OP_progress.sen"         include
 
         "OP_purge.sen"            include
+        "OP_pwf.sen"              include
         "OP_python.sen"           include
         "OP_pythonShell.sen"      include
 
