@@ -1035,6 +1035,7 @@ public:
   // reg info set
   void vRegInfoSetAddColumnDef(void);
   void vRegInfoSetAddGridSanity(void);
+  void vRegInfoSetAddListContents(void);
   void vRegInfoSetAddNodeInfo(void);
   void vRegInfoSetAddPingInfo(void);
   void vRegInfoSetAddProgressUnits(void);
@@ -1049,7 +1050,6 @@ public:
   void vRegInfoSetInfoRows(void);
   void vRegInfoSetIsProgress(void);
   void vRegInfoSetIsTotalUnits(void);
-  void vRegInfoSetAddLstblInfo(void);
   void vRegInfoSetName(void);
   void vRegInfoSetNew(void);
   void vRegInfoSetNextRow(void);

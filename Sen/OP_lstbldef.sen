@@ -38,7 +38,7 @@
     // skip definition only tables
     pTable table.isDefinitionOnly if
 
-      sTableNm StreamDef[] InfoSet[].addLstblInfo assert
+      sTableNm StreamDef[] InfoSet[].addListContents assert
 
     then
 

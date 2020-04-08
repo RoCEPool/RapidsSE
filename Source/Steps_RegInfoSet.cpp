@@ -12,7 +12,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
   vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vRegInfoSetAddColumnDef);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
-  vAddStep("InfoSet[].addLstblInfo"_Stz,    &Step::vRegInfoSetAddLstblInfo);
+  vAddStep("InfoSet[].addListContents"_Stz,&Step::vRegInfoSetAddListContents);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vRegInfoSetAddPingInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
@@ -115,22 +115,22 @@ void Step::vRegInfoSetAddGridSanity(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSet[].addLstblInfo -- add a row to infoset with the list tables        */
+/* InfoSet[].addListContents -- add a row to infoset with the list contents   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddLstblInfo(void)
+void Step::vRegInfoSetAddListContents(void)
 {
   ENTRY(); // ENTRY("vRegInfoSetAddLstblInfo"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
-  s256 sTableNm;
-  m_pDataStack->vPopStr(sTableNm, __func__);
+  s256 sContents;
+  m_pDataStack->vPopStr(sContents, __func__);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
-                                  sTableNm.azChar(),
+                                  sContents.azChar(),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);

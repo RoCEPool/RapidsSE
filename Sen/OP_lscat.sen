@@ -28,7 +28,7 @@
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    StreamDef[] object@ word.name@ InfoSet[].addString assert
+    StreamDef[] object@ word.name@ InfoSet[].addListContents assert
     object@ word.prev object!      // step backwards thru words
   next
 
