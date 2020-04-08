@@ -129,6 +129,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make an index (run by all participants)                                     */
+/*----------------------------------------------------------------------------*/
+: index::make params| sTableNm sIndexNm |
+
+  // push folders to ../t/indexes
+  sTableNm path[].pushTableFolder assert
+  path[].pushIndexesFolder assert
+
+  // create the name index (word & object)
+  sIndexNm :createIndexEmbObj locals| pwIndexTest |
+
+  path[].discardIndexesFolder
+  path[].discardTableFolder
+
+  pwIndexTest // return:
+;
+/*----------------------------------------------------------------------------*/
+//: index::make params| sTableNm sIndexNm |
+//
+//  // push folders to ../t/indexes
+//  sTableNm path[].pushTableFolder assert
+//  path[].pushIndexesFolder assert
+//
+//  // create the name index (word & object)
+//  sIndexNm :createIndexObject locals| pwIndexTest |
+//
+//  path[].discardIndexesFolder
+//  path[].discardTableFolder
+//
+//  pwIndexTest // return:
+//;
+
+/*----------------------------------------------------------------------------*/
 /* tidy up of the index                                                       */
 /*----------------------------------------------------------------------------*/
 : index.tidyUp params| pIndex |
@@ -154,24 +187,6 @@
   next
 
   path[].discardFolder
-;
-
-/*----------------------------------------------------------------------------*/
-/* make an index (run by all participants)                                     */
-/*----------------------------------------------------------------------------*/
-: index::make params| sTableNm sIndexNm |
-
-  // push folders to ../t/indexes
-  sTableNm path[].pushTableFolder assert
-  path[].pushIndexesFolder assert
-
-  // create the name index (word & object)
-  sIndexNm :createIndexEmbObj locals| pwIndexTest |
-
-  path[].discardIndexesFolder
-  path[].discardTableFolder
-
-  pwIndexTest // return:
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -781,7 +781,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_HPROW
 
   /* */ HT_INVALID,           // CN__I__
-  /* */ HT_INVALID,           // CN_INDEX
+  /* */ HT_TRANSIENT_SMALL,   // CN_INDEX
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INDEXDEF
   /* */ HT_TRANSIENT_SMALL,   // CN_INDEXPTN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INDEXPTNVEC
