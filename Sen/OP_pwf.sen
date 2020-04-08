@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* OP_pwf.sen -- Operator present working flolder                             */
+/*============================================================================*/
+
+" OP_pwf.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: pwf_action
+
+  0 locals| folder |
+
+  "/"
+  // iterate thru each folder in path and concat to end
+  path[].depth 0 do
+    // compute the path subscript
+    path[].depth 1 - I -
+    // pick the path, get its name and concat name to working string
+    path[].pick dic.name@ str.cat
+    // concat "/" to end of working string
+    "/" str.cat
+  loop
+
+  // save folder
+  to folder
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // add nodeInfo to the infoSet
+  StreamDef[]  folder InfoSet[].addString assert
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: pwf :: pwf ;
+
+: pwf opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __pwf
+    <params>      = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
