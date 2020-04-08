@@ -135,7 +135,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
   
   i8 iPtnNode;
   if (m_pStageSpec->bNodeTopo())
-    iPtnNode = iNode;
+    iPtnNode = m_i_Nde;
   else
     iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
   
