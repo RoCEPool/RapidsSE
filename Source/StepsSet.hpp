@@ -1037,6 +1037,7 @@ public:
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddListContents(void);
   void vRegInfoSetAddListFolder(void);
+  void vRegInfoSetAddListIndex(void);
   void vRegInfoSetAddNodeInfo(void);
   void vRegInfoSetAddPingInfo(void);
   void vRegInfoSetAddProgressUnits(void);

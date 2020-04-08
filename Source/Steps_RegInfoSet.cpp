@@ -14,6 +14,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
   vAddStep("InfoSet[].addListContents"_Stz,&Step::vRegInfoSetAddListContents);
   vAddStep("InfoSet[].addListFolder"_Stz,  &Step::vRegInfoSetAddListFolder);
+  vAddStep("InfoSet[].addListIndex"_Stz,   &Step::vRegInfoSetAddListIndex);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vRegInfoSetAddPingInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
@@ -165,6 +166,35 @@ void Step::vRegInfoSetAddListFolder(void)
                                   C_VARGS_BEGIN,
                                   sName.azChar(),
                                   sKind.azChar(),
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addListIndex -- add a row to infoset with the list index         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddListIndex(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddListIndex"_Stz);
+  
+  // get the streamDef
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  
+  // get the index
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  pIndex->szIndexNm(),
+                                  (i8)pIndex->bIsUnique(),
+                                  (i8)pIndex->bIsPrimaryKey(),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);

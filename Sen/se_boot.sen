@@ -92,7 +92,6 @@
         "job_ForgetNode.sen"      include
 
         "Job_ListIdxColumns.sen"  include
-        "Job_ListIndexes.sen"     include
         "Job_ListPartColumns.sen" include
         "Job_ListPartitions.sen"  include
         "Job_LoadTable.sen"       include
@@ -153,6 +152,7 @@
         "OP_lf.sen"               include
         "OP_lscat.sen"            include
         "OP_lscol.sen"            include
+        "OP_lsidx.sen"            include
         "OP_lssch.sen"            include
         "OP_lstbl.sen"            include
         "OP_lstbldef.sen"         include

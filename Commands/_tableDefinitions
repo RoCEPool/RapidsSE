@@ -20,6 +20,23 @@ create table definition __listColumns (
   isNullable     BOOLEAN NOT NULL,
   isPartitionKey BOOLEAN NOT NULL
 );
+// this is C_TDEF_LISTCONTENTS
+create table definition __listContents (
+Name       VARCHAR NOT NULL
+);
+
+// this is C_TDEF_LISTFOLDER
+create table definition __listFolder (
+Name       VARCHAR NOT NULL,
+Type       VARCHAR NOT NULL
+);
+
+// this is C_TDEF_LISTINDEX
+create table definition __listIndex (
+  indexName    VARCHAR NOT NULL,
+  isUnique     BOOLEAN NOT NULL,
+  isPrimaryKey BOOLEAN NOT NULL
+);
 
 // this is C_TDEF_LOCKSTATS
 create table definition __lockStats (
@@ -36,17 +53,6 @@ create table definition __lockStats (
   writeGrab      INTEGER     NOT NULL,
   writeCollision INTEGER     NOT NULL,
   WritePercent   INTEGER     NOT NULL
-);
-
-// this is C_TDEF_LISTCONTENTS
-create table definition __listContents (
-  Name       VARCHAR NOT NULL
-);
-
-// this is C_TDEF_LISTFOLDER
-create table definition __listFolder (
-  Name       VARCHAR NOT NULL,
-  Type       VARCHAR NOT NULL
 );
 
 // this is C_TDEF_NODEINFO
