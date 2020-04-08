@@ -129,7 +129,7 @@ void DicStack::vDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump dictionary                                                            */
+/* dump dictionary stack                                                      */
 /*----------------------------------------------------------------------------*/
 void DicStack::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
