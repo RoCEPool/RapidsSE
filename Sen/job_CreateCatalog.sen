@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : checkMakeCatalog ( "<catalogNm>" -- true | errorCode false )
 
-  path[].checkInCatalogs   not if false exit then
+  folder[].checkInCatalogs   not if false exit then
   checkIsNotCatalog not if false exit then
 
   true

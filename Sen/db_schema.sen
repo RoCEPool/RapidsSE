@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../schemas                                         */
 /*----------------------------------------------------------------------------*/
-: path[].checkInSchemas
+: folder[].checkInSchemas
 
   folder[].isSchemas if true exit then
   

@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../catalogs                                        */
 /*----------------------------------------------------------------------------*/
-: path[].checkInCatalogs
+: folder[].checkInCatalogs
 
   folder[].isCatalogs if true exit then
   EC_NOT_IN_CATALOGS false

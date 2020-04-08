@@ -11,7 +11,7 @@
 
   params| sCatalogNm |
 
-  path[].checkInCatalogs not if false exit then
+  folder[].checkInCatalogs not if false exit then
 
   sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
 

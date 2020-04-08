@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../tenants                                         */
 /*----------------------------------------------------------------------------*/
-: path[].checkInTenants
+: folder[].checkInTenants
 
   folder[].isTenants if true exit then
   EC_NOT_IN_TENANTS false
