@@ -1036,6 +1036,7 @@ public:
   void vRegInfoSetAddColumnDef(void);
   void vRegInfoSetAddGridSanity(void);
   void vRegInfoSetAddListContents(void);
+  void vRegInfoSetAddListFolder(void);
   void vRegInfoSetAddNodeInfo(void);
   void vRegInfoSetAddPingInfo(void);
   void vRegInfoSetAddProgressUnits(void);

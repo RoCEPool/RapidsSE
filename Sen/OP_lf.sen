@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* OP_lf.sen -- Operator list folder                                          */
+/*============================================================================*/
+
+" OP_lf.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lf_action
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in teh infoSet for each word
+
+  folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+
+    object@ word.isTable if
+    "table"
+    then
+
+    object@ word.isIndex if
+    "index"
+    then
+
+    object@ isFolder if
+      object@ execute dic.kind@ word.name@
+    then
+
+    object@ word.name@
+    StreamDef[] InfoSet[].addListFolder assert
+
+    object@ word.prev object!      // step backwards thru words
+  next
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: lf :: lf ;
+
+: lf opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listFolder
+    <params>      = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -91,7 +91,6 @@
         "job_FetchRows.sen"       include
         "job_ForgetNode.sen"      include
 
-        "Job_Lf.sen"              include
         "Job_ListIdxColumns.sen"  include
         "Job_ListIndexes.sen"     include
         "Job_ListPartColumns.sen" include
@@ -151,6 +150,7 @@
 
         "OP_insert.sen"           include
 
+        "OP_lf.sen"               include
         "OP_lscat.sen"            include
         "OP_lscol.sen"            include
         "OP_lssch.sen"            include

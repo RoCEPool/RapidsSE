@@ -13,6 +13,7 @@ void Step::vAddSteps_RegInfoSet(void)
   vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vRegInfoSetAddColumnDef);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
   vAddStep("InfoSet[].addListContents"_Stz,&Step::vRegInfoSetAddListContents);
+  vAddStep("InfoSet[].addListFolder"_Stz,  &Step::vRegInfoSetAddListFolder);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vRegInfoSetAddPingInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
@@ -131,6 +132,39 @@ void Step::vRegInfoSetAddListContents(void)
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sContents.azChar(),
+                                  C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addListFolder -- add a row to infoset with the list folder       */
+/*----------------------------------------------------------------------------*/
+void Step::vRegInfoSetAddListFolder(void)
+{
+  ENTRY(); // ENTRY("vRegInfoSetAddListFolder"_Stz);
+  
+  // get the streamDef
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  
+  // get the name
+  s256 sName;
+  m_pDataStack->vPopStr(sName, __func__);
+  
+  // get the kind
+  s256 sKind;
+  m_pDataStack->vPopStr(sKind, __func__);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  sName.azChar(),
+                                  sKind.azChar(),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
