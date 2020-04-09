@@ -33,10 +33,10 @@
 
     object@ word.name@ to sTableNm
     sTableNm "path[].pushTableFolder" find execute  assert
-    sTableNm find execute to pTable
+    sTableNm find execute to table[]
 
     // skip definition only tables
-    pTable table.isDefinitionOnly not if
+    table[].isDefinitionOnly not if
 
       sTableNm StreamDef[] InfoSet[].addListContents assert
 

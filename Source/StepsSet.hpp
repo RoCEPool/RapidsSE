@@ -1341,7 +1341,6 @@ public:
   void vTableInit(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnly(void);
-  void vTableIsLoadingStore(void);
   void vTableLazyBuildIndexes(void);
   void vTablePublish(void);
   void vTablePurge(void);

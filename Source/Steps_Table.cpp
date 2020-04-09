@@ -22,8 +22,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("table.isDefinitionOnly"_Stz,   &Step::vTableIsDefinitionOnly);
-  vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
+  vAddStep("table[].isDefinitionOnly"_Stz, &Step::vTableIsDefinitionOnly);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
@@ -122,22 +121,6 @@ void Step::vTableLazyBuildIndexes(void)
   iSlot = sString.iToI8();
   
   pTable->vLazyBuildIndexes(iSlot);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.isLoading! -- store lable is loading                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTableIsLoadingStore(void)
-{
-  ENTRY(); // ENTRY("vTableIsLoadingStore"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iLoading = m_pDataStack->iPopInt(__func__);
-  
-  pTable->vIsLoading(iLoading == 1 ? true : false);
   
   EXIT();
 }
@@ -405,7 +388,7 @@ void Step::vTableIsDefinitionOnly(void)
 {
   ENTRY(); // ENTRY("vTableIsDefinitionOnly"_Stz);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
   
