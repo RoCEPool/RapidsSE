@@ -10,7 +10,7 @@ namespace Structures
   {
   private:
     i8    m_nItems;            // number of actual items
-    ITEM  m_oaItem[MAX_ITEMS]; // array of items
+    ITEM  m_oItem[MAX_ITEMS];  // array of items
   
     // must be last
     Footer m_xFooter;
@@ -76,7 +76,7 @@ ITEM* ArrayNL_t<ITEM, MAX_ITEMS>::pGet(i8 i_Item)
   
   ASSERT(i_Item >= 0 && i_Item < m_nItems);
   
-  ITEM* pItem = &m_oaItem[i_Item];
+  ITEM* pItem = &m_oItem[i_Item];
   
   return pItem;
 }
