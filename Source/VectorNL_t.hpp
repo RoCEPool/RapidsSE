@@ -10,7 +10,7 @@ namespace Structures
   {
   protected:
     u8     m_nItems;           // number of items currently in the vector
-  protected:
+  private:
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
   
     // must be last
