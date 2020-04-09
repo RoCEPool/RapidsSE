@@ -12305,7 +12305,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // insert a row in the infoset for each column\n"
     "  iColumns 0 do\n"
-    "    I table[].column\n"
+    "    I table[].column@\n"
     "    StreamDef[] InfoSet[].addColumnDef assert\n"
     "  loop\n"
     "\n"

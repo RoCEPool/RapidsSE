@@ -28,7 +28,7 @@
 
   // insert a row in the infoset for each column
   iColumns 0 do
-    I table[].column
+    I table[].column@
     StreamDef[] InfoSet[].addColumnDef assert
   loop
 

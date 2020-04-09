@@ -1329,32 +1329,37 @@ public:
   // table
   void vTableAddIndex(void);
   void vTableAnalyze(void);
-  void vTableBufferGenCsv(void);
-  void vTableDrop(void);
+
+  void vTableColumnCount(void);
+  void vTableColumnFetch(void);
+
+  void vTableDump(void);
   void vTableFindColumn(void);
-  void vTableFirstBuffer(void);
+
   void vTableGenCsvBuffer(void);
+  void vTableGet(void);
   void vTableGetColumnsAsString(void);
-  void vTableColumn(void);
   void vTableGetPtn(void);
+
   void vTableIndexCount(void);
   void vTableInit(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnly(void);
   void vTableIsLoadingStore(void);
   void vTableLazyBuildIndexes(void);
-  void vTableList(void);
   void vTableName(void);
   void vTablePublish(void);
   void vTablePurge(void);
   void vTableRemoveIndex(void);
   void vTableScan(void);
+  void vTableSet(void);
   void vTableSlots(void);
   void vTableSpace(void);
   void vTableStreamDefFetch(void);
   void vTableSubLoaders(void);
   void vTableTableDefFetch(void);
   void vTableTableDefStore(void);
+  void vTableTablePtnFetch(void);
   void vTableTruncate(void);
   void vTableVerify(void);
   void vTableVisualize(void);
@@ -1379,13 +1384,6 @@ public:
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
-
-  // table reg
-  void vTableColumnCount(void);
-  void vTableDump(void);
-  void vTableRegGet(void);
-  void vTableRegSet(void);
-  void vTableRegPtnFetch(void);
 
   // tag
   void vTagGet(void);
