@@ -36,6 +36,7 @@ namespace Registers
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;
     REG<TablePtn>    m_xpTablePtn;
+    REG<Table>       m_xpInfoSetTable;
     REG<Tx>          m_xpTx;
     REG<WriteBehind> m_xpWriteBehind;
     

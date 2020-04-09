@@ -421,6 +421,11 @@ public:
   void vRegIndexPtnGet(void);
   void vRegIndexPtnSet(void);
 
+  void vInfoSetTableColumnFetch(void);
+  void vInfoSetTableDump(void);
+  void vInfoSetTableGet(void);
+  void vInfoSetTableSet(void);
+
   // input
   void vInputClose(void);
   void vInputDepth(void);
