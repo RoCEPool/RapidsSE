@@ -5,8 +5,8 @@
 
 namespace Structures
 {  
-  template <class ITEM, i8 MAX_ITEMS>
-  class ArrayNL_t
+  template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+  class ArrayNL_t : public Object
   {
   private:
     i8    m_nItems;            // number of actual items
@@ -27,8 +27,8 @@ namespace Structures
     Footer* aFooter(void);
   };
 
-  template <class ITEM, i8 MAX_ITEMS>
-    ArrayNL_t<ITEM, MAX_ITEMS>* _pArrayNL_t(void* aAddr);
+  template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+    ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>* _pArrayNL_t(void* aAddr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,8 +40,9 @@ namespace Structures
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-ArrayNL_t<ITEM, MAX_ITEMS>::ArrayNL_t(void)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::ArrayNL_t(void)
+: Object(ARY_CN)
 {
   aFooter()->vAssertFooter();
   
@@ -55,8 +56,8 @@ ArrayNL_t<ITEM, MAX_ITEMS>::ArrayNL_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-ArrayNL_t<ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
 {
   aFooter()->vAssertFooter();
   
@@ -69,8 +70,8 @@ ArrayNL_t<ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-ITEM* ArrayNL_t<ITEM, MAX_ITEMS>::pGet(i8 i_Item)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::pGet(i8 i_Item)
 {
   aFooter()->vAssertFooter();
   
@@ -84,8 +85,8 @@ ITEM* ArrayNL_t<ITEM, MAX_ITEMS>::pGet(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-i8 ArrayNL_t<ITEM, MAX_ITEMS>::nItems(void)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+i8 ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::nItems(void)
 {
   aFooter()->vAssertFooter();
   
@@ -97,8 +98,8 @@ i8 ArrayNL_t<ITEM, MAX_ITEMS>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* set number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ITEM, MAX_ITEMS>::vItems(i8 nItems)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
 {
   aFooter()->vAssertFooter();
   
@@ -110,8 +111,8 @@ void ArrayNL_t<ITEM, MAX_ITEMS>::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* get maximum number of items                                                */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-i8 ArrayNL_t<ITEM, MAX_ITEMS>::nMaxItems(void)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+i8 ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::nMaxItems(void)
 {
   aFooter()->vAssertFooter();
   
@@ -125,8 +126,8 @@ i8 ArrayNL_t<ITEM, MAX_ITEMS>::nMaxItems(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-Footer* ArrayNL_t<ITEM, MAX_ITEMS>::aFooter(void)
+template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+Footer* ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::aFooter(void)
 {
   return &m_xFooter;
 }

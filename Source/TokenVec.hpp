@@ -6,6 +6,7 @@
 namespace LexicalAnalysis
 {
   class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
+  //class TokenVec : public ArrayNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
   {
   private:
    
