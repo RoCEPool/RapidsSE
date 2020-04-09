@@ -11,6 +11,7 @@
 
   0 locals| iColumns |
 
+  // find the table
   <tableNm> op__table not if
     false
     exit

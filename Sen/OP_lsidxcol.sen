@@ -11,13 +11,11 @@
 
   0 locals| iColumns |
 
+  // find the table
   <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
-
-  // save the base table of the command
-  table[] to OperandB[]
 
   // find the __listColumns table
   C_TDEF_LISTCOLUMNS op__tableDef not if exit then
