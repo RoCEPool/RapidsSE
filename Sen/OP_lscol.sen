@@ -1,27 +1,26 @@
 /*============================================================================*/
-/* OP_listColumns.sen -- Operator list columns                                */
+/* OP_lscol.sen -- Operator list columns                                      */
 /*============================================================================*/
 
-" OP_listColumns.sen" .verbose
+" OP_lscol.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: ListColumns_PulseMarker \handler
+: lscol_action
 
   0 locals| iColumns |
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
-  Pipein[].pipeOut
+  <tableNm> op__table not if
+    false
+    exit
+  then
 
   // get the table column count
   table[].columnCount@ to iColumns
 
   // find the __listColumns table
   C_TDEF_LISTCOLUMNS op__tableDef not if exit then
-
-  // create a new streamDef
-  infoSetTable[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new
@@ -38,60 +37,22 @@
   // pipeout the infoset
   InfoSet[].pipeout
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
-
-  assert::stack_0
-
   true
 ;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: ListColumns_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  <tableNm> op__table if
-    Pipein[].pipeout
-  then
-
-  assert::stack_0
-
-  true
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* execute for TruncateOp req                         (on node where spawned) */
-/*----------------------------------------------------------------------------*/
-: ListColumns_req \operator
-
-  LogReqEntry SEED_REQ
-
-  op__topology
-
-  find: ListColumns_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: ListColumns_StartMarker ZK_STARTMARKER op[].handler!
-
-  op__loop
-
-  LogReqExit
-  job::deleteThis
-  DONE_REQ_OP
-;
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: listColumns :: listColumns <tableNm> ;
+opSyntax: lscol :: lscol <tableNm> ;
 
-: listColumns opInfo tagCopy: localOp_tags
-  tags{ <jobDesc>  = "--description of operator--" }
+: lscol opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listColumns
+    <params>      = 1
+  }
 ;
-
     
 /*============================================================================*/
 /* end                                                                        */
