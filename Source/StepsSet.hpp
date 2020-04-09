@@ -1329,25 +1329,20 @@ public:
   // table
   void vTableAddIndex(void);
   void vTableAnalyze(void);
-
-  void vTableColumnCount(void);
+  void vTableColumnCountFetch(void);
   void vTableColumnFetch(void);
-
   void vTableDump(void);
   void vTableFindColumn(void);
-
   void vTableGenCsvBuffer(void);
   void vTableGet(void);
   void vTableGetColumnsAsString(void);
   void vTableGetPtn(void);
-
   void vTableIndexCount(void);
   void vTableInit(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnly(void);
   void vTableIsLoadingStore(void);
   void vTableLazyBuildIndexes(void);
-  void vTableName(void);
   void vTablePublish(void);
   void vTablePurge(void);
   void vTableRemoveIndex(void);

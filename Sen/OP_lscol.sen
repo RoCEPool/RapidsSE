@@ -15,7 +15,7 @@
   Pipein[].pipeOut
 
   // get the table column count
-  table[].columnCount to iColumns
+  table[].columnCount@ to iColumns
 
   // find the __listColumns table
   C_TDEF_LISTCOLUMNS op__tableDef not if exit then

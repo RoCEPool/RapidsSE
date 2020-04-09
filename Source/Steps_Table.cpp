@@ -14,20 +14,17 @@ void Step::vAddSteps_Table(void)
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
   vAddStep("table.analyze"_Stz,            &Step::vTableAnalyze);
-  vAddStep("table[].columnCount"_Stz,      &Step::vTableColumnCount);
+  vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
-  vAddStep("table.genCsvBuffer"_Stz,       &Step::vTableGenCsvBuffer);
-  vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
-  vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
+  vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.isDefinitionOnly"_Stz,   &Step::vTableIsDefinitionOnly);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
-  vAddStep("table.name"_Stz,               &Step::vTableName);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
@@ -42,6 +39,10 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
   vAddStep("table.verify"_Stz,             &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
+  
+  // to go
+  vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
+  vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,9 +163,9 @@ void Step::vTableColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 /* table[].columnCount -- get column count                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTableColumnCount(void)
+void Step::vTableColumnCountFetch(void)
 {
-  ENTRY(); // ENTRY("vTableColumnCount"_Stz);
+  ENTRY(); // ENTRY("vTableColumnCountFetch"_Stz);
   
   StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
   i8 nColumns = pStreamDef->nColumns(C_ALL);
@@ -195,13 +196,13 @@ void Step::vTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.genCsvBuffer -- generate a random row for table                      */
+/* table[].genCsvBuffer -- generate a random row for table                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTableGenCsvBuffer(void)
 {
   ENTRY(); // ENTRY("vTableGenCsvBuffer"_Stz);
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
@@ -408,24 +409,6 @@ void Step::vTableIsDefinitionOnly(void)
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.name -- get table name                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vTableName(void)
-{
-  ENTRY(); // ENTRY("vTableName"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  s32 sName;
-  
-  sName = (Stz*)pTable->szTableNm();
-  
-  m_pDataStack->vPushStr(sName);
-
   EXIT();
 }
 

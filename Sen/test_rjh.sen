@@ -14,10 +14,10 @@
 
   str.toStrVec path[].set
 
-  "T" find execute to pTable
+  "T" find execute to table[]
 
   3 0 do
-    pTable table.genCsvBuffer drop
+    table[].genCsvBuffer drop
   loop
 ;
 
