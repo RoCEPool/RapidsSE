@@ -1335,7 +1335,7 @@ public:
   void vTableFirstBuffer(void);
   void vTableGenCsvBuffer(void);
   void vTableGetColumnsAsString(void);
-  void vTableColumnFetch(void);
+  void vTableColumn(void);
   void vTableGetPtn(void);
   void vTableIndexCount(void);
   void vTableInit(void);

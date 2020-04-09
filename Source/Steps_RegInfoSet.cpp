@@ -46,16 +46,13 @@ void Step::vRegInfoSetAddColumnDef(void)
   ENTRY(); // ENTRY("vRegInfoSetAddColumnDef"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  Column* pColumn = pTable->pStreamDef()->pGetColumn(iColumnNo);
-  
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
-                                  pColumn->iColumnNo(),
                                   pColumn->szColNm(),
                                   aCT[pColumn->eColumnType()],
                                   pColumn->iColumnLength(),

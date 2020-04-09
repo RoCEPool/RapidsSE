@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* OP_lsidxcol.sen -- Operator list index columns                             */
+/*============================================================================*/
+
+" OP_lsidxcol.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lsidxcol_action
+
+  0 locals| iColumns |
+
+  <tableNm> <indexNm> op__table_index not if
+    false
+    exit
+  then
+
+  // save the base table of the command
+  table[] to OperandB[]
+
+  // find the __listColumns table
+  C_TDEF_LISTCOLUMNS op__tableDef not if exit then
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // get no of columns in the index
+  index[].columnCount@ to iColumns
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in the infoSet for each index column
+  iColumns 0 do
+    I index[].column@
+    StreamDef[] InfoSet[].addColumnDef assert
+  loop
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
+
+: lsidxcol opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listColumns
+    <params>      = 2
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

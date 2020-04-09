@@ -22,14 +22,14 @@ success
 // list columns of the table
 lscol lstTbl;
 rows:
-  (0,'bol_col1','BOOLEAN',0,0,false,true)
-  (1,'vch_col2','VARCHAR',32,0,false,false)
-  (2,'int_col3','INTEGER',19,0,false,false)
-  (3,'int_col4','INTEGER',19,0,false,false)
-  (4,'dec_col5','DECIMAL',10,2,false,false)
-  (5,'flt_col6','FLOAT',19,0,false,false)
-  (6,'tsp_col7','TIMESTAMP',0,0,false,false)
-  (7,'bol_col8','BOOLEAN',0,0,true,false)
+  ('bol_col1','BOOLEAN',0,0,false,true)
+  ('vch_col2','VARCHAR',32,0,false,false)
+  ('int_col3','INTEGER',19,0,false,false)
+  ('int_col4','INTEGER',19,0,false,false)
+  ('dec_col5','DECIMAL',10,2,false,false)
+  ('flt_col6','FLOAT',19,0,false,false)
+  ('tsp_col7','TIMESTAMP',0,0,false,false)
+  ('bol_col8','BOOLEAN',0,0,true,false)
 
 // change folder
 cf ..;
@@ -46,14 +46,14 @@ success
 // list columns of the table
 lscol lstTbl;
 rows:
-  (0,'bol_col1','BOOLEAN',0,0,false,true)
-  (1,'vch_col2','VARCHAR',32,0,false,false)
-  (2,'int_col3','INTEGER',19,0,false,false)
-  (3,'int_col4','INTEGER',19,0,false,false)
-  (4,'dec_col5','DECIMAL',10,2,false,false)
-  (5,'flt_col6','FLOAT',19,0,false,false)
-  (6,'tsp_col7','TIMESTAMP',0,0,false,false)
-  (7,'bol_col8','BOOLEAN',0,0,true,false)
+  ('bol_col1','BOOLEAN',0,0,false,true)
+  ('vch_col2','VARCHAR',32,0,false,false)
+  ('int_col3','INTEGER',19,0,false,false)
+  ('int_col4','INTEGER',19,0,false,false)
+  ('dec_col5','DECIMAL',10,2,false,false)
+  ('flt_col6','FLOAT',19,0,false,false)
+  ('tsp_col7','TIMESTAMP',0,0,false,false)
+  ('bol_col8','BOOLEAN',0,0,true,false)
 
 // drop the table
 drop table lstTbl;

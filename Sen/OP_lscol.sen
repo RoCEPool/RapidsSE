@@ -17,11 +17,6 @@
   // get the table column count
   table[].columnCount to iColumns
 
-  // save the table of the base table
-  table[] to OperandB[]
-
-  //path[].discardTableFolder
-
   // find the __listColumns table
   C_TDEF_LISTCOLUMNS op__tableDef not if exit then
 
@@ -31,8 +26,10 @@
   // create an infoSet operand
   StreamDef[] InfoSet[].new
 
+  // insert a row in the infoset for each column
   iColumns 0 do
-    I OperandB[] StreamDef[] InfoSet[].addColumnDef assert
+    I table[].column
+    StreamDef[] InfoSet[].addColumnDef assert
   loop
 
   // pipeout the streamDef

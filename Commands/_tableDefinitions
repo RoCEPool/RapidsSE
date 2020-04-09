@@ -12,7 +12,6 @@ create table definition __gridSanity (
 
 // this is C_TDEF_LISTCOLUMNS
 create table definition __listColumns (
-  columnNo       INTEGER NOT NULL,
   columnName     VARCHAR NOT NULL,
   columnType     VARCHAR NOT NULL,
   columnLength   INTEGER NOT NULL,
@@ -20,6 +19,7 @@ create table definition __listColumns (
   isNullable     BOOLEAN NOT NULL,
   isPartitionKey BOOLEAN NOT NULL
 );
+
 // this is C_TDEF_LISTCONTENTS
 create table definition __listContents (
 Name       VARCHAR NOT NULL

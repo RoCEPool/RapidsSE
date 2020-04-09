@@ -12294,11 +12294,6 @@ void Task::vAddMunged(Forth* pForth)
     "  // get the table column count\n"
     "  table[].columnCount to iColumns\n"
     "\n"
-    "  // save the table of the base table\n"
-    "  table[] to OperandB[]\n"
-    "\n"
-    "  //path[].discardTableFolder\n"
-    "\n"
     "  // find the __listColumns table\n"
     "  C_TDEF_LISTCOLUMNS op__tableDef not if exit then\n"
     "\n"
@@ -12308,8 +12303,10 @@ void Task::vAddMunged(Forth* pForth)
     "  // create an infoSet operand\n"
     "  StreamDef[] InfoSet[].new\n"
     "\n"
+    "  // insert a row in the infoset for each column\n"
     "  iColumns 0 do\n"
-    "    I OperandB[] StreamDef[] InfoSet[].addColumnDef assert\n"
+    "    I table[].column\n"
+    "    StreamDef[] InfoSet[].addColumnDef assert\n"
     "  loop\n"
     "\n"
     "  // pipeout the streamDef\n"
@@ -12385,11 +12382,11 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of OP_lsIdx.sen
+  // munge of OP_lsidx.sen
 
   sFileContents =
     "\""
-    "\\\"munged OP_lsIdx.sen \\\" .verbose \n"
+    "\\\"munged OP_lsidx.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_lsidx.sen -- Operator list indexes                                      */\n"
     "/*============================================================================*/\n"
@@ -12491,7 +12488,83 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT OP_lsIdx.sen"_Stz
+  " CONSTANT OP_lsidx.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_lsidxcol.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_lsidxcol.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_lsidxcol.sen -- Operator list index columns                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_lsidxcol.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": lsidxcol_action\n"
+    "\n"
+    "  0 locals| iColumns |\n"
+    "\n"
+    "  <tableNm> <indexNm> op__table_index not if\n"
+    "    false\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  // save the base table of the command\n"
+    "  table[] to OperandB[]\n"
+    "\n"
+    "  // find the __listColumns table\n"
+    "  C_TDEF_LISTCOLUMNS op__tableDef not if exit then\n"
+    "\n"
+    "  // create an infoSet operand\n"
+    "  StreamDef[] InfoSet[].new\n"
+    "\n"
+    "  // get no of columns in the index\n"
+    "  index[].columnCount@ to iColumns\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // insert a row in the infoSet for each index column\n"
+    "  iColumns 0 do\n"
+    "    I index[].column@\n"
+    "    StreamDef[] InfoSet[].addColumnDef assert\n"
+    "  loop\n"
+    "\n"
+    "  // pipeout the streamDef\n"
+    "  StreamDef[].pipeout\n"
+    "\n"
+    "  // pipeout the infoset\n"
+    "  InfoSet[].pipeout\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;\n"
+    "\n"
+    ": lsidxcol opInfo tagCopy: localLiteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>     = \\\"--description of operator--\\\"\n"
+    "    <localLiteOp> = true\n"
+    "    <streamDef>   = __listColumns\n"
+    "    <params>      = 2\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_lsidxcol.sen"_Stz
   ;
 
   vCompileConstant(sFileContents);
@@ -16351,7 +16424,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_FetchRows.sen\\\"       include\n"
     "        \\\"job_ForgetNode.sen\\\"      include\n"
     "\n"
-    "        \\\"Job_ListIdxColumns.sen\\\"  include\n"
     "        \\\"Job_ListPartColumns.sen\\\" include\n"
     "        \\\"Job_ListPartitions.sen\\\"  include\n"
     "        \\\"Job_LoadTable.sen\\\"       include\n"
@@ -16413,6 +16485,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"OP_lscat.sen\\\"            include\n"
     "        \\\"OP_lscol.sen\\\"            include\n"
     "        \\\"OP_lsidx.sen\\\"            include\n"
+    "        \\\"OP_lsidxcol.sen\\\"         include\n"
     "        \\\"OP_lssch.sen\\\"            include\n"
     "        \\\"OP_lstbl.sen\\\"            include\n"
     "        \\\"OP_lstbldef.sen\\\"         include\n"

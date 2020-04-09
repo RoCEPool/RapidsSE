@@ -11,7 +11,7 @@ void Step::vAddSteps_Table(void)
 {
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
   vAddStep("table.analyze"_Stz,            &Step::vTableAnalyze);
-  vAddStep("table.column@"_Stz,            &Step::vTableColumnFetch);
+  vAddStep("table[].column"_Stz,           &Step::vTableColumn);
   vAddStep("table.isDefinitionOnly"_Stz,   &Step::vTableIsDefinitionOnly);
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
@@ -114,13 +114,13 @@ void Step::vTableIsLoadingStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.column@ -- get the column from the table                             */
+/* table[].column -- get the column from the table                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTableColumnFetch(void)
+void Step::vTableColumn(void)
 {
   ENTRY(); // ENTRY("vTableColumnFetch"_Stz);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   

@@ -13,8 +13,8 @@ void Step::vAddSteps_Index(void)
   vAddStep("index::new"_Stz,            &Step::vIndexNew);
 
   vAddStep("index.analyze"_Stz,         &Step::vIndexAnalyze);
-  vAddStep("index.columnCount@"_Stz,    &Step::vIndexColumnCountFetch);
-  vAddStep("index.column@"_Stz,         &Step::vIndexColumnFetch);
+  vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
+  vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
@@ -69,7 +69,7 @@ void Step::vIndexColumnFetch(void)
 {
   ENTRY(); // ENTRY("vIndexColumnFetch"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
@@ -89,7 +89,7 @@ void Step::vIndexColumnCountFetch(void)
 {
   ENTRY(); // ENTRY("vIndexColumnCountFetch"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = *m_pRegSet->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   m_pDataStack->vPushInt(pIndex->pIdxColVec()->nItems());
