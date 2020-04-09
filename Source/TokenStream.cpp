@@ -155,10 +155,11 @@ bool TokenStream::bBlankLine(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  if (0 != (*pTknVec_arg)[0]->iLength())
-    return false;
+  if (! pTknVec_arg->nTokens() ||
+      0 == pTknVec_arg->pGet(0)->iLength())
+    return true;
   
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,12 +172,13 @@ void TokenStream::vGetCommand(TokenVec* pTknVec_arg)
   vGetTokens(pTknVec_arg);
     
   // if empty line just return
-  if ( ! (*pTknVec_arg)[0]->bHasText() )
+  if ( ! pTknVec_arg->nTokens() ||
+       ! pTknVec_arg->pGet(0)->bHasText() )
     return;
   
   // if its a command file just return
-  if ( ! (*pTknVec_arg)[0]->bSame("/"_Stz) &&
-      bTestFile((*pTknVec_arg)[0]->szTerm()))
+  if ( ! pTknVec_arg->pGet(0)->bSame("/"_Stz) &&
+      bTestFile(pTknVec_arg->pGet(0)->szTerm()))
     return;
   
   // collect till ;
@@ -223,7 +225,7 @@ void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
     pTknVec_arg->vSource(m_pTokeniser->szSource());
     for (;;) {
       
-      Token* pToken = (*pTknVec_arg)[pTknVec_arg->nTokens()];
+      Token* pToken = pTknVec_arg->pGet(pTknVec_arg->nTokens(),true);
       
 //      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
 //

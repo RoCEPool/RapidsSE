@@ -27,7 +27,7 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("indexEntries"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("indexEntries"_Stz));
   
   // get number of items in token vector
   i8 nTokens = pTokenVec->nItems();

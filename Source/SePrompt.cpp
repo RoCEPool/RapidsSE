@@ -1350,7 +1350,7 @@ Token* SePrompt::pTkn(i8 i_Token)
   
   TokenVec* pTknVec = this->pTokenVec();
   
-  Token* pTkn = (*pTknVec)[i_Token];
+  Token* pTkn = pTknVec->pGet(i_Token,true);
   
   return pTkn;
 }

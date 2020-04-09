@@ -28,10 +28,10 @@ bool Prompt::bPrompt_fileProc(SePrompt* pPrompt)
 
   TokenVec* pTknVec = pPrompt->pTokenVec();
   
-  ASSERT((*pTknVec)[0]->bSame("fileProc"_Stz));
+  ASSERT(pTknVec->pGet(0)->bSame("fileProc"_Stz));
   
-  sFileInp = (*pTknVec)[1]->szTerm();
-  sFileOut = (*pTknVec)[2]->szTerm();
+  sFileInp = pTknVec->pGet(1)->szTerm();
+  sFileOut = pTknVec->pGet(2)->szTerm();
   i8 nLines = pTknVec->nItems() > 3 ? pTknVec->pGet(3)->iToI8() : 0;
 
   File oFileInp(pPrompt);

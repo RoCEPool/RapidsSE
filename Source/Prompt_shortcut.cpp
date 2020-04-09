@@ -25,7 +25,7 @@ bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTknVec)[0]->bSame("shortcut"_Stz));
+  ASSERT(pTknVec->pGet(0)->bSame("shortcut"_Stz));
 
   if (1 == pTknVec->nItems()) {
     ShortCutVec* pShortCutVec = pPrompt->pShortCutVec();
