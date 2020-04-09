@@ -58,8 +58,10 @@ TokenVec::~TokenVec(void) noexcept(false)
 void TokenVec::vAppendToken(Stz* szTerm)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  pGet(m_nItems++)->vCopy(szTerm);
+
+  pGet(nItems(),true)->vCopy(szTerm);
+
+  vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +151,7 @@ void TokenVec::vCutToken(i8 i_Tkn)
     pTknDst->vCopy(pTknSrc);
   }
   
-  m_nItems--;
+  vDecItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,7 +235,7 @@ void TokenVec::vIncTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_nItems++;
+  vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,7 +245,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
       
-  for (i8 i_Token = m_nItems - 1; i_Token >= i_Tkn ; i_Token--) {
+  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
     
     Token* pTknDst = pGet(i_Token + 1,true);
     if (! pTknDst) {
@@ -256,7 +258,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
     pTknDst->vCopy(pTknSrc);
   }
   
-  m_nItems++;
+  vIncItems();
   
   Token* pTknIns = pGet(i_Tkn);
   
@@ -320,7 +322,7 @@ void TokenVec::vReset(void)
   
   m_sSource = C_NO_NAME;
   
-  m_nItems = 0;
+  vItems(0);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
     pGet(i_Token,true)->vReset();
@@ -333,7 +335,7 @@ void TokenVec::vSetAllTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
-  m_nItems = C_MAX_TOKENS;
+  vItems(C_MAX_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +352,7 @@ void TokenVec::vSetTokens(void)
       break;
   }
   
-  m_nItems = i_Token;
+  vItems(i_Token);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,7 +425,9 @@ i8 TokenVec::nTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  return m_nItems;
+  i8 nTokens = nItems();
+  
+  return nTokens;
 }
 
 /*----------------------------------------------------------------------------*/

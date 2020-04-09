@@ -8,9 +8,8 @@ namespace Structures
   template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
   class VectorNL_t : public Object
   {
-  protected:
-    u8     m_nItems;           // number of items currently in the vector
   private:
+    u8     m_nItems;           // number of items currently in the vector
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
   
     // must be last
@@ -207,6 +206,21 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vDecItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item, bool bDisableBounds)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+  
+  ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
+  
+  ITEM* pItem = m_pItem[i_Item];
+  
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
 /* increment the number of items                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
@@ -273,21 +287,6 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vItems(i8 nItems)
   ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
   m_nItems = nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
-/*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item, bool bDisableBounds)
-{
-  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
-  
-  ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
-  
-  ITEM* pItem = m_pItem[i_Item];
-  
-  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
