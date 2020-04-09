@@ -10,6 +10,7 @@ namespace Structures
   {
   protected:
     u8     m_nItems;           // number of items currently in the vector
+  protected:
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
   
     // must be last
@@ -30,9 +31,10 @@ namespace Structures
     bool  bContains(ITEM* pObject);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
-    ITEM* pGet(u8 i_Item);
+    ITEM* pGet(u8 i_Item, bool bDisableBounds=false);
     void  vRemove(ITEM* pObject);
-  
+    void  vSet(u8 i_Item, ITEM* pObject);
+
     Footer* aFooter(void);
   };
   
@@ -239,11 +241,11 @@ i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::nItems(void)
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item)
+ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item, bool bDisableBounds)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < m_nItems);
+  ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
   
   ITEM* pItem = m_pItem[i_Item];
   
@@ -291,6 +293,23 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vRemove(ITEM* pItem)
   
   // clear the last item
   m_pItem[m_nItems] = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set an item                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vSet(u8 i_Item, ITEM* pItem)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+    
+  ASSERT(m_nItems > 0 && m_nItems <= MAX_ITEMS);
+  
+  // there shouldnt already be a item
+  ASSERT( ! m_pItem[i_Item] );
+  
+  // set item
+  m_pItem[i_Item] = pItem;
 }
 
 /*----------------------------------------------------------------------------*/
