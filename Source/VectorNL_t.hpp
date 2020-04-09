@@ -29,8 +29,11 @@ namespace Structures
     void  vAdd(ITEM* pObject);
     void  vClear(void);
     bool  bContains(ITEM* pObject);
+    void  vDecItems(void);
+    void  vIncItems(void);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
+    void  vItems(i8 nItems);
     ITEM* pGet(u8 i_Item, bool bDisableBounds=false);
     void  vRemove(ITEM* pObject);
     void  vSet(u8 i_Item, ITEM* pObject);
@@ -193,6 +196,28 @@ bool VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::bContains(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decrement the number of items                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vDecItems(void)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+
+  m_nItems--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment the number of items                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vIncItems(void)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+
+  m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an item as first                                                    */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
@@ -235,6 +260,19 @@ i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::nItems(void)
   ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
   return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of actual items                                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vItems(i8 nItems)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+  
+  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
+  
+  m_nItems = nItems;
 }
 
 /*----------------------------------------------------------------------------*/
