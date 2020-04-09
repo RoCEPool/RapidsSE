@@ -23,12 +23,12 @@ TokenVec::TokenVec(bool bNewTokens)
   
   if (bNewTokens) {
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-      m_pItem[i_Token] = new Token;
+      vSet(i_Token,new Token);
     vReset();
   }
   else {
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-      m_pItem[i_Token] = nullptr;
+      vSet(i_Token,nullptr);
   }
   
   m_iCurTkn = C_UNKNOWN;

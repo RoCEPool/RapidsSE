@@ -303,7 +303,7 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vSet(u8 i_Item, ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
     
-  ASSERT(m_nItems > 0 && m_nItems <= MAX_ITEMS);
+  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
   
   // there shouldnt already be a item
   ASSERT( ! m_pItem[i_Item] );
