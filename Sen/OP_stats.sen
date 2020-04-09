@@ -27,7 +27,7 @@
   C_TDEF_LOCKSTATS op__tableDef assert
 
   // create a new streamDef
-  table[] StreamDef[].new
+  infoSetTable[] StreamDef[].new
 
   StreamDef[].asStr .
 

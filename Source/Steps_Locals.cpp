@@ -216,6 +216,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("InfoSetTable[]"_Stz)) {
+    pCurrentWord->vEncodeCall("InfoSetTable[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
     EXIT();

@@ -90,7 +90,7 @@
 
   // create the streamDef for C_TDEF_PROGRESSUNITS
   C_TDEF_PROGRESSUNITS op__tableDef assert
-  table[] StreamDef[].new
+  infoSetTable[] StreamDef[].new
 
   // clear the table[] to be used next
   nullptr to table[]

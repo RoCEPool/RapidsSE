@@ -45,10 +45,10 @@
 
   // move to table folder and find the table
   sTableNm path[].pushTableFolder assert
-  sTableNm find execute to table[]
+  sTableNm find execute to infoSetTable[]
 
   // cross-check
-  table[] assert
+  infoSetTable[] assert
 
   path[].discardTableFolder
 
