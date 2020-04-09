@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TokenVec.hpp -- vector of tokens                                           */
+/* TokenVec.cpp -- vector of tokens                                           */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -12,7 +12,6 @@ __aNewFunction(TokenVec,CN_TOKENVEC)
 __vDeleteFunction(TokenVec,CN_TOKENVEC)
 __aFooterFunction(TokenVec)
 
-//#define __WITH_TOKEN_ARY
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
