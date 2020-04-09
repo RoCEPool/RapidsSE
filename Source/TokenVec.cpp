@@ -12,6 +12,8 @@ __aNewFunction(TokenVec,CN_TOKENVEC)
 __vDeleteFunction(TokenVec,CN_TOKENVEC)
 __aFooterFunction(TokenVec)
 
+//#define __WITH_TOKEN_ARY
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -21,6 +23,17 @@ TokenVec::TokenVec(bool bNewTokens)
   
   m_sSource = C_NO_NAME;
   
+#ifdef __WITH_TOKEN_ARY
+//  if (bNewTokens) {
+//    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
+//      vSet(i_Token,new Token);
+//    vReset();
+//  }
+//  else {
+//    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
+//      vSet(i_Token,nullptr);
+//  }
+#else
   if (bNewTokens) {
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
       vSet(i_Token,new Token);
@@ -30,6 +43,7 @@ TokenVec::TokenVec(bool bNewTokens)
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
       vSet(i_Token,nullptr);
   }
+#endif
   
   m_iCurTkn = C_UNKNOWN;
   
