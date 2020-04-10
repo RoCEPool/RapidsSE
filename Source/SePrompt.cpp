@@ -148,7 +148,7 @@ void SePrompt::vPromptLoop(void)
 
     L_Read_Next_Command:
     
-    if (! bReadCommand())
+    if (! bReadNextCommand())
       break;
     
     if (bDumpTokens()) {
@@ -964,7 +964,7 @@ void SePrompt::vPromptUser(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadCommand(void)
+bool SePrompt::bReadNextCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

@@ -1,46 +1,17 @@
 /*============================================================================*/
-/* TokenStream.cpp -- TokenStream Processor                                               */
+/* TokenStream.cpp -- Token Stream Processor                                  */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-TokenStream* LexicalAnalysis::_pTokenStream(void* aAddr)
-{
-  TokenStream* pTokenStream = reinterpret_cast<TokenStream*>(aAddr);
-  
-  RASSERT_TYPE(pTokenStream,CN_TOKENSTREAM);
-  
-  return pTokenStream;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* TokenStream::operator new(size_t)
-{
-  Object* pObject = HeapMem::pAllocate(CN_TOKENSTREAM);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TokenStream::operator delete(void* aAddr)
-{
-  TokenStream* pTokenStream = reinterpret_cast<TokenStream*>(aAddr);
-  
-  HeapMem::vFree(pTokenStream);
-}
+__pCastFunction(LexicalAnalysis,TokenStream,CN_TOKENSTREAM)
+__aNewFunction(TokenStream,CN_TOKENSTREAM)
+__vDeleteFunction(TokenStream,CN_TOKENSTREAM)
+__aFooterFunction(TokenStream)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -49,7 +20,6 @@ TokenStream::TokenStream(void)
 : Object(CN_TOKENSTREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
 
   m_pTokeniser = new Tokeniser;
   
@@ -84,6 +54,20 @@ TokenStream::~TokenStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* test for blank line                                                        */
+/*----------------------------------------------------------------------------*/
+bool TokenStream::bBlankLine(TokenVec* pTknVec_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  if (! pTknVec_arg->nTokens() ||
+      0 == pTknVec_arg->pGet(0)->iLength())
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* potentially execute a command file                                         */
 /*----------------------------------------------------------------------------*/
 bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)
@@ -97,69 +81,6 @@ bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)
   //ASSERT(b);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set file to run                                                            */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bRunFile(TokenVec* pTknVec_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-//  if ( ! bTokenCheck(1) )
-//    if (! pTkn(1)->bSame(";"_Stz))
-//      return false;
-  
-  vPushFile(pTknVec_arg->pGet(0)->szTerm());
-  m_pTokeniser->vLineMode(true);
-  
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* push command file                                                          */
-/*----------------------------------------------------------------------------*/
-void TokenStream::vPushFile(Stz* aFileName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  s256 sPath;
-  
-  sPath = aFileName;
-  
-  m_pTokeniser->vPushParser();
-  
-  bool b = m_pTokeniser->bUseFile(sPath);
-  ASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for a specific number of tokens                                      */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  if (pTknVec_arg->pGet(nTokens)->bHasText()) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bBlankLine(TokenVec* pTknVec_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  if (! pTknVec_arg->nTokens() ||
-      0 == pTknVec_arg->pGet(0)->iLength())
-    return true;
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,6 +137,23 @@ void TokenStream::vNextInputTokens(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push command file                                                          */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vPushFile(Stz* aFileName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  s256 sPath;
+  
+  sPath = aFileName;
+  
+  m_pTokeniser->vPushParser();
+  
+  bool b = m_pTokeniser->bUseFile(sPath);
+  ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
@@ -248,6 +186,23 @@ void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set file to run                                                            */
+/*----------------------------------------------------------------------------*/
+bool TokenStream::bRunFile(TokenVec* pTknVec_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+//  if ( ! bTokenCheck(1) )
+//    if (! pTkn(1)->bSame(";"_Stz))
+//      return false;
+  
+  vPushFile(pTknVec_arg->pGet(0)->szTerm());
+  m_pTokeniser->vLineMode(true);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
 bool TokenStream::bTestFile(Stz* aFileName)
@@ -258,6 +213,20 @@ bool TokenStream::bTestFile(Stz* aFileName)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for a specific number of tokens                                      */
+/*----------------------------------------------------------------------------*/
+bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  if (pTknVec_arg->pGet(nTokens)->bHasText()) {
+    return false;
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,12 +279,6 @@ bool TokenStream::bStdIn(void)
   
   return bIsStdIn;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-__aFooterFunction(TokenStream);
 
 /*============================================================================*/
 /* end                                                                        */

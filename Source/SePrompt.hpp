@@ -95,7 +95,7 @@ namespace Prompt
     void vPrepareSpawn(void);
     i8   iPromptId(void);
     void vPromptUser(void);
-    bool bReadCommand(void);
+    bool bReadNextCommand(void);
     void vReformatCommand(void);
     void vReportObjects();
     void vReportOther(void);

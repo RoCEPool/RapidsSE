@@ -20,23 +20,20 @@ namespace LexicalAnalysis
     void  operator delete(void*);
     
     TokenStream(void);
-    ~TokenStream(void) noexcept(false);
+   ~TokenStream(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
     static bool bExecute(Stz* aCommand);
   
-    bool bExecuteFile(TokenVec* pTknVec);
-
-    void vPushFile(Stz* aPath);
-    bool bRunFile(TokenVec* pTknVec);
-    bool bTokenCheck(TokenVec* pTknVec,i8 nTokens);
-
     bool bBlankLine(TokenVec* pTknVec);
+    bool bExecuteFile(TokenVec* pTknVec);
     bool bNextInputToken(TokenVec* pTknVec_arg, Token* pTkn);
     void vNextInputTokens(TokenVec* pTknVec);
+    void vPushFile(Stz* aPath);
     void vReadCommand(TokenVec* pTknVec);
+    bool bRunFile(TokenVec* pTknVec);
     bool bTestFile(Stz* aPath);
+    bool bTokenCheck(TokenVec* pTknVec,i8 nTokens);
     void vTokenise(Stz* aCommand, TokenVec* pTknVec);
     Tokeniser* pTokeniser(void);
     void vUseStdin(void);
