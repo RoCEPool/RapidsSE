@@ -3,28 +3,6 @@
 /*============================================================================*/
 
 " jobInfo.sen" .verbose
-
-
-/*----------------------------------------------------------------------------*/
-/* preliminary setup                                                          */
-/*----------------------------------------------------------------------------*/
-: __liteOp_SetUp
-
-"
-: /liteOp/_setup
-
-  job[] job.enameSet@ enameSet.asStr .
-
-  // find the __ table
-  <streamDef> op__tableDef assert
-
-  // create a new streamDef
-  infoSetTable[] StreamDef[].new
-
-  true
-;
-"
-;
     
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
@@ -36,7 +14,6 @@
 
   Pipein[].pipeout
 
-  /liteOp/_setup  assert
   /liteOp/_action assert
 
   Operand[].newEosMarker
@@ -413,7 +390,6 @@ end
     "<liteOp>" pEnameSet EnameSet.hasName if
       sWordNm_trunc "LiteOP: %v\n" .printf
 
-      "/liteOp/" sWordNm_trunc __liteop_Setup       str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_procedure   str.replace procedure::add

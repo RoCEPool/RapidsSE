@@ -48,7 +48,7 @@
   // pipeout the streamDef
   StreamDef[].pipeout
 
-  table[] StreamDef[].new
+  infoSetTable[] StreamDef[].new
 
   true
 ;
