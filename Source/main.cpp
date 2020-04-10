@@ -21,6 +21,10 @@ int main(int argc, const char* argv[])
 {
   //ASSERT(1 == 0);
 
+  printf("sizeof(Token)       %lld\n", (i8)sizeof(Token));
+  printf("sizeof(TokenVec)    %lld\n", (i8)sizeof(TokenVec));
+  printf("sizeof(Session)     %lld\n", (i8)sizeof(Session));
+
 //  printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
 //  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
 //  printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));

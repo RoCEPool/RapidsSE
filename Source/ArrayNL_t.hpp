@@ -114,7 +114,7 @@ i8 ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::nItems(void)
 {
   aFooter()->vAssertFooter();
   
-  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
+  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
   return m_nItems;
 }
@@ -127,7 +127,7 @@ void ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
 {
   aFooter()->vAssertFooter();
   
-  ASSERT(nItems >= 0 && nItems < MAX_ITEMS);
+  ASSERT(nItems >= 0 && nItems <= MAX_ITEMS);
   
   m_nItems = nItems;
 }
