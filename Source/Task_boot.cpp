@@ -294,16 +294,18 @@ Word* Task::pCompileColon(s48K& sDefinition)
   Word* pCalledWord;
   Datum xVariable;
   
+  TokenVec* pTokenVec;
+  
   vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
   m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get :
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   // get name of word
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   Dic* pDic;
@@ -317,7 +319,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   
   m_pForth->m_pCompiler->vCurrentWord(pNewWord);
 
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   
   while (TN_EOF != m_pForth->m_pCompiler->pTokeniser()->eToken()) {
     
@@ -378,7 +380,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
                );
     }
     
-    m_pForth->m_pCompiler->vNextToken();
+    m_pForth->m_pCompiler->vNextToken_y();
   }
   
   pNewWord->vEncodeCall("exit_rt"_Stz);
@@ -404,7 +406,7 @@ void Task::vCompileConstant(s48K& sDefinition)
   m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get string
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   
   if (AM::bVerbose())
     vTrace("CompileConstant: %s\n"_Stz,
@@ -413,11 +415,11 @@ void Task::vCompileConstant(s48K& sDefinition)
   sValue = (Stz*)m_pForth->m_pCompiler->szToken()->azChar();
   
   // get CONSTANT
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
   
   // get name of word
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
 
   Stz* szName = (Stz*)m_pForth->m_pCompiler->szToken()->azChar();
@@ -426,7 +428,7 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   AM::vAddConstant(szName,sValue.szStz());
   
-  m_pForth->m_pCompiler->vNextToken();
+  m_pForth->m_pCompiler->vNextToken_y();
   
   m_pForth->m_pCompiler->pTokeniser()->vUseEnd();
 }

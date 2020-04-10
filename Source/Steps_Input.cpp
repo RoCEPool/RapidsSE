@@ -76,7 +76,7 @@ void Step::vInputNext(void)
 //
 //  eTN eToken = m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
-  m_pCompiler->vNextToken();
+  m_pCompiler->vNextToken_y();
 
   EXIT();
 }
@@ -218,7 +218,7 @@ void Step::vTokenColon(void)
 {
   ENTRY(); // ENTRY("vTokenColon"_Stz);
   
-  m_pCompiler->vNextToken();
+  m_pCompiler->vNextToken_y();
   
   s48K sTkn(m_pCompiler->szToken());
   
