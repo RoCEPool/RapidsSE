@@ -12,6 +12,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
   folder[].checkInCatalogs not if
+
+    // delete streamdef created during setup
+    Streamdef[].delete
+
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

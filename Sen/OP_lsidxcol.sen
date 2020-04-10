@@ -13,12 +13,11 @@
 
   // find the table
   <tableNm> <indexNm> op__table_index not if
+    // delete streamdef created during setup
+    Streamdef[].delete
     false
     exit
   then
-
-  // find the __listColumns table
-  C_TDEF_LISTCOLUMNS op__tableDef not if exit then
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new

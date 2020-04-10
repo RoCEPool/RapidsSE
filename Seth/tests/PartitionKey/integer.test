@@ -18,7 +18,7 @@ success
 // check columns of partition key
 lspartcol dataTable;
 rows:
-  ('key')
+  ('key','INTEGER',19,0,false,true)
 
 // load data into the table
 load dataTable "../DATA/PartitionKey/data.csv";

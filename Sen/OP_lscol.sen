@@ -13,15 +13,16 @@
 
   // find the table
   <tableNm> op__table not if
+
+    // delete streamdef created during setup
+    Streamdef[].delete
+
     false
     exit
   then
 
   // get the table column count
   table[].columnCount@ to iColumns
-
-  // find the __listColumns table
-  C_TDEF_LISTCOLUMNS op__tableDef not if exit then
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new

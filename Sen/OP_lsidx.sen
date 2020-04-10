@@ -13,18 +13,11 @@
 
   <tableNm> to sTableNm
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  folder[].checkInTables not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-    false
-    exit
-  then
-
   sTableNm op__table not if
+
+    // delete streamdef created during setup
+    Streamdef[].delete
+
     false
     exit
   then
@@ -36,6 +29,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
   sTableNm name::checkIsTable not if
+
+    // delete streamdef created during setup
+    Streamdef[].delete
+
     path[].discardTableFolder
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete

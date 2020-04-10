@@ -23,9 +23,6 @@
   table[].slots@ to pSlots
   pSlots slots.columnCount@ to iPartitionCols
 
-  // find the __listColumns table
-  C_TDEF_LISTCOLUMNS op__tableDef not if exit then
-
   // create an infoSet operand
   StreamDef[] InfoSet[].new
 
