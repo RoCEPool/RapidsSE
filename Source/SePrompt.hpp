@@ -78,7 +78,6 @@ namespace Prompt
     bool bFindMatch_job(void);
     bool bFindMatch_procedure(void);
     void vFocalOutline(s4K& sOutline);
-    bool bGetCommand(void);
     void vInitialSettings(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
@@ -96,6 +95,7 @@ namespace Prompt
     void vPrepareSpawn(void);
     i8   iPromptId(void);
     void vPromptUser(void);
+    bool bReadCommand(void);
     void vReformatCommand(void);
     void vReportObjects();
     void vReportOther(void);

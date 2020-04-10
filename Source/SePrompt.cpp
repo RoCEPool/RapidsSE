@@ -146,9 +146,9 @@ void SePrompt::vPromptLoop(void)
       vPromptUser();
     }
 
-    L_Get_Command:
+    L_Read_Next_Command:
     
-    if (! bGetCommand())
+    if (! bReadCommand())
       break;
     
     if (bDumpTokens()) {
@@ -173,7 +173,7 @@ void SePrompt::vPromptLoop(void)
     vLogCommand();
     
     if (bTranslateProcedure())
-      goto L_Get_Command;
+      goto L_Read_Next_Command;
     
     vRestateCommand();
     
@@ -626,62 +626,6 @@ void SePrompt::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bGetCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenVec*     pTknVec      = pTokenVec();
-  TokenStream*  pTokenStream = this->pTokenStream();
-  Tokeniser*    pTokeniser   = pTokenStream->pTokeniser();
-  Characterise* pCharser     = pTokeniser->pCharser();
-
-  if (gxArgs.m_bInitial) {
-    gxArgs.m_bInitial = false;
-    
-    s4K szInitial = AM::szInitial();
-    Tokeniser::vTokenise(pTknVec,szInitial);
-    pTknVec->vStripSemicolon();
-    pTknVec->vSetTokens();
-    return true;
-  }
-  
-  
-  if (m_bOneCommand && ! m_bOneRun) {
-    m_bOneRun = true;
-    
-    s4K szCommand = AM::szCommand();
-    Tokeniser::vTokenise(pTknVec,szCommand);
-    pTknVec->vStripSemicolon();
-    pTknVec->vSetTokens();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (* m_pSession->m_sToDo.azChar()) {
-    Tokeniser::vTokenise(pTknVec,m_pSession->m_sToDo);
-    pTknVec->vStripSemicolon();
-    pTknVec->vSetTokens();
-
-    m_pSession->m_sToDo = ""_Stz;
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-  if (m_bOneCommand && pTokenStream->bStdIn()) {
-    vDebugPoint();
-    return false;
-  }
-  
-  pTokenStream->vGetCommand(pTknVec);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* initise prompt settings tags                                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vInitialSettings(void)
@@ -1015,6 +959,62 @@ void SePrompt::vPromptUser(void)
         );
 
   fflush(stdin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next command from                                                     */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bReadCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec*     pTknVec      = pTokenVec();
+  TokenStream*  pTokenStream = this->pTokenStream();
+  Tokeniser*    pTokeniser   = pTokenStream->pTokeniser();
+  Characterise* pCharser     = pTokeniser->pCharser();
+
+  if (gxArgs.m_bInitial) {
+    gxArgs.m_bInitial = false;
+    
+    s4K szInitial = AM::szInitial();
+    Tokeniser::vTokenise(pTknVec,szInitial);
+    pTknVec->vStripSemicolon();
+    pTknVec->vSetTokens();
+    return true;
+  }
+  
+  
+  if (m_bOneCommand && ! m_bOneRun) {
+    m_bOneRun = true;
+    
+    s4K szCommand = AM::szCommand();
+    Tokeniser::vTokenise(pTknVec,szCommand);
+    pTknVec->vStripSemicolon();
+    pTknVec->vSetTokens();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (* m_pSession->m_sToDo.azChar()) {
+    Tokeniser::vTokenise(pTknVec,m_pSession->m_sToDo);
+    pTknVec->vStripSemicolon();
+    pTknVec->vSetTokens();
+
+    m_pSession->m_sToDo = ""_Stz;
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  if (m_bOneCommand && pTokenStream->bStdIn()) {
+    vDebugPoint();
+    return false;
+  }
+  
+  pTokenStream->vReadCommand(pTknVec);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

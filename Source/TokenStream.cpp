@@ -163,38 +163,6 @@ bool TokenStream::bBlankLine(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command                                                                */
-/*----------------------------------------------------------------------------*/
-void TokenStream::vGetCommand(TokenVec* pTknVec_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  vNextInputTokens(pTknVec_arg);
-    
-  // if empty line just return
-  if ( ! pTknVec_arg->nTokens() ||
-       ! pTknVec_arg->pGet(0)->bHasText() )
-    return;
-  
-  // if its a command file just return
-  if ( ! pTknVec_arg->pGet(0)->bSame("/"_Stz) &&
-      bTestFile(pTknVec_arg->pGet(0)->szTerm()))
-    return;
-  
-  // collect till ;
-  m_pTokeniser->vCollectStatement(pTknVec_arg);
-  
-  // stip off ;
-  pTknVec_arg->vStripSemicolon();
-  
-  // stip off &
-  pTknVec_arg->vStripAmpersand();
-  
-  // set no of tokens in token vector
-  pTknVec_arg->vSetTokens();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next token from input                                                  */
 /*----------------------------------------------------------------------------*/
 bool TokenStream::bNextInputToken(TokenVec* pTknVec_arg, Token* pTkn)
@@ -248,6 +216,38 @@ void TokenStream::vNextInputTokens(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* read next command from token stream                                        */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  vNextInputTokens(pTknVec_arg);
+    
+  // if empty line just return
+  if ( ! pTknVec_arg->nTokens() ||
+       ! pTknVec_arg->pGet(0)->bHasText() )
+    return;
+  
+  // if its a command file just return
+  if ( ! pTknVec_arg->pGet(0)->bSame("/"_Stz) &&
+      bTestFile(pTknVec_arg->pGet(0)->szTerm()))
+    return;
+  
+  // collect till ;
+  m_pTokeniser->vCollectStatement(pTknVec_arg);
+  
+  // stip off ;
+  pTknVec_arg->vStripSemicolon();
+  
+  // stip off &
+  pTknVec_arg->vStripAmpersand();
+  
+  // set no of tokens in token vector
+  pTknVec_arg->vSetTokens();
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
 bool TokenStream::bTestFile(Stz* aFileName)
@@ -272,7 +272,8 @@ void TokenStream::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
   m_pTokeniser->vPushParser();
   m_pTokeniser->vUseString(sCommand);
   
-  vGetCommand(pTknVec_arg);
+  vReadCommand(pTknVec_arg);
+  
   m_pTokeniser->bPopParser();
 }
 
