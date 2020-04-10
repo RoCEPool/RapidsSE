@@ -38,7 +38,8 @@
   //pJob_UseSchema job.schemaName@ to sSchemaNm
 
   <schemaNm> word::isKnown not if EC_NO_SUCH_SCHEMA pJob_UseSchema ERROR_JOB !!logError exit then
-  path[].checkIsSchema not if pJob_UseSchema ERROR_JOB !!logError exit then
+
+  <schemaNm> path[].checkIsSchema not if pJob_UseSchema ERROR_JOB !!logError exit then
   execute path[].pushFolder
 
   // find the tables folder
@@ -56,7 +57,7 @@
 
   LogEntry SEED_REQ
 
-  0 0 locals| sSchemaNm pJob_UseSchema pTask |
+  0 0 0 locals| sSchemaNm pJob_UseSchema pTask |
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* OP_useSchema.sen -- Operator use schema                                    */
+/*============================================================================*/
+
+" OP_useSchema.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: useSchema_action
+
+  // pop path till we get to tenants
+  begin
+    folder[] dic.name@ "tenants" str.equal not while path[].discardFolder
+  repeat
+
+  // find the boray folder
+  "boray" folder[].findSymbol
+  execute path[].pushFolder
+
+  // find the catalogs folder
+  "catalogs" folder[].findSymbol
+  execute path[].pushFolder
+
+  // find the rapidssecatalogs folder
+  "rapidsse" folder[].findSymbol
+  execute path[].pushFolder
+
+  // find the schemas folder
+  "schemas" folder[].findSymbol
+  execute path[].pushFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if schema name is a word
+  <schemaNm> word::isKnown not if
+    EC_NO_SUCH_SCHEMA op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if schema exists
+  <schemaNm> path[].checkIsSchema not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
+
+  // push folder
+  <schemaNm> execute path[].pushFolder
+
+  // find the tables folder
+  "tables" folder[].findSymbol
+  execute path[].pushFolder
+
+  // save the path
+  setPath
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: useSchema :: useSchema <schemaNm> ;
+
+: useSchema opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <params>      = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
