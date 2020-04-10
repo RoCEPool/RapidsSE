@@ -348,6 +348,7 @@ void Constants::vAddConstantsCpp(void)
   /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,   CN_STEPTIMING);
   /* 69 */ vAddConstant("CN_STMT_SELECT"_Stz,  CN_STMT_SELECT);
   /*  1 */ vAddConstant("CN_STREAMDEF"_Stz,    CN_STREAMDEF);
+  /*  1 */ vAddConstant("CN_STREAMSET"_Stz,    CN_STREAMSET);
   /*  1 */ vAddConstant("CN_STRING_T"_Stz,     CN_STRING_T);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 

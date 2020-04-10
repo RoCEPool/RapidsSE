@@ -287,6 +287,7 @@ pFINALIZE *gpFinalize[]
   /*128 */ &Finalize::vUndefined,         // CN_STMT_SELECT
   /*126 */ &Finalize::vUndefined,         // CN_STRAND
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
+  /* 13 */ &Finalize::vUndefined,         // CN_STREAMSET
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /* 12 */ &Finalize::vUndefined,         // CN_STZVAL  
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL

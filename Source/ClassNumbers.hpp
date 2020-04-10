@@ -290,6 +290,7 @@ enum eCN : u2 // Class Number
   /* 255 0x0FF       80B Heap:L */ CN_STMT_SELECT,
   /* 246 0x0F6     2112B Heap:S */ CN_STRAND,
   /* 256 0x100    47800B Heap:L */ CN_STREAMDEF,
+  /* 256 0x100    47800B Heap:L */ CN_STREAMSET,
   /* 257 0x101       56B Heap:I */ CN_STRING_T,
   /* 258 0x102       24B Heap:I */ CN_STZVAL,
   /* 259 0x103       32B Heap:I */ CN_SYSCALL,
@@ -619,6 +620,7 @@ static Stz* aCN[]
   /* 255 0x0FF */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
   /* 246 0x0F6 */ "STRAND"_Stz,              // CN_STRAND
   /* 256 0x100 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
+  /* 256 0x100 */ "STREAMSET"_Stz,           // CN_STREAMSET
   /* 257 0x101 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 258 0x102 */ "STZVAL"_Stz,              // CN_STZVAL
   /* 259 0x103 */ "SYSCALL"_Stz,             // CN_SYSCALL
