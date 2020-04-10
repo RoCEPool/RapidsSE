@@ -12,10 +12,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
   folder[].checkInCatalogs not if
-
-    // delete streamdef created during setup
-    Streamdef[].delete
-
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -23,6 +19,12 @@
     false
     exit
   then
+
+  // find the __ table
+  <streamDef> op__tableDef assert
+
+  // create a new streamDef
+  infoSetTable[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new

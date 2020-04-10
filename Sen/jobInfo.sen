@@ -100,50 +100,9 @@ end
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* preliminary setup                                                          */
-/*----------------------------------------------------------------------------*/
-: __localLiteOp_SetUp
-
-"
-: /localLiteOp/_setup
-
-  job[] job.enameSet@ enameSet.asStr .
-
-  // find the __ table
-  <streamDef> op__tableDef assert
-
-  // create a new streamDef
-  infoSetTable[] StreamDef[].new
-
-  true
-  ;
-"
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : __localLiteOp_PulseMarker
-
-"
-  : /localLiteOp/_PulseMarker \\handler
-
-    /localLiteOp/_setup  assert
-    /localLiteOp/_action if
-      Pipein[].pipeout
-      Operand[].newEosMarker
-      Operand[].pipeOut
-    then
-
-    true
-  ;
-"
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: __localLiteOp_PulseMarker_noSetup
 
 "
   : /localLiteOp/_PulseMarker \\handler
@@ -464,14 +423,9 @@ end
       "<localLiteOp>" pEnameSet EnameSet.hasName if
         sWordNm_trunc "LocalLiteOP: %v\n" .printf
 
-        "<streamDef>" pEnameSet EnameSet.hasName if
-          "/localLiteOp/" sWordNm_trunc __localLiteop_Setup       str.replace >interpret
-          "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
-        else
-          "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker_noSetup str.replace >interpret
-        then
+      "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
 
-        "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
+      "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
 
         // add procedure depending on no of parameters
         "<params>" pEnameSet EnameSet.hasName assert

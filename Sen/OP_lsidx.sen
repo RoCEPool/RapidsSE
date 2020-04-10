@@ -14,10 +14,6 @@
   <tableNm> to sTableNm
 
   sTableNm op__table not if
-
-    // delete streamdef created during setup
-    Streamdef[].delete
-
     false
     exit
   then
@@ -29,10 +25,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
   sTableNm name::checkIsTable not if
-
-    // delete streamdef created during setup
-    Streamdef[].delete
-
     path[].discardTableFolder
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
@@ -44,6 +36,12 @@
 
   // push indexes folder
   path[].pushIndexesFolder assert
+
+  // find the __ table
+  <streamDef> op__tableDef assert
+
+  // create a new streamDef
+  infoSetTable[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new

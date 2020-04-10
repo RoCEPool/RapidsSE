@@ -13,11 +13,15 @@
 
   // find the table
   <tableNm> <indexNm> op__table_index not if
-    // delete streamdef created during setup
-    Streamdef[].delete
     false
     exit
   then
+
+  // find the __ table
+  <streamDef> op__tableDef assert
+
+  // create a new streamDef
+  infoSetTable[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new

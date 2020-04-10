@@ -20,6 +20,12 @@
     exit
   then
 
+  // find the __ table
+  <streamDef> op__tableDef assert
+
+  // create a new streamDef
+  infoSetTable[] StreamDef[].new
+
   // create an infoSet operand
   StreamDef[] InfoSet[].new
 

@@ -13,8 +13,6 @@
 
   // find the table
   <tableNm> op__table not if
-    // delete streamdef created during setup
-    StreamDef[].delete
     false
     exit
   then
@@ -22,6 +20,12 @@
   // get the table column count
   table[].slots@ to pSlots
   pSlots slots.columnCount@ to iPartitionCols
+
+  // find the __ table
+  <streamDef> op__tableDef assert
+
+  // create a new streamDef
+  infoSetTable[] StreamDef[].new
 
   // create an infoSet operand
   StreamDef[] InfoSet[].new
