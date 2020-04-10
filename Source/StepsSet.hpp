@@ -1351,7 +1351,6 @@ public:
   void vTableSlotsFetch(void);
   void vTableSlots(void);
   void vTableSpace(void);
-  void vTableStreamDefFetch(void);
   void vTableSubLoaders(void);
   void vTableTableDefFetch(void);
   void vTableTableDefStore(void);

@@ -30,7 +30,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].slots@"_Stz,           &Step::vTableSlotsFetch);
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
-  vAddStep("table.streamDef@"_Stz,         &Step::vTableStreamDefFetch);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
@@ -593,20 +592,6 @@ void Step::vTableSpace(void)
   i8 iBuffers = pTable->nCrwBuffers();
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
   m_pDataStack->vPushInt(iSpace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.streamDef@ -- fetch the table streamDef                              */
-/*----------------------------------------------------------------------------*/
-void Step::vTableStreamDefFetch(void)
-{
-  ENTRY(); // ENTRY("vTableStreamDefFetch"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pTable->pStreamDef());
   
   EXIT();
 }
