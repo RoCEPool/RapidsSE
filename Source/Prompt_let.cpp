@@ -25,7 +25,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTknVec)[0]->bSame("let"_Stz));
+  ASSERT(pTknVec->pGet(0)->bSame("let"_Stz));
   
   i8 nTokens = pTknVec->nItems();
 

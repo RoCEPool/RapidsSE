@@ -25,9 +25,9 @@ bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("sleep"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("sleep"_Stz));
   
-  i8 nSeconds = (*pTokenVec)[1]->iToI8();
+  i8 nSeconds = pTokenVec->pGet(1)->iToI8();
   
   AM::vNapMsec(nSeconds * C_1K,CN_SEPROMPT);
 

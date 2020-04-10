@@ -32,7 +32,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
                  
   TokenVec* pTokenVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("ls"_Stz));
   
   // get the current directory
   if (!Dir::bGetCurrent(sDirPath))

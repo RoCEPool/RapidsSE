@@ -25,7 +25,7 @@ bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
-  ASSERT((*pTokenVec)[0]->bSame("pwd"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("pwd"_Stz));
   
   s256 sDir;
   if (Dir::bGetCurrent(sDir))

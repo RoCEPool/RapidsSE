@@ -25,10 +25,10 @@ bool Prompt::bPrompt_show(SePrompt* pPrompt)
 {
   TokenVec* pTkVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTkVec)[0]->bSame("show"_Stz));
+  ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if ((*pTkVec)[1]->bSame("grid"_Stz)) {
+  if (pTkVec->pGet(1)->bSame("grid"_Stz)) {
     
     SP_Grid spGrid;
     Grid* pGrid = AM::pGrid();
@@ -39,7 +39,7 @@ bool Prompt::bPrompt_show(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if ((*pTkVec)[1]->bSame("nodes"_Stz)) {
+  if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
     for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {

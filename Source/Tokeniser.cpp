@@ -315,7 +315,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
-    Token* pToken = (*pTokenVec_arg)[i_Token];
+    Token* pToken = pTokenVec_arg->pGet(i_Token,true);
     vNextToken(pToken);
     ASSERT(TN_EOF != pToken->eToken());
     

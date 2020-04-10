@@ -27,9 +27,9 @@ bool Prompt::bPrompt_mkfifo(SePrompt* pPrompt)
   
   TokenVec* pTokenVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("mkfifo"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("mkfifo"_Stz));
   
-  sFifoPath = (*pTokenVec)[1]->szTerm();
+  sFifoPath = pTokenVec->pGet(1)->szTerm();
   
   if (! Fifo::bMake(sFifoPath)) {
     vTrace("Failed to make fifo: %s\n"_Stz,sFifoPath.azChar());

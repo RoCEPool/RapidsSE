@@ -36,7 +36,7 @@ bool Prompt::bPrompt_setDbg(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("setDbg"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("setDbg"_Stz));
   
   //vTrace(" sizof(u) %lld\n"_Stz,sizeof(u));
   

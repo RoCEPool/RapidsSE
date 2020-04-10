@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TokenVec.hpp -- vector of tokens                                           */
+/* TokenVec.cpp -- vector of tokens                                           */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -12,6 +12,7 @@ __aNewFunction(TokenVec,CN_TOKENVEC)
 __vDeleteFunction(TokenVec,CN_TOKENVEC)
 __aFooterFunction(TokenVec)
 
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -21,15 +22,27 @@ TokenVec::TokenVec(bool bNewTokens)
   
   m_sSource = C_NO_NAME;
   
+#ifdef __WITH_TOKEN_ARY
+//  if (bNewTokens) {
+//    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
+//      vSet(i_Token,new Token);
+//    vReset();
+//  }
+//  else {
+//    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
+//      vSet(i_Token,nullptr);
+//  }
+#else
   if (bNewTokens) {
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-      m_pItem[i_Token] = new Token;
+      vSet(i_Token,new Token);
     vReset();
   }
   else {
     for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-      m_pItem[i_Token] = nullptr;
+      vSet(i_Token,nullptr);
   }
+#endif
   
   m_iCurTkn = C_UNKNOWN;
   
@@ -58,8 +71,10 @@ TokenVec::~TokenVec(void) noexcept(false)
 void TokenVec::vAppendToken(Stz* szTerm)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_pItem[m_nItems++]->vCopy(szTerm);
+
+  pGet(nItems(),true)->vCopy(szTerm);
+
+  vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +98,7 @@ i8 TokenVec::iCountTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token,true);
     if ( ! pToken->bHasText() )
       return i_Token;
   }
@@ -95,6 +110,21 @@ i8 TokenVec::iCountTokens(void)
 /*----------------------------------------------------------------------------*/
 /* copy given token vector to this token vector                               */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_TOKEN_ARY
+void TokenVec::vCopyVector(TokenVec* pTokenVecSrc)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < pTokenVecSrc->nTokens(); i_Token++) {
+    
+    Token* pToken_src = pTokenVecSrc->pGet(i_Token);
+    Token* pToken_dst = pGet(i_Token);
+    
+    pToken_dst->vCopy(pToken_src);
+  }
+}
+/*----------------------------------------------------------------------------*/
+#else
 void TokenVec::vCopyVector(TokenVec* pTokenVec)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -107,6 +137,7 @@ void TokenVec::vCopyVector(TokenVec* pTokenVec)
     vAdd(pNewToken);
   }
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* return current token                                                       */
@@ -143,13 +174,13 @@ void TokenVec::vCutToken(i8 i_Tkn)
   
   for (i8 i_Token = i_Tkn; i_Token < nTkns ; i_Token++) {
     
-    Token* pTknDst = m_pItem[i_Token];
-    Token* pTknSrc = m_pItem[i_Token + 1];
+    Token* pTknDst = pGet(i_Token);
+    Token* pTknSrc = pGet(i_Token + 1,true);
     
     pTknDst->vCopy(pTknSrc);
   }
   
-  m_nItems--;
+  vDecItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +194,7 @@ void TokenVec::vDumpTokens(void)
 
   for (i8 i_Token = 0; i_Token < nItems(); i_Token++) {
     
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token);
 
     if (! pToken->szTerm())
       break;
@@ -185,7 +216,7 @@ i8 TokenVec::iFindToken(Stz* szTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token,true);
     if (szTerm->bSame(pToken->szTerm()))
       return i_Token;
   }
@@ -201,7 +232,7 @@ Token* TokenVec::pFindToken(Stz* szTerm, i8& i_Token)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i_Token++; i_Token < nTokens(); i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token);
     if (pToken->szTerm()->bSame(szTerm))
       return pToken;
   }
@@ -233,36 +264,64 @@ void TokenVec::vIncTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_nItems++;
+  vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_TOKEN_ARY
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
       
-  for (i8 i_Token = m_nItems - 1; i_Token >= i_Tkn ; i_Token--) {
+  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
     
-    Token* pTknDst = m_pItem[i_Token + 1];
+    Token* pTknDst = pGet(i_Token + 1,true);
     if (! pTknDst) {
-      m_pItem[i_Token + 1] = new Token;
-      pTknDst = m_pItem[i_Token + 1];
+      vSet(i_Token + 1,new Token);
+      pTknDst = pGet(i_Token + 1,true);
     }
     
-    Token* pTknSrc = m_pItem[i_Token];
+    Token* pTknSrc = pGet(i_Token);
     
     pTknDst->vCopy(pTknSrc);
   }
   
-  m_nItems++;
+  vIncItems();
   
-  Token* pTknIns = m_pItem[i_Tkn];
+  Token* pTknIns = pGet(i_Tkn);
   
   pTknIns->vCopy(szTerm);
   pTknIns->vToken(eToken);
 }
+#else
+/*----------------------------------------------------------------------------*/
+void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+      
+  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
+    
+    Token* pTknDst = pGet(i_Token + 1,true);
+    if (! pTknDst) {
+      vSet(i_Token + 1,new Token);
+      pTknDst = pGet(i_Token + 1,true);
+    }
+    
+    Token* pTknSrc = pGet(i_Token);
+    
+    pTknDst->vCopy(pTknSrc);
+  }
+  
+  vIncItems();
+  
+  Token* pTknIns = pGet(i_Tkn);
+  
+  pTknIns->vCopy(szTerm);
+  pTknIns->vToken(eToken);
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* return next token                                                          */
@@ -308,7 +367,7 @@ void TokenVec::vPrint(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nItems(); i_Token++)
-    vTrace("  %s\n"_Stz,m_pItem[i_Token]->szTerm());
+    vTrace("  %s\n"_Stz,pGet(i_Token)->szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,10 +379,10 @@ void TokenVec::vReset(void)
   
   m_sSource = C_NO_NAME;
   
-  m_nItems = 0;
+  vItems(0);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-    m_pItem[i_Token]->vReset();
+    pGet(i_Token,true)->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,7 +392,7 @@ void TokenVec::vSetAllTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
-  m_nItems = C_MAX_TOKENS;
+  vItems(C_MAX_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -346,11 +405,11 @@ void TokenVec::vSetTokens(void)
    // get count of words in pWords
   i8 i_Token;
   for (i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    if ( ! m_pItem[i_Token]->bHasText() )
+    if ( ! pGet(i_Token,true)->bHasText() )
       break;
   }
   
-  m_nItems = i_Token;
+  vItems(i_Token);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,7 +440,7 @@ void TokenVec::vStripAmpersand(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token,true);
     if (TN_OTHER == pToken->eToken() && pToken->bSame("&"_Stz)) {
       pToken->vReset();
       break;
@@ -395,7 +454,7 @@ void TokenVec::vStripAmpersand(void)
 void TokenVec::vStripSingleQuotes(void)
 {
   for (i8 i_Token = 0; i_Token < nTokens(); i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token);
     pToken->vStripSingleQuotes();
   }
 }
@@ -408,7 +467,7 @@ void TokenVec::vStripSemicolon(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+    Token* pToken = pGet(i_Token,true);
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz)) {
       pToken->vReset();
       //break;
@@ -423,7 +482,9 @@ i8 TokenVec::nTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  return m_nItems;
+  i8 nTokens = nItems();
+  
+  return nTokens;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,7 +34,7 @@ bool Prompt::bPrompt_version(SePrompt* pPrompt)
       version
       then
    */
-  ASSERT((*pTokenVec)[0]->bSame("version"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("version"_Stz));
   
   if (AM::bMetadata()) {
     vTrace("metadata: (version VARCHAR)\n"_Stz);

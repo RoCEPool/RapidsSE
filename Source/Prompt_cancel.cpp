@@ -26,7 +26,7 @@ bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
 
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
-  ASSERT((*pTokenVec)[0]->bSame("cancel"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("cancel"_Stz));
   
   i8 iJobId = pTokenVec->pGet(1)->iToI8();
   

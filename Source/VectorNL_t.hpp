@@ -8,7 +8,7 @@ namespace Structures
   template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
   class VectorNL_t : public Object
   {
-  protected:
+  private:
     u8     m_nItems;           // number of items currently in the vector
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
   
@@ -23,16 +23,20 @@ namespace Structures
     VectorNL_t(void);
     ~VectorNL_t(void) noexcept(false);
 
-    ITEM*& operator [](u8 i_Item);
+    //ITEM*& operator [](u8 i_Item);
 
     void  vAdd(ITEM* pObject);
     void  vClear(void);
     bool  bContains(ITEM* pObject);
+    void  vDecItems(void);
+    void  vIncItems(void);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
-    ITEM* pGet(u8 i_Item);
+    void  vItems(i8 nItems);
+    ITEM* pGet(u8 i_Item, bool bDisableBounds=false);
     void  vRemove(ITEM* pObject);
-  
+    void  vSet(u8 i_Item, ITEM* pObject);
+
     Footer* aFooter(void);
   };
   
@@ -128,15 +132,15 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::~VectorNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* subscript [] operator                                                      */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator [](u8 i_Item)
-{
-  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
-  
-  //ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
-  
-  return m_pItem[i_Item];
-}
+//template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+//ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator [](u8 i_Item)
+//{
+//  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+//  
+//  //ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
+//  
+//  return m_pItem[i_Item];
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
@@ -191,6 +195,43 @@ bool VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::bContains(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decrement the number of items                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vDecItems(void)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+
+  m_nItems--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item, bool bDisableBounds)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+  
+  ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
+  
+  ITEM* pItem = m_pItem[i_Item];
+  
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment the number of items                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vIncItems(void)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+
+  m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an item as first                                                    */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
@@ -236,18 +277,16 @@ i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
+/* set number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item)
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vItems(i8 nItems)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < m_nItems);
+  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
-  ITEM* pItem = m_pItem[i_Item];
-  
-  return pItem;
+  m_nItems = nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,6 +330,23 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vRemove(ITEM* pItem)
   
   // clear the last item
   m_pItem[m_nItems] = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set an item                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vSet(u8 i_Item, ITEM* pItem)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+    
+  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
+  
+  // there shouldnt already be a item
+  ASSERT( ! m_pItem[i_Item] );
+  
+  // set item
+  m_pItem[i_Item] = pItem;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,9 +27,9 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
 
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
-  ASSERT((*pTokenVec)[0]->bSame("fileCat"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("fileCat"_Stz));
   
-  sFile = (*pTokenVec)[1]->szTerm();
+  sFile = pTokenVec->pGet(1)->szTerm();
   i8 nLines = pTokenVec->pGet(2)->iToI8();
 
   File* pFile = new File(pPrompt);
