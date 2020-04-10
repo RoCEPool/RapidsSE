@@ -456,7 +456,7 @@ void Tokeniser::vNextToken(TokenVec* pTokenVec_arg,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  //RASSERT(pTokenVec_arg->pCurrToken() == pToken);
+  //RASSERT(! pTokenVec_arg || pTokenVec_arg->pCurrToken() == pToken);
   
   if (m_bNormal)
     vNextNormal(pTokenVec_arg,pToken);

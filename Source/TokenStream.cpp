@@ -169,7 +169,7 @@ void TokenStream::vGetCommand(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  vGetTokens(pTknVec_arg);
+  vNextInputTokens(pTknVec_arg);
     
   // if empty line just return
   if ( ! pTknVec_arg->nTokens() ||
@@ -197,7 +197,7 @@ void TokenStream::vGetCommand(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* get next token from input                                                  */
 /*----------------------------------------------------------------------------*/
-bool TokenStream::bGetToken(TokenVec* pTknVec_arg, Token* pTkn)
+bool TokenStream::bNextInputToken(TokenVec* pTknVec_arg, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -214,7 +214,7 @@ bool TokenStream::bGetToken(TokenVec* pTknVec_arg, Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* get command tokens from input                                              */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
+void TokenStream::vNextInputTokens(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
@@ -225,21 +225,10 @@ void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
     pTknVec_arg->vSource(m_pTokeniser->szSource());
     for (;;) {
       
+      pTknVec_arg->vAdvanceCurr();
       Token* pToken = pTknVec_arg->pGet(pTknVec_arg->nTokens(),true);
-      
-//      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
-//
-//      if (TN_EOF == eToken)
-//        break;
-//
-//      pToken->vToken(eToken);
-      
-      
-      //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
-      //             pTknVec_inp()->nTokens(),
-      //             pTkn(pTknVec_inp()->nTokens())->aText());
-      
-      if (! bGetToken(pTknVec_arg,pToken))
+            
+      if (! bNextInputToken(pTknVec_arg,pToken))
         break;
       
       pTknVec_arg->vIncTokens();

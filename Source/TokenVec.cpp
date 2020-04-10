@@ -44,7 +44,7 @@ TokenVec::TokenVec(bool bNewTokens)
   }
 #endif
   
-  m_iCurTkn = C_UNKNOWN;
+  m_iCurTkn = -1;
   
   _checkInitialised_(CN_TOKENVEC);
   
@@ -64,6 +64,16 @@ TokenVec::~TokenVec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* advance current token                                                      */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vAdvanceCurr(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  m_iCurTkn++;
+}
 
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
@@ -159,7 +169,7 @@ Token* TokenVec::pCurrToken(void)
   if (C_UNKNOWN == m_iCurTkn)
     return nullptr;
   
-  Token* pTkn = pGet(m_iCurTkn);
+  Token* pTkn = pGet(m_iCurTkn,true);
   return pTkn;
 }
 
@@ -377,7 +387,8 @@ void TokenVec::vReset(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_sSource = C_NO_NAME;
-  
+  m_iCurTkn = -1;
+
   vItems(0);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
