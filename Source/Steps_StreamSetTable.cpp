@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* Steps_StreamSetTable.cpp - StreamSet table step group                      */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_StreamSetTable(void)
+{
+  vAddStep("StreamSetTable[]"_Stz,         &Step::vStreamSetTableGet);
+  vAddStep("StreamSetTable[].column@"_Stz, &Step::vStreamSetTableColumnFetch);
+  vAddStep("StreamSetTable[].dump"_Stz,    &Step::vStreamSetTableDump);
+  vAddStep("StreamSetTable[].set"_Stz,     &Step::vStreamSetTableSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSetTable[].column -- fetch the column from the StreamSet table       */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetTableColumnFetch(void)
+{
+  ENTRY(); // ENTRY("vStreamSetTableColumnFetch"_Stz);
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpStreamSetTable);
+  
+  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSetTable[].dump                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetTableDump(void)
+{
+  ENTRY(); // ENTRY("vStreamSetTableDump"_Stz);
+  
+  vTrace("TableDump\n"_Stz);
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpStreamSetTable);
+  
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
+    TablePtn* pPartition = pTable->pPartition(iPartition);
+    vTrace("Partition %lld\n"_Stz, iPartition);
+    pPartition->vDump();
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSetTable[] -- get table                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetTableGet(void)
+{
+  ENTRY(); // ENTRY("vStreamSetTableGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpStreamSetTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSetTable[].set -- set table                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetTableSet(void)
+{
+  ENTRY(); // ENTRY("vStreamSetTableSet"_Stz);
+  
+  m_pRegSet->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

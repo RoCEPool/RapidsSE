@@ -7,43 +7,43 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegInfoSet(void)
+void Step::vAddSteps_InfoSet(void)
 {
-  vAddStep("InfoSet[]"_Stz,                &Step::vRegInfoSetGet);
-  vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vRegInfoSetAddColumnDef);
-  vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vRegInfoSetAddGridSanity);
-  vAddStep("InfoSet[].addListContents"_Stz,&Step::vRegInfoSetAddListContents);
-  vAddStep("InfoSet[].addListFolder"_Stz,  &Step::vRegInfoSetAddListFolder);
-  vAddStep("InfoSet[].addListIndex"_Stz,   &Step::vRegInfoSetAddListIndex);
-  vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vRegInfoSetAddNodeInfo);
-  vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vRegInfoSetAddPingInfo);
-  vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vRegInfoSetAddProgressUnits);
-  vAddStep("InfoSet[].addShowCluster"_Stz,   &Step::vRegInfoSetAddShowCluster);
-  vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vRegInfoSetAddSpaceInfo);
-  vAddStep("InfoSet[].addString"_Stz,        &Step::vRegInfoSetAddString);
-  vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vRegInfoSetAddTotalUnits);
-  vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vRegInfoSetChunkFile);
-  vAddStep("InfoSet[].delete"_Stz,         &Step::vRegInfoSetDelete);
-  vAddStep("InfoSet[].firstRow"_Stz,       &Step::vRegInfoSetFirstRow);
-  vAddStep("InfoSet[].get"_Stz,            &Step::vRegInfoSetGet);
-  vAddStep("InfoSet[].infoRows"_Stz,       &Step::vRegInfoSetInfoRows);
-  vAddStep("InfoSet[].isProgress"_Stz,     &Step::vRegInfoSetIsProgress);
-  vAddStep("InfoSet[].isTotalUnits"_Stz,   &Step::vRegInfoSetIsTotalUnits);
-  vAddStep("InfoSet[].name"_Stz,           &Step::vRegInfoSetName);
-  vAddStep("InfoSet[].new"_Stz,            &Step::vRegInfoSetNew);
-  vAddStep("InfoSet[].nextRow"_Stz,        &Step::vRegInfoSetNextRow);
-  vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vRegInfoSetPipeOut);
-  vAddStep("InfoSet[].readChunk"_Stz,      &Step::vRegInfoSetReadChunk);
-  vAddStep("InfoSet[].set"_Stz,            &Step::vRegInfoSetSet);
-  vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vRegInfoSetWriteCsv);
+  vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
+  vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vInfoSetAddColumnDef);
+  vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vInfoSetAddGridSanity);
+  vAddStep("InfoSet[].addListContents"_Stz,&Step::vInfoSetAddListContents);
+  vAddStep("InfoSet[].addListFolder"_Stz,  &Step::vInfoSetAddListFolder);
+  vAddStep("InfoSet[].addListIndex"_Stz,   &Step::vInfoSetAddListIndex);
+  vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
+  vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vInfoSetAddPingInfo);
+  vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
+  vAddStep("InfoSet[].addShowCluster"_Stz,   &Step::vInfoSetAddShowCluster);
+  vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vInfoSetAddSpaceInfo);
+  vAddStep("InfoSet[].addString"_Stz,        &Step::vInfoSetAddString);
+  vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
+  vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vInfoSetChunkFile);
+  vAddStep("InfoSet[].delete"_Stz,         &Step::vInfoSetDelete);
+  vAddStep("InfoSet[].firstRow"_Stz,       &Step::vInfoSetFirstRow);
+  vAddStep("InfoSet[].get"_Stz,            &Step::vInfoSetGet);
+  vAddStep("InfoSet[].infoRows"_Stz,       &Step::vInfoSetInfoRows);
+  vAddStep("InfoSet[].isProgress"_Stz,     &Step::vInfoSetIsProgress);
+  vAddStep("InfoSet[].isTotalUnits"_Stz,   &Step::vInfoSetIsTotalUnits);
+  vAddStep("InfoSet[].name"_Stz,           &Step::vInfoSetName);
+  vAddStep("InfoSet[].new"_Stz,            &Step::vInfoSetNew);
+  vAddStep("InfoSet[].nextRow"_Stz,        &Step::vInfoSetNextRow);
+  vAddStep("InfoSet[].pipeOut"_Stz,        &Step::vInfoSetPipeOut);
+  vAddStep("InfoSet[].readChunk"_Stz,      &Step::vInfoSetReadChunk);
+  vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
+  vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
 }
 
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addColumnDef -- add a row to the infoset with the column def     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddColumnDef(void)
+void Step::vInfoSetAddColumnDef(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddColumnDef"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddColumnDef"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
@@ -70,9 +70,9 @@ void Step::vRegInfoSetAddColumnDef(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addGridSanity -- add a row to the infoset with the gridSanity    */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddGridSanity(void)
+void Step::vInfoSetAddGridSanity(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetDelete"_Stz);
+  ENTRY(); // ENTRY("vInfoSetDelete"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
@@ -116,9 +116,9 @@ void Step::vRegInfoSetAddGridSanity(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addListContents -- add a row to infoset with the list contents   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddListContents(void)
+void Step::vInfoSetAddListContents(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddLstblInfo"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddLstblInfo"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
@@ -142,9 +142,9 @@ void Step::vRegInfoSetAddListContents(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addListFolder -- add a row to infoset with the list folder       */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddListFolder(void)
+void Step::vInfoSetAddListFolder(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddListFolder"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddListFolder"_Stz);
   
   // get the streamDef
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -175,9 +175,9 @@ void Step::vRegInfoSetAddListFolder(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addListIndex -- add a row to infoset with the list index         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddListIndex(void)
+void Step::vInfoSetAddListIndex(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddListIndex"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddListIndex"_Stz);
   
   // get the streamDef
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -204,9 +204,9 @@ void Step::vRegInfoSetAddListIndex(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddNodeInfo(void)
+void Step::vInfoSetAddNodeInfo(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetDelete"_Stz);
+  ENTRY(); // ENTRY("vInfoSetDelete"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
@@ -229,9 +229,9 @@ void Step::vRegInfoSetAddNodeInfo(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addPingInfo -- add a row to infoset with the ping response       */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddPingInfo(void)
+void Step::vInfoSetAddPingInfo(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddPingInfo"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddPingInfo"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
@@ -251,9 +251,9 @@ void Step::vRegInfoSetAddPingInfo(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addProgressUnits -- add a row to infoset with the progressUnits  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddProgressUnits(void)
+void Step::vInfoSetAddProgressUnits(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddProgressUnits"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddProgressUnits"_Stz);
   
   i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
   
@@ -275,9 +275,9 @@ void Step::vRegInfoSetAddProgressUnits(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addShowCluster -- add a row to infoset with the cluster info     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddShowCluster(void)
+void Step::vInfoSetAddShowCluster(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddShowCluster"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddShowCluster"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   i8 i_Node = m_pDataStack->iPopInt(__func__);
@@ -304,9 +304,9 @@ void Step::vRegInfoSetAddShowCluster(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addNSpaceInfo -- add a row to the infoset with the spaceInfo     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddSpaceInfo(void)
+void Step::vInfoSetAddSpaceInfo(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddSpaceInfo"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddSpaceInfo"_Stz);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
@@ -347,9 +347,9 @@ void Step::vRegInfoSetAddSpaceInfo(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addStr -- add a row to infoset with a string response            */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddString(void)
+void Step::vInfoSetAddString(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddString"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddString"_Stz);
   
   s256 sString;
   m_pDataStack->vPopStr(sString, __func__);
@@ -372,9 +372,9 @@ void Step::vRegInfoSetAddString(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].addTotalUnits -- add a row to infoset with the totalUnits        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetAddTotalUnits(void)
+void Step::vInfoSetAddTotalUnits(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetAddTotalUnits"_Stz);
+  ENTRY(); // ENTRY("vInfoSetAddTotalUnits"_Stz);
   
   i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
   
@@ -396,9 +396,9 @@ void Step::vRegInfoSetAddTotalUnits(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].chunkFile -- info set chunk file                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetChunkFile(void)
+void Step::vInfoSetChunkFile(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetChunkFile"_Stz);
+  ENTRY(); // ENTRY("vInfoSetChunkFile"_Stz);
   
   // get the seekOffsets
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
@@ -505,9 +505,9 @@ void Step::vRegInfoSetChunkFile(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].delete -- operand infoset                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetDelete(void)
+void Step::vInfoSetDelete(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetDelete"_Stz);
+  ENTRY(); // ENTRY("vInfoSetDelete"_Stz);
   
   AM::vDeleteOperand(*m_pRegSet->m_xpInfoSet);
   
@@ -519,9 +519,9 @@ void Step::vRegInfoSetDelete(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].firstRow -- get first row from the infoset                       */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetFirstRow(void)
+void Step::vInfoSetFirstRow(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetFirstRow"_Stz);
+  ENTRY(); // ENTRY("vInfoSetFirstRow"_Stz);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
@@ -531,9 +531,9 @@ void Step::vRegInfoSetFirstRow(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].get -- get infoset                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetGet(void)
+void Step::vInfoSetGet(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetGet"_Stz);
+  ENTRY(); // ENTRY("vInfoSetGet"_Stz);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
 
@@ -545,9 +545,9 @@ void Step::vRegInfoSetGet(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].infoRows -- get now of info rows in info set                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetInfoRows(void)
+void Step::vInfoSetInfoRows(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetInfoRows"_Stz);
+  ENTRY(); // ENTRY("vInfoSetInfoRows"_Stz);
   
   ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
   
@@ -561,9 +561,9 @@ void Step::vRegInfoSetInfoRows(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].isProgress --is infor set a progress info set ?                  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetIsProgress(void)
+void Step::vInfoSetIsProgress(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetIsProgress"_Stz);
+  ENTRY(); // ENTRY("vInfoSetIsProgress"_Stz);
   
   ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
   
@@ -579,9 +579,9 @@ void Step::vRegInfoSetIsProgress(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].isTotalUnits --is infor set a totalUnits info set ?              */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetIsTotalUnits(void)
+void Step::vInfoSetIsTotalUnits(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetIsTotalUnits"_Stz);
+  ENTRY(); // ENTRY("vInfoSetIsTotalUnits"_Stz);
   
   ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
   
@@ -596,9 +596,9 @@ void Step::vRegInfoSetIsTotalUnits(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].name -- get infoset name                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetName(void)
+void Step::vInfoSetName(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetName"_Stz);
+  ENTRY(); // ENTRY("vInfoSetName"_Stz);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
 
@@ -612,9 +612,9 @@ void Step::vRegInfoSetName(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].new -- new an infoset operand                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetNew(void)
+void Step::vInfoSetNew(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetNew"_Stz);
+  ENTRY(); // ENTRY("vInfoSetNew"_Stz);
   
   ASSERT(m_pRegSet->m_xpInfoSet.bIsNull());
   
@@ -628,9 +628,9 @@ void Step::vRegInfoSetNew(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].nextRow -- get next row from the infoset                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetNextRow(void)
+void Step::vInfoSetNextRow(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetNextRow"_Stz);
+  ENTRY(); // ENTRY("vInfoSetNextRow"_Stz);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   Row* pRow = _pRow(*m_pRegSet->m_xpRow);
@@ -643,9 +643,9 @@ void Step::vRegInfoSetNextRow(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].pipeOut -- pipeout infoset                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetPipeOut(void)
+void Step::vInfoSetPipeOut(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetPipeOut"_Stz);
+  ENTRY(); // ENTRY("vInfoSetPipeOut"_Stz);
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   
@@ -661,9 +661,9 @@ void Step::vRegInfoSetPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].readChunk -- reach a chunk from file given the infoSet           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetReadChunk(void)
+void Step::vInfoSetReadChunk(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetReadChunk"_Stz);
+  ENTRY(); // ENTRY("vInfoSetReadChunk"_Stz);
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
@@ -691,9 +691,9 @@ void Step::vRegInfoSetReadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].set -- set InfoSet                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetSet(void)
+void Step::vInfoSetSet(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetSet"_Stz);
+  ENTRY(); // ENTRY("vInfoSetSet"_Stz);
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpInfoSet.bIsNull());
@@ -705,9 +705,9 @@ void Step::vRegInfoSetSet(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].writeCsv -- write InfoSet to file as csv                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegInfoSetWriteCsv(void)
+void Step::vInfoSetWriteCsv(void)
 {
-  ENTRY(); // ENTRY("vRegInfoSetWriteCsv"_Stz);
+  ENTRY(); // ENTRY("vInfoSetWriteCsv"_Stz);
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   

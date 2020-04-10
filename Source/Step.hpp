@@ -67,6 +67,7 @@ namespace Steps
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexPtn(void);
+    static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_RegIndexPtn(void);
     static void vAddSteps_Input(void);
@@ -123,7 +124,6 @@ namespace Steps
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegJob(void);
     static void vAddSteps_RegIndex(void);
-    static void vAddSteps_RegInfoSet(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegOp(void);
     static void vAddSteps_RegOperand(void);
@@ -147,6 +147,8 @@ namespace Steps
     static void vAddSteps_SsnState(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);
+    static void vAddSteps_StreamSet(void);
+    static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_Subset(void);
   
     static void vAddSteps_Table(void);

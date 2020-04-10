@@ -421,6 +421,35 @@ public:
   void vRegIndexPtnGet(void);
   void vRegIndexPtnSet(void);
 
+  // reg info set
+  void vInfoSetAddColumnDef(void);
+  void vInfoSetAddGridSanity(void);
+  void vInfoSetAddListContents(void);
+  void vInfoSetAddListFolder(void);
+  void vInfoSetAddListIndex(void);
+  void vInfoSetAddNodeInfo(void);
+  void vInfoSetAddPingInfo(void);
+  void vInfoSetAddProgressUnits(void);
+  void vInfoSetAddShowCluster(void);
+  void vInfoSetAddSpaceInfo(void);
+  void vInfoSetAddString(void);
+  void vInfoSetAddTotalUnits(void);
+  void vInfoSetChunkFile(void);
+  void vInfoSetDelete(void);
+  void vInfoSetFirstRow(void);
+  void vInfoSetGet(void);
+  void vInfoSetInfoRows(void);
+  void vInfoSetIsProgress(void);
+  void vInfoSetIsTotalUnits(void);
+  void vInfoSetName(void);
+  void vInfoSetNew(void);
+  void vInfoSetNextRow(void);
+  void vInfoSetPipeOut(void);
+  void vInfoSetReadChunk(void);
+  void vInfoSetSet(void);
+  void vInfoSetWriteCsv(void);
+
+  // reg infoSet table
   void vInfoSetTableColumnFetch(void);
   void vInfoSetTableDump(void);
   void vInfoSetTableGet(void);
@@ -1037,34 +1066,6 @@ public:
   // reg folder
   void vRegFolderFindSymbol(void);
 
-  // reg info set
-  void vRegInfoSetAddColumnDef(void);
-  void vRegInfoSetAddGridSanity(void);
-  void vRegInfoSetAddListContents(void);
-  void vRegInfoSetAddListFolder(void);
-  void vRegInfoSetAddListIndex(void);
-  void vRegInfoSetAddNodeInfo(void);
-  void vRegInfoSetAddPingInfo(void);
-  void vRegInfoSetAddProgressUnits(void);
-  void vRegInfoSetAddShowCluster(void);
-  void vRegInfoSetAddSpaceInfo(void);
-  void vRegInfoSetAddString(void);
-  void vRegInfoSetAddTotalUnits(void);
-  void vRegInfoSetChunkFile(void);
-  void vRegInfoSetDelete(void);
-  void vRegInfoSetFirstRow(void);
-  void vRegInfoSetGet(void);
-  void vRegInfoSetInfoRows(void);
-  void vRegInfoSetIsProgress(void);
-  void vRegInfoSetIsTotalUnits(void);
-  void vRegInfoSetName(void);
-  void vRegInfoSetNew(void);
-  void vRegInfoSetNextRow(void);
-  void vRegInfoSetPipeOut(void);
-  void vRegInfoSetReadChunk(void);
-  void vRegInfoSetSet(void);
-  void vRegInfoSetWriteCsv(void);
-
   // reg job
   void vRegJobGet(void);
 
@@ -1317,6 +1318,40 @@ public:
   void vStrSub(void);
   void vStrTailInt(void);
   void vStrToStrVec(void);
+
+  // reg info set
+  void vStreamSetAddColumnDef(void);
+  void vStreamSetAddGridSanity(void);
+  void vStreamSetAddListContents(void);
+  void vStreamSetAddListFolder(void);
+  void vStreamSetAddListIndex(void);
+  void vStreamSetAddNodeInfo(void);
+  void vStreamSetAddPingInfo(void);
+  void vStreamSetAddProgressUnits(void);
+  void vStreamSetAddShowCluster(void);
+  void vStreamSetAddSpaceInfo(void);
+  void vStreamSetAddString(void);
+  void vStreamSetAddTotalUnits(void);
+  void vStreamSetChunkFile(void);
+  void vStreamSetDelete(void);
+  void vStreamSetFirstRow(void);
+  void vStreamSetGet(void);
+  void vStreamSetInfoRows(void);
+  void vStreamSetIsProgress(void);
+  void vStreamSetIsTotalUnits(void);
+  void vStreamSetName(void);
+  void vStreamSetNew(void);
+  void vStreamSetNextRow(void);
+  void vStreamSetPipeOut(void);
+  void vStreamSetReadChunk(void);
+  void vStreamSetSet(void);
+  void vStreamSetWriteCsv(void);
+
+  // reg infoSet table
+  void vStreamSetTableColumnFetch(void);
+  void vStreamSetTableDump(void);
+  void vStreamSetTableGet(void);
+  void vStreamSetTableSet(void);
 
   // sub loader
   void vSubLoaderDelete(void);
