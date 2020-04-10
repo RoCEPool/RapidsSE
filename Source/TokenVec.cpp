@@ -274,26 +274,25 @@ void TokenVec::vIncTokens(void)
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-      
+  
+  // open up a token at _i_Tkn
   for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
     
-    Token* pTknDst = pGet(i_Token + 1,true);
-    if (! pTknDst) {
-      vSet(i_Token + 1,new Token);
-      pTknDst = pGet(i_Token + 1,true);
-    }
+    Token* pTkn_dst = pGet(i_Token + 1,true);
+    Token* pTkn_src = pGet(i_Token);
     
-    Token* pTknSrc = pGet(i_Token);
-    
-    pTknDst->vCopy(pTknSrc);
+    pTkn_dst->vCopy(pTkn_src);
   }
   
   vIncItems();
   
-  Token* pTknIns = pGet(i_Tkn);
+  // - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - -
+  // now copy the inserting token into place
   
-  pTknIns->vCopy(szTerm);
-  pTknIns->vToken(eToken);
+  Token* pTkn_ins = pGet(i_Tkn);
+  
+  pTkn_ins->vCopy(szTerm);
+  pTkn_ins->vToken(eToken);
 }
 #else
 /*----------------------------------------------------------------------------*/

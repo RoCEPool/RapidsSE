@@ -150,7 +150,7 @@
         "OP_lf.sen"               include
         "OP_lscat.sen"            include
         "OP_lscol.sen"            include
-        "OP_lsidx.sen"            include
+        //"OP_lsidx.sen"            include
         "OP_lsidxcol.sen"         include
         "OP_lspartcol.sen"        include
         "OP_lssch.sen"            include
