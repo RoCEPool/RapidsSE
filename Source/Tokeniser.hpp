@@ -46,7 +46,7 @@ namespace LexicalAnalysis
     bool bLineMode(void);
     void vMalloc(bool bMalloc);
     void vNextToken(void);
-    void vNextToken(Token* pToken);
+    void vNextToken(TokenVec* pTokenVec, Token* pToken);
     void vNormal(bool bNormal);
     bool bPopParser(void);
     void vPushParser(void);
@@ -59,20 +59,20 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:
-    void vNextNormal(Token* pToken);
-    void vNextSen(Token* pToken);
+    void vNextNormal(TokenVec* pTokenVec, Token* pToken);
+    void vNextSen(TokenVec* pTokenVec, Token* pToken);
     
-    void vCollectNormal(Token* pToken, char* azTermCrs);
-    void vCollectNormalInteger(Token* pToken, char* azTermCrs);
-    void vCollectNormalName(Token* pToken, char* azTermCrs);
-    void vCollectNormalOther(Token* pToken, char* azTermCrs);
-    void vCollectNormalString(Token* pToken, char* azTermCrs);
+    void vCollectNormal(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectNormalInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectNormalName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectNormalOther(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectNormalString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     
-    void vCollectSen(Token* pToken, char* azTermCrs);
-    void vCollectSenInteger(Token* pToken, char* azTermCrs);
-    void vCollectSenName(Token* pToken, char* azTermCrs);
-    void vCollectSenString(Token* pToken, char* azTermCrs);
-    void vCollectSenTag(Token* pToken, char* azTermCrs);
+    void vCollectSen(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectSenInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectSenName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectSenString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectSenTag(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
@@ -93,7 +93,7 @@ namespace LexicalAnalysis
     void vParserGetAnnCharStripped(void);
     void vParserUngetAnnCharStripped(void);
   
-    void vTokenCollectBegin(Token* pToken);
+    void vTokenCollectBegin(TokenVec* pTokenVec, Token* pToken);
     void vTokenCollectEnd(void);
 
     bool bEndInput(void);

@@ -35,7 +35,7 @@ namespace LexicalAnalysis
     bool bBlankLine(TokenVec* pTknVec);
     void vGetCommand(TokenVec* pTknVec);
     void vGetCommandArgument(void);
-    bool bGetToken(Token* pTkn);
+    bool bGetToken(TokenVec* pTknVec_arg, Token* pTkn);
     void vGetTokens(TokenVec* pTknVec);
     bool bTestFile(Stz* aPath);
     void vTokenise(Stz* aCommand, TokenVec* pTknVec);

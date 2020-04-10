@@ -197,11 +197,11 @@ void TokenStream::vGetCommand(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* get next token from input                                                  */
 /*----------------------------------------------------------------------------*/
-bool TokenStream::bGetToken(Token* pTkn)
+bool TokenStream::bGetToken(TokenVec* pTknVec_arg, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vNextToken(pTkn);
+  m_pTokeniser->vNextToken(pTknVec_arg,pTkn);
   
   eTN eToken = pTkn->eToken();
   
@@ -239,7 +239,7 @@ void TokenStream::vGetTokens(TokenVec* pTknVec_arg)
       //             pTknVec_inp()->nTokens(),
       //             pTkn(pTknVec_inp()->nTokens())->aText());
       
-      if (! bGetToken(pToken))
+      if (! bGetToken(pTknVec_arg,pToken))
         break;
       
       pTknVec_arg->vIncTokens();

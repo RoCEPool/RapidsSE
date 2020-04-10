@@ -316,7 +316,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = pTokenVec_arg->pGet(i_Token,true);
-    vNextToken(pToken);
+    vNextToken(pTokenVec_arg,pToken);
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
@@ -446,20 +446,20 @@ void Tokeniser::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vNextToken(&m_oToken);
+  vNextToken(nullptr,&m_oToken);
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextToken(Token* pToken)
+void Tokeniser::vNextToken(TokenVec* pTokenVec_arg,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if (m_bNormal)
-    vNextNormal(pToken);
+    vNextNormal(pTokenVec_arg,pToken);
   else
-    vNextSen(pToken);
+    vNextSen(pTokenVec_arg,pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -583,13 +583,13 @@ void Tokeniser::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* parse next normal token into given buffer                                  */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextNormal(Token* pToken)
+void Tokeniser::vNextNormal(TokenVec* pTokenVec_arg,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   pToken->vReset();
   
-  vCollectNormal(pToken,pToken->azTerm());
+  vCollectNormal(pTokenVec_arg,pToken,pToken->azTerm());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -616,13 +616,13 @@ void Tokeniser::vNextNormal(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* parse next Sen token into given buffer                                     */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextSen(Token* pToken)
+void Tokeniser::vNextSen(TokenVec* pTokenVec_arg,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   pToken->vReset();
 
-  vCollectSen(pToken,pToken->azTerm());
+  vCollectSen(pTokenVec_arg,pToken,pToken->azTerm());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -654,7 +654,7 @@ void Tokeniser::vNextSen(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* collect normal token                                                       */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectNormal(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormal(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -671,29 +671,29 @@ void Tokeniser::vCollectNormal(Token* pToken, char* azTermCrs)
   
   // collect integer literal?
   if (bStartNormalInteger()) {
-    vCollectNormalInteger(pToken,azTermCrs);
+    vCollectNormalInteger(pTokenVec_arg,pToken,azTermCrs);
     return;
   }
   
   // collect string literal?
   if (bStartNormalString()) {
-    vCollectNormalString(pToken,azTermCrs);
+    vCollectNormalString(pTokenVec_arg,pToken,azTermCrs);
     return;
   }
   
   // collect name token?
   if (bStartNormalName()) {
-    vCollectNormalName(pToken,azTermCrs);
+    vCollectNormalName(pTokenVec_arg,pToken,azTermCrs);
     return;
   }
   
-  vCollectNormalOther(pToken,azTermCrs);
+  vCollectNormalOther(pTokenVec_arg,pToken,azTermCrs);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect normal integer literal                                             */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectNormalInteger(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalInteger(TokenVec* pTokenVec_arg,Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -703,7 +703,7 @@ void Tokeniser::vCollectNormalInteger(Token* pToken, char* azTermCrs)
   // we have seen a digit
   ASSERT(bStartNormalInteger());
   
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
   
   // - start parsing an integer
   
@@ -741,7 +741,7 @@ void Tokeniser::vCollectNormalInteger(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect normal name                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectNormalName(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalName(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -749,7 +749,7 @@ void Tokeniser::vCollectNormalName(Token* pToken, char* azTermCrs)
   
   ASSERT(bStartNormalName());
   
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
   
   // collect the characters of the name
   while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
@@ -770,7 +770,7 @@ void Tokeniser::vCollectNormalName(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect other token                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalOther(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -778,7 +778,7 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
   
   ASSERT(bStartNormalOther());
  
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather ]] as a token
@@ -968,7 +968,7 @@ void Tokeniser::vCollectNormalOther(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect normal string literal                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormalString(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -976,7 +976,7 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
   
   ASSERT(bStartSenString());
   
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
   
   // skip the leading '"'
   vParserGetAnnCharStripped();
@@ -1008,7 +1008,7 @@ void Tokeniser::vCollectNormalString(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect Sen token                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSen(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1025,33 +1025,33 @@ void Tokeniser::vCollectSen(Token* pToken, char* azTermCrs)
   
   // collect integer literal?
   if (bStartSenInteger()) {
-    vCollectSenInteger(pToken,azTermCrs);
+    vCollectSenInteger(pTokenVec_arg,pToken,azTermCrs);
     return;
   }
   
   // collect string literal?
   if (bStartSenString()) {
-    vCollectSenString(pToken,azTermCrs);
+    vCollectSenString(pTokenVec_arg,pToken,azTermCrs);
     return;
   }
 
 #ifdef WITH_SEN_TAGS
   // collect sen tag?
   if (bStartSenTag()) {
-    vCollectSenTag(pToken,azTermCrs);
+    vCollectSenTag(pTokenVec_arg,pToken,azTermCrs);
     return;
   }
 #endif
   
   // collect name token
-  vTokenCollectBegin(pToken);
-  vCollectSenName(pToken,azTermCrs);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
+  vCollectSenName(pTokenVec_arg,pToken,azTermCrs);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect Sen integer                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenInteger(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1061,7 +1061,7 @@ void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
   // we have seen a minus or a digit
   ASSERT(bStartSenInteger());
   
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
 
   // - start parsing an integer
   
@@ -1093,7 +1093,7 @@ void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
   
   // - handle minus only
   if (! iNoDigits) {
-    vCollectSenName(pToken,z);
+    vCollectSenName(pTokenVec_arg,pToken,z);
     vTokenCollectEnd();
     return;
   }
@@ -1114,13 +1114,13 @@ void Tokeniser::vCollectSenInteger(Token* pToken, char* azTermCrs)
   }
   
   // its actually a name; complete parsing name
-  vCollectSenName(pToken,z);
+  vCollectSenName(pTokenVec_arg,pToken,z);
 }
 
 /*----------------------------------------------------------------------------*/
 /* collect Sen name                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenName(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenName(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1148,7 +1148,7 @@ void Tokeniser::vCollectSenName(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect Sen string                                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenString(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1156,7 +1156,7 @@ void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
   
   ASSERT(bStartSenString());
   
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
   
   char cStartQuote = m_xAnnChar.m_cChar;
   
@@ -1191,7 +1191,7 @@ void Tokeniser::vCollectSenString(Token* pToken, char* azTermCrs)
 /*----------------------------------------------------------------------------*/
 /* collect Sen tag                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenTag(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -1199,7 +1199,7 @@ void Tokeniser::vCollectSenTag(Token* pToken, char* azTermCrs)
   
   ASSERT(bStartSenTag());
   
-  vTokenCollectBegin(pToken);
+  vTokenCollectBegin(pTokenVec_arg,pToken);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1460,7 +1460,7 @@ void Tokeniser::vParserUngetAnnCharStripped(void)
 /*----------------------------------------------------------------------------*/
 /* begin collecting a new token                                               */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vTokenCollectBegin(Token* pToken)
+void Tokeniser::vTokenCollectBegin(TokenVec* pTokenVec_arg, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
