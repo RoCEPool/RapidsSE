@@ -9,18 +9,36 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Slots(void)
 {
-  vAddStep("slots.columnCount"_Stz,     &Step::vSlotsColumnCount);
+  vAddStep("slots.column@"_Stz,         &Step::vSlotsColumnFetch);
+  vAddStep("slots.columnCount@"_Stz,    &Step::vSlotsColumnCountFetch);
   vAddStep("slots.columnName"_Stz,      &Step::vSlotsColumnName);
   vAddStep("slots.createStreamDef"_Stz, &Step::vSlotsCreateStreamDef);
   vAddStep("slots.subDic"_Stz,          &Step::vSlotsSubDic);
 }
 
 /*----------------------------------------------------------------------------*/
-/* slots.columnCount -- get column count                                      */
+/* slots.column@ -- fetch the column                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsColumnCount(void)
+void Step::vSlotsColumnFetch(void)
 {
-  ENTRY(); // ENTRY("vSlotsColumnCount"_Stz);
+  ENTRY(); // ENTRY("vSlotsColumnFetch"_Stz);
+  
+  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_SLOTS == pSlots->eClass());
+  
+  i8 iColumn = m_pDataStack->iPopInt(__func__);
+  
+  m_pDataStack->vPushPtr(pSlots->pPtnStreamDef()->pGetColumn(iColumn));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* slots.columnCount@ -- fetch column count                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vSlotsColumnCountFetch(void)
+{
+  ENTRY(); // ENTRY("vSlotsColumnCountFetch"_Stz);
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());

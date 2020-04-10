@@ -17,7 +17,7 @@ success
 // check columns of partition key
 lspartcol boolTable;
 rows:
-  ('key1')
+  ('key1','BOOLEAN',0,0,false,true)
 
 // create an index
 create index idx1 on boolTable (key1);

@@ -28,7 +28,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
-  vAddStep("table.slots"_Stz,              &Step::vTableSlots);
+  vAddStep("table[].slots@"_Stz,           &Step::vTableSlotsFetch);
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
   vAddStep("table.streamDef@"_Stz,         &Step::vTableStreamDefFetch);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
@@ -42,6 +42,7 @@ void Step::vAddSteps_Table(void)
   // to go
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
+  vAddStep("table.slots"_Stz,              &Step::vTableSlots);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -560,6 +561,20 @@ void Step::vTableSlots(void)
   ENTRY(); // ENTRY("vTableSlots"_Stz);
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushPtr(pTable->pSlots());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].slots@ -- fetch the slots of table on data stack                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableSlotsFetch(void)
+{
+  ENTRY(); // ENTRY("vTableSlots"_Stz);
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
   m_pDataStack->vPushPtr(pTable->pSlots());
   

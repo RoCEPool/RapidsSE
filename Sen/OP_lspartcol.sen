@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* OP_lspartcol.sen -- Operator list partition columns                        */
+/*============================================================================*/
+
+" OP_lspartcol.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lspartcol_action
+
+  0 0 locals| iPartitionCols pSlots |
+
+  // find the table
+  <tableNm> op__table not if
+    // delete streamdef created during setup
+    StreamDef[].delete
+    false
+    exit
+  then
+
+  // get the table column count
+  table[].slots@ to pSlots
+  pSlots slots.columnCount@ to iPartitionCols
+
+  // find the __listColumns table
+  C_TDEF_LISTCOLUMNS op__tableDef not if exit then
+
+  // create an infoSet operand
+  StreamDef[] InfoSet[].new
+
+  // insert a row in the infoset for each column
+  iPartitionCols 0 do
+    I pSlots slots.column@
+    StreamDef[] InfoSet[].addColumnDef assert
+  loop
+
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
+  // pipeout the infoset
+  InfoSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: lspartcol :: lspartcol <tableNm> ;
+
+: lspartcol opInfo tagCopy: localLiteOp_tags
+  tags{
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listColumns
+    <params>      = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

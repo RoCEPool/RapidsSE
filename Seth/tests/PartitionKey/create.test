@@ -16,7 +16,7 @@ success
 -- check columns of partition key
 lspartcol createT1;
 rows:
-  ('key')
+  ('key','INTEGER',19,0,false,true)
 
 -- drop the table
 drop table createT1;
@@ -84,7 +84,8 @@ success
 
 -- check existence of partition key
 lspartcol createT1;
-rows: ('key')
+rows:
+  ('key','INTEGER',19,0,false,true)
 
 -- drop the table
 drop table createT1;
@@ -98,7 +99,8 @@ success
 
 -- check existence of partition key
 lspartcol createT1;
-rows: ('name')
+rows:
+  ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
 drop table createT1;
@@ -113,8 +115,8 @@ success
 -- check existence of partition key
 lspartcol createT1;
 rows:
- ('key')
- ('name')
+ ('key','INTEGER',19,0,false,true)
+ ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
 drop table createT1;
@@ -129,8 +131,8 @@ success
 -- check existence of partition key
 lspartcol createT1;
 rows:
-  ('key')
-  ('name')
+  ('key','INTEGER',19,0,false,true)
+  ('name','VARCHAR',32,0,false,true)
 
 -- drop the table
 drop table createT1;

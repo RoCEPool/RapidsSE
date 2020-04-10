@@ -1264,7 +1264,8 @@ public:
   void vShellExecute(void);
 
   // slots
-  void vSlotsColumnCount(void);
+  void vSlotsColumnFetch(void);
+  void vSlotsColumnCountFetch(void);
   void vSlotsColumnName(void);
   void vSlotsCreateStreamDef(void);
   void vSlotsSubDic(void);
@@ -1347,6 +1348,7 @@ public:
   void vTableRemoveIndex(void);
   void vTableScan(void);
   void vTableSet(void);
+  void vTableSlotsFetch(void);
   void vTableSlots(void);
   void vTableSpace(void);
   void vTableStreamDefFetch(void);
