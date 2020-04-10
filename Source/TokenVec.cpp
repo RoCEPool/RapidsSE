@@ -110,6 +110,21 @@ i8 TokenVec::iCountTokens(void)
 /*----------------------------------------------------------------------------*/
 /* copy given token vector to this token vector                               */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_TOKEN_ARY
+void TokenVec::vCopyVector(TokenVec* pTokenVecSrc)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < pTokenVecSrc->nTokens(); i_Token++) {
+    
+    Token* pToken_src = pTokenVecSrc->pGet(i_Token);
+    Token* pToken_dst = pGet(i_Token);
+    
+    pToken_dst->vCopy(pToken_src);
+  }
+}
+/*----------------------------------------------------------------------------*/
+#else
 void TokenVec::vCopyVector(TokenVec* pTokenVec)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -122,6 +137,7 @@ void TokenVec::vCopyVector(TokenVec* pTokenVec)
     vAdd(pNewToken);
   }
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* return current token                                                       */
@@ -254,6 +270,7 @@ void TokenVec::vIncTokens(void)
 /*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_TOKEN_ARY
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -278,6 +295,33 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
   pTknIns->vCopy(szTerm);
   pTknIns->vToken(eToken);
 }
+#else
+/*----------------------------------------------------------------------------*/
+void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+      
+  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
+    
+    Token* pTknDst = pGet(i_Token + 1,true);
+    if (! pTknDst) {
+      vSet(i_Token + 1,new Token);
+      pTknDst = pGet(i_Token + 1,true);
+    }
+    
+    Token* pTknSrc = pGet(i_Token);
+    
+    pTknDst->vCopy(pTknSrc);
+  }
+  
+  vIncItems();
+  
+  Token* pTknIns = pGet(i_Tkn);
+  
+  pTknIns->vCopy(szTerm);
+  pTknIns->vToken(eToken);
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* return next token                                                          */
