@@ -100,7 +100,6 @@
         "Job_Service.sen"         include
         "Job_SizeIndex.sen"       include
         "Job_SizeTable.sen"       include
-        "job_StartNode.sen"       include
         "job_Status.sen"          include
         "job_SubFetch.sen"        include
         "job_SubLoader.sen"       include
@@ -109,7 +108,6 @@
         "job_TableSizes.sen"      include
 
         "job_Universal.sen"       include
-        "job_UseSchema.sen"       include
 
         "job_VerifyIndex.sen"     include
         "job_VerifyTable.sen"     include
