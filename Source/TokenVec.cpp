@@ -477,6 +477,8 @@ void TokenVec::vStripAmpersand(void)
 /*----------------------------------------------------------------------------*/
 void TokenVec::vStripSingleQuotes(void)
 {
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
   for (i8 i_Token = 0; i_Token < nTokens(); i_Token++) {
     Token* pToken = pGet(i_Token);
     pToken->vStripSingleQuotes();
@@ -571,7 +573,6 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
     StrLib::vConcat(szDstStr->azChar(),";");
   }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

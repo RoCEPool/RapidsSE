@@ -83,65 +83,65 @@ void TokenStream::vPushFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
+void TokenStream::vReadCommand(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  vReadTillEOF(pTknVec_arg);
+  vReadTillEOF(pTknVec);
     
   // if empty line just return
-  if ( ! pTknVec_arg->nTokens() ||
-       ! pTknVec_arg->pGet(0)->bHasText() )
+  if ( ! pTknVec->nTokens() ||
+       ! pTknVec->pGet(0)->bHasText() )
     return;
   
   // if its a command file just return
-  if ( ! pTknVec_arg->pGet(0)->bSame("/"_Stz) &&
-     File::bExists(pTknVec_arg->pGet(0)->szTerm()))
+  if ( ! pTknVec->pGet(0)->bSame("/"_Stz) &&
+     File::bExists(pTknVec->pGet(0)->szTerm()))
     return;
   
   // read more till ;
-  vReadTillSemicolon(pTknVec_arg);
+  vReadTillSemicolon(pTknVec);
   
   // stip off ;
-  pTknVec_arg->vStripSemicolon();
+  pTknVec->vStripSemicolon();
   
   // stip off &
-  pTknVec_arg->vStripAmpersand();
+  pTknVec->vStripAmpersand();
   
   // set no of tokens in token vector
-  pTknVec_arg->vSetTokens();
+  pTknVec->vSetTokens();
 }
 
 /*----------------------------------------------------------------------------*/
 /* read tokens from stream till EOF                                           */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vReadTillEOF(TokenVec* pTknVec_arg)
+void TokenStream::vReadTillEOF(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   while (true) {
     
-    pTknVec_arg->vReset();
+    pTknVec->vReset();
     
-    pTknVec_arg->vSource(m_pTokeniser->szSource());
+    pTknVec->vSource(m_pTokeniser->szSource());
     for (;;) {
       
-      pTknVec_arg->vAdvanceCurr();
-      Token* pToken = pTknVec_arg->pGet(pTknVec_arg->nTokens(),true);
+      pTknVec->vAdvanceCurr();
+      Token* pToken = pTknVec->pGet(pTknVec->nTokens(),true);
             
-//      if (! bNextInputToken(pTknVec_arg,pToken))
+//      if (! bNextInputToken(pTknVec,pToken))
 //        break;
       
-      m_pTokeniser->vNextToken_z(pTknVec_arg,pToken);
+      m_pTokeniser->vNextToken_z(pTknVec,pToken);
       if (TN_EOF == pToken->eToken())
         break;
 
-      pTknVec_arg->vIncTokens();
-      ASSERT(pTknVec_arg->nTokens() < C_MAX_TOKENS);
+      pTknVec->vIncTokens();
+      ASSERT(pTknVec->nTokens() < C_MAX_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (! pTknVec_arg->nTokens() && m_pTokeniser->bEOF()) {
+    if (! pTknVec->nTokens() && m_pTokeniser->bEOF()) {
       bool b = m_pTokeniser->bPopParser();
       ASSERT(b);
       break;
@@ -197,31 +197,17 @@ void TokenStream::vReadTillSemicolon(TokenVec* pTokenVec_arg)
 /*----------------------------------------------------------------------------*/
 /* read next token from stream                                                */
 /*----------------------------------------------------------------------------*/
-bool TokenStream::bReadToken(TokenVec* pTknVec_arg, Token* pTkn)
+bool TokenStream::bReadToken(TokenVec* pTknVec, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vNextToken_z(pTknVec_arg,pTkn);
+  m_pTokeniser->vNextToken_z(pTknVec,pTkn);
   
   eTN eToken = pTkn->eToken();
   
   if (TN_EOF == eToken)
     return false;
 
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for a specific number of tokens                                      */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  if (pTknVec_arg->pGet(nTokens)->bHasText()) {
-    return false;
-  }
-  
   return true;
 }
 
