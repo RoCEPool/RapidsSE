@@ -1040,10 +1040,12 @@ void Tokeniser::vCollectSen(TokenVec* pTokenVec_arg, Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* collect Sen integer                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenInteger(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenInteger(TokenVec* pTokenVec_arg, Token* pToken, char* )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  char* azTermCrs = pToken->azTerm();
+
   i8 iNoDigits = 0;
   char *z = azTermCrs;
   
@@ -1137,9 +1139,11 @@ void Tokeniser::vCollectSenName(TokenVec* pTokenVec_arg, Token* pToken, char* az
 /*----------------------------------------------------------------------------*/
 /* collect Sen string                                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenString(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenString(TokenVec* pTokenVec_arg, Token* pToken, char* )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  char* azTermCrs = pToken->azTerm();
   
   char *z = azTermCrs;
   
@@ -1180,9 +1184,11 @@ void Tokeniser::vCollectSenString(TokenVec* pTokenVec_arg, Token* pToken, char* 
 /*----------------------------------------------------------------------------*/
 /* collect Sen tag                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenTag(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSenTag(TokenVec* pTokenVec_arg, Token* pToken, char* )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  char* azTermCrs = pToken->azTerm();
   
   char *z = azTermCrs;
   
