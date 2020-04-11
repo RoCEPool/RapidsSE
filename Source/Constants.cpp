@@ -618,6 +618,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,     ZK_STARTMARKER);
   /*  0 */ vAddConstant("ZK_STARTEDMARKER"_Stz,   ZK_STARTEDMARKER);
   /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,       ZK_STREAMDEF);
+  /*  0 */ vAddConstant("ZK_STREAMSET"_Stz,       ZK_STREAMSET);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

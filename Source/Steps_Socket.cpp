@@ -457,6 +457,27 @@ void Step::vSocketRecvObject(void)
       return;
     }
       
+    case CN_STREAMSET: {
+      StreamSet* pStreamSet = new StreamSet;
+      
+      MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
+      
+      aBody = aAdd<void*>(pStreamSet,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_STREAMSET] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushPtr(pStreamSet);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
     case CN_MARKER: {
       Marker* pMarker = new Marker();
       

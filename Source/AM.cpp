@@ -206,6 +206,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
+    case CN_STREAMSET: {
+      StreamSet* pStreamSet = _pStreamSet(pOperand);
+      delete pStreamSet;
+      break;
+    }
+      
     default: {
       RASSERT(0);
     }

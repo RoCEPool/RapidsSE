@@ -31,6 +31,7 @@ bool Operands::_bIsValidOperand(eCN eClass)
     case CN_IRWBUFFER:
     case CN_MARKER:
     case CN_STREAMDEF:
+    case CN_STREAMSET:
       return true;
     default:
       return false;

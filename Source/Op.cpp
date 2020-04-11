@@ -1098,7 +1098,8 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           
         case XK_HASHED : {
           DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-          if (pDataBuffer->eClass() == CN_INFOSET)
+          if (pDataBuffer->eClass() == CN_INFOSET ||
+              pDataBuffer->eClass() == CN_STREAMSET)
             i_Ptn = 0;
           else
             i_Ptn = pDataBuffer->iPartitionNo();

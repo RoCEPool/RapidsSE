@@ -25,6 +25,7 @@ enum eZK // operand kind
   /*    */ ZK_STARTMARKER,
   /*    */ ZK_STARTEDMARKER,
   /*    */ ZK_STREAMDEF,
+  /*    */ ZK_STREAMSET,
 
   /*    */ ZK_ENUMS
 };
@@ -51,7 +52,8 @@ static Stz* aZK[]
   /*    */ "ZK_STARTMARKER"_Stz,
   /*    */ "ZK_STARTEDMARKER"_Stz,
   /*    */ "ZK_STREAMDEF"_Stz,
-
+  /*    */ "ZK_STREAMSET"_Stz,
+  
   /*    */ "ENUMS"_Stz
 };
 

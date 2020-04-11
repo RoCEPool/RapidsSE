@@ -332,24 +332,6 @@ void Result::vProcessBufferQueue(void)
       case CN_INFOSET: {
         InfoSet* pInfoSet = _pInfoSet(pOperand);
         ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
- /*
-        // progress ?
-        if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS)) {
-          Row* aRow = pInfoSet->aFirstRow();
-          iTotalUnits = aRow->m_waColVal[0];
-          break;
-        }
-        if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS)) {
-          Row* aRow = pInfoSet->aFirstRow();
-          iProgressUnits += aRow->m_waColVal[0];
-          ASSERT(iTotalUnits != C_UNKNOWN);
-          i8 iPercentFree = AM::pBufferPool()->iFreePercent();
-          i8 iPercentComplete = IntLib::iPercent(iProgressUnits, iTotalUnits);
-          if ( iPercentComplete > 0 && iPercentComplete <= 100 )
-            vTrace("Load Progress: %lld%% (free %lld%%)\n"_Stz,iPercentComplete,iPercentFree);
-          break;
-        }
-  */
         m_xJobResponse.m_ixRowsProcessed += pInfoSet->nInfoRows();
         pInfoSet->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
@@ -454,6 +436,15 @@ void Result::vProcessBufferQueue(void)
             vTrace("%s\n"_Stz, m_sMetadata.szStz());
           }
         }
+        break;
+      }
+        
+      case CN_STREAMSET: {
+        StreamSet* pStreamSet = _pStreamSet(pOperand);
+        ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
+        m_xJobResponse.m_ixRowsProcessed += pStreamSet->nInfoRows();
+        pStreamSet->vPrintRows(pStreamDef);
+        AM::vDeleteOperand(pOperand);
         break;
       }
         
