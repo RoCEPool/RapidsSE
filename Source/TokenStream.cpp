@@ -100,7 +100,7 @@ void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
     return;
   
   // collect till ;
-  m_pTokeniser->vCollectStatement(pTknVec_arg);
+  m_pTokeniser->vReadTillSemicolon(pTknVec_arg);
   
   // stip off ;
   pTknVec_arg->vStripSemicolon();

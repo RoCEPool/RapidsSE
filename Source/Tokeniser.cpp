@@ -292,7 +292,7 @@ Characterise* Tokeniser::pCharser(void)
 /*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
+void Tokeniser::vReadTillSemicolon(TokenVec* pTokenVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
