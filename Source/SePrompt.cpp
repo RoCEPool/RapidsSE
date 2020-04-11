@@ -539,6 +539,13 @@ bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  TokenVec* pTknVec = this->pTokenVec();
+
+  Stz* szPath = pTknVec->pGet(0)->szTerm();
+
+  if (! File::bExists(szPath))
+    return false;
+  
   TokenStream* pTokenStream = this->pTokenStream();
   
   bool bExecuteFile = pTokenStream->bExecuteFile(m_pSession->pTokenVec());

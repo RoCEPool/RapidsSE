@@ -59,11 +59,8 @@ TokenStream::~TokenStream(void) noexcept(false)
 bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  if (! bTestFile(pTknVec_arg->pGet(0)->szTerm()))
-    return false;
-  
-  bool b = bRunFile(pTknVec_arg);
+    
+  bool b = bRunFile(pTknVec_arg->pGet(0)->szTerm());
   //ASSERT(b);
   
   return true;
@@ -190,15 +187,11 @@ bool TokenStream::bReadToken(TokenVec* pTknVec_arg, Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* set file to run                                                            */
 /*----------------------------------------------------------------------------*/
-bool TokenStream::bRunFile(TokenVec* pTknVec_arg)
+bool TokenStream::bRunFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-//  if ( ! bTokenCheck(1) )
-//    if (! pTkn(1)->bSame(";"_Stz))
-//      return false;
-  
-  vPushFile(pTknVec_arg->pGet(0)->szTerm());
+    
+  vPushFile(szPath);
   m_pTokeniser->vLineMode(true);
   
   return true;
