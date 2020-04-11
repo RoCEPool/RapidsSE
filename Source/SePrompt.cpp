@@ -956,8 +956,7 @@ bool SePrompt::bReadNextCommand(void)
   
   TokenVec*     pTknVec      = pTokenVec();
   TokenStream*  pTokenStream = this->pTokenStream();
-  Tokeniser*    pTokeniser   = pTokenStream->pTokeniser();
-  Characterise* pCharser     = pTokeniser->pCharser();
+
 
   if (gxArgs.m_bInitial) {
     gxArgs.m_bInitial = false;

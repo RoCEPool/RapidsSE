@@ -31,7 +31,6 @@ namespace LexicalAnalysis
     void vReadTillEOF(TokenVec* pTknVec);
     bool bReadToken(TokenVec* pTknVec_arg, Token* pTkn);
     bool bTokenCheck(TokenVec* pTknVec, i8 nTokens);
-    Tokeniser* pTokeniser(void);
     void vUseStdin(void);
     
     Footer* aFooter(void);

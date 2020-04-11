@@ -184,16 +184,6 @@ bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tokeniser                                                              */
-/*----------------------------------------------------------------------------*/
-Tokeniser* TokenStream::pTokeniser(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  return m_pTokeniser;
-}
-
-/*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vUseStdin(void)
