@@ -441,7 +441,7 @@ void Tokeniser::vReadToken_vec(TokenVec* pTknVec,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  //RASSERT(! pTknVec || pTknVec->pCurrToken() == pToken);
+  RASSERT(! pTknVec || pTknVec->pCurrToken() == pToken);
   
   if (m_bNormal)
     vCollectNormal(pTknVec,pToken);

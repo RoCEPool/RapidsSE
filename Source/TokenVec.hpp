@@ -17,7 +17,7 @@ namespace LexicalAnalysis
    
     s256 m_sSource;  // where did the tokens come from
   
-    i8 m_iCurTkn;
+    i8 m_iCurTkn;    // the current token in the vector
   
     // must be last
     Footer m_xFooter;    

@@ -101,14 +101,14 @@ namespace LexicalAnalysis
     void vStripComment(void);
     
     // Reading
-    void  vRawCharFromInput(AnnChar& rxAnnChar);
-    void  vRawCharFromFile(AnnChar& rxAnnChar);
-    void  vRawCharFromStdin(AnnChar& rxAnnChar);
-    void  vRawCharFromString(AnnChar& rxAnnChar);
-    void  vNextCharFromRawLine(AnnChar& rxAnnChar);
+    void vRawCharFromInput(AnnChar& rxAnnChar);
+    void vRawCharFromFile(AnnChar& rxAnnChar);
+    void vRawCharFromStdin(AnnChar& rxAnnChar);
+    void vRawCharFromString(AnnChar& rxAnnChar);
+    void vNextCharFromRawLine(AnnChar& rxAnnChar);
 
-    void  vReadRawLineFile(void);
-    void  vReadRawLineStdin(void);
+    void vReadRawLineFile(void);
+    void vReadRawLineStdin(void);
     
     Footer* aFooter(void);
   };

@@ -179,12 +179,15 @@ void TokenStream::vReadTillSemicolon(TokenVec* pTknVec)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = pTknVec->pGet(i_Token,true);
+    
     m_pTokeniser->vReadToken_vec(pTknVec,pToken);
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
       break;
+
+    pTknVec->vAdvanceCurr();
   }
   
   // switch back to line mode
