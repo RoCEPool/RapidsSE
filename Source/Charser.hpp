@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Characterise.hpp -- read input as chars, removing line and block comments  */
+/* Charser.hpp -- read input as chars, removing line and block comments       */
 /*============================================================================*/
 #pragma once
 
@@ -7,13 +7,12 @@ namespace LexicalAnalysis
 {
   const char C_END_OF_LINE = '\n';
   
-
-  class Characterise : public Object
+  class Charser : public Object
   {
   private:
     i8      m_iViaMalloc; // is this object in malloc heap (or small heap)?
     i8      m_iDepth;     // depth of this parser
-    Characterise* m_pNext;     // next parser in stack
+    Charser* m_pNext;     // next parser in stack
     
     // source definition
     eIS     m_eSource;   // what source are we parsing? given file or string?
@@ -45,10 +44,10 @@ namespace LexicalAnalysis
     void* operator new(size_t, i8 iViaMalloc);
     void operator delete(void* pDirAddress);
     
-    Characterise(Characterise* pNext);
-   ~Characterise(void) noexcept(false);
+    Charser(Charser* pNext);
+   ~Charser(void) noexcept(false);
     
-    static Characterise* _pParser(void* aAddr);
+    static Charser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
     Stz* szSource(void);
@@ -64,9 +63,9 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
     void vUseEnd(void);
 
-    // Characterise Stack
-    Characterise* pNext(void);
-    void    vNext(Characterise* pNext);
+    // Charser Stack
+    Charser* pNext(void);
+    void    vNext(Charser* pNext);
     i8      iDepth(void);
     
     // Processing Functions

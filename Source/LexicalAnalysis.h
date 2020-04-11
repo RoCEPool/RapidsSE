@@ -18,7 +18,7 @@ namespace LexicalAnalysis
 #include "Token.hpp"
 #include "TokenVec.hpp"
 
-#include "Characterise.hpp"
+#include "Charser.hpp"
 #include "Tokeniser.hpp"
 #include "TokenStream.hpp"
 

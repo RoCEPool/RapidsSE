@@ -51,7 +51,7 @@ namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
                           class Job_Operand; class Job_Universal;             }
-namespace LexicalAnalysis { class TokenStream; class Characterise;
+namespace LexicalAnalysis { class TokenStream; class Charser;
                             class Tokeniser; class TokenVec;                  }
 namespace Library       {                                                     }
 namespace Load          {                                                     }

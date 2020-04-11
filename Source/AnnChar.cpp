@@ -452,7 +452,7 @@ bool AnnChar::bIsX(void)
 /*----------------------------------------------------------------------------*/
 void AnnChar::vReset(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   m_cChar  = '\0';
   m_iLine  = C_UNKNOWN;

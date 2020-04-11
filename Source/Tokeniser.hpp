@@ -8,7 +8,7 @@ namespace LexicalAnalysis
   class Tokeniser : public Object
   {
   private:
-    Characterise*  m_pCharser;   // charser
+    Charser*  m_pCharser;   // charser
   
     bool     m_bMalloc;   // malloc or pool heap?
     bool     m_bNormal;   // normal tokens?
@@ -27,16 +27,16 @@ namespace LexicalAnalysis
    ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vReplace(TokenVec* pTokenVec, TokenVec* pFindVec, TokenVec* pWithVec);
-    static TokenVec* pSubVec(TokenVec* pTokenVec, i8 i_From, i8 i_To);
-    static TokenVec* pSubVec(TokenVec* pTokenVec, Stz* szStart, Stz* szEnd);
+    static void vReplace(TokenVec* pTknVec, TokenVec* pFindVec, TokenVec* pWithVec);
+    static TokenVec* pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To);
+    static TokenVec* pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
     static TokenVec* pTokenise(Stz* szString);
-    static void vTokenise(TokenVec* pTokenVec, Stz* szString);
-    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec);
-    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, i8 i_From, i8 i_To);
-    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, Stz* sDelimiter, i8 i_From, i8 i_To);
+    static void vTokenise(TokenVec* pTknVec, Stz* szString);
+    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec);
+    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 i_To);
+    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter, i8 i_From, i8 i_To);
 
-    Characterise* pCharser(void);
+    Charser* pCharser(void);
     i8   iDepth(void);
     void vDump(void);
     bool bEOF(void);
@@ -47,7 +47,7 @@ namespace LexicalAnalysis
     bool bPopParser(void);
     void vPushParser(void);
     void vReadToken_nil(void);
-    void vReadToken_vec(TokenVec* pTokenVec, Token* pToken);
+    void vReadToken_vec(TokenVec* pTknVec, Token* pToken);
     Stz* szSource(void);
     bool bStdin(void);
     eTN  eToken(void);
@@ -58,17 +58,17 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:    
-    void vCollectNormal(TokenVec* pTokenVec, Token* pToken);
-    void vCollectNormalInteger(TokenVec* pTokenVec, Token* pToken);
-    void vCollectNormalName(TokenVec* pTokenVec, Token* pToken);
-    void vCollectNormalOther(TokenVec* pTokenVec, Token* pToken);
-    void vCollectNormalString(TokenVec* pTokenVec, Token* pToken);
+    void vCollectNormal(TokenVec* pTknVec, Token* pToken);
+    void vCollectNormalInteger(TokenVec* pTknVec, Token* pToken);
+    void vCollectNormalName(TokenVec* pTknVec, Token* pToken);
+    void vCollectNormalOther(TokenVec* pTknVec, Token* pToken);
+    void vCollectNormalString(TokenVec* pTknVec, Token* pToken);
     
-    void vCollectSen(TokenVec* pTokenVec, Token* pToken);
-    void vCollectSenInteger(TokenVec* pTokenVec, Token* pToken);
-    void vCollectSenName(TokenVec* pTokenVec, Token* pToken);
-    void vCollectSenString(TokenVec* pTokenVec, Token* pToken);
-    void vCollectSenTag(TokenVec* pTokenVec, Token* pToken);
+    void vCollectSen(TokenVec* pTknVec, Token* pToken);
+    void vCollectSenInteger(TokenVec* pTknVec, Token* pToken);
+    void vCollectSenName(TokenVec* pTknVec, Token* pToken);
+    void vCollectSenString(TokenVec* pTknVec, Token* pToken);
+    void vCollectSenTag(TokenVec* pTknVec, Token* pToken);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
@@ -89,7 +89,7 @@ namespace LexicalAnalysis
     void vParserGetAnnCharStripped(void);
     void vParserUngetAnnCharStripped(void);
   
-    void vTokenCollectBegin(TokenVec* pTokenVec, Token* pToken);
+    void vTokenCollectBegin(TokenVec* pTknVec, Token* pToken);
     void vTokenCollectEnd(void);
 
     bool bEndInput(void);

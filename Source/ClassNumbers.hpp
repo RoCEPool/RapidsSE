@@ -39,7 +39,7 @@ enum eCN : u2 // Class Number
   /*  17 0x011    36880B Heap:M */ CN_CALCULATOR,
   /*  19 0x013       40B Heap:I */ CN_CARRYOVER,
   /*  20 0x014       16B Heap:I */ CN_CATALOG,
-  /* 166 0x0A6    48840B Heap:M */ CN_CHARACTERISE,
+  /* 166 0x0A6    48840B Heap:M */ CN_CHARSER,
   /*  21 0x015      136B Heap:M */ CN_CLAUSE_FROM,
   /*  22 0x016      136B Heap:M */ CN_CLAUSE_GROUPBY,
   /*  23 0x017      136B Heap:M */ CN_CLAUSE_JOIN,
@@ -369,7 +369,7 @@ static Stz* aCN[]
   /*  17 0x011 */ "CALCULATOR"_Stz,          // CN_CALCULATOR
   /*  19 0x013 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  20 0x014 */ "CATALOG"_Stz,             // CN_CATALOG
-  /* 166 0x0A6 */ "CHARACTERISE"_Stz,        // CN_CHARACTERISE
+  /* 166 0x0A6 */ "Charser"_Stz,        // CN_CHARSER
   /*  21 0x015 */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
   /*  22 0x016 */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
   /*  23 0x017 */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN

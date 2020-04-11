@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Characterise.cpp -- read input as chars, removing line and block comments  */
+/* Charser.cpp -- read input as chars, removing line and block comments       */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -10,11 +10,11 @@ extern Args gxArgs;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Characterise* Characterise::_pParser(void* aAddr)
+Charser* Charser::_pParser(void* aAddr)
 {
-  Characterise* pParser = reinterpret_cast<Characterise*>(aAddr);
+  Charser* pParser = reinterpret_cast<Charser*>(aAddr);
   
-  RASSERT_TYPE(pParser,CN_CHARACTERISE);
+  RASSERT_TYPE(pParser,CN_CHARSER);
   
   return pParser;
 }
@@ -22,14 +22,14 @@ Characterise* Characterise::_pParser(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Characterise::operator new(size_t, i8 iViaMalloc)
+void* Charser::operator new(size_t, i8 iViaMalloc)
 {
-  Characterise* pParser;
+  Charser* pParser;
   
   if (iViaMalloc)
-    pParser = reinterpret_cast<Characterise*>(MemLib::aMallocBlock(sizeof(Characterise)));
+    pParser = reinterpret_cast<Charser*>(MemLib::aMallocBlock(sizeof(Charser)));
   else
-    pParser = reinterpret_cast<Characterise*>(HeapMem::pAllocate(CN_CHARACTERISE));
+    pParser = reinterpret_cast<Charser*>(HeapMem::pAllocate(CN_CHARSER));
   
   pParser->m_iViaMalloc = iViaMalloc;
   
@@ -39,12 +39,12 @@ void* Characterise::operator new(size_t, i8 iViaMalloc)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Characterise::operator delete(void* pParserAddress)
+void Charser::operator delete(void* pParserAddress)
 {
-  Characterise* pParser = reinterpret_cast<Characterise*>(pParserAddress);
+  Charser* pParser = reinterpret_cast<Charser*>(pParserAddress);
   
   if (pParser->m_iViaMalloc)
-    MemLib::vFreeBlock(pParser,sizeof(Characterise));
+    MemLib::vFreeBlock(pParser,sizeof(Charser));
   else
     HeapMem::vFree(pParser);
 }
@@ -52,11 +52,11 @@ void Characterise::operator delete(void* pParserAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Characterise::Characterise(Characterise* pNext)
-: Object(CN_CHARACTERISE)
+Charser::Charser(Charser* pNext)
+: Object(CN_CHARSER)
 , m_oRawFile(nullptr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   //m_bMalloc set in new
   m_pNext   = pNext;
@@ -65,17 +65,17 @@ Characterise::Characterise(Characterise* pNext)
   
   vResetParser();
   
-  _checkInitialised_(CN_CHARACTERISE);
+  _checkInitialised_(CN_CHARSER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
 };
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Characterise::~Characterise(void) noexcept(false)
+Charser::~Charser(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if (m_oRawFile.bIsOpen())
     m_oRawFile.vClose();
@@ -84,9 +84,9 @@ Characterise::~Characterise(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump parser                                                                */
 /*----------------------------------------------------------------------------*/
-void Characterise::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Characterise* pParser = _pParser(pObject);
+  Charser* pParser = _pParser(pObject);
   
   vTrace("%s depth %lld next %p\n"_Stz,
          pParser->m_iViaMalloc ? "malloc"_Stz : "pool"_Stz,
@@ -97,9 +97,9 @@ void Characterise::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get source                                                                 */
 /*----------------------------------------------------------------------------*/
-Stz* Characterise::szSource(void)
+Stz* Charser::szSource(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_sSource;
 }
@@ -107,9 +107,9 @@ Stz* Characterise::szSource(void)
 /*----------------------------------------------------------------------------*/
 /* get m_iLineRaw                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Characterise::iLineRaw(void)
+i8 Charser::iLineRaw(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_iLineRaw;
 }
@@ -117,9 +117,9 @@ i8 Characterise::iLineRaw(void)
 /*----------------------------------------------------------------------------*/
 /* get m_iColRaw                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Characterise::iLineCol(void)
+i8 Charser::iLineCol(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_iColRaw;
 }
@@ -132,9 +132,9 @@ i8 Characterise::iLineCol(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void Characterise::vLineMode(bool bLineMode)
+void Charser::vLineMode(bool bLineMode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   m_bLineMode = bLineMode;
 }
@@ -146,9 +146,9 @@ void Characterise::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* use given file for parsing                                                 */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bUseFile(Stz* szPath)
+bool Charser::bUseFile(Stz* szPath)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vResetParser();
   
@@ -165,9 +165,9 @@ bool Characterise::bUseFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* use stdin for parsing                                                      */
 /*----------------------------------------------------------------------------*/
-void Characterise::vUseStdin(void)
+void Charser::vUseStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vResetParser();
   
@@ -181,9 +181,9 @@ void Characterise::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use given string for parsing                                               */
 /*----------------------------------------------------------------------------*/
-void Characterise::vUseString(Stz* szString)
+void Charser::vUseString(Stz* szString)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vResetParser();
   
@@ -197,9 +197,9 @@ m_sSource = "string"_Stz;
 /*----------------------------------------------------------------------------*/
 /* end usage of source                                                        */
 /*----------------------------------------------------------------------------*/
-void Characterise::vUseEnd(void)
+void Charser::vUseEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   switch (m_eSource) {
       
@@ -227,9 +227,9 @@ void Characterise::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* get next parser in stack                                                   */
 /*----------------------------------------------------------------------------*/
-Characterise* Characterise::pNext(void)
+Charser* Charser::pNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_pNext;
 }
@@ -237,9 +237,9 @@ Characterise* Characterise::pNext(void)
 /*----------------------------------------------------------------------------*/
 /* set next parser in stack                                                   */
 /*----------------------------------------------------------------------------*/
-void Characterise::vNext(Characterise* pNext)
+void Charser::vNext(Charser* pNext)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   m_pNext = pNext;
 }
@@ -247,9 +247,9 @@ void Characterise::vNext(Characterise* pNext)
 /*----------------------------------------------------------------------------*/
 /* depth of this parser                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Characterise::iDepth(void)
+i8 Charser::iDepth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_iDepth;
 }
@@ -261,9 +261,9 @@ i8 Characterise::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* get next parsed char                                                       */
 /*----------------------------------------------------------------------------*/
-void Characterise::vGet(AnnChar& rxAnnChar, bool bStripComments)
+void Charser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
@@ -281,9 +281,9 @@ void Characterise::vGet(AnnChar& rxAnnChar, bool bStripComments)
 /*----------------------------------------------------------------------------*/
 /* put char back into parsing stream                                          */
 /*----------------------------------------------------------------------------*/
-void Characterise::vUnget(AnnChar& rxAnnChar)
+void Charser::vUnget(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vRewindRegs(rxAnnChar);
 }
@@ -291,9 +291,9 @@ void Characterise::vUnget(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* have we seen an EOF?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bEOF(void)
+bool Charser::bEOF(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_bEOF;
 }
@@ -301,9 +301,9 @@ bool Characterise::bEOF(void)
 /*----------------------------------------------------------------------------*/
 /* linemode?                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bLineMode(void)
+bool Charser::bLineMode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_bLineMode;
 }
@@ -311,9 +311,9 @@ bool Characterise::bLineMode(void)
 /*----------------------------------------------------------------------------*/
 /* stdin?                                                                     */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bStdin(void)
+bool Charser::bStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if (IS_STDIN != m_eSource)
     return false;
@@ -330,9 +330,9 @@ bool Characterise::bStdin(void)
 /*----------------------------------------------------------------------------*/
 /* reset this parser                                                          */
 /*----------------------------------------------------------------------------*/
-void Characterise::vResetParser(void)
+void Charser::vResetParser(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   //ASSERT(! m_oRawFile.bIsOpen());
   
@@ -362,9 +362,9 @@ void Characterise::vResetParser(void)
 /*----------------------------------------------------------------------------*/
 /* clear character registers                                                  */
 /*----------------------------------------------------------------------------*/
-void Characterise::vClearRegs(void)
+void Charser::vClearRegs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   m_nLoaded = 0;
   m_xAnnOne.vReset();
@@ -374,9 +374,9 @@ void Characterise::vClearRegs(void)
 /*----------------------------------------------------------------------------*/
 /* consume the character in the first register                                */
 /*----------------------------------------------------------------------------*/
-void Characterise::vConsumeFirst(AnnChar& rxAnnChar)
+void Charser::vConsumeFirst(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_nLoaded);
 
@@ -391,9 +391,9 @@ void Characterise::vConsumeFirst(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* discard the character in the first register                                */
 /*----------------------------------------------------------------------------*/
-void Characterise::vDiscardFirst(void)
+void Charser::vDiscardFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_nLoaded);
   
@@ -407,9 +407,9 @@ void Characterise::vDiscardFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load both the first and second registers from raw input stream             */
 /*----------------------------------------------------------------------------*/
-void Characterise::vLoadBoth(void)
+void Charser::vLoadBoth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(! m_nLoaded);
   
@@ -429,9 +429,9 @@ void Characterise::vLoadBoth(void)
 /*----------------------------------------------------------------------------*/
 /* load first register from input stream                                      */
 /*----------------------------------------------------------------------------*/
-void Characterise::vLoadFirst(void)
+void Charser::vLoadFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(! m_nLoaded);
   
@@ -444,9 +444,9 @@ void Characterise::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load first (and maybe) second register from input stream, strip comments   */
 /*----------------------------------------------------------------------------*/
-void Characterise::vLoadRegs(bool bStripComments)
+void Charser::vLoadRegs(bool bStripComments)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(0 == m_nLoaded);
   
@@ -467,9 +467,9 @@ void Characterise::vLoadRegs(bool bStripComments)
 /*----------------------------------------------------------------------------*/
 /* load second register from input stream                                     */
 /*----------------------------------------------------------------------------*/
-void Characterise::vLoadSecond(void)
+void Charser::vLoadSecond(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xAnnOne.m_cChar);
@@ -483,9 +483,9 @@ void Characterise::vLoadSecond(void)
 /*----------------------------------------------------------------------------*/
 /* rewind registers by one character                                          */
 /*----------------------------------------------------------------------------*/
-void Characterise::vRewindRegs(AnnChar& rxAnnChar)
+void Charser::vRewindRegs(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_nLoaded < 2);
   ASSERT('\0' == m_xAnnTwo.m_cChar);
@@ -499,9 +499,9 @@ void Characterise::vRewindRegs(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* strip a possible line or block comment                                     */
 /*----------------------------------------------------------------------------*/
-void Characterise::vStripComment(void)
+void Charser::vStripComment(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   AnnChar xRewAnnChar;
   
@@ -537,9 +537,9 @@ void Characterise::vStripComment(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of block comment                                              */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bBlockCommentEnd(void)
+bool Charser::bBlockCommentEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if ('*' == m_xAnnOne.m_cChar && '/' == m_xAnnTwo.m_cChar)
     return true;
@@ -550,9 +550,9 @@ bool Characterise::bBlockCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 /* skip a block comment                                                       */
 /*----------------------------------------------------------------------------*/
-void Characterise::vBlockCommentSkip(void)
+void Charser::vBlockCommentSkip(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vClearRegs();
   
@@ -578,9 +578,9 @@ void Characterise::vBlockCommentSkip(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of block comment                                            */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bBlockCommentStart(void)
+bool Charser::bBlockCommentStart(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if ('/' == m_xAnnOne.m_cChar && '*' == m_xAnnTwo.m_cChar)
     return true;
@@ -591,9 +591,9 @@ bool Characterise::bBlockCommentStart(void)
 /*----------------------------------------------------------------------------*/
 /* test for possible start of comment                                         */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bPossibleComment(void)
+bool Charser::bPossibleComment(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_nLoaded);
   
@@ -610,9 +610,9 @@ bool Characterise::bPossibleComment(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of comment                                                  */
 /*----------------------------------------------------------------------------*/
-eCS Characterise::eCommentStyle(void)
+eCS Charser::eCommentStyle(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if (bLineCommentStart())
     return CS_LINE;
@@ -626,9 +626,9 @@ eCS Characterise::eCommentStyle(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of line comment                                               */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bLineCommentEnd(void)
+bool Charser::bLineCommentEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if ('\n' == m_xAnnOne.m_cChar)
     return true;
@@ -639,9 +639,9 @@ bool Characterise::bLineCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 /* skip a line comment                                                        */
 /*----------------------------------------------------------------------------*/
-void Characterise::vLineCommentSkip(void)
+void Charser::vLineCommentSkip(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vClearRegs();
   
@@ -658,9 +658,9 @@ void Characterise::vLineCommentSkip(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of line comment                                             */
 /*----------------------------------------------------------------------------*/
-bool Characterise::bLineCommentStart(void)
+bool Charser::bLineCommentStart(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if ('/' == m_xAnnOne.m_cChar && '/' == m_xAnnTwo.m_cChar)
     return true;
@@ -676,9 +676,9 @@ bool Characterise::bLineCommentStart(void)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from input source                                   */
 /*----------------------------------------------------------------------------*/
-void Characterise::vRawCharFromInput(AnnChar& rxAnnChar)
+void Charser::vRawCharFromInput(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   switch (m_eSource) {
       
@@ -709,9 +709,9 @@ void Characterise::vRawCharFromInput(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from line-buffered source file                      */
 /*----------------------------------------------------------------------------*/
-void Characterise::vRawCharFromFile(AnnChar& rxAnnChar)
+void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vNextCharFromRawLine(rxAnnChar);
   
@@ -748,9 +748,9 @@ void Characterise::vRawCharFromFile(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from line-buffered stdin                            */
 /*----------------------------------------------------------------------------*/
-void Characterise::vRawCharFromStdin(AnnChar& rxAnnChar)
+void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(! m_bEOF);
     
@@ -790,9 +790,9 @@ void Characterise::vRawCharFromStdin(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from buffered string                                */
 /*----------------------------------------------------------------------------*/
-void Characterise::vRawCharFromString(AnnChar& rxAnnChar)
+void Charser::vRawCharFromString(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_bEOF);
     
@@ -808,9 +808,9 @@ void Characterise::vRawCharFromString(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character                                                     */
 /*----------------------------------------------------------------------------*/
-void Characterise::vNextCharFromRawLine(AnnChar& rxAnnChar)
+void Charser::vNextCharFromRawLine(AnnChar& rxAnnChar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   rxAnnChar.m_cChar = *m_acRawChar++;
   
@@ -821,9 +821,9 @@ void Characterise::vNextCharFromRawLine(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* read raw line from input file                                              */
 /*----------------------------------------------------------------------------*/
-void Characterise::vReadRawLineFile(void)
+void Charser::vReadRawLineFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(! m_bEOF);
 
@@ -857,9 +857,9 @@ void Characterise::vReadRawLineFile(void)
 /*----------------------------------------------------------------------------*/
 /* read raw line from stdin                                                   */
 /*----------------------------------------------------------------------------*/
-void Characterise::vReadRawLineStdin(void)
+void Charser::vReadRawLineStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(! m_bEOF);
   
@@ -918,9 +918,9 @@ void Characterise::vReadRawLineStdin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Characterise::aFooter(void)
+Footer* Charser::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARACTERISE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER);
   
   return &m_xFooter;
 }

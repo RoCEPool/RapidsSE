@@ -314,7 +314,7 @@ void Constants::vAddConstantsCpp(void)
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
   /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
 
-  /* 40 */ vAddConstant("CN_CHARACTERISE"_Stz,       CN_CHARACTERISE);
+  /* 40 */ vAddConstant("CN_CHARSER"_Stz,      CN_CHARSER);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
 
@@ -650,7 +650,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
   /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
   
-  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Characterise));
+  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Charser));
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));

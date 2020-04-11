@@ -155,22 +155,22 @@ void TokenStream::vReadTillEOF(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vReadTillSemicolon(TokenVec* pTokenVec_arg)
+void TokenStream::vReadTillSemicolon(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(pTokenVec_arg->pGet(0)->bHasText());
+  ASSERT(pTknVec->pGet(0)->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = pTokenVec_arg->iFindToken(";"_Stz);
+  i8 i_Token = pTknVec->iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
     return;
   }
   
-  i_Token = pTokenVec_arg->iCountTokens();
+  i_Token = pTknVec->iCountTokens();
   
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
@@ -178,8 +178,8 @@ void TokenStream::vReadTillSemicolon(TokenVec* pTokenVec_arg)
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
-    Token* pToken = pTokenVec_arg->pGet(i_Token,true);
-    m_pTokeniser->vReadToken_vec(pTokenVec_arg,pToken);
+    Token* pToken = pTknVec->pGet(i_Token,true);
+    m_pTokeniser->vReadToken_vec(pTknVec,pToken);
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal

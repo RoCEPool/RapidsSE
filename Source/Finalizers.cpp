@@ -36,7 +36,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CALCULATOR
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
-  /* 78 */ &Finalize::vUndefined,         // CN_CHARACTERISE
+  /* 78 */ &Finalize::vUndefined,         // CN_CHARSER
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_FROM
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_GROUPBY
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_JOIN

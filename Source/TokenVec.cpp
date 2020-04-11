@@ -90,12 +90,12 @@ void TokenVec::vAppendToken(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 /* append given token vector to this token vector                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAppendVector(TokenVec* pTokenVec)
+void TokenVec::vAppendVector(TokenVec* pTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
-    Token* pToken = pTokenVec->pGet(i_Token);
+  for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
     vAppendToken(pToken->szTerm());
   }
 }
@@ -135,13 +135,13 @@ i8 TokenVec::iCountTokens(void)
 /* copy given token vector to this token vector                               */
 /*----------------------------------------------------------------------------*/
 #ifdef __WITH_TOKEN_ARY
-void TokenVec::vCopyVector(TokenVec* pTokenVecSrc)
+void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < pTokenVecSrc->nTokens(); i_Token++) {
+  for (i8 i_Token = 0; i_Token < pTknVecSrc->nTokens(); i_Token++) {
     
-    Token* pToken_src = pTokenVecSrc->pGet(i_Token);
+    Token* pToken_src = pTknVecSrc->pGet(i_Token);
     Token* pToken_dst = pGet(i_Token);
     
     pToken_dst->vCopy(pToken_src);
@@ -149,12 +149,12 @@ void TokenVec::vCopyVector(TokenVec* pTokenVecSrc)
 }
 /*----------------------------------------------------------------------------*/
 #else
-void TokenVec::vCopyVector(TokenVec* pTokenVec)
+void TokenVec::vCopyVector(TokenVec* pTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
-    Token* pToken = pTokenVec->pGet(i_Token);
+  for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
 
     Token* pNewToken = new Token(pToken);
     

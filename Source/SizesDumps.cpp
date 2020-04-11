@@ -41,7 +41,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CARRYOVER
   /* */ &Dump::vDummy,           // CN_CATALOG
   /* */ &Dump::vDummy,           // CN_CATALOG
-  /* */ &Characterise::vDump,          // CN_CHARACTERISE
+  /* */ &Charser::vDump,          // CN_CHARSER
   /* */ &Dump::vDummy,           // CN_CLAUSE_FROM
   /* */ &Dump::vDummy,           // CN_CLAUSE_GROUPBY
   /* */ &Dump::vDummy,           // CN_CLAUSE_JOIN
@@ -371,7 +371,7 @@ i8 giClassSize[]
   /* */ sizeof(Calculator),         // CN_CALCULATOR
   /* */ sizeof(CarryOver),          // CN_CARRYOVER
   /* */ sizeof(Catalog),            // CN_CATALOG
-  /* */ sizeof(Characterise),             // CN_CHARACTERISE
+  /* */ sizeof(Charser),             // CN_CHARSER
   /* */ sizeof(Clause_From),        // CN_CLAUSE_FROM
   /* */ sizeof(Clause_GroupBy),     // CN_CLAUSE_GROUPBY
   /* */ sizeof(Clause_Join),        // CN_CLAUSE_JOIN
@@ -702,7 +702,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CALCULATOR
   /* */ HT_INVALID,           // CN_CARRYOVER
   /* */ HT_INVALID,           // CN_CATALOG
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_CHARACTERISE
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_CHARSER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_FROM
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_GROUPBY
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_JOIN
