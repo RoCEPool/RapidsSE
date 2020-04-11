@@ -659,8 +659,9 @@ void Tokeniser::vCollectNormalInteger(TokenVec* pTokenVec_arg,Token* pToken, cha
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  char *z = StrLib::zNullTerminator(pToken->azTerm());
+  
   i8 iNoDigits = 0;
-  char *z = azTermCrs;
   
   // we have seen a digit
   ASSERT(bStartNormalInteger());
@@ -707,8 +708,8 @@ void Tokeniser::vCollectNormalName(TokenVec* pTokenVec_arg, Token* pToken, char*
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTermCrs;
-  
+  char *z = StrLib::zNullTerminator(pToken->azTerm());
+
   ASSERT(bStartNormalName());
   
   vTokenCollectBegin(pTokenVec_arg,pToken);
@@ -736,8 +737,8 @@ void Tokeniser::vCollectNormalOther(TokenVec* pTokenVec_arg, Token* pToken, char
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTermCrs;
-  
+  char *z = StrLib::zNullTerminator(pToken->azTerm());
+
   ASSERT(bStartNormalOther());
  
   vTokenCollectBegin(pTokenVec_arg,pToken);
@@ -934,8 +935,8 @@ void Tokeniser::vCollectNormalString(TokenVec* pTokenVec_arg, Token* pToken, cha
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTermCrs;
-  
+  char *z = StrLib::zNullTerminator(pToken->azTerm());
+
   ASSERT(bStartSenString());
   
   vTokenCollectBegin(pTokenVec_arg,pToken);
