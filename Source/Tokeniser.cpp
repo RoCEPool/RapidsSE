@@ -461,7 +461,7 @@ void Tokeniser::vNextToken_z(TokenVec* pTokenVec_arg,Token* pToken)
   if (m_bNormal)
     vCollectNormal(pTokenVec_arg,pToken);
   else
-    vNextSen(pTokenVec_arg,pToken);
+    vCollectSen(pTokenVec_arg,pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -581,39 +581,6 @@ void Tokeniser::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* parse next Sen token into given buffer                                     */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNextSen(TokenVec* pTokenVec_arg,Token* pToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  pToken->vReset();
-
-  vCollectSen(pTokenVec_arg,pToken,pToken->azTerm());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // cross check valid SEN tokens
-  switch (pToken->eToken()) {
-      
-    // the expected tokens
-    case TN_EOF:
-    case TN_INTEGER:
-    case TN_NAME:
-    case TN_STRING:
-    case TN_TAG:
-      break;
-      
-    // unexpected tokens
-    case TN_OTHER:
-      NEVER_REACH;
-      
-    default:
-      NEVER_REACH;
-  }
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1003,10 +970,14 @@ void Tokeniser::vCollectNormalString(TokenVec* pTokenVec_arg, Token* pToken, cha
 /*----------------------------------------------------------------------------*/
 /* collect Sen token                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSen(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectSen(TokenVec* pTokenVec_arg, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  char* azTermCrs = pToken->azTerm();
+  
+  pToken->vReset();
+
   vParserGetAnnCharStripped();
   
   vSkipWhitespace();
@@ -1018,29 +989,52 @@ void Tokeniser::vCollectSen(TokenVec* pTokenVec_arg, Token* pToken, char* azTerm
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // collect integer literal?
   if (bStartSenInteger()) {
     vCollectSenInteger(pTokenVec_arg,pToken,azTermCrs);
-    return;
   }
   
   // collect string literal?
-  if (bStartSenString()) {
+  else if (bStartSenString()) {
     vCollectSenString(pTokenVec_arg,pToken,azTermCrs);
-    return;
   }
 
 #ifdef WITH_SEN_TAGS
   // collect sen tag?
-  if (bStartSenTag()) {
+  else if (bStartSenTag()) {
     vCollectSenTag(pTokenVec_arg,pToken,azTermCrs);
-    return;
   }
 #endif
   
   // collect name token
-  vTokenCollectBegin(pTokenVec_arg,pToken);
-  vCollectSenName(pTokenVec_arg,pToken,azTermCrs);
+  else {
+    vTokenCollectBegin(pTokenVec_arg,pToken);
+    vCollectSenName(pTokenVec_arg,pToken,azTermCrs);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // cross check valid SEN tokens
+  switch (pToken->eToken()) {
+      
+    // the expected tokens
+    case TN_EOF:
+    case TN_INTEGER:
+    case TN_NAME:
+    case TN_STRING:
+    case TN_TAG:
+      break;
+      
+    // unexpected tokens
+    case TN_OTHER:
+      NEVER_REACH;
+      
+    default:
+      NEVER_REACH;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

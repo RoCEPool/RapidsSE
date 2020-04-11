@@ -58,16 +58,14 @@ namespace LexicalAnalysis
     void vUseStdin(void);
     void vUseString(Stz* szString);
  
-  private:
-    void vNextSen(TokenVec* pTokenVec, Token* pToken);
-    
+  private:    
     void vCollectNormal(TokenVec* pTokenVec, Token* pToken);
     void vCollectNormalInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectNormalName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectNormalOther(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectNormalString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     
-    void vCollectSen(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectSen(TokenVec* pTokenVec, Token* pToken);
     void vCollectSenInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectSenName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectSenString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
