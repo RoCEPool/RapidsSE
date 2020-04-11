@@ -84,6 +84,18 @@ bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* using stdin ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool TokenStream::bIsStdIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+
+  bool bIsStdIn = m_pTokeniser->bStdin();
+  
+  return bIsStdIn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vPushFile(Stz* aFileName)
@@ -270,18 +282,6 @@ void TokenStream::vUseStdin(void)
   m_pTokeniser->vUseStdin();
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vNormal(true);
-}
-
-/*----------------------------------------------------------------------------*/
-/* using stdin ?                                                              */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bStdIn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-
-  bool bIsStdIn = m_pTokeniser->bStdin();
-  
-  return bIsStdIn;
 }
 
 /*============================================================================*/

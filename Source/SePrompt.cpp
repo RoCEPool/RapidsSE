@@ -1007,7 +1007,7 @@ bool SePrompt::bReadNextCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  if (m_bOneCommand && pTokenStream->bStdIn()) {
+  if (m_bOneCommand && pTokenStream->bIsStdIn()) {
     vDebugPoint();
     return false;
   }
@@ -1257,7 +1257,7 @@ bool SePrompt::bStdIn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   TokenStream* pTokenStream = this->pTokenStream();
-  if (pTokenStream->bStdIn())
+  if (pTokenStream->bIsStdIn())
     return true;
   else
     return false;

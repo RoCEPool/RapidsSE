@@ -27,6 +27,7 @@ namespace LexicalAnalysis
   
     bool bBlankLine(TokenVec* pTknVec);
     bool bExecuteFile(TokenVec* pTknVec);
+    bool bIsStdIn(void);
     void vPushFile(Stz* aPath);
     void vReadCommand(TokenVec* pTknVec);
     void vReadTillEOF(TokenVec* pTknVec);
@@ -37,7 +38,6 @@ namespace LexicalAnalysis
     void vTokenise(Stz* aCommand, TokenVec* pTknVec);
     Tokeniser* pTokeniser(void);
     void vUseStdin(void);
-    bool bStdIn(void);
     
     Footer* aFooter(void);
   };
