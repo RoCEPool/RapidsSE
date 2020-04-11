@@ -34,7 +34,7 @@ namespace LexicalAnalysis
     bool bRunFile(TokenVec* pTknVec);
     bool bTestFile(Stz* aPath);
     bool bTokenCheck(TokenVec* pTknVec,i8 nTokens);
-    void vTokenise(Stz* aCommand, TokenVec* pTknVec);
+    void vTokenise(TokenVec* pTknVec, Stz* aCommand);
     Tokeniser* pTokeniser(void);
     void vUseStdin(void);
     

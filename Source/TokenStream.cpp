@@ -234,7 +234,7 @@ bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* tokenize string                                                            */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
+void TokenStream::vTokenise(TokenVec* pTknVec_arg, Stz* aCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
