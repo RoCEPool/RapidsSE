@@ -96,7 +96,7 @@ void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
   
   // if its a command file just return
   if ( ! pTknVec_arg->pGet(0)->bSame("/"_Stz) &&
-      bTestFile(pTknVec_arg->pGet(0)->szTerm()))
+     File::bExists(pTknVec_arg->pGet(0)->szTerm()))
     return;
   
   // collect till ;
@@ -167,19 +167,6 @@ bool TokenStream::bReadToken(TokenVec* pTknVec_arg, Token* pTkn)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for command file                                                      */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bTestFile(Stz* aFileName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  if (File::bExists(aFileName))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
