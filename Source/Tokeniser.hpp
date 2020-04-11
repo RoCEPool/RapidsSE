@@ -62,7 +62,7 @@ namespace LexicalAnalysis
     void vNextNormal(TokenVec* pTokenVec, Token* pToken);
     void vNextSen(TokenVec* pTokenVec, Token* pToken);
     
-    void vCollectNormal(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectNormal(TokenVec* pTokenVec, Token* pToken);
     void vCollectNormalInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectNormalName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     void vCollectNormalOther(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);

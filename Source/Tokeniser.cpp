@@ -589,31 +589,9 @@ void Tokeniser::vNextNormal(TokenVec* pTokenVec_arg,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  pToken->vReset();
+  vCollectNormal(pTokenVec_arg,pToken);
   
-  vCollectNormal(pTokenVec_arg,pToken,pToken->azTerm());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // cross check valid normal tokens
-  switch (pToken->eToken()) {
-      
-    // the expected tokens
-    case TN_EOF:
-    case TN_INTEGER:
-    case TN_NAME:
-    case TN_STRING:
-    case TN_OTHER:
-      break;
-      
-    // unexpected tokens
-    case TN_TAG:
-      NEVER_REACH;
-      
-    default:
-      NEVER_REACH;
-  }
-}
+ }
 
 /*----------------------------------------------------------------------------*/
 /* parse next Sen token into given buffer                                     */
@@ -656,10 +634,13 @@ void Tokeniser::vNextSen(TokenVec* pTokenVec_arg,Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* collect normal token                                                       */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectNormal(TokenVec* pTokenVec_arg, Token* pToken, char* azTermCrs)
+void Tokeniser::vCollectNormal(TokenVec* pTokenVec_arg, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  char* azTermCrs = pToken->azTerm();
+  pToken->vReset();
+
   vParserGetAnnCharStripped();
   
   vSkipWhitespace();
@@ -671,25 +652,48 @@ void Tokeniser::vCollectNormal(TokenVec* pTokenVec_arg, Token* pToken, char* azT
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // collect integer literal?
   if (bStartNormalInteger()) {
     vCollectNormalInteger(pTokenVec_arg,pToken,azTermCrs);
-    return;
   }
   
   // collect string literal?
-  if (bStartNormalString()) {
+  else if (bStartNormalString()) {
     vCollectNormalString(pTokenVec_arg,pToken,azTermCrs);
-    return;
   }
   
   // collect name token?
-  if (bStartNormalName()) {
+  else if (bStartNormalName()) {
     vCollectNormalName(pTokenVec_arg,pToken,azTermCrs);
-    return;
   }
   
-  vCollectNormalOther(pTokenVec_arg,pToken,azTermCrs);
+  // collect other
+  else {
+    vCollectNormalOther(pTokenVec_arg,pToken,azTermCrs);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+  // cross check valid normal tokens
+  switch (pToken->eToken()) {
+     
+    // the expected tokens
+    case TN_EOF:
+    case TN_INTEGER:
+    case TN_NAME:
+    case TN_STRING:
+    case TN_OTHER:
+      break;
+     
+    // unexpected tokens
+    case TN_TAG:
+      NEVER_REACH;
+     
+    default:
+      NEVER_REACH;
+   }
 }
 
 /*----------------------------------------------------------------------------*/
