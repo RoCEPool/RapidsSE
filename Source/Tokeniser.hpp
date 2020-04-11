@@ -66,10 +66,10 @@ namespace LexicalAnalysis
     void vCollectNormalString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
     
     void vCollectSen(TokenVec* pTokenVec, Token* pToken);
-    void vCollectSenInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
-    void vCollectSenName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
-    void vCollectSenString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
-    void vCollectSenTag(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectSenInteger(TokenVec* pTokenVec, Token* pToken);
+    void vCollectSenName(TokenVec* pTokenVec, Token* pToken);
+    void vCollectSenString(TokenVec* pTokenVec, Token* pToken);
+    void vCollectSenTag(TokenVec* pTokenVec, Token* pToken);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
