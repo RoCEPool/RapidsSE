@@ -1959,7 +1959,7 @@ bool Vortex::bGetNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_bEOF = ! m_pTokenStream->bNextInputToken(nullptr,&m_oCurTkn);
+  m_bEOF = ! m_pTokenStream->bReadToken(nullptr,&m_oCurTkn);
   
   if (m_bTrace) {
     if (m_bEOF)

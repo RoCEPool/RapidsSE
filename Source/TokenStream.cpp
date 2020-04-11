@@ -84,59 +84,6 @@ bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next token from input                                                  */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bNextInputToken(TokenVec* pTknVec_arg, Token* pTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  m_pTokeniser->vNextToken_z(pTknVec_arg,pTkn);
-  
-  eTN eToken = pTkn->eToken();
-  
-  if (TN_EOF == eToken)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command tokens from input                                              */
-/*----------------------------------------------------------------------------*/
-void TokenStream::vNextInputTokens(TokenVec* pTknVec_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  while (true) {
-    
-    pTknVec_arg->vReset();
-    
-    pTknVec_arg->vSource(m_pTokeniser->szSource());
-    for (;;) {
-      
-      pTknVec_arg->vAdvanceCurr();
-      Token* pToken = pTknVec_arg->pGet(pTknVec_arg->nTokens(),true);
-            
-      if (! bNextInputToken(pTknVec_arg,pToken))
-        break;
-      
-      pTknVec_arg->vIncTokens();
-      ASSERT(pTknVec_arg->nTokens() < C_MAX_TOKENS);
-    }
-    
-    // end of file? if so, pop and retry
-    if (! pTknVec_arg->nTokens() && m_pTokeniser->bEOF()) {
-      bool b = m_pTokeniser->bPopParser();
-      ASSERT(b);
-      break;
-    }
-    
-    break;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vPushFile(Stz* aFileName)
@@ -160,7 +107,7 @@ void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  vNextInputTokens(pTknVec_arg);
+  vReadTillEOF(pTknVec_arg);
     
   // if empty line just return
   if ( ! pTknVec_arg->nTokens() ||
@@ -183,6 +130,63 @@ void TokenStream::vReadCommand(TokenVec* pTknVec_arg)
   
   // set no of tokens in token vector
   pTknVec_arg->vSetTokens();
+}
+
+/*----------------------------------------------------------------------------*/
+/* read tokens from stream till EOF                                           */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vReadTillEOF(TokenVec* pTknVec_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  while (true) {
+    
+    pTknVec_arg->vReset();
+    
+    pTknVec_arg->vSource(m_pTokeniser->szSource());
+    for (;;) {
+      
+      pTknVec_arg->vAdvanceCurr();
+      Token* pToken = pTknVec_arg->pGet(pTknVec_arg->nTokens(),true);
+            
+//      if (! bNextInputToken(pTknVec_arg,pToken))
+//        break;
+      
+      m_pTokeniser->vNextToken_z(pTknVec_arg,pToken);
+      if (TN_EOF == pToken->eToken())
+        break;
+
+      pTknVec_arg->vIncTokens();
+      ASSERT(pTknVec_arg->nTokens() < C_MAX_TOKENS);
+    }
+    
+    // end of file? if so, pop and retry
+    if (! pTknVec_arg->nTokens() && m_pTokeniser->bEOF()) {
+      bool b = m_pTokeniser->bPopParser();
+      ASSERT(b);
+      break;
+    }
+    
+    break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next token from stream                                                */
+/*----------------------------------------------------------------------------*/
+bool TokenStream::bReadToken(TokenVec* pTknVec_arg, Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  m_pTokeniser->vNextToken_z(pTknVec_arg,pTkn);
+  
+  eTN eToken = pTkn->eToken();
+  
+  if (TN_EOF == eToken)
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

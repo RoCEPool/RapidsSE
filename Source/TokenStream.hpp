@@ -27,10 +27,10 @@ namespace LexicalAnalysis
   
     bool bBlankLine(TokenVec* pTknVec);
     bool bExecuteFile(TokenVec* pTknVec);
-    bool bNextInputToken(TokenVec* pTknVec_arg, Token* pTkn);
-    void vNextInputTokens(TokenVec* pTknVec);
     void vPushFile(Stz* aPath);
     void vReadCommand(TokenVec* pTknVec);
+    void vReadTillEOF(TokenVec* pTknVec);
+    bool bReadToken(TokenVec* pTknVec_arg, Token* pTkn);
     bool bRunFile(TokenVec* pTknVec);
     bool bTestFile(Stz* aPath);
     bool bTokenCheck(TokenVec* pTknVec,i8 nTokens);
