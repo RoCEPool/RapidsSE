@@ -547,10 +547,10 @@ bool SePrompt::bExecuteFile(void)
     return false;
   
   TokenStream* pTokenStream = this->pTokenStream();
+    
+  bool bExecuteFile = pTokenStream->bRunFile(szPath);
   
-  bool bExecuteFile = pTokenStream->bExecuteFile(m_pSession->pTokenVec());
-  
-  return bExecuteFile;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
