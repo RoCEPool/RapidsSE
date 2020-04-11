@@ -316,7 +316,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = pTokenVec_arg->pGet(i_Token,true);
-    vNextToken(pTokenVec_arg,pToken);
+    vNextToken_z(pTokenVec_arg,pToken);
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
@@ -446,13 +446,13 @@ void Tokeniser::vNextToken_x(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vNextToken(nullptr,&m_oToken);
+  vNextToken_z(nullptr,&m_oToken);
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vNextToken(TokenVec* pTokenVec_arg,Token* pToken)
+void Tokeniser::vNextToken_z(TokenVec* pTokenVec_arg,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

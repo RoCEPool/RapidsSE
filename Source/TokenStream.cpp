@@ -90,7 +90,7 @@ bool TokenStream::bNextInputToken(TokenVec* pTknVec_arg, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vNextToken(pTknVec_arg,pTkn);
+  m_pTokeniser->vNextToken_z(pTknVec_arg,pTkn);
   
   eTN eToken = pTkn->eToken();
   
