@@ -37,7 +37,6 @@ namespace LexicalAnalysis
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, Stz* sDelimiter, i8 i_From, i8 i_To);
 
     Characterise* pCharser(void);
-    void vReadTillSemicolon(TokenVec* pTokenVec_arg);
     i8   iDepth(void);
     void vDump(void);
     bool bEOF(void);

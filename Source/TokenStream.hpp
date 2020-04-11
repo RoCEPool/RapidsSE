@@ -29,6 +29,7 @@ namespace LexicalAnalysis
     void vPushFile(Stz* szPath);
     void vReadCommand(TokenVec* pTknVec);
     void vReadTillEOF(TokenVec* pTknVec);
+    void vReadTillSemicolon(TokenVec* pTokenVec);
     bool bReadToken(TokenVec* pTknVec_arg, Token* pTkn);
     bool bTokenCheck(TokenVec* pTknVec, i8 nTokens);
     void vUseStdin(void);

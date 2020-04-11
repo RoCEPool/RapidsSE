@@ -290,48 +290,6 @@ Characterise* Tokeniser::pCharser(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect ';' delimited statement                                            */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vReadTillSemicolon(TokenVec* pTokenVec_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  // we should have a first token (e.g. create or drop)
-  ASSERT(pTokenVec_arg->pGet(0)->bHasText());
-  
-  // have we already seen the ';'
-  i8 i_Token = pTokenVec_arg->iFindToken(";"_Stz);
-  
-  if (i_Token >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
-    return;
-  }
-  
-  i_Token = pTokenVec_arg->iCountTokens();
-  
-  // switch to terminal mode
-  vLineMode(false);
-  
-  // get tokens delimited by ';'
-  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
-    
-    Token* pToken = pTokenVec_arg->pGet(i_Token,true);
-    vNextToken_z(pTokenVec_arg,pToken);
-    ASSERT(TN_EOF != pToken->eToken());
-    
-    // look for terminal
-    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
-      break;
-  }
-  
-  // switch back to line mode
-  vLineMode(true);
-  //vPrompt(m_sPrompt);
-  
-  //m_pTokeniser->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get depth of parser                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Tokeniser::iDepth(void)
