@@ -139,24 +139,25 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   
   TokenVec* pTokenVec = new TokenVec;
   
-  Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPushParser();
-  pTokeniser->vUseString(szString);
-  
-  for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken_x();
-    if (TN_EOF == pTokeniser->eToken())
-      break;
-    
-    pTokenVec->vIncTokens();
-    
-    Token* pToken = pTokenVec->pGet(i_Token);
-    pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->szToken());
-    
-  }
-  
-  delete pTokeniser;
+  vTokenise(pTokenVec,szString);
+//  Tokeniser* pTokeniser = new Tokeniser;
+//  pTokeniser->vPushParser();
+//  pTokeniser->vUseString(szString);
+//
+//  for (i8 i_Token = 0; ; i_Token++) {
+//    pTokeniser->vNextToken_x();
+//    if (TN_EOF == pTokeniser->eToken())
+//      break;
+//
+//    pTokenVec->vIncTokens();
+//
+//    Token* pToken = pTokenVec->pGet(i_Token);
+//    pToken->vToken(pTokeniser->eToken());
+//    pToken->vCopy(pTokeniser->szToken());
+//
+//  }
+//
+//  delete pTokeniser;
   
   return pTokenVec;
 }
@@ -175,7 +176,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken_x();
+    pTokeniser->vReadToken_nil();
     if (TN_EOF == pTokeniser->eToken())
       break;
     
@@ -354,18 +355,6 @@ bool Tokeniser::bEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get EOF?                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Tokeniser::szSource(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  Stz* szSource = m_pCharser->szSource();
-  
-  return szSource;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vLineMode(bool bLineMode)
@@ -395,31 +384,6 @@ void Tokeniser::vMalloc(bool bMalloc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_bMalloc = bMalloc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse next token                                                           */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNextToken_x(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  vNextToken_z(nullptr,&m_oToken);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse next token into given buffer                                         */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNextToken_z(TokenVec* pTokenVec_arg,Token* pToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  //RASSERT(! pTokenVec_arg || pTokenVec_arg->pCurrToken() == pToken);
-  
-  if (m_bNormal)
-    vCollectNormal(pTokenVec_arg,pToken);
-  else
-    vCollectSen(pTokenVec_arg,pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,6 +422,43 @@ void Tokeniser::vPushParser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser = new(m_bMalloc) Characterise(m_pCharser);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse next token                                                           */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vReadToken_nil(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  vReadToken_vec(nullptr,&m_oToken);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse next token into given buffer                                         */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vReadToken_vec(TokenVec* pTokenVec_arg,Token* pToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  //RASSERT(! pTokenVec_arg || pTokenVec_arg->pCurrToken() == pToken);
+  
+  if (m_bNormal)
+    vCollectNormal(pTokenVec_arg,pToken);
+  else
+    vCollectSen(pTokenVec_arg,pToken);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get EOF?                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Tokeniser::szSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  Stz* szSource = m_pCharser->szSource();
+  
+  return szSource;
 }
 
 /*----------------------------------------------------------------------------*/

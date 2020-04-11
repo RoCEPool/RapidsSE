@@ -42,10 +42,10 @@ namespace SenVM
     Word* pNestedWord(i8 i_Nested);
     void  vNestedWord(i8 i_Nested, Word* pNested);
   
-    void  vNextToken_y(void);
-  
     bool  bPostponing(void);
   
+    void  vReadToken_cpl(void);
+    
     Stz*  szToken(void);
   
     Tokeniser* pTokeniser(void);

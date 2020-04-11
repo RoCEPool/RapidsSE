@@ -40,15 +40,15 @@ namespace LexicalAnalysis
     i8   iDepth(void);
     void vDump(void);
     bool bEOF(void);
-    Stz* szSource(void);
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
     void vMalloc(bool bMalloc);
-    void vNextToken_x(void);
-    void vNextToken_z(TokenVec* pTokenVec, Token* pToken);
     void vNormal(bool bNormal);
     bool bPopParser(void);
     void vPushParser(void);
+    void vReadToken_nil(void);
+    void vReadToken_vec(TokenVec* pTokenVec, Token* pToken);
+    Stz* szSource(void);
     bool bStdin(void);
     eTN  eToken(void);
     Stz* szToken(void);

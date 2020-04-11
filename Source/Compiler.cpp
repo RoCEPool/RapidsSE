@@ -169,16 +169,6 @@ void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
 }
 
 /*----------------------------------------------------------------------------*/
-/* advance to next token                                                      */
-/*----------------------------------------------------------------------------*/
-void Compiler::vNextToken_y(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vNextToken_x();
-}
-
-/*----------------------------------------------------------------------------*/
 /* is the compiler in postponing mode?                                        */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bPostponing(void)
@@ -188,6 +178,16 @@ bool Compiler::bPostponing(void)
   bool bIsPostponing = CM_POSTPONING == m_eMode;
   
   return bIsPostponing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next token                                                      */
+/*----------------------------------------------------------------------------*/
+void Compiler::vReadToken_cpl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vReadToken_nil();
 }
 
 /*----------------------------------------------------------------------------*/

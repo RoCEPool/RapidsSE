@@ -132,7 +132,7 @@ void TokenStream::vReadTillEOF(TokenVec* pTknVec)
 //      if (! bNextInputToken(pTknVec,pToken))
 //        break;
       
-      m_pTokeniser->vNextToken_z(pTknVec,pToken);
+      m_pTokeniser->vReadToken_vec(pTknVec,pToken);
       if (TN_EOF == pToken->eToken())
         break;
 
@@ -179,7 +179,7 @@ void TokenStream::vReadTillSemicolon(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = pTokenVec_arg->pGet(i_Token,true);
-    m_pTokeniser->vNextToken_z(pTokenVec_arg,pToken);
+    m_pTokeniser->vReadToken_vec(pTokenVec_arg,pToken);
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
@@ -201,7 +201,7 @@ bool TokenStream::bReadToken(TokenVec* pTknVec, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vNextToken_z(pTknVec,pTkn);
+  m_pTokeniser->vReadToken_vec(pTknVec,pTkn);
   
   eTN eToken = pTkn->eToken();
   
