@@ -59,6 +59,38 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef                             */
+/*----------------------------------------------------------------------------*/
+: op__tableDef_streamSet ( tableNm -- )
+
+params| sTableNm |
+
+  // save current path
+  path[].save
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
+
+  // table
+  sTableNm name::checkIsValidTable assert
+
+  // move to table folder and find the table
+  sTableNm path[].pushTableFolder assert
+  sTableNm find execute to StreamSetTable[]
+
+  // cross-check
+  StreamSetTable[] assert
+
+  path[].discardTableFolder
+
+  // restore path
+  path[].restore
+
+  true
+  ;
+
+/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm>                                         */
 /*----------------------------------------------------------------------------*/
 : op__table ( tableNm -- )
