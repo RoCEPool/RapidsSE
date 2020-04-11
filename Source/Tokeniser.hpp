@@ -59,7 +59,6 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:
-    void vNextNormal(TokenVec* pTokenVec, Token* pToken);
     void vNextSen(TokenVec* pTokenVec, Token* pToken);
     
     void vCollectNormal(TokenVec* pTokenVec, Token* pToken);

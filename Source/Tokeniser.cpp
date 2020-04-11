@@ -459,7 +459,7 @@ void Tokeniser::vNextToken_z(TokenVec* pTokenVec_arg,Token* pToken)
   //RASSERT(! pTokenVec_arg || pTokenVec_arg->pCurrToken() == pToken);
   
   if (m_bNormal)
-    vNextNormal(pTokenVec_arg,pToken);
+    vCollectNormal(pTokenVec_arg,pToken);
   else
     vNextSen(pTokenVec_arg,pToken);
 }
@@ -581,17 +581,6 @@ void Tokeniser::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* parse next normal token into given buffer                                  */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNextNormal(TokenVec* pTokenVec_arg,Token* pToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  vCollectNormal(pTokenVec_arg,pToken);
-  
- }
 
 /*----------------------------------------------------------------------------*/
 /* parse next Sen token into given buffer                                     */
