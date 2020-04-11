@@ -548,7 +548,7 @@ bool SePrompt::bExecuteFile(void)
   
   TokenStream* pTokenStream = this->pTokenStream();
     
-  bool bExecuteFile = pTokenStream->bRunFile(szPath);
+  pTokenStream->vRunFile(szPath);
   
   return true;
 }
