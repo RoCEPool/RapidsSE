@@ -68,14 +68,16 @@ bool TokenStream::bIsStdIn(void)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vPushFile(Stz* szFileName)
+void TokenStream::vPushFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
   m_pTokeniser->vPushParser();
   
-  bool b = m_pTokeniser->bUseFile(szFileName);
+  bool b = m_pTokeniser->bUseFile(szPath);
   ASSERT(b);
+  
+  m_pTokeniser->vLineMode(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,18 +167,6 @@ bool TokenStream::bReadToken(TokenVec* pTknVec_arg, Token* pTkn)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set file to run                                                            */
-/*----------------------------------------------------------------------------*/
-void TokenStream::vRunFile(Stz* szPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-    
-  vPushFile(szPath);
-  
-  m_pTokeniser->vLineMode(true);
 }
 
 /*----------------------------------------------------------------------------*/

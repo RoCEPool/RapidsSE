@@ -179,7 +179,7 @@ void SePrompt::vPromptLoop(void)
     
     vReformatCommand();
     
-    if (bExecuteFile())
+    if (bRedirectFromFile())
       continue;
     
     if (bExecuteFunction())
@@ -530,27 +530,6 @@ bool SePrompt::bExecutePipeline(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a file                                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenVec* pTknVec = this->pTokenVec();
-
-  Stz* szPath = pTknVec->pGet(0)->szTerm();
-
-  if (! File::bExists(szPath))
-    return false;
-  
-  TokenStream* pTokenStream = this->pTokenStream();
-    
-  pTokenStream->vRunFile(szPath);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1020,6 +999,27 @@ bool SePrompt::bReadNextCommand(void)
   }
   
   pTokenStream->vReadCommand(pTknVec);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially redurect/push a file                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bRedirectFromFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTokenVec();
+
+  Stz* szPath = pTknVec->pGet(0)->szTerm();
+
+  if (! File::bExists(szPath))
+    return false;
+  
+  TokenStream* pTokenStream = this->pTokenStream();
+    
+  pTokenStream->vPushFile(szPath);
   
   return true;
 }
