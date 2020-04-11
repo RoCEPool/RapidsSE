@@ -34,6 +34,7 @@ namespace LexicalAnalysis
     void vAdvanceCurr(void);
     void vAppendToken(Stz* szTerm);
     void vAppendVector(TokenVec* pTokenVec);
+    bool bBlankLine(void);
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);
     i8   iCurrToken(void);

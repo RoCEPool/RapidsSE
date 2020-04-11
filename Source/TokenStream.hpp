@@ -25,7 +25,6 @@ namespace LexicalAnalysis
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static bool bExecute(Stz* aCommand);
   
-    bool bBlankLine(TokenVec* pTknVec);
     bool bExecuteFile(TokenVec* pTknVec);
     bool bIsStdIn(void);
     void vPushFile(Stz* aPath);

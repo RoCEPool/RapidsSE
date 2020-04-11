@@ -54,20 +54,6 @@ TokenStream::~TokenStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-bool TokenStream::bBlankLine(TokenVec* pTknVec_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  if (! pTknVec_arg->nTokens() ||
-      0 == pTknVec_arg->pGet(0)->iLength())
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* potentially execute a command file                                         */
 /*----------------------------------------------------------------------------*/
 bool TokenStream::bExecuteFile(TokenVec* pTknVec_arg)

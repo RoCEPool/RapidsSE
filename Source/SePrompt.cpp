@@ -290,7 +290,7 @@ bool SePrompt::bBlankLine(void)
   TokenStream* pTokenStream = this->pTokenStream();
   
   TokenVec* pTknVec = this->pTokenVec();
-  bool bBlankLine = pTokenStream->bBlankLine(pTknVec);
+  bool bBlankLine = pTknVec->bBlankLine();
 
   return bBlankLine;
 }

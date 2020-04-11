@@ -101,6 +101,20 @@ void TokenVec::vAppendVector(TokenVec* pTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for blank line                                                        */
+/*----------------------------------------------------------------------------*/
+bool TokenVec::bBlankLine(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  if (0 == nTokens() ||
+      0 == pGet(0)->iLength())
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iCountTokens(void)
