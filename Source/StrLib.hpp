@@ -140,6 +140,7 @@ namespace Strings
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     
     static char* sNew(const char* sFormat, ...);
+    static char* zNullTerminator(char* s);
 
     static bool  bOneOf(char** asaSet, char* sWord);
   
@@ -178,7 +179,6 @@ namespace Strings
     static void  vStrip(char* s, char cTrailing);
     static void  vSubPath(char* azDst, char* azSrc);
 
-    static char* zTerminator(char* s);
     static bool  bToBool(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);

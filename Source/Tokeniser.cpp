@@ -1068,7 +1068,8 @@ void Tokeniser::vCollectSenInteger(TokenVec* pTokenVec_arg, Token* pToken, char*
     iNoDigits++;
     vParserGetAnnCharStripped();
   }
-  
+  *z = '\0';
+
   // 0x hex number?
   if (1 == iNoDigits && m_xAnnChar.bIsX()) {
 
@@ -1115,7 +1116,7 @@ void Tokeniser::vCollectSenName(TokenVec* pTokenVec_arg, Token* pToken, char* az
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  char *z = azTermCrs;
+  char *z = StrLib::zNullTerminator(azTermCrs);
   
   //ASSERT(bStartSenName());
   

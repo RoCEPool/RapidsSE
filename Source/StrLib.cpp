@@ -2352,7 +2352,7 @@ void StrLib::vPad(char* w, i8 iToLength, const char cWith)
   if (iCurrLength >= iToLength)
     return;
   
-  char* z = zTerminator(w);
+  char* z = zNullTerminator(w);
   i8 nChars = iToLength - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
@@ -3008,7 +3008,7 @@ char* StrLib::wToString(i8 i, char* w)
 /*----------------------------------------------------------------------------*/
 /* zTerminator: get ptr to null terminator                                    */
 /*----------------------------------------------------------------------------*/
-char* StrLib::zTerminator(char* s)
+char* StrLib::zNullTerminator(char* s)
 {
   i8 nLen  = nLength(s);
   
