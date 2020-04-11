@@ -60,10 +60,10 @@ namespace LexicalAnalysis
  
   private:    
     void vCollectNormal(TokenVec* pTokenVec, Token* pToken);
-    void vCollectNormalInteger(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
-    void vCollectNormalName(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
-    void vCollectNormalOther(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
-    void vCollectNormalString(TokenVec* pTokenVec, Token* pToken, char* azTermCrs);
+    void vCollectNormalInteger(TokenVec* pTokenVec, Token* pToken);
+    void vCollectNormalName(TokenVec* pTokenVec, Token* pToken);
+    void vCollectNormalOther(TokenVec* pTokenVec, Token* pToken);
+    void vCollectNormalString(TokenVec* pTokenVec, Token* pToken);
     
     void vCollectSen(TokenVec* pTokenVec, Token* pToken);
     void vCollectSenInteger(TokenVec* pTokenVec, Token* pToken);
