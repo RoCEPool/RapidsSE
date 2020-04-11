@@ -184,23 +184,6 @@ bool TokenStream::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenize string                                                            */
-/*----------------------------------------------------------------------------*/
-void TokenStream::vTokenise(TokenVec* pTknVec_arg, Stz* aCommand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
-  
-  s48K sCommand(aCommand);
-  
-  m_pTokeniser->vPushParser();
-  m_pTokeniser->vUseString(sCommand);
-  
-  vReadCommand(pTknVec_arg);
-  
-  m_pTokeniser->bPopParser();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tokeniser                                                              */
 /*----------------------------------------------------------------------------*/
 Tokeniser* TokenStream::pTokeniser(void)

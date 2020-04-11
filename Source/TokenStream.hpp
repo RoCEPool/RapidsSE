@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TokenStream.hpp -- TokenStream Processor                                               */
+/* TokenStream.hpp -- Token Stream                                            */
 /*============================================================================*/
 #pragma once
 
@@ -31,7 +31,6 @@ namespace LexicalAnalysis
     void vReadTillEOF(TokenVec* pTknVec);
     bool bReadToken(TokenVec* pTknVec_arg, Token* pTkn);
     bool bTokenCheck(TokenVec* pTknVec, i8 nTokens);
-    void vTokenise(TokenVec* pTknVec, Stz* aCommand);
     Tokeniser* pTokeniser(void);
     void vUseStdin(void);
     
