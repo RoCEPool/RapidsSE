@@ -71,7 +71,6 @@ namespace Prompt
     void vDumpTokens(bool bDumpTokens);
     void vDumpTokenVec(bool bForce);
     void vEndRequest(void);
-    bool bExecuteFile(void);
     bool bExecuteFunction(void);
     bool bExecutePipeline(void);
     bool bFindJobClass(void);
@@ -96,6 +95,7 @@ namespace Prompt
     i8   iPromptId(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);
+    bool bRedirectFromFile(void);
     void vReformatCommand(void);
     void vReportObjects();
     void vReportOther(void);
