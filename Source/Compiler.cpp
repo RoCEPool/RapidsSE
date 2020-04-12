@@ -5,24 +5,14 @@
 #include "SenVM.h"
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* Compiler::operator new(size_t)
-{
-  Compiler* pCompiler = reinterpret_cast<Compiler*>(HeapMem::pAllocate(CN_COMPILER));
-  
-  return pCompiler;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Compiler::operator delete(void* pCompilerAddress)
-{
-  Compiler* pCompiler = reinterpret_cast<Compiler*>(pCompilerAddress);
-  
-  HeapMem::vFree(pCompiler);
-}
+__pCastFunction(SenVM,Compiler,CN_COMPILER)
+__aNewFunction(Compiler,CN_COMPILER)
+__vDeleteFunction(Compiler,CN_COMPILER)
+__aFooterFunction(Compiler)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -265,19 +255,36 @@ void Compiler::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* use string                                                                 */
 /*----------------------------------------------------------------------------*/
+void Compiler::vUseFile(Stz* szPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  bool bOpened = m_pTokeniser->bUseFile(szPath);
+  
+  if ( ! bOpened )
+    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+           "No such file: %s"_Stz,szPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* use end                                                                    */
+/*----------------------------------------------------------------------------*/
+void Compiler::vUseStdin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vUseStdin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* use string                                                                 */
+/*----------------------------------------------------------------------------*/
 void Compiler::vUseString(Stz* szString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pTokeniser->vUseString(szString);
 }
-
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Compiler)
 
 /*============================================================================*/
 /* end                                                                        */

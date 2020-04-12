@@ -56,11 +56,7 @@ void Step::vInputDump(void)
 void Step::vInputNext(void)
 {
   ENTRY(); // ENTRY("vInputNext"_Stz);
-  
-//  char* aToken = m_pCompiler->szToken()->azChar();
-//
-//  eTN eToken = m_pCompiler->m_pTokeniser->eNextToken(aToken);
-  
+    
   m_pCompiler->vReadToken_cpl();
 
   EXIT();
@@ -77,12 +73,8 @@ void Step::vInputOpen(void)
   
   m_pDataStack->vPopStr(sFilePath,__func__);
   
-  bool bOpened = m_pCompiler->pTokeniser()->bUseFile(sFilePath);
-  
-  if ( ! bOpened )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No such file: %s"_Stz,sFilePath.azChar());
-  
+  m_pCompiler->vUseFile(sFilePath);
+    
   EXIT();
 }
 
@@ -124,7 +116,7 @@ void Step::vInputStdin(void)
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
   
-  m_pCompiler->pTokeniser()->vUseStdin();
+  m_pCompiler->vUseStdin();
   m_pCompiler->pTokeniser()->vLineMode(true);
 
   EXIT();

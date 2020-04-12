@@ -44,10 +44,14 @@ namespace SenVM
     Stz*  szToken(void);
     Tokeniser* pTokeniser(void);
     void  vUseEnd(void);
+    void  vUseFile(Stz* szPath);
+    void  vUseStdin(void);
     void  vUseString(Stz* szString);
 
     Footer* aFooter(void);
   };
+
+  Compiler* _pCompiler(void* aAddr);
 }
 
 /*============================================================================*/
