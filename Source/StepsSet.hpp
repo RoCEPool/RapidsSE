@@ -457,7 +457,6 @@ public:
 
   // input
   void vInputClose(void);
-  void vInputDepth(void);
   void vInputDump(void);
   void vInputNext(void);
   void vInputOpen(void);

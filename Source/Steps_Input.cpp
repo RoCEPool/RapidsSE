@@ -10,7 +10,6 @@
 void Step::vAddSteps_Input(void)
 {
   vAddStep("input::close"_Stz,     &Step::vInputClose);
-  vAddStep("input::depth"_Stz,     &Step::vInputDepth);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
   vAddStep("input::next"_Stz,      &Step::vInputNext);
   vAddStep("input::open"_Stz,      &Step::vInputOpen);
@@ -32,21 +31,7 @@ void Step::vInputClose(void)
 {
   ENTRY(); // ENTRY("vInputClose"_Stz);
   
-  m_pCompiler->pTokeniser()->vUseEnd();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* input::depth -- push current depth of input stream onto data stack         */
-/*----------------------------------------------------------------------------*/
-void Step::vInputDepth(void)
-{
-  ENTRY(); // ENTRY("vInputDepth"_Stz);
-  
-  i8 iDepth = m_pCompiler->pTokeniser()->iDepth();
-  
-  m_pDataStack->vPushInt(iDepth);
+  m_pCompiler->vUseEnd();
   
   EXIT();
 }
@@ -160,7 +145,7 @@ void Step::vInputText(void)
   
   m_pDataStack->vPopStr(sInput,__func__);
     
-  m_pCompiler->pTokeniser()->vUseString(sInput);
+  m_pCompiler->vUseString(sInput);
   
   EXIT();
 }
@@ -186,7 +171,7 @@ void Step::vInputType(void)
 {
   ENTRY(); // ENTRY("vInputType"_Stz);
   
-  eTN eTokenType = m_pCompiler->pTokeniser()->eToken();
+  eTN eTokenType = m_pCompiler->eToken();
   
   m_pDataStack->vPushInt(eTokenType);
   
@@ -202,7 +187,7 @@ void Step::vInputUnknown(void)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         m_pCompiler->szToken()->azChar()
+         m_pCompiler->szToken()
          );
   vTrace("\n"_Stz);
 
