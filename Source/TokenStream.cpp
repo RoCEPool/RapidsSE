@@ -24,7 +24,7 @@ TokenStream::TokenStream(void)
   m_pTokeniser = new Tokeniser;
   
   m_pTokeniser->vMalloc(false);
-  m_pTokeniser->vPushParser();
+  m_pTokeniser->vPushCharser();
   
   //if (gxArgs.m_bPrompt)
      m_pTokeniser->vUseStdin();
@@ -72,7 +72,7 @@ void TokenStream::vPushFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vPushParser();
+  m_pTokeniser->vPushCharser();
   
   bool b = m_pTokeniser->bUseFile(szPath);
   ASSERT(b);
@@ -142,7 +142,7 @@ void TokenStream::vReadTillEOF(TokenVec* pTknVec)
     
     // end of file? if so, pop and retry
     if (! pTknVec->nTokens() && m_pTokeniser->bEOF()) {
-      bool b = m_pTokeniser->bPopParser();
+      bool b = m_pTokeniser->bPopCharser();
       ASSERT(b);
       break;
     }

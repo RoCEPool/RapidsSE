@@ -44,7 +44,7 @@ Tokeniser::~Tokeniser(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   while (m_pCharser)
-    RASSERT(bPopParser());
+    RASSERT(bPopCharser());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,7 +172,7 @@ void Tokeniser::vTokenise(TokenVec* pTknVec, Stz* szString)
   pTknVec->vReset();
   
   Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPushParser();
+  pTokeniser->vPushCharser();
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
@@ -399,7 +399,7 @@ void Tokeniser::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 /* pop a parser                                                               */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bPopParser(void)
+bool Tokeniser::bPopCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -417,7 +417,7 @@ bool Tokeniser::bPopParser(void)
 /*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPushParser(void)
+void Tokeniser::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

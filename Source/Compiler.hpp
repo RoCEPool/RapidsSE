@@ -40,7 +40,9 @@ namespace SenVM
     void  vMode(eCM eMode);
     Word* pNestedWord(i8 i_Nested);
     void  vNestedWord(i8 i_Nested, Word* pNested);
+    void  vPop(void);
     bool  bPostponing(void);
+    void  vPush(void);
     void  vReadToken_cpl(void);
     eTN   eToken(void);
     Stz*  szToken(void);

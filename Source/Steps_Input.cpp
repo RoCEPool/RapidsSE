@@ -25,7 +25,7 @@ void Step::vAddSteps_Input(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::close -- close current input stream                                  */
+/* input::close -- close current input stream                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vInputClose(void)
 {
@@ -49,7 +49,7 @@ void Step::vInputDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::next -- get next input token from current input stream               */
+/* input::next -- get next input token from current input stream              */
 /*----------------------------------------------------------------------------*/
 void Step::vInputNext(void)
 {
@@ -61,7 +61,7 @@ void Step::vInputNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::open -- open new input using filepath on data stack                  */
+/* input::open -- open new input using filepath on data stack                 */
 /*----------------------------------------------------------------------------*/
 void Step::vInputOpen(void)
 {
@@ -77,20 +77,19 @@ void Step::vInputOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::pop -- pop to previous input stream                                  */
+/* input::pop -- pop to previous input stream                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vInputPop(void)
 {
   ENTRY(); // ENTRY("vInputPop"_Stz);
   
-  bool bPopped = m_pCompiler->pTokeniser()->bPopParser();
-  ASSERT(bPopped);
+  m_pCompiler->vPop();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::push -- push input stream, allowing for new input stream             */
+/* input::push -- push input stream, allowing for new input stream            */
 /*----------------------------------------------------------------------------*/
 void Step::vInputPush(void)
 {
@@ -99,13 +98,13 @@ void Step::vInputPush(void)
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
   
-  m_pCompiler->pTokeniser()->vPushParser();
+  m_pCompiler->vPush();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::stdin -- use stdin as new input stream                               */
+/* input::stdin -- use stdin as new input stream                              */
 /*----------------------------------------------------------------------------*/
 void Step::vInputStdin(void)
 {
@@ -121,7 +120,7 @@ void Step::vInputStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::text -- use string as new input stream                               */
+/* input::text -- use string as new input stream                              */
 /*----------------------------------------------------------------------------*/
 void Step::vInputText(void)
 {
@@ -141,7 +140,7 @@ void Step::vInputText(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::token -- push current token of input stream onto data stack          */
+/* input::token -- push current token of input stream onto data stack         */
 /*----------------------------------------------------------------------------*/
 void Step::vInputToken(void)
 {
@@ -155,7 +154,7 @@ void Step::vInputToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::type -- push current token type onto data stack                      */
+/* input::type -- push current token type onto data stack                     */
 /*----------------------------------------------------------------------------*/
 void Step::vInputType(void)
 {
@@ -169,7 +168,7 @@ void Step::vInputType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::unknown -- unknown current token                                     */
+/* input::unknown -- unknown current token                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vInputUnknown(void)
 {

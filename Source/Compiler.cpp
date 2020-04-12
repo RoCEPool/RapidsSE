@@ -26,7 +26,7 @@ Compiler::Compiler(void)
   m_eMode      = CM_INTERPRETING;
 
   m_pTokeniser = new Tokeniser;
-  m_pTokeniser->vPushParser();
+  m_pTokeniser->vPushCharser();
   m_pTokeniser->vUseString(""_Stz);
   
   m_pTknVec = new TokenVec;
@@ -183,6 +183,17 @@ void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop charser                                                                */
+/*----------------------------------------------------------------------------*/
+void Compiler::vPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  bool bPopped = m_pTokeniser->bPopCharser();
+  ASSERT(bPopped);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the compiler in postponing mode?                                        */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bPostponing(void)
@@ -192,6 +203,16 @@ bool Compiler::bPostponing(void)
   bool bIsPostponing = CM_POSTPONING == m_eMode;
   
   return bIsPostponing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push charser                                                               */
+/*----------------------------------------------------------------------------*/
+void Compiler::vPush(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vPushCharser();
 }
 
 /*----------------------------------------------------------------------------*/

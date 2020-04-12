@@ -44,8 +44,8 @@ namespace LexicalAnalysis
     bool bLineMode(void);
     void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
-    bool bPopParser(void);
-    void vPushParser(void);
+    bool bPopCharser(void);
+    void vPushCharser(void);
     void vReadToken_nil(void);
     void vReadToken_vec(TokenVec* pTknVec, Token* pToken);
     Stz* szSource(void);
