@@ -31,6 +31,8 @@ Tokeniser::Tokeniser(void)
     
   m_oToken.vReset();
   
+  m_pTknVec = new TokenVec;
+  
   _checkInitialised_(CN_TOKENISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -45,6 +47,8 @@ Tokeniser::~Tokeniser(void) noexcept(false)
   
   while (m_pCharser)
     RASSERT(bPopCharser());
+  
+  delete m_pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/

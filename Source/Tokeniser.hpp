@@ -8,13 +8,14 @@ namespace LexicalAnalysis
   class Tokeniser : public Object
   {
   private:
-    Charser*  m_pCharser;   // charser
+    Charser*  m_pCharser;  // charser
   
-    bool     m_bMalloc;   // malloc or pool heap?
-    bool     m_bNormal;   // normal tokens?
-    AnnChar  m_xAnnChar;  // annotated char from parser
+    bool      m_bMalloc;   // malloc or pool heap?
+    bool      m_bNormal;   // normal tokens?
+    AnnChar   m_xAnnChar;  // annotated char from parser
     
-    Token    m_oToken;    // working token
+    Token     m_oToken;    // working token
+    TokenVec* m_pTknVec;   // set of collected tokens
 
     // must be last
     Footer m_xFooter;    
