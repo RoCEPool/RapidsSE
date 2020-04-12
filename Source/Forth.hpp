@@ -28,8 +28,10 @@ namespace SenVM
  
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
   
-    Compiler* m_pCompiler;    // word compiler (Job boot, create table etc)
-  
+  protected:
+    Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
+    //Tokeniser*  m_pTokeniser;   // word compiler (Job boot, create table etc)
+
     // must be last
     Footer m_xFooter;
   
@@ -41,6 +43,8 @@ namespace SenVM
    ~Forth(void) noexcept(false);
   
     void vCheckBreakPt(void);
+    Compiler* pCompiler(void);
+    void vCompiler(Compiler* pCompiler);
     void vContentDump(void);
     bool bCorrectLayout(void);
     DicStack* pDicStack(void);

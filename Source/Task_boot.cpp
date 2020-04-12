@@ -296,7 +296,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
   TokenVec* pTokenVec;
   
-  Compiler* pCompiler = m_pForth->m_pCompiler;
+  Compiler* pCompiler = m_pForth->pCompiler();
   
   vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
@@ -340,7 +340,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
         break;
         
       case TN_NAME:
-        pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->m_pCompiler->szToken());
+        pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->pCompiler()->szToken());
         if (WK_INTRINSIC == pCalledWord->eWord()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
@@ -377,8 +377,8 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
       default:
         vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
                "Invalid m_eToken %lld %s"_Stz,
-               m_pForth->m_pCompiler->eToken(),
-               m_pForth->m_pCompiler->szToken()
+               m_pForth->pCompiler()->eToken(),
+               m_pForth->pCompiler()->szToken()
                );
     }
     
@@ -405,7 +405,7 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   
   s48K sValue;
   
-  Compiler* pCompiler = m_pForth->m_pCompiler;
+  Compiler* pCompiler = m_pForth->pCompiler();
   
   pCompiler->vUseString(sDefinition);
   

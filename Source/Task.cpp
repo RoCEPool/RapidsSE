@@ -403,7 +403,7 @@ Compiler* Task::pCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pForth->m_pCompiler;
+  return m_pForth->pCompiler();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,9 +516,11 @@ void Task::vInitExeContext(void)
   m_pRegSet = new RegSet(this);
   m_pForth  = new Forth(this,m_pRegSet);
   
-  m_pForth->m_pCompiler = (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
-
-}
+  Compiler* pCompiler =
+    (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
+  
+  m_pForth->vCompiler(pCompiler);
+  }
 
 /*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */

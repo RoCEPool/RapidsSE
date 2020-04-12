@@ -121,6 +121,26 @@ void Forth::vCheckBreakPt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get compiler                                                               */
+/*----------------------------------------------------------------------------*/
+Compiler* Forth::pCompiler(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  return m_pCompiler;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set compiler                                                               */
+/*----------------------------------------------------------------------------*/
+void Forth::vCompiler(Compiler* pCompiler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+  
+  m_pCompiler = pCompiler;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump execution context                                                     */
 /*----------------------------------------------------------------------------*/
 void Forth::vContentDump(void)
