@@ -42,10 +42,8 @@ void Step::vInputClose(void)
 void Step::vInputDump(void)
 {
   ENTRY(); // ENTRY("vInputDump"_Stz);
-  
-  Tokeniser* pTokeniser = m_pCompiler->pTokeniser();
-  
-  pTokeniser->vDump();
+    
+  m_pCompiler->vDump();
   
   EXIT();
 }
@@ -117,7 +115,7 @@ void Step::vInputStdin(void)
     m_pCompiler = new Compiler;
   
   m_pCompiler->vUseStdin();
-  m_pCompiler->pTokeniser()->vLineMode(true);
+  m_pCompiler->vLineMode(true);
 
   EXIT();
 }

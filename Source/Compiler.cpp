@@ -88,6 +88,16 @@ void Compiler::vCurrentWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Compiler::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the compiler in interpreting mode?                                      */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bInterpreting(void)
@@ -98,6 +108,17 @@ bool Compiler::bInterpreting(void)
   
   return bIsInterpreting;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void Compiler::vLineMode(bool bLineMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vLineMode(bLineMode);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get number of locals                                                       */
