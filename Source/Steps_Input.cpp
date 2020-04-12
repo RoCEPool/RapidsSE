@@ -11,15 +11,15 @@ void Step::vAddSteps_Input(void)
 {
   vAddStep("input::close"_Stz,     &Step::vInputClose);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
+  vAddStep("input::kind@"_Stz,     &Step::vInputKind);
   vAddStep("input::next"_Stz,      &Step::vInputNext);
   vAddStep("input::open"_Stz,      &Step::vInputOpen);
   vAddStep("input::pop"_Stz,       &Step::vInputPop);
   vAddStep("input::push"_Stz,      &Step::vInputPush);
   vAddStep("input::read"_Stz,      &Step::vInputRead);
   vAddStep("input::stdin"_Stz,     &Step::vInputStdin);
-  vAddStep("input::text"_Stz,      &Step::vInputText);
-  vAddStep("input::token"_Stz,     &Step::vInputToken);
-  vAddStep("input::type"_Stz,      &Step::vInputType);
+  vAddStep("input::token"_Stz,     &Step::vInputTerm);
+  vAddStep("input::text!"_Stz,     &Step::vInputText);
   vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
 }
 
@@ -43,6 +43,20 @@ void Step::vInputDump(void)
   ENTRY(); // ENTRY("vInputDump"_Stz);
     
   m_pCompiler->vDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::kind -- push current token kind onto data stack                     */
+/*----------------------------------------------------------------------------*/
+void Step::vInputKind(void)
+{
+  ENTRY(); // ENTRY("vInputKind"_Stz);
+  
+  eTN eTokenType = m_pCompiler->eToken();
+  
+  m_pDataStack->vPushInt(eTokenType);
   
   EXIT();
 }
@@ -135,7 +149,21 @@ void Step::vInputStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::text -- use string as input stream                                  */
+/* input::term -- push term of current token onto data stack                  */
+/*----------------------------------------------------------------------------*/
+void Step::vInputTerm(void)
+{
+  ENTRY(); // ENTRY("vInputTerm"_Stz);
+  
+  s48K sTkn(m_pCompiler->szToken());
+  
+  m_pDataStack->vPushStr(sTkn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::text! -- use string as input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vInputText(void)
 {
@@ -150,34 +178,6 @@ void Step::vInputText(void)
   m_pDataStack->vPopStr(sInput,__func__);
     
   m_pCompiler->vUseString(sInput);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* input::token -- push current token of input stream onto data stack         */
-/*----------------------------------------------------------------------------*/
-void Step::vInputToken(void)
-{
-  ENTRY(); // ENTRY("vInputToken"_Stz);
-  
-  s48K sTkn(m_pCompiler->szToken());
-  
-  m_pDataStack->vPushStr(sTkn);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* input::type -- push current token type onto data stack                     */
-/*----------------------------------------------------------------------------*/
-void Step::vInputType(void)
-{
-  ENTRY(); // ENTRY("vInputType"_Stz);
-  
-  eTN eTokenType = m_pCompiler->eToken();
-  
-  m_pDataStack->vPushInt(eTokenType);
   
   EXIT();
 }

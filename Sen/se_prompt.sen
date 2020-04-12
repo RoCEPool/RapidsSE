@@ -18,14 +18,14 @@
 
   // -- -- -- -- -- -- --
   // test for end of input?
-  input::type TN_EOF == if
+  input::kind@ TN_EOF == if
     //"!!NONE!!" .put
     true exit_rt
   then
 
   // -- -- -- -- -- -- --
   // is token an integer?
-  input::type TN_INTEGER == if
+  input::kind@ TN_INTEGER == if
 
     input::token >int        // convert str to int, leave on stack
 
@@ -46,7 +46,7 @@
 
   // -- -- -- -- -- -- --
   // is token a string?
-  input::type TN_STRING == if
+  input::kind@ TN_STRING == if
 
     input::token             // put str on stack
 
@@ -67,8 +67,8 @@
 
   // -- -- -- -- -- -- --
   // token should be a name
-  input::type TN_NAME != if
-    "strange token" .put input::type .put
+  input::kind@ TN_NAME != if
+    "strange token" .put input::kind@ .put
     reenter
   then
 

@@ -458,15 +458,15 @@ public:
   // input
   void vInputClose(void);
   void vInputDump(void);
+  void vInputKind(void);
   void vInputNext(void);
   void vInputOpen(void);
   void vInputPop(void);
   void vInputPush(void);
   void vInputRead(void);
   void vInputStdin(void);
+  void vInputTerm(void);
   void vInputText(void);
-  void vInputToken(void);
-  void vInputType(void);
   void vInputUnknown(void);
 
   // int

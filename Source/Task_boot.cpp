@@ -47,7 +47,7 @@ void Task::vAddAxioms(void)
   //" \"((b))\" .put input::token . "
   // -- -- -- -- -- -- --
   // test for end of input?
-  "  input::type TN_EOF == if"
+  "  input::kind@ TN_EOF == if"
   "    exit_rt"
   "  then"
   
@@ -55,7 +55,7 @@ void Task::vAddAxioms(void)
   //" \"((c))\" . "
   // -- -- -- -- -- -- --
   // is token an integer?
-  "  input::type TN_INTEGER == if"
+  "  input::kind@ TN_INTEGER == if"
   
   "    compiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING AN INT\" ."
@@ -78,7 +78,7 @@ void Task::vAddAxioms(void)
   //" \"((d))\" . "
   // -- -- -- -- -- -- --
   // is token a string?
-  "  input::type TN_STRING == if"
+  "  input::kind@ TN_STRING == if"
   
   "    compiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A STR\" ."
@@ -100,7 +100,7 @@ void Task::vAddAxioms(void)
   //" \"((e))\" . "
   // -- -- -- -- -- -- --
   // is token a tag?
-  "  input::type TN_TAG == if"
+  "  input::kind@ TN_TAG == if"
   
   "    compiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A TAG\" ."
@@ -128,8 +128,8 @@ void Task::vAddAxioms(void)
   //
   // -- token should be a name --
   //
-  "  input::type TN_NAME != if"
-  "    \"strange token\" . input::type ."
+  "  input::kind@ TN_NAME != if"
+  "    \"strange token\" . input::kind@ ."
   "    reenter"
   "  then"
   
@@ -187,12 +187,12 @@ void Task::vAddAxioms(void)
   // -- -- -- -- -- -- --
   // compiling mode?
   "  compiler::isCompiling if "
-  "    encode::call"                 // compile : encode call to word on stack
+  "    encode::call"             // compile : encode call to word on stack
   "    reenter"
   "  then"
   
   // pointer to word on stack
-
+  
   
   //" \"((k))\" . "
   // -- -- -- -- -- -- --
@@ -231,7 +231,7 @@ void Task::vAddAxioms(void)
   ": include-string"
   "  input::push"
   //"  dup ."
-  "  input::text"
+  "  input::text!"
   "  interpret"
   "  input::pop"
   "  ;"_Stz;
