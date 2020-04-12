@@ -122,9 +122,9 @@ namespace Tasks
 
     void vAddBaseWords(void);
     void vAddMunged(Forth* pForth);
-    void vAddRoutines(void);
-    Word* pCompileColon(s48K& sDefinition);
-    void  vCompileConstant(s48K& sDefinition);
+    void vAddAxioms(void);
+    Word* pCompileAxiomaticColon(s48K& sDefinition);
+    void  vCompileMungedColon(s48K& sDefinition);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

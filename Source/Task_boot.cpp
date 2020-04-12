@@ -12,7 +12,7 @@ void Task::vAddBaseWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddRoutines();
+  vAddAxioms();
   
 #ifdef WITH_MUNGED_SEN
   if (AM::bMunged())
@@ -23,12 +23,12 @@ void Task::vAddBaseWords(void)
 /*----------------------------------------------------------------------------*/
 /* add initial set of axiomatic routines into dictionary (min set to boot)    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddRoutines(void)
+void Task::vAddAxioms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (AM::bVerbose())
-    vTrace("[[mainThread]] Adding routines...\n"_Stz);
+    vTrace("[[mainThread]] Adding axiomatic routines...\n"_Stz);
   
   s48K sDefinition;
   
@@ -207,7 +207,7 @@ void Task::vAddRoutines(void)
 
   "  ;"_Stz;
   
-  pCompileColon(sDefinition);
+  pCompileAxiomaticColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include file
@@ -222,7 +222,7 @@ void Task::vAddRoutines(void)
   "  input::pop"
   "  ;"_Stz;
   
-  pCompileColon(sDefinition);
+  pCompileAxiomaticColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include-string
@@ -236,7 +236,7 @@ void Task::vAddRoutines(void)
   "  input::pop"
   "  ;"_Stz;
   
-  pCompileColon(sDefinition);
+  pCompileAxiomaticColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include
@@ -254,7 +254,7 @@ void Task::vAddRoutines(void)
   "  include-file"
   "  ;"_Stz;
   
-  pCompileColon(sDefinition);
+  pCompileAxiomaticColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
@@ -279,13 +279,13 @@ void Task::vAddRoutines(void)
   "  ;"_Stz;
 #endif
   
-  pCompileColon(sDefinition);
+  pCompileAxiomaticColon(sDefinition);
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile given : routine                                                    */
+/* compile given axiomatic : routine                                          */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileColon(s48K& sDefinition)
+Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -296,16 +296,18 @@ Word* Task::pCompileColon(s48K& sDefinition)
   
   TokenVec* pTokenVec;
   
+  Compiler* pCompiler = m_pForth->m_pCompiler;
+  
   vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
-  m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
+  pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get :
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   // get name of word
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   Dic* pDic;
@@ -315,25 +317,25 @@ Word* Task::pCompileColon(s48K& sDefinition)
     pDic = AM::pRootDic();
 
 
-  pNewWord = new(pDic) Word(m_pForth->m_pCompiler->szToken());
+  pNewWord = new(pDic) Word(pCompiler->szToken());
   
-  m_pForth->m_pCompiler->vCurrentWord(pNewWord);
+  pCompiler->vCurrentWord(pNewWord);
 
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   
-  while (TN_EOF != m_pForth->m_pCompiler->pTokeniser()->eToken()) {
+  while (TN_EOF != pCompiler->pTokeniser()->eToken()) {
     
     //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
     
 //  if (StrLib::bEqualTo(";",m_pCompiler->szToken()->azChar()))
-    if (m_pForth->m_pCompiler->szToken()->bEqual(";"_Stz))
+    if (pCompiler->szToken()->bEqual(";"_Stz))
       break;
     
-    eTN eToken = m_pForth->m_pCompiler->pTokeniser()->eToken();
+    eTN eToken = pCompiler->pTokeniser()->eToken();
     switch (eToken) {
         
       case TN_INTEGER:
-        xVariable = m_pForth->m_pCompiler->szToken()->iToI8();
+        xVariable = pCompiler->szToken()->iToI8();
         pNewWord->vEncodePush(xVariable);
         break;
         
@@ -358,13 +360,13 @@ Word* Task::pCompileColon(s48K& sDefinition)
         break;
         
       case TN_STRING: {
-        xVariable = m_pForth->m_pCompiler->szToken();
+        xVariable = pCompiler->szToken();
         pNewWord->vEncodePush(xVariable);
         break;
       }
         
       case TN_TAG: {
-        xVariable = m_pForth->m_pCompiler->szToken();
+        xVariable = pCompiler->szToken();
         pNewWord->vEncodePush(xVariable);
         
         pCalledWord = m_pForth->m_oDicStack.pFindWord("tag::get"_Stz);
@@ -380,57 +382,59 @@ Word* Task::pCompileColon(s48K& sDefinition)
                );
     }
     
-    m_pForth->m_pCompiler->vReadToken_cpl();
+    pCompiler->vReadToken_cpl();
   }
   
   pNewWord->vEncodeCall("exit_rt"_Stz);
   
 
   // reset scanning
-  m_pForth->m_pCompiler->pTokeniser()->vUseEnd();
+  pCompiler->pTokeniser()->vUseEnd();
   
   return pNewWord;
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile a constant definition                                              */
+/* compile a munged definition                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vCompileConstant(s48K& sDefinition)
+void Task::vCompileMungedColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vTrace("vCompileConstant :\n%s\n"_Stz,sDefinition.szStz());
+  vTrace("vCompileMungedColon :\n%s\n"_Stz,sDefinition.szStz());
   
   s48K sValue;
   
-  m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
+  Compiler* pCompiler = m_pForth->m_pCompiler;
+  
+  pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get string
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   
   if (AM::bVerbose())
     vTrace("CompileConstant: %s\n"_Stz,
-           m_pForth->m_pCompiler->szToken()->azChar());
+           pCompiler->szToken()->azChar());
   
-  sValue = (Stz*)m_pForth->m_pCompiler->szToken()->azChar();
+  sValue = (Stz*)pCompiler->szToken()->azChar();
   
   // get CONSTANT
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
   
   // get name of word
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
 
-  Stz* szName = (Stz*)m_pForth->m_pCompiler->szToken()->azChar();
+  Stz* szName = (Stz*)pCompiler->szToken()->azChar();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   
   AM::vAddConstant(szName,sValue.szStz());
   
-  m_pForth->m_pCompiler->vReadToken_cpl();
+  pCompiler->vReadToken_cpl();
   
-  m_pForth->m_pCompiler->pTokeniser()->vUseEnd();
+  pCompiler->pTokeniser()->vUseEnd();
 }
 
 /*============================================================================*/

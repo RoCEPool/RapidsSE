@@ -104,7 +104,7 @@
 
   "\n" pCppFile file.write
 
-  "  vCompileConstant(sFileContents);\n" pCppFile file.write
+  "  vCompileMungedColon(sFileContents);\n" pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/

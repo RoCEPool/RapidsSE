@@ -103,7 +103,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_stats.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -469,7 +469,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT jobMarkers.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -736,7 +736,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT jobHooks.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1014,7 +1014,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_folder.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1151,7 +1151,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_jData.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1191,7 +1191,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT JobOperand.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1230,7 +1230,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_object.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1291,7 +1291,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_print.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1666,7 +1666,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_encodingData.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1714,7 +1714,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_vistbl.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1870,7 +1870,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_AnalyzeIndex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1953,7 +1953,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lf.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1982,7 +1982,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_sleep.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2267,7 +2267,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_index.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2374,7 +2374,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_statWrite.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2420,7 +2420,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_socket.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2665,7 +2665,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateIndex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2742,7 +2742,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Periodic.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2819,7 +2819,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_python.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2988,7 +2988,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT jobSuffix.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3160,7 +3160,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_SubFetch.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3278,7 +3278,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_VerifyTable.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3431,7 +3431,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_chunk.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3510,7 +3510,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lssch.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3589,7 +3589,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lsten.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3706,7 +3706,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Universal.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3785,7 +3785,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_docols.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3851,7 +3851,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_ping.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3901,7 +3901,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_xmit.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3974,7 +3974,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Supervisor.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4078,7 +4078,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DropIndex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4175,7 +4175,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DropSchema.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4241,7 +4241,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Docol.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4349,7 +4349,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lsidx.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4522,7 +4522,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_BootCluster.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4702,7 +4702,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Connector.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4871,7 +4871,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_insert.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4962,7 +4962,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_genCrw.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5088,7 +5088,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_gridSanity.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5152,7 +5152,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toDemon.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5271,7 +5271,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_SizeTable.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5386,7 +5386,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  \\\"\\\\n\\\" pCppFile file.write\n"
     "\n"
-    "  \\\"  vCompileConstant(sFileContents);\\\\n\\\" pCppFile file.write\n"
+    "  \\\"  vCompileMungedColon(sFileContents);\\\\n\\\" pCppFile file.write\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5518,7 +5518,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_munge.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5792,7 +5792,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_LoadTable.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5893,7 +5893,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_TableSizes.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5987,7 +5987,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lstbldef.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6028,7 +6028,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_unit.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6100,7 +6100,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_bufferGen.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6197,7 +6197,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Cancel.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6312,7 +6312,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Service.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6446,7 +6446,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toCrw.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6514,7 +6514,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_iData.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6629,7 +6629,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Pipeline.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6723,7 +6723,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lstbl.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6751,7 +6751,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_1m.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6875,7 +6875,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_periodic.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -6963,7 +6963,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_purge.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7039,7 +7039,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toStatD.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7117,7 +7117,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_pythonShell.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7222,7 +7222,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DefineNode.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7377,7 +7377,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toCrwH.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7451,7 +7451,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_gGen.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7490,7 +7490,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_rjh.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7539,7 +7539,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_visidx.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7607,7 +7607,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_tData.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7721,7 +7721,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_path.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7819,7 +7819,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DropTenant.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7910,7 +7910,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_genCsv.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8050,7 +8050,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_sink.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8125,7 +8125,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_categories.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8293,7 +8293,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_scan.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8416,7 +8416,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_readChunk.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8565,7 +8565,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Cancelled.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8649,7 +8649,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT grid_node.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -8864,7 +8864,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_log.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9068,7 +9068,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_WriteBuffer.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9209,7 +9209,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_start.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9296,7 +9296,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toCsv.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9394,7 +9394,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_truncate.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9715,7 +9715,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT jobWords.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9861,7 +9861,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Executed.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9913,7 +9913,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_requests.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -9963,7 +9963,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CopyBuffer.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10184,7 +10184,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_FetchRows.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10286,7 +10286,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DropCatalog.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10379,7 +10379,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT jobSyntax.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10456,7 +10456,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lscol.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10534,7 +10534,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lspartcol.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10603,7 +10603,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_ForgetNode.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10680,7 +10680,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lsidxcol.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10741,7 +10741,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_dData.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -10878,7 +10878,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_SizeIndex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11063,7 +11063,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT grid_grid.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11669,7 +11669,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT jobInfo.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11770,7 +11770,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_str.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11821,7 +11821,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Start.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11915,7 +11915,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Execute.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11963,7 +11963,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dumpTbl.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12024,7 +12024,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_exemplar.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12117,7 +12117,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_schema.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12305,7 +12305,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_output.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12482,7 +12482,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_consume.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12546,7 +12546,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_eatAll.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12607,7 +12607,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_space.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12671,7 +12671,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_SubLoader.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12741,7 +12741,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_showCluster.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12897,7 +12897,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Begun.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12958,7 +12958,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_ListPartitions.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13036,7 +13036,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_pwf.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13171,7 +13171,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_inflateCrw.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13263,7 +13263,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateSchema.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13311,7 +13311,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT op__tagSets.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13494,7 +13494,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_prompt.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13978,7 +13978,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT op__common.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14146,7 +14146,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_tags.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14203,7 +14203,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Status.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14356,7 +14356,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_insIdx.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14513,7 +14513,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Receiver.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14622,7 +14622,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_progress.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14651,7 +14651,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_str.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14771,7 +14771,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_genEnt.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14986,7 +14986,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OPERAND__handlers.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15079,7 +15079,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_catalog.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15158,7 +15158,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_lscat.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15192,7 +15192,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_arithmetic.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15290,7 +15290,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toFile.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15572,7 +15572,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_table.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15698,7 +15698,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CompactIndex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15846,7 +15846,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_AnalyzeTable.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15944,7 +15944,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_upsert.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16034,7 +16034,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job2pc.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16151,7 +16151,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_passThru.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16212,7 +16212,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_nodeInfo.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16385,7 +16385,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_ConnectCluster.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16502,7 +16502,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Ended.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16695,7 +16695,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_partition.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17012,7 +17012,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_boot.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17089,7 +17089,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_burst.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17166,7 +17166,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_tenant.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17339,7 +17339,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_report.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17403,7 +17403,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_logic.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17614,7 +17614,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_misc.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17751,7 +17751,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateTable.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17799,7 +17799,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_flow.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -17907,7 +17907,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_snapshot.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18129,7 +18129,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT JobSeeds.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18230,7 +18230,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_cf.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18295,7 +18295,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Waker.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18447,7 +18447,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_VerifyIndex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18540,7 +18540,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateTenant.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18592,7 +18592,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_word.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18658,7 +18658,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Alarm.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19239,7 +19239,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_core.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19288,7 +19288,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dumpIdx.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19385,7 +19385,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_vortex.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19482,7 +19482,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__End.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19577,7 +19577,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DropTable.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19668,7 +19668,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateCatalog.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19812,7 +19812,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Answer.sen"_Stz
   ;
 
-  vCompileConstant(sFileContents);
+  vCompileMungedColon(sFileContents);
 }
 
 /*============================================================================*/
