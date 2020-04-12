@@ -15,7 +15,7 @@ void LlcTest::vTest(Forth* pForth)
 {
 #ifdef WITH_APPLE
   
-  PsxThd* pPsxThd = pForth->m_pTask->pThread()->m_pPsxThd;
+  PsxThd* pPsxThd = pForth->pTask()->pThread()->m_pPsxThd;
   
   pPsxThd->vEnableRealtime_2();
   

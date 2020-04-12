@@ -8,7 +8,8 @@ namespace SenVM
   class Forth : public Object
   {
     friend class Tasks::Task;
-  public:
+  
+  protected:
     Task*     m_pTask;        // which task
     RegSet*   m_pRegSet;      // associated register set
 
@@ -21,7 +22,6 @@ namespace SenVM
     DicStack  m_oDicStack;      // dictionary stack
     DicStack  m_oSaveDicStack;  // save dictionary stack
 
-  protected:
     Cell*     m_aInxPtr;      // instruction/cell pointer
   
     Stack*    m_pAuxStack;    // auxiliary stack
@@ -52,6 +52,7 @@ namespace SenVM
     void vReset(void);
     DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
+    Task* pTask(void);
 
   private:
     Footer* aFooter(void);
