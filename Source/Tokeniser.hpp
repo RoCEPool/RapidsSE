@@ -14,7 +14,6 @@ namespace LexicalAnalysis
     bool      m_bNormal;   // normal or sen tokens?
     AnnChar   m_xAnnChar;  // annotated char from parser
     
-    Token     m_oToken;    // working token
     TokenVec* m_pTknVec;   // set of collected tokens
 
     // must be last

@@ -28,9 +28,7 @@ Tokeniser::Tokeniser(void)
   m_bNormal = false;
   
   m_xAnnChar.vReset();
-    
-  m_oToken.vReset();
-  
+      
   m_pTknVec = new TokenVec;
   
   _checkInitialised_(CN_TOKENISER);
@@ -320,11 +318,13 @@ void Tokeniser::vDump(void)
   vTrace("Tokeniser::vDump\n"_Stz);
   vTrace("----------------\n"_Stz);
 
+  Token* pCurTkn = m_pTknVec->pCurrToken();
+  
   vTrace("Current Token: '%s' : %s @%lld,%lld\n"_Stz,
-         m_oToken.szTerm(),
-         aTN[m_oToken.eToken()],
-         m_oToken.iLineNo(),
-         m_oToken.iColNo()
+         pCurTkn->szTerm(),
+         aTN[pCurTkn->eToken()],
+         pCurTkn->iLineNo(),
+         pCurTkn->iColNo()
          );
   
   vTrace("Charser Stack:\n"_Stz);
@@ -431,11 +431,23 @@ void Tokeniser::vPushCharser(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
+//void Tokeniser::vReadToken_nil(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+//
+//  vReadToken_vec(nullptr,&m_oToken);
+//}
+/*----------------------------------------------------------------------------*/
 void Tokeniser::vReadToken_nil(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vReadToken_vec(nullptr,&m_oToken);
+  m_pTknVec->vReset();
+
+  m_pTknVec->vAdvanceCurr();
+  Token* pToken = m_pTknVec->pCurrToken();;
+
+  vReadToken_vec(m_pTknVec,pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,11 +492,22 @@ bool Tokeniser::bStdin(void)
 /*----------------------------------------------------------------------------*/
 /* get token type                                                             */
 /*----------------------------------------------------------------------------*/
+//eTN Tokeniser::eToken(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+//
+//  eTN eToken = m_oToken.eToken();
+//
+//  return eToken;
+//}
+/*----------------------------------------------------------------------------*/
 eTN Tokeniser::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTN eToken = m_oToken.eToken();
+  Token* pCurrToken = m_pTknVec->pCurrToken();
+  
+  eTN eToken = pCurrToken->eToken();
   
   return eToken;
 }
@@ -492,12 +515,22 @@ eTN Tokeniser::eToken(void)
 /*----------------------------------------------------------------------------*/
 /* get token string                                                           */
 /*----------------------------------------------------------------------------*/
+//Stz* Tokeniser::szToken(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+//
+//  return m_oToken.szTerm();
+//}
+/*----------------------------------------------------------------------------*/
 Stz* Tokeniser::szToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+
+  Token* pCurrToken = m_pTknVec->pCurrToken();
   
-  return m_oToken.szTerm();
+  return pCurrToken->szTerm();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* end use of source                                                          */
