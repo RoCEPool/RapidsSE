@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 : CREATE:
 
-  input::next input::token :create
+  input::read input::token :create
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +277,7 @@ true find: CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : FORGET
 
-  input::next input::token word::find dup if
+  input::read input::token word::find dup if
     word::delete
   else
     drop

@@ -14,7 +14,7 @@
   
   // -- -- -- -- -- -- --
   // get next input token
-  input::next
+  input::read
 
   // -- -- -- -- -- -- --
   // test for end of input?

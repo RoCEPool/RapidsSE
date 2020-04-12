@@ -40,8 +40,8 @@ void Task::vAddAxioms(void)
     
   //" \"((a))\" . "
   // -- -- -- -- -- -- --
-  // get next input token
-  "  input::next"
+  // read next input token
+  "  input::read"
   
   
   //" \"((b))\" .put input::token . "

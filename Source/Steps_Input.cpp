@@ -11,10 +11,10 @@ void Step::vAddSteps_Input(void)
 {
   vAddStep("input::close"_Stz,     &Step::vInputClose);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
-  vAddStep("input::next"_Stz,      &Step::vInputNext);
   vAddStep("input::open"_Stz,      &Step::vInputOpen);
   vAddStep("input::pop"_Stz,       &Step::vInputPop);
   vAddStep("input::push"_Stz,      &Step::vInputPush);
+  vAddStep("input::read"_Stz,      &Step::vInputRead);
   vAddStep("input::stdin"_Stz,     &Step::vInputStdin);
   vAddStep("input::text"_Stz,      &Step::vInputText);
   vAddStep("input::token"_Stz,     &Step::vInputToken);
@@ -45,18 +45,6 @@ void Step::vInputDump(void)
     
   m_pCompiler->vDump();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* input::next -- get next input token from current input stream              */
-/*----------------------------------------------------------------------------*/
-void Step::vInputNext(void)
-{
-  ENTRY(); // ENTRY("vInputNext"_Stz);
-    
-  m_pCompiler->vReadToken_cpl();
-
   EXIT();
 }
 
@@ -100,6 +88,18 @@ void Step::vInputPush(void)
   
   m_pCompiler->vPush();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::read -- read next token from input stream                           */
+/*----------------------------------------------------------------------------*/
+void Step::vInputRead(void)
+{
+  ENTRY(); // ENTRY("vInputRead"_Stz);
+    
+  m_pCompiler->vReadToken_cpl();
+
   EXIT();
 }
 
