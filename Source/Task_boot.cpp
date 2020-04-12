@@ -377,7 +377,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
       default:
         vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
                "Invalid m_eToken %lld %s"_Stz,
-               m_pForth->m_pCompiler->pTokeniser()->eToken(),
+               m_pForth->m_pCompiler->eToken(),
                m_pForth->m_pCompiler->szToken()
                );
     }
