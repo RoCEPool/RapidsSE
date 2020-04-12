@@ -87,7 +87,7 @@
 
   begin
   
-    next-token
+    input::next
     
     dup "}" str.equal not
     
@@ -97,10 +97,10 @@
     to sTagName
     
     // skip the =
-    next-token drop
+    input::next drop
     
     // collect the tag value
-    next-token to sTagValue
+    input::next to sTagValue
     
     // add the decoded
     sTagName sTagValue tagSet::addReplace
@@ -121,7 +121,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* copy ename set of next-token and copy into word being compiled             */
+/* copy ename set of input::next and copy into word being compiled             */
 /*----------------------------------------------------------------------------*/
 : tagCopy: immediate ( -- )
 
@@ -137,7 +137,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get the ename set to be copied
-  next-token find to pSrcTagWord
+  input::next find to pSrcTagWord
   
   pSrcTagWord not if
   then

@@ -458,6 +458,7 @@ public:
   // input
   void vInputClose(void);
   void vInputDump(void);
+  void vInputNext(void);
   void vInputOpen(void);
   void vInputPop(void);
   void vInputPush(void);
@@ -1513,9 +1514,6 @@ public:
   void vToPtr(void);
   void vToStr(void);
   void vToTask(void);
-
-  // token
-  void vTokenColon(void);
 
   // trace
   void vTraceOff(void);

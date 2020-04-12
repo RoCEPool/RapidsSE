@@ -258,7 +258,7 @@ params| sTableNm |
 
   // create a word using next token from input source as the word name
 
-  next-token locals| sOpNm |
+  input::next locals| sOpNm |
 
   sOpNm series-name "_syntax" str.cat :create
 
@@ -277,7 +277,7 @@ params| sTableNm |
     pEnameSet enameSet.appendStr
 
   // skip the :: token from input source
-  next-token drop
+  input::next drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -287,7 +287,7 @@ params| sTableNm |
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
   begin
-    next-token
+    input::next
     dup ";" str.equal not
     while
 
@@ -332,7 +332,7 @@ params| sTableNm |
   0 0 0 0 locals| pWord sEname sEvalue pEnameSet |
 
   // create a word using next token from input source as the word name
-  next-token "_info" str.cat :create
+  input::next "_info" str.cat :create
 
   compiler::current@ to pWord
 
@@ -350,18 +350,18 @@ params| sTableNm |
   "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
 
   // skip the "{" token from input source
-  next-token drop
+  input::next drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
 
   begin
-    next-token
+    input::next
     dup "}" str.equal not
   while
     to sEname
-    next-token drop
-    next-token to sEvalue
+    input::next drop
+    input::next to sEvalue
     sEname sEvalue pWord jobInfo::addEname
   repeat
 
@@ -371,7 +371,7 @@ params| sTableNm |
   drop
 
   // get and drop ";"
-  next-token drop
+  input::next drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set

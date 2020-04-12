@@ -71,7 +71,7 @@ jobInfo: service
   0 locals| nArgs |
 
   begin
-    next-token
+    input::next
   dup ";&" str.equal not
   while
     nArgs ++ to nArgs

@@ -11,6 +11,7 @@ void Step::vAddSteps_Input(void)
 {
   vAddStep("input::close"_Stz,     &Step::vInputClose);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
+  vAddStep("input::next"_Stz,      &Step::vInputNext);
   vAddStep("input::open"_Stz,      &Step::vInputOpen);
   vAddStep("input::pop"_Stz,       &Step::vInputPop);
   vAddStep("input::push"_Stz,      &Step::vInputPush);
@@ -20,8 +21,6 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::token"_Stz,     &Step::vInputToken);
   vAddStep("input::type"_Stz,      &Step::vInputType);
   vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
-
-  vAddStep("next-token"_Stz,       &Step::vTokenColon);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +43,22 @@ void Step::vInputDump(void)
   ENTRY(); // ENTRY("vInputDump"_Stz);
     
   m_pCompiler->vDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::next -- read next token and push its term                           */
+/*----------------------------------------------------------------------------*/
+void Step::vInputNext(void)
+{
+  ENTRY(); // ENTRY("vTokenColon"_Stz);
+  
+  m_pCompiler->vReadToken_cpl();
+  
+  s48K sTkn(m_pCompiler->szToken());
+  
+  m_pDataStack->vPushStr(sTkn);
   
   EXIT();
 }
@@ -77,7 +92,7 @@ void Step::vInputPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::push -- push input stream, allowing for new input stream            */
+/* input::push -- push new input stream                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vInputPush(void)
 {
@@ -104,7 +119,7 @@ void Step::vInputRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::stdin -- use stdin as new input stream                              */
+/* input::stdin -- use stdin as input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vInputStdin(void)
 {
@@ -120,7 +135,7 @@ void Step::vInputStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::text -- use string as new input stream                              */
+/* input::text -- use string as input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vInputText(void)
 {
@@ -181,22 +196,6 @@ void Step::vInputUnknown(void)
   vTrace("\n"_Stz);
 
   AM::vBootError(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* next-token -- token colon                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTokenColon(void)
-{
-  ENTRY(); // ENTRY("vTokenColon"_Stz);
-  
-  m_pCompiler->vReadToken_cpl();
-  
-  s48K sTkn(m_pCompiler->szToken());
-  
-  m_pDataStack->vPushStr(sTkn);
   
   EXIT();
 }
