@@ -28,9 +28,7 @@ Compiler::Compiler(void)
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPushCharser();
   m_pTokeniser->vUseString(""_Stz);
-  
-  m_pTknVec = new TokenVec;
-  
+    
   m_nLocals    = 0;
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
@@ -48,7 +46,6 @@ Compiler::~Compiler(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   delete m_pTokeniser;
-  delete m_pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/

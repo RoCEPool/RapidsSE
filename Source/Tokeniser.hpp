@@ -11,7 +11,7 @@ namespace LexicalAnalysis
     Charser*  m_pCharser;  // charser
   
     bool      m_bMalloc;   // malloc or pool heap?
-    bool      m_bNormal;   // normal tokens?
+    bool      m_bNormal;   // normal or sen tokens?
     AnnChar   m_xAnnChar;  // annotated char from parser
     
     Token     m_oToken;    // working token

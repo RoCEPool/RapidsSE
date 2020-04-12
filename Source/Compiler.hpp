@@ -13,8 +13,6 @@ namespace SenVM
   
     Tokeniser* m_pTokeniser; // input stream tokenizer
 
-    TokenVec*  m_pTknVec;    //
-
     i8    m_nLocals;         // number of locals/params variables
     Word* m_paWord[C_MAX_NESTED_WORDS]; // array of nested words
  
