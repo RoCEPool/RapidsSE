@@ -206,6 +206,18 @@ void Compiler::vReadToken_cpl(void)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* get token type                                                             */
+/*----------------------------------------------------------------------------*/
+eTN Compiler::eToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  eTN eToken = m_pTokeniser->eToken();
+  
+  return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current token                                                          */
 /*----------------------------------------------------------------------------*/
 Stz* Compiler::szToken(void)
@@ -239,6 +251,27 @@ Tokeniser* Compiler::pTokeniser(void)
   
   return m_pTokeniser;
 }
+
+/*----------------------------------------------------------------------------*/
+/* use end                                                                    */
+/*----------------------------------------------------------------------------*/
+void Compiler::vUseEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vUseEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* use string                                                                 */
+/*----------------------------------------------------------------------------*/
+void Compiler::vUseString(Stz* szString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vUseString(szString);
+}
+
 
 
 /*----------------------------------------------------------------------------*/

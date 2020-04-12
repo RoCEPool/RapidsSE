@@ -29,28 +29,22 @@ namespace SenVM
    ~Compiler(void) noexcept(false);
   
     bool  bCompiling(void);
-
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
-  
     bool  bInterpreting(void);
-  
     i8    nLocals(void);
     void  vLocals(i8 nLocals);
-
     eCM   eMode(void);
     void  vMode(eCM eMode);
-  
     Word* pNestedWord(i8 i_Nested);
     void  vNestedWord(i8 i_Nested, Word* pNested);
-  
     bool  bPostponing(void);
-  
     void  vReadToken_cpl(void);
-    
+    eTN   eToken(void);
     Stz*  szToken(void);
-  
     Tokeniser* pTokeniser(void);
+    void  vUseEnd(void);
+    void  vUseString(Stz* szString);
 
     Footer* aFooter(void);
   };

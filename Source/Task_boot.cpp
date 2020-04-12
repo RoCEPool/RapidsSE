@@ -300,7 +300,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
   vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
-  pCompiler->pTokeniser()->vUseString(sDefinition);
+  pCompiler->vUseString(sDefinition);
   
   // get :
   pCompiler->vReadToken_cpl();
@@ -323,7 +323,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 
   pCompiler->vReadToken_cpl();
   
-  while (TN_EOF != pCompiler->pTokeniser()->eToken()) {
+  while (TN_EOF != pCompiler->eToken()) {
     
     //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
     
@@ -331,7 +331,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
     if (pCompiler->szToken()->bEqual(";"_Stz))
       break;
     
-    eTN eToken = pCompiler->pTokeniser()->eToken();
+    eTN eToken = pCompiler->eToken();
     switch (eToken) {
         
       case TN_INTEGER:
@@ -389,7 +389,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
 
   // reset scanning
-  pCompiler->pTokeniser()->vUseEnd();
+  pCompiler->vUseEnd();
   
   return pNewWord;
 }
@@ -407,14 +407,14 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   
   Compiler* pCompiler = m_pForth->m_pCompiler;
   
-  pCompiler->pTokeniser()->vUseString(sDefinition);
+  pCompiler->vUseString(sDefinition);
   
   // get string
   pCompiler->vReadToken_cpl();
   
   if (AM::bVerbose())
     vTrace("CompileConstant: %s\n"_Stz,
-           pCompiler->szToken()->azChar());
+           pCompiler->szToken());
   
   sValue = (Stz*)pCompiler->szToken()->azChar();
   
@@ -426,7 +426,7 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   pCompiler->vReadToken_cpl();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
 
-  Stz* szName = (Stz*)pCompiler->szToken()->azChar();
+  Stz* szName = (Stz*)pCompiler->szToken();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   
@@ -434,7 +434,7 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   
   pCompiler->vReadToken_cpl();
   
-  pCompiler->pTokeniser()->vUseEnd();
+  pCompiler->vUseEnd();
 }
 
 /*============================================================================*/
