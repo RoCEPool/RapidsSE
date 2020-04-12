@@ -7,6 +7,7 @@ namespace SenVM
 {
   class Forth : public Object
   {
+    friend class Tasks::Task;
   public:
     Task*     m_pTask;        // which task
     RegSet*   m_pRegSet;      // associated register set
@@ -20,6 +21,7 @@ namespace SenVM
     DicStack  m_oDicStack;      // dictionary stack
     DicStack  m_oSaveDicStack;  // save dictionary stack
 
+  protected:
     Cell*     m_aInxPtr;      // instruction/cell pointer
   
     Stack*    m_pAuxStack;    // auxiliary stack
@@ -28,7 +30,6 @@ namespace SenVM
  
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
   
-  protected:
     Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
     //Tokeniser*  m_pTokeniser;   // word compiler (Job boot, create table etc)
 

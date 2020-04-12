@@ -20,7 +20,6 @@ void Step::vAddSteps_Astack(void)
   vAddStep("astk"_Stz,            &Step::vAstackStk);
   vAddStep(">a"_Stz,              &Step::vAstackToA);
   vAddStep("a>"_Stz,              &Step::vAstackToD);
-  vAddStep(">auxStack"_Stz,       &Step::vAstackTransfer);
   vAddStep("aswap"_Stz,           &Step::vAstackSwap);
   vAddStep("a0"_Stz,              &Step::vAstack0);
   vAddStep("a1"_Stz,              &Step::vAstack1);
@@ -253,25 +252,6 @@ void Step::vAstackToD(void)
   m_pAuxStack->vPopVal(xVal,__func__);
   
   m_pDataStack->vPushVal(xVal);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >auxStack -- pop stack of this task and push onto aux stack of that task   */
-/*----------------------------------------------------------------------------*/
-void Step::vAstackTransfer(void)
-{
-  ENTRY(); // ENTRY("vAstackTransfer"_Stz);
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  Datum xVariable;
-  m_pDataStack->vPopVal(xVariable,__func__);
-  
-  pThatTask->m_okLock.vGrabWrite();
-  pThatTask->m_pForth->m_pAuxStack->vPushVal(xVariable);
-  pThatTask->m_okLock.vDropWrite();
   
   EXIT();
 }

@@ -83,7 +83,6 @@ public:
   void vAstackSwap(void);
   void vAstackToA(void);
   void vAstackToD(void);
-  void vAstackTransfer(void);
   void vAstack0(void);
   void vAstack1(void);
   void vAstack2(void);
@@ -241,7 +240,6 @@ public:
   void vDstackRotInv(void);
   void vDstackStk(void);
   void vDstackSwap(void);
-  void vDstackTransfer(void);
   void vDstackTuck(void);
 
   // encode

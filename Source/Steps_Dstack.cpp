@@ -25,27 +25,7 @@ void Step::vAddSteps_Dstack(void)
   vAddStep("-rot"_Stz,            &Step::vDstackRotInv);
   vAddStep("stk"_Stz,             &Step::vDstackStk);
   vAddStep("swap"_Stz,            &Step::vDstackSwap);
-  vAddStep(">DStack"_Stz,         &Step::vDstackTransfer);
   vAddStep("tuck"_Stz,            &Step::vDstackTuck);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* >DStack -- pop stack of this task and push onto aux stack of that task     */
-/*----------------------------------------------------------------------------*/
-void Step::vDstackTransfer(void)
-{
-  ENTRY(); // ENTRY("vDstackTransfer"_Stz);
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iVal = m_pDataStack->iPopInt(__func__);
-  
-  pThatTask->m_okLock.vGrabWrite();
-  pThatTask->m_pForth->m_pDataStack->vPushInt(iVal);
-  pThatTask->m_okLock.vDropWrite();
-  
-  EXIT();
 }
 
 
