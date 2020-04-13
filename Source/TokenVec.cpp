@@ -60,6 +60,89 @@ TokenVec::~TokenVec(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* replace tokens                                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vReplace(TokenVec* pThisVec,
+                              TokenVec* pFindVec, TokenVec* pWithVec)
+{
+  _static_
+  
+  i8 nTokens = pThisVec->nTokens();
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+    
+    Token* pThisToken = pThisVec->pGet(i_Token);
+    
+    i8 i_Find = pFindVec->iFindToken(pThisToken->szTerm());
+    
+    if (C_UNKNOWN == i_Find)
+      continue;
+    
+    Token* pWithToken = pWithVec->pGet(i_Find);
+
+    pThisToken->vCopy(pWithToken->szTerm());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract sub vector of tokens                                               */
+/*----------------------------------------------------------------------------*/
+TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To)
+{
+  _static_
+  
+  TokenVec* pExtractedVec = new TokenVec;
+
+  i8 nTokens = pTknVec->nTokens();
+  
+  i8 i_Token;
+  for (i_Token = i_From; i_Token < nTokens && i_Token <= i_To; i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
+    pExtractedVec->vAppendToken(pToken->szTerm());
+  }
+  
+  return pExtractedVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract sub vector of tokens                                               */
+/*----------------------------------------------------------------------------*/
+TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
+{
+  _static_
+
+  i8 nTokens = pTknVec->nTokens();
+  
+  i8 i_Token;
+  for (i_Token = 0; i_Token < nTokens; i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
+    if (pToken->bSame(szStart)) {
+      break;
+    }
+  }
+
+  if (i_Token >= nTokens)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TokenVec* pExtractedVec = new TokenVec;
+
+  for (i_Token++; i_Token < nTokens; i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
+    if (pToken->bSame(szEnd))
+      break;
+    
+    pExtractedVec->vAppendToken(pToken->szTerm());
+  }
+  
+  return pExtractedVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
