@@ -4,42 +4,17 @@
 
 #include "LexicalAnalysis.h"
 
-
 extern Args gxArgs;
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Charser* Charser::_pParser(void* aAddr)
-{
-  Charser* pParser = reinterpret_cast<Charser*>(aAddr);
-  
-  RASSERT_TYPE(pParser,CN_CHARSER);
-  
-  return pParser;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Charser::operator new(size_t)
-{
-  Charser* pParser;
-  
-  pParser = reinterpret_cast<Charser*>(HeapMem::pAllocate(CN_CHARSER));
-    
-  return pParser;
-}
+__pCastFunction(LexicalAnalysis,Charser,CN_CHARSER)
+__aNewFunction(Charser,CN_CHARSER)
+__vDeleteFunction(Charser,CN_CHARSER)
+__aFooterFunction(Charser)
 
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Charser::operator delete(void* pParserAddress)
-{
-  Charser* pParser = reinterpret_cast<Charser*>(pParserAddress);
-  
-  HeapMem::vFree(pParser);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -78,11 +53,11 @@ Charser::~Charser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Charser* pParser = _pParser(pObject);
+  Charser* pCharser = _pCharser(pObject);
   
   vTrace("depth %lld next %p\n"_Stz,
-         pParser->m_iDepth,
-         pParser->m_pNext);
+         pCharser->m_iDepth,
+         pCharser->m_pNext);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -900,20 +875,6 @@ void Charser::vReadRawLineStdin(void)
   m_acRawChar = m_sRawLine.azChar();
   
   ASSERT(! m_bEOF);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Charser::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/

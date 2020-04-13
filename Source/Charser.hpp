@@ -111,6 +111,8 @@ namespace LexicalAnalysis
     
     Footer* aFooter(void);
   };
+
+  Charser* _pCharser(void* aAddr);
 }
 
 /*============================================================================*/
