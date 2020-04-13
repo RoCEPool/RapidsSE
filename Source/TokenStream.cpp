@@ -46,6 +46,16 @@ TokenStream::~TokenStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* input will be cpp tokens                                                   */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vCppTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  m_pTokeniser->vCppTokens();
+}
+
+/*----------------------------------------------------------------------------*/
 /* using stdin ?                                                              */
 /*----------------------------------------------------------------------------*/
 bool TokenStream::bIsStdIn(void)
@@ -116,6 +126,16 @@ bool TokenStream::bReadToken(void)
 //    return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* input will be sen tokens                                                   */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vSenTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  m_pTokeniser->vSenTokens();
 }
 
 /*----------------------------------------------------------------------------*/

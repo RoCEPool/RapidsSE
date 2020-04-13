@@ -25,11 +25,13 @@ namespace LexicalAnalysis
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static bool bExecute(Stz* aCommand);
   
+    void vCppTokens(void);
     bool bIsStdIn(void);
     void vLineMode(bool bLineMode);
     void vPushFile(Stz* szPath);
     void vReadCommand(void);
     bool bReadToken(void);
+    void vSenTokens(void);
     Tokeniser* pTokeniser(void);
     TokenVec* pTokenVec(void);
     void vUseEnd(void);
