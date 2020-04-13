@@ -60,7 +60,7 @@ namespace Sessions
     Semantic*  m_pSemantic;
   
   private:
-    TokenVec m_xTokenVec;  // token vector
+    //TokenVec m_xTokenVec;  // token vector
 
 
     // must be last
