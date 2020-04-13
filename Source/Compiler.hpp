@@ -11,7 +11,8 @@ namespace SenVM
     Word* m_pCurrent;        // current word being compiled
     eCM   m_eMode;           // current mode of compiler
   
-    Tokeniser* m_pTokeniser; // input stream tokenizer
+    Tokeniser*   m_pTokeniser;   // input stream tokenizer
+    TokenStream* m_pTokenStream; // input stream 
 
     i8    m_nLocals;         // number of locals/params variables
     Word* m_paWord[C_MAX_NESTED_WORDS]; // array of nested words
