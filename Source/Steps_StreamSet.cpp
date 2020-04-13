@@ -610,7 +610,7 @@ void Step::vStreamSetName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].new -- new an infoset operand                                    */
+/* StreamSet[].new -- new an infoset operand                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetNew(void)
 {
@@ -618,7 +618,9 @@ void Step::vStreamSetNew(void)
   
   ASSERT(m_pRegSet->m_xpStreamSet.bIsNull());
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
   m_pRegSet->m_xpStreamSet = new InfoSet(pStreamDef);
   
@@ -626,7 +628,7 @@ void Step::vStreamSetNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].nextRow -- get next row from the infoset                         */
+/* StreamSet[].nextRow -- get next row from the infoset                       */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetNextRow(void)
 {
@@ -641,7 +643,7 @@ void Step::vStreamSetNextRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].pipeOut -- pipeout infoset                                       */
+/* StreamSet[].pipeOut -- pipeout infoset                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetPipeOut(void)
 {

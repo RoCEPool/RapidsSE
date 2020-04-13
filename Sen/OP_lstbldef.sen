@@ -29,7 +29,7 @@
   StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] StreamSet[].new
+  streamSetTable[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word

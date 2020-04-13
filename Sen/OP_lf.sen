@@ -13,10 +13,13 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
 
-  // create an infoSet operand
-  StreamDef[] StreamSet[].new
+  // create a streamSet operand
+  streamSetTable[] streamSet[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
@@ -37,13 +40,10 @@
     then
 
     object@ word.name@
-    StreamDef[] StreamSet[].addListFolder assert
+    streamSetTable[] StreamSet[].addListFolder assert
 
     object@ word.prev object!      // step backwards thru words
   next
-
-  // pipeout the streamDef
-  StreamDef[].pipeout
 
   // pipeout the infoset
   StreamSet[].pipeout

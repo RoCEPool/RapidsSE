@@ -24,7 +24,7 @@
   StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] StreamSet[].new
+  streamSetTable[] StreamSet[].new
 
   // get no of columns in the index
   index[].columnCount@ to iColumns

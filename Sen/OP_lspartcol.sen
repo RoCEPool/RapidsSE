@@ -28,7 +28,7 @@
   StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] StreamSet[].new
+  streamSetTable[] StreamSet[].new
 
   // insert a row in the infoset for each column
   iPartitionCols 0 do
