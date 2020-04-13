@@ -606,6 +606,15 @@ Stz* Tokeniser::szToken(void)
   return pCurrToken->szTerm();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get token string                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_pTknVec;
+}
 
 /*----------------------------------------------------------------------------*/
 /* end use of source                                                          */

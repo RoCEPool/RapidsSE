@@ -108,6 +108,18 @@ bool TokenStream::bReadToken(TokenVec* pTknVec, Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* read next token from stream                                                */
+/*----------------------------------------------------------------------------*/
+TokenVec* TokenStream::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+
+  TokenVec* pTknVec = m_pTokeniser->pTokenVec();
+  
+  return pTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vUseStdin(void)
