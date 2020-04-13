@@ -24,14 +24,10 @@ TokenStream::TokenStream(void)
   m_pTokeniser = new Tokeniser;
   
   m_pTokeniser->vMalloc(false);
+  
   m_pTokeniser->vPushCharser();
   
-  //if (gxArgs.m_bPrompt)
-     m_pTokeniser->vUseStdin();
-  
-  m_pTokeniser->vLineMode(true);
-  m_pTokeniser->vNormal(true);
-
+  vUseStdin();
     
   _checkInitialised_(CN_TOKENSTREAM);
   
@@ -135,9 +131,7 @@ void TokenStream::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vUseStdin();
-  m_pTokeniser->vLineMode(true);
-  m_pTokeniser->vNormal(true);
+  m_pTokeniser->vUseStdinX();
 }
 
 /*============================================================================*/

@@ -26,6 +26,7 @@ Compiler::Compiler(void)
   m_eMode      = CM_INTERPRETING;
 
   m_pTokeniser = new Tokeniser;
+
   m_pTokeniser->vPushCharser();
   m_pTokeniser->vUseString(""_Stz);
     
@@ -288,7 +289,7 @@ void Compiler::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
-  m_pTokeniser->vUseStdin();
+  m_pTokeniser->vUseStdinX();
 }
 
 /*----------------------------------------------------------------------------*/

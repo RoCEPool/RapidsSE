@@ -57,7 +57,7 @@ namespace LexicalAnalysis
     TokenVec* pTokenVec(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
-    void vUseStdin(void);
+    void vUseStdinX(void);
     void vUseString(Stz* szString);
  
   private:    

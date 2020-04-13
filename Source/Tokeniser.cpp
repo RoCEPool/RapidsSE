@@ -574,11 +574,13 @@ bool Tokeniser::bUseFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseStdin(void)
+void Tokeniser::vUseStdinX(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser->vUseStdin();
+  vLineMode(true);
+  vNormal(true);
 }
 
 /*----------------------------------------------------------------------------*/
