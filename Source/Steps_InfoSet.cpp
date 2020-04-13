@@ -10,8 +10,6 @@
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
-  vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vInfoSetAddGridSanity);
-  vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vInfoSetAddSpaceInfo);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
@@ -29,77 +27,6 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addGridSanity -- add a row to the infoset with the gridSanity    */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddGridSanity(void)
-{
-  ENTRY(); // ENTRY("vInfoSetDelete"_Stz);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
-  //StreamDef* pStreamDefNI = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  //pNodeInfo->vDump(pStreamDefNI);
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  // get regionSize on this node
-  bool bRegionSize = false;
-  i8 iRegionSize = AM::iRegionSize();
-  if (pNodeInfo->m_waColVal[1] == iRegionSize)
-    bRegionSize = true;
-  
-  // get slots per node for this node
-  bool bPartitions = false;
-  i8 nSlotsPerNode = pGrid->nSlotsPerNode();
-  if (pNodeInfo->m_waColVal[2] == nSlotsPerNode)
-    bPartitions = true;
-  
-  // check if the regionSize and partitions match
-  bool bHomogenous = false;
-  if ( bRegionSize && bPartitions )
-    bHomogenous = true;
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pNodeInfo->szStzGet(0),
-                                  bHomogenous,
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddNodeInfo(void)
-{
-  ENTRY(); // ENTRY("vInfoSetDelete"_Stz);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pGrid->pThisNode()->szNodeNm(),
-                                  AM::iRegionSize(),
-                                  pGrid->nSlotsPerNode(),
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

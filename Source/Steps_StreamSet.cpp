@@ -72,19 +72,24 @@ void Step::vStreamSetAddColumnDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addGridSanity -- add a row to the infoset with the gridSanity    */
+/* StreamSet[].addGridSanity -- add a row to the infoset with the gridSanity  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddGridSanity(void)
 {
   ENTRY(); // ENTRY("vStreamSetDelete"_Stz);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
   Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
   //StreamDef* pStreamDefNI = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
   //pNodeInfo->vDump(pStreamDefNI);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
   
@@ -105,7 +110,7 @@ void Step::vStreamSetAddGridSanity(void)
   if ( bRegionSize && bPartitions )
     bHomogenous = true;
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNodeInfo->szStzGet(0),
                                   bHomogenous,
@@ -222,12 +227,17 @@ void Step::vStreamSetAddNodeInfo(void)
 {
   ENTRY(); // ENTRY("vStreamSetDelete"_Stz);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pGrid->pThisNode()->szNodeNm(),
                                   AM::iRegionSize(),

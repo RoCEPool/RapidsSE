@@ -10,22 +10,22 @@
 : nodeInfo_action
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
-
-  // create an infoSet operand
-  StreamDef[] InfoSet[].new
-
-  // add nodeInfo to the infoSet
-  StreamDef[] InfoSet[].addNodeInfo assert
+  streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] streamSet[].new
+
+  // add nodeInfo to the infoSet
+  streamSetTable[] streamSet[].addNodeInfo assert
 
   // pipeout the infoset
-  InfoSet[].pipeout
+  streamSet[].pipeout
 
   true
 ;
