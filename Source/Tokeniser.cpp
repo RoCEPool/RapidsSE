@@ -142,24 +142,6 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   TokenVec* pTknVec = new TokenVec;
   
   vTokenise(pTknVec,szString);
-//  Tokeniser* pTokeniser = new Tokeniser;
-//  pTokeniser->vPushParser();
-//  pTokeniser->vUseString(szString);
-//
-//  for (i8 i_Token = 0; ; i_Token++) {
-//    pTokeniser->vNextToken_x();
-//    if (TN_EOF == pTokeniser->eToken())
-//      break;
-//
-//    pTknVec->vIncTokens();
-//
-//    Token* pToken = pTknVec->pGet(i_Token);
-//    pToken->vToken(pTokeniser->eToken());
-//    pToken->vCopy(pTokeniser->szToken());
-//
-//  }
-//
-//  delete pTokeniser;
   
   return pTknVec;
 }
@@ -431,13 +413,6 @@ void Tokeniser::vPushCharser(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-//void Tokeniser::vReadToken_nil(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-//
-//  vReadToken_vec(nullptr,&m_oToken);
-//}
-/*----------------------------------------------------------------------------*/
 void Tokeniser::vReadToken_nil(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -492,15 +467,6 @@ bool Tokeniser::bStdin(void)
 /*----------------------------------------------------------------------------*/
 /* get token type                                                             */
 /*----------------------------------------------------------------------------*/
-//eTN Tokeniser::eToken(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-//
-//  eTN eToken = m_oToken.eToken();
-//
-//  return eToken;
-//}
-/*----------------------------------------------------------------------------*/
 eTN Tokeniser::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -514,13 +480,6 @@ eTN Tokeniser::eToken(void)
 
 /*----------------------------------------------------------------------------*/
 /* get token string                                                           */
-/*----------------------------------------------------------------------------*/
-//Stz* Tokeniser::szToken(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-//
-//  return m_oToken.szTerm();
-//}
 /*----------------------------------------------------------------------------*/
 Stz* Tokeniser::szToken(void)
 {
