@@ -35,7 +35,7 @@ success
 lscat;
 rows: ('rapidsse')
 
-create catalog "myCatalog";
+create catalog myCatalog;
 success
 
 lscat;
@@ -43,7 +43,7 @@ rows:
   ('rapidsse')
   ('myCatalog')
 
-drop catalog "myCatalog";
+drop catalog myCatalog;
 success
 
 cf "default";
@@ -55,7 +55,7 @@ rows:
 
 CLEANUP {
   
-  drop catalog "myCatalog";
+  drop catalog myCatalog;
   mute
   
   cf "default";

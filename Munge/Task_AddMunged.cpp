@@ -5062,7 +5062,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check if we can remove the schema\n"
     "  //pJob_DropSchema job.schemaName@\n"
-    "  <schemaNm> checkRemoveSchema not if job[] ERROR_JOB !!logError exit then\n"
+    "  //<schemaNm> checkRemoveSchema not if job[] ERROR_JOB !!logError exit then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

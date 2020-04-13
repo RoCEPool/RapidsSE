@@ -1,0 +1,82 @@
+/*----------------------------------------------------------------------------*/
+/* lssch.test -- list schemas                                                 */
+/*----------------------------------------------------------------------------*/
+
+pwf;
+rows:
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// list schemas when not in schemas folder
+lssch;
+failure contains: 'not in schemas'
+
+// cf to tenants
+cf "tenants";
+success
+
+// list schemas when not in catalogs folder
+lssch;
+failure contains: 'not in schemas'
+
+// cf to boray tenant
+cf "boray";
+success
+
+// list schemas when not in catalogs folder
+lssch;
+failure contains: 'not in schemas'
+
+// cf to catalogs
+cf "catalogs";
+success
+
+// list schemas when not in catalogs folder
+lssch;
+failure contains: 'not in schemas'
+
+// cf to catalogs
+cf "rapidsse";
+success
+
+// list schemas when not in catalogs folder
+lssch;
+failure contains: 'not in schemas'
+
+// cf to schemas
+cf "schemas";
+success
+
+// list schemas when not in catalogs folder
+lssch;
+rows: ('public')
+
+create schema "mySchema";
+success
+
+lssch;
+rows:
+  ('public')
+  ('mySchema')
+
+drop schema mySchema;
+success
+
+cf "default";
+success
+
+pwf;
+rows:
+('/tenants/boray/catalogs/rapidsse/schemas/public/tables');
+
+CLEANUP {
+  
+  drop catalog "mySchema";
+  mute
+  
+  cf "default";
+  mute;
+  
+  bye;
+  mute
+}
+
