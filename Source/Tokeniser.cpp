@@ -325,7 +325,9 @@ void Tokeniser::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser = new(false) Charser(m_pCharser);
+  Charser* pNewCharser = new Charser(m_pCharser);
+  
+  m_pCharser = pNewCharser;
 }
 
 /*----------------------------------------------------------------------------*/

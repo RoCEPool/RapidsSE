@@ -22,17 +22,12 @@ Charser* Charser::_pParser(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Charser::operator new(size_t, i8 iViaMalloc)
+void* Charser::operator new(size_t)
 {
   Charser* pParser;
   
-  if (iViaMalloc)
-    pParser = reinterpret_cast<Charser*>(MemLib::aMallocBlock(sizeof(Charser)));
-  else
-    pParser = reinterpret_cast<Charser*>(HeapMem::pAllocate(CN_CHARSER));
-  
-  pParser->m_iViaMalloc = iViaMalloc;
-  
+  pParser = reinterpret_cast<Charser*>(HeapMem::pAllocate(CN_CHARSER));
+    
   return pParser;
 }
 
@@ -43,10 +38,7 @@ void Charser::operator delete(void* pParserAddress)
 {
   Charser* pParser = reinterpret_cast<Charser*>(pParserAddress);
   
-  if (pParser->m_iViaMalloc)
-    MemLib::vFreeBlock(pParser,sizeof(Charser));
-  else
-    HeapMem::vFree(pParser);
+  HeapMem::vFree(pParser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,8 +80,7 @@ void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Charser* pParser = _pParser(pObject);
   
-  vTrace("%s depth %lld next %p\n"_Stz,
-         pParser->m_iViaMalloc ? "malloc"_Stz : "pool"_Stz,
+  vTrace("depth %lld next %p\n"_Stz,
          pParser->m_iDepth,
          pParser->m_pNext);
 }

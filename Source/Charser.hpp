@@ -10,8 +10,7 @@ namespace LexicalAnalysis
   class Charser : public Object
   {
   private:
-    i8      m_iViaMalloc; // is this object in malloc heap (or small heap)?
-    i8      m_iDepth;     // depth of this parser
+    i8       m_iDepth;    // depth of this parser
     Charser* m_pNext;     // next parser in stack
     
     // source definition
@@ -41,7 +40,7 @@ namespace LexicalAnalysis
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, i8 iViaMalloc);
+    void* operator new(size_t);
     void operator delete(void* pDirAddress);
     
     Charser(Charser* pNext);
