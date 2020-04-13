@@ -45,7 +45,11 @@ void Step::vStreamSetAddColumnDef(void)
 {
   ENTRY(); // ENTRY("vStreamSetAddColumnDef"_Stz);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
 
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   
@@ -114,7 +118,7 @@ void Step::vStreamSetAddGridSanity(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addListContents -- add a row to infoset with the list contents   */
+/* StreamSet[].addListContents -- add a row to infoset with the list contents */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListContents(void)
 {
@@ -186,8 +190,11 @@ void Step::vStreamSetAddListIndex(void)
 {
   ENTRY(); // ENTRY("vStreamSetAddListIndex"_Stz);
   
-  // get the streamDef
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
   // get the index
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));

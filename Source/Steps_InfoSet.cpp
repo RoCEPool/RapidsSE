@@ -10,9 +10,7 @@
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
-  vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vInfoSetAddColumnDef);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vInfoSetAddGridSanity);
-  vAddStep("InfoSet[].addListIndex"_Stz,   &Step::vInfoSetAddListIndex);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vInfoSetAddPingInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
@@ -34,35 +32,6 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addColumnDef -- add a row to the infoset with the column def     */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddColumnDef(void)
-{
-  ENTRY(); // ENTRY("vInfoSetAddColumnDef"_Stz);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pColumn->szColNm(),
-                                  aCT[pColumn->eColumnType()],
-                                  pColumn->iColumnLength(),
-                                  pColumn->iColumnScale(),
-                                  (i8)pColumn->bIsNullable(),
-                                  (i8)pColumn->bIsPtnKey(),
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,35 +74,6 @@ void Step::vInfoSetAddGridSanity(void)
                                   bHomogenous,
                                   C_VARGS_END);
   ASSERT(pRow);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addListIndex -- add a row to infoset with the list index         */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddListIndex(void)
-{
-  ENTRY(); // ENTRY("vInfoSetAddListIndex"_Stz);
-  
-  // get the streamDef
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  // get the index
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pIndex->szIndexNm(),
-                                  (i8)pIndex->bIsUnique(),
-                                  (i8)pIndex->bIsPrimaryKey(),
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   

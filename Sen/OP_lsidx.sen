@@ -43,6 +43,9 @@
   // create a new streamDef
   StreamSetTable[] StreamDef[].new
 
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
@@ -54,7 +57,7 @@
 
     object@ word.name@ folder[].findSymbol execute to pIndex
 
-    pIndex StreamDef[] StreamSet[].addListIndex assert
+    pIndex streamSetTable[] StreamSet[].addListIndex assert
 
     object@ word.prev object!      // step backwards thru words
   next
@@ -66,9 +69,6 @@
   // pop table dictionary
   path[].discardTableFolder
   folder[].isTables assert
-
-  // pipeout the streamDef
-  StreamDef[].pipeout
 
   // pipeout the infoset
   StreamSet[].pipeout

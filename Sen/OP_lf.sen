@@ -15,14 +15,14 @@
   // create a new streamDef
   streamSetTable[] streamDef[].new
 
-  // create a streamSet operand
-  streamSetTable[] streamSet[].new
-
   // pipeout the streamDef
   streamDef[].pipeout
 
+  // create a streamSet operand
+  streamSetTable[] streamSet[].new
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // insert a row in the infoSet for each word
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words

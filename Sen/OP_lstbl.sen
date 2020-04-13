@@ -28,6 +28,9 @@
   // create a new streamDef
   StreamSetTable[] StreamDef[].new
 
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
@@ -52,9 +55,6 @@
 
     object@ word.prev object!      // step backwards thru words
   next
-
-  // pipeout the streamDef
-  StreamDef[].pipeout
 
   // pipeout the infoset
   StreamSet[].pipeout

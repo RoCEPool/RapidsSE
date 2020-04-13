@@ -420,9 +420,7 @@ public:
   void vRegIndexPtnSet(void);
 
   // reg info set
-  void vInfoSetAddColumnDef(void);
   void vInfoSetAddGridSanity(void);
-  void vInfoSetAddListIndex(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddPingInfo(void);
   void vInfoSetAddProgressUnits(void);

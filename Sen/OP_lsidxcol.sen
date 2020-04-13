@@ -23,6 +23,9 @@
   // create a new streamDef
   StreamSetTable[] StreamDef[].new
 
+  // pipeout the streamDef
+  StreamDef[].pipeout
+
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
@@ -33,11 +36,8 @@
   // insert a row in the infoSet for each index column
   iColumns 0 do
     I index[].column@
-    StreamDef[] StreamSet[].addColumnDef assert
+    StreamSetTable[] StreamSet[].addColumnDef assert
   loop
-
-  // pipeout the streamDef
-  StreamDef[].pipeout
 
   // pipeout the infoset
   StreamSet[].pipeout
