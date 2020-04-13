@@ -26,6 +26,7 @@ namespace LexicalAnalysis
     static bool bExecute(Stz* aCommand);
   
     bool bIsStdIn(void);
+    void vLineMode(bool bLineMode);
     void vPushFile(Stz* szPath);
     void vReadCommand(void);
     bool bReadToken(void);

@@ -58,6 +58,16 @@ bool TokenStream::bIsStdIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vLineMode(bool bLineMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  m_pTokeniser->vLineMode(bLineMode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
 //void TokenStream::vPushFile(Stz* szPath)
