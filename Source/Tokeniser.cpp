@@ -23,7 +23,7 @@ Tokeniser::Tokeniser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser = nullptr;
+  m_pCharser = new Charser(nullptr);
   m_bNormal  = false;
   
   m_xAnnChar.vReset();
@@ -32,9 +32,7 @@ Tokeniser::Tokeniser(void)
   m_pToken   = nullptr;
   
   _checkInitialised_(CN_TOKENISER);
-  
-  vPushCharser();
-  
+    
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 }
 
