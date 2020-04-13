@@ -15,6 +15,7 @@ namespace LexicalAnalysis
     AnnChar   m_xAnnChar;  // annotated char from parser
     
     TokenVec* m_pTknVec;   // set of collected tokens
+    Token*    m_pToken;    // current token
 
     // must be last
     Footer m_xFooter;    

@@ -24,12 +24,13 @@ Tokeniser::Tokeniser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser = nullptr;
-  m_bMalloc = false;
-  m_bNormal = false;
+  m_bMalloc  = false;
+  m_bNormal  = false;
   
   m_xAnnChar.vReset();
       
-  m_pTknVec = new TokenVec;
+  m_pTknVec  = new TokenVec;
+  m_pToken   = nullptr;
   
   _checkInitialised_(CN_TOKENISER);
   
@@ -548,12 +549,12 @@ void Tokeniser::vReadToken_vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  Token* pToken = m_pTknVec->pCurrToken();;
+  m_pToken = m_pTknVec->pCurrToken();;
 
   if (m_bNormal)
-    vCollectNormal(pToken);
+    vCollectNormal(m_pToken);
   else
-    vCollectSen(pToken);
+    vCollectSen(m_pToken);
 }
 
 /*----------------------------------------------------------------------------*/
