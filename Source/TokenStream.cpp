@@ -123,7 +123,6 @@ void TokenStream::vReadTillEOF(TokenVec* pTknVec)
     
     pTknVec->vReset();
     
-    pTknVec->vSource(m_pTokeniser->szSource());
     for (;;) {
       
       pTknVec->vAdvanceCurr();
