@@ -61,11 +61,11 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:    
-    void vCollectNormal(void);
-    void vCollectNormalInteger(void);
-    void vCollectNormalName(void);
-    void vCollectNormalOther(void);
-    void vCollectNormalString(void);
+    void vCollectCpp(void);
+    void vCollectCppInteger(void);
+    void vCollectCppName(void);
+    void vCollectCppOther(void);
+    void vCollectCppString(void);
     
     void vCollectSen(void);
     void vCollectSenInteger(void);
@@ -76,11 +76,11 @@ namespace LexicalAnalysis
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
     
-    bool bStartNormalInteger(void);
-    bool bStartNormalName(void);
-    bool bStartNormalOther(void);
-    bool bStartNormalString(void);
-    bool bEndNormalString(void);
+    bool bStartCppInteger(void);
+    bool bStartCppName(void);
+    bool bStartCppOther(void);
+    bool bStartCppString(void);
+    bool bEndCppString(void);
 
     bool bStartSenInteger(void);
     bool bStartSenName(void);
@@ -88,9 +88,9 @@ namespace LexicalAnalysis
     bool bStartSenTag(void);
     bool bEndSenString(void);
    
-    void vParserGetAnnChar(void);
-    void vParserGetAnnCharStripped(void);
-    void vParserUngetAnnCharStripped(void);
+    void vGetAnnChar(void);
+    void vGetAnnCharStripped(void);
+    void vUngetAnnCharStripped(void);
   
     void vTokenCollectBegin(void);
     void vTokenCollectEnd(void);
