@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 : op__tableDef_streamSet ( tableNm -- )
 
-params| sTableNm |
+  params| sTableNm |
 
   // save current path
   path[].save
