@@ -113,6 +113,16 @@ bool TokenStream::bReadToken(void)
 /*----------------------------------------------------------------------------*/
 /* read next token from stream                                                */
 /*----------------------------------------------------------------------------*/
+Tokeniser* TokenStream::pTokeniser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+
+  return m_pTokeniser;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next token from stream                                                */
+/*----------------------------------------------------------------------------*/
 TokenVec* TokenStream::pTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
