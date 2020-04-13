@@ -63,11 +63,11 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:    
-    void vCollectNormal(Token* pToken);
-    void vCollectNormalInteger(Token* pToken);
-    void vCollectNormalName(Token* pToken);
-    void vCollectNormalOther(Token* pToken);
-    void vCollectNormalString(Token* pToken);
+    void vCollectNormal(void);
+    void vCollectNormalInteger(void);
+    void vCollectNormalName(void);
+    void vCollectNormalOther(void);
+    void vCollectNormalString(void);
     
     void vCollectSen(Token* pToken);
     void vCollectSenInteger(Token* pToken);
