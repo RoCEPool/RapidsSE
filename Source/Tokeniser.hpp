@@ -46,6 +46,9 @@ namespace LexicalAnalysis
     void vNormal(bool bNormal);
     bool bPopCharser(void);
     void vPushCharser(void);
+    void vReadCommand(TokenVec* pTknVec);
+    void vReadTillEOF(TokenVec* pTknVec);
+    void vReadTillSemicolon(TokenVec* pTknVec);
     void vReadToken_nil(void);
     void vReadToken_vec(TokenVec* pTknVec, Token* pToken);
     Stz* szSource(void);

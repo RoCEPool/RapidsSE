@@ -83,33 +83,41 @@ void TokenStream::vPushFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
+//void TokenStream::vReadCommand(TokenVec* pTknVec)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+//  
+//  vReadTillEOF(pTknVec);
+//    
+//  // if empty line just return
+//  if ( ! pTknVec->nTokens() ||
+//       ! pTknVec->pGet(0)->bHasText() )
+//    return;
+//  
+//  // if its a command file just return
+//  if ( ! pTknVec->pGet(0)->bSame("/"_Stz) &&
+//     File::bExists(pTknVec->pGet(0)->szTerm()))
+//    return;
+//  
+//  // read more till ;
+//  vReadTillSemicolon(pTknVec);
+//  
+//  // stip off ;
+//  pTknVec->vStripSemicolon();
+//  
+//  // stip off &
+//  pTknVec->vStripAmpersand();
+//  
+//  // set no of tokens in token vector
+//  pTknVec->vSetTokens();
+//}
+/*----------------------------------------------------------------------------*/
 void TokenStream::vReadCommand(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  vReadTillEOF(pTknVec);
-    
-  // if empty line just return
-  if ( ! pTknVec->nTokens() ||
-       ! pTknVec->pGet(0)->bHasText() )
-    return;
+  m_pTokeniser->vReadCommand(pTknVec);
   
-  // if its a command file just return
-  if ( ! pTknVec->pGet(0)->bSame("/"_Stz) &&
-     File::bExists(pTknVec->pGet(0)->szTerm()))
-    return;
-  
-  // read more till ;
-  vReadTillSemicolon(pTknVec);
-  
-  // stip off ;
-  pTknVec->vStripSemicolon();
-  
-  // stip off &
-  pTknVec->vStripAmpersand();
-  
-  // set no of tokens in token vector
-  pTknVec->vSetTokens();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +131,6 @@ void TokenStream::vReadTillEOF(TokenVec* pTknVec)
     
     pTknVec->vReset();
     
-    pTknVec->vSource(m_pTokeniser->szSource());
     for (;;) {
       
       pTknVec->vAdvanceCurr();
@@ -200,7 +207,7 @@ void TokenStream::vReadTillSemicolon(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* read next token from stream                                                */
 /*----------------------------------------------------------------------------*/
-bool TokenStream::bReadToken(TokenVec* pTknVec, Token* pTkn)
+bool TokenStream::vReadTillEOF(TokenVec* pTknVec, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   

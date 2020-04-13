@@ -142,24 +142,6 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   TokenVec* pTknVec = new TokenVec;
   
   vTokenise(pTknVec,szString);
-//  Tokeniser* pTokeniser = new Tokeniser;
-//  pTokeniser->vPushParser();
-//  pTokeniser->vUseString(szString);
-//
-//  for (i8 i_Token = 0; ; i_Token++) {
-//    pTokeniser->vNextToken_x();
-//    if (TN_EOF == pTokeniser->eToken())
-//      break;
-//
-//    pTknVec->vIncTokens();
-//
-//    Token* pToken = pTknVec->pGet(i_Token);
-//    pToken->vToken(pTokeniser->eToken());
-//    pToken->vCopy(pTokeniser->szToken());
-//
-//  }
-//
-//  delete pTokeniser;
   
   return pTknVec;
 }
@@ -429,14 +411,125 @@ void Tokeniser::vPushCharser(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next token                                                           */
+/* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
-//void Tokeniser::vReadToken_nil(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-//
-//  vReadToken_vec(nullptr,&m_oToken);
-//}
+void Tokeniser::vReadCommand(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  vReadTillEOF(pTknVec);
+    
+  // if empty line just return
+  if ( ! pTknVec->nTokens() ||
+       ! pTknVec->pGet(0)->bHasText() )
+    return;
+  
+  // if its a command file just return
+  if ( ! pTknVec->pGet(0)->bSame("/"_Stz) &&
+     File::bExists(pTknVec->pGet(0)->szTerm()))
+    return;
+  
+  // read more till ;
+  vReadTillSemicolon(pTknVec);
+  
+  // stip off ;
+  pTknVec->vStripSemicolon();
+  
+  // stip off &
+  pTknVec->vStripAmpersand();
+  
+  // set no of tokens in token vector
+  pTknVec->vSetTokens();
+}
+
+/*----------------------------------------------------------------------------*/
+/* read tokens from stream till EOF                                           */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vReadTillEOF(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  while (true) {
+    
+    pTknVec->vReset();
+    
+    for (;;) {
+      
+      pTknVec->vAdvanceCurr();
+      Token* pToken = pTknVec->pGet(pTknVec->nTokens(),true);
+            
+//      if (! bNextInputToken(pTknVec,pToken))
+//        break;
+      
+      vReadToken_vec(pTknVec,pToken);
+      if (TN_EOF == pToken->eToken())
+        break;
+
+      pTknVec->vIncTokens();
+      ASSERT(pTknVec->nTokens() < C_MAX_TOKENS);
+    }
+    
+    // end of file? if so, pop and retry
+    if (! pTknVec->nTokens() && bEOF()) {
+      bool b = bPopCharser();
+      ASSERT(b);
+      break;
+    }
+    
+    break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect ';' delimited statement                                            */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vReadTillSemicolon(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  // we should have a first token (e.g. create or drop)
+  ASSERT(pTknVec->pGet(0)->bHasText());
+  
+  // have we already seen the ';'
+  i8 i_Token = pTknVec->iFindToken(";"_Stz);
+  
+  if (i_Token >= 0) {
+    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
+    return;
+  }
+  
+  i_Token = pTknVec->iCountTokens();
+  
+  // switch to terminal mode
+  vLineMode(false);
+  
+  // get tokens delimited by ';'
+  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
+    
+    Token* pToken = pTknVec->pGet(i_Token,true);
+    
+    vReadToken_vec(pTknVec,pToken);
+    ASSERT(TN_EOF != pToken->eToken());
+    
+    // look for terminal
+    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
+      break;
+
+    pTknVec->vAdvanceCurr();
+  }
+  
+  // switch back to line mode
+  vLineMode(true);
+  //vPrompt(m_sPrompt);
+  
+  //m_pTokeniser->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vReadToken_nil(void)
 {
@@ -492,15 +585,7 @@ bool Tokeniser::bStdin(void)
 /*----------------------------------------------------------------------------*/
 /* get token type                                                             */
 /*----------------------------------------------------------------------------*/
-//eTN Tokeniser::eToken(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-//
-//  eTN eToken = m_oToken.eToken();
-//
-//  return eToken;
-//}
-/*----------------------------------------------------------------------------*/
+
 eTN Tokeniser::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -514,13 +599,6 @@ eTN Tokeniser::eToken(void)
 
 /*----------------------------------------------------------------------------*/
 /* get token string                                                           */
-/*----------------------------------------------------------------------------*/
-//Stz* Tokeniser::szToken(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-//
-//  return m_oToken.szTerm();
-//}
 /*----------------------------------------------------------------------------*/
 Stz* Tokeniser::szToken(void)
 {
