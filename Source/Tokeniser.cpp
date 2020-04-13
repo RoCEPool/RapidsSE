@@ -24,7 +24,8 @@ Tokeniser::Tokeniser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser   = new Charser(nullptr);
-  m_bCppTokens = false;
+  
+  vSenTokens();
   
   m_xAnnChar.vReset();
       
