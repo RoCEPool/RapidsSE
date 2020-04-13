@@ -183,12 +183,12 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // substitute parameters in procedure text with command arguments
   
-  TokenVec* pParamsVec = Tokeniser::pSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
+  TokenVec* pParamsVec = TokenVec::pSubVec(pProcTextVec,"parameters"_Stz,"begin"_Stz);
   TokenVec* pArgsVec = nullptr;
   
   if ( pParamsVec ) {
   
-    pArgsVec = Tokeniser::pSubVec(pCmdTokenVec,1,nTokens-1);
+    pArgsVec = TokenVec::pSubVec(pCmdTokenVec,1,nTokens-1);
     
     if (pParamsVec->nTokens() != pArgsVec->nTokens()) {
       delete pProcTextVec;
@@ -197,7 +197,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       return false;
     }
     
-    Tokeniser::vReplace(pProcTextVec,pParamsVec,pArgsVec);
+    TokenVec::vReplace(pProcTextVec,pParamsVec,pArgsVec);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove the parameters clause from the modified text vector

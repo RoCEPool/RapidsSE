@@ -3,15 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-//#define __WITH_TOKEN_ARY
-
 namespace LexicalAnalysis
 {
-  #ifdef __WITH_TOKEN_ARY
   class TokenVec : public ArrayNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
-  #else
-  class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
-  #endif
   {
   private:
      
@@ -27,6 +21,10 @@ namespace LexicalAnalysis
     TokenVec(bool bNewTokens=true);
    ~TokenVec(void) noexcept(false);
   
+    static void vReplace(TokenVec* pTknVec, TokenVec* pFindVec, TokenVec* pWithVec);
+    static TokenVec* pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To);
+    static TokenVec* pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
+
     static TokenVec* _pTokenSet(void* aAddr);
   
     void vAdvanceCurr(void);

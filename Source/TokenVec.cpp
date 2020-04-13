@@ -19,29 +19,7 @@ __aFooterFunction(TokenVec)
 TokenVec::TokenVec(bool bNewTokens)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-    
-#ifdef __WITH_TOKEN_ARY
-//  if (bNewTokens) {
-//    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-//      vSet(i_Token,new Token);
-//    vReset();
-//  }
-//  else {
-//    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-//      vSet(i_Token,nullptr);
-//  }
-#else
-  if (bNewTokens) {
-    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-      vSet(i_Token,new Token);
-    vReset();
-  }
-  else {
-    for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-      vSet(i_Token,nullptr);
-  }
-#endif
-  
+      
   m_iCurTkn = -1;
   
   _checkInitialised_(CN_TOKENVEC);
@@ -57,6 +35,89 @@ TokenVec::~TokenVec(void) noexcept(false)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   vSetAllTokens();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* replace tokens                                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vReplace(TokenVec* pThisVec,
+                              TokenVec* pFindVec, TokenVec* pWithVec)
+{
+  _static_
+  
+  i8 nTokens = pThisVec->nTokens();
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+    
+    Token* pThisToken = pThisVec->pGet(i_Token);
+    
+    i8 i_Find = pFindVec->iFindToken(pThisToken->szTerm());
+    
+    if (C_UNKNOWN == i_Find)
+      continue;
+    
+    Token* pWithToken = pWithVec->pGet(i_Find);
+
+    pThisToken->vCopy(pWithToken->szTerm());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract sub vector of tokens                                               */
+/*----------------------------------------------------------------------------*/
+TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To)
+{
+  _static_
+  
+  TokenVec* pExtractedVec = new TokenVec;
+
+  i8 nTokens = pTknVec->nTokens();
+  
+  i8 i_Token;
+  for (i_Token = i_From; i_Token < nTokens && i_Token <= i_To; i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
+    pExtractedVec->vAppendToken(pToken->szTerm());
+  }
+  
+  return pExtractedVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract sub vector of tokens                                               */
+/*----------------------------------------------------------------------------*/
+TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
+{
+  _static_
+
+  i8 nTokens = pTknVec->nTokens();
+  
+  i8 i_Token;
+  for (i_Token = 0; i_Token < nTokens; i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
+    if (pToken->bSame(szStart)) {
+      break;
+    }
+  }
+
+  if (i_Token >= nTokens)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TokenVec* pExtractedVec = new TokenVec;
+
+  for (i_Token++; i_Token < nTokens; i_Token++) {
+    Token* pToken = pTknVec->pGet(i_Token);
+    if (pToken->bSame(szEnd))
+      break;
+    
+    pExtractedVec->vAppendToken(pToken->szTerm());
+  }
+  
+  return pExtractedVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +193,6 @@ i8 TokenVec::iCountTokens(void)
 /*----------------------------------------------------------------------------*/
 /* copy given token vector to this token vector                               */
 /*----------------------------------------------------------------------------*/
-#ifdef __WITH_TOKEN_ARY
 void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -145,21 +205,6 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
     pToken_dst->vCopy(pToken_src);
   }
 }
-/*----------------------------------------------------------------------------*/
-#else
-void TokenVec::vCopyVector(TokenVec* pTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
-    Token* pToken = pTknVec->pGet(i_Token);
-
-    Token* pNewToken = new Token(pToken);
-    
-    vAdd(pNewToken);
-  }
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* return current token                                                       */
@@ -290,7 +335,6 @@ void TokenVec::vIncTokens(void)
 /*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef __WITH_TOKEN_ARY
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -314,33 +358,6 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
   pTkn_ins->vCopy(szTerm);
   pTkn_ins->vToken(eToken);
 }
-#else
-/*----------------------------------------------------------------------------*/
-void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-      
-  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
-    
-    Token* pTknDst = pGet(i_Token + 1,true);
-    if (! pTknDst) {
-      vSet(i_Token + 1,new Token);
-      pTknDst = pGet(i_Token + 1,true);
-    }
-    
-    Token* pTknSrc = pGet(i_Token);
-    
-    pTknDst->vCopy(pTknSrc);
-  }
-  
-  vIncItems();
-  
-  Token* pTknIns = pGet(i_Tkn);
-  
-  pTknIns->vCopy(szTerm);
-  pTknIns->vToken(eToken);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* return next token                                                          */
