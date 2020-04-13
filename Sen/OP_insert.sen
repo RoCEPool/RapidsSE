@@ -30,7 +30,7 @@
     infoSetTable[] InfoSet[].new
 
     // insert progressUnits to the infoset
-    streamDef[] Counter0[] InfoSet[].addProgressUnits assert
+    Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
 
     // pipeout the infoset
     InfoSet[].pipeout
@@ -57,13 +57,10 @@
   infoSetTable[] InfoSet[].new
 
   // insert progressUnits to the infoset
-  streamDef[] Counter0[] InfoSet[].addTotalUnits assert
+  Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
 
   // pipeout the infoset
   InfoSet[].pipeout
-
-  // delete the C_TDEF_PROGRESSUNITS StreamDef
-  streamDef[].delete
 
   true
   ;
@@ -88,12 +85,8 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  // create the streamDef for C_TDEF_PROGRESSUNITS
+  // create the infoSetTable for C_TDEF_PROGRESSUNITS
   C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
-  infoSetTable[] streamDef[].new
-
-  // clear the table[] to be used next
-  nullptr to table[]
 
   // get table[] to be inserted into
   <tableNm> op__table if
@@ -107,6 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
+/*
 : Insert_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
@@ -116,6 +110,7 @@
   
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* execute for insert                                 (on node where spawned) */
@@ -132,7 +127,7 @@
   find: Insert_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: Insert_EosMarker   ZK_EOSMARKER   op[].handler!
   find: Insert_ExitMarker  ZK_EXITMARKER  op[].handler!
-  find: Insert_StreamDef   ZK_STREAMDEF   op[].handler!
+  //find: Insert_StreamDef   ZK_STREAMDEF   op[].handler!
   find: Insert_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

@@ -421,7 +421,6 @@ public:
 
   // reg info set
   void vInfoSetAddProgressUnits(void);
-  void vInfoSetAddSpaceInfo(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
   void vInfoSetDelete(void);

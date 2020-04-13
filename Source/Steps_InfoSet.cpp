@@ -11,7 +11,6 @@ void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
-  vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vInfoSetAddSpaceInfo);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,         &Step::vInfoSetDelete);
@@ -36,57 +35,21 @@ void Step::vInfoSetAddProgressUnits(void)
 {
   ENTRY(); // ENTRY("vInfoSetAddProgressUnits"_Stz);
   
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get no of progress units
   i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the streamDef
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  // get the infoSet
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addNSpaceInfo -- add a row to the infoset with the spaceInfo     */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddSpaceInfo(void)
-{
-  ENTRY(); // ENTRY("vInfoSetAddSpaceInfo"_Stz);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  i8 iTotalSpace = AM::iRegionSize()
-  - AM::iJumboSize();
-  
-  i8 iInUseSpace = AM::iRegionSize()
-    - AM::iJumboSize()
-    - gpBufferPool->iFreeSpace()
-    - PoolHelper::iPoolFree();
-  
-  i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
-  i8 iTotalFreeSpace = iFreeSpace + iFreeSpaceInPool;
-  
-//  s256 s;
-//
-//  MagLib::vByteMag(iTotalSpace, iScale, s);
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pGrid->pThisNode()->szNodeNm(),
-                                  iTotalSpace,
-                                  iInUseSpace,
-                                  iTotalFreeSpace,
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
@@ -103,9 +66,15 @@ void Step::vInfoSetAddTotalUnits(void)
 {
   ENTRY(); // ENTRY("vInfoSetAddTotalUnits"_Stz);
   
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the total units
   i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
@@ -395,7 +364,7 @@ void Step::vInfoSetReadChunk(void)
   ENTRY(); // ENTRY("vInfoSetReadChunk"_Stz);
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));

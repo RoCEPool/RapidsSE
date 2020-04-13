@@ -56,19 +56,15 @@
 
     // create a streamDef for C_TDEF_TOTALUNITS
     C_TDEF_TOTALUNITS op__tableDef_infoSet assert
-    infoSetTable[] streamDef[].new
 
     // create an infoSet operand for C_TDEF_TOTALUNITS
     infoSetTable[] InfoSet[].new
 
     // add fileSize to the infoset
-    streamDef[] iFileSizeMb InfoSet[].addTotalUnits assert
+    iFileSizeMb infoSetTable[] InfoSet[].addTotalUnits assert
 
     // pipeout the infoset
     InfoSet[].pipeout
-
-    // delete the streamDef
-    streamDef[].delete
 
   then
 

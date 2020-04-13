@@ -17,23 +17,17 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   vAddStep("StreamSet[].addNodeInfo"_Stz,    &Step::vStreamSetAddNodeInfo);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
-  vAddStep("StreamSet[].addProgressUnits"_Stz, &Step::vStreamSetAddProgressUnits);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
   vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
-  vAddStep("StreamSet[].addTotalUnits"_Stz,    &Step::vStreamSetAddTotalUnits);
-  vAddStep("StreamSet[].chunkFile"_Stz,      &Step::vStreamSetChunkFile);
   vAddStep("StreamSet[].delete"_Stz,         &Step::vStreamSetDelete);
   vAddStep("StreamSet[].firstRow"_Stz,       &Step::vStreamSetFirstRow);
   vAddStep("StreamSet[].get"_Stz,            &Step::vStreamSetGet);
   vAddStep("StreamSet[].infoRows"_Stz,       &Step::vStreamSetInfoRows);
-  vAddStep("StreamSet[].isProgress"_Stz,     &Step::vStreamSetIsProgress);
-  vAddStep("StreamSet[].isTotalUnits"_Stz,   &Step::vStreamSetIsTotalUnits);
   vAddStep("StreamSet[].name"_Stz,           &Step::vStreamSetName);
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].pipeOut"_Stz,        &Step::vStreamSetPipeOut);
-  vAddStep("StreamSet[].readChunk"_Stz,      &Step::vStreamSetReadChunk);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
   vAddStep("StreamSet[].writeCsv"_Stz,       &Step::vStreamSetWriteCsv);
 }
@@ -365,13 +359,18 @@ void Step::vStreamSetAddShowCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addNSpaceInfo -- add a row to the infoset with the spaceInfo     */
+/* StreamSet[].addSpaceInfo -- add a row to the infoset with the spaceInfo    */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddSpaceInfo(void)
 {
   ENTRY(); // ENTRY("vStreamSetAddSpaceInfo"_Stz);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
