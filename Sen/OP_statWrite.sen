@@ -66,8 +66,8 @@
  
   LogReqEntry SEED_REQ
 
-  C_TDEF_LOCKSTATS op__tableDef assert
-  infoSetTable[] StreamDef[].new
+  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+  infoSetTable[] streamDef[].new
 
   op__topology
 

@@ -25,18 +25,18 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  StreamSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // create an infoSet operand
-  StreamSetTable[] StreamSet[].new
+  streamSetTable[] StreamSet[].new
 
   // insert a row in the infoset for each column
   iPartitionCols 0 do
     I pSlots slots.column@
-    StreamSetTable[] StreamSet[].addColumnDef assert
+    streamSetTable[] StreamSet[].addColumnDef assert
   loop
 
   // pipeout the infoset

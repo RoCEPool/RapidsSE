@@ -24,10 +24,10 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  StreamSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // create an infoSet operand
   streamSetTable[] StreamSet[].new

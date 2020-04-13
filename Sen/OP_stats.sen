@@ -18,18 +18,18 @@
 //    path[].toStr .
 //    C_TDEF_LOCKSTATS find execute to table[]
 //    Operand[].newStreamDef
-//    Operand[] to StreamDef[]
-//    StreamDef[].asStr .
+//    Operand[] to streamDef[]
+//    streamDef[].asStr .
 //    nullptr to Operand[]
 //  then
 
   // find the __lockStats table
-  C_TDEF_LOCKSTATS op__tableDef assert
+  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
+  infoSetTable[] streamDef[].new
 
-  StreamDef[].asStr .
+  streamDef[].asStr .
 
   metrics::lockSample to operandC[]
   OperandC[].pipeOut

@@ -27,10 +27,10 @@
   Counter0[] 10 % 0 == if
 
     // create an infoSet operand
-    StreamDef[] InfoSet[].new
+    streamDef[] InfoSet[].new
 
     // insert progressUnits to the infoset
-    StreamDef[] Counter0[] InfoSet[].addProgressUnits assert
+    streamDef[] Counter0[] InfoSet[].addProgressUnits assert
 
     // pipeout the infoset
     InfoSet[].pipeout
@@ -54,16 +54,16 @@
   // send out final progress units
 
   // create an infoSet operand
-  StreamDef[] InfoSet[].new
+  streamDef[] InfoSet[].new
 
   // insert progressUnits to the infoset
-  StreamDef[] Counter0[] InfoSet[].addTotalUnits assert
+  streamDef[] Counter0[] InfoSet[].addTotalUnits assert
 
   // pipeout the infoset
   InfoSet[].pipeout
 
   // delete the C_TDEF_PROGRESSUNITS StreamDef
-  StreamDef[].delete
+  streamDef[].delete
 
   true
   ;
@@ -89,8 +89,8 @@
   //"Operand:- ZK_STARTMARKER" .verbose
 
   // create the streamDef for C_TDEF_PROGRESSUNITS
-  C_TDEF_PROGRESSUNITS op__tableDef assert
-  infoSetTable[] StreamDef[].new
+  C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert
+  infoSetTable[] streamDef[].new
 
   // clear the table[] to be used next
   nullptr to table[]

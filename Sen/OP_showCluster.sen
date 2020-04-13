@@ -10,7 +10,7 @@
 : showCluster_action
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
   streamSetTable[] streamDef[].new

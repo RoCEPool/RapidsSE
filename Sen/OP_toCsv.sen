@@ -34,8 +34,8 @@
 
   //"Operand:- ZK_STREAMDEF" .verbose
   Pipein[].delete
-  StreamDef[].newToCsvStream
-  StreamDef[].pipeout
+  streamDef[].newToCsvStream
+  streamDef[].pipeout
 
   true
 ;

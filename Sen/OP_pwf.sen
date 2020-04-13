@@ -29,16 +29,16 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  StreamSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // create an infoSet operand
-  StreamSetTable[] StreamSet[].new
+  streamSetTable[] StreamSet[].new
 
   // add nodeInfo to the infoSet
-  folder StreamSetTable[]  StreamSet[].addPwfInfo assert
+  folder streamSetTable[]  StreamSet[].addPwfInfo assert
 
   // pipeout the infoset
   StreamSet[].pipeout

@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__tableDef ( tableNm -- )
+: op__tableDef_infoSet ( tableNm -- )
 
   params| sTableNm |
 
@@ -77,10 +77,10 @@
 
   // move to table folder and find the table
   sTableNm path[].pushTableFolder assert
-  sTableNm find execute to StreamSetTable[]
+  sTableNm find execute to streamSetTable[]
 
   // cross-check
-  StreamSetTable[] assert
+  streamSetTable[] assert
 
   path[].discardTableFolder
 

@@ -13,18 +13,18 @@
   Pipein[].pipeOut
 
   // find the __seekOffsets table
-  C_TDEF_SEEKOFFSETS op__tableDef assert
+  C_TDEF_SEEKOFFSETS op__tableDef_infoSet assert
 
   // create a new streamDef and save it in Operand
-  infoSetTable[] StreamDef[].new
-  StreamDef[] to Operand[]
-  nullptr to StreamDef[]
+  infoSetTable[] streamDef[].new
+  streamDef[] to Operand[]
+  nullptr to streamDef[]
 
   // create the streamDef to be piped out
-  infoSetTable[] StreamDef[].new
+  infoSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // set eof location in counter0
   File0[].getEofLocation to counter1[]
@@ -68,20 +68,20 @@
     File0[].size C_1Mb / to iFileSizeMb
 
     // create a streamDef for C_TDEF_TOTALUNITS
-    C_TDEF_TOTALUNITS op__tableDef assert
-    infoSetTable[] StreamDef[].new
+    C_TDEF_TOTALUNITS op__tableDef_infoSet assert
+    infoSetTable[] streamDef[].new
 
     // create an infoSet operand for C_TDEF_TOTALUNITS
-    StreamDef[] InfoSet[].new
+    streamDef[] InfoSet[].new
 
     // add fileSize to the infoset
-    StreamDef[] iFileSizeMb InfoSet[].addTotalUnits assert
+    streamDef[] iFileSizeMb InfoSet[].addTotalUnits assert
 
     // pipeout the infoset
     InfoSet[].pipeout
 
     // delete the streamDef
-    StreamDef[].delete
+    streamDef[].delete
 
   then
 

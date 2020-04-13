@@ -20,10 +20,10 @@
   C_TDEF_GRIDSANITY op__tableDef_streamSet assert
 
   // create a new stream defnition as per the nodeinfo being sent
-  streamSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // create an infoSet operand
   streamSetTable[] streamSet[].new
@@ -60,7 +60,7 @@
 
   Pipein[].pipeout
 
-  StreamDef[].delete
+  streamDef[].delete
 
   true
 ;
@@ -77,7 +77,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for chunk req                              (on node where spawned) */
+/* execute for gridSanity req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : GridSanity_req \operator
  

@@ -16,7 +16,7 @@
   streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // create an infoSet operand
   streamSetTable[] streamSet[].new

@@ -21,10 +21,10 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  StreamSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  StreamDef[].pipeout
+  streamDef[].pipeout
 
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
@@ -36,7 +36,7 @@
   // insert a row in the infoSet for each index column
   iColumns 0 do
     I index[].column@
-    StreamSetTable[] StreamSet[].addColumnDef assert
+    streamSetTable[] StreamSet[].addColumnDef assert
   loop
 
   // pipeout the infoset
