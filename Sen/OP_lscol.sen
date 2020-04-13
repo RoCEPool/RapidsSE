@@ -21,25 +21,25 @@
   table[].columnCount@ to iColumns
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
+  StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] InfoSet[].new
+  StreamDef[] StreamSet[].new
 
   // insert a row in the infoset for each column
   iColumns 0 do
     I table[].column@
-    StreamDef[] InfoSet[].addColumnDef assert
+    StreamDef[] StreamSet[].addColumnDef assert
   loop
 
   // pipeout the streamDef
   StreamDef[].pipeout
 
   // pipeout the infoset
-  InfoSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;

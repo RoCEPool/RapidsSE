@@ -7,7 +7,6 @@ ping;
 rows:
 ('pong')
 
-
 CLEANUP {
   bye;
   mute
