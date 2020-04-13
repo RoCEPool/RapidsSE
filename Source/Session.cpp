@@ -120,11 +120,7 @@ Session::Session(void)
   m_pNmStrLst       = nullptr;
 
   m_pSemantic       = new Semantic;
-  
-  //m_xTokenVec.vSetAllTokens();
-  
-  //ASSERT(C_MAX_TOKENS == m_xTokenVec.nItems());
-  
+    
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -399,13 +395,6 @@ i8 Session::iSlot(void)
 
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-//TokenVec* Session::pTokenVec(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-//
-//  return &m_xTokenVec;
-//}
 /*----------------------------------------------------------------------------*/
 TokenVec* Session::pTokenVec(void)
 {
