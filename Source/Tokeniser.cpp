@@ -23,13 +23,13 @@ Tokeniser::Tokeniser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser = new Charser(nullptr);
-  m_bNormal  = false;
+  m_pCharser   = new Charser(nullptr);
+  m_bCppTokens = false;
   
   m_xAnnChar.vReset();
       
-  m_pTknVec  = new TokenVec;
-  m_pToken   = nullptr;
+  m_pTknVec    = new TokenVec;
+  m_pToken     = nullptr;
   
   _checkInitialised_(CN_TOKENISER);
     
@@ -190,6 +190,16 @@ Charser* Tokeniser::pCharser(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set normal cpp tokens                                                      */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vCppTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_bCppTokens = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get depth of parser                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Tokeniser::iDepth(void)
@@ -296,7 +306,7 @@ void Tokeniser::vNormal(bool bNormal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_bNormal = bNormal;
+  m_bCppTokens = bNormal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,10 +494,20 @@ void Tokeniser::vReadToken_vec(void)
   
   m_pToken = m_pTknVec->pCurrToken();;
 
-  if (m_bNormal)
+  if (m_bCppTokens)
     vCollectNormal();
   else
     vCollectSen();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sen tokens                                                             */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vSenTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_bCppTokens = false;
 }
 
 /*----------------------------------------------------------------------------*/

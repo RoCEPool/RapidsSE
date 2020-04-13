@@ -8,13 +8,13 @@ namespace LexicalAnalysis
   class Tokeniser : public Object
   {
   private:
-    Charser*  m_pCharser;  // charser
+    Charser*  m_pCharser;   // charser
   
-    bool      m_bNormal;   // normal or sen tokens?
-    AnnChar   m_xAnnChar;  // annotated char from parser
+    bool      m_bCppTokens; // cpp or sen tokens?
+    AnnChar   m_xAnnChar;   // annotated char from parser
     
-    TokenVec* m_pTknVec;   // set of collected tokens
-    Token*    m_pToken;    // current token
+    TokenVec* m_pTknVec;    // set of collected tokens
+    Token*    m_pToken;     // current token
 
     // must be last
     Footer m_xFooter;    
@@ -34,6 +34,7 @@ namespace LexicalAnalysis
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter, i8 i_From, i8 i_To);
 
     Charser* pCharser(void);
+    void vCppTokens(void);
     i8   iDepth(void);
     void vDump(void);
     bool bEOF(void);
@@ -49,6 +50,7 @@ namespace LexicalAnalysis
     void vReadTillSemicolon(void);
     void vReadToken_nil(void);
     void vReadToken_vec(void);
+    void vSenTokens(void);
     Stz* szSource(void);
     eTN  eToken(void);
     Stz* szToken(void);
