@@ -15,7 +15,7 @@ namespace LexicalAnalysis
     
     // source definition
     eIS     m_eSource;   // what source are we parsing? given file or string?
-    s256    m_sSource;   // source
+    s256    m_sPath;     // the source path
     bool    m_bLineMode; // line mode?
   
     // sources

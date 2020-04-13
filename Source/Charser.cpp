@@ -28,7 +28,7 @@ Charser::Charser(Charser* pNext)
   //m_bMalloc set in new
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
-  m_sSource = C_NO_NAME;
+  m_sPath   = C_NO_NAME;
   
   vResetCharser();
   
@@ -67,7 +67,7 @@ Stz* Charser::szSource(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  return m_sSource;
+  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,138 +90,8 @@ i8 Charser::iLineCol(void)
   return m_iColRaw;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Options -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set line mode                                                              */
-/*----------------------------------------------------------------------------*/
-void Charser::vLineMode(bool bLineMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  m_bLineMode = bLineMode;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Use What ----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* use given file for parsing                                                 */
-/*----------------------------------------------------------------------------*/
-bool Charser::bUseFile(Stz* szPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  vResetCharser();
-  
-  m_eSource = IS_FILE;
-  m_bRead = true;
-  
-  m_sSource.vSprint("file: %s"_Stz,szPath);
-  
-  bool bOpened = m_oRawFile.bOpenRead(szPath);
-  
-  return bOpened;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use stdin for parsing                                                      */
-/*----------------------------------------------------------------------------*/
-void Charser::vUseStdin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  vResetCharser();
-  
-  m_oRawFile.vUseStdin();
-  m_eSource = IS_STDIN;
-  m_bRead = true;
-  
-  m_sSource = "stdin"_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use given string for parsing                                               */
-/*----------------------------------------------------------------------------*/
-void Charser::vUseString(Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  vResetCharser();
-  
-  m_sRawLine = szString;
-  m_eSource = IS_STRING;
-  m_bEOF = true;
-  
-m_sSource = "string"_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* end usage of source                                                        */
-/*----------------------------------------------------------------------------*/
-void Charser::vUseEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  switch (m_eSource) {
-      
-    case IS_FILE:
-      ASSERT( m_oRawFile.bIsOpen() );
-      m_oRawFile.vClose();
-      break;
-      
-    case IS_STDIN:
-      break;
-      
-    case IS_STRING:
-      break;
-      
-    default: ;
-  }
-  
-  vResetCharser();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Commands Stack -----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get next parser in stack                                                   */
-/*----------------------------------------------------------------------------*/
-Charser* Charser::pNext(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_pNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next parser in stack                                                   */
-/*----------------------------------------------------------------------------*/
-void Charser::vNext(Charser* pNext)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  m_pNext = pNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* depth of this parser                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Charser::iDepth(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_iDepth;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Commands ----------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -230,6 +100,32 @@ i8 Charser::iDepth(void)
 void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  // debug
+  
+  if (IS_FILE == m_eSource) {
+    Correctness::vDebugPoint();
+    if (m_bLineMode)
+      Correctness::vDebugPoint();
+    else
+      Correctness::vDebugPoint();
+  }
+  else if (IS_STDIN == m_eSource) {
+    Correctness::vDebugPoint();
+    if (m_bLineMode)
+      Correctness::vDebugPoint();
+    else
+      Correctness::vDebugPoint();
+  }
+  else if (IS_STRING == m_eSource) {
+    Correctness::vDebugPoint();
+    if (m_bLineMode)
+      Correctness::vDebugPoint();
+    else
+      Correctness::vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
@@ -290,11 +186,136 @@ bool Charser::bStdin(void)
 }
 
 
-// private: ////////////////////////////////////////////////////////////////////
+// Options /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void Charser::vLineMode(bool bLineMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  m_bLineMode = bLineMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use given file for parsing                                                 */
+/*----------------------------------------------------------------------------*/
+bool Charser::bUseFile(Stz* szPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  vResetCharser();
+  
+  m_eSource = IS_FILE;
+  m_bRead = true;
+  
+  m_sPath.vSprint("file: %s"_Stz,szPath);
+  
+  bool bOpened = m_oRawFile.bOpenRead(szPath);
+  
+  return bOpened;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use stdin for parsing                                                      */
+/*----------------------------------------------------------------------------*/
+void Charser::vUseStdin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  vResetCharser();
+  
+  m_oRawFile.vUseStdin();
+  m_eSource = IS_STDIN;
+  m_bRead = true;
+  
+  m_sPath = "stdin"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use given string for parsing                                               */
+/*----------------------------------------------------------------------------*/
+void Charser::vUseString(Stz* szString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  vResetCharser();
+  
+  m_sRawLine = szString;
+  m_eSource = IS_STRING;
+  m_bEOF = true;
+  
+m_sPath = "string"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end usage of source                                                        */
+/*----------------------------------------------------------------------------*/
+void Charser::vUseEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  switch (m_eSource) {
+      
+    case IS_FILE:
+      ASSERT( m_oRawFile.bIsOpen() );
+      m_oRawFile.vClose();
+      break;
+      
+    case IS_STDIN:
+      break;
+      
+    case IS_STRING:
+      break;
+      
+    default: ;
+  }
+  
+  vResetCharser();
+}
+
+
+// charser /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* get next charser in stack                                                  */
+/*----------------------------------------------------------------------------*/
+Charser* Charser::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next charser in stack                                                  */
+/*----------------------------------------------------------------------------*/
+void Charser::vNext(Charser* pNext)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  m_pNext = pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* depth of this parser                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Charser::iDepth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_iDepth;
+}
 
 
 /*----------------------------------------------------------------------------*/
-/* reset this parser                                                          */
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* reset this charse                                                          */
 /*----------------------------------------------------------------------------*/
 void Charser::vResetCharser(void)
 {
