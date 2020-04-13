@@ -221,13 +221,13 @@ i8 Charser::iDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Commands -----------------------------------------------------------------*/
+/*-- Commands ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get next parsed char                                                       */
+/* get next annotated char                                                    */
 /*----------------------------------------------------------------------------*/
-void Charser::vGet(AnnChar& rxAnnChar, bool bStripComments)
+void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -245,9 +245,9 @@ void Charser::vGet(AnnChar& rxAnnChar, bool bStripComments)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put char back into parsing stream                                          */
+/* put char back into stream                                                  */
 /*----------------------------------------------------------------------------*/
-void Charser::vUnget(AnnChar& rxAnnChar)
+void Charser::vUngetAnnChar(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   

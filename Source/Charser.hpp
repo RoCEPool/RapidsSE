@@ -68,8 +68,8 @@ namespace LexicalAnalysis
     i8      iDepth(void);
     
     // Processing Functions
-    void vGet(AnnChar& rxAnnChar, bool bStripComments);
-    void vUnget(AnnChar& rxAnnChar);
+    void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
+    void vUngetAnnChar(AnnChar& rxAnnChar);
     bool bEOF(void);
     bool bLineMode(void);
     bool bStdin(void);

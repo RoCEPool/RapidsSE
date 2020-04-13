@@ -1440,7 +1440,7 @@ void Tokeniser::vGetAnnChar(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser->vGet(m_xAnnChar,false);
+  m_pCharser->vGetAnnChar(m_xAnnChar,false);
   m_xAnnChar.m_cChar = m_xAnnChar.m_cChar;
 }
 
@@ -1451,7 +1451,7 @@ void Tokeniser::vGetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser->vGet(m_xAnnChar,true);
+  m_pCharser->vGetAnnChar(m_xAnnChar,true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1461,7 +1461,7 @@ void Tokeniser::vUngetAnnCharStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser->vUnget(m_xAnnChar);
+  m_pCharser->vUngetAnnChar(m_xAnnChar);
 }
 
 /*----------------------------------------------------------------------------*/
