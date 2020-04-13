@@ -13,27 +13,27 @@
   <streamDef> op__tableDef assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
+  streamSetTable[] streamDef[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeout the streamDef
+  streamDef[].pipeout
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an infoSet operand
-  StreamDef[] InfoSet[].new
+  streamSetTable[] streamSet[].new
 
   grid::definedNodes 0 do
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a row in the infoSet for the defined node
-    I StreamDef[] InfoSet[].addShowCluster assert
+    I streamSetTable[] streamSet[].addShowCluster assert
 
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipeout the streamDef
-  StreamDef[].pipeout
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout the infoset
-  InfoSet[].pipeout
+  streamSet[].pipeout
 
   true
 ;

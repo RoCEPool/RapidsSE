@@ -327,13 +327,18 @@ void Step::vStreamSetAddShowCluster(void)
 {
   ENTRY(); // ENTRY("vStreamSetAddShowCluster"_Stz);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
   i8 i_Node = m_pDataStack->iPopInt(__func__);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
   Node* pNode = AM::pGrid()->m_pNodes[i_Node];
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->iNodeNo(),
                                   pNode->szNodeNm(),

@@ -13,7 +13,6 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vInfoSetAddGridSanity);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
-  vAddStep("InfoSet[].addShowCluster"_Stz,   &Step::vInfoSetAddShowCluster);
   vAddStep("InfoSet[].addSpaceInfo"_Stz,     &Step::vInfoSetAddSpaceInfo);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vInfoSetChunkFile);
@@ -118,35 +117,6 @@ void Step::vInfoSetAddProgressUnits(void)
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addShowCluster -- add a row to infoset with the cluster info     */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddShowCluster(void)
-{
-  ENTRY(); // ENTRY("vInfoSetAddShowCluster"_Stz);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  i8 i_Node = m_pDataStack->iPopInt(__func__);
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Node* pNode = AM::pGrid()->m_pNodes[i_Node];
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pNode->iNodeNo(),
-                                  pNode->szNodeNm(),
-                                  pNode->szIPAddr(),
-                                  pNode->iPortNo(),
-                                  (i8)(pNode->pSendSocket() ? true : false),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);

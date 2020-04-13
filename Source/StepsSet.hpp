@@ -423,7 +423,6 @@ public:
   void vInfoSetAddGridSanity(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
-  void vInfoSetAddShowCluster(void);
   void vInfoSetAddSpaceInfo(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
