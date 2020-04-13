@@ -60,7 +60,7 @@ bool TokenStream::bIsStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
 
-  bool bIsStdIn = m_pTokeniser->bStdin();
+  bool bIsStdIn = m_pTokeniser->bIsStdin();
   
   return bIsStdIn;
 }
@@ -68,16 +68,23 @@ bool TokenStream::bIsStdIn(void)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
+//void TokenStream::vPushFile(Stz* szPath)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+//
+//  m_pTokeniser->vPushCharser();
+//
+//  bool b = m_pTokeniser->bUseFile(szPath);
+//  ASSERT(b);
+//
+//  m_pTokeniser->vLineMode(true);
+//}
+/*----------------------------------------------------------------------------*/
 void TokenStream::vPushFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vPushCharser();
-  
-  bool b = m_pTokeniser->bUseFile(szPath);
-  ASSERT(b);
-  
-  m_pTokeniser->vLineMode(true);
+  m_pTokeniser->vPushFile(szPath);
 }
 
 /*----------------------------------------------------------------------------*/

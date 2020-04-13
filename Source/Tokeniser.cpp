@@ -259,6 +259,18 @@ bool Tokeniser::bEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stdin?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsStdin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  bool bStdin = m_pCharser->bStdin();
+  
+  return bStdin;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vLineMode(bool bLineMode)
@@ -326,6 +338,21 @@ void Tokeniser::vPushCharser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser = new(m_bMalloc) Charser(m_pCharser);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push input file                                                            */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vPushFile(Stz* szPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  vPushCharser();
+  
+  bool b = bUseFile(szPath);
+  ASSERT(b);
+  
+  vLineMode(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,18 +511,6 @@ Stz* Tokeniser::szSource(void)
   Stz* szSource = m_pCharser->szSource();
   
   return szSource;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stdin?                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bStdin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  bool bStdin = m_pCharser->bStdin();
-  
-  return bStdin;
 }
 
 /*----------------------------------------------------------------------------*/
