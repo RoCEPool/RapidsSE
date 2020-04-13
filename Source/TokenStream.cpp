@@ -87,7 +87,7 @@ void TokenStream::vReadCommand(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vReadCommand(pTknVec);
+  m_pTokeniser->vReadCommand();
 }
 
 /*----------------------------------------------------------------------------*/
