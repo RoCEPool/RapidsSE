@@ -5255,7 +5255,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check if we can remove the tenant\n"
-    "  <tenantNm> checkRemoveTenant not if job[] ERROR_JOB !!logError exit then\n"
+    "  //<tenantNm> checkRemoveTenant not if job[] ERROR_JOB !!logError exit then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
