@@ -94,7 +94,7 @@ namespace LexicalAnalysis
     void vParserGetAnnCharStripped(void);
     void vParserUngetAnnCharStripped(void);
   
-    void vTokenCollectBegin(Token* pToken);
+    void vTokenCollectBegin(void);
     void vTokenCollectEnd(void);
 
     bool bEndInput(void);

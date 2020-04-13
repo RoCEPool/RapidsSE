@@ -747,7 +747,7 @@ void Tokeniser::vCollectNormalInteger(void)
   // we have seen a digit
   ASSERT(bStartNormalInteger());
   
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
   
   // - start parsing an integer
   
@@ -793,7 +793,7 @@ void Tokeniser::vCollectNormalName(void)
 
   ASSERT(bStartNormalName());
   
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
   
   // collect the characters of the name
   while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
@@ -822,7 +822,7 @@ void Tokeniser::vCollectNormalOther(void)
 
   ASSERT(bStartNormalOther());
  
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather ]] as a token
@@ -1020,7 +1020,7 @@ void Tokeniser::vCollectNormalString(void)
 
   ASSERT(bStartSenString());
   
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
   
   // skip the leading '"'
   vParserGetAnnCharStripped();
@@ -1092,7 +1092,7 @@ void Tokeniser::vCollectSen(void)
   
   // collect name token
   else {
-    vTokenCollectBegin(m_pToken);
+    vTokenCollectBegin();
     vCollectSenName();
   }
   
@@ -1133,7 +1133,7 @@ void Tokeniser::vCollectSenInteger(void)
   // we have seen a minus or a digit
   ASSERT(bStartSenInteger());
   
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
 
   // - start parsing an integer
   
@@ -1229,7 +1229,7 @@ void Tokeniser::vCollectSenString(void)
 
   ASSERT(bStartSenString());
   
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
   
   char cStartQuote = m_xAnnChar.m_cChar;
   
@@ -1272,7 +1272,7 @@ void Tokeniser::vCollectSenTag(void)
 
   ASSERT(bStartSenTag());
   
-  vTokenCollectBegin(m_pToken);
+  vTokenCollectBegin();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1533,12 +1533,12 @@ void Tokeniser::vParserUngetAnnCharStripped(void)
 /*----------------------------------------------------------------------------*/
 /* begin collecting a new token                                               */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vTokenCollectBegin(Token* pToken)
+void Tokeniser::vTokenCollectBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  pToken->vLineNo(m_xAnnChar.m_iLine);
-  pToken->vColNo(m_xAnnChar.m_iCol);
+  m_pToken->vLineNo(m_xAnnChar.m_iLine);
+  m_pToken->vColNo(m_xAnnChar.m_iCol);
 }
 
 /*----------------------------------------------------------------------------*/
