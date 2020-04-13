@@ -1,0 +1,60 @@
+/*----------------------------------------------------------------------------*/
+/* lscat.test -- list catalogs                                                */
+/*----------------------------------------------------------------------------*/
+
+
+pwf;
+rows:
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// list catalogs when not in catalogs folder
+lscat;
+failure contains: 'not in catalogs'
+
+// cf to tenants
+cf "tenants";
+success
+
+// list catalogs when not in catalogs folder
+lscat;
+failure contains: 'not in catalogs'
+
+// cf to boray tenant
+cf "boray";
+success
+
+// list catalogs when not in catalogs folder
+lscat;
+failure contains: 'not in catalogs'
+
+// cf to catalogs
+cf "catalogs";
+success
+
+// list catalogs when not in catalogs folder
+lscat;
+rows: ('rapidsse')
+
+create catalog "myCatalog";
+success
+
+lscat;
+rows:
+  ('rapidsse')
+  ('myCatalog')
+
+drop catalog "myCatalog";
+success
+
+cf "/tables/public/schemas/rapidsse/catalogs/boray/tenants/"
+success
+
+CLEANUP {
+  
+  drop catalog "myCatalog";
+  mute
+  
+  bye;
+  mute
+}
+
