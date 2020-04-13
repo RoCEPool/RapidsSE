@@ -32,6 +32,7 @@ namespace LexicalAnalysis
     bool bReadToken(void);
     Tokeniser* pTokeniser(void);
     TokenVec* pTokenVec(void);
+    void vUseEnd(void);
     void vUseStdin(void);
     
     Footer* aFooter(void);

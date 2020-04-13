@@ -29,7 +29,7 @@ Charser::Charser(Charser* pNext)
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
   m_sPath   = C_NO_NAME;
-  
+    
   vResetCharser();
   
   _checkInitialised_(CN_CHARSER);
@@ -205,7 +205,8 @@ bool Charser::bUseFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vResetCharser();
+  ASSERT(IS_NONE == m_eSource);
+  //vResetCharser();
   
   m_eSource = IS_FILE;
   m_bRead = true;
@@ -224,7 +225,8 @@ void Charser::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vResetCharser();
+  ASSERT(IS_NONE == m_eSource);
+  //vResetCharser();
   
   m_oRawFile.vUseStdin();
   m_eSource = IS_STDIN;
@@ -240,7 +242,8 @@ void Charser::vUseString(Stz* szString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vResetCharser();
+  ASSERT(IS_NONE == m_eSource);
+  //vResetCharser();
   
   m_sRawLine = szString;
   m_eSource = IS_STRING;
@@ -322,7 +325,7 @@ void Charser::vResetCharser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   //ASSERT(! m_oRawFile.bIsOpen());
-  
+
   // reset input sources
   m_eSource    = IS_NONE;
   m_oRawFile.vReset();

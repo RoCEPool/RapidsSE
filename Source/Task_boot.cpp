@@ -398,7 +398,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
   pNewWord->vEncodeCall("exit_rt"_Stz);
   
-  // reset scanning
+  // reset charser
   pCompiler->vUseEnd();
   
   return pNewWord;
