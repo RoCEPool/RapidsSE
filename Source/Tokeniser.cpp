@@ -75,7 +75,6 @@ void Tokeniser::vTokenise(TokenVec* pTknVec, Stz* szString)
   pTknVec->vReset();
   
   Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPushCharser();
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
