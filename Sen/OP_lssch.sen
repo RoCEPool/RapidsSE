@@ -21,20 +21,20 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
+  StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] InfoSet[].new
+  StreamDef[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    object@ word.name@ StreamDef[] InfoSet[].addListContents assert
+    object@ word.name@ StreamDef[] StreamSet[].addListContents assert
     object@ word.prev object!      // step backwards thru words
   next
 
@@ -42,7 +42,7 @@
   StreamDef[].pipeout
 
   // pipeout the infoset
-  InfoSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;

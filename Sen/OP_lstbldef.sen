@@ -23,13 +23,13 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
+  StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] InfoSet[].new
+  StreamDef[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in teh infoSet for each word
@@ -44,7 +44,7 @@
     // skip definition only tables
     table[].isDefinitionOnly if
 
-      sTableNm StreamDef[] InfoSet[].addListContents assert
+      sTableNm StreamDef[] StreamSet[].addListContents assert
 
     then
 
@@ -57,7 +57,7 @@
   StreamDef[].pipeout
 
   // pipeout the infoset
-  InfoSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;

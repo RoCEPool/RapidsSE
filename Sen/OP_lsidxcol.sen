@@ -18,13 +18,13 @@
   then
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
+  StreamSetTable[] StreamDef[].new
 
   // create an infoSet operand
-  StreamDef[] InfoSet[].new
+  StreamDef[] StreamSet[].new
 
   // get no of columns in the index
   index[].columnCount@ to iColumns
@@ -33,14 +33,14 @@
   // insert a row in the infoSet for each index column
   iColumns 0 do
     I index[].column@
-    StreamDef[] InfoSet[].addColumnDef assert
+    StreamDef[] StreamSet[].addColumnDef assert
   loop
 
   // pipeout the streamDef
   StreamDef[].pipeout
 
   // pipeout the infoset
-  InfoSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;
