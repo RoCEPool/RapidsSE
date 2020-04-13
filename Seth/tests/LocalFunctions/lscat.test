@@ -46,13 +46,20 @@ rows:
 drop catalog "myCatalog";
 success
 
-cf "/tables/public/schemas/rapidsse/catalogs/boray/tenants/"
+cf "default";
 success
+
+pwf;
+rows:
+('/tenants/boray/catalogs/rapidsse/schemas/public/tables');
 
 CLEANUP {
   
   drop catalog "myCatalog";
   mute
+  
+  cf "default";
+  mute;
   
   bye;
   mute

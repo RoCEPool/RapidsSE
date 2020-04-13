@@ -39,6 +39,18 @@
   then
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // test for a "default" will set default path
+
+  // pop up to tenants
+  sFolderNm "default" str.equal if
+    "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    str.toStrVec path[].set
+    setPath
+    true
+    exit                                                         // *EARLY EXIT*
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // test for a "tenants" will clear folder path and set to /tenants
 
   // clear dic path and push tenants
