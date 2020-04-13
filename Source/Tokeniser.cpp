@@ -33,6 +33,8 @@ Tokeniser::Tokeniser(void)
   
   _checkInitialised_(CN_TOKENISER);
   
+  vPushCharser();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 }
 

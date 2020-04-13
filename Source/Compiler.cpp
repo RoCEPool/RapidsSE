@@ -27,11 +27,8 @@ Compiler::Compiler(void)
 
   m_pTokenStream = new TokenStream;
   
+//  m_pTokeniser = m_pTokenStream->pTokeniser();
   m_pTokeniser = new Tokeniser;
-
-  m_pTokeniser->vPushCharser();
-  m_pTokeniser->vUseString(""_Stz);
-
 
   m_nLocals    = 0;
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
