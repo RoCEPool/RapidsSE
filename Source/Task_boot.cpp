@@ -289,58 +289,63 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pNewWord;
-  StepFp  fpStep;
-  Word* pCalledWord;
-  Datum xVariable;
+  vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
+  Word*     pNewWord;
+  StepFp    fpStep;
+  Word*     pCalledWord;
+  Datum     xVariable;
   TokenVec* pTokenVec;
   
   Compiler* pCompiler = m_pForth->pCompiler();
-  
-  vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
-  
   pCompiler->vUseString(sDefinition);
   
   // get :
   pCompiler->vReadToken_cpl();
-  //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
-  
+  Stz* szChars = pCompiler->szToken();
+  vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
+
   // get name of word
   pCompiler->vReadToken_cpl();
-  //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
-  
+  szChars = pCompiler->szToken();
+  vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Dic* pDic;
   if (m_pForth->m_oDicStack.iCount())
     pDic = m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
 
-
-  pNewWord = new(pDic) Word(pCompiler->szToken());
+  pNewWord = new(pDic) Word(szChars);
   
   pCompiler->vCurrentWord(pNewWord);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   pCompiler->vReadToken_cpl();
   
   while (TN_EOF != pCompiler->eToken()) {
     
-    //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
+    szChars = pCompiler->szToken();
+    vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
     
-//  if (StrLib::bEqualTo(";",m_pCompiler->szToken()->azChar()))
-    if (pCompiler->szToken()->bEqual(";"_Stz))
+    if (szChars->bEqual(";"_Stz))
       break;
     
     eTN eToken = pCompiler->eToken();
     switch (eToken) {
         
+      // -- -- -- -- -- -- -- -- -- --
       case TN_INTEGER:
-        xVariable = pCompiler->szToken()->iToI8();
+        xVariable = szChars->iToI8();
         pNewWord->vEncodePush(xVariable);
         break;
         
+      // -- -- -- -- -- -- -- -- -- --
       case TN_NAME:
-        pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->pCompiler()->szToken());
+        pCalledWord = m_pForth->m_oDicStack.pFindWord(szChars);
         if (WK_INTRINSIC == pCalledWord->eWord()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
@@ -359,35 +364,40 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
         }
         break;
         
+      // -- -- -- -- -- -- -- -- -- --
       case TN_STRING: {
-        xVariable = pCompiler->szToken();
+        xVariable = szChars;
         pNewWord->vEncodePush(xVariable);
         break;
       }
         
+      // -- -- -- -- -- -- -- -- -- --
       case TN_TAG: {
-        xVariable = pCompiler->szToken();
+        xVariable = szChars;
         pNewWord->vEncodePush(xVariable);
         
         pCalledWord = m_pForth->m_oDicStack.pFindWord("tag::get"_Stz);
         pNewWord->vAppend(pCalledWord->afpEntryStep());
         break;
       }
+              
         
+      // -- -- -- -- -- -- -- -- -- --
       default:
         vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-               "Invalid m_eToken %lld %s"_Stz,
-               m_pForth->pCompiler()->eToken(),
-               m_pForth->pCompiler()->szToken()
+               "Invalid eToken %lld %s"_Stz,
+               eToken,
+               szChars
                );
     }
     
     pCompiler->vReadToken_cpl();
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   pNewWord->vEncodeCall("exit_rt"_Stz);
   
-
   // reset scanning
   pCompiler->vUseEnd();
   
