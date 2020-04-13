@@ -422,11 +422,9 @@ public:
   // reg info set
   void vInfoSetAddGridSanity(void);
   void vInfoSetAddNodeInfo(void);
-  void vInfoSetAddPingInfo(void);
   void vInfoSetAddProgressUnits(void);
   void vInfoSetAddShowCluster(void);
   void vInfoSetAddSpaceInfo(void);
-  void vInfoSetAddString(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
   void vInfoSetDelete(void);
@@ -1322,9 +1320,9 @@ public:
   void vStreamSetAddNodeInfo(void);
   void vStreamSetAddPingInfo(void);
   void vStreamSetAddProgressUnits(void);
+  void vStreamSetAddPwfInfo(void);
   void vStreamSetAddShowCluster(void);
   void vStreamSetAddSpaceInfo(void);
-  void vStreamSetAddString(void);
   void vStreamSetAddTotalUnits(void);
   void vStreamSetChunkFile(void);
   void vStreamSetDelete(void);

@@ -14,22 +14,22 @@
   "ping wakes" .
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
-
-  // create an infoSet operand
-  StreamDef[] InfoSet[].new
-
-  // add nodeInfo to the infoSet
-  StreamDef[] InfoSet[].addPingInfo assert
+  StreamSetTable[] StreamDef[].new
 
   // pipeout the streamDef
   StreamDef[].pipeout
 
+  // create an infoSet operand
+  StreamSetTable[] StreamSet[].new
+
+  // add nodeInfo to the infoSet
+  StreamSetTable[] StreamSet[].addPingInfo assert
+
   // pipeout the infoset
-  InfoSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;

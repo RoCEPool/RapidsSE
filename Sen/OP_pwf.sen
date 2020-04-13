@@ -26,22 +26,22 @@
   to folder
 
   // find the __ table
-  <streamDef> op__tableDef assert
+  <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  infoSetTable[] StreamDef[].new
-
-  // create an infoSet operand
-  StreamDef[] InfoSet[].new
-
-  // add nodeInfo to the infoSet
-  StreamDef[]  folder InfoSet[].addString assert
+  StreamSetTable[] StreamDef[].new
 
   // pipeout the streamDef
   StreamDef[].pipeout
 
+  // create an infoSet operand
+  StreamSetTable[] StreamSet[].new
+
+  // add nodeInfo to the infoSet
+  folder StreamSetTable[]  StreamSet[].addPwfInfo assert
+
   // pipeout the infoset
-  InfoSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;
