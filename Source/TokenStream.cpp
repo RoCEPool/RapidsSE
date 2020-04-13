@@ -22,9 +22,7 @@ TokenStream::TokenStream(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
 
   m_pTokeniser = new Tokeniser;
-  
-  m_pTokeniser->vMalloc(false);
-  
+    
   m_pTokeniser->vPushCharser();
   
   vUseStdin();

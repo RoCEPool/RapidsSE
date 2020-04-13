@@ -24,7 +24,6 @@ Tokeniser::Tokeniser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser = nullptr;
-  m_bMalloc  = false;
   m_bNormal  = false;
   
   m_xAnnChar.vReset();
@@ -173,9 +172,8 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 
   Tokeniser* pTokeniser = _pTokeniser(pObject);
   
-  vTrace("parser %p %s\n"_Stz,
-         pTokeniser->m_pCharser,
-         pTokeniser->m_bMalloc == true ? "malloc"_Stz : "pool"_Stz);
+  vTrace("parser %p\n"_Stz,
+         pTokeniser->m_pCharser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,16 +291,6 @@ bool Tokeniser::bLineMode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set malloc flag                                                            */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vMalloc(bool bMalloc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_bMalloc = bMalloc;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set normal token flag                                                      */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vNormal(bool bNormal)
@@ -337,7 +325,7 @@ void Tokeniser::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pCharser = new(m_bMalloc) Charser(m_pCharser);
+  m_pCharser = new(false) Charser(m_pCharser);
 }
 
 /*----------------------------------------------------------------------------*/

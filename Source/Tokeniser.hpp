@@ -10,7 +10,6 @@ namespace LexicalAnalysis
   private:
     Charser*  m_pCharser;  // charser
   
-    bool      m_bMalloc;   // malloc or pool heap?
     bool      m_bNormal;   // normal or sen tokens?
     AnnChar   m_xAnnChar;  // annotated char from parser
     
@@ -41,7 +40,6 @@ namespace LexicalAnalysis
     bool bIsStdin(void);
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
-    void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
     bool bPopCharser(void);
     void vPushCharser(void);
