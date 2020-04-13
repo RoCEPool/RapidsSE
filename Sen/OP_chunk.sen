@@ -15,17 +15,6 @@
   // find the __seekOffsets table
   C_TDEF_SEEKOFFSETS op__tableDef_infoSet assert
 
-  // create a new streamDef and save it in Operand
-  infoSetTable[] streamDef[].new
-  streamDef[] to Operand[]
-  nullptr to streamDef[]
-
-  // create the streamDef to be piped out
-  infoSetTable[] streamDef[].new
-
-  // pipeout the streamDef
-  streamDef[].pipeout
-
   // set eof location in counter0
   File0[].getEofLocation to counter1[]
 
@@ -36,12 +25,10 @@
     counter1[] counter0[] >
   while
     // create an infoSet operand
-    Operand[] InfoSet[].new
+    infoSetTable[] InfoSet[].new
     InfoSet[].chunkFile
     InfoSet[].pipeOut
   repeat
-
-  Operand[].delete
 
   // send EOSMARKER
   Operand[].newEosMarker
@@ -72,7 +59,7 @@
     infoSetTable[] streamDef[].new
 
     // create an infoSet operand for C_TDEF_TOTALUNITS
-    streamDef[] InfoSet[].new
+    infoSetTable[] InfoSet[].new
 
     // add fileSize to the infoset
     streamDef[] iFileSizeMb InfoSet[].addTotalUnits assert

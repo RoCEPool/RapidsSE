@@ -27,7 +27,7 @@
   Counter0[] 10 % 0 == if
 
     // create an infoSet operand
-    streamDef[] InfoSet[].new
+    infoSetTable[] InfoSet[].new
 
     // insert progressUnits to the infoset
     streamDef[] Counter0[] InfoSet[].addProgressUnits assert
@@ -54,7 +54,7 @@
   // send out final progress units
 
   // create an infoSet operand
-  streamDef[] InfoSet[].new
+  infoSetTable[] InfoSet[].new
 
   // insert progressUnits to the infoset
   streamDef[] Counter0[] InfoSet[].addTotalUnits assert

@@ -345,7 +345,9 @@ void Step::vInfoSetNew(void)
   
   ASSERT(m_pRegSet->m_xpInfoSet.bIsNull());
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
   m_pRegSet->m_xpInfoSet = new InfoSet(pStreamDef);
   
