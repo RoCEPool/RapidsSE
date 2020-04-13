@@ -14,7 +14,9 @@ namespace LexicalAnalysis
   #endif
   {
   private:
-    
+   
+    s256 m_sSource;  // where did the tokens come from
+  
     i8 m_iCurTkn;    // the current token in the vector
   
     // must be last
@@ -50,6 +52,8 @@ namespace LexicalAnalysis
     void vReset(void);
     void vSetAllTokens(void);
     void vSetTokens(void);
+    Stz* szSource(void);
+    void vSource(Stz* szSource);
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
