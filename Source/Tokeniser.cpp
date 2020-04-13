@@ -413,64 +413,64 @@ void Tokeniser::vPushCharser(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadCommand(TokenVec* pTknVec)
+void Tokeniser::vReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  vReadTillEOF(pTknVec);
+    
+  vReadTillEOF();
     
   // if empty line just return
-  if ( ! pTknVec->nTokens() ||
-       ! pTknVec->pGet(0)->bHasText() )
+  if ( ! m_pTknVec->nTokens() ||
+       ! m_pTknVec->pGet(0)->bHasText() )
     return;
   
   // if its a command file just return
-  if ( ! pTknVec->pGet(0)->bSame("/"_Stz) &&
-     File::bExists(pTknVec->pGet(0)->szTerm()))
+  if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
+     File::bExists(m_pTknVec->pGet(0)->szTerm()))
     return;
   
   // read more till ;
-  vReadTillSemicolon(pTknVec);
+  vReadTillSemicolon();
   
   // stip off ;
-  pTknVec->vStripSemicolon();
+  m_pTknVec->vStripSemicolon();
   
   // stip off &
-  pTknVec->vStripAmpersand();
+  m_pTknVec->vStripAmpersand();
   
   // set no of tokens in token vector
-  pTknVec->vSetTokens();
+  m_pTknVec->vSetTokens();
 }
 
 /*----------------------------------------------------------------------------*/
 /* read tokens from stream till EOF                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadTillEOF(TokenVec* pTknVec)
+void Tokeniser::vReadTillEOF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   while (true) {
     
-    pTknVec->vReset();
+    m_pTknVec->vReset();
     
     for (;;) {
       
-      pTknVec->vAdvanceCurr();
-      Token* pToken = pTknVec->pGet(pTknVec->nTokens(),true);
+      m_pTknVec->vAdvanceCurr();
+      Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
             
 //      if (! bNextInputToken(pTknVec,pToken))
 //        break;
       
-      vReadToken_vec(pTknVec,pToken);
+      vReadToken_vec();
       if (TN_EOF == pToken->eToken())
         break;
 
-      pTknVec->vIncTokens();
-      ASSERT(pTknVec->nTokens() < C_MAX_TOKENS);
+      m_pTknVec->vIncTokens();
+      ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (! pTknVec->nTokens() && bEOF()) {
+    if (! m_pTknVec->nTokens() && bEOF()) {
       bool b = bPopCharser();
       ASSERT(b);
       break;
@@ -484,22 +484,22 @@ void Tokeniser::vReadTillEOF(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadTillSemicolon(TokenVec* pTknVec)
+void Tokeniser::vReadTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(pTknVec->pGet(0)->bHasText());
+  ASSERT(m_pTknVec->pGet(0)->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = pTknVec->iFindToken(";"_Stz);
+  i8 i_Token = m_pTknVec->iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
     return;
   }
   
-  i_Token = pTknVec->iCountTokens();
+  i_Token = m_pTknVec->iCountTokens();
   
   // switch to terminal mode
   vLineMode(false);
@@ -507,16 +507,16 @@ void Tokeniser::vReadTillSemicolon(TokenVec* pTknVec)
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
-    Token* pToken = pTknVec->pGet(i_Token,true);
+    Token* pToken = m_pTknVec->pGet(i_Token,true);
     
-    vReadToken_vec(pTknVec,pToken);
+    vReadToken_vec();
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
       break;
 
-    pTknVec->vAdvanceCurr();
+    m_pTknVec->vAdvanceCurr();
   }
   
   // switch back to line mode
@@ -538,22 +538,22 @@ void Tokeniser::vReadToken_nil(void)
   m_pTknVec->vAdvanceCurr();
   Token* pToken = m_pTknVec->pCurrToken();;
 
-  vReadToken_vec(m_pTknVec,pToken);
+  vReadToken_vec();
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadToken_vec(TokenVec* pTknVec,Token* pToken)
+void Tokeniser::vReadToken_vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  RASSERT(! pTknVec || pTknVec->pCurrToken() == pToken);
-  
+  Token* pToken = m_pTknVec->pCurrToken();;
+
   if (m_bNormal)
-    vCollectNormal(pTknVec,pToken);
+    vCollectNormal(m_pTknVec,pToken);
   else
-    vCollectSen(pTknVec,pToken);
+    vCollectSen(m_pTknVec,pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -606,6 +606,15 @@ Stz* Tokeniser::szToken(void)
   return pCurrToken->szTerm();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get token string                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_pTknVec;
+}
 
 /*----------------------------------------------------------------------------*/
 /* end use of source                                                          */
@@ -665,6 +674,8 @@ void Tokeniser::vCollectNormal(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char* azTermCrs = pToken->azTerm();
   pToken->vReset();
 
@@ -730,6 +741,8 @@ void Tokeniser::vCollectNormalInteger(TokenVec* pTknVec,Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
   
   i8 iNoDigits = 0;
@@ -779,6 +792,8 @@ void Tokeniser::vCollectNormalName(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
 
   ASSERT(bStartNormalName());
@@ -808,6 +823,8 @@ void Tokeniser::vCollectNormalOther(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
 
   ASSERT(bStartNormalOther());
@@ -1006,6 +1023,8 @@ void Tokeniser::vCollectNormalString(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
 
   ASSERT(bStartSenString());
@@ -1046,6 +1065,8 @@ void Tokeniser::vCollectSen(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char* azTermCrs = pToken->azTerm();
   
   pToken->vReset();
@@ -1116,6 +1137,8 @@ void Tokeniser::vCollectSenInteger(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
 
   i8 iNoDigits = 0;
@@ -1187,6 +1210,8 @@ void Tokeniser::vCollectSenName(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
   
   //ASSERT(bStartSenName());
@@ -1215,6 +1240,8 @@ void Tokeniser::vCollectSenString(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
 
   ASSERT(bStartSenString());
@@ -1258,6 +1285,8 @@ void Tokeniser::vCollectSenTag(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   char *z = StrLib::zNullTerminator(pToken->azTerm());
 
   ASSERT(bStartSenTag());
@@ -1527,6 +1556,8 @@ void Tokeniser::vTokenCollectBegin(TokenVec* pTknVec, Token* pToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(pTknVec == m_pTknVec);
+
   pToken->vLineNo(m_xAnnChar.m_iLine);
   pToken->vColNo(m_xAnnChar.m_iCol);
 }

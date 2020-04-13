@@ -997,7 +997,7 @@ bool SePrompt::bReadNextCommand(void)
     return false;
   }
   
-  pTokenStream->vReadCommand(pTknVec);
+  pTokenStream->vReadCommand();
   
   return true;
 }

@@ -83,28 +83,42 @@ void TokenStream::vPushFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
-void TokenStream::vReadCommand(TokenVec* pTknVec)
+void TokenStream::vReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vReadCommand(pTknVec);
+  m_pTokeniser->vReadCommand();
 }
 
 /*----------------------------------------------------------------------------*/
 /* read next token from stream                                                */
 /*----------------------------------------------------------------------------*/
-bool TokenStream::bReadToken(TokenVec* pTknVec, Token* pTkn)
+bool TokenStream::bReadToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vReadToken_vec(pTknVec,pTkn);
+  RASSERT(0); // called from vortex
   
-  eTN eToken = pTkn->eToken();
-  
-  if (TN_EOF == eToken)
-    return false;
+//  m_pTokeniser->vReadToken_vec(pTknVec,pTkn);
+//
+//  eTN eToken = pTkn->eToken();
+//
+//  if (TN_EOF == eToken)
+//    return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next token from stream                                                */
+/*----------------------------------------------------------------------------*/
+TokenVec* TokenStream::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+
+  TokenVec* pTknVec = m_pTokeniser->pTokenVec();
+  
+  return pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/

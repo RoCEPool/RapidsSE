@@ -27,8 +27,9 @@ namespace LexicalAnalysis
   
     bool bIsStdIn(void);
     void vPushFile(Stz* szPath);
-    void vReadCommand(TokenVec* pTknVec);
-    bool bReadToken(TokenVec* pTknVec, Token* pTkn);
+    void vReadCommand(void);
+    bool bReadToken(void);
+    TokenVec* pTokenVec(void);
     void vUseStdin(void);
     
     Footer* aFooter(void);
