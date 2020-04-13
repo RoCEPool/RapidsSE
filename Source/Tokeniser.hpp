@@ -50,7 +50,7 @@ namespace LexicalAnalysis
     void vReadTillEOF(void);
     void vReadTillSemicolon(void);
     void vReadToken_nil(void);
-    void vReadToken_vec(TokenVec* pTknVec, Token* pToken);
+    void vReadToken_vec(void);
     Stz* szSource(void);
     bool bStdin(void);
     eTN  eToken(void);

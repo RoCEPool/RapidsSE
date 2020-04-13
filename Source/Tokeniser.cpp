@@ -461,7 +461,7 @@ void Tokeniser::vReadTillEOF(void)
 //      if (! bNextInputToken(pTknVec,pToken))
 //        break;
       
-      vReadToken_vec(m_pTknVec,pToken);
+      vReadToken_vec();
       if (TN_EOF == pToken->eToken())
         break;
 
@@ -509,7 +509,7 @@ void Tokeniser::vReadTillSemicolon(void)
     
     Token* pToken = m_pTknVec->pGet(i_Token,true);
     
-    vReadToken_vec(m_pTknVec,pToken);
+    vReadToken_vec();
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
@@ -538,24 +538,22 @@ void Tokeniser::vReadToken_nil(void)
   m_pTknVec->vAdvanceCurr();
   Token* pToken = m_pTknVec->pCurrToken();;
 
-  vReadToken_vec(m_pTknVec,pToken);
+  vReadToken_vec();
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadToken_vec(TokenVec* pTknVec,Token* pToken)
+void Tokeniser::vReadToken_vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  ASSERT(pTknVec == m_pTknVec);
+  Token* pToken = m_pTknVec->pCurrToken();;
 
-  RASSERT(! pTknVec || pTknVec->pCurrToken() == pToken);
-  
   if (m_bNormal)
-    vCollectNormal(pTknVec,pToken);
+    vCollectNormal(m_pTknVec,pToken);
   else
-    vCollectSen(pTknVec,pToken);
+    vCollectSen(m_pTknVec,pToken);
 }
 
 /*----------------------------------------------------------------------------*/

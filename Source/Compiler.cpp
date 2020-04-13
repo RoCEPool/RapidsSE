@@ -221,18 +221,6 @@ void Compiler::vReadToken_cpl(void)
 
   m_pTokeniser->vReadToken_nil();
 }
-/*----------------------------------------------------------------------------*/
-//void Compiler::vReadToken_cpl(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-//
-//  m_pTknVec->vReset();
-//
-//  m_pTknVec->vAdvanceCurr();
-//  Token* pToken = m_pTknVec->pCurrToken();;
-//
-//  m_pTokeniser->vReadToken_vec(m_pTknVec,pToken);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get token type                                                             */
@@ -258,18 +246,6 @@ Stz* Compiler::szToken(void)
 
   return m_pTokeniser->szToken();
 }
-/*----------------------------------------------------------------------------*/
-//Stz* Compiler::szToken(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-//
-//  Token* pToken = m_pTknVec->pCurrToken();;
-//
-//  Stz* szTerm = pToken->szTerm();
-//  vTrace("Compiler:: %s\n"_Stz,szTerm);
-//
-//  return szTerm;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get tokeniser                                                              */
