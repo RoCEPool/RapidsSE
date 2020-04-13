@@ -62,17 +62,17 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:    
-    void vCollectNormal(TokenVec* pTknVec, Token* pToken);
-    void vCollectNormalInteger(TokenVec* pTknVec, Token* pToken);
-    void vCollectNormalName(TokenVec* pTknVec, Token* pToken);
-    void vCollectNormalOther(TokenVec* pTknVec, Token* pToken);
-    void vCollectNormalString(TokenVec* pTknVec, Token* pToken);
+    void vCollectNormal(Token* pToken);
+    void vCollectNormalInteger(Token* pToken);
+    void vCollectNormalName(Token* pToken);
+    void vCollectNormalOther(Token* pToken);
+    void vCollectNormalString(Token* pToken);
     
-    void vCollectSen(TokenVec* pTknVec, Token* pToken);
-    void vCollectSenInteger(TokenVec* pTknVec, Token* pToken);
-    void vCollectSenName(TokenVec* pTknVec, Token* pToken);
-    void vCollectSenString(TokenVec* pTknVec, Token* pToken);
-    void vCollectSenTag(TokenVec* pTknVec, Token* pToken);
+    void vCollectSen(Token* pToken);
+    void vCollectSenInteger(Token* pToken);
+    void vCollectSenName(Token* pToken);
+    void vCollectSenString(Token* pToken);
+    void vCollectSenTag(Token* pToken);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
@@ -93,7 +93,7 @@ namespace LexicalAnalysis
     void vParserGetAnnCharStripped(void);
     void vParserUngetAnnCharStripped(void);
   
-    void vTokenCollectBegin(TokenVec* pTknVec, Token* pToken);
+    void vTokenCollectBegin(Token* pToken);
     void vTokenCollectEnd(void);
 
     bool bEndInput(void);
