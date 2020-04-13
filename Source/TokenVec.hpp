@@ -3,15 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-//#define __WITH_TOKEN_ARY
-
 namespace LexicalAnalysis
 {
-  #ifdef __WITH_TOKEN_ARY
   class TokenVec : public ArrayNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
-  #else
-  class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
-  #endif
   {
   private:
      
