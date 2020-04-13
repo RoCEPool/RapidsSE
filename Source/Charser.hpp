@@ -76,7 +76,7 @@ namespace LexicalAnalysis
 
   private:
     
-    void vResetParser(void);
+    void vResetCharser(void);
     
     // Character Processing
     void vClearRegs(void);
