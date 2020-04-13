@@ -41,7 +41,6 @@ namespace LexicalAnalysis
     bool bIsStdin(void);
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
-    void vNormal(bool bNormal);
     bool bPopCharser(void);
     void vPushCharser(void);
     void vPushFile(Stz* szPath);

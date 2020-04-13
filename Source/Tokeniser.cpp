@@ -300,16 +300,6 @@ bool Tokeniser::bLineMode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set normal token flag                                                      */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNormal(bool bNormal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_bCppTokens = bNormal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop a parser                                                               */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bPopCharser(void)
@@ -589,7 +579,7 @@ void Tokeniser::vUseStdinX(void)
   
   m_pCharser->vUseStdin();
   vLineMode(true);
-  vNormal(true);
+  vCppTokens();
 }
 
 /*----------------------------------------------------------------------------*/
