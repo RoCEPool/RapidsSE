@@ -69,11 +69,11 @@ namespace LexicalAnalysis
     void vCollectNormalOther(void);
     void vCollectNormalString(void);
     
-    void vCollectSen(Token* pToken);
-    void vCollectSenInteger(Token* pToken);
-    void vCollectSenName(Token* pToken);
-    void vCollectSenString(Token* pToken);
-    void vCollectSenTag(Token* pToken);
+    void vCollectSen(void);
+    void vCollectSenInteger(void);
+    void vCollectSenName(void);
+    void vCollectSenString(void);
+    void vCollectSenTag(void);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
