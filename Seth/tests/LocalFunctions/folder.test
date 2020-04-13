@@ -2,6 +2,10 @@
 /* folder.test -- folder functions                                            */
 /*----------------------------------------------------------------------------*/
 
+// list folder
+lf;
+success;
+
 // change folder
 cf "noFolder";
 failure contains: 'no such folder'

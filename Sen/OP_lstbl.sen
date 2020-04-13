@@ -44,7 +44,7 @@
     // skip definition only tables
     table[].isDefinitionOnly not if
 
-      sTableNm StreamDef[] StreamSet[].addListContents assert
+      sTableNm streamSetTable[] StreamSet[].addListContents assert
 
     then
 

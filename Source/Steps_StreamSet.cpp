@@ -120,7 +120,11 @@ void Step::vStreamSetAddListContents(void)
 {
   ENTRY(); // ENTRY("vStreamSetAddLstblInfo"_Stz);
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
   s256 sContents;
   m_pDataStack->vPopStr(sContents, __func__);
@@ -140,14 +144,17 @@ void Step::vStreamSetAddListContents(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addListFolder -- add a row to infoset with the list folder       */
+/* StreamSet[].addListFolder -- add a row to infoset with the list folder     */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListFolder(void)
 {
   ENTRY(); // ENTRY("vStreamSetAddListFolder"_Stz);
   
-  // get the streamDef
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
   // get the name
   s256 sName;

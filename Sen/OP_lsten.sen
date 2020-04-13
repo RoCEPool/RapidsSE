@@ -34,7 +34,7 @@
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    object@ word.name@ StreamDef[] StreamSet[].addListContents assert
+    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
     object@ word.prev object!      // step backwards thru words
   next
 

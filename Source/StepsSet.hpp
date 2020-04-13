@@ -422,8 +422,6 @@ public:
   // reg info set
   void vInfoSetAddColumnDef(void);
   void vInfoSetAddGridSanity(void);
-  void vInfoSetAddListContents(void);
-  void vInfoSetAddListFolder(void);
   void vInfoSetAddListIndex(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddPingInfo(void);

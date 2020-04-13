@@ -12,8 +12,6 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
   vAddStep("InfoSet[].addColumnDef"_Stz,   &Step::vInfoSetAddColumnDef);
   vAddStep("InfoSet[].addGridSanity"_Stz,  &Step::vInfoSetAddGridSanity);
-  vAddStep("InfoSet[].addListContents"_Stz,&Step::vInfoSetAddListContents);
-  vAddStep("InfoSet[].addListFolder"_Stz,  &Step::vInfoSetAddListFolder);
   vAddStep("InfoSet[].addListIndex"_Stz,   &Step::vInfoSetAddListIndex);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addPingInfo"_Stz,    &Step::vInfoSetAddPingInfo);
@@ -107,65 +105,6 @@ void Step::vInfoSetAddGridSanity(void)
                                   bHomogenous,
                                   C_VARGS_END);
   ASSERT(pRow);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addListContents -- add a row to infoset with the list contents   */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddListContents(void)
-{
-  ENTRY(); // ENTRY("vInfoSetAddLstblInfo"_Stz);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  s256 sContents;
-  m_pDataStack->vPopStr(sContents, __func__);
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  sContents.azChar(),
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].addListFolder -- add a row to infoset with the list folder       */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetAddListFolder(void)
-{
-  ENTRY(); // ENTRY("vInfoSetAddListFolder"_Stz);
-  
-  // get the streamDef
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  // get the name
-  s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
-  
-  // get the kind
-  s256 sKind;
-  m_pDataStack->vPopStr(sKind, __func__);
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
-  
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  sName.azChar(),
-                                  sKind.azChar(),
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   
