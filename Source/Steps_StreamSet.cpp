@@ -15,7 +15,6 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
-  vAddStep("StreamSet[].addNodeInfo"_Stz,    &Step::vStreamSetAddNodeInfo);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
@@ -29,11 +28,10 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].pipeOut"_Stz,        &Step::vStreamSetPipeOut);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
-  vAddStep("StreamSet[].writeCsv"_Stz,       &Step::vStreamSetWriteCsv);
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addColumnDef -- add a row to the infoset with the column def     */
+/* StreamSet[].addColumnDef -- add a row to the streamSet with the column def */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddColumnDef(void)
 {
@@ -47,9 +45,9 @@ void Step::vStreamSetAddColumnDef(void)
 
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pColumn->szColNm(),
                                   aCT[pColumn->eColumnType()],
@@ -132,9 +130,9 @@ void Step::vStreamSetAddListContents(void)
   s256 sContents;
   m_pDataStack->vPopStr(sContents, __func__);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sContents.azChar(),
                                   C_VARGS_END);
@@ -167,9 +165,9 @@ void Step::vStreamSetAddListFolder(void)
   s256 sKind;
   m_pDataStack->vPopStr(sKind, __func__);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sName.azChar(),
                                   sKind.azChar(),
@@ -198,9 +196,9 @@ void Step::vStreamSetAddListIndex(void)
   // get the index
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pIndex->szIndexNm(),
                                   (i8)pIndex->bIsUnique(),
@@ -211,36 +209,6 @@ void Step::vStreamSetAddListIndex(void)
   
   m_pDataStack->vPushPtr(pRow);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddNodeInfo(void)
-{
-  ENTRY(); // ENTRY("vStreamSetDelete"_Stz);
-  
-  // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
-  
-  Grid* pGrid = AM::pGrid();
-  
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pGrid->pThisNode()->szNodeNm(),
-                                  AM::iRegionSize(),
-                                  pGrid->nSlotsPerNode(),
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
   EXIT();
 }
 
@@ -256,9 +224,9 @@ void Step::vStreamSetAddPingInfo(void)
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   "pong"_Stz,
                                   C_VARGS_END);
@@ -271,7 +239,7 @@ void Step::vStreamSetAddPingInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addProgressUnits -- add a row to infoset with the progressUnits  */
+/* StreamSet[].addProgressUnits -- add a row to streamSet with progressUnits  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddProgressUnits(void)
 {
@@ -280,9 +248,9 @@ void Step::vStreamSetAddProgressUnits(void)
   i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
@@ -295,7 +263,7 @@ void Step::vStreamSetAddProgressUnits(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addStr -- add a row to infoset with a __pwf response           */
+/* StreamSet[].addStr -- add a row to streamSet with a __pwf response         */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddPwfInfo(void)
 {
@@ -325,7 +293,7 @@ void Step::vStreamSetAddPwfInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addShowCluster -- add a row to infoset with the cluster info     */
+/* StreamSet[].addShowCluster -- add a row to streamSet with the cluster info */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddShowCluster(void)
 {
@@ -359,7 +327,7 @@ void Step::vStreamSetAddShowCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addSpaceInfo -- add a row to the infoset with the spaceInfo    */
+/* StreamSet[].addSpaceInfo -- add a row to the streamSet with the spaceInfo  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddSpaceInfo(void)
 {
@@ -371,7 +339,7 @@ void Step::vStreamSetAddSpaceInfo(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
   
@@ -391,7 +359,7 @@ void Step::vStreamSetAddSpaceInfo(void)
 //
 //  MagLib::vByteMag(iTotalSpace, iScale, s);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pGrid->pThisNode()->szNodeNm(),
                                   iTotalSpace,
@@ -416,9 +384,9 @@ void Step::vStreamSetAddTotalUnits(void)
   i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iTotalUnits,
                                   C_VARGS_END);
@@ -438,7 +406,7 @@ void Step::vStreamSetChunkFile(void)
   ENTRY(); // ENTRY("vStreamSetChunkFile"_Stz);
   
   // get the seekOffsets
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
   // get the file we are chunking
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
@@ -467,7 +435,7 @@ void Step::vStreamSetChunkFile(void)
       
       // compute the number of bytes which belong to the current chunk
       nChunkBytes = i_EofLoc - i_ChunkLoc;
-      Row* pRow = pInfoSet->aAllotRow();
+      Row* pRow = pStreamSet->aAllotRow();
       
       if (pRow) {
         pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
@@ -478,7 +446,7 @@ void Step::vStreamSetChunkFile(void)
       MagLib::vByteMag(i_EofLoc, 3, sFileSize);
       vTrace("Loading %s %s in %lld chunks by %lld nodes %lld partitions\n"_Stz,
              pFile->sFilePath().szStz(),sFileSize.szStz(),
-             pInfoSet->nInfoRows(),
+             pStreamSet->nInfoRows(),
              AM::nDefinedNodes(),
              AM::nPartitions());
       
@@ -512,7 +480,7 @@ void Step::vStreamSetChunkFile(void)
     // compute end location of chunk
     i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
     
-    Row* pRow = pInfoSet->aAllotRow();
+    Row* pRow = pStreamSet->aAllotRow();
     
     if (pRow) {
       pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
@@ -527,7 +495,7 @@ void Step::vStreamSetChunkFile(void)
       m_pRegSet->m_iCounter0 = i_ChunkLoc;
       
       // dump
-      //pInfoSet->vPrintRows();
+      //pStreamSet->vPrintRows();
       
       break;
     }
@@ -540,7 +508,7 @@ void Step::vStreamSetChunkFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].delete -- operand infoset                                        */
+/* StreamSet[].delete -- operand streamSet                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetDelete(void)
 {
@@ -554,27 +522,27 @@ void Step::vStreamSetDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].firstRow -- get first row from the infoset                       */
+/* StreamSet[].firstRow -- get first row from the streamSet                   */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetFirstRow(void)
 {
   ENTRY(); // ENTRY("vStreamSetFirstRow"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  m_pDataStack->vPushPtr(pInfoSet->aFirstRow());
+  m_pDataStack->vPushPtr(pStreamSet->aFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].get -- get infoset                                               */
+/* StreamSet[].get -- get streamSet                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetGet(void)
 {
   ENTRY(); // ENTRY("vStreamSetGet"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
 
-  m_pDataStack->vPushPtr(pInfoSet);
+  m_pDataStack->vPushPtr(pStreamSet);
 
   EXIT();
 }
@@ -588,9 +556,9 @@ void Step::vStreamSetInfoRows(void)
   
   ASSERT ( ! m_pRegSet->m_xpStreamSet.bIsNull() );
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  m_pDataStack->vPushInt(pInfoSet->nInfoRows());
+  m_pDataStack->vPushInt(pStreamSet->nInfoRows());
   
   EXIT();
 }
@@ -604,10 +572,10 @@ void Step::vStreamSetIsProgress(void)
   
   ASSERT ( ! m_pRegSet->m_xpStreamSet.bIsNull() );
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  bool bIsProgress = pInfoSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
-                       pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
+  bool bIsProgress = pStreamSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
+                       pStreamSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
   m_pDataStack->vPushInt(bIsProgress);
   
   EXIT();
@@ -622,24 +590,24 @@ void Step::vStreamSetIsTotalUnits(void)
   
   ASSERT ( ! m_pRegSet->m_xpStreamSet.bIsNull() );
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
-  bool bIsTotalUnits = pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
+  bool bIsTotalUnits = pStreamSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
   m_pDataStack->vPushInt(bIsTotalUnits);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].name -- get infoset name                                         */
+/* StreamSet[].name -- get infoset name                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetName(void)
 {
   ENTRY(); // ENTRY("vStreamSetName"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
 
-  Stz* szInfoSetNm = pInfoSet->szInfoSetNm();
+  Stz* szInfoSetNm = pStreamSet->szInfoSetNm();
   
   m_pDataStack->vPushStz(szInfoSetNm);
 
@@ -659,7 +627,7 @@ void Step::vStreamSetNew(void)
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pRegSet->m_xpStreamSet = new InfoSet(pStreamDef);
+  m_pRegSet->m_xpStreamSet = new StreamSet(pStreamDef);
   
   EXIT();
 }
@@ -671,12 +639,12 @@ void Step::vStreamSetNextRow(void)
 {
   ENTRY(); // ENTRY("vStreamSetNextRow"_Stz);
   
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   Row* pRow = _pRow(*m_pRegSet->m_xpRow);
   
   ASSERT(pRow);
   
-  m_pDataStack->vPushPtr(pInfoSet->aNextRow(pRow));
+  m_pDataStack->vPushPtr(pStreamSet->aNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -698,14 +666,14 @@ void Step::vStreamSetPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].readChunk -- reach a chunk from file given the infoSet           */
+/* StreamSet[].readChunk -- reach a chunk from file given the streamSet       */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetReadChunk(void)
 {
   ENTRY(); // ENTRY("vStreamSetReadChunk"_Stz);
   
   ASSERT(*m_pRegSet->m_xpStreamSet);
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
+
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
@@ -728,7 +696,7 @@ void Step::vStreamSetReadChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].set -- set InfoSet                                             */
+/* StreamSet[].set -- set streamSet                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetSet(void)
 {
@@ -737,26 +705,6 @@ void Step::vStreamSetSet(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpStreamSet.bIsNull());
   m_pRegSet->m_xpStreamSet = _pOperand(pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].writeCsv -- write InfoSet to file as csv                       */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetWriteCsv(void)
-{
-  ENTRY(); // ENTRY("vStreamSetWriteCsv"_Stz);
-  
-  ASSERT(*m_pRegSet->m_xpStreamSet);
-  
-  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpStreamSet);
-  
-  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
-
-  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
-
-  MetricsHelper::vWriteCsv(pInfoSet,pStreamDef,pFile);
   
   EXIT();
 }

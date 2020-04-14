@@ -10,6 +10,7 @@
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
+  vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,      &Step::vInfoSetChunkFile);
@@ -26,6 +27,36 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddNodeInfo(void)
+{
+  ENTRY(); // ENTRY("vInfoSetAddNodeInfo"_Stz);
+  
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  
+  Grid* pGrid = AM::pGrid();
+  
+  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    AM::iRegionSize(),
+                                    pGrid->nSlotsPerNode(),
+                                    C_VARGS_END);
+  ASSERT(pRow);
+  pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

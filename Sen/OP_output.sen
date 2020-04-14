@@ -64,17 +64,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_INFOSET ...                                                 */
-/*----------------------------------------------------------------------------*/
-: output_InfoSet \handler
-
-  //"Operand:- ZK_INFOSET" .verbose
-  Pipein[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_IRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : output_IrwBuffer \handler
@@ -134,6 +123,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMSET ...                                               */
+/*----------------------------------------------------------------------------*/
+: output_StreamSet \handler
+
+//"Operand:- ZK_STREAMSET" .verbose
+Pipein[].pipeToJob
+
+true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for output request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : output_req \operator
@@ -147,12 +147,12 @@
   find: output_EntBuffer   ZK_ENTBUFFER   op[].handler!
   find: output_EosMarker   ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: output_InfoSet     ZK_INFOSET     op[].handler!
   find: output_IrwBuffer   ZK_IRWBUFFER   op[].handler!
   find: output_PulseMarker ZK_PULSEMARKER op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: output_StartMarker ZK_STARTMARKER op[].handler!
   find: output_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: output_StreamDef   ZK_STREAMSET   op[].handler!
 
   op__loop
 

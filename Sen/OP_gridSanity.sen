@@ -5,16 +5,17 @@
 " OP_sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STREAMSET ...                                                        */
+/* on ZK_INFOSET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: GridSanity_StreamSet \handler
+: GridSanity_InfoSet \handler
 
   //"Operand:- ZK_STREAMSET" .verbose
 
-  Pipein[] to streamSet[]
-  streamSet[].firstRow to row[]
+  Pipein[] to infoSet[]
+  nullptr to Pipein[]
 
-  streamSet[].delete
+  // get the first row of the infoSet (nodeInfo)
+  infoSet[].firstRow to row[]
 
   // find the __nodeInfo table
   C_TDEF_GRIDSANITY op__tableDef_streamSet assert
@@ -34,47 +35,12 @@
   // pipeout the infoset
   streamSet[].pipeout
 
-  Pipein[].delete
+  // delete the infoset
+  infoSet[].delete
 
   true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                      */
-/*----------------------------------------------------------------------------*/
-: GridSanity_StartMarker \handler
-
-  //"Operand:- ZK_STARTMARKER" .verbose
-
-  Pipein[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                        */
-/*----------------------------------------------------------------------------*/
-: GridSanity_EosMarker \handler
-
-  //"Operand:- ZK_EOSMARKER" .verbose
-
-  Pipein[].pipeout
-
-  streamDef[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                                        */
-/*----------------------------------------------------------------------------*/
-: GridSanity_StreamDef \handler
-
-  //"Operand:- ZK_STREAMDEF" .verbose
-  Pipein[].delete
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /* execute for gridSanity req                         (on node where spawned) */
@@ -85,10 +51,7 @@
 
   op__topology
 
-  find: GridSanity_StreamSet   ZK_INFOSET op[].handler!
-  find: GridSanity_StartMarker ZK_STARTMARKER op[].handler!
-  find: GridSanity_EosMarker   ZK_EOSMARKER op[].handler!
-  find: GridSanity_StreamDef   ZK_STREAMDEF op[].handler!
+  find: GridSanity_InfoSet     ZK_INFOSET op[].handler!
 
   op__loop
 

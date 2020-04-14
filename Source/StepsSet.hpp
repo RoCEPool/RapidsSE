@@ -420,6 +420,7 @@ public:
   void vRegIndexPtnSet(void);
 
   // reg info set
+  void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
@@ -1313,7 +1314,6 @@ public:
   void vStreamSetAddListContents(void);
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
-  void vStreamSetAddNodeInfo(void);
   void vStreamSetAddPingInfo(void);
   void vStreamSetAddProgressUnits(void);
   void vStreamSetAddPwfInfo(void);
@@ -1333,7 +1333,6 @@ public:
   void vStreamSetPipeOut(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
-  void vStreamSetWriteCsv(void);
 
   // reg infoSet table
   void vStreamSetTableColumnFetch(void);

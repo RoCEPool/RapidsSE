@@ -54,7 +54,7 @@ StreamSet::StreamSet(void)
   
   _checkInitialised_(CN_INFOSET);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
 }
 
 /*----------------------------------------------------------------------------*/
