@@ -1323,6 +1323,7 @@ public:
   void vStreamSetAddSizeIndex(void);
   void vStreamSetAddSpaceInfo(void);
   void vStreamSetAddTotalUnits(void);
+  void vStreamSetAddVerifyIndex(void);
   void vStreamSetChunkFile(void);
   void vStreamSetDelete(void);
   void vStreamSetFirstRow(void);

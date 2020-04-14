@@ -28,7 +28,7 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  <indexNm> <tableNm> index::size to iSize
+  index[].space to iSize
   0 iSize number.magnitude >str
 
   // insert index size

@@ -33,7 +33,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
-  vAddStep("index.space"_Stz,           &Step::vIndexSpace);
+  vAddStep("index[].space"_Stz,         &Step::vIndexSpace);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
   vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
@@ -924,13 +924,13 @@ LastBuffer:
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.space -- push space used by index                                    */
+/* index[].space -- push space used by index                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexSpace(void)
 {
   ENTRY(); // ENTRY("vIndexSpace"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());

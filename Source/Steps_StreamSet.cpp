@@ -20,6 +20,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
   vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
   vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
+  vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
   vAddStep("StreamSet[].delete"_Stz,         &Step::vStreamSetDelete);
   vAddStep("StreamSet[].firstRow"_Stz,       &Step::vStreamSetFirstRow);
   vAddStep("StreamSet[].get"_Stz,            &Step::vStreamSetGet);
@@ -398,6 +399,43 @@ void Step::vStreamSetAddSpaceInfo(void)
                                   iInUseSpace,
                                   iTotalFreeSpace,
                                   C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addVerifyIndex -- add a row to streamSet with the index verify */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddVerifyIndex(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddVerifyIndex"_Stz);
+  
+  // get the table
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  
+  // get the index
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  
+  // get the table from the index
+  Table* pTable = pIndex->pTable();
+  
+  s256 sStatus;
+  m_pDataStack->vPopStr(sStatus, __func__);
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pTable->szTableNm(),
+                                    pIndex->szIndexNm(),
+                                    sStatus.azChar(),
+                                    C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
