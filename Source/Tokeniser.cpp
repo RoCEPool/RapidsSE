@@ -198,6 +198,8 @@ void Tokeniser::vCppTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_bCppTokens = true;
+
+  m_eTknForm = UF_CPP_TOKENS;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,6 +501,8 @@ void Tokeniser::vSenTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_bCppTokens = false;
+  
+  m_eTknForm = UF_SEN_TOKENS;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -557,6 +561,8 @@ void Tokeniser::vUseEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pCharser->vUseEnd();
+  
+  m_eTknForm = UF_SEN_TOKENS;
 }
 
 /*----------------------------------------------------------------------------*/

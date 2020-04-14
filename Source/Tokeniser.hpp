@@ -11,6 +11,7 @@ namespace LexicalAnalysis
     Charser*  m_pCharser;   // charser
   
     bool      m_bCppTokens; // cpp or sen tokens?
+    eUF       m_eTknForm;   // token form
     AnnChar   m_xAnnChar;   // annotated char from parser
     
     TokenVec* m_pTknVec;    // set of collected tokens
