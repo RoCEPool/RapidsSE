@@ -217,7 +217,9 @@ void Task::vAddAxioms(void)
   "  input::push"
   "  args.senDir str.prepend"
   "  input::open"
+  "  input::useBegin"
   "  interpret"
+  "  input::useEnd"
   "  input::close"
   "  input::pop"
   "  ;"_Stz;
@@ -232,7 +234,9 @@ void Task::vAddAxioms(void)
   "  input::push"
   //"  dup ."
   "  input::text!"
+  "  input::useBegin"
   "  interpret"
+  "  input::useEnd"
   "  input::pop"
   "  ;"_Stz;
   
