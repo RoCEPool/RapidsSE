@@ -107,7 +107,6 @@
 
         "job_Universal.sen"       include
 
-        "job_VerifyIndex.sen"     include
         "job_VerifyTable.sen"     include
 
         "job_Waker.sen"           include

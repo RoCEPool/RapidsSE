@@ -169,6 +169,8 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
   
   // table definition
+  vAddConstant("C_TDEF_ANALYZEINDEX"_Stz, C_TDEF_ANALYZEINDEX);
+  vAddConstant("C_TDEF_ANALYZETABLE"_Stz, C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,  C_TDEF_LISTCOLUMNS);
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz, C_TDEF_LISTCONTENTS);
@@ -176,13 +178,16 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LISTINDEX"_Stz,    C_TDEF_LISTINDEX);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,    C_TDEF_LOCKSTATS);
   vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
-  vAddConstant("C_TDEF_PING"_Stz,         C_TDEF_PING);
+  vAddConstant("C_TDEF_PINGINFO"_Stz,     C_TDEF_PINGINFO);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz,C_TDEF_PROGRESSUNITS);
   vAddConstant("C_TDEF_PWF"_Stz,          C_TDEF_PWF);
   vAddConstant("C_TDEF_SEEKOFFSETS"_Stz,  C_TDEF_SEEKOFFSETS);
   vAddConstant("C_TDEF_SHOWCLUSTER"_Stz,  C_TDEF_SHOWCLUSTER);
+  vAddConstant("C_TDEF_SIZEINDEX"_Stz,    C_TDEF_SIZEINDEX);
+  vAddConstant("C_TDEF_SIZETABLE"_Stz,    C_TDEF_SIZETABLE);
   vAddConstant("C_TDEF_SPACE"_Stz,        C_TDEF_SPACE);
   vAddConstant("C_TDEF_TOTALUNITS"_Stz,   C_TDEF_TOTALUNITS);
+  vAddConstant("C_TDEF_VERIFYINDEX"_Stz,  C_TDEF_VERIFYINDEX);
 
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSecond());

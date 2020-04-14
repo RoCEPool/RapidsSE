@@ -4,6 +4,22 @@
 
 Print "Creating System Table Definitions";
 
+// this is C_TDEF_ANALYZEINDEX
+create table definition __analyzeIndex (
+  nodeName       VARCHAR NOT NULL,
+  partition      INTEGER NOT NULL,
+  buffers        INTEGER NOT NULL,
+  entries        INTEGER NOT NULL
+);
+
+// this is C_TDEF_ANALYZETABLE
+create table definition __analyzeTable (
+  nodeName       VARCHAR NOT NULL,
+  partition      INTEGER NOT NULL,
+  buffers        INTEGER NOT NULL,
+  entries        INTEGER NOT NULL
+);
+
 // this is C_TDEF_GRIDSANITY
 create table definition __gridSanity (
   nodeName   VARCHAR NOT NULL,
@@ -92,8 +108,14 @@ create table definition __showCluster (
   Connected BOOLEAN NOT NULL
 );
 
-// this is C_TDEF_SHOWCLUSTER
+// this is C_TDEF_SIZEINDEX
 create table definition __sizeIndex (
+ NodeName  VARCHAR NOT NULL,
+ size      VARCHAR NOT NULL
+);
+
+// this is C_TDEF_SIZETABLE
+create table definition __sizeTable (
  NodeName  VARCHAR NOT NULL,
  size      VARCHAR NOT NULL
 );
@@ -111,7 +133,7 @@ create table definition __totalUnits (
   UNITS      INTEGER NOT NULL
 );
 
-// this is C_TDEF_SHOWCLUSTER
+// this is C_TDEF_VERIFYINDEX
 create table definition __verifyIndex (
   nodeName       VARCHAR NOT NULL,
   tableName      VARCHAR NOT NULL,
