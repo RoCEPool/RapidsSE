@@ -446,6 +446,7 @@ public:
 
   // input
   void vInputClose(void);
+  void vInputCppTokens(void);
   void vInputDump(void);
   void vInputKind(void);
   void vInputNext(void);
@@ -453,6 +454,7 @@ public:
   void vInputPop(void);
   void vInputPush(void);
   void vInputRead(void);
+  void vInputSenTokens(void);
   void vInputStdin(void);
   void vInputTerm(void);
   void vInputText(void);

@@ -455,7 +455,16 @@ true find: CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 /* interpret string on stack                                                  */
 /*----------------------------------------------------------------------------*/
-: >interpret input::push input::text! interpret input::pop ;
+: >interpret
+
+   input::push
+   input::text!
+   input::senTokens
+
+   interpret
+ 
+   input::pop
+;
 
 /*----------------------------------------------------------------------------*/
 /* test type of top stack value                                               */

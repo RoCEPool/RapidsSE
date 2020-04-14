@@ -10,6 +10,7 @@
 void Step::vAddSteps_Input(void)
 {
   vAddStep("input::close"_Stz,     &Step::vInputClose);
+  vAddStep("input::cppTokens"_Stz, &Step::vInputCppTokens);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
   vAddStep("input::kind@"_Stz,     &Step::vInputKind);
   vAddStep("input::next"_Stz,      &Step::vInputNext);
@@ -17,6 +18,7 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::pop"_Stz,       &Step::vInputPop);
   vAddStep("input::push"_Stz,      &Step::vInputPush);
   vAddStep("input::read"_Stz,      &Step::vInputRead);
+  vAddStep("input::senTokens"_Stz, &Step::vInputSenTokens);
   vAddStep("input::stdin"_Stz,     &Step::vInputStdin);
   vAddStep("input::token"_Stz,     &Step::vInputTerm);
   vAddStep("input::text!"_Stz,     &Step::vInputText);
@@ -32,6 +34,21 @@ void Step::vInputClose(void)
   
   m_pCompiler->vUseEnd();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::cppTokens -- expect cpp tokens                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vInputCppTokens(void)
+{
+  ENTRY(); // ENTRY("vInputCppTokens"_Stz);
+  
+  if ( ! m_pCompiler )
+    m_pCompiler = new Compiler;
+  
+  m_pCompiler->vCppTokens();
+
   EXIT();
 }
 
@@ -128,6 +145,21 @@ void Step::vInputRead(void)
   ENTRY(); // ENTRY("vInputRead"_Stz);
     
   m_pCompiler->vReadToken_cpl();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::senTokens -- expect sen tokens                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vInputSenTokens(void)
+{
+  ENTRY(); // ENTRY("vInputStdin"_Stz);
+  
+  if ( ! m_pCompiler )
+    m_pCompiler = new Compiler;
+  
+  m_pCompiler->vSenTokens();
 
   EXIT();
 }
