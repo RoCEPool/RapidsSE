@@ -67,6 +67,16 @@ bool Compiler::bCompiling(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* expect cpp tokens                                                          */
+/*----------------------------------------------------------------------------*/
+void Compiler::vCppTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vCppTokens();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current word                                                           */
 /*----------------------------------------------------------------------------*/
 Word* Compiler::pCurrentWord(void)
@@ -212,6 +222,16 @@ void Compiler::vPush(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pTokeniser->vPushCharser();
+}
+
+/*----------------------------------------------------------------------------*/
+/* expect sen tokens                                                          */
+/*----------------------------------------------------------------------------*/
+void Compiler::vSenTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vSenTokens();
 }
 
 /*----------------------------------------------------------------------------*/

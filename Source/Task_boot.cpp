@@ -299,7 +299,8 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
   Compiler* pCompiler = m_pForth->pCompiler();
   pCompiler->vUseString(sDefinition);
-  
+  pCompiler->vSenTokens();
+
   // get :
   pCompiler->vReadToken_cpl();
   Stz* szChars = pCompiler->szToken();

@@ -28,6 +28,7 @@ namespace SenVM
    ~Compiler(void) noexcept(false);
   
     bool  bCompiling(void);
+    void  vCppTokens(void);
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
     void  vDump(void);
@@ -43,6 +44,7 @@ namespace SenVM
     bool  bPostponing(void);
     void  vPush(void);
     void  vReadToken_cpl(void);
+    void  vSenTokens(void);
     eTN   eToken(void);
     Stz*  szToken(void);
     Tokeniser* pTokeniser(void);
