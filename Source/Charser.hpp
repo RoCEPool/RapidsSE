@@ -59,6 +59,7 @@ namespace LexicalAnalysis
     
     // Use What
     void vUseBegins(void);
+    bool bUseBegun(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
     void vUseStdin(void);
