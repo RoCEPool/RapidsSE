@@ -153,11 +153,11 @@ void Charser::vUngetAnnChar(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* have we seen an EOF?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Charser::bEOF(void)
+bool Charser::bSeenEOF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  return m_bEOF;
+  return m_bSeenEOF;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +247,7 @@ void Charser::vUseString(Stz* szString)
   
   m_sRawLine = szString;
   m_eSource = IS_STRING;
-  m_bEOF = true;
+  m_bSeenEOF = true;
   
 m_sPath = "string"_Stz;
 }
@@ -341,7 +341,7 @@ void Charser::vResetCharser(void)
   m_xAnnTwo.vReset();
   m_eComment   = CS_NONE;
   m_bRead      = false;
-  m_bEOF       = false;
+  m_bSeenEOF       = false;
 }
 
 
@@ -558,7 +558,7 @@ void Charser::vBlockCommentSkip(void)
     else
       vLoadSecond();
     
-    if (0 == m_nLoaded && bEOF())
+    if (0 == m_nLoaded && bSeenEOF())
       break;
   }
   
@@ -675,17 +675,17 @@ void Charser::vRawCharFromInput(AnnChar& rxAnnChar)
     case IS_FILE:
       vRawCharFromFile(rxAnnChar);
       ASSERT( (rxAnnChar.m_cChar) ||
-              (! rxAnnChar.m_cChar && (m_bEOF || m_bLineMode)) );
+              (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bLineMode)) );
       break;
       
     case IS_STDIN:
       vRawCharFromStdin(rxAnnChar);
-      ASSERT(! m_bEOF);
+      ASSERT(! m_bSeenEOF);
       break;
       
     case IS_STRING:
       vRawCharFromString(rxAnnChar);
-      ASSERT(m_bEOF);
+      ASSERT(m_bSeenEOF);
       break;
       
     default:
@@ -708,7 +708,7 @@ void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
   if (rxAnnChar.m_cChar)
     return ;
   
-  if (m_bEOF) {
+  if (m_bSeenEOF) {
     rxAnnChar.m_cChar = '\0';
     return;
   }
@@ -732,7 +732,7 @@ void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
   vReadRawLineFile();
   vNextCharFromRawLine(rxAnnChar);
   
-  ASSERT( (rxAnnChar.m_cChar) || (!rxAnnChar.m_cChar && m_bEOF) );
+  ASSERT( (rxAnnChar.m_cChar) || (!rxAnnChar.m_cChar && m_bSeenEOF) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -742,12 +742,12 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  ASSERT(! m_bEOF);
+  ASSERT(! m_bSeenEOF);
     
   vNextCharFromRawLine(rxAnnChar);
   
   if (rxAnnChar.m_cChar) {
-    ASSERT(! m_bEOF);
+    ASSERT(! m_bSeenEOF);
     return;
   }
   
@@ -757,7 +757,7 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
   if (! m_bLineMode) {
     vReadRawLineStdin();
     vNextCharFromRawLine(rxAnnChar);
-    ASSERT(! m_bEOF);
+    ASSERT(! m_bSeenEOF);
     return;
   }
   
@@ -766,7 +766,7 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
     m_acRawChar = m_sRawLine.azChar();
     *m_acRawChar = '\0';
     rxAnnChar.m_cChar = '\0';
-    ASSERT(! m_bEOF);
+    ASSERT(! m_bSeenEOF);
     return ;
   }
   
@@ -774,7 +774,7 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
   vReadRawLineStdin();
   vNextCharFromRawLine(rxAnnChar);
   
-  ASSERT(! m_bEOF);
+  ASSERT(! m_bSeenEOF);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,14 +784,14 @@ void Charser::vRawCharFromString(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  ASSERT(m_bEOF);
+  ASSERT(m_bSeenEOF);
     
   vNextCharFromRawLine(rxAnnChar);
   
   if (rxAnnChar.m_cChar)
     return;
   
-  ASSERT(m_bEOF);
+  ASSERT(m_bSeenEOF);
   ASSERT('\0' == rxAnnChar.m_cChar);
 }
 
@@ -815,7 +815,7 @@ void Charser::vReadRawLineFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  ASSERT(! m_bEOF);
+  ASSERT(! m_bSeenEOF);
 
   char cInput;
   
@@ -832,9 +832,9 @@ void Charser::vReadRawLineFile(void)
     
   } while (cInput);
   
-  ASSERT(! m_bEOF);
+  ASSERT(! m_bSeenEOF);
   if (! cInput)
-    m_bEOF = true;
+    m_bSeenEOF = true;
   
   *acRawLineCrs++ = '\0';
   
@@ -851,7 +851,7 @@ void Charser::vReadRawLineStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  ASSERT(! m_bEOF);
+  ASSERT(! m_bSeenEOF);
   
   char* acRawLine = m_sRawLine.azChar();
     
@@ -898,7 +898,7 @@ void Charser::vReadRawLineStdin(void)
 
   m_acRawChar = m_sRawLine.azChar();
   
-  ASSERT(! m_bEOF);
+  ASSERT(! m_bSeenEOF);
 }
 
 /*============================================================================*/

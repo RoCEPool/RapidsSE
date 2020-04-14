@@ -25,7 +25,6 @@ Tokeniser::Tokeniser(void)
   
   m_pCharser   = new Charser(nullptr);
   
-  //vSenTokens();
   m_eTknForm = UF_NONE;
   
   m_xAnnChar.vReset();
@@ -203,18 +202,18 @@ void Tokeniser::vCppTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get depth of parser                                                        */
+/* get depth of charser                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Tokeniser::iDepth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  i8 iParserDepth = 0;
+  i8 iCharserDepth = 0;
   
   if (m_pCharser)
-    iParserDepth = m_pCharser->iDepth();
+    iCharserDepth = m_pCharser->iDepth();
   
-  return iParserDepth;
+  return iCharserDepth;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,18 +253,6 @@ void Tokeniser::vDump(void)
   
   vTrace("----------------\n"_Stz);
   vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get EOF?                                                                   */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bEOF(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  bool bEOF = m_pCharser->bEOF();
-  
-  return bEOF;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -407,7 +394,7 @@ void Tokeniser::vReadTillEOF(void)
     }
     
     // end of file? if so, pop and retry
-    if (! m_pTknVec->nTokens() && bEOF()) {
+    if (! m_pTknVec->nTokens() && bSeenEOF()) {
       bool b = bPopCharser();
       ASSERT(b);
       break;
@@ -493,6 +480,18 @@ void Tokeniser::vReadToken_vec(void)
     vCollectCpp();
   else
     vCollectSen();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seen EOF?                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bSeenEOF(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  bool bEOF = m_pCharser->bSeenEOF();
+  
+  return bEOF;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1295,7 +1294,7 @@ bool Tokeniser::bHaveWhitespace(void)
     return false;
   
   // a '\0' at eof is the eof marker; not considered whitespace
-  if (bEOF())
+  if (bSeenEOF())
     return false;
 
   // a '\0' is otherwise whitespace

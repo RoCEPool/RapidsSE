@@ -36,7 +36,6 @@ namespace LexicalAnalysis
     void vCppTokens(void);
     i8   iDepth(void);
     void vDump(void);
-    bool bEOF(void);
     bool bIsStdin(void);
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
@@ -48,6 +47,7 @@ namespace LexicalAnalysis
     void vReadTillSemicolon(void);
     void vReadToken_nil(void);
     void vReadToken_vec(void);
+    bool bSeenEOF(void);
     void vSenTokens(void);
     Stz* szSource(void);
     eTN  eToken(void);

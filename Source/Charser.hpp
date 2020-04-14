@@ -34,7 +34,7 @@ namespace LexicalAnalysis
     AnnChar m_xAnnTwo;   //
     eCS     m_eComment;  // comment style currently being processed
     bool    m_bRead;     // prompt user for more input
-    bool    m_bEOF;      // eof seen?
+    bool    m_bSeenEOF;  // eof seen?
   
     // must be last
     Footer m_xFooter;
@@ -70,7 +70,7 @@ namespace LexicalAnalysis
     // Processing Functions
     void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
     void vUngetAnnChar(AnnChar& rxAnnChar);
-    bool bEOF(void);
+    bool bSeenEOF(void);
     bool bLineMode(void);
     bool bStdin(void);
 
