@@ -92,6 +92,12 @@ create table definition __showCluster (
   Connected BOOLEAN NOT NULL
 );
 
+// this is C_TDEF_SHOWCLUSTER
+create table definition __sizeIndex (
+ NodeName  VARCHAR NOT NULL,
+ size      VARCHAR NOT NULL
+);
+
 // this is C_TDEF_SPACE
 create table definition __space (
   nodeName   VARCHAR NOT NULL,

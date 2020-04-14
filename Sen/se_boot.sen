@@ -97,7 +97,6 @@
         "Job_Pipeline.sen"        include
 
         "Job_Service.sen"         include
-        "Job_SizeIndex.sen"       include
         "Job_SizeTable.sen"       include
         "job_Status.sen"          include
         "job_SubFetch.sen"        include
@@ -182,6 +181,7 @@
         "OP_start.sen"            include
         "OP_stats.sen"            include
         "OP_statWrite.sen"        include
+        "OP_sizeIndex.sen"        include
 
         "OP_toDemon.sen"          include
         "OP_toCrw.sen"            include

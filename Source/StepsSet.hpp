@@ -1320,6 +1320,7 @@ public:
   void vStreamSetAddProgressUnits(void);
   void vStreamSetAddPwfInfo(void);
   void vStreamSetAddShowCluster(void);
+  void vStreamSetAddSizeIndex(void);
   void vStreamSetAddSpaceInfo(void);
   void vStreamSetAddTotalUnits(void);
   void vStreamSetChunkFile(void);

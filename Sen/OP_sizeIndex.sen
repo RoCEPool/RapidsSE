@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* OP_sizeIndex.sen -- Operator size index                                    */
+/*============================================================================*/
+
+" OP_sizeIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: szidx_action
+
+  0 0 locals| iSize sSize |
+
+  <tableNm> <indexNm> op__table_index not if
+    false
+    exit
+  then
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  <indexNm> <tableNm> index::size to iSize
+  0 iSize number.magnitude >str
+
+  // insert index size
+  streamSetTable[] StreamSet[].addSizeIndex assert
+
+  // pipeout the infoset
+  StreamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: szidx :: szidx <tableNm> <indexNm> ;
+
+: szidx opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __sizeIndex
+    <params>    = 2
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
