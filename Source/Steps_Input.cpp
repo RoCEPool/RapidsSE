@@ -23,8 +23,8 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::token"_Stz,     &Step::vInputTerm);
   vAddStep("input::text!"_Stz,     &Step::vInputText);
   vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
-  vAddStep("input::useBegin"_Stz,  &Step::vInputUnknown);
-  vAddStep("input::useEnd"_Stz,    &Step::vInputUnknown);
+  vAddStep("input::useBegin"_Stz,  &Step::vInputUseBegin);
+  vAddStep("input::useEnd"_Stz,    &Step::vInputUseEnd);
 }
 
 /*----------------------------------------------------------------------------*/

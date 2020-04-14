@@ -129,6 +129,7 @@
 
   input::push
   input::stdin
+  input::useBegin
 
   begin
     "SE Task> " .put
@@ -137,6 +138,7 @@
 
   //debug::breakpoint
 
+  input::useEnd
   input::pop
 ;
 
@@ -154,6 +156,7 @@
 
   input::push
   input::stdin
+  input::useBegin
 
   begin
     "dbg> " .put
@@ -162,6 +165,7 @@
 
   //debug::breakpoint
 
+  input::useEnd
   input::pop
 ;
 

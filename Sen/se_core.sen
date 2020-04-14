@@ -460,9 +460,11 @@ true find: CASE word.immediate!
    input::push
    input::text!
    input::senTokens
+   input::useBegin
 
    interpret
  
+   input::useEnd
    input::pop
 ;
 
@@ -519,7 +521,9 @@ true find: CASE word.immediate!
           to sFilePath
         sFilePath "Would open %v" .printf
 
-        sFilePath input::open interpret input::close
+        sFilePath
+          input::open input::useBegin
+          interpret input::useEnd input::close
 
       then
 
