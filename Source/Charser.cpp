@@ -28,7 +28,6 @@ Charser::Charser(Charser* pNext)
   //m_bMalloc set in new
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
-  m_sPath   = C_NO_NAME;
     
   vResetCharser();
   
@@ -199,6 +198,46 @@ void Charser::vLineMode(bool bLineMode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* usage of this charser begins                                               */
+/*----------------------------------------------------------------------------*/
+void Charser::vUseBegins(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  ASSERT(! m_bUseBegun);
+  
+  m_bUseBegun = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end usage of source                                                        */
+/*----------------------------------------------------------------------------*/
+void Charser::vUseEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  //ASSERT(m_bUseBegun);
+
+  switch (m_eSource) {
+      
+    case IS_FILE:
+      ASSERT( m_oRawFile.bIsOpen() );
+      m_oRawFile.vClose();
+      break;
+      
+    case IS_STDIN:
+      break;
+      
+    case IS_STRING:
+      break;
+      
+    default: ;
+  }
+  
+  vResetCharser();
+}
+
+/*----------------------------------------------------------------------------*/
 /* use given file for charsing                                                */
 /*----------------------------------------------------------------------------*/
 bool Charser::bUseFile(Stz* szPath)
@@ -252,31 +291,6 @@ void Charser::vUseString(Stz* szString)
 m_sPath = "string"_Stz;
 }
 
-/*----------------------------------------------------------------------------*/
-/* end usage of source                                                        */
-/*----------------------------------------------------------------------------*/
-void Charser::vUseEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  switch (m_eSource) {
-      
-    case IS_FILE:
-      ASSERT( m_oRawFile.bIsOpen() );
-      m_oRawFile.vClose();
-      break;
-      
-    case IS_STDIN:
-      break;
-      
-    case IS_STRING:
-      break;
-      
-    default: ;
-  }
-  
-  vResetCharser();
-}
 
 
 // charser /////////////////////////////////////////////////////////////////////
@@ -326,22 +340,27 @@ void Charser::vResetCharser(void)
   
   //ASSERT(! m_oRawFile.bIsOpen());
 
-  // reset input sources
-  m_eSource    = IS_NONE;
+  // source definition
+  m_bUseBegun = false;
+  m_eSource   = IS_NONE;
+  m_sPath     = C_NO_NAME;
+  m_bLineMode = false;
+
+  // sources
   m_oRawFile.vReset();
-  m_bLineMode  = false;
   m_sRawLine   = ""_Stz;
   m_azRawLine  = m_sRawLine.azChar();
   m_acRawChar  = m_sRawLine.azChar();
   m_iLineRaw   = 0;
   m_iColRaw    = 0;
 
+  // registers
   m_nLoaded    = 0;
   m_xAnnOne.vReset();
   m_xAnnTwo.vReset();
   m_eComment   = CS_NONE;
   m_bRead      = false;
-  m_bSeenEOF       = false;
+  m_bSeenEOF   = false;
 }
 
 

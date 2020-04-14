@@ -161,7 +161,17 @@ TokenVec* TokenStream::pTokenVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use stdin                                                                  */
+/* use of token stream begins                                                 */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vUseBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  m_pTokeniser->vUseEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* use of token stream ends                                                   */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vUseEnd(void)
 {

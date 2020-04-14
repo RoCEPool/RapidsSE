@@ -14,27 +14,28 @@ namespace LexicalAnalysis
     Charser* m_pNext;     // next parser in stack
     
     // source definition
-    eIS     m_eSource;   // what source are we parsing? given file or string?
-    s256    m_sPath;     // the source path
-    bool    m_bLineMode; // line mode?
+    bool     m_bUseBegun; // has use of this charser begun?
+    eIS      m_eSource;   // what source are we parsing? given file or string?
+    s256     m_sPath;     // the source path
+    bool     m_bLineMode; // line mode?
   
     // sources
-    File    m_oRawFile;  // given file
-    s48K    m_sRawLine;  // either raw line read from file or given string
-    char*   m_azRawLine; // ptr into m_sRawLine -- debug help
-    char*   m_acRawChar; // next raw char in raw line
-    i8      m_iLineRaw;  // line number of raw char
-    i8      m_iColRaw;   // column number of raw char
+    File     m_oRawFile;  // given file
+    s48K     m_sRawLine;  // either raw line read from file or given string
+    char*    m_azRawLine; // ptr into m_sRawLine -- debug help
+    char*    m_acRawChar; // next raw char in raw line
+    i8       m_iLineRaw;  // line number of raw char
+    i8       m_iColRaw;   // column number of raw char
 
     // registers
-    i8      m_nLoaded;   // 0: neither has char
-                         // 1: m_cFirst has char
-                         // 2: m_cFirst and m_cSecond each have a char
-    AnnChar m_xAnnOne;   //
-    AnnChar m_xAnnTwo;   //
-    eCS     m_eComment;  // comment style currently being processed
-    bool    m_bRead;     // prompt user for more input
-    bool    m_bSeenEOF;  // eof seen?
+    i8       m_nLoaded;   // 0: neither has char
+                          // 1: m_cFirst has char
+                          // 2: m_cFirst and m_cSecond each have a char
+    AnnChar  m_xAnnOne;   //
+    AnnChar  m_xAnnTwo;   //
+    eCS      m_eComment;  // comment style currently being processed
+    bool     m_bRead;     // prompt user for more input
+    bool     m_bSeenEOF;  // eof seen?
   
     // must be last
     Footer m_xFooter;
@@ -57,10 +58,11 @@ namespace LexicalAnalysis
     void vLineMode(bool bLineMode);
     
     // Use What
+    void vUseBegins(void);
+    void vUseEnd(void);
     bool bUseFile(Stz* szPath);
     void vUseStdin(void);
     void vUseString(Stz* szString);
-    void vUseEnd(void);
 
     // Charser Stack
     Charser* pNext(void);

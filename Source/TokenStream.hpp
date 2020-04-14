@@ -34,6 +34,7 @@ namespace LexicalAnalysis
     void vSenTokens(void);
     Tokeniser* pTokeniser(void);
     TokenVec* pTokenVec(void);
+    void vUseBegin(void);
     void vUseEnd(void);
     void vUseStdin(void);
     
