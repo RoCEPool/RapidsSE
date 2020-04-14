@@ -243,7 +243,7 @@ void Tokeniser::vDump(void)
     
     vTrace("[%lld] %s @%lld,%lld\n"_Stz,
            pCharser->iDepth(),
-           pCharser->szSource(),
+           pCharser->szPath(),
            pCharser->iLineRaw(),
            pCharser->iLineCol()
            );
@@ -262,7 +262,7 @@ bool Tokeniser::bIsStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  bool bStdin = m_pCharser->bStdin();
+  bool bStdin = m_pCharser->bIsStdin();
   
   return bStdin;
 }
@@ -287,6 +287,18 @@ bool Tokeniser::bLineMode(void)
   bool bLineMode = m_pCharser->bLineMode();
   
   return bLineMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get charser path                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Tokeniser::szPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  Stz* szSource = m_pCharser->szPath();
+  
+  return szSource;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -502,18 +514,6 @@ void Tokeniser::vSenTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
     
   m_eTknForm = UF_SEN_TOKENS;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get EOF?                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Tokeniser::szSource(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  Stz* szSource = m_pCharser->szSource();
-  
-  return szSource;
 }
 
 /*----------------------------------------------------------------------------*/

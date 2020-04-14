@@ -49,7 +49,7 @@ Charser::~Charser(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump parser                                                                */
+/* dump charser                                                               */
 /*----------------------------------------------------------------------------*/
 void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
@@ -61,17 +61,7 @@ void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get source                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Charser::szSource(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_sPath;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get m_iLineRaw                                                             */
+/* get line number of raw char                                                */
 /*----------------------------------------------------------------------------*/
 i8 Charser::iLineRaw(void)
 {
@@ -81,13 +71,23 @@ i8 Charser::iLineRaw(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_iColRaw                                                              */
+/* get column number of raw char                                              */
 /*----------------------------------------------------------------------------*/
 i8 Charser::iLineCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   return m_iColRaw;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get path                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Charser::szPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,7 +173,7 @@ bool Charser::bLineMode(void)
 /*----------------------------------------------------------------------------*/
 /* stdin?                                                                     */
 /*----------------------------------------------------------------------------*/
-bool Charser::bStdin(void)
+bool Charser::bIsStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -199,7 +199,7 @@ void Charser::vLineMode(bool bLineMode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use given file for parsing                                                 */
+/* use given file for charsing                                                */
 /*----------------------------------------------------------------------------*/
 bool Charser::bUseFile(Stz* szPath)
 {
@@ -219,7 +219,7 @@ bool Charser::bUseFile(Stz* szPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use stdin for parsing                                                      */
+/* use stdin for charsing                                                     */
 /*----------------------------------------------------------------------------*/
 void Charser::vUseStdin(void)
 {
@@ -236,7 +236,7 @@ void Charser::vUseStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use given string for parsing                                               */
+/* use given string for charsing                                              */
 /*----------------------------------------------------------------------------*/
 void Charser::vUseString(Stz* szString)
 {
@@ -302,7 +302,7 @@ void Charser::vNext(Charser* pNext)
 }
 
 /*----------------------------------------------------------------------------*/
-/* depth of this parser                                                       */
+/* depth of this charser                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Charser::iDepth(void)
 {
@@ -318,7 +318,7 @@ i8 Charser::iDepth(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* reset this charse                                                          */
+/* reset this charser                                                         */
 /*----------------------------------------------------------------------------*/
 void Charser::vResetCharser(void)
 {
@@ -417,7 +417,7 @@ void Charser::vLoadBoth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* load first register from input stream                                      */
+/* load first register from raw input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Charser::vLoadFirst(void)
 {
@@ -432,7 +432,7 @@ void Charser::vLoadFirst(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* load first (and maybe) second register from input stream, strip comments   */
+/* load first (& maybe) second register from raw input stream, strip comments */
 /*----------------------------------------------------------------------------*/
 void Charser::vLoadRegs(bool bStripComments)
 {
@@ -455,7 +455,7 @@ void Charser::vLoadRegs(bool bStripComments)
 }
 
 /*----------------------------------------------------------------------------*/
-/* load second register from input stream                                     */
+/* load second register from raw input stream                                 */
 /*----------------------------------------------------------------------------*/
 void Charser::vLoadSecond(void)
 {

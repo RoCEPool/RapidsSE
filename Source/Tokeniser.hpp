@@ -39,6 +39,7 @@ namespace LexicalAnalysis
     bool bIsStdin(void);
     void vLineMode(bool bLineMode);
     bool bLineMode(void);
+    Stz* szPath(void);
     bool bPopCharser(void);
     void vPushCharser(void);
     void vPushFile(Stz* szPath);
@@ -49,7 +50,6 @@ namespace LexicalAnalysis
     void vReadToken_vec(void);
     bool bSeenEOF(void);
     void vSenTokens(void);
-    Stz* szSource(void);
     eTN  eToken(void);
     Stz* szToken(void);
     TokenVec* pTokenVec(void);

@@ -23,8 +23,8 @@ namespace LexicalAnalysis
     s48K    m_sRawLine;  // either raw line read from file or given string
     char*   m_azRawLine; // ptr into m_sRawLine -- debug help
     char*   m_acRawChar; // next raw char in raw line
-    i8      m_iLineRaw;
-    i8      m_iColRaw;
+    i8      m_iLineRaw;  // line number of raw char
+    i8      m_iColRaw;   // column number of raw char
 
     // registers
     i8      m_nLoaded;   // 0: neither has char
@@ -49,7 +49,7 @@ namespace LexicalAnalysis
     static Charser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
-    Stz* szSource(void);
+    Stz* szPath(void);
     i8   iLineRaw(void);
     i8   iLineCol(void);
 
@@ -72,7 +72,7 @@ namespace LexicalAnalysis
     void vUngetAnnChar(AnnChar& rxAnnChar);
     bool bSeenEOF(void);
     bool bLineMode(void);
-    bool bStdin(void);
+    bool bIsStdin(void);
 
   private:
     
