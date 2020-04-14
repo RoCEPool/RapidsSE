@@ -300,6 +300,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   Compiler* pCompiler = m_pForth->pCompiler();
   pCompiler->vUseString(sDefinition);
   pCompiler->vSenTokens();
+  pCompiler->vUseBegin();
 
   // get :
   pCompiler->vReadToken_cpl();

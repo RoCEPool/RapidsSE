@@ -458,6 +458,8 @@ public:
   void vInputTerm(void);
   void vInputText(void);
   void vInputUnknown(void);
+  void vInputUseBegin(void);
+  void vInputUseEnd(void);
 
   // int
   void vIntAdd(void);

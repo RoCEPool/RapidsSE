@@ -53,6 +53,7 @@ namespace LexicalAnalysis
     eTN  eToken(void);
     Stz* szToken(void);
     TokenVec* pTokenVec(void);
+    void vUseBegin(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
     void vUseStdinX(void);

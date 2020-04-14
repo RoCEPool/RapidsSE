@@ -58,7 +58,7 @@ namespace LexicalAnalysis
     void vLineMode(bool bLineMode);
     
     // Use What
-    void vUseBegins(void);
+    void vUseBegin(void);
     bool bUseBegun(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);

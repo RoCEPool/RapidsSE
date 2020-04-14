@@ -200,7 +200,7 @@ void Charser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* usage of this charser begins                                               */
 /*----------------------------------------------------------------------------*/
-void Charser::vUseBegins(void)
+void Charser::vUseBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   

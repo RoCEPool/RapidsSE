@@ -23,6 +23,8 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::token"_Stz,     &Step::vInputTerm);
   vAddStep("input::text!"_Stz,     &Step::vInputText);
   vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
+  vAddStep("input::useBegin"_Stz,  &Step::vInputUnknown);
+  vAddStep("input::useEnd"_Stz,    &Step::vInputUnknown);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,6 +231,30 @@ void Step::vInputUnknown(void)
 
   AM::vBootError(true);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::useBegin -- begin using input                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vInputUseBegin(void)
+{
+  ENTRY(); // ENTRY("vInputUseBegin"_Stz);
+  
+  m_pCompiler->vUseBegin();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::useBegin -- begin using input                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vInputUseEnd(void)
+{
+  ENTRY(); // ENTRY("vInputUseBegin"_Stz);
+  
+  m_pCompiler->vUseEnd();
+
   EXIT();
 }
 

@@ -48,6 +48,7 @@ namespace SenVM
     eTN   eToken(void);
     Stz*  szToken(void);
     Tokeniser* pTokeniser(void);
+    void  vUseBegin(void);
     void  vUseEnd(void);
     void  vUseFile(Stz* szPath);
     void  vUseStdin(void);
