@@ -487,10 +487,14 @@ void Tokeniser::vReadToken_vec(void)
   
   m_pToken = m_pTknVec->pCurrToken();;
 
-  if (m_bCppTokens)
+  if (m_bCppTokens) {
+    ASSERT(UF_CPP_TOKENS == m_eTknForm);
     vCollectCpp();
-  else
+  }
+  else {
+    ASSERT(UF_SEN_TOKENS == m_eTknForm);
     vCollectSen();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,6 +619,8 @@ void Tokeniser::vCollectCpp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(UF_CPP_TOKENS == m_eTknForm);
+
   char* azTermCrs = m_pToken->azTerm();
   m_pToken->vReset();
 
@@ -995,6 +1001,8 @@ void Tokeniser::vCollectCppString(void)
 void Tokeniser::vCollectSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  ASSERT(UF_SEN_TOKENS == m_eTknForm);
   
   char* azTermCrs = m_pToken->azTerm();
   
