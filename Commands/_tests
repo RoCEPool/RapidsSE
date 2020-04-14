@@ -8,6 +8,12 @@ print section "Boot Cluster";
 bc
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection trackMemory;
+print section "trackMemory";
+
+trackMemory;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection ping;
 print section "Ping";
 
@@ -89,7 +95,7 @@ print section "Create Index";
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+create index lineItem_Idx1 ON LineItem(L_ORDERKEY);
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection listTable;
@@ -161,13 +167,13 @@ time fetch lineitem "l_orderKey 20 <" ;
 logSection dumpTable;
 print section "Dump Table";
 
-dumptable lineitem;
+dumpTbl lineitem;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection dumpIndex;
 print section "Dump Index";
 
-dumpindex LineItem LineItem_Idx1;
+dumpIdx LineItem LineItem_Idx1;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection verifyTable;
@@ -221,13 +227,37 @@ export lineitem "/tmp/lineitem_export.csv" ;
 logSection truncateTable;
 print section "Truncate Table";
 
-tr lineitem;
+truncate lineitem;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection LoadExportTable;
 print section "Load Table";
 
 Load lineitem "/tmp/lineitem_export.csv" ;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection tableFetch;
+print section "table Fetch";
+
+tableFetch lineitem;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection dropIndex;
+print section "drop Index";
+
+drop Index lineitem lineitem_idx1;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection dropTable;
+print section "drop Table";
+
+drop table lineitem;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection memoryLeaks;
+print section "memoryLeaks";
+
+memoryLeaks fatal;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
