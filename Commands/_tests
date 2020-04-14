@@ -125,7 +125,7 @@ lsidxcol lineitem Lineitem_idx1;
 logSection load;
 print section "Load Table";
 
-time load lineitem "../DATA/TPCH/lineitem_10.csv";
+time load lineitem "../DATA/TPCH/lineitem10.csv";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection sztbl;
