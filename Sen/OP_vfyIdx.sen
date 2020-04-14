@@ -10,8 +10,8 @@
 : vfyidx_action
 
   <tableNm> <indexNm> op__table_index not if
-  false
-  exit
+    false
+    exit
   then
 
   // find the __ table
@@ -29,11 +29,12 @@
   index[].verify
 
   // insert index verify
-  index[] streamSetTable[] StreamSet[].addVerifyIndex assert
+  index[].get streamSetTable[] StreamSet[].addVerifyIndex assert
 
   // pipeout the infoset
   StreamSet[].pipeout
 
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

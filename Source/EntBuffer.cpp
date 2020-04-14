@@ -351,6 +351,37 @@ Ent* EntBuffer::aAllotEntry(i8 nEntBytes_Without_NEO)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
+void EntBuffer::vAnalyze(i8& iBuffers, i8& iEntries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  iBuffers++;
+  iEntries += m_nItems;
+  
+  // recursively dump the lower level buffers
+  if (m_iBufferHeight != 0) {
+    
+    for (Ent* aEnt = aLeadEntry();
+         aEnt != nullptr;
+         aEnt = aNextEntry(aEnt, 0)) {
+      
+      // get the index buffer from the entry
+      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
+      
+      ASSERT(pEntBuffer);
+      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
+      
+      pEntBuffer->vAnalyze(iBuffers, iEntries);
+      
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze this buffer                                                        */
+/*----------------------------------------------------------------------------*/
+/*
 void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                            i8& iBuffers, i8& iEntries)
 {
@@ -386,6 +417,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   }
   
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* assert valid entry buffer                                                  */

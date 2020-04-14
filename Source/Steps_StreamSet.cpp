@@ -10,6 +10,7 @@
 void Step::vAddSteps_StreamSet(void)
 {
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
+  vAddStep("StreamSet[].addAnalyzeIndex"_Stz,&Step::vStreamSetAddAnalyzeIndex);
   vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
@@ -30,6 +31,47 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
   vAddStep("StreamSet[].pipeOut"_Stz,        &Step::vStreamSetPipeOut);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addAnalyzeIndex -- add a row to the streamSet index analysis   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddAnalyzeIndex(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddAnalyzeIndex"_Stz);
+  
+  // get the streamSet table
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the index to be analyzed
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  
+  // get the slot
+  i8 iSlot = m_pDataStack->iPopInt(__func__);
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  
+  // get the stream set
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+
+  i8 nBuffers = 0;
+  i8 nEntries = 0;
+  
+  pIndex->vAnalyze(iSlot, nBuffers, nEntries);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    TablePtn::iSlotToPartition(iSlot),
+                                    nBuffers,
+                                    nEntries,
+                                    C_VARGS_END);
+  ASSERT(pRow);
+  pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

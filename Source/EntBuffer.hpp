@@ -97,7 +97,8 @@ namespace Indexing
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    //void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    void        vAnalyze(i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Ent** aaEnt);
     void        vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);

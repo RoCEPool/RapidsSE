@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* OP_anidx.sen -- Operator analyze index                                     */
+/*============================================================================*/
+
+" OP_anidx.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: anidx_action
+
+  <tableNm> <indexNm> op__table_index not if
+    false
+    exit
+  then
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  // add a row for each slot
+  grid::slots 0
+  do
+    // insert index verify
+    I index[].get streamSetTable[] StreamSet[].addAnalyzeIndex assert
+  loop
+
+  // pipeout the infoset
+  StreamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: anidx :: anidx <tableNm> <indexNm> ;
+
+: anidx opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __analyzeIndex
+    <params>    = 2
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -33,6 +33,7 @@ namespace MetaData
    ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
+    void   vAnalyze(i8 iSlot, i8& nBuffers, i8& nEntries);
     IdxColVec* pIdxColVec(void);
     IndexDef* pIndexDef(void);
     void   vIndexDef(IndexDef* pIndexDef);

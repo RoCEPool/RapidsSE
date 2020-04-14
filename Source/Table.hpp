@@ -44,7 +44,7 @@ namespace MetaData
     static void  vMonitorPortrait(s48K& sPortrait);
     
     void vAddIndex(Index* pIndex);
-    Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
+    //Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
     Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
     void vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     void vCompactIndex(Index* pIndex);

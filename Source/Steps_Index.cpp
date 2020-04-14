@@ -11,8 +11,6 @@ void Step::vAddSteps_Index(void)
 {
   vAddStep("index::delete"_Stz,         &Step::vIndexDelete);
   vAddStep("index::new"_Stz,            &Step::vIndexNew);
-
-  vAddStep("index.analyze"_Stz,         &Step::vIndexAnalyze);
   vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
   vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
@@ -38,28 +36,8 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
   vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
   vAddStep("index.upperBound"_Stz,      &Step::vIndexUpperBound);
-  vAddStep("index.verify"_Stz,          &Step::vIndexVerify);
+  vAddStep("index[].verify"_Stz,        &Step::vIndexVerify);
   vAddStep("index[].visualize"_Stz,     &Step::vIndexVisualize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.analyze -- analyze index                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexAnalyze(void)
-{
-  ENTRY(); // ENTRY("vIndexAnalyze"_Stz);
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iDetailed = m_pDataStack->iPopInt(__func__);
-  
-  s48K sAnalysis;
-  i8 nRows;
-  sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
-  m_pDataStack->vPushStr(sAnalysis);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1164,7 +1142,7 @@ void Step::vIndexVerify(void)
 {
   ENTRY(); // ENTRY("vIndexVerify"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);

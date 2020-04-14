@@ -66,7 +66,6 @@
         "Job_Answer.sen"          include
 
         "job_Alarm.sen"           include
-        "job_AnalyzeIndex.sen"    include
         "job_AnalyzeTable.sen"    include
 
         "job_BootCluster.sen"     include
@@ -122,6 +121,7 @@
         "op__common.sen"          include
         "op__tagSets.sen"         include
 
+        "OP_anidx.sen"            include
 
         "OP_bufferGen.sen"        include
         "OP_burst.sen"            include
@@ -192,6 +192,7 @@
 
         "OP_upsert.sen"           include
 
+        "OP_vfyidx.sen"           include
         "OP_visidx.sen"           include
         "OP_vistbl.sen"           include
         "OP_xmit.sen"             include

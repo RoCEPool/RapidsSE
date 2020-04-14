@@ -221,6 +221,7 @@ void Table::vAddIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze index                                                              */
 /*----------------------------------------------------------------------------*/
+/*
 Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -267,6 +268,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
   
   return sAnalysis;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* analyze index                                                              */

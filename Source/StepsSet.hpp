@@ -372,7 +372,6 @@ public:
   void vHandlerServiceSleepQueue(void);
 
   // index
-  void vIndexAnalyze(void);
   void vIndexColumnFetch(void);
   void vIndexColumnCountFetch(void);
   void vIndexColumnName(void);
@@ -1310,7 +1309,8 @@ public:
   void vStrTailInt(void);
   void vStrToStrVec(void);
 
-  // reg info set
+  // reg stream set
+  void vStreamSetAddAnalyzeIndex(void);
   void vStreamSetAddColumnDef(void);
   void vStreamSetAddGridSanity(void);
   void vStreamSetAddListContents(void);

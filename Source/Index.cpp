@@ -143,6 +143,30 @@ void Index::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* analyze the index                                                          */
+/*----------------------------------------------------------------------------*/
+void Index::vAnalyze(i8 iSlot, i8& nBuffers, i8& nEntries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  i8 nEntriesTotal = 0;
+  i8 nBuffersTotal = 0;
+  
+  IndexPtn* pIndexPtn = m_pTable->pPartition(iSlot)->pIndexPtn(m_iIndexNo);
+  EntBuffer *pIndexBuffer = pIndexPtn->pRootBuffer();
+  
+  nBuffers = 0;
+  nEntries = 0;
+  
+  if (pIndexBuffer)
+    pIndexBuffer->vAnalyze(nBuffers, nEntries);
+  
+  nEntriesTotal += nEntries;
+  nBuffersTotal += nBuffers;
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get index column vector                                                    */
 /*----------------------------------------------------------------------------*/
 IdxColVec* Index::pIdxColVec(void)
