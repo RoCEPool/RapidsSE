@@ -25,7 +25,8 @@ Tokeniser::Tokeniser(void)
   
   m_pCharser   = new Charser(nullptr);
   
-  vSenTokens();
+  //vSenTokens();
+  m_eTknForm = UF_NONE;
   
   m_xAnnChar.vReset();
       
@@ -75,7 +76,8 @@ void Tokeniser::vTokenise(TokenVec* pTknVec, Stz* szString)
   
   Tokeniser* pTokeniser = new Tokeniser;
   pTokeniser->vUseString(szString);
-  
+  pTokeniser->vSenTokens();
+
   for (i8 i_Token = 0; ; i_Token++) {
     pTokeniser->vReadToken_nil();
     if (TN_EOF == pTokeniser->eToken())
@@ -483,6 +485,8 @@ void Tokeniser::vReadToken_vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
+
   m_pToken = m_pTknVec->pCurrToken();;
 
   if (UF_CPP_TOKENS == m_eTknForm)
