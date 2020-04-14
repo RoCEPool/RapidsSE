@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegIndex(void)
 {
-  vAddStep("index[].get"_Stz,  &Step::vRegIndexGet);
+  vAddStep("index[]"_Stz,      &Step::vRegIndexGet);
   vAddStep("index[].set"_Stz,  &Step::vRegIndexSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].get -- get index                                                   */
+/* index[] -- get index                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegIndexGet(void)
 {

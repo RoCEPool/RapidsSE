@@ -29,7 +29,7 @@
   index[].verify
 
   // insert index verify
-  index[].get streamSetTable[] StreamSet[].addVerifyIndex assert
+  index[] streamSetTable[] StreamSet[].addVerifyIndex assert
 
   // pipeout the infoset
   StreamSet[].pipeout

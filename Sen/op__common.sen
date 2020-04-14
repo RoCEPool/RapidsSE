@@ -181,7 +181,7 @@
   sIndexNm find execute to index[]
 
   // cross-check
-  index[].get assert
+  index[] assert
 
   path[].discardTableFolder
   path[].discardIndexesFolder
