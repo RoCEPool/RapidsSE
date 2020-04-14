@@ -25,11 +25,24 @@ success
 load Q1 "../DATA/Queries/L0_SingleBuffer.csv";
 success
 
+dumpidx Q1 idx2;
+failure contains: 'no such index'
+
+dumpidx Q2 idx;
+failure contains: 'no such table'
+
 dumpidx Q1 idx;
 success
 
+vfyidx Q2 idx;
+failure contains: 'no such table'
+
+vfyidx Q1 idx2;
+failure contains: 'no such index'
+
 vfyidx Q1 idx;
-success
+rows:
+('NODE0','Q1','idx','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN

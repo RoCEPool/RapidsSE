@@ -29,7 +29,8 @@ dumpidx Q1 idx;
 success
 
 vfyidx Q1 idx;
-success
+rows:
+  ('NODE0','Q1','idx','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN

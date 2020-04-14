@@ -28,7 +28,8 @@ load jCdt "../DATA/Select/range2.csv";
 success
 
 vfyidx jCdt jCdt_idx1;
-success
+rows:
+('NODE0','jCdt','jCdt_idx1','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN
