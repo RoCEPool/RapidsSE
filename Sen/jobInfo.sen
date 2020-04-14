@@ -12,21 +12,19 @@
 "
 : /liteOp/_PulseMarker \\handler
 
-  Pipein[].pipeout
-
-  /liteOp/_action assert
-
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  /liteOp/_action if
+    Pipein[].pipeout
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
 
   true
 ;
 "
 ;
 
-
 /*----------------------------------------------------------------------------*/
-/* execute for space req                              (on node where spawned) */
+/* execute for liteOp req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : __liteOp_req
 
@@ -50,9 +48,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* get space on each node                                                     */
+/* liteOp procedure with 0 parameters                                         */
 /*----------------------------------------------------------------------------*/
-: __liteOp_procedure
+: __liteOp_procedure0
 
 "
 procedure /liteOp/
@@ -71,6 +69,51 @@ end
 "
 ;
     
+/*----------------------------------------------------------------------------*/
+/* liteOp procedure with 1 parameter                                          */
+/*----------------------------------------------------------------------------*/
+: __liteOp_procedure1
+
+"
+  procedure /liteOp/
+    parameters $param
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    /liteOp/ $param | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end
+"
+;
+
+/*----------------------------------------------------------------------------*/
+/* liteOp procedure with 2 parameters                                         */
+/*----------------------------------------------------------------------------*/
+: __liteOp_procedure2
+
+"
+  procedure /liteOp/
+    parameters $param0 $param1
+  begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    /liteOp/ $param0 $param1 | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end
+"
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -96,7 +139,7 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for space req                              (on node where spawned) */
+/* execute for localLiteOp req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : __localLiteOp_req
 
@@ -392,8 +435,20 @@ end
 
       "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
-      "/liteOp/" sWordNm_trunc __liteOp_procedure   str.replace procedure::add
 
+      // add procedure depending on no of parameters
+      "<params>" pEnameSet EnameSet.hasName assert
+      "<params>" pEnameSet EnameSet.getStr >int to iParams
+      iParams 2 == if
+        "/liteOp/" sWordNm_trunc __liteOp_procedure2 str.replace procedure::add
+      else
+        iParams 1 == if
+          "/liteOp/" sWordNm_trunc __liteOp_procedure1 str.replace procedure::add
+        else
+         iParams 0 == assert
+         "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
+        then
+      then
     else
 
       "<localLiteOp>" pEnameSet EnameSet.hasName if
@@ -411,10 +466,11 @@ end
         else
           iParams 1 == if
             "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1   str.replace procedure::add
-        else
-          iParams 0 == assert
-          "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
-        then then
+          else
+            iParams 0 == assert
+            "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
+          then
+        then
 
       then
 
