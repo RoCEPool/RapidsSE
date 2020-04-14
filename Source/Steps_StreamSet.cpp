@@ -11,6 +11,7 @@ void Step::vAddSteps_StreamSet(void)
 {
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
   vAddStep("StreamSet[].addAnalyzeIndex"_Stz,&Step::vStreamSetAddAnalyzeIndex);
+  vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
   vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
@@ -68,7 +69,48 @@ void Step::vStreamSetAddAnalyzeIndex(void)
                                     nEntries,
                                     C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addAnalyzeTable -- add a row to the streamSet table analysis   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddAnalyzeTable(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddAnalyzeTable"_Stz);
+  
+  // get the streamSet table
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the index to be analyzed
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the slot
+  i8 iSlot = m_pDataStack->iPopInt(__func__);
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  
+  // get the stream set
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
+  i8 nBuffers = 0;
+  i8 nRows = 0;
+  
+  pTable->vAnalyze(iSlot, nBuffers, nRows);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    TablePtn::iSlotToPartition(iSlot),
+                                    nBuffers,
+                                    nRows,
+                                    C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   EXIT();
@@ -101,7 +143,7 @@ void Step::vStreamSetAddColumnDef(void)
                                   (i8)pColumn->bIsPtnKey(),
                                   C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   EXIT();

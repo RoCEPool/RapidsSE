@@ -176,6 +176,12 @@ print section "Dump Index";
 dumpIdx LineItem LineItem_Idx1;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection analyzeTable;
+print section "Analyze Table";
+
+antbl LineItem;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection analyzeIndex;
 print section "Analyze Index";
 

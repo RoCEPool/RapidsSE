@@ -1311,6 +1311,7 @@ public:
 
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);
+  void vStreamSetAddAnalyzeTable(void);
   void vStreamSetAddColumnDef(void);
   void vStreamSetAddGridSanity(void);
   void vStreamSetAddListContents(void);
@@ -1355,7 +1356,6 @@ public:
 
   // table
   void vTableAddIndex(void);
-  void vTableAnalyze(void);
   void vTableColumnCountFetch(void);
   void vTableColumnFetch(void);
   void vTableDump(void);

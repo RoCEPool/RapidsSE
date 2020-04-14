@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* OP_antbl.sen -- Operator analyze table                                     */
+/*============================================================================*/
+
+" OP_antbl.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: antbl_action
+
+  <tableNm> op__table not if
+    false
+    exit
+  then
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  // add a row for each slot
+  grid::slots 0
+  do
+    // analyze table
+    I table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
+  loop
+
+  // pipeout the infoset
+  StreamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: antbl :: antbl <tableNm> ;
+
+: antbl opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __analyzeTable
+    <params>    = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

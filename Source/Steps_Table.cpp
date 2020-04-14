@@ -13,7 +13,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
-  vAddStep("table.analyze"_Stz,            &Step::vTableAnalyze);
   vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table[].dump"_Stz,             &Step::vTableDump);
@@ -80,25 +79,6 @@ void Step::vTableAddIndex(void)
   
   pTable->vAddIndex(pIndex);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.analyze -- analyze table                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vTableAnalyze(void)
-{
-  ENTRY(); // ENTRY("vTableAnalyze"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  i8 iDetailed = m_pDataStack->iPopInt(__func__);
-  
-  s48K sAnalysis;
-  i8 nRows;
-  sAnalysis = (Stz*)pTable->pAnalyzeTable(iDetailed == 1 ? true : false, nRows);
-  
-  m_pDataStack->vPushStr(sAnalysis);
-    
   EXIT();
 }
 

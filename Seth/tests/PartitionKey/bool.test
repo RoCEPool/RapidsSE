@@ -28,6 +28,10 @@ load boolTable "../DATA/PartitionKey/bool.csv";
 success
 
 // analyze table
+antbl boolTable1;
+failure contains: 'no such table'
+
+// analyze table
 antbl boolTable;
 rows:
  (*,*,*,0)

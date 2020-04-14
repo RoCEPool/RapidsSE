@@ -81,7 +81,7 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iRows);
+    void        vAnalyze(i8& nBuffers, i8& nRows);
     void        vDump(void);
     void        vRestore(void);
     void        vRestoreNub(void);

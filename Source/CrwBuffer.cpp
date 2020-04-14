@@ -158,8 +158,7 @@ void CrwBuffer::vToRow(RowSingle* pRow, Crw* aCrw)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
-                           i8& iBuffers, i8& iRows)
+void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
@@ -167,15 +166,15 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   
   do {
     
-    iBuffers++;
-    iRows += (pNextBuffer->nRowCount());
+    nBuffers++;
+    nRows += (pNextBuffer->nRowCount());
     
-    if (bDetailed)
-      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-                           AM::szNodeNm(),
-                           pNextBuffer->m_iPartitionNo,
-                           iBuffers,
-                           pNextBuffer->nRowCount());
+//    if (bDetailed)
+//      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
+//                           AM::szNodeNm(),
+//                           pNextBuffer->m_iPartitionNo,
+//                           iBuffers,
+//                           pNextBuffer->nRowCount());
     
     pNextBuffer = pNextBuffer->pNextBuffer();
     

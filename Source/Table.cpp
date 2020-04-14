@@ -273,6 +273,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
 /*----------------------------------------------------------------------------*/
 /* analyze index                                                              */
 /*----------------------------------------------------------------------------*/
+/*
 Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -320,6 +321,31 @@ Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
     nRows = 1;
   
   return sAnalysis;
+}
+*/
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+void Table::vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nRowsTotal    = 0;
+  i8 nBuffersTotal = 0;
+  s48K sAnalysis;
+  
+    
+  i8 iPartition = TablePtn::iSlotToPartition(iSlot);
+  
+  TablePtn *pPartition = this->pPartition(iSlot);
+  
+  CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
+  
+  if (pCrwBuffer)
+    pCrwBuffer->vAnalyze(nBuffers, nRows);
+  
+  nRowsTotal += nRows;
+  nBuffersTotal += nBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
