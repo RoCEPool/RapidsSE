@@ -9,11 +9,9 @@ namespace LexicalAnalysis
   {
   private:
     Charser*  m_pCharser;   // charser
-  
-    bool      m_bCppTokens; // cpp or sen tokens?
-    eUF       m_eTknForm;   // token form
-    AnnChar   m_xAnnChar;   // annotated char from parser
-    
+    AnnChar   m_xAnnChar;   // annotated char from charser
+
+    eUF       m_eTknForm;   // form of tokens to be collected
     TokenVec* m_pTknVec;    // set of collected tokens
     Token*    m_pToken;     // current token
 

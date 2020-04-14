@@ -197,8 +197,6 @@ void Tokeniser::vCppTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_bCppTokens = true;
-
   m_eTknForm = UF_CPP_TOKENS;
 }
 
@@ -487,14 +485,10 @@ void Tokeniser::vReadToken_vec(void)
   
   m_pToken = m_pTknVec->pCurrToken();;
 
-  if (m_bCppTokens) {
-    ASSERT(UF_CPP_TOKENS == m_eTknForm);
+  if (UF_CPP_TOKENS == m_eTknForm)
     vCollectCpp();
-  }
-  else {
-    ASSERT(UF_SEN_TOKENS == m_eTknForm);
+  else
     vCollectSen();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,9 +497,7 @@ void Tokeniser::vReadToken_vec(void)
 void Tokeniser::vSenTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_bCppTokens = false;
-  
+    
   m_eTknForm = UF_SEN_TOKENS;
 }
 
