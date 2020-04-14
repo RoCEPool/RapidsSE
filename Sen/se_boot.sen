@@ -71,7 +71,6 @@
 
         "job_BootCluster.sen"     include
 
-        "job_CompactIndex.sen"    include
         "job_ConnectCluster.sen"  include
         "Job_CopyBuffer.sen"      include
         "job_CreateCatalog.sen"   include
@@ -131,6 +130,7 @@
 
         "OP_cf.sen"               include
         "OP_chunk.sen"            include
+        "OP_compactIdx.sen"       include
         "OP_consume.sen"          include
 
         //"OP_docol.sen"            include

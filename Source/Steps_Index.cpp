@@ -17,7 +17,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
-  vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
+  vAddStep("index[].compact"_Stz,       &Step::vIndexCompact);
   vAddStep("index[].dump"_Stz,          &Step::vIndexDump);
   vAddStep("index[].genEntBuffer"_Stz,  &Step::vIndexGenEntBuffer);
   vAddStep("index[].genEntBuffers"_Stz, &Step::vIndexGenEntBuffers);
@@ -146,7 +146,7 @@ void Step::vIndexCompact(void)
 {
   ENTRY(); // ENTRY("vIndexCompact"_Stz);
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = *m_pRegSet->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->pTable()->vCompactIndex(pIndex);

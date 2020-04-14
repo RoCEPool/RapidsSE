@@ -145,10 +145,10 @@ void Correctness::vThreadCallStackDump(void)
   //    printf("  FreeChunk was %d\n",eWasClass);
   //  }
   
-  //if (AM::bDeveloper()) {
-  //  AM::vTaskDump();
-  //  vThreadCallStackDump();
-  //}
+  if (AM::bDeveloper()) {
+    AM::vTaskDump();
+    vThreadCallStackDump();
+  }
 
   vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }

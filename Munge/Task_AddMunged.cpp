@@ -10876,6 +10876,55 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_compactIdx.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_compactIdx.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_compactIdx.sen -- Operator compact index                                */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_compactIdx.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": compactIdx_action\n"
+    "\n"
+    "  <tableNm> <indexNm> op__table_index if\n"
+    "    index[].compact\n"
+    "    true\n"
+    "  else\n"
+    "    false\n"
+    "  then\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: compactIdx :: compactIndex <tableNm> <indexNm> ;\n"
+    "opSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;\n"
+    "\n"
+    ": compactIdx opInfo tagCopy: liteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>   = \\\"--description of operator--\\\"\n"
+    "    <liteOp>    = true\n"
+    "    <params>    = 2\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_compactIdx.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_consume.sen
 
   sFileContents =
@@ -16000,7 +16049,6 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "        \\\"job_BootCluster.sen\\\"     include\n"
     "\n"
-    "        \\\"job_CompactIndex.sen\\\"    include\n"
     "        \\\"job_ConnectCluster.sen\\\"  include\n"
     "        \\\"Job_CopyBuffer.sen\\\"      include\n"
     "        \\\"job_CreateCatalog.sen\\\"   include\n"
@@ -16060,6 +16108,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "        \\\"OP_cf.sen\\\"               include\n"
     "        \\\"OP_chunk.sen\\\"            include\n"
+    "        \\\"OP_compactIdx.sen\\\"       include\n"
     "        \\\"OP_consume.sen\\\"          include\n"
     "\n"
     "        //\\\"OP_docol.sen\\\"            include\n"

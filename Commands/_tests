@@ -212,6 +212,18 @@ print section "Visualize Index";
 visidx LineItem LineItem_Idx1;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection compactIndex;
+print section "Compact Index";
+
+compactIdx LineItem LineItem_Idx1;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection visualizeIndex;
+print section "Visualize Index";
+
+visidx LineItem LineItem_Idx1;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection logWrite;
 print section "Log Write";
 
