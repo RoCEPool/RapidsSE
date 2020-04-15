@@ -71,11 +71,13 @@ void Charser::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vTrace("Charser[%lld] : Source %s Path %s %s\n"_Stz,
+  vTrace("Charser[%lld] : Source %s Path %s %s %s %s\n"_Stz,
          m_iDepth,
          aIS[m_eSource],
          m_sPath.szStz(),
-         m_bLineMode ? "LineMode" : "Non-LineMode"
+         m_bLineMode ? "LineMode" : "Non-LineMode",
+         m_bUseBegun ? "UseBegun" : "Not-UseBegun",
+         m_bUseEnded ? "UseEnded" : "Not-UseEnded"
          );
 }
 
