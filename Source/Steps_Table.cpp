@@ -632,9 +632,8 @@ void Step::vTableVerify(void)
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
   bool bVerified = pTable->bVerifyTable();
-  s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
   
-  m_pDataStack->vPushStr(s);
+  m_pDataStack->vPushInt(bVerified);
   
   EXIT();
 }

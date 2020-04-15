@@ -577,8 +577,7 @@ void Step::vStreamSetAddVerifyIndex(void)
   // get the table from the index
   Table* pTable = pIndex->pTable();
   
-  s256 sStatus;
-  m_pDataStack->vPopStr(sStatus, __func__);
+  i8 iStatus = m_pDataStack->iPopInt(__func__);
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
@@ -587,7 +586,7 @@ void Step::vStreamSetAddVerifyIndex(void)
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pTable->szTableNm(),
                                     pIndex->szIndexNm(),
-                                    sStatus.azChar(),
+                                    iStatus ? "valid"_Stz : "invalid"_Stz,
                                     C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
@@ -611,8 +610,7 @@ void Step::vStreamSetAddVerifyTable(void)
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  s256 sStatus;
-  m_pDataStack->vPopStr(sStatus, __func__);
+  i8 iStatus = m_pDataStack->iPopInt(__func__);
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
@@ -620,7 +618,7 @@ void Step::vStreamSetAddVerifyTable(void)
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pTable->szTableNm(),
-                                    sStatus.azChar(),
+                                    iStatus ? "valid"_Stz : "invalid"_Stz,
                                     C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);

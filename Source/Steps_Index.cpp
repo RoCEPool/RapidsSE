@@ -1136,7 +1136,7 @@ LastBuffer:
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.verify -- verify index                                               */
+/* index[].verify -- verify index                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVerify(void)
 {
@@ -1146,8 +1146,7 @@ void Step::vIndexVerify(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
-  s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
-  m_pDataStack->vPushStr(s);
+  m_pDataStack->vPushInt(bVerified);
   
   EXIT();
 }
