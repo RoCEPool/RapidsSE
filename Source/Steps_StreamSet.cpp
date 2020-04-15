@@ -17,6 +17,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
+  vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
@@ -270,7 +271,7 @@ void Step::vStreamSetAddListFolder(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamSet[].addListIndex -- add a row to infoset with the list index         */
+/* StreamSet[].addListIndex -- add a row to infoset with the list index       */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListIndex(void)
 {
@@ -293,6 +294,39 @@ void Step::vStreamSetAddListIndex(void)
                                   (i8)pIndex->bIsUnique(),
                                   (i8)pIndex->bIsPrimaryKey(),
                                   C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addNodeStatus -- add a row to the streamSet with node status   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddNodeStatus(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddNodeStatus"_Stz);
+  
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
+  Grid* pGrid = AM::pGrid();
+  
+  s32 sRegionNm(AM::szRegionName());
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        pGrid->pThisNode()->szNodeNm(),
+                        sRegionNm.azChar(),
+                        Region::bTest(sRegionNm) ? "running"_Stz : "not running"_Stz,
+                        C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   

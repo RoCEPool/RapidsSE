@@ -95,7 +95,6 @@
         "Job_Pipeline.sen"        include
 
         "Job_Service.sen"         include
-        "job_Status.sen"          include
         "job_SubFetch.sen"        include
         "job_SubLoader.sen"       include
         "job_Supervisor.sen"      include
@@ -174,6 +173,7 @@
         "OP_space.sen"            include
         "OP_start.sen"            include
         "OP_stats.sen"            include
+        "OP_status.sen"           include
         "OP_statWrite.sen"        include
         "OP_szidx.sen"            include
         "OP_sztbl.sen"            include

@@ -11151,6 +11151,68 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_lspart.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_lspart.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_status.sen -- Operator status                                           */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_status.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": status_action\n"
+    "\n"
+    "  // find the __ table\n"
+    "  <streamDef> op__tableDef_streamSet assert\n"
+    "\n"
+    "  // create a new streamDef\n"
+    "  streamSetTable[] streamDef[].new\n"
+    "\n"
+    "  // pipeout the streamDef\n"
+    "  streamDef[].pipeout\n"
+    "\n"
+    "  // create an infoSet operand\n"
+    "  streamSetTable[] streamSet[].new\n"
+    "\n"
+    "  // add nodeInfo to the infoSet\n"
+    "  streamSetTable[] streamSet[].addNodeStatus assert\n"
+    "\n"
+    "  // pipeout the infoset\n"
+    "  streamSet[].pipeout\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: status :: status ;\n"
+    "\n"
+    ": status opInfo tagCopy: liteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>   = \\\"--description of operator--\\\"\n"
+    "    <liteOp>    = true\n"
+    "    <streamDef> = __status\n"
+    "    <params>    = 0\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_lspart.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_lspartcol.sen
 
   sFileContents =
@@ -13688,6 +13750,68 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_status.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_status.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_status.sen -- Operator status                                           */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_status.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": status_action\n"
+    "\n"
+    "  // find the __ table\n"
+    "  <streamDef> op__tableDef_streamSet assert\n"
+    "\n"
+    "  // create a new streamDef\n"
+    "  streamSetTable[] streamDef[].new\n"
+    "\n"
+    "  // pipeout the streamDef\n"
+    "  streamDef[].pipeout\n"
+    "\n"
+    "  // create an infoSet operand\n"
+    "  streamSetTable[] streamSet[].new\n"
+    "\n"
+    "  // add nodeInfo to the infoSet\n"
+    "  streamSetTable[] streamSet[].addNodeStatus assert\n"
+    "\n"
+    "  // pipeout the infoset\n"
+    "  streamSet[].pipeout\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: status :: status ;\n"
+    "\n"
+    ": status opInfo tagCopy: liteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>   = \\\"--description of operator--\\\"\n"
+    "    <liteOp>    = true\n"
+    "    <streamDef> = __status\n"
+    "    <params>    = 0\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_status.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_statWrite.sen
 
   sFileContents =
@@ -15509,7 +15633,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"Job_Pipeline.sen\\\"        include\n"
     "\n"
     "        \\\"Job_Service.sen\\\"         include\n"
-    "        \\\"job_Status.sen\\\"          include\n"
     "        \\\"job_SubFetch.sen\\\"        include\n"
     "        \\\"job_SubLoader.sen\\\"       include\n"
     "        \\\"job_Supervisor.sen\\\"      include\n"
@@ -15588,6 +15711,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"OP_space.sen\\\"            include\n"
     "        \\\"OP_start.sen\\\"            include\n"
     "        \\\"OP_stats.sen\\\"            include\n"
+    "        \\\"OP_status.sen\\\"           include\n"
     "        \\\"OP_statWrite.sen\\\"        include\n"
     "        \\\"OP_szidx.sen\\\"            include\n"
     "        \\\"OP_sztbl.sen\\\"            include\n"

@@ -128,6 +128,13 @@ create table definition __space (
   freeSpace  VARCHAR NOT NULL
 );
 
+// this is C_TDEF_STATUS
+create table definition __status (
+ nodeName   VARCHAR NOT NULL,
+ regionName VARCHAR NOT NULL,
+ status     VARCHAR NOT NULL
+);
+
 // this is C_TDEF_TABLESIZES
 create table definition __tableSizes (
  NodeName  VARCHAR NOT NULL,

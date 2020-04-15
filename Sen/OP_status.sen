@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* OP_status.sen -- Operator status                                           */
+/*============================================================================*/
+
+" OP_status.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: status_action
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] streamSet[].new
+
+  // add nodeInfo to the infoSet
+  streamSetTable[] streamSet[].addNodeStatus assert
+
+  // pipeout the infoset
+  streamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: status :: status ;
+
+: status opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __status
+    <params>    = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
