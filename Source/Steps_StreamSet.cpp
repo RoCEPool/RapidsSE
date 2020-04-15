@@ -23,6 +23,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
   vAddStep("StreamSet[].addSizeTable"_Stz,     &Step::vStreamSetAddSizeTable);
   vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
+  vAddStep("StreamSet[].addTableSizes"_Stz,    &Step::vStreamSetAddTableSizes);
   vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
   vAddStep("StreamSet[].delete"_Stz,         &Step::vStreamSetDelete);
   vAddStep("StreamSet[].firstRow"_Stz,       &Step::vStreamSetFirstRow);
@@ -452,10 +453,10 @@ void Step::vStreamSetAddSizeTable(void)
   ENTRY(); // ENTRY("vStreamSetAddSizeTable"_Stz);
   
   // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   // get the streamDef from the table
-  StreamDef* pStreamDef = pTable->pStreamDef();
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
   
   s256 sSize;
   m_pDataStack->vPopStr(sSize, __func__);
@@ -524,6 +525,41 @@ void Step::vStreamSetAddSpaceInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* StreamSet[].addTableSizes -- add a row to streamSet with the table sizes   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddTableSizes(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddTableSizes"_Stz);
+  
+  // get the table
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  
+  s256 sTableName;
+  m_pDataStack->vPopStr(sTableName, __func__);
+  
+  s256 sSize;
+  m_pDataStack->vPopStr(sSize, __func__);
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    sTableName.azChar(),
+                                    sSize.azChar(),
+                                    C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* StreamSet[].addVerifyIndex -- add a row to streamSet with the index verify */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddVerifyIndex(void)
@@ -556,139 +592,6 @@ void Step::vStreamSetAddVerifyIndex(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].addTotalUnits -- add a row to infoset with the totalUnits        */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddTotalUnits(void)
-{
-  ENTRY(); // ENTRY("vStreamSetAddTotalUnits"_Stz);
-  
-  i8 iTotalUnits = m_pDataStack->iPopInt(__func__);
-  
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
-  
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  iTotalUnits,
-                                  C_VARGS_END);
-  ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
-  
-  m_pDataStack->vPushPtr(pRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].chunkFile -- info set chunk file                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetChunkFile(void)
-{
-  ENTRY(); // ENTRY("vStreamSetChunkFile"_Stz);
-  
-  // get the seekOffsets
-  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
-  
-  // get the file we are chunking
-  File* pFile = _pFile(*m_pRegSet->m_xpFile0);
-  
-  // get the last chunk location
-  i8 i_ChunkLoc = m_pRegSet->m_iCounter0;
-  
-  // get the Eof location
-  i8 i_EofLoc = m_pRegSet->m_iCounter1;
-  
-  char* pReadBlock = (char*)MemLib::aMallocBlock(C_CHUNKBLOCK);
-  
-  i8 nChunkBytes;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process chunks till eof or till we get C_SET_SEEKOFFSETS
-  
-  while (true) {
-    
-    // compute the location of the final block of the current chunk
-    i8 i_FinalBlockLoc = i_ChunkLoc + C_LOAD_READCHUNK - C_CHUNKBLOCK;
-    
-    // the final block will be past the eof if the chunk is
-    // less than maximum chunk size
-    if (i_FinalBlockLoc > i_EofLoc) {
-      
-      // compute the number of bytes which belong to the current chunk
-      nChunkBytes = i_EofLoc - i_ChunkLoc;
-      Row* pRow = pStreamSet->aAllotRow();
-      
-      if (pRow) {
-        pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
-        pRow->m_waColVal[1].m_iWrd = nChunkBytes;
-      }
-      
-      s32 sFileSize;
-      MagLib::vByteMag(i_EofLoc, 3, sFileSize);
-      vTrace("Loading %s %s in %lld chunks by %lld nodes %lld partitions\n"_Stz,
-             pFile->sFilePath().szStz(),sFileSize.szStz(),
-             pStreamSet->nInfoRows(),
-             AM::nDefinedNodes(),
-             AM::nPartitions());
-      
-      // set the chunk location
-      m_pRegSet->m_iCounter0 = i_ChunkLoc + nChunkBytes;
-      
-      break;
-    }
-    
-    // read next block of the chunk
-    pFile->vSeek(i_FinalBlockLoc);
-    
-    i8 nBytesRead = pFile->nReadBytes(pReadBlock,C_CHUNKBLOCK);
-    
-    // compute last actual byte of final block just read in
-    char *aLastByte = &pReadBlock[nBytesRead - 1];
-    
-    // find the final end of line for the block (and therefore the chunk)
-    char *aFinalEol = aLastByte;
-    bool bFoundEol = StrLib::bBackward(&aFinalEol,pReadBlock,'\n');
-    if (!bFoundEol)
-      bFoundEol = StrLib::bBackward(&aFinalEol,pReadBlock,'\r');
-    RASSERT(bFoundEol);
-    
-    // compute the number of bytes which belong to the current chunk
-    i8 nPartialBytes = Correctness::nSub((void*)aFinalEol,pReadBlock) + 1;
-    
-    // compute the total chunk bytes
-    nChunkBytes = nPartialBytes + C_WSP_DATACHUNK - 2048;
-    
-    // compute end location of chunk
-    i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
-    
-    Row* pRow = pStreamSet->aAllotRow();
-    
-    if (pRow) {
-      pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
-      pRow->m_waColVal[1].m_iWrd = nChunkBytes;
-      
-      // advance to start of next chunk
-      i_ChunkLoc = i_EndChunkLoc + 1;
-    }
-    else {
-      
-      // save the current chunk location
-      m_pRegSet->m_iCounter0 = i_ChunkLoc;
-      
-      // dump
-      //pStreamSet->vPrintRows();
-      
-      break;
-    }
-  }
-  
-  // free the read block
-  MemLib::vFreeBlock(pReadBlock, C_2K);
   
   EXIT();
 }
@@ -745,41 +648,6 @@ void Step::vStreamSetInfoRows(void)
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
   m_pDataStack->vPushInt(pStreamSet->nInfoRows());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].isProgress --is infor set a progress info set ?                  */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetIsProgress(void)
-{
-  ENTRY(); // ENTRY("vStreamSetIsProgress"_Stz);
-  
-  ASSERT ( ! m_pRegSet->m_xpStreamSet.bIsNull() );
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
-  
-  bool bIsProgress = pStreamSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
-                       pStreamSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
-  m_pDataStack->vPushInt(bIsProgress);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].isTotalUnits --is infor set a totalUnits info set ?              */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetIsTotalUnits(void)
-{
-  ENTRY(); // ENTRY("vStreamSetIsTotalUnits"_Stz);
-  
-  ASSERT ( ! m_pRegSet->m_xpStreamSet.bIsNull() );
-  
-  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
-  
-  bool bIsTotalUnits = pStreamSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
-  m_pDataStack->vPushInt(bIsTotalUnits);
   
   EXIT();
 }

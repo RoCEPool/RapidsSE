@@ -128,6 +128,13 @@ create table definition __space (
   freeSpace  INTEGER NOT NULL
 );
 
+// this is C_TDEF_TABLESIZES
+create table definition __tableSizes (
+ NodeName  VARCHAR NOT NULL,
+ TableName VARCHAR NOT NULL,
+ size      VARCHAR NOT NULL
+);
+
 // this is C_TDEF_TOTALUNITS
 create table definition __totalUnits (
   UNITS      INTEGER NOT NULL

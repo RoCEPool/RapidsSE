@@ -180,6 +180,7 @@
         "OP_szidx.sen"            include
         "OP_sztbl.sen"            include
 
+        "OP_tableSizes.sen"       include
         "OP_toDemon.sen"          include
         "OP_toCrw.sen"            include
         "OP_toCrwH.sen"           include

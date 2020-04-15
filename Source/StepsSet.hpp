@@ -1326,15 +1326,12 @@ public:
   void vStreamSetAddSizeIndex(void);
   void vStreamSetAddSizeTable(void);
   void vStreamSetAddSpaceInfo(void);
-  void vStreamSetAddTotalUnits(void);
+  void vStreamSetAddTableSizes(void);
   void vStreamSetAddVerifyIndex(void);
-  void vStreamSetChunkFile(void);
   void vStreamSetDelete(void);
   void vStreamSetFirstRow(void);
   void vStreamSetGet(void);
   void vStreamSetInfoRows(void);
-  void vStreamSetIsProgress(void);
-  void vStreamSetIsTotalUnits(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
   void vStreamSetNextRow(void);

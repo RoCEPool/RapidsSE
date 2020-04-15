@@ -118,8 +118,8 @@
   then
 
   // move to table folder and find the table
-  <tableNm> path[].pushTableFolder assert
-  <tableNm> find execute to table[]
+  sTableNm path[].pushTableFolder assert
+  sTableNm find execute to table[]
   path[].discardTableFolder
 
   // cross-check

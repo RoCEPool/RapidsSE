@@ -1,0 +1,86 @@
+/*============================================================================*/
+/* OP_tableSizes.sen -- Operator table sizes                                  */
+/*============================================================================*/
+
+" OP_tableSizes.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: tableSizes_action
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  folder[].checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
+
+  0 locals| sTableNm |
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  folder[] dic.lastWord dup
+  iterate
+
+    object@ word.name@ to sTableNm
+
+    // get size ofthe table
+    sTableNm op__table not if
+      false
+      exit
+    then
+
+    // skip definition only tables
+    table[].isDefinitionOnly not if
+
+      0 table[].size number.magnitude >str
+
+      // insert index size
+      sTableNm streamSetTable[] StreamSet[].addTableSizes assert
+    then
+
+    // move to next table
+    nullptr to table[]
+
+    object@ word.prev object!
+
+  next
+
+  // pipeout the infoset
+  StreamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: tableSizes :: tableSizes ;
+
+: tableSizes opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __tableSizes
+    <params>    = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -561,7 +561,7 @@ void Step::vTableSlotsFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.size -- push space used by table                                     */
+/* table[].size -- push space used by table                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTableSize(void)
 {
