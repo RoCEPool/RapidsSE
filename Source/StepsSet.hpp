@@ -395,7 +395,7 @@ public:
   void vIndexNew(void);
   void vIndexPopulate(void);
   void vIndexRange(void);
-  void vIndexSpace(void);
+  void vIndexSize(void);
   void vIndexTableFetch(void);
   void vIndexTableStore(void);
   void vIndexTruncate(void);

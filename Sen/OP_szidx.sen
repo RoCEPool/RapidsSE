@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : szidx_action
 
-  0 0 locals| iSize sSize |
-
   <tableNm> <indexNm> op__table_index not if
     false
     exit
@@ -28,8 +26,7 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  index[].space to iSize
-  0 iSize number.magnitude >str
+  0 index[].size number.magnitude >str
 
   // insert index size
   streamSetTable[] StreamSet[].addSizeIndex assert
