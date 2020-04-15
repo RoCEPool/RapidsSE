@@ -15,6 +15,7 @@ namespace LexicalAnalysis
     
     // source definition
     bool     m_bUseBegun; // has use of this charser begun?
+    bool     m_bUseEnded; // has use of this charser ended?
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
     bool     m_bLineMode; // line mode?

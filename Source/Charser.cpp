@@ -29,6 +29,7 @@ Charser::Charser(Charser* pNext)
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
     
+  m_bUseEnded = true;
   vResetCharser();
   
   _checkInitialised_(CN_CHARSER);
@@ -264,6 +265,8 @@ void Charser::vUseEnd(void)
     default: ;
   }
   
+  m_bUseEnded = true;
+  
   vResetCharser();
 }
 
@@ -369,9 +372,11 @@ void Charser::vResetCharser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   //ASSERT(! m_oRawFile.bIsOpen());
+  ASSERT(m_bUseEnded);
 
   // source definition
   m_bUseBegun = false;
+  m_bUseEnded = false;
   m_eSource   = IS_NONE;
   m_sPath     = C_NO_NAME;
   m_bLineMode = false;
