@@ -148,6 +148,13 @@ create table definition __verifyIndex (
   status         VARCHAR NOT NULL
 );
 
+// this is C_TDEF_VERIFYTABLE
+create table definition __verifyTable (
+   nodeName       VARCHAR NOT NULL,
+   tableName      VARCHAR NOT NULL,
+   status         VARCHAR NOT NULL
+);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

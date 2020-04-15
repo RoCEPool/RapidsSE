@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* OP_vfytbl.sen -- Operator verify table                                     */
+/*============================================================================*/
+
+" OP_vfytbl.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: vfytbl_action
+
+  <tableNm> op__table not if
+    false
+    exit
+  then
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  table[].verify
+
+  // insert index verify
+  table[] streamSetTable[] StreamSet[].addVerifyTable assert
+
+  // pipeout the infoset
+  StreamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: vfytbl :: vfytbl <tableNm> ;
+
+: vfytbl opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __verifyTable
+    <params>    = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

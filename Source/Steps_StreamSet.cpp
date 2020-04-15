@@ -25,6 +25,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
   vAddStep("StreamSet[].addTableSizes"_Stz,    &Step::vStreamSetAddTableSizes);
   vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
+  vAddStep("StreamSet[].addVerifyTable"_Stz,   &Step::vStreamSetAddVerifyTable);
   vAddStep("StreamSet[].delete"_Stz,         &Step::vStreamSetDelete);
   vAddStep("StreamSet[].firstRow"_Stz,       &Step::vStreamSetFirstRow);
   vAddStep("StreamSet[].get"_Stz,            &Step::vStreamSetGet);
@@ -586,6 +587,39 @@ void Step::vStreamSetAddVerifyIndex(void)
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pTable->szTableNm(),
                                     pIndex->szIndexNm(),
+                                    sStatus.azChar(),
+                                    C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addVerifyTable -- add a row to streamSet with the table verify */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddVerifyTable(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddVerifyTable"_Stz);
+  
+  // get the table
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  s256 sStatus;
+  m_pDataStack->vPopStr(sStatus, __func__);
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    pTable->szTableNm(),
                                     sStatus.azChar(),
                                     C_VARGS_END);
   ASSERT(pRow);

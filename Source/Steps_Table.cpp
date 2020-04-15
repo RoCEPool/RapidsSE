@@ -34,7 +34,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
-  vAddStep("table.verify"_Stz,             &Step::vTableVerify);
+  vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
   
   // to go
@@ -623,13 +623,13 @@ void Step::vTableTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.verify -- verify the table                                           */
+/* table[].verify -- verify the table                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vTableVerify(void)
 {
   ENTRY(); // ENTRY("vTableVerify"_Stz);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
   bool bVerified = pTable->bVerifyTable();
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;

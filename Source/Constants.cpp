@@ -189,6 +189,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_TABLESIZES"_Stz,   C_TDEF_TABLESIZES);
   vAddConstant("C_TDEF_TOTALUNITS"_Stz,   C_TDEF_TOTALUNITS);
   vAddConstant("C_TDEF_VERIFYINDEX"_Stz,  C_TDEF_VERIFYINDEX);
+  vAddConstant("C_TDEF_VERIFYTABLE"_Stz,  C_TDEF_VERIFYTABLE);
 
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSecond());

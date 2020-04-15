@@ -1328,6 +1328,7 @@ public:
   void vStreamSetAddSpaceInfo(void);
   void vStreamSetAddTableSizes(void);
   void vStreamSetAddVerifyIndex(void);
+  void vStreamSetAddVerifyTable(void);
   void vStreamSetDelete(void);
   void vStreamSetFirstRow(void);
   void vStreamSetGet(void);
