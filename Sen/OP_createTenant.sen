@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* OP_createTenant.sen -- Operator create catalog                            */
+/* OP_createTenant.sen -- Operator create tenant                              */
 /*============================================================================*/
 
 " OP_createTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is not a catalog                                             */
+/* check if word is not a tenant                                              */
 /*----------------------------------------------------------------------------*/
 : checkIsNotTenant ( word )
   folder[].findSymbol not if true exit then
@@ -29,7 +29,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if are in catalogs
+  // check if are in tenant
   folder[].checkInTenants not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
@@ -51,7 +51,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the catalog
+  // make the tenant
   <tenantNm> :makeTenantFolder ( )
 
   true

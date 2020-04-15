@@ -18,7 +18,7 @@ begin
     createCatalog $catalogNm | stageC
 
   stage stageC on origin :
-    output | sink | stageA
+    sink | stageA
 
 end;
 
@@ -36,7 +36,7 @@ procedure create schema
     createSchema $schemaNm | stageC
 
   stage stageC on origin :
-    output | sink | stageA
+    sink | stageA
 
 end;
 
@@ -54,7 +54,7 @@ begin
     createTenant $tenantNm | stageC
 
   stage stageC on origin :
-    output | sink | stageA
+    sink | stageA
 
 end;
 

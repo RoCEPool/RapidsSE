@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* OP_dropTenant.sen -- Operator drop tenant                                  */
+/*============================================================================*/
+
+" OP_dropTenant.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: dropTenant_PulseMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if are in tenants
+  folder[].checkInTenants not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if tenant exits
+  <tenantNm> path[].checkIsTenant not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // forget the tenant
+  <tenantNm> :forget
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for createTenant req                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: dropTenant_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: dropTenant_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: dropTenant :: dropTenant <tenantNm> ;
+
+: dropTenant opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
