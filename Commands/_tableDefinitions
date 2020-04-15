@@ -54,6 +54,12 @@ create table definition __listIndex (
   isPrimaryKey BOOLEAN NOT NULL
 );
 
+// this is C_TDEF_LISTPARTITIONS
+create table definition __listPartitions (
+  partition     INTEGER NOT NULL,
+  nodeName      VARCHAR NOT NULL
+);
+
 // this is C_TDEF_LOCKSTATS
 create table definition __lockStats (
   nodeNo         INTEGER     NOT NULL,

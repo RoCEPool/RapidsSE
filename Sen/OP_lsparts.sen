@@ -1,0 +1,54 @@
+/*============================================================================*/
+/* OP_lsparts.sen -- Operator list partitions                                  */
+/*============================================================================*/
+
+" OP_lsparts.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lsparts_action
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] streamSet[].new
+
+  grid::slots 0 do
+
+    // add nodeInfo to the infoSet
+    I grid::toPartition
+    streamSetTable[] streamSet[].addListPartitions assert
+
+  loop
+
+  // pipeout the infoset
+  streamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: lsparts :: lsparts ;
+
+: lsparts opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __listPartitions
+    <params>    = 0
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

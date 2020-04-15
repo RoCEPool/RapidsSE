@@ -176,6 +176,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz, C_TDEF_LISTCONTENTS);
   vAddConstant("C_TDEF_LISTFOLDER"_Stz,   C_TDEF_LISTFOLDER);
   vAddConstant("C_TDEF_LISTINDEX"_Stz,    C_TDEF_LISTINDEX);
+  vAddConstant("C_TDEF_LISTPARTITIONS"_Stz,C_TDEF_LISTPARTITIONS);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,    C_TDEF_LOCKSTATS);
   vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PINGINFO"_Stz,     C_TDEF_PINGINFO);

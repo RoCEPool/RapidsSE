@@ -5124,67 +5124,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_ListPartitions.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_ListPartitions.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_ListPartitions.sen -- Job list partitions                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_ListPartitions.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* get space in the pool (executed on all nodes)                              */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": listPartitions::execute _eeh ( -- )\n"
-    "\n"
-    "  job[] locals| pJob_ListPartitions |\n"
-    "\n"
-    "  \\\"\\\"   // intialize the string\n"
-    "  grid::slots 0 do\n"
-    "    I 0 != if \\\"\\\\n\\\" str.cat then\n"
-    "    I grid::toPartition\n"
-    "    I grid::toPartition grid::toNode grid::toNode grid::node node.name\n"
-    "    \\\"row: ( %v, %v )\\\" str.format str.cat\n"
-    "  loop\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // set response in job\n"
-    "  pJob_ListPartitions job.response!\n"
-    "  grid::slots pJob_ListPartitions job.rowsProcessed!\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/***                            - Definition -                              ***/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "jobSyntax: listPartitions :: lspart ;\n"
-    "\n"
-    "jobInfo: listPartitions\n"
-    "{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
-    "  \n"
-    "  <jobKind>  = JK_DIST2PC\n"
-    "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
-    "  <ddlLock>  = DL_NONE\n"
-    "  \n"
-    "  <preCheck> = bClusterStarted\n"
-    "}\n"
-    " ;\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_ListPartitions.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_LoadTable.sen
 
   sFileContents =
@@ -11151,68 +11090,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of OP_lspart.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged OP_lspart.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* OP_status.sen -- Operator status                                           */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" OP_status.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* action                                                                     */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": status_action\n"
-    "\n"
-    "  // find the __ table\n"
-    "  <streamDef> op__tableDef_streamSet assert\n"
-    "\n"
-    "  // create a new streamDef\n"
-    "  streamSetTable[] streamDef[].new\n"
-    "\n"
-    "  // pipeout the streamDef\n"
-    "  streamDef[].pipeout\n"
-    "\n"
-    "  // create an infoSet operand\n"
-    "  streamSetTable[] streamSet[].new\n"
-    "\n"
-    "  // add nodeInfo to the infoSet\n"
-    "  streamSetTable[] streamSet[].addNodeStatus assert\n"
-    "\n"
-    "  // pipeout the infoset\n"
-    "  streamSet[].pipeout\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "opSyntax: status :: status ;\n"
-    "\n"
-    ": status opInfo tagCopy: liteOp_tags\n"
-    "  tags{\n"
-    "    <jobDesc>   = \\\"--description of operator--\\\"\n"
-    "    <liteOp>    = true\n"
-    "    <streamDef> = __status\n"
-    "    <params>    = 0\n"
-    "  }\n"
-    " ;\n"
-    "    \n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_lspart.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_lspartcol.sen
 
   sFileContents =
@@ -11285,6 +11162,73 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "\""
   " CONSTANT OP_lspartcol.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of OP_lsparts.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged OP_lsparts.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_lsparts.sen -- Operator list partitions                                  */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" OP_lsparts.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": lsparts_action\n"
+    "\n"
+    "  // find the __ table\n"
+    "  <streamDef> op__tableDef_streamSet assert\n"
+    "\n"
+    "  // create a new streamDef\n"
+    "  streamSetTable[] streamDef[].new\n"
+    "\n"
+    "  // pipeout the streamDef\n"
+    "  streamDef[].pipeout\n"
+    "\n"
+    "  // create an infoSet operand\n"
+    "  streamSetTable[] streamSet[].new\n"
+    "\n"
+    "  grid::slots 0 do\n"
+    "\n"
+    "    // add nodeInfo to the infoSet\n"
+    "    I grid::toPartition\n"
+    "    streamSetTable[] streamSet[].addListPartitions assert\n"
+    "\n"
+    "  loop\n"
+    "\n"
+    "  // pipeout the infoset\n"
+    "  streamSet[].pipeout\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "opSyntax: lsparts :: lsparts ;\n"
+    "\n"
+    ": lsparts opInfo tagCopy: liteOp_tags\n"
+    "  tags{\n"
+    "    <jobDesc>   = \\\"--description of operator--\\\"\n"
+    "    <liteOp>    = true\n"
+    "    <streamDef> = __listPartitions\n"
+    "    <params>    = 0\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT OP_lsparts.sen"_Stz
   ;
 
   vCompileMungedColon(sFileContents);
@@ -15626,7 +15570,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_FetchRows.sen\\\"       include\n"
     "        \\\"job_ForgetNode.sen\\\"      include\n"
     "\n"
-    "        \\\"Job_ListPartitions.sen\\\"  include\n"
     "        \\\"Job_LoadTable.sen\\\"       include\n"
     "\n"
     "        \\\"Job_Periodic.sen\\\"        include\n"
@@ -15680,6 +15623,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"OP_lscol.sen\\\"            include\n"
     "        \\\"OP_lsidx.sen\\\"            include\n"
     "        \\\"OP_lsidxcol.sen\\\"         include\n"
+    "        \\\"OP_lsparts.sen\\\"          include\n"
     "        \\\"OP_lspartcol.sen\\\"        include\n"
     "        \\\"OP_lssch.sen\\\"            include\n"
     "        \\\"OP_lstbl.sen\\\"            include\n"

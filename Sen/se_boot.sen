@@ -88,7 +88,6 @@
         "job_FetchRows.sen"       include
         "job_ForgetNode.sen"      include
 
-        "Job_ListPartitions.sen"  include
         "Job_LoadTable.sen"       include
 
         "Job_Periodic.sen"        include
@@ -142,6 +141,7 @@
         "OP_lscol.sen"            include
         "OP_lsidx.sen"            include
         "OP_lsidxcol.sen"         include
+        "OP_lsparts.sen"          include
         "OP_lspartcol.sen"        include
         "OP_lssch.sen"            include
         "OP_lstbl.sen"            include

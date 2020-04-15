@@ -17,6 +17,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
+  vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
@@ -294,6 +295,40 @@ void Step::vStreamSetAddListIndex(void)
                                   (i8)pIndex->bIsUnique(),
                                   (i8)pIndex->bIsPrimaryKey(),
                                   C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addListPartitions -- add a row to infoset with the partitions  */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddListPartitions(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddListPartitions"_Stz);
+  
+  // get the table
+  Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iPartition = m_pDataStack->iPopInt(__func__);
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
+  Grid* pGrid = AM::pGrid();
+  i8 iNode = TablePtn::iPartitionToNode(iPartition);
+  Node* pNode = pGrid->pGetNode(iNode);
+  
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    iPartition,
+                                    pNode->szNodeNm(),
+                                    C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
@@ -625,7 +660,7 @@ void Step::vStreamSetAddVerifyIndex(void)
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pTable->szTableNm(),
                                     pIndex->szIndexNm(),
-                                    iStatus ? "valid"_Stz : "invalid"_Stz,
+                                    iStatus ? "Valid"_Stz : "Invalid"_Stz,
                                     C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
