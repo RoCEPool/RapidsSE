@@ -506,16 +506,21 @@ void Step::vStreamSetAddSpaceInfo(void)
   i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
   i8 iTotalFreeSpace = iFreeSpace + iFreeSpaceInPool;
   
-//  s256 s;
-//
-//  MagLib::vByteMag(iTotalSpace, iScale, s);
+  s256 sTotalSpace;
+  MagLib::vByteMag(iTotalSpace, 0, sTotalSpace);
+  
+  s256 sInUseSpace;
+  MagLib::vByteMag(iInUseSpace, 0, sInUseSpace);
+  
+  s256 sTotalFreeSpace;
+  MagLib::vByteMag(iTotalFreeSpace, 0, sTotalFreeSpace);
   
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pGrid->pThisNode()->szNodeNm(),
-                                  iTotalSpace,
-                                  iInUseSpace,
-                                  iTotalFreeSpace,
+                                  sTotalSpace.azChar(),
+                                  sInUseSpace.azChar(),
+                                  sTotalFreeSpace.azChar(),
                                   C_VARGS_END);
   ASSERT(pRow);
   //pRow->vDump(pStreamDef);
