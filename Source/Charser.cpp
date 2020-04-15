@@ -207,6 +207,14 @@ void Charser::vUseBegin(void)
   ASSERT(! m_bUseBegun);
   
   m_bUseBegun = true;
+  
+  if (AM::bDeveloper())
+    vTrace("Charser[%lld] : Source %s Path %s %s\n"_Stz,
+           m_iDepth,
+           aIS[m_eSource],
+           m_sPath.szStz(),
+           m_bLineMode ? "LineMode" : "Non-LineMode"
+           );
 }
 
 /*----------------------------------------------------------------------------*/

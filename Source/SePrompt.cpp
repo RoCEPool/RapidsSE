@@ -1021,6 +1021,8 @@ bool SePrompt::bRedirectFromFile(void)
     
   pTokenStream->vPushFile(szPath);
   
+  pTokenStream->vUseBegin();
+
   return true;
 }
 

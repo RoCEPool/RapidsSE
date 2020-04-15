@@ -167,7 +167,7 @@ void TokenStream::vUseBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
   
-  m_pTokeniser->vUseEnd();
+  m_pTokeniser->vUseBegin();
 }
 
 /*----------------------------------------------------------------------------*/
