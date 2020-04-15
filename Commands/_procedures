@@ -4,6 +4,21 @@
 
 //print "_procedures" ;
 
+procedure create catalog
+  parameters $catalogNm
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    createCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end;
+
 /*----------------------------------------------------------------------------*/
 /* export table into csv file                                                 */
 /*----------------------------------------------------------------------------*/
