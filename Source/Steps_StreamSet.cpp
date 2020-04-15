@@ -21,6 +21,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
   vAddStep("StreamSet[].addShowCluster"_Stz,   &Step::vStreamSetAddShowCluster);
   vAddStep("StreamSet[].addSizeIndex"_Stz,     &Step::vStreamSetAddSizeIndex);
+  vAddStep("StreamSet[].addSizeTable"_Stz,     &Step::vStreamSetAddSizeTable);
   vAddStep("StreamSet[].addSpaceInfo"_Stz,     &Step::vStreamSetAddSpaceInfo);
   vAddStep("StreamSet[].addVerifyIndex"_Stz,   &Step::vStreamSetAddVerifyIndex);
   vAddStep("StreamSet[].delete"_Stz,         &Step::vStreamSetDelete);
@@ -430,6 +431,37 @@ void Step::vStreamSetAddSizeIndex(void)
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
 
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    AM::pGrid()->pThisNode()->szNodeNm(),
+                                    sSize.azChar(),
+                                    C_VARGS_END);
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addSizeTable -- add a row to streamSet with the table size     */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddSizeTable(void)
+{
+  ENTRY(); // ENTRY("vStreamSetAddSizeTable"_Stz);
+  
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  s256 sSize;
+  m_pDataStack->vPopStr(sSize, __func__);
+  
+  StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
+  
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),

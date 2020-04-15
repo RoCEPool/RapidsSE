@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* OP_sztbl.sen -- Operator size table                                        */
+/*============================================================================*/
+
+" OP_sztbl.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: sztbl_action
+
+  <tableNm> op__table not if
+    false
+    exit
+  then
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  0 table[].size number.magnitude >str
+
+  // insert index size
+  streamSetTable[] StreamSet[].addSizeTable assert
+
+  // pipeout the infoset
+  StreamSet[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: sztbl :: sztbl <tableNm> ;
+
+: sztbl opInfo tagCopy: liteOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __sizeTable
+    <params>    = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

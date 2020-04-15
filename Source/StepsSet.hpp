@@ -1324,6 +1324,7 @@ public:
   void vStreamSetAddPwfInfo(void);
   void vStreamSetAddShowCluster(void);
   void vStreamSetAddSizeIndex(void);
+  void vStreamSetAddSizeTable(void);
   void vStreamSetAddSpaceInfo(void);
   void vStreamSetAddTotalUnits(void);
   void vStreamSetAddVerifyIndex(void);
@@ -1378,7 +1379,7 @@ public:
   void vTableSet(void);
   void vTableSlotsFetch(void);
   void vTableSlots(void);
-  void vTableSpace(void);
+  void vTableSize(void);
   void vTableSubLoaders(void);
   void vTableTableDefFetch(void);
   void vTableTableDefStore(void);
