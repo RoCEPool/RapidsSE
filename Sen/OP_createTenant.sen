@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* OP_createTenant.sen -- Operator create catalog                            */
+/*============================================================================*/
+
+" OP_createTenant.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is not a catalog                                             */
+/*----------------------------------------------------------------------------*/
+: checkIsNotTenant ( word )
+  folder[].findSymbol not if true exit then
+  EC_TENANT_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: createTenant_PulseMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we have enough buffers
+  node::checkEnoughBuffers not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if are in catalogs
+  folder[].checkInTenants not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if catalog already exits
+  <tenantNm> checkIsNotTenant not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the catalog
+  <tenantNm> :makeTenantFolder ( )
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for createTenant req                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: createTenant_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: createTenant_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: createTenant :: createTenant <tenantNm> ;
+
+: createTenant opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

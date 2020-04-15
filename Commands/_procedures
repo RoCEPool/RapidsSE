@@ -30,13 +30,31 @@ procedure create schema
   begin
 
   stage stageA on origin :
-  start | periodicOp once | stageB
+    start | periodicOp once | stageB
 
   stage stageB on all nodes :
-  createSchema $schemaNm | stageC
+    createSchema $schemaNm | stageC
 
   stage stageC on origin :
-  output | sink | stageA
+    output | sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* create tenant                                                              */
+/*----------------------------------------------------------------------------*/
+procedure create tenant
+  parameters $tenantNm
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    createTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
 
 end;
 

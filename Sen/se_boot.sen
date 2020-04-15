@@ -72,7 +72,6 @@
         "job_ConnectCluster.sen"  include
         "Job_CopyBuffer.sen"      include
         "job_CreateIndex.sen"     include
-        "job_CreateTenant.sen"    include
         "job_CreateTable.sen"     include
 
         "job_DefineNode.sen"      include
@@ -123,6 +122,7 @@
         "OP_consume.sen"          include
         "OP_createCatalog.sen"    include
         "OP_createSchema.sen"     include
+        "OP_createTenant.sen"     include
 
         //"OP_docol.sen"            include
         "OP_dumpIdx.sen"          include
