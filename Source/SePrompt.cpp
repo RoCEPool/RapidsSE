@@ -65,7 +65,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
   m_pSession->m_pTokenStream->vUseEnd();
-  m_pSession->m_pTokenStream->vUseStdin();
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
@@ -138,6 +137,9 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
+  m_pSession->m_pTokenStream->vUseStdin();
+  m_pSession->m_pTokenStream->vUseBegin();
+
   vVerifyJobSeeds();
   
   while (bContinue()) {
@@ -997,7 +999,9 @@ bool SePrompt::bReadNextCommand(void)
     vDebugPoint();
     return false;
   }
-  
+
+  pTokenStream->vInspect();
+
   pTokenStream->vReadCommand();
   
   return true;

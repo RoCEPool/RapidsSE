@@ -50,6 +50,7 @@ namespace LexicalAnalysis
     static Charser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
+    void vInspect(void);
     Stz* szPath(void);
     i8   iLineRaw(void);
     i8   iLineCol(void);

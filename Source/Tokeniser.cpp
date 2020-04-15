@@ -258,6 +258,16 @@ void Tokeniser::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspection                                                                 */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vInspect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_pCharser->vInspect();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stdin?                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsStdin(void)
@@ -355,7 +365,7 @@ void Tokeniser::vReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
     
-  //ASSERT(m_pCharser->bUseBegun());
+  ASSERT(m_pCharser->bUseBegun());
   
   vReadTillEOF();
     
@@ -389,7 +399,7 @@ void Tokeniser::vReadTillEOF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  //ASSERT(m_pCharser->bUseBegun());
+  ASSERT(m_pCharser->bUseBegun());
   
   while (true) {
     
@@ -430,7 +440,7 @@ void Tokeniser::vReadTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  //ASSERT(m_pCharser->bUseBegun());
+  ASSERT(m_pCharser->bUseBegun());
   
   // we should have a first token (e.g. create or drop)
   ASSERT(m_pTknVec->pGet(0)->bHasText());
@@ -477,7 +487,7 @@ void Tokeniser::vReadToken_nil(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  //ASSERT(m_pCharser->bUseBegun());
+  ASSERT(m_pCharser->bUseBegun());
   
   m_pTknVec->vReset();
 
@@ -494,7 +504,7 @@ void Tokeniser::vReadToken_vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  //ASSERT(m_pCharser->bUseBegun());
+  ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
   m_pToken = m_pTknVec->pCurrToken();;
