@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* OP_createSchema.sen -- Operator create schema                              */
+/*============================================================================*/
+
+" OP_createSchema.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is not a schema                                              */
+/*----------------------------------------------------------------------------*/
+: checkIsNotSchema ( word )
+  folder[].findSymbol not if true exit then
+  EC_SCHEMA_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: createSchema_PulseMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we have enough buffers
+  node::checkEnoughBuffers not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if are in schemas
+  folder[].checkInSchemas not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if schema already exits
+  <schemaNm> checkIsNotSchema not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the schema
+  <schemaNm> :makeSchemaFolder ( )
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for createSchema req                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: createSchema_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: createSchema_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: createSchema :: createSchema <schemaNm> ;
+
+: createSchema opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -4,6 +4,9 @@
 
 //print "_procedures" ;
 
+/*----------------------------------------------------------------------------*/
+/* create catalog                                                             */
+/*----------------------------------------------------------------------------*/
 procedure create catalog
   parameters $catalogNm
 begin
@@ -16,6 +19,24 @@ begin
 
   stage stageC on origin :
     output | sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* create schema                                                              */
+/*----------------------------------------------------------------------------*/
+procedure create schema
+  parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+  start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+  createSchema $schemaNm | stageC
+
+  stage stageC on origin :
+  output | sink | stageA
 
 end;
 
