@@ -598,6 +598,37 @@ void TokenVec::vStripSemicolon(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tokenise given string into given TokenVec                                  */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vTokenise(Stz* szString)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  vReset();
+  
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vUseString(szString);
+  pTokeniser->vSenTokens();
+  pTokeniser->vUseBegin();
+
+  for (i8 i_Token = 0; ; i_Token++) {
+    pTokeniser->vReadToken_nil();
+    if (TN_EOF == pTokeniser->eToken())
+      break;
+    
+    vIncTokens();
+    
+    Token* pToken = pGet(i_Token);
+    pToken->vToken(pTokeniser->eToken());
+    pToken->vCopy(pTokeniser->szToken());
+    
+  }
+  
+  pTokeniser->vUseEnd();
+  delete pTokeniser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::nTokens(void)
