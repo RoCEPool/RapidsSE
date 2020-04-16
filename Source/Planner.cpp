@@ -598,7 +598,7 @@ void Planner::vParseWhere(s48K& sWhereClause)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
+  m_pWhereTknVec = TokenVec::pTokenise(sWhereClause);
   
   m_pWhereTknVec->vStripSingleQuotes();
 }

@@ -51,20 +51,6 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string                                                      */
-/*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTokenise(Stz* szString)
-{
-  _static_
-  
-  TokenVec* pTknVec = new TokenVec;
-  
-  vTokenise(pTknVec,szString);
-  
-  return pTknVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* tokenise given string into given TokenVec                                  */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vTokenise(TokenVec* pTknVec, Stz* szString)
