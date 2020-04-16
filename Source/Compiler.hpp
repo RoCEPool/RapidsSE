@@ -44,7 +44,6 @@ namespace SenVM
     void  vReadToken_cpl(void);
     void  vSenTokens(void);
     eTN   eToken(void);
-    Stz*  szToken(void);
     Tokeniser* pTokeniser(void);
 
     Footer* aFooter(void);

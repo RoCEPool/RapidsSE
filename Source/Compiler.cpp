@@ -238,19 +238,6 @@ eTN Compiler::eToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current token                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Compiler::szToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-
-  Stz* szTerm = m_pTokeniser->szToken();
-  //vTrace("Compiler:: %s\n"_Stz,szTerm);
-
-  return m_pTokeniser->szToken();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tokeniser                                                              */
 /*----------------------------------------------------------------------------*/
 Tokeniser* Compiler::pTokeniser(void)
