@@ -30,17 +30,19 @@ namespace Registers
     REG<Index>       m_xpIndex;
     REG<IndexPtn>    m_xpIndexPtn;
     REG<Operand>     m_xpInfoSet;
-    REG<Operand>     m_xpStreamSet;
+    REG<Table>       m_xpInfoSetTable;
     REG<Loader>      m_xpLoader;
+    REG<Operand>     m_xpPipein;    // Pipein
     REG<Row>         m_xpRow;
     REG<StreamDef>   m_xpStreamDef;
+    REG<Operand>     m_xpStreamSet;
+    REG<Table>       m_xpStreamSetTable;
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;
     REG<TablePtn>    m_xpTablePtn;
-    REG<Table>       m_xpInfoSetTable;
-    REG<Table>       m_xpStreamSetTable;
     REG<Tx>          m_xpTx;
     REG<WriteBehind> m_xpWriteBehind;
+    REG<Xmits>       m_xpXmits;     // consume xmits
     
     REG<AggTimer>    m_xpAggTimer;  // aggregate timer
     REG<Now>         m_xpNow;       // now
@@ -51,10 +53,6 @@ namespace Registers
     REG<Operand>     m_xpOperandB;  // operand B
     REG<Operand>     m_xpOperandC;  // operand C
     REG<Operand>     m_xpOperandOoO; // operand OoO
-    
-    REG<Operand>     m_xpPipein;    // Pipein
-    
-    REG<Xmits>       m_xpXmits;     // consume xmits
     
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
