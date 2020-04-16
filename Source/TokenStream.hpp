@@ -26,6 +26,7 @@ namespace LexicalAnalysis
     static bool bExecute(Stz* aCommand);
   
     void vCppTokens(void);
+    void vForkReset(void);
     void vInspect(void);
     bool bIsStdIn(void);
     void vLineMode(bool bLineMode);

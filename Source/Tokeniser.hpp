@@ -36,6 +36,7 @@ namespace LexicalAnalysis
     void vCppTokens(void);
     i8   iDepth(void);
     void vDump(void);
+    void vForkReset(void);
     void vInspect(void);
     bool bIsStdin(void);
     void vLineMode(bool bLineMode);

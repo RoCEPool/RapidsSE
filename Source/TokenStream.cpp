@@ -56,6 +56,16 @@ void TokenStream::vCppTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* hard reset hard fork                                                       */
+/*----------------------------------------------------------------------------*/
+void TokenStream::vForkReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSTREAM,_FOOTER_);
+  
+  m_pTokeniser->vForkReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect                                                                    */
 /*----------------------------------------------------------------------------*/
 void TokenStream::vInspect(void)

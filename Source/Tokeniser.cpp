@@ -258,6 +258,18 @@ void Tokeniser::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* hard reset after fork                                                      */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vForkReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_pCharser->vForkReset();
+  
+  m_eTknForm = UF_SEN_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspection                                                                 */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vInspect(void)

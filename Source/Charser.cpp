@@ -209,6 +209,18 @@ bool Charser::bIsStdin(void)
 // Options /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* complete reset after fork                                                  */
+/*----------------------------------------------------------------------------*/
+void Charser::vForkReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  m_bUseEnded = true;
+  
+  vResetCharser();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
 void Charser::vLineMode(bool bLineMode)
@@ -279,7 +291,7 @@ void Charser::vUseEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  //ASSERT(m_bUseBegun);
+  ASSERT(m_bUseBegun);
   ASSERT(! m_bUseEnded);
 
   m_bUseEnded = true;

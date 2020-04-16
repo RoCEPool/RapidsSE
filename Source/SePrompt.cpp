@@ -64,7 +64,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pSession->m_pTokenStream->vUseEnd();
+  m_pSession->m_pTokenStream->vForkReset();
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
