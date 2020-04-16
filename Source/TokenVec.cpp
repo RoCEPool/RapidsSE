@@ -191,6 +191,38 @@ void TokenVec::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* tokenise given string into given TokenVec                                  */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vTokenise(TokenVec* pTknVec, Stz* szString)
+{
+  _static_
+  
+  pTknVec->vReset();
+  
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vUseString(szString);
+  pTokeniser->vSenTokens();
+  pTokeniser->vUseBegin();
+
+  for (i8 i_Token = 0; ; i_Token++) {
+    pTokeniser->vReadToken_nil();
+    if (TN_EOF == pTokeniser->eToken())
+      break;
+    
+    pTknVec->vIncTokens();
+    
+    Token* pToken = pTknVec->pGet(i_Token);
+    pToken->vToken(pTokeniser->eToken());
+    pToken->vCopy(pTokeniser->szToken());
+    
+  }
+  
+  pTokeniser->vUseEnd();
+  delete pTokeniser;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
