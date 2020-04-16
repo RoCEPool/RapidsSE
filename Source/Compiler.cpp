@@ -107,6 +107,16 @@ void Compiler::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspect                                                                    */
+/*----------------------------------------------------------------------------*/
+void Compiler::vInspect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pTokeniser->vInspect();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the compiler in interpreting mode?                                      */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bInterpreting(void)

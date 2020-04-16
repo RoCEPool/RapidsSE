@@ -221,6 +221,7 @@ void Task::vAddAxioms(void)
   "  interpret"
   "  input::useEnd"
   "  input::close"
+  "  input::inspect"
   "  input::pop"
   "  ;"_Stz;
   
@@ -237,6 +238,7 @@ void Task::vAddAxioms(void)
   "  input::useBegin"
   "  interpret"
   "  input::useEnd"
+  "  input::inspect"
   "  input::pop"
   "  ;"_Stz;
   

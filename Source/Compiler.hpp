@@ -32,6 +32,7 @@ namespace SenVM
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
     void  vDump(void);
+    void  vInspect(void);
     bool  bInterpreting(void);
     void  vLineMode(bool bLineMode);
     i8    nLocals(void);

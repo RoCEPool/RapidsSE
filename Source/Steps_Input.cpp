@@ -12,6 +12,7 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::close"_Stz,     &Step::vInputClose);
   vAddStep("input::cppTokens"_Stz, &Step::vInputCppTokens);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
+  vAddStep("input::inspect"_Stz,   &Step::vInputInspect);
   vAddStep("input::kind@"_Stz,     &Step::vInputKind);
   vAddStep("input::next"_Stz,      &Step::vInputNext);
   vAddStep("input::open"_Stz,      &Step::vInputOpen);
@@ -60,6 +61,18 @@ void Step::vInputCppTokens(void)
 void Step::vInputDump(void)
 {
   ENTRY(); // ENTRY("vInputDump"_Stz);
+    
+  m_pCompiler->vDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::inpsect -- inspect input                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vInputInspect(void)
+{
+  ENTRY(); // ENTRY("vInputInspect"_Stz);
     
   m_pCompiler->vDump();
   

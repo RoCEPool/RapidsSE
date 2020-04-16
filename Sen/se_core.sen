@@ -522,8 +522,12 @@ true find: CASE word.immediate!
         sFilePath "Would open %v" .printf
 
         sFilePath
-          input::open input::useBegin
-          interpret input::useEnd input::close
+          input::open
+          input::useBegin
+          interpret
+          input::useEnd
+          input::inspect
+          input::close
 
       then
 
