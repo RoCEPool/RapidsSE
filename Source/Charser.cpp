@@ -121,6 +121,8 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
+
   // debug
   
   if (IS_FILE == m_eSource) {
@@ -238,7 +240,9 @@ void Charser::vUseBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(! m_bUseBegun);
-  
+  ASSERT(! m_bUseEnded);
+  ASSERT(! m_bUseClosed);
+
   m_bUseBegun = true;
   
   if (AM::bDeveloper())
@@ -262,6 +266,8 @@ void Charser::vUseClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
   ASSERT(m_bUseOpened);
   ASSERT(! m_bUseClosed);
 
@@ -293,6 +299,7 @@ void Charser::vUseEnd(void)
   
   ASSERT(m_bUseBegun);
   ASSERT(! m_bUseEnded);
+  ASSERT((m_bUseOpened && m_bUseClosed) || (! m_bUseOpened && ! m_bUseClosed));
 
   m_bUseEnded = true;
   
@@ -397,7 +404,6 @@ void Charser::vResetCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  //ASSERT(! m_oRawFile.bIsOpen());
   ASSERT((m_bUseOpened && m_bUseClosed) || (! m_bUseOpened && !m_bUseClosed));
   ASSERT(m_bUseEnded);
 
@@ -440,6 +446,8 @@ void Charser::vClearRegs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
+  
   m_nLoaded = 0;
   m_xAnnOne.vReset();
   m_xAnnTwo.vReset();
@@ -452,6 +460,7 @@ void Charser::vConsumeFirst(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded);
 
   rxAnnChar = m_xAnnOne;
@@ -469,6 +478,7 @@ void Charser::vDiscardFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded);
   
   m_xAnnOne.m_cChar  = m_xAnnTwo.m_cChar;
@@ -485,6 +495,7 @@ void Charser::vLoadBoth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
   vRawCharFromInput(m_xAnnOne);
@@ -507,6 +518,7 @@ void Charser::vLoadFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
   vRawCharFromInput(m_xAnnOne);
@@ -522,6 +534,7 @@ void Charser::vLoadRegs(bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(0 == m_nLoaded);
   
   while (! m_nLoaded) {
@@ -545,6 +558,7 @@ void Charser::vLoadSecond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xAnnOne.m_cChar);
   
@@ -561,6 +575,7 @@ void Charser::vRewindRegs(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded < 2);
   ASSERT('\0' == m_xAnnTwo.m_cChar);
   
@@ -576,6 +591,8 @@ void Charser::vRewindRegs(AnnChar& rxAnnChar)
 void Charser::vStripComment(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  ASSERT(IS_NONE != m_eSource);
   
   AnnChar xRewAnnChar;
   
@@ -614,7 +631,7 @@ void Charser::vStripComment(void)
 bool Charser::bBlockCommentEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
+    
   if ('*' == m_xAnnOne.m_cChar && '/' == m_xAnnTwo.m_cChar)
     return true;
   else
@@ -627,7 +644,7 @@ bool Charser::bBlockCommentEnd(void)
 void Charser::vBlockCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
+    
   vClearRegs();
   
   vLoadBoth();
@@ -668,9 +685,7 @@ bool Charser::bBlockCommentStart(void)
 bool Charser::bPossibleComment(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  ASSERT(m_nLoaded);
-  
+    
   if ('/' == m_xAnnOne.m_cChar) {
     if (1 == m_nLoaded)
       vLoadSecond();
@@ -754,6 +769,9 @@ void Charser::vRawCharFromInput(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
+  
   switch (m_eSource) {
       
     case IS_FILE:
@@ -787,6 +805,9 @@ void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
+
   vNextCharFromRawLine(rxAnnChar);
   
   if (rxAnnChar.m_cChar)
@@ -826,6 +847,8 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
   ASSERT(! m_bSeenEOF);
     
   vNextCharFromRawLine(rxAnnChar);
@@ -868,6 +891,8 @@ void Charser::vRawCharFromString(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
   ASSERT(m_bSeenEOF);
     
   vNextCharFromRawLine(rxAnnChar);
@@ -886,6 +911,9 @@ void Charser::vNextCharFromRawLine(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
+
   rxAnnChar.m_cChar = *m_acRawChar++;
   
   rxAnnChar.m_iLine = m_iLineRaw;
@@ -899,6 +927,10 @@ void Charser::vReadRawLineFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
+  ASSERT(m_bUseOpened);
+
   ASSERT(! m_bSeenEOF);
 
   char cInput;
@@ -935,36 +967,12 @@ void Charser::vReadRawLineStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  ASSERT(m_bUseBegun);
+  ASSERT(! m_bUseEnded);
   ASSERT(! m_bSeenEOF);
   
   char* acRawLine = m_sRawLine.azChar();
-    
-//  bool bHasStarted = AM::bHasStarted();
-//
-//  bool bLowMem = gpBufferPool->bLowMemory();
-//  
-//  if (! gxArgs.m_bSethScript) {
-//    
-//    if (! AM::bDeveloper()) {
-//      vInfo("%s "_Stz,m_sPrompt.azChar());
-//    }
-//    else {
-//      vInfo("%s%s%s%s %s> "_Stz,
-//            m_sPrompt.azChar(),
-//            AM::bBootError()      ? " *BOOTERROR* " : "",
-//            bLowMem               ? " *LOWMEM* "    : "",
-//  #ifdef WITH_ENTRY_EXIT
-//            AM::pStepTiming()     ? " *STEPTIMING*" : "",
-//  #else
-//            "",
-//  #endif
-//            bHasStarted           ? "has" : "not"
-//
-//            );
-//    }
-//    fflush(stdin);
-//  }
-  
+      
   for (;;) {
     
     char cInput = m_oRawFile.cGetChar();
