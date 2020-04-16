@@ -15,7 +15,9 @@ namespace LexicalAnalysis
     
     // source definition
     bool     m_bUseBegun; // has use of this charser begun?
+    bool     m_bUseClosed;// has use of this charser closed?
     bool     m_bUseEnded; // has use of this charser ended?
+    bool     m_bUseOpened;// has use of this charser opened?
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
     bool     m_bLineMode; // line mode?
@@ -62,6 +64,7 @@ namespace LexicalAnalysis
     // Use What
     void vUseBegin(void);
     bool bUseBegun(void);
+    void vUseClose(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
     void vUseStdin(void);

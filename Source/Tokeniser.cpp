@@ -584,6 +584,16 @@ void Tokeniser::vUseBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* close use of charser source                                                */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vUseClose(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_pCharser->vUseClose();
+}
+
+/*----------------------------------------------------------------------------*/
 /* end use of source                                                          */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vUseEnd(void)

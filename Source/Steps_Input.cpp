@@ -35,7 +35,7 @@ void Step::vInputClose(void)
 {
   ENTRY(); // ENTRY("vInputClose"_Stz);
   
-  m_pCompiler->vUseEnd();
+  m_pCompiler->vUseClose();
   
   EXIT();
 }
