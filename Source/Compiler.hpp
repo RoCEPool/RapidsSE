@@ -12,7 +12,7 @@ namespace SenVM
     eCM   m_eMode;           // current mode of compiler
   
     Tokeniser*   m_pTokeniser;   // input stream tokenizer
-    TokenStream* m_pTokenStream; // input stream 
+    //TokenStream* m_pTokenStream; // input stream
 
     i8    m_nLocals;         // number of locals/params variables
     Word* m_paWord[C_MAX_NESTED_WORDS]; // array of nested words
@@ -28,7 +28,7 @@ namespace SenVM
    ~Compiler(void) noexcept(false);
   
     bool  bCompiling(void);
-    void  vCppTokens(void);
+    //void  vCppTokens(void);
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
     void  vDump(void);

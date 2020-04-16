@@ -35,7 +35,7 @@ void Step::vInputClose(void)
 {
   ENTRY(); // ENTRY("vInputClose"_Stz);
   
-  m_pCompiler->vUseClose();
+  m_pTokeniser->vUseClose();
   
   EXIT();
 }
@@ -46,11 +46,8 @@ void Step::vInputClose(void)
 void Step::vInputCppTokens(void)
 {
   ENTRY(); // ENTRY("vInputCppTokens"_Stz);
-  
-//  if ( ! m_pCompiler )
-//    m_pCompiler = new Compiler;
-  
-  m_pCompiler->vCppTokens();
+    
+  m_pTokeniser->vCppTokens();
 
   EXIT();
 }
@@ -62,8 +59,8 @@ void Step::vInputDump(void)
 {
   ENTRY(); // ENTRY("vInputDump"_Stz);
     
-  m_pCompiler->vDump();
-  
+  m_pTokeniser->vInspect();
+
   EXIT();
 }
 
@@ -74,7 +71,7 @@ void Step::vInputInspect(void)
 {
   ENTRY(); // ENTRY("vInputInspect"_Stz);
     
-  m_pCompiler->vDump();
+  m_pTokeniser->vInspect();
   
   EXIT();
 }
@@ -86,7 +83,7 @@ void Step::vInputKind(void)
 {
   ENTRY(); // ENTRY("vInputKind"_Stz);
   
-  eTN eTokenType = m_pCompiler->eToken();
+  eTN eTokenType = m_pTokeniser->eToken();
   
   m_pDataStack->vPushInt(eTokenType);
   
@@ -100,9 +97,9 @@ void Step::vInputNext(void)
 {
   ENTRY(); // ENTRY("vTokenColon"_Stz);
   
-  m_pCompiler->vReadToken_cpl();
+  m_pTokeniser->vReadToken_nil();
   
-  s48K sTkn(m_pCompiler->szToken());
+  s48K sTkn(m_pTokeniser->szToken());
   
   m_pDataStack->vPushStr(sTkn);
   
@@ -120,8 +117,12 @@ void Step::vInputOpen(void)
   
   m_pDataStack->vPopStr(sFilePath,__func__);
   
-  m_pCompiler->vUseFile(sFilePath);
-    
+  bool bOpened = m_pTokeniser->bUseFile(sFilePath);
+  
+  if ( ! bOpened )
+    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+           "No such file: %s"_Stz,sFilePath.szStz());
+
   EXIT();
 }
 
@@ -132,8 +133,9 @@ void Step::vInputPop(void)
 {
   ENTRY(); // ENTRY("vInputPop"_Stz);
   
-  m_pCompiler->vPop();
-  
+  bool bPopped = m_pTokeniser->bPopCharser();
+  ASSERT(bPopped);
+
   EXIT();
 }
 
@@ -144,11 +146,8 @@ void Step::vInputPush(void)
 {
   ENTRY(); // ENTRY("vInputPush"_Stz);
   
-//  if ( ! m_pCompiler )
-//    m_pCompiler = new Compiler;
-  
-  m_pCompiler->vPush();
-  
+  m_pTokeniser->vPushCharser();
+
   EXIT();
 }
 
@@ -159,7 +158,7 @@ void Step::vInputRead(void)
 {
   ENTRY(); // ENTRY("vInputRead"_Stz);
     
-  m_pCompiler->vReadToken_cpl();
+  m_pTokeniser->vReadToken_nil();
 
   EXIT();
 }
@@ -171,10 +170,7 @@ void Step::vInputSenTokens(void)
 {
   ENTRY(); // ENTRY("vInputStdin"_Stz);
   
-//  if ( ! m_pCompiler )
-//    m_pCompiler = new Compiler;
-  
-  m_pCompiler->vSenTokens();
+  m_pTokeniser->vSenTokens();
 
   EXIT();
 }
@@ -185,12 +181,9 @@ void Step::vInputSenTokens(void)
 void Step::vInputStdin(void)
 {
   ENTRY(); // ENTRY("vInputStdin"_Stz);
-  
-//  if ( ! m_pCompiler )
-//    m_pCompiler = new Compiler;
-  
-  m_pCompiler->vUseStdin();
-  m_pCompiler->vLineMode(true);
+    
+  m_pTokeniser->vUseStdinX();
+  m_pTokeniser->vLineMode(true);
 
   EXIT();
 }
@@ -202,7 +195,7 @@ void Step::vInputTerm(void)
 {
   ENTRY(); // ENTRY("vInputTerm"_Stz);
   
-  s48K sTkn(m_pCompiler->szToken());
+  s48K sTkn(m_pTokeniser->szToken());
   
   m_pDataStack->vPushStr(sTkn);
   
@@ -224,7 +217,7 @@ void Step::vInputText(void)
   
   m_pDataStack->vPopStr(sInput,__func__);
     
-  m_pCompiler->vUseString(sInput);
+  m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }
@@ -238,7 +231,7 @@ void Step::vInputUnknown(void)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         m_pCompiler->szToken()
+         m_pTokeniser->szToken()
          );
   vTrace("\n"_Stz);
 
@@ -254,7 +247,7 @@ void Step::vInputUseBegin(void)
 {
   ENTRY(); // ENTRY("vInputUseBegin"_Stz);
   
-  m_pCompiler->vUseBegin();
+  m_pTokeniser->vUseBegin();
 
   EXIT();
 }
@@ -266,7 +259,7 @@ void Step::vInputUseEnd(void)
 {
   ENTRY(); // ENTRY("vInputUseBegin"_Stz);
   
-  m_pCompiler->vUseEnd();
+  m_pTokeniser->vUseEnd();
 
   EXIT();
 }

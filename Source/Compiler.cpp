@@ -25,7 +25,7 @@ Compiler::Compiler(void)
   m_pCurrent   = nullptr;
   m_eMode      = CM_INTERPRETING;
 
-  m_pTokenStream = new TokenStream;
+  //m_pTokenStream = new TokenStream;
   
 //  m_pTokeniser = m_pTokenStream->pTokeniser();
   m_pTokeniser = new Tokeniser;
@@ -47,7 +47,7 @@ Compiler::~Compiler(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   delete m_pTokeniser;
-  delete m_pTokenStream;
+  //delete m_pTokenStream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,12 +69,12 @@ bool Compiler::bCompiling(void)
 /*----------------------------------------------------------------------------*/
 /* expect cpp tokens                                                          */
 /*----------------------------------------------------------------------------*/
-void Compiler::vCppTokens(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vCppTokens();
-}
+//void Compiler::vCppTokens(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+//  
+//  m_pTokeniser->vCppTokens();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get current word                                                           */
