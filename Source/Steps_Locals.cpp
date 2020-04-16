@@ -71,8 +71,8 @@ void Step::vLocalsBar(void)
   for (;;) {
     
     // get name of local variable
-    m_pCompiler->vReadToken_cpl();
-    
+    m_pTokeniser->vReadToken_nil();
+
     // end of locals declaration?
     if (m_pTokeniser->szToken()->bEqual("|"_Stz))
       break;
@@ -163,7 +163,7 @@ void Step::vLocalsTo(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // advance to token after to
-  m_pCompiler->vReadToken_cpl();
+  m_pTokeniser->vReadToken_nil();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -174,7 +174,7 @@ void Step::vLocalsTo(void)
   if (szTerm->bSame("/session"_Stz)) {
     
     bSessionLevelTag = true;
-    m_pCompiler->vReadToken_cpl();
+    m_pTokeniser->vReadToken_nil();
   }
   else if (szTerm->bSame("AggTimer[]"_Stz)) {
     pCurrentWord->vEncodeCall("AggTimer[].set"_Stz);

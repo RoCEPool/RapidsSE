@@ -31,7 +31,6 @@ namespace SenVM
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
     bool  bInterpreting(void);
-    void  vLineMode(bool bLineMode);
     i8    nLocals(void);
     void  vLocals(i8 nLocals);
     eCM   eMode(void);
@@ -41,9 +40,7 @@ namespace SenVM
     void  vPop(void);
     bool  bPostponing(void);
     void  vPush(void);
-    void  vReadToken_cpl(void);
     void  vSenTokens(void);
-    eTN   eToken(void);
     Tokeniser* pTokeniser(void);
 
     Footer* aFooter(void);

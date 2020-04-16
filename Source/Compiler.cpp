@@ -100,17 +100,6 @@ bool Compiler::bInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set line mode                                                              */
-/*----------------------------------------------------------------------------*/
-void Compiler::vLineMode(bool bLineMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vLineMode(bLineMode);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get number of locals                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Compiler::nLocals(void)
@@ -213,28 +202,6 @@ void Compiler::vSenTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pTokeniser->vSenTokens();
-}
-
-/*----------------------------------------------------------------------------*/
-/* advance to next token                                                      */
-/*----------------------------------------------------------------------------*/
-void Compiler::vReadToken_cpl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-
-  m_pTokeniser->vReadToken_nil();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token type                                                             */
-/*----------------------------------------------------------------------------*/
-eTN Compiler::eToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  eTN eToken = m_pTokeniser->eToken();
-  
-  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/

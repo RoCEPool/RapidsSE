@@ -10,6 +10,7 @@
 void Step::vAddSteps_Forth(void)
 {
   vAddStep(":"_Stz,                 &Step::vColon);
+  vAddStep("("_Stz,                 &Step::vComment,          true );
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
   vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("execute"_Stz,           &Step::vFlowExecute);
@@ -33,7 +34,7 @@ void Step::vColon(void)
   
   m_pCompiler->vMode(CM_COMPILING);
   
-  m_pCompiler->vReadToken_cpl();
+  m_pTokeniser->vReadToken_nil();
   sName = m_pTokeniser->szToken();
   
   //vTrace("Colon: %s\n"_Stz,sName.szStz());
@@ -53,6 +54,21 @@ void Step::vColon(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* comment -- comment                                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vComment(void)
+{
+  ENTRY(); // ENTRY("vComment"_Stz);
+  
+  for (;;) {
+    m_pTokeniser->vReadToken_nil();
+    if (m_pTokeniser->szToken()->bEqual(")"_Stz))
+      break;
+  }
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* >createInRoot -- create word in root dictionary using string on stack      */
 /*----------------------------------------------------------------------------*/
@@ -172,8 +188,8 @@ void Step::vFind(void)
 {
   ENTRY(); // ENTRY("vTick"_Stz);
   
-  m_pCompiler->vReadToken_cpl();
-    
+  m_pTokeniser->vReadToken_nil();
+
   s32 sWordNm;
   sWordNm = m_pTokeniser->szToken();
   
@@ -222,8 +238,8 @@ void Step::vPostpone(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // get name of word to be called
-  m_pCompiler->vReadToken_cpl();
-  
+  m_pTokeniser->vReadToken_nil();
+
   // find the word in dic stack
   Word* pCalledWord = m_oDicStack.pFindWord(m_pTokeniser->szToken());
   if ( ! pCalledWord )
