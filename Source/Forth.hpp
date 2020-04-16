@@ -31,7 +31,7 @@ namespace SenVM
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
   
     Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
-    //Tokeniser*  m_pTokeniser;   // word compiler (Job boot, create table etc)
+    Tokeniser*  m_pTokeniser;   // word compiler (Job boot, create table etc)
 
     // must be last
     Footer m_xFooter;

@@ -65,7 +65,9 @@ Forth::Forth(Task* pTask, RegSet* pRegSet)
   m_pLocalsFrame = nullptr;
 
   m_pCompiler    = new Compiler;
-  
+  m_pTokeniser   = m_pCompiler->pTokeniser();
+  //m_pTokeniser   = new Tokeniser;
+
   _checkInitialised_(CN_FORTH);
  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
@@ -96,6 +98,7 @@ Forth::~Forth(void) noexcept(false)
   }
   
   delete m_pCompiler;
+  //delete m_pCompiler;
 }
 
 /*----------------------------------------------------------------------------*/
