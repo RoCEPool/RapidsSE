@@ -28,11 +28,8 @@ namespace SenVM
    ~Compiler(void) noexcept(false);
   
     bool  bCompiling(void);
-    //void  vCppTokens(void);
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
-    void  vDump(void);
-    void  vInspect(void);
     bool  bInterpreting(void);
     void  vLineMode(bool bLineMode);
     i8    nLocals(void);
@@ -49,12 +46,6 @@ namespace SenVM
     eTN   eToken(void);
     Stz*  szToken(void);
     Tokeniser* pTokeniser(void);
-    void  vUseBegin(void);
-    void  vUseClose(void);
-    void  vUseEnd(void);
-    void  vUseFile(Stz* szPath);
-    void  vUseStdin(void);
-    void  vUseString(Stz* szString);
 
     Footer* aFooter(void);
   };

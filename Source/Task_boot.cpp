@@ -303,19 +303,21 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   Datum     xVariable;
   TokenVec* pTokenVec;
   
-  Compiler* pCompiler = m_pForth->pCompiler();
-  pCompiler->vUseString(sDefinition);
-  pCompiler->vSenTokens();
-  pCompiler->vUseBegin();
+  Compiler*  pCompiler = m_pForth->pCompiler();
+  Tokeniser* pTokeniser = pCompiler->pTokeniser();
+  
+  pTokeniser->vUseString(sDefinition);
+  pTokeniser->vSenTokens();
+  pTokeniser->vUseBegin();
 
   // get :
-  pCompiler->vReadToken_cpl();
+  pTokeniser->vReadToken_nil();
   Stz* szChars = pCompiler->szToken();
   vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // get name of word
-  pCompiler->vReadToken_cpl();
-  szChars = pCompiler->szToken();
+  pTokeniser->vReadToken_nil();
+  szChars = pTokeniser->szToken();
   vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -407,7 +409,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   pNewWord->vEncodeCall("exit_rt"_Stz);
   
   // reset charser
-  pCompiler->vUseEnd();
+  pTokeniser->vUseEnd();
   
   return pNewWord;
 }
@@ -424,8 +426,9 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   s48K sValue;
   
   Compiler* pCompiler = m_pForth->pCompiler();
-  
-  pCompiler->vUseString(sDefinition);
+  Tokeniser* pTokeniser = pCompiler->pTokeniser();
+
+  pTokeniser->vUseString(sDefinition);
   
   // get string
   pCompiler->vReadToken_cpl();
@@ -450,9 +453,9 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   
   AM::vAddConstant(szName,sValue.szStz());
   
-  pCompiler->vReadToken_cpl();
+  pTokeniser->vReadToken_nil();
   
-  pCompiler->vUseEnd();
+  pTokeniser->vUseEnd();
 }
 
 /*============================================================================*/

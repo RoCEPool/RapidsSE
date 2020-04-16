@@ -66,15 +66,6 @@ bool Compiler::bCompiling(void)
   return bIsCompiling;
 }
 
-/*----------------------------------------------------------------------------*/
-/* expect cpp tokens                                                          */
-/*----------------------------------------------------------------------------*/
-//void Compiler::vCppTokens(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-//  
-//  m_pTokeniser->vCppTokens();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get current word                                                           */
@@ -94,26 +85,6 @@ void Compiler::vCurrentWord(Word* pWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pCurrent = pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void Compiler::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vDump();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect                                                                    */
-/*----------------------------------------------------------------------------*/
-void Compiler::vInspect(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vInspect();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,70 +258,6 @@ Tokeniser* Compiler::pTokeniser(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   return m_pTokeniser;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use begin                                                                  */
-/*----------------------------------------------------------------------------*/
-void Compiler::vUseBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vUseBegin();
-}
-
-/*----------------------------------------------------------------------------*/
-/* use close                                                                  */
-/*----------------------------------------------------------------------------*/
-void Compiler::vUseClose(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vUseClose();
-}
-
-/*----------------------------------------------------------------------------*/
-/* use end                                                                    */
-/*----------------------------------------------------------------------------*/
-void Compiler::vUseEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vUseEnd();
-}
-
-/*----------------------------------------------------------------------------*/
-/* use string                                                                 */
-/*----------------------------------------------------------------------------*/
-void Compiler::vUseFile(Stz* szPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  bool bOpened = m_pTokeniser->bUseFile(szPath);
-  
-  if ( ! bOpened )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No such file: %s"_Stz,szPath);
-}
-
-/*----------------------------------------------------------------------------*/
-/* use end                                                                    */
-/*----------------------------------------------------------------------------*/
-void Compiler::vUseStdin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vUseStdinX();
-}
-
-/*----------------------------------------------------------------------------*/
-/* use string                                                                 */
-/*----------------------------------------------------------------------------*/
-void Compiler::vUseString(Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
-  
-  m_pTokeniser->vUseString(szString);
 }
 
 /*============================================================================*/
