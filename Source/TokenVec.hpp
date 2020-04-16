@@ -30,8 +30,6 @@ namespace LexicalAnalysis
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec,
                           Stz* sDelimiter, i8 i_From, i8 i_To);
 
-    static void vTokenise(TokenVec* pTknVec, Stz* szString);
-
     static TokenVec* _pTokenSet(void* aAddr);
   
     void vAdvanceCurr(void);
