@@ -31,12 +31,12 @@ Stz* My::szJobNm(void)
 /*----------------------------------------------------------------------------*/
 /* get current token                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* My::szToken(void)
-{
-  Task* pTask = AM::pThisTLSTask();
-  
-  return pTask->pCompiler()->pTokeniser()->szToken();
-}
+//Stz* My::szToken(void)
+//{
+//  Task* pTask = AM::pThisTLSTask();
+//  
+//  return pTask->pTokeniser()->szToken();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get current word name                                                      */

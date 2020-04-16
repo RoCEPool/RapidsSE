@@ -65,8 +65,7 @@ Forth::Forth(Task* pTask, RegSet* pRegSet)
   m_pLocalsFrame = nullptr;
 
   m_pCompiler    = new Compiler;
-  m_pTokeniser   = m_pCompiler->pTokeniser();
-  //m_pTokeniser   = new Tokeniser;
+  m_pTokeniser   = new Tokeniser;
 
   _checkInitialised_(CN_FORTH);
  
@@ -260,6 +259,16 @@ Task* Forth::pTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
   return m_pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get compiler                                                               */
+/*----------------------------------------------------------------------------*/
+Tokeniser* Forth::pTokeniser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  return m_pTokeniser;
 }
 
 
