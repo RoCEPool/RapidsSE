@@ -28,9 +28,6 @@ namespace LexicalAnalysis
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(Stz* szString);
     static void vTokenise(TokenVec* pTknVec, Stz* szString);
-    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec);
-    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 i_To);
-    static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter, i8 i_From, i8 i_To);
 
     Charser* pCharser(void);
     void vCppTokens(void);
