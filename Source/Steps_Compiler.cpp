@@ -63,8 +63,8 @@ void Step::vCompilerCurrentFetch(void)
 {
   ENTRY(); // ENTRY("vCompilerCurrentFetch"_Stz);
   
-  if (! m_pCompiler)
-    m_pCompiler = new Compiler;
+//  if (! m_pCompiler)
+//    m_pCompiler = new Compiler;
   
   Word* pCurrWord = m_pCompiler->pCurrentWord();
     
@@ -85,8 +85,8 @@ void Step::vCompilerCurrentStore(void)
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  if (! m_pCompiler)
-    m_pCompiler = new Compiler;
+//  if (! m_pCompiler)
+//    m_pCompiler = new Compiler;
   
   m_pCompiler->vCurrentWord(pCurrWord);
   
@@ -142,8 +142,8 @@ void Step::vCompilerNestedFetch(void)
 {
   ENTRY(); // ENTRY("vCompilerNestedFetch"_Stz);
   
-  if (! m_pCompiler)
-    m_pCompiler = new Compiler;
+//  if (! m_pCompiler)
+//    m_pCompiler = new Compiler;
   
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
@@ -165,8 +165,8 @@ void Step::vCompilerNestedStore(void)
   
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
-  if (! m_pCompiler)
-    m_pCompiler = new Compiler;
+//  if (! m_pCompiler)
+//    m_pCompiler = new Compiler;
   
   m_pCompiler->vNestedWord(i_Nested,pNested);
   

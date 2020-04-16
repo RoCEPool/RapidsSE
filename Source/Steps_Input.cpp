@@ -47,8 +47,8 @@ void Step::vInputCppTokens(void)
 {
   ENTRY(); // ENTRY("vInputCppTokens"_Stz);
   
-  if ( ! m_pCompiler )
-    m_pCompiler = new Compiler;
+//  if ( ! m_pCompiler )
+//    m_pCompiler = new Compiler;
   
   m_pCompiler->vCppTokens();
 
@@ -144,8 +144,8 @@ void Step::vInputPush(void)
 {
   ENTRY(); // ENTRY("vInputPush"_Stz);
   
-  if ( ! m_pCompiler )
-    m_pCompiler = new Compiler;
+//  if ( ! m_pCompiler )
+//    m_pCompiler = new Compiler;
   
   m_pCompiler->vPush();
   
@@ -171,8 +171,8 @@ void Step::vInputSenTokens(void)
 {
   ENTRY(); // ENTRY("vInputStdin"_Stz);
   
-  if ( ! m_pCompiler )
-    m_pCompiler = new Compiler;
+//  if ( ! m_pCompiler )
+//    m_pCompiler = new Compiler;
   
   m_pCompiler->vSenTokens();
 
@@ -186,8 +186,8 @@ void Step::vInputStdin(void)
 {
   ENTRY(); // ENTRY("vInputStdin"_Stz);
   
-  if ( ! m_pCompiler )
-    m_pCompiler = new Compiler;
+//  if ( ! m_pCompiler )
+//    m_pCompiler = new Compiler;
   
   m_pCompiler->vUseStdin();
   m_pCompiler->vLineMode(true);
