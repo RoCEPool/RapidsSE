@@ -28,12 +28,21 @@
 /*----------------------------------------------------------------------------*/
 : removeCatalog ( "<catalogNm>" --  )
 
+  params| sCatalogNm |
 
   args.tracepoint if
   dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  :forget ( )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to schema folder
+  sCatalogNm path[].pushCatalogFolder assert
+
+  "schemas" folder::remove
+
+  path[].discardCatalogFolder
+
+  sCatalogNm folder::remove
 ;
 
 /*----------------------------------------------------------------------------*/
