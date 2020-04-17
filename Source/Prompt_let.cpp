@@ -62,7 +62,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     if (! pNmStrList)
       return true;
     
-    sName = pTknVec->pGet(1)->szTerm();
+    sName = pTknVec->pGet(1)->szChars();
     pNmStr = pNmStrList->pFind(sName);
     if (pNmStr)
       vTrace("  %s = %s\n"_Stz,
@@ -96,7 +96,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     if (! pNmStrList)
       return true;
     
-    sName = pTknVec->pGet(1)->szTerm();
+    sName = pTknVec->pGet(1)->szChars();
     
     pNmStrList->vDelete(sName);
     
@@ -108,7 +108,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
   
   if (nTokens > 2 && pTknVec->pGet(1)->bIsName()) {
 
-    sName = pTknVec->pGet(1)->szTerm();
+    sName = pTknVec->pGet(1)->szChars();
     
     if (! pNmStrList) {
       pPrompt->pSession()->m_pNmStrLst = new NmStrList;

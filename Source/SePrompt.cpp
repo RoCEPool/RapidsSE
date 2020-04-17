@@ -325,7 +325,7 @@ void SePrompt::vCheckJobCtl(void)
   while ('/' == * pTkn0->azTerm() ) {
     
    Token* pTkn1 = pTkn(1);
-   sTag.vSprint("</%s>"_Stz,pTkn1->szTerm());
+   sTag.vSprint("</%s>"_Stz,pTkn1->szChars());
     
     m_oJobCtl.vInsert(sTag,1);
     
@@ -544,12 +544,12 @@ bool SePrompt::bExecuteFunction(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szTerm(), pTkn(1)->szTerm());
+    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
   
   if (! pPromptDesc)
     return false;
   
-  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szTerm());
+  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
   
   (pPromptDesc->m_fPrompt)(this);
   
@@ -563,8 +563,8 @@ bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* aCommand1 = pTkn(0)->szTerm();
-  Stz* aCommand2 = pTkn(1)->szTerm();
+  Stz* aCommand1 = pTkn(0)->szChars();
+  Stz* aCommand2 = pTkn(1)->szChars();
   
   m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
 
@@ -641,7 +641,7 @@ bool SePrompt::bIsPromptWord(void)
   Token* pTkn0 = pTknVec->pGet(0);
 
   s32 sWordNm;
-  sWordNm = pTkn0->szTerm();
+  sWordNm = pTkn0->szChars();
   
   Dic* pRootDic = AM::pRootDic();
 
@@ -1014,7 +1014,7 @@ bool SePrompt::bRedirectFromFile(void)
   
   TokenVec* pTknVec = this->pTokenVec();
 
-  Stz* szPath = pTknVec->pGet(0)->szTerm();
+  Stz* szPath = pTknVec->pGet(0)->szChars();
 
   if (! File::bExists(szPath))
     return false;
@@ -1237,7 +1237,7 @@ bool SePrompt::bShortCut(void)
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
     ShortCut* pShortCut = m_oShortCutVec.pGet(i_ShortCut);
     
-    if (! pShortCut->m_sName.bSame(pTkn->szTerm()))
+    if (! pShortCut->m_sName.bSame(pTkn->szChars()))
       continue;
     
     m_pSession->m_sToDo = pShortCut->m_sCmd;
@@ -1302,7 +1302,7 @@ bool SePrompt::bSubLet(void)
     if (! pToken->bIsName())
       continue;
     
-    s32 sName = pToken->szTerm();
+    s32 sName = pToken->szChars();
     
     NmStr* pNmStr = pNmStrList->pFind(sName);
     if (! pNmStr)
@@ -1415,7 +1415,7 @@ void SePrompt::vUnknownCommand(void)
   
   Token* pTkn = pTokenVec()->pGet(0);
   
-  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szTerm());
+  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szChars());
 }
 
 /*----------------------------------------------------------------------------*/

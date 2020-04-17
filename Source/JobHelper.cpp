@@ -126,28 +126,28 @@ bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
 
   pTkn = pTknVec->pGet(++i_Tkn_);
   while (! pTkn->bSame("}"_Stz)) {
-    vTrace("  %s\n"_Stz,pTkn->szTerm());
+    vTrace("  %s\n"_Stz,pTkn->szChars());
     Token* pTkn_name = pTkn;
     
     pTkn = pTknVec->pGet(++i_Tkn_);
-    vTrace("  %s\n"_Stz,pTkn->szTerm());
+    vTrace("  %s\n"_Stz,pTkn->szChars());
 
     pTkn = pTknVec->pGet(++i_Tkn_);
-    vTrace("  %s\n"_Stz,pTkn->szTerm());
+    vTrace("  %s\n"_Stz,pTkn->szChars());
     Token* pTkn_value = pTkn;
     
-    pArgEnmSet->vInsert(pTkn_name->szTerm(),
-                     pTkn_value->szTerm());
+    pArgEnmSet->vInsert(pTkn_name->szChars(),
+                     pTkn_value->szChars());
     
     //pArgEnmSet->vPrint();
 
 
     pTkn = pTknVec->pGet(++i_Tkn_);
-    vTrace("  %s\n"_Stz,pTkn->szTerm());
+    vTrace("  %s\n"_Stz,pTkn->szChars());
     
     if (pTkn->bSame(","_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn_);
-      vTrace("  %s\n"_Stz,pTkn->szTerm());
+      vTrace("  %s\n"_Stz,pTkn->szChars());
     }
   }
   
@@ -169,7 +169,7 @@ bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
   Stz* szValue = pSynEnmSet->szValue(i_Syn_);
   
   Token* pTkn = pTknVec->pGet(i_Tkn_);
-  Stz* szTerm = pTkn->szTerm();
+  Stz* szTerm = pTkn->szChars();
   
   pArgEnmSet->vInsert(szValue,szTerm);
   

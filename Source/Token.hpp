@@ -27,6 +27,7 @@ namespace LexicalAnalysis
     static Token* _pToken(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    Stz*  szChars(void);
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     void  vConcat(Stz*);
@@ -43,7 +44,6 @@ namespace LexicalAnalysis
     bool  bSame(Stz*);
     void  vStripSingleQuotes(void);
     char* azTerm(void);
-    Stz*  szTerm(void);
     i8    iToI8(void);
     eTN   eToken(void);
     void  vToken(eTN eToken);

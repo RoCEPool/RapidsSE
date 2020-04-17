@@ -30,7 +30,7 @@ bool Prompt::bPrompt_logNote(SePrompt* pPrompt)
   if (pTokenVec->nTokens() > 1)
     AM::vLogPrm(SL_INF,pPrompt,PA_PRM_LOG_NOTE,
                 "%s"_Stz, //!format-LogPrm
-                pTokenVec->pGet(1)->szTerm());
+                pTokenVec->pGet(1)->szChars());
 
   return true;
 }

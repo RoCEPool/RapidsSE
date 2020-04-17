@@ -900,7 +900,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
 
   pSession->m_sResponse.vCopy(""_Stz);
   while ( ! pTknVec->pGet(iToken)->bSame(")"_Stz)) {
-    pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->szTerm());
+    pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->szChars());
   }
   API_LOC(350);
 

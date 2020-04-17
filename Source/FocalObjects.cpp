@@ -113,7 +113,7 @@ void FocalObjects::vMri(TokenVec* pTknVec)
 
   if (3 == nTokens && pTknVec->pGet(1)->bSame("class"_Stz)
                    && pTknVec->pGet(2)->bIsName()) {
-    vMriClass(pTknVec->pGet(2)->szTerm());
+    vMriClass(pTknVec->pGet(2)->szChars());
     return;
   }
   

@@ -35,7 +35,7 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
   }
   
   if (pTokenVec->nTokens() == 2) {
-    vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szTerm());
+    vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szChars());
     return true;
   }
   
@@ -47,12 +47,12 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
           "/\n"_Stz);
     vInfo("Section §%lld) %s:\n"_Stz,
           pPrompt->iNextSectionNo(),
-          pTokenVec->pGet(2)->szTerm());
+          pTokenVec->pGet(2)->szChars());
     vInfo("\n"_Stz);
     return true;
   }
   
-  vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szTerm());
+  vInfo("%s\n"_Stz,pTokenVec->pGet(1)->szChars());
   return true;
 }
 

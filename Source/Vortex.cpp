@@ -344,7 +344,7 @@ void Vortex::vParseClass(void)
       
   // get <name>
   vGetNextToken();
-  s32 sClassNm = m_oCurTkn.szTerm();
+  s32 sClassNm = m_oCurTkn.szChars();
 
   // get `;` or `:` or `{`
   vGetNextToken();
@@ -435,7 +435,7 @@ void Vortex::vParseConst(void)
   }
     
   // get <type>
-  m_sConstNm = m_oCurTkn.szTerm();
+  m_sConstNm = m_oCurTkn.szChars();
 
   // get =
   vGetExpectedToken("="_Stz);
@@ -469,7 +469,7 @@ void Vortex::vParseEnum(void)
 
   RASSERT(m_oCurTkn.bSame("enum"_Stz));
 
-  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  vDiscardTill(m_oCurTkn.szChars(),";"_Stz);
   
   vCppPartSaw(VP_ENUM);
   
@@ -494,7 +494,7 @@ void Vortex::vParseExtern(void)
 
   RASSERT(m_oCurTkn.bSame("extern"_Stz));
 
-  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  vDiscardTill(m_oCurTkn.szChars(),";"_Stz);
   
   vCppPartSaw(VP_EXTERN);
 
@@ -520,7 +520,7 @@ void Vortex::vParseFriend(void)
   RASSERT(m_oCurTkn.bSame("friend"_Stz));
   RASSERT(m_bInClass);
 
-  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  vDiscardTill(m_oCurTkn.szChars(),";"_Stz);
   
   vCppPartSaw(VP_FRIEND_CLASS);
 
@@ -603,7 +603,7 @@ void Vortex::vParseNamespace(void)
   // get {
   vGetExpectedToken("{"_Stz);
   
-  vNamepaceBegin(m_oCurTkn.szTerm());
+  vNamepaceBegin(m_oCurTkn.szChars());
   vCppPartSaw(VP_NAMESPACE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -816,7 +816,7 @@ void Vortex::vParseStruct(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // scenarios 4), 5) and 6) named structures
   
-  sStructNm = m_oCurTkn.szTerm();
+  sStructNm = m_oCurTkn.szChars();
   
   // get ; or {
   vGetNextToken();
@@ -911,7 +911,7 @@ void Vortex::vParseTypedef(void)                           // MORE WORK REQUIRED
 
   RASSERT(m_oCurTkn.bSame("typedef"_Stz));
       
-  vDiscardTill(m_oCurTkn.szTerm(),";"_Stz);
+  vDiscardTill(m_oCurTkn.szChars(),";"_Stz);
   
   vCppPartSaw(VP_TYPEDEF);
   
@@ -954,7 +954,7 @@ void Vortex::vParseUnion(void)
   }
   else {
     // 2) union <unionNm> { ... } ;
-    sUnionNm = m_oCurTkn.szTerm();
+    sUnionNm = m_oCurTkn.szChars();
     vGetExpectedToken("{"_Stz);
   }
 
@@ -1087,14 +1087,14 @@ void Vortex::vBase_List(void)
 
   while (bGetNextToken()) {
      
-    Stz* szTerm = m_oCurTkn.szTerm();
+    Stz* szTerm = m_oCurTkn.szChars();
      
     // ignore optional visibility
     if (szTerm->bOneOf("private"_Stz,"protected"_Stz,"public"_Stz,nullptr))
       vGetNextToken();
 
     // record the name of the inherited class
-    Stz* szInheritedClassNm = m_oCurTkn.szTerm();
+    Stz* szInheritedClassNm = m_oCurTkn.szChars();
 
     // add inherited type to current type
     MetaInherit* pInherit = m_p_MetaType->pAddInherit(szInheritedClassNm);
@@ -1353,7 +1353,7 @@ void Vortex::vVarFun_Type(void)
   vTraceEnter((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  m_sTypeNm = m_oCurTkn.szTerm();
+  m_sTypeNm = m_oCurTkn.szChars();
 
   vGetNextToken();
 
@@ -1373,7 +1373,7 @@ void Vortex::vVarFun_Type(void)
       break;
     
     // we have an asterisk
-    m_oTypeSpec.vInsert(m_oCurTkn.szTerm());
+    m_oTypeSpec.vInsert(m_oCurTkn.szChars());
     m_nAsterisks++;
   
     vGetNextToken();
@@ -1513,7 +1513,7 @@ void Vortex::vVarFun_Name(void)
     
     vGetExpectedToken("*"_Stz);
     vGetNextToken();
-    m_oFunVarNm.vInsert(m_oCurTkn.szTerm());
+    m_oFunVarNm.vInsert(m_oCurTkn.szChars());
     vGetExpectedToken(")"_Stz);
     
     vGetExpectedToken("("_Stz);
@@ -1544,7 +1544,7 @@ void Vortex::vVarFun_Name(void)
   }
   
   // we have a <name>
-  m_oFunVarNm.vInsert(m_oCurTkn.szTerm());
+  m_oFunVarNm.vInsert(m_oCurTkn.szChars());
   vTraceFunVarNm();
   vCppPartSaw(VP_FUNVAR_NAME);
   
@@ -1661,7 +1661,7 @@ void Vortex::vVarFun_Array(void)
      if (m_oCurTkn.bSame("]"_Stz))
        break;
      
-    m_oArraySpec.vInsert(m_oCurTkn.szTerm());
+    m_oArraySpec.vInsert(m_oCurTkn.szChars());
   }
 
   vGetNextToken();
@@ -1737,7 +1737,7 @@ void Vortex::vVarFun_FunBody(void)
       if (m_oCurTkn.bSame("("_Stz))
         nParenthesis++;
       
-      m_oFunSpec.vInsert(m_oCurTkn.szTerm());
+      m_oFunSpec.vInsert(m_oCurTkn.szChars());
     }
   }
   
@@ -1971,7 +1971,7 @@ bool Vortex::bGetNextToken(void)
       vTrace("  got: EOF\n"_Stz);
     else
       vTrace("  got: `%s` @%lld,%lld\n"_Stz,
-             m_oCurTkn.szTerm(),
+             m_oCurTkn.szChars(),
              m_oCurTkn.iLineNo(),
              m_oCurTkn.iColNo());
   }
@@ -2094,7 +2094,7 @@ void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
   for (;;) {
     
     vGetNextToken();
-    roTerms.vInsert(m_oCurTkn.szTerm());
+    roTerms.vInsert(m_oCurTkn.szChars());
     
     // test for close
     if (m_oCurTkn.bSame(szClose))
@@ -2157,7 +2157,7 @@ void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
   for (;;) {
     
     vGetNextToken();
-    roTerms.vInsert(m_oCurTkn.szTerm());
+    roTerms.vInsert(m_oCurTkn.szChars());
 
     // test for terminating ;
     if (m_oCurTkn.bSame(";"_Stz))
@@ -2190,7 +2190,7 @@ void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
   while (bGetNextToken()) {
     if (m_oCurTkn.bSame(">"_Stz))
       break;
-    roTplSepc.vInsert(m_oCurTkn.szTerm());
+    roTplSepc.vInsert(m_oCurTkn.szChars());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2219,7 +2219,7 @@ void Vortex::vCollectTypeArgs(EnameSet& roTypeArgs)
   while (bGetNextToken()) {
     if (m_oCurTkn.bSame(">"_Stz))
       break;
-    roTypeArgs.vInsert(m_oCurTkn.szTerm());
+    roTypeArgs.vInsert(m_oCurTkn.szChars());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2580,7 +2580,7 @@ void Vortex::vTraceEnter(char* azFunc)
     m_sSourcePath.szStz(),
     azFunc,
   
-    m_oCurTkn.szTerm(),
+    m_oCurTkn.szChars(),
     m_oCurTkn.iLineNo(),
     m_oCurTkn.iColNo(),
 
@@ -2616,7 +2616,7 @@ void Vortex::vTraceEnter_short(char* azFunc)
     m_sSourcePath.szStz(),
     azFunc,
     
-    m_oCurTkn.szTerm(),
+    m_oCurTkn.szChars(),
     m_oCurTkn.iLineNo(),
     m_oCurTkn.iColNo(),
 

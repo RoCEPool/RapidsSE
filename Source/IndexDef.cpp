@@ -168,7 +168,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sIndexNm = pTkn->szTerm();
+  m_sIndexNm = pTkn->szChars();
   
   // -- -- -- --
   // ON
@@ -182,7 +182,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sTableNm = pTkn->szTerm();
+  m_sTableNm = pTkn->szChars();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <colNm> ,... )
@@ -221,7 +221,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- -- --
     // process column
     // -- -- -- -- --
-    bool bResult = bAddIdxCol(pTable,pTkn->szTerm());
+    bool bResult = bAddIdxCol(pTable,pTkn->szChars());
     if ( ! bResult ) {
       eError = EC_INVALID_INDEX_COLUMN;
       goto L_RETURN;

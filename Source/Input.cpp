@@ -75,7 +75,7 @@ Stz* Input::szChars(void)
 
   Token* pCurrToken = m_pTknVec->pCurrToken();
   
-  return pCurrToken->szTerm();
+  return pCurrToken->szChars();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ void Input::vDump(void)
   Token* pCurTkn = m_pTknVec->pCurrToken();
   
   vTrace("Current Token: '%s' : %s @%lld,%lld\n"_Stz,
-         pCurTkn->szTerm(),
+         pCurTkn->szChars(),
          aTN[pCurTkn->eToken()],
          pCurTkn->iLineNo(),
          pCurTkn->iColNo()
@@ -252,7 +252,7 @@ void Input::vReadCommand(void)
   
   // if its a command file just return
   if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
-     File::bExists(m_pTknVec->pGet(0)->szTerm()))
+     File::bExists(m_pTknVec->pGet(0)->szChars()))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1168,7 +1168,7 @@ void Input::vCollectSenTag(void)
   
   vTokenCollectEnd();
   
-  //vTrace("Recognised Sen Tag: %s\n"_Stz,pToken->szTerm());
+  //vTrace("Recognised Sen Tag: %s\n"_Stz,pToken->szChars());
   
   Correctness::vDebugPoint();
 }

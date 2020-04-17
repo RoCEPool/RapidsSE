@@ -83,7 +83,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
   for (i8 i_Tkn = iStartTkn; i_Tkn <= iEndTkn; i_Tkn++) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
-    vTrace(" >%s<"_Stz,pTkn->szTerm());
+    vTrace(" >%s<"_Stz,pTkn->szChars());
     
     // -- -- -- -- -- -- -- -- -- -- --
 
@@ -157,7 +157,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
     // -- -- -- -- -- -- -- -- -- -- --
     
     m_eaCode[i_Code++] = EO_RETURN;
-    vTrace("Error: %s\n"_Stz,pTkn->szTerm());
+    vTrace("Error: %s\n"_Stz,pTkn->szChars());
     return false;
   }
 

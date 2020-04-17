@@ -33,7 +33,7 @@ bool Prompt::bPrompt_with(SePrompt* pPrompt)
     return true;
   }
   
-  Stz* szWith = pTokenVec->pGet(1)->szTerm();
+  Stz* szWith = pTokenVec->pGet(1)->szChars();
   
   if (! Correctness::bTraceWith(szWith))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

@@ -54,14 +54,14 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     
     Token* pThisToken = pThisVec->pGet(i_Token);
     
-    i8 i_Find = pFindVec->iFindToken(pThisToken->szTerm());
+    i8 i_Find = pFindVec->iFindToken(pThisToken->szChars());
     
     if (C_UNKNOWN == i_Find)
       continue;
     
     Token* pWithToken = pWithVec->pGet(i_Find);
 
-    pThisToken->vCopy(pWithToken->szTerm());
+    pThisToken->vCopy(pWithToken->szChars());
   }
 }
 
@@ -79,7 +79,7 @@ TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To)
   i8 i_Token;
   for (i_Token = i_From; i_Token < nTokens && i_Token <= i_To; i_Token++) {
     Token* pToken = pTknVec->pGet(i_Token);
-    pExtractedVec->vAppendToken(pToken->szTerm());
+    pExtractedVec->vAppendToken(pToken->szChars());
   }
   
   return pExtractedVec;
@@ -114,7 +114,7 @@ TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
     if (pToken->bSame(szEnd))
       break;
     
-    pExtractedVec->vAppendToken(pToken->szTerm());
+    pExtractedVec->vAppendToken(pToken->szChars());
   }
   
   return pExtractedVec;
@@ -170,7 +170,7 @@ void TokenVec::vAppendVector(TokenVec* pTknVec)
   
   for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
     Token* pToken = pTknVec->pGet(i_Token);
-    vAppendToken(pToken->szTerm());
+    vAppendToken(pToken->szChars());
   }
 }
 
@@ -276,14 +276,14 @@ void TokenVec::vDumpTokens(void)
     
     Token* pToken = pGet(i_Token);
 
-    if (! pToken->szTerm())
+    if (! pToken->szChars())
       break;
     
     vTrace("  (%2lld,%2lld) %s %s\n"_Stz,
            pToken->iLineNo(),
            pToken->iColNo(),
            aTN[pToken->eToken()],
-           pToken->szTerm());
+           pToken->szChars());
   }
   vTrace("\n"_Stz);
 }
@@ -297,7 +297,7 @@ i8 TokenVec::iFindToken(Stz* szTerm)
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = pGet(i_Token,true);
-    if (szTerm->bSame(pToken->szTerm()))
+    if (szTerm->bSame(pToken->szChars()))
       return i_Token;
   }
   
@@ -313,7 +313,7 @@ Token* TokenVec::pFindToken(Stz* szTerm, i8& i_Token)
   
   for (i_Token++; i_Token < nTokens(); i_Token++) {
     Token* pToken = pGet(i_Token);
-    if (pToken->szTerm()->bSame(szTerm))
+    if (pToken->szChars()->bSame(szTerm))
       return pToken;
   }
   
@@ -417,8 +417,10 @@ void TokenVec::vPrint(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < nItems(); i_Token++)
-    vTrace("  %s\n"_Stz,pGet(i_Token)->szTerm());
+  for (i8 i_Token = 0; i_Token < nItems(); i_Token++) {
+    Token* pToken = pGet(i_Token);
+    vTrace("  %s\n"_Stz,pToken->szChars());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -575,28 +577,28 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
       case TN_EOF:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
       case TN_STRING:
         StrLib::vConcat(szDstStr->azChar(),"\"");
-        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         StrLib::vConcat(szDstStr->azChar(),"\"");
         break;
         
       case TN_TAG:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szTerm()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
       default:

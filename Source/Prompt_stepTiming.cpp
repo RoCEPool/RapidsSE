@@ -66,7 +66,7 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   // show a step timing
   if ( pTokenVec->pGet(1)->bSame("show"_Stz) && nTokens == 3) {
     
-    s32 sStepNm = pTokenVec->pGet(2)->szTerm();
+    s32 sStepNm = pTokenVec->pGet(2)->szChars();
 
     if (! AM::pStepTiming()) {
       vTrace("Step timing not started\n"_Stz);
@@ -80,7 +80,7 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   // write step timings to given file
   if ( pTokenVec->pGet(1)->bSame("write"_Stz) && nTokens == 3) {
     
-    s256 sPath = pTokenVec->pGet(2)->szTerm();
+    s256 sPath = pTokenVec->pGet(2)->szChars();
 
     if (! AM::pStepTiming()) {
       vTrace("Step timing not started\n"_Stz);

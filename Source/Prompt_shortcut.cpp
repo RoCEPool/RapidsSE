@@ -44,7 +44,7 @@ bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
   s32 sNm;
   s4K sCmd;
   
-  sNm = pTknVec->pGet(1)->szTerm();
+  sNm = pTknVec->pGet(1)->szChars();
   
   pTknVec->vStripSemicolon();
   pTknVec->vSetTokens();

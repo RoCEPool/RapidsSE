@@ -28,7 +28,7 @@ bool Prompt::bPrompt_dumpTokens(SePrompt* pPrompt)
   
   if (2 == iNumTokens) {
     Token* pTkn1 = pTokenVec->pGet(1);
-    if (pTkn1->szTerm()->bIsSomeTrue())
+    if (pTkn1->szChars()->bIsSomeTrue())
       pPrompt->vDumpTokens(true);
     else
       pPrompt->vDumpTokens(false);

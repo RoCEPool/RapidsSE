@@ -30,7 +30,7 @@ bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
   if (pTokenVec->nTokens() < 1)
     return true;
   
-  Stz* szSectionNm = pTokenVec->pGet(1)->szTerm();
+  Stz* szSectionNm = pTokenVec->pGet(1)->szChars();
   i8 iSectNmLen = szSectionNm->nLength();
 
   char caSection[256] = { '\0' };

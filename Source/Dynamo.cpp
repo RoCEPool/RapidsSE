@@ -161,7 +161,7 @@ bool Dynamo::bCompile(void)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
     Token* pTkn = m_pTknVec->pGet(i_Tkn++);
 
-    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szTerm());
+    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
   }
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
@@ -309,11 +309,11 @@ bool Dynamo::bCollectName(void)
   vAcceptToken();
   
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("        pipeline=%s\n"_Stz,m_pTkn->szTerm());
+  vTrace("        pipeline=%s\n"_Stz,m_pTkn->szChars());
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm(),m_p_Job);
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szChars(),m_p_Job);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -336,14 +336,14 @@ bool Dynamo::bCollectTag(void)
   ASSERT(m_pTkn->bSame("tag"_Stz));
   vAcceptToken();
   
-  s32 sTagNm = m_pTkn->szTerm();
+  s32 sTagNm = m_pTkn->szChars();
   vAcceptToken();
 
   if (! m_pTkn->bSame("="_Stz))
     return false;
   vAcceptToken();
 
-  s4K sTagValue = m_pTkn->szTerm();
+  s4K sTagValue = m_pTkn->szChars();
   vAcceptToken();
 
   while (! m_pTkn->bSame("endTag"_Stz)) {
@@ -375,12 +375,12 @@ bool Dynamo::bCollectStage(void)
   vAcceptToken();
   
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("        stage=%s\n"_Stz,m_pTkn->szTerm());
+  vTrace("        stage=%s\n"_Stz,m_pTkn->szChars());
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 i_Stage = m_pPipelineSpec->nItems();
-  m_pStageSpec = new StageSpec(m_pTkn->szTerm(),i_Stage,m_pPipelineSpec);
+  m_pStageSpec = new StageSpec(m_pTkn->szChars(),i_Stage,m_pPipelineSpec);
   m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -492,11 +492,11 @@ bool Dynamo::bCollectOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("        op=%s\n"_Stz,m_pTkn->szTerm());
+  vTrace("        op=%s\n"_Stz,m_pTkn->szChars());
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  OpSpec* pOpSpec = new OpSpec(m_pTkn->szTerm(),m_pStageSpec);
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),m_pStageSpec);
   m_pStageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -527,7 +527,7 @@ bool Dynamo::bCollectOp(void)
     s32 sArgName;
     sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
     
-    s256 sArgValue ( m_pTkn->szTerm() );
+    s256 sArgValue ( m_pTkn->szChars() );
     
     pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
     
@@ -568,7 +568,7 @@ void Dynamo::vAcceptToken(void)
   
   m_pTkn = m_pTknVec->pGet(m_i_Tkn);
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szTerm());
+  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szChars());
 #endif
 }
 
@@ -583,7 +583,7 @@ void Dynamo::vBeginToken(i8 i_Tkn)
   m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
   
 #ifdef WITH_TRACE_DYNAMO
-  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szTerm());
+  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szChars());
 #endif
 }
 
@@ -702,7 +702,7 @@ bool Dynamo::bParseOnNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  s32 sLocus(m_pTkn->szTerm());
+  s32 sLocus(m_pTkn->szChars());
   vAcceptToken();
   
   if (m_pTkn->bSame(":"_Stz)) {
@@ -730,7 +730,7 @@ bool Dynamo::bParseOnPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  s32 sLocus(m_pTkn->szTerm());
+  s32 sLocus(m_pTkn->szChars());
   vAcceptToken();
   
   if (m_pTkn->bSame(":"_Stz)) {
@@ -767,7 +767,7 @@ bool Dynamo::bParseOnOrigin(void)
     return true;
   }
   else {
-    s32 sLocus(m_pTkn->szTerm());
+    s32 sLocus(m_pTkn->szChars());
     vAcceptToken();
   }
   

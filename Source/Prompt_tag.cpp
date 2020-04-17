@@ -62,11 +62,11 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   
   if (pTkn->bSame("<"_Stz)) {
     TKNpf();
-    sName = pTkn->szTerm();
+    sName = pTkn->szChars();
     TKNpf();
   }
   else {
-    sName = pTkn->szTerm();
+    sName = pTkn->szChars();
   }
   
   sTagNm.vSprint("<%s>"_Stz,sName.szStz());
@@ -84,7 +84,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   TKNpf();
   TKNpf();
 
-  sTagValue = pTkn->szTerm();
+  sTagValue = pTkn->szChars();
 
   if (pEnameSet->bHasName(sTagNm))
     pEnameSet->vReplace(sTagNm,sTagValue);

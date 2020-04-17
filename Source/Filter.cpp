@@ -72,7 +72,7 @@ void Filter::vAsString(s4K& sFilterStr)
   
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nTokens(); i_Tkn++) {
     sFilterStr.vConcat(" "_Stz);
-    sFilterStr.vConcat(m_pTokenVec->pGet(i_Tkn)->szTerm());
+    sFilterStr.vConcat(m_pTokenVec->pGet(i_Tkn)->szChars());
   }
 }
 

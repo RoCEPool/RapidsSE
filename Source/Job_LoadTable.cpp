@@ -221,10 +221,10 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   
   // set the table name
-  pEnameSet()->vInsert(C_TAG_TABLENM, pTokenVec->pGet(1)->szTerm());
+  pEnameSet()->vInsert(C_TAG_TABLENM, pTokenVec->pGet(1)->szChars());
   
   // set the file name
-  vFilePath(pTokenVec->pGet(2)->szTerm());
+  vFilePath(pTokenVec->pGet(2)->szChars());
   
   i8 i_Token = 3;
   
@@ -286,7 +286,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_FIELD_DELIMITER
     else if (pTokenVec->pGet(i_Token)->bSame(C_FIELD_DELIMITER)) {
       s32 sFieldDelimiter;
-      sFieldDelimiter = pTokenVec->pGet(++i_Token)->szTerm();
+      sFieldDelimiter = pTokenVec->pGet(++i_Token)->szChars();
       if (sFieldDelimiter.bSame("\\t"_Stz))
         m_oFormatters.m_cFieldDelimiter = '\t';
       else
@@ -336,7 +336,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_DATE_FORMAT
     else if (pTokenVec->pGet(i_Token)->bSame(C_DATE_FORMAT)) {
       // extract date format
-      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->szTerm()) ) {
+      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->szChars()) ) {
         if ( ! AM::bMetadata())
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;

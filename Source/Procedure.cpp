@@ -17,7 +17,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   Token* pTkn1_ProcNm = pTokenVec->pGet(1);
   
-  s32 sProcNm = pTkn1_ProcNm->szTerm();
+  s32 sProcNm = pTkn1_ProcNm->szChars();
   
 #ifdef WITH_TRACE_PROCEDURE
   vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
@@ -26,7 +26,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
           pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
     sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(pTokenVec->pGet(2)->szTerm());
+    sProcNm.vConcat(pTokenVec->pGet(2)->szChars());
     
 #ifdef WITH_TRACE_PROCEDURE
     vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
@@ -121,7 +121,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 
   Token* pTkn_ProcNm = pCmdTokenVec->pGet(0);
 
-  s4K sProcNm = pTkn_ProcNm->szTerm();
+  s4K sProcNm = pTkn_ProcNm->szChars();
   
   // one-part name
   Word* pProcWord = pRootDic->pFindWord(sProcNm);
@@ -136,7 +136,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     Token* pTkn1_ProcNmTwo = pCmdTokenVec->pGet(1);
 
     sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(pTkn1_ProcNmTwo->szTerm());
+    sProcNm.vConcat(pTkn1_ProcNmTwo->szChars());
 
 #ifdef WITH_TRACE_PROCEDURE
     vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
@@ -278,10 +278,10 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
       break;
     
 #ifdef WITH_TRACE_PROCEDURE
-    vTrace("%s: adding parameter %s\n"_Stz,pProcWord->szWordNm(),pTkn->szTerm());
+    vTrace("%s: adding parameter %s\n"_Stz,pProcWord->szWordNm(),pTkn->szChars());
 #endif
     
-    pEnameSet->vInsert(pTkn->szTerm());
+    pEnameSet->vInsert(pTkn->szChars());
   }
 
 }

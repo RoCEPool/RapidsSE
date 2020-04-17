@@ -94,6 +94,16 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* reset the charsed characters of the token                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Token::szChars(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  return m_sTerm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the column number                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Token::iColNo()
@@ -141,7 +151,7 @@ void Token::vCopy(Token* pGivenToken)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = pGivenToken->m_eToken;
-  m_sTerm.vCopy(pGivenToken->szTerm());
+  m_sTerm.vCopy(pGivenToken->szChars());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,16 +270,6 @@ char* Token::azTerm(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   return m_sTerm.azChar();
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
-/*----------------------------------------------------------------------------*/
-Stz* Token::szTerm(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  return m_sTerm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
