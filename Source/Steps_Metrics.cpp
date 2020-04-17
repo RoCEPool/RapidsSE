@@ -17,7 +17,7 @@ void Step::vAddSteps_Metrics(void)
 /*----------------------------------------------------------------------------*/
 void Step::vMetricsLockSample(void)
 {
-  ENTRY(); // ENTRY("vMetricsLockSample"_Stz);
+  ENTRY();
 
   StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
     

@@ -181,7 +181,7 @@
 
   folder[] dic.lastWord dup
   iterate
-    object@ drop
+    object@ discard
 
     object@ word.prev object!
   next

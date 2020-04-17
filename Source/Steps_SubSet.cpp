@@ -20,7 +20,7 @@ void Step::vAddSteps_Subset(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubsetFetch(void)
 {
-  ENTRY(); // ENTRY("vSubsetFetch"_Stz);
+  ENTRY();
   
   if (m_pRegSet->m_xpSubset.bIsNull())
     m_pDataStack->vPushPtr(nullptr);
@@ -35,7 +35,7 @@ void Step::vSubsetFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubsetNext(void)
 {
-  ENTRY(); // ENTRY("vSubsetNext"_Stz);
+  ENTRY();
   
   Operand* pNextOperand = nullptr;
   
@@ -52,7 +52,7 @@ void Step::vSubsetNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubsetNextBuffer(void)
 {
-  ENTRY(); // ENTRY("vSubsetNext"_Stz);
+  ENTRY();
   
   Operand* pNextOperand = nullptr;
   
@@ -83,7 +83,7 @@ void Step::vSubsetNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubsetSet(void)
 {
-  ENTRY(); // ENTRY("vOperandSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   

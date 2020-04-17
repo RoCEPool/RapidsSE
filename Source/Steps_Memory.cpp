@@ -20,7 +20,7 @@ void Step::vAddSteps_Memory(void)
 /*----------------------------------------------------------------------------*/
 void Step::vMemoryByteDump(void)
 {
-  ENTRY(); // ENTRY("vMemoryByteDump"_Stz);
+  ENTRY();
   
   i8 iSize = m_pDataStack->iPopInt(__func__);
   
@@ -37,7 +37,7 @@ void Step::vMemoryByteDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vMemoryReset(void)
 {
-  ENTRY(); // ENTRY("vMemoryReset"_Stz);
+  ENTRY();
   
   MemLib::vReset();
     
@@ -49,7 +49,7 @@ void Step::vMemoryReset(void)
 /*----------------------------------------------------------------------------*/
 void Step::vMemoryStatistics(void)
 {
-  ENTRY(); // ENTRY("vMemoryStatistics"_Stz);
+  ENTRY();
 
   
   EXIT();
@@ -60,7 +60,7 @@ void Step::vMemoryStatistics(void)
 /*----------------------------------------------------------------------------*/
 void Step::vMemoryWordDump(void)
 {
-  ENTRY(); // ENTRY("vMemoryWordDump"_Stz);
+  ENTRY();
   
   i8 iSize = m_pDataStack->iPopInt(__func__);
   

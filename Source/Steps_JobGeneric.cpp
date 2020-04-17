@@ -23,7 +23,7 @@ void Step::vAddSteps_JobGeneric(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__BegunNew(void)
 {
-  ENTRY(); // ENTRY("vJob__BegunNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -63,7 +63,7 @@ void Step::vJob__BegunNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelNew(void)
 {
-  ENTRY(); // ENTRY("vJob__CancelNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -100,7 +100,7 @@ void Step::vJob__CancelNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelledNew(void)
 {
-  ENTRY(); // ENTRY("vJob__CancelledNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -138,7 +138,7 @@ void Step::vJob__CancelledNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndNew(void)
 {
-  ENTRY(); // ENTRY("vJob__EndNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -175,7 +175,7 @@ void Step::vJob__EndNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndedNew(void)
 {
-  ENTRY(); // ENTRY("vJob__EndedNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -213,7 +213,7 @@ void Step::vJob__EndedNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecuteNew(void)
 {
-  ENTRY(); // ENTRY("vJob__ExecuteNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -250,7 +250,7 @@ void Step::vJob__ExecuteNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecutedNew(void)
 {
-  ENTRY(); // ENTRY("vJob__ExecutedNew"_Stz);
+  ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 

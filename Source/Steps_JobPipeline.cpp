@@ -26,7 +26,7 @@ void Step::vAddSteps_JobPipeline(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineBegin(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineBegin"_Stz);
+  ENTRY();
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   i8 iThisNode = AM::pGrid()->iThisNode();
@@ -72,7 +72,7 @@ void Step::vJob_PipelineBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineCancelled(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineCancelled"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -88,7 +88,7 @@ void Step::vJob_PipelineCancelled(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineCompile(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineCompile"_Stz);
+  ENTRY();
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
@@ -120,7 +120,7 @@ void Step::vJob_PipelineCompile(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineDeleteDynamo(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineDeleteDynamo"_Stz);
+  ENTRY();
   
   PipelineSpec* pPipelineSpec = m_pRegSet->m_xpDynamo->pPipelineSpec();
   delete pPipelineSpec;
@@ -136,7 +136,7 @@ void Step::vJob_PipelineDeleteDynamo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineErrored(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineErrored"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -152,7 +152,7 @@ void Step::vJob_PipelineErrored(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineExecute(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineExecute"_Stz);
+  ENTRY();
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -190,7 +190,7 @@ void Step::vJob_PipelineExecute(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsCancelled(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineIsCancelled"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -207,7 +207,7 @@ void Step::vJob_PipelineIsCancelled(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsErrored(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineIsErrored"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -224,7 +224,7 @@ void Step::vJob_PipelineIsErrored(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsPulsed(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelineIsPulsed"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -241,7 +241,7 @@ EXIT();
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelinePulsed(void)
 {
-  ENTRY(); // ENTRY("vJob_PipelinePulsed"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   

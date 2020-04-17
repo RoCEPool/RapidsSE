@@ -33,7 +33,7 @@ void Step::vAddSteps_Assert(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssert(void)
 {
-  ENTRY(); // ENTRY("vAssert"_Stz);
+  ENTRY();
   
   i8 iTrue = m_pDataStack->iPopAsInt(__func__);
   
@@ -47,7 +47,7 @@ void Step::vAssert(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass(void)
 {
-  ENTRY(); // ENTRY("vAssertClass"_Stz);
+  ENTRY();
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
@@ -73,7 +73,7 @@ void Step::vAssertClass(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_0(void)
 {
-  ENTRY(); // ENTRY("vAssertClass_0"_Stz);
+  ENTRY();
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
@@ -99,7 +99,7 @@ void Step::vAssertClass_0(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_1(void)
 {
-  ENTRY(); // ENTRY("vAssertClass_1"_Stz);
+  ENTRY();
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
@@ -125,7 +125,7 @@ void Step::vAssertClass_1(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_2(void)
 {
-  ENTRY(); // ENTRY("vAssertClass_2"_Stz);
+  ENTRY();
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
@@ -151,7 +151,7 @@ void Step::vAssertClass_2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_3(void)
 {
-  ENTRY(); // ENTRY("vAssertClass_3"_Stz);
+  ENTRY();
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
@@ -177,7 +177,7 @@ void Step::vAssertClass_3(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_4(void)
 {
-  ENTRY(); // ENTRY("vAssertClass_4"_Stz);
+  ENTRY();
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
@@ -203,7 +203,7 @@ void Step::vAssertClass_4(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_0(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_0"_Stz);
+  ENTRY();
 
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -223,7 +223,7 @@ void Step::vAssertStack_0(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_0more(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_0more"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -239,7 +239,7 @@ void Step::vAssertStack_0more(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_1(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_1"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -255,7 +255,7 @@ void Step::vAssertStack_1(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_1more(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_1more"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -271,7 +271,7 @@ void Step::vAssertStack_1more(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_2(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_2"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -287,7 +287,7 @@ void Step::vAssertStack_2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_2more(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_2more"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -303,7 +303,7 @@ void Step::vAssertStack_2more(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_3(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_3"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -319,7 +319,7 @@ void Step::vAssertStack_3(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_3more(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_3more"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -335,7 +335,7 @@ void Step::vAssertStack_3more(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_4(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_4"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -351,7 +351,7 @@ void Step::vAssertStack_4(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_4more(void)
 {
-  ENTRY(); // ENTRY("vAssertStack_4more"_Stz);
+  ENTRY();
   
   i8 iStackValues = m_pDataStack->nValues();
   

@@ -17,7 +17,7 @@ void Step::vAddSteps_Handler(void)
 /*----------------------------------------------------------------------------*/
 void Step::vHandlerServiceSleepQueue(void)
 {
-  ENTRY(); // ENTRY("vHandlerServiceSleepQueue"_Stz);
+  ENTRY();
   
   m_pTask->m_pThread->m_pPsxThd->vSleepSsec(1,CN_WORD);
   

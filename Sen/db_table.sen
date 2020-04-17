@@ -85,8 +85,8 @@
   dup ( "<tableNm>" ^w:table ^w:table )
   not ( "<tableNm>" ^w:table bool )
   if
-    drop ( "<tableNm>" )
-    drop ( )
+    discard ( "<tableNm>" )
+    discard ( )
     EC_NO_SUCH_TABLE false ( errorCode false )
     exit
   then
@@ -97,13 +97,13 @@
   find: \table ( "<tableNm>" ^w:table ^word ^word )
   eql ( "<tableNm>" ^w:table bool )
   if
-    drop ( "<tableNm>" )
+    discard ( "<tableNm>" )
     true ( "<tableNm>" true )
     exit
   then
 
-  drop ( "<tableNm>" )
-  drop ( )
+  discard ( "<tableNm>" )
+  discard ( )
   EC_NOT_A_TABLE false ( errorCode false )
 ;
 
@@ -118,7 +118,7 @@
   folder[].checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm word::isKnown not if drop EC_NO_SUCH_TABLE false exit then
+  sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm path[].pushTableFolder assert
@@ -203,7 +203,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
-  sTableNm :createTable ( ^table ) drop
+  sTableNm :createTable ( ^table ) discard
   sTableNm find execute to pTable
 
   // return table pointer

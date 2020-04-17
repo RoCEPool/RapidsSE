@@ -24,7 +24,7 @@ void Step::vAddSteps_Loader(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderCreate(void)
 {
-  ENTRY(); // ENTRY("vLoaderGet"_Stz);
+  ENTRY();
   
   Job* pJob = m_pTask->pJob();
   
@@ -49,7 +49,7 @@ void Step::vLoaderCreate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderCrwBufferFetch(void)
 {
-  ENTRY(); // ENTRY("vLoaderCrwBufferFetch"_Stz);
+  ENTRY();
   
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
@@ -62,7 +62,7 @@ void Step::vLoaderCrwBufferFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderCrwBufferStore(void)
 {
-  ENTRY(); // ENTRY("vLoaderCrwBufferStore"_Stz);
+  ENTRY();
   
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
@@ -76,7 +76,7 @@ void Step::vLoaderCrwBufferStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderFullCrwBufferFetch(void)
 {
-  ENTRY(); // ENTRY("vLoaderCrwBufferFetch"_Stz);
+  ENTRY();
   
   i8 iPartition = m_pDataStack->iPopInt(__func__);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
@@ -91,7 +91,7 @@ void Step::vLoaderFullCrwBufferFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderDelete(void)
 {
-  ENTRY(); // ENTRY("vLoaderGet"_Stz);
+  ENTRY();
   
   Loader* pLoader = *m_pRegSet->m_xpLoader;
   delete pLoader;
@@ -104,7 +104,7 @@ void Step::vLoaderDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderGet(void)
 {
-  ENTRY(); // ENTRY("vLoaderGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpLoader);
 }
@@ -114,7 +114,7 @@ void Step::vLoaderGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderHandleDangling(void)
 {
-  ENTRY(); // ENTRY("vLoaderHandleDangling"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   Loader* pLoader = *m_pRegSet->m_xpLoader;
@@ -138,7 +138,7 @@ void Step::vLoaderHandleDangling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLoaderset(void)
 {
-  ENTRY(); // ENTRY("vLoaderset"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpLoader = _pLoader(m_pDataStack->pPopPtr(__func__));
 }

@@ -48,7 +48,7 @@ void Step::vAddSteps_Table(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableGet(void)
 {
-  ENTRY(); // ENTRY("vTableRegGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpTable);
   
@@ -60,7 +60,7 @@ void Step::vTableGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSet(void)
 {
-  ENTRY(); // ENTRY("vTableRegSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -72,7 +72,7 @@ void Step::vTableSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableAddIndex(void)
 {
-  ENTRY(); // ENTRY("vTableAddIndex"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
@@ -87,7 +87,7 @@ void Step::vTableAddIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableLazyBuildIndexes(void)
 {
-  ENTRY(); // ENTRY("vTableLazyBuildIndexes"_Stz);
+  ENTRY();
   i8 iSlot;
   s48K sString;
   
@@ -110,7 +110,7 @@ void Step::vTableLazyBuildIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnFetch(void)
 {
-  ENTRY(); // ENTRY("vTableColumnFetch"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
@@ -128,7 +128,7 @@ void Step::vTableColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnCountFetch(void)
 {
-  ENTRY(); // ENTRY("vTableColumnCountFetch"_Stz);
+  ENTRY();
   
   StreamDef* pStreamDef = m_pRegSet->m_xpTable->pStreamDef();
   i8 nColumns = pStreamDef->nColumns(C_ALL);
@@ -143,7 +143,7 @@ void Step::vTableColumnCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableDump(void)
 {
-  ENTRY(); // ENTRY("vTableDump"_Stz);
+  ENTRY();
   
   vTrace("TableDump\n"_Stz);
   
@@ -163,7 +163,7 @@ void Step::vTableDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableGenCsvBuffer(void)
 {
-  ENTRY(); // ENTRY("vTableGenCsvBuffer"_Stz);
+  ENTRY();
 
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
@@ -200,7 +200,7 @@ void Step::vTableGenCsvBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableGetColumnsAsString(void)
 {
-  ENTRY(); // ENTRY("vTableGetColumnsAsString"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -232,7 +232,7 @@ void Step::vTableGetColumnsAsString(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableGetPtn(void)
 {
-  ENTRY(); // ENTRY("vTableGetPtn"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -252,7 +252,7 @@ void Step::vTableGetPtn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnFetch(void)
 {
-  ENTRY(); // ENTRY("vTableTablePtnFetch"_Stz);
+  ENTRY();
   
   Job* pJob = m_pTask->m_pJob;
   
@@ -271,7 +271,7 @@ void Step::vTableTablePtnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIndexCount(void)
 {
-  ENTRY(); // ENTRY("vTableIndexCount"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -285,7 +285,7 @@ void Step::vTableIndexCount(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableInit(void)
 {
-  ENTRY(); // ENTRY("vTableInit"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -299,7 +299,7 @@ void Step::vTableInit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableFindColumn(void)
 {
-  ENTRY(); // ENTRY("vTableFindColumn"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -333,7 +333,7 @@ void Step::vTableFindColumn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsColumn(void)
 {
-  ENTRY(); // ENTRY("vTableInit"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -366,7 +366,7 @@ void Step::vTableIsColumn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsDefinitionOnly(void)
 {
-  ENTRY(); // ENTRY("vTableIsDefinitionOnly"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
 
@@ -380,7 +380,7 @@ void Step::vTableIsDefinitionOnly(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePublish(void)
 {
-  ENTRY(); // ENTRY("vTablePublish"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -396,7 +396,7 @@ void Step::vTablePublish(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePurge(void)
 {
-  ENTRY(); // ENTRY("vTablePurge"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -414,7 +414,7 @@ void Step::vTablePurge(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableRemoveIndex(void)
 {
-  ENTRY(); // ENTRY("vTableRef"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -430,7 +430,7 @@ void Step::vTableRemoveIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableScan(void)
 {
-  ENTRY(); // ENTRY("vTableScan"_Stz);
+  ENTRY();
   
   FetchBuffer* pFetchBuffer;
   Datum xVariable;
@@ -521,7 +521,7 @@ void Step::vTableScan(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSubLoaders(void)
 {
-  ENTRY(); // ENTRY("vTableSubDic"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -537,7 +537,7 @@ void Step::vTableSubLoaders(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSlots(void)
 {
-  ENTRY(); // ENTRY("vTableSlots"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -551,7 +551,7 @@ void Step::vTableSlots(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSlotsFetch(void)
 {
-  ENTRY(); // ENTRY("vTableSlots"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
@@ -565,7 +565,7 @@ void Step::vTableSlotsFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSize(void)
 {
-  ENTRY(); // ENTRY("vTableSpace"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
@@ -581,7 +581,7 @@ void Step::vTableSize(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTableDefFetch(void)
 {
-  ENTRY(); // ENTRY("vTableTableDefFetch"_Stz);
+  ENTRY();
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -595,7 +595,7 @@ void Step::vTableTableDefFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTableDefStore(void)
 {
-  ENTRY(); // ENTRY("vTableTableDefStore"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -611,7 +611,7 @@ void Step::vTableTableDefStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTruncate(void)
 {
-  ENTRY(); // ENTRY("vTableTruncate"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -627,7 +627,7 @@ void Step::vTableTruncate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableVerify(void)
 {
-  ENTRY(); // ENTRY("vTableVerify"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
@@ -643,7 +643,7 @@ void Step::vTableVerify(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableVisualize(void)
 {
-  ENTRY(); // ENTRY("vTableVisualize"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   

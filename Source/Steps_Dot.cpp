@@ -20,7 +20,7 @@ void Step::vAddSteps_Dot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDot(void)
 {
-  ENTRY(); // ENTRY("vDot"_Stz);
+  ENTRY();
   
   Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
@@ -48,7 +48,7 @@ void Step::vDot(void)
 /*----------------------------------------------------------------------------*/
 //void Step::vDot(void)
 //{
-//  ENTRY(); // ENTRY("vDot"_Stz);
+//  ENTRY();
 //
 //  Datum xVariable;
 //  m_pDataStack->vPopVal(xVariable,__func__);
@@ -80,7 +80,7 @@ void Step::vDot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDotPut(void)
 {
-  ENTRY(); // ENTRY("vDotPut"_Stz);
+  ENTRY();
   
   Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
@@ -98,7 +98,7 @@ void Step::vDotPut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDotNewline(void)
 {
-  ENTRY(); // ENTRY("vDotNewline"_Stz);
+  ENTRY();
   
   vTrace("\n"_Stz);
   
@@ -110,7 +110,7 @@ void Step::vDotNewline(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDotVerbose(void)
 {
-  ENTRY(); // ENTRY("vDotVerbose"_Stz);
+  ENTRY();
   
   Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);

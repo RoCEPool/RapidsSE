@@ -21,7 +21,7 @@ void Step::vAddSteps_RegOp(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpGet(void)
 {
-  ENTRY(); // ENTRY("vRegOpGet"_Stz);
+  ENTRY();
     
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOp);
 
@@ -33,7 +33,7 @@ void Step::vRegOpGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerFetch(void)
 {
-  ENTRY(); // ENTRY("vRegOpHandlerFetch"_Stz);
+  ENTRY();
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
@@ -49,7 +49,7 @@ void Step::vRegOpHandlerFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerStore(void)
 {
-  ENTRY(); // ENTRY("vRegOpHandlerStore"_Stz);
+  ENTRY();
 
   i8 i_OpKind = m_pDataStack->iPopInt(__func__);
   
@@ -65,7 +65,7 @@ void Step::vRegOpHandlerStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpHandlerAllStore(void)
 {
-  ENTRY(); // ENTRY("vRegOpHandlerAllStore"_Stz);
+  ENTRY();
 
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
@@ -80,7 +80,7 @@ void Step::vRegOpHandlerAllStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpInit(void)
 {
-  ENTRY(); // ENTRY("vRegOpInit"_Stz);
+  ENTRY();
 
   Op* pOp = m_pTask->m_pJob->m_pOp;
 

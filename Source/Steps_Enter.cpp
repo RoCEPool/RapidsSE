@@ -18,7 +18,7 @@ void Step::vAddSteps_Enter(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnterObject(void)
 {
-  ENTRY(); // ENTRY("vEnterObject"_Stz);
+  ENTRY();
   
   StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpStep + 1;
 
@@ -46,7 +46,7 @@ void Step::vEnterObject(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnterRoutine(void)
 {
-  ENTRY(); // ENTRY("vEnterRoutine"_Stz);
+  ENTRY();
   
   StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpStep + 1;
   

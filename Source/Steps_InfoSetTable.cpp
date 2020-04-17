@@ -20,7 +20,7 @@ void Step::vAddSteps_InfoSetTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetTableColumnFetch(void)
 {
-  ENTRY(); // ENTRY("vInfoSetTableColumnFetch"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpInfoSetTable);
   
@@ -38,7 +38,7 @@ void Step::vInfoSetTableColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetTableDump(void)
 {
-  ENTRY(); // ENTRY("vInfoSetTableDump"_Stz);
+  ENTRY();
   
   vTrace("TableDump\n"_Stz);
   
@@ -58,7 +58,7 @@ void Step::vInfoSetTableDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetTableGet(void)
 {
-  ENTRY(); // ENTRY("vInfoSetTableGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpInfoSetTable);
   
@@ -70,7 +70,7 @@ void Step::vInfoSetTableGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetTableSet(void)
 {
-  ENTRY(); // ENTRY("vInfoSetTableSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

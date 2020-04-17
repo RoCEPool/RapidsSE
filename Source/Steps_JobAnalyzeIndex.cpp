@@ -18,7 +18,7 @@ void Step::vAddSteps_JobAnalyzeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_AnalyzeIndexIsDetailed(void)
 {
-  ENTRY(); // ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
+  ENTRY();
   
   
   EXIT();
@@ -29,7 +29,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_AnalyzeTableIsDetailed(void)
 {
-  ENTRY(); // ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
+  ENTRY();
   
   
   EXIT();

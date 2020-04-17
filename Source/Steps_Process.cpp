@@ -19,7 +19,7 @@ void Step::vAddSteps_Process(void)
 /*----------------------------------------------------------------------------*/
 void Step::vProcessGetPid(void)
 {
-  ENTRY(); // ENTRY("vProcessGetPid"_Stz);
+  ENTRY();
   
   i8 iPid = Process::iGetPid();
   
@@ -33,7 +33,7 @@ void Step::vProcessGetPid(void)
 /*----------------------------------------------------------------------------*/
 void Step::vProcessQuit(void)
 {
-  ENTRY(); // ENTRY("vProcessQuit"_Stz);
+  ENTRY();
   
 //  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
 //         "Process quitting\n"_Stz);
@@ -48,7 +48,7 @@ void Step::vProcessQuit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vProcessTestPid(void)
 {
-  ENTRY(); // ENTRY("vProcessTestPid"_Stz);
+  ENTRY();
 
   i8 iPid = m_pDataStack->iPopInt(__func__);
   

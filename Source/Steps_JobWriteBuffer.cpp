@@ -23,7 +23,7 @@ void Step::vAddSteps_JobWriteBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferParentJobIdFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -41,7 +41,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferInsertRows(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferInsertRows"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -57,7 +57,7 @@ void Step::vJob_WriteBufferInsertRows(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIsIngesting(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferIsIngesting"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -73,7 +73,7 @@ void Step::vJob_WriteBufferIsIngesting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIsInserting(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferIsInserting"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -89,7 +89,7 @@ void Step::vJob_WriteBufferIsInserting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIsLoading(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferIsLoading"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -105,7 +105,7 @@ void Step::vJob_WriteBufferIsLoading(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferPartitionFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -120,7 +120,7 @@ void Step::vJob_WriteBufferPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferTableStore(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteBufferTableStore"_Stz);
+  ENTRY();
   
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   

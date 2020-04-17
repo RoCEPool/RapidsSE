@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : folder.forgetAllWords ( dic -- )
 
-  dup dic.lastWord not if drop exit_rt then
+  dup dic.lastWord not if discard exit_rt then
 
   dup path[].pushFolder
 
@@ -21,7 +21,7 @@
 
   path[].discardFolder
 
-  drop
+  discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +257,7 @@ diclock.dropwrite
     dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
     word.prev
   repeat
-  drop
+  discard
 ;
 
 /*============================================================================*/

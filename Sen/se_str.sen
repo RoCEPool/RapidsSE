@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : str.isMetaToken ( s -- t|f )
 
-  dup 1 swap str.left  "<" str.equal not if drop false exit_rt then
+  dup 1 swap str.left  "<" str.equal not if discard false exit_rt then
 
   1 swap str.right ">" str.equal not if false exit_rt then
 

@@ -26,7 +26,7 @@ void Step::vAddSteps_RegStreamDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefAsStr(void)
 {
-  ENTRY(); // ENTRY("vStreamDefGet"_Stz);
+  ENTRY();
   
   StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
   
@@ -44,7 +44,7 @@ void Step::vRegStreamDefAsStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefDelete(void)
 {
-  ENTRY(); // ENTRY("vRegStreamDefDelete"_Stz);
+  ENTRY();
 
   AM::vDeleteOperand(*m_pRegSet->m_xpStreamDef);
   
@@ -58,7 +58,7 @@ void Step::vRegStreamDefDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefGet(void)
 {
-  ENTRY(); // ENTRY("vStreamDefGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpStreamDef);
   
@@ -70,7 +70,7 @@ void Step::vRegStreamDefGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNew(void)
 {
-  ENTRY(); // ENTRY("vOperandNewStreamDef"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpStreamDef.bIsNull());
   
@@ -86,7 +86,7 @@ void Step::vRegStreamDefNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNewCount(void)
 {
-  ENTRY(); // ENTRY("vStreamDefNewCountStream"_Stz);
+  ENTRY();
   
   // create a new streamDef
   StreamDef* pStreamDef = new StreamDef;
@@ -111,7 +111,7 @@ void Step::vRegStreamDefNewCount(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefNewToCsv(void)
 {
-  ENTRY(); // ENTRY("vStreamDefNewToCsvStream"_Stz);
+  ENTRY();
   
   // create a new streamDef
   StreamDef* pStreamDef = new StreamDef;
@@ -136,7 +136,7 @@ void Step::vRegStreamDefNewToCsv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefPipeOut(void)
 {
-  ENTRY(); // ENTRY("vStreamDefPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpStreamDef);
   
@@ -154,7 +154,7 @@ void Step::vRegStreamDefPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefRowSize(void)
 {
-  ENTRY(); // ENTRY("vOperandStreamDefFetch"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpStreamDef);
   StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpStreamDef);
@@ -169,7 +169,7 @@ void Step::vRegStreamDefRowSize(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegStreamDefSet(void)
 {
-  ENTRY(); // ENTRY("vStreamDefSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   

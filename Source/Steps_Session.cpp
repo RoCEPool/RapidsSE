@@ -29,7 +29,7 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionCommand(void)
 {
-  ENTRY(); // ENTRY("vSessionCommand"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
@@ -44,7 +44,7 @@ void Step::vSessionCommand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionDicStackFetch(void)
 {
-  ENTRY(); // ENTRY("vSessionDicStackFetch"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(pSession);
@@ -60,7 +60,7 @@ void Step::vSessionDicStackFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionDump(void)
 {
-  ENTRY(); // ENTRY("vSessionDump"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
@@ -75,7 +75,7 @@ void Step::vSessionDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionEnameSetFetch(void)
 {
-  ENTRY(); // ENTRY("vSessionEnameSetFetch"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
@@ -91,7 +91,7 @@ void Step::vSessionEnameSetFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionIsExiting(void)
 {
-  ENTRY(); // ENTRY("vSessionIsExiting"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
@@ -106,7 +106,7 @@ void Step::vSessionIsExiting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionPid(void)
 {
-  ENTRY(); // ENTRY("vSessionPid"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
@@ -121,7 +121,7 @@ void Step::vSessionPid(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionSlotFetch(void)
 {
-  ENTRY(); // ENTRY("vSessionSlotFetch"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
@@ -136,7 +136,7 @@ void Step::vSessionSlotFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionThis(void)
 {
-  ENTRY(); // ENTRY("vSessionThis"_Stz);
+  ENTRY();
  
   Job* pJob = m_pTask->m_pJob;
 
@@ -157,7 +157,7 @@ void Step::vSessionThis(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionToDoFetch(void)
 {
-  ENTRY(); // ENTRY("vSessionToDoFetch"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
 
@@ -171,7 +171,7 @@ void Step::vSessionToDoFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionToDoStore(void)
 {
-  ENTRY(); // ENTRY("vSessionTxStore"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
@@ -188,7 +188,7 @@ void Step::vSessionToDoStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTxFetch(void)
 {
-  ENTRY(); // ENTRY("vSessionTxFetch"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
@@ -204,7 +204,7 @@ void Step::vSessionTxFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTxStore(void)
 {
-  ENTRY(); // ENTRY("vSessionTxStore"_Stz);
+  ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   

@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : ALLOT
 
-  compiler::current@ word.allotObject drop
+  compiler::current@ word.allotObject discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -157,8 +157,8 @@
 /*----------------------------------------------------------------------------*/
 : UNLOOP immediate
 
-  POSTPONE rdrop
-  POSTPONE rdrop
+  POSTPONE rdiscard
+  POSTPONE rdiscard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -230,10 +230,10 @@ true find: CASE word.immediate!
   1+   // inc number of OFs
   >R   // save OFs counter
 
-  POSTPONE OVER  // copy case value
-  POSTPONE ==    // test case value against of value
-  POSTPONE IF    // add conditional block (with orig on control stack)
-  POSTPONE DROP  // discard case value within conditional block
+  POSTPONE OVER     // copy case value
+  POSTPONE ==       // test case value against of value
+  POSTPONE IF       // add conditional block (with orig on control stack)
+  POSTPONE DISCARD  // discard case value within conditional block
 
   R> // restore OFs counter
 ;
@@ -253,9 +253,9 @@ true find: CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : ENDCASE immediate
 
-  POSTPONE DROP  // discard case value
+  POSTPONE DISCARD // discard case value
 
-  0 ?DO          // resolve all forward ENDOF branches
+  0 ?DO            // resolve all forward ENDOF branches
     POSTPONE THEN
   LOOP
 ;
@@ -280,7 +280,7 @@ true find: CASE word.immediate!
   input::read input::token word::find dup if
     word::delete
   else
-    drop
+    discard
   then
 ;
 
@@ -293,7 +293,7 @@ true find: CASE word.immediate!
   compiler::current@ word.exitHook@ word::find dup if
     encode::call
   else
-    drop
+    discard
   then
 
   POSTPONE exit_rt
@@ -359,13 +359,13 @@ true find: CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : :forget ( <"wordNm"> )
 
-  find dup not if drop exit_rt then
+  find dup not if discard exit_rt then
 
   word::delete
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop all values on stack except topmost                                    */
+/* discard all values on stack except topmost                                 */
 /*----------------------------------------------------------------------------*/
 : nipAll ( ... top -- top )
 
@@ -375,10 +375,10 @@ true find: CASE word.immediate!
   // save topmost
   >r
 
-  // drop everything else
+  // discard everything else
   begin
     depth while
-      drop
+      discard
   repeat
 
   // restore topmost
@@ -386,16 +386,16 @@ true find: CASE word.immediate!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop n values from stack                                                   */
+/* discard n values from stack                                                */
 /*----------------------------------------------------------------------------*/
 : dropN ( ... #values -- )
 
   // handle expty stack case
   depth not if exit_rt then
 
-  // drop n values
+  // discard n values
   0 ?do
-    drop
+    discard
   loop
 ;
 
@@ -441,13 +441,13 @@ true find: CASE word.immediate!
 : rstk_w
 
   "return stack" .
-  rdepth dup not if drop exit_rt then
+  rdepth dup not if discard exit_rt then
   0 do
     I 2 + rpick
     dup .put
     " ".put
     locate
-    dup if .put else drop then
+    dup if .put else discard then
     .\n
   loop
 ;
@@ -474,7 +474,7 @@ true find: CASE word.immediate!
 : isType ( CN_ -- bool )
 
   // false if stack empty
-  depth 2 >= not if drop false exit_rt then
+  depth 2 >= not if discard false exit_rt then
 
   // no more if not indirect
   1 stack.class ==

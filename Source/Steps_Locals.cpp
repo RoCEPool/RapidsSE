@@ -24,7 +24,7 @@ void Step::vAddSteps_Locals(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalFetch(void)
 {
-  ENTRY(); // ENTRY("vLocalFetch"_Stz);
+  ENTRY();
   
   if ( ! m_pLocalsFrame ) THROW_DSTACK();
   
@@ -42,7 +42,7 @@ void Step::vLocalFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalStore(void)
 {
-  ENTRY(); // ENTRY("vLocalStore"_Stz);
+  ENTRY();
   
   if ( ! m_pLocalsFrame ) THROW_DSTACK();
   
@@ -60,7 +60,7 @@ void Step::vLocalStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsBar(void)
 {
-  ENTRY(); // ENTRY("vLocalsBar"_Stz);
+  ENTRY();
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -120,7 +120,7 @@ void Step::vLocalsBar(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsPop(void)
 {
-  ENTRY(); // ENTRY("vLocalsPop"_Stz);
+  ENTRY();
   
   LocalChain* pLocalsFrame = m_pLocalsFrame;
   
@@ -138,7 +138,7 @@ void Step::vLocalsPop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsPush(void)
 {
-  ENTRY(); // ENTRY("vLocalsPush"_Stz);
+  ENTRY();
   
   LocalChain* pLocalsFrame = new LocalChain;
   
@@ -156,7 +156,7 @@ void Step::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsTo(void)
 {
-  ENTRY(); // ENTRY("vLocalsTo"_Stz);
+  ENTRY();
   
   bool bSessionLevelTag = false;
   

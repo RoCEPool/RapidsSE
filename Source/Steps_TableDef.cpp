@@ -18,7 +18,7 @@ void Step::vAddSteps_TableDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableDefParse(void)
 {
-  ENTRY(); // ENTRY("vTableDefParse"_Stz);
+  ENTRY();
   
   Job* pJob_CreateTable = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -56,7 +56,7 @@ void Step::vTableDefParse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableDefSyntax(void)
 {
-  ENTRY(); // ENTRY("vTableDefSyntax"_Stz);
+  ENTRY();
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);

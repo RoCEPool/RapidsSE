@@ -17,7 +17,7 @@ void Step::vAddSteps_RegFolder(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegFolderFindSymbol(void)
 {
-  ENTRY(); // ENTRY("vFindInCurrent"_Stz);
+  ENTRY();
   
   s256 sName;
   m_pDataStack->vPopStr(sName,__func__);

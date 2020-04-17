@@ -53,7 +53,7 @@
   // get the context of this __ended job
 
   // find the originating job
-  iJobId olist::findJob drop
+  iJobId olist::findJob discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __ended job on this originating node

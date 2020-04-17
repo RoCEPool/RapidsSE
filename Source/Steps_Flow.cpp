@@ -24,7 +24,7 @@ void Step::vAddSteps_Flow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowHazard(void)
 {
-  ENTRY(); // ENTRY("vFlowHazard"_Stz);
+  ENTRY();
   
   vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,"Entered hazard"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vFlowHazard(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJump(void)
 {
-  ENTRY(); // ENTRY("vJump"_Stz);
+  ENTRY();
   
   m_aInxPtr = m_aInxPtr->m_aJumpTo;
   
@@ -48,7 +48,7 @@ void Step::vFlowJump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJumpFalse(void)
 {
-  ENTRY(); // ENTRY("vJumpFalse"_Stz);
+  ENTRY();
   
   i8 iVal = m_pDataStack->iPopAsInt(__func__);
   
@@ -66,7 +66,7 @@ void Step::vFlowJumpFalse(void)
 /*----------------------------------------------------------------------------*/
 //void Step::vFlowJumpFalse(void)
 //{
-//  ENTRY(); // ENTRY("vJumpFalse"_Stz);
+//  ENTRY();
 //
 //  //if ( ! bGuard(1) ) THROW_DSTACK();
 //
@@ -109,7 +109,7 @@ void Step::vFlowJumpFalse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJumpTrue(void)
 {
-  ENTRY(); // ENTRY("vJumpTrue"_Stz);
+  ENTRY();
   
   i8 iVal = m_pDataStack->iPopAsInt(__func__);
   
@@ -130,7 +130,7 @@ void Step::vFlowJumpTrue(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowNop(void)
 {
-  ENTRY(); // ENTRY("vFlowNop"_Stz);
+  ENTRY();
   
   EXIT();
 }
@@ -140,7 +140,7 @@ void Step::vFlowNop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowReenter(void)
 {
-  ENTRY(); // ENTRY("vFlowReenter"_Stz);
+  ENTRY();
   
   Word* pExecuting = Word::pToWord(m_aInxPtr);
   
@@ -154,7 +154,7 @@ void Step::vFlowReenter(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowTest(void)
 {
-  ENTRY(); // ENTRY("vFlowTest"_Stz);
+  ENTRY();
   
   vTrace("[%s] Test\n"_Stz,m_pTask->szJobName());
   
@@ -166,7 +166,7 @@ void Step::vFlowTest(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowThrow(void)
 {
-  ENTRY(); // ENTRY("vFlowThrow"_Stz);
+  ENTRY();
   
   s256 sException;
   

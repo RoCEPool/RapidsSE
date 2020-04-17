@@ -19,7 +19,7 @@ void Step::vAddSteps_RegTimer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegTimerGet(void)
 {
-  ENTRY(); // ENTRY("vRegTimerGet"_Stz);
+  ENTRY();
     
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpTimer);
 
@@ -31,7 +31,7 @@ void Step::vRegTimerGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegTimerSet(void)
 {
-  ENTRY(); // ENTRY("vRegTimerGet"_Stz);
+  ENTRY();
     
   m_pRegSet->m_xpTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
 

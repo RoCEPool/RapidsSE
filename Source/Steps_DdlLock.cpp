@@ -22,7 +22,7 @@ void Step::vAddSteps_DdlLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockDropRead(void)
 {
-  ENTRY(); // ENTRY("vDdlLockDropRead"_Stz);
+  ENTRY();
   
   ASSERT(LH_HAVE_READ_LOCK == m_pRegSet->m_eDdlLocked);
   
@@ -38,7 +38,7 @@ void Step::vDdlLockDropRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockDropWrite(void)
 {
-  ENTRY(); // ENTRY("vDdlLockDropWrite"_Stz);
+  ENTRY();
   
   ASSERT(LH_HAVE_WRITE_LOCK == m_pRegSet->m_eDdlLocked);
   
@@ -54,7 +54,7 @@ void Step::vDdlLockDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockGrabRead(void)
 {
-  ENTRY(); // ENTRY("vDdlLockGrabRead"_Stz);
+  ENTRY();
   
   ASSERT(! m_pRegSet->m_eDdlLocked);
   
@@ -70,7 +70,7 @@ void Step::vDdlLockGrabRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockGrabWrite(void)
 {
-  ENTRY(); // ENTRY("vDdlLockGrabWrite"_Stz);
+  ENTRY();
   
   ASSERT(! m_pRegSet->m_eDdlLocked);
 
@@ -86,7 +86,7 @@ void Step::vDdlLockGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockNone(void)
 {
-  ENTRY(); // ENTRY("vDdlLockNone"_Stz);
+  ENTRY();
 
   if (LH_HAVE_NO_LOCK != m_pRegSet->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
@@ -99,7 +99,7 @@ void Step::vDdlLockNone(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockTestDrop(void)
 {
-  ENTRY(); // ENTRY("vDdlLockTestDrop"_Stz);
+  ENTRY();
   
   if (LH_HAVE_READ_LOCK == m_pRegSet->m_eDdlLocked) {
     

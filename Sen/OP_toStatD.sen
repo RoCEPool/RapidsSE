@@ -23,7 +23,7 @@
       word.object@
       pipeline.pipeout
     else
-      drop drop
+      discard discard
       infoset[].delete
     then
 

@@ -17,7 +17,7 @@ void Step::vAddSteps_RegSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegSetFun(void)
 {
-  ENTRY(); // ENTRY("vRegSetFun"_Stz);
+  ENTRY();
   
   EXIT();
 }

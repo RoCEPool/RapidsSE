@@ -20,7 +20,7 @@ void Step::vAddSteps_Row(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRowGet(void)
 {
-  ENTRY(); // ENTRY("vRowGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpRow);
   
@@ -32,7 +32,7 @@ void Step::vRowGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRowGetIntColumn(void)
 {
-  ENTRY(); // ENTRY("vRowGetIntColumn"_Stz);
+  ENTRY();
   
   i8 iColumn = m_pDataStack->iPopInt(__func__);
   
@@ -47,7 +47,7 @@ void Step::vRowGetIntColumn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRowIsNull(void)
 {
-  ENTRY(); // ENTRY("vRowIsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpRow.bIsNull() ? 1 : 0);
   
@@ -59,7 +59,7 @@ void Step::vRowIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRowSet(void)
 {
-  ENTRY(); // ENTRY("vRowSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpRow = _pRow(m_pDataStack->pPopPtr(__func__));
   

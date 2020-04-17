@@ -22,7 +22,7 @@ void Step::vAddSteps_Column(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnIsNullableFetch(void)
 {
-  ENTRY(); // ENTRY("vColumnIsNullableFetch"_Stz);
+  ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -40,7 +40,7 @@ void Step::vColumnIsNullableFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnIsPartitionKeyFetch(void)
 {
-  ENTRY(); // ENTRY("vColumnIsPartitionKeyFetch"_Stz);
+  ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -58,7 +58,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnLengthFetch(void)
 {
-  ENTRY(); // ENTRY("vColumnLengthFetch"_Stz);
+  ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -73,7 +73,7 @@ void Step::vColumnLengthFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnNameFetch(void)
 {
-  ENTRY(); // ENTRY("vColumnNameFetch"_Stz);
+  ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -90,7 +90,7 @@ void Step::vColumnNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnScaleFetch(void)
 {
-  ENTRY(); // ENTRY("vColumnScaleFetch"_Stz);
+  ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -105,7 +105,7 @@ void Step::vColumnScaleFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnTypeFetch(void)
 {
-  ENTRY(); // ENTRY("vColumnTypeFetch"_Stz);
+  ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());

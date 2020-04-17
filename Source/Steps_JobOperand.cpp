@@ -17,7 +17,7 @@ void Step::vAddSteps_JobOperand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_OperandPipeOut(void)
 {
-  ENTRY(); // ENTRY("vJob_OperandPipeOut"_Stz);
+  ENTRY();
   
   Job_Operand* pJob_Operand = _pJob_Operand(m_pDataStack->pPopPtr(__func__));
   

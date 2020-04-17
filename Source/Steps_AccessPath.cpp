@@ -18,7 +18,7 @@ void Step::vAddSteps_AccessPath(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAccessPathTableStore(void)
 {
-  ENTRY(); // ENTRY("vAccessPathTableStore"_Stz);
+  ENTRY();
   
   AccessPath* pAccessPath = _pAccessPath(m_pDataStack->pPopPtr(__func__));
   
@@ -34,7 +34,7 @@ void Step::vAccessPathTableStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAccessPathTableFetch(void)
 {
-  ENTRY(); // ENTRY("vAccessPathTableFetch"_Stz);
+  ENTRY();
   
   AccessPath* pAccessPath = _pAccessPath(m_pDataStack->pPopPtr(__func__));
   

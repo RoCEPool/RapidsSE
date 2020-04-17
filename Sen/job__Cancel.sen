@@ -55,7 +55,7 @@
 
   // find the job to be executed in the participating jobs
   pJob__Cancel job.id@ locals| iJobId |
-  iJobId plist::findJob drop
+  iJobId plist::findJob discard
 
   // execute the cancel seed of the job on this participating node
   JM_SEED_CAN JobRef[] job.seed!

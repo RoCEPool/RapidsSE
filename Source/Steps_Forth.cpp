@@ -28,7 +28,7 @@ void Step::vAddSteps_Forth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColon(void)
 {
-  ENTRY(); // ENTRY("vColon"_Stz);
+  ENTRY();
   
   s32 sName;
   
@@ -59,7 +59,7 @@ void Step::vColon(void)
 /*----------------------------------------------------------------------------*/
 void Step::vComment(void)
 {
-  ENTRY(); // ENTRY("vComment"_Stz);
+  ENTRY();
   
   for (;;) {
     m_pTokeniser->vReadToken_nil();
@@ -74,7 +74,7 @@ void Step::vComment(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreateFromInRoot(void)
 {
-  ENTRY(); // ENTRY("vCreateFromInRoot"_Stz);
+  ENTRY();
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
@@ -96,7 +96,7 @@ void Step::vCreateFromInRoot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDoes_RT(void)
 {
-  ENTRY(); // ENTRY("vDoes_RT"_Stz);
+  ENTRY();
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -111,7 +111,7 @@ void Step::vDoes_RT(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowExecute(void)
 {
-  ENTRY(); // ENTRY("vFlowExecute"_Stz);
+  ENTRY();
   
   StepFp fpStep;
   Object* pObject;
@@ -163,7 +163,7 @@ void Step::vFlowExecute(void)
 /*----------------------------------------------------------------------------*/
 void Step::vExit_RT(void)
 {
-  ENTRY(); // ENTRY("vExit_RT"_Stz);
+  ENTRY();
   
   //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
   
@@ -186,7 +186,7 @@ void Step::vExit_RT(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFind(void)
 {
-  ENTRY(); // ENTRY("vTick"_Stz);
+  ENTRY();
   
   m_pTokeniser->vReadToken_nil();
 
@@ -217,7 +217,7 @@ void Step::vFind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vImmediate(void)
 {
-  ENTRY(); // ENTRY("vImmediate"_Stz);
+  ENTRY();
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -233,7 +233,7 @@ void Step::vImmediate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPostpone(void)
 {
-  ENTRY(); // ENTRY("vPostpone"_Stz);
+  ENTRY();
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -278,7 +278,7 @@ void Step::vPostpone(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSee(void)
 {
-  ENTRY(); // ENTRY("vSee"_Stz);
+  ENTRY();
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
 
@@ -292,7 +292,7 @@ void Step::vSee(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSemicolon(void)
 {
-  ENTRY(); // ENTRY("vSemicolon"_Stz);
+  ENTRY();
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -336,7 +336,7 @@ void Step::vSemicolon(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSeriesName(void)
 {
-  ENTRY(); // ENTRY("vSeriesName"_Stz);
+  ENTRY();
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);

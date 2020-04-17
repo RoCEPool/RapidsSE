@@ -36,7 +36,7 @@ void Step::vAddSteps_Dir(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirChangeCurrent(void)
 {
-  ENTRY(); // ENTRY("vDirChangeCurrent"_Stz);
+  ENTRY();
   
   s256 sDir;
   m_pDataStack->vPopStr(sDir,__func__);
@@ -53,7 +53,7 @@ void Step::vDirChangeCurrent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirExists(void)
 {
-  ENTRY(); // ENTRY("vDirExists"_Stz);
+  ENTRY();
   
   s256 sDirPath;
   m_pDataStack->vPopStr(sDirPath,__func__);
@@ -70,7 +70,7 @@ void Step::vDirExists(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirGetCurrent(void)
 {
-  ENTRY(); // ENTRY("vDirGetCurrent"_Stz);
+  ENTRY();
   
   Datum xDirPath;
   
@@ -93,7 +93,7 @@ void Step::vDirGetCurrent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirMake(void)
 {
-  ENTRY(); // ENTRY("vDirMake"_Stz);
+  ENTRY();
   
   s256 sPath;
   m_pDataStack->vPopStr(sPath,__func__);
@@ -110,7 +110,7 @@ void Step::vDirMake(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirRemove(void)
 {
-  ENTRY(); // ENTRY("vDirRemove"_Stz);
+  ENTRY();
   
   s256 sPath;
   m_pDataStack->vPopStr(sPath,__func__);
@@ -127,7 +127,7 @@ void Step::vDirRemove(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirClose(void)
 {
-  ENTRY(); // ENTRY("vDirClose"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -141,7 +141,7 @@ void Step::vDirClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirDelete(void)
 {
-  ENTRY(); // ENTRY("vDirDelete"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -155,7 +155,7 @@ void Step::vDirDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirEntryName(void)
 {
-  ENTRY(); // ENTRY("vDirEntryName"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -171,7 +171,7 @@ void Step::vDirEntryName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirEntryType(void)
 {
-  ENTRY(); // ENTRY("vDirEntryType"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -189,7 +189,7 @@ void Step::vDirEntryType(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirIsClosed(void)
 {
-  ENTRY(); // ENTRY("vDirIsClosed"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -205,7 +205,7 @@ void Step::vDirIsClosed(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirIsOpen(void)
 {
-  ENTRY(); // ENTRY("vDirIsOpen"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -221,7 +221,7 @@ void Step::vDirIsOpen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirNew(void)
 {
-  ENTRY(); // ENTRY("vDirNew"_Stz);
+  ENTRY();
   
   Dir* pDir = new Dir(m_pTask);
   
@@ -238,7 +238,7 @@ void Step::vDirNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirOpen(void)
 {
-  ENTRY(); // ENTRY("vDirOpen"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -257,7 +257,7 @@ void Step::vDirOpen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirPathGet(void)
 {
-  ENTRY(); // ENTRY("vDirPathGet"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -274,7 +274,7 @@ void Step::vDirPathGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirRead(void)
 {
-  ENTRY(); // ENTRY("vDirRead"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -290,7 +290,7 @@ void Step::vDirRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirRewind(void)
 {
-  ENTRY(); // ENTRY("vDirRewind"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -304,7 +304,7 @@ void Step::vDirRewind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirSeek(void)
 {
-  ENTRY(); // ENTRY("vDirSeek"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
@@ -320,7 +320,7 @@ void Step::vDirSeek(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirTell(void)
 {
-  ENTRY(); // ENTRY("vDirTell"_Stz);
+  ENTRY();
   
   Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   

@@ -26,7 +26,7 @@
   >interpret
 
   begin
-    depth while drop
+    depth while discard
   repeat
 
   LogExit DONE_REQ

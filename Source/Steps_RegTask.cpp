@@ -17,7 +17,7 @@ void Step::vAddSteps_RegTask(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegTaskGet(void)
 {
-  ENTRY(); // ENTRY("vRegTaskGet"_Stz);
+  ENTRY();
     
   m_pDataStack->vPushPtr(m_pTask);
 

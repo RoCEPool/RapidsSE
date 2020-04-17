@@ -17,7 +17,7 @@ void Step::vAddSteps_RegJob(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegJobGet(void)
 {
-  ENTRY(); // ENTRY("vRegTaskGet"_Stz);
+  ENTRY();
     
   Job* pJob = m_pTask->m_pJob;
 

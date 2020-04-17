@@ -18,7 +18,7 @@ void Step::vAddSteps_ExtractRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vExtractRowCreate(void)
 {
-  ENTRY(); // ENTRY("vExtractRowCreate"_Stz);
+  ENTRY();
   
   ExtractRow* pExtractRow = new ExtractRow(*m_pRegSet->m_xpTable);
   
@@ -30,7 +30,7 @@ void Step::vExtractRowCreate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vExtractRowDelete(void)
 {
-  ENTRY(); // ENTRY("vExtractRowDelete"_Stz);
+  ENTRY();
   
   ExtractRow* pExtractRow = _pExtractRow(*m_pRegSet->m_xpRegister0);
   delete pExtractRow;

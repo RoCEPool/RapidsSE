@@ -89,7 +89,7 @@
     // recv operand
 
     pReceivedJob job.hasOperand if
-      pSocket socket.recvObject drop to pOperand
+      pSocket socket.recvObject discard to pOperand
       pOperand pReceivedJob job.operand!
     then
 

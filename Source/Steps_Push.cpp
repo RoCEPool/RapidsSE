@@ -24,7 +24,7 @@ void Step::vAddSteps_Push(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushI(void)
 {
-  ENTRY(); // ENTRY("vPushI"_Stz);
+  ENTRY();
   
   AnyVal* aLoopIndex_I = m_pReturnStack->aTopVal();
   
@@ -38,7 +38,7 @@ void Step::vPushI(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushJ(void)
 {
-  ENTRY(); // ENTRY("vPushJ"_Stz);
+  ENTRY();
   
   AnyVal* aLoopIndex_J = m_pReturnStack->aPeekVal(3);
   
@@ -52,7 +52,7 @@ void Step::vPushJ(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushNullPtr(void)
 {
-  ENTRY(); // ENTRY("vPushNullPtr"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(nullptr);
   
@@ -64,7 +64,7 @@ void Step::vPushNullPtr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushFipVal(void)
 {
-  ENTRY(); // ENTRY("vPushFipVal"_Stz);
+  ENTRY();
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -84,7 +84,7 @@ void Step::vPushFipVal(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushIntVal(void)
 {
-  ENTRY(); // ENTRY("vPushInt"_Stz);
+  ENTRY();
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -104,7 +104,7 @@ void Step::vPushIntVal(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushPtrVal(void)
 {
-  ENTRY(); // ENTRY("vPushPtr"_Stz);
+  ENTRY();
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -124,7 +124,7 @@ void Step::vPushPtrVal(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPushStzVal(void)
 {
-  ENTRY(); // ENTRY("vPushStr"_Stz);
+  ENTRY();
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);

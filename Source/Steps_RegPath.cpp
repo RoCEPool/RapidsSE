@@ -25,7 +25,7 @@ void Step::vAddSteps_RegPath(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathGet(void)
 {
-  ENTRY(); // ENTRY("vRegPathGet"_Stz);
+  ENTRY();
     
   Object* pPtrDicStack = &m_oDicStack;
   
@@ -39,7 +39,7 @@ void Step::vRegPathGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDepth(void)
 {
-  ENTRY(); // ENTRY("vRegPathDepth"_Stz);
+  ENTRY();
   
   i8 iDepth = m_oDicStack.iCount();
   
@@ -53,7 +53,7 @@ void Step::vRegPathDepth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDiscard(void)
 {
-  ENTRY(); // ENTRY("vRegPathDiscard"_Stz);
+  ENTRY();
   
   m_oDicStack.vDiscard();
   
@@ -65,7 +65,7 @@ void Step::vRegPathDiscard(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDump(void)
 {
-  ENTRY(); // ENTRY("vRegPathDump"_Stz);
+  ENTRY();
   
   m_oDicStack.vContentDump();
   
@@ -77,7 +77,7 @@ void Step::vRegPathDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPick(void)
 {
-  ENTRY(); // ENTRY("vRegPathPick"_Stz);
+  ENTRY();
   
   i8 iDic = m_pDataStack->iPopInt(__func__);
   
@@ -93,7 +93,7 @@ void Step::vRegPathPick(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPush(void)
 {
-  ENTRY(); // ENTRY("vRegPathPush"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
@@ -107,7 +107,7 @@ void Step::vRegPathPush(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathSave(void)
 {
-  ENTRY(); // ENTRY("vRegPathSave"_Stz);
+  ENTRY();
   
   m_oSaveDicStack.vCopy(&m_oDicStack);
   
@@ -119,7 +119,7 @@ void Step::vRegPathSave(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathRestore(void)
 {
-  ENTRY(); // ENTRY("vRegPathRestore"_Stz);
+  ENTRY();
   
   m_oDicStack.vCopy(&m_oSaveDicStack);
 

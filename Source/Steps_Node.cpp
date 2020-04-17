@@ -33,7 +33,7 @@ void Step::vAddSteps_Node(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeNew(void)
 {
-  ENTRY(); // ENTRY("vNodeNew"_Stz);
+  ENTRY();
   
   i8 nNodes = AM::nDefinedNodes();
   
@@ -78,7 +78,7 @@ void Step::vNodeNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeForget(void)
 {
-  ENTRY(); // ENTRY("vNodeForget"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
@@ -99,7 +99,7 @@ void Step::vNodeForget(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeIP(void)
 {
-  ENTRY(); // ENTRY("vNodeIP"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
@@ -116,7 +116,7 @@ void Step::vNodeIP(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeName(void)
 {
-  ENTRY(); // ENTRY("vNodeName"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
@@ -133,7 +133,7 @@ void Step::vNodeName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeNo(void)
 {
-  ENTRY(); // ENTRY("vNodeNo"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
@@ -148,7 +148,7 @@ void Step::vNodeNo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodePartitions(void)
 {
-  ENTRY(); // ENTRY("vNodePartitions"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->nSlotsPerNode());
   
@@ -160,7 +160,7 @@ void Step::vNodePartitions(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodePort(void)
 {
-  ENTRY(); // ENTRY("vNodeNo"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -174,7 +174,7 @@ void Step::vNodePort(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeRecvSocketStore(void)
 {
-  ENTRY(); // ENTRY("vNodeRecvSocketStore"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -190,7 +190,7 @@ void Step::vNodeRecvSocketStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeRecvSocketFetch(void)
 {
-  ENTRY(); // ENTRY("vNodeRecvSocketFetch"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -206,7 +206,7 @@ void Step::vNodeRecvSocketFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeSendSocketStore(void)
 {
-  ENTRY(); // ENTRY("vNodeSendSocketStore"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
@@ -222,7 +222,7 @@ void Step::vNodeSendSocketStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeSendSocketFetch(void)
 {
-  ENTRY(); // ENTRY("vNodeSendSocketFetch"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -238,7 +238,7 @@ void Step::vNodeSendSocketFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeSize(void)
 {
-  ENTRY(); // ENTRY("vNodeSize"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::iRegionSize());
   
@@ -250,7 +250,7 @@ void Step::vNodeSize(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStartNode(void)
 {
-  ENTRY(); // ENTRY("vNodeStartNode"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -264,7 +264,7 @@ void Step::vNodeStartNode(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStateStore(void)
 {
-  ENTRY(); // ENTRY("vNodeStateStore"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -280,7 +280,7 @@ void Step::vNodeStateStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStateFetch(void)
 {
-  ENTRY(); // ENTRY("vNodeStateFetch"_Stz);
+  ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
@@ -296,7 +296,7 @@ void Step::vNodeStateFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStatus(void)
 {
-  ENTRY(); // ENTRY("vNodeStatus"_Stz);
+  ENTRY();
 
   s256 s;
   

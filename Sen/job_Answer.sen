@@ -15,7 +15,7 @@
   0 locals| pAnsweredNode |
 
   // receive the node info job
-  pSocket socket.recvObject drop to pJob_NodeInfo
+  pSocket socket.recvObject discard to pJob_NodeInfo
 
   // find the answered node in grid
   pJob_NodeInfo job_NodeInfo.nodeName@ grid::findNode to pAnsweredNode

@@ -11,8 +11,8 @@ void Step::vAddSteps_Dstack(void)
 {
   vAddStep("stack.class"_Stz,     &Step::vDstackClass);
   vAddStep("depth"_Stz,           &Step::vDstackDepth);
-  vAddStep("drop"_Stz,            &Step::vDstackDrop);
-  vAddStep("2drop"_Stz,           &Step::vDstackDropTwo);
+  vAddStep("discard"_Stz,         &Step::vDstackDiscard);
+  vAddStep("2discard"_Stz,        &Step::vDstackDiscardTwo);
   vAddStep("dup"_Stz,             &Step::vDstackDup);
   vAddStep("?dup"_Stz,            &Step::vDstackDupNonZero);
   vAddStep("nip"_Stz,             &Step::vDstackNip);
@@ -34,7 +34,7 @@ void Step::vAddSteps_Dstack(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackClass(void)
 {
-  ENTRY(); // ENTRY("vDstackClass"_Stz);
+  ENTRY();
   
   i8 i_Val = m_pDataStack->iPopInt(__func__);
   
@@ -54,7 +54,7 @@ void Step::vDstackClass(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackDepth(void)
 {
-  ENTRY(); // ENTRY("vDstackDepth"_Stz);
+  ENTRY();
   
   i8 iDepth = m_pDataStack->nValues();
   
@@ -66,9 +66,9 @@ void Step::vDstackDepth(void)
 /*----------------------------------------------------------------------------*/
 /* drop -- discard top value off stack                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDrop(void)
+void Step::vDstackDiscard(void)
 {
-  ENTRY(); // ENTRY("vDstackDrop"_Stz);
+  ENTRY();
   
   m_pDataStack->vDiscardTop();
   
@@ -78,9 +78,9 @@ void Step::vDstackDrop(void)
 /*----------------------------------------------------------------------------*/
 /* 2drop -- discard top two values off stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDropTwo(void)
+void Step::vDstackDiscardTwo(void)
 {
-  ENTRY(); // ENTRY("vDstackDrop"_Stz);
+  ENTRY();
   
   //! should just discard on stack
   
@@ -96,7 +96,7 @@ void Step::vDstackDropTwo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackDup(void)
 {
-  ENTRY(); // ENTRY("vDstackDup"_Stz);
+  ENTRY();
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -118,7 +118,7 @@ void Step::vDstackDup(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackDupNonZero(void)
 {
-  ENTRY(); // ENTRY("vDstackDupNonZero"_Stz);
+  ENTRY();
   
   // could just copy from stack back into stack
   
@@ -140,7 +140,7 @@ void Step::vDstackDupNonZero(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackNip(void)
 {
-  ENTRY(); // ENTRY("vDstackNip"_Stz);
+  ENTRY();
   
   Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
@@ -158,7 +158,7 @@ void Step::vDstackNip(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackOver(void)
 {
-  ENTRY(); // ENTRY("vDstackOver"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -176,7 +176,7 @@ void Step::vDstackOver(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackPick(void)
 {
-  ENTRY(); // ENTRY("vDstackPick"_Stz);
+  ENTRY();
   
   i8 iPick = m_pDataStack->iPopAsInt(__func__);
   
@@ -196,7 +196,7 @@ void Step::vDstackPick(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackReverse(void)
 {
-  ENTRY(); // ENTRY("vDstackReverse"_Stz);
+  ENTRY();
   
   Datum xVal1;
   Datum xVal2;
@@ -239,7 +239,7 @@ void Step::vDstackReverse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackRoll(void)
 {
-  ENTRY(); // ENTRY("vDstackRoll"_Stz);
+  ENTRY();
   
   Datum xVarA;
   Datum xVarX;
@@ -270,7 +270,7 @@ void Step::vDstackRoll(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackRollInv(void)
 {
-  ENTRY(); // ENTRY("vDstackRollInv"_Stz);
+  ENTRY();
   
   Datum xVarZ;
   Datum xVarX;
@@ -302,7 +302,7 @@ void Step::vDstackRollInv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackRot(void)
 {
-  ENTRY(); // ENTRY("vDstackRot"_Stz);
+  ENTRY();
   
   Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
@@ -324,7 +324,7 @@ void Step::vDstackRot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackRotInv(void)
 {
-  ENTRY(); // ENTRY("vDstackRotInv"_Stz);
+  ENTRY();
   
   Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
@@ -345,7 +345,7 @@ void Step::vDstackRotInv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackStk(void)
 {
-  ENTRY(); // ENTRY("vDstackStk"_Stz);
+  ENTRY();
   
   m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
   
@@ -357,7 +357,7 @@ void Step::vDstackStk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackSwap(void)
 {
-  ENTRY(); // ENTRY("vDstackSwap"_Stz);
+  ENTRY();
   
   Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
@@ -376,7 +376,7 @@ void Step::vDstackSwap(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDstackTuck(void)
 {
-  ENTRY(); // ENTRY("vDstackTuck"_Stz);
+  ENTRY();
   
   Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);

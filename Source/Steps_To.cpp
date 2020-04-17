@@ -20,7 +20,7 @@ void Step::vAddSteps_To(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToInt(void)
 {
-  ENTRY(); // ENTRY("vToInt"_Stz);
+  ENTRY();
   
   s32 sInt;
   
@@ -39,7 +39,7 @@ void Step::vToInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToPtr(void)
 {
-  ENTRY(); // ENTRY("vToPtr"_Stz);
+  ENTRY();
   
   i8 iPtr = m_pDataStack->iPopInt(__func__);
   
@@ -55,7 +55,7 @@ void Step::vToPtr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToStr(void)
 {
-  ENTRY(); // ENTRY("vToStr"_Stz);
+  ENTRY();
   
   Datum xVar;
   m_pDataStack->vPopVal(xVar,__func__);

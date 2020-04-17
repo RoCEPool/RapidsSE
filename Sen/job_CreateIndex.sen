@@ -166,7 +166,7 @@
   <cmd> IndexDef::syntax dup EC_NONE != if
     pJob_CreateIndex ERROR_JOB !!logError
   else
-    drop
+    discard
   then
 ;
 

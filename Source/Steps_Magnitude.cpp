@@ -19,7 +19,7 @@ void Step::vAddSteps_Magnitude(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToDigitName(void)
 {
-  ENTRY(); // ENTRY("vToDigitName"_Stz);
+  ENTRY();
   
   // get the arguments
   i8 iDigit = m_pDataStack->iPopInt(__func__);
@@ -50,7 +50,7 @@ void Step::vToDigitName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBytesMagnitude(void)
 {
-  ENTRY(); // ENTRY("vBytesMagnitude"_Stz);
+  ENTRY();
   
   i8 iBytes = m_pDataStack->iPopInt(__func__);
   
@@ -67,7 +67,7 @@ void Step::vBytesMagnitude(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNumberMagnitude(void)
 {
-  ENTRY(); // ENTRY("vNumberMagnitude"_Stz);
+  ENTRY();
   
   i8 iNumber = m_pDataStack->iPopInt(__func__);
   

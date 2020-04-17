@@ -17,7 +17,7 @@ void Step::vAddSteps_Error(void)
 /*----------------------------------------------------------------------------*/
 void Step::vErrorMsg(void)
 {
-  ENTRY(); // ENTRY("vErrorMsg"_Stz);
+  ENTRY();
   
   
   i8 iErrorCode = m_pDataStack->iPopInt(__func__);

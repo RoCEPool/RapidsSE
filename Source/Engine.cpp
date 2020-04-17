@@ -303,7 +303,9 @@ void Engine::vCallBoot(void)
   Task* pBootTask = new Task(pJob_Boot);
   pBootTask->vInitExeContext();
 
-  pBootTask->vAddBaseWords();
+  pBootTask->vAddAxioms();
+
+  pBootTask->vAddMunged();
   
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);

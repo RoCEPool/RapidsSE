@@ -5,7 +5,7 @@
 " se_path.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* drop all folders from path stack                                           */
+/* discard all folders from path stack                                        */
 /*----------------------------------------------------------------------------*/
 : path[].discardFolderAll ( -- )
 
@@ -25,24 +25,24 @@
 
   path[].discardFolderAll
 
-  dup not if drop exit_rt then
+  dup not if discard exit_rt then
 
   0 do
 
     // dup "path[].set %v" .printf
 
     dup "__dicRoot" str.equal if
-      drop
+      discard
       dic::root
       path[].pushFolder
     else
 
       dup "session" str.equal if
-        drop
+        discard
       else
 
         dup "tenants" str.equal if
-          drop attachmap::tenants@ execute path[].pushFolder
+          discard attachmap::tenants@ execute path[].pushFolder
         else
 
           find

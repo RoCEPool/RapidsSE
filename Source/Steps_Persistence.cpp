@@ -18,7 +18,7 @@ void Step::vAddSteps_Persistence(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPersistenceCheckpoint(void)
 {
-  ENTRY(); // ENTRY("vPersistenceCheckpoint"_Stz);
+  ENTRY();
   
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);
@@ -39,7 +39,7 @@ void Step::vPersistenceCheckpoint(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPersistenceReload(void)
 {
-  ENTRY(); // ENTRY("vPersistenceReload"_Stz);
+  ENTRY();
   
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);

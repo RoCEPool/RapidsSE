@@ -21,7 +21,7 @@ void Step::vAddSteps_Tx(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTx0Begin(void)
 {
-  ENTRY(); // ENTRY("vTx0Begin"_Stz);
+  ENTRY();
   
   Tx* pTx = new Tx;
     
@@ -38,7 +38,7 @@ void Step::vTx0Begin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTx0Commit(void)
 {
-  ENTRY(); // ENTRY("vTx0Commit"_Stz);
+  ENTRY();
   
   Tx* pTx = *m_pRegSet->m_xpTx;
   m_pRegSet->m_xpTx = nullptr;
@@ -58,7 +58,7 @@ void Step::vTx0Commit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTx0Perspective(void)
 {
-  ENTRY(); // ENTRY("vTx0Perspective"_Stz);
+  ENTRY();
   
   Tx* pTx = *m_pRegSet->m_xpTx;
   
@@ -77,7 +77,7 @@ void Step::vTx0Perspective(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxDumpAll(void)
 {
-  ENTRY(); // ENTRY("vTxDumpAll"_Stz);
+  ENTRY();
   
   AM::pTxSet()->vDumpAll();
   

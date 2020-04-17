@@ -29,7 +29,7 @@
     pEnameSet enameSet.appendStr
 
   // skip the :: token from input source
-  input::next drop
+  input::next discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -64,14 +64,14 @@
       then then then
   repeat
 
-  // drop the ";" from dstack
-  drop
+  // discard the ";" from dstack
+  discard
 
   //pEnameSet EnameSet.asStr .
 
   does>
     // ..to be written
-    drop
+    discard
 ;
 
 

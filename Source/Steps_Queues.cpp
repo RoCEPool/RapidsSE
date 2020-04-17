@@ -22,7 +22,7 @@ void Step::vAddSteps_Queues(void)
 /*----------------------------------------------------------------------------*/
 void Step::vQueuesCheckSleeping(void)
 {
-  ENTRY(); // ENTRY("vQueuesCheckSleeping"_Stz);
+  ENTRY();
   
   Scheduler::vWakeSleepingTasks(m_pTask);
   
@@ -34,7 +34,7 @@ void Step::vQueuesCheckSleeping(void)
 /*----------------------------------------------------------------------------*/
 void Step::vQueuesExecutingLength(void)
 {
-  ENTRY(); // ENTRY("vQueuesExecutingLength"_Stz);
+  ENTRY();
   
   i8 iSlot = m_pDataStack->iPopInt(__func__);
   
@@ -49,7 +49,7 @@ void Step::vQueuesExecutingLength(void)
 /*----------------------------------------------------------------------------*/
 void Step::vQueuesReadyLength(void)
 {
-  ENTRY(); // ENTRY("vQueuesReadyLength"_Stz);
+  ENTRY();
   
   i8 iSlot = m_pDataStack->iPopInt(__func__);
   
@@ -64,7 +64,7 @@ void Step::vQueuesReadyLength(void)
 /*----------------------------------------------------------------------------*/
 void Step::vQueuesSleepingLength(void)
 {
-  ENTRY(); // ENTRY("vQueuesSleepingLength"_Stz);
+  ENTRY();
   
   Queues* pQueues = AM::pQueues();
   m_pDataStack->vPushInt(pQueues->nTasksSleeping());
@@ -77,7 +77,7 @@ void Step::vQueuesSleepingLength(void)
 /*----------------------------------------------------------------------------*/
 void Step::vQueuesWaitingLength(void)
 {
-  ENTRY(); // ENTRY("vQueuesWaitingLength"_Stz);
+  ENTRY();
   
   Queues* pQueues = AM::pQueues();
   m_pDataStack->vPushInt(pQueues->nTasksWaiting());

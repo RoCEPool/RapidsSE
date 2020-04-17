@@ -34,7 +34,7 @@ void Step::vAddSteps_InfoSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetAddNodeInfo(void)
 {
-  ENTRY(); // ENTRY("vInfoSetAddNodeInfo"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -64,7 +64,7 @@ void Step::vInfoSetAddNodeInfo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetAddProgressUnits(void)
 {
-  ENTRY(); // ENTRY("vInfoSetAddProgressUnits"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -95,7 +95,7 @@ void Step::vInfoSetAddProgressUnits(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetAddTotalUnits(void)
 {
-  ENTRY(); // ENTRY("vInfoSetAddTotalUnits"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -125,7 +125,7 @@ void Step::vInfoSetAddTotalUnits(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetChunkFile(void)
 {
-  ENTRY(); // ENTRY("vInfoSetChunkFile"_Stz);
+  ENTRY();
   
   // get the seekOffsets
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
@@ -234,7 +234,7 @@ void Step::vInfoSetChunkFile(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetDelete(void)
 {
-  ENTRY(); // ENTRY("vInfoSetDelete"_Stz);
+  ENTRY();
   
   AM::vDeleteOperand(*m_pRegSet->m_xpInfoSet);
   
@@ -248,7 +248,7 @@ void Step::vInfoSetDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetFirstRow(void)
 {
-  ENTRY(); // ENTRY("vInfoSetFirstRow"_Stz);
+  ENTRY();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
@@ -260,7 +260,7 @@ void Step::vInfoSetFirstRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetGet(void)
 {
-  ENTRY(); // ENTRY("vInfoSetGet"_Stz);
+  ENTRY();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
 
@@ -274,7 +274,7 @@ void Step::vInfoSetGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetInfoRows(void)
 {
-  ENTRY(); // ENTRY("vInfoSetInfoRows"_Stz);
+  ENTRY();
   
   ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
   
@@ -290,7 +290,7 @@ void Step::vInfoSetInfoRows(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetIsProgress(void)
 {
-  ENTRY(); // ENTRY("vInfoSetIsProgress"_Stz);
+  ENTRY();
   
   ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
   
@@ -308,7 +308,7 @@ void Step::vInfoSetIsProgress(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetIsTotalUnits(void)
 {
-  ENTRY(); // ENTRY("vInfoSetIsTotalUnits"_Stz);
+  ENTRY();
   
   ASSERT ( ! m_pRegSet->m_xpInfoSet.bIsNull() );
   
@@ -325,7 +325,7 @@ void Step::vInfoSetIsTotalUnits(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetName(void)
 {
-  ENTRY(); // ENTRY("vInfoSetName"_Stz);
+  ENTRY();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
 
@@ -341,7 +341,7 @@ void Step::vInfoSetName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetNew(void)
 {
-  ENTRY(); // ENTRY("vInfoSetNew"_Stz);
+  ENTRY();
   
   ASSERT(m_pRegSet->m_xpInfoSet.bIsNull());
   
@@ -359,7 +359,7 @@ void Step::vInfoSetNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetNextRow(void)
 {
-  ENTRY(); // ENTRY("vInfoSetNextRow"_Stz);
+  ENTRY();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   Row* pRow = _pRow(*m_pRegSet->m_xpRow);
@@ -374,7 +374,7 @@ void Step::vInfoSetNextRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetPipeOut(void)
 {
-  ENTRY(); // ENTRY("vInfoSetPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   
@@ -392,7 +392,7 @@ void Step::vInfoSetPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetReadChunk(void)
 {
-  ENTRY(); // ENTRY("vInfoSetReadChunk"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
 
@@ -422,7 +422,7 @@ void Step::vInfoSetReadChunk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetSet(void)
 {
-  ENTRY(); // ENTRY("vInfoSetSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpInfoSet.bIsNull());
@@ -436,7 +436,7 @@ void Step::vInfoSetSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetWriteCsv(void)
 {
-  ENTRY(); // ENTRY("vInfoSetWriteCsv"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   

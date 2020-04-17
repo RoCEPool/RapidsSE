@@ -23,7 +23,7 @@ void Step::vAddSteps_Vortex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vVortexNew(void)
 {
-  ENTRY(); // ENTRY("vVortexNew"_Stz);
+  ENTRY();
 
   Vortex* pVortex = new Vortex;
   
@@ -40,7 +40,7 @@ void Step::vVortexNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vVortexClose(void)
 {
-  ENTRY(); // ENTRY("vVortexNew"_Stz);
+  ENTRY();
 
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
     
@@ -54,7 +54,7 @@ void Step::vVortexClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vVortexDelete(void)
 {
-  ENTRY(); // ENTRY("vVortexNew"_Stz);
+  ENTRY();
 
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
   
@@ -68,7 +68,7 @@ void Step::vVortexDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vVortexOpen(void)
 {
-  ENTRY(); // ENTRY("vVortexNew"_Stz);
+  ENTRY();
 
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
     
@@ -85,7 +85,7 @@ void Step::vVortexOpen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vVortexProcessH(void)
 {
-  ENTRY(); // ENTRY("vVortexProcessH"_Stz);
+  ENTRY();
   
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
 
@@ -102,7 +102,7 @@ void Step::vVortexProcessH(void)
 /*----------------------------------------------------------------------------*/
 void Step::vVortexProcessHpp(void)
 {
-  ENTRY(); // ENTRY("vVortexProcessHpp"_Stz);
+  ENTRY();
   
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
 

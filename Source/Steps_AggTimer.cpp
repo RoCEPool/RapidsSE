@@ -27,7 +27,7 @@ void Step::vAddSteps_AggTimer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerAdd(void)
 {
-  ENTRY(); // ENTRY("vAggTimerAdd"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
 
@@ -47,7 +47,7 @@ void Step::vAggTimerAdd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerDelete(void)
 {
-  ENTRY(); // ENTRY("vAggTimerDelete"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
     
@@ -61,7 +61,7 @@ void Step::vAggTimerDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerMicrosecs(void)
 {
-  ENTRY(); // ENTRY("vAggTimerMicrosecs"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
@@ -77,7 +77,7 @@ void Step::vAggTimerMicrosecs(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerMillisecs(void)
 {
-  ENTRY(); // ENTRY("vAggTimerMillisecs"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
@@ -93,7 +93,7 @@ void Step::vAggTimerMillisecs(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerNanosecs(void)
 {
-  ENTRY(); // ENTRY("vAggTimerNanosecs"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
@@ -109,7 +109,7 @@ void Step::vAggTimerNanosecs(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerNew(void)
 {
-  ENTRY(); // ENTRY("vAggTimerNew"_Stz);
+  ENTRY();
 
   AggTimer* pAggTimer = new AggTimer;
      
@@ -123,7 +123,7 @@ void Step::vAggTimerNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerReportStr(void)
 {
-  ENTRY(); // ENTRY("vAggTimerReportStr"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
@@ -139,7 +139,7 @@ void Step::vAggTimerReportStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerReset(void)
 {
-  ENTRY(); // ENTRY("vAggTimerReset"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
@@ -153,7 +153,7 @@ void Step::vAggTimerReset(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerSecs(void)
 {
-  ENTRY(); // ENTRY("vAggTimerSecs"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
@@ -169,7 +169,7 @@ void Step::vAggTimerSecs(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAggTimerTicks(void)
 {
-  ENTRY(); // ENTRY("vAggTimerTicks"_Stz);
+  ENTRY();
   
   AggTimer* pAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
   
