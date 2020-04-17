@@ -46,6 +46,8 @@
   // make the tenant
   <tenantNm> :makeTenantFolder ( )
 
+  Pipein[].pipeout
+
   true
 ;
 

@@ -54,6 +54,8 @@
   // make the schema
   <schemaNm> :makeSchemaFolder ( )
 
+  Pipein[].pipeout
+
   true
 ;
 

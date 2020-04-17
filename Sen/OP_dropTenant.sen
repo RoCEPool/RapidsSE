@@ -35,6 +35,8 @@
   // forget the tenant
   <tenantNm> :forget
 
+  Pipein[].pipeout
+
   true
 ;
 

@@ -54,6 +54,8 @@
   // make the catalog
   <catalogNm> :makeCatalogFolder ( )
 
+  Pipein[].pipeout
+
   true
 ;
 
