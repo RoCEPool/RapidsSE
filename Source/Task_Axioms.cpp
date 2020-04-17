@@ -1,22 +1,24 @@
 /*============================================================================*/
-/* Task_boot.cpp - parts of task which boot the system                        */
+/* Task_Axioms.cpp - functions which add axioms during the boot of system     */
 /*============================================================================*/
 
 #include "Tasks.h"
 
-
 /*----------------------------------------------------------------------------*/
-/* add initial set of words in main dictionary                                */
+/* add munged words into main dictionary                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAddBaseWords(void)
+void Task::vAddMunged(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddAxioms();
-  
 #ifdef WITH_MUNGED_SEN
-  if (AM::bMunged())
+  if (AM::bMunged()) {
+
+    if (AM::bVerbose())
+      vTrace("[[mainThread]] Adding munged routines...\n"_Stz);
+
     vAddMunged(m_pForth);
+  }
 #endif
 }
 

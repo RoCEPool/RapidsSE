@@ -120,7 +120,7 @@ namespace Tasks
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    void vAddBaseWords(void);
+    void vAddMunged(void);
     void vAddMunged(Forth* pForth);
     void vAddAxioms(void);
     Word* pCompileAxiomaticColon(s48K& sDefinition);
