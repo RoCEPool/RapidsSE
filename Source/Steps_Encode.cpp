@@ -200,8 +200,8 @@ void Step::vEncodeLoop(void)
     pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoLimitTest+1);
   }
   
-  pCurrentWord->vEncodeCall("rdrop"_Stz);
-  pCurrentWord->vEncodeCall("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
   
   EXIT();
 }
@@ -242,8 +242,8 @@ void Step::vEncodeLoopPlus(void)
     pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoLimitTest+1);
   }
   
-  pCurrentWord->vEncodeCall("rdrop"_Stz);
-  pCurrentWord->vEncodeCall("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
   
   EXIT();
 }
@@ -265,8 +265,8 @@ void Step::vEncodeNext(void)
   
   pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoLimitTest+1);
   
-  pCurrentWord->vEncodeCall("rdrop"_Stz);
-  pCurrentWord->vEncodeCall("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
   
   EXIT();
 }
