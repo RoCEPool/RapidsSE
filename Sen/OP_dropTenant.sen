@@ -32,8 +32,8 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // forget the tenant
-  <tenantNm> :forget
+  // remove the tenant
+  <tenantNm> removeTenant
 
   Pipein[].pipeout
 
