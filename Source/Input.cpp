@@ -501,8 +501,6 @@ void Input::vUseEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUseEnd();
-  
-  m_eTknForm = UF_SEN_TOKENS;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -524,8 +522,8 @@ void Input::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  m_pCharser->vLineMode(true);
   m_pCharser->vUseStdin();
-  vLineMode(true);
 }
 
 /*----------------------------------------------------------------------------*/
