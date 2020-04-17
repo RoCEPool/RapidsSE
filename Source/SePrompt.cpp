@@ -322,7 +322,7 @@ void SePrompt::vCheckJobCtl(void)
   
   s32 sTag;
   
-  while ('/' == * pTkn0->azTerm() ) {
+  while ('/' == * pTkn0->azChars() ) {
     
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("</%s>"_Stz,pTkn1->szChars());

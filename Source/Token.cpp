@@ -94,7 +94,17 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reset the charsed characters of the token                                  */
+/* get the charsed characters of the token                                    */
+/*----------------------------------------------------------------------------*/
+char* Token::azChars(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  return m_sTerm.azChar();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the charsed characters of the token                                    */
 /*----------------------------------------------------------------------------*/
 Stz* Token::szChars(void)
 {
@@ -260,16 +270,6 @@ bool Token::bSame(Stz* aArg)
   bool b = m_sTerm.bSame(aArg);
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the az of term                                                         */
-/*----------------------------------------------------------------------------*/
-char* Token::azTerm(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  return m_sTerm.azChar();
 }
 
 /*----------------------------------------------------------------------------*/

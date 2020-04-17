@@ -238,7 +238,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_TERMINATOR
     if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_TERMINATOR)) {
-      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->azTerm();
+      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->azChars();
       if (m_oFormatters.m_cRecordTerminator == '0')
         m_oFormatters.m_cRecordTerminator = '\0';
       else
@@ -248,7 +248,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_ENDS
     else if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_ENDS)) {
-      char cRecordEnds = *pTokenVec->pGet(++i_Token)->azTerm();
+      char cRecordEnds = *pTokenVec->pGet(++i_Token)->azChars();
       
       // is record_ends 1 character ?
       if (pTokenVec->pGet(i_Token)->iLength() == 1) {
@@ -300,7 +300,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_ENCLOSED_BY_LEADING
     else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_LEADING)) {
       m_oFormatters.m_cEnclosedBy_Leading =
-      *pTokenVec->pGet(++i_Token)->azTerm();
+      *pTokenVec->pGet(++i_Token)->azChars();
       if (m_oFormatters.m_cEnclosedBy_Leading == '0')
         m_oFormatters.m_cEnclosedBy_Leading = '\0';
       
@@ -322,7 +322,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         return false;
       }
       m_oFormatters.m_cEnclosedBy_Trailing =
-      *pTokenVec->pGet(++i_Token)->azTerm();
+      *pTokenVec->pGet(++i_Token)->azChars();
       if (m_oFormatters.m_cEnclosedBy_Trailing == '0')
         m_oFormatters.m_cEnclosedBy_Trailing = '\0';
       
@@ -347,7 +347,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ESCAPE_CHAR
     else if (pTokenVec->pGet(i_Token)->bSame(C_ESCAPE_CHAR)) {
-      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->azTerm();
+      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->azChars();
       if (m_oFormatters.m_cEscapeChar == '0')
         m_oFormatters.m_cEscapeChar = '\0';
       

@@ -1947,7 +1947,7 @@ void Vortex::vGetExpectedToken(Stz* szExpect)
   if (! m_oCurTkn.bSame(szExpect)) {
     TRACE("Expecting token: `%s` got: `%s` @%lld.%lld\n"_Stz,
           szExpect->azChar(),
-          m_oCurTkn.azTerm(),
+          m_oCurTkn.szChars(),
           m_oCurTkn.iLineNo(),
           m_oCurTkn.iColNo());
     
@@ -2358,9 +2358,9 @@ void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
   }
         
   while (bGetNextToken()) {
-    TRACE("%s "_Stz,m_oCurTkn.azTerm());
+    TRACE("%s "_Stz,m_oCurTkn.szChars());
     if (m_oCurTkn.bSame(szTill)) {
-      TRACE("\n"_Stz,m_oCurTkn.azTerm());
+      TRACE("\n"_Stz,m_oCurTkn.szChars());
       return;
     }
   }

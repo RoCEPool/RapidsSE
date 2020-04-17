@@ -46,7 +46,7 @@ Clause::Clause(eCN eClassNo, TokenVec* pTknVec_src, i8& i_Tkn_)
   while (i_Tkn_ < nTkn) {
     Token* pTkn_src = pTknVec_src->pGet(i_Tkn_);
     
-    if (StrLib::bOneOf((char**)szaClauseWords,pTkn_src->azTerm()))
+    if (StrLib::bOneOf((char**)szaClauseWords,pTkn_src->azChars()))
       break;
     
     Token* pTkn_dst = m_pTokenVec->pGet(i_Tkn_);

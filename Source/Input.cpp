@@ -529,7 +529,7 @@ void Input::vCollectCpp(void)
   
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
 
-  char* azTermCrs = m_pToken->azTerm();
+  char* azTermCrs = m_pToken->azChars();
   m_pToken->vReset();
 
   vGetAnnCharStripped();
@@ -594,7 +594,7 @@ void Input::vCollectCppInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
   
   i8 iNoDigits = 0;
   
@@ -643,7 +643,7 @@ void Input::vCollectCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartCppName());
   
@@ -672,7 +672,7 @@ void Input::vCollectCppOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartCppOther());
  
@@ -870,7 +870,7 @@ void Input::vCollectCppString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartSenString());
   
@@ -916,7 +916,7 @@ void Input::vCollectSen(void)
   
   ASSERT(UF_SEN_TOKENS == m_eTknForm);
   
-  char* azTermCrs = m_pToken->azTerm();
+  char* azTermCrs = m_pToken->azChars();
   
   m_pToken->vReset();
 
@@ -986,7 +986,7 @@ void Input::vCollectSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   i8 iNoDigits = 0;
   
@@ -1057,7 +1057,7 @@ void Input::vCollectSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
   
   //ASSERT(bStartSenName());
   
@@ -1085,7 +1085,7 @@ void Input::vCollectSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartSenString());
   
@@ -1128,7 +1128,7 @@ void Input::vCollectSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azTerm());
+  char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartSenTag());
   
