@@ -160,6 +160,10 @@ void Input::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  vTrace("Input : %s\n"_Stz,
+         aUF[m_eTknForm]
+         );
+
   m_pCharser->vInspect();
 }
 
@@ -522,7 +526,6 @@ void Input::vUseStdin(void)
   
   m_pCharser->vUseStdin();
   vLineMode(true);
-  vCppTokens();
 }
 
 /*----------------------------------------------------------------------------*/
