@@ -22,7 +22,7 @@ void Step::vProcedureAdd(void)
   s48K sProcText;
   m_pDataStack->vPopStr(sProcText,__func__);
   
-  TokenVec* pTokenVec = Input::pTokenise(sProcText);
+  TokenVec* pTokenVec = TokenVec::pTokenise(sProcText);
   
   Procedure::vAddProcedure(pTokenVec);
   

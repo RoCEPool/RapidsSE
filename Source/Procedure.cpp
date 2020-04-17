@@ -169,7 +169,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   Stz* szProcText = pEnameSet->szValue("procText"_Stz);
   
-  TokenVec* pProcTextVec = Input::pTokenise(szProcText);
+  TokenVec* pProcTextVec = TokenVec::pTokenise(szProcText);
   
   //pProcVec->vDumpTokens();
   

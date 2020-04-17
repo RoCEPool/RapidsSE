@@ -874,7 +874,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_LOC(310);
 
   // tokenize the response
-  TokenVec* pTknVec = Input::pTokenise(pResponse->m_sResponse);
+  TokenVec* pTknVec = TokenVec::pTokenise(pResponse->m_sResponse);
   API_LOC(320);
 
   i8 iRows = 0;
