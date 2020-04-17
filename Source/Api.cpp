@@ -88,13 +88,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
                           bool bPostJob, bool bFromPrompt)
 {
   SessionArray::vMarkApiLoc(pSession,101);
-  
-//  bool bFound = pTokenStream->bFindJobClass();
-//  if (! bFound) {
-//    return nullptr;
-//  }
-//  JobClass* pJobClass = pTokenStream->pJobClass();
-  
+    
   TokenVec* pTknVec = pSession->pTokenVec();
   
   Tokeniser::vTokenise(pTknVec, sCommand);

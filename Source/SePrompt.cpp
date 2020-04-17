@@ -64,7 +64,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pSession->m_pTokenStream->vForkReset();
+  m_pSession->m_pTokeniser->vForkReset();
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
@@ -137,8 +137,8 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
-  m_pSession->m_pTokenStream->vUseStdin();
-  m_pSession->m_pTokenStream->vUseBegin();
+  m_pSession->m_pTokeniser->vUseStdinX();
+  m_pSession->m_pTokeniser->vUseBegin();
 
   vVerifyJobSeeds();
   
@@ -289,9 +289,7 @@ void SePrompt::vBeginRequest(void)
 bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenStream* pTokenStream = this->pTokenStream();
-  
+    
   TokenVec* pTknVec = this->pTokenVec();
   bool bBlankLine = pTknVec->bBlankLine();
 
@@ -877,9 +875,7 @@ void SePrompt::vPrepareSpawn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RASSERT(JS_LOCKED != m_pJob->eJobState());
-  
-  TokenStream* pTokenStream = this->pTokenStream();
-  
+    
   m_pSession->pTokenVec()->vSetTokens();
   
   m_pJob->vSeed(SS_SEED_REQ);
@@ -958,8 +954,7 @@ bool SePrompt::bReadNextCommand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   TokenVec*     pTknVec      = pTokenVec();
-  TokenStream*  pTokenStream = this->pTokenStream();
-
+ 
 
   if (gxArgs.m_bInitial) {
     gxArgs.m_bInitial = false;
@@ -995,14 +990,14 @@ bool SePrompt::bReadNextCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  if (m_bOneCommand && pTokenStream->bIsStdIn()) {
+  if (m_bOneCommand && m_pSession->m_pTokeniser->bIsStdin()) {
     vDebugPoint();
     return false;
   }
 
-  pTokenStream->vInspect();
+  m_pSession->m_pTokeniser->vInspect();
 
-  pTokenStream->vReadCommand();
+  m_pSession->m_pTokeniser->vReadCommand();
   
   return true;
 }
@@ -1021,11 +1016,11 @@ bool SePrompt::bRedirectFromFile(void)
   if (! File::bExists(szPath))
     return false;
   
-  TokenStream* pTokenStream = this->pTokenStream();
+  Tokeniser* pTokeniser = m_pSession->m_pTokeniser;
     
-  pTokenStream->vPushFile(szPath);
+  pTokeniser->vPushFile(szPath);
   
-  pTokenStream->vUseBegin();
+  pTokeniser->vUseBegin();
 
   return true;
 }
@@ -1269,8 +1264,8 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenStream* pTokenStream = this->pTokenStream();
-  if (pTokenStream->bIsStdIn())
+  Tokeniser* pTokeniser = m_pSession->m_pTokeniser;
+  if (pTokeniser->bIsStdin())
     return true;
   else
     return false;
@@ -1332,16 +1327,6 @@ bool SePrompt::bSubLet(void)
   }
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command input processor                                                */
-/*----------------------------------------------------------------------------*/
-TokenStream* SePrompt::pTokenStream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSession->m_pTokenStream;
 }
 
 /*----------------------------------------------------------------------------*/
