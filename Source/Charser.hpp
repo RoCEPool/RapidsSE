@@ -14,26 +14,28 @@ namespace LexicalAnalysis
     Charser* m_pNext;     // next parser in stack
     
     // source definition
+    eIS      m_eSource;   // what source are we parsing? given file or string?
+    s256     m_sPath;     // the source path
+  
+    // sources
+    File     m_oRawFile;  // given file
+    s48K     m_sRawBuff;  // raw buffer
+    char*    m_azRawBuff; // ptr into m_sRawBuff -- debug help
+    char*    m_acRawChar; // next raw char in raw buffer
+    i8       m_iLineRaw;  // line number of raw char
+    i8       m_iColRaw;   // column number of raw char
+
+    // uses
     bool     m_bUseBegun; // has use of this charser begun?
     bool     m_bUseClosed;// has use of this charser closed?
     bool     m_bUseEnded; // has use of this charser ended?
     bool     m_bUseOpened;// has use of this charser opened?
-    eIS      m_eSource;   // what source are we parsing? given file or string?
-    s256     m_sPath;     // the source path
-    bool     m_bSingleLineMode; // single line mode?
   
-    // sources
-    File     m_oRawFile;  // given file
-    s48K     m_sRawLine;  // either raw line read from file or given string
-    char*    m_azRawLine; // ptr into m_sRawLine -- debug help
-    char*    m_acRawChar; // next raw char in raw line
-    i8       m_iLineRaw;  // line number of raw char
-    i8       m_iColRaw;   // column number of raw char
-
     // registers
-    i8       m_nLoaded;   // 0: neither has char
-                          // 1: m_cFirst has char
-                          // 2: m_cFirst and m_cSecond each have a char
+    bool     m_bSingleLineCmd; // single line command?
+    i8       m_nLoaded;   // 0: neither register has char
+                          // 1: m_xAnnOne has char
+                          // 2: m_xAnnOne and m_xAnnTwo each have a char
     AnnChar  m_xAnnOne;   //
     AnnChar  m_xAnnTwo;   //
     eCS      m_eComment;  // comment style currently being processed
@@ -60,7 +62,7 @@ namespace LexicalAnalysis
     i8   iLineCol(void);
 
     // Options
-    void vSingleLineMode(bool bLineMode);
+    void vSingleLineCmd(bool bLineMode);
     
     // Use What
     void vUseBegin(void);
@@ -80,7 +82,7 @@ namespace LexicalAnalysis
     void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
     void vUngetAnnChar(AnnChar& rxAnnChar);
     bool bSeenEOF(void);
-    bool bSingleLineMode(void);
+    bool bSingleLineCmd(void);
     bool bIsStdin(void);
 
   private:

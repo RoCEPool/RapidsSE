@@ -182,21 +182,21 @@ bool Input::bIsStdin(void)
 /*----------------------------------------------------------------------------*/
 /* set single line mode                                                       */
 /*----------------------------------------------------------------------------*/
-void Input::vSingleLineMode(bool bLineMode)
+void Input::vSingleLineCmd(bool bLineMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  m_pCharser->vSingleLineMode(bLineMode);
+  m_pCharser->vSingleLineCmd(bLineMode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get SignleLine mode?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Input::bSingleLineMode(void)
+bool Input::bSingleLineCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  bool bLineMode = m_pCharser->bSingleLineMode();
+  bool bLineMode = m_pCharser->bSingleLineCmd();
   
   return bLineMode;
 }
@@ -255,7 +255,7 @@ void Input::vPushFile(Stz* szPath)
   bool b = bUseFile(szPath);
   ASSERT(b);
   
-  vSingleLineMode(true);
+  vSingleLineCmd(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,7 +267,7 @@ void Input::vReadCommand(void)
     
   ASSERT(m_pCharser->bUseBegun());
   
-  vSingleLineMode(true);
+  vSingleLineCmd(true);
   
   vReadTillEOF();
     
@@ -284,13 +284,13 @@ void Input::vReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // switch to terminal mode
-  vSingleLineMode(false);
+  vSingleLineCmd(false);
   
   // read more till ;
   vReadTillSemicolon();
   
   // switch back to line mode
-  vSingleLineMode(true);
+  vSingleLineCmd(true);
   
   // stip off ;
   m_pTknVec->vStripSemicolon();
@@ -1227,7 +1227,7 @@ bool Input::bHaveWhitespace(void)
   // - no current parsed character
   
   // a '\0' in line mode indicates end of line; not considered whitespace
-  if (bSingleLineMode())
+  if (bSingleLineCmd())
     return false;
   
   // a '\0' at eof is the eof marker; not considered whitespace

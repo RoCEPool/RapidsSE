@@ -183,7 +183,7 @@ void Step::vInputStdin(void)
   ENTRY();
     
   m_pInput->vUseStdin();
-  m_pInput->vSingleLineMode(true);
+  m_pInput->vSingleLineCmd(true);
 
   EXIT();
 }

@@ -76,7 +76,7 @@ void Charser::vInspect(void)
          m_iDepth,
          aIS[m_eSource],
          m_sPath.szStz(),
-         m_bSingleLineMode  ? "SingleLine"  : "MultiLine",
+         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
          m_bUseBegun  ? "UseBegun"  : "Not-UseBegun",
          m_bUseEnded  ? "UseEnded"  : "Not-UseEnded",
          m_bUseOpened ? "UseOpened" : "Not-UseOpened",
@@ -129,21 +129,21 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
   
   if (IS_FILE == m_eSource) {
     Correctness::vDebugPoint();
-    if (m_bSingleLineMode)
+    if (m_bSingleLineCmd)
       Correctness::vDebugPoint();
     else
       Correctness::vDebugPoint();
   }
   else if (IS_STDIN == m_eSource) {
     Correctness::vDebugPoint();
-    if (m_bSingleLineMode)
+    if (m_bSingleLineCmd)
       Correctness::vDebugPoint();
     else
       Correctness::vDebugPoint();
   }
   else if (IS_STRING == m_eSource) {
     Correctness::vDebugPoint();
-    if (m_bSingleLineMode)
+    if (m_bSingleLineCmd)
       Correctness::vDebugPoint();
     else
       Correctness::vDebugPoint();
@@ -187,11 +187,11 @@ bool Charser::bSeenEOF(void)
 /*----------------------------------------------------------------------------*/
 /* single line mode?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Charser::bSingleLineMode(void)
+bool Charser::bSingleLineCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  return m_bSingleLineMode;
+  return m_bSingleLineCmd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,11 +227,11 @@ void Charser::vForkReset(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void Charser::vSingleLineMode(bool bSingleLineMode)
+void Charser::vSingleLineCmd(bool bSingleLineCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  m_bSingleLineMode = bSingleLineMode;
+  m_bSingleLineCmd = bSingleLineCmd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,7 +352,7 @@ void Charser::vUseString(Stz* szString)
   
   ASSERT(IS_NONE == m_eSource);
   
-  m_sRawLine = szString;
+  m_sRawBuff = szString;
   m_eSource = IS_STRING;
   m_bSeenEOF = true;
   
@@ -417,13 +417,13 @@ void Charser::vResetCharser(void)
   m_bUseOpened = false;
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
-  m_bSingleLineMode  = false;
+  m_bSingleLineCmd  = false;
 
   // sources
   m_oRawFile.vReset();
-  m_sRawLine   = ""_Stz;
-  m_azRawLine  = m_sRawLine.azChar();
-  m_acRawChar  = m_sRawLine.azChar();
+  m_sRawBuff   = ""_Stz;
+  m_azRawBuff  = m_sRawBuff.azChar();
+  m_acRawChar  = m_sRawBuff.azChar();
   m_iLineRaw   = 0;
   m_iColRaw    = 0;
 
@@ -779,7 +779,7 @@ void Charser::vRawCharFromSource(AnnChar& rxAnnChar)
     case IS_FILE:
       vRawCharFromFile(rxAnnChar);
       ASSERT( (rxAnnChar.m_cChar) ||
-              (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bSingleLineMode)) );
+              (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bSingleLineCmd)) );
       break;
       
     case IS_STDIN:
@@ -822,7 +822,7 @@ void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
   
   ASSERT(m_oRawFile.bIsOpen());
   
-  if (! m_bSingleLineMode) {
+  if (! m_bSingleLineCmd) {
     vReadRawLineFile();
     vNextCharFromRawLine(rxAnnChar);
     return;
@@ -830,7 +830,7 @@ void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
   
   if (! m_bRead) {
     m_bRead = true;
-    m_acRawChar = m_sRawLine.azChar();
+    m_acRawChar = m_sRawBuff.azChar();
     *m_acRawChar = '\0';
     return;
   }
@@ -863,7 +863,7 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
   ASSERT(m_oRawFile.bIsStdin());
   ASSERT(m_oRawFile.bIsOpen());
   
-  if (! m_bSingleLineMode) {
+  if (! m_bSingleLineCmd) {
     vReadRawLineStdin();
     vNextCharFromRawLine(rxAnnChar);
     ASSERT(! m_bSeenEOF);
@@ -872,7 +872,7 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
   
   if (! m_bRead) {
     m_bRead = true;
-    m_acRawChar = m_sRawLine.azChar();
+    m_acRawChar = m_sRawBuff.azChar();
     *m_acRawChar = '\0';
     rxAnnChar.m_cChar = '\0';
     ASSERT(! m_bSeenEOF);
@@ -937,7 +937,7 @@ void Charser::vReadRawLineFile(void)
 
   char cInput;
   
-  char* acRawLineCrs = m_sRawLine.azChar();
+  char* acRawLineCrs = m_sRawBuff.azChar();
   
   do {
     
@@ -959,7 +959,7 @@ void Charser::vReadRawLineFile(void)
   m_iLineRaw++;
   m_iColRaw = 0;
   
-  m_acRawChar = m_sRawLine.azChar();
+  m_acRawChar = m_sRawBuff.azChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -973,7 +973,7 @@ void Charser::vReadRawLineStdin(void)
   ASSERT(! m_bUseEnded);
   ASSERT(! m_bSeenEOF);
   
-  char* acRawLine = m_sRawLine.azChar();
+  char* acRawLine = m_sRawBuff.azChar();
       
   for (;;) {
     
@@ -990,7 +990,7 @@ void Charser::vReadRawLineStdin(void)
   m_iLineRaw++;
   m_iColRaw = 0;
 
-  m_acRawChar = m_sRawLine.azChar();
+  m_acRawChar = m_sRawBuff.azChar();
   
   ASSERT(! m_bSeenEOF);
 }
