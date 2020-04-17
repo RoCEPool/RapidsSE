@@ -526,7 +526,6 @@ void Input::vUseStdin(void)
   
   m_pCharser->vUseStdin();
   vLineMode(true);
-  vCppTokens();
 }
 
 /*----------------------------------------------------------------------------*/
