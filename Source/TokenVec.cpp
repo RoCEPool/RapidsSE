@@ -523,7 +523,7 @@ void TokenVec::vTokenise(Stz* szString)
   pInput->vUseBegin();
 
   for (i8 i_Token = 0; ; i_Token++) {
-    pInput->vReadToken_nil();
+    pInput->vReadToken();
     if (TN_EOF == pInput->eToken())
       break;
     

@@ -97,7 +97,7 @@ void Step::vInputNext(void)
 {
   ENTRY();
   
-  m_pInput->vReadToken_nil();
+  m_pInput->vReadToken();
   
   s48K sTkn(m_pInput->szToken());
   
@@ -158,7 +158,7 @@ void Step::vInputRead(void)
 {
   ENTRY();
     
-  m_pInput->vReadToken_nil();
+  m_pInput->vReadToken();
 
   EXIT();
 }

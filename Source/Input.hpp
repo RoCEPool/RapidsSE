@@ -41,10 +41,7 @@ namespace LexicalAnalysis
     void vPushCharser(void);
     void vPushFile(Stz* szPath);
     void vReadCommand(void);
-    void vReadTillEOF(void);
-    void vReadTillSemicolon(void);
-    void vReadToken_nil(void);
-    void vReadToken_vec(void);
+    void vReadToken(void);
     bool bSeenEOF(void);
     void vSenTokens(void);
     eTN  eToken(void);
@@ -58,6 +55,10 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:    
+    void vCollectToken(void);
+    void vCollectVecTillEOF(void);
+    void vCollectVecTillSemicolon(void);
+  
     void vCollectCpp(void);
     void vCollectCppInteger(void);
     void vCollectCppName(void);

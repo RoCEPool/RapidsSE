@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Input.cpp -- Input : divide input stream into tokens               */
+/* Input.cpp -- Input : collect input stream into tokens                      */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -269,7 +269,7 @@ void Input::vReadCommand(void)
   
   vSingleLineCmd(true);
   
-  vReadTillEOF();
+  vCollectVecTillEOF();
     
   // if empty line just return
   if ( ! m_pTknVec->nTokens() ||
@@ -287,7 +287,7 @@ void Input::vReadCommand(void)
   vSingleLineCmd(false);
   
   // read more till ;
-  vReadTillSemicolon();
+  vCollectVecTillSemicolon();
   
   // switch back to single line command
   vSingleLineCmd(true);
@@ -303,9 +303,9 @@ void Input::vReadCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read tokens from input stream till EOF                                     */
+/* collect tokens from input stream till EOF                                  */
 /*----------------------------------------------------------------------------*/
-void Input::vReadTillEOF(void)
+void Input::vCollectVecTillEOF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -323,7 +323,7 @@ void Input::vReadTillEOF(void)
 //      if (! bNextInputToken(pToken))
 //        break;
       
-      vReadToken_vec();
+      vCollectToken();
       if (TN_EOF == pToken->eToken())
         break;
 
@@ -344,9 +344,9 @@ void Input::vReadTillEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read tokens from input stream till ';'                                     */
+/* collect tokens from input stream till ';'                                  */
 /*----------------------------------------------------------------------------*/
-void Input::vReadTillSemicolon(void)
+void Input::vCollectVecTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -368,7 +368,7 @@ void Input::vReadTillSemicolon(void)
     
     Token* pToken = m_pTknVec->pGet(i_Token,true);
     
-    vReadToken_vec();
+    vCollectToken();
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
@@ -383,7 +383,7 @@ void Input::vReadTillSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vReadToken_nil(void)
+void Input::vReadToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -394,25 +394,7 @@ void Input::vReadToken_nil(void)
   m_pTknVec->vAdvanceCurr();
   Token* pToken = m_pTknVec->pCurrToken();;
 
-  vReadToken_vec();
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse next token into given buffer                                         */
-/*----------------------------------------------------------------------------*/
-void Input::vReadToken_vec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  ASSERT(m_pCharser->bUseBegun());
-  ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
-
-  m_pToken = m_pTknVec->pCurrToken();;
-
-  if (UF_CPP_TOKENS == m_eTknForm)
-    vCollectCpp();
-  else
-    vCollectSen();
+  vCollectToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1193,6 +1175,23 @@ void Input::vCollectSenTag(void)
   Correctness::vDebugPoint();
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect next token                                                         */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
+
+  m_pToken = m_pTknVec->pCurrToken();;
+
+  if (UF_CPP_TOKENS == m_eTknForm)
+    vCollectCpp();
+  else
+    vCollectSen();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- character processing ----------------------------------------------------*/

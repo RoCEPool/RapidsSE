@@ -34,7 +34,7 @@ void Step::vColon(void)
   
   m_pCompiler->vMode(CM_COMPILING);
   
-  m_pInput->vReadToken_nil();
+  m_pInput->vReadToken();
   sName = m_pInput->szToken();
   
   //vTrace("Colon: %s\n"_Stz,sName.szStz());
@@ -62,7 +62,7 @@ void Step::vComment(void)
   ENTRY();
   
   for (;;) {
-    m_pInput->vReadToken_nil();
+    m_pInput->vReadToken();
     if (m_pInput->szToken()->bEqual(")"_Stz))
       break;
   }
@@ -188,7 +188,7 @@ void Step::vFind(void)
 {
   ENTRY();
   
-  m_pInput->vReadToken_nil();
+  m_pInput->vReadToken();
 
   s32 sWordNm;
   sWordNm = m_pInput->szToken();
@@ -238,7 +238,7 @@ void Step::vPostpone(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // get name of word to be called
-  m_pInput->vReadToken_nil();
+  m_pInput->vReadToken();
 
   // find the word in dic stack
   Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szToken());

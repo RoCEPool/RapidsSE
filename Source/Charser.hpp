@@ -75,8 +75,8 @@ namespace LexicalAnalysis
 
     // Charser Stack
     Charser* pNext(void);
-    void    vNext(Charser* pNext);
-    i8      iDepth(void);
+    void     vNext(Charser* pNext);
+    i8       iDepth(void);
     
     // Processing Functions
     void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
