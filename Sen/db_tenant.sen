@@ -10,6 +10,14 @@
 : \tenant \\category ;
 
 /*----------------------------------------------------------------------------*/
+/* pop the tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
+: path[].discardTenantFolder
+
+  path[].discardFolder
+;
+
+/*----------------------------------------------------------------------------*/
 /* test if current folder is ../tenants                                       */
 /*----------------------------------------------------------------------------*/
 : folder[].isTenants
@@ -73,6 +81,37 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make catalogs folder
   sTenantNm :makeCatalogsFolder ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* find the tenant folder and push it onto task dictionary                   */
+/*----------------------------------------------------------------------------*/
+: path[].pushTenantFolder ( "<tenantName>" -- )
+
+  find execute path[].pushFolder
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeTenant ( "<schemaNm>" --  )
+
+  params| sTenantNm |
+
+  args.tracepoint if
+  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to tenant folder
+  sTenantNm path[].pushTenantFolder assert
+
+  "catalogs" folder::remove
+
+  path[].discardTenantFolder
+
+  sTenantNm folder::remove
 ;
 
 /*============================================================================*/
