@@ -70,7 +70,7 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* set normal cpp tokens                                                      */
 /*----------------------------------------------------------------------------*/
-void Input::vCppTokens(void)
+void Input::vFormCppTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -402,7 +402,7 @@ bool Input::bSeenEOF(void)
 /*----------------------------------------------------------------------------*/
 /* set sen tokens                                                             */
 /*----------------------------------------------------------------------------*/
-void Input::vSenTokens(void)
+void Input::vFormSenTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     

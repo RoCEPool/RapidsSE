@@ -27,10 +27,11 @@ namespace LexicalAnalysis
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void vCppTokens(void);
     i8   iDepth(void);
     void vDump(void);
     void vForkReset(void);
+    void vFormCppTokens(void);
+    void vFormSenTokens(void);
     void vInspect(void);
     bool bIsStdin(void);
     void vSingleLineCmd(bool bLineMode);
@@ -42,7 +43,6 @@ namespace LexicalAnalysis
     void vReadCommand(void);
     void vReadToken(void);
     bool bSeenEOF(void);
-    void vSenTokens(void);
     eTN  eToken(void);
     Stz* szToken(void);
     TokenVec* pTokenVec(void);

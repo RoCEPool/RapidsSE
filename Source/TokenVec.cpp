@@ -519,7 +519,7 @@ void TokenVec::vTokenise(Stz* szString)
   
   Input* pInput = new Input;
   pInput->vUseString(szString);
-  pInput->vSenTokens();
+  pInput->vFormSenTokens();
   pInput->vUseBegin();
 
   for (i8 i_Token = 0; ; i_Token++) {

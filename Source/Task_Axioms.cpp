@@ -309,7 +309,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   Input* pInput = m_pForth->pInput();
   
   pInput->vUseString(sDefinition);
-  pInput->vSenTokens();
+  pInput->vFormSenTokens();
   pInput->vUseBegin();
 
   // get :

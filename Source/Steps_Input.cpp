@@ -47,7 +47,7 @@ void Step::vInputCppTokens(void)
 {
   ENTRY();
     
-  m_pInput->vCppTokens();
+  m_pInput->vFormCppTokens();
 
   EXIT();
 }
@@ -170,7 +170,7 @@ void Step::vInputSenTokens(void)
 {
   ENTRY();
   
-  m_pInput->vSenTokens();
+  m_pInput->vFormSenTokens();
 
   EXIT();
 }

@@ -139,7 +139,7 @@ void SePrompt::vPromptLoop(void)
   
   ASSERT(0 == m_pSession->m_pInput->iDepth());
   m_pSession->m_pInput->vUseStdin();
-  m_pSession->m_pInput->vCppTokens();
+  m_pSession->m_pInput->vFormCppTokens();
   m_pSession->m_pInput->vUseBegin();
   m_pSession->m_pInput->vInspect();
 
