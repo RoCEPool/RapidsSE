@@ -1263,7 +1263,7 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   vToCmdStr(szCmdStr);
   
   TokenVec* pTknVec = new TokenVec;
-  Input::vTokenise(pTknVec, szCmdStr);
+  pTknVec->vTokenise(szCmdStr);
   
   //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
   

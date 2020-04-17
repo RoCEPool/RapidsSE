@@ -960,7 +960,7 @@ bool SePrompt::bReadNextCommand(void)
     gxArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    Input::vTokenise(pTknVec,szInitial);
+    pTknVec->vTokenise(szInitial);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
     return true;
@@ -971,7 +971,7 @@ bool SePrompt::bReadNextCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    Input::vTokenise(pTknVec,szCommand);
+    pTknVec->vTokenise(szCommand);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
     return true;
@@ -980,7 +980,7 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (* m_pSession->m_sToDo.azChar()) {
-    Input::vTokenise(pTknVec,m_pSession->m_sToDo);
+    pTknVec->vTokenise(m_pSession->m_sToDo);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
 
@@ -1321,7 +1321,7 @@ bool SePrompt::bSubLet(void)
                          pNmStr->m_sValue.szStz(),
                          sPartB.szStz());
     
-    Input::vTokenise(pTknVec,sSubstituted);
+    pTknVec->vTokenise(sSubstituted);
     
     return true;
   }

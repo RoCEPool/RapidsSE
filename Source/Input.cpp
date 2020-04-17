@@ -51,38 +51,6 @@ Input::~Input(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string into given TokenVec                                  */
-/*----------------------------------------------------------------------------*/
-void Input::vTokenise(TokenVec* pTknVec, Stz* szString)
-{
-  _static_
-  
-  pTknVec->vReset();
-  
-  Input* pInput = new Input;
-  pInput->vUseString(szString);
-  pInput->vSenTokens();
-  pInput->vUseBegin();
-
-  for (i8 i_Token = 0; ; i_Token++) {
-    pInput->vReadToken_nil();
-    if (TN_EOF == pInput->eToken())
-      break;
-    
-    pTknVec->vIncTokens();
-    
-    Token* pToken = pTknVec->pGet(i_Token);
-    pToken->vToken(pInput->eToken());
-    pToken->vCopy(pInput->szToken());
-    
-  }
-  
-  pInput->vUseEnd();
-  delete pInput;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
 void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)

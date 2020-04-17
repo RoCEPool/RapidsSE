@@ -26,7 +26,6 @@ namespace LexicalAnalysis
    ~Input(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vTokenise(TokenVec* pTknVec, Stz* szString);
 
     Charser* pCharser(void);
     void vCppTokens(void);

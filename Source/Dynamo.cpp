@@ -27,7 +27,7 @@ Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
   m_p_Job = p_Job;
   
   m_pTknVec = new TokenVec;
-  Input::vTokenise(m_pTknVec, sCmd);
+  m_pTknVec->vTokenise(sCmd);
   
   m_pTknVec->vCutToken(m_pTknVec->nTokens());
   
@@ -219,7 +219,7 @@ void Dynamo::vShow(void)
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 #endif
   
-  Input::vTokenise(m_pTknVec,sPipe);
+  m_pTknVec->vTokenise(sPipe);
   
   SP_TknVecStr spTknVecStr;
   vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pTknVec));
