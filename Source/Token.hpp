@@ -51,6 +51,8 @@ namespace LexicalAnalysis
   
     Footer* aFooter(void);
   };
+
+  Token* _pToken(void* aAddr);
 }
 
 /*============================================================================*/

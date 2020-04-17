@@ -5,36 +5,14 @@
 #include "LexicalAnalysis.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Token* Token::_pToken(void* aAddr)
-{
-  Token* pToken = reinterpret_cast<Token*>(aAddr);
-  
-  RASSERT_TYPE(pToken,CN_TOKEN);
-  
-  return pToken;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Token::operator new(size_t)
-{
-  void* pToken = HeapMem::pAllocate(CN_TOKEN);
-  
-  return pToken;
-}
+__pCastFunction(LexicalAnalysis,Token,CN_TOKEN)
+__aNewFunction(Token,CN_TOKEN)
+__vDeleteFunction(Token,CN_TOKEN)
+__aFooterFunction(Token)
 
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Token::operator delete(void* pTokenAddress)
-{
-  Token* pToken = _pToken(pTokenAddress);
-  
-  HeapMem::vFree(pToken);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -317,21 +295,6 @@ void Token::vToken(eTN eToken)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = eToken;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Token::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/
