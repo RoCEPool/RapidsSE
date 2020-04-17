@@ -104,7 +104,7 @@ char* Token::azChars(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  return m_sTerm.azChar();
+  return m_szChars->azChar();
 }
 
 /*----------------------------------------------------------------------------*/
