@@ -67,6 +67,18 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get chars of current token                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Input::szChars(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  Token* pCurrToken = m_pTknVec->pCurrToken();
+  
+  return pCurrToken->szTerm();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get depth of charser                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Input::iDepth(void)
@@ -327,18 +339,6 @@ eTN Input::eToken(void)
   eTN eToken = pCurrToken->eToken();
   
   return eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token string                                                           */
-/*----------------------------------------------------------------------------*/
-Stz* Input::szToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-
-  Token* pCurrToken = m_pTknVec->pCurrToken();
-  
-  return pCurrToken->szTerm();
 }
 
 /*----------------------------------------------------------------------------*/

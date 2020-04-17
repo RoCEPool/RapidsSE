@@ -531,7 +531,7 @@ void TokenVec::vTokenise(Stz* szString)
     
     Token* pToken = pGet(i_Token);
     pToken->vToken(pInput->eToken());
-    pToken->vCopy(pInput->szToken());
+    pToken->vCopy(pInput->szChars());
     
   }
   

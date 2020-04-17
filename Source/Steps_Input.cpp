@@ -99,7 +99,7 @@ void Step::vInputNext(void)
   
   m_pInput->vReadToken();
   
-  s48K sTkn(m_pInput->szToken());
+  s48K sTkn(m_pInput->szChars());
   
   m_pDataStack->vPushStr(sTkn);
   
@@ -195,7 +195,7 @@ void Step::vInputTerm(void)
 {
   ENTRY();
   
-  s48K sTkn(m_pInput->szToken());
+  s48K sTkn(m_pInput->szChars());
   
   m_pDataStack->vPushStr(sTkn);
   
@@ -231,7 +231,7 @@ void Step::vInputUnknown(void)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         m_pInput->szToken()
+         m_pInput->szChars()
          );
   vTrace("\n"_Stz);
 

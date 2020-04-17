@@ -74,7 +74,7 @@ void Step::vLocalsBar(void)
     m_pInput->vReadToken();
 
     // end of locals declaration?
-    if (m_pInput->szToken()->bEqual("|"_Stz))
+    if (m_pInput->szChars()->bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
@@ -91,7 +91,7 @@ void Step::vLocalsBar(void)
     }
     
     // create new word for local variable in current dictionary
-    Word* pWordLocal = new(pDic) Word(m_pInput->szToken());
+    Word* pWordLocal = new(pDic) Word(m_pInput->szChars());
     // ** do not set as current word **
     
     // set word as local variable
@@ -169,7 +169,7 @@ void Step::vLocalsTo(void)
   
   // is is a semantic ename?
   
-  Stz* szTerm = m_pInput->szToken();
+  Stz* szTerm = m_pInput->szChars();
   
   if (szTerm->bSame("/session"_Stz)) {
     
@@ -299,7 +299,7 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream
-  s32 sLocalNm(m_pInput->szToken());
+  s32 sLocalNm(m_pInput->szChars());
   
   // attempt to find the word describing the local
   Word* pLocalWord = m_oDicStack.pFindWord(sLocalNm);

@@ -35,7 +35,7 @@ void Step::vColon(void)
   m_pCompiler->vMode(CM_COMPILING);
   
   m_pInput->vReadToken();
-  sName = m_pInput->szToken();
+  sName = m_pInput->szChars();
   
   //vTrace("Colon: %s\n"_Stz,sName.szStz());
   
@@ -63,7 +63,7 @@ void Step::vComment(void)
   
   for (;;) {
     m_pInput->vReadToken();
-    if (m_pInput->szToken()->bEqual(")"_Stz))
+    if (m_pInput->szChars()->bEqual(")"_Stz))
       break;
   }
   
@@ -191,7 +191,7 @@ void Step::vFind(void)
   m_pInput->vReadToken();
 
   s32 sWordNm;
-  sWordNm = m_pInput->szToken();
+  sWordNm = m_pInput->szChars();
   
   Word* pWord = m_oDicStack.pFindWord(sWordNm);
   
@@ -241,11 +241,11 @@ void Step::vPostpone(void)
   m_pInput->vReadToken();
 
   // find the word in dic stack
-  Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szToken());
+  Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szChars());
   if ( ! pCalledWord )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,
-           m_pInput->szToken()->azChar());
+           m_pInput->szChars()->azChar());
   
   
   Datum xVar;

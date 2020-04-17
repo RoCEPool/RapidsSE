@@ -314,12 +314,12 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 
   // get :
   pInput->vReadToken();
-  Stz* szChars = pInput->szToken();
+  Stz* szChars = pInput->szChars();
   vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // get name of word
   pInput->vReadToken();
-  szChars = pInput->szToken();
+  szChars = pInput->szChars();
   vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -340,7 +340,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
   while (TN_EOF != pInput->eToken()) {
     
-    szChars = pInput->szToken();
+    szChars = pInput->szChars();
     vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
     
     if (szChars->bEqual(";"_Stz))
@@ -437,9 +437,9 @@ void Task::vCompileMungedColon(s48K& sDefinition)
 
   if (AM::bVerbose())
     vTrace("CompileConstant: %s\n"_Stz,
-           pInput->szToken());
+           pInput->szChars());
   
-  sValue = (Stz*)pInput->szToken()->azChar();
+  sValue = (Stz*)pInput->szChars()->azChar();
   
   // get CONSTANT
   pInput->vReadToken();
@@ -449,7 +449,7 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   pInput->vReadToken();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
 
-  Stz* szName = (Stz*)pInput->szToken();
+  Stz* szName = (Stz*)pInput->szChars();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   
