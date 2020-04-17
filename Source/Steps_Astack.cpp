@@ -11,7 +11,7 @@ void Step::vAddSteps_Astack(void)
 {
   vAddStep("astack.class"_Stz,    &Step::vAstackClass);
   vAddStep("adepth"_Stz,          &Step::vAstackDepth);
-  vAddStep("adrop"_Stz,           &Step::vAstackDiscard);
+  vAddStep("adiscard"_Stz,        &Step::vAstackDiscard);
   vAddStep("adup"_Stz,            &Step::vAstackDup);
   vAddStep("a@"_Stz,              &Step::vAstackFetch);
   vAddStep("anip"_Stz,            &Step::vAstackNip);
