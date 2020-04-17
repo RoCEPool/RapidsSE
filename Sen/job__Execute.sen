@@ -53,7 +53,7 @@
 
   // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |
-  iJobId plist::findJob drop
+  iJobId plist::findJob discard
 
   // execute the job on this participating node
   JM_SEED_EXE JobRef[] job.seed!

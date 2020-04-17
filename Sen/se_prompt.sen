@@ -82,7 +82,7 @@
   // is token a known word?
   input::token word::find
   dup not if
-    drop                     // token is an unknown word
+    discard                     // token is an unknown word
     input::unknown
     reenter
   then

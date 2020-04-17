@@ -77,8 +77,8 @@ jobInfo: service
     nArgs ++ to nArgs
   repeat
 
-  // drop the ";&" from dstack
-  drop
+  // discard the ";&" from dstack
+  discard
 
   nArgs
 
@@ -92,7 +92,7 @@ jobInfo: service
 
   find: job::spawnUniversal encode::call
 
-  //find: drop encode::call
+  //find: discard encode::call
 
   assert::stack_0
 ;
