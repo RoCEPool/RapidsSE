@@ -49,6 +49,7 @@ namespace Sessions
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
     TokenStream* m_pTokenStream; // input command processor
+    Tokeniser* m_pTokeniser;     // input tokens
 
     Job*     m_pJob;             // job session currently executing
     Tx*      m_pTx;              // current transaction

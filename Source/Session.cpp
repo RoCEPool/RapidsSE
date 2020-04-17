@@ -114,7 +114,8 @@ Session::Session(void)
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
   m_pTokenStream    = new TokenStream;
-  
+  m_pTokeniser      = new Tokeniser;
+
   m_sToDo           = ""_Stz;
   
   m_pNmStrLst       = nullptr;
@@ -123,7 +124,7 @@ Session::Session(void)
     
   _checkInitialised_(CN_SESSION);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
   
   // set initial session <path>
   m_pSemantic->pEnameSet()->vInsert(C_TAG_PATH,C_SE_PATH);
@@ -149,7 +150,8 @@ Session::~Session(void) noexcept(false)
   delete m_pJobStack;
   
   delete m_pTokenStream;
-  
+  delete m_pTokeniser;
+
   delete m_pNmStrLst;
   
   delete m_pSemantic;
