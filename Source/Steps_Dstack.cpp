@@ -11,8 +11,8 @@ void Step::vAddSteps_Dstack(void)
 {
   vAddStep("stack.class"_Stz,     &Step::vDstackClass);
   vAddStep("depth"_Stz,           &Step::vDstackDepth);
-  vAddStep("drop"_Stz,            &Step::vDstackDrop);
-  vAddStep("2drop"_Stz,           &Step::vDstackDropTwo);
+  vAddStep("drop"_Stz,            &Step::vDstackDiscard);
+  vAddStep("2drop"_Stz,           &Step::vDstackDiscardTwo);
   vAddStep("dup"_Stz,             &Step::vDstackDup);
   vAddStep("?dup"_Stz,            &Step::vDstackDupNonZero);
   vAddStep("nip"_Stz,             &Step::vDstackNip);
@@ -66,7 +66,7 @@ void Step::vDstackDepth(void)
 /*----------------------------------------------------------------------------*/
 /* drop -- discard top value off stack                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDrop(void)
+void Step::vDstackDiscard(void)
 {
   ENTRY(); // ENTRY("vDstackDrop"_Stz);
   
@@ -78,7 +78,7 @@ void Step::vDstackDrop(void)
 /*----------------------------------------------------------------------------*/
 /* 2drop -- discard top two values off stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDropTwo(void)
+void Step::vDstackDiscardTwo(void)
 {
   ENTRY(); // ENTRY("vDstackDrop"_Stz);
   

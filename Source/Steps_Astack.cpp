@@ -11,7 +11,7 @@ void Step::vAddSteps_Astack(void)
 {
   vAddStep("astack.class"_Stz,    &Step::vAstackClass);
   vAddStep("adepth"_Stz,          &Step::vAstackDepth);
-  vAddStep("adrop"_Stz,           &Step::vAstackDrop);
+  vAddStep("adrop"_Stz,           &Step::vAstackDiscard);
   vAddStep("adup"_Stz,            &Step::vAstackDup);
   vAddStep("a@"_Stz,              &Step::vAstackFetch);
   vAddStep("anip"_Stz,            &Step::vAstackNip);
@@ -70,7 +70,7 @@ void Step::vAstackDepth(void)
 /*----------------------------------------------------------------------------*/
 /* adrop -- discard top value off astack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDrop(void)
+void Step::vAstackDiscard(void)
 {
   ENTRY(); // ENTRY("vAstackDrop"_Stz);
   

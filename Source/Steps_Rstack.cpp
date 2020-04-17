@@ -12,7 +12,7 @@ void Step::vAddSteps_Rstack(void)
   vAddStep("cs-pick"_Stz,         &Step::vRstackCsPick);
   vAddStep("cs-roll"_Stz,         &Step::vRstackCsRoll);
   vAddStep("rdepth"_Stz,          &Step::vRstackDepth);
-  vAddStep("rdrop"_Stz,           &Step::vRstackDrop);
+  vAddStep("rdrop"_Stz,           &Step::vRstackDiscard);
   vAddStep("r@"_Stz,              &Step::vRstackFetch);
   vAddStep("2r@"_Stz,             &Step::vRstackFetchTwo);
   vAddStep("rpick"_Stz,           &Step::vRstackPick);
@@ -112,7 +112,7 @@ void Step::vRstackDepth(void)
 /*----------------------------------------------------------------------------*/
 /* rdrop -- discard top value off rstack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackDrop(void)
+void Step::vRstackDiscard(void)
 {
   ENTRY(); // ENTRY("vRstackDrop"_Stz);
   

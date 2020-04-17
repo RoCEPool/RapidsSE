@@ -73,7 +73,7 @@ public:
   // astack
   void vAstackClass(void);
   void vAstackDepth(void);
-  void vAstackDrop(void);
+  void vAstackDiscard(void);
   void vAstackDup(void);
   void vAstackFetch(void);
   void vAstackNip(void);
@@ -226,8 +226,8 @@ public:
   // dstack
   void vDstackClass(void);                 //! DUP OF class@
   void vDstackDepth(void);
-  void vDstackDrop(void);
-  void vDstackDropTwo(void);
+  void vDstackDiscard(void);
+  void vDstackDiscardTwo(void);
   void vDstackDup(void);
   void vDstackDupNonZero(void);
   void vDstackNip(void);
@@ -1213,7 +1213,7 @@ public:
   void vRstackCsPick(void);
   void vRstackCsRoll(void);
   void vRstackDepth(void);
-  void vRstackDrop(void);
+  void vRstackDiscard(void);
   void vRstackFetch(void);
   void vRstackFetchTwo(void);
   void vRstackPick(void);
