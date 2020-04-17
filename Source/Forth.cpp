@@ -97,7 +97,7 @@ Forth::~Forth(void) noexcept(false)
   }
   
   delete m_pCompiler;
-  //delete m_pCompiler;
+  delete m_pTokeniser;
 }
 
 /*----------------------------------------------------------------------------*/
