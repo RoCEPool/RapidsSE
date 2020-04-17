@@ -44,6 +44,8 @@ Token::Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
+  m_szChars = m_sTerm.szStz();
+  
   vReset();
   
   _checkInitialised_(CN_TOKEN);
@@ -58,6 +60,8 @@ Token::Token(Token* pToCopy)
 : Object(CN_TOKEN)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_szChars = m_sTerm.szStz();
   
   vReset();
   
@@ -110,7 +114,7 @@ Stz* Token::szChars(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  return m_sTerm.szStz();
+  return m_szChars;
 }
 
 /*----------------------------------------------------------------------------*/

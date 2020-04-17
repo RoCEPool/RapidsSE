@@ -9,6 +9,7 @@ namespace LexicalAnalysis
   {
   private:
     eTN   m_eToken;  // kind of token
+    Stz*  m_szChars; // term (aka text)
     s256  m_sTerm;   // term (aka text)
     i8    m_iLineNo; // line number where term can be found in input
     i8    m_iColNo;  // column number where term can be found in input
