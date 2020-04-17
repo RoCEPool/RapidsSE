@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : checkRemoveSchema ( "<schemaNm>" --  true | errorCode false )
 
- params| sSchemaNm |
+  params| sSchemaNm |
 
   folder[].checkInSchemas not if false exit then
   sSchemaNm word::isKnown not if EC_NO_SUCH_SCHEMA false exit then
@@ -25,12 +25,21 @@
 /*----------------------------------------------------------------------------*/
 : removeSchema ( "<schemaNm>" --  )
 
+  params| sSchemaNm |
 
   args.tracepoint if
     dup "REMOVING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  :forget ( )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to schema folder
+  sSchemaNm path[].pushSchemaFolder assert
+
+  "tables" folder::remove
+
+  path[].discardSchemaFolder
+
+  sSchemaNm folder::remove
 ;
 
 /*----------------------------------------------------------------------------*/
