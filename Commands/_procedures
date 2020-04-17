@@ -59,6 +59,24 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
+/* drop tenant                                                                */
+/*----------------------------------------------------------------------------*/
+procedure drop tenant
+  parameters $tenantNm
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
 /* export table into csv file                                                 */
 /*----------------------------------------------------------------------------*/
 procedure export
@@ -271,6 +289,8 @@ end;
 
 
 /*
+
+
 procedure sp_dropTable
 parameters $table
 begin

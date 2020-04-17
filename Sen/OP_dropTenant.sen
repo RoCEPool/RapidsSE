@@ -5,6 +5,14 @@
 " OP_dropTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check if word is not a tenant                                              */
+/*----------------------------------------------------------------------------*/
+: checkIsTenant ( word )
+  folder[].findSymbol if true exit then
+  EC_TENANT_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
 : dropTenant_PulseMarker
@@ -22,7 +30,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if tenant exits
-  <tenantNm> path[].checkIsTenant not if
+  <tenantNm> checkIsTenant not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

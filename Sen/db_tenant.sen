@@ -10,7 +10,7 @@
 : \tenant \\category ;
 
 /*----------------------------------------------------------------------------*/
-/* test if current folder is ../tennants                                      */
+/* test if current folder is ../tenants                                       */
 /*----------------------------------------------------------------------------*/
 : folder[].isTenants
 

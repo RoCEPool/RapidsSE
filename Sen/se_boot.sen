@@ -80,7 +80,6 @@
         "job_DropIndex.sen"       include
         "job_DropSchema.sen"      include
         "job_DropTable.sen"       include
-        "job_DropTenant.sen"      include
 
         "job_FetchRows.sen"       include
         "job_ForgetNode.sen"      include
@@ -125,6 +124,7 @@
         "OP_createTenant.sen"     include
 
         //"OP_docol.sen"            include
+        "OP_dropTenant.sen"       include
         "OP_dumpIdx.sen"          include
         "OP_dumpTbl.sen"          include
 
