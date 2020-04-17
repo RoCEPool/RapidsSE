@@ -391,7 +391,7 @@ void Input::vReadTillSemicolon(void)
   i8 i_Token = m_pTknVec->iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
+    //m_pInput->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
     return;
   }
   
@@ -419,7 +419,7 @@ void Input::vReadTillSemicolon(void)
   vLineMode(true);
   //vPrompt(m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
+  //m_pInput->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

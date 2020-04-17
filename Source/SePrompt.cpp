@@ -64,7 +64,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pSession->m_pTokeniser->vForkReset();
+  m_pSession->m_pInput->vForkReset();
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
@@ -137,8 +137,8 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
-  m_pSession->m_pTokeniser->vUseStdin();
-  m_pSession->m_pTokeniser->vUseBegin();
+  m_pSession->m_pInput->vUseStdin();
+  m_pSession->m_pInput->vUseBegin();
 
   vVerifyJobSeeds();
   
@@ -990,14 +990,14 @@ bool SePrompt::bReadNextCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  if (m_bOneCommand && m_pSession->m_pTokeniser->bIsStdin()) {
+  if (m_bOneCommand && m_pSession->m_pInput->bIsStdin()) {
     vDebugPoint();
     return false;
   }
 
-  m_pSession->m_pTokeniser->vInspect();
+  m_pSession->m_pInput->vInspect();
 
-  m_pSession->m_pTokeniser->vReadCommand();
+  m_pSession->m_pInput->vReadCommand();
   
   return true;
 }
@@ -1016,7 +1016,7 @@ bool SePrompt::bRedirectFromFile(void)
   if (! File::bExists(szPath))
     return false;
   
-  Input* pTokeniser = m_pSession->m_pTokeniser;
+  Input* pTokeniser = m_pSession->m_pInput;
     
   pTokeniser->vPushFile(szPath);
   
@@ -1264,7 +1264,7 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pTokeniser = m_pSession->m_pTokeniser;
+  Input* pTokeniser = m_pSession->m_pInput;
   if (pTokeniser->bIsStdin())
     return true;
   else

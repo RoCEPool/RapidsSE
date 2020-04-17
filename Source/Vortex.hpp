@@ -13,7 +13,7 @@ namespace Utilities
   
     s256         m_sSourcePath;  // .h/hpp source path
     i8           m_nSources;     // sources so far
-    Input*   m_pTokeniser;   // input token stream of source file
+    Input*       m_pInput;       // input token stream of source file
     bool         m_bEOF;         // end-of-file reached?
     Token        m_oCurTkn;      // current token
 

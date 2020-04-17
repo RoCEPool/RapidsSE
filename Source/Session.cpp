@@ -113,7 +113,7 @@ Session::Session(void)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pTokeniser      = new Input;
+  m_pInput      = new Input;
 
   m_sToDo           = ""_Stz;
   
@@ -148,7 +148,7 @@ Session::~Session(void) noexcept(false)
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
   
-  delete m_pTokeniser;
+  delete m_pInput;
 
   delete m_pNmStrLst;
   
@@ -400,7 +400,7 @@ TokenVec* Session::pTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return m_pTokeniser->pTokenVec();
+  return m_pInput->pTokenVec();
 }
 
 /*----------------------------------------------------------------------------*/

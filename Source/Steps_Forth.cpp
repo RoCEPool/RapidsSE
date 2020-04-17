@@ -34,8 +34,8 @@ void Step::vColon(void)
   
   m_pCompiler->vMode(CM_COMPILING);
   
-  m_pTokeniser->vReadToken_nil();
-  sName = m_pTokeniser->szToken();
+  m_pInput->vReadToken_nil();
+  sName = m_pInput->szToken();
   
   //vTrace("Colon: %s\n"_Stz,sName.szStz());
   
@@ -62,8 +62,8 @@ void Step::vComment(void)
   ENTRY();
   
   for (;;) {
-    m_pTokeniser->vReadToken_nil();
-    if (m_pTokeniser->szToken()->bEqual(")"_Stz))
+    m_pInput->vReadToken_nil();
+    if (m_pInput->szToken()->bEqual(")"_Stz))
       break;
   }
   
@@ -188,10 +188,10 @@ void Step::vFind(void)
 {
   ENTRY();
   
-  m_pTokeniser->vReadToken_nil();
+  m_pInput->vReadToken_nil();
 
   s32 sWordNm;
-  sWordNm = m_pTokeniser->szToken();
+  sWordNm = m_pInput->szToken();
   
   Word* pWord = m_oDicStack.pFindWord(sWordNm);
   
@@ -238,14 +238,14 @@ void Step::vPostpone(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // get name of word to be called
-  m_pTokeniser->vReadToken_nil();
+  m_pInput->vReadToken_nil();
 
   // find the word in dic stack
-  Word* pCalledWord = m_oDicStack.pFindWord(m_pTokeniser->szToken());
+  Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szToken());
   if ( ! pCalledWord )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,
-           m_pTokeniser->szToken()->azChar());
+           m_pInput->szToken()->azChar());
   
   
   Datum xVar;

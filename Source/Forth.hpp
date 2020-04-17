@@ -31,7 +31,7 @@ namespace SenVM
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
   
     Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
-    Input*  m_pTokeniser;   // word compiler (Job boot, create table etc)
+    Input*      m_pInput;       // input stream
 
     // must be last
     Footer m_xFooter;
