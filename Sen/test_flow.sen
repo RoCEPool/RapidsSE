@@ -25,7 +25,7 @@
     assert::stack_2
   until
   assert::stack_1
-  drop
+  discard
   assert::stack_0
 
 ;

@@ -28,7 +28,7 @@
   <jobNm> "::request" str.cat find dup if
     execute
   else
-    drop
+    discard
   then
 
   DdlLock[].testDrop
@@ -65,7 +65,7 @@
   <jobNm> "::request" str.cat find dup if
     execute
   else
-    drop
+    discard
   then
 
   job[] job.hasError not if
@@ -110,7 +110,7 @@
   <jobNm> "::checkResources" str.cat find dup if
     execute
   else
-    drop
+    discard
   then
 
   JP_BEGUN job[] job.phase!
@@ -142,7 +142,7 @@
   <jobNm> "::execute" str.cat find dup if
     execute
   else
-    drop
+    discard
   then
 
   JP_EXECUTED job[] job.phase!
@@ -166,7 +166,7 @@
   <jobNm> "::releaseResources" str.cat find dup if
     execute
   else
-    drop
+    discard
   then
 
   JP_ENDED job[] job.phase!
@@ -192,7 +192,7 @@
   <jobNm> "::releaseResources" str.cat find dup if
     execute
   else
-    drop
+    discard
   then
 
   JP_CANCELED job[] job.phase!

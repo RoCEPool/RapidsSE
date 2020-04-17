@@ -277,7 +277,7 @@
     pEnameSet enameSet.appendStr
 
   // skip the :: token from input source
-  input::next drop
+  input::next discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -312,14 +312,14 @@
       then then then
   repeat
 
-  // drop the ";" from dstack
-  drop
+  // discard the ";" from dstack
+  discard
 
   // pEnameSet EnameSet.asStr .
 
   does>
     // ..to be written
-    drop
+    discard
 ;
 
 
@@ -350,7 +350,7 @@
   "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
 
   // skip the "{" token from input source
-  input::next drop
+  input::next discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
@@ -360,18 +360,18 @@
     dup "}" str.equal not
   while
     to sEname
-    input::next drop
+    input::next discard
     input::next to sEvalue
     sEname sEvalue pWord jobInfo::addEname
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // drop the "}" from dstack
-  drop
+  // discard the "}" from dstack
+  discard
 
-  // get and drop ";"
-  input::next drop
+  // get and discard ";"
+  input::next discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set

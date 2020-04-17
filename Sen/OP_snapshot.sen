@@ -36,7 +36,7 @@
   // end a read transaction
   tx[].commit
 
-  // drop the read lock on the table ptn
+  // discard the read lock on the table ptn
   tablePtn[].get tablePtnDropRead2
 
   Operand[].newEosMarker

@@ -17,7 +17,7 @@
   "T" find execute to table[]
 
   3 0 do
-    table[].genCsvBuffer drop
+    table[].genCsvBuffer discard
   loop
 ;
 
