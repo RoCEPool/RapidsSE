@@ -24,8 +24,10 @@ namespace LexicalAnalysis
     static void vReplace(TokenVec* pTknVec, TokenVec* pFindVec, TokenVec* pWithVec);
     static TokenVec* pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To);
     static TokenVec* pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
+    static TokenVec* pTokenise(Stz* szString);
     static TokenVec* _pTokenSet(void* aAddr);
-  
+
+
     void vAdvanceCurr(void);
     void vAppendToken(Stz* szTerm);
     void vAppendVector(TokenVec* pTokenVec);

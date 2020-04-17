@@ -51,20 +51,6 @@ Input::~Input(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string                                                      */
-/*----------------------------------------------------------------------------*/
-TokenVec* Input::pTokenise(Stz* szString)
-{
-  _static_
-  
-  TokenVec* pTknVec = new TokenVec;
-  
-  vTokenise(pTknVec,szString);
-  
-  return pTknVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* tokenise given string into given TokenVec                                  */
 /*----------------------------------------------------------------------------*/
 void Input::vTokenise(TokenVec* pTknVec, Stz* szString)
