@@ -11,7 +11,6 @@ void Step::vAddSteps_Session(void)
 {
   vAddStep("session::this"_Stz,            &Step::vSessionThis);
   
-  vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
   vAddStep("session.dicStack@"_Stz,        &Step::vSessionDicStackFetch);
   vAddStep("session.dump"_Stz,             &Step::vSessionDump);
   vAddStep("session.enameSet@"_Stz,        &Step::vSessionEnameSetFetch);
@@ -22,21 +21,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("session.todo!"_Stz,            &Step::vSessionToDoStore);
   vAddStep("session.tx@"_Stz,              &Step::vSessionTxFetch);
   vAddStep("session.tx!"_Stz,              &Step::vSessionTxStore);
-}
-
-/*----------------------------------------------------------------------------*/
-/* session.commandProcessor -- get session command processor                  */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionCommand(void)
-{
-  ENTRY();
-  
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eClass());
-  
-  m_pDataStack->vPushPtr(pSession->m_pTokenStream);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
