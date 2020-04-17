@@ -19,7 +19,7 @@ namespace LexicalAnalysis
 #include "TokenVec.hpp"
 
 #include "Charser.hpp"
-#include "Tokeniser.hpp"
+#include "Input.hpp"
 
 #include "SP_TknVecStr.hpp"
 
