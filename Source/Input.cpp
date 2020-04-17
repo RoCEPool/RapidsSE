@@ -267,6 +267,8 @@ void Input::vReadCommand(void)
     
   ASSERT(m_pCharser->bUseBegun());
   
+  vLineMode(true);
+  
   vReadTillEOF();
     
   // if empty line just return
@@ -279,8 +281,14 @@ void Input::vReadCommand(void)
      File::bExists(m_pTknVec->pGet(0)->szTerm()))
     return;
   
+  // switch to terminal mode
+  vLineMode(false);
+  
   // read more till ;
   vReadTillSemicolon();
+  
+  // switch back to line mode
+  vLineMode(true);
   
   // stip off ;
   m_pTknVec->vStripSemicolon();
@@ -355,9 +363,6 @@ void Input::vReadTillSemicolon(void)
   
   i_Token = m_pTknVec->iCountTokens();
   
-  // switch to terminal mode
-  vLineMode(false);
-  
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
@@ -373,11 +378,6 @@ void Input::vReadTillSemicolon(void)
     m_pTknVec->vAdvanceCurr();
   }
   
-  // switch back to line mode
-  vLineMode(true);
-  //vPrompt(m_sPrompt);
-  
-  //m_pInput->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,7 +522,6 @@ void Input::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  m_pCharser->vLineMode(true);
   m_pCharser->vUseStdin();
 }
 
