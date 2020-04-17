@@ -48,7 +48,7 @@ namespace Sessions
     s48K     m_sResponse;        // response
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
-    Tokeniser* m_pTokeniser;     // input tokens
+    Input* m_pTokeniser;     // input tokens
 
     Job*     m_pJob;             // job session currently executing
     Tx*      m_pTx;              // current transaction

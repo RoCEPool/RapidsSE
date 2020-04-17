@@ -960,7 +960,7 @@ bool SePrompt::bReadNextCommand(void)
     gxArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    Tokeniser::vTokenise(pTknVec,szInitial);
+    Input::vTokenise(pTknVec,szInitial);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
     return true;
@@ -971,7 +971,7 @@ bool SePrompt::bReadNextCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    Tokeniser::vTokenise(pTknVec,szCommand);
+    Input::vTokenise(pTknVec,szCommand);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
     return true;
@@ -980,7 +980,7 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (* m_pSession->m_sToDo.azChar()) {
-    Tokeniser::vTokenise(pTknVec,m_pSession->m_sToDo);
+    Input::vTokenise(pTknVec,m_pSession->m_sToDo);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
 
@@ -1016,7 +1016,7 @@ bool SePrompt::bRedirectFromFile(void)
   if (! File::bExists(szPath))
     return false;
   
-  Tokeniser* pTokeniser = m_pSession->m_pTokeniser;
+  Input* pTokeniser = m_pSession->m_pTokeniser;
     
   pTokeniser->vPushFile(szPath);
   
@@ -1264,7 +1264,7 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Tokeniser* pTokeniser = m_pSession->m_pTokeniser;
+  Input* pTokeniser = m_pSession->m_pTokeniser;
   if (pTokeniser->bIsStdin())
     return true;
   else
@@ -1321,7 +1321,7 @@ bool SePrompt::bSubLet(void)
                          pNmStr->m_sValue.szStz(),
                          sPartB.szStz());
     
-    Tokeniser::vTokenise(pTknVec,sSubstituted);
+    Input::vTokenise(pTknVec,sSubstituted);
     
     return true;
   }

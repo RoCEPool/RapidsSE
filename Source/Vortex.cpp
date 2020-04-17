@@ -156,7 +156,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   TRACE("Parsing file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
   
   m_sSourcePath = szSourcePath;
-  m_pTokeniser = new Tokeniser;
+  m_pTokeniser = new Input;
   m_pTokeniser->vPushFile(szSourcePath);
   
   bool b = bGetNextToken();

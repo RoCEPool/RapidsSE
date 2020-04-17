@@ -31,7 +31,7 @@ namespace SenVM
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
   
     Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
-    Tokeniser*  m_pTokeniser;   // word compiler (Job boot, create table etc)
+    Input*  m_pTokeniser;   // word compiler (Job boot, create table etc)
 
     // must be last
     Footer m_xFooter;
@@ -53,7 +53,7 @@ namespace SenVM
     DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
     Task* pTask(void);
-    Tokeniser* pTokeniser(void);
+    Input* pTokeniser(void);
 
   private:
     Footer* aFooter(void);

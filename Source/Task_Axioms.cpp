@@ -306,7 +306,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   TokenVec* pTokenVec;
   
   Compiler*  pCompiler = m_pForth->pCompiler();
-  Tokeniser* pTokeniser = m_pForth->pTokeniser();
+  Input* pTokeniser = m_pForth->pTokeniser();
   
   pTokeniser->vUseString(sDefinition);
   pTokeniser->vSenTokens();
@@ -428,7 +428,7 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   s48K sValue;
   
   Compiler* pCompiler = m_pForth->pCompiler();
-  Tokeniser* pTokeniser = m_pForth->pTokeniser();
+  Input* pTokeniser = m_pForth->pTokeniser();
 
   pTokeniser->vUseString(sDefinition);
   

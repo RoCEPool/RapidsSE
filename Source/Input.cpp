@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Tokeniser.cpp -- Tokeniser : divide input stream into tokens               */
+/* Input.cpp -- Input : divide input stream into tokens               */
 /*============================================================================*/
 
 #include "LexicalAnalysis.h"
@@ -9,19 +9,19 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(LexicalAnalysis,Tokeniser,CN_TOKENISER)
-__aNewFunction(Tokeniser,CN_TOKENISER)
-__vDeleteFunction(Tokeniser,CN_TOKENISER)
-__aFooterFunction(Tokeniser)
+__pCastFunction(LexicalAnalysis,Input,CN_INPUT)
+__aNewFunction(Input,CN_INPUT)
+__vDeleteFunction(Input,CN_INPUT)
+__aFooterFunction(Input)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Tokeniser::Tokeniser(void)
-: Object(CN_TOKENISER)
+Input::Input(void)
+: Object(CN_INPUT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser   = new Charser(nullptr);
   
@@ -32,17 +32,17 @@ Tokeniser::Tokeniser(void)
   m_pTknVec    = new TokenVec;
   m_pToken     = nullptr;
   
-  _checkInitialised_(CN_TOKENISER);
+  _checkInitialised_(CN_INPUT);
     
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Tokeniser::~Tokeniser(void) noexcept(false)
+Input::~Input(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   while (m_pCharser)
     RASSERT(bPopCharser());
@@ -53,7 +53,7 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTokenise(Stz* szString)
+TokenVec* Input::pTokenise(Stz* szString)
 {
   _static_
   
@@ -67,13 +67,13 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into given TokenVec                                  */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vTokenise(TokenVec* pTknVec, Stz* szString)
+void Input::vTokenise(TokenVec* pTknVec, Stz* szString)
 {
   _static_
   
   pTknVec->vReset();
   
-  Tokeniser* pTokeniser = new Tokeniser;
+  Input* pTokeniser = new Input;
   pTokeniser->vUseString(szString);
   pTokeniser->vSenTokens();
   pTokeniser->vUseBegin();
@@ -99,11 +99,11 @@ void Tokeniser::vTokenise(TokenVec* pTknVec, Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   _static_
 
-  Tokeniser* pTokeniser = _pTokeniser(pObject);
+  Input* pTokeniser = _pInput(pObject);
   
   vTrace("parser %p\n"_Stz,
          pTokeniser->m_pCharser);
@@ -116,9 +116,9 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get current charser                                                        */
 /*----------------------------------------------------------------------------*/
-Charser* Tokeniser::pCharser(void)
+Charser* Input::pCharser(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   return m_pCharser;
 }
@@ -126,9 +126,9 @@ Charser* Tokeniser::pCharser(void)
 /*----------------------------------------------------------------------------*/
 /* set normal cpp tokens                                                      */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCppTokens(void)
+void Input::vCppTokens(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_eTknForm = UF_CPP_TOKENS;
 }
@@ -136,9 +136,9 @@ void Tokeniser::vCppTokens(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of charser                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iDepth(void)
+i8 Input::iDepth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   i8 iCharserDepth = 0;
   
@@ -151,12 +151,12 @@ i8 Tokeniser::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* dump the tokeniser                                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDump(void)
+void Input::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   vTrace("\n"_Stz);
-  vTrace("Tokeniser::vDump\n"_Stz);
+  vTrace("Input::vDump\n"_Stz);
   vTrace("----------------\n"_Stz);
 
   Token* pCurTkn = m_pTknVec->pCurrToken();
@@ -190,9 +190,9 @@ void Tokeniser::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* hard reset after fork                                                      */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vForkReset(void)
+void Input::vForkReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vForkReset();
   
@@ -202,9 +202,9 @@ void Tokeniser::vForkReset(void)
 /*----------------------------------------------------------------------------*/
 /* inspection                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vInspect(void)
+void Input::vInspect(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vInspect();
 }
@@ -212,9 +212,9 @@ void Tokeniser::vInspect(void)
 /*----------------------------------------------------------------------------*/
 /* get stdin?                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsStdin(void)
+bool Input::bIsStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   bool bStdin = m_pCharser->bIsStdin();
   
@@ -224,9 +224,9 @@ bool Tokeniser::bIsStdin(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vLineMode(bool bLineMode)
+void Input::vLineMode(bool bLineMode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vLineMode(bLineMode);
 }
@@ -234,9 +234,9 @@ void Tokeniser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* get LineMode?                                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bLineMode(void)
+bool Input::bLineMode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   bool bLineMode = m_pCharser->bLineMode();
   
@@ -246,9 +246,9 @@ bool Tokeniser::bLineMode(void)
 /*----------------------------------------------------------------------------*/
 /* get charser path                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Tokeniser::szPath(void)
+Stz* Input::szPath(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   Stz* szSource = m_pCharser->szPath();
   
@@ -258,9 +258,9 @@ Stz* Tokeniser::szPath(void)
 /*----------------------------------------------------------------------------*/
 /* pop a parser                                                               */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bPopCharser(void)
+bool Input::bPopCharser(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (! m_pCharser)
     return false;
@@ -276,9 +276,9 @@ bool Tokeniser::bPopCharser(void)
 /*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPushCharser(void)
+void Input::vPushCharser(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   Charser* pNewCharser = new Charser(m_pCharser);
   
@@ -288,9 +288,9 @@ void Tokeniser::vPushCharser(void)
 /*----------------------------------------------------------------------------*/
 /* push input file                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPushFile(Stz* szPath)
+void Input::vPushFile(Stz* szPath)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   vPushCharser();
   
@@ -303,9 +303,9 @@ void Tokeniser::vPushFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* read next command from token stream                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadCommand(void)
+void Input::vReadCommand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
   ASSERT(m_pCharser->bUseBegun());
   
@@ -337,9 +337,9 @@ void Tokeniser::vReadCommand(void)
 /*----------------------------------------------------------------------------*/
 /* read tokens from stream till EOF                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadTillEOF(void)
+void Input::vReadTillEOF(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(m_pCharser->bUseBegun());
   
@@ -378,9 +378,9 @@ void Tokeniser::vReadTillEOF(void)
 /*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadTillSemicolon(void)
+void Input::vReadTillSemicolon(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(m_pCharser->bUseBegun());
   
@@ -425,9 +425,9 @@ void Tokeniser::vReadTillSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadToken_nil(void)
+void Input::vReadToken_nil(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(m_pCharser->bUseBegun());
   
@@ -442,9 +442,9 @@ void Tokeniser::vReadToken_nil(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vReadToken_vec(void)
+void Input::vReadToken_vec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
@@ -460,9 +460,9 @@ void Tokeniser::vReadToken_vec(void)
 /*----------------------------------------------------------------------------*/
 /* seen EOF?                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bSeenEOF(void)
+bool Input::bSeenEOF(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   bool bEOF = m_pCharser->bSeenEOF();
   
@@ -472,9 +472,9 @@ bool Tokeniser::bSeenEOF(void)
 /*----------------------------------------------------------------------------*/
 /* set sen tokens                                                             */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vSenTokens(void)
+void Input::vSenTokens(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
   m_eTknForm = UF_SEN_TOKENS;
 }
@@ -482,9 +482,9 @@ void Tokeniser::vSenTokens(void)
 /*----------------------------------------------------------------------------*/
 /* get token type                                                             */
 /*----------------------------------------------------------------------------*/
-eTN Tokeniser::eToken(void)
+eTN Input::eToken(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   Token* pCurrToken = m_pTknVec->pCurrToken();
   
@@ -496,9 +496,9 @@ eTN Tokeniser::eToken(void)
 /*----------------------------------------------------------------------------*/
 /* get token string                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Tokeniser::szToken(void)
+Stz* Input::szToken(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
   Token* pCurrToken = m_pTknVec->pCurrToken();
   
@@ -508,9 +508,9 @@ Stz* Tokeniser::szToken(void)
 /*----------------------------------------------------------------------------*/
 /* get token string                                                           */
 /*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTokenVec(void)
+TokenVec* Input::pTokenVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   return m_pTknVec;
 }
@@ -518,9 +518,9 @@ TokenVec* Tokeniser::pTokenVec(void)
 /*----------------------------------------------------------------------------*/
 /* begin use of charser source                                                */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseBegin(void)
+void Input::vUseBegin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUseBegin();
 }
@@ -528,9 +528,9 @@ void Tokeniser::vUseBegin(void)
 /*----------------------------------------------------------------------------*/
 /* close use of charser source                                                */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseClose(void)
+void Input::vUseClose(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUseClose();
 }
@@ -538,9 +538,9 @@ void Tokeniser::vUseClose(void)
 /*----------------------------------------------------------------------------*/
 /* end use of source                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseEnd(void)
+void Input::vUseEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUseEnd();
   
@@ -550,9 +550,9 @@ void Tokeniser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* use file                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bUseFile(Stz* szPath)
+bool Input::bUseFile(Stz* szPath)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   bool bOpened = m_pCharser->bUseFile(szPath);
   
@@ -562,9 +562,9 @@ bool Tokeniser::bUseFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseStdin(void)
+void Input::vUseStdin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUseStdin();
   vLineMode(true);
@@ -574,9 +574,9 @@ void Tokeniser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use string                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseString(Stz* szString)
+void Input::vUseString(Stz* szString)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUseString(szString);
 }
@@ -593,9 +593,9 @@ void Tokeniser::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* collect normal token                                                       */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectCpp(void)
+void Input::vCollectCpp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
 
@@ -660,9 +660,9 @@ void Tokeniser::vCollectCpp(void)
 /*----------------------------------------------------------------------------*/
 /* collect normal cpp integer literal                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectCppInteger(void)
+void Input::vCollectCppInteger(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
   
@@ -709,9 +709,9 @@ void Tokeniser::vCollectCppInteger(void)
 /*----------------------------------------------------------------------------*/
 /* collect normal cpp name                                                    */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectCppName(void)
+void Input::vCollectCppName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
 
@@ -738,9 +738,9 @@ void Tokeniser::vCollectCppName(void)
 /*----------------------------------------------------------------------------*/
 /* collect other cpp token                                                    */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectCppOther(void)
+void Input::vCollectCppOther(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
 
@@ -936,9 +936,9 @@ void Tokeniser::vCollectCppOther(void)
 /*----------------------------------------------------------------------------*/
 /* collect normal cpp string literal                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectCppString(void)
+void Input::vCollectCppString(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
 
@@ -976,9 +976,9 @@ void Tokeniser::vCollectCppString(void)
 /*----------------------------------------------------------------------------*/
 /* collect Sen token                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSen(void)
+void Input::vCollectSen(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(UF_SEN_TOKENS == m_eTknForm);
   
@@ -1048,9 +1048,9 @@ void Tokeniser::vCollectSen(void)
 /*----------------------------------------------------------------------------*/
 /* collect Sen integer                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenInteger(void)
+void Input::vCollectSenInteger(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
 
@@ -1119,9 +1119,9 @@ void Tokeniser::vCollectSenInteger(void)
 /*----------------------------------------------------------------------------*/
 /* collect Sen name                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenName(void)
+void Input::vCollectSenName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
   
@@ -1147,9 +1147,9 @@ void Tokeniser::vCollectSenName(void)
 /*----------------------------------------------------------------------------*/
 /* collect Sen string                                                         */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenString(void)
+void Input::vCollectSenString(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
 
@@ -1190,9 +1190,9 @@ void Tokeniser::vCollectSenString(void)
 /*----------------------------------------------------------------------------*/
 /* collect Sen tag                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectSenTag(void)
+void Input::vCollectSenTag(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   char *z = StrLib::zNullTerminator(m_pToken->azTerm());
 
@@ -1247,9 +1247,9 @@ void Tokeniser::vCollectSenTag(void)
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vSkipWhitespace(void)
+void Input::vSkipWhitespace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   while (bHaveWhitespace())
     vGetAnnCharStripped();
@@ -1258,9 +1258,9 @@ void Tokeniser::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 /* have whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bHaveWhitespace(void)
+bool Input::bHaveWhitespace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   // do we have a current parsed character, which is a white char?
   if (m_xAnnChar.m_cChar) {
@@ -1287,9 +1287,9 @@ bool Tokeniser::bHaveWhitespace(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal integer                                           */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartCppInteger(void)
+bool Input::bStartCppInteger(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (StrLib::bIsDigit(m_xAnnChar.m_cChar))
     return true;
@@ -1300,9 +1300,9 @@ bool Tokeniser::bStartCppInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal name                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartCppName(void)
+bool Input::bStartCppName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (StrLib::bIsNameStartChar(m_xAnnChar.m_cChar))
     return true;
@@ -1313,9 +1313,9 @@ bool Tokeniser::bStartCppName(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal other                                             */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartCppOther(void)
+bool Input::bStartCppOther(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (! StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar))
     return true;
@@ -1326,9 +1326,9 @@ bool Tokeniser::bStartCppOther(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal string                                            */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartCppString(void)
+bool Input::bStartCppString(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
@@ -1339,9 +1339,9 @@ bool Tokeniser::bStartCppString(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of normal string                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bEndCppString(void)
+bool Input::bEndCppString(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
@@ -1352,9 +1352,9 @@ bool Tokeniser::bEndCppString(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of Sen integer                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSenInteger(void)
+bool Input::bStartSenInteger(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (m_xAnnChar.bIsMinus() || StrLib::bIsDigit(m_xAnnChar.m_cChar))
     return true;
@@ -1365,9 +1365,9 @@ bool Tokeniser::bStartSenInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of Sen name                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSenName(void)
+bool Input::bStartSenName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (bStartSenInteger() || bStartSenString())
     return false;
@@ -1378,9 +1378,9 @@ bool Tokeniser::bStartSenName(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of Sen string                                               */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSenString(void)
+bool Input::bStartSenString(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
@@ -1396,9 +1396,9 @@ bool Tokeniser::bStartSenString(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of Sen tag                                                  */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bStartSenTag(void)
+bool Input::bStartSenTag(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   //if (m_xAnnChar.bIsTilde())
   if (m_xAnnChar.bIsLessThan())
@@ -1410,9 +1410,9 @@ bool Tokeniser::bStartSenTag(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of Sen string                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bEndSenString(void)
+bool Input::bEndSenString(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
@@ -1428,9 +1428,9 @@ bool Tokeniser::bEndSenString(void)
 /*----------------------------------------------------------------------------*/
 /* get next character from parser input                                       */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vGetAnnChar(void)
+void Input::vGetAnnChar(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vGetAnnChar(m_xAnnChar,false);
   m_xAnnChar.m_cChar = m_xAnnChar.m_cChar;
@@ -1439,9 +1439,9 @@ void Tokeniser::vGetAnnChar(void)
 /*----------------------------------------------------------------------------*/
 /* get next input character (stripped of comments)                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vGetAnnCharStripped(void)
+void Input::vGetAnnCharStripped(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vGetAnnChar(m_xAnnChar,true);
 }
@@ -1449,9 +1449,9 @@ void Tokeniser::vGetAnnCharStripped(void)
 /*----------------------------------------------------------------------------*/
 /* unget current input character                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUngetAnnCharStripped(void)
+void Input::vUngetAnnCharStripped(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUngetAnnChar(m_xAnnChar);
 }
@@ -1459,9 +1459,9 @@ void Tokeniser::vUngetAnnCharStripped(void)
 /*----------------------------------------------------------------------------*/
 /* begin collecting a new token                                               */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vTokenCollectBegin(void)
+void Input::vTokenCollectBegin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pToken->vLineNo(m_xAnnChar.m_iLine);
   m_pToken->vColNo(m_xAnnChar.m_iCol);
@@ -1470,18 +1470,18 @@ void Tokeniser::vTokenCollectBegin(void)
 /*----------------------------------------------------------------------------*/
 /* end collecting a token                                                     */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vTokenCollectEnd(void)
+void Input::vTokenCollectEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* test for end of input                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bEndInput(void)
+bool Input::bEndInput(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (m_xAnnChar.bIsNull())
     return true;

@@ -120,7 +120,7 @@ eEC TableDef::eParse(Stz* szCmd)
   m_sCmd = szCmd;
   
   // tokenise the command
-  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+  TokenVec* pTknVec = Input::pTokenise(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Table <tableNm>
@@ -238,7 +238,7 @@ eEC TableDef::eSyntax(Stz* szCmd)
   i8 i_Col = C_UNKNOWN;
   
   // tokenise the command
-  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+  TokenVec* pTknVec = Input::pTokenise(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Table <tableNm>

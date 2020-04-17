@@ -502,7 +502,7 @@ void TokenVec::vTokenise(Stz* szString)
 
   vReset();
   
-  Tokeniser* pTokeniser = new Tokeniser;
+  Input* pTokeniser = new Input;
   pTokeniser->vUseString(szString);
   pTokeniser->vSenTokens();
   pTokeniser->vUseBegin();

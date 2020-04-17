@@ -5,7 +5,7 @@
 
 namespace LexicalAnalysis
 {
-  class Tokeniser : public Object
+  class Input : public Object
   {
   private:
     Charser*  m_pCharser;   // charser
@@ -22,8 +22,8 @@ namespace LexicalAnalysis
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Tokeniser(void);
-   ~Tokeniser(void) noexcept(false);
+    Input(void);
+   ~Input(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(Stz* szString);
@@ -99,7 +99,7 @@ namespace LexicalAnalysis
     Footer* aFooter(void);
   };
   
-  Tokeniser* _pTokeniser(void* aAddr);
+  Input* _pInput(void* aAddr);
 }
 
 /*============================================================================*/

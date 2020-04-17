@@ -140,7 +140,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   m_sCmd = szCmd;
 
   // tokenise the command
-  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+  TokenVec* pTknVec = Input::pTokenise(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Index <indexNm>
@@ -318,7 +318,7 @@ eEC IndexDef::eSyntax(Stz* szCmd)
   i8 iIndexColumns;
   
   // tokenise the command
-  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+  TokenVec* pTknVec = Input::pTokenise(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Index <indexNm>

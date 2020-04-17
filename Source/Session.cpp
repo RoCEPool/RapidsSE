@@ -113,7 +113,7 @@ Session::Session(void)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pTokeniser      = new Tokeniser;
+  m_pTokeniser      = new Input;
 
   m_sToDo           = ""_Stz;
   

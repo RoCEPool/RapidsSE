@@ -125,6 +125,7 @@ pFINALIZE *gpFinalize[]
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /*    */ &Finalize::vUndefined,         // CN_INFOSET
   /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
+  /*144 */ &Finalize::vUndefined,         // CN_INPUT
   /*    */ &Finalize::vUndefined,         // CN_INTBUFFER
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
@@ -309,7 +310,6 @@ pFINALIZE *gpFinalize[]
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*  7 */ &Finalize::vUndefined,         // CN_TMEVAL
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
-  /*144 */ &Finalize::vUndefined,         // CN_TOKENISER
   /*146 */ &Finalize::vUndefined,         // CN_TOKENVEC
   /*  7 */ &Finalize::vUndefined,         // CN_TSPVAL
   /*147 */ &Finalize::vUndefined,         // CN_TX

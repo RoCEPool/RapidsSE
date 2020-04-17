@@ -369,7 +369,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
-  /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
+  /* 81 */ vAddConstant("CN_INPUT"_Stz,    CN_INPUT);
   /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
   /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
   
@@ -686,7 +686,7 @@ void Constants::vAddConstantsCpp(void)
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
   
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
-  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
+  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Input));
   /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
   /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
   
