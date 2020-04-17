@@ -97,7 +97,7 @@
     to sTagName
     
     // skip the =
-    input::next drop
+    input::next discard
     
     // collect the tag value
     input::next to sTagValue
@@ -109,8 +109,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // drop the "}" from dstack
-  drop
+  // discard the "}" from dstack
+  discard
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

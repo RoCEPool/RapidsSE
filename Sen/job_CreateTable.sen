@@ -35,7 +35,7 @@
   <cmd> TableDef::syntax dup EC_NONE != if
     pJob_CreateTable ERROR_JOB !!logError
   else
-    drop
+    discard
   then
 ;
 

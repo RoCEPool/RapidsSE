@@ -166,11 +166,11 @@
 
   socket[].lock
 
-    pJob pSocket socket.sendObject drop
+    pJob pSocket socket.sendObject discard
 
     pJob job.hasOperand if
       //"job.send: Job has crs buffer" .
-       pJob job.operand@ pSocket socket.sendObject drop
+       pJob job.operand@ pSocket socket.sendObject discard
     then
 
   socket[].unlock
@@ -269,7 +269,7 @@
 
   dup DL_GRAB_WRITE
   == if
-    drop
+    discard
     // "job::acquireDdlLock - grabbing ddl write lock" .
     DdlLock[].grabWrite
     exit
@@ -279,13 +279,13 @@
 
   dup DL_GRAB_READ
   == if
-    drop
+    discard
     // "job::acquireDdlLock - grabbing ddl read lock" .
     DdlLock[].grabRead
     exit
   then
 
-  drop
+  discard
 ;
 
 /*----------------------------------------------------------------------------*/
