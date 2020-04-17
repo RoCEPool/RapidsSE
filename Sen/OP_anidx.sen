@@ -43,6 +43,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 opSyntax: anidx :: anidx <tableNm> <indexNm> ;
+opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
 
 : anidx opInfo tagCopy: liteOp_tags
   tags{
