@@ -67,7 +67,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("token %s %s\n"_Stz,
          aTN[pToken->m_eToken],
-         pToken->m_sTerm.azChar());
+         pToken->azChars());
 }
 
 
@@ -153,7 +153,7 @@ bool Token::bHasText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = *(char*)m_sTerm.szStz() ? true : false;
+  bool b = *(char*)m_szChars ? true : false;
   
   return b;
 }

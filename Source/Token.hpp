@@ -25,7 +25,6 @@ namespace LexicalAnalysis
     Token(Token* pToCopy);
    ~Token(void) noexcept(false);
   
-    static Token* _pToken(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     char* azChars(void);
