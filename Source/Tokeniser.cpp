@@ -562,7 +562,7 @@ bool Tokeniser::bUseFile(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseStdinX(void)
+void Tokeniser::vUseStdin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

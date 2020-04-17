@@ -182,7 +182,7 @@ void Step::vInputStdin(void)
 {
   ENTRY();
     
-  m_pTokeniser->vUseStdinX();
+  m_pTokeniser->vUseStdin();
   m_pTokeniser->vLineMode(true);
 
   EXIT();

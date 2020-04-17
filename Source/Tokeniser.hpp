@@ -56,7 +56,7 @@ namespace LexicalAnalysis
     void vUseClose(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
-    void vUseStdinX(void);
+    void vUseStdin(void);
     void vUseString(Stz* szString);
  
   private:    

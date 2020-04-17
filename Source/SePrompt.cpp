@@ -137,7 +137,7 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
-  m_pSession->m_pTokeniser->vUseStdinX();
+  m_pSession->m_pTokeniser->vUseStdin();
   m_pSession->m_pTokeniser->vUseBegin();
 
   vVerifyJobSeeds();
