@@ -34,8 +34,8 @@ namespace LexicalAnalysis
     void vForkReset(void);
     void vInspect(void);
     bool bIsStdin(void);
-    void vLineMode(bool bLineMode);
-    bool bLineMode(void);
+    void vSingleLineMode(bool bLineMode);
+    bool bSingleLineMode(void);
     Stz* szPath(void);
     bool bPopCharser(void);
     void vPushCharser(void);

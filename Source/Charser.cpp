@@ -76,7 +76,7 @@ void Charser::vInspect(void)
          m_iDepth,
          aIS[m_eSource],
          m_sPath.szStz(),
-         m_bLineMode  ? "LineMode"  : "Non-LineMode",
+         m_bSingleLineMode  ? "SingleLine"  : "MultiLine",
          m_bUseBegun  ? "UseBegun"  : "Not-UseBegun",
          m_bUseEnded  ? "UseEnded"  : "Not-UseEnded",
          m_bUseOpened ? "UseOpened" : "Not-UseOpened",
@@ -129,21 +129,21 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
   
   if (IS_FILE == m_eSource) {
     Correctness::vDebugPoint();
-    if (m_bLineMode)
+    if (m_bSingleLineMode)
       Correctness::vDebugPoint();
     else
       Correctness::vDebugPoint();
   }
   else if (IS_STDIN == m_eSource) {
     Correctness::vDebugPoint();
-    if (m_bLineMode)
+    if (m_bSingleLineMode)
       Correctness::vDebugPoint();
     else
       Correctness::vDebugPoint();
   }
   else if (IS_STRING == m_eSource) {
     Correctness::vDebugPoint();
-    if (m_bLineMode)
+    if (m_bSingleLineMode)
       Correctness::vDebugPoint();
     else
       Correctness::vDebugPoint();
@@ -185,13 +185,13 @@ bool Charser::bSeenEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* linemode?                                                                  */
+/* single line mode?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Charser::bLineMode(void)
+bool Charser::bSingleLineMode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  return m_bLineMode;
+  return m_bSingleLineMode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,11 +227,11 @@ void Charser::vForkReset(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void Charser::vLineMode(bool bLineMode)
+void Charser::vSingleLineMode(bool bSingleLineMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  m_bLineMode = bLineMode;
+  m_bSingleLineMode = bSingleLineMode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -417,7 +417,7 @@ void Charser::vResetCharser(void)
   m_bUseOpened = false;
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
-  m_bLineMode  = false;
+  m_bSingleLineMode  = false;
 
   // sources
   m_oRawFile.vReset();
@@ -779,7 +779,7 @@ void Charser::vRawCharFromSource(AnnChar& rxAnnChar)
     case IS_FILE:
       vRawCharFromFile(rxAnnChar);
       ASSERT( (rxAnnChar.m_cChar) ||
-              (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bLineMode)) );
+              (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bSingleLineMode)) );
       break;
       
     case IS_STDIN:
@@ -822,7 +822,7 @@ void Charser::vRawCharFromFile(AnnChar& rxAnnChar)
   
   ASSERT(m_oRawFile.bIsOpen());
   
-  if (! m_bLineMode) {
+  if (! m_bSingleLineMode) {
     vReadRawLineFile();
     vNextCharFromRawLine(rxAnnChar);
     return;
@@ -863,7 +863,7 @@ void Charser::vRawCharFromStdin(AnnChar& rxAnnChar)
   ASSERT(m_oRawFile.bIsStdin());
   ASSERT(m_oRawFile.bIsOpen());
   
-  if (! m_bLineMode) {
+  if (! m_bSingleLineMode) {
     vReadRawLineStdin();
     vNextCharFromRawLine(rxAnnChar);
     ASSERT(! m_bSeenEOF);

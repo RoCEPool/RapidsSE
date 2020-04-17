@@ -180,23 +180,23 @@ bool Input::bIsStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set line mode                                                              */
+/* set single line mode                                                       */
 /*----------------------------------------------------------------------------*/
-void Input::vLineMode(bool bLineMode)
+void Input::vSingleLineMode(bool bLineMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  m_pCharser->vLineMode(bLineMode);
+  m_pCharser->vSingleLineMode(bLineMode);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get LineMode?                                                              */
+/* get SignleLine mode?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Input::bLineMode(void)
+bool Input::bSingleLineMode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  bool bLineMode = m_pCharser->bLineMode();
+  bool bLineMode = m_pCharser->bSingleLineMode();
   
   return bLineMode;
 }
@@ -255,7 +255,7 @@ void Input::vPushFile(Stz* szPath)
   bool b = bUseFile(szPath);
   ASSERT(b);
   
-  vLineMode(true);
+  vSingleLineMode(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,7 +267,7 @@ void Input::vReadCommand(void)
     
   ASSERT(m_pCharser->bUseBegun());
   
-  vLineMode(true);
+  vSingleLineMode(true);
   
   vReadTillEOF();
     
@@ -281,14 +281,16 @@ void Input::vReadCommand(void)
      File::bExists(m_pTknVec->pGet(0)->szTerm()))
     return;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // switch to terminal mode
-  vLineMode(false);
+  vSingleLineMode(false);
   
   // read more till ;
   vReadTillSemicolon();
   
   // switch back to line mode
-  vLineMode(true);
+  vSingleLineMode(true);
   
   // stip off ;
   m_pTknVec->vStripSemicolon();
@@ -301,7 +303,7 @@ void Input::vReadCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read tokens from stream till EOF                                           */
+/* read tokens from input stream till EOF                                     */
 /*----------------------------------------------------------------------------*/
 void Input::vReadTillEOF(void)
 {
@@ -342,7 +344,7 @@ void Input::vReadTillEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect ';' delimited statement                                            */
+/* read tokens from input stream till ';'                                     */
 /*----------------------------------------------------------------------------*/
 void Input::vReadTillSemicolon(void)
 {
@@ -356,10 +358,8 @@ void Input::vReadTillSemicolon(void)
   // have we already seen the ';'
   i8 i_Token = m_pTknVec->iFindToken(";"_Stz);
   
-  if (i_Token >= 0) {
-    //m_pInput->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
+  if (i_Token >= 0)
     return;
-  }
   
   i_Token = m_pTknVec->iCountTokens();
   
@@ -1227,7 +1227,7 @@ bool Input::bHaveWhitespace(void)
   // - no current parsed character
   
   // a '\0' in line mode indicates end of line; not considered whitespace
-  if (bLineMode())
+  if (bSingleLineMode())
     return false;
   
   // a '\0' at eof is the eof marker; not considered whitespace

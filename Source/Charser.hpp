@@ -20,7 +20,7 @@ namespace LexicalAnalysis
     bool     m_bUseOpened;// has use of this charser opened?
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
-    bool     m_bLineMode; // line mode?
+    bool     m_bSingleLineMode; // single line mode?
   
     // sources
     File     m_oRawFile;  // given file
@@ -60,7 +60,7 @@ namespace LexicalAnalysis
     i8   iLineCol(void);
 
     // Options
-    void vLineMode(bool bLineMode);
+    void vSingleLineMode(bool bLineMode);
     
     // Use What
     void vUseBegin(void);
@@ -80,7 +80,7 @@ namespace LexicalAnalysis
     void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
     void vUngetAnnChar(AnnChar& rxAnnChar);
     bool bSeenEOF(void);
-    bool bLineMode(void);
+    bool bSingleLineMode(void);
     bool bIsStdin(void);
 
   private:
