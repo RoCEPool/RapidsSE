@@ -34,10 +34,10 @@ namespace LexicalAnalysis
     // registers
     bool     m_bSingleLineCmd; // single line command?
     i8       m_nLoaded;   // 0: neither register has char
-                          // 1: m_xAnnOne has char
-                          // 2: m_xAnnOne and m_xAnnTwo each have a char
-    AnnChar  m_xAnnOne;   //
-    AnnChar  m_xAnnTwo;   //
+                          // 1: m_xRegOne has char
+                          // 2: m_xRegOne and m_xRegTwo each have a char
+    AnnChar  m_xRegOne;   // first raw char register
+    AnnChar  m_xRegTwo;   // second raw char register
     eCS      m_eComment;  // comment style currently being processed
     bool     m_bRead;     // prompt user for more input
     bool     m_bSeenEOF;  // eof seen?
@@ -110,15 +110,16 @@ namespace LexicalAnalysis
     bool bLineCommentStart(void);
     void vStripComment(void);
     
-    // Reading
-    void vRawCharFromSource(AnnChar& rxAnnChar);
-    void vRawCharFromFile(AnnChar& rxAnnChar);
-    void vRawCharFromStdin(AnnChar& rxAnnChar);
-    void vRawCharFromString(AnnChar& rxAnnChar);
-    void vNextCharFromRawLine(AnnChar& rxAnnChar);
+    // Get next annotated char
+    void vGetAnnChar(AnnChar& rxAnnChar);
+    void vGetAnnCharFile(AnnChar& rxAnnChar);
+    void vGetAnnCharStdin(AnnChar& rxAnnChar);
+    void vGetAnnCharString(AnnChar& rxAnnChar);
 
-    void vReadRawLineFile(void);
-    void vReadRawLineStdin(void);
+    // Reading
+    void vNextAnnCharFromRawBuff(AnnChar& rxAnnChar);
+    void vReadFileIntoRawBuff(void);
+    void vReadStdinIntoRawBuff(void);
     
     Footer* aFooter(void);
   };

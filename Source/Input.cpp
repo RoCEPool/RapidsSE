@@ -259,7 +259,7 @@ void Input::vPushFile(Stz* szPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next command from token stream                                        */
+/* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
 void Input::vReadCommand(void)
 {
@@ -283,13 +283,13 @@ void Input::vReadCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // switch to terminal mode
+  // switch to multi-line command
   vSingleLineCmd(false);
   
   // read more till ;
   vReadTillSemicolon();
   
-  // switch back to line mode
+  // switch back to single line command
   vSingleLineCmd(true);
   
   // stip off ;
