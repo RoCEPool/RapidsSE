@@ -5,15 +5,7 @@
 " OP_createTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is not a tenant                                              */
-/*----------------------------------------------------------------------------*/
-: checkIsNotTenant ( word )
-  folder[].findSymbol not if true exit then
-  EC_TENANT_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* action                                                                     */
+/* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : createTenant_PulseMarker
 
