@@ -192,21 +192,6 @@ void TokenVec::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string                                                      */
-/*----------------------------------------------------------------------------*/
-TokenVec* TokenVec::pTokenise(Stz* szString)
-{
-  _static_
-  
-  TokenVec* pTknVec = new TokenVec;
-  
-  Tokeniser::vTokenise(pTknVec,szString);
-  
-  return pTknVec;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
