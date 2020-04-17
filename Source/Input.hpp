@@ -27,7 +27,6 @@ namespace LexicalAnalysis
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    Charser* pCharser(void);
     void vCppTokens(void);
     i8   iDepth(void);
     void vDump(void);
