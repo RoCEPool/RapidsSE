@@ -151,7 +151,7 @@ void Task::vAddAxioms(void)
   // -- -- -- -- -- -- --
   // is token a known word?
   "  dup not if"
-  "    drop"                     // error -- token is an unknown word
+  "    discard"                  // error -- token is an unknown word
   "    input::unknown"
   "    reenter"
   "  then"
