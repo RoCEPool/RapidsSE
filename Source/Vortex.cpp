@@ -157,9 +157,13 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   
   m_sSourcePath = szSourcePath;
   m_pInput = new Input;
-  m_pInput->vPushFile(szSourcePath);
-  
-  bool b = bGetNextToken();
+    
+  m_pInput->vPushCharser();
+  bool b = m_pInput->bUseFile(szSourcePath);
+
+  m_pInput->vUseBegin();
+
+  b = bGetNextToken();
   
   if (b) {
     

@@ -4,7 +4,6 @@
 
 #include "LexicalAnalysis.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -23,14 +22,14 @@ Input::Input(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  m_pCharser   = new Charser(nullptr);
+  m_pCharser = new Charser(nullptr);
   
   m_eTknForm = UF_NONE;
   
   m_xAnnChar.vReset();
       
-  m_pTknVec    = new TokenVec;
-  m_pToken     = nullptr;
+  m_pTknVec  = new TokenVec;
+  m_pToken   = nullptr;
   
   _checkInitialised_(CN_INPUT);
     
@@ -66,16 +65,6 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set normal cpp tokens                                                      */
-/*----------------------------------------------------------------------------*/
-void Input::vFormCppTokens(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  m_eTknForm = UF_CPP_TOKENS;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get depth of charser                                                       */
@@ -144,6 +133,26 @@ void Input::vForkReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set normal cpp tokens                                                      */
+/*----------------------------------------------------------------------------*/
+void Input::vFormCppTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  m_eTknForm = UF_CPP_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sen tokens                                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vFormSenTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+    
+  m_eTknForm = UF_SEN_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspection                                                                 */
 /*----------------------------------------------------------------------------*/
 void Input::vInspect(void)
@@ -167,28 +176,6 @@ bool Input::bIsStdin(void)
   bool bStdin = m_pCharser->bIsStdin();
   
   return bStdin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set single line mode                                                       */
-/*----------------------------------------------------------------------------*/
-void Input::vSingleLineCmd(bool bLineMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  m_pCharser->vSingleLineCmd(bLineMode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get SignleLine mode?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Input::bSingleLineCmd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  bool bLineMode = m_pCharser->bSingleLineCmd();
-  
-  return bLineMode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,21 +218,6 @@ void Input::vPushCharser(void)
   Charser* pNewCharser = new Charser(m_pCharser);
   
   m_pCharser = pNewCharser;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push input file                                                            */
-/*----------------------------------------------------------------------------*/
-void Input::vPushFile(Stz* szPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  vPushCharser();
-  
-  bool b = bUseFile(szPath);
-  ASSERT(b);
-  
-  vSingleLineCmd(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,84 +265,6 @@ void Input::vReadCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect tokens from input stream till EOF                                  */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectVecTillEOF(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  ASSERT(m_pCharser->bUseBegun());
-  
-  while (true) {
-    
-    m_pTknVec->vReset();
-    
-    for (;;) {
-      
-      m_pTknVec->vAdvanceCurr();
-      Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
-            
-//      if (! bNextInputToken(pToken))
-//        break;
-      
-      vCollectToken();
-      if (TN_EOF == pToken->eToken())
-        break;
-
-      m_pTknVec->vIncTokens();
-      ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
-    }
-    
-    // end of file? if so, pop and retry
-    if (! m_pTknVec->nTokens() && bSeenEOF()) {
-      bool b = bPopCharser();
-      ASSERT(b);
-      break;
-    }
-    
-    break;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect tokens from input stream till ';'                                  */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectVecTillSemicolon(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  ASSERT(m_pCharser->bUseBegun());
-  
-  // we should have a first token (e.g. create or drop)
-  ASSERT(m_pTknVec->pGet(0)->bHasText());
-  
-  // have we already seen the ';'
-  i8 i_Token = m_pTknVec->iFindToken(";"_Stz);
-  
-  if (i_Token >= 0)
-    return;
-  
-  i_Token = m_pTknVec->iCountTokens();
-  
-  // get tokens delimited by ';'
-  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
-    
-    Token* pToken = m_pTknVec->pGet(i_Token,true);
-    
-    vCollectToken();
-    ASSERT(TN_EOF != pToken->eToken());
-    
-    // look for terminal
-    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
-      break;
-
-    m_pTknVec->vAdvanceCurr();
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
 void Input::vReadToken(void)
@@ -400,13 +294,25 @@ bool Input::bSeenEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set sen tokens                                                             */
+/* set single line mode                                                       */
 /*----------------------------------------------------------------------------*/
-void Input::vFormSenTokens(void)
+void Input::vSingleLineCmd(bool bLineMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-    
-  m_eTknForm = UF_SEN_TOKENS;
+  
+  m_pCharser->vSingleLineCmd(bLineMode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get SignleLine mode?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Input::bSingleLineCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  bool bLineMode = m_pCharser->bSingleLineCmd();
+  
+  return bLineMode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,9 +418,107 @@ void Input::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 
 
+//
+// collecting tokens ///////////////////////////////////////////////////////////
+//
+
 /*----------------------------------------------------------------------------*/
-/*-- token processing --------------------------------------------------------*/
+/* collect next token                                                         */
 /*----------------------------------------------------------------------------*/
+void Input::vCollectToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
+
+  m_pToken = m_pTknVec->pCurrToken();;
+
+  if (UF_CPP_TOKENS == m_eTknForm)
+    vCollectCpp();
+  else
+    vCollectSen();
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect vector of tokens from input stream till EOF                        */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectVecTillEOF(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  while (true) {
+    
+    m_pTknVec->vReset();
+    
+    for (;;) {
+      
+      m_pTknVec->vAdvanceCurr();
+      Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
+            
+//      if (! bNextInputToken(pToken))
+//        break;
+      
+      vCollectToken();
+      if (TN_EOF == pToken->eToken())
+        break;
+
+      m_pTknVec->vIncTokens();
+      ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
+    }
+    
+    // end of file? if so, pop and retry
+    if (! m_pTknVec->nTokens() && bSeenEOF()) {
+      bool b = bPopCharser();
+      ASSERT(b);
+      break;
+    }
+    
+    break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect vector of tokens from input stream till ';'                        */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectVecTillSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  // we should have a first token (e.g. create or drop)
+  ASSERT(m_pTknVec->pGet(0)->bHasText());
+  
+  // have we already seen the ';'
+  i8 i_Token = m_pTknVec->iFindToken(";"_Stz);
+  
+  if (i_Token >= 0)
+    return;
+  
+  i_Token = m_pTknVec->iCountTokens();
+  
+  // get tokens delimited by ';'
+  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
+    
+    Token* pToken = m_pTknVec->pGet(i_Token,true);
+    
+    vCollectToken();
+    ASSERT(TN_EOF != pToken->eToken());
+    
+    // look for terminal
+    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
+      break;
+
+    m_pTknVec->vAdvanceCurr();
+  }
+  
+}
+
+// collect cpp tokens //////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* collect normal token                                                       */
@@ -899,6 +903,10 @@ void Input::vCollectCppString(void)
   vTokenCollectEnd();
 }
 
+//
+// collect sen tokens //////////////////////////////////////////////////////////
+//
+
 /*----------------------------------------------------------------------------*/
 /* collect Sen token                                                          */
 /*----------------------------------------------------------------------------*/
@@ -1165,27 +1173,10 @@ void Input::vCollectSenTag(void)
   Correctness::vDebugPoint();
 }
 
-/*----------------------------------------------------------------------------*/
-/* collect next token                                                         */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  ASSERT(m_pCharser->bUseBegun());
-  ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
-  m_pToken = m_pTknVec->pCurrToken();;
-
-  if (UF_CPP_TOKENS == m_eTknForm)
-    vCollectCpp();
-  else
-    vCollectSen();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- character processing ----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+//
+// character processing ////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */

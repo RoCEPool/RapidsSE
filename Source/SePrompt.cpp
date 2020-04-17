@@ -1021,8 +1021,9 @@ bool SePrompt::bRedirectFromFile(void)
   
   Input* pInput = m_pSession->m_pInput;
     
-  pInput->vPushFile(szPath);
-  
+  pInput->vPushCharser();
+  bool b = pInput->bUseFile(szPath);
+
   pInput->vUseBegin();
 
   return true;

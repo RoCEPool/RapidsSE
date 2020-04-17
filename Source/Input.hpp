@@ -34,15 +34,14 @@ namespace LexicalAnalysis
     void vFormSenTokens(void);
     void vInspect(void);
     bool bIsStdin(void);
-    void vSingleLineCmd(bool bLineMode);
-    bool bSingleLineCmd(void);
     Stz* szPath(void);
     bool bPopCharser(void);
     void vPushCharser(void);
-    void vPushFile(Stz* szPath);
     void vReadCommand(void);
     void vReadToken(void);
     bool bSeenEOF(void);
+    void vSingleLineCmd(bool bLineMode);
+    bool bSingleLineCmd(void);
     eTN  eToken(void);
     Stz* szToken(void);
     TokenVec* pTokenVec(void);
