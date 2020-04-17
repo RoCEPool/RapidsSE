@@ -56,7 +56,7 @@ void Step::vAddSteps_RegOperand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandAddColumnDef(void)
 {
-  ENTRY(); // ENTRY("vRegOperandAddColumnDef"_Stz);
+  ENTRY();
   
   StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpOperandA);
   
@@ -76,7 +76,7 @@ void Step::vRegOperandAddColumnDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBide(void)
 {
-  ENTRY(); // ENTRY("vOperandBide"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpOperandA = m_pTask->m_pJob->m_pOp->pPopQueue();
   
@@ -93,7 +93,7 @@ void Step::vRegOperandBide(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCsvAppend(void)
 {
-  ENTRY(); // ENTRY("vOperandCsvAppend"_Stz);
+  ENTRY();
   
   s256 sCsvRow;
   m_pDataStack->vPopStr(sCsvRow,__func__);
@@ -114,7 +114,7 @@ void Step::vRegOperandCsvAppend(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCsvData(void)
 {
-  ENTRY(); // ENTRY("vOperandCsvData"_Stz);
+  ENTRY();
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   char* data = (char*)pCsvBuffer->ayDataArea();
@@ -128,7 +128,7 @@ void Step::vRegOperandCsvData(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandDelete(void)
 {
-  ENTRY(); // ENTRY("vOperandDelete"_Stz);
+  ENTRY();
   
   AM::vDeleteOperand(*m_pRegSet->m_xpOperandA);
   
@@ -142,7 +142,7 @@ void Step::vRegOperandDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandFirstRowFetch(void)
 {
-  ENTRY(); // ENTRY("vOperandFirstRowFetch"_Stz);
+  ENTRY();
   
   IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperandA);
   m_pRegSet->m_xpRow = pIrwBuffer->aFirstRow();
@@ -155,7 +155,7 @@ void Step::vRegOperandFirstRowFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandGet(void)
 {
-  ENTRY(); // ENTRY("vOperandGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandA);
   
@@ -167,7 +167,7 @@ void Step::vRegOperandGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandHandleAggEnd(void)
 {
-  ENTRY(); // ENTRY("vOperandHandleAggEnd"_Stz);
+  ENTRY();
   
 //  ASSERT(*m_pRegSet->m_xpOperandA);
 //  
@@ -211,7 +211,7 @@ void Step::vRegOperandHandleAggEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandIsNull(void)
 {
-  ENTRY(); // ENTRY("vOperandIsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpOperandA.bIsNull() ? 1 : 0);
   
@@ -223,7 +223,7 @@ void Step::vRegOperandIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandIsReport(void)
 {
-  ENTRY(); // ENTRY("vOperandIsReport"_Stz);
+  ENTRY();
   
   Operand* pOperand = *m_pRegSet->m_xpOperandA;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == TP_REPORT ? true : false);
@@ -236,7 +236,7 @@ void Step::vRegOperandIsReport(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandItemCountFetch(void)
 {
-  ENTRY(); // ENTRY("vOperandItemCountFetch"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperandA);
@@ -251,7 +251,7 @@ void Step::vRegOperandItemCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandInsertIntoTable(void)
 {
-  ENTRY(); // ENTRY("vOperandInsertIntoTable"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
@@ -274,7 +274,7 @@ void Step::vRegOperandInsertIntoTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandInvokePython(void)
 {
-  ENTRY(); // ENTRY("vOperandInvokePython"_Stz);
+  ENTRY();
 
   s4K  pData;
   s256 pPythonFile;
@@ -346,7 +346,7 @@ void Step::vRegOperandInvokePython(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandInvokePythonShell(void)
 {
-  ENTRY(); // ENTRY("vOperandInvokePython"_Stz);
+  ENTRY();
   
   s4K  pData;
   s256 pPythonFile;
@@ -374,7 +374,7 @@ void Step::vRegOperandInvokePythonShell(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandKind(void)
 {
-  ENTRY(); // ENTRY("vOperandKind"_Stz);
+  ENTRY();
   
   eZK eOperand = ZK_NONE;
   
@@ -424,7 +424,7 @@ void Step::vRegOperandKind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNext(void)
 {
-  ENTRY(); // ENTRY("vOperandNext"_Stz);
+  ENTRY();
   
   if (m_pRegSet->m_xpOperandA.bIsNull())
     m_pRegSet->m_xpOperandA = m_pTask->m_pJob->m_pOp->pPopQueue();
@@ -438,7 +438,7 @@ void Step::vRegOperandNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewCsvBuffer(void)
 {
-  ENTRY(); // ENTRY("vOperandNewCsvBuffer"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -452,7 +452,7 @@ void Step::vRegOperandNewCsvBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewEosMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewEosMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -466,7 +466,7 @@ void Step::vRegOperandNewEosMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewErrorMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewErrorMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -480,7 +480,7 @@ void Step::vRegOperandNewErrorMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewErroredMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewErroredMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -494,7 +494,7 @@ void Step::vRegOperandNewErroredMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewExitMarker(void)
 {
-  ENTRY(); // ENTRY("vRegOperandNewExitMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -508,7 +508,7 @@ void Step::vRegOperandNewExitMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewExitedMarker(void)
 {
-  ENTRY(); // ENTRY("vRegOperandNewExitedMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -522,7 +522,7 @@ void Step::vRegOperandNewExitedMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewPulseMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewPulseMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -536,7 +536,7 @@ void Step::vRegOperandNewPulseMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewPulsedMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewPulsedMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -550,7 +550,7 @@ void Step::vRegOperandNewPulsedMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewStartMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewStartMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -564,7 +564,7 @@ void Step::vRegOperandNewStartMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewStartedMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewStartedMarker"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -578,7 +578,7 @@ void Step::vRegOperandNewStartedMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNewStreamDef(void)
 {
-  ENTRY(); // ENTRY("vOperandNewStreamDef"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpOperandA.bIsNull());
   
@@ -595,7 +595,7 @@ void Step::vRegOperandNewStreamDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandPipeOut(void)
 {
-  ENTRY(); // ENTRY("vOperandPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
@@ -613,7 +613,7 @@ void Step::vRegOperandPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandPipeOutSet(void)
 {
-  ENTRY(); // ENTRY("vOperandPipeOutSet"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
@@ -631,7 +631,7 @@ void Step::vRegOperandPipeOutSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandPipeToJob(void)
 {
-  ENTRY(); // ENTRY("vOperandPipeToJob"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
@@ -649,7 +649,7 @@ void Step::vRegOperandPipeToJob(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandReport(void)
 {
-  ENTRY(); // ENTRY("vOperandReport"_Stz);
+  ENTRY();
   
   Operand* pOperand = *m_pRegSet->m_xpOperandA;
   pOperand->vTailProcessing(TP_REPORT);
@@ -662,7 +662,7 @@ void Step::vRegOperandReport(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandRowCountFetch(void)
 {
-  ENTRY(); // ENTRY("vOperandRowCountFetch"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
@@ -677,7 +677,7 @@ void Step::vRegOperandRowCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandSet(void)
 {
-  ENTRY(); // ENTRY("vOperandSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpOperandA.bIsNull());
@@ -691,7 +691,7 @@ void Step::vRegOperandSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandUpsertIntoTable(void)
 {
-  ENTRY(); // ENTRY("vOperandUpsertIntoTable"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
@@ -713,7 +713,7 @@ void Step::vRegOperandUpsertIntoTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCrwToCsv(void)
 {
-  ENTRY(); // ENTRY("vOperandCrwToCsv"_Stz);
+  ENTRY();
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
   m_pRegSet->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
@@ -726,7 +726,7 @@ void Step::vRegOperandCrwToCsv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCsvToCrw(void)
 {
-  ENTRY(); // ENTRY("vOperandCsvToCrw"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -796,7 +796,7 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCsvToCrwH(void)
 {
-  ENTRY(); // ENTRY("vOperandCsvToCrwH"_Stz);
+  ENTRY();
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperandA);
   Loader* pLoader = *m_pRegSet->m_xpLoader;
@@ -813,7 +813,7 @@ void Step::vRegOperandCsvToCrwH(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandWorkDone(void)
 {
-  ENTRY(); // ENTRY("vOperandWorkDone"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
@@ -870,7 +870,7 @@ void Step::vRegOperandWorkDone(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandWriteToFile0(void)
 {
-  ENTRY(); // ENTRY("vOperandWriteToFile0"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   ASSERT(*m_pRegSet->m_xpFile0);

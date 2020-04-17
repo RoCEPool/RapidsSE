@@ -17,7 +17,7 @@ void Step::vAddSteps_CrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCrwBufferSnapshot(void)
 {
-  ENTRY(); // ENTRY("vCrwBufferSnapshot"_Stz);
+  ENTRY();
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 

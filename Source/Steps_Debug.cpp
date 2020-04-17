@@ -18,7 +18,7 @@ void Step::vAddSteps_Debug(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDebugTrap(void)
 {
-  ENTRY(); // ENTRY("vDebugTrap"_Stz);
+  ENTRY();
 
   Correctness::vDebugPoint();
   

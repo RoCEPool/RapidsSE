@@ -17,7 +17,7 @@ void Step::vAddSteps_RegNow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegNowGet(void)
 {
-  ENTRY(); // ENTRY("vRegNowGet"_Stz);
+  ENTRY();
     
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpNow);
 

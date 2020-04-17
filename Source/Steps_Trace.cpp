@@ -20,7 +20,7 @@ void Step::vAddSteps_Trace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTraceOff(void)
 {
-  ENTRY(); // ENTRY("vTraceOff"_Stz);
+  ENTRY();
   
   m_pTask->m_iTraceMask = 0;
   
@@ -32,7 +32,7 @@ void Step::vTraceOff(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTraceOn(void)
 {
-  ENTRY(); // ENTRY("vTraceOn"_Stz);
+  ENTRY();
   
   m_pTask->m_iTraceMask = C_TRACE_STEPS;
   
@@ -44,7 +44,7 @@ void Step::vTraceOn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTracePoint(void)
 {
-  ENTRY(); // ENTRY("vTracePoint"_Stz);
+  ENTRY();
   
   s256 sPointName;
   
@@ -61,7 +61,7 @@ void Step::vTracePoint(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTraceSet(void)
 {
-  ENTRY(); // ENTRY("vTraceSet"_Stz);
+  ENTRY();
   
   i8 iTrace = m_pDataStack->iPopInt(__func__);
   

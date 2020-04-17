@@ -39,7 +39,7 @@ void Step::vAddSteps_Task(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAck(void)
 {
-  ENTRY(); // ENTRY("vTaskAck"_Stz);
+  ENTRY();
   
   Task* pTaskWaiting = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -58,7 +58,7 @@ void Step::vTaskAck(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(void)
 {
-  ENTRY(); // ENTRY("vTaskAcksStore"_Stz);
+  ENTRY();
   
   Task* pGivenTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -88,7 +88,7 @@ void Step::vTaskAcksStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskBreakPoint(void)
 {
-  ENTRY(); // ENTRY("vTaskBreakPoint"_Stz);
+  ENTRY();
     
   EXIT();
 }
@@ -98,7 +98,7 @@ void Step::vTaskBreakPoint(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDoneFinally(void)
 {
-  ENTRY(); // ENTRY("vTaskDoneFinally"_Stz);
+  ENTRY();
   
   m_bDoneFinally = true;
   
@@ -110,7 +110,7 @@ void Step::vTaskDoneFinally(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDropLock(void)
 {
-  ENTRY(); // ENTRY("vTaskDrop"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -125,7 +125,7 @@ void Step::vTaskDropLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDump(void)
 {
-  ENTRY(); // ENTRY("vTaskDump"_Stz);
+  ENTRY();
   
   m_pTask->vDump();
   
@@ -137,7 +137,7 @@ void Step::vTaskDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDelete(void)
 {
-  ENTRY(); // ENTRY("vTaskDelete"_Stz);
+  ENTRY();
   
   m_pTask->vUnlinkJob();
   
@@ -151,7 +151,7 @@ void Step::vTaskDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskGrabLock(void)
 {
-  ENTRY(); // ENTRY("vTaskGrab"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -165,7 +165,7 @@ void Step::vTaskGrabLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsAckSet(void)
 {
-  ENTRY(); // ENTRY("vTaskIsAckSet"_Stz);
+  ENTRY();
   
   Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -188,7 +188,7 @@ void Step::vTaskIsAckSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskJobFetch(void)
 {
-  ENTRY(); // ENTRY("vTaskJobFetch"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -204,7 +204,7 @@ void Step::vTaskJobFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskJobStore(void)
 {
-  ENTRY(); // ENTRY("vTaskJobStore"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -220,7 +220,7 @@ void Step::vTaskJobStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskNameFetch(void)
 {
-  ENTRY(); // ENTRY("vTaskNameFetch"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -236,7 +236,7 @@ void Step::vTaskNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeedInitially(void)
 {
-  ENTRY(); // ENTRY("vTaskSeedInitially"_Stz);
+  ENTRY();
   
   m_bSeedInitially = true;
 
@@ -248,7 +248,7 @@ void Step::vTaskSeedInitially(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSendNodeFetch(void)
 {
-  ENTRY(); // ENTRY("vTaskSendNodeFetch"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -266,7 +266,7 @@ void Step::vTaskSendNodeFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSendNodeStore(void)
 {
-  ENTRY(); // ENTRY("vTaskSendNodeStore"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -282,7 +282,7 @@ void Step::vTaskSendNodeStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepMsec(void)
 {
-  ENTRY(); // ENTRY("vTaskSleepMsec"_Stz);
+  ENTRY();
   
   i8 nMilliSeconds = m_pDataStack->iPopInt(__func__);
   
@@ -299,7 +299,7 @@ void Step::vTaskSleepMsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepSsec(void)
 {
-  ENTRY(); // ENTRY("vTaskSleepSsec"_Stz);
+  ENTRY();
   
   i8 nSeconds = m_pDataStack->iPopInt(__func__);
   i8 nMicroSeconds = nSeconds * C_1M;
@@ -315,7 +315,7 @@ void Step::vTaskSleepSsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepUsec(void)
 {
-  ENTRY(); // ENTRY("vTaskSleepUsec"_Stz);
+  ENTRY();
   
   i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
   
@@ -330,7 +330,7 @@ void Step::vTaskSleepUsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskStateFetch(void)
 {
-  ENTRY(); // ENTRY("vTaskStateFetch"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
@@ -346,7 +346,7 @@ void Step::vTaskStateFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskThread(void)
 {
-  ENTRY(); // ENTRY("vTaskThread"_Stz);
+  ENTRY();
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
 
@@ -362,7 +362,7 @@ void Step::vTaskThread(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskWait(void)
 {
-  ENTRY(); // ENTRY("vTaskWait"_Stz);
+  ENTRY();
   
   m_pTask->vSchedulerAct(SA_WAIT);
 
@@ -374,7 +374,7 @@ void Step::vTaskWait(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskYield(void)
 {
-  ENTRY(); // ENTRY("vTaskYield"_Stz);
+  ENTRY();
     
   m_pTask->vSchedulerAct(SA_YIELD);
 

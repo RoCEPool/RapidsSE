@@ -28,7 +28,7 @@ void Step::vAddSteps_Socket(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketAccept(void)
 {
-  ENTRY(); // ENTRY("vSocketAccept"_Stz);
+  ENTRY();
   
   SysCall oSysCall;
   
@@ -55,7 +55,7 @@ void Step::vSocketAccept(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClose(void)
 {
-  ENTRY(); // ENTRY("vSocketClose"_Stz);
+  ENTRY();
   
   SysCall oSysCall;
 
@@ -76,7 +76,7 @@ void Step::vSocketClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketConnect(void)
 {
-  ENTRY(); // ENTRY("vSocketConnect"_Stz);
+  ENTRY();
   
   SysCall oSysCall;
   Socket* pSocket;
@@ -135,7 +135,7 @@ void Step::vSocketConnect(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketDropWrite(void)
 {
-  ENTRY(); // ENTRY("vSocketDropWrite"_Stz);
+  ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
@@ -149,7 +149,7 @@ void Step::vSocketDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketGrabWrite(void)
 {
-  ENTRY(); // ENTRY("vSocketGrabWrite"_Stz);
+  ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
@@ -163,7 +163,7 @@ void Step::vSocketGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketListen(void)
 {
-  ENTRY(); // ENTRY("vSocketListen"_Stz);
+  ENTRY();
   
   SysCall oSysCall;
   
@@ -218,7 +218,7 @@ void Step::vSocketListen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketOpen(void)
 {
-  ENTRY(); // ENTRY("vSocketOpen"_Stz);
+  ENTRY();
   
   SysCall oSysCall;
   Socket* pSocket;
@@ -254,7 +254,7 @@ void Step::vSocketRecvObject(void)
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
-  ENTRY(); // ENTRY("vSocketRecvObject"_Stz);
+  ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
@@ -545,7 +545,7 @@ void Step::vSocketRecvObject(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvObject_LowMem(void)
 {
-  ENTRY(); // ENTRY("vSocketRecvObject_LowMem"_Stz);
+  ENTRY();
   
   i8 nFreeBuffer = gpBufferPool->nFreeCount();
   
@@ -802,7 +802,7 @@ void Step::vSocketRecvObject_LowMem(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketSendObject(void)
 {
-  ENTRY(); // ENTRY("vSocketSendObject"_Stz);
+  ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   

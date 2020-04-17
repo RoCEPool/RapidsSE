@@ -38,7 +38,7 @@ void Step::vAddSteps_Astack(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackClass(void)
 {
-  ENTRY(); // ENTRY("vAstackClass"_Stz);
+  ENTRY();
   
   i8 nTh = m_pDataStack->iPopInt(__func__);
   
@@ -58,7 +58,7 @@ void Step::vAstackClass(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackDepth(void)
 {
-  ENTRY(); // ENTRY("vAstackDepth"_Stz);
+  ENTRY();
   
   i8 iDepth = m_pAuxStack->nValues();
   
@@ -72,7 +72,7 @@ void Step::vAstackDepth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackDiscard(void)
 {
-  ENTRY(); // ENTRY("vAstackDrop"_Stz);
+  ENTRY();
   
   m_pAuxStack->vDiscardTop();
   
@@ -84,7 +84,7 @@ void Step::vAstackDiscard(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackDup(void)
 {
-  ENTRY(); // ENTRY("vAstackDup"_Stz);
+  ENTRY();
   
   // could just copy from stack back into stack
   
@@ -102,7 +102,7 @@ void Step::vAstackDup(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackFetch(void)
 {
-  ENTRY(); // ENTRY("vAstackFetch"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -120,7 +120,7 @@ void Step::vAstackFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackNip(void)
 {
-  ENTRY(); // ENTRY("vAstackNip"_Stz);
+  ENTRY();
   
   Datum xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
@@ -138,7 +138,7 @@ void Step::vAstackNip(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackPick(void)
 {
-  ENTRY(); // ENTRY("vAstackPick"_Stz);
+  ENTRY();
   
   i8 iPick = m_pDataStack->iPopAsInt(__func__);
   
@@ -158,7 +158,7 @@ void Step::vAstackPick(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackReverse(void)
 {
-  ENTRY(); // ENTRY("vAstackReverse"_Stz);
+  ENTRY();
   
   Datum xVal1;
   Datum xVal2;
@@ -200,7 +200,7 @@ void Step::vAstackReverse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackStk(void)
 {
-  ENTRY(); // ENTRY("vAstackStk"_Stz);
+  ENTRY();
   
   m_pAuxStack->vDump(&m_oDicStack,"AuxStack:"_Stz);
   
@@ -212,7 +212,7 @@ void Step::vAstackStk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackSwap(void)
 {
-  ENTRY(); // ENTRY("vAstackSwap"_Stz);
+  ENTRY();
   
   Datum xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
@@ -231,7 +231,7 @@ void Step::vAstackSwap(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackToA(void)
 {
-  ENTRY(); // ENTRY("vAstackToA"_Stz);
+  ENTRY();
   
   Datum xValOpaque;
   m_pDataStack->vPopVal(xValOpaque,__func__);
@@ -246,7 +246,7 @@ void Step::vAstackToA(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstackToD(void)
 {
-  ENTRY(); // ENTRY("vAstackToD"_Stz);
+  ENTRY();
   
   Datum xVal;
   m_pAuxStack->vPopVal(xVal,__func__);
@@ -261,7 +261,7 @@ void Step::vAstackToD(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack0(void)
 {
-  ENTRY(); // ENTRY("vAstack0"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -279,7 +279,7 @@ void Step::vAstack0(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack1(void)
 {
-  ENTRY(); // ENTRY("vAstack1"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -297,7 +297,7 @@ void Step::vAstack1(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack2(void)
 {
-  ENTRY(); // ENTRY("vAstack2"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -315,7 +315,7 @@ void Step::vAstack2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack3(void)
 {
-  ENTRY(); // ENTRY("vAstack3"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -333,7 +333,7 @@ void Step::vAstack3(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack4(void)
 {
-  ENTRY(); // ENTRY("vAstack4"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -351,7 +351,7 @@ void Step::vAstack4(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack5(void)
 {
-  ENTRY(); // ENTRY("vAstack5"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -369,7 +369,7 @@ void Step::vAstack5(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack6(void)
 {
-  ENTRY(); // ENTRY("vAstack6"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -387,7 +387,7 @@ void Step::vAstack6(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack7(void)
 {
-  ENTRY(); // ENTRY("vAstack7"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -405,7 +405,7 @@ void Step::vAstack7(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack8(void)
 {
-  ENTRY(); // ENTRY("vAstack8"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   
@@ -423,7 +423,7 @@ void Step::vAstack8(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAstack9(void)
 {
-  ENTRY(); // ENTRY("vAstack9"_Stz);
+  ENTRY();
   
   // could do this directly on stack
   

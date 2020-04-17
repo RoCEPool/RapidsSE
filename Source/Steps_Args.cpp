@@ -18,7 +18,7 @@ void Step::vAddSteps_Args(void)
 /*----------------------------------------------------------------------------*/
 void Step::vArgsOscillate(void)
 {
-  ENTRY(); // ENTRY("vArgsOscillate"_Stz);
+  ENTRY();
   
   EXIT();
 }
@@ -28,7 +28,7 @@ void Step::vArgsOscillate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vArgsPrint(void)
 {
-  ENTRY(); // ENTRY("vArgsPrint"_Stz);
+  ENTRY();
   
   AM::vPrintStartupInfo();
   

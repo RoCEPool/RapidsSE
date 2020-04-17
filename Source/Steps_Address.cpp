@@ -19,7 +19,7 @@ void Step::vAddSteps_Address(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAddressEqual(void)
 {
-  ENTRY(); // ENTRY("vAddressEql"_Stz);
+  ENTRY();
   
   Datum xAddressA;
   m_pDataStack->vPopVal(xAddressA,__func__);
@@ -42,7 +42,7 @@ void Step::vAddressEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAddressFetch(void)
 {
-  ENTRY(); // ENTRY("vAddressFetch"_Stz);
+  ENTRY();
   
   AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
 
@@ -58,7 +58,7 @@ void Step::vAddressFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAddressStore(void)
 {
-  ENTRY(); // ENTRY("vAddressStore"_Stz);
+  ENTRY();
   
   AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
 

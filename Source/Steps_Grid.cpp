@@ -33,7 +33,7 @@ void Step::vAddSteps_Grid(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridConnectedNodes(void)
 {
-  ENTRY(); // ENTRY("vGridConnectedNodes"_Stz);
+  ENTRY();
   
   i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
 
@@ -47,7 +47,7 @@ void Step::vGridConnectedNodes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridDefinedNodes(void)
 {
-  ENTRY(); // ENTRY("vGridDefinedNodes"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->nDefinedNodes());
   
@@ -59,7 +59,7 @@ void Step::vGridDefinedNodes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridFindNode(void)
 {
-  ENTRY(); // ENTRY("vGridFindNode"_Stz);
+  ENTRY();
   
   s256 sNodeNm;
   m_pDataStack->vPopStr(sNodeNm,__func__);
@@ -76,7 +76,7 @@ void Step::vGridFindNode(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridIncConnectedNodes(void)
 {
-  ENTRY(); // ENTRY("vGridIncConnectedNodes"_Stz);
+  ENTRY();
   
   AM::pGrid()->vIncConnectedNodes();
   
@@ -88,7 +88,7 @@ void Step::vGridIncConnectedNodes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridNode(void)
 {
-  ENTRY(); // ENTRY("vGridNode"_Stz);
+  ENTRY();
   
   i8 iNode = m_pDataStack->iPopInt(__func__);
   
@@ -104,7 +104,7 @@ void Step::vGridNode(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridPartitions(void)
 {
-  ENTRY(); // ENTRY("vGridNode"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->nPartitions());
   
@@ -116,7 +116,7 @@ void Step::vGridPartitions(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridShow(void)
 {
-  ENTRY(); // ENTRY("vGridShow"_Stz);
+  ENTRY();
   
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
@@ -146,7 +146,7 @@ void Step::vGridShow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridSlots(void)
 {
-  ENTRY(); // ENTRY("vGridNode"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->nSlotsPerNode());
   
@@ -158,7 +158,7 @@ void Step::vGridSlots(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeFetch(void)
 {
-  ENTRY(); // ENTRY("vGridThisNodeFetch"_Stz);
+  ENTRY();
   
   Object* pPtrGrid;
   
@@ -174,7 +174,7 @@ void Step::vGridThisNodeFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeNameFetch(void)
 {
-  ENTRY(); // ENTRY("vGridThisNodeNameFetch"_Stz);
+  ENTRY();
   
   s256 sName;
   sName = AM::pGrid()->pThisNode()->szNodeNm();
@@ -189,7 +189,7 @@ void Step::vGridThisNodeNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartedStore(void)
 {
-  ENTRY(); // ENTRY("vGridSetStarted"_Stz);
+  ENTRY();
   
   i8 iStarted = m_pDataStack->iPopInt(__func__);
   
@@ -203,7 +203,7 @@ void Step::vGridStartedStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartNodeFetch(void)
 {
-  ENTRY(); // ENTRY("vGridStartNodeFetch"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->iStartNode());
   
@@ -215,7 +215,7 @@ void Step::vGridStartNodeFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartNodeStore(void)
 {
-  ENTRY(); // ENTRY("vGridStartNodeStore"_Stz);
+  ENTRY();
   
   i8 iStartNode = m_pDataStack->iPopInt(__func__);
   
@@ -229,7 +229,7 @@ void Step::vGridStartNodeStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartedFetch(void)
 {
-  ENTRY(); // ENTRY("vGridGetStarted"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->bHasStarted());
   
@@ -241,7 +241,7 @@ void Step::vGridStartedFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridToNode(void)
 {
-  ENTRY(); // ENTRY("vGridToNode"_Stz);
+  ENTRY();
   
   i8 iParitionId = m_pDataStack->iPopInt(__func__);
   
@@ -260,7 +260,7 @@ void Step::vGridToNode(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridToPartition(void)
 {
-  ENTRY(); // ENTRY("vGridToPartition"_Stz);
+  ENTRY();
   
   i8 iSlot = m_pDataStack->iPopInt(__func__);
   
@@ -276,7 +276,7 @@ void Step::vGridToPartition(void)
 /*----------------------------------------------------------------------------*/
 void Step::vGridToSlot(void)
 {
-  ENTRY(); // ENTRY("vGridToSlot"_Stz);
+  ENTRY();
   
   i8 iPartitionId = m_pDataStack->iPopInt(__func__);
   

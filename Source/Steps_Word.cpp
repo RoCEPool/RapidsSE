@@ -47,7 +47,7 @@ void Step::vAddSteps_Word(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWord(void)
 {
-  ENTRY(); // ENTRY("vWord"_Stz);
+  ENTRY();
   EXIT();
 }
 
@@ -56,7 +56,7 @@ void Step::vWord(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordAllotObject(void)
 {
-  ENTRY(); // ENTRY("vWordAllotObject"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -79,7 +79,7 @@ void Step::vWordAllotObject(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordBreakPtFetch(void)
 {
-  ENTRY(); // ENTRY("vWordBreakPtFetch"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -95,7 +95,7 @@ void Step::vWordBreakPtFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordBreakPtStore(void)
 {
-  ENTRY(); // ENTRY("vWordBreakPtStore"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -111,7 +111,7 @@ void Step::vWordBreakPtStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordCategoryFetch(void)
 {
-  ENTRY(); // ENTRY("vWordKindGet"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -127,7 +127,7 @@ void Step::vWordCategoryFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordCategoryStore(void)
 {
-  ENTRY(); // ENTRY("vWordKindSet"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -151,7 +151,7 @@ void Step::vWordCategoryStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordDump(void)
 {
-  ENTRY(); // ENTRY("vWordDump"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -165,7 +165,7 @@ void Step::vWordDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordEmbObject(void)
 {
-  ENTRY(); // ENTRY("vWordEmbObject"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -183,7 +183,7 @@ void Step::vWordEmbObject(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetFetch(void)
 {
-  ENTRY(); // ENTRY("vWordEnmSetFetch"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -199,7 +199,7 @@ void Step::vWordEnmSetFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetStore(void)
 {
-  ENTRY(); // ENTRY("vWordEnmSetStore"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -215,7 +215,7 @@ void Step::vWordEnmSetStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordExitHookGet(void)
 {
-  ENTRY(); // ENTRY("vWordExitHookGet"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -231,7 +231,7 @@ void Step::vWordExitHookGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordExitHookSet(void)
 {
-  ENTRY(); // ENTRY("vWordExitHookSet"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -248,7 +248,7 @@ void Step::vWordExitHookSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordFind(void)
 {
-  ENTRY(); // ENTRY("vWordNew"_Stz);
+  ENTRY();
   
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
@@ -265,7 +265,7 @@ void Step::vWordFind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordDelete(void)
 {
-  ENTRY(); // ENTRY("vWordForget"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -284,7 +284,7 @@ void Step::vWordDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordImmediateGet(void)
 {
-  ENTRY(); // ENTRY("vWordImmediateGet"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -300,7 +300,7 @@ void Step::vWordImmediateGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordImmediateSet(void)
 {
-  ENTRY(); // ENTRY("vWordImmediateSet"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -316,7 +316,7 @@ void Step::vWordImmediateSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordIsImmediate(void)
 {
-  ENTRY(); // ENTRY("vWordIsImmediate"_Stz);
+  ENTRY();
   
   // we should just modify the pointers rather than actually pop
   
@@ -334,7 +334,7 @@ void Step::vWordIsImmediate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordIsIntrinsic(void)
 {
-  ENTRY(); // ENTRY("vWordIsIntrinsic"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -350,7 +350,7 @@ void Step::vWordIsIntrinsic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordKindFetch(void)
 {
-  ENTRY(); // ENTRY("vWordKindFetch"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -366,7 +366,7 @@ void Step::vWordKindFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordKindStore(void)
 {
-  ENTRY(); // ENTRY("vWordKindStore"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -382,7 +382,7 @@ void Step::vWordKindStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordLocate(void)
 {
-  ENTRY(); // ENTRY("vWordKindStore"_Stz);
+  ENTRY();
   
   Cell* aHasCell = m_pDataStack->aPopFip(__func__);
   
@@ -406,7 +406,7 @@ void Step::vWordLocate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordNameFetch(void)
 {
-  ENTRY(); // ENTRY("vWordName"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -422,7 +422,7 @@ void Step::vWordNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordNameStore(void)
 {
-  ENTRY(); // ENTRY("vWordName"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
@@ -439,7 +439,7 @@ void Step::vWordNameStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordNew(void)
 {
-  ENTRY(); // ENTRY("vWordNew"_Stz);
+  ENTRY();
   
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
@@ -463,7 +463,7 @@ void Step::vWordNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordObjectFetch(void)
 {
-  ENTRY(); // ENTRY("vWordObjectFetch"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -479,7 +479,7 @@ void Step::vWordObjectFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordObjectStore(void)
 {
-  ENTRY(); // ENTRY("vWordObjectStore"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -495,7 +495,7 @@ void Step::vWordObjectStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordPrev(void)
 {
-  ENTRY(); // ENTRY("vWordPrev"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -511,7 +511,7 @@ void Step::vWordPrev(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordPromptFetch(void)
 {
-  ENTRY(); // ENTRY("vWordPromptFetch"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -527,7 +527,7 @@ void Step::vWordPromptFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordPromptStore(void)
 {
-  ENTRY(); // ENTRY("vWordPromptStore"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -543,7 +543,7 @@ void Step::vWordPromptStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordResetRoutine(void)
 {
-  ENTRY(); // ENTRY("vWordResetRoutine"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -557,7 +557,7 @@ void Step::vWordResetRoutine(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordSee(void)
 {
-  ENTRY(); // ENTRY("vWordSee"_Stz);
+  ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   

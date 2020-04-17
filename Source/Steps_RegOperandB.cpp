@@ -23,7 +23,7 @@ void Step::vAddSteps_RegOperandB(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBAppendClose(void)
 {
-  ENTRY(); // ENTRY("vOperandBAppendClose"_Stz);
+  ENTRY();
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandB);
   pCrwBuffer->vAppendClose();
@@ -36,7 +36,7 @@ void Step::vRegOperandBAppendClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBDelete(void)
 {
-  ENTRY(); // ENTRY("vRegOperandBDelete"_Stz);
+  ENTRY();
   
   AM::vDeleteOperand(*m_pRegSet->m_xpOperandB);
   
@@ -50,7 +50,7 @@ void Step::vRegOperandBDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBGet(void)
 {
-  ENTRY(); // ENTRY("vOperandBGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandB);
   
@@ -62,7 +62,7 @@ void Step::vRegOperandBGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBIsNull(void)
 {
-  ENTRY(); // ENTRY("vOperandBIsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpOperandB.bIsNull() ? 1 : 0);
   
@@ -74,7 +74,7 @@ void Step::vRegOperandBIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBPipeOut(void)
 {
-  ENTRY(); // ENTRY("vOperandBPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandB);
   
@@ -92,7 +92,7 @@ void Step::vRegOperandBPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandBSet(void)
 {
-  ENTRY(); // ENTRY("vOperandBSet"_Stz);
+  ENTRY();
   
   ASSERT(m_pRegSet->m_xpOperandB.bIsNull());
   m_pRegSet->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));

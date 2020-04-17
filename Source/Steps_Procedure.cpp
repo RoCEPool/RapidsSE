@@ -17,7 +17,7 @@ void Step::vAddSteps_Procedure(void)
 /*----------------------------------------------------------------------------*/
 void Step::vProcedureAdd(void)
 {
-  ENTRY(); // ENTRY("vProcedureAdd"_Stz);
+  ENTRY();
   
   s48K sProcText;
   m_pDataStack->vPopStr(sProcText,__func__);

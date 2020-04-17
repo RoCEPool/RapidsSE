@@ -23,7 +23,7 @@ void Step::vAddSteps_TablePartition2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnGet(void)
 {
-  ENTRY(); // ENTRY("vTablePtnGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpTablePtn);
   
@@ -35,7 +35,7 @@ void Step::vTablePtnGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnGenCrwBuffers(void)
 {
-  ENTRY(); // ENTRY("vTablePtnGenCrwBuffers"_Stz);
+  ENTRY();
   
   // get no of buffers to generate
   i8 nBuffers = m_pDataStack->iPopInt(__func__);
@@ -118,7 +118,7 @@ void Step::vTablePtnGenCrwBuffers(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnInflateCrwBuffer(void)
 {
-  ENTRY(); // ENTRY("vTablePtnInflateCrwBuffers"_Stz);
+  ENTRY();
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperandA);
   TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
@@ -157,7 +157,7 @@ void Step::vTablePtnInflateCrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnPurge(void)
 {
-  ENTRY(); // ENTRY("vTablePtnPurge"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
   
@@ -173,7 +173,7 @@ void Step::vTablePtnPurge(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnRoot(void)
 {
-  ENTRY(); // ENTRY("vTablePtnSet"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
   
@@ -187,7 +187,7 @@ void Step::vTablePtnRoot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnSet(void)
 {
-  ENTRY(); // ENTRY("vTablePtnSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
@@ -199,7 +199,7 @@ void Step::vTablePtnSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnTruncate(void)
 {
-  ENTRY(); // ENTRY("vTablePtnTruncate"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
   pTablePtn->vTruncate();

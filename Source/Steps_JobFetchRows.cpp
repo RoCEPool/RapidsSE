@@ -29,7 +29,7 @@ void Step::vAddSteps_JobFetchRows(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsColumnStore(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsColumnStore"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
   
@@ -45,7 +45,7 @@ void Step::vJob_FetchRowsColumnStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsColumnNameFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsColumnNameFetch"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
   
@@ -59,7 +59,7 @@ void Step::vJob_FetchRowsColumnNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsLastBuffersStore(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsLastBuffersStore"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
   
@@ -75,7 +75,7 @@ void Step::vJob_FetchRowsLastBuffersStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsPartitionFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsPartitionFetch"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
 
@@ -89,7 +89,7 @@ void Step::vJob_FetchRowsPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsPlannerStore(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsPlannerStore"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
   
@@ -109,7 +109,7 @@ void Step::vJob_FetchRowsPlannerStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsSpawnSub(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsSpawnSub"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
 
@@ -152,7 +152,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsTableStore(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsTableStore"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
   
@@ -168,7 +168,7 @@ void Step::vJob_FetchRowsTableStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsWhereFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_FetchRowsWhereFetch"_Stz);
+  ENTRY();
   
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(m_pDataStack->pPopPtr(__func__));
   
@@ -183,7 +183,7 @@ void Step::vJob_FetchRowsWhereFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubFetchBufferQueueFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_SubFetchBufferQueueFetch"_Stz);
+  ENTRY();
   
   Job_SubFetch* pJob = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
   
@@ -197,7 +197,7 @@ void Step::vJob_SubFetchBufferQueueFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubFetchPhraseFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_SubFetchPhraseFetch"_Stz);
+  ENTRY();
   
   Job_SubFetch* pJob = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
   
@@ -211,7 +211,7 @@ void Step::vJob_SubFetchPhraseFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubFetchPlannerFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_SubFetchPlannerFetch"_Stz);
+  ENTRY();
   
   Job_SubFetch* pJob = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
   
@@ -226,7 +226,7 @@ void Step::vJob_SubFetchPlannerFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubFetchSlotFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_SubFetchSlotFetch"_Stz);
+  ENTRY();
   
   Job_SubFetch* pJob = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
   

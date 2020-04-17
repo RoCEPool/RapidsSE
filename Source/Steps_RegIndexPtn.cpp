@@ -18,7 +18,7 @@ void Step::vAddSteps_RegIndexPtn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegIndexPtnGet(void)
 {
-  ENTRY(); // ENTRY("vRegIndexPtnGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexPtn);
   
@@ -30,7 +30,7 @@ void Step::vRegIndexPtnGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegIndexPtnSet(void)
 {
-  ENTRY(); // ENTRY("vRegIndexPtnSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
   

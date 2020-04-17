@@ -30,7 +30,7 @@ void Step::vAddSteps_EnameSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetNew(void)
 {
-  ENTRY(); // ENTRY("vEnameSetNew"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = new EnameSet;
   
@@ -47,7 +47,7 @@ void Step::vEnameSetNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAppendInt(void)
 {
-  ENTRY(); // ENTRY("vEnameSetAppendInt"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -67,7 +67,7 @@ void Step::vEnameSetAppendInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAppendStr(void)
 {
-  ENTRY(); // ENTRY("vEnameSetAppendStr"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
 
@@ -87,7 +87,7 @@ void Step::vEnameSetAppendStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAsStr(void)
 {
-  ENTRY(); // ENTRY("vEnameSetAsStr"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -105,7 +105,7 @@ void Step::vEnameSetAsStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetCopy(void)
 {
-  ENTRY(); // ENTRY("vEnameSetCopy"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet_dst = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   EnameSet* pEnameSet_src = _pEnameSet(m_pDataStack->pPopPtr(__func__));
@@ -122,7 +122,7 @@ void Step::vEnameSetCopy(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetGetInt(void)
 {
-  ENTRY(); // ENTRY("vEnameSetGetInt"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -142,7 +142,7 @@ void Step::vEnameSetGetInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetGetStr(void)
 {
-  ENTRY(); // ENTRY("vEnameSetGetStr"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -168,7 +168,7 @@ void Step::vEnameSetGetStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetHasName(void)
 {
-  ENTRY(); // ENTRY("vEnameSetHasName"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -187,7 +187,7 @@ void Step::vEnameSetHasName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetInsertInt(void)
 {
-  ENTRY(); // ENTRY("vEnameSetAddInt"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -207,7 +207,7 @@ void Step::vEnameSetInsertInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetInsertStr(void)
 {
-  ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
 
@@ -228,7 +228,7 @@ void Step::vEnameSetInsertStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetReplaceInt(void)
 {
-  ENTRY(); // ENTRY("vEnameSetReplaceInt"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
@@ -248,7 +248,7 @@ void Step::vEnameSetReplaceInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetReplaceStr(void)
 {
-  ENTRY(); // ENTRY("vEnameSetReplaceStr"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
 
@@ -269,7 +269,7 @@ void Step::vEnameSetReplaceStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetUpsertStr(void)
 {
-  ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
+  ENTRY();
   
   EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   

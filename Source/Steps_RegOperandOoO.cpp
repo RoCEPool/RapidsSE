@@ -24,7 +24,7 @@ void Step::vAddSteps_RegOperandOoO(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoODelete(void)
 {
-  ENTRY(); // ENTRY("vOperandOoODelete"_Stz);
+  ENTRY();
   
   AM::vDeleteOperand(*m_pRegSet->m_xpOperandOoO);
   
@@ -38,7 +38,7 @@ void Step::vRegOperandOoODelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoOGet(void)
 {
-  ENTRY(); // ENTRY("vOperandOoOGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandOoO);
   
@@ -50,7 +50,7 @@ void Step::vRegOperandOoOGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoOIsNull(void)
 {
-  ENTRY(); // ENTRY("vOperandOoOIsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpOperandOoO.bIsNull() ? 1 : 0);
   
@@ -62,7 +62,7 @@ void Step::vRegOperandOoOIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoOKind(void)
 {
-  ENTRY(); // ENTRY("vOperandOoOKind"_Stz);
+  ENTRY();
   
   eZK eOperand = ZK_NONE;
   
@@ -112,7 +112,7 @@ void Step::vRegOperandOoOKind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandNextOoO(void)
 {
-  ENTRY(); // ENTRY("vRegOperandNextOoO"_Stz);
+  ENTRY();
   
   ASSERT(m_pRegSet->m_xpOperandOoO.bIsNull());
   
@@ -130,7 +130,7 @@ void Step::vRegOperandNextOoO(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoOPipeOut(void)
 {
-  ENTRY(); // ENTRY("vOperandOoOPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandOoO);
   
@@ -148,7 +148,7 @@ void Step::vRegOperandOoOPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoOPipeToJob(void)
 {
-  ENTRY(); // ENTRY("vOperandOoOPipeToJob"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandOoO);
   
@@ -166,7 +166,7 @@ void Step::vRegOperandOoOPipeToJob(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandOoOSet(void)
 {
-  ENTRY(); // ENTRY("vOperandOoOSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpOperandOoO.bIsNull());

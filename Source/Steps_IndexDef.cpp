@@ -18,7 +18,7 @@ void Step::vAddSteps_IndexDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefParse(void)
 {
-  ENTRY(); // ENTRY("vIndexDefParse"_Stz);
+  ENTRY();
   
   Job* pJob_CreateIndex = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -60,7 +60,7 @@ void Step::vIndexDefParse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefSyntax(void)
 {
-  ENTRY(); // ENTRY("vIndexDefSyntax"_Stz);
+  ENTRY();
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);

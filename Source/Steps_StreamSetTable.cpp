@@ -20,7 +20,7 @@ void Step::vAddSteps_StreamSetTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetTableColumnFetch(void)
 {
-  ENTRY(); // ENTRY("vStreamSetTableColumnFetch"_Stz);
+  ENTRY();
   
   Table* pTable = _pTable(*m_pRegSet->m_xpStreamSetTable);
   
@@ -38,7 +38,7 @@ void Step::vStreamSetTableColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetTableDump(void)
 {
-  ENTRY(); // ENTRY("vStreamSetTableDump"_Stz);
+  ENTRY();
   
   vTrace("TableDump\n"_Stz);
   
@@ -58,7 +58,7 @@ void Step::vStreamSetTableDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetTableGet(void)
 {
-  ENTRY(); // ENTRY("vStreamSetTableGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpStreamSetTable);
   
@@ -70,7 +70,7 @@ void Step::vStreamSetTableGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetTableSet(void)
 {
-  ENTRY(); // ENTRY("vStreamSetTableSet"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

@@ -18,7 +18,7 @@ void Step::vAddSteps_Tag(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTagGet(void)
 {
-  ENTRY(); // ENTRY("vTagGet"_Stz);
+  ENTRY();
   
   s32 sTagNm;
   m_pDataStack->vPopStr(sTagNm,__func__);
@@ -57,7 +57,7 @@ void Step::vTagGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTagSet(void)
 {
-  ENTRY(); // ENTRY("vTagSet"_Stz);
+  ENTRY();
   
   s32 sTagNm;
   m_pDataStack->vPopStr(sTagNm,__func__);

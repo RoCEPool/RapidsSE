@@ -21,7 +21,7 @@ void Step::vAddSteps_Slots(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSlotsColumnFetch(void)
 {
-  ENTRY(); // ENTRY("vSlotsColumnFetch"_Stz);
+  ENTRY();
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
@@ -38,7 +38,7 @@ void Step::vSlotsColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSlotsColumnCountFetch(void)
 {
-  ENTRY(); // ENTRY("vSlotsColumnCountFetch"_Stz);
+  ENTRY();
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
@@ -53,7 +53,7 @@ void Step::vSlotsColumnCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSlotsColumnName(void)
 {
-  ENTRY(); // ENTRY("vSlotsColumnName"_Stz);
+  ENTRY();
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
@@ -75,7 +75,7 @@ void Step::vSlotsColumnName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSlotsCreateStreamDef(void)
 {
-  ENTRY(); // ENTRY("vSlotsCreateStreamDef"_Stz);
+  ENTRY();
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
@@ -90,7 +90,7 @@ void Step::vSlotsCreateStreamDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSlotsSubDic(void)
 {
-  ENTRY(); // ENTRY("vSlotsSubDic"_Stz);
+  ENTRY();
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());

@@ -28,7 +28,7 @@ void Step::vAddSteps_Dic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicDelete(void)
 {
-  ENTRY(); // ENTRY("vDicDelete"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
@@ -42,7 +42,7 @@ void Step::vDicDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicInit(void)
 {
-  ENTRY(); // ENTRY("vDicInit"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
@@ -59,7 +59,7 @@ void Step::vDicInit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicKindGet(void)
 {
-  ENTRY(); // ENTRY("vDicFrozenGet"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
@@ -76,7 +76,7 @@ void Step::vDicKindGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicKindSet(void)
 {
-  ENTRY(); // ENTRY("vDicKindSet"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
@@ -92,7 +92,7 @@ void Step::vDicKindSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicLastWord(void)
 {
-  ENTRY(); // ENTRY("vDicLastWord"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
@@ -108,7 +108,7 @@ void Step::vDicLastWord(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicNameFetch(void)
 {
-  ENTRY(); // ENTRY("vDicName"_Stz);
+  ENTRY();
  
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
@@ -124,7 +124,7 @@ void Step::vDicNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicNameStore(void)
 {
-  ENTRY(); // ENTRY("vDicNameStore"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
@@ -142,7 +142,7 @@ void Step::vDicNameStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicNew(void)
 {
-  ENTRY(); // ENTRY("vDicNew"_Stz);
+  ENTRY();
   
   Dic* pRootDic = new Dic;
   
@@ -156,7 +156,7 @@ void Step::vDicNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicRef(void)
 {
-  ENTRY(); // ENTRY("vDicRef"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
@@ -172,7 +172,7 @@ void Step::vDicRef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicRoot(void)
 {
-  ENTRY(); // ENTRY("vDicRoot"_Stz);
+  ENTRY();
   
   Dic* pRootDic = AM::pRootDic();
   m_pDataStack->vPushPtr(pRootDic);
@@ -185,7 +185,7 @@ void Step::vDicRoot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicWordCount(void)
 {
-  ENTRY(); // ENTRY("vDicWordCount"_Stz);
+  ENTRY();
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   

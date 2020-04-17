@@ -44,7 +44,7 @@ void Step::vAddSteps_StreamSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddAnalyzeIndex(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddAnalyzeIndex"_Stz);
+  ENTRY();
   
   // get the streamSet table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -85,7 +85,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddAnalyzeTable(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddAnalyzeTable"_Stz);
+  ENTRY();
   
   // get the streamSet table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -126,7 +126,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddColumnDef(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddColumnDef"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -159,7 +159,7 @@ void Step::vStreamSetAddColumnDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddGridSanity(void)
 {
-  ENTRY(); // ENTRY("vStreamSetDelete"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -210,7 +210,7 @@ void Step::vStreamSetAddGridSanity(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListContents(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddLstblInfo"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -240,7 +240,7 @@ void Step::vStreamSetAddListContents(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListFolder(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddListFolder"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -276,7 +276,7 @@ void Step::vStreamSetAddListFolder(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListIndex(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddListIndex"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -308,7 +308,7 @@ void Step::vStreamSetAddListIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddListPartitions(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddListPartitions"_Stz);
+  ENTRY();
   
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -342,7 +342,7 @@ void Step::vStreamSetAddListPartitions(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddNodeStatus(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddNodeStatus"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -375,7 +375,7 @@ void Step::vStreamSetAddNodeStatus(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddPingInfo(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddPingInfo"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -401,7 +401,7 @@ void Step::vStreamSetAddPingInfo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddProgressUnits(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddProgressUnits"_Stz);
+  ENTRY();
   
   i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
   
@@ -425,7 +425,7 @@ void Step::vStreamSetAddProgressUnits(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddPwfInfo(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddPwfInfo"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -455,7 +455,7 @@ void Step::vStreamSetAddPwfInfo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddShowCluster(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddShowCluster"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -489,7 +489,7 @@ void Step::vStreamSetAddShowCluster(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddSizeIndex(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddSizeIndex"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -520,7 +520,7 @@ void Step::vStreamSetAddSizeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddSizeTable(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddSizeTable"_Stz);
+  ENTRY();
   
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -551,7 +551,7 @@ void Step::vStreamSetAddSizeTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddSpaceInfo(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddSpaceInfo"_Stz);
+  ENTRY();
   
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -604,7 +604,7 @@ void Step::vStreamSetAddSpaceInfo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddTableSizes(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddTableSizes"_Stz);
+  ENTRY();
   
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -639,7 +639,7 @@ void Step::vStreamSetAddTableSizes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddVerifyIndex(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddVerifyIndex"_Stz);
+  ENTRY();
   
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -675,7 +675,7 @@ void Step::vStreamSetAddVerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetAddVerifyTable(void)
 {
-  ENTRY(); // ENTRY("vStreamSetAddVerifyTable"_Stz);
+  ENTRY();
   
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -707,7 +707,7 @@ void Step::vStreamSetAddVerifyTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetDelete(void)
 {
-  ENTRY(); // ENTRY("vStreamSetDelete"_Stz);
+  ENTRY();
   
   AM::vDeleteOperand(*m_pRegSet->m_xpStreamSet);
   
@@ -721,7 +721,7 @@ void Step::vStreamSetDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetFirstRow(void)
 {
-  ENTRY(); // ENTRY("vStreamSetFirstRow"_Stz);
+  ENTRY();
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   
@@ -733,7 +733,7 @@ void Step::vStreamSetFirstRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetGet(void)
 {
-  ENTRY(); // ENTRY("vStreamSetGet"_Stz);
+  ENTRY();
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
 
@@ -747,7 +747,7 @@ void Step::vStreamSetGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetInfoRows(void)
 {
-  ENTRY(); // ENTRY("vStreamSetInfoRows"_Stz);
+  ENTRY();
   
   ASSERT ( ! m_pRegSet->m_xpStreamSet.bIsNull() );
   
@@ -763,7 +763,7 @@ void Step::vStreamSetInfoRows(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetName(void)
 {
-  ENTRY(); // ENTRY("vStreamSetName"_Stz);
+  ENTRY();
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
 
@@ -779,7 +779,7 @@ void Step::vStreamSetName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetNew(void)
 {
-  ENTRY(); // ENTRY("vStreamSetNew"_Stz);
+  ENTRY();
   
   ASSERT(m_pRegSet->m_xpStreamSet.bIsNull());
   
@@ -797,7 +797,7 @@ void Step::vStreamSetNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetNextRow(void)
 {
-  ENTRY(); // ENTRY("vStreamSetNextRow"_Stz);
+  ENTRY();
   
   StreamSet* pStreamSet = _pStreamSet(*m_pRegSet->m_xpStreamSet);
   Row* pRow = _pRow(*m_pRegSet->m_xpRow);
@@ -812,7 +812,7 @@ void Step::vStreamSetNextRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetPipeOut(void)
 {
-  ENTRY(); // ENTRY("vStreamSetPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpStreamSet);
   
@@ -830,7 +830,7 @@ void Step::vStreamSetPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetReadChunk(void)
 {
-  ENTRY(); // ENTRY("vStreamSetReadChunk"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpStreamSet);
 
@@ -860,7 +860,7 @@ void Step::vStreamSetReadChunk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStreamSetSet(void)
 {
-  ENTRY(); // ENTRY("vStreamSetSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpStreamSet.bIsNull());

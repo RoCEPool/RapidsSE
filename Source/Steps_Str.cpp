@@ -38,7 +38,7 @@ void Step::vAddSteps_Str(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrAlgebra(void)
 {
-  ENTRY(); // ENTRY("vStrAlgebra"_Stz);
+  ENTRY();
  
   // (1) StzVal's cannot be declared as local variables
   //StzVal xStrval;  // uncommenting this line should produce a compile error
@@ -54,7 +54,7 @@ void Step::vStrAlgebra(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrCat(void)
 {
-  ENTRY(); // ENTRY("vStrCat"_Stz);
+  ENTRY();
   
   s48K sStrR;
   s48K sStrB;
@@ -78,7 +78,7 @@ void Step::vStrCat(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrClip(void)
 {
-  ENTRY(); // ENTRY("vStrClip"_Stz);
+  ENTRY();
   
   s48K sSubStr;
   
@@ -114,7 +114,7 @@ void Step::vStrClip(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrEqual(void)
 {
-  ENTRY(); // ENTRY("vStrEql"_Stz);
+  ENTRY();
   
   Datum xStringA;
   m_pDataStack->vPopVal(xStringA,__func__);
@@ -138,7 +138,7 @@ void Step::vStrEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrEscape(void)
 {
-  ENTRY(); // ENTRY("vStrEscape"_Stz);
+  ENTRY();
   
   s48K xArg;
   s48K xEscaped;
@@ -158,7 +158,7 @@ void Step::vStrEscape(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrFirstCsv(void)
 {
-  ENTRY(); // ENTRY("vStrFirstCsv"_Stz);
+  ENTRY();
   
   s48K sStr;
   m_pDataStack->vPopStr(sStr,__func__);
@@ -180,7 +180,7 @@ void Step::vStrFirstCsv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrFormat(void)
 {
-  ENTRY(); // ENTRY("vStrFormat"_Stz);
+  ENTRY();
   
   s48K sFormat;
   m_pDataStack->vPopStr(sFormat,__func__);
@@ -199,7 +199,7 @@ void Step::vStrFormat(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrLeft(void)
 {
-  ENTRY(); // ENTRY("vClip"_Stz);
+  ENTRY();
   
   s48K sSubStr;
   
@@ -230,7 +230,7 @@ void Step::vStrLeft(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrLength(void)
 {
-  ENTRY(); // ENTRY("vStrLen"_Stz);
+  ENTRY();
   
   i8 iLength;
   s48K sString;
@@ -250,7 +250,7 @@ void Step::vStrLength(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrPrepend(void)
 {
-  ENTRY(); // ENTRY("vStrPrepend"_Stz);
+  ENTRY();
   
   s48K xStrR;
   s48K xStrB;
@@ -302,7 +302,7 @@ void Step::vStrPrepend(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRandom(void)
 {
-  ENTRY(); // ENTRY("vStrRandom"_Stz);
+  ENTRY();
   
   i8 iLength = m_pDataStack->iPopInt(__func__);
   
@@ -320,7 +320,7 @@ void Step::vStrRandom(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRemovePrefix(void)
 {
-  ENTRY(); // ENTRY("vStrRemovePrefix"_Stz);
+  ENTRY();
   
   s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
@@ -340,7 +340,7 @@ void Step::vStrRemovePrefix(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRemoveSuffix(void)
 {
-  ENTRY(); // ENTRY("vStrRemoveSuffix"_Stz);
+  ENTRY();
   
   s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
@@ -360,7 +360,7 @@ void Step::vStrRemoveSuffix(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrReplace(void)
 {
-  ENTRY(); // ENTRY("vStrReplace"_Stz);
+  ENTRY();
   
   s48K sString;
   s48K sThat;
@@ -386,7 +386,7 @@ void Step::vStrReplace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRight(void)
 {
-  ENTRY(); // ENTRY("vStrRight"_Stz);
+  ENTRY();
   
   s48K sSubStr;
   
@@ -419,7 +419,7 @@ void Step::vStrRight(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrSub(void)
 {
-  ENTRY(); // ENTRY("vStrSub"_Stz);
+  ENTRY();
   
   s48K sSubStr;
   
@@ -460,7 +460,7 @@ void Step::vStrSub(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrTailInt(void)
 {
-  ENTRY(); // ENTRY("vStrTailInt"_Stz);
+  ENTRY();
   
   // get the string
   s48K sString;
@@ -498,7 +498,7 @@ void Step::vStrTailInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrToStrVec(void)
 {
-  ENTRY(); // ENTRY("vStrToStrVec"_Stz);
+  ENTRY();
   
   // get the path string
   s256 sPath;

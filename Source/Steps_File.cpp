@@ -29,7 +29,7 @@ void Step::vAddSteps_File(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFile0Get(void)
 {
-  ENTRY(); // ENTRY("vFile0Get"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpFile0);
   
@@ -41,7 +41,7 @@ void Step::vFile0Get(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFile0GetEofLocation(void)
 {
-  ENTRY(); // ENTRY("vFile0GetEofLocation"_Stz);
+  ENTRY();
   
   File* pFile = *m_pRegSet->m_xpFile0;
   
@@ -59,7 +59,7 @@ void Step::vFile0GetEofLocation(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFile0IsNull(void)
 {
-  ENTRY(); // ENTRY("vFile0IsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpFile0.bIsNull() ? 1 : 0);
   
@@ -71,7 +71,7 @@ void Step::vFile0IsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFile0Set(void)
 {
-  ENTRY(); // ENTRY("vFile0Set"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
@@ -85,7 +85,7 @@ void Step::vFile0Set(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFile0Size(void)
 {
-  ENTRY(); // ENTRY("vFile0Size"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
@@ -99,7 +99,7 @@ void Step::vFile0Size(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileClose(void)
 {
-  ENTRY(); // ENTRY("vFileClose"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   
@@ -113,7 +113,7 @@ void Step::vFileClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileDelete(void)
 {
-  ENTRY(); // ENTRY("vFileDelete"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
@@ -127,7 +127,7 @@ void Step::vFileDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileNew(void)
 {
-  ENTRY(); // ENTRY("vFileNew"_Stz);
+  ENTRY();
   
   File* pFile = new File(m_pTask);
   
@@ -141,7 +141,7 @@ void Step::vFileNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileOpen(void)
 {
-  ENTRY(); // ENTRY("vFileOpen"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   
@@ -163,7 +163,7 @@ void Step::vFileOpen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFilePathGet(void)
 {
-  ENTRY(); // ENTRY("vFilePathGet"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
@@ -179,7 +179,7 @@ void Step::vFilePathGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileRead(void)
 {
-  ENTRY(); // ENTRY("vFileRead"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
@@ -204,7 +204,7 @@ void Step::vFileRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileWrite(void)
 {
-  ENTRY(); // ENTRY("vFileWrite"_Stz);
+  ENTRY();
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);

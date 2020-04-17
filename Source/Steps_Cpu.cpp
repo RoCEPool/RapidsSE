@@ -17,7 +17,7 @@ void Step::vAddSteps_Cpu(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCpuRdtscp(void)
 {
-  ENTRY(); // ENTRY("vCpuRdtscp"_Stz);
+  ENTRY();
   
   i8 iTscp = TickingDevice::iGetTick();
   

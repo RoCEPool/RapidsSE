@@ -33,7 +33,7 @@ void Step::vAddSteps_Input(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputClose(void)
 {
-  ENTRY(); // ENTRY("vInputClose"_Stz);
+  ENTRY();
   
   m_pTokeniser->vUseClose();
   
@@ -45,7 +45,7 @@ void Step::vInputClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputCppTokens(void)
 {
-  ENTRY(); // ENTRY("vInputCppTokens"_Stz);
+  ENTRY();
     
   m_pTokeniser->vCppTokens();
 
@@ -57,7 +57,7 @@ void Step::vInputCppTokens(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputDump(void)
 {
-  ENTRY(); // ENTRY("vInputDump"_Stz);
+  ENTRY();
     
   m_pTokeniser->vInspect();
 
@@ -69,7 +69,7 @@ void Step::vInputDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputInspect(void)
 {
-  ENTRY(); // ENTRY("vInputInspect"_Stz);
+  ENTRY();
     
   m_pTokeniser->vInspect();
   
@@ -81,7 +81,7 @@ void Step::vInputInspect(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputKind(void)
 {
-  ENTRY(); // ENTRY("vInputKind"_Stz);
+  ENTRY();
   
   eTN eTokenType = m_pTokeniser->eToken();
   
@@ -95,7 +95,7 @@ void Step::vInputKind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputNext(void)
 {
-  ENTRY(); // ENTRY("vTokenColon"_Stz);
+  ENTRY();
   
   m_pTokeniser->vReadToken_nil();
   
@@ -111,7 +111,7 @@ void Step::vInputNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputOpen(void)
 {
-  ENTRY(); // ENTRY("vInputOpen"_Stz);
+  ENTRY();
   
   s256 sFilePath;
   
@@ -131,7 +131,7 @@ void Step::vInputOpen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputPop(void)
 {
-  ENTRY(); // ENTRY("vInputPop"_Stz);
+  ENTRY();
   
   bool bPopped = m_pTokeniser->bPopCharser();
   ASSERT(bPopped);
@@ -144,7 +144,7 @@ void Step::vInputPop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputPush(void)
 {
-  ENTRY(); // ENTRY("vInputPush"_Stz);
+  ENTRY();
   
   m_pTokeniser->vPushCharser();
 
@@ -156,7 +156,7 @@ void Step::vInputPush(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputRead(void)
 {
-  ENTRY(); // ENTRY("vInputRead"_Stz);
+  ENTRY();
     
   m_pTokeniser->vReadToken_nil();
 
@@ -168,7 +168,7 @@ void Step::vInputRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputSenTokens(void)
 {
-  ENTRY(); // ENTRY("vInputStdin"_Stz);
+  ENTRY();
   
   m_pTokeniser->vSenTokens();
 
@@ -180,7 +180,7 @@ void Step::vInputSenTokens(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputStdin(void)
 {
-  ENTRY(); // ENTRY("vInputStdin"_Stz);
+  ENTRY();
     
   m_pTokeniser->vUseStdinX();
   m_pTokeniser->vLineMode(true);
@@ -193,7 +193,7 @@ void Step::vInputStdin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputTerm(void)
 {
-  ENTRY(); // ENTRY("vInputTerm"_Stz);
+  ENTRY();
   
   s48K sTkn(m_pTokeniser->szToken());
   
@@ -207,7 +207,7 @@ void Step::vInputTerm(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputText(void)
 {
-  ENTRY(); // ENTRY("vInputText"_Stz);
+  ENTRY();
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -227,7 +227,7 @@ void Step::vInputText(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputUnknown(void)
 {
-  ENTRY(); // ENTRY("vInputUnknown"_Stz);
+  ENTRY();
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
@@ -245,7 +245,7 @@ void Step::vInputUnknown(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputUseBegin(void)
 {
-  ENTRY(); // ENTRY("vInputUseBegin"_Stz);
+  ENTRY();
   
   m_pTokeniser->vUseBegin();
 
@@ -257,7 +257,7 @@ void Step::vInputUseBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputUseEnd(void)
 {
-  ENTRY(); // ENTRY("vInputUseBegin"_Stz);
+  ENTRY();
   
   m_pTokeniser->vUseEnd();
 

@@ -23,7 +23,7 @@ void Step::vAddSteps_EntBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferDump(void)
 {
-  ENTRY(); // ENTRY("vEntBufferDump"_Stz);
+  ENTRY();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -37,7 +37,7 @@ void Step::vEntBufferDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferIndexFetch(void)
 {
-  ENTRY(); // ENTRY("vEntBufferIndexFetch"_Stz);
+  ENTRY();
   
   Object* pPtrIndex;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
@@ -52,7 +52,7 @@ void Step::vEntBufferIndexFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferIndexStore(void)
 {
-  ENTRY(); // ENTRY("vEntBufferIndexStore"_Stz);
+  ENTRY();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
@@ -69,7 +69,7 @@ void Step::vEntBufferIndexStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferNextBuffer(void)
 {
-  ENTRY(); // ENTRY("vEntBufferNextBuffer"_Stz);
+  ENTRY();
   
   Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
@@ -88,7 +88,7 @@ void Step::vEntBufferNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferPartitionFetch(void)
 {
-  ENTRY(); // ENTRY("vEntBufferPartitionFetch"_Stz);
+  ENTRY();
   
   Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
@@ -103,7 +103,7 @@ void Step::vEntBufferPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferPartitionStore(void)
 {
-  ENTRY(); // ENTRY("vEntBufferPartitionStore"_Stz);
+  ENTRY();
   
   Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
@@ -120,7 +120,7 @@ void Step::vEntBufferPartitionStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEntBufferToEntBuffer(void)
 {
-  ENTRY(); // ENTRY("vEntBufferToEntBuffer"_Stz);
+  ENTRY();
   
   s48K sString;
   

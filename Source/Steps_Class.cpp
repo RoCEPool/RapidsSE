@@ -17,7 +17,7 @@ void Step::vAddSteps_Class(void)
 /*----------------------------------------------------------------------------*/
 void Step::vClassName(void)
 {
-  ENTRY(); // ENTRY("vClassName"_Stz);
+  ENTRY();
   
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
   

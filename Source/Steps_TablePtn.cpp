@@ -23,7 +23,7 @@ void Step::vAddSteps_TablePartition(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnAttemptGrabRead(void)
 {
-  ENTRY(); // ENTRY("vTablePtnAttemptGrabRead"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
@@ -40,7 +40,7 @@ void Step::vTablePtnAttemptGrabRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnAttemptGrabWrite(void)
 {
-  ENTRY(); // ENTRY("vTablePtnAttemptGrabWrite"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
@@ -57,7 +57,7 @@ void Step::vTablePtnAttemptGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDropRead(void)
 {
-  ENTRY(); // ENTRY("vTablePtnDropRead"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
     
@@ -72,7 +72,7 @@ void Step::vTablePtnDropRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDump(void)
 {
-  ENTRY(); // ENTRY("vTablePtnDump"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
@@ -86,7 +86,7 @@ void Step::vTablePtnDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDropWrite(void)
 {
-  ENTRY(); // ENTRY("vTablePtnDropWrite"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
@@ -101,7 +101,7 @@ void Step::vTablePtnDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnIsLocked(void)
 {
-  ENTRY(); // ENTRY("vTablePtnIsLocked"_Stz);
+  ENTRY();
   
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   

@@ -25,7 +25,7 @@ void Step::vAddSteps_Op(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpAckPipelineJob(void)
 {
-  ENTRY(); // ENTRY("vOpAckPipelineJob"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   pOp->vAckJob();
@@ -36,7 +36,7 @@ void Step::vOpAckPipelineJob(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpNextOpStore(void)
 {
-  ENTRY(); // ENTRY("vOpNextOpStore"_Stz);
+  ENTRY();
   
   m_pTask->m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
   
@@ -48,7 +48,7 @@ void Step::vOpNextOpStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpNextStageStore(void)
 {
-  ENTRY(); // ENTRY("vOpNextStageStore"_Stz);
+  ENTRY();
   
   m_pTask->m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
   
@@ -60,7 +60,7 @@ void Step::vOpNextStageStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpPartitionFetch(void)
 {
-  ENTRY(); // ENTRY("vOpPartitionFetch"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->nPartition());
   
@@ -72,7 +72,7 @@ void Step::vOpPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpPiplineJobFetch(void)
 {
-  ENTRY(); // ENTRY("vOpPipleineJobFetch"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -86,7 +86,7 @@ void Step::vOpPiplineJobFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeOut(void)
 {
-  ENTRY(); // ENTRY("vOpPipeOut"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
@@ -102,7 +102,7 @@ void Step::vOpPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpTopologyStore(void)
 {
-  ENTRY(); // ENTRY("vOpTopologyStore"_Stz);
+  ENTRY();
   
   m_pTask->m_pJob->m_pOp->vTopologyX((ePX)m_pDataStack->iPopInt(__func__));
   
@@ -114,7 +114,7 @@ void Step::vOpTopologyStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpXmitKindStore(void)
 {
-  ENTRY(); // ENTRY("vOpXmitKindStore"_Stz);
+  ENTRY();
   
   m_pTask->m_pJob->m_pOp->vXmitKind((eXK)m_pDataStack->iPopInt(__func__));
   

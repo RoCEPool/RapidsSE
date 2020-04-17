@@ -19,7 +19,7 @@ void Step::vAddSteps_Logic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogicAnd(void)
 {
-  ENTRY(); // ENTRY("vLogicAnd"_Stz);
+  ENTRY();
   
   i8 iArgB = m_pDataStack->iPopAsInt(__func__);
   
@@ -37,7 +37,7 @@ void Step::vLogicAnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogicNot(void)
 {
-  ENTRY(); // ENTRY("vLogicNot"_Stz);
+  ENTRY();
   
   i8 iValA = m_pDataStack->iPopAsInt(__func__);
   
@@ -53,7 +53,7 @@ void Step::vLogicNot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogicOr(void)
 {
-  ENTRY(); // ENTRY("vLogicOr"_Stz);
+  ENTRY();
   
   i8 iArgB = m_pDataStack->iPopAsInt(__func__);
   

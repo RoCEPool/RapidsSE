@@ -17,7 +17,7 @@ void Step::vAddSteps_Pipeline(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePipeout(void)
 {
-  ENTRY(); // ENTRY("vOpPipeOut"_Stz);
+  ENTRY();
 
   Job* pPipelineJob = _pJob(m_pDataStack->pPopPtr(__func__));
   

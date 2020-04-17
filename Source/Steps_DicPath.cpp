@@ -19,7 +19,7 @@ void Step::vAddSteps_DicPath(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicPathDepth(void)
 {
-  ENTRY(); // ENTRY("vDicStackDepth"_Stz);
+  ENTRY();
   
   DicPath* pDicPath = _pDicPath(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -36,7 +36,7 @@ void Step::vDicPathDepth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicPathDump(void)
 {
-  ENTRY(); // ENTRY("vDicPathDump"_Stz);
+  ENTRY();
   
   DicPath* pDicPath = _pDicPath(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -51,7 +51,7 @@ void Step::vDicPathDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicPathPick(void)
 {
-  ENTRY(); // ENTRY("vDicPathPick"_Stz);
+  ENTRY();
   
   DicPath* pDicPath = _pDicPath(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICPATH == pDicPath->eClass());

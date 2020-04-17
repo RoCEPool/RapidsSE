@@ -17,7 +17,7 @@ void Step::vAddSteps_IndexPtn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexPtnInsEntBuffer(void)
 {
-  ENTRY(); // ENTRY("vIndexPtnInsEntBuffer"_Stz);
+  ENTRY();
   
   IndexPtn* pIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
 

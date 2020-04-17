@@ -45,7 +45,7 @@ void Step::vAddSteps_Index(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexColumnFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -65,7 +65,7 @@ void Step::vIndexColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnCountFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexColumnCountFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = *m_pRegSet->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -80,7 +80,7 @@ void Step::vIndexColumnCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnName(void)
 {
-  ENTRY(); // ENTRY("vIndexColumnName"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -101,7 +101,7 @@ void Step::vIndexColumnName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnType(void)
 {
-  ENTRY(); // ENTRY("vIndexColumnType"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -122,7 +122,7 @@ void Step::vIndexColumnType(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCompact(void)
 {
-  ENTRY(); // ENTRY("vIndexCompact"_Stz);
+  ENTRY();
   
   Index* pIndex = *m_pRegSet->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -137,7 +137,7 @@ void Step::vIndexCompact(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDelete(void)
 {
-  ENTRY(); // ENTRY("vIndexDelete"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
 
@@ -151,7 +151,7 @@ void Step::vIndexDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDump(void)
 {
-  ENTRY(); // ENTRY("vIndexDump"_Stz);
+  ENTRY();
   
   Index* pIndex = *m_pRegSet->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -175,7 +175,7 @@ void Step::vIndexDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexGenEntBuffer(void)
 {
-  ENTRY(); // ENTRY("vIndexGenEntBuffer"_Stz);
+  ENTRY();
   
   Index* pIndex = *m_pRegSet->m_xpIndex;
   IndexDef* pIndexDef = pIndex->pIndexDef();
@@ -241,7 +241,7 @@ void Step::vIndexGenEntBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexGenEntBuffers(void)
 {
-  ENTRY(); // ENTRY("vIndexGenEntBuffer"_Stz);
+  ENTRY();
   
   i8 nBuffers = m_pDataStack->iPopInt(__func__);
   
@@ -326,7 +326,7 @@ void Step::vIndexGenEntBuffers(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexDefFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexIndexDefFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
@@ -340,7 +340,7 @@ void Step::vIndexIndexDefFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexDefStore(void)
 {
-  ENTRY(); // ENTRY("vIndexIndexDefStore"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
@@ -356,7 +356,7 @@ void Step::vIndexIndexDefStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexPtn(void)
 {
-  ENTRY(); // ENTRY("vIndexIndexDefStore"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
@@ -388,7 +388,7 @@ void Step::vIndexIndexPtn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexInit(void)
 {
-  ENTRY(); // ENTRY("vIndexInit"_Stz);
+  ENTRY();
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
   
@@ -402,7 +402,7 @@ void Step::vIndexInit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsPrimaryKeyFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -419,7 +419,7 @@ void Step::vIndexIsPrimaryKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsPrimaryKeyStore(void)
 {
-  ENTRY(); // ENTRY("vIndexIsPrimaryKeyStore"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -436,7 +436,7 @@ void Step::vIndexIsPrimaryKeyStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsUniqueFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexIsUniqueFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -453,7 +453,7 @@ void Step::vIndexIsUniqueFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsValidUniqueIndex(void)
 {
-  ENTRY(); // ENTRY("vIndexIsValidUniqueIndex"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -498,7 +498,7 @@ void Step::vIndexIsValidUniqueIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexLowerBound(void)
 {
-  ENTRY(); // ENTRY("vIndexLowerBound"_Stz);
+  ENTRY();
   
   FetchBuffer* pFetchBuffer;
   
@@ -636,7 +636,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 void Step::vIndexNameFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexNameFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -653,7 +653,7 @@ void Step::vIndexNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexNew(void)
 {
-  ENTRY(); // ENTRY("vIndexNew"_Stz);
+  ENTRY();
   
   Index* pIndex = new Index;
   
@@ -667,7 +667,7 @@ void Step::vIndexNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexPopulate(void)
 {
-  ENTRY(); // ENTRY("vIndexPopulate"_Stz);
+  ENTRY();
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
   
@@ -686,7 +686,7 @@ void Step::vIndexPopulate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexRange(void)
 {
-  ENTRY(); // ENTRY("vIndexRange"_Stz);
+  ENTRY();
   
   Datum xValWrkLwr;
   Datum xValWrkUpr;
@@ -906,7 +906,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 void Step::vIndexSize(void)
 {
-  ENTRY(); // ENTRY("vIndexSize"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -923,7 +923,7 @@ void Step::vIndexSize(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTableFetch(void)
 {
-  ENTRY(); // ENTRY("vIndexTableFetch"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -941,7 +941,7 @@ void Step::vIndexTableFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTableStore(void)
 {
-  ENTRY(); // ENTRY("vIndexTableStore"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -959,7 +959,7 @@ void Step::vIndexTableStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTruncate(void)
 {
-  ENTRY(); // ENTRY("vIndexTruncate"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -978,7 +978,7 @@ void Step::vIndexTruncate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexUpperBound(void)
 {
-  ENTRY(); // ENTRY("vIndexUpperBound"_Stz);
+  ENTRY();
   
 
   Datum xVariable;
@@ -1140,7 +1140,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVerify(void)
 {
-  ENTRY(); // ENTRY("vIndexVerify"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -1156,7 +1156,7 @@ void Step::vIndexVerify(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVisualize(void)
 {
-  ENTRY(); // ENTRY("vIndexVisualize"_Stz);
+  ENTRY();
   
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

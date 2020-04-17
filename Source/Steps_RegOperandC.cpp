@@ -23,7 +23,7 @@ void Step::vAddSteps_RegOperandC(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCCollect(void)
 {
-  ENTRY(); // ENTRY("vRegOperandCCollect"_Stz);
+  ENTRY();
     
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -55,7 +55,7 @@ void Step::vRegOperandCCollect(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCGet(void)
 {
-  ENTRY(); // ENTRY("vOperandGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandC);
   
@@ -67,7 +67,7 @@ void Step::vRegOperandCGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCPipeOut(void)
 {
-  ENTRY(); // ENTRY("vRegOperandCPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpOperandC);
   
@@ -85,7 +85,7 @@ void Step::vRegOperandCPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCPipeOutSet(void)
 {
-  ENTRY(); // ENTRY("vRegOperandCPipeOutSet"_Stz);
+  ENTRY();
   
   if (m_pRegSet->m_xpOperandC.bIsNull())
     return;
@@ -104,7 +104,7 @@ void Step::vRegOperandCPipeOutSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCSet(void)
 {
-  ENTRY(); // ENTRY("vOperandCSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpOperandC.bIsNull());
@@ -118,7 +118,7 @@ void Step::vRegOperandCSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCSetFirst(void)
 {
-  ENTRY(); // ENTRY("vRegOperandCSetFirst"_Stz);
+  ENTRY();
   
   if (m_pRegSet->m_xpOperandC.bIsNull())
     return;

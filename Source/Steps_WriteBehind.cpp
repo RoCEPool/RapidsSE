@@ -21,7 +21,7 @@ void Step::vAddSteps_WriteBehind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWriteBehindCreate(void)
 {
-  ENTRY(); // ENTRY("vWriteBehindGet"_Stz);
+  ENTRY();
   
   WriteBehind* pWriteBehind = new WriteBehind(*m_pRegSet->m_xpTable);
   
@@ -33,7 +33,7 @@ void Step::vWriteBehindCreate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWriteBehindDelete(void)
 {
-  ENTRY(); // ENTRY("vWriteBehindGet"_Stz);
+  ENTRY();
   
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
   delete pWriteBehind;
@@ -46,7 +46,7 @@ void Step::vWriteBehindDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWriteBehindGet(void)
 {
-  ENTRY(); // ENTRY("vWriteBehindGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpWriteBehind);
 }
@@ -56,7 +56,7 @@ void Step::vWriteBehindGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWriteBehindHandleDangling(void)
 {
-  ENTRY(); // ENTRY("vWriteBehindHandleDangling"_Stz);
+  ENTRY();
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
@@ -80,7 +80,7 @@ void Step::vWriteBehindHandleDangling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWriteBehindset(void)
 {
-  ENTRY(); // ENTRY("vWriteBehindset"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpWriteBehind = _pWriteBehind(m_pDataStack->pPopPtr(__func__));
 }

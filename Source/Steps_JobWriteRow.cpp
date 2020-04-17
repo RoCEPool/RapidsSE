@@ -18,7 +18,7 @@ void Step::vAddSteps_JobWriteRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowEncodeRow(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteRowEncodeRow"_Stz);
+  ENTRY();
   
 //  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(m_pDataStack->pPopPtr(__func__));
 //
@@ -61,7 +61,7 @@ void Step::vJob_WriteRowEncodeRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowInsertRow(void)
 {
-  ENTRY(); // ENTRY("vJob_WriteRowInsertRow"_Stz);
+  ENTRY();
   
 //  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(m_pDataStack->pPopPtr(__func__));
 //

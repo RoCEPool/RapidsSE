@@ -22,7 +22,7 @@ void Step::vAddSteps_JobReceiver(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverConnNoFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_ReceiverConnNoFetch"_Stz);
+  ENTRY();
   
   Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
   
@@ -37,7 +37,7 @@ void Step::vJob_ReceiverConnNoFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverJobReceived(void)
 {
-  ENTRY(); // ENTRY("vJob_ReceiverJobReceived"_Stz);
+  ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
@@ -65,7 +65,7 @@ void Step::vJob_ReceiverJobReceived(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverConnNoStore(void)
 {
-  ENTRY(); // ENTRY("vJob_ReceiverConnNoStore"_Stz);
+  ENTRY();
   
   Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
   
@@ -81,7 +81,7 @@ void Step::vJob_ReceiverConnNoStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverNodeFetch(void)
 {
-  ENTRY(); // ENTRY("vJob_ReceiverNodeFetch"_Stz);
+  ENTRY();
   
   Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
   
@@ -96,7 +96,7 @@ void Step::vJob_ReceiverNodeFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverNodeStore(void)
 {
-  ENTRY(); // ENTRY("vJob_ReceiverNodeStore"_Stz);
+  ENTRY();
   
   Job_Receiver* pJob_Receiver = _pJob_Receiver(m_pDataStack->pPopPtr(__func__));
   

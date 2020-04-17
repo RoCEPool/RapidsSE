@@ -25,7 +25,7 @@ void Step::vAddSteps_RegPipein(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinBide(void)
 {
-  ENTRY(); // ENTRY("vOperandBide"_Stz);
+  ENTRY();
   
   m_pRegSet->m_xpPipein = m_pTask->m_pJob->m_pOp->pPopQueue();
   
@@ -42,7 +42,7 @@ void Step::vRegPipeinBide(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinDelete(void)
 {
-  ENTRY(); // ENTRY("vOperandDelete"_Stz);
+  ENTRY();
   
   AM::vDeleteOperand(*m_pRegSet->m_xpPipein);
   
@@ -56,7 +56,7 @@ void Step::vRegPipeinDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinGet(void)
 {
-  ENTRY(); // ENTRY("vOperandGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpPipein);
   
@@ -68,7 +68,7 @@ void Step::vRegPipeinGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinIsNull(void)
 {
-  ENTRY(); // ENTRY("vOperandIsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpPipein.bIsNull() ? 1 : 0);
   
@@ -80,7 +80,7 @@ void Step::vRegPipeinIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinKind(void)
 {
-  ENTRY(); // ENTRY("vOperandKind"_Stz);
+  ENTRY();
   
   eZK eOperand = ZK_NONE;
   
@@ -130,7 +130,7 @@ void Step::vRegPipeinKind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinNext(void)
 {
-  ENTRY(); // ENTRY("vOperandNext"_Stz);
+  ENTRY();
   
   if (m_pRegSet->m_xpPipein.bIsNull())
     m_pRegSet->m_xpPipein = m_pTask->m_pJob->m_pOp->pPopQueue();
@@ -144,7 +144,7 @@ void Step::vRegPipeinNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinPipeOut(void)
 {
-  ENTRY(); // ENTRY("vOperandPipeOut"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpPipein);
   
@@ -162,7 +162,7 @@ void Step::vRegPipeinPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinPipeToJob(void)
 {
-  ENTRY(); // ENTRY("vOperandPipeToJob"_Stz);
+  ENTRY();
   
   ASSERT(*m_pRegSet->m_xpPipein);
   
@@ -180,7 +180,7 @@ void Step::vRegPipeinPipeToJob(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegPipeinSet(void)
 {
-  ENTRY(); // ENTRY("vOperandSet"_Stz);
+  ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_pRegSet->m_xpPipein.bIsNull());

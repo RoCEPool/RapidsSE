@@ -22,7 +22,7 @@ void Step::vAddSteps_Object(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectClassFetch(void)
 {
-  ENTRY(); // ENTRY("vObjectClassFetch"_Stz);
+  ENTRY();
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
@@ -38,7 +38,7 @@ void Step::vObjectClassFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectClassStore(void)
 {
-  ENTRY(); // ENTRY("vObjectClassStore"_Stz);
+  ENTRY();
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
@@ -54,7 +54,7 @@ void Step::vObjectClassStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectDump(void)
 {
-  ENTRY(); // ENTRY("vObjectDump"_Stz);
+  ENTRY();
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
@@ -72,7 +72,7 @@ void Step::vObjectDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectFetch(void)
 {
-  ENTRY(); // ENTRY("vObjectFetch"_Stz);
+  ENTRY();
   
   i8 iPick = 0;
   
@@ -90,7 +90,7 @@ void Step::vObjectFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectMagicMark(void)
 {
-  ENTRY(); // ENTRY("vObjectMagicMark"_Stz);
+  ENTRY();
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
@@ -104,7 +104,7 @@ void Step::vObjectMagicMark(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectStore(void)
 {
-  ENTRY(); // ENTRY("vObjectStore"_Stz);
+  ENTRY();
   
   i8 iPeek = 0;
   
@@ -122,7 +122,7 @@ void Step::vObjectStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectWordBodySet(void)
 {
-  ENTRY(); // ENTRY("vObjectWordBodySet"_Stz);
+  ENTRY();
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   

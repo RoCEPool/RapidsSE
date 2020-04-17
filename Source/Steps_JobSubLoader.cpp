@@ -22,7 +22,7 @@ void Step::vAddSteps_JobSubLoader(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderSpawn(void)
 {
-  ENTRY(); // ENTRY("vJob_SubLoaderSpawn"_Stz);
+  ENTRY();
   
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(m_pDataStack->pPopPtr(__func__));
   
@@ -68,7 +68,7 @@ void Step::vJob_SubLoaderSpawn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderBegin(void)
 {
-  ENTRY(); // ENTRY("vJob_SubLoaderBegin"_Stz);
+  ENTRY();
   
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
 
@@ -84,7 +84,7 @@ void Step::vJob_SubLoaderBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderChunk(void)
 {
-  ENTRY(); // ENTRY("vJob_SubLoaderChunk"_Stz);
+  ENTRY();
   
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
   
@@ -109,7 +109,7 @@ void Step::vJob_SubLoaderChunk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderEnd(void)
 {
-  ENTRY(); // ENTRY("vJob_SubLoaderEnd"_Stz);
+  ENTRY();
   
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
   
@@ -123,7 +123,7 @@ void Step::vJob_SubLoaderEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderTerminate(void)
 {
-  ENTRY(); // ENTRY("vJob_SubLoaderTerminate"_Stz);
+  ENTRY();
   
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
   

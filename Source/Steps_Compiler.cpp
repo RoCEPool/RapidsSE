@@ -37,7 +37,7 @@ void Step::vAddSteps_Compiler(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerInterpreting(void)
 {
-  ENTRY(); // ENTRY("vCompilerInterpreting"_Stz);
+  ENTRY();
   
   m_pCompiler->vMode(CM_INTERPRETING);
   
@@ -49,7 +49,7 @@ void Step::vCompilerInterpreting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCompiling(void)
 {
-  ENTRY(); // ENTRY("vCompilerCompiling"_Stz);
+  ENTRY();
   
   m_pCompiler->vMode(CM_COMPILING);
   
@@ -61,7 +61,7 @@ void Step::vCompilerCompiling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCurrentFetch(void)
 {
-  ENTRY(); // ENTRY("vCompilerCurrentFetch"_Stz);
+  ENTRY();
   
 //  if (! m_pCompiler)
 //    m_pCompiler = new Compiler;
@@ -81,7 +81,7 @@ void Step::vCompilerCurrentFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCurrentStore(void)
 {
-  ENTRY(); // ENTRY("vCompilerCurrentStore"_Stz);
+  ENTRY();
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -98,7 +98,7 @@ void Step::vCompilerCurrentStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerIsCompiling(void)
 {
-  ENTRY(); // ENTRY("vCompilerIsCompiling"_Stz);
+  ENTRY();
   
   i8 iIsCompiling = m_pCompiler->bCompiling();
   
@@ -112,7 +112,7 @@ void Step::vCompilerIsCompiling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerIsInterpreting(void)
 {
-  ENTRY(); // ENTRY("vCompilerIsInterpreting"_Stz);
+  ENTRY();
   
   i8 iIsInterpreting = m_pCompiler->bInterpreting();
   
@@ -126,7 +126,7 @@ void Step::vCompilerIsInterpreting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerIsPostponing(void)
 {
-  ENTRY(); // ENTRY("vCompilerIsPostponing"_Stz);
+  ENTRY();
   
   i8 bIsPostponing = m_pCompiler->bPostponing();
   
@@ -140,7 +140,7 @@ void Step::vCompilerIsPostponing(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerNestedFetch(void)
 {
-  ENTRY(); // ENTRY("vCompilerNestedFetch"_Stz);
+  ENTRY();
   
 //  if (! m_pCompiler)
 //    m_pCompiler = new Compiler;
@@ -159,7 +159,7 @@ void Step::vCompilerNestedFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerNestedStore(void)
 {
-  ENTRY(); // ENTRY("vCompilerNestedStore"_Stz);
+  ENTRY();
   
   Word* pNested = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -178,7 +178,7 @@ void Step::vCompilerNestedStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerPostponing(void)
 {
-  ENTRY(); // ENTRY("vCompilerPostponing"_Stz);
+  ENTRY();
   
   m_pCompiler->vMode(CM_POSTPONING);
   

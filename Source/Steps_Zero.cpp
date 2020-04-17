@@ -22,7 +22,7 @@ void Step::vAddSteps_Zero(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroLess(void)
 {
-  ENTRY(); // ENTRY("vZeroLess"_Stz);
+  ENTRY();
   
   i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
@@ -39,7 +39,7 @@ void Step::vZeroLess(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroLessEqual(void)
 {
-  ENTRY(); // ENTRY("vZeroLessEqual"_Stz);
+  ENTRY();
   
   i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
@@ -56,7 +56,7 @@ void Step::vZeroLessEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroEqual(void)
 {
-  ENTRY(); // ENTRY("vZeroEqual"_Stz);
+  ENTRY();
   
   i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
@@ -73,7 +73,7 @@ void Step::vZeroEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroNotEqual(void)
 {
-  ENTRY(); // ENTRY("vZeroNotEqual"_Stz);
+  ENTRY();
   
   i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
@@ -90,7 +90,7 @@ void Step::vZeroNotEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroGreaterEqual(void)
 {
-  ENTRY(); // ENTRY("vZeroGreaterEqual"_Stz);
+  ENTRY();
   
   i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
@@ -107,7 +107,7 @@ void Step::vZeroGreaterEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroGreater(void)
 {
-  ENTRY(); // ENTRY("vZeroGreater"_Stz);
+  ENTRY();
   
   i8 iZero = m_pDataStack->iPopAsInt(__func__);
   

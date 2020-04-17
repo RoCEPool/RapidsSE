@@ -19,7 +19,7 @@ void Step::vAddSteps_AttachMap(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAttachMapTenantsFetch(void)
 {
-  ENTRY(); // ENTRY("vAttachMapTenantsFetch"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(AM::pTenants());
 }
@@ -29,7 +29,7 @@ void Step::vAttachMapTenantsFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAttachMapTenantsStore(void)
 {
-  ENTRY(); // ENTRY("vAttachMapTenantsFetch"_Stz);
+  ENTRY();
   
   Word *pWord_tenants = _pWord(m_pDataStack->pPopPtr(__func__));
 
@@ -41,7 +41,7 @@ void Step::vAttachMapTenantsStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAttachMapRegionSizeFetch(void)
 {
-  ENTRY(); // ENTRY("vAttachMapRegionSizeFetch"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(AM::iRegionSize());
 }

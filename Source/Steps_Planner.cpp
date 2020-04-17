@@ -36,7 +36,7 @@ void Step::vPlannerChoosePaths(void)
 {
   //! refer:  https://en.cppreference.com/w/c/language/function_definition
   
-  ENTRY(); // ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -51,7 +51,7 @@ void Step::vPlannerChoosePaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerChosenPath(void)
 {
-  ENTRY(); // ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -68,7 +68,7 @@ void Step::vPlannerChosenPath(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerDelete(void)
 {
-  ENTRY(); // ENTRY("vPlannerDelete"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
 
@@ -82,7 +82,7 @@ void Step::vPlannerDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerFetchTechniqueFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerDelete"_Stz);
+  ENTRY();
   
   Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -99,7 +99,7 @@ void Step::vPlannerFetchTechniqueFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerGenPaths(void)
 {
-  ENTRY(); // ENTRY("vPlannerGenPaths"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -113,7 +113,7 @@ void Step::vPlannerGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerHighKeyFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerHighKeyFetch"_Stz);
+  ENTRY();
   
   Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -134,7 +134,7 @@ void Step::vPlannerHighKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerIndexNmFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerIndexFetch"_Stz);
+  ENTRY();
   
   Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -154,7 +154,7 @@ void Step::vPlannerIndexNmFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerKeyFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerKeyFetch"_Stz);
+  ENTRY();
   
   Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -175,7 +175,7 @@ void Step::vPlannerKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerLowKeyFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerLowKeyFetch"_Stz);
+  ENTRY();
   
   Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -196,7 +196,7 @@ void Step::vPlannerLowKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerMatchPaths(void)
 {
-  ENTRY(); // ENTRY("vPlannerMatchnPaths"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -210,7 +210,7 @@ void Step::vPlannerMatchPaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerNew(void)
 {
-  ENTRY(); // ENTRY("vPlannerNew"_Stz);
+  ENTRY();
   
   Planner* pPlanner = new Planner;
   
@@ -224,7 +224,7 @@ void Step::vPlannerNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerParseWhere(void)
 {
-  ENTRY(); // ENTRY("vPlannerParseWhere"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -252,7 +252,7 @@ void Step::vPlannerParseWhere(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerPhrasesFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerPhrasesFetch"_Stz);
+  ENTRY();
   
   Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -268,7 +268,7 @@ void Step::vPlannerPhrasesFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerScorePaths(void)
 {
-  ENTRY(); // ENTRY("vPlannerScorePaths"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -282,7 +282,7 @@ void Step::vPlannerScorePaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerShowPaths(void)
 {
-  ENTRY(); // ENTRY("vPlannerShowPaths"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -296,7 +296,7 @@ void Step::vPlannerShowPaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerTableFetch(void)
 {
-  ENTRY(); // ENTRY("vPlannerTableFetch"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
@@ -312,7 +312,7 @@ void Step::vPlannerTableFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerTableStore(void)
 {
-  ENTRY(); // ENTRY("vPlannerTableStore"_Stz);
+  ENTRY();
   
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   

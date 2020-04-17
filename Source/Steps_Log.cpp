@@ -26,7 +26,7 @@ void Step::vAddSteps_Log(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogDump(void)
 {
-  ENTRY(); // ENTRY("vActivityLogDump"_Stz);
+  ENTRY();
   
   AM::vLogWriteCsv(false);
   
@@ -38,7 +38,7 @@ void Step::vLogDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMark(void)
 {
-  ENTRY(); // ENTRY("vActivityLogMark"_Stz);
+  ENTRY();
   
   s256 sMark;
 
@@ -55,7 +55,7 @@ void Step::vLogMark(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkEntry(void)
 {
-  ENTRY(); // ENTRY("vActivityLogMarkEntry"_Stz);
+  ENTRY();
   
   s256 sWordNm;
   
@@ -74,7 +74,7 @@ void Step::vLogMarkEntry(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkExit(void)
 {
-  ENTRY(); // ENTRY("vActivityLogMarkExit"_Stz);
+  ENTRY();
   
   s256 sWordNm;
   
@@ -94,7 +94,7 @@ void Step::vLogMarkExit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkPhase(void)
 {
-  ENTRY(); // ENTRY("vActivityLogMarkPhase"_Stz);
+  ENTRY();
   
   i8 i_Phase = m_pDataStack->iPopInt(__func__);
   
@@ -114,7 +114,7 @@ void Step::vLogMarkPhase(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkSeed(void)
 {
-  ENTRY(); // ENTRY("vLogMarkSeed"_Stz);
+  ENTRY();
   
   i8 iSeed = m_pDataStack->iPopInt(__func__);
   
@@ -131,7 +131,7 @@ void Step::vLogMarkSeed(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkWord(void)
 {
-  ENTRY(); // ENTRY("vLogMarkWord"_Stz);
+  ENTRY();
   
   i8 iAN = m_pDataStack->iPopInt(__func__);
   
@@ -148,7 +148,7 @@ void Step::vLogMarkWord(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogJobSeed(void)
 {
-  ENTRY(); // ENTRY("vLogJobSeed"_Stz);
+  ENTRY();
   
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
   

@@ -19,7 +19,7 @@ void Step::vAddSteps_Tenants(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTenantsDelete(void)
 {
-  ENTRY(); // ENTRY("vTenantsDelete"_Stz);
+  ENTRY();
   
   Tenants* pTenants = _pTenants(m_pDataStack->pPopPtr(__func__));
   
@@ -33,7 +33,7 @@ void Step::vTenantsDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTenantsNew(void)
 {
-  ENTRY(); // ENTRY("vTenantsNew"_Stz);
+  ENTRY();
   
   Tenants* pTenants = new Tenants;
   

@@ -17,7 +17,7 @@ void Step::vAddSteps_Shell(void)
 /*----------------------------------------------------------------------------*/
 void Step::vShellExecute(void)
 {
-  ENTRY(); // ENTRY("vShellExecute"_Stz);
+  ENTRY();
   
   Datum xCommand;
   

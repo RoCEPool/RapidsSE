@@ -22,7 +22,7 @@ void Step::vAddSteps_SsnState(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncBegun(void)
 {
-  ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
+  ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -40,7 +40,7 @@ void Step::vSsnIncBegun(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncCancelled(void)
 {
-  ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
+  ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -58,7 +58,7 @@ void Step::vSsnIncCancelled(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncEnded(void)
 {
-  ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
+  ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -76,7 +76,7 @@ void Step::vSsnIncEnded(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncExecuted(void)
 {
-  ENTRY(); // ENTRY("vSsnIncExecuted"_Stz);
+  ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
@@ -94,7 +94,7 @@ void Step::vSsnIncExecuted(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnSenLoc(void)
 {
-  ENTRY(); // ENTRY("vSsnSenLoc"_Stz);
+  ENTRY();
   
   i8 iPosition = m_pDataStack->iPopInt(__func__);
 
@@ -112,7 +112,7 @@ void Step::vSsnSenLoc(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnTraceSession(void)
 {
-  ENTRY(); // ENTRY("vSsnTraceSession"_Stz);
+  ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   

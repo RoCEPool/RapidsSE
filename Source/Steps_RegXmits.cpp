@@ -28,7 +28,7 @@ void Step::vAddSteps_RegXmits(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsDelete(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsDelete"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   delete pXmits;
@@ -43,7 +43,7 @@ void Step::vRegXmitsDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsGet(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsGet"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpXmits);
   
@@ -55,7 +55,7 @@ void Step::vRegXmitsGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandleCancel(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsHandleCancel"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
  
@@ -71,7 +71,7 @@ void Step::vRegXmitsHandleCancel(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandleEos(void)
 {
-  ENTRY(); // ENTRY("vRegXmitssHandleEos"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -87,7 +87,7 @@ void Step::vRegXmitsHandleEos(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandleError(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsHandleError"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -103,7 +103,7 @@ void Step::vRegXmitsHandleError(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandleExit(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsHandleExit"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -119,7 +119,7 @@ void Step::vRegXmitsHandleExit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandlePulse(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsHandlePulse"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -135,7 +135,7 @@ void Step::vRegXmitsHandlePulse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandlePulsed(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsHandlePulsed"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -151,7 +151,7 @@ void Step::vRegXmitsHandlePulsed(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandleStart(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsXmitsHandleStart"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -168,7 +168,7 @@ void Step::vRegXmitsHandleStart(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsHandleStreamDef(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsHandleStreamDef"_Stz);
+  ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pRegSet->m_xpXmits);
   
@@ -186,7 +186,7 @@ void Step::vRegXmitsHandleStreamDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsIsNull(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsIsNull"_Stz);
+  ENTRY();
   
   m_pDataStack->vPushInt(m_pRegSet->m_xpXmits.bIsNull() ? 1 : 0);
   
@@ -198,7 +198,7 @@ void Step::vRegXmitsIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRegXmitsNew(void)
 {
-  ENTRY(); // ENTRY("vRegXmitsNew"_Stz);
+  ENTRY();
   
   ASSERT (m_pRegSet->m_xpXmits.bIsNull());
   
