@@ -313,7 +313,6 @@ enum eCN : u2 // Class Number
   /*  99 0x063       16B Heap:I */ CN_TMEVAL,
   /* 276 0x114      304B Heap:S */ CN_TOKEN,
   /* 277 0x115    56856B Heap:M */ CN_TOKENISER,
-  /*  94 0x05E       24B Heap:M */ CN_TOKENSTREAM,
   /* 278 0x116     8232B Heap:M */ CN_TOKENVEC,
   /*  99 0x063       16B Heap:I */ CN_TSPVAL,
   /* 279 0x117      432B Heap:S */ CN_TX,
@@ -335,6 +334,7 @@ enum eCN : u2 // Class Number
   /* 287 0x11F       25B Heap:I */ CN__Y__,
   
   /* 288 0x120       26B Heap:I */ CN__Z__,
+  
   /* 289 0x121       -1B Heap:I */ CN_ENUMS,
 };
   
@@ -643,7 +643,6 @@ static Stz* aCN[]
   /*  99 0x063 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* 276 0x114 */ "TOKEN"_Stz,               // CN_TOKEN
   /* 277 0x115 */ "TOKENISER"_Stz,           // CN_TOKENISER
-  /*  94 0x05E */ "TOKENSTREAM"_Stz,         // CN_TOKENSTREAM
   /* 278 0x116 */ "TOKENVEC"_Stz,            // CN_TOKENVEC
   /*  99 0x063 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /* 279 0x117 */ "TX"_Stz,                  // CN_TX
@@ -665,6 +664,7 @@ static Stz* aCN[]
   /* 287 0x11F */ "_Y__"_Stz,                // CN__Y__
   
   /* 288 0x120 */ "_Z__"_Stz,                // CN__Z__
+  
   /* 289 0x121 */ "ENUMS"_Stz,               // CN_ENUMS
 };
   

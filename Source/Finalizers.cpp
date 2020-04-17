@@ -307,10 +307,9 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_THREADQUEUE
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
-  /*143 */ &Finalize::vUndefined,         // CN_TOKEN
   /*  7 */ &Finalize::vUndefined,         // CN_TMEVAL
+  /*143 */ &Finalize::vUndefined,         // CN_TOKEN
   /*144 */ &Finalize::vUndefined,         // CN_TOKENISER
-  /*    */ &Finalize::vUndefined,         // CN_TOKENSTREAM
   /*146 */ &Finalize::vUndefined,         // CN_TOKENVEC
   /*  7 */ &Finalize::vUndefined,         // CN_TSPVAL
   /*147 */ &Finalize::vUndefined,         // CN_TX
