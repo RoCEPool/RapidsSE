@@ -500,13 +500,13 @@ void Charser::vLoadBoth(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  vRawCharFromInput(m_xAnnOne);
+  vRawCharFromSource(m_xAnnOne);
   
   if (m_xAnnOne.m_cChar) {
     
     m_nLoaded++;
     
-    vRawCharFromInput(m_xAnnTwo);
+    vRawCharFromSource(m_xAnnTwo);
     
     if (m_xAnnTwo.m_cChar)
       m_nLoaded++;
@@ -523,7 +523,7 @@ void Charser::vLoadFirst(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  vRawCharFromInput(m_xAnnOne);
+  vRawCharFromSource(m_xAnnOne);
   
   if (m_xAnnOne.m_cChar)
     m_nLoaded++;
@@ -564,7 +564,7 @@ void Charser::vLoadSecond(void)
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xAnnOne.m_cChar);
   
-  vRawCharFromInput(m_xAnnTwo);
+  vRawCharFromSource(m_xAnnTwo);
   
   if (m_xAnnTwo.m_cChar)
     m_nLoaded++;
@@ -767,7 +767,7 @@ bool Charser::bLineCommentStart(void)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from input source                                   */
 /*----------------------------------------------------------------------------*/
-void Charser::vRawCharFromInput(AnnChar& rxAnnChar)
+void Charser::vRawCharFromSource(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   

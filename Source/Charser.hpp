@@ -109,7 +109,7 @@ namespace LexicalAnalysis
     void vStripComment(void);
     
     // Reading
-    void vRawCharFromInput(AnnChar& rxAnnChar);
+    void vRawCharFromSource(AnnChar& rxAnnChar);
     void vRawCharFromFile(AnnChar& rxAnnChar);
     void vRawCharFromStdin(AnnChar& rxAnnChar);
     void vRawCharFromString(AnnChar& rxAnnChar);
