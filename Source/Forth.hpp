@@ -53,7 +53,7 @@ namespace SenVM
     DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
     Task* pTask(void);
-    Input* pTokeniser(void);
+    Input* pInput(void);
 
   private:
     Footer* aFooter(void);

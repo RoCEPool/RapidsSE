@@ -264,7 +264,7 @@ Task* Forth::pTask(void)
 /*----------------------------------------------------------------------------*/
 /* get input stream                                                           */
 /*----------------------------------------------------------------------------*/
-Input* Forth::pTokeniser(void)
+Input* Forth::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 

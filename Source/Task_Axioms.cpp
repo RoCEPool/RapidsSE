@@ -306,20 +306,20 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   TokenVec* pTokenVec;
   
   Compiler*  pCompiler = m_pForth->pCompiler();
-  Input* pTokeniser = m_pForth->pTokeniser();
+  Input* pInput = m_pForth->pInput();
   
-  pTokeniser->vUseString(sDefinition);
-  pTokeniser->vSenTokens();
-  pTokeniser->vUseBegin();
+  pInput->vUseString(sDefinition);
+  pInput->vSenTokens();
+  pInput->vUseBegin();
 
   // get :
-  pTokeniser->vReadToken_nil();
-  Stz* szChars = pTokeniser->szToken();
+  pInput->vReadToken_nil();
+  Stz* szChars = pInput->szToken();
   vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // get name of word
-  pTokeniser->vReadToken_nil();
-  szChars = pTokeniser->szToken();
+  pInput->vReadToken_nil();
+  szChars = pInput->szToken();
   vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -336,17 +336,17 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pTokeniser->vReadToken_nil();
+  pInput->vReadToken_nil();
   
-  while (TN_EOF != pTokeniser->eToken()) {
+  while (TN_EOF != pInput->eToken()) {
     
-    szChars = pTokeniser->szToken();
+    szChars = pInput->szToken();
     vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
     
     if (szChars->bEqual(";"_Stz))
       break;
     
-    eTN eToken = pTokeniser->eToken();
+    eTN eToken = pInput->eToken();
     switch (eToken) {
         
       // -- -- -- -- -- -- -- -- -- --
@@ -403,7 +403,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
                );
     }
     
-    pTokeniser->vReadToken_nil();
+    pInput->vReadToken_nil();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -411,7 +411,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   pNewWord->vEncodeCall("exit_rt"_Stz);
   
   // reset charser
-  pTokeniser->vUseEnd();
+  pInput->vUseEnd();
   
   return pNewWord;
 }
@@ -428,36 +428,36 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   s48K sValue;
   
   Compiler* pCompiler = m_pForth->pCompiler();
-  Input* pTokeniser = m_pForth->pTokeniser();
+  Input* pInput = m_pForth->pInput();
 
-  pTokeniser->vUseString(sDefinition);
+  pInput->vUseString(sDefinition);
   
   // get string
-  pTokeniser->vReadToken_nil();
+  pInput->vReadToken_nil();
 
   if (AM::bVerbose())
     vTrace("CompileConstant: %s\n"_Stz,
-           pTokeniser->szToken());
+           pInput->szToken());
   
-  sValue = (Stz*)pTokeniser->szToken()->azChar();
+  sValue = (Stz*)pInput->szToken()->azChar();
   
   // get CONSTANT
-  pTokeniser->vReadToken_nil();
+  pInput->vReadToken_nil();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
   
   // get name of word
-  pTokeniser->vReadToken_nil();
+  pInput->vReadToken_nil();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
 
-  Stz* szName = (Stz*)pTokeniser->szToken();
+  Stz* szName = (Stz*)pInput->szToken();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   
   AM::vAddConstant(szName,sValue.szStz());
   
-  pTokeniser->vReadToken_nil();
+  pInput->vReadToken_nil();
   
-  pTokeniser->vUseEnd();
+  pInput->vUseEnd();
 }
 
 /*============================================================================*/

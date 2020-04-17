@@ -1016,11 +1016,11 @@ bool SePrompt::bRedirectFromFile(void)
   if (! File::bExists(szPath))
     return false;
   
-  Input* pTokeniser = m_pSession->m_pInput;
+  Input* pInput = m_pSession->m_pInput;
     
-  pTokeniser->vPushFile(szPath);
+  pInput->vPushFile(szPath);
   
-  pTokeniser->vUseBegin();
+  pInput->vUseBegin();
 
   return true;
 }
@@ -1264,8 +1264,8 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pTokeniser = m_pSession->m_pInput;
-  if (pTokeniser->bIsStdin())
+  Input* pInput = m_pSession->m_pInput;
+  if (pInput->bIsStdin())
     return true;
   else
     return false;

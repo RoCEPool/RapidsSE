@@ -73,26 +73,26 @@ void Input::vTokenise(TokenVec* pTknVec, Stz* szString)
   
   pTknVec->vReset();
   
-  Input* pTokeniser = new Input;
-  pTokeniser->vUseString(szString);
-  pTokeniser->vSenTokens();
-  pTokeniser->vUseBegin();
+  Input* pInput = new Input;
+  pInput->vUseString(szString);
+  pInput->vSenTokens();
+  pInput->vUseBegin();
 
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vReadToken_nil();
-    if (TN_EOF == pTokeniser->eToken())
+    pInput->vReadToken_nil();
+    if (TN_EOF == pInput->eToken())
       break;
     
     pTknVec->vIncTokens();
     
     Token* pToken = pTknVec->pGet(i_Token);
-    pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->szToken());
+    pToken->vToken(pInput->eToken());
+    pToken->vCopy(pInput->szToken());
     
   }
   
-  pTokeniser->vUseEnd();
-  delete pTokeniser;
+  pInput->vUseEnd();
+  delete pInput;
 }
 
 
@@ -103,10 +103,10 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   _static_
 
-  Input* pTokeniser = _pInput(pObject);
+  Input* pInput = _pInput(pObject);
   
   vTrace("parser %p\n"_Stz,
-         pTokeniser->m_pCharser);
+         pInput->m_pCharser);
 }
 
 /*----------------------------------------------------------------------------*/

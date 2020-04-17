@@ -502,26 +502,26 @@ void TokenVec::vTokenise(Stz* szString)
 
   vReset();
   
-  Input* pTokeniser = new Input;
-  pTokeniser->vUseString(szString);
-  pTokeniser->vSenTokens();
-  pTokeniser->vUseBegin();
+  Input* pInput = new Input;
+  pInput->vUseString(szString);
+  pInput->vSenTokens();
+  pInput->vUseBegin();
 
   for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vReadToken_nil();
-    if (TN_EOF == pTokeniser->eToken())
+    pInput->vReadToken_nil();
+    if (TN_EOF == pInput->eToken())
       break;
     
     vIncTokens();
     
     Token* pToken = pGet(i_Token);
-    pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->szToken());
+    pToken->vToken(pInput->eToken());
+    pToken->vCopy(pInput->szToken());
     
   }
   
-  pTokeniser->vUseEnd();
-  delete pTokeniser;
+  pInput->vUseEnd();
+  delete pInput;
 }
 
 /*----------------------------------------------------------------------------*/

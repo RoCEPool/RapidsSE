@@ -35,7 +35,7 @@ Stz* My::szJobNm(void)
 //{
 //  Task* pTask = AM::pThisTLSTask();
 //  
-//  return pTask->pTokeniser()->szToken();
+//  return pTask->pInput()->szToken();
 //}
 
 /*----------------------------------------------------------------------------*/
