@@ -8,12 +8,14 @@ namespace LexicalAnalysis
   class Token : public Object
   {
   private:
-    i8    m_i_Token; // which token
     eTN   m_eToken;  // kind of token
     Stz*  m_szChars; // the charsed characters of this token
     i8    m_iLineNo; // line number where term can be found in input
     i8    m_iColNo;  // column number where term can be found in input
 
+    TokenVec* m_p_TokenVec; // which token vector
+    i8        m_i_Token;    // which token
+    
     s256  m__sCharsBuff; // temp buffer for charsed characters
 
     // must be last
@@ -29,15 +31,15 @@ namespace LexicalAnalysis
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void  vCopy_restricted(Stz* , TokenVec* pCaller);
-    void  vCopy_restricted(Token* , TokenVec* pCaller);
+    void  vCopy_restricted(Stz* szArg, TokenVec* pCaller);
+    void  vCopy_restricted(Token* pToken_src, TokenVec* pCaller);
+    void  vInit_restricted(i8 i_Token, TokenVec* pCaller);
 
     char* azChars(void);
     Stz*  szChars(void);
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     bool  bHasChars(void);
-    void  vInitTkn(i8 i_Token);
     bool  bIsInteger(void);
     bool  bIsName(void);
     bool  bIsNumeric(void);

@@ -22,7 +22,8 @@ Token::Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_i_Token = C_UNKNOWN;
+  m_p_TokenVec = nullptr;
+  m_i_Token    = C_UNKNOWN;
   
   vReset();
   
@@ -39,7 +40,8 @@ Token::Token(Token* pToCopy, TokenVec* pCaller)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_i_Token = C_UNKNOWN;
+  m_p_TokenVec = nullptr;
+  m_i_Token    = C_UNKNOWN;
 
   vReset();
   
@@ -82,7 +84,7 @@ void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given token into this token                                          */
+/* copy given token into this token                                           */
 /*----------------------------------------------------------------------------*/
 void Token::vCopy_restricted(Token* pGivenToken, TokenVec* pCaller)
 {
@@ -121,7 +123,7 @@ Stz* Token::szChars(void)
 /*----------------------------------------------------------------------------*/
 /* get the column number                                                      */
 /*----------------------------------------------------------------------------*/
-i8 Token::iColNo()
+i8 Token::iColNo(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -153,11 +155,12 @@ bool Token::bHasChars(void)
 /*----------------------------------------------------------------------------*/
 /* init this token                                                            */
 /*----------------------------------------------------------------------------*/
-void Token::vInitTkn(i8 i_Token)
+void Token::vInit_restricted(i8 i_Token, TokenVec* pCaller)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  m_i_Token = i_Token;
+  m_p_TokenVec = pCaller;
+  m_i_Token    = i_Token;
 }
 
 /*----------------------------------------------------------------------------*/
