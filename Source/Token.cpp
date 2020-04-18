@@ -126,24 +126,24 @@ void Token::vConcat(Stz* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
-void Token::vCopy(Stz* szArg)
+void Token::vCopy(Stz* szChars)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_szChars->vCopy(szArg);
+  m_szChars->vCopy(szChars);
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* copy given token into this token                                          */
 /*----------------------------------------------------------------------------*/
 void Token::vCopy(Token* pGivenToken)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = pGivenToken->m_eToken;
-  m_sTerm.vCopy(pGivenToken->szChars());
+  m_szChars->vCopy(pGivenToken->szChars());
 }
 
 /*----------------------------------------------------------------------------*/
