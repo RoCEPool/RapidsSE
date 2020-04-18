@@ -113,6 +113,18 @@ void Token::vAdjustChars(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* string length of chars                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Token::nChars()
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  i8 nChars = m_szChars->nLength();
+  
+  return nChars;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the charsed characters of the token                                    */
 /*----------------------------------------------------------------------------*/
 char* Token::azChars(void)
@@ -173,18 +185,6 @@ void Token::vInit_restricted(i8 i_Token, TokenVec* pCaller)
 
   m_p_TokenVec = pCaller;
   m_i_Token    = i_Token;
-}
-
-/*----------------------------------------------------------------------------*/
-/* string length of chars                                                     */
-/*----------------------------------------------------------------------------*/
-i8 Token::iLength()
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  i8 iLen = m_szChars->nLength();
-  
-  return iLen;
 }
 
 /*----------------------------------------------------------------------------*/

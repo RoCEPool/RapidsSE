@@ -189,7 +189,7 @@ bool TokenVec::bBlankLine(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   if (0 == nTokens() ||
-      0 == pGet(0)->iLength())
+      0 == pGet(0)->nChars())
     return true;
   
   return false;
@@ -269,7 +269,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   Token* pTknCut = pGet(i_CutTkn);
   
   Stz* szWhereToCut = pTknCut->szChars();
-  i8 nBytesToCut = pTknCut->iLength() + 1;
+  i8 nBytesToCut = pTknCut->nChars() + 1;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -530,6 +530,16 @@ void TokenVec::vStripSemicolon(void)
       //break;
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* take bytes (for token chars) from xyCharsSet                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vTakeCharsBytes(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyCharsSet.vTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1377,6 +1377,11 @@ void Input::vTokenCollectEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
 #ifdef __WITH_CHARS_SET
+  
+  i8 nChars = m_pToken->nChars();
+  
+  m_pTknVec->vTakeCharsBytes(nChars + 1);
+  
 #endif
 }
 

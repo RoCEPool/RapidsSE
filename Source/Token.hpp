@@ -36,6 +36,7 @@ namespace LexicalAnalysis
     void  vInit_restricted(i8 i_Token, TokenVec* pCaller);
 
     void  vAdjustChars(i8 nBytes);
+    i8    nChars(void);
     char* azChars(void);
     Stz*  szChars(void);
     i8    iColNo(void);
@@ -44,7 +45,6 @@ namespace LexicalAnalysis
     bool  bIsInteger(void);
     bool  bIsName(void);
     bool  bIsNumeric(void);
-    i8    iLength(void);
     i8    iLineNo(void);
     void  vLineNo(i8 iLineNo);
     void  vReset(void);

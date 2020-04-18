@@ -251,7 +251,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       char cRecordEnds = *pTokenVec->pGet(++i_Token)->azChars();
       
       // is record_ends 1 character ?
-      if (pTokenVec->pGet(i_Token)->iLength() == 1) {
+      if (pTokenVec->pGet(i_Token)->nChars() == 1) {
         if (cRecordEnds == '0') {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
           return false;
@@ -265,7 +265,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         }
       }
       // record_ends is 2 characters
-      else if (pTokenVec->pGet(i_Token)->iLength() == 2) {
+      else if (pTokenVec->pGet(i_Token)->nChars() == 2) {
         
         if (pTokenVec->pGet(i_Token)->bSame("\r\n"_Stz)) {
           m_oFormatters.m_bDefault = false;

@@ -54,6 +54,7 @@ namespace LexicalAnalysis
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
+    void vTakeCharsBytes(i8 nBytes);
     void vTokenise(Stz* szString);
     i8   nTokens(void);
     void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
