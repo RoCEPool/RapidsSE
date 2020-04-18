@@ -203,7 +203,7 @@ bool Token::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = m_sTerm.bIsNumeric();
+  bool b = m_szChars->bIsNumeric();
   
   return b;
 }
