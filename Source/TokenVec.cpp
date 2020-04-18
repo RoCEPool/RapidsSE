@@ -24,7 +24,7 @@ TokenVec::TokenVec(bool bNewTokens)
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = pGet(i_Token,true);
-    pToken->vInit_restricted(i_Token,this);
+    pToken->vInitToken_restricted(i_Token,this);
   }
   
   _checkInitialised_(CN_TOKENVEC);

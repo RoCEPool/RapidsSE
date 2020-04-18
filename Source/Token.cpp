@@ -80,7 +80,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
-void Token::vCopyChars_restricted(Stz* szChars, TokenVec* pCaller)
+void Token::vCopyChars_restricted(Stz* szArg, TokenVec* pCaller)
 {
 #ifdef __WITH_CHARS_SET
   RASSERT(0);
@@ -90,7 +90,7 @@ void Token::vCopyChars_restricted(Stz* szChars, TokenVec* pCaller)
   
   ASSERT(pCaller == m_p_TokenVec);
   
-  m_szChars->vCopy(szChars);
+  m_szChars->vCopy(szArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
 /*----------------------------------------------------------------------------*/
 /* init this token                                                            */
 /*----------------------------------------------------------------------------*/
-void Token::vInit_restricted(i8 i_Token, TokenVec* pCaller)
+void Token::vInitToken_restricted(i8 i_Token, TokenVec* pCaller)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
@@ -121,6 +121,22 @@ void Token::vInit_restricted(i8 i_Token, TokenVec* pCaller)
   
   m_p_TokenVec = pCaller;
   m_i_Token    = i_Token;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set chars of this token to given arg                                       */
+/*----------------------------------------------------------------------------*/
+void Token::vSetChars_restricted(Stz* szArg, TokenVec* pCaller)
+{
+#ifndef __WITH_CHARS_SET
+  RASSERT(0);
+#endif
+  
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  ASSERT(pCaller == m_p_TokenVec);
+  
+  m_szChars = szArg;
 }
 
 
