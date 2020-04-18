@@ -118,7 +118,11 @@ void Bytes_t<BYTES>::vCut(Stz* szWhereToCut, i8 nBytes)
   Stz* szDst = szWhereToCut;
   Stz* szSrc = aAdd<Stz*>(szWhereToCut,nBytes);
   
+  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
+  
   MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
+  
+  m_i_Latter -= nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +168,8 @@ void Bytes_t<BYTES>::vListAll(void)
   
     if (bMarkup) {
       bMarkup = false;
-      vTrace("[%02lld-%04lld] "_Stz);
+      i8 nLen = StrLib::nLength((char*)ayByte);
+      vTrace("[%02lld-%04lld] %p : "_Stz,i_String,nLen,ayByte);
     }
 
     if (* ayByte) {
@@ -174,6 +179,7 @@ void Bytes_t<BYTES>::vListAll(void)
     
     vTrace("\n"_Stz);
     bMarkup = true;
+    i_String++;
   }
 }
 

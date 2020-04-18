@@ -268,11 +268,19 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   Token* pTknCut = pGet(i_CutTkn);
   
+#ifdef __WITH_CHARS_SET
+
+  char* azChars = pTknCut->azChars();
   Stz* szWhereToCut = pTknCut->szChars();
   i8 nBytesToCut = pTknCut->nChars() + 1;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_xyCharsSet.vListAll();
   
+  Correctness::vDebugPoint();
+
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
     
@@ -283,6 +291,23 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   }
   
   vDecItems();
+  
+#ifdef __WITH_CHARS_SET
+  
+  m_xyCharsSet.vCut(szWhereToCut,nBytesToCut);
+  m_xyCharsSet.vListAll();
+
+  nTkns = nItems();
+
+  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
+    Token* pTknAdj = pGet(i_Token);
+    
+    pTknAdj->vAdjustChars(- nBytesToCut); // observe minus sign
+  }
+  
+  
+  Correctness::vDebugPoint();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
