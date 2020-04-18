@@ -294,6 +294,8 @@ void Step::vSemicolon(void)
 {
   ENTRY();
   
+  static i8 iMaxUsed = 0;
+  
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   if (m_pCompiler->nLocals()) {
@@ -320,6 +322,14 @@ void Step::vSemicolon(void)
   }
   else
     pCurrentWord->vEncodeCall("exit_rt"_Stz);
+  
+  i8 iUsed = pCurrentWord->nRoutineUsed();
+  if (iUsed > iMaxUsed)
+    iMaxUsed = iUsed;
+//  vTrace(" Routine %lldB (%lld): %s\n"_Stz,
+//         pCurrentWord->nRoutineUsed(),
+//         iMaxUsed,
+//         pCurrentWord->szWordNm());
   
   m_pCompiler->vMode(CM_INTERPRETING);
     

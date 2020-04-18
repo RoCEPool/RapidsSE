@@ -119,7 +119,7 @@ namespace SenVM
     bool  bPrompt(void);
     void  vPrompt(bool bImmediate);
     void  vResetRoutine(void);
-    i8    iSize(void);
+    i8    nRoutineUsed(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);
