@@ -31,7 +31,7 @@ namespace LexicalAnalysis
     Stz*  szChars(void);
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
-    void  vConcat(Stz*);
+    void  vConcat(Stz* szArg);
     void  vCopy(Stz*);
     void  vCopy(Token*);
     bool  bHasChars(void);

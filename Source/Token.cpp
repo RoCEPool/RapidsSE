@@ -128,11 +128,11 @@ void Token::vConcat(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-void Token::vCopy(Stz* aArg)
+void Token::vCopy(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_sTerm.vCopy(aArg);
+  m_szChars->vCopy(szArg);
 }
 
 /*----------------------------------------------------------------------------*/
