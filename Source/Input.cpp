@@ -1365,6 +1365,7 @@ void Input::vTokenCollectBegin(void)
 #ifdef __WITH_CHARS_SET
   
   Stz* szLatter = m_pTknVec->szLaterChars();
+  //m_pToken->vChars(szLatter);
   
 #endif
   

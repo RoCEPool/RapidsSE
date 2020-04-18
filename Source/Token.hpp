@@ -39,6 +39,7 @@ namespace LexicalAnalysis
     i8    nChars(void);
     char* azChars(void);
     Stz*  szChars(void);
+    void  vChars(Stz* szChars);
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     bool  bHasChars(void);
