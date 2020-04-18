@@ -21,6 +21,7 @@ namespace Esses
   
     i8   iAppend(Stz* szStr);
     Stz* szGet(i8 i_Area);
+    Stz* szLatter(void);
     void vPrintAll(void);
     void vReset(void);
   
@@ -87,6 +88,20 @@ i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   return i_String;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get address of the later portion                                           */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+Stz* Bytes_t<BYTES>::szLatter(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  Stz* szLater = szGet(m_i_Latter);
+  
+  return szLater;
 }
 
 /*----------------------------------------------------------------------------*/
