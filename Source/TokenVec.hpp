@@ -9,7 +9,9 @@ namespace LexicalAnalysis
   {
   private:
      
-    i8 m_iCurTkn;    // the current token in the vector
+    i8 m_iCurTkn;       // the current token in the vector
+  
+    b256K m_yxCharsSet; // buffer for all token chars 
   
     // must be last
     Footer m_xFooter;    
