@@ -149,7 +149,7 @@ void Token::vCopy(Token* pGivenToken)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-bool Token::bHasText(void)
+bool Token::bHasChars(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -249,7 +249,7 @@ bool Token::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = m_sTerm.bSame(aArg);
+  bool b = m_szChars->bSame(aArg);
   
   return b;
 }

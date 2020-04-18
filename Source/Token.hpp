@@ -34,7 +34,7 @@ namespace LexicalAnalysis
     void  vConcat(Stz*);
     void  vCopy(Stz*);
     void  vCopy(Token*);
-    bool  bHasText(void);
+    bool  bHasChars(void);
     bool  bIsInteger(void);
     bool  bIsName(void);
     bool  bIsNumeric(void);

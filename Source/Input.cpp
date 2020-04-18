@@ -247,7 +247,7 @@ void Input::vReadCommand(void)
     
   // if empty line just return
   if ( ! m_pTknVec->nTokens() ||
-       ! m_pTknVec->pGet(0)->bHasText() )
+       ! m_pTknVec->pGet(0)->bHasChars() )
     return;
   
   // if its a command file just return
@@ -491,7 +491,7 @@ void Input::vCollectVecTillSemicolon(void)
   ASSERT(m_pCharser->bUseBegun());
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(m_pTknVec->pGet(0)->bHasText());
+  ASSERT(m_pTknVec->pGet(0)->bHasChars());
   
   // have we already seen the ';'
   i8 i_Token = m_pTknVec->iFindToken(";"_Stz);

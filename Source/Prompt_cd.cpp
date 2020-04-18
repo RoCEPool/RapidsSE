@@ -33,7 +33,7 @@ bool Prompt::bPrompt_cd(SePrompt* pPrompt)
   
   i8 i_Token;
   for (i_Token = 2; i_Token < C_MAX_TOKENS; i_Token++) {
-    if (! pTokenVec->pGet(i_Token)->bHasText())
+    if (! pTokenVec->pGet(i_Token)->bHasChars())
       break;
     sDir.vConcat(pTokenVec->pGet(i_Token)->szChars());
   }

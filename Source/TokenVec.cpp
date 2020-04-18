@@ -197,7 +197,7 @@ i8 TokenVec::iCountTokens(void)
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = pGet(i_Token,true);
-    if ( ! pToken->bHasText() )
+    if ( ! pToken->bHasChars() )
       return i_Token;
   }
   
@@ -458,7 +458,7 @@ void TokenVec::vSetTokens(void)
    // get count of words in pWords
   i8 i_Token;
   for (i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    if ( ! pGet(i_Token,true)->bHasText() )
+    if ( ! pGet(i_Token,true)->bHasChars() )
       break;
   }
   
