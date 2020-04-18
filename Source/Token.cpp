@@ -22,8 +22,6 @@ Token::Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_szChars = m_sTerm.szStz();
-  
   vReset();
   
   _checkInitialised_(CN_TOKEN);
@@ -38,8 +36,6 @@ Token::Token(Token* pToCopy)
 : Object(CN_TOKEN)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  m_szChars = m_sTerm.szStz();
   
   vReset();
   
@@ -235,11 +231,15 @@ void Token::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_eToken  = TN_NONE;
-  m_sTerm   = ""_Stz;
+  // tbd...
+  m_szChars = m_sTerm.szStz();
   
-  m_iLineNo = C_UNKNOWN;
-  m_iColNo  = C_UNKNOWN;
+
+  m_eToken   = TN_NONE;
+  *m_szChars->azChar() = '\0';
+  
+  m_iLineNo  = C_UNKNOWN;
+  m_iColNo   = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
