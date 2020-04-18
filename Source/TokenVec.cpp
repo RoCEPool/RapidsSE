@@ -224,7 +224,7 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
     Token* pToken_src = pTknVecSrc->pGet(i_Token);
     Token* pToken_dst = pGet(i_Token);
     
-    pToken_dst->vCopy_restricted(pToken_src,this);
+    pToken_dst->vCopyToken_restricted(pToken_src,this);
   }
 }
 
@@ -276,7 +276,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
     Token* pTknDst = pGet(i_Token);
     Token* pTknSrc = pGet(i_Token + 1,true);
     
-    pTknDst->vCopy_restricted(pTknSrc,this);
+    pTknDst->vCopyToken_restricted(pTknSrc,this);
   }
   
   vDecItems();
@@ -314,7 +314,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
     Token* pTknDst = pGet(i_Token);
     Token* pTknSrc = pGet(i_Token + 1,true);
     
-    pTknDst->vCopy_restricted(pTknSrc,this);
+    pTknDst->vCopyToken_restricted(pTknSrc,this);
   }
   
   vDecItems();
@@ -434,7 +434,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
     Token* pTkn_dst = pGet(i_Token + 1,true);
     Token* pTkn_src = pGet(i_Token);
     
-    pTkn_dst->vCopy_restricted(pTkn_src,this);
+    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
   }
   
   vIncItems();

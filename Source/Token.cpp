@@ -45,7 +45,7 @@ Token::Token(Token* pToCopy, TokenVec* pCaller)
 
   vReset();
   
-  vCopy_restricted(pToCopy,pCaller);
+  vCopyToken_restricted(pToCopy,pCaller);
   
   _checkInitialised_(CN_TOKEN);
   
@@ -92,7 +92,7 @@ void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
 /*----------------------------------------------------------------------------*/
 /* copy given token into this token                                           */
 /*----------------------------------------------------------------------------*/
-void Token::vCopy_restricted(Token* pGivenToken, TokenVec* pCaller)
+void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
