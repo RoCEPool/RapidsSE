@@ -24,6 +24,7 @@ namespace Esses
     void vCut(Stz* szWhereToCut, i8 nBytes);
     Stz* szGet(i8 i_Area);
     Stz* szLatter(void);
+    void vListAll(void);
     void vPrintAll(void);
     void vReset(void);
   
@@ -143,6 +144,36 @@ Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
   char* acStr = (char*)& m_yaArea[i_Area];
   
   return (Stz*)acStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* list all embedded strings                                                  */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vListAll(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  byte* ayWild = & m_yaArea[m_i_Latter];
+  
+  bool bMarkup = true;
+
+  i8 i_String = 0;
+  for (byte* ayByte = m_yaArea; ayByte < ayWild; ayByte++) {
+  
+    if (bMarkup) {
+      bMarkup = false;
+      vTrace("[%02lld-%04lld] "_Stz);
+    }
+
+    if (* ayByte) {
+      vTrace("%c"_Stz,* ayByte);
+      continue;
+    }
+    
+    vTrace("\n"_Stz);
+    bMarkup = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

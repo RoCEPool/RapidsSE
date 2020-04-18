@@ -259,6 +259,13 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  i8 nTkns = nItems();
+  
+  if (i_CutTkn >= nTkns - 1) {
+    vDecItems();
+    return;
+  }
+  
   Token* pTknCut = pGet(i_CutTkn);
   
   Stz* szWhereToCut = pTknCut->szChars();
@@ -266,7 +273,6 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nTkns = nItems();
   
   for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
     
