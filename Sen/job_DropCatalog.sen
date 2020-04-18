@@ -13,12 +13,12 @@
 
   folder[].checkInCatalogs not if false exit then
 
-  sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
+  //sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
 
-  sCatalogNm path[].checkIsCatalog  not if false exit then
+  sCatalogNm checkIsCatalog  not if false exit then
 
-  folder.isEmpty    not if false exit then
-  folder.notUsed    not if false exit then
+  // folder.isEmpty    not if false exit then
+  // folder.notUsed    not if false exit then
 
   true 
 ;
@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
-  //<catalogNm> checkRemoveCatalog not if job[] ERROR_JOB !!logError exit then
+  <catalogNm> checkRemoveCatalog not if job[] ERROR_JOB !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/

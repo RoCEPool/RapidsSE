@@ -5,14 +5,6 @@
 " OP_createCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is not a catalog                                             */
-/*----------------------------------------------------------------------------*/
-: checkIsNotCatalog ( word )
-  folder[].findSymbol not if true exit then
-  EC_CATALOG_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : createCatalog_PulseMarker
