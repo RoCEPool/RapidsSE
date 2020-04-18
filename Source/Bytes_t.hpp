@@ -21,6 +21,7 @@ namespace Esses
   
     i8   iAppend(Stz* szStr);
     void vCut(i8 i_At, i8 nBytes);
+    void vCut(Stz* szWhereToCut, i8 nBytes);
     Stz* szGet(i8 i_Area);
     Stz* szLatter(void);
     void vPrintAll(void);
@@ -99,9 +100,22 @@ void Bytes_t<BYTES>::vCut(i8 i_At, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
-  Stz* szDst = szGet(i_At);
-  Stz* szSrc = szGet(i_At + nBytes);
+  Stz* szWhereToCut = szGet(i_At);
 
+  vCut(szWhereToCut,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut nBytes starting at given offset                                        */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vCut(Stz* szWhereToCut, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  Stz* szDst = szWhereToCut;
+  Stz* szSrc = aAdd<Stz*>(szWhereToCut,nBytes);
+  
   MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
 }
 

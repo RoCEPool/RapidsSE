@@ -255,13 +255,20 @@ Token* TokenVec::pCurrToken(void)
 /*----------------------------------------------------------------------------*/
 /* cut a token from token vector                                              */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vCutToken(i8 i_Tkn)
+void TokenVec::vCutToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  Token* pTknCut = pGet(i_CutTkn);
+  
+  Stz* szWhereToCut = pTknCut->szChars();
+  i8 nBytesToCut = pTknCut->iLength() + 1;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 nTkns = nItems();
   
-  for (i8 i_Token = i_Tkn; i_Token < nTkns ; i_Token++) {
+  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
     
     Token* pTknDst = pGet(i_Token);
     Token* pTknSrc = pGet(i_Token + 1,true);

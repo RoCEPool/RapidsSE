@@ -101,6 +101,18 @@ void Token::vCopy_restricted(Token* pGivenToken, TokenVec* pCaller)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* adjust this tokens m_szChars address by +/- the given number of bytes      */
+/*----------------------------------------------------------------------------*/
+void Token::vAdjustChars(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  Stz* szAdjustedChars = aAdd<Stz*>(m_szChars,nBytes);
+
+  m_szChars = szAdjustedChars;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the charsed characters of the token                                    */
 /*----------------------------------------------------------------------------*/
 char* Token::azChars(void)
