@@ -1363,6 +1363,9 @@ void Input::vTokenCollectBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
 #ifdef __WITH_CHARS_SET
+  
+  Stz* szLatter = m_pTknVec->szLaterChars();
+  
 #endif
   
   m_pToken->vLineNo(m_xAnnChar.m_iLine);

@@ -395,6 +395,18 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get latter of xyCharsSet                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* TokenVec::szLaterChars(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Stz* szLater = m_xyCharsSet.szLatter();
+  
+  return szLater;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return next token                                                          */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pNextToken(void)
