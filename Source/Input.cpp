@@ -4,6 +4,8 @@
 
 #include "LexicalAnalysis.h"
 
+#define __WITH_CHARS_SET EndDefine
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1360,6 +1362,9 @@ void Input::vTokenCollectBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+#ifdef __WITH_CHARS_SET
+#endif
+  
   m_pToken->vLineNo(m_xAnnChar.m_iLine);
   m_pToken->vColNo(m_xAnnChar.m_iCol);
 }
@@ -1370,7 +1375,9 @@ void Input::vTokenCollectBegin(void)
 void Input::vTokenCollectEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+
+#ifdef __WITH_CHARS_SET
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
