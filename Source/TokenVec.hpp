@@ -11,7 +11,7 @@ namespace LexicalAnalysis
      
     i8 m_iCurTkn;       // the current token in the vector
   
-    b256K m_yxCharsSet; // buffer for all token chars 
+    b256K m_xyCharsSet; // buffer for all token chars 
   
     // must be last
     Footer m_xFooter;    

@@ -19,7 +19,7 @@ namespace Gadgets
       eTN m_eToken;
     } m_xEname[C_ENAME_SET];
 
-    b4K  m_yxStrings;
+    b4K  m_xyStrings;
   
     // must be last
     Footer m_xFooter;
