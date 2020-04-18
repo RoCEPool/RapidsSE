@@ -255,6 +255,7 @@ Token* TokenVec::pCurrToken(void)
 /*----------------------------------------------------------------------------*/
 /* cut a token from token vector                                              */
 /*----------------------------------------------------------------------------*/
+#ifndef __WITH_CHARS_SET
 void TokenVec::vCutToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -268,8 +269,35 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   Token* pTknCut = pGet(i_CutTkn);
   
-#ifdef __WITH_CHARS_SET
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
+    
+    Token* pTknDst = pGet(i_Token);
+    Token* pTknSrc = pGet(i_Token + 1,true);
+    
+    pTknDst->vCopy_restricted(pTknSrc,this);
+  }
+  
+  vDecItems();
+  
+}
+#else
+/*----------------------------------------------------------------------------*/
+void TokenVec::vCutToken(i8 i_CutTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nItems();
+  
+  if (i_CutTkn >= nTkns - 1) {
+    vDecItems();
+    return;
+  }
+  
+  Token* pTknCut = pGet(i_CutTkn);
+  
+// ----
   char* azChars = pTknCut->azChars();
   Stz* szWhereToCut = pTknCut->szChars();
   i8 nBytesToCut = pTknCut->nChars() + 1;
@@ -277,8 +305,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   m_xyCharsSet.vListAll();
   
   Correctness::vDebugPoint();
-
-#endif
+// ----
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -292,8 +319,8 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   vDecItems();
   
-#ifdef __WITH_CHARS_SET
-  
+// ----
+
   m_xyCharsSet.vCut(szWhereToCut,nBytesToCut);
   m_xyCharsSet.vListAll();
 
@@ -307,8 +334,10 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   
   Correctness::vDebugPoint();
-#endif
+// ----
+
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
