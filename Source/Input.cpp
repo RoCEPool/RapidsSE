@@ -535,18 +535,19 @@ void Input::vCollectCpp(void)
   vGetAnnCharStripped();
   
   vSkipWhitespace();
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTokenCollectBegin();
+
   // end of input?
-  if (bEndInput()) {
+  if (bHitEOF()) {
     *azTermCrs = '\0';
     m_pToken->vToken(TN_EOF);
-    return;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // collect integer literal?
-  if (bStartCppInteger()) {
+  else if (bStartCppInteger()) {
     vCollectCppInteger();
   }
   
@@ -565,6 +566,8 @@ void Input::vCollectCpp(void)
     vCollectCppOther();
   }
   
+  vTokenCollectEnd();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
   // cross check valid normal tokens
@@ -601,8 +604,6 @@ void Input::vCollectCppInteger(void)
   // we have seen a digit
   ASSERT(bStartCppInteger());
   
-  vTokenCollectBegin();
-  
   // - start parsing an integer
   
   // collect initial digits
@@ -632,8 +633,6 @@ void Input::vCollectCppInteger(void)
   *z = '\0';
   
   m_pToken->vToken(TN_INTEGER);
-  
-  vTokenCollectEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,9 +645,7 @@ void Input::vCollectCppName(void)
   char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartCppName());
-  
-  vTokenCollectBegin();
-  
+    
   // collect the characters of the name
   while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
     *z++ = m_xAnnChar.m_cChar;
@@ -660,9 +657,8 @@ void Input::vCollectCppName(void)
   
   // terminate the name
   *z = '\0';
-  m_pToken->vToken(TN_NAME);
   
-  vTokenCollectEnd();
+  m_pToken->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -676,8 +672,6 @@ void Input::vCollectCppOther(void)
 
   ASSERT(bStartCppOther());
  
-  vTokenCollectBegin();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather ]] as a token
   if (m_xAnnChar.bIsCloseBracket()) {
@@ -687,7 +681,6 @@ void Input::vCollectCppOther(void)
       *z++ = ']';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -710,7 +703,6 @@ void Input::vCollectCppOther(void)
       *z++ = ':';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -733,7 +725,6 @@ void Input::vCollectCppOther(void)
       *z++ = '.';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -754,7 +745,6 @@ void Input::vCollectCppOther(void)
       *z++ = '=';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -775,7 +765,6 @@ void Input::vCollectCppOther(void)
       *z++ = '=';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -796,7 +785,6 @@ void Input::vCollectCppOther(void)
       *z++ = '=';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -817,7 +805,6 @@ void Input::vCollectCppOther(void)
       *z++ = '[';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -840,7 +827,6 @@ void Input::vCollectCppOther(void)
       *z++ = '|';
       *z = '\0';
       m_pToken->vToken(TN_STRING);
-      vTokenCollectEnd();
       return;
     }
     else {
@@ -859,8 +845,6 @@ void Input::vCollectCppOther(void)
   // terminate the other token
   *z = '\0';
   m_pToken->vToken(TN_OTHER);
-
-  vTokenCollectEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -873,9 +857,7 @@ void Input::vCollectCppString(void)
   char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartSenString());
-  
-  vTokenCollectBegin();
-  
+    
   // skip the leading '"'
   vGetAnnCharStripped();
   
@@ -899,8 +881,6 @@ void Input::vCollectCppString(void)
   *z = '\0';
   
   m_pToken->vToken(TN_STRING);
-  
-  vTokenCollectEnd();
 }
 
 //
@@ -923,17 +903,19 @@ void Input::vCollectSen(void)
   vGetAnnCharStripped();
   
   vSkipWhitespace();
-  
-  // end of input?
-  if (bEndInput()) {
-    *azTermCrs = '\0';
-    m_pToken->vToken(TN_EOF);
-    return;
-  }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vTokenCollectBegin();
+
+  // end of input?
+  if (bHitEOF()) {
+    *azTermCrs = '\0';
+    m_pToken->vToken(TN_EOF);
+  }
+  
   // collect integer literal?
+  else
   if (bStartSenInteger()) {
     vCollectSenInteger();
   }
@@ -952,10 +934,11 @@ void Input::vCollectSen(void)
   
   // collect name token
   else {
-    vTokenCollectBegin();
     vCollectSenName();
   }
   
+  vTokenCollectEnd();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // cross check valid SEN tokens
@@ -993,8 +976,6 @@ void Input::vCollectSenInteger(void)
   // we have seen a minus or a digit
   ASSERT(bStartSenInteger());
   
-  vTokenCollectBegin();
-
   // - start parsing an integer
   
   // collect leading minus
@@ -1027,7 +1008,6 @@ void Input::vCollectSenInteger(void)
   // - handle minus only
   if (! iNoDigits) {
     vCollectSenName();
-    vTokenCollectEnd();
     return;
   }
   
@@ -1042,7 +1022,6 @@ void Input::vCollectSenInteger(void)
     // terminate an intlit
     *z = '\0';
     m_pToken->vToken(TN_INTEGER);
-    vTokenCollectEnd();
     return;
   }
   
@@ -1074,8 +1053,6 @@ void Input::vCollectSenName(void)
   *z = '\0';
 
   m_pToken->vToken(TN_NAME);
-  
-  vTokenCollectEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1088,9 +1065,7 @@ void Input::vCollectSenString(void)
   char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartSenString());
-  
-  vTokenCollectBegin();
-  
+    
   char cStartQuote = m_xAnnChar.m_cChar;
   
   // skip the leading '"' or '\''
@@ -1117,8 +1092,6 @@ void Input::vCollectSenString(void)
   *z = '\0';
 
   m_pToken->vToken(TN_STRING);
-  
-  vTokenCollectEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1131,8 +1104,6 @@ void Input::vCollectSenTag(void)
   char *z = StrLib::zNullTerminator(m_pToken->azChars());
 
   ASSERT(bStartSenTag());
-  
-  vTokenCollectBegin();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1145,8 +1116,6 @@ void Input::vCollectSenTag(void)
 
     m_pToken->vToken(TN_NAME);
     
-    vTokenCollectEnd();
-
     return;
   }
      
@@ -1165,12 +1134,6 @@ void Input::vCollectSenTag(void)
   *z = '\0';
 
   m_pToken->vToken(TN_TAG);
-  
-  vTokenCollectEnd();
-  
-  //vTrace("Recognised Sen Tag: %s\n"_Stz,pToken->szChars());
-  
-  Correctness::vDebugPoint();
 }
 
 
@@ -1413,7 +1376,7 @@ void Input::vTokenCollectEnd(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of input                                                      */
 /*----------------------------------------------------------------------------*/
-bool Input::bEndInput(void)
+bool Input::bHitEOF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   

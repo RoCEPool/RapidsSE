@@ -91,7 +91,7 @@ namespace LexicalAnalysis
     void vTokenCollectBegin(void);
     void vTokenCollectEnd(void);
 
-    bool bEndInput(void);
+    bool bHitEOF(void);
     
     Footer* aFooter(void);
   };
