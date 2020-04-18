@@ -165,7 +165,7 @@ i8 Token::iLength()
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  i8 iLen = m_sTerm.nLength();
+  i8 iLen = m_szChars->nLength();
   
   return iLen;
 }
