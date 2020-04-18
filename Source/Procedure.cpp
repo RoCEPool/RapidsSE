@@ -33,7 +33,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 #endif
     pTokenVec->vCutToken(2);
     
-    pTkn1_ProcNm->vCopy(sProcNm);
+    pTkn1_ProcNm->vCopy_restricted(sProcNm,pTokenVec);
     
     //pTokenVec->vDumpTokens();
   }
@@ -150,7 +150,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     // found two-part; correct the token vector
     pCmdTokenVec->vCutToken(1);
     
-    pTkn_ProcNm->vCopy(sProcNm);
+    pTkn_ProcNm->vCopy_restricted(sProcNm,pCmdTokenVec);
     
     pCmdTokenVec->vDumpTokens();
 
@@ -178,7 +178,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   Token* pTkn0 = pProcTextVec->pGet(0);
 
-  pTkn0->vCopy("pipeline"_Stz);
+  pTkn0->vCopy_restricted("pipeline"_Stz,pProcTextVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // substitute parameters in procedure text with command arguments

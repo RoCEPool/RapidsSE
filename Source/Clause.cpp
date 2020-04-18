@@ -50,7 +50,7 @@ Clause::Clause(eCN eClassNo, TokenVec* pTknVec_src, i8& i_Tkn_)
       break;
     
     Token* pTkn_dst = m_pTokenVec->pGet(i_Tkn_);
-    pTkn_dst->vCopy(pTkn_src);
+    pTkn_dst->vCopy_restricted(pTkn_src,m_pTokenVec);
     i_Tkn_++;
   }
 }

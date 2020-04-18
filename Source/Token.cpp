@@ -34,7 +34,7 @@ Token::Token(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Token::Token(Token* pToCopy)
+Token::Token(Token* pToCopy, TokenVec* pCaller)
 : Object(CN_TOKEN)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
@@ -43,7 +43,7 @@ Token::Token(Token* pToCopy)
 
   vReset();
   
-  vCopy(pToCopy);
+  vCopy_restricted(pToCopy,pCaller);
   
   _checkInitialised_(CN_TOKEN);
   
@@ -69,6 +69,29 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
          aTN[pToken->m_eToken],
          pToken->azChars());
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* copy given chars into this token                                           */
+/*----------------------------------------------------------------------------*/
+void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_szChars->vCopy(szChars);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given token into this token                                          */
+/*----------------------------------------------------------------------------*/
+void Token::vCopy_restricted(Token* pGivenToken, TokenVec* pCaller)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_eToken = pGivenToken->m_eToken;
+  m_szChars->vCopy(pGivenToken->szChars());
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -113,37 +136,6 @@ void Token::vColNo(i8 iColNo)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_iColNo = iColNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
-/*----------------------------------------------------------------------------*/
-void Token::vConcat(Stz* aArg)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  m_szChars->vConcat(aArg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given chars into this token                                           */
-/*----------------------------------------------------------------------------*/
-void Token::vCopy(Stz* szChars)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  m_szChars->vCopy(szChars);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given token into this token                                          */
-/*----------------------------------------------------------------------------*/
-void Token::vCopy(Token* pGivenToken)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  m_eToken = pGivenToken->m_eToken;
-  m_szChars->vCopy(pGivenToken->szChars());
 }
 
 /*----------------------------------------------------------------------------*/

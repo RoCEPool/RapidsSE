@@ -50,7 +50,7 @@ TokenVec::~TokenVec(void) noexcept(false)
 /* replace tokens                                                             */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vReplace(TokenVec* pThisVec,
-                              TokenVec* pFindVec, TokenVec* pWithVec)
+                        TokenVec* pFindVec, TokenVec* pWithVec)
 {
   _static_
   
@@ -66,7 +66,7 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     
     Token* pWithToken = pWithVec->pGet(i_Find);
 
-    pThisToken->vCopy(pWithToken->szChars());
+    pThisToken->vCopy_restricted(pWithToken->szChars(),pThisVec);
   }
 }
 
@@ -161,7 +161,9 @@ void TokenVec::vAppendToken(Stz* szTerm)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  pGet(nItems(),true)->vCopy(szTerm);
+  Token* pToken = pGet(nItems(),true);
+  
+  pToken->vCopy_restricted(szTerm,this);
 
   vIncItems();
 }
@@ -222,7 +224,7 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
     Token* pToken_src = pTknVecSrc->pGet(i_Token);
     Token* pToken_dst = pGet(i_Token);
     
-    pToken_dst->vCopy(pToken_src);
+    pToken_dst->vCopy_restricted(pToken_src,this);
   }
 }
 
@@ -264,7 +266,7 @@ void TokenVec::vCutToken(i8 i_Tkn)
     Token* pTknDst = pGet(i_Token);
     Token* pTknSrc = pGet(i_Token + 1,true);
     
-    pTknDst->vCopy(pTknSrc);
+    pTknDst->vCopy_restricted(pTknSrc,this);
   }
   
   vDecItems();
@@ -365,7 +367,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
     Token* pTkn_dst = pGet(i_Token + 1,true);
     Token* pTkn_src = pGet(i_Token);
     
-    pTkn_dst->vCopy(pTkn_src);
+    pTkn_dst->vCopy_restricted(pTkn_src,this);
   }
   
   vIncItems();
@@ -375,7 +377,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
   
   Token* pTkn_ins = pGet(i_Tkn);
   
-  pTkn_ins->vCopy(szTerm);
+  pTkn_ins->vCopy_restricted(szTerm,this);
   pTkn_ins->vToken(eToken);
 }
 
@@ -540,7 +542,7 @@ void TokenVec::vTokenise(Stz* szString)
     
     Token* pToken = pGet(i_Token);
     pToken->vToken(pInput->eToken());
-    pToken->vCopy(pInput->szChars());
+    pToken->vCopy_restricted(pInput->szChars(),this);
     
   }
   

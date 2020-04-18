@@ -24,18 +24,18 @@ namespace LexicalAnalysis
     void  operator delete(void*);
     
     Token(void);
-    Token(Token* pToCopy);
+    Token(Token* pToCopy, TokenVec* pCaller);
    ~Token(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
+
+    void  vCopy_restricted(Stz* , TokenVec* pCaller);
+    void  vCopy_restricted(Token* , TokenVec* pCaller);
+
     char* azChars(void);
     Stz*  szChars(void);
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
-    void  vConcat(Stz* szArg);
-    void  vCopy(Stz*);
-    void  vCopy(Token*);
     bool  bHasChars(void);
     void  vInitTkn(i8 i_Token);
     bool  bIsInteger(void);
