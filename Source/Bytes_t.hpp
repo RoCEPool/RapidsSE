@@ -27,6 +27,7 @@ namespace Esses
     void vListAll(void);
     void vPrintAll(void);
     void vReset(void);
+    void vTake(i8 nBytes);
   
     Footer* aFooter(void);
   };
@@ -203,6 +204,17 @@ void Bytes_t<BYTES>::vReset(void)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take nBytes from latter area                                               */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vTake(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  m_i_Latter += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
