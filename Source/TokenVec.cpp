@@ -462,6 +462,8 @@ void TokenVec::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  m_xyCharsSet.vReset();
+  
   m_iCurTkn = -1;
 
   vItems(0);

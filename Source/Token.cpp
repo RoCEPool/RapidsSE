@@ -74,11 +74,17 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Restricted --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
 void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  ASSERT(pCaller == m_p_TokenVec);
   
   m_szChars->vCopy(szChars);
 }
@@ -89,6 +95,8 @@ void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
 void Token::vCopy_restricted(Token* pGivenToken, TokenVec* pCaller)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  ASSERT(pCaller == m_p_TokenVec);
   
   m_eToken = pGivenToken->m_eToken;
   m_szChars->vCopy(pGivenToken->szChars());

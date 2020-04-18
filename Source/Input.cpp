@@ -4,8 +4,6 @@
 
 #include "LexicalAnalysis.h"
 
-#define __WITH_CHARS_SET EndDefine
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -599,8 +597,9 @@ void Input::vCollectCppInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
-  
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
+
   i8 iNoDigits = 0;
   
   // we have seen a digit
@@ -644,7 +643,8 @@ void Input::vCollectCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
 
   ASSERT(bStartCppName());
     
@@ -670,7 +670,8 @@ void Input::vCollectCppOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
 
   ASSERT(bStartCppOther());
  
@@ -856,7 +857,8 @@ void Input::vCollectCppString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
 
   ASSERT(bStartSenString());
     
@@ -971,7 +973,8 @@ void Input::vCollectSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
 
   i8 iNoDigits = 0;
   
@@ -1038,8 +1041,9 @@ void Input::vCollectSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
-  
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
+
   //ASSERT(bStartSenName());
   
   // collect the characters of the name
@@ -1064,7 +1068,8 @@ void Input::vCollectSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
 
   ASSERT(bStartSenString());
     
@@ -1103,7 +1108,8 @@ void Input::vCollectSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *z = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *z = azChars;
 
   ASSERT(bStartSenTag());
     
@@ -1365,7 +1371,10 @@ void Input::vTokenCollectBegin(void)
 #ifdef __WITH_CHARS_SET
   
   Stz* szLatter = m_pTknVec->szLaterChars();
-  //m_pToken->vChars(szLatter);
+  
+  * szLatter->azChar() = '\0';
+  
+  m_pToken->vChars(szLatter);
   
 #endif
   
@@ -1385,6 +1394,11 @@ void Input::vTokenCollectEnd(void)
   i8 nChars = m_pToken->nChars();
   
   m_pTknVec->vTakeCharsBytes(nChars + 1);
+  
+  Stz* szLatter = m_pTknVec->szLaterChars();
+  * szLatter->azChar() = '\0';
+
+  vTrace("Chars: %s\n"_Stz,m_pToken->szChars());
   
 #endif
 }
