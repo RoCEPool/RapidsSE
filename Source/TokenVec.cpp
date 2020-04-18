@@ -434,8 +434,10 @@ void TokenVec::vReset(void)
 
   vItems(0);
   
-  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-    pGet(i_Token,true)->vReset();
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
+    Token* pToken = pGet(i_Token,true);
+    pToken->vReset();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
