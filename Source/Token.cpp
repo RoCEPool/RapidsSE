@@ -80,8 +80,12 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
-void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
+void Token::vCopyChars_restricted(Stz* szChars, TokenVec* pCaller)
 {
+#ifdef __WITH_CHARS_SET
+  RASSERT(0);
+#endif
+  
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   ASSERT(pCaller == m_p_TokenVec);
@@ -94,6 +98,10 @@ void Token::vCopy_restricted(Stz* szChars, TokenVec* pCaller)
 /*----------------------------------------------------------------------------*/
 void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
 {
+  #ifdef __WITH_CHARS_SET
+    RASSERT(0);
+  #endif
+
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   ASSERT(pCaller == m_p_TokenVec);
@@ -102,6 +110,18 @@ void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
   m_szChars->vCopy(pGivenToken->szChars());
 }
 
+/*----------------------------------------------------------------------------*/
+/* init this token                                                            */
+/*----------------------------------------------------------------------------*/
+void Token::vInit_restricted(i8 i_Token, TokenVec* pCaller)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  ASSERT(! m_p_TokenVec);
+  
+  m_p_TokenVec = pCaller;
+  m_i_Token    = i_Token;
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -192,17 +212,6 @@ bool Token::bHasChars(void)
   bool b = *(char*)m_szChars ? true : false;
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* init this token                                                            */
-/*----------------------------------------------------------------------------*/
-void Token::vInit_restricted(i8 i_Token, TokenVec* pCaller)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-
-  m_p_TokenVec = pCaller;
-  m_i_Token    = i_Token;
 }
 
 /*----------------------------------------------------------------------------*/

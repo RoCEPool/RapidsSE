@@ -66,7 +66,7 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     
     Token* pWithToken = pWithVec->pGet(i_Find);
 
-    pThisToken->vCopy_restricted(pWithToken->szChars(),pThisVec);
+    pThisToken->vCopyChars_restricted(pWithToken->szChars(),pThisVec);
   }
 }
 
@@ -163,7 +163,7 @@ void TokenVec::vAppendToken(Stz* szTerm)
 
   Token* pToken = pGet(nItems(),true);
   
-  pToken->vCopy_restricted(szTerm,this);
+  pToken->vCopyChars_restricted(szTerm,this);
 
   vIncItems();
 }
@@ -444,7 +444,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
   
   Token* pTkn_ins = pGet(i_Tkn);
   
-  pTkn_ins->vCopy_restricted(szTerm,this);
+  pTkn_ins->vCopyChars_restricted(szTerm,this);
   pTkn_ins->vToken(eToken);
 }
 
@@ -633,7 +633,7 @@ void TokenVec::vTokenise(Stz* szString)
     
     Token* pToken = pGet(i_Token);
     pToken->vToken(pInput->eToken());
-    pToken->vCopy_restricted(pInput->szChars(),this);
+    pToken->vCopyChars_restricted(pInput->szChars(),this);
     
   }
   

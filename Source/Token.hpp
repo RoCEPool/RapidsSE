@@ -31,7 +31,7 @@ namespace LexicalAnalysis
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void  vCopy_restricted(Stz* szArg, TokenVec* pCaller);
+    void  vCopyChars_restricted(Stz* szArg, TokenVec* pCaller);
     void  vCopyToken_restricted(Token* pToken_src, TokenVec* pCaller);
     void  vInit_restricted(i8 i_Token, TokenVec* pCaller);
 
