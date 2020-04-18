@@ -22,6 +22,11 @@ TokenVec::TokenVec(bool bNewTokens)
       
   m_iCurTkn = -1;
   
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
+    Token* pToken = pGet(i_Token,true);
+    pToken->vInitTkn(i_Token);
+  }
+  
   _checkInitialised_(CN_TOKENVEC);
   
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);

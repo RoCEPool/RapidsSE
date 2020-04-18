@@ -8,6 +8,7 @@ namespace LexicalAnalysis
   class Token : public Object
   {
   private:
+    i8    m_i_Token; // which token
     eTN   m_eToken;  // kind of token
     Stz*  m_szChars; // the charsed characters of this token
     i8    m_iLineNo; // line number where term can be found in input
@@ -36,6 +37,7 @@ namespace LexicalAnalysis
     void  vCopy(Stz*);
     void  vCopy(Token*);
     bool  bHasChars(void);
+    void  vInitTkn(i8 i_Token);
     bool  bIsInteger(void);
     bool  bIsName(void);
     bool  bIsNumeric(void);

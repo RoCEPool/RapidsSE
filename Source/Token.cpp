@@ -22,6 +22,8 @@ Token::Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
+  m_i_Token = C_UNKNOWN;
+  
   vReset();
   
   _checkInitialised_(CN_TOKEN);
@@ -37,6 +39,8 @@ Token::Token(Token* pToCopy)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
+  m_i_Token = C_UNKNOWN;
+
   vReset();
   
   vCopy(pToCopy);
@@ -143,7 +147,7 @@ void Token::vCopy(Token* pGivenToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* does this token have chars?                                                */
 /*----------------------------------------------------------------------------*/
 bool Token::bHasChars(void)
 {
@@ -155,7 +159,17 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* init this token                                                            */
+/*----------------------------------------------------------------------------*/
+void Token::vInitTkn(i8 i_Token)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  m_i_Token = i_Token;
+}
+
+/*----------------------------------------------------------------------------*/
+/* string length of chars                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Token::iLength()
 {
@@ -243,19 +257,19 @@ void Token::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* are the chars of this token the same as given arg?                         */
 /*----------------------------------------------------------------------------*/
-bool Token::bSame(Stz* aArg)
+bool Token::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = m_szChars->bSame(aArg);
+  bool b = m_szChars->bSame(szArg);
   
   return b;
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* get the i8 of the chars                                                    */
 /*----------------------------------------------------------------------------*/
 i8 Token::iToI8(void)
 {
