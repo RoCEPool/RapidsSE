@@ -118,7 +118,7 @@ void Token::vConcat(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_sTerm.vConcat(aArg);
+  m_szChars->vConcat(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,7 +232,7 @@ void Token::vReset(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   // tbd...
-  m_szChars = m_sTerm.szStz();
+  m_szChars = m__sCharsBuff.szStz();
   
 
   m_eToken   = TN_NONE;
@@ -261,7 +261,7 @@ i8 Token::iToI8(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  i8 i = m_sTerm.iToI8();
+  i8 i = m_szChars->iToI8();
   
   return i;
 }
@@ -273,8 +273,8 @@ void Token::vStripSingleQuotes(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  StrLib::vRemove(m_sTerm.azChar(),'\'');
-  StrLib::vStrip(m_sTerm.azChar(),'\'');
+  StrLib::vRemove(m_szChars->azChar(),'\'');
+  StrLib::vStrip(m_szChars->azChar(),'\'');
 }
 
 /*----------------------------------------------------------------------------*/
