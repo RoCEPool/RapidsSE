@@ -72,16 +72,16 @@ void Charser::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vTrace("Charser[%lld] : Source %s Path %s %s %s %s %s %s\n"_Stz,
-         m_iDepth,
-         aIS[m_eSource],
-         m_sPath.szStz(),
-         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
-         m_bUseBegun  ? "UseBegun"  : "Not-UseBegun",
-         m_bUseEnded  ? "UseEnded"  : "Not-UseEnded",
-         m_bUseOpened ? "UseOpened" : "Not-UseOpened",
-         m_bUseClosed ? "UseClosed" : "Not-UseClosed"
-         );
+//  vTrace("Charser[%lld] : Source %s Path %s %s %s %s %s %s\n"_Stz,
+//         m_iDepth,
+//         aIS[m_eSource],
+//         m_sPath.szStz(),
+//         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
+//         m_bUseBegun  ? "UseBegun"  : "Not-UseBegun",
+//         m_bUseEnded  ? "UseEnded"  : "Not-UseEnded",
+//         m_bUseOpened ? "UseOpened" : "Not-UseOpened",
+//         m_bUseClosed ? "UseClosed" : "Not-UseClosed"
+//         );
 }
 
 /*----------------------------------------------------------------------------*/
