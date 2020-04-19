@@ -169,6 +169,8 @@ void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   ASSERT(0);
 
 }
@@ -205,13 +207,13 @@ void TokenVec::vAdvanceCurr(void)
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAppendToken(Stz* szTerm)
+void TokenVec::vAppendToken(Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   Token* pToken = pGet(nItems(),true);
   
-  pToken->vCopyChars_restricted(szTerm,this);
+  pToken->vCopyChars_restricted(szArgChars,this);
 
   vIncItems();
 }
@@ -413,13 +415,13 @@ void TokenVec::vDumpTokens(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 TokenVec::iFindToken(Stz* szTerm)
+i8 TokenVec::iFindToken(Stz* szArgChars)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = pGet(i_Token,true);
-    if (szTerm->bSame(pToken->szChars()))
+    if (szArgChars->bSame(pToken->szChars()))
       return i_Token;
   }
   
@@ -429,13 +431,13 @@ i8 TokenVec::iFindToken(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
-Token* TokenVec::pFindToken(Stz* szTerm, i8& i_Token)
+Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i_Token++; i_Token < nTokens(); i_Token++) {
     Token* pToken = pGet(i_Token);
-    if (pToken->szChars()->bSame(szTerm))
+    if (pToken->szChars()->bSame(szArgChars))
       return pToken;
   }
   
@@ -472,7 +474,7 @@ void TokenVec::vIncTokens(void)
 /*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
+void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -492,7 +494,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szTerm, eTN eToken)
   
   Token* pTkn_ins = pGet(i_Tkn);
   
-  pTkn_ins->vCopyChars_restricted(szTerm,this);
+  pTkn_ins->vCopyChars_restricted(szArgChars,this);
   pTkn_ins->vToken(eToken);
 }
 
@@ -506,6 +508,30 @@ Stz* TokenVec::szLaterChars(void)
   Stz* szLater = m_xyCharsSet.szLatter();
   
   return szLater;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars by +/- nBytes at given token                          */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vMoveChars(i8 i_Tkn, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars left at given chars in chars set                      */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vMoveCharsLeft(Stz* szAtChars, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars right at given chars in chars set                     */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vMoveCharsRight(Stz* szAtChars, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
