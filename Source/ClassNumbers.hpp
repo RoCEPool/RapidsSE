@@ -231,6 +231,7 @@ enum eCN : u2 // Class Number
   /* 192 0x0C0     1048B Heap:M */ CN_RESPONSEVEC,
   /* 192 0x0C0     1048B Heap:M */ CN_RESULT,
   /*                            */ CN_RN_RAND,
+  /*                            */ CN_ROUTINE,
   /* 193 0x0C1    17808B Heap:L */ CN_ROW,
   /* 194 0x0C2      848B Heap:M */ CN_ROWAGG,
   /* 195 0x0C3     2184B Heap:L */ CN_ROWCOMPACTOR,
@@ -561,6 +562,7 @@ static Stz* aCN[]
   /* 192 0x0C0 */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC
   /* 192 0x0C0 */ "RESULT"_Stz,              // CN_RESULT
   /* 192 0x0C0 */ "RN_RAND"_Stz,             // CN_RN_RAND
+  /* 192 0x0C0 */ "ROUTINE"_Stz,             // CN_ROUTINE
   /* 193 0x0C1 */ "ROW"_Stz,                 // CN_ROW
   /* 194 0x0C2 */ "ROWAGG"_Stz,              // CN_ROWAGG
   /* 195 0x0C3 */ "ROWCOMPACTOR"_Stz,        // CN_ROWCOMPACTOR
