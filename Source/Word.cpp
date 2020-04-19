@@ -65,6 +65,7 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 Word::Word(Stz* szWordNm)
 : Object(CN_WORD)
+, m_xRoutine(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 

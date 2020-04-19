@@ -10,6 +10,10 @@ namespace SenVM
   class Routine : public Wsp_t<C_WSP_ROUTINE>
   {
   public:
+    Routine(Word* p_Word);
+  
+  private:
+    Word* m_p_ExoWord;
 
   };
 }
