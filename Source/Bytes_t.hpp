@@ -10,7 +10,7 @@ namespace Esses
   {
   private:
     i8     m_i_Latter;      // offset of next available byte
-    byte   m_yaArea[BYTES]; // byte area
+    byte   m_yaArea[BYTES]; // byte area (_ya =: byte array)
     
     // must be last
     Footer m_xFooter;
@@ -23,6 +23,8 @@ namespace Esses
     void vCut(i8 i_At, i8 nBytes);
     void vCut(Stz* szWhereToCut, i8 nBytes);
     Stz* szGet(i8 i_Area);
+    void vInsert(i8 i_At, i8 nBytes);
+    void vInsert(Stz* szWhereToCut, i8 nBytes);
     Stz* szLatter(void);
     void vListAll(void);
     void vPrintAll(void);
@@ -126,6 +128,50 @@ void Bytes_t<BYTES>::vCut(Stz* szWhereToCut, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stz at given subscript in m_yaArea                                     */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  char* azStr = (char*)& m_yaArea[i_Area];
+  
+  return (Stz*)azStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert nBytes starting at given offset                                     */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vInsert(i8 i_At, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  Stz* szWhereToIns = szGet(i_At);
+
+  vInsert(szWhereToIns,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert nBytes starting at given offset                                     */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vInsert(Stz* szWhereToIns, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  Stz* szSrc = szWhereToIns;
+  Stz* szDst = aAdd<Stz*>(szWhereToIns,nBytes);
+  
+  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
+  
+  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
+  
+  m_i_Latter += nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of the later portion                                           */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
@@ -136,19 +182,6 @@ Stz* Bytes_t<BYTES>::szLatter(void)
   Stz* szLater = szGet(m_i_Latter);
   
   return szLater;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get string at given subscript in m_yaArea                                  */
-/*----------------------------------------------------------------------------*/
-template <int BYTES>
-Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
-{
-  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
-  char* acStr = (char*)& m_yaArea[i_Area];
-  
-  return (Stz*)acStr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -489,7 +489,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   
   vIncItems();
   
-  // - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now copy the inserting token into place
   
   Token* pTkn_ins = pGet(i_Tkn);

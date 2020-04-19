@@ -57,6 +57,20 @@ static CAST pAdd(Object* pObject, i8 nBytes)
   return pOtherObject;
 }
 
+/*----------------------------------------------------------------------------*/
+/* subtract bytes from given address                                          */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+inline static CAST aSubtract(void* aAddress, i8 nBytes)
+{
+  char* aAddr0 = reinterpret_cast<char*>(aAddress);
+  
+  char* aAddr1 = aAddr0 - nBytes;
+
+  return reinterpret_cast<CAST>(aAddr1);
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
