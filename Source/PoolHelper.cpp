@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* PoolHelper.cpp - buffer pool analyzer                                             */
+/* PoolHelper.cpp - buffer pool analyzer                                      */
 /*============================================================================*/
 
 #include "Utilities.h"
+
+extern i8  giClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* dump given buffer                                                          */
@@ -211,6 +213,12 @@ void PoolHelper::vObjectList(void)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vObjectSummary(void)
 {
+  s32 sFlag;
+  s32 sMagObj;
+  s32 sMagHeap;
+  s32 sMagBlocks;
+  i8  nObjInHeap;
+  
   i8 iCountObjects[CN_ENUMS];
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     iCountObjects[i_Index] = 0;
@@ -239,49 +247,109 @@ void PoolHelper::vObjectSummary(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  
+  
+  i8 nBlockSize = C_SIZE_SMALL_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
   AM::pHeapMem()->Transient.m_pSmall->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
   
   vTrace("\n"_Stz);
-  vTrace("  Transient SmallHeap Object Summary:\n"_Stz);
+  vTrace("  Transient Small Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
-    if (iCountObjects[eClass] == 0)
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
       continue;
     
-    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = giClassSize[eClass];
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+    
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+    
+    if (nObjSize < C_SIZE_SMALL_OBJECT / 2)
+      sFlag = " !savings"_Stz;
+    else
+      sFlag = ""_Stz;
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
   }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  nBlockSize = C_SIZE_MEDIUM_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
   AM::pHeapMem()->Transient.m_pMedium->vAnalyse(iCountObjects);
-  
+  nObjInHeap = 0;
+
   vTrace("\n"_Stz);
-  vTrace("  Transient MediumHeap Object Summary:\n"_Stz);
+  vTrace("  Transient Medium Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
-    if (iCountObjects[eClass] == 0)
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
       continue;
     
-    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = giClassSize[eClass];
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+    
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    if (nObjSize < C_SIZE_SMALL_OBJECT)
+      sFlag = " *waste"_Stz;
+    else
+      sFlag = ""_Stz;
+    
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse);
   }
-  
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  nBlockSize = C_SIZE_LARGE_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
   AM::pHeapMem()->Transient.m_pLarge->vAnalyse(iCountObjects);
-  
+  nObjInHeap = 0;
+
   vTrace("\n"_Stz);
-  vTrace("  Transient LargeHeap Object Summary:\n"_Stz);
+  vTrace("  Transient Large Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
-    if (iCountObjects[eClass] == 0)
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
       continue;
     
-    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = giClassSize[eClass];
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+    
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    if (nObjSize < C_SIZE_MEDIUM_OBJECT)
+      sFlag = " *waste"_Stz;
+    else
+      sFlag = ""_Stz;
+    
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse);
   }
-  
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
   
 //  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
 //    iCountObjects[i_Index] = 0;
