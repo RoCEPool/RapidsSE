@@ -224,6 +224,8 @@ void PoolHelper::vObjectSummary(void)
     iCountObjects[pBuffer->eClass()]++;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vTrace("\n"_Stz);
   vTrace("  BufferPool Object Summary:\n"_Stz);
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
@@ -232,8 +234,10 @@ void PoolHelper::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::pHeapMem()->Transient.m_pSmall->vAnalyse(iCountObjects);
   
@@ -245,8 +249,10 @@ void PoolHelper::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::pHeapMem()->Transient.m_pMedium->vAnalyse(iCountObjects);
   
@@ -258,8 +264,10 @@ void PoolHelper::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::pHeapMem()->Transient.m_pLarge->vAnalyse(iCountObjects);
   
@@ -271,7 +279,7 @@ void PoolHelper::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
   
@@ -291,6 +299,8 @@ void PoolHelper::vObjectSummary(void)
 //    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
 //  }
   
+  
+  /*
   AM::pHeapMem()->Persistent.m_pSmall->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
@@ -329,6 +339,8 @@ void PoolHelper::vObjectSummary(void)
     
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
+   */
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,7 +428,7 @@ void PoolHelper::vPoolAnalyze(void)
   
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
-  vTrace("* PoolBuffer Pool Analysis                                         *\n"_Stz);
+  vTrace("* Buffer Pool Analysis                                         *\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   
   vRegionSummary();
@@ -436,7 +448,7 @@ void PoolHelper::vPoolDump(void)
   
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
-  vTrace("* PoolBuffer Pool Dump                                             *\n"_Stz);
+  vTrace("* Buffer Pool Dump                                             *\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   
   vRegionSummary();
@@ -517,57 +529,57 @@ void PoolHelper::vRegionSummary()
          AM::iEpoch());
   
   vTrace("\n"_Stz);
-  
-  vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n"_Stz,
+  vTrace("  BufferPool buffer %6s buffers %lld alloc %lld free %lld \n"_Stz,
          sMagLarge.azChar(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_nAllocCount,
          gpBufferPool->m_nFreeCount
          );
   
-  vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("\n"_Stz);
+  vTrace("   Transient SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
          AM::pHeapMem()->Transient.m_pSmall->iBufferCount(),
          AM::pHeapMem()->Transient.m_pSmall->iAllocCount(),
          AM::pHeapMem()->Transient.m_pSmall->iFreeCount());
   
-  vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Transient MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
          AM::pHeapMem()->Transient.m_pMedium->iBufferCount(),
          AM::pHeapMem()->Transient.m_pMedium->iAllocCount(),
          AM::pHeapMem()->Transient.m_pMedium->iFreeCount());
   
-  vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Transient LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
          AM::pHeapMem()->Transient.m_pLarge->iBufferCount(),
          AM::pHeapMem()->Transient.m_pLarge->iAllocCount(),
          AM::pHeapMem()->Transient.m_pLarge->iFreeCount());
   
-  vTrace("   Transient JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Transient JumboHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.azChar(),
          AM::pHeapMem()->Transient.m_pJumbo->iBufferCount(),
          AM::pHeapMem()->Transient.m_pJumbo->iAllocCount(),
          AM::pHeapMem()->Transient.m_pJumbo->iFreeCount());
   
-  vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
          AM::pHeapMem()->Persistent.m_pSmall->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pSmall->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pSmall->iFreeCount());
   
-  vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
          AM::pHeapMem()->Persistent.m_pMedium->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pMedium->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pMedium->iFreeCount());
   
-  vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.azChar(),
          AM::pHeapMem()->Persistent.m_pLarge->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pLarge->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pLarge->iFreeCount());
   
-  vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("  Persistent JumboHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.azChar(),
          AM::pHeapMem()->Persistent.m_pJumbo->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pJumbo->iAllocCount(),
@@ -581,7 +593,7 @@ void PoolHelper::vResourceSummary(void)
 {
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
-  vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
+  vTrace("  Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
          AM::pResourceTracker()->nDirOpen(),
          AM::pResourceTracker()->nFileOpen(),
          AM::pResourceTracker()->nShmOpen(),

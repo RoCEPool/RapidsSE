@@ -169,6 +169,12 @@ print section "Export Table";
 export lineitem "/tmp/lineitem_export.csv" ;
 
 
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection bpa;
+print section "Buffer Pool Analysis";
+
+docol bpa ;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
