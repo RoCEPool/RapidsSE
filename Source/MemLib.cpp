@@ -5,7 +5,7 @@
 #include "Correctness.h"
 
 
-extern i8 giClassSize[];
+extern i8 gnClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* add number of bytes to given address                                       */
@@ -38,10 +38,10 @@ void MemLib::vAsciiDump(Stz* aText, i8 nBytes)
 void MemLib::vCheckInitialised(void* aAddress, eCN eClass)
 {
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
-  i8  nBytes = giClassSize[eClass];
+  i8  nBytes = gnClassSize[eClass];
   i8  nWords = nBytes / 8;
   
-  // if this fails check the size of the object in giClassSize[]
+  // if this fails check the size of the object in gnClassSize[]
   ASSERT(nWords);
 
   for (i8 i_Word = 0; i_Word < nWords; i_Word++) {

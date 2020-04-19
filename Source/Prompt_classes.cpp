@@ -19,7 +19,7 @@ PromptFun __Prompt_classes (
 );
 
 extern eHT geWhichHeap[];
-extern i8  giClassSize[];
+extern i8  gnClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
@@ -63,7 +63,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
            
            i_Class,
            i_Class,
-           giClassSize[i_Class],
+           gnClassSize[i_Class],
            cHeap,
            aCN[i_Class],
            

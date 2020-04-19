@@ -6,7 +6,7 @@
 
 extern BufferPool* gpBufferPool;
 
-extern i8  giClassSize[];
+extern i8  gnClassSize[];
 extern eHT geWhichHeap[];
 
 
@@ -149,7 +149,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(giClassSize[eAllocClass] < m_iObjectSize);
+  ASSERT(gnClassSize[eAllocClass] < m_iObjectSize);
   
   //static eCN eLastClass = CN_ENUMS;
   

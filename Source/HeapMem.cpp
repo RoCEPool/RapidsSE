@@ -5,7 +5,7 @@
 #include "Pool.h"
 
 
-extern i8  giClassSize[];
+extern i8  gnClassSize[];
 extern eHT geWhichHeap[];
 
 bool gbAddrAllocated = false;
@@ -304,7 +304,7 @@ void HeapMem::vValidateEnums(void)
     eCN eClass = (eCN)i_Class;
     
     eHT eHeap = geWhichHeap[eClass];
-    i8  iSize = giClassSize[eClass];
+    i8  iSize = gnClassSize[eClass];
     
     switch(eHeap) {
       case HT_INVALID:

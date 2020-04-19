@@ -4,7 +4,7 @@
 
 #include "Jobs.h"
 
-extern i8 giClassSize[];
+extern i8 gnClassSize[];
 
 extern JobCatalog gxJobCatalog;
 
@@ -258,7 +258,7 @@ void JobClass::vJobCat(void)
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          aCN[m_eClass],
-         giClassSize[m_eClass],
+         gnClassSize[m_eClass],
          sFunctions.szStz(),
          aJK[m_eKind],
          sDdlLock.szStz(),

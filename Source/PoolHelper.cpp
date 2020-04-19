@@ -4,7 +4,7 @@
 
 #include "Utilities.h"
 
-extern i8  giClassSize[];
+extern i8  gnClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* dump given buffer                                                          */
@@ -264,7 +264,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = giClassSize[eClass];
+    i8 nObjSize    = gnClassSize[eClass];
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     
@@ -298,7 +298,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = giClassSize[eClass];
+    i8 nObjSize    = gnClassSize[eClass];
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     
@@ -332,7 +332,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = giClassSize[eClass];
+    i8 nObjSize    = gnClassSize[eClass];
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     

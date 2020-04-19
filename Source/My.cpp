@@ -14,7 +14,7 @@ extern Header*       gaSeShmRegion;
 extern File*         gpTraceFile;
 
 extern eHT           geWhichHeap[];
-extern i8            giClassSize[];
+extern i8            gnClassSize[];
 extern pFINALIZE*    gpFinalize[];
 
 

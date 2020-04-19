@@ -15,7 +15,7 @@ extern Index*        gpReadApiIndex;
 extern Log*          gpLog;
 
 extern eHT           geWhichHeap[];
-extern i8            giClassSize[];
+extern i8            gnClassSize[];
 extern pFINALIZE*    gpFinalize[];
 
 // Arg
@@ -453,12 +453,12 @@ void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = giClassSize[pJob_Operand->eClass()];
+  i8 nObjectSize = gnClassSize[pJob_Operand->eClass()];
   bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
   
   Operand* pOperand = pJob_Operand->m_pOperand;
   
-  nObjectSize = giClassSize[pOperand->eClass()];
+  nObjectSize = gnClassSize[pOperand->eClass()];
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
   // drop the socket write lock
@@ -1226,9 +1226,9 @@ void AM::vBootCheck(void)
   }
   
   bFoundEnum = false;
-  // find number of entries in giClassSize
+  // find number of entries in gnClassSize
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
-    if (giClassSize[i_Class] == -1) {
+    if (gnClassSize[i_Class] == -1) {
       bFoundEnum = true;
       break;
     }
@@ -1237,11 +1237,11 @@ void AM::vBootCheck(void)
   
   if (!bFoundEnum)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Enum for CN_ENUM not found in giClassSize\n"_Stz);
+           "Enum for CN_ENUM not found in gnClassSize\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "\n!!!ALERT!!! No of entries in giClassSize (%lld) "
+           "\n!!!ALERT!!! No of entries in gnClassSize (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
   }
@@ -1272,7 +1272,7 @@ void AM::vBootCheck(void)
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {
     
     eCN eClass = (eCN)iClass;
-    i8  iClassSize = giClassSize[eClass];
+    i8  iClassSize = gnClassSize[eClass];
     
     switch (geWhichHeap[eClass]) {
         

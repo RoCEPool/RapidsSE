@@ -4,7 +4,7 @@
 
 #include "Gadgets.h"
 
-extern i8  giClassSize[];
+extern i8  gnClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -56,7 +56,7 @@ Stz* SP_Footer::sz(Object* pObject)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   eCN eClass = pObject->eClass();
-  i8 nObjectSize = giClassSize[eClass];
+  i8 nObjectSize = gnClassSize[eClass];
 
   Footer* aFoot = aAdd<Footer*>(pObject,nObjectSize-sizeof(Footer));
 

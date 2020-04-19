@@ -4,7 +4,7 @@
 
 #include "Gadgets.h"
 
-extern i8  giClassSize[];
+extern i8  gnClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -39,7 +39,7 @@ Stz* SP_Header::sz(Header* aHeader)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   eCN eClassNo  = aHeader->eClass();
-  i8 nClassSize = giClassSize[eClassNo];
+  i8 nClassSize = gnClassSize[eClassNo];
 
   StrLib::vSprint(m_caResult,
                   "<cn%03d %s %lldB %s>"_Stz,

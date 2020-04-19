@@ -8,7 +8,7 @@ extern Args         gxArgs;
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
-extern i8           giClassSize[];
+extern i8           gnClassSize[];
 extern Header*      gaSeShmRegion;
 extern File*        gpTraceFile;
 
@@ -258,32 +258,32 @@ void Engine::vAttachRegion(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vBootCheck(void)
 {
-  ASSERT( 1 == giClassSize[CN__A__]);
-  ASSERT( 2 == giClassSize[CN__B__]);
-  ASSERT( 3 == giClassSize[CN__C__]);
-  ASSERT( 4 == giClassSize[CN__D__]);
-  ASSERT( 5 == giClassSize[CN__E__]);
-  ASSERT( 6 == giClassSize[CN__F__]);
-  ASSERT( 7 == giClassSize[CN__G__]);
-  ASSERT( 8 == giClassSize[CN__H__]);
-  ASSERT( 9 == giClassSize[CN__I__]);
-  ASSERT(10 == giClassSize[CN__J__]);
-  ASSERT(11 == giClassSize[CN__K__]);
-  ASSERT(12 == giClassSize[CN__L__]);
-  ASSERT(13 == giClassSize[CN__M__]);
-  ASSERT(14 == giClassSize[CN__N__]);
-  ASSERT(15 == giClassSize[CN__O__]);
-  ASSERT(16 == giClassSize[CN__P__]);
-  ASSERT(17 == giClassSize[CN__Q__]);
-  ASSERT(18 == giClassSize[CN__R__]);
-  ASSERT(19 == giClassSize[CN__S__]);
-  ASSERT(20 == giClassSize[CN__T__]);
-  ASSERT(21 == giClassSize[CN__U__]);
-  ASSERT(22 == giClassSize[CN__V__]);
-  ASSERT(23 == giClassSize[CN__W__]);
-  ASSERT(24 == giClassSize[CN__X__]);
-  ASSERT(25 == giClassSize[CN__Y__]);
-  ASSERT(26 == giClassSize[CN__Z__]);
+  ASSERT( 1 == gnClassSize[CN__A__]);
+  ASSERT( 2 == gnClassSize[CN__B__]);
+  ASSERT( 3 == gnClassSize[CN__C__]);
+  ASSERT( 4 == gnClassSize[CN__D__]);
+  ASSERT( 5 == gnClassSize[CN__E__]);
+  ASSERT( 6 == gnClassSize[CN__F__]);
+  ASSERT( 7 == gnClassSize[CN__G__]);
+  ASSERT( 8 == gnClassSize[CN__H__]);
+  ASSERT( 9 == gnClassSize[CN__I__]);
+  ASSERT(10 == gnClassSize[CN__J__]);
+  ASSERT(11 == gnClassSize[CN__K__]);
+  ASSERT(12 == gnClassSize[CN__L__]);
+  ASSERT(13 == gnClassSize[CN__M__]);
+  ASSERT(14 == gnClassSize[CN__N__]);
+  ASSERT(15 == gnClassSize[CN__O__]);
+  ASSERT(16 == gnClassSize[CN__P__]);
+  ASSERT(17 == gnClassSize[CN__Q__]);
+  ASSERT(18 == gnClassSize[CN__R__]);
+  ASSERT(19 == gnClassSize[CN__S__]);
+  ASSERT(20 == gnClassSize[CN__T__]);
+  ASSERT(21 == gnClassSize[CN__U__]);
+  ASSERT(22 == gnClassSize[CN__V__]);
+  ASSERT(23 == gnClassSize[CN__W__]);
+  ASSERT(24 == gnClassSize[CN__X__]);
+  ASSERT(25 == gnClassSize[CN__Y__]);
+  ASSERT(26 == gnClassSize[CN__Z__]);
 }
 
 /*----------------------------------------------------------------------------*/
