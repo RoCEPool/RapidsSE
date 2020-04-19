@@ -13,8 +13,8 @@ namespace LexicalAnalysis
     i8    m_iLineNo; // line number where term can be found in input
     i8    m_iColNo;  // column number where term can be found in input
 
-    TokenVec* m_p_TokenVec; // which token vector
-    i8        m_i_Token;    // which token
+    TokenVec* m_p_ExoTknVec; // which token vector this 
+    i8        m_i_Token;      // which token
     
     s256  m__sCharsBuff; // temp buffer for charsed characters
 
@@ -31,10 +31,10 @@ namespace LexicalAnalysis
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void  vCopyChars_restricted(Stz* szArg, TokenVec* pCaller);
-    void  vCopyToken_restricted(Token* pToken_src, TokenVec* pCaller);
-    void  vInitToken_restricted(i8 i_Token, TokenVec* pCaller);
-    void  vSetChars_restricted(Stz* szArg, TokenVec* pCaller);
+    void  vCopyChars_restricted(Stz* szArg, TokenVec* pExoTknVec);
+    void  vCopyToken_restricted(Token* pToken_src, TokenVec* pExoTknVec);
+    void  vInitToken_restricted(i8 i_Token, TokenVec* pExoTknVec);
+    void  vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec);
 
     void  vAdjustChars(i8 nBytes);
     i8    nChars(void);
