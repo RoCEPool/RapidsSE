@@ -29,7 +29,7 @@ namespace LexicalAnalysis
     static TokenVec* pTokenise(Stz* szString);
     static TokenVec* _pTokenSet(void* aAddr);
 
-    void vCopyCharsTV_restricted(Token* pDstToken, Stz* szArg);
+    void vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars);
     void vCopyTokenTV_restricted(Token* pDstToken, Token* pSrcToken);
   
     void vAdvanceCurr(void);
