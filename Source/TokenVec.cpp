@@ -151,7 +151,26 @@ void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
+  //ASSERT(0);
+  
+  i8 nTkns = nItems();
+  
+  if (pDstToken->i_Token() + 1 == nTkns) {
+    
+    Stz* szLatter = szLaterChars();
+    * szLatter->azChar() = '\0';
+    pDstToken->vChars(szLatter);
+
+    szLatter->vCopy(szArgChars);
+    
+    i8 nLen = szLatter->nLength();
+    vTakeCharsBytes(nLen + 1);
+    
+    return;
+  }
+  
   ASSERT(0);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -636,20 +655,21 @@ void TokenVec::vTakeCharsBytes(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string into given TokenVec                                  */
+/* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokenise(Stz* szString)
+void TokenVec::vTokenise(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   vReset();
   
   Input* pInput = new Input;
-  pInput->vUseString(szString);
+  pInput->vUseString(szTokenStr);
   pInput->vFormSenTokens();
   pInput->vUseBegin();
 
   for (i8 i_Token = 0; ; i_Token++) {
+    
     pInput->vReadToken();
     if (TN_EOF == pInput->eToken())
       break;
