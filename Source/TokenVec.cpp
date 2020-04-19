@@ -180,7 +180,11 @@ void TokenVec::vCopyTokenTV_restricted(Token* pDstToken, Token* pSrcToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  ASSERT(0);
+  // chars is not copied here. its copied in the caller
+  
+  pDstToken->vToken(pSrcToken->eToken());
+  pDstToken->vLineNo(pSrcToken->iLineNo());
+  pDstToken->vColNo(pSrcToken->iColNo());
 }
 
 
