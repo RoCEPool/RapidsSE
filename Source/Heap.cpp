@@ -525,7 +525,7 @@ void Heap::vValidFree(FreeChunk* aFreeChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)aFreeChunk & (u8)~0xFFFFF);
+  HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)aFreeChunk & ~C_MASK_LARGE_OBJECT);
   
   ASSERT(pHeapBuffer->eClass() == CN_HEAPBUFFER);
   

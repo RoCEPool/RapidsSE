@@ -169,7 +169,7 @@ Word* Word::pToWord(void* aAddrWithinWord)
 {
   _static_
     
-  u8    uWord = ((u8)aAddrWithinWord & (u8)~0xFFFF) + sizeof(HeapBuffer);
+  u8 uWord = ((u8)aAddrWithinWord & ~C_MASK_MEDIUM_OBJECT) + sizeof(HeapBuffer);
   
   Word* pWord = _pWord((void*)uWord);
   

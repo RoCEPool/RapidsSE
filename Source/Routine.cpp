@@ -8,6 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Routine::Routine(Word* p_ExoWord)
+: Object(CN_ROUTINE)
 {
   m_p_ExoWord = p_ExoWord;
 }

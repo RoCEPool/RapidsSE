@@ -7,7 +7,7 @@ namespace SenVM
 {
   static const i8 C_WSP_ROUTINE = C_SIZE_MEDIUM_OBJECT - C_1KB;
   
-  class Routine
+  class Routine : public Object
   {
   public:
     Word* m_p_ExoWord;
