@@ -80,11 +80,20 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
+#ifndef __WITH_CHARS_SET
 void Token::vCopyChars_restricted(Stz* szArg, TokenVec* pCaller)
 {
-#ifdef __WITH_CHARS_SET
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  ASSERT(pCaller == m_p_TokenVec);
+  
+  m_szChars->vCopy(szArg);
+}
+#else
+/*----------------------------------------------------------------------------*/
+void Token::vCopyChars_restricted(Stz* szArg, TokenVec* pCaller)
+{
   RASSERT(0);
-#endif
   
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -92,15 +101,14 @@ void Token::vCopyChars_restricted(Stz* szArg, TokenVec* pCaller)
   
   m_szChars->vCopy(szArg);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* copy given token into this token                                           */
 /*----------------------------------------------------------------------------*/
+#ifndef __WITH_CHARS_SET
 void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
 {
-  #ifdef __WITH_CHARS_SET
-    RASSERT(0);
-  #endif
 
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -109,7 +117,20 @@ void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
   m_eToken = pGivenToken->m_eToken;
   m_szChars->vCopy(pGivenToken->szChars());
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Token::vCopyToken_restricted(Token* pGivenToken, TokenVec* pCaller)
+{
+  RASSERT(0);
 
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  ASSERT(pCaller == m_p_TokenVec);
+  
+  m_eToken = pGivenToken->m_eToken;
+  m_szChars->vCopy(pGivenToken->szChars());
+}
+#endif
 /*----------------------------------------------------------------------------*/
 /* init this token                                                            */
 /*----------------------------------------------------------------------------*/
