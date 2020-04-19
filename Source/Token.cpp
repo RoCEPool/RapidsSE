@@ -107,7 +107,6 @@ void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
 #ifndef __WITH_CHARS_SET
 void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
 {
-
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   ASSERT(pExoTknVec == m_p_ExoTknVec);

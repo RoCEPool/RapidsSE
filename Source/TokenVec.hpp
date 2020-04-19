@@ -48,14 +48,15 @@ namespace LexicalAnalysis
     void vIncTokens(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     Stz* szLaterChars(void);
-    void vMoveChars(i8 i_Tkn, i8 nBytes);
-    void vMoveCharsLeft(Stz* szAtChars, i8 nBytes);
+     void vMoveCharsLeft(Stz* szAtChars, i8 nBytes);
     void vMoveCharsRight(Stz* szAtChars, i8 nBytes);
     Token* pNextToken(void);
     Token* pPrevToken(void);
     void vPrint(void);
+    void vRemoveTokenChars(i8 i_Tkn);
     void vReset(void);
     void vSetAllTokens(void);
+    void vSetTokenChars(i8 i_Tkn, Stz* szAtChars);
     void vSetTokens(void);
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);

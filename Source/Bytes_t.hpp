@@ -141,7 +141,7 @@ Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert nBytes starting at given offset                                     */
+/* insert space for n-bytes starting at given offset                          */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 void Bytes_t<BYTES>::vInsert(i8 i_At, i8 nBytes)
@@ -154,7 +154,7 @@ void Bytes_t<BYTES>::vInsert(i8 i_At, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert nBytes starting at given offset                                     */
+/* insert space for n-bytes starting at given offset                          */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 void Bytes_t<BYTES>::vInsert(Stz* szWhereToIns, i8 nBytes)

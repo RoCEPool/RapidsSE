@@ -4,6 +4,9 @@
 
 #include "Correctness.h"
 
+extern BufferPool* gpBufferPool;
+
+
 /*----------------------------------------------------------------------------*/
 /* compute byte difference between two addresses                              */
 /*----------------------------------------------------------------------------*/
@@ -23,8 +26,10 @@ i8 Correctness::nDifference(void* aAddress0, void* aAddress1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vCheckAddress is defined in ??                                             */
+/* vCheckAddress is defined in BufferPool.cpp                                 */
 /*----------------------------------------------------------------------------*/
+
+// refer: BufferPool.cpp
 
 /*============================================================================*/
 /* end                                                                        */
