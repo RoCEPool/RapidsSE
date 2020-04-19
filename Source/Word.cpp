@@ -165,14 +165,23 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of this cell ptr                                        */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* aAddrWithinWord)
+//Word* Word::pToWord(void* aAddrWithinWord)
+//{
+//  _static_
+//
+//  u8 uWord = ((u8)aAddrWithinWord & ~C_MASK_MEDIUM_OBJECT) + sizeof(HeapBuffer);
+//
+//  Word* pWord = _pWord((void*)uWord);
+//
+//  return pWord;
+//}
+/*----------------------------------------------------------------------------*/
+Word* Word::pToWord(void* aEndoAddr)
 {
   _static_
     
-  u8 uWord = ((u8)aAddrWithinWord & ~C_MASK_MEDIUM_OBJECT) + sizeof(HeapBuffer);
-  
-  Word* pWord = _pWord((void*)uWord);
-  
+  Word* pWord = _pMaskDownToObject<Word*>(aEndoAddr,C_MASK_MEDIUM_OBJECT);
+    
   return pWord;
 }
 

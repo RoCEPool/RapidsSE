@@ -43,6 +43,22 @@ namespace Pool
   HeapBuffer* _pHeapBuffer(void* aAddr);
 }
 
+/*----------------------------------------------------------------------------*/
+/* mask given address to the object it is within                              */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+static CAST _pMaskDownToObject(void* aEndoAddr, u8 uMask)
+{
+  u8 uObject = ((u8)aEndoAddr & ~uMask) + sizeof(HeapBuffer);
+  
+  CAST pObject = reinterpret_cast<CAST>(uObject);
+  
+  ASSERT(pObject->bValidMagic());
+  
+  return pObject;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
