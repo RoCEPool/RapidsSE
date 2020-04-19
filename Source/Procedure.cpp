@@ -223,11 +223,11 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // add the <stmt> tag into the modified text vector
   
   i8 i_InsTkn = i_Cut;
-  pProcTextVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,C_TAG_STMT,TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
-  pProcTextVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken_restricted(i_InsTkn++,"tag"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken_restricted(i_InsTkn++,C_TAG_STMT,TN_NAME);
+  pProcTextVec->vInsertToken_restricted(i_InsTkn++,"="_Stz,TN_NAME);
+  pProcTextVec->vInsertToken_restricted(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
+  pProcTextVec->vInsertToken_restricted(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stringise the modified text vector into a pipeline statement

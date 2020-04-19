@@ -189,10 +189,39 @@ void TokenVec::vCopyTokenTV_restricted(Token* pDstToken, Token* pSrcToken)
   pDstToken->vColNo(pSrcToken->iColNo());
 }
 
+/*----------------------------------------------------------------------------*/
+/* insert a token                                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vInsertToken_restricted(i8 i_Tkn, Stz* szArgChars, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  // open up a token at _i_Tkn
+  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
+    
+    Token* pTkn_dst = pGet(i_Token + 1,true);
+    Token* pTkn_src = pGet(i_Token);
+    
+    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
+  }
+  
+  vIncItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now copy the inserting token into place
+  
+  Token* pTkn_ins = pGet(i_Tkn);
+  
+  pTkn_ins->vCopyChars_restricted(szArgChars,this);
+  pTkn_ins->vToken(eToken);
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* advance current token                                                      */
@@ -472,33 +501,6 @@ void TokenVec::vIncTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a token                                                             */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  // open up a token at _i_Tkn
-  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
-    
-    Token* pTkn_dst = pGet(i_Token + 1,true);
-    Token* pTkn_src = pGet(i_Token);
-    
-    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
-  }
-  
-  vIncItems();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now copy the inserting token into place
-  
-  Token* pTkn_ins = pGet(i_Tkn);
-  
-  pTkn_ins->vCopyChars_restricted(szArgChars,this);
-  pTkn_ins->vToken(eToken);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get latter of xyCharsSet                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* TokenVec::szLaterChars(void)
@@ -508,54 +510,6 @@ Stz* TokenVec::szLaterChars(void)
   Stz* szLater = m_xyCharsSet.szLatter();
   
   return szLater;
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars by +/- nBytes at given token                          */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vRemoveTokenChars(i8 i_Tkn)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Token* pTkn = pGet(i_Tkn);
-  
-  Stz* szAtChars = pTkn->szChars();
-  
-  i8 nBytes = szAtChars->nSize();
-
-  vMoveCharsLeft(szAtChars,nBytes);
-  
-  i8 nTokens = nItems();
-  for (i8 i_Scan = i_Tkn + 1; i_Scan < nTokens ; i_Scan++) {
-    Token* pTknAdj = pGet(i_Scan);
-    
-    pTknAdj->vAdjustChars(- nBytes); // observe minus sign
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars leftwards                                             */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vMoveCharsLeft(Stz* szAtChars, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  // for a leftwards move we cut out the chars
-  
-  m_xyCharsSet.vCut(szAtChars,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars rightwards                                            */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vMoveCharsRight(Stz* szAtChars, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  // for a rightwards move we insert sspace for the chars
-  
-  m_xyCharsSet.vInsert(szAtChars,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,22 +588,6 @@ void TokenVec::vSetAllTokens(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
   vItems(C_MAX_TOKENS);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set token chars                                                            */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vSetTokenChars(i8 i_Tkn, Stz* szChars)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Token* pTkn = pGet(i_Tkn);
-    
-  i8 nBytes = szChars->nSize();
-
-  Stz* szAtChars = pTkn->szChars();
-
-  vMoveCharsRight(szAtChars,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -827,6 +765,76 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
   if (bAddSemicolon) {
     StrLib::vConcat(szDstStr->azChar(),";");
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert byte space for chars, adjust all following tokens upwards to match  */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vByteSpaceInsert(i8 i_Tkn, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Token* pTkn = pGet(i_Tkn);
+    
+  Stz* szInsAddr = pTkn->szChars();
+
+  _vMoveCharsRight(szInsAddr,nBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nTokens = nItems();
+  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTokens ; i_Follow++) {
+    Token* pTknFollowing = pGet(i_Follow);
+    
+    pTknFollowing->vAdjustChars(+ nBytes); // observe plus sign
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove byte space for chars, adjust all following tokens downwards to match*/
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Token* pTkn = pGet(i_Tkn);
+  
+  Stz* szRemAddr = pTkn->szChars();
+  
+  _vMoveCharsLeft(szRemAddr,nBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nTokens = nItems();
+  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTokens ; i_Follow++) {
+    Token* pTknFollowing = pGet(i_Follow);
+    
+    pTknFollowing->vAdjustChars(- nBytes); // observe minus sign
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars leftwards                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vMoveCharsLeft(Stz* szAtAddr, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+    
+  m_xyCharsSet.vMoveLeft(szAtAddr,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars rightwards                                            */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vMoveCharsRight(Stz* szAtAddr, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyCharsSet.vMoveRight(szAtAddr,nBytes);
 }
 
 /*============================================================================*/

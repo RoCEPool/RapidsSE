@@ -46,17 +46,13 @@ namespace LexicalAnalysis
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
-    void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
+    void vInsertToken_restricted(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     Stz* szLaterChars(void);
-     void vMoveCharsLeft(Stz* szAtChars, i8 nBytes);
-    void vMoveCharsRight(Stz* szAtChars, i8 nBytes);
     Token* pNextToken(void);
     Token* pPrevToken(void);
     void vPrint(void);
-    void vRemoveTokenChars(i8 i_Tkn);
     void vReset(void);
     void vSetAllTokens(void);
-    void vSetTokenChars(i8 i_Tkn, Stz* szAtChars);
     void vSetTokens(void);
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
@@ -65,6 +61,12 @@ namespace LexicalAnalysis
     void vTokenise(Stz* szString);
     i8   nTokens(void);
     void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
+  
+  private:
+    void _vByteSpaceInsert(i8 i_Tkn, i8 nBytess);
+    void _vMoveCharsLeft(Stz* szAtChars, i8 nBytes);
+    void _vMoveCharsRight(Stz* szAtChars, i8 nBytes);
+    void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
 
     Footer* aFooter(void);
   };

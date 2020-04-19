@@ -20,13 +20,11 @@ namespace Esses
    ~Bytes_t(void) noexcept(false);
   
     i8   iAppend(Stz* szStr);
-    void vCut(i8 i_At, i8 nBytes);
-    void vCut(Stz* szWhereToCut, i8 nBytes);
     Stz* szGet(i8 i_Area);
-    void vInsert(i8 i_At, i8 nBytes);
-    void vInsert(Stz* szWhereToCut, i8 nBytes);
     Stz* szLatter(void);
     void vListAll(void);
+    void vMoveLeft(Stz* szAtAddr, i8 nBytes);
+    void vMoveRight(Stz* szAtAddr, i8 nBytes);
     void vPrintAll(void);
     void vReset(void);
     void vTake(i8 nBytes);
@@ -97,37 +95,6 @@ i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cut nBytes starting at given offset                                        */
-/*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vCut(i8 i_At, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
-  Stz* szWhereToCut = szGet(i_At);
-
-  vCut(szWhereToCut,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* cut nBytes starting at given offset                                        */
-/*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vCut(Stz* szWhereToCut, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
-  Stz* szDst = szWhereToCut;
-  Stz* szSrc = aAdd<Stz*>(szWhereToCut,nBytes);
-  
-  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
-  
-  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
-  
-  m_i_Latter -= nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stz at given subscript in m_yaArea                                     */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
@@ -138,37 +105,6 @@ Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
   char* azStr = (char*)& m_yaArea[i_Area];
   
   return (Stz*)azStr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert space for n-bytes starting at given offset                          */
-/*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vInsert(i8 i_At, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
-  Stz* szWhereToIns = szGet(i_At);
-
-  vInsert(szWhereToIns,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert space for n-bytes starting at given offset                          */
-/*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vInsert(Stz* szWhereToIns, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
-  Stz* szSrc = szWhereToIns;
-  Stz* szDst = aAdd<Stz*>(szWhereToIns,nBytes);
-  
-  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
-  
-  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
-  
-  m_i_Latter += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +150,42 @@ void Bytes_t<BYTES>::vListAll(void)
     bMarkup = true;
     i_String++;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut nBytes starting at given offset                                        */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  Stz* szDst = szAtAddr;
+  Stz* szSrc = aAdd<Stz*>(szAtAddr,nBytes);
+  
+  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
+  
+  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
+  
+  m_i_Latter -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert space for n-bytes starting at given offset                          */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vMoveRight(Stz* szAtAddr, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  Stz* szSrc = szAtAddr;
+  Stz* szDst = aAdd<Stz*>(szAtAddr,nBytes);
+  
+  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
+  
+  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
+  
+  m_i_Latter += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
