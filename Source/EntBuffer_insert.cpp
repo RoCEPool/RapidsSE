@@ -213,7 +213,7 @@ void EntBuffer::vCompact(void)
     MemLib::vMove(aFreeItem, aMoveEntry, nCopyBytes, CN_ENTBUFFER);
     
     // give the reclaimed space back to the buffer
-    i8 nReclaimedBytes = nSub(aMoveEntry,aFreeItem);
+    i8 nReclaimedBytes = nDifference(aMoveEntry,aFreeItem);
     //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry

@@ -240,7 +240,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iToOffset(Stz* aItem)
 {
-  i4 iOffset = static_cast<i4>(nSub(aItem,this));
+  i4 iOffset = static_cast<i4>(nDifference(aItem,this));
   
   return iOffset;
 }

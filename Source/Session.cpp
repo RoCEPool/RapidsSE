@@ -483,9 +483,9 @@ void Session::vTraceSession(void)
   
   i8 nBytes;
   if (m_aStackBase >= m_aStackPtr)
-    nBytes = nSub(m_aStackBase,m_aStackPtr);
+    nBytes = nDifference(m_aStackBase,m_aStackPtr);
   else
-    nBytes = nSub(m_aStackPtr,m_aStackBase);
+    nBytes = nDifference(m_aStackPtr,m_aStackBase);
   
   vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
          "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"

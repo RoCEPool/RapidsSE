@@ -48,8 +48,8 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     
     vTrace("\n%s OverLine %p (diff %lldB %lldU):\n"_Stz,
            szTitle,aOverLine,
-           nSub(aOverLine,aHeadLine),
-           nSub(aOverLine,aHeadLine) / sizeof(SpaceUnit));
+           nDifference(aOverLine,aHeadLine),
+           nDifference(aOverLine,aHeadLine) / sizeof(SpaceUnit));
     
     MemLib::vWordDump(aOverLine,nOverBytes);
   }
@@ -247,8 +247,8 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     
     vTrace("\n%s OverLine %p (diff %lldB %lldU):\n"_Stz,
            szTitle,aOverLine,
-           nSub(aOverLine,aHeadLine),
-           nSub(aOverLine,aHeadLine) / sizeof(SpaceUnit));
+           nDifference(aOverLine,aHeadLine),
+           nDifference(aOverLine,aHeadLine) / sizeof(SpaceUnit));
     
     MemLib::vWordDump(aOverLine,nOverBytes);
   }

@@ -194,7 +194,7 @@ void Step::vInfoSetChunkFile(void)
     RASSERT(bFoundEol);
     
     // compute the number of bytes which belong to the current chunk
-    i8 nPartialBytes = Correctness::nSub((void*)aFinalEol,pReadBlock) + 1;
+    i8 nPartialBytes = nDifference((void*)aFinalEol,pReadBlock) + 1;
     
     // compute the total chunk bytes
     nChunkBytes = nPartialBytes + C_WSP_DATACHUNK - 2048;

@@ -535,7 +535,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   // append the row to the record
   hvRec->vAppend(hRow);
   
-  i8 nOffset = nSub(this,aCompactRow);
+  i8 nOffset = nDifference(this,aCompactRow);
   
   vTrace("row: %04x (%s)\n"_Stz,nOffset,hvRec->szRecStr());
   

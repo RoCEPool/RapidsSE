@@ -1060,7 +1060,7 @@ void EntBuffer::vRestore(void)
   if (m_aLazyChain) {
     PoolBuffer* pOriginalBuffer =
     pBitAnd<PoolBuffer*>(m_aLazyChain,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_aLazyChain, pOriginalBuffer);
+    u8 uOffset = nDifference(m_aLazyChain, pOriginalBuffer);
     m_aLazyChain = pBitOr<Ent*>(pThisBuffer,uOffset);
   }
   

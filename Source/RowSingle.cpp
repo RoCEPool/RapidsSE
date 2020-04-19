@@ -117,7 +117,7 @@ void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    i8 nDeltaBytes = nSub(m_waColVal[i_Col].m_szVch,pCopiedFromRow);
+    i8 nDeltaBytes = nDifference(m_waColVal[i_Col].m_szVch,pCopiedFromRow);
     
     m_waColVal[i_Col].m_szVch = aAdd<Stz*>(this,nDeltaBytes);
   }

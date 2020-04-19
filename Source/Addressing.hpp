@@ -5,10 +5,16 @@
 
 namespace Correctness
 {
-  i8 nSub(void* aAddress0, void* aAddress1);
+  i8 nDifference(void* aAddress0, void* aAddress1);
   
   void vCheckAddress(void* aAddress);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Template Functions ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* add bytes to given address                                                 */
@@ -69,7 +75,6 @@ inline static CAST aSubtract(void* aAddress, i8 nBytes)
 
   return reinterpret_cast<CAST>(aAddr1);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -831,7 +831,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iToUnit(TAIL* aTail)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // how far (in bytes) into m_axaUnits
-  i8 nBytes = nSub(aTail,m_axaUnits);
+  i8 nBytes = nDifference(aTail,m_axaUnits);
   
   // how far (in units) into m_axaUnits
   i8 i_Unit = nBytes / (i8)sizeof(SpaceUnit);

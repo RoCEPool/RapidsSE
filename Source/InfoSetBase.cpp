@@ -205,7 +205,7 @@ i8 InfoSetBase::iToOffset(Stz* aItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i4 iOffset = static_cast<i4>(nSub(aItem,this));
+  i4 iOffset = static_cast<i4>(nDifference(aItem,this));
   
   return iOffset;
 }

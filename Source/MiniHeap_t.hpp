@@ -395,7 +395,7 @@ void MiniHeap_t<ITEM>::vResetUsed(void)
 template <class ITEM>
 void MiniHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
 {
-  i8 nUsedBytes = nSub(aUptil,aItemArea());
+  i8 nUsedBytes = nDifference(aUptil,aItemArea());
   
   m_xWsp.vUsed(nUsedBytes);
   
@@ -408,7 +408,7 @@ void MiniHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
 template <class ITEM>
 i4 MiniHeap_t<ITEM>::iToOffset(ITEM* aItem)
 {
-  i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.ayArea()));
+  i4 iOffset = static_cast<i4>(nDifference(aItem,m_xWsp.ayArea()));
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   

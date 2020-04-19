@@ -118,7 +118,7 @@ i8 DataChunk::nQuantumBytes(void)
     bFoundEol = StrLib::bBackward(&aFinalEol,aLastByte,'\r');
   RASSERT(bFoundEol);
   
-  nBytes = nSub((void*)aFinalEol,(void*)aDataArea()) + 1;
+  nBytes = nDifference((void*)aFinalEol,(void*)aDataArea()) + 1;
   
   return nBytes;
 }
