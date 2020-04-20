@@ -72,6 +72,7 @@ success
 pwf;
 rows: ('/catalogs/boray/tenants/')
 
+//! ALKA ENABLE once empty folder test in place
 //drop catalog myCatalog;
 //failure contains: 'folder not empty'
 

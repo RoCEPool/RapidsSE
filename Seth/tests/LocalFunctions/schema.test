@@ -2,6 +2,10 @@
 /* lssch.test -- list schemas                                                 */
 /*----------------------------------------------------------------------------*/
 
+// track memory
+trackMemory;
+
+success
 pwf;
 rows:
   ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
@@ -72,8 +76,6 @@ rows:
 drop schema mySchema;
 success
 
-/*
-
 create schema mySchema;
 success
 
@@ -82,17 +84,39 @@ rows:
 ('public')
 ('mySchema')
 
-cf "mySchema";
+cf mySchema;
 success
 
-cf "tables";
+cf tables;
 success
 
 create table myTable (c integer);
 success
 
+cf "~schemas";
+success
+
+pwf;
+rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
+
+//! ALKA ENABLE once empty folder test in place
+//drop schema mySchema;
+//failure contains: 'folder not empty'
+
+cf mySchema;
+success
+
+cf tables;
+success
+
+drop table myTable;
+success
+
 cf ..;
 success
+
+pwf;
+rows: ('/mySchema/schemas/rapidsse/catalogs/boray/tenants/')
 
 cf ..;
 success
@@ -101,9 +125,7 @@ pwf;
 rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
 
 drop schema mySchema;
-failure contains: 'folder not empty'
-
-*/
+success
 
 cf "~tables";
 success
@@ -111,6 +133,10 @@ success
 pwf;
 rows:
   ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   
