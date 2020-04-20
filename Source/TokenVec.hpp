@@ -68,6 +68,8 @@ namespace LexicalAnalysis
     void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
+    void _vHardReset(void);
+    
     bool _bIsLastToken(Token* pToken);
 
     void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
@@ -77,7 +79,6 @@ namespace LexicalAnalysis
     void _vTokenCutInterior(i8 i_Tkn);
     void _vTokenCutLast(i8 i_Tkn);
 
-    void _vVecHardReset(void);
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
 

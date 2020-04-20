@@ -866,6 +866,24 @@ void TokenVec::_vCharsSet(Token* pDstToken, Stz* szArgChars)
 }
 
 /*----------------------------------------------------------------------------*/
+/* completely reset this token vector                                         */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vHardReset(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyByteSpace.vReset();
+  
+  m_iCurTkn = -1;
+
+  vItems(0);
+  
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
+    Token* pToken = pGet(i_Token,true);
+    pToken->vReset();
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* cut / erase a non-last token                                               */
 /*----------------------------------------------------------------------------*/
 void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
@@ -913,24 +931,6 @@ void TokenVec::_vTokenCutLast(i8 i_CutTkn)
   vDecItems();
 }
 
-/*----------------------------------------------------------------------------*/
-/* completely reset this token vector                                         */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vVecHardReset(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_xyByteSpace.vReset();
-  
-  m_iCurTkn = -1;
-
-  vItems(0);
-  
-  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = pGet(i_Token,true);
-    pToken->vReset();
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* ripple the tokens leftward, overwriting the i_Tkn, dec no of tokens        */
