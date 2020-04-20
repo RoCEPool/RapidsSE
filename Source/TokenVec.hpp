@@ -67,8 +67,11 @@ namespace LexicalAnalysis
     void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
-    void _vMoveCharsLeft(Stz* szAtChars, i8 nBytes);
-    void _vMoveCharsRight(Stz* szAtChars, i8 nBytes);
+    void _vCharsMoveLeft(Stz* szAtChars, i8 nBytes);
+    void _vCharsMoveRight(Stz* szAtChars, i8 nBytes);
+  
+    void _vVecRippleLeft(i8 i_Tkn);
+    void _vVecRippleRight(i8 i_Tkn);
 
     Footer* aFooter(void);
   };
