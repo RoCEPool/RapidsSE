@@ -650,7 +650,7 @@ bool SePrompt::bIsPromptWord(void)
   if ( ! (pWord && pWord->bPrompt()) )
     return false;
 
-  pTknVec->vReset();
+  pTknVec->vSoftReset();
   pTknVec->vAppendToken("docol"_Stz);
   pTknVec->vAppendToken(sWordNm);
   pTknVec->vSetTokens();

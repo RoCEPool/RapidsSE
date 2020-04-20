@@ -153,7 +153,7 @@ void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
 
   //ASSERT(0);
   
-  i8 nTkns = nItems();
+  i8 nTkns = nTokens();
   
   if (pDstToken->i_Token() + 1 == nTkns) {
     
@@ -197,7 +197,7 @@ void TokenVec::vInsertToken_restricted(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   // open up a token at _i_Tkn
-  for (i8 i_Token = nItems() - 1; i_Token >= i_Tkn ; i_Token--) {
+  for (i8 i_Token = nTokens() - 1; i_Token >= i_Tkn ; i_Token--) {
     
     Token* pTkn_dst = pGet(i_Token + 1,true);
     Token* pTkn_src = pGet(i_Token);
@@ -240,7 +240,7 @@ void TokenVec::vAppendToken(Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  Token* pToken = pGet(nItems(),true);
+  Token* pToken = pGet(nTokens(),true);
   
   pToken->vCopyChars_restricted(szArgChars,this);
 
@@ -339,7 +339,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  i8 nTkns = nItems();
+  i8 nTkns = nTokens();
   
   if (i_CutTkn >= nTkns - 1) {
     vDecItems();
@@ -367,7 +367,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  i8 nTkns = nItems();
+  i8 nTkns = nTokens();
   
   if (i_CutTkn < nTkns - 1) {
     _vTokenCutInterior(i_CutTkn);
@@ -382,7 +382,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
 //
-//  i8 nTkns = nItems();
+//  i8 nTkns = nTokens();
 //
 //  if (i_CutTkn >= nTkns - 1) {
 //    vDecItems();
@@ -418,7 +418,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 //  m_xyCharsSet.vMoveLeft(szWhereToCut,nBytesToCut);
 //  m_xyCharsSet.vListAll();
 //
-//  nTkns = nItems();
+//  nTkns = nTokens();
 //
 //  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
 //    Token* pTknAdj = pGet(i_Token);
@@ -566,25 +566,6 @@ Token* TokenVec::pPrevToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vReset(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_xyCharsSet.vReset();
-  
-  m_iCurTkn = -1;
-
-  vItems(0);
-  
-  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = pGet(i_Token,true);
-    pToken->vReset();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* set the number of tokens                                                   */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vSetAllTokens(void)
@@ -609,6 +590,25 @@ void TokenVec::vSetTokens(void)
   }
   
   vItems(i_Token);
+}
+
+/*----------------------------------------------------------------------------*/
+/* completely reset this token vector                                         */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vSoftReset(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyCharsSet.vReset();
+  
+  m_iCurTkn = -1;
+
+  vItems(0);
+  
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
+    Token* pToken = pGet(i_Token,true);
+    pToken->vReset();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -673,7 +673,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  vReset();
+  vSoftReset();
   
   Input* pInput = new Input;
   pInput->vUseString(szTokenStr);
@@ -790,8 +790,8 @@ void TokenVec::_vByteSpaceInsert(i8 i_Tkn, i8 nBytes)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nTokens = nItems();
-  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTokens ; i_Follow++) {
+  i8 nTkns = nTokens();
+  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
     Token* pTknFollowing = pGet(i_Follow);
     
     pTknFollowing->vAdjustChars(+ nBytes); // observe plus sign
@@ -813,8 +813,8 @@ void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nTokens = nItems();
-  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTokens ; i_Follow++) {
+  i8 nTkns = nTokens();
+  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
     Token* pTknFollowing = pGet(i_Follow);
     
     pTknFollowing->vAdjustChars(- nBytes); // observe minus sign
@@ -858,7 +858,7 @@ void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  i8 nTkns = nItems();
+  i8 nTkns = nTokens();
   
   Token* pTknCut = pGet(i_CutTkn);
   
@@ -889,13 +889,32 @@ void TokenVec::_vTokenCutLast(i8 i_CutTkn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* completely reset this token vector                                         */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vVecHardReset(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyCharsSet.vReset();
+  
+  m_iCurTkn = -1;
+
+  vItems(0);
+  
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
+    Token* pToken = pGet(i_Token,true);
+    pToken->vReset();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* ripple the tokens leftward, overwriting the i_Tkn, dec no of tokens        */
 /*----------------------------------------------------------------------------*/
 void TokenVec::_vVecRippleLeft(i8 i_Tkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  i8 i_Limit = nItems();
+  i8 i_Limit = nTokens();
 
   for (i8 i_Ripple = i_Tkn + 1; i_Ripple < i_Limit ; i_Ripple++) {
     
@@ -915,7 +934,7 @@ void TokenVec::_vVecRippleRight(i8 i_Tkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  i8 i_Start = nItems() - 1;
+  i8 i_Start = nTokens() - 1;
 
   vIncItems();
   

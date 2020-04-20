@@ -538,13 +538,13 @@ void Planner::vParsePhrases(void)
       m_pPhraseTknVec[m_nPhrases] = new TokenVec;
       m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase1);
       m_nPhrases++;
-      pPhrase1->vReset();
+      pPhrase1->vSoftReset();
       
       if (pPhrase2->nTokens()) {
         m_pPhraseTknVec[m_nPhrases] = new TokenVec;
         m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase2);
         m_nPhrases++;
-        pPhrase2->vReset();
+        pPhrase2->vSoftReset();
       }
       
       bAdd1 = true;
@@ -567,7 +567,7 @@ void Planner::vParsePhrases(void)
     //   (predicateA predicateB and)
     if (pToken->bSame("and"_Stz)) {
       pPhrase1->vAppendVector(pPhrase2);
-      pPhrase2->vReset();
+      pPhrase2->vSoftReset();
       continue;
     }
 

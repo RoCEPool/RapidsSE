@@ -50,9 +50,9 @@ namespace LexicalAnalysis
     void vListTokens(void);
     Token* pNextToken(void);
     Token* pPrevToken(void);
-    void vReset(void);
     void vSetAllTokens(void);
     void vSetTokens(void);
+    void vSoftReset(void);
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
@@ -72,6 +72,7 @@ namespace LexicalAnalysis
     void _vTokenCutInterior(i8 i_Tkn);
     void _vTokenCutLast(i8 i_Tkn);
 
+    void _vVecHardReset(void);
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
 
