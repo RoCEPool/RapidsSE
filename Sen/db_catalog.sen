@@ -63,8 +63,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a removable catalog folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkRemoveCatalog ( "<catalogNm>" --  true | errorCode false )
+
+  params| sCatalogNm |
+
+  folder[].checkInCatalogs not if false exit then
+  //sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
+  sCatalogNm checkIsCatalog  not if false exit then
+  //folder.isEmpty   not if false exit then
+  //folder.notUsed   not if false exit then
+
+  true
+;
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* make a catalogs folder under given named tenant                            */
+/*----------------------------------------------------------------------------*/
+: :makeCatalogsFolder ( <catalogNm> -- )
+
+  args.tracepoint if
+  dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "catalogs"   ( dic "catalogs" )
+  swap         ( "catalogs" dic )
+  :makeSubFolder   ( )
+;
 
 /*----------------------------------------------------------------------------*/
 /* make a named catalog folder (run by participant)                           */
@@ -81,23 +112,8 @@
     find: \catalog swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make schemas folder
+  // make catalogs folder
   sCatalogNm :makeSchemasFolder ( )
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a catalogs folder under given named tenant                            */
-/*----------------------------------------------------------------------------*/
-: :makeCatalogsFolder ( "<tenantNm>" -- )
-
-  args.tracepoint if
-    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  find execute ( dic )
-  "catalogs"   ( dic "catalogs" )
-  swap         ( "catalogs" dic )
-  :makeSubFolder   ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -107,6 +123,28 @@
 
   find execute path[].pushFolder
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeCatalog ( "<catalogNm>" --  )
+
+  params| sCatalogNm |
+
+  args.tracepoint if
+    dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to catalog folder
+  sCatalogNm path[].pushCatalogFolder assert
+
+  "schemas" folder::remove
+
+  path[].discardCatalogFolder
+
+  sCatalogNm folder::remove
 ;
 
 /*============================================================================*/
