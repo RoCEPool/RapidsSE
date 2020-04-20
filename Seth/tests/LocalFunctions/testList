@@ -1,8 +1,8 @@
 //funs.test
 folder.test
-lscat.test
+catalog.test
 lscol.test
-lssch.test
+schema.test
 lstbl.test
 lsten.test
 misc.test
