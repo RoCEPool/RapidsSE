@@ -38,14 +38,23 @@
     exit                                                         // *EARLY EXIT*
   then
 
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // test for a "default" will set default path
+  // set default catalogs
+  sFolderNm "~catalogs" str.equal if
+    setCatalogs
+    true
+    exit                                                         // *EARLY EXIT*
+  then
 
-  // pop up to tenants
-  sFolderNm "default" str.equal if
-    "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    str.toStrVec path[].set
-    setPath
+  // set default schemas
+  sFolderNm "~schemas" str.equal if
+    setSchemas
+    true
+    exit                                                         // *EARLY EXIT*
+  then
+
+  // set default tables
+  sFolderNm "~tables" str.equal if
+    setTables
     true
     exit                                                         // *EARLY EXIT*
   then

@@ -136,9 +136,9 @@ drop schema t;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection cfdefault;
-print section "cf default";
+print section "cf ~tables";
 
-cf "default";
+cf "~tables";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection createTable;

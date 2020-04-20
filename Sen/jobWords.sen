@@ -19,6 +19,32 @@
   path[].depth strVec::toPath to /session <path>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* set path to the default tenants catalogs folder                            */
+/*----------------------------------------------------------------------------*/
+: setCatalogs ( )
+  "/tenants/boray/catalogs/"
+  str.toStrVec path[].set
+  setPath
+;
+
+/*----------------------------------------------------------------------------*/
+/* set path to the default tenants schemas folder                            */
+/*----------------------------------------------------------------------------*/
+: setSchemas ( )
+  "/tenants/boray/catalogs/rapidsse/schemas"
+  str.toStrVec path[].set
+  setPath
+;
+
+/*----------------------------------------------------------------------------*/
+/* set path to the default tenants tables folder                              */
+/*----------------------------------------------------------------------------*/
+: setTables ( )
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
+  setPath
+;
 
 /*----------------------------------------------------------------------------*/
 /* job becomes a participant on participant node                              */
