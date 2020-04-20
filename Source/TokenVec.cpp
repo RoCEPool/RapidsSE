@@ -757,17 +757,29 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* insert byte space for chars, adjust all following tokens upwards to match  */
+/* copy chars into a last token                                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vByteSpaceInsert(i8 i_Tkn, i8 nBytes)
+Stz* TokenVec::_szByteSpaceExtend(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Token* pTkn = pGet(i_Tkn);
-    
-  Stz* szInsAddr = pTkn->szChars();
+  Stz* szExtension = m_xyByteSpace.szLatter();;
+  
+  * szExtension->azChar() = '\0';
 
-  _vByteSpaceMoveRight(szInsAddr,nBytes);
+  vTakeCharsBytes(nBytes);
+
+  return szExtension;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert byte space for chars, adjust all following tokens upwards to match  */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vByteSpaceInsert(Stz* szAtChars, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  _vByteSpaceMoveRight(szAtChars,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -793,15 +805,11 @@ void TokenVec::_vByteSpaceMoveRight(Stz* szAtAddr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* remove byte space for chars, adjust all following tokens downwards to match*/
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
+void TokenVec::_vByteSpaceRemove(Stz* szAtChars, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Token* pTkn = pGet(i_Tkn);
-  
-  Stz* szRemAddr = pTkn->szChars();
-  
-  _vByteSpaceMoveLeft(szRemAddr,nBytes);
+    
+  _vByteSpaceMoveLeft(szAtChars,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -840,16 +848,14 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 void TokenVec::_vCharsSet(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Stz* szLatter = szLaterChars();
-  * szLatter->azChar() = '\0';
 
-  szLatter->vCopy(szArgChars);
+  i8 nSize = szArgChars->nSize();
   
-  i8 nLen = szLatter->nLength();
-  vTakeCharsBytes(nLen + 1);
+  Stz* szExtension = _szByteSpaceExtend(nSize);
   
-  pDstToken->vChars(szLatter);
+  pDstToken->vChars(szExtension);
+
+  szExtension->vCopy(szArgChars);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -897,19 +903,23 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   vListTokens();
   
   i8 nTkns = nTokens();
-
   i8 i_CutTkn = pTknCut->i_Token();
-  
   SP_Token spTkn;
   vTrace("Cutting:- %s\n"_Stz,spTkn.sz(pTknCut));
 
-  char* azChars = pTknCut->azChars();
-  Stz* szWhereToCut = pTknCut->szChars();
+  
+  // * * * * * * * * * * * * * * * * * * * * * *
+
+  Stz* szCutAt  = pTknCut->szChars();
+  char* azChars = szCutAt->azChar();
+  
   i8 nBytesToCut = pTknCut->nChars() + 1;
   
-  _vByteSpaceRemove(i_CutTkn,nBytesToCut);
-  
+  _vByteSpaceRemove(szCutAt,nBytesToCut);
   _vVecRippleLeft(i_CutTkn);
+    
+  // * * * * * * * * * * * * * * * * * * * * * *
+
   
   vTrace("--- --- --- --- --- ---\n"_Stz);
   vListTokens();
@@ -924,7 +934,6 @@ void TokenVec::_vTokenCutLast(Token* pTknCut)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-    
   // reclaim the chars byte space
   i8 nBytes = pTknCut->nChars() + 1;
   _vByteSpaceTrim(nBytes);

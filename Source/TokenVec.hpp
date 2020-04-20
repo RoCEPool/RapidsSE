@@ -62,10 +62,11 @@ namespace LexicalAnalysis
     void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
   
   private:
-    void _vByteSpaceInsert(i8 i_Tkn, i8 nBytess);
+    Stz* _szByteSpaceExtend(i8 nBytes);
+    void _vByteSpaceInsert(Stz* szAtChars, i8 nBytess);
     void _vByteSpaceMoveLeft(Stz* szAtChars, i8 nBytes);
     void _vByteSpaceMoveRight(Stz* szAtChars, i8 nBytes);
-    void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
+    void _vByteSpaceRemove(Stz* szAtChars, i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
     void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
