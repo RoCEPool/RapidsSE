@@ -21,6 +21,7 @@ namespace Esses
   
     i8   iAppend(Stz* szStr);
     Stz* szGet(i8 i_Area);
+    void vGive(i8 nBytes);
     Stz* szLatter(void);
     void vListAll(void);
     void vMoveLeft(Stz* szAtAddr, i8 nBytes);
@@ -105,6 +106,17 @@ Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
   char* azStr = (char*)& m_yaArea[i_Area];
   
   return (Stz*)azStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* give nBytes back to latter area                                            */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vGive(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  m_i_Latter -= nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
