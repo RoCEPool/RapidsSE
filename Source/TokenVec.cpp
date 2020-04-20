@@ -369,72 +369,13 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   i8 nTkns = nItems();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // last token in vector is being cut
-  if (i_CutTkn >= nTkns - 1) {
-    Token* pTknCut = pGet(i_CutTkn);
-    
-    // reclaim the chars byte space
-    i8 nBytes = pTknCut->nChars() + 1;
-    _vByteSpaceTrim(nBytes);
-    
-    // decrement te number of tokens
-    vDecItems();
-    
-    return;
+  if (i_CutTkn < nTkns - 1) {
+    _vTokenCutInterior(i_CutTkn);
   }
-
-  Token* pTknCut = pGet(i_CutTkn);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // a non-last token in vector is being cut
-
-  
-  
-  
-  
-  
-// ----
-  char* azChars = pTknCut->azChars();
-  Stz* szWhereToCut = pTknCut->szChars();
-  i8 nBytesToCut = pTknCut->nChars() + 1;
-
-  m_xyCharsSet.vListAll();
-  
-  Correctness::vDebugPoint();
-// ----
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
-    
-    Token* pTknDst = pGet(i_Token);
-    Token* pTknSrc = pGet(i_Token + 1,true);
-    
-    pTknDst->vCopyToken_restricted(pTknSrc,this);
+  else {
+    _vTokenCutLast(i_CutTkn);
   }
   
-  vDecItems();
-  
-// ----
-
-  m_xyCharsSet.vMoveLeft(szWhereToCut,nBytesToCut);
-  m_xyCharsSet.vListAll();
-
-  nTkns = nItems();
-
-  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
-    Token* pTknAdj = pGet(i_Token);
-    
-    pTknAdj->vAdjustChars(- nBytesToCut); // observe minus sign
-  }
-  
-  
-  Correctness::vDebugPoint();
-// ----
-
 }
 /*----------------------------------------------------------------------------*/
 //void TokenVec::vCutToken(i8 i_CutTkn)
@@ -491,29 +432,6 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 //
 //}
 #endif
-
-/*----------------------------------------------------------------------------*/
-/* dump token array                                                           */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vDumpTokens(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  for (i8 i_Token = 0; i_Token < nItems(); i_Token++) {
-    
-    Token* pToken = pGet(i_Token);
-
-    if (! pToken->szChars())
-      break;
-    
-    vTrace("  (%2lld,%2lld) %s %s\n"_Stz,
-           pToken->iLineNo(),
-           pToken->iColNo(),
-           aTN[pToken->eToken()],
-           pToken->szChars());
-  }
-  vTrace("\n"_Stz);
-}
 
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
@@ -587,6 +505,31 @@ Stz* TokenVec::szLaterChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* list tokens                                                                */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vListTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nTokens();
+  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+    
+    Token* pToken = pGet(i_Token);
+
+    //if (! pToken->szChars())
+    //  break;
+    
+    vTrace("  [%lld (%2lld,%2lld)] %s %s\n"_Stz,
+           pToken->i_Token(),
+           pToken->iLineNo(),
+           pToken->iColNo(),
+           aTN[pToken->eToken()],
+           pToken->szChars());
+  }
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return next token                                                          */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pNextToken(void)
@@ -620,19 +563,6 @@ Token* TokenVec::pPrevToken(void)
   
   m_iCurTkn = C_UNKNOWN;
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print this token vector                                                    */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vPrint(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  for (i8 i_Token = 0; i_Token < nItems(); i_Token++) {
-    Token* pToken = pGet(i_Token);
-    vTrace("  %s\n"_Stz,pToken->szChars());
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,6 +849,43 @@ void TokenVec::_vCharsMoveRight(Stz* szAtAddr, i8 nBytes)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_xyCharsSet.vMoveRight(szAtAddr,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut / erase a non-last token                                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nItems();
+  
+  Token* pTknCut = pGet(i_CutTkn);
+  
+  char* azChars = pTknCut->azChars();
+  Stz* szWhereToCut = pTknCut->szChars();
+  i8 nBytesToCut = pTknCut->nChars() + 1;
+  
+  _vByteSpaceRemove(i_CutTkn,nBytesToCut);
+  
+  _vVecRippleLeft(i_CutTkn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut / erase the last token                                                 */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vTokenCutLast(i8 i_CutTkn)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Token* pTknCut = pGet(i_CutTkn);
+    
+  // reclaim the chars byte space
+  i8 nBytes = pTknCut->nChars() + 1;
+  _vByteSpaceTrim(nBytes);
+    
+  // decrement te number of tokens
+  vDecItems();
 }
 
 /*----------------------------------------------------------------------------*/

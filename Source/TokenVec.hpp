@@ -41,16 +41,15 @@ namespace LexicalAnalysis
     i8   iCurrToken(void);
     Token* pCurrToken(void);
     void vCutToken(i8 i_Tkn);
-    void vDumpTokens(void);
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
     void vInsertToken_restricted(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     Stz* szLaterChars(void);
+    void vListTokens(void);
     Token* pNextToken(void);
     Token* pPrevToken(void);
-    void vPrint(void);
     void vReset(void);
     void vSetAllTokens(void);
     void vSetTokens(void);
@@ -69,7 +68,10 @@ namespace LexicalAnalysis
   
     void _vCharsMoveLeft(Stz* szAtChars, i8 nBytes);
     void _vCharsMoveRight(Stz* szAtChars, i8 nBytes);
-  
+
+    void _vTokenCutInterior(i8 i_Tkn);
+    void _vTokenCutLast(i8 i_Tkn);
+
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
 
