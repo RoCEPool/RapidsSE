@@ -37,13 +37,14 @@ Stz* SP_Token::sz(Token* pToken)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
   StrLib::vSprint(m_caResult,
-                  "Token %p: [%lld (%2lld,%2lld)] %s %s"_Stz,
+                  "Token %p: [%lld (%2lld,%2lld)] %s %p %s"_Stz,
                   
                   pToken,
                   pToken->i_Token(),
                   pToken->iLineNo(),
                   pToken->iColNo(),
                   aTN[pToken->eToken()],
+                  pToken->szChars(),
                   pToken->szChars()
                   );
   

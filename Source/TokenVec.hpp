@@ -77,6 +77,8 @@ namespace LexicalAnalysis
     void _vTokenCutInterior(Token* pCutToken);
     void _vTokenCutLast(Token* pCutToken);
 
+    void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
+    void _vVecCheckChars(void);
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
 

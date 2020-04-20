@@ -809,7 +809,35 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  ASSERT(0);
+  vTrace("_vCharsCopyInterior::\n"_Stz);
+  vListTokens();
+
+  SP_Token spTkn;
+  vTrace("Copying:- %s <= %s\n"_Stz,spTkn.sz(pDstToken),szArgChars);
+
+  
+  // * * * * * * * * * * * * * * * * * * * *
+  i8 i_Tkn = pDstToken->i_Token();
+  Stz* szInsitui = pDstToken->szChars();
+  
+  i8 nRemSize = pDstToken->nChars() + 1;
+  _vByteSpaceRemove(szInsitui,nRemSize);
+  _vVecAdjustChars(i_Tkn + 1,(- nRemSize)); // observe the minus sign
+  
+  vTrace("--- --- --- --- --- ---\n"_Stz);
+  vListTokens();
+
+  i8 nInsSize = szArgChars->nSize();
+  _vByteSpaceInsert(szInsitui,nInsSize);
+  _vVecAdjustChars(i_Tkn + 1,nInsSize);
+
+  
+  szInsitui->vCopy(szArgChars);
+  // * * * * * * * * * * * * * * * * * * * *
+
+  
+  vTrace("--- --- --- --- --- ---\n"_Stz);
+  vListTokens();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -912,6 +940,43 @@ void TokenVec::_vTokenCutLast(Token* pTknCut)
   vDecItems();
 }
 
+/*----------------------------------------------------------------------------*/
+/* step thru tokens adjusting location of each chars by given +/- bytes       */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vVecAdjustChars(i8 i_Tkn, i8 nByBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nTokens();
+
+  for (i8 i_Token = i_Tkn; i_Token < nTkns; i_Token++) {
+    Token* pTknAdj = pGet(i_Token);
+
+    pTknAdj->vAdjustChars(nByBytes);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* step thru tokens checking the address of the next tokens chars             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vVecCheckChars(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nTokens();
+
+  for (i8 i_Token = 0; i_Token < nTkns - 1; i_Token++) {
+    Token* pTknA = pGet(i_Token);
+    Token* pTknB = pGet(i_Token + 1);
+
+    Stz* szCharsA = pTknA->szChars();
+    Stz* szCharsB = pTknB->szChars();
+
+    i8 nBytesA = szCharsA->nSize();
+    
+    ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* ripple the tokens leftward, overwriting the i_Tkn, dec no of tokens        */
