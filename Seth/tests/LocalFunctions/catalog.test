@@ -75,6 +75,7 @@ rows: ('/catalogs/boray/tenants/')
 
 drop catalog myCatalog;
 failure contains: 'folder not empty'
+*/
 
 cf "default";
 success
@@ -82,7 +83,7 @@ success
 pwf;
 rows:
 ('/tenants/boray/catalogs/rapidsse/schemas/public/tables');
-*/
+
 
 CLEANUP {
   
