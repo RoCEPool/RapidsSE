@@ -69,6 +69,8 @@ namespace LexicalAnalysis
     void _vCharsMoveLeft(Stz* szAtChars, i8 nBytes);
     void _vCharsMoveRight(Stz* szAtChars, i8 nBytes);
 
+    bool _bIsLastToken(Token* pToken);
+
     void _vTokenCopyInterior(Token* pDstToken, Stz* szArgChars);
     void _vTokenCopyLast(Token* pDstToken, Stz* szArgChars);
   

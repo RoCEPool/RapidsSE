@@ -151,21 +151,10 @@ void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  //ASSERT(0);
-  
-  i8 nTkns = nTokens();
-  
-  if (pDstToken->i_Token() + 1 == nTkns) {
-    
+  if (_bIsLastToken(pDstToken))
     _vTokenCopyLast(pDstToken,szArgChars);
-  }
-  else {
+  else
     _vTokenCopyInterior(pDstToken,szArgChars);
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ASSERT(0);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -842,12 +831,28 @@ void TokenVec::_vCharsMoveRight(Stz* szAtAddr, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if given token is the last token                                      */
+/*----------------------------------------------------------------------------*/
+bool TokenVec::_bIsLastToken(Token* pToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nTokens();
+
+  if (pToken->i_Token() + 1 == nTkns)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy chars into a non-last token                                           */
 /*----------------------------------------------------------------------------*/
 void TokenVec::_vTokenCopyInterior(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
