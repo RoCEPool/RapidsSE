@@ -511,6 +511,8 @@ void TokenVec::vListTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  SP_Token spTkn;
+  
   i8 nTkns = nTokens();
   for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
     
@@ -519,12 +521,7 @@ void TokenVec::vListTokens(void)
     //if (! pToken->szChars())
     //  break;
     
-    vTrace("  [%lld (%2lld,%2lld)] %s %s\n"_Stz,
-           pToken->i_Token(),
-           pToken->iLineNo(),
-           pToken->iColNo(),
-           aTN[pToken->eToken()],
-           pToken->szChars());
+    vTrace("  %s\n"_Stz,spTkn.sz(pToken));
   }
   vTrace("\n"_Stz);
 }
@@ -788,14 +785,14 @@ void TokenVec::_vByteSpaceInsert(i8 i_Tkn, i8 nBytes)
 
   _vCharsMoveRight(szInsAddr,nBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 nTkns = nTokens();
-  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
-    Token* pTknFollowing = pGet(i_Follow);
-    
-    pTknFollowing->vAdjustChars(+ nBytes); // observe plus sign
-  }
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  i8 nTkns = nTokens();
+//  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
+//    Token* pTknFollowing = pGet(i_Follow);
+//
+//    pTknFollowing->vAdjustChars(+ nBytes); // observe plus sign
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -813,12 +810,12 @@ void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nTkns = nTokens();
-  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
-    Token* pTknFollowing = pGet(i_Follow);
-    
-    pTknFollowing->vAdjustChars(- nBytes); // observe minus sign
-  }
+//  i8 nTkns = nTokens();
+//  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
+//    Token* pTknFollowing = pGet(i_Follow);
+//
+//    pTknFollowing->vAdjustChars(- nBytes); // observe minus sign
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -858,10 +855,16 @@ void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  vTrace("_vTokenCutInterior::\n"_Stz);
+  vListTokens();
+  
   i8 nTkns = nTokens();
   
   Token* pTknCut = pGet(i_CutTkn);
   
+  SP_Token spTkn;
+  vTrace("Cutting:- %s\n"_Stz,spTkn.sz(pTknCut));
+
   char* azChars = pTknCut->azChars();
   Stz* szWhereToCut = pTknCut->szChars();
   i8 nBytesToCut = pTknCut->nChars() + 1;
@@ -869,6 +872,11 @@ void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
   _vByteSpaceRemove(i_CutTkn,nBytesToCut);
   
   _vVecRippleLeft(i_CutTkn);
+  
+  vTrace("--- --- --- --- --- ---\n"_Stz);
+  vListTokens();
+  
+  Correctness::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
