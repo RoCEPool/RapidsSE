@@ -2,6 +2,9 @@
 /* lscat.test -- list catalogs                                                */
 /*----------------------------------------------------------------------------*/
 
+// track memory
+trackMemory;
+success
 
 pwf;
 rows:
@@ -12,7 +15,7 @@ lscat;
 failure contains: 'not in catalogs'
 
 // cf to tenants
-cf "tenants";
+cf "~";
 success
 
 // list catalogs when not in catalogs folder
@@ -46,7 +49,6 @@ rows:
 drop catalog myCatalog;
 success
 
-/*
 create catalog myCatalog;
 success
 
@@ -55,17 +57,38 @@ rows:
   ('rapidsse')
   ('myCatalog')
 
-cf "myCatalog";
+cf myCatalog;
 success
 
-cf "schemas";
+cf schemas;
 success
 
 create schema mySchema;
 success
 
+cf "~catalogs";
+success
+
+pwf;
+rows: ('/catalogs/boray/tenants/')
+
+//drop catalog myCatalog;
+//failure contains: 'folder not empty'
+
+cf myCatalog;
+success
+
+cf schemas;
+success
+
+drop schema mySchema;
+success
+
 cf ..;
 success
+
+pwf;
+rows: ('/myCatalog/catalogs/boray/tenants/')
 
 cf ..;
 success
@@ -74,16 +97,18 @@ pwf;
 rows: ('/catalogs/boray/tenants/')
 
 drop catalog myCatalog;
-failure contains: 'folder not empty'
-*/
+success
 
 cf "~tables";
 success
 
 pwf;
 rows:
- ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   
