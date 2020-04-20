@@ -1,0 +1,62 @@
+/*============================================================================*/
+/* OP_dropIndex.sen -- Operator drop index                                    */
+/*============================================================================*/
+
+" OP_dropIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: dropIndex_PulseMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the index
+  <indexNm> <tableNm> checkRemoveIndex not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index
+  <indexNm> <tableNm> removeIndex
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for dropIndex req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: dropIndex_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: dropIndex_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: dropIndex :: dropIndex <tableNm> <indexNm> ;
+
+: dropIndex opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
