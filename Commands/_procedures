@@ -59,6 +59,42 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
+/* drop catalog                                                                */
+/*----------------------------------------------------------------------------*/
+procedure drop catalog
+  parameters $catalogNm
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
+/* drop schema                                                                */
+/*----------------------------------------------------------------------------*/
+procedure drop schema
+  parameters $schemaNm
+begin
+
+stage stageA on origin :
+  start | periodicOp once | stageB
+
+stage stageB on all nodes :
+  dropSchema $schemaNm | stageC
+
+stage stageC on origin :
+  sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
 /* drop tenant                                                                */
 /*----------------------------------------------------------------------------*/
 procedure drop tenant
@@ -208,24 +244,6 @@ begin
   output | sink | stageA
 
 end;
-
-/*----------------------------------------------------------------------------*/
-/* get space on each node                                                     */
-/*----------------------------------------------------------------------------*/
-//procedure space
-//begin
-//
-//  stage stageA on origin:
-//    start | periodicOp once | stageB
-//
-//  stage stageB on all nodes:
-//    space | stageC
-//
-//  stage stageC on origin:
-//    output | sink | stageA
-//
-//end
-//;
 
 /*----------------------------------------------------------------------------*/
 /* fetch rows from a table (all nodes)                                        */

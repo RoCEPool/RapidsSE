@@ -46,12 +46,44 @@ rows:
 drop catalog myCatalog;
 success
 
+/*
+create catalog myCatalog;
+success
+
+lscat;
+rows:
+  ('rapidsse')
+  ('myCatalog')
+
+cf "myCatalog";
+success
+
+cf "schemas";
+success
+
+create schema mySchema;
+success
+
+cf ..;
+success
+
+cf ..;
+success
+
+pwf;
+rows: ('/catalogs/boray/tenants/')
+
+drop catalog myCatalog;
+failure contains: 'folder not empty'
+*/
+
 cf "default";
 success
 
 pwf;
 rows:
 ('/tenants/boray/catalogs/rapidsse/schemas/public/tables');
+
 
 CLEANUP {
   
