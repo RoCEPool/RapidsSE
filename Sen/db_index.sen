@@ -84,6 +84,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a removable index folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveIndex ( "<tableNm>" "<indexNm" -- true | errorCode false )
+
+  params| sTableNm sIndexNm |
+
+  // should be in the tables folder
+  folder[].checkInTables not if false exit then
+
+  // there should be a table folder
+  sTableNm folder[].checkIsTablesFolder not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm path[].pushTableFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  path[].pushIndexesFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is an index we are dropping
+  sIndexNm name::checkIsIndex not if
+    path[].discardIndexesFolder
+    path[].discardTableFolder
+    folder[].isTables assert
+    false
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -7,6 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable index folder                                  */
 /*----------------------------------------------------------------------------*/
+/*
 : checkRemoveIndex ( "<tableNm>" -- true | errorCode false )
 
   params| sTableNm |
@@ -19,7 +20,7 @@
 
   true 
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
@@ -49,8 +50,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index
-  sTableNm checkRemoveIndex not if job[] ERROR_JOB !!logError exit then
-
+  sIndexNm sTableNm checkRemoveIndex not if job[] ERROR_JOB !!logError exit then
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
   sTableNm path[].pushTableFolder assert
@@ -67,6 +68,7 @@
     folder[].isTables assert
     job[] ERROR_JOB !!logError exit
   then
+ */
 ;
 
 /*----------------------------------------------------------------------------*/
