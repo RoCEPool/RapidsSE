@@ -351,11 +351,13 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   i8 nTkns = nTokens();
   
+  Token* pTknCut = pGet(i_CutTkn);
+
   if (i_CutTkn < nTkns - 1) {
-    _vTokenCutInterior(i_CutTkn);
+    _vTokenCutInterior(pTknCut);
   }
   else {
-    _vTokenCutLast(i_CutTkn);
+    _vTokenCutLast(pTknCut);
   }
   
 }
@@ -887,7 +889,7 @@ bool TokenVec::_bIsLastToken(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* cut / erase a non-last token                                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
+void TokenVec::_vTokenCutInterior(Token* pTknCut)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -895,8 +897,8 @@ void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
   vListTokens();
   
   i8 nTkns = nTokens();
-  
-  Token* pTknCut = pGet(i_CutTkn);
+
+  i8 i_CutTkn = pTknCut->i_Token();
   
   SP_Token spTkn;
   vTrace("Cutting:- %s\n"_Stz,spTkn.sz(pTknCut));
@@ -918,11 +920,10 @@ void TokenVec::_vTokenCutInterior(i8 i_CutTkn)
 /*----------------------------------------------------------------------------*/
 /* cut / erase the last token                                                 */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vTokenCutLast(i8 i_CutTkn)
+void TokenVec::_vTokenCutLast(Token* pTknCut)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Token* pTknCut = pGet(i_CutTkn);
     
   // reclaim the chars byte space
   i8 nBytes = pTknCut->nChars() + 1;

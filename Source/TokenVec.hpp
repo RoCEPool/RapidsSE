@@ -76,8 +76,8 @@ namespace LexicalAnalysis
     
     bool _bIsLastToken(Token* pToken);
 
-    void _vTokenCutInterior(i8 i_Tkn);
-    void _vTokenCutLast(i8 i_Tkn);
+    void _vTokenCutInterior(Token* pCutToken);
+    void _vTokenCutLast(Token* pCutToken);
 
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
