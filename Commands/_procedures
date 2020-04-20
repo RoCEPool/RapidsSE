@@ -41,6 +41,10 @@ procedure create schema
 end;
 
 /*----------------------------------------------------------------------------*/
+/* create table                                                               */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* create tenant                                                              */
 /*----------------------------------------------------------------------------*/
 procedure create tenant
@@ -379,6 +383,26 @@ begin
 
 end
 ;
+
+/////////////////
+//RAY TO LOOK AT
+/////////////////
+procedure create table
+  parameters $tableNm etc
+begin
+
+stage stageA on origin :
+  start | periodicOp once | stageB
+
+stage stageB on all nodes :
+  createTable $tableNm <cmd> | stageC
+
+stage stageC on origin :
+  sink | stageA
+
+end;
+
+
 */
 
 /*============================================================================*/
