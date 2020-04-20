@@ -369,15 +369,28 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   i8 nTkns = nItems();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // last token in vector is being cut
   if (i_CutTkn >= nTkns - 1) {
+    Token* pTknCut = pGet(i_CutTkn);
+    
+    // reclaim the chars byte space
+    i8 nBytes = pTknCut->nChars() + 1;
+    _vByteSpaceTrim(nBytes);
+    
+    // decrement te number of tokens
     vDecItems();
+    
     return;
   }
-  
+
   Token* pTknCut = pGet(i_CutTkn);
   
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // a non-last token in vector is being cut
+
   
   
   
@@ -843,7 +856,7 @@ void TokenVec::_vByteSpaceInsert(i8 i_Tkn, i8 nBytes)
     
   Stz* szInsAddr = pTkn->szChars();
 
-  _vMoveCharsRight(szInsAddr,nBytes);
+  _vCharsMoveRight(szInsAddr,nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -866,7 +879,7 @@ void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
   
   Stz* szRemAddr = pTkn->szChars();
   
-  _vMoveCharsLeft(szRemAddr,nBytes);
+  _vCharsMoveLeft(szRemAddr,nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -891,7 +904,7 @@ void TokenVec::_vByteSpaceTrim(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* move subset of chars leftwards                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vMoveCharsLeft(Stz* szAtAddr, i8 nBytes)
+void TokenVec::_vCharsMoveLeft(Stz* szAtAddr, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
@@ -901,11 +914,51 @@ void TokenVec::_vMoveCharsLeft(Stz* szAtAddr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* move subset of chars rightwards                                            */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vMoveCharsRight(Stz* szAtAddr, i8 nBytes)
+void TokenVec::_vCharsMoveRight(Stz* szAtAddr, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_xyCharsSet.vMoveRight(szAtAddr,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ripple the tokens leftward, overwriting the i_Tkn, dec no of tokens        */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vVecRippleLeft(i8 i_Tkn)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 i_Limit = nItems();
+
+  for (i8 i_Ripple = i_Tkn + 1; i_Ripple < i_Limit ; i_Ripple++) {
+    
+    Token* pTknSrc = pGet(i_Ripple);
+    Token* pTknDst = pGet(i_Ripple - 1);
+ 
+    pTknDst->vRippleCopy_restricted(pTknSrc,this);
+  }
+
+  vDecItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc no tokens, ripple tokens rightward from i_Tkn, leaving i_Tkn for reuse */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vVecRippleRight(i8 i_Tkn)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 i_Start = nItems() - 1;
+
+  vIncItems();
+  
+  for (i8 i_Ripple = i_Start; i_Ripple >= i_Tkn; i_Ripple--) {
+    
+    Token* pTknSrc = pGet(i_Ripple);
+    Token* pTknDst = pGet(i_Ripple + 1);
+    
+    pTknDst->vRippleCopy_restricted(pTknSrc,this);
+  }
 }
 
 /*============================================================================*/

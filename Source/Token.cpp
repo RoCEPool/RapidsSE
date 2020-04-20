@@ -139,6 +139,21 @@ void Token::vInitToken_restricted(i8 i_Token, TokenVec* pExoTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ripple copy given token into this token                                    */
+/*----------------------------------------------------------------------------*/
+void Token::vRippleCopy_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  ASSERT(pExoTknVec == m_p_ExoTknVec);
+  
+  m_eToken  = pSrcToken->m_eToken;
+  m_szChars = pSrcToken->m_szChars;
+  m_iLineNo = pSrcToken->m_iLineNo;
+  m_iColNo  = pSrcToken->m_iColNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set chars of this token to given arg                                       */
 /*----------------------------------------------------------------------------*/
 void Token::vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec)
