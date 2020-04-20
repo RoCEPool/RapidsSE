@@ -2,7 +2,7 @@
 /* OP_dropTable.sen -- Operator drop table                                    */
 /*============================================================================*/
 
-" OP_dropSchema.sen" .verbose
+" OP_dropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
@@ -12,8 +12,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
   <tableNm> checkRemoveTable not if
-stk
-"T1" .
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
