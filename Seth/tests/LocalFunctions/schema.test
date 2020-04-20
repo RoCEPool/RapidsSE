@@ -61,6 +61,50 @@ rows:
 drop schema mySchema;
 success
 
+create schema mySchema;
+success
+
+lssch;
+rows:
+('public')
+('mySchema')
+
+drop schema mySchema;
+success
+
+/*
+
+create schema mySchema;
+success
+
+lssch;
+rows:
+('public')
+('mySchema')
+
+cf "mySchema";
+success
+
+cf "tables";
+success
+
+create table myTable (c integer);
+success
+
+cf ..;
+success
+
+cf ..;
+success
+
+pwf;
+rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
+
+drop schema mySchema;
+failure contains: 'folder not empty'
+
+*/
+
 cf "default";
 success
 
