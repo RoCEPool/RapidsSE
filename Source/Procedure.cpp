@@ -25,6 +25,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
           pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+    
     sProcNm.vConcat("__"_Stz);
     sProcNm.vConcat(pTokenVec->pGet(2)->szChars());
     

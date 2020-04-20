@@ -157,18 +157,11 @@ void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
   
   if (pDstToken->i_Token() + 1 == nTkns) {
     
-    Stz* szLatter = szLaterChars();
-    * szLatter->azChar() = '\0';
-    pDstToken->vChars(szLatter);
-
-    szLatter->vCopy(szArgChars);
-    
-    i8 nLen = szLatter->nLength();
-    vTakeCharsBytes(nLen + 1);
-    
-    return;
+    _vTokenCopyLast(pDstToken,szArgChars);
   }
-  
+  else {
+    _vTokenCopyInterior(pDstToken,szArgChars);
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ASSERT(0);
@@ -846,6 +839,32 @@ void TokenVec::_vCharsMoveRight(Stz* szAtAddr, i8 nBytes)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_xyCharsSet.vMoveRight(szAtAddr,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy chars into a non-last token                                           */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vTokenCopyInterior(Token* pDstToken, Stz* szArgChars)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy chars into a last token                                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vTokenCopyLast(Token* pDstToken, Stz* szArgChars)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Stz* szLatter = szLaterChars();
+  * szLatter->azChar() = '\0';
+  pDstToken->vChars(szLatter);
+
+  szLatter->vCopy(szArgChars);
+  
+  i8 nLen = szLatter->nLength();
+  vTakeCharsBytes(nLen + 1);
 }
 
 /*----------------------------------------------------------------------------*/
