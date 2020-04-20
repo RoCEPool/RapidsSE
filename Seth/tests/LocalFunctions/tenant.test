@@ -1,0 +1,141 @@
+/*----------------------------------------------------------------------------*/
+/* lssch.test -- list schemas                                                 */
+/*----------------------------------------------------------------------------*/
+
+// track memory
+trackMemory;
+success
+
+pwf;
+rows:
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// list tenants when not in schemas folder
+lsten;
+failure contains: 'not in tenants'
+
+// cf to tenants
+cf tenants;
+success
+
+// list tenants when in tenants folder
+lsten;
+rows: ('boray')
+
+// create a tenant
+create tenant myTenant;
+success
+
+// list tenants
+lsten;
+rows:
+  ('myTenant')
+  ('boray')
+
+// drop the tenant
+drop tenant myTenant;
+success
+
+// create tenant againt
+create tenant myTenant;
+success
+
+// list tenants
+lsten;
+rows:
+  ('myTenant')
+  ('boray')
+
+// cf to myTenant
+cf myTenant;
+success
+
+// pwf
+pwf;
+rows:
+  ('/myTenant/tenants/')
+
+// cf to catalogs
+cf catalogs;
+success
+
+// pwf
+pwf;
+rows:
+('/catalogs/myTenant/tenants/')
+
+// create a table
+create catalog myCatalog;
+success
+
+// cf ~
+cf ~;
+success
+
+//! ALKA ENABLE once empty folder test in place
+// drop a tenant when it has a catalog under it
+//drop tenant myTenant;
+//failure contains: 'folder is not empty'
+
+// cf to myTenant
+cf myTenant;
+success
+
+pwf;
+rows:
+  ('/myTenant/tenants/')
+
+cf catalogs;
+success
+
+pwf;
+rows:
+  ('/catalogs/myTenant/tenants/')
+
+// now drop the catalog
+drop catalog myCatalog;
+success
+
+// cf back to tenants
+cf ..;
+success
+
+pwf;
+rows:
+('/myTenant/tenants/')
+
+// cf back to tenants
+cf ..;
+success
+
+pwf;
+rows:
+('/tenants/')
+
+// now drop the tenant
+drop tenant myTenant;
+success
+
+cf "~tables";
+success
+
+pwf;
+rows:
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  drop catalog myTenant;
+  mute
+  
+  cf "~tables";
+  mute;
+  
+  bye;
+  mute
+}
+

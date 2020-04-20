@@ -4,5 +4,5 @@ catalog.test
 lscol.test
 schema.test
 lstbl.test
-lsten.test
+tenant.test
 misc.test
