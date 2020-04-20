@@ -779,27 +779,7 @@ void TokenVec::_vByteSpaceInsert(Stz* szAtChars, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  _vByteSpaceMoveRight(szAtChars,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars leftwards                                             */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vByteSpaceMoveLeft(Stz* szAtAddr, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-    
-  m_xyByteSpace.vMoveLeft(szAtAddr,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars rightwards                                            */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vByteSpaceMoveRight(Stz* szAtAddr, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_xyByteSpace.vMoveRight(szAtAddr,nBytes);
+  m_xyByteSpace.vMoveRight(szAtChars,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -809,7 +789,7 @@ void TokenVec::_vByteSpaceRemove(Stz* szAtChars, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
-  _vByteSpaceMoveLeft(szAtChars,nBytes);
+  m_xyByteSpace.vMoveLeft(szAtChars,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -839,16 +819,6 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  _vCharsSet(pDstToken,szArgChars);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy chars into a last token                                               */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vCharsSet(Token* pDstToken, Stz* szArgChars)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-
   i8 nSize = szArgChars->nSize();
   
   Stz* szExtension = _szByteSpaceExtend(nSize);

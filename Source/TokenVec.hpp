@@ -64,14 +64,11 @@ namespace LexicalAnalysis
   private:
     Stz* _szByteSpaceExtend(i8 nBytes);
     void _vByteSpaceInsert(Stz* szAtChars, i8 nBytess);
-    void _vByteSpaceMoveLeft(Stz* szAtChars, i8 nBytes);
-    void _vByteSpaceMoveRight(Stz* szAtChars, i8 nBytes);
     void _vByteSpaceRemove(Stz* szAtChars, i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
     void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
     void _vCharsCopyLast(Token* pDstToken, Stz* szArgChars);
-    void _vCharsSet(Token* pDstToken, Stz* szArgChars);
 
     void _vHardReset(void);
     
