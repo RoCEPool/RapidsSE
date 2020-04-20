@@ -29,20 +29,20 @@ rows:
 drop tenant myTenant;
 success
 
-cf "default";
+cf "~tables";
 success
 
 pwf;
 rows:
-('/tenants/boray/catalogs/rapidsse/schemas/public/tables');
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 CLEANUP {
   
-  //drop catalog myTenant;
-  //mute
+  drop catalog myTenant;
+  mute
   
-  //cf "default";
-  //mute;
+  cf "~tables";
+  mute;
   
   bye;
   mute

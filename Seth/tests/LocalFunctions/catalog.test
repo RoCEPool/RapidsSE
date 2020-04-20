@@ -77,12 +77,12 @@ drop catalog myCatalog;
 failure contains: 'folder not empty'
 */
 
-cf "default";
+cf "~tables";
 success
 
 pwf;
 rows:
-('/tenants/boray/catalogs/rapidsse/schemas/public/tables');
+ ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 
 CLEANUP {
@@ -90,7 +90,7 @@ CLEANUP {
   drop catalog myCatalog;
   mute
   
-  cf "default";
+  cf "~tables";
   mute;
   
   bye;
