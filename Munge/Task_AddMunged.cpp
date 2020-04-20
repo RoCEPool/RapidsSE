@@ -4384,73 +4384,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_DropTable.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_DropTable.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_DropTable.sen -- Job Drop Table                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_DropTable.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* check resources for dropTable                 (on each participating node) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": dropTable::checkResources _eeh ( -- )\n"
-    "\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // grab a ddl lock\n"
-    "  DdlLock[].grabRead\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // check if we can remove the table\n"
-    "  <tableNm> checkRemoveTable not if job[] ERROR_JOB !!logError exit then\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute Job_DropTable job on a node                                        */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": dropTable::execute _eeh ( -- )\n"
-    "\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // remove the table\n"
-    "  <tableNm> removeTable\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/***                            - Definition -                              ***/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "jobSyntax: dropTable :: drop table <tableNm> ;\n"
-    "\n"
-    "jobInfo: dropTable\n"
-    "{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
-    "  \n"
-    "  <jobKind>  = JK_DIST2PC\n"
-    "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
-    "  <ddlLock>  = DL_GRAB_WRITE\n"
-    "  \n"
-    "  <preCheck> = bClusterStarted\n"
-    "}\n"
-    " ;\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_DropTable.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_FetchRows.sen
 
   sFileContents =
@@ -10196,7 +10129,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* OP_dropTable.sen -- Operator drop table                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dropSchema.sen\\\" .verbose\n"
+    "\\\" OP_dropTable.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -10206,8 +10139,6 @@ void Task::vAddMunged(Forth* pForth)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check if we can remove table\n"
     "  <tableNm> checkRemoveTable not if\n"
-    "stk\n"
-    "\\\"T1\\\" .\n"
     "    op.pipelineJob@ ERROR_JOB\n"
     "    Pipein[].delete\n"
     "    Operand[].newErrorMarker\n"
