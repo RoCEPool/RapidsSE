@@ -400,7 +400,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
 // ----
 
-  m_xyCharsSet.vCut(szWhereToCut,nBytesToCut);
+  m_xyCharsSet.vMoveLeft(szWhereToCut,nBytesToCut);
   m_xyCharsSet.vListAll();
 
   nTkns = nItems();
