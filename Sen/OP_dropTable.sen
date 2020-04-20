@@ -1,0 +1,62 @@
+/*============================================================================*/
+/* OP_dropTable.sen -- Operator drop table                                    */
+/*============================================================================*/
+
+" OP_dropTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: dropTable_PulseMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove table
+  <tableNm> checkRemoveTable not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the table
+  <tableNm> removeTable
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for dropTable req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: dropTable_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: dropTable_PulseMarker ZK_PULSEMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: dropTable :: dropTable <tableNm> ;
+
+: dropTable opInfo tagCopy: localOp_tags
+  tags{
+    <jobDesc>   = "--description of operator--" }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

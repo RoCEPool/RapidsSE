@@ -77,7 +77,6 @@
         "job_DefineNode.sen"      include
         "job_Docol.sen"           include
         "job_DropIndex.sen"       include
-        "job_DropTable.sen"       include
 
         "job_FetchRows.sen"       include
         "job_ForgetNode.sen"      include
@@ -124,6 +123,7 @@
         //"OP_docol.sen"            include
         "OP_dropCatalog.sen"      include
         "OP_dropSchema.sen"       include
+        "OP_dropTable.sen"        include
         "OP_dropTenant.sen"       include
         "OP_dumpIdx.sen"          include
         "OP_dumpTbl.sen"          include
