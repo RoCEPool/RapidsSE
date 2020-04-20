@@ -376,6 +376,13 @@ void TokenVec::vCutToken(i8 i_CutTkn)
   
   Token* pTknCut = pGet(i_CutTkn);
   
+  
+  
+  
+  
+  
+  
+  
 // ----
   char* azChars = pTknCut->azChars();
   Stz* szWhereToCut = pTknCut->szChars();
@@ -416,6 +423,60 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 // ----
 
 }
+/*----------------------------------------------------------------------------*/
+//void TokenVec::vCutToken(i8 i_CutTkn)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+//
+//  i8 nTkns = nItems();
+//
+//  if (i_CutTkn >= nTkns - 1) {
+//    vDecItems();
+//    return;
+//  }
+//
+//  Token* pTknCut = pGet(i_CutTkn);
+//
+//// ----
+//  char* azChars = pTknCut->azChars();
+//  Stz* szWhereToCut = pTknCut->szChars();
+//  i8 nBytesToCut = pTknCut->nChars() + 1;
+//
+//  m_xyCharsSet.vListAll();
+//
+//  Correctness::vDebugPoint();
+//// ----
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
+//
+//    Token* pTknDst = pGet(i_Token);
+//    Token* pTknSrc = pGet(i_Token + 1,true);
+//
+//    pTknDst->vCopyToken_restricted(pTknSrc,this);
+//  }
+//
+//  vDecItems();
+//
+//// ----
+//
+//  m_xyCharsSet.vMoveLeft(szWhereToCut,nBytesToCut);
+//  m_xyCharsSet.vListAll();
+//
+//  nTkns = nItems();
+//
+//  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
+//    Token* pTknAdj = pGet(i_Token);
+//
+//    pTknAdj->vAdjustChars(- nBytesToCut); // observe minus sign
+//  }
+//
+//
+//  Correctness::vDebugPoint();
+//// ----
+//
+//}
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -815,6 +876,16 @@ void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
     
     pTknFollowing->vAdjustChars(- nBytes); // observe minus sign
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* trim byte space at end of chars set                                        */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vByteSpaceTrim(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyCharsSet.vGive(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -64,9 +64,11 @@ namespace LexicalAnalysis
   
   private:
     void _vByteSpaceInsert(i8 i_Tkn, i8 nBytess);
+    void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
+    void _vByteSpaceTrim(i8 nBytes);
+  
     void _vMoveCharsLeft(Stz* szAtChars, i8 nBytes);
     void _vMoveCharsRight(Stz* szAtChars, i8 nBytes);
-    void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
 
     Footer* aFooter(void);
   };
