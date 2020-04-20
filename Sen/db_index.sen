@@ -114,6 +114,9 @@
     exit
   then
 
+  path[].discardIndexesFolder
+  path[].discardTableFolder
+
   true
 ;
 

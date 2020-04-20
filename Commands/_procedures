@@ -77,6 +77,24 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
+/* drop index                                                                 */
+/*----------------------------------------------------------------------------*/
+procedure drop index
+  parameters $tableNm $indexNm
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropIndex $tableNm $indexNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
 /* drop schema                                                                */
 /*----------------------------------------------------------------------------*/
 procedure drop schema
