@@ -152,9 +152,9 @@ void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   if (_bIsLastToken(pDstToken))
-    _vTokenCopyLast(pDstToken,szArgChars);
+    _vCharsCopyLast(pDstToken,szArgChars);
   else
-    _vTokenCopyInterior(pDstToken,szArgChars);
+    _vCharsCopyInterior(pDstToken,szArgChars);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +378,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 //  Stz* szWhereToCut = pTknCut->szChars();
 //  i8 nBytesToCut = pTknCut->nChars() + 1;
 //
-//  m_xyCharsSet.vListAll();
+//  m_xyByteSpace.vListAll();
 //
 //  Correctness::vDebugPoint();
 //// ----
@@ -397,8 +397,8 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 //
 //// ----
 //
-//  m_xyCharsSet.vMoveLeft(szWhereToCut,nBytesToCut);
-//  m_xyCharsSet.vListAll();
+//  m_xyByteSpace.vMoveLeft(szWhereToCut,nBytesToCut);
+//  m_xyByteSpace.vListAll();
 //
 //  nTkns = nTokens();
 //
@@ -481,7 +481,7 @@ Stz* TokenVec::szLaterChars(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Stz* szLater = m_xyCharsSet.szLatter();
+  Stz* szLater = m_xyByteSpace.szLatter();
   
   return szLater;
 }
@@ -578,7 +578,7 @@ void TokenVec::vSoftReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_xyCharsSet.vReset();
+  m_xyByteSpace.vReset();
   
   m_iCurTkn = -1;
 
@@ -642,7 +642,7 @@ void TokenVec::vTakeCharsBytes(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_xyCharsSet.vTake(nBytes);
+  m_xyByteSpace.vTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -765,16 +765,27 @@ void TokenVec::_vByteSpaceInsert(i8 i_Tkn, i8 nBytes)
     
   Stz* szInsAddr = pTkn->szChars();
 
-  _vCharsMoveRight(szInsAddr,nBytes);
+  _vByteSpaceMoveRight(szInsAddr,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars leftwards                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vByteSpaceMoveLeft(Stz* szAtAddr, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+    
+  m_xyByteSpace.vMoveLeft(szAtAddr,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move subset of chars rightwards                                            */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vByteSpaceMoveRight(Stz* szAtAddr, i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  i8 nTkns = nTokens();
-//  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
-//    Token* pTknFollowing = pGet(i_Follow);
-//
-//    pTknFollowing->vAdjustChars(+ nBytes); // observe plus sign
-//  }
+  m_xyByteSpace.vMoveRight(szAtAddr,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -788,16 +799,7 @@ void TokenVec::_vByteSpaceRemove(i8 i_Tkn, i8 nBytes)
   
   Stz* szRemAddr = pTkn->szChars();
   
-  _vCharsMoveLeft(szRemAddr,nBytes);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  i8 nTkns = nTokens();
-//  for (i8 i_Follow = i_Tkn + 1; i_Follow < nTkns ; i_Follow++) {
-//    Token* pTknFollowing = pGet(i_Follow);
-//
-//    pTknFollowing->vAdjustChars(- nBytes); // observe minus sign
-//  }
+  _vByteSpaceMoveLeft(szRemAddr,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -807,27 +809,7 @@ void TokenVec::_vByteSpaceTrim(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_xyCharsSet.vGive(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars leftwards                                             */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vCharsMoveLeft(Stz* szAtAddr, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-    
-  m_xyCharsSet.vMoveLeft(szAtAddr,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move subset of chars rightwards                                            */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vCharsMoveRight(Stz* szAtAddr, i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_xyCharsSet.vMoveRight(szAtAddr,nBytes);
+  m_xyByteSpace.vGive(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -848,7 +830,7 @@ bool TokenVec::_bIsLastToken(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* copy chars into a non-last token                                           */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vTokenCopyInterior(Token* pDstToken, Stz* szArgChars)
+void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -858,18 +840,29 @@ void TokenVec::_vTokenCopyInterior(Token* pDstToken, Stz* szArgChars)
 /*----------------------------------------------------------------------------*/
 /* copy chars into a last token                                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vTokenCopyLast(Token* pDstToken, Stz* szArgChars)
+void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  _vCharsSet(pDstToken,szArgChars);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy chars into a last token                                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vCharsSet(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   Stz* szLatter = szLaterChars();
   * szLatter->azChar() = '\0';
-  pDstToken->vChars(szLatter);
 
   szLatter->vCopy(szArgChars);
   
   i8 nLen = szLatter->nLength();
   vTakeCharsBytes(nLen + 1);
+  
+  pDstToken->vChars(szLatter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,7 +920,7 @@ void TokenVec::_vVecHardReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_xyCharsSet.vReset();
+  m_xyByteSpace.vReset();
   
   m_iCurTkn = -1;
 

@@ -9,9 +9,9 @@ namespace LexicalAnalysis
   {
   private:
      
-    i8 m_iCurTkn;       // the current token in the vector
+    i8 m_iCurTkn;        // the current token in the vector
   
-    b256K m_xyCharsSet; // buffer for all token chars 
+    b256K m_xyByteSpace; // buffer for all token chars
   
     // must be last
     Footer m_xFooter;    
@@ -63,17 +63,17 @@ namespace LexicalAnalysis
   
   private:
     void _vByteSpaceInsert(i8 i_Tkn, i8 nBytess);
+    void _vByteSpaceMoveLeft(Stz* szAtChars, i8 nBytes);
+    void _vByteSpaceMoveRight(Stz* szAtChars, i8 nBytes);
     void _vByteSpaceRemove(i8 i_Tkn, i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
-    void _vCharsMoveLeft(Stz* szAtChars, i8 nBytes);
-    void _vCharsMoveRight(Stz* szAtChars, i8 nBytes);
-
     bool _bIsLastToken(Token* pToken);
 
-    void _vTokenCopyInterior(Token* pDstToken, Stz* szArgChars);
-    void _vTokenCopyLast(Token* pDstToken, Stz* szArgChars);
-  
+    void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
+    void _vCharsCopyLast(Token* pDstToken, Stz* szArgChars);
+    void _vCharsSet(Token* pDstToken, Stz* szArgChars);
+
     void _vTokenCutInterior(i8 i_Tkn);
     void _vTokenCutLast(i8 i_Tkn);
 
