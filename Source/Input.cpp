@@ -285,7 +285,7 @@ void Input::vReadToken(void)
   
   ASSERT(m_pCharser->bUseBegun());
   
-  m_pTknVec->vReset();
+  m_pTknVec->vSoftReset();
 
   m_pTknVec->vAdvanceCurr();
   Token* pToken = m_pTknVec->pCurrToken();;
@@ -451,7 +451,7 @@ void Input::vCollectVecTillEOF(void)
   
   while (true) {
     
-    m_pTknVec->vReset();
+    m_pTknVec->vSoftReset();
     
     for (;;) {
       
