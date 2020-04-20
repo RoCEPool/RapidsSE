@@ -95,6 +95,24 @@ stage stageC on origin :
 end;
 
 /*----------------------------------------------------------------------------*/
+/* drop table                                                                 */
+/*----------------------------------------------------------------------------*/
+procedure drop table
+  parameters $tableNm
+begin
+
+  stage stageA on origin :
+    start | periodicOp once | stageB
+
+  stage stageB on all nodes :
+    dropTable $tableNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+end;
+
+/*----------------------------------------------------------------------------*/
 /* drop tenant                                                                */
 /*----------------------------------------------------------------------------*/
 procedure drop tenant
