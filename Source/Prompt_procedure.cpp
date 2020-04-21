@@ -25,6 +25,8 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
+  pTokenVec->vListTokens();
+  
   pTokenVec->vIntegrityCheck();
   
   ASSERT(pTokenVec->pGet(0)->bSame("procedure"_Stz));

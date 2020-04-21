@@ -175,6 +175,15 @@ void Input::vInspect(void)
 //         aUF[m_eTknForm]
 //         );
 
+  if (! m_pToken)
+    return;
+  
+  SP_Token spTkn;
+
+  vTrace("Input : %s\n"_Stz,
+         spTkn.sz(m_pToken)
+         );
+
   m_pCharser->vInspect();
 }
 
@@ -957,6 +966,11 @@ void Input::vCollectSen(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  if (m_pToken->szChars()->bSame(""_Stz)) {
+    vInspect();
+    Correctness::vDebugPoint();
+  }
+  
   // cross check valid SEN tokens
   switch (m_pToken->eToken()) {
       
@@ -1220,6 +1234,9 @@ bool Input::bStartCppInteger(void)
 bool Input::bStartCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if ('$' == m_xAnnChar.m_cChar)
+    return true;
   
   if (StrLib::bIsNameStartChar(m_xAnnChar.m_cChar))
     return true;

@@ -1008,6 +1008,7 @@ bool SePrompt::bReadNextCommand(void)
   pTknVec->vIntegrityCheck();
   m_pSession->m_pInput->vReadCommand();
   
+  pTknVec->vListTokens();
   pTknVec->vIntegrityCheck();
   return true;
 }

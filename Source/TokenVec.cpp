@@ -267,6 +267,10 @@ void TokenVec::vCollectEnd(Token* pToken)
 
   vTrace("Chars: %s\n"_Stz,pToken->szChars());
   
+  //if (pToken->szChars()->bSame("catalog"_Stz))
+  if (pToken->szChars()->bSame(""_Stz))
+    Correctness::vDebugPoint();
+  
 #ifdef __WITH_CHARS_SET
   vIntegrityCheck();
 #endif
@@ -1020,6 +1024,7 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   #ifdef __WITH_CHARS_SET
+    vListTokens();
     vIntegrityCheck();
   #endif
   i8 nSize = szArgChars->nSize();
@@ -1030,6 +1035,7 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 
   szExtension->vCopy(szArgChars);
 #ifdef __WITH_CHARS_SET
+  vListTokens();
   vIntegrityCheck();
 #endif
 }
