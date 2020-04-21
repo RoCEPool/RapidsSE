@@ -15,6 +15,8 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 {
   _static_
   
+  pTokenVec->vIntegrityCheck();
+  
   Token* pTkn1_ProcNm = pTokenVec->pGet(1);
   
   s32 sProcNm = pTkn1_ProcNm->szChars();
@@ -33,9 +35,11 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
     vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
 #endif
     pTokenVec->vRemoveToken(2);
-    
+    pTokenVec->vIntegrityCheck();
+
     pTkn1_ProcNm->vCopyChars_restricted(sProcNm,pTokenVec);
-    
+    pTokenVec->vIntegrityCheck();
+
     //pTokenVec->vDumpTokens();
   }
   

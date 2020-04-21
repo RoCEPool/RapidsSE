@@ -44,6 +44,7 @@ namespace LexicalAnalysis
     Token* pFirstToken(void);
     void vIncTokens(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
+    void vIntegrityCheck(void);
     void vListTokens(void);
     Token* pNextToken(void);
     Token* pPrevToken(void);
@@ -80,7 +81,6 @@ namespace LexicalAnalysis
     void _vTokenCutLast(Token* pCutToken);
 
     void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
-    void _vVecIntegrityCheck(void);
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
 

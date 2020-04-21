@@ -956,8 +956,9 @@ bool SePrompt::bReadNextCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec*     pTknVec      = pTokenVec();
+  TokenVec* pTknVec = pTokenVec();
  
+  pTknVec->vIntegrityCheck();
 
   if (gxArgs.m_bInitial) {
     gxArgs.m_bInitial = false;
@@ -966,6 +967,7 @@ bool SePrompt::bReadNextCommand(void)
     pTknVec->vTokenise(szInitial);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
+    pTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -977,6 +979,7 @@ bool SePrompt::bReadNextCommand(void)
     pTknVec->vTokenise(szCommand);
     pTknVec->vStripSemicolon();
     pTknVec->vSetTokens();
+    pTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -988,6 +991,7 @@ bool SePrompt::bReadNextCommand(void)
     pTknVec->vSetTokens();
 
     m_pSession->m_sToDo = ""_Stz;
+    pTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -998,10 +1002,13 @@ bool SePrompt::bReadNextCommand(void)
     return false;
   }
 
+  pTknVec->vIntegrityCheck();
   m_pSession->m_pInput->vInspect();
 
+  pTknVec->vIntegrityCheck();
   m_pSession->m_pInput->vReadCommand();
   
+  pTknVec->vIntegrityCheck();
   return true;
 }
 
