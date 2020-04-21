@@ -265,7 +265,8 @@ void TokenVec::vCollectEnd(Token* pToken)
   Stz* szLatter = _szLaterChars();
   * szLatter->azChar() = '\0';
 
-  vTrace("Chars: %s\n"_Stz,pToken->szChars());
+  SP_Token spTkn;
+  vTrace("vCollectEnd: %s\n"_Stz,spTkn.sz(pToken));
   
   //if (pToken->szChars()->bSame("catalog"_Stz))
   if (pToken->szChars()->bSame(""_Stz))

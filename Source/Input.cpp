@@ -966,22 +966,23 @@ void Input::vCollectSen(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pToken->szChars()->bSame(""_Stz)) {
-    vInspect();
-    Correctness::vDebugPoint();
-  }
-  
   // cross check valid SEN tokens
   switch (m_pToken->eToken()) {
       
     // the expected tokens
-    case TN_EOF:
     case TN_INTEGER:
     case TN_NAME:
-    case TN_STRING:
     case TN_TAG:
+      if (m_pToken->szChars()->bSame(""_Stz)) {
+        vInspect();
+        Correctness::vDebugPoint();
+      }
       break;
       
+    case TN_EOF:
+    case TN_STRING:
+      break;
+
     // unexpected tokens
     case TN_OTHER:
       NEVER_REACH;
