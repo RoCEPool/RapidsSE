@@ -1,4 +1,3 @@
-create.test
 createLoop.test
 createUnique.test
 emptyTable.test

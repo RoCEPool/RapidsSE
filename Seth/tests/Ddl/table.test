@@ -2,6 +2,10 @@
 /* create table tests                                                         */
 /*----------------------------------------------------------------------------*/
 
+// begin tracking memory
+trackMemory;
+success
+
 // (1) create table t1
 create table T1 (
   key   INTEGER NOT NULL, 
@@ -420,6 +424,10 @@ create table T1 (
   c1  integer NOT NUKK
 );
 failure contains: 'invalid command'
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
 

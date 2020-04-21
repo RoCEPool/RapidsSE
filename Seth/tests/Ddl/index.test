@@ -2,6 +2,10 @@
 /* create index tests                                                         */
 /*----------------------------------------------------------------------------*/
 
+// begin tracking memory
+trackMemory;
+success
+
 // (1) create an index (syntax error)
 create index on T1 (key);
 failure contains: 'invalid command'
@@ -230,6 +234,10 @@ success
 
 drop table T1;
 success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   
