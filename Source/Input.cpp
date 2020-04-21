@@ -31,6 +31,9 @@ Input::Input(void)
   m_pTknVec  = new TokenVec;
   m_pToken   = nullptr;
   
+  d_nUseBegin = 0;
+  d_nCollectToken = 0;
+
   _checkInitialised_(CN_INPUT);
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
@@ -180,7 +183,9 @@ void Input::vInspect(void)
   
   SP_Token spTkn;
 
-  vTrace("Input : %s\n"_Stz,
+  vTrace("Input #UseBegin.%lld #CollectToken.%lld : %s\n"_Stz,
+         d_nUseBegin,
+         d_nCollectToken,
          spTkn.sz(m_pToken)
          );
 
@@ -379,6 +384,8 @@ void Input::vUseBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  d_nUseBegin++;
+  
   m_pCharser->vUseBegin();
 }
 
@@ -452,6 +459,8 @@ void Input::vCollectToken(void)
   
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
+
+  d_nCollectToken++;
 
   m_pToken = m_pTknVec->pCurrToken();;
 

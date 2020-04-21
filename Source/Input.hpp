@@ -14,7 +14,11 @@ namespace LexicalAnalysis
     eUF       m_eTknForm;   // form of tokens to be collected
     TokenVec* m_pTknVec;    // set of collected tokens
     Token*    m_pToken;     // current token
-
+  
+    // some debugging aids
+    i8        d_nUseBegin;     //
+    i8        d_nCollectToken; //
+  
     // must be last
     Footer m_xFooter;    
     
