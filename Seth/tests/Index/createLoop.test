@@ -1,6 +1,10 @@
---------------------------------------------------------------------------------
--- create index in a loop tests
---------------------------------------------------------------------------------
+/*----------------------------------------------------------------------------*/
+/* create index in a loop tests                                               */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
 
 -- create a table
 create table createT1 (
@@ -34,6 +38,10 @@ success
 // now drop the table
 drop table createT1;
 success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   drop table createT1;
