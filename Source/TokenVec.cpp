@@ -158,6 +158,7 @@ void TokenVec::vAdvanceCurr(void)
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
 /*----------------------------------------------------------------------------*/
+#ifndef __WITH_CHARS_SET
 void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -169,10 +170,27 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 
   vIncItems();
   
-#ifdef __WITH_CHARS_SET
-  vIntegrityCheck();
-#endif
 }
+#else
+/*----------------------------------------------------------------------------*/
+void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  vIncItems();
+  Token* pToken = pGet(nTokens()-1);
+  
+  i8 nSize = szArgChars->nSize();
+  Stz* szExtension = _szByteSpaceExtend(nSize);
+  
+  pToken->vChars(szExtension);
+  szExtension->vCopy(szArgChars);
+
+  pToken->vToken(eToken);
+
+  vIntegrityCheck();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
@@ -732,6 +750,7 @@ void TokenVec::vStripSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
+#ifndef __WITH_CHARS_SET
 void TokenVec::vTokenise(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -768,6 +787,35 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   pInput->vUseEnd();
   delete pInput;
 }
+#else
+/*----------------------------------------------------------------------------*/
+void TokenVec::vTokenise(Stz* szTokenStr)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  vSoftReset();
+  #ifdef __WITH_CHARS_SET
+    vIntegrityCheck();
+  #endif
+
+  Input* pInput = new Input;
+  pInput->vUseString(szTokenStr);
+  pInput->vFormSenTokens();
+  pInput->vUseBegin();
+
+  for (i8 i_Token = 0; ; i_Token++) {
+    
+    pInput->vReadToken();
+    if (TN_EOF == pInput->eToken())
+      break;
+      
+    vAppendToken(pInput->szChars(),pInput->eToken());
+  }
+  
+  pInput->vUseEnd();
+  delete pInput;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */
