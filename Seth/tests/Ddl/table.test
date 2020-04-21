@@ -466,6 +466,75 @@ rows:
 drop table T1 ;
 success
 
+///////////////
+// lspartcol //
+///////////////
+
+// lspartcol on invalid table
+lspartcol noTable;
+failure contains: 'no such table'
+
+// (17) create table t1
+create table T1 (
+   key   INTEGER NOT NULL,
+   name  VARCHAR(32) NOT NULL
+);
+success
+
+// move to tenants
+cf ~;
+success
+
+// lspartcol not in tables
+lspartcol T1;
+failure contains: 'not in tables'
+
+// move to tables folder
+cf "~tables";
+success
+
+// lspartcol
+lspartcol T1;
+rows:
+ ('key','INTEGER',19,0,false,true)
+
+// () drop table t1
+drop table T1 ;
+success
+
+// (17) create table t1
+create table T1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition by (name);
+success
+
+// lspartcol
+lspartcol T1;
+rows:
+  ('name','VARCHAR',32,0,false,true)
+
+// () drop table t1
+drop table T1 ;
+success
+
+// (17) create table t1
+create table T1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition by (name, key);
+success
+
+// lspartcol
+lspartcol T1;
+rows:
+  ('name','VARCHAR',32,0,false,true)
+  ('key','INTEGER',19,0,false,true)
+
+// () drop table t1
+drop table T1 ;
+success
+
 ////////////
 // drop   //
 ////////////
