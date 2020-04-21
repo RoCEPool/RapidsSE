@@ -1,15 +1,18 @@
 /*============================================================================*/
-/* OP_vfytbl.sen -- Operator verify table                                     */
+/* OP_listIndexColumns.sen -- Operator list index columns                             */
 /*============================================================================*/
 
-" OP_vfytbl.sen" .verbose
+" OP_listIndexColumns.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: vfytbl_action
+: lsidxcol_action
 
-  <tableNm> op__table not if
+  0 locals| iColumns |
+
+  // find the table
+  <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
@@ -26,10 +29,15 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  table[].verify
+  // get no of columns in the index
+  index[].columnCount@ to iColumns
 
-  // insert index verify
-  table[] streamSetTable[] StreamSet[].addVerifyTable assert
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in the infoSet for each index column
+  iColumns 0 do
+    I index[].column@
+    streamSetTable[] StreamSet[].addColumnDef assert
+  loop
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -40,17 +48,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vfytbl :: vfytbl <tableNm> ;
+opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
-: vfytbl opInfo tagCopy: liteOp_tags
+: lsidxcol opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
-    <liteOp>    = true
-    <streamDef> = __verifyTable
-    <params>    = 1
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listColumns
+    <params>      = 2
   }
 ;
-    
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

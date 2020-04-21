@@ -1,23 +1,15 @@
 /*============================================================================*/
-/* OP_lstbl.sen -- Operator list tables                                       */
+/* OP_verifyIndex.sen -- Operator verify index                                */
 /*============================================================================*/
 
-" OP_lstbl.sen" .verbose
+" OP_verifyIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lstbl_action
+: vfyidx_action
 
-  0 0 locals| sTableNm pTable |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  folder[].checkInTables not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
+  <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
@@ -34,27 +26,10 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  index[].verify
 
-  folder[] dic.lastWord dup
-  iterate                          // setup iteration of words
-
-    object@ word.name@ to sTableNm
-    sTableNm "path[].pushTableFolder" find execute  assert
-    sTableNm find execute to table[]
-
-    // skip definition only tables
-    table[].isDefinitionOnly not if
-
-      sTableNm streamSetTable[] StreamSet[].addListContents assert
-
-    then
-
-    "path[].discardTableFolder" find execute
-
-    object@ word.prev object!      // step backwards thru words
-  next
+  // insert index verify
+  index[] streamSetTable[] StreamSet[].addVerifyIndex assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -65,14 +40,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lstbl :: lstbl ;
+opSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
 
-: lstbl opInfo tagCopy: localLiteOp_tags
+: vfyidx opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
-    <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __verifyIndex
+    <params>    = 2
   }
 ;
     

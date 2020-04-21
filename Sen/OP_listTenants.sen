@@ -1,15 +1,21 @@
 /*============================================================================*/
-/* OP_sztbl.sen -- Operator size table                                        */
+/* OP_listTenants.sen -- Operator list tenants                                */
 /*============================================================================*/
 
-" OP_sztbl.sen" .verbose
+" OP_listTenants.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: sztbl_action
+: lsten_action
 
-  <tableNm> op__table not if
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tenants folder
+  folder[].checkInTenants not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
     false
     exit
   then
@@ -26,10 +32,14 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  0 table[].size number.magnitude >str
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in teh infoSet for each word
 
-  // insert index size
-  streamSetTable[] StreamSet[].addSizeTable assert
+  folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
+    object@ word.prev object!      // step backwards thru words
+  next
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -40,14 +50,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: sztbl :: sztbl <tableNm> ;
+opSyntax: lsten :: lsten ;
 
-: sztbl opInfo tagCopy: liteOp_tags
+: lsten opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
-    <liteOp>    = true
-    <streamDef> = __sizeTable
-    <params>    = 1
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listContents
+    <params>      = 0
   }
 ;
     

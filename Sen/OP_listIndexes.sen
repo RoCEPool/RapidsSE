@@ -1,17 +1,31 @@
 /*============================================================================*/
-/* OP_lscat.sen -- Operator list catalogs                                      */
+/* OP_listIndexes.sen -- Operator list indexes                                */
 /*============================================================================*/
 
-" OP_lscat.sen" .verbose
+" OP_listIndexes.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lscat_action
+: lsidx_action
+
+  0 0 locals| sTableNm pIndex |
+
+  <tableNm> to sTableNm
+
+  sTableNm op__table not if
+    false
+    exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the schemas folder
-  folder[].checkInCatalogs not if
+  // push table dictionary
+  sTableNm path[].pushTableFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm name::checkIsTable not if
+    path[].discardTableFolder
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -19,6 +33,9 @@
     false
     exit
   then
+
+  // push indexes folder
+  path[].pushIndexesFolder assert
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -33,13 +50,25 @@
   streamSetTable[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // insert a row in the infoSet for each word
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
+
+    object@ word.name@ folder[].findSymbol execute to pIndex
+
+    pIndex streamSetTable[] StreamSet[].addListIndex assert
+
     object@ word.prev object!      // step backwards thru words
   next
+
+  // pop indexes folder
+  path[].discardIndexesFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  path[].discardTableFolder
+  folder[].isTables assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -50,14 +79,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lscat :: lscat ;
+opSyntax: lsidx :: lsidx <tableNm> ;
 
-: lscat opInfo tagCopy: localLiteOp_tags
+: lsidx opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <streamDef>   = __listIndex
+    <params>      = 1
   }
 ;
     

@@ -1,13 +1,24 @@
 /*============================================================================*/
-/* OP_lsparts.sen -- Operator list partitions                                  */
+/* OP_listSchemas.sen -- Operator list schemas                                      */
 /*============================================================================*/
 
-" OP_lsparts.sen" .verbose
+" OP_listSchemas.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lsparts_action
+: lssch_action
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the schemas folder
+  folder[].checkInSchemas not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -19,33 +30,34 @@
   streamDef[].pipeout
 
   // create an infoSet operand
-  streamSetTable[] streamSet[].new
+  streamSetTable[] StreamSet[].new
 
-  grid::slots 0 do
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in teh infoSet for each word
 
-    // add nodeInfo to the infoSet
-    I grid::toPartition
-    streamSetTable[] streamSet[].addListPartitions assert
-
-  loop
+  folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
+    object@ word.prev object!      // step backwards thru words
+  next
 
   // pipeout the infoset
-  streamSet[].pipeout
+  StreamSet[].pipeout
 
   true
 ;
-  
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lsparts :: lsparts ;
+opSyntax: lssch :: lssch ;
 
-: lsparts opInfo tagCopy: liteOp_tags
+: lssch opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
-    <liteOp>    = true
-    <streamDef> = __listPartitions
-    <params>    = 0
+    <jobDesc>     = "--description of operator--"
+    <localLiteOp> = true
+    <streamDef>   = __listContents
+    <params>      = 0
   }
 ;
     

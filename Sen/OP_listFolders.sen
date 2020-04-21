@@ -1,24 +1,13 @@
 /*============================================================================*/
-/* OP_lssch.sen -- Operator list schemas                                      */
+/* OP_listFolders.sen -- Operator list folder                                 */
 /*============================================================================*/
 
-" OP_lssch.sen" .verbose
+" OP_listFolders.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lssch_action
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the schemas folder
-  folder[].checkInSchemas not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-    false
-    exit
-  then
+: lf_action
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -29,15 +18,30 @@
   // pipeout the streamDef
   streamDef[].pipeout
 
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  // create a streamSet operand
+  streamSetTable[] streamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // insert a row in the infoSet for each word
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
+
+    object@ word.isTable if
+    "table"
+    then
+
+    object@ word.isIndex if
+    "index"
+    then
+
+    object@ isFolder if
+      object@ execute dic.kind@ word.name@
+    then
+
+    object@ word.name@
+    streamSetTable[] StreamSet[].addListFolder assert
+
     object@ word.prev object!      // step backwards thru words
   next
 
@@ -50,13 +54,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lssch :: lssch ;
+opSyntax: lf :: lf ;
 
-: lssch opInfo tagCopy: localLiteOp_tags
+: lf opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listContents
+    <streamDef>   = __listFolder
     <params>      = 0
   }
 ;

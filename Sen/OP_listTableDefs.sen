@@ -1,25 +1,26 @@
 /*============================================================================*/
-/* OP_lspartcol.sen -- Operator list partition columns                        */
+/* OP_listTableDefs.sen -- Operator list table definitions                    */
 /*============================================================================*/
 
-" OP_lspartcol.sen" .verbose
+" OP_listTableDefs.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lspartcol_action
+: lstbldef_action
 
-  0 0 locals| iPartitionCols pSlots |
+  0 0 locals| sTableNm pTable |
 
-  // find the table
-  <tableNm> op__table not if
-    false
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  folder[].checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
     exit
   then
-
-  // get the table column count
-  table[].slots@ to pSlots
-  pSlots slots.columnCount@ to iPartitionCols
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -33,11 +34,27 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // insert a row in the infoset for each column
-  iPartitionCols 0 do
-    I pSlots slots.column@
-    streamSetTable[] StreamSet[].addColumnDef assert
-  loop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in teh infoSet for each word
+
+  folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+
+    object@ word.name@ to sTableNm
+    sTableNm "path[].pushTableFolder" find execute  assert
+    sTableNm find execute to table[]
+
+    // skip definition only tables
+    table[].isDefinitionOnly if
+
+      sTableNm streamSetTable[] StreamSet[].addListContents assert
+
+    then
+
+    "path[].discardTableFolder" find execute
+
+    object@ word.prev object!      // step backwards thru words
+  next
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -48,18 +65,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lspartcol :: lspartcol <tableNm> ;
+opSyntax: lstbldef :: lstbldef ;
 
-: lspartcol opInfo tagCopy: localLiteOp_tags
+: lstbldef opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listColumns
-    <params>      = 1
+    <streamDef>   = __listContents
+    <params>      = 0
   }
 ;
     
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

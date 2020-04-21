@@ -1,21 +1,15 @@
 /*============================================================================*/
-/* OP_lsten.sen -- Operator list tenants                                      */
+/* OP_analyzeTable.sen -- Operator analyze table                              */
 /*============================================================================*/
 
-" OP_lsten.sen" .verbose
+" OP_analyzeTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lsten_action
+: antbl_action
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tenants folder
-  folder[].checkInTenants not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
+  <tableNm> op__table not if
     false
     exit
   then
@@ -32,14 +26,12 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
-
-  folder[] dic.lastWord dup
-  iterate                          // setup iteration of words
-    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
-    object@ word.prev object!      // step backwards thru words
-  next
+  // add a row for each slot
+  grid::slots 0
+  do
+    // analyze table
+    I table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
+  loop
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -50,14 +42,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lsten :: lsten ;
+opSyntax: antbl :: antbl <tableNm> ;
 
-: lsten opInfo tagCopy: localLiteOp_tags
+: antbl opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
-    <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __analyzeTable
+    <params>    = 1
   }
 ;
     

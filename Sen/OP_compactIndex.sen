@@ -1,52 +1,31 @@
 /*============================================================================*/
-/* OP_vfyidx.sen -- Operator verify index                                     */
+/* OP_compactIndex.sen -- Operator compact index                              */
 /*============================================================================*/
 
-" OP_vfyidx.sen" .verbose
+" OP_compactIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: vfyidx_action
+: compactIdx_action
 
-  <tableNm> <indexNm> op__table_index not if
+  <tableNm> <indexNm> op__table_index if
+    index[].compact
+    true
+  else
     false
-    exit
   then
-
-  // find the __ table
-  <streamDef> op__tableDef_streamSet assert
-
-  // create a new streamDef
-  streamSetTable[] streamDef[].new
-
-  // pipeout the streamDef
-  streamDef[].pipeout
-
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
-
-  index[].verify
-
-  // insert index verify
-  index[] streamSetTable[] StreamSet[].addVerifyIndex assert
-
-  // pipeout the infoset
-  StreamSet[].pipeout
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
+opSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
 
-: vfyidx opInfo tagCopy: liteOp_tags
+: compactIdx opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true
-    <streamDef> = __verifyIndex
     <params>    = 2
   }
 ;

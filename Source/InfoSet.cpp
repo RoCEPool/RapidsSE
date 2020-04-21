@@ -67,6 +67,26 @@ InfoSet::~InfoSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set operator infoset                                                       */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vOpInfoSet(eOI eOpInfoSet) {
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_eOpInfoSet = eOpInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get operator infoset                                                       */
+/*----------------------------------------------------------------------------*/
+eOI InfoSet::eOpInfoSet(void) {
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  return m_eOpInfoSet;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

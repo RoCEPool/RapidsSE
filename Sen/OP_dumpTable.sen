@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* OP_vistbl.sen -- Operator visualize table                                  */
+/* OP_dumpTable.sen -- Operator dump table                                    */
 /*============================================================================*/
 
-" OP_vistbl.sen" .verbose
+" OP_dumpTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: vistbl_action
+: dumpTbl_action
 
   <tableNm> op__table if
-    table[].visualize
+    table[].dump
     true
   else
     false
@@ -20,9 +20,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vistbl :: vistbl <tableNm> ;
+opSyntax: dumpTbl :: dumpTbl <tableNm> ;
 
-: vistbl opInfo tagCopy: localLiteOp_tags
+: dumpTbl opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true

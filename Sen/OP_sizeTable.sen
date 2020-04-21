@@ -1,24 +1,18 @@
 /*============================================================================*/
-/* OP_lscol.sen -- Operator list columns                                      */
+/* OP_sizeTable.sen -- Operator size table                                    */
 /*============================================================================*/
 
-" OP_lscol.sen" .verbose
+" OP_sizeTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lscol_action
+: sztbl_action
 
-  0 locals| iColumns |
-
-  // find the table
   <tableNm> op__table not if
     false
     exit
   then
-
-  // get the table column count
-  table[].columnCount@ to iColumns
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -32,11 +26,10 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // insert a row in the infoset for each column
-  iColumns 0 do
-    I table[].column@
-    streamSetTable[] StreamSet[].addColumnDef assert
-  loop
+  0 table[].size number.magnitude >str
+
+  // insert index size
+  streamSetTable[] StreamSet[].addSizeTable assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -47,18 +40,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lscol :: lscol <tableNm> ;
+opSyntax: sztbl :: sztbl <tableNm> ;
 
-: lscol opInfo tagCopy: localLiteOp_tags
+: sztbl opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
-    <localLiteOp> = true
-    <streamDef>   = __listColumns
-    <params>      = 1
+    <jobDesc>   = "--description of operator--"
+    <liteOp>    = true
+    <streamDef> = __sizeTable
+    <params>    = 1
   }
 ;
     
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

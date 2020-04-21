@@ -1,64 +1,35 @@
 /*============================================================================*/
-/* OP_lsidxcol.sen -- Operator list index columns                             */
+/* OP_visualizeTable.sen -- Operator visualize table                          */
 /*============================================================================*/
 
-" OP_lsidxcol.sen" .verbose
+" OP_visualizeTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lsidxcol_action
+: vistbl_action
 
-  0 locals| iColumns |
-
-  // find the table
-  <tableNm> <indexNm> op__table_index not if
+  <tableNm> op__table if
+    table[].visualize
+    true
+  else
     false
-    exit
   then
-
-  // find the __ table
-  <streamDef> op__tableDef_streamSet assert
-
-  // create a new streamDef
-  streamSetTable[] streamDef[].new
-
-  // pipeout the streamDef
-  streamDef[].pipeout
-
-  // create an infoSet operand
-  streamSetTable[] StreamSet[].new
-
-  // get no of columns in the index
-  index[].columnCount@ to iColumns
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in the infoSet for each index column
-  iColumns 0 do
-    I index[].column@
-    streamSetTable[] StreamSet[].addColumnDef assert
-  loop
-
-  // pipeout the infoset
-  StreamSet[].pipeout
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
+opSyntax: vistbl :: vistbl <tableNm> ;
 
-: lsidxcol opInfo tagCopy: localLiteOp_tags
+: vistbl opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listColumns
-    <params>      = 2
+    <params>      = 1
   }
 ;
-
+    
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

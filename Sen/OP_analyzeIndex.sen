@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* OP_antbl.sen -- Operator analyze table                                     */
+/* OP_analyzeIndex.sen -- Operator analyze index                              */
 /*============================================================================*/
 
-" OP_antbl.sen" .verbose
+" OP_analyzeIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: antbl_action
+: anidx_action
 
-  <tableNm> op__table not if
+  <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
@@ -29,8 +29,8 @@
   // add a row for each slot
   grid::slots 0
   do
-    // analyze table
-    I table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
+    // insert index verify
+    I index[] streamSetTable[] StreamSet[].addAnalyzeIndex assert
   loop
 
   // pipeout the infoset
@@ -42,14 +42,15 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: antbl :: antbl <tableNm> ;
+opSyntax: anidx :: anidx <tableNm> <indexNm> ;
+opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
 
-: antbl opInfo tagCopy: liteOp_tags
+: anidx opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true
-    <streamDef> = __analyzeTable
-    <params>    = 1
+    <streamDef> = __analyzeIndex
+    <params>    = 2
   }
 ;
     

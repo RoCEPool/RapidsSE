@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* OP_anidx.sen -- Operator analyze index                                     */
+/* OP_verifyTable.sen -- Operator verify table                                */
 /*============================================================================*/
 
-" OP_anidx.sen" .verbose
+" OP_verifyTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: anidx_action
+: vfytbl_action
 
-  <tableNm> <indexNm> op__table_index not if
+  <tableNm> op__table not if
     false
     exit
   then
@@ -26,12 +26,10 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // add a row for each slot
-  grid::slots 0
-  do
-    // insert index verify
-    I index[] streamSetTable[] StreamSet[].addAnalyzeIndex assert
-  loop
+  table[].verify
+
+  // insert index verify
+  table[] streamSetTable[] StreamSet[].addVerifyTable assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -42,15 +40,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: anidx :: anidx <tableNm> <indexNm> ;
-opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
+opSyntax: vfytbl :: vfytbl <tableNm> ;
 
-: anidx opInfo tagCopy: liteOp_tags
+: vfytbl opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true
-    <streamDef> = __analyzeIndex
-    <params>    = 2
+    <streamDef> = __verifyTable
+    <params>    = 1
   }
 ;
     

@@ -218,37 +218,6 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* list columns of a table                                                    */
-/*----------------------------------------------------------------------------*/
-procedure lscol
-  parameters $table
-begin
-
-  stage stageA on origin:
-    start | periodicOp once | listColumns $table |
-      output | sink | stageA
-end
-;
-
-/*----------------------------------------------------------------------------*/
-/* check sanity of the grid                                                   */
-/*----------------------------------------------------------------------------*/
-procedure nodeInfo
-begin
-
-  stage stageA on origin:
-    start | periodicOp once | stageB
-
-  stage stageB on all nodes:
-    nodeInfo | stageC
-
-  stage stageC on origin:
-    output | sink | stageA
-
-end
-;
-
-/*----------------------------------------------------------------------------*/
 /* fetch rows from a partition of a table                                     */
 /*----------------------------------------------------------------------------*/
 procedure partitionFetch

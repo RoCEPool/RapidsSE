@@ -1,32 +1,51 @@
 /*============================================================================*/
-/* OP_compactIdx.sen -- Operator compact index                                */
+/* OP_listPartitions.sen -- Operator list partitions                          */
 /*============================================================================*/
 
-" OP_compactIdx.sen" .verbose
+" OP_listPartitions.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: compactIdx_action
+: lsparts_action
 
-  <tableNm> <indexNm> op__table_index if
-    index[].compact
-    true
-  else
-    false
-  then
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  // create an infoSet operand
+  streamSetTable[] streamSet[].new
+
+  grid::slots 0 do
+
+    // add nodeInfo to the infoSet
+    I grid::toPartition
+    streamSetTable[] streamSet[].addListPartitions assert
+
+  loop
+
+  // pipeout the infoset
+  streamSet[].pipeout
+
+  true
 ;
-
+  
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
+opSyntax: lsparts :: lsparts ;
 
-: compactIdx opInfo tagCopy: liteOp_tags
+: lsparts opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true
-    <params>    = 2
+    <streamDef> = __listPartitions
+    <params>    = 0
   }
 ;
     

@@ -1,26 +1,24 @@
 /*============================================================================*/
-/* OP_lstbldef.sen -- Operator list table definitions                         */
+/* OP_listColumns.sen -- Operator list columns                                */
 /*============================================================================*/
 
-" OP_lstbldef.sen" .verbose
+" OP_listColumns.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lstbldef_action
+: lscol_action
 
-  0 0 locals| sTableNm pTable |
+  0 locals| iColumns |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  folder[].checkInTables not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-    true
+  // find the table
+  <tableNm> op__table not if
+    false
     exit
   then
+
+  // get the table column count
+  table[].columnCount@ to iColumns
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -34,27 +32,11 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
-
-  folder[] dic.lastWord dup
-  iterate                          // setup iteration of words
-
-    object@ word.name@ to sTableNm
-    sTableNm "path[].pushTableFolder" find execute  assert
-    sTableNm find execute to table[]
-
-    // skip definition only tables
-    table[].isDefinitionOnly if
-
-      sTableNm streamSetTable[] StreamSet[].addListContents assert
-
-    then
-
-    "path[].discardTableFolder" find execute
-
-    object@ word.prev object!      // step backwards thru words
-  next
+  // insert a row in the infoset for each column
+  iColumns 0 do
+    I table[].column@
+    streamSetTable[] StreamSet[].addColumnDef assert
+  loop
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -65,17 +47,18 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lstbldef :: lstbldef ;
+opSyntax: lscol :: lscol <tableNm> ;
 
-: lstbldef opInfo tagCopy: localLiteOp_tags
+: lscol opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <streamDef>   = __listColumns
+    <params>      = 1
   }
 ;
     
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+

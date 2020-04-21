@@ -470,7 +470,6 @@ void Step::vStreamSetAddShowCluster(void)
   Node* pNode = AM::pGrid()->m_pNodes[i_Node];
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
-                                  pNode->iNodeNo(),
                                   pNode->szNodeNm(),
                                   pNode->szIPAddr(),
                                   pNode->iPortNo(),
