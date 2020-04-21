@@ -265,7 +265,7 @@ void Input::vReadCommand(void)
   vSingleLineCmd(true);
   
   m_pTknVec->vIntegrityCheck();
-  vCollectVecTillEOF();
+  vCollectVecFirstLine();
     
   // if empty line just return
   if ( ! m_pTknVec->nTokens() ||
@@ -479,9 +479,9 @@ void Input::vCollectToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect vector of tokens from input stream till EOF                        */
+/* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectVecTillEOF(void)
+void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   

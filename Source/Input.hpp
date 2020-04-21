@@ -58,7 +58,7 @@ namespace LexicalAnalysis
  
   private:    
     void vCollectToken(void);
-    void vCollectVecTillEOF(void);
+    void vCollectVecFirstLine(void);
     void vCollectVecTillSemicolon(void);
   
     void vCollectCpp(void);
