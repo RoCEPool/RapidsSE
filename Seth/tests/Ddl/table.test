@@ -6,6 +6,10 @@
 trackMemory;
 success
 
+//////////////////
+// create table //
+//////////////////
+
 // (1) create table t1
 create table T1 (
   key   INTEGER NOT NULL, 
@@ -421,9 +425,76 @@ failure contains: 'invalid command'
 
 // (16) try create table t1 with invalid null
 create table T1 (
-  c1  integer NOT NUKK
-);
+                 c1  integer NOT NUKK
+                 );
 failure contains: 'invalid command'
+
+///////////
+// lscol //
+///////////
+
+// lscol on invalid table
+lscol noTable;
+failure contains: 'no such table'
+
+// (17) create table t1
+create table T1 (
+   key   INTEGER NOT NULL,
+   name  VARCHAR(32) NOT NULL
+   );
+success
+
+// move to tenants
+cf ~;
+success
+
+// lscol not in tables
+lscol T1;
+failure contains: 'not in tables'
+
+// move to tables folder
+cf "~tables";
+success
+
+// lscol
+lscol T1;
+rows:
+  ('key','INTEGER',19,0,false,true)
+  ('name','VARCHAR',32,0,false,false)
+
+// () drop table t1
+drop table T1 ;
+success
+
+////////////
+// drop   //
+////////////
+
+// drop invalid table
+drop table T1;
+failure contains: 'no such table'
+
+// create table t1
+create table T1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+// move to tenants folder
+cf ~;
+success
+
+// not in tables
+drop table T;
+failure contains: 'not in tables'
+
+// move to tables
+cf "~tables";
+success
+
+drop table T1;
+success
 
 // get memory leaks
 memoryLeaks;
@@ -431,9 +502,12 @@ rows: 0
 
 CLEANUP {
 
+  cf "~tables";
+  mute
+  
   drop table T1;
   mute
-
+  
   bye;
   mute
 }
