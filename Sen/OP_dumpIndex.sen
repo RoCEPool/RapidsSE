@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* OP_vistbl.sen -- Operator visualize table                                  */
+/* OP_dumpIndex.sen -- Operator dump index                                    */
 /*============================================================================*/
 
-" OP_vistbl.sen" .verbose
+" OP_dumpIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: vistbl_action
+: dumpIdx_action
 
-  <tableNm> op__table if
-    table[].visualize
+  <tableNm> <indexNm> op__table_index if
+    index[].dump
     true
   else
     false
@@ -20,16 +20,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vistbl :: vistbl <tableNm> ;
+opSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
 
-: vistbl opInfo tagCopy: localLiteOp_tags
-  tags{
-    <jobDesc>     = "--description of operator--"
-    <localLiteOp> = true
-    <params>      = 1
+: dumpIdx opInfo tagCopy: localLiteOp_tags
+tags{
+  <jobDesc>     = "--description of operator--"
+  <localLiteOp> = true
+  <params>      = 2
   }
 ;
-    
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
+  
+  /*============================================================================*/
+  /* end                                                                        */
+  /*============================================================================*/
+

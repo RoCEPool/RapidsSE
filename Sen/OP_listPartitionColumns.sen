@@ -1,24 +1,25 @@
 /*============================================================================*/
-/* OP_lssch.sen -- Operator list schemas                                      */
+/* OP_listPartitionColumns.sen -- Operator list partition columns             */
 /*============================================================================*/
 
-" OP_lssch.sen" .verbose
+" OP_listPartitionColumns.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lssch_action
+: lspartcol_action
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the schemas folder
-  folder[].checkInSchemas not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
+  0 0 locals| iPartitionCols pSlots |
+
+  // find the table
+  <tableNm> op__table not if
     false
     exit
   then
+
+  // get the table column count
+  table[].slots@ to pSlots
+  pSlots slots.columnCount@ to iPartitionCols
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -32,14 +33,11 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
-
-  folder[] dic.lastWord dup
-  iterate                          // setup iteration of words
-    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
-    object@ word.prev object!      // step backwards thru words
-  next
+  // insert a row in the infoset for each column
+  iPartitionCols 0 do
+    I pSlots slots.column@
+    streamSetTable[] StreamSet[].addColumnDef assert
+  loop
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -50,17 +48,18 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lssch :: lssch ;
+opSyntax: lspartcol :: lspartcol <tableNm> ;
 
-: lssch opInfo tagCopy: localLiteOp_tags
+: lspartcol opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <streamDef>   = __listColumns
+    <params>      = 1
   }
 ;
     
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+

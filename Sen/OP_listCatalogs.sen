@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* OP_lsten.sen -- Operator list tenants                                      */
+/* OP_listCatalogs.sen -- Operator list catalogs                              */
 /*============================================================================*/
 
-" OP_lsten.sen" .verbose
+" OP_listCatalogs.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lsten_action
+: lscat_action
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tenants folder
-  folder[].checkInTenants not if
+  // should be in the schemas folder
+  folder[].checkInCatalogs not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -50,9 +50,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lsten :: lsten ;
+opSyntax: lscat :: lscat ;
 
-: lsten opInfo tagCopy: localLiteOp_tags
+: lscat opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true

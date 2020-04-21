@@ -1,19 +1,17 @@
 /*============================================================================*/
-/* OP_lstbl.sen -- Operator list tables                                       */
+/* OP_listTenants.sen -- Operator list tenants                                */
 /*============================================================================*/
 
-" OP_lstbl.sen" .verbose
+" OP_listTenants.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lstbl_action
-
-  0 0 locals| sTableNm pTable |
+: lsten_action
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  folder[].checkInTables not if
+  // should be in the tenants folder
+  folder[].checkInTenants not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -39,20 +37,7 @@
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-
-    object@ word.name@ to sTableNm
-    sTableNm "path[].pushTableFolder" find execute  assert
-    sTableNm find execute to table[]
-
-    // skip definition only tables
-    table[].isDefinitionOnly not if
-
-      sTableNm streamSetTable[] StreamSet[].addListContents assert
-
-    then
-
-    "path[].discardTableFolder" find execute
-
+    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
     object@ word.prev object!      // step backwards thru words
   next
 
@@ -65,9 +50,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lstbl :: lstbl ;
+opSyntax: lsten :: lsten ;
 
-: lstbl opInfo tagCopy: localLiteOp_tags
+: lsten opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true

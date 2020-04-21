@@ -1,26 +1,41 @@
 /*============================================================================*/
-/* OP_lstbldef.sen -- Operator list table definitions                         */
+/* OP_listIndexes.sen -- Operator list indexes                                */
 /*============================================================================*/
 
-" OP_lstbldef.sen" .verbose
+" OP_listIndexes.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lstbldef_action
+: lsidx_action
 
-  0 0 locals| sTableNm pTable |
+  0 0 locals| sTableNm pIndex |
+
+  <tableNm> to sTableNm
+
+  sTableNm op__table not if
+    false
+    exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  folder[].checkInTables not if
+  // push table dictionary
+  sTableNm path[].pushTableFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm name::checkIsTable not if
+    path[].discardTableFolder
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    true
+    false
     exit
   then
+
+  // push indexes folder
+  path[].pushIndexesFolder assert
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -35,26 +50,25 @@
   streamSetTable[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // insert a row in the infoSet for each word
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
-    object@ word.name@ to sTableNm
-    sTableNm "path[].pushTableFolder" find execute  assert
-    sTableNm find execute to table[]
+    object@ word.name@ folder[].findSymbol execute to pIndex
 
-    // skip definition only tables
-    table[].isDefinitionOnly if
-
-      sTableNm streamSetTable[] StreamSet[].addListContents assert
-
-    then
-
-    "path[].discardTableFolder" find execute
+    pIndex streamSetTable[] StreamSet[].addListIndex assert
 
     object@ word.prev object!      // step backwards thru words
   next
+
+  // pop indexes folder
+  path[].discardIndexesFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  path[].discardTableFolder
+  folder[].isTables assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -65,14 +79,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lstbldef :: lstbldef ;
+opSyntax: lsidx :: lsidx <tableNm> ;
 
-: lstbldef opInfo tagCopy: localLiteOp_tags
+: lsidx opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <streamDef>   = __listIndex
+    <params>      = 1
   }
 ;
     

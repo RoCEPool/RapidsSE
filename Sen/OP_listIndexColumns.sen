@@ -1,21 +1,18 @@
 /*============================================================================*/
-/* OP_lscat.sen -- Operator list catalogs                                      */
+/* OP_listIndexColumns.sen -- Operator list index columns                             */
 /*============================================================================*/
 
-" OP_lscat.sen" .verbose
+" OP_listIndexColumns.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lscat_action
+: lsidxcol_action
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the schemas folder
-  folder[].checkInCatalogs not if
-    op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
+  0 locals| iColumns |
+
+  // find the table
+  <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
@@ -32,14 +29,15 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // get no of columns in the index
+  index[].columnCount@ to iColumns
 
-  folder[] dic.lastWord dup
-  iterate                          // setup iteration of words
-    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
-    object@ word.prev object!      // step backwards thru words
-  next
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in the infoSet for each index column
+  iColumns 0 do
+    I index[].column@
+    streamSetTable[] StreamSet[].addColumnDef assert
+  loop
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -50,17 +48,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lscat :: lscat ;
+opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
-: lscat opInfo tagCopy: localLiteOp_tags
+: lsidxcol opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listContents
-    <params>      = 0
+    <streamDef>   = __listColumns
+    <params>      = 2
   }
 ;
-    
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

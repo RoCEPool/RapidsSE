@@ -1,13 +1,26 @@
 /*============================================================================*/
-/* OP_lf.sen -- Operator list folder                                          */
+/* OP_listTableDefs.sen -- Operator list table definitions                    */
 /*============================================================================*/
 
-" OP_lf.sen" .verbose
+" OP_listTableDefs.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: lf_action
+: lstbldef_action
+
+  0 0 locals| sTableNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  folder[].checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -18,29 +31,27 @@
   // pipeout the streamDef
   streamDef[].pipeout
 
-  // create a streamSet operand
-  streamSetTable[] streamSet[].new
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in the infoSet for each word
+  // insert a row in teh infoSet for each word
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
-    object@ word.isTable if
-    "table"
+    object@ word.name@ to sTableNm
+    sTableNm "path[].pushTableFolder" find execute  assert
+    sTableNm find execute to table[]
+
+    // skip definition only tables
+    table[].isDefinitionOnly if
+
+      sTableNm streamSetTable[] StreamSet[].addListContents assert
+
     then
 
-    object@ word.isIndex if
-    "index"
-    then
-
-    object@ isFolder if
-      object@ execute dic.kind@ word.name@
-    then
-
-    object@ word.name@
-    streamSetTable[] StreamSet[].addListFolder assert
+    "path[].discardTableFolder" find execute
 
     object@ word.prev object!      // step backwards thru words
   next
@@ -54,13 +65,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lf :: lf ;
+opSyntax: lstbldef :: lstbldef ;
 
-: lf opInfo tagCopy: localLiteOp_tags
+: lstbldef opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
-    <streamDef>   = __listFolder
+    <streamDef>   = __listContents
     <params>      = 0
   }
 ;
