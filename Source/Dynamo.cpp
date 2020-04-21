@@ -29,7 +29,7 @@ Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
   m_pTknVec = new TokenVec;
   m_pTknVec->vTokenise(sCmd);
   
-  m_pTknVec->vCutToken(m_pTknVec->nTokens());
+  m_pTknVec->vRemoveToken(m_pTknVec->nTokens());
   
   m_pPipelineSpec = nullptr;
   m_pStageSpec   = nullptr;

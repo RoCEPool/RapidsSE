@@ -141,66 +141,6 @@ TokenVec* TokenVec::pTokenise(Stz* szString)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Restricted --------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* copy chars                                                                 */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-
-  if (_bIsLastToken(pDstToken))
-    _vCharsCopyLast(pDstToken,szArgChars);
-  else
-    _vCharsCopyInterior(pDstToken,szArgChars);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy token                                                                 */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vCopyTokenTV_restricted(Token* pDstToken, Token* pSrcToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-
-  // chars is not copied here. its copied in the caller
-  
-  pDstToken->vToken(pSrcToken->eToken());
-  pDstToken->vLineNo(pSrcToken->iLineNo());
-  pDstToken->vColNo(pSrcToken->iColNo());
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a token                                                             */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vInsertToken_restricted(i8 i_Tkn, Stz* szArgChars, eTN eToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  // open up a token at _i_Tkn
-  for (i8 i_Token = nTokens() - 1; i_Token >= i_Tkn ; i_Token--) {
-    
-    Token* pTkn_dst = pGet(i_Token + 1,true);
-    Token* pTkn_src = pGet(i_Token);
-    
-    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
-  }
-  
-  vIncItems();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now copy the inserting token into place
-  
-  Token* pTkn_ins = pGet(i_Tkn);
-  
-  pTkn_ins->vCopyChars_restricted(szArgChars,this);
-  pTkn_ins->vToken(eToken);
-}
-
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -314,10 +254,166 @@ Token* TokenVec::pCurrToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cut a token from token vector                                              */
+/* find token in token array                                                  */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFindToken(Stz* szArgChars)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
+    Token* pToken = pGet(i_Token,true);
+    if (szArgChars->bSame(pToken->szChars()))
+      return i_Token;
+  }
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find token given text                                                      */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i_Token++; i_Token < nTokens(); i_Token++) {
+    Token* pToken = pGet(i_Token);
+    if (pToken->szChars()->bSame(szArgChars))
+      return pToken;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return first token                                                         */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pFirstToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  if (nTokens()) {
+    m_iCurTkn = 0;
+    Token* pTkn = pGet(m_iCurTkn);
+    return pTkn;
+  }
+  
+  m_iCurTkn = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc number of tokens                                                       */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vIncTokens(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  vIncItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a token                                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  // open up a token at _i_Tkn
+  for (i8 i_Token = nTokens() - 1; i_Token >= i_Tkn ; i_Token--) {
+    
+    Token* pTkn_dst = pGet(i_Token + 1,true);
+    Token* pTkn_src = pGet(i_Token);
+    
+    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
+  }
+  
+  vIncItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now copy the inserting token into place
+  
+  Token* pTkn_ins = pGet(i_Tkn);
+  
+  pTkn_ins->vCopyChars_restricted(szArgChars,this);
+  pTkn_ins->vToken(eToken);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get latter of xyCharsSet                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* TokenVec::szLaterChars(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Stz* szLater = m_xyByteSpace.szLatter();
+  
+  return szLater;
+}
+
+/*----------------------------------------------------------------------------*/
+/* list tokens                                                                */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vListTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  SP_Token spTkn;
+  
+  i8 nTkns = nTokens();
+  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+    
+    Token* pToken = pGet(i_Token);
+
+    //if (! pToken->szChars())
+    //  break;
+    
+    vTrace("  %s\n"_Stz,spTkn.sz(pToken));
+  }
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next token                                                          */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pNextToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_iCurTkn++;
+  
+  if (m_iCurTkn >= nTokens()) {
+    m_iCurTkn = C_UNKNOWN;
+    return nullptr;
+  }
+  
+  Token* pTkn = pGet(m_iCurTkn);
+  return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return previous token                                                      */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pPrevToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  if (m_iCurTkn > 0) {
+    
+    m_iCurTkn--;
+    Token* pTkn = pGet(m_iCurTkn);
+    return pTkn;
+  }
+  
+  m_iCurTkn = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove a token from token vector                                           */
 /*----------------------------------------------------------------------------*/
 #ifndef __WITH_CHARS_SET
-void TokenVec::vCutToken(i8 i_CutTkn)
+void TokenVec::vRemoveToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -345,7 +441,7 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 }
 #else
 /*----------------------------------------------------------------------------*/
-void TokenVec::vCutToken(i8 i_CutTkn)
+void TokenVec::vRemoveToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -418,132 +514,17 @@ void TokenVec::vCutToken(i8 i_CutTkn)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* find token in token array                                                  */
+/* copy token                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 TokenVec::iFindToken(Stz* szArgChars)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = pGet(i_Token,true);
-    if (szArgChars->bSame(pToken->szChars()))
-      return i_Token;
-  }
-  
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find token given text                                                      */
-/*----------------------------------------------------------------------------*/
-Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
+void TokenVec::vReplaceToken(Token* pDstToken, Token* pSrcToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  for (i_Token++; i_Token < nTokens(); i_Token++) {
-    Token* pToken = pGet(i_Token);
-    if (pToken->szChars()->bSame(szArgChars))
-      return pToken;
-  }
-  
-  return nullptr;
-}
 
-/*----------------------------------------------------------------------------*/
-/* return first token                                                         */
-/*----------------------------------------------------------------------------*/
-Token* TokenVec::pFirstToken(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  // chars is not copied here. its copied in the caller
   
-  if (nTokens()) {
-    m_iCurTkn = 0;
-    Token* pTkn = pGet(m_iCurTkn);
-    return pTkn;
-  }
-  
-  m_iCurTkn = C_UNKNOWN;
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc number of tokens                                                       */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vIncTokens(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  vIncItems();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get latter of xyCharsSet                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* TokenVec::szLaterChars(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Stz* szLater = m_xyByteSpace.szLatter();
-  
-  return szLater;
-}
-
-/*----------------------------------------------------------------------------*/
-/* list tokens                                                                */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vListTokens(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  SP_Token spTkn;
-  
-  i8 nTkns = nTokens();
-  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
-    
-    Token* pToken = pGet(i_Token);
-
-    //if (! pToken->szChars())
-    //  break;
-    
-    vTrace("  %s\n"_Stz,spTkn.sz(pToken));
-  }
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return next token                                                          */
-/*----------------------------------------------------------------------------*/
-Token* TokenVec::pNextToken(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_iCurTkn++;
-  
-  if (m_iCurTkn >= nTokens()) {
-    m_iCurTkn = C_UNKNOWN;
-    return nullptr;
-  }
-  
-  Token* pTkn = pGet(m_iCurTkn);
-  return pTkn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return previous token                                                      */
-/*----------------------------------------------------------------------------*/
-Token* TokenVec::pPrevToken(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  if (m_iCurTkn > 0) {
-    
-    m_iCurTkn--;
-    Token* pTkn = pGet(m_iCurTkn);
-    return pTkn;
-  }
-  
-  m_iCurTkn = C_UNKNOWN;
-  return nullptr;
+  pDstToken->vToken(pSrcToken->eToken());
+  pDstToken->vLineNo(pSrcToken->iLineNo());
+  pDstToken->vColNo(pSrcToken->iColNo());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -689,6 +670,19 @@ i8 TokenVec::nTokens(void)
   i8 nTokens = nItems();
   
   return nTokens;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy chars                                                                 */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  if (_bIsLastToken(pDstToken))
+    _vCharsCopyLast(pDstToken,szArgChars);
+  else
+    _vCharsCopyInterior(pDstToken,szArgChars);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -29,9 +29,6 @@ namespace LexicalAnalysis
     static TokenVec* pTokenise(Stz* szString);
     static TokenVec* _pTokenSet(void* aAddr);
 
-    void vCopyCharsTV_restricted(Token* pDstToken, Stz* szArgChars);
-    void vCopyTokenTV_restricted(Token* pDstToken, Token* pSrcToken);
-  
     void vAdvanceCurr(void);
     void vAppendToken(Stz* szArgChars);
     void vAppendVector(TokenVec* pTokenVec);
@@ -40,16 +37,17 @@ namespace LexicalAnalysis
     void vCopyVector(TokenVec* pTokenVec);
     i8   iCurrToken(void);
     Token* pCurrToken(void);
-    void vCutToken(i8 i_Tkn);
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     Token* pFirstToken(void);
     void vIncTokens(void);
-    void vInsertToken_restricted(i8 i_Tkn, Stz* szArgChars, eTN eToken);
+    void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     Stz* szLaterChars(void);
     void vListTokens(void);
     Token* pNextToken(void);
     Token* pPrevToken(void);
+    void vRemoveToken(i8 i_Tkn);
+    void vReplaceToken(Token* pDstToken, Token* pSrcToken);
     void vSetAllTokens(void);
     void vSetTokens(void);
     void vSoftReset(void);
@@ -59,6 +57,7 @@ namespace LexicalAnalysis
     void vTakeCharsBytes(i8 nBytes);
     void vTokenise(Stz* szString);
     i8   nTokens(void);
+    void vUpdateToken(Token* pDstToken, Stz* szArgChars);
     void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
   
   private:

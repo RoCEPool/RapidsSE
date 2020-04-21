@@ -32,7 +32,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 #ifdef WITH_TRACE_PROCEDURE
     vTrace("vAddProcedure: two part name %s\n"_Stz,sProcNm.szStz());
 #endif
-    pTokenVec->vCutToken(2);
+    pTokenVec->vRemoveToken(2);
     
     pTkn1_ProcNm->vCopyChars_restricted(sProcNm,pTokenVec);
     
@@ -149,7 +149,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     
     // -- -- -- -- -- --
     // found two-part; correct the token vector
-    pCmdTokenVec->vCutToken(1);
+    pCmdTokenVec->vRemoveToken(1);
     
     pTkn_ProcNm->vCopyChars_restricted(sProcNm,pCmdTokenVec);
     
@@ -207,7 +207,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     
     if (C_UNKNOWN != i_Cut) {
       for (;;) {
-        pProcTextVec->vCutToken(i_Cut);
+        pProcTextVec->vRemoveToken(i_Cut);
         Token* pTest = pProcTextVec->pGet(i_Cut);
         if (pTest->bSame("begin"_Stz))
           break;
@@ -224,11 +224,11 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // add the <stmt> tag into the modified text vector
   
   i8 i_InsTkn = i_Cut;
-  pProcTextVec->vInsertToken_restricted(i_InsTkn++,"tag"_Stz,TN_NAME);
-  pProcTextVec->vInsertToken_restricted(i_InsTkn++,C_TAG_STMT,TN_NAME);
-  pProcTextVec->vInsertToken_restricted(i_InsTkn++,"="_Stz,TN_NAME);
-  pProcTextVec->vInsertToken_restricted(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
-  pProcTextVec->vInsertToken_restricted(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,C_TAG_STMT,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
+  pProcTextVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stringise the modified text vector into a pipeline statement
