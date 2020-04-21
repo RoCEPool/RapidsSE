@@ -178,8 +178,14 @@ void Input::vInspect(void)
 //         aUF[m_eTknForm]
 //         );
 
-  if (! m_pToken)
+  if (! m_pToken) {
+    vTrace("Input #UseBegin.%lld #CollectToken.%lld : ]>NoToken<[\n"_Stz,
+           d_nUseBegin,
+           d_nCollectToken
+           );
+    m_pCharser->vInspect();
     return;
+  }
   
   SP_Token spTkn;
 
@@ -387,6 +393,8 @@ void Input::vUseBegin(void)
   d_nUseBegin++;
   
   m_pCharser->vUseBegin();
+  
+  vInspect();
 }
 
 /*----------------------------------------------------------------------------*/
