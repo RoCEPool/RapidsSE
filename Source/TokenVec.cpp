@@ -84,7 +84,7 @@ TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To)
   i8 i_Token;
   for (i_Token = i_From; i_Token < nTokens && i_Token <= i_To; i_Token++) {
     Token* pToken = pTknVec->pGet(i_Token);
-    pExtractedVec->vAppendToken(pToken->szChars());
+    pExtractedVec->vAppendToken(pToken);
   }
   
   return pExtractedVec;
@@ -119,7 +119,7 @@ TokenVec* TokenVec::pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
     if (pToken->bSame(szEnd))
       break;
     
-    pExtractedVec->vAppendToken(pToken->szChars());
+    pExtractedVec->vAppendToken(pToken);
   }
   
   return pExtractedVec;
@@ -158,15 +158,26 @@ void TokenVec::vAdvanceCurr(void)
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAppendToken(Stz* szArgChars)
+void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   Token* pToken = pGet(nTokens(),true);
   
   pToken->vCopyChars_restricted(szArgChars,this);
+  pToken->vToken(eToken);
 
   vIncItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a token                                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vAppendToken(Token* pToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  vAppendToken(pToken->szChars(),pToken->eToken());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +189,7 @@ void TokenVec::vAppendVector(TokenVec* pTknVec)
   
   for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
     Token* pToken = pTknVec->pGet(i_Token);
-    vAppendToken(pToken->szChars());
+    vAppendToken(pToken);
   }
 }
 

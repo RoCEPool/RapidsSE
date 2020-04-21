@@ -29,7 +29,8 @@ namespace LexicalAnalysis
     static TokenVec* pTokenise(Stz* szString);
 
     void vAdvanceCurr(void);
-    void vAppendToken(Stz* szArgChars);
+    void vAppendToken(Stz* szArgChars, eTN eToken);
+    void vAppendToken(Token* pToken);
     void vAppendVector(TokenVec* pTokenVec);
     bool bBlankLine(void);
     void vCollectBegin(Token* pToken);
