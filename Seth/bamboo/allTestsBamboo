@@ -5,7 +5,6 @@
 ../tests/Ddl/testList
 ../tests/Datums/testList
 ../tests/Examples/testList
-../tests/Index/testList
 //../tests/Insert/testList
 ../tests/Load/testList
 ../tests/LocalFunctions/testList
@@ -16,4 +15,5 @@
 ../tests/Retrieve/testList
 ../tests/Select/testList
 ../tests/Table/testList
+../tests/Index/testList
 ../tests/Tpch/testList
