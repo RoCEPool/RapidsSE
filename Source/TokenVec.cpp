@@ -168,6 +168,10 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
   pToken->vToken(eToken);
 
   vIncItems();
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,6 +182,10 @@ void TokenVec::vAppendToken(Token* pToken)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   vAppendToken(pToken->szChars(),pToken->eToken());
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,6 +199,10 @@ void TokenVec::vAppendVector(TokenVec* pTknVec)
     Token* pToken = pTknVec->pGet(i_Token);
     vAppendToken(pToken);
   }
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,12 +242,16 @@ void TokenVec::vCollectEnd(Token* pToken)
   
   i8 nChars = pToken->nChars();
 
-  vTakeCharsBytes(nChars + 1);
+  _vBytesSpaceTake(nChars + 1);
 
   Stz* szLatter = _szLaterChars();
   * szLatter->azChar() = '\0';
 
   vTrace("Chars: %s\n"_Stz,pToken->szChars());
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,6 +285,10 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
     
     pToken_dst->vCopyToken_restricted(pToken_src,this);
   }
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,18 +399,10 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   
   pTkn_ins->vCopyChars_restricted(szArgChars,this);
   pTkn_ins->vToken(eToken);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get latter of xyCharsSet                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* TokenVec::_szLaterChars(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Stz* szLater = m_xyByteSpace.szLatter();
-  
-  return szLater;
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -498,6 +510,10 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
     _vTokenCutLast(pTknCut);
   }
   
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 /*----------------------------------------------------------------------------*/
 //void TokenVec::vCutToken(i8 i_CutTkn)
@@ -567,6 +583,10 @@ void TokenVec::vReplaceToken(Token* pDstToken, Token* pSrcToken)
   pDstToken->vToken(pSrcToken->eToken());
   pDstToken->vLineNo(pSrcToken->iLineNo());
   pDstToken->vColNo(pSrcToken->iColNo());
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -661,16 +681,6 @@ void TokenVec::vStripSemicolon(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* take bytes (for token chars) from xyCharsSet                               */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vTakeCharsBytes(i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  m_xyByteSpace.vTake(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vTokenise(Stz* szTokenStr)
@@ -725,6 +735,10 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
     _vCharsCopyLast(pDstToken,szArgChars);
   else
     _vCharsCopyInterior(pDstToken,szArgChars);
+  
+#ifdef __WITH_CHARS_SET
+  _vVecIntegrityCheck();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -803,7 +817,7 @@ Stz* TokenVec::_szByteSpaceExtend(i8 nBytes)
   
   * szExtension->azChar() = '\0';
 
-  vTakeCharsBytes(nBytes);
+  _vBytesSpaceTake(nBytes);
 
   return szExtension;
 }
@@ -826,6 +840,16 @@ void TokenVec::_vByteSpaceRemove(Stz* szAtChars, i8 nBytes)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
   m_xyByteSpace.vMoveLeft(szAtChars,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* take bytes (for token chars) from xyCharsSet                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::_vBytesSpaceTake(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_xyByteSpace.vTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,6 +951,18 @@ bool TokenVec::_bIsLastToken(Token* pToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get latter of xyCharsSet                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* TokenVec::_szLaterChars(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Stz* szLater = m_xyByteSpace.szLatter();
+  
+  return szLater;
+}
+
+/*----------------------------------------------------------------------------*/
 /* cut / erase a non-last token                                               */
 /*----------------------------------------------------------------------------*/
 void TokenVec::_vTokenCutInterior(Token* pTknCut)
@@ -995,7 +1031,7 @@ void TokenVec::_vVecAdjustChars(i8 i_Tkn, i8 nByBytes)
 /*----------------------------------------------------------------------------*/
 /* step thru tokens checking the address of the next tokens chars             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vVecCheckChars(void)
+void TokenVec::_vVecIntegrityCheck(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -1004,6 +1040,11 @@ void TokenVec::_vVecCheckChars(void)
   for (i8 i_Token = 0; i_Token < nTkns - 1; i_Token++) {
     Token* pTknA = pGet(i_Token);
     Token* pTknB = pGet(i_Token + 1);
+    
+    i8 i_TknA = pTknA->i_Token();
+    i8 i_TknB = pTknB->i_Token();
+    ASSERT(i_Token == i_TknA);
+    ASSERT(i_TknB  == i_TknA + 1);
 
     Stz* szCharsA = pTknA->szChars();
     Stz* szCharsB = pTknB->szChars();

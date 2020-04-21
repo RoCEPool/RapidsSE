@@ -55,7 +55,6 @@ namespace LexicalAnalysis
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
-    void vTakeCharsBytes(i8 nBytes);
     void vTokenise(Stz* szString);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
@@ -65,6 +64,7 @@ namespace LexicalAnalysis
     Stz* _szByteSpaceExtend(i8 nBytes);
     void _vByteSpaceInsert(Stz* szAtChars, i8 nBytess);
     void _vByteSpaceRemove(Stz* szAtChars, i8 nBytes);
+    void _vBytesSpaceTake(i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
     void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
@@ -80,7 +80,7 @@ namespace LexicalAnalysis
     void _vTokenCutLast(Token* pCutToken);
 
     void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
-    void _vVecCheckChars(void);
+    void _vVecIntegrityCheck(void);
     void _vVecRippleLeft(i8 i_Tkn);
     void _vVecRippleRight(i8 i_Tkn);
 
