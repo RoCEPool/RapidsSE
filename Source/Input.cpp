@@ -500,6 +500,7 @@ void Input::vCollectVecTillEOF(void)
 //        break;
       
       vCollectToken();
+      
       if (TN_EOF == pToken->eToken())
         break;
 
