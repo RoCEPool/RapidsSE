@@ -218,19 +218,6 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* list columns of a table                                                    */
-/*----------------------------------------------------------------------------*/
-procedure lscol
-  parameters $table
-begin
-
-  stage stageA on origin:
-    start | periodicOp once | listColumns $table |
-      output | sink | stageA
-end
-;
-
-/*----------------------------------------------------------------------------*/
 /* fetch rows from a partition of a table                                     */
 /*----------------------------------------------------------------------------*/
 procedure partitionFetch
