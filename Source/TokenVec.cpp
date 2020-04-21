@@ -972,6 +972,8 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   vTrace("_vTokenCutInterior::\n"_Stz);
   vListTokens();
   
+  _vVecIntegrityCheck();
+
   i8 nTkns = nTokens();
   i8 i_CutTkn = pTknCut->i_Token();
   SP_Token spTkn;
@@ -993,7 +995,9 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   
   vTrace("--- --- --- --- --- ---\n"_Stz);
   vListTokens();
-  
+
+  _vVecIntegrityCheck();
+
   Correctness::vDebugPoint();
 }
 
@@ -1043,6 +1047,7 @@ void TokenVec::_vVecIntegrityCheck(void)
     
     i8 i_TknA = pTknA->i_Token();
     i8 i_TknB = pTknB->i_Token();
+    
     ASSERT(i_Token == i_TknA);
     ASSERT(i_TknB  == i_TknA + 1);
 
