@@ -200,7 +200,7 @@ Session* SessionArray::pAllocSession(void)
   m_iFirstFree = pSession->m_i_NextFree;
   
   m_nSessionsSoFar++;
-  
+  vTrace("Sessions so far %lld\n"_Stz,m_nSessionsSoFar );
   m_okLock.vDropWrite();
   
   return pSession;
