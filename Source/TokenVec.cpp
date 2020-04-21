@@ -197,6 +197,37 @@ bool TokenVec::bBlankLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin collecting a new token                                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vCollectBegin(Token* pToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Stz* szLatter = szLaterChars();
+  
+  * szLatter->azChar() = '\0';
+  
+  pToken->vChars(szLatter);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end collecting a token                                                     */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vCollectEnd(Token* pToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nChars = pToken->nChars();
+
+  vTakeCharsBytes(nChars + 1);
+
+  Stz* szLatter = szLaterChars();
+  * szLatter->azChar() = '\0';
+
+  vTrace("Chars: %s\n"_Stz,pToken->szChars());
+}
+
+/*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iCountTokens(void)
