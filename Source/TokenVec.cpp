@@ -170,7 +170,7 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
   vIncItems();
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -184,7 +184,7 @@ void TokenVec::vAppendToken(Token* pToken)
   vAppendToken(pToken->szChars(),pToken->eToken());
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -201,7 +201,7 @@ void TokenVec::vAppendVector(TokenVec* pTknVec)
   }
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -250,7 +250,7 @@ void TokenVec::vCollectEnd(Token* pToken)
   vTrace("Chars: %s\n"_Stz,pToken->szChars());
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -287,7 +287,7 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
   }
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -401,7 +401,38 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   pTkn_ins->vToken(eToken);
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* step thru tokens checking the address of the next tokens chars             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vIntegrityCheck(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+#ifdef __WITH_CHARS_SET
+
+  i8 nTkns = nTokens();
+
+  for (i8 i_Token = 0; i_Token < nTkns - 1; i_Token++) {
+    Token* pTknA = pGet(i_Token);
+    Token* pTknB = pGet(i_Token + 1);
+    
+    i8 i_TknA = pTknA->i_Token();
+    i8 i_TknB = pTknB->i_Token();
+    
+    ASSERT(i_Token == i_TknA);
+    ASSERT(i_TknB  == i_TknA + 1);
+
+    Stz* szCharsA = pTknA->szChars();
+    Stz* szCharsB = pTknB->szChars();
+
+    i8 nBytesA = szCharsA->nSize();
+    
+    ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));
+  }
 #endif
 }
 
@@ -512,7 +543,7 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
   
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 /*----------------------------------------------------------------------------*/
@@ -585,7 +616,7 @@ void TokenVec::vReplaceToken(Token* pDstToken, Token* pSrcToken)
   pDstToken->vColNo(pSrcToken->iColNo());
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -737,7 +768,7 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
     _vCharsCopyInterior(pDstToken,szArgChars);
   
 #ifdef __WITH_CHARS_SET
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 #endif
 }
 
@@ -972,7 +1003,7 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   vTrace("_vTokenCutInterior::\n"_Stz);
   vListTokens();
   
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 
   i8 nTkns = nTokens();
   i8 i_CutTkn = pTknCut->i_Token();
@@ -996,7 +1027,7 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   vTrace("--- --- --- --- --- ---\n"_Stz);
   vListTokens();
 
-  _vVecIntegrityCheck();
+  vIntegrityCheck();
 
   Correctness::vDebugPoint();
 }
@@ -1029,34 +1060,6 @@ void TokenVec::_vVecAdjustChars(i8 i_Tkn, i8 nByBytes)
     Token* pTknAdj = pGet(i_Token);
 
     pTknAdj->vAdjustChars(nByBytes);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* step thru tokens checking the address of the next tokens chars             */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vVecIntegrityCheck(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  i8 nTkns = nTokens();
-
-  for (i8 i_Token = 0; i_Token < nTkns - 1; i_Token++) {
-    Token* pTknA = pGet(i_Token);
-    Token* pTknB = pGet(i_Token + 1);
-    
-    i8 i_TknA = pTknA->i_Token();
-    i8 i_TknB = pTknB->i_Token();
-    
-    ASSERT(i_Token == i_TknA);
-    ASSERT(i_TknB  == i_TknA + 1);
-
-    Stz* szCharsA = pTknA->szChars();
-    Stz* szCharsB = pTknB->szChars();
-
-    i8 nBytesA = szCharsA->nSize();
-    
-    ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));
   }
 }
 
