@@ -97,7 +97,7 @@ void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
   
   ASSERT(pExoTknVec == m_p_ExoTknVec);
 
-  m_p_ExoTknVec->vCopyCharsTV_restricted(this,szArgChars);
+  m_p_ExoTknVec->vUpdateToken(this,szArgChars);
 }
 #endif
 
@@ -122,7 +122,7 @@ void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
   
   ASSERT(pExoTknVec == m_p_ExoTknVec);
   
-  m_p_ExoTknVec->vCopyTokenTV_restricted(this,pSrcToken);
+  m_p_ExoTknVec->vReplaceToken(this,pSrcToken);
 }
 #endif
 /*----------------------------------------------------------------------------*/

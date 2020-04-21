@@ -27,7 +27,6 @@ namespace LexicalAnalysis
     static TokenVec* pSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To);
     static TokenVec* pSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
     static TokenVec* pTokenise(Stz* szString);
-    static TokenVec* _pTokenSet(void* aAddr);
 
     void vAdvanceCurr(void);
     void vAppendToken(Stz* szArgChars);
@@ -44,7 +43,6 @@ namespace LexicalAnalysis
     Token* pFirstToken(void);
     void vIncTokens(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
-    Stz* szLaterChars(void);
     void vListTokens(void);
     Token* pNextToken(void);
     Token* pPrevToken(void);
@@ -75,6 +73,8 @@ namespace LexicalAnalysis
     
     bool _bIsLastToken(Token* pToken);
 
+    Stz* _szLaterChars(void);
+  
     void _vTokenCutInterior(Token* pCutToken);
     void _vTokenCutLast(Token* pCutToken);
 

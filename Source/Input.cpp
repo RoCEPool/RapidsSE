@@ -1370,11 +1370,13 @@ void Input::vTokenCollectBegin(void)
   
 #ifdef __WITH_CHARS_SET
   
-  Stz* szLatter = m_pTknVec->szLaterChars();
+//  Stz* szLatter = m_pTknVec->szLaterChars();
+//
+//  * szLatter->azChar() = '\0';
+//
+//  m_pToken->vChars(szLatter);
   
-  * szLatter->azChar() = '\0';
-  
-  m_pToken->vChars(szLatter);
+  m_pTknVec->vCollectBegin(m_pToken);
   
 #endif
   
@@ -1391,15 +1393,17 @@ void Input::vTokenCollectEnd(void)
 
 #ifdef __WITH_CHARS_SET
   
-  i8 nChars = m_pToken->nChars();
+//  i8 nChars = m_pToken->nChars();
+//
+//  m_pTknVec->vTakeCharsBytes(nChars + 1);
+//
+//  Stz* szLatter = m_pTknVec->szLaterChars();
+//  * szLatter->azChar() = '\0';
+//
+//  vTrace("Chars: %s\n"_Stz,m_pToken->szChars());
   
-  m_pTknVec->vTakeCharsBytes(nChars + 1);
-  
-  Stz* szLatter = m_pTknVec->szLaterChars();
-  * szLatter->azChar() = '\0';
+  m_pTknVec->vCollectEnd(m_pToken);
 
-  vTrace("Chars: %s\n"_Stz,m_pToken->szChars());
-  
 #endif
 }
 

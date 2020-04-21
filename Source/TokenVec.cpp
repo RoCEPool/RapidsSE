@@ -203,7 +203,7 @@ void TokenVec::vCollectBegin(Token* pToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Stz* szLatter = szLaterChars();
+  Stz* szLatter = _szLaterChars();
   
   * szLatter->azChar() = '\0';
   
@@ -221,7 +221,7 @@ void TokenVec::vCollectEnd(Token* pToken)
 
   vTakeCharsBytes(nChars + 1);
 
-  Stz* szLatter = szLaterChars();
+  Stz* szLatter = _szLaterChars();
   * szLatter->azChar() = '\0';
 
   vTrace("Chars: %s\n"_Stz,pToken->szChars());
@@ -373,7 +373,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* get latter of xyCharsSet                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* TokenVec::szLaterChars(void)
+Stz* TokenVec::_szLaterChars(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
