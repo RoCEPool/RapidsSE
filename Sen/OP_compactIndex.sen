@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_compactIdx.sen -- Operator compact index                                */
+/* OP_compactIndex.sen -- Operator compact index                              */
 /*============================================================================*/
 
-" OP_compactIdx.sen" .verbose
+" OP_compactIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */

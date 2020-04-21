@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_lsparts.sen -- Operator list partitions                                  */
+/* OP_listPartitions.sen -- Operator list partitions                          */
 /*============================================================================*/
 
-" OP_lsparts.sen" .verbose
+" OP_listPartitions.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */

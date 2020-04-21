@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* OP_vfytbl.sen -- Operator verify table                                     */
+/* OP_verifyIndex.sen -- Operator verify index                                */
 /*============================================================================*/
 
-" OP_vfytbl.sen" .verbose
+" OP_verifyIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: vfytbl_action
+: vfyidx_action
 
-  <tableNm> op__table not if
+  <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
@@ -26,10 +26,10 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  table[].verify
+  index[].verify
 
   // insert index verify
-  table[] streamSetTable[] StreamSet[].addVerifyTable assert
+  index[] streamSetTable[] StreamSet[].addVerifyIndex assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -40,14 +40,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vfytbl :: vfytbl <tableNm> ;
+opSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
 
-: vfytbl opInfo tagCopy: liteOp_tags
+: vfyidx opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true
-    <streamDef> = __verifyTable
-    <params>    = 1
+    <streamDef> = __verifyIndex
+    <params>    = 2
   }
 ;
     

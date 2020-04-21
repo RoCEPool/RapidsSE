@@ -105,15 +105,15 @@
         "op__common.sen"          include
         "op__tagSets.sen"         include
 
-        "OP_anidx.sen"            include
-        "OP_antbl.sen"            include
+        "OP_analyzeIndex.sen"     include
+        "OP_analyzeTable.sen"     include
 
         "OP_bufferGen.sen"        include
         "OP_burst.sen"            include
 
         "OP_changeFolder.sen"     include
         "OP_chunk.sen"            include
-        "OP_compactIdx.sen"       include
+        "OP_compactIndex.sen"     include
         "OP_consume.sen"          include
         "OP_createCatalog.sen"    include
         "OP_createSchema.sen"     include
@@ -141,7 +141,7 @@
         "OP_listColumns.sen"          include
         "OP_listIndexes.sen"          include
         "OP_listIndexColumns.sen"     include
-        "OP_lsparts.sen"              include
+        "OP_listPartitions.sen"       include
         "OP_listPartitionColumns.sen" include
         "OP_listSchemas.sen"          include
         "OP_listTables.sen"           include
@@ -166,7 +166,7 @@
         "OP_readChunk.sen"            include
         "OP_report.sen"               include
 
-        "OP_scan.sen"             include
+        "OP_scan.sen"                 include
         "OP_showcluster.sen"      include
         "OP_sink.sen"             include
         "OP_snapshot.sen"         include
@@ -175,8 +175,8 @@
         "OP_stats.sen"            include
         "OP_status.sen"           include
         "OP_statWrite.sen"        include
-        "OP_szidx.sen"            include
-        "OP_sztbl.sen"            include
+        "OP_sizeIndex.sen"            include
+        "OP_sizeTable.sen"            include
 
         "OP_tableSizes.sen"       include
         "OP_toDemon.sen"          include
@@ -189,11 +189,11 @@
 
         "OP_upsert.sen"           include
 
-        "OP_vfyidx.sen"           include
-        "OP_vfytbl.sen"           include
-        "OP_visualizeIndex.sen"   include
-        "OP_visualizeTable.sen"   include
-        "OP_xmit.sen"             include
+        "OP_verifyIndex.sen"           include
+        "OP_verifyTable.sen"           include
+        "OP_visualizeIndex.sen"        include
+        "OP_visualizeTable.sen"        include
+        "OP_xmit.sen"                  include
 
         "BM_genEnt.sen"           include
         "BM_genCrw.sen"           include

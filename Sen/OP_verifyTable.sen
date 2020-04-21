@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_sztbl.sen -- Operator size table                                        */
+/* OP_verifyTable.sen -- Operator verify table                                */
 /*============================================================================*/
 
-" OP_sztbl.sen" .verbose
+" OP_verifyTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: sztbl_action
+: vfytbl_action
 
   <tableNm> op__table not if
     false
@@ -26,10 +26,10 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  0 table[].size number.magnitude >str
+  table[].verify
 
-  // insert index size
-  streamSetTable[] StreamSet[].addSizeTable assert
+  // insert index verify
+  table[] streamSetTable[] StreamSet[].addVerifyTable assert
 
   // pipeout the infoset
   StreamSet[].pipeout
@@ -40,13 +40,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: sztbl :: sztbl <tableNm> ;
+opSyntax: vfytbl :: vfytbl <tableNm> ;
 
-: sztbl opInfo tagCopy: liteOp_tags
+: vfytbl opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true
-    <streamDef> = __sizeTable
+    <streamDef> = __verifyTable
     <params>    = 1
   }
 ;
