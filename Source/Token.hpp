@@ -50,6 +50,7 @@ namespace LexicalAnalysis
     bool  bIsName(void);
     bool  bIsNumeric(void);
     bool  bIsOther(void);
+    bool  bIsSemicolon(void);
     i8    iLineNo(void);
     void  vLineNo(i8 iLineNo);
     void  vReset(void);

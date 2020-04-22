@@ -265,8 +265,8 @@ void TokenVec::vCollectEnd(Token* pToken)
   Stz* szLatter = _szLaterChars();
   * szLatter->azChar() = '\0';
 
-  SP_Token spTkn;
-  vTrace("vCollectEnd: %s\n"_Stz,spTkn.sz(pToken));
+  //SP_Token spTkn;
+  //vTrace("vCollectEnd: %s\n"_Stz,spTkn.sz(pToken));
   
   //if (pToken->szChars()->bSame("catalog"_Stz))
   if (pToken->szChars()->bSame(""_Stz))
@@ -385,6 +385,25 @@ Token* TokenVec::pFirstToken(void)
   
   m_iCurTkn = C_UNKNOWN;
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this token vector have a ';'                                          */
+/*----------------------------------------------------------------------------*/
+bool TokenVec::bHasSemicolon(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nTokens();
+  
+  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+    Token* pToken = pGet(i_Token);
+    
+    if (pToken->bIsSemicolon())
+      return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
