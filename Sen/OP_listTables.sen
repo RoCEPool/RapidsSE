@@ -47,7 +47,12 @@
     // skip definition only tables
     table[].isDefinitionOnly not if
 
+    sTableNm streamSetTable[] StreamSet[].addListContents  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
       sTableNm streamSetTable[] StreamSet[].addListContents assert
+    then
+
 
     then
 

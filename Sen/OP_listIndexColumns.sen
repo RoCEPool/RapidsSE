@@ -36,7 +36,12 @@
   // insert a row in the infoSet for each index column
   iColumns 0 do
     I index[].column@
-    streamSetTable[] StreamSet[].addColumnDef assert
+    streamSetTable[] StreamSet[].addColumnDef  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      I index[].column@
+      streamSetTable[] StreamSet[].addColumnDef assert
+    then
   loop
 
   // pipeout the infoset

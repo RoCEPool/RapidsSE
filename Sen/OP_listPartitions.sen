@@ -25,7 +25,13 @@
 
     // add nodeInfo to the infoSet
     I grid::toPartition
-    streamSetTable[] streamSet[].addListPartitions assert
+    streamSetTable[] streamSet[].addListPartitions  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      I grid::toPartition
+      streamSetTable[] StreamSet[].addListPartitions assert
+    then
+
 
   loop
 

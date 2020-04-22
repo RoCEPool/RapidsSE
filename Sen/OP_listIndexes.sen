@@ -57,7 +57,11 @@
 
     object@ word.name@ folder[].findSymbol execute to pIndex
 
-    pIndex streamSetTable[] StreamSet[].addListIndex assert
+    pIndex streamSetTable[] StreamSet[].addListIndex  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      pIndex streamSetTable[] StreamSet[].addListIndex assert
+    then
 
     object@ word.prev object!      // step backwards thru words
   next

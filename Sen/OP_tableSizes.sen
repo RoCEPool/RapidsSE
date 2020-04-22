@@ -51,7 +51,12 @@
       0 table[].size number.magnitude >str
 
       // insert index size
-      sTableNm streamSetTable[] StreamSet[].addTableSizes assert
+      sTableNm streamSetTable[] StreamSet[].addTableSizes  not if
+        StreamSet[].pipeout
+        streamSetTable[] streamSet[].new
+        sTableNm streamSetTable[] StreamSet[].addTableSizes assert
+      then
+
     then
 
     // move to next table

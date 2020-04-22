@@ -30,7 +30,12 @@
   grid::slots 0
   do
     // insert index verify
-    I index[] streamSetTable[] StreamSet[].addAnalyzeIndex assert
+    I index[] streamSetTable[] StreamSet[].addAnalyzeIndex  not if
+    StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      I index[] streamSetTable[] StreamSet[].addAnalyzeIndex assert
+    then
+
   loop
 
   // pipeout the infoset

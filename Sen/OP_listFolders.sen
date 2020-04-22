@@ -43,6 +43,7 @@
     streamSetTable[] StreamSet[].addListFolder not if
       StreamSet[].pipeout
       streamSetTable[] streamSet[].new
+      object@ word.name@
       streamSetTable[] StreamSet[].addListFolder assert
     then
 

@@ -36,7 +36,12 @@
   // insert a row in the infoset for each column
   iPartitionCols 0 do
     I pSlots slots.column@
-    streamSetTable[] StreamSet[].addColumnDef assert
+    streamSetTable[] StreamSet[].addColumnDef  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      I pSlots slots.column@
+      streamSetTable[] StreamSet[].addColumnDef assert
+    then
   loop
 
   // pipeout the infoset
