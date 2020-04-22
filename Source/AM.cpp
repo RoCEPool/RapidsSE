@@ -1168,6 +1168,20 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a universal job for op                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* AM::pOperandName(Operand* pOperand)
+{
+  if (pOperand->bIsMarker())
+    return aOM[(_pMarker(pOperand))->eOpMarker()];
+  
+  if (pOperand->bIsInfoSet())
+    return aOI[(_pInfoSet(pOperand))->eOpInfoSet()];
+  else
+    return aCN[pOperand->eClass()];
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

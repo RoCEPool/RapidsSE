@@ -206,7 +206,7 @@ begin
     chunk $file | stageC Robin
 
   stage stageC on all partitions on origin:
-    readChunk $file | toCrwH $table | stageD hashed
+    readChunk $file | toCrwH $table | stageD Hashed
 
   stage stageD on all partitions:
     insert $table | stageE

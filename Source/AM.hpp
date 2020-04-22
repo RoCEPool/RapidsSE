@@ -247,6 +247,8 @@ namespace Oblique
     
     static Stz* szJobName(Job* pJob);
     
+    static Stz* pOperandName(Operand* pOperand);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TokenVec* pTknVec);

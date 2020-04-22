@@ -61,6 +61,16 @@ Operand::~Operand(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this operand an InfoSet ?                                               */
+/*----------------------------------------------------------------------------*/
+bool Operand::bIsInfoSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return eClass() == CN_INFOSET ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this operand a marker ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Operand::bIsMarker(void)

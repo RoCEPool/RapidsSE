@@ -17,6 +17,7 @@ namespace Operands
     Operand(eCN eClass);
     ~Operand(void) noexcept(false);
     
+    bool bIsInfoSet(void);
     bool bIsMarker(void);
     void vTailProcessing(eTP eTailProcessing);
     eTP  eTailProcessing(void);
