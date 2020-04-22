@@ -45,9 +45,11 @@ namespace LexicalAnalysis
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     bool  bHasChars(void);
+    bool  bIsEOF(void);
     bool  bIsInteger(void);
     bool  bIsName(void);
     bool  bIsNumeric(void);
+    bool  bIsOther(void);
     i8    iLineNo(void);
     void  vLineNo(i8 iLineNo);
     void  vReset(void);
