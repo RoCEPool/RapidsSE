@@ -94,6 +94,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_iSectionNo = 0;
 
+  d_bDebugMode = false;
+  
   _checkInitialised_(CN_SEPROMPT);
   
   vInitialSettings();
@@ -307,6 +309,18 @@ BPA* SePrompt::pBPA(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pBPA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDebugMode(bool bDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  d_bDebugMode = bDebugMode;
+
+  m_pSession->m_pInput->vDebugMode(bDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/

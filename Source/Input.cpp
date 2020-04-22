@@ -31,7 +31,8 @@ Input::Input(void)
   m_pTknVec  = new TokenVec;
   m_pToken   = nullptr;
   
-  d_nUseBegin = 0;
+  d_bDebugMode    = false;
+  d_nUseBegin     = 0;
   d_nCollectToken = 0;
 
   _checkInitialised_(CN_INPUT);
@@ -79,6 +80,18 @@ Stz* Input::szChars(void)
   Token* pCurrToken = m_pTknVec->pCurrToken();
   
   return pCurrToken->szChars();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vDebugMode(bool bDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  d_bDebugMode = bDebugMode;
+  
+  m_pCharser->vDebugMode(bDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/

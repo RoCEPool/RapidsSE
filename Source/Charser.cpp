@@ -28,7 +28,9 @@ Charser::Charser(Charser* pNext)
   //m_bMalloc set in new
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
-    
+  
+  d_bDebugMode = false;
+  
   m_bUseClosed = true;
   m_bUseEnded  = true;
   vResetCharser();
@@ -215,6 +217,17 @@ bool Charser::bIsStdin(void)
 
   return bIsStdin;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void Charser::vDebugMode(bool bDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  d_bDebugMode = bDebugMode;
+}
+
 
 
 // Options /////////////////////////////////////////////////////////////////////
