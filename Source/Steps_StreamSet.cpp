@@ -73,10 +73,11 @@ void Step::vStreamSetAddAnalyzeIndex(void)
                                     nBuffers,
                                     nEntries,
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
+  
   EXIT();
 }
 
@@ -114,10 +115,10 @@ void Step::vStreamSetAddAnalyzeTable(void)
                                     nBuffers,
                                     nRows,
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -147,10 +148,10 @@ void Step::vStreamSetAddColumnDef(void)
                                   (i8)pColumn->bIsNullable(),
                                   (i8)pColumn->bIsPtnKey(),
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -198,9 +199,9 @@ void Step::vStreamSetAddGridSanity(void)
                                   pNodeInfo->szStzGet(0),
                                   bHomogenous,
                                   C_VARGS_END);
-  ASSERT(pRow);
-  
-  m_pDataStack->vPushPtr(pRow);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -227,10 +228,10 @@ void Step::vStreamSetAddListContents(void)
                                   C_VARGS_BEGIN,
                                   sContents.azChar(),
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -263,10 +264,10 @@ void Step::vStreamSetAddListFolder(void)
                                   sName.azChar(),
                                   sKind.azChar(),
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -295,10 +296,10 @@ void Step::vStreamSetAddListIndex(void)
                                   (i8)pIndex->bIsUnique(),
                                   (i8)pIndex->bIsPrimaryKey(),
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -329,10 +330,10 @@ void Step::vStreamSetAddListPartitions(void)
                                     iPartition,
                                     pNode->szNodeNm(),
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -362,10 +363,10 @@ void Step::vStreamSetAddNodeStatus(void)
                         sRegionNm.azChar(),
                         Region::bTest(sRegionNm) ? "running"_Stz : "not running"_Stz,
                         C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -388,10 +389,10 @@ void Step::vStreamSetAddPingInfo(void)
                                   C_VARGS_BEGIN,
                                   "pong"_Stz,
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -412,10 +413,10 @@ void Step::vStreamSetAddProgressUnits(void)
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -442,10 +443,10 @@ void Step::vStreamSetAddPwfInfo(void)
                                     C_VARGS_BEGIN,
                                     sString.azChar(),
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -475,10 +476,10 @@ void Step::vStreamSetAddShowCluster(void)
                                   pNode->iPortNo(),
                                   (i8)(pNode->pSendSocket() ? true : false),
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -506,10 +507,10 @@ void Step::vStreamSetAddSizeIndex(void)
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     sSize.azChar(),
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -537,10 +538,10 @@ void Step::vStreamSetAddSizeTable(void)
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     sSize.azChar(),
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -590,10 +591,10 @@ void Step::vStreamSetAddSpaceInfo(void)
                                   sInUseSpace.azChar(),
                                   sTotalFreeSpace.azChar(),
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -625,10 +626,10 @@ void Step::vStreamSetAddTableSizes(void)
                                     sTableName.azChar(),
                                     sSize.azChar(),
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -661,10 +662,10 @@ void Step::vStreamSetAddVerifyIndex(void)
                                     pIndex->szIndexNm(),
                                     iStatus ? "Valid"_Stz : "Invalid"_Stz,
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -693,10 +694,10 @@ void Step::vStreamSetAddVerifyTable(void)
                                     pTable->szTableNm(),
                                     iStatus ? "valid"_Stz : "invalid"_Stz,
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }

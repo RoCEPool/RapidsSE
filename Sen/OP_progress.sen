@@ -5,61 +5,67 @@
 " OP_progress.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_INFOSET...                                                           */
+/* on ZK_PROGRESSUNITS...                                                     */
 /*----------------------------------------------------------------------------*/
-: progress_Infoset \handler
+: progress_ProgressUnits \handler
 
   0 locals| iPercent |
 
-  //"Operand:- ZK_INFOSET" .verbose
+  //"Operand:- ZK_PROGRESSUNITS" .verbose
 
   // get operand into InfoSet[]
   Pipein[] to InfoSet[]
   nullptr to Pipein[]
 
-  // is it a progress operand ?
-  Infoset[].isProgress if
 
-    // is it totalUnits ?
-    Infoset[].isTotalUnits if
+  // get first row of InfoSet[]
+  Infoset[].firstRow to row[]
 
-      // get first row of infoSet[]
-      Infoset[].firstRow to row[]
+  // get 0th Column (ProgressUnits) add to Counter
+  0 row[].getIntColumn Counter1[] + to Counter1[]
 
-      // get 0th column (totalUnits)
-      0 row[].getIntColumn to Counter0[]
+  // calculat the Load %
+  Counter1[] Counter0[] Int.percent to iPercent
 
+  // print the Load %
+  iPercent 0 > if
+    iPercent 100 > if
+      <string> "%v Progress: 100" str.format
+      "%" str.cat .
     else
-
-      // get first row of InfoSet[]
-      Infoset[].firstRow to row[]
-
-      // get 0th Column (ProgressUnits) add to Counter
-      0 row[].getIntColumn Counter1[] + to Counter1[]
-
-      // calculat the Load %
-      Counter1[] Counter0[] Int.percent to iPercent
-
-      // print the Load %
-      iPercent 0 > if
-        iPercent 100 > if
-          <string> "%v Progress: 100" str.format
-          "%" str.cat .
-        else
-          iPercent <string> "%v Progress: %v" str.format
-          "%" str.cat .
-        then
-      then
-
+      iPercent <string> "%v Progress: %v" str.format
+      "%" str.cat .
     then
-
-    // now delete the InfoSet[]
-    InfoSet[].delete
-
-  else
-    // not a progress InfoSet, just pipeout
-    Infoset[].pipeout
   then
+
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_TOTALUNITS...                                                        */
+/*----------------------------------------------------------------------------*/
+: progress_TotalUnits \handler
+
+  0 locals| iPercent |
+
+  //"Operand:- ZK_TOTALUNITS" .verbose
+
+  // get operand into InfoSet[]
+  Pipein[] to InfoSet[]
+  nullptr to Pipein[]
+
+  // get first row of infoSet[]
+  Infoset[].firstRow to row[]
+
+  // get 0th column (totalUnits)
+  0 row[].getIntColumn to Counter0[]
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
 
   true
 ;
@@ -73,7 +79,8 @@
 
   op__topology
 
-  find: Progress_Infoset ZK_INFOSET op[].handler!
+  find: Progress_ProgressUnits ZK_PROGRESSUNITS op[].handler!
+  find: Progress_TotalUnits    ZK_TOTALUNITS op[].handler!
 
   op__loop
 

@@ -7,6 +7,7 @@ enum eOI // operator Infoset
 {
   /*  0 */ OI_NONE=0,
   
+  /*    */ OI_LOCKSTATS,
   /*    */ OI_NODEINFO,
   /*    */ OI_PROGRESSUNITS,
   /*    */ OI_SEEKOFFSETS,
@@ -19,6 +20,7 @@ static Stz* aOI[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "LOCKSTATS"_Stz,
   /*    */ "NODEINFO"_Stz,
   /*    */ "PROGRESSUNITS"_Stz,
   /*    */ "SEEKOFFSETS"_Stz,

@@ -5,16 +5,17 @@
 " OP_statWrite.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_LOCKSTATS ...                                               */
 /*----------------------------------------------------------------------------*/
-: OP_statWrite_InfoSet \handler
+: OP_statWrite_LockStats \handler
 
   "statWrite_InfoSet --- --- ---" .
 
-  File0[].isNull not if
-    "File not null" .
-    process::quit
-  then
+//! ALKA TO CHECK WITH RAY
+//  File0[].isNull not if
+//    "File not null" .
+//    process::quit
+//  then
 /*
   file::new to File0[]
   "/tmp/SE_Stats.csv" OPEN_APPEND File0[].get file.open
@@ -46,7 +47,9 @@
     Pipein[] to infoset[]
     nullptr to Pipein[]
 
-    InfoSet[].writeCsv
+    C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+
+    infoSetTable[] InfoSet[].writeCsv
 
     infoset[].delete
 
@@ -67,11 +70,10 @@
   LogReqEntry SEED_REQ
 
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
-  infoSetTable[] streamDef[].new
 
   op__topology
 
-  find: OP_statWrite_InfoSet ZK_INFOSET op[].handler!
+  find: OP_statWrite_LockStats ZK_LOCKSTATS op[].handler!
 
   op__loop
 

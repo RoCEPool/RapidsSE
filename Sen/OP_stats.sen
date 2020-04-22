@@ -22,17 +22,29 @@
 //    streamDef[].asStr .
 //    nullptr to Operand[]
 //  then
-
+/*
   // find the __lockStats table
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
   // create a new streamDef
   infoSetTable[] streamDef[].new
 
-  streamDef[].asStr .
-
+  //streamDef[].asStr .
   metrics::lockSample to operandC[]
   OperandC[].pipeOut
+*/
+
+  // find the __lockStats table
+  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+
+  // add lock  to the infoSet
+  infoSetTable[] infoSet[].addLockStats assert
+
+  // pipeout the infoset
+  infoSet[].pipeout
 
   true
 ;
@@ -41,12 +53,29 @@
 /* handler for ZK_EXITMARKER ...                                              */
 /*----------------------------------------------------------------------------*/
 : stats_ExitMarker \handler
-
+/*
   metrics::lockSample // to operandC[]
   //OperandC[].pipeOut
 
   Pipein[].pipeOut
+ 
+ Op.ackPipelineJob
+ false
+*/
 
+  // find the __lockStats table
+  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+
+  // add lock  to the infoSet
+  infoSetTable[] infoSet[].addLockStats assert
+
+  // pipeout the infoset
+  infoSet[].pipeout
+
+  Pipein[].pipeout
   Op.ackPipelineJob
   false
 ;

@@ -31,8 +31,6 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
   m_nRowSize   = C_UNKNOWN;
   m_nInfoRows  = 0;
   
-  _checkInitialised_(eClassNo);
-  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
@@ -47,8 +45,6 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
   m_sInfoSetNm = pStreamDef->szName();
   m_nRowSize  = Row::nSizeBytes(pStreamDef);
   m_nInfoRows = 0;
-  
-  _checkInitialised_(eClassNo);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

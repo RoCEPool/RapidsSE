@@ -47,6 +47,9 @@ InfoSet::InfoSet(void)
 : InfoSetBase(CN_INFOSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  m_eOpInfoSet = OI_NONE;
+  _checkInitialised_(CN_INFOSET);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +60,9 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
+  m_eOpInfoSet = OI_NONE;
+  
+  _checkInitialised_(CN_INFOSET);
 }
 
 /*----------------------------------------------------------------------------*/

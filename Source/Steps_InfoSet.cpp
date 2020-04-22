@@ -10,6 +10,7 @@
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
+  vAddStep("InfoSet[].addLockStats"_Stz,   &Step::vInfoSetAddLockStats);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
@@ -30,6 +31,31 @@ void Step::vAddSteps_InfoSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* InfoSet[].addLockStats -- add a row to infoset with the lockStats          */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddLockStats(void)
+{
+  ENTRY();
+  
+  // get the table
+  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamTable->pStreamDef();
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_LOCKSTATS);
+  
+  Row* pRow = LockMetrics::pSample(pStreamDef, pInfoSet);
+  
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushInt(pRow ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* InfoSet[].addNodeInfo -- add a row to the infoset with the nodeInfo        */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetAddNodeInfo(void)
@@ -43,6 +69,7 @@ void Step::vInfoSetAddNodeInfo(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_NODEINFO);
   
   Grid* pGrid = AM::pGrid();
   
@@ -52,10 +79,10 @@ void Step::vInfoSetAddNodeInfo(void)
                                     AM::iRegionSize(),
                                     pGrid->nSlotsPerNode(),
                                     C_VARGS_END);
-  ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -77,15 +104,16 @@ void Step::vInfoSetAddProgressUnits(void)
   
   // get the infoSet
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_PROGRESSUNITS);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -107,15 +135,16 @@ void Step::vInfoSetAddTotalUnits(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_TOTALUNITS);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iTotalUnits,
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -129,6 +158,7 @@ void Step::vInfoSetChunkFile(void)
   
   // get the seekOffsets
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_SEEKOFFSETS);
   
   // get the file we are chunking
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
@@ -296,8 +326,8 @@ void Step::vInfoSetIsProgress(void)
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  bool bIsProgress = pInfoSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
-                       pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
+  bool bIsProgress = pInfoSet->eOpInfoSet() == OI_PROGRESSUNITS ||
+                     pInfoSet->eOpInfoSet() == OI_TOTALUNITS;
   m_pDataStack->vPushInt(bIsProgress);
   
   EXIT();
@@ -314,8 +344,7 @@ void Step::vInfoSetIsTotalUnits(void)
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  bool bIsTotalUnits = pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
-  m_pDataStack->vPushInt(bIsTotalUnits);
+  m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_TOTALUNITS ? true : false);
   
   EXIT();
 }
@@ -440,9 +469,11 @@ void Step::vInfoSetWriteCsv(void)
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   
+  Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
+  StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
 
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
 

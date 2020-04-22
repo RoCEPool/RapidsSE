@@ -5,11 +5,11 @@
 " OP_toStatD.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_INFOSET ...                                                          */
+/* on ZK_LOCKSTATS ...                                                        */
 /*----------------------------------------------------------------------------*/
-: OP_toStatD_InfoSet \handler
+: OP_toStatD_LockStats \handler
 
-  "OP_toStatD_InfoSet +++ +++ +++" .
+  "OP_toStatD_LockStats +++ +++ +++" .
 
   Pipein[] to infoset[]
   nullptr to Pipein[]
@@ -22,6 +22,7 @@
     "__statD" find dup if
       word.object@
       pipeline.pipeout
+      nullptr to infoSet[]
     else
       discard discard
       infoset[].delete
@@ -39,7 +40,7 @@
 
   op__topology
 
-  find: OP_toStatD_InfoSet ZK_INFOSET op[].handler!
+  find: OP_toStatD_LockStats ZK_LOCKSTATS op[].handler!
 
   op__loop
 

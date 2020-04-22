@@ -21,9 +21,9 @@ void Step::vMetricsLockSample(void)
 
   StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
     
-  InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
+  //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   
-  m_pDataStack->vPushPtr(pInfoSet);
+  //m_pDataStack->vPushPtr(pInfoSet);
   
   EXIT();
 }

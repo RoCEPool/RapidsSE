@@ -419,6 +419,7 @@ public:
   void vRegIndexPtnSet(void);
 
   // reg info set
+  void vInfoSetAddLockStats(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
   void vInfoSetAddTotalUnits(void);
@@ -1133,7 +1134,6 @@ public:
   void vRegOperandOoODelete(void);
   void vRegOperandOoOGet(void);
   void vRegOperandOoOIsNull(void);
-  void vRegOperandOoOKind(void);
   void vRegOperandNextOoO(void);
   void vRegOperandOoOPipeOut(void);
   void vRegOperandOoOPipeToJob(void);

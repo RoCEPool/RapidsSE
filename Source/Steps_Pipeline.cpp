@@ -13,7 +13,7 @@ void Step::vAddSteps_Pipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op::pipeout -- append operand onto next operator in pipeline               */
+/* pipeline.pipeout -- append operand onto next operator in pipeline          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePipeout(void)
 {

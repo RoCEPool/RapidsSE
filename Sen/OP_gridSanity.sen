@@ -5,9 +5,9 @@
 " OP_sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_INFOSET ...                                                          */
+/* on ZK_NODEINFO...                                                          */
 /*----------------------------------------------------------------------------*/
-: GridSanity_InfoSet \handler
+: GridSanity_NodeInfo \handler
 
   //"Operand:- ZK_STREAMSET" .verbose
 
@@ -51,7 +51,7 @@
 
   op__topology
 
-  find: GridSanity_InfoSet     ZK_INFOSET op[].handler!
+  find: GridSanity_NodeInfo     ZK_NODEINFO op[].handler!
 
   op__loop
 

@@ -40,7 +40,11 @@
     then
 
     object@ word.name@
-    streamSetTable[] StreamSet[].addListFolder assert
+    streamSetTable[] StreamSet[].addListFolder not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      streamSetTable[] StreamSet[].addListFolder assert
+    then
 
     object@ word.prev object!      // step backwards thru words
   next
