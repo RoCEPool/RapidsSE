@@ -521,6 +521,23 @@ void Input::vCollectVecFirstLine(void)
     break;
   }
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nTkns = m_pTknVec->nTokens();
+  if (! nTkns)
+    return;
+  
+//  Token* pLastTkn = m_pTknVec->pGet(nTkns - 1);
+//  
+//  if (pLastTkn->bIsEOF()) {
+//    m_pTknVec->vIntegrityCheck();
+//    m_pTknVec->vRemoveToken(pLastTkn->i_Token());
+//    m_pTknVec->vIntegrityCheck();
+//  }
+//  else {
+//    m_pTknVec->vListTokens();
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
