@@ -154,7 +154,7 @@ void TokenVec::vAdvanceCurr(void)
 
   m_iCurTkn++;
   
-  vIncItems();
+  //vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
