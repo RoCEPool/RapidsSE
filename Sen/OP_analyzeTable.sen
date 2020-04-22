@@ -30,7 +30,12 @@
   grid::slots 0
   do
     // analyze table
-    I table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
+    I table[] streamSetTable[] StreamSet[].addAnalyzeTable  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      I table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
+    then
+
   loop
 
   // pipeout the infoset

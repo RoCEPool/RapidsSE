@@ -27,7 +27,11 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a row in the infoSet for the defined node
-    I streamSetTable[] streamSet[].addShowCluster assert
+    I streamSetTable[] streamSet[].addShowCluster  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      I streamSetTable[] StreamSet[].addShowCluster assert
+    then
 
   loop
 

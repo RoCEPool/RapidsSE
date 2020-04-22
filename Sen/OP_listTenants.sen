@@ -37,7 +37,14 @@
 
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
-    object@ word.name@ streamSetTable[] StreamSet[].addListContents assert
+    object@ word.name@
+    streamSetTable[] StreamSet[].addListContents  not if
+      StreamSet[].pipeout
+      streamSetTable[] streamSet[].new
+      object@ word.name@
+      streamSetTable[] StreamSet[].addListContents assert
+    then
+
     object@ word.prev object!      // step backwards thru words
   next
 
