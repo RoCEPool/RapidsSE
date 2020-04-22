@@ -12,22 +12,16 @@
   Pipein[] to InfoSet[]
   nullptr to Pipein[]
 
-  infoSet[].IsProgress if
-    InfoSet[].pipeout
+  InfoSet[].firstRow to row[]
+  begin
+    row[].isNull
+  not while
+    row[].get InfoSet[].readChunk to Operand[]
+    Operand[].pipeout
+    InfoSet[].nextRow to row[]
+  repeat
 
-  else
-
-    InfoSet[].firstRow to row[]
-    begin
-      row[].isNull
-    not while
-      row[].get InfoSet[].readChunk to Operand[]
-      Operand[].pipeout
-      InfoSet[].nextRow to row[]
-    repeat
-
-    InfoSet[].delete
-  then
+  InfoSet[].delete
 
   true
 ;
@@ -72,9 +66,9 @@
 
   op__topology
 
-  find: readChunk_SeekOffsets ZK_SEEKOFFSETS op[].handler!
-  find: readChunk_StartMarker ZK_STARTMARKER op[].handler!
-  find: readChunk_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: readChunk_ExitMarker    ZK_EXITMARKER    op[].handler!
+  find: readChunk_SeekOffsets   ZK_SEEKOFFSETS   op[].handler!
+  find: readChunk_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 
