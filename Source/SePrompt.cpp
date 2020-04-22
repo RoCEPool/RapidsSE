@@ -141,7 +141,7 @@ void SePrompt::vPromptLoop(void)
   m_pSession->m_pInput->vUseStdin();
   m_pSession->m_pInput->vFormCppTokens();
   m_pSession->m_pInput->vUseBegin();
-  m_pSession->m_pInput->vInspect();
+  //m_pSession->m_pInput->vInspect();
 
   vVerifyJobSeeds();
   
@@ -1003,11 +1003,12 @@ bool SePrompt::bReadNextCommand(void)
   }
 
   pTknVec->vIntegrityCheck();
-  m_pSession->m_pInput->vInspect();
+  //m_pSession->m_pInput->vInspect();
 
   pTknVec->vIntegrityCheck();
   m_pSession->m_pInput->vReadCommand();
   
+  //pTknVec->vListTokens();
   pTknVec->vIntegrityCheck();
   return true;
 }

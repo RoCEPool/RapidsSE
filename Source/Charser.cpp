@@ -72,16 +72,23 @@ void Charser::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-//  vTrace("Charser[%lld] : Source %s Path %s %s %s %s %s %s\n"_Stz,
-//         m_iDepth,
-//         aIS[m_eSource],
-//         m_sPath.szStz(),
-//         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
-//         m_bUseBegun  ? "UseBegun"  : "Not-UseBegun",
-//         m_bUseEnded  ? "UseEnded"  : "Not-UseEnded",
-//         m_bUseOpened ? "UseOpened" : "Not-UseOpened",
-//         m_bUseClosed ? "UseClosed" : "Not-UseClosed"
-//         );
+  vTrace("Charser[%lld] : Source %s Path %s %s %s %s %s %s %s : "
+         "Loaded %lld %c %c\n"_Stz,
+         m_iDepth,
+         aIS[m_eSource],
+         m_sPath.szStz(),
+         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
+         m_bUseBegun       ? "UseBegun"    : "Not-UseBegun",
+         m_bUseEnded       ? "UseEnded"    : "Not-UseEnded",
+         m_bUseOpened      ? "UseOpened"   : "Not-UseOpened",
+         m_bUseClosed      ? "UseClosed"   : "Not-UseClosed",
+
+         m_bSeenEOF        ? "SeenEOF"     : "Not-SeenEOF",
+
+         m_nLoaded,
+         m_xRegOne.m_cChar ? m_xRegOne.m_cChar : ' ',
+         m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' '
+         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,8 +254,8 @@ void Charser::vUseBegin(void)
 
   m_bUseBegun = true;
   
-  if (AM::bDeveloper())
-    vInspect();
+  //if (AM::bDeveloper())
+  //  vInspect();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,6 +785,13 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar)
       
     case IS_FILE:
       vGetAnnCharFile(rxAnnChar);
+      
+      
+      if (! rxAnnChar.m_cChar) {
+        
+      }
+      
+      
       ASSERT( (rxAnnChar.m_cChar) ||
               (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bSingleLineCmd)) );
       break;

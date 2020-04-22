@@ -157,7 +157,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     
     pTkn_ProcNm->vCopyChars_restricted(sProcNm,pCmdTokenVec);
     
-    pCmdTokenVec->vListTokens();
+    //pCmdTokenVec->vListTokens();
 
     Correctness::vDebugPoint();
   }

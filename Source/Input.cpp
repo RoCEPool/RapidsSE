@@ -31,6 +31,9 @@ Input::Input(void)
   m_pTknVec  = new TokenVec;
   m_pToken   = nullptr;
   
+  d_nUseBegin = 0;
+  d_nCollectToken = 0;
+
   _checkInitialised_(CN_INPUT);
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
@@ -175,6 +178,23 @@ void Input::vInspect(void)
 //         aUF[m_eTknForm]
 //         );
 
+  if (! m_pToken) {
+    vTrace("Input #UseBegin.%lld #CollectToken.%lld : ]>NoToken<[\n"_Stz,
+           d_nUseBegin,
+           d_nCollectToken
+           );
+    m_pCharser->vInspect();
+    return;
+  }
+  
+  SP_Token spTkn;
+
+  vTrace("Input #UseBegin.%lld #CollectToken.%lld : %s\n"_Stz,
+         d_nUseBegin,
+         d_nCollectToken,
+         spTkn.sz(m_pToken)
+         );
+
   m_pCharser->vInspect();
 }
 
@@ -245,9 +265,11 @@ void Input::vReadCommand(void)
   vSingleLineCmd(true);
   
   m_pTknVec->vIntegrityCheck();
-  vCollectVecTillEOF();
+  vCollectVecFirstLine();
     
-  // if empty line just return
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
       ! m_pTknVec->pGet(0)->bHasChars() ) {
     m_pTknVec->vIntegrityCheck();
@@ -260,6 +282,7 @@ void Input::vReadCommand(void)
     m_pTknVec->vIntegrityCheck();
     return;
   }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // switch to multi-line command
@@ -370,7 +393,11 @@ void Input::vUseBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  d_nUseBegin++;
+  
   m_pCharser->vUseBegin();
+  
+  //vInspect();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,6 +471,8 @@ void Input::vCollectToken(void)
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
+  d_nCollectToken++;
+
   m_pToken = m_pTknVec->pCurrToken();;
 
   if (UF_CPP_TOKENS == m_eTknForm)
@@ -453,9 +482,9 @@ void Input::vCollectToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect vector of tokens from input stream till EOF                        */
+/* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectVecTillEOF(void)
+void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -474,6 +503,7 @@ void Input::vCollectVecTillEOF(void)
 //        break;
       
       vCollectToken();
+      
       if (TN_EOF == pToken->eToken())
         break;
 
@@ -961,13 +991,19 @@ void Input::vCollectSen(void)
   switch (m_pToken->eToken()) {
       
     // the expected tokens
-    case TN_EOF:
     case TN_INTEGER:
     case TN_NAME:
-    case TN_STRING:
     case TN_TAG:
+//      if (m_pToken->szChars()->bSame(""_Stz)) {
+//        vInspect();
+//        Correctness::vDebugPoint();
+//      }
       break;
       
+    case TN_EOF:
+    case TN_STRING:
+      break;
+
     // unexpected tokens
     case TN_OTHER:
       NEVER_REACH;
@@ -1220,6 +1256,9 @@ bool Input::bStartCppInteger(void)
 bool Input::bStartCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if ('$' == m_xAnnChar.m_cChar)
+    return true;
   
   if (StrLib::bIsNameStartChar(m_xAnnChar.m_cChar))
     return true;
