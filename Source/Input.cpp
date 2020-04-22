@@ -422,6 +422,7 @@ void Input::vReadCommand(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
 void Input::vReadToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
@@ -430,10 +431,25 @@ void Input::vReadToken(void)
   
   m_pTknVec->vSoftReset();
 
-  m_pTknVec->vAdvanceCurr();
+  m_pTknVec->vAdvanceCurr(false);
 
   vCollectOneToken();
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Input::vReadToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  m_pTknVec->vSoftReset();
+
+  m_pTknVec->vAdvanceCurr(false);
+
+  vCollectOneToken();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* seen EOF?                                                                  */
@@ -669,7 +685,7 @@ void Input::vCollectVecFirstLine(void)
   
   for (;;) {
     
-    m_pTknVec->vAdvanceCurr();
+    m_pTknVec->vAdvanceCurr(false);
     Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
               
     vCollectOneToken();
@@ -790,7 +806,7 @@ void Input::vCollectVecTillSemicolon(void)
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
       break;
 
-    m_pTknVec->vAdvanceCurr();
+    m_pTknVec->vAdvanceCurr(false);
   }
   
   //m_pTknVec->vListTokens();
@@ -1716,7 +1732,12 @@ bool Input::bHitEOF(void)
 /*----------------------------------------------------------------------------*/
 void Input::vCursorAdvance(void)
 {
-  m_pTknVec->vAdvanceCurr();
+#ifdef __WITH_INPUT_CURSOR
+  m_pTknVec->vAdvanceCurr(true);
+#else
+  m_pTknVec->vAdvanceCurr(false);
+#endif
+  
   m_pCurrTkn = m_pTknVec->pCurrToken();
 }
 
