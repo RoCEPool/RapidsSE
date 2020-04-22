@@ -943,7 +943,7 @@ void SePrompt::vPromptUser(void)
 
   vInfo("[%s %lld] "
         "%s%s%s"
-        "se %s%c %s> "_Stz,
+        "se %s%c %s%s> "_Stz,
         
         szNodeNm,
         iPid,
@@ -953,12 +953,17 @@ void SePrompt::vPromptUser(void)
         AM::pStepTiming()     ? "*STEPTIMING* " : "",
         
         RAPIDSSE_VERSION_STRING,
-  #ifdef WITH_DEBUG_VERSION
+#ifdef WITH_DEBUG_VERSION
         'd',
-  #else
+#else
         'r',
-  #endif
-        bHasStarted           ? "booted" : "not-booted"
+#endif
+        bHasStarted           ? "booted" : "not-booted",
+#ifdef ___WITH_CHARS_SET
+        " __WITH_CHARS_SET"_Stz
+#else
+        ""_Stz
+#endif
         );
 
   fflush(stdin);

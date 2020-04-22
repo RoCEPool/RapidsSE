@@ -276,52 +276,56 @@ void Input::vReadCommand(void)
     
   ASSERT(m_pCharser->bUseBegun());
   
-  m_pTknVec->vIntegrityCheck();
   vSingleLineCmd(true);
   
-  m_pTknVec->vIntegrityCheck();
   vCollectVecFirstLine();
+  m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected FirstLine\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
       ! m_pTknVec->pGet(0)->bHasChars() ) {
-    m_pTknVec->vIntegrityCheck();
     return;
   }
   
   // if its a command file just return
   if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
       File::bExists(m_pTknVec->pGet(0)->szChars())) {
-    m_pTknVec->vIntegrityCheck();
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // switch to multi-line command
-  m_pTknVec->vIntegrityCheck();
   vSingleLineCmd(false);
   
   // read more till ;
-  m_pTknVec->vIntegrityCheck();
   vCollectVecTillSemicolon();
-  
-  // switch back to single line command
   m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected TillSemicolon\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+
+  // switch back to single line command
   vSingleLineCmd(true);
   
   // stip off ;
-  m_pTknVec->vIntegrityCheck();
   m_pTknVec->vStripSemicolon();
-  
+  m_pTknVec->vIntegrityCheck();
+
   // stip off &
-  m_pTknVec->vIntegrityCheck();
   m_pTknVec->vStripAmpersand();
-  
-  // set no of tokens in token vector
   m_pTknVec->vIntegrityCheck();
+
+  // set no of tokens in token vector
   m_pTknVec->vSetTokens();
   m_pTknVec->vIntegrityCheck();
 }
