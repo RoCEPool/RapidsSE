@@ -48,10 +48,9 @@ void Step::vInfoSetAddLockStats(void)
   
   Row* pRow = LockMetrics::pSample(pStreamDef, pInfoSet);
   
-  ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -80,10 +79,10 @@ void Step::vInfoSetAddNodeInfo(void)
                                     AM::iRegionSize(),
                                     pGrid->nSlotsPerNode(),
                                     C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -111,10 +110,10 @@ void Step::vInfoSetAddProgressUnits(void)
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
@@ -142,10 +141,10 @@ void Step::vInfoSetAddTotalUnits(void)
                                   C_VARGS_BEGIN,
                                   iTotalUnits,
                                   C_VARGS_END);
-  ASSERT(pRow);
+  //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   
-  m_pDataStack->vPushPtr(pRow);
+  m_pDataStack->vPushInt(pRow ? true : false);
   
   EXIT();
 }
