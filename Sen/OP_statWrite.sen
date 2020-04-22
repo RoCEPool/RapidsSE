@@ -11,10 +11,11 @@
 
   "statWrite_InfoSet --- --- ---" .
 
-  File0[].isNull not if
-    "File not null" .
-    process::quit
-  then
+//! ALKA TO CHECK WITH RAY
+//  File0[].isNull not if
+//    "File not null" .
+//    process::quit
+//  then
 /*
   file::new to File0[]
   "/tmp/SE_Stats.csv" OPEN_APPEND File0[].get file.open
@@ -69,7 +70,6 @@
   LogReqEntry SEED_REQ
 
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
-  infoSetTable[] streamDef[].new
 
   op__topology
 

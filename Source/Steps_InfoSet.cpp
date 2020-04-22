@@ -49,7 +49,7 @@ void Step::vInfoSetAddLockStats(void)
   Row* pRow = LockMetrics::pSample(pStreamDef, pInfoSet);
   
   ASSERT(pRow);
-  //pRow->vDump(pStreamDef);
+  pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   
@@ -470,7 +470,7 @@ void Step::vInfoSetWriteCsv(void)
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   
-  Table* pInfoSetTable = _pTable(*m_pRegSet->m_xpInfoSetTable);
+  Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   

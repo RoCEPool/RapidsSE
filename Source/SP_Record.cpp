@@ -396,6 +396,17 @@ Stz* SP_Record::sz(Row* aRow)
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");
 
+    if (DM_VCH == pCol->eDatum()) {
+      
+      if (aRow->m_waColVal[i_Col].bIsNull()) {
+        vAddCol(pCol, C_DATUM_NULL);
+        continue;
+      }
+      
+      Stz* acSrcString = aRow->szStzGet(i_Col);
+      vAddCol(pCol, (i8)acSrcString);
+      continue;
+    }
     vAddCol(pCol, aRow->m_waColVal[i_Col]);
   }
   
