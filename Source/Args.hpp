@@ -75,7 +75,7 @@ namespace Arguments
     bool m_bMunged;          // load munged words
     i8   m_nPeriodicSleep;   // sleep period for periodic job
     bool m_bProgress;        // print initialisation progress
-    bool m_bPromptDebug;     // prompt debug mode
+    i8   m_iPromptDebug;     // prompt debug mode
     bool m_bReload;          // relaod from checkpoint files
     bool m_bRestart;         // restart if system already started
     i8   m_nSubIngesters;    // number of subloaders

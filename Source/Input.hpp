@@ -16,7 +16,7 @@ namespace LexicalAnalysis
     Token*    m_pToken;     // current token
   
     // some debugging aids
-    bool      d_bDebugMode;    // debug mode?
+    bool      d_iDebugMode;    // debug mode?
     i8        d_nUseBegin;     //
     i8        d_nCollectToken; //
   
@@ -33,7 +33,7 @@ namespace LexicalAnalysis
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     Stz* szChars(void);
-    void vDebugMode(bool bDebugMode);
+    void vDebugMode(i8 iDebugMode);
     i8   iDepth(void);
     void vDump(void);
     void vForkReset(void);

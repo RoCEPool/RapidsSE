@@ -31,7 +31,7 @@ Input::Input(void)
   m_pTknVec  = new TokenVec;
   m_pToken   = nullptr;
   
-  d_bDebugMode    = false;
+  d_iDebugMode    = false;
   d_nUseBegin     = 0;
   d_nCollectToken = 0;
 
@@ -85,13 +85,13 @@ Stz* Input::szChars(void)
 /*----------------------------------------------------------------------------*/
 /* set debug mode                                                             */
 /*----------------------------------------------------------------------------*/
-void Input::vDebugMode(bool bDebugMode)
+void Input::vDebugMode(i8 iDebugMode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  d_bDebugMode = bDebugMode;
+  d_iDebugMode = iDebugMode;
   
-  m_pCharser->vDebugMode(bDebugMode);
+  m_pCharser->vDebugMode(d_iDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,6 +263,8 @@ void Input::vPushCharser(void)
   Charser* pNewCharser = new Charser(m_pCharser);
   
   m_pCharser = pNewCharser;
+  
+  m_pCharser->vDebugMode(d_iDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/

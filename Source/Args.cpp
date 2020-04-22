@@ -73,24 +73,25 @@ Args::Args(void)
   m_nEntries         = 0;
   m_bFreeCB          = false;
   m_bGridTest        = false;
-  m_bLock            = false;
   m_bHugePages       = false;
   m_bKillPrev        = false;
+  m_bLock            = false;
   m_bLog             = false;
   m_bNoMunge         = false;
   m_nMaxLoadErrors   = 0;
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
+  m_nPeriodicSleep   = 10;
   m_bProgress        = true;
+  m_iPromptDebug     = 0;
   m_bReload          = false;
   m_bRestart         = true;
   m_nSubIngesters    = 4;
   m_nSubLoaders      = 4;
+  m_nSupervisorSleep = 10;
   m_iThisNode        = C_UNKNOWN;
   m_nThreads         = 12;
-  m_nPeriodicSleep   = 10;
-  m_nSupervisorSleep = 10;
   m_bTouch           = false;
   m_bTracepoint      = false;
   m_bTracing         = false;
@@ -450,7 +451,7 @@ bool Args::bParse(int argc, Stz* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--promptDebug"_Stz)) {
-      m_bPromptDebug = true;
+      m_iPromptDebug = argv[++i_Arg]->iToI8();
       continue;
     }
 

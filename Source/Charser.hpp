@@ -43,7 +43,7 @@ namespace LexicalAnalysis
     bool     m_bSeenEOF;  // eof seen?
   
     // some debugging aids
-    bool      d_bDebugMode;  // debug mode?
+    bool      d_iDebugMode;  // debug mode?
  
     // must be last
     Footer m_xFooter;
@@ -88,7 +88,7 @@ namespace LexicalAnalysis
     bool bSingleLineCmd(void);
     bool bIsStdin(void);
 
-    void vDebugMode(bool bDebugMode);
+    void vDebugMode(i8 iDebugMode);
   
   private:
     

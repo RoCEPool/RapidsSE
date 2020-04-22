@@ -29,7 +29,7 @@ Charser::Charser(Charser* pNext)
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
   
-  d_bDebugMode = false;
+  d_iDebugMode = false;
   
   m_bUseClosed = true;
   m_bUseEnded  = true;
@@ -221,13 +221,12 @@ bool Charser::bIsStdin(void)
 /*----------------------------------------------------------------------------*/
 /* set debug mode                                                             */
 /*----------------------------------------------------------------------------*/
-void Charser::vDebugMode(bool bDebugMode)
+void Charser::vDebugMode(i8 iDebugMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  d_bDebugMode = bDebugMode;
+  d_iDebugMode = iDebugMode;
 }
-
 
 
 // Options /////////////////////////////////////////////////////////////////////
