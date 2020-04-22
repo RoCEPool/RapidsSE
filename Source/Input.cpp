@@ -524,13 +524,14 @@ void Input::vCollectVecFirstLine(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nTkns = m_pTknVec->nTokens();
-  if (! nTkns)
-    return;
-  
+//  i8 nTkns = m_pTknVec->nTokens();
+//  if (! nTkns)
+//    return;
+//
 //  Token* pLastTkn = m_pTknVec->pGet(nTkns - 1);
-//  
+//
 //  if (pLastTkn->bIsEOF()) {
+//    m_pTknVec->vListTokens();
 //    m_pTknVec->vIntegrityCheck();
 //    m_pTknVec->vRemoveToken(pLastTkn->i_Token());
 //    m_pTknVec->vIntegrityCheck();
@@ -538,6 +539,8 @@ void Input::vCollectVecFirstLine(void)
 //  else {
 //    m_pTknVec->vListTokens();
 //  }
+//
+//  Correctness::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -552,13 +555,15 @@ void Input::vCollectVecTillSemicolon(void)
   // we should have a first token (e.g. create or drop)
   ASSERT(m_pTknVec->pGet(0)->bHasChars());
   
+  //m_pTknVec->vListTokens();
+
   // have we already seen the ';'
-  i8 i_Token = m_pTknVec->iFindToken(";"_Stz);
-  
-  if (i_Token >= 0)
+  if (m_pTknVec->bHasSemicolon())
     return;
   
-  i_Token = m_pTknVec->iCountTokens();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_Token = m_pTknVec->iCountTokens();
   
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
@@ -575,6 +580,9 @@ void Input::vCollectVecTillSemicolon(void)
     m_pTknVec->vAdvanceCurr();
   }
   
+  //m_pTknVec->vListTokens();
+  
+  Correctness::vDebugPoint();
 }
 
 // collect cpp tokens //////////////////////////////////////////////////////////

@@ -42,6 +42,7 @@ namespace LexicalAnalysis
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     Token* pFirstToken(void);
+    bool bHasSemicolon(void);
     void vIncTokens(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     void vIntegrityCheck(void);
