@@ -233,6 +233,9 @@ c149 boolean NOT NULL
 );
 success
 
+lscol T1;
+rows: 150
+
 // (10) drop table
 drop table T1 ;
 success
