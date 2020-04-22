@@ -10,6 +10,7 @@
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                &Step::vInfoSetGet);
+  vAddStep("InfoSet[].addLockStats"_Stz,   &Step::vInfoSetAddLockStats);
   vAddStep("InfoSet[].addNodeInfo"_Stz,    &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
@@ -27,6 +28,32 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].readChunk"_Stz,      &Step::vInfoSetReadChunk);
   vAddStep("InfoSet[].set"_Stz,            &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,       &Step::vInfoSetWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addLockStats -- add a row to infoset with the lockStats          */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddLockStats(void)
+{
+  ENTRY();
+  
+  // get the table
+  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamTable->pStreamDef();
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_LOCKSTATS);
+  
+  Row* pRow = LockMetrics::pSample(pStreamDef, pInfoSet);
+  
+  ASSERT(pRow);
+  //pRow->vDump(pStreamDef);
+  
+  m_pDataStack->vPushPtr(pRow);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +81,7 @@ void Step::vInfoSetAddNodeInfo(void)
                                     pGrid->nSlotsPerNode(),
                                     C_VARGS_END);
   ASSERT(pRow);
-  pRow->vDump(pStreamDef);
+  //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushPtr(pRow);
   EXIT();
@@ -443,9 +470,11 @@ void Step::vInfoSetWriteCsv(void)
   
   ASSERT(*m_pRegSet->m_xpInfoSet);
   
+  Table* pInfoSetTable = _pTable(*m_pRegSet->m_xpInfoSetTable);
+  
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  StreamDef* pStreamDef = *m_pRegSet->m_xpStreamDef;
+  StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
 
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
 

@@ -5,9 +5,9 @@
 " OP_statWrite.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* handler for ZK_LOCKSTATS ...                                               */
 /*----------------------------------------------------------------------------*/
-: OP_statWrite_InfoSet \handler
+: OP_statWrite_LockStats \handler
 
   "statWrite_InfoSet --- --- ---" .
 
@@ -46,7 +46,9 @@
     Pipein[] to infoset[]
     nullptr to Pipein[]
 
-    InfoSet[].writeCsv
+    C_TDEF_LOCKSTATS op__tableDef_infoSet assert
+
+    infoSetTable[] InfoSet[].writeCsv
 
     infoset[].delete
 
@@ -71,7 +73,7 @@
 
   op__topology
 
-  //find: OP_statWrite_InfoSet ZK_INFOSET op[].handler!
+  find: OP_statWrite_LockStats ZK_LOCKSTATS op[].handler!
 
   op__loop
 
