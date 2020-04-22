@@ -8,13 +8,13 @@ namespace LexicalAnalysis
   class Input : public Object
   {
   private:
+    eUF       m_eTknForm;   // form of tokens to be collected
+    TokenVec* m_pTknVec;    // set of collected tokens
+    Token*    m_pCurrTkn;   // current token
+  
     Charser*  m_pCharser;   // charser
     AnnChar   m_xAnnChar;   // annotated char from charser
 
-    eUF       m_eTknForm;   // form of tokens to be collected
-    TokenVec* m_pTknVec;    // set of collected tokens
-    Token*    m_pToken;     // current token
-  
     // some debugging aids
     bool      d_iDebugMode;    // debug mode?
     i8        d_nUseBegin;     //
@@ -59,7 +59,7 @@ namespace LexicalAnalysis
     void vUseString(Stz* szString);
  
   private:    
-    void vCollectToken(void);
+    void vCollectOneToken(void);
     void vCollectVecFirstLine(void);
     void vCollectVecTillSemicolon(void);
   
@@ -96,6 +96,9 @@ namespace LexicalAnalysis
   
     void vTokenCollectBegin(void);
     void vTokenCollectEnd(void);
+  
+    void vCursorAdvance(void);
+    void vCursorReset(void);
 
     bool bHitEOF(void);
     

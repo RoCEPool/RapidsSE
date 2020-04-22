@@ -29,7 +29,7 @@ Input::Input(void)
   m_xAnnChar.vReset();
       
   m_pTknVec  = new TokenVec;
-  m_pToken   = nullptr;
+  m_pCurrTkn = nullptr;
   
   d_iDebugMode    = false;
   d_nUseBegin     = 0;
@@ -191,7 +191,7 @@ void Input::vInspect(void)
 //         aUF[m_eTknForm]
 //         );
 
-  if (! m_pToken) {
+  if (! m_pCurrTkn) {
     vTrace("Input #UseBegin.%lld #CollectToken.%lld : ]>NoToken<[\n"_Stz,
            d_nUseBegin,
            d_nCollectToken
@@ -205,7 +205,7 @@ void Input::vInspect(void)
   vTrace("Input #UseBegin.%lld #CollectToken.%lld : %s\n"_Stz,
          d_nUseBegin,
          d_nCollectToken,
-         spTkn.sz(m_pToken)
+         spTkn.sz(m_pCurrTkn)
          );
 
   m_pCharser->vInspect();
@@ -354,9 +354,8 @@ void Input::vReadToken(void)
   m_pTknVec->vSoftReset();
 
   m_pTknVec->vAdvanceCurr();
-  Token* pToken = m_pTknVec->pCurrToken();;
 
-  vCollectToken();
+  vCollectOneToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -495,16 +494,17 @@ void Input::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* collect next token                                                         */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectToken(void)
+void Input::vCollectOneToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  d_nCollectToken++;
   
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
-  d_nCollectToken++;
 
-  m_pToken = m_pTknVec->pCurrToken();;
+  m_pCurrTkn = m_pTknVec->pCurrToken();;
 
   if (UF_CPP_TOKENS == m_eTknForm)
     vCollectCpp();
@@ -521,36 +521,30 @@ void Input::vCollectVecFirstLine(void)
   
   ASSERT(m_pCharser->bUseBegun());
   
-  while (true) {
-    
-    m_pTknVec->vSoftReset();
-    
-    for (;;) {
-      
-      m_pTknVec->vAdvanceCurr();
-      Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
-            
-//      if (! bNextInputToken(pToken))
-//        break;
-      
-      vCollectToken();
-      
-      if (TN_EOF == pToken->eToken())
-        break;
+  m_pTknVec->vSoftReset();
 
-      m_pTknVec->vIncTokens();
-      ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
-    }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (;;) {
     
-    // end of file? if so, pop and retry
-    if (! m_pTknVec->nTokens() && bSeenEOF()) {
-      bool b = bPopCharser();
-      ASSERT(b);
+    m_pTknVec->vAdvanceCurr();
+    Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
+              
+    vCollectOneToken();
+    
+    if (TN_EOF == pToken->eToken())
       break;
-    }
-    
-    break;
+
+    m_pTknVec->vIncTokens();
+    ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
   }
+  
+  // end of file? if so, pop and retry
+  if (! m_pTknVec->nTokens() && bSeenEOF()) {
+    bool b = bPopCharser();
+    ASSERT(b);
+  }
+    
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -598,7 +592,7 @@ void Input::vCollectVecTillSemicolon(void)
     
     Token* pToken = m_pTknVec->pGet(i_Token,true);
     
-    vCollectToken();
+    vCollectOneToken();
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
@@ -624,8 +618,8 @@ void Input::vCollectCpp(void)
   
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
 
-  char* azTermCrs = m_pToken->azChars();
-  m_pToken->vReset();
+  char* azTermCrs = m_pCurrTkn->azChars();
+  m_pCurrTkn->vReset();
 
   vGetAnnCharStripped();
   
@@ -638,7 +632,7 @@ void Input::vCollectCpp(void)
   // end of input?
   if (bHitEOF()) {
     *azTermCrs = '\0';
-    m_pToken->vToken(TN_EOF);
+    m_pCurrTkn->vToken(TN_EOF);
   }
   
   // collect integer literal?
@@ -666,7 +660,7 @@ void Input::vCollectCpp(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
   // cross check valid normal tokens
-  switch (m_pToken->eToken()) {
+  switch (m_pCurrTkn->eToken()) {
      
     // the expected tokens
     case TN_EOF:
@@ -692,7 +686,7 @@ void Input::vCollectCppInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 iNoDigits = 0;
@@ -728,7 +722,7 @@ void Input::vCollectCppInteger(void)
   // terminate the integer literal
   *z = '\0';
   
-  m_pToken->vToken(TN_INTEGER);
+  m_pCurrTkn->vToken(TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -738,7 +732,7 @@ void Input::vCollectCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppName());
@@ -755,7 +749,7 @@ void Input::vCollectCppName(void)
   // terminate the name
   *z = '\0';
   
-  m_pToken->vToken(TN_NAME);
+  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -765,7 +759,7 @@ void Input::vCollectCppOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppOther());
@@ -778,7 +772,7 @@ void Input::vCollectCppOther(void)
       *z++ = ']';
       *z++ = ']';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -800,7 +794,7 @@ void Input::vCollectCppOther(void)
       *z++ = ':';
       *z++ = ':';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -822,7 +816,7 @@ void Input::vCollectCppOther(void)
       *z++ = '.';
       *z++ = '.';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -842,7 +836,7 @@ void Input::vCollectCppOther(void)
       *z++ = '=';
       *z++ = '=';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -862,7 +856,7 @@ void Input::vCollectCppOther(void)
       *z++ = '>';
       *z++ = '=';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -882,7 +876,7 @@ void Input::vCollectCppOther(void)
       *z++ = '<';
       *z++ = '=';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -902,7 +896,7 @@ void Input::vCollectCppOther(void)
       *z++ = '[';
       *z++ = '[';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -924,7 +918,7 @@ void Input::vCollectCppOther(void)
       *z++ = '|';
       *z++ = '|';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -942,7 +936,7 @@ void Input::vCollectCppOther(void)
   
   // terminate the other token
   *z = '\0';
-  m_pToken->vToken(TN_OTHER);
+  m_pCurrTkn->vToken(TN_OTHER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,7 +946,7 @@ void Input::vCollectCppString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -979,7 +973,7 @@ void Input::vCollectCppString(void)
   // terminate the string literal
   *z = '\0';
   
-  m_pToken->vToken(TN_STRING);
+  m_pCurrTkn->vToken(TN_STRING);
 }
 
 //
@@ -995,9 +989,9 @@ void Input::vCollectSen(void)
   
   ASSERT(UF_SEN_TOKENS == m_eTknForm);
   
-  char* azTermCrs = m_pToken->azChars();
+  char* azTermCrs = m_pCurrTkn->azChars();
   
-  m_pToken->vReset();
+  m_pCurrTkn->vReset();
 
   vGetAnnCharStripped();
   
@@ -1010,7 +1004,7 @@ void Input::vCollectSen(void)
   // end of input?
   if (bHitEOF()) {
     *azTermCrs = '\0';
-    m_pToken->vToken(TN_EOF);
+    m_pCurrTkn->vToken(TN_EOF);
   }
   
   // collect integer literal?
@@ -1041,13 +1035,13 @@ void Input::vCollectSen(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // cross check valid SEN tokens
-  switch (m_pToken->eToken()) {
+  switch (m_pCurrTkn->eToken()) {
       
     // the expected tokens
     case TN_INTEGER:
     case TN_NAME:
     case TN_TAG:
-//      if (m_pToken->szChars()->bSame(""_Stz)) {
+//      if (m_pCurrTkn->szChars()->bSame(""_Stz)) {
 //        vInspect();
 //        Correctness::vDebugPoint();
 //      }
@@ -1074,7 +1068,7 @@ void Input::vCollectSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 iNoDigits = 0;
@@ -1127,7 +1121,7 @@ void Input::vCollectSenInteger(void)
     
     // terminate an intlit
     *z = '\0';
-    m_pToken->vToken(TN_INTEGER);
+    m_pCurrTkn->vToken(TN_INTEGER);
     return;
   }
   
@@ -1142,7 +1136,7 @@ void Input::vCollectSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   //ASSERT(bStartSenName());
@@ -1159,7 +1153,7 @@ void Input::vCollectSenName(void)
   // terminate a namelit
   *z = '\0';
 
-  m_pToken->vToken(TN_NAME);
+  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1169,7 +1163,7 @@ void Input::vCollectSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -1199,7 +1193,7 @@ void Input::vCollectSenString(void)
   // terminate the strlit
   *z = '\0';
 
-  m_pToken->vToken(TN_STRING);
+  m_pCurrTkn->vToken(TN_STRING);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1209,7 +1203,7 @@ void Input::vCollectSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenTag());
@@ -1223,7 +1217,7 @@ void Input::vCollectSenTag(void)
     // terminate a namelit
     *z = '\0';
 
-    m_pToken->vToken(TN_NAME);
+    m_pCurrTkn->vToken(TN_NAME);
     
     return;
   }
@@ -1242,7 +1236,7 @@ void Input::vCollectSenTag(void)
   // terminate a namelit
   *z = '\0';
 
-  m_pToken->vToken(TN_TAG);
+  m_pCurrTkn->vToken(TN_TAG);
 }
 
 
@@ -1478,14 +1472,14 @@ void Input::vTokenCollectBegin(void)
 //
 //  * szLatter->azChar() = '\0';
 //
-//  m_pToken->vChars(szLatter);
+//  m_pCurrTkn->vChars(szLatter);
   
-  m_pTknVec->vCollectBegin(m_pToken);
+  m_pTknVec->vCollectBegin(m_pCurrTkn);
   
 #endif
   
-  m_pToken->vLineNo(m_xAnnChar.m_iLine);
-  m_pToken->vColNo(m_xAnnChar.m_iCol);
+  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
+  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1497,16 +1491,16 @@ void Input::vTokenCollectEnd(void)
 
 #ifdef __WITH_CHARS_SET
   
-//  i8 nChars = m_pToken->nChars();
+//  i8 nChars = m_pCurrTkn->nChars();
 //
 //  m_pTknVec->vTakeCharsBytes(nChars + 1);
 //
 //  Stz* szLatter = m_pTknVec->szLaterChars();
 //  * szLatter->azChar() = '\0';
 //
-//  vTrace("Chars: %s\n"_Stz,m_pToken->szChars());
+//  vTrace("Chars: %s\n"_Stz,m_pCurrTkn->szChars());
   
-  m_pTknVec->vCollectEnd(m_pToken);
+  m_pTknVec->vCollectEnd(m_pCurrTkn);
 
 #endif
 }
@@ -1522,6 +1516,25 @@ bool Input::bHitEOF(void)
     return true;
   
   return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* reset the token vector and current token cursor pair                       */
+/*----------------------------------------------------------------------------*/
+void Input::vCursorAdvance(void)
+{
+  m_pTknVec->vAdvanceCurr();
+  m_pCurrTkn = m_pTknVec->pCurrToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the token vector and current token cursor pair                       */
+/*----------------------------------------------------------------------------*/
+void Input::vCursorReset(void)
+{
+  m_pTknVec->vSoftReset();
+  m_pCurrTkn = nullptr;
 }
 
 /*============================================================================*/
