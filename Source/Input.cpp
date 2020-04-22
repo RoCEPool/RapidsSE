@@ -597,6 +597,11 @@ void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecFirstLine\n"_Stz);
+    vInspect();
+  }
+  
   ASSERT(m_pCharser->bUseBegun());
   
   m_pTknVec->vSoftReset();
@@ -651,12 +656,17 @@ void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecFirstLine\n"_Stz);
+    vInspect();
+  }
+  
   ASSERT(m_pCharser->bUseBegun());
   
-  m_pTknVec->vSoftReset();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pTknVec->vSoftReset();
+  
   for (;;) {
     
     m_pTknVec->vAdvanceCurr();
@@ -709,6 +719,11 @@ void Input::vCollectVecTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecTillSemicolon\n"_Stz);
+    vInspect();
+  }
+  
   ASSERT(m_pCharser->bUseBegun());
   
   // we should have a first token (e.g. create or drop)
@@ -745,6 +760,11 @@ void Input::vCollectVecTillSemicolon(void)
 void Input::vCollectVecTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecTillSemicolon\n"_Stz);
+    vInspect();
+  }
   
   ASSERT(m_pCharser->bUseBegun());
   
