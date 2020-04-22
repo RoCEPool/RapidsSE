@@ -153,6 +153,8 @@ void TokenVec::vAdvanceCurr(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   m_iCurTkn++;
+  
+  vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -497,7 +499,6 @@ void TokenVec::vListTokens(void)
     
     vTrace("  %s\n"_Stz,spTkn.sz(pToken));
   }
-  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
