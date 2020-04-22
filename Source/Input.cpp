@@ -4,6 +4,8 @@
 
 #include "LexicalAnalysis.h"
 
+//#define __WITH_INPUT_CURSOR
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -270,6 +272,7 @@ void Input::vPushCharser(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
 void Input::vReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
@@ -341,6 +344,80 @@ void Input::vReadCommand(void)
   m_pTknVec->vSetTokens();
   m_pTknVec->vIntegrityCheck();
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Input::vReadCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+    
+  ASSERT(m_pCharser->bUseBegun());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the first line so we can test if its a command file to be executed
+  vSingleLineCmd(true);
+  
+  vCollectVecFirstLine();
+  m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected FirstLine\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+  
+  // if empty line just return                                      ** NON-SENSE
+  if ( ! m_pTknVec->nTokens() ||
+       ! m_pTknVec->pGet(0)->bHasChars() ) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a command file
+  
+  // if its a command file just return
+  if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
+      File::bExists(m_pTknVec->pGet(0)->szChars())) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read more until we encounter a ';'
+  
+  // have we already seen the ';'
+  if (m_pTknVec->bHasSemicolon()) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
+  
+  // switch to multi-line command
+  vSingleLineCmd(false);
+  
+  // read more till ;
+  vCollectVecTillSemicolon();
+  m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected TillSemicolon\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+
+  // switch back to single line command
+  vSingleLineCmd(true);
+  
+  // stip off ;
+  m_pTknVec->vStripSemicolon();
+  m_pTknVec->vIntegrityCheck();
+
+  // stip off &
+  m_pTknVec->vStripAmpersand();
+  m_pTknVec->vIntegrityCheck();
+
+  // set no of tokens in token vector
+  m_pTknVec->vSetTokens();
+  m_pTknVec->vIntegrityCheck();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
@@ -515,6 +592,7 @@ void Input::vCollectOneToken(void)
 /*----------------------------------------------------------------------------*/
 /* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
 void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
@@ -567,9 +645,102 @@ void Input::vCollectVecFirstLine(void)
 //
 //  Correctness::vDebugPoint();
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Input::vCollectVecFirstLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  m_pTknVec->vSoftReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (;;) {
+    
+    m_pTknVec->vAdvanceCurr();
+    Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
+              
+    vCollectOneToken();
+    
+    if (TN_EOF == pToken->eToken())
+      break;
+
+    m_pTknVec->vIncTokens();
+    ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
+  }
+  
+  // end of file? if so, pop and retry
+  if (! m_pTknVec->nTokens() && bSeenEOF()) {
+    bool b = bPopCharser();
+    ASSERT(b);
+  }
+    
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+//  i8 nTkns = m_pTknVec->nTokens();
+//  if (! nTkns)
+//    return;
+//
+//  Token* pLastTkn = m_pTknVec->pGet(nTkns - 1);
+//
+//  if (pLastTkn->bIsEOF()) {
+//    m_pTknVec->vListTokens();
+//    m_pTknVec->vIntegrityCheck();
+//    m_pTknVec->vRemoveToken(pLastTkn->i_Token());
+//    m_pTknVec->vIntegrityCheck();
+//  }
+//  else {
+//    m_pTknVec->vListTokens();
+//  }
+//
+//  Correctness::vDebugPoint();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* collect vector of tokens from input stream till ';'                        */
+/*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
+void Input::vCollectVecTillSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  // we should have a first token (e.g. create or drop)
+  ASSERT(m_pTknVec->pGet(0)->bHasChars());
+  
+  // we should not have seen ';'
+  ASSERT( ! m_pTknVec->bHasSemicolon());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_Token = m_pTknVec->iCountTokens();
+  
+  // get tokens delimited by ';'
+  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
+    
+    Token* pToken = m_pTknVec->pGet(i_Token,true);
+    
+    vCollectOneToken();
+    ASSERT(TN_EOF != pToken->eToken());
+    
+    // look for terminal
+    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
+      break;
+
+    m_pTknVec->vAdvanceCurr();
+  }
+  
+  //m_pTknVec->vListTokens();
+  
+  Correctness::vDebugPoint();
+}
+#else
 /*----------------------------------------------------------------------------*/
 void Input::vCollectVecTillSemicolon(void)
 {
@@ -606,6 +777,7 @@ void Input::vCollectVecTillSemicolon(void)
   
   Correctness::vDebugPoint();
 }
+#endif
 
 // collect cpp tokens //////////////////////////////////////////////////////////
 
