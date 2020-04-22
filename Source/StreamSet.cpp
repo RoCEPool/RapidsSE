@@ -52,7 +52,7 @@ StreamSet::StreamSet(void)
   m_nRowSize   = C_UNKNOWN;
   m_nInfoRows  = 0;
   
-  _checkInitialised_(CN_INFOSET);
+  _checkInitialised_(CN_STREAMSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
 }
@@ -69,7 +69,7 @@ StreamSet::StreamSet(StreamDef* pStreamDef)
   m_nRowSize  = Row::nSizeBytes(pStreamDef);
   m_nInfoRows = 0;
   
-  _checkInitialised_(CN_INFOSET);
+  _checkInitialised_(CN_STREAMSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
   

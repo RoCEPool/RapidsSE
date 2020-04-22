@@ -17,16 +17,18 @@ enum eZK // operand kind
   /*    */ ZK_ERROREDMARKER,
   /*    */ ZK_EXITMARKER,
   /*    */ ZK_EXITEDMARKER,
-  /*    */ ZK_INFOSET,
   /*    */ ZK_IRWBUFFER,
+  /*    */ ZK_NODEINFO,
+  /*    */ ZK_PROGRESSUNITS,
   /*    */ ZK_PULSEMARKER,
   /*    */ ZK_PULSEDMARKER,
+  /*    */ ZK_SEEKOFFSETS,
   /*    */ ZK_SRTBUFFER,
   /*    */ ZK_STARTMARKER,
   /*    */ ZK_STARTEDMARKER,
   /*    */ ZK_STREAMDEF,
   /*    */ ZK_STREAMSET,
-
+  /*    */ ZK_TOTALUNITS,
   /*    */ ZK_ENUMS
 };
 
@@ -44,15 +46,18 @@ static Stz* aZK[]
   /*    */ "ZK_ERROREDMARKER"_Stz,
   /*    */ "ZK_EXITMARKER"_Stz,
   /*    */ "ZK_EXITEDMARKER"_Stz,
-  /*    */ "ZK_INFOSET"_Stz,
   /*    */ "ZK_IRWBUFFER"_Stz,
+  /*    */ "ZK_NODEINFO"_Stz,
+  /*    */ "ZK_PROGRESSUNITS"_Stz,
   /*    */ "ZK_PULSEMARKER"_Stz,
   /*    */ "ZK_PULSEDMARKER"_Stz,
+  /*    */ "ZK_SEEKOFFSETS"_Stz,
   /*    */ "ZK_SRTBUFFER"_Stz,
   /*    */ "ZK_STARTMARKER"_Stz,
   /*    */ "ZK_STARTEDMARKER"_Stz,
   /*    */ "ZK_STREAMDEF"_Stz,
   /*    */ "ZK_STREAMSET"_Stz,
+  /*    */ "ZK_TOTALUNITS"_Stz,
   
   /*    */ "ENUMS"_Stz
 };

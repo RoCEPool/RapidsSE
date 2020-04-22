@@ -384,7 +384,19 @@ void Step::vRegOperandKind(void)
     case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
     case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
     case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
-    case CN_INFOSET  :       eOperand = ZK_INFOSET;         break;
+    case CN_INFOSET  : {
+      InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpOperandA);
+      
+      switch(pInfoSet->eOpInfoSet()) {
+        case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
+        case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;
+        case OI_SEEKOFFSETS:    eOperand = ZK_SEEKOFFSETS;  break;
+        case OI_TOTALUNITS:     eOperand = ZK_TOTALUNITS;     break;
+        default: ASSERT(0)
+      }
+      break;
+    }
+      
     case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
     case CN_MARKER: {
       Marker* pMarker = _pMarker(*m_pRegSet->m_xpOperandA);

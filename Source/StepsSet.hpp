@@ -1133,7 +1133,6 @@ public:
   void vRegOperandOoODelete(void);
   void vRegOperandOoOGet(void);
   void vRegOperandOoOIsNull(void);
-  void vRegOperandOoOKind(void);
   void vRegOperandNextOoO(void);
   void vRegOperandOoOPipeOut(void);
   void vRegOperandOoOPipeToJob(void);

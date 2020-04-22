@@ -108,21 +108,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_INFOSET ...                                                 */
-/*----------------------------------------------------------------------------*/
-: ZK_INFOSET_handler \handler
-
-  //"ZK_INFOSET" .verbose
-  Pipein[].pipeOut
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_IRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : ZK_IRWBUFFER_handler \handler
 
   //"ZK_IRWBUFFER_handler" .verbose
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_NODEINFO ...                                                */
+/*----------------------------------------------------------------------------*/
+: ZK_NODEINFO_handler \handler
+
+  //"ZK_NODEINFO" .verbose
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PROGRESSUNITS ...                                           */
+/*----------------------------------------------------------------------------*/
+: ZK_PROGRESSUNITS_handler \handler
+
+  //"ZK_PROGRESSUNITS" .verbose
   Pipein[].pipeOut
   true
 ;
@@ -143,6 +153,16 @@
 : ZK_PULSEDMARKER_handler \handler
 
   //"ZK_PULSEDMARKER_handler" .verbose
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_SEEKOFFSETS ...                                             */
+/*----------------------------------------------------------------------------*/
+: ZK_SEEKOFFSETS_handler \handler
+
+  //"ZK_SEEKOFFSETS" .verbose
   Pipein[].pipeOut
   true
 ;
@@ -192,9 +212,19 @@
 /*----------------------------------------------------------------------------*/
 : ZK_STREAMSET_handler \handler
 
-//"ZK_STREAMSET" .verbose
-Pipein[].pipeOut
-true
+  //"ZK_STREAMSET" .verbose
+  Pipein[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_TOTALUNITS ...                                              */
+/*----------------------------------------------------------------------------*/
+: ZK_TOTALUNITS_handler \handler
+
+  //"ZK_TOTALUNITS" .verbose
+  Pipein[].pipeOut
+  true
 ;
 
 /*============================================================================*/

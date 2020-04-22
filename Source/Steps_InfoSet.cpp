@@ -43,6 +43,7 @@ void Step::vInfoSetAddNodeInfo(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_NODEINFO);
   
   Grid* pGrid = AM::pGrid();
   
@@ -77,6 +78,7 @@ void Step::vInfoSetAddProgressUnits(void)
   
   // get the infoSet
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_PROGRESSUNITS);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -107,6 +109,7 @@ void Step::vInfoSetAddTotalUnits(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_TOTALUNITS);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -129,6 +132,7 @@ void Step::vInfoSetChunkFile(void)
   
   // get the seekOffsets
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_SEEKOFFSETS);
   
   // get the file we are chunking
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
@@ -296,8 +300,8 @@ void Step::vInfoSetIsProgress(void)
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  bool bIsProgress = pInfoSet->szInfoSetNm()->bSame(C_TDEF_PROGRESSUNITS) ||
-                       pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
+  bool bIsProgress = pInfoSet->eOpInfoSet() == OI_PROGRESSUNITS ||
+                     pInfoSet->eOpInfoSet() == OI_TOTALUNITS;
   m_pDataStack->vPushInt(bIsProgress);
   
   EXIT();
@@ -314,8 +318,7 @@ void Step::vInfoSetIsTotalUnits(void)
   
   InfoSet* pInfoSet = _pInfoSet(*m_pRegSet->m_xpInfoSet);
   
-  bool bIsTotalUnits = pInfoSet->szInfoSetNm()->bSame(C_TDEF_TOTALUNITS);
-  m_pDataStack->vPushInt(bIsTotalUnits);
+  m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_TOTALUNITS ? true : false);
   
   EXIT();
 }

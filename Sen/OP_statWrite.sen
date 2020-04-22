@@ -71,7 +71,7 @@
 
   op__topology
 
-  find: OP_statWrite_InfoSet ZK_INFOSET op[].handler!
+  //find: OP_statWrite_InfoSet ZK_INFOSET op[].handler!
 
   op__loop
 
