@@ -267,7 +267,9 @@ void Input::vReadCommand(void)
   m_pTknVec->vIntegrityCheck();
   vCollectVecFirstLine();
     
-  // if empty line just return
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
       ! m_pTknVec->pGet(0)->bHasChars() ) {
     m_pTknVec->vIntegrityCheck();
@@ -280,6 +282,7 @@ void Input::vReadCommand(void)
     m_pTknVec->vIntegrityCheck();
     return;
   }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // switch to multi-line command
