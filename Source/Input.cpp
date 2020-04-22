@@ -276,6 +276,8 @@ void Input::vReadCommand(void)
     
   ASSERT(m_pCharser->bUseBegun());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the first line so we can test if its a command file to be executed
   vSingleLineCmd(true);
   
   vCollectVecFirstLine();
@@ -285,22 +287,32 @@ void Input::vReadCommand(void)
     vTrace("Collected FirstLine\n"_Stz);
     m_pTknVec->vListTokens();
   }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
   // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
-      ! m_pTknVec->pGet(0)->bHasChars() ) {
+       ! m_pTknVec->pGet(0)->bHasChars() ) {
+    m_pTknVec->vIntegrityCheck();
     return;
   }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a command file
   
   // if its a command file just return
   if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
       File::bExists(m_pTknVec->pGet(0)->szChars())) {
+    m_pTknVec->vIntegrityCheck();
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read more until we encounter a ';'
+  
+  // have we already seen the ';'
+  if (m_pTknVec->bHasSemicolon()) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
   
   // switch to multi-line command
   vSingleLineCmd(false);
@@ -574,11 +586,8 @@ void Input::vCollectVecTillSemicolon(void)
   // we should have a first token (e.g. create or drop)
   ASSERT(m_pTknVec->pGet(0)->bHasChars());
   
-  //m_pTknVec->vListTokens();
-
-  // have we already seen the ';'
-  if (m_pTknVec->bHasSemicolon())
-    return;
+  // we should not have seen ';'
+  ASSERT( ! m_pTknVec->bHasSemicolon());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

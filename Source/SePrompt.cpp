@@ -980,6 +980,9 @@ bool SePrompt::bReadNextCommand(void)
  
   pTknVec->vIntegrityCheck();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // special case: initial command supplied as an SE command line argument
+  
   if (gxArgs.m_bInitial) {
     gxArgs.m_bInitial = false;
     
@@ -991,6 +994,8 @@ bool SePrompt::bReadNextCommand(void)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // special case: run one command only
   
   if (m_bOneCommand && ! m_bOneRun) {
     m_bOneRun = true;
@@ -1004,6 +1009,7 @@ bool SePrompt::bReadNextCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // special case: a previous command has requested to prompt to do something
   
   if (* m_pSession->m_sToDo.azChar()) {
     pTknVec->vTokenise(m_pSession->m_sToDo);
@@ -1016,20 +1022,19 @@ bool SePrompt::bReadNextCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  // special case:
+  
   if (m_bOneCommand && m_pSession->m_pInput->bIsStdin()) {
-    vDebugPoint();
+    pTknVec->vIntegrityCheck();
     return false;
   }
 
-  pTknVec->vIntegrityCheck();
-  //m_pSession->m_pInput->vInspect();
-
-  pTknVec->vIntegrityCheck();
-  m_pSession->m_pInput->vReadCommand();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // general case
   
-  //pTknVec->vListTokens();
+  m_pSession->m_pInput->vReadCommand();
   pTknVec->vIntegrityCheck();
+
   return true;
 }
 
