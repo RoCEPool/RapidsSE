@@ -261,6 +261,19 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token an EOF?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsEOF(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_EOF == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token an integer?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsInteger(void)
@@ -296,6 +309,19 @@ bool Token::bIsNumeric(void)
   bool b = m_szChars->bIsNumeric();
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token an other?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsOther(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_OTHER == m_eToken)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
