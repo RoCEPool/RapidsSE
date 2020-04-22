@@ -254,8 +254,8 @@ void Charser::vUseBegin(void)
 
   m_bUseBegun = true;
   
-  if (AM::bDeveloper())
-    vInspect();
+  //if (AM::bDeveloper())
+  //  vInspect();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,7 +25,7 @@ bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
-  pTokenVec->vListTokens();
+  //pTokenVec->vListTokens();
   
   pTokenVec->vIntegrityCheck();
   

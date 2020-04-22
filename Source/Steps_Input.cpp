@@ -71,7 +71,7 @@ void Step::vInputInspect(void)
 {
   ENTRY();
     
-  m_pInput->vInspect();
+  //m_pInput->vInspect();
   
   EXIT();
 }

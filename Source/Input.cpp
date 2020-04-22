@@ -397,7 +397,7 @@ void Input::vUseBegin(void)
   
   m_pCharser->vUseBegin();
   
-  vInspect();
+  //vInspect();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -994,10 +994,10 @@ void Input::vCollectSen(void)
     case TN_INTEGER:
     case TN_NAME:
     case TN_TAG:
-      if (m_pToken->szChars()->bSame(""_Stz)) {
-        vInspect();
-        Correctness::vDebugPoint();
-      }
+//      if (m_pToken->szChars()->bSame(""_Stz)) {
+//        vInspect();
+//        Correctness::vDebugPoint();
+//      }
       break;
       
     case TN_EOF:
