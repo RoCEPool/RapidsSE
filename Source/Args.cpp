@@ -449,6 +449,12 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--promptDebug"_Stz)) {
+      m_bPromptDebug = true;
+      continue;
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--region"_Stz)) {
       m_sRegionName = (Stz*)argv[++i_Arg];
       continue;

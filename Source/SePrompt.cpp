@@ -94,7 +94,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_iSectionNo = 0;
 
-  d_bDebugMode = false;
+  d_bDebugMode = gxArgs.m_bPromptDebug;
   
   _checkInitialised_(CN_SEPROMPT);
   
