@@ -847,171 +847,6 @@ OperandQueue* Op::pQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Job_Operand* pJob_Operand;
-  
-  // new a operand job
-  pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, i_Nde, i_Ptn);
-  
-  // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(i_Nde);
-  
-  if (bSet) {
-    while (pOperand) {
-      
-      // set the operand in the job
-      AM::vSetOperand(pJob_Operand, pOperand);
-      
-      // send the operand job across the sendNode
-      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
-    }
-  }
-  else {
-    // send the operand job across the sendNode
-    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
-  }
-  
-  // delete the operand job
-  AM::vDeleteJobOperand(pJob_Operand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToOrigin(Operand* pOperand, bool bSet, eXK eXmitKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
-  m_iXmitNode = m_pPipeline->iOriginatingNode();
-  vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  i8 i_Ptn;
-  
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-  switch (eXmitKind) {
-      
-    case XK_HASHED : {
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      i_Ptn = pDataBuffer->iPartitionNo();
-      
-      // xmitNode is the partition node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-      
-      vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
-      break;
-    }
-      
-    case XK_NORMAL: {
-      
-      ASSERT(pNextStage->nItems() == AM::pGrid()->nPartitions());
-      for (i_Ptn = 0; i_Ptn < pNextStage->nItems(); i_Ptn++) {
-        
-        // xmitNode is the partition node
-        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-        
-        ASSERT( ! bSet );
-        vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
-      }
-      break;
-    }
-      
-    case XK_ROBIN : {
-      m_iRobin++;
-      i_Ptn = m_iRobin % AM::pGrid()->nPartitions();
-      
-      // xmitNode is the partition node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-      
-      ASSERT( ! bSet );
-      vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
-      
-      break;
-    }
-      
-    default:
-      ASSERT(0);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  i8 i_Ptn;
-  i8 i_Slt;
-
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-  // check the XmitKind
-  switch (eXmitKind) {
-      
-    case XK_ROBIN : {
-      m_iRobin++;
-      i_Slt = m_iRobin % AM::pGrid()->nSlotsPerNode();
-      i_Ptn = TablePtn::iSlotToPartition(i_Slt);
-      
-      // xmitNode is the partition node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-      ASSERT(m_iXmitNode == m_pPipeline->iOriginatingNode());
-      
-      if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
-        ASSERT( ! bSet );
-        vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
-      }
-      
-      break;
-    }
-      
-      
-    case XK_NORMAL: {
-      
-      ASSERT(pNextStage->nItems() == AM::pGrid()->nSlotsPerNode());
-      for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
-        
-        Strand* pStrand = pNextStage->pGet(i_Strand);
-        i_Ptn = pStrand->i_Ptn();
-        
-        // xmitNode is the partition node
-        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
-        if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
-          vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
-        }
-        
-      }
-    }
-      break;
-      
-    default:
-      ASSERT(0);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* set job operand                                                            */
 /*----------------------------------------------------------------------------*/
 void Op::vSendJobOperand(Operand* pOperand, bool bSet)
@@ -1282,6 +1117,178 @@ void Op::vXmitNode(i8 iXmitNode)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(Op);
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Job_Operand* pJob_Operand;
+  
+  // new a operand job
+  pJob_Operand = AM::pNewJobOperand(m_pPipelineJob, pOperand, this, i_Nde, i_Ptn);
+  
+  // get the send node in the task
+  Node* pSendNode = AM::pGrid()->pGetNode(i_Nde);
+  
+  if (bSet) {
+    while (pOperand) {
+      
+      // set the operand in the job
+      AM::vSetOperand(pJob_Operand, pOperand);
+      
+      // send the operand job across the sendNode
+      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      pOperand = pDataBuffer->pNextBuffer();
+    }
+  }
+  else {
+    // send the operand job across the sendNode
+    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
+  }
+  
+  // delete the operand job
+  AM::vDeleteJobOperand(pJob_Operand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 i_Ptn;
+  i8 i_Slt;
+  
+  // get the next stage
+  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  RASSERT(pNextStage);
+  
+  // check the XmitKind
+  switch (eXmitKind) {
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_ROBIN : {
+      m_iRobin++;
+      i_Slt = m_iRobin % AM::pGrid()->nSlotsPerNode();
+      i_Ptn = TablePtn::iSlotToPartition(i_Slt);
+      
+      // xmitNode is the partition node
+      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      ASSERT(m_iXmitNode == m_pPipeline->iOriginatingNode());
+      
+      if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
+        ASSERT( ! bSet );
+        vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+      }
+      
+      break;
+    }
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_NORMAL: {
+      
+      ASSERT(pNextStage->nItems() == AM::pGrid()->nSlotsPerNode());
+      for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
+        
+        Strand* pStrand = pNextStage->pGet(i_Strand);
+        i_Ptn = pStrand->i_Ptn();
+        
+        // xmitNode is the partition node
+        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+        if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
+          vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+        }
+        
+      }
+    }
+      break;
+      
+    default:
+      ASSERT(0);
+  }
+  
+}
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 i_Ptn;
+  
+  // get the next stage
+  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  RASSERT(pNextStage);
+  
+  switch (eXmitKind) {
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_HASHED : {
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      i_Ptn = pDataBuffer->iPartitionNo();
+      
+      // xmitNode is the partition node
+      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      
+      vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+      break;
+    }
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_NORMAL: {
+      
+      ASSERT(pNextStage->nItems() == AM::pGrid()->nPartitions());
+      for (i_Ptn = 0; i_Ptn < pNextStage->nItems(); i_Ptn++) {
+        
+        // xmitNode is the partition node
+        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+        
+        ASSERT( ! bSet );
+        vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+      }
+      break;
+    }
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_ROBIN : {
+      m_iRobin++;
+      i_Ptn = m_iRobin % AM::pGrid()->nPartitions();
+      
+      // xmitNode is the partition node
+      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      
+      ASSERT( ! bSet );
+      vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
+      
+      break;
+    }
+      
+    default:
+      ASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vSendToOrigin(Operand* pOperand, bool bSet, eXK eXmitKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
+  m_iXmitNode = m_pPipeline->iOriginatingNode();
+  vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
+}
 
 /*============================================================================*/
 /* end                                                                        */
