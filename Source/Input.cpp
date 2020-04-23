@@ -4,7 +4,7 @@
 
 #include "LexicalAnalysis.h"
 
-//#define __WITH_INPUT_CURSOR
+#define __WITH_INPUT_CURSOR
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -626,7 +626,7 @@ void Input::vCollectVecFirstLine(void)
 
   for (;;) {
     
-    m_pTknVec->vAdvanceCurr();
+    m_pTknVec->vAdvanceCurr(false);
     Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
               
     vCollectOneToken();
@@ -696,7 +696,14 @@ void Input::vCollectVecFirstLine(void)
     m_pTknVec->vIncTokens();
     ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
   }
+
+  if (d_iDebugMode) {
+    m_pTknVec->vListTokens();
+  }
   
+//  ASSERT( (! m_pTknVec->nTokens() &&   bSeenEOF() ) ||
+//         (  m_pTknVec->nTokens() && ! bSeenEOF() ) );
+
   // end of file? if so, pop and retry
   if (! m_pTknVec->nTokens() && bSeenEOF()) {
     bool b = bPopCharser();
@@ -764,7 +771,7 @@ void Input::vCollectVecTillSemicolon(void)
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
       break;
 
-    m_pTknVec->vAdvanceCurr();
+    m_pTknVec->vAdvanceCurr(false);
   }
   
   //m_pTknVec->vListTokens();
