@@ -16,7 +16,6 @@ namespace LexicalAnalysis
     // source definition
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
-    bool     m_bStrip;    // strip comments?
   
     // source
     File     m_oSrcFile;  // given file
@@ -33,7 +32,10 @@ namespace LexicalAnalysis
     bool     m_bUseClosed;// has use of this charser closed?
     bool     m_bUseEnded; // has use of this charser ended?
     bool     m_bUseOpened;// has use of this charser opened?
-  
+
+    // mode
+    bool     m_bSingleLineCmd; // single line command?
+
     // registers
     i8       m_nLoaded;   // 0: neither register has char
                           // 1: m_xRegOne has char
@@ -43,7 +45,6 @@ namespace LexicalAnalysis
     eCS      m_eComment;  // comment style currently being processed
     bool     m_bRead;     // prompt user for more input
     bool     m_bSeenEOF;  // eof seen?
-    bool     m_bSingleLineCmd; // single line command?
 
     // some debugging aids
     bool      d_iDebugMode;  // debug mode?
@@ -61,7 +62,7 @@ namespace LexicalAnalysis
     static Charser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
-    void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
+    void vGetAnnChar(AnnChar& rxAnnChar, bool bStrip);
     void vUngetAnnChar(AnnChar& rxAnnChar);
 
     // Source

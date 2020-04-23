@@ -447,7 +447,6 @@ void Charser::vResetCharser(void)
   // source definition
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
-  m_bStrip = true;
   
   // source
   m_oSrcFile.vReset();
@@ -465,6 +464,9 @@ void Charser::vResetCharser(void)
   m_bUseEnded  = false;
   m_bUseOpened = false;
   
+  // mode
+  m_bSingleLineCmd  = false;
+
   // registers
   m_nLoaded    = 0;
   m_xRegOne.vReset();
@@ -472,9 +474,7 @@ void Charser::vResetCharser(void)
   m_eComment   = CS_NONE;
   m_bRead      = false;
   m_bSeenEOF   = false;
-  m_bSingleLineCmd  = false;
 }
-
 
 //
 // Character Processing ////////////////////////////////////////////////////////
