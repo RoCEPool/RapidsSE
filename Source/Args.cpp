@@ -6,8 +6,9 @@
 
 extern Args       gxArgs;
 extern AttachMap* gpAttachMap;
-extern bool       gbSHM;
+extern bool       gbJot;
 extern Log*       gpLog;
+extern bool       gbSHM;
 
 int    gi_argc;
 char** gi_argv;
@@ -74,6 +75,7 @@ Args::Args(void)
   m_bFreeCB          = false;
   m_bGridTest        = false;
   m_bHugePages       = false;
+  m_bJot             = false;
   m_bKillPrev        = false;
   m_bLock            = false;
   m_bLog             = false;
@@ -294,6 +296,12 @@ bool Args::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--initial"_Stz)) {
       m_bInitial = true;
       m_sInitial = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--jot"_Stz)) {
+      m_bJot = true;
       continue;
     }
     

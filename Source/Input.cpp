@@ -4,7 +4,7 @@
 
 #include "LexicalAnalysis.h"
 
-#define __WITH_INPUT_CURSOR
+//#define __WITH_INPUT_CURSOR
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -386,7 +386,12 @@ void Input::vReadCommand(void)
   
   // have we already seen the ';'
   if (m_pTknVec->bHasSemicolon()) {
+    m_pTknVec->vStripSemicolon();
+    m_pTknVec->vSetTokens();
     m_pTknVec->vIntegrityCheck();
+    if (d_iDebugMode) {
+      m_pTknVec->vListTokens();
+    }
     return;
   }
   
@@ -683,10 +688,12 @@ void Input::vCollectVecFirstLine(void)
 
   m_pTknVec->vSoftReset();
   
+  Token* pToken = nullptr;
+  
   for (;;) {
     
     m_pTknVec->vAdvanceCurr(false);
-    Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
+    pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
               
     vCollectOneToken();
     

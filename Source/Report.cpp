@@ -4,6 +4,7 @@
 
 #include "Correctness.h"
 
+bool gbJotting = false;
 
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */

@@ -65,6 +65,7 @@ namespace Arguments
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
     s256 m_sInitial;         // initial to run
+    bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
     bool m_bLock;            // lock shared memory pages in memory
     bool m_bLog;             // use shared log
