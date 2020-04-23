@@ -64,18 +64,20 @@ namespace LexicalAnalysis
     void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
     void vUngetAnnChar(AnnChar& rxAnnChar);
 
+    // Source
+    bool bIsStdin(void);
+    Stz* szPath(void);
+    bool bSeenEOF(void);
+    i8   iSrcCol(void);
+    i8   iSrcLine(void);
+
     // Control
     void vDebugMode(i8 iDebugMode);
     void vForkReset(void);
     void vInspect(void);
-    bool bIsStdin(void);
-    i8   iLineRaw(void);
-    i8   iLineCol(void);  // iSrcCol
-    Stz* szPath(void);
-    bool bSeenEOF(void);
-    bool bSingleLineCmd(void);
-
+ 
     // Mode
+    bool bSingleLineCmd(void);
     void vSingleLineCmd(bool bLineMode);
     
     // Usage

@@ -140,8 +140,8 @@ void Input::vDump(void)
     vTrace("[%lld] %s @%lld,%lld\n"_Stz,
            pCharser->iDepth(),
            pCharser->szPath(),
-           pCharser->iLineRaw(),
-           pCharser->iLineCol()
+           pCharser->iSrcLine(),
+           pCharser->iSrcCol()
            );
     
     pCharser = pCharser->pNext();

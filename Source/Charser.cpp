@@ -126,6 +126,66 @@ void Charser::vUngetAnnChar(AnnChar& rxAnnChar)
 }
 
 //
+// Source //////////////////////////////////////////////////////////////////////
+//
+
+/*----------------------------------------------------------------------------*/
+/* is stdin?                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Charser::bIsStdin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  if (IS_STDIN != m_eSource)
+    return false;
+
+  bool bIsStdin = m_oSrcFile.bIsStdin();
+
+  return bIsStdin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get path                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Charser::szPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_sPath;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have we seen an EOF?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Charser::bSeenEOF(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_bSeenEOF;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column number of source                                                */
+/*----------------------------------------------------------------------------*/
+i8 Charser::iSrcCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_iSrcCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get line number of source                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Charser::iSrcLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_iSrcLine;
+}
+
+
+//
 // Control /////////////////////////////////////////////////////////////////////
 //
 
@@ -181,60 +241,9 @@ void Charser::vInspect(void)
          );
 }
 
-/*----------------------------------------------------------------------------*/
-/* is stdin?                                                                   */
-/*----------------------------------------------------------------------------*/
-bool Charser::bIsStdin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  if (IS_STDIN != m_eSource)
-    return false;
-
-  bool bIsStdin = m_oSrcFile.bIsStdin();
-
-  return bIsStdin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get line number of raw char                                                */
-/*----------------------------------------------------------------------------*/
-i8 Charser::iLineRaw(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_iSrcLine;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column number of raw char                                              */
-/*----------------------------------------------------------------------------*/
-i8 Charser::iLineCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_iSrcCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get path                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Charser::szPath(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_sPath;
-}
-
-/*----------------------------------------------------------------------------*/
-/* have we seen an EOF?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Charser::bSeenEOF(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_bSeenEOF;
-}
+//
+// Mode ////////////////////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* single line mode?                                                          */
@@ -245,9 +254,6 @@ bool Charser::bSingleLineCmd(void)
   
   return m_bSingleLineCmd;
 }
-
-
-// Mode ////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
