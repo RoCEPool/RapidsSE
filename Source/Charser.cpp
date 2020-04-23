@@ -828,6 +828,12 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar)
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
   
+  if (d_iDebugMode) {
+    vJot("    AnnChar (L%lld C%lld) : %c\n"_Stz,
+         rxAnnChar.m_iLine,
+         rxAnnChar.m_iCol,
+         rxAnnChar.m_cChar);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

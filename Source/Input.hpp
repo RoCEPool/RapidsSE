@@ -18,6 +18,7 @@ namespace LexicalAnalysis
     // some debugging aids
     bool      d_iDebugMode;    // debug mode?
     i8        d_nUseBegin;     //
+    i8        d_nReadCommand;  //
     i8        d_nCollectToken; //
   
     // must be last

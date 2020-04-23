@@ -35,6 +35,7 @@ Input::Input(void)
   
   d_iDebugMode    = false;
   d_nUseBegin     = 0;
+  d_nReadCommand  = 0;
   d_nCollectToken = 0;
 
   _checkInitialised_(CN_INPUT);
@@ -194,8 +195,10 @@ void Input::vInspect(void)
 //         );
 
   if (! m_pCurrTkn) {
-    vJot("Input #UseBegin.%lld #CollectToken.%lld : ]>NoToken<[\n"_Stz,
+    vJot("Input #UseBegin.%lld #ReadCommand.%lld #CollectToken.%lld : "
+         "]>NoToken<[\n"_Stz,
            d_nUseBegin,
+           d_nReadCommand,
            d_nCollectToken
            );
     m_pCharser->vInspect();
@@ -204,8 +207,10 @@ void Input::vInspect(void)
   
   SP_Token spTkn;
 
-  vJot("Input #UseBegin.%lld #CollectToken.%lld : %s\n"_Stz,
+  vJot("Input #UseBegin.%lld #ReadCommand.%lld #CollectToken.%lld : "
+       "%s\n"_Stz,
          d_nUseBegin,
+         d_nReadCommand,
          d_nCollectToken,
          spTkn.sz(m_pCurrTkn)
          );
@@ -277,14 +282,17 @@ void Input::vReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
+  d_nReadCommand++;
+  
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    vJotSection("::vReadCommand"_Stz);
+    i8 i_Section = iJotSection("::vReadCommand"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first line so we can test if its a command file to be executed
+  
   vSingleLineCmd(true);
   
   vCollectVecFirstLine();
@@ -315,8 +323,9 @@ void Input::vReadCommand(void)
   // have we already seen the ';'
   
   if (m_pTknVec->bHasSemicolon()) {
-    m_pTknVec->vStripSemicolon();
+    m_pTknVec->vRemoveSemicolon();
     m_pTknVec->vIntegrityCheck();
+    m_pTknVec->vListTokens();
     goto L_Exit;
   }
   
@@ -342,8 +351,8 @@ void Input::vReadCommand(void)
   m_pTknVec->vIntegrityCheck();
 
   // stip off &
-  m_pTknVec->vStripAmpersand();
-  m_pTknVec->vIntegrityCheck();
+  //m_pTknVec->vStripAmpersand();
+  //m_pTknVec->vIntegrityCheck();
 
   m_pTknVec->vIntegrityCheck();
   
@@ -365,7 +374,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    vJotSection("::vReadCommand"_Stz);
+    i8 i_Section = iJotSection("::vReadCommand"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -625,10 +634,19 @@ void Input::vCollectOneToken(void)
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
+  if (d_iDebugMode) {
+    vInspect();
+  }
+  
   if (UF_CPP_TOKENS == m_eTknForm)
     vCollectCpp();
   else
     vCollectSen();
+  
+  if (d_iDebugMode) {
+    SP_Token spTkn;
+    vJot("Collected %s\n"_Stz,spTkn.sz(m_pCurrTkn));
+  }
 }
 #else
 void Input::vCollectOneToken(void)
