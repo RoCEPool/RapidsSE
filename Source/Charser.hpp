@@ -16,6 +16,7 @@ namespace LexicalAnalysis
     // source definition
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
+    bool     m_bStripComments;  // strip comments?
   
     // sources
     File     m_oRawFile;  // given file
@@ -115,14 +116,14 @@ namespace LexicalAnalysis
     bool bLineCommentStart(void);
     void vStripComment(void);
     
-    // Get next annotated char
-    void vGetAnnChar(AnnChar& rxAnnChar);
-    void vGetAnnCharFile(AnnChar& rxAnnChar);
-    void vGetAnnCharStdin(AnnChar& rxAnnChar);
-    void vGetAnnCharString(AnnChar& rxAnnChar);
+    // Get next raw char
+    void vNextRawChar(AnnChar& rxAnnChar);
+    void vNextRawCharFromFile(AnnChar& rxAnnChar);
+    void vNextRawCharFromStdin(AnnChar& rxAnnChar);
+    void vNextRawCharFromString(AnnChar& rxAnnChar);
 
     // Reading
-    void vNextAnnCharFromRawBuff(AnnChar& rxAnnChar);
+    void vNextCharFromRawBuff(AnnChar& rxAnnChar);
     void vReadFileIntoRawBuff(void);
     void vReadStdinIntoRawBuff(void);
     

@@ -433,15 +433,10 @@ void Charser::vResetCharser(void)
   ASSERT(m_bUseEnded);
 
   // source definition
-  m_bUseBegun  = false;
-  
-  m_bUseClosed = false;
-  m_bUseEnded  = false;
-  m_bUseOpened = false;
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
-  m_bSingleLineCmd  = false;
-
+  m_bStripComments = true;
+  
   // sources
   m_oRawFile.vReset();
   m_sRawBuff   = ""_Stz;
@@ -450,7 +445,14 @@ void Charser::vResetCharser(void)
   m_iLineRaw   = 0;
   m_iColRaw    = 0;
 
+  // uses
+  m_bUseBegun  = false;
+  m_bUseClosed = false;
+  m_bUseEnded  = false;
+  m_bUseOpened = false;
+  
   // registers
+  m_bSingleLineCmd  = false;
   m_nLoaded    = 0;
   m_xRegOne.vReset();
   m_xRegTwo.vReset();
@@ -523,13 +525,13 @@ void Charser::vLoadBoth(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  vGetAnnChar(m_xRegOne);
+  vNextRawChar(m_xRegOne);
   
   if (m_xRegOne.m_cChar) {
     
     m_nLoaded++;
     
-    vGetAnnChar(m_xRegTwo);
+    vNextRawChar(m_xRegTwo);
     
     if (m_xRegTwo.m_cChar)
       m_nLoaded++;
@@ -546,7 +548,7 @@ void Charser::vLoadFirst(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  vGetAnnChar(m_xRegOne);
+  vNextRawChar(m_xRegOne);
   
   if (m_xRegOne.m_cChar)
     m_nLoaded++;
@@ -587,7 +589,7 @@ void Charser::vLoadSecond(void)
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xRegOne.m_cChar);
   
-  vGetAnnChar(m_xRegTwo);
+  vNextRawChar(m_xRegTwo);
   
   if (m_xRegTwo.m_cChar)
     m_nLoaded++;
@@ -790,7 +792,7 @@ bool Charser::bLineCommentStart(void)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from input source                                   */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnChar(AnnChar& rxAnnChar)
+void Charser::vNextRawChar(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -800,7 +802,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar)
   switch (m_eSource) {
       
     case IS_FILE:
-      vGetAnnCharFile(rxAnnChar);
+      vNextRawCharFromFile(rxAnnChar);
       
       
       if (! rxAnnChar.m_cChar) {
@@ -813,12 +815,12 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar)
       break;
       
     case IS_STDIN:
-      vGetAnnCharStdin(rxAnnChar);
+      vNextRawCharFromStdin(rxAnnChar);
       ASSERT(! m_bSeenEOF);
       break;
       
     case IS_STRING:
-      vGetAnnCharString(rxAnnChar);
+      vNextRawCharFromString(rxAnnChar);
       ASSERT(m_bSeenEOF);
       break;
       
@@ -839,14 +841,14 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from line-buffered source file                      */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnCharFile(AnnChar& rxAnnChar)
+void Charser::vNextRawCharFromFile(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_bUseBegun);
   ASSERT(! m_bUseEnded);
 
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vNextCharFromRawBuff(rxAnnChar);
   
   if (rxAnnChar.m_cChar)
     return ;
@@ -860,7 +862,7 @@ void Charser::vGetAnnCharFile(AnnChar& rxAnnChar)
   
   if (! m_bSingleLineCmd) {
     vReadFileIntoRawBuff();
-    vNextAnnCharFromRawBuff(rxAnnChar);
+    vNextCharFromRawBuff(rxAnnChar);
     return;
   }
   
@@ -873,7 +875,7 @@ void Charser::vGetAnnCharFile(AnnChar& rxAnnChar)
   
   m_bRead = false;
   vReadFileIntoRawBuff();
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vNextCharFromRawBuff(rxAnnChar);
   
   ASSERT( (rxAnnChar.m_cChar) || (!rxAnnChar.m_cChar && m_bSeenEOF) );
 }
@@ -881,7 +883,7 @@ void Charser::vGetAnnCharFile(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from line-buffered stdin                            */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
+void Charser::vNextRawCharFromStdin(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -889,7 +891,7 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
   ASSERT(! m_bUseEnded);
   ASSERT(! m_bSeenEOF);
     
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vNextCharFromRawBuff(rxAnnChar);
   
   if (rxAnnChar.m_cChar) {
     ASSERT(! m_bSeenEOF);
@@ -901,7 +903,7 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
   
   if (! m_bSingleLineCmd) {
     vReadStdinIntoRawBuff();
-    vNextAnnCharFromRawBuff(rxAnnChar);
+    vNextCharFromRawBuff(rxAnnChar);
     ASSERT(! m_bSeenEOF);
     return;
   }
@@ -917,7 +919,7 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
   
   m_bRead = false;
   vReadStdinIntoRawBuff();
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vNextCharFromRawBuff(rxAnnChar);
   
   ASSERT(! m_bSeenEOF);
 }
@@ -925,7 +927,7 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from buffered string                                */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnCharString(AnnChar& rxAnnChar)
+void Charser::vNextRawCharFromString(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -933,7 +935,7 @@ void Charser::vGetAnnCharString(AnnChar& rxAnnChar)
   ASSERT(! m_bUseEnded);
   ASSERT(m_bSeenEOF);
     
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vNextCharFromRawBuff(rxAnnChar);
   
   if (rxAnnChar.m_cChar)
     return;
@@ -945,7 +947,7 @@ void Charser::vGetAnnCharString(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next annotated character from raw buffer                               */
 /*----------------------------------------------------------------------------*/
-void Charser::vNextAnnCharFromRawBuff(AnnChar& rxAnnChar)
+void Charser::vNextCharFromRawBuff(AnnChar& rxAnnChar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
