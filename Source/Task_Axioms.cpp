@@ -297,7 +297,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
+  //vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
   Word*     pNewWord;
   StepFp    fpStep;
@@ -315,12 +315,12 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   // get :
   pInput->vReadToken();
   Stz* szChars = pInput->szChars();
-  vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
+  //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // get name of word
   pInput->vReadToken();
   szChars = pInput->szChars();
-  vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
+  //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -341,7 +341,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   while (TN_EOF != pInput->eToken()) {
     
     szChars = pInput->szChars();
-    vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
+    //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
     
     if (szChars->bEqual(";"_Stz))
       break;

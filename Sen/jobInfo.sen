@@ -431,7 +431,7 @@ end
   else
 
     "<liteOp>" pEnameSet EnameSet.hasName if
-      sWordNm_trunc "LiteOP: %v\n" .printf
+      sWordNm_trunc "LiteOP: %v" .printf
 
       "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
@@ -452,7 +452,7 @@ end
     else
 
       "<localLiteOp>" pEnameSet EnameSet.hasName if
-        sWordNm_trunc "LocalLiteOP: %v\n" .printf
+        sWordNm_trunc "LocalLiteOP: %v" .printf
 
       "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
 
