@@ -15,6 +15,7 @@ namespace Correctness
   void  vJotDivB(void);
   void  vJotDivC(void);
 
+  void  vJotDivES(void);
   void  vJotDivMS(void);
   void  vJotDivPS(void);
 

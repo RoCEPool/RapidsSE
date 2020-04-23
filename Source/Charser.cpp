@@ -70,12 +70,17 @@ void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get next annotated char                                                    */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
+void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(IS_NONE != m_eSource);
 
+  if (d_iDebugMode) {
+    vJotTabIn();
+    vJot("::vGetAnnChar\n"_Stz);
+  }
+  
   // debug
   
   if (IS_FILE == m_eSource) {
@@ -104,15 +109,27 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
-    vLoadRegs(bStripComments);
+    vLoadRegs(bStrip);
   
   if (! m_nLoaded) {
     rxAnnChar.vReset();
+    if (d_iDebugMode) {
+      vJot("No more AnnChar\n"_Stz);
+      vJotTabOut();
+    }
     return;
   }
   
   // consume the first char reg
   vConsumeFirst(rxAnnChar);
+  
+  if (d_iDebugMode) {
+    vJot("Got AnnChar (L%lld C%lld) : %c\n"_Stz,
+         rxAnnChar.m_iLine,
+         rxAnnChar.m_iCol,
+         rxAnnChar.m_cChar);
+    vJotTabOut();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -513,7 +530,7 @@ void Charser::vConsumeFirst(AnnChar& rxAnnChar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard the character in the first register                                */
+/* discard the character in the first register (its part of a comment)        */
 /*----------------------------------------------------------------------------*/
 void Charser::vDiscardFirst(void)
 {
@@ -521,6 +538,14 @@ void Charser::vDiscardFirst(void)
   
   ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded);
+  
+  if (d_iDebugMode) {
+    vJot("Discarding (L%lld C%lld) : '%c'\n"_Stz,
+         m_xRegOne.m_iLine,
+         m_xRegOne.m_iCol,
+         m_xRegOne.m_cChar
+         );
+  }
   
   m_xRegOne.m_cChar  = m_xRegTwo.m_cChar;
   
@@ -571,7 +596,7 @@ void Charser::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load first (& maybe) second register from raw input stream, strip comments */
 /*----------------------------------------------------------------------------*/
-void Charser::vLoadRegs(bool bStripComments)
+void Charser::vLoadRegs(bool bStrip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -585,8 +610,8 @@ void Charser::vLoadRegs(bool bStripComments)
     if (! m_nLoaded)
       break;
     
-    if (! bStripComments || ! bPossibleComment())
-      continue;               // this may leave a char in second register e.g. /t
+    if (! bStrip || ! bPossibleComment())
+      continue;              // this may leave a char in second register e.g. /t
     
     vStripComment();
   }
@@ -650,6 +675,10 @@ void Charser::vBlockCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
     
+  if (d_iDebugMode) {
+    vJot("Skipping BlockComment /* ...\n"_Stz);
+  }
+  
   vClearRegs();
   
   vLoadBoth();
@@ -720,6 +749,10 @@ void Charser::vLineCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  if (d_iDebugMode) {
+    vJot("Skipping LineComment //...\n"_Stz);
+  }
+  
   vClearRegs();
   
   vLoadFirst();
@@ -771,25 +804,25 @@ void Charser::vStripComment(void)
   
   ASSERT(IS_NONE != m_eSource);
   
-  AnnChar xRawAnnChar;
+  AnnChar xReplaceWith;
   
-  xRawAnnChar.vReset();
-  xRawAnnChar.m_cChar = ' ';
+  xReplaceWith.vReset();
+  xReplaceWith.m_cChar = ' ';
 
   switch (eCommentStyle()) {
       
     case CS_BLOCK:
       vBlockCommentSkip();
-      xRawAnnChar.m_iLine = m_iSrcLine;
-      xRawAnnChar.m_iCol  = m_iSrcCol;
-      vRewindRegs(xRawAnnChar);
+      xReplaceWith.m_iLine = m_iSrcLine;
+      xReplaceWith.m_iCol  = m_iSrcCol;
+      vRewindRegs(xReplaceWith);
       break;
       
     case CS_LINE:
       vLineCommentSkip();
-      xRawAnnChar.m_iLine = m_iSrcLine;
-      xRawAnnChar.m_iCol  = m_iSrcCol;
-      vRewindRegs(xRawAnnChar);
+      xReplaceWith.m_iLine = m_iSrcLine;
+      xReplaceWith.m_iCol  = m_iSrcCol;
+      vRewindRegs(xReplaceWith);
       break;
       
     default:
@@ -840,13 +873,6 @@ void Charser::vLoadRegWithRawChar(AnnChar& rxReg)
       rxReg.vReset();
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid m_eSource %lld"_Stz,m_eSource);
-  }
-  
-  if (d_iDebugMode) {
-    vJot("    AnnChar (L%lld C%lld) : %c\n"_Stz,
-         rxReg.m_iLine,
-         rxReg.m_iCol,
-         rxReg.m_cChar);
   }
 }
 

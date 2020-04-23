@@ -359,7 +359,7 @@ void Input::vReadCommand(void)
   
 L_Exit:
   if (d_iDebugMode) {
-    vJotDivPS();
+    vJotDivES();
     vJot("Read Command\n"_Stz);
     m_pTknVec->vListTokens();
   }
@@ -375,6 +375,7 @@ void Input::vReadCommand(void)
 
   if (d_iDebugMode) {
     i8 i_Section = iJotSection("::vReadCommand"_Stz);
+    vJotTabIn();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -448,9 +449,10 @@ void Input::vReadCommand(void)
   
 L_Exit:
   if (d_iDebugMode) {
-    vJotDivPS();
+    vJotDivES();
     vJot("Read Command\n"_Stz);
     m_pTknVec->vListTokens();
+    vJotTabOut();
   }
 
 }
