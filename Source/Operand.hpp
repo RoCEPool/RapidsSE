@@ -19,6 +19,7 @@ namespace Operands
     
     bool bIsInfoSet(void);
     bool bIsMarker(void);
+    bool bIsStreamDef(void);
     void vTailProcessing(eTP eTailProcessing);
     eTP  eTailProcessing(void);
   };
