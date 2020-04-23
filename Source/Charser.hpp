@@ -59,16 +59,24 @@ namespace LexicalAnalysis
     static Charser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
+    void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
+    void vUngetAnnChar(AnnChar& rxAnnChar);
+
+    // Control
+    void vDebugMode(i8 iDebugMode);
     void vForkReset(void);
     void vInspect(void);
-    Stz* szPath(void);
+    bool bIsStdin(void);
     i8   iLineRaw(void);
-    i8   iLineCol(void);
+    i8   iLineCol(void);  // iSrcCol
+    Stz* szPath(void);
+    bool bSeenEOF(void);
+    bool bSingleLineCmd(void);
 
-    // Options
+    // Mode
     void vSingleLineCmd(bool bLineMode);
     
-    // Use What
+    // Usage
     void vUseBegin(void);
     bool bUseBegun(void);
     void vUseClose(void);
@@ -82,15 +90,6 @@ namespace LexicalAnalysis
     void     vNext(Charser* pNext);
     i8       iDepth(void);
     
-    // Processing Functions
-    void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
-    void vUngetAnnChar(AnnChar& rxAnnChar);
-    bool bSeenEOF(void);
-    bool bSingleLineCmd(void);
-    bool bIsStdin(void);
-
-    void vDebugMode(i8 iDebugMode);
-  
   private:
     
     void vResetCharser(void);
@@ -109,21 +108,21 @@ namespace LexicalAnalysis
     bool bBlockCommentEnd(void);
     void vBlockCommentSkip(void);
     bool bBlockCommentStart(void);
-    bool bPossibleComment(void);
     eCS  eCommentStyle(void);
     bool bLineCommentEnd(void);
     void vLineCommentSkip(void);
     bool bLineCommentStart(void);
+    bool bPossibleComment(void);
     void vStripComment(void);
     
-    // Get next raw char
-    void vNextRawChar(AnnChar& rxAnnChar);
-    void vNextRawCharFromFile(AnnChar& rxAnnChar);
-    void vNextRawCharFromStdin(AnnChar& rxAnnChar);
-    void vNextRawCharFromString(AnnChar& rxAnnChar);
+    // Loading Register With Next Raw char
+    void vLoadRegWithRawChar(AnnChar& rxReg);
+    void vLoadRegWithRawCharFromFile(AnnChar& rxReg);
+    void vLoadRegWithRawCharFromStdin(AnnChar& rxReg);
+    void vLoadRegWithRawCharFromString(AnnChar& rxReg);
 
-    // Reading
-    void vNextCharFromRawBuff(AnnChar& rxAnnChar);
+    // Reading Next Raw Char
+    void vReadRawCharFromRawBuff(AnnChar& rxReg);
     void vReadFileIntoRawBuff(void);
     void vReadStdinIntoRawBuff(void);
     
