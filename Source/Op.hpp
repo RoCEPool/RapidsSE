@@ -110,6 +110,9 @@ namespace Pipelines
     
   private:
     void vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn);
+    void vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind);
+    void vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind);
+    void vSendToOrigin(Operand* pOperand, bool bSet, eXK eXmitKind);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
