@@ -210,8 +210,8 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
     }
     
     if (! pTkn->bSame((pSynEnmSet->szValue(i_Syn)))) {
-      //vTrace("%s\n"_Stz, pTkn->szText());
-      //pSynEnmSet->vPrint();
+//      vTrace("%s\n"_Stz, pTkn->szChars());
+//      pSynEnmSet->vDumpSetDetailed();
       return false;
     }
     

@@ -28,7 +28,9 @@ Charser::Charser(Charser* pNext)
   //m_bMalloc set in new
   m_pNext   = pNext;
   m_iDepth  = m_pNext ? m_pNext->iDepth() + 1 : 0;
-    
+  
+  d_iDebugMode = false;
+  
   m_bUseClosed = true;
   m_bUseEnded  = true;
   vResetCharser();
@@ -72,9 +74,14 @@ void Charser::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vTrace("Charser[%lld] : Source %s Path %s %s %s %s %s %s %s : "
+  vTrace("Charser[%lld] (L%lld C%lld) : "
+         "Source %s Path %s %s %s %s %s %s %s : "
          "Loaded %lld %c %c\n"_Stz,
+         
          m_iDepth,
+         m_iLineRaw,
+         m_iColRaw,
+         
          aIS[m_eSource],
          m_sPath.szStz(),
          m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
@@ -82,7 +89,6 @@ void Charser::vInspect(void)
          m_bUseEnded       ? "UseEnded"    : "Not-UseEnded",
          m_bUseOpened      ? "UseOpened"   : "Not-UseOpened",
          m_bUseClosed      ? "UseClosed"   : "Not-UseClosed",
-
          m_bSeenEOF        ? "SeenEOF"     : "Not-SeenEOF",
 
          m_nLoaded,
@@ -214,6 +220,16 @@ bool Charser::bIsStdin(void)
   bool bIsStdin = m_oRawFile.bIsStdin();
 
   return bIsStdin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void Charser::vDebugMode(i8 iDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  d_iDebugMode = iDebugMode;
 }
 
 

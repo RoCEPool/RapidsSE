@@ -4,6 +4,8 @@
 
 #include "LexicalAnalysis.h"
 
+//#define __WITH_INPUT_CURSOR
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -29,9 +31,10 @@ Input::Input(void)
   m_xAnnChar.vReset();
       
   m_pTknVec  = new TokenVec;
-  m_pToken   = nullptr;
+  m_pCurrTkn = nullptr;
   
-  d_nUseBegin = 0;
+  d_iDebugMode    = false;
+  d_nUseBegin     = 0;
   d_nCollectToken = 0;
 
   _checkInitialised_(CN_INPUT);
@@ -79,6 +82,18 @@ Stz* Input::szChars(void)
   Token* pCurrToken = m_pTknVec->pCurrToken();
   
   return pCurrToken->szChars();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vDebugMode(i8 iDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  d_iDebugMode = iDebugMode;
+  
+  m_pCharser->vDebugMode(d_iDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +193,7 @@ void Input::vInspect(void)
 //         aUF[m_eTknForm]
 //         );
 
-  if (! m_pToken) {
+  if (! m_pCurrTkn) {
     vTrace("Input #UseBegin.%lld #CollectToken.%lld : ]>NoToken<[\n"_Stz,
            d_nUseBegin,
            d_nCollectToken
@@ -192,7 +207,7 @@ void Input::vInspect(void)
   vTrace("Input #UseBegin.%lld #CollectToken.%lld : %s\n"_Stz,
          d_nUseBegin,
          d_nCollectToken,
-         spTkn.sz(m_pToken)
+         spTkn.sz(m_pCurrTkn)
          );
 
   m_pCharser->vInspect();
@@ -250,31 +265,41 @@ void Input::vPushCharser(void)
   Charser* pNewCharser = new Charser(m_pCharser);
   
   m_pCharser = pNewCharser;
+  
+  m_pCharser->vDebugMode(d_iDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
 void Input::vReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
   ASSERT(m_pCharser->bUseBegun());
   
-  m_pTknVec->vIntegrityCheck();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the first line so we can test if its a command file to be executed
   vSingleLineCmd(true);
   
-  m_pTknVec->vIntegrityCheck();
   vCollectVecFirstLine();
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pTknVec->vIntegrityCheck();
 
+  if (d_iDebugMode) {
+    vTrace("Collected FirstLine\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+  
   // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
-      ! m_pTknVec->pGet(0)->bHasChars() ) {
+       ! m_pTknVec->pGet(0)->bHasChars() ) {
     m_pTknVec->vIntegrityCheck();
     return;
   }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a command file
   
   // if its a command file just return
   if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
@@ -284,35 +309,140 @@ void Input::vReadCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read more until we encounter a ';'
+  
+  // have we already seen the ';'
+  if (m_pTknVec->bHasSemicolon()) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
   
   // switch to multi-line command
-  m_pTknVec->vIntegrityCheck();
   vSingleLineCmd(false);
   
   // read more till ;
-  m_pTknVec->vIntegrityCheck();
   vCollectVecTillSemicolon();
-  
-  // switch back to single line command
   m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected TillSemicolon\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+
+  // switch back to single line command
   vSingleLineCmd(true);
   
   // stip off ;
-  m_pTknVec->vIntegrityCheck();
   m_pTknVec->vStripSemicolon();
-  
+  m_pTknVec->vIntegrityCheck();
+
   // stip off &
-  m_pTknVec->vIntegrityCheck();
   m_pTknVec->vStripAmpersand();
-  
-  // set no of tokens in token vector
   m_pTknVec->vIntegrityCheck();
+
+  // set no of tokens in token vector
   m_pTknVec->vSetTokens();
   m_pTknVec->vIntegrityCheck();
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Input::vReadCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+    
+  ASSERT(m_pCharser->bUseBegun());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the first line so we can test if its a command file to be executed
+  vSingleLineCmd(true);
+  
+  vCollectVecFirstLine();
+  m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected FirstLine\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+  
+  // if empty line just return                                      ** NON-SENSE
+  if ( ! m_pTknVec->nTokens() ||
+       ! m_pTknVec->pGet(0)->bHasChars() ) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a command file
+  
+  // if its a command file just return
+  if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
+      File::bExists(m_pTknVec->pGet(0)->szChars())) {
+    m_pTknVec->vIntegrityCheck();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // have we already seen the ';'
+  
+  if (m_pTknVec->bHasSemicolon()) {
+    m_pTknVec->vStripSemicolon();
+    m_pTknVec->vSetTokens();
+    m_pTknVec->vIntegrityCheck();
+    if (d_iDebugMode) {
+      m_pTknVec->vListTokens();
+    }
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read more until we encounter a ';'
+  
+  // switch to multi-line command
+  vSingleLineCmd(false);
+  
+  // read more till ;
+  vCollectVecTillSemicolon();
+  m_pTknVec->vIntegrityCheck();
+
+  if (d_iDebugMode) {
+    vTrace("Collected TillSemicolon\n"_Stz);
+    m_pTknVec->vListTokens();
+  }
+
+  // switch back to single line command
+  vSingleLineCmd(true);
+  
+  // stip off ;
+  m_pTknVec->vStripSemicolon();
+  m_pTknVec->vIntegrityCheck();
+
+  // stip off &
+  m_pTknVec->vStripAmpersand();
+  m_pTknVec->vIntegrityCheck();
+
+  // set no of tokens in token vector
+  m_pTknVec->vSetTokens();
+  m_pTknVec->vIntegrityCheck();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
+/*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
+void Input::vReadToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  m_pTknVec->vSoftReset();
+
+  m_pTknVec->vAdvanceCurr(false);
+
+  vCollectOneToken();
+}
+#else
 /*----------------------------------------------------------------------------*/
 void Input::vReadToken(void)
 {
@@ -322,11 +452,11 @@ void Input::vReadToken(void)
   
   m_pTknVec->vSoftReset();
 
-  m_pTknVec->vAdvanceCurr();
-  Token* pToken = m_pTknVec->pCurrToken();;
+  m_pTknVec->vAdvanceCurr(false);
 
-  vCollectToken();
+  vCollectOneToken();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* seen EOF?                                                                  */
@@ -464,16 +594,17 @@ void Input::vUseString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* collect next token                                                         */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectToken(void)
+void Input::vCollectOneToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  d_nCollectToken++;
   
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
-  d_nCollectToken++;
 
-  m_pToken = m_pTknVec->pCurrToken();;
+  m_pCurrTkn = m_pTknVec->pCurrToken();;
 
   if (UF_CPP_TOKENS == m_eTknForm)
     vCollectCpp();
@@ -484,42 +615,42 @@ void Input::vCollectToken(void)
 /*----------------------------------------------------------------------------*/
 /* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
 void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecFirstLine\n"_Stz);
+    vInspect();
+  }
+  
   ASSERT(m_pCharser->bUseBegun());
   
-  while (true) {
-    
-    m_pTknVec->vSoftReset();
-    
-    for (;;) {
-      
-      m_pTknVec->vAdvanceCurr();
-      Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
-            
-//      if (! bNextInputToken(pToken))
-//        break;
-      
-      vCollectToken();
-      
-      if (TN_EOF == pToken->eToken())
-        break;
+  m_pTknVec->vSoftReset();
 
-      m_pTknVec->vIncTokens();
-      ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
-    }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (;;) {
     
-    // end of file? if so, pop and retry
-    if (! m_pTknVec->nTokens() && bSeenEOF()) {
-      bool b = bPopCharser();
-      ASSERT(b);
+    m_pTknVec->vAdvanceCurr(false);
+    Token* pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
+              
+    vCollectOneToken();
+    
+    if (TN_EOF == pToken->eToken())
       break;
-    }
-    
-    break;
+
+    m_pTknVec->vIncTokens();
+    ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
   }
+  
+  // end of file? if so, pop and retry
+  if (! m_pTknVec->nTokens() && bSeenEOF()) {
+    bool b = bPopCharser();
+    ASSERT(b);
+  }
+    
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -542,24 +673,96 @@ void Input::vCollectVecFirstLine(void)
 //
 //  Correctness::vDebugPoint();
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Input::vCollectVecFirstLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecFirstLine\n"_Stz);
+    vInspect();
+  }
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTknVec->vSoftReset();
+  
+  Token* pToken = nullptr;
+  
+  for (;;) {
+    
+    m_pTknVec->vAdvanceCurr(false);
+    pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
+              
+    vCollectOneToken();
+    
+    if (TN_EOF == pToken->eToken())
+      break;
+
+    m_pTknVec->vIncTokens();
+    ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
+  }
+
+  if (d_iDebugMode) {
+    m_pTknVec->vListTokens();
+  }
+  
+//  ASSERT( (! m_pTknVec->nTokens() &&   bSeenEOF() ) ||
+//         (  m_pTknVec->nTokens() && ! bSeenEOF() ) );
+
+  // end of file? if so, pop and retry
+  if (! m_pTknVec->nTokens() && bSeenEOF()) {
+    bool b = bPopCharser();
+    ASSERT(b);
+  }
+    
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+//  i8 nTkns = m_pTknVec->nTokens();
+//  if (! nTkns)
+//    return;
+//
+//  Token* pLastTkn = m_pTknVec->pGet(nTkns - 1);
+//
+//  if (pLastTkn->bIsEOF()) {
+//    m_pTknVec->vListTokens();
+//    m_pTknVec->vIntegrityCheck();
+//    m_pTknVec->vRemoveToken(pLastTkn->i_Token());
+//    m_pTknVec->vIntegrityCheck();
+//  }
+//  else {
+//    m_pTknVec->vListTokens();
+//  }
+//
+//  Correctness::vDebugPoint();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* collect vector of tokens from input stream till ';'                        */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INPUT_CURSOR
 void Input::vCollectVecTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecTillSemicolon\n"_Stz);
+    vInspect();
+  }
   
   ASSERT(m_pCharser->bUseBegun());
   
   // we should have a first token (e.g. create or drop)
   ASSERT(m_pTknVec->pGet(0)->bHasChars());
   
-  //m_pTknVec->vListTokens();
-
-  // have we already seen the ';'
-  if (m_pTknVec->bHasSemicolon())
-    return;
+  // we should not have seen ';'
+  ASSERT( ! m_pTknVec->bHasSemicolon());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -570,20 +773,63 @@ void Input::vCollectVecTillSemicolon(void)
     
     Token* pToken = m_pTknVec->pGet(i_Token,true);
     
-    vCollectToken();
+    vCollectOneToken();
     ASSERT(TN_EOF != pToken->eToken());
     
     // look for terminal
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
       break;
 
-    m_pTknVec->vAdvanceCurr();
+    m_pTknVec->vAdvanceCurr(false);
   }
   
   //m_pTknVec->vListTokens();
   
   Correctness::vDebugPoint();
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Input::vCollectVecTillSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (d_iDebugMode) {
+    vTrace("::vCollectVecTillSemicolon\n"_Stz);
+    vInspect();
+  }
+  
+  ASSERT(m_pCharser->bUseBegun());
+  
+  // we should have a first token (e.g. create or drop)
+  ASSERT(m_pTknVec->pGet(0)->bHasChars());
+  
+  // we should not have seen ';'
+  ASSERT( ! m_pTknVec->bHasSemicolon());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_Token = m_pTknVec->iCountTokens();
+  
+  // get tokens delimited by ';'
+  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
+    
+    Token* pToken = m_pTknVec->pGet(i_Token,true);
+    
+    vCollectOneToken();
+    ASSERT(TN_EOF != pToken->eToken());
+    
+    // look for terminal
+    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
+      break;
+
+    m_pTknVec->vAdvanceCurr(false);
+  }
+  
+  //m_pTknVec->vListTokens();
+  
+  Correctness::vDebugPoint();
+}
+#endif
 
 // collect cpp tokens //////////////////////////////////////////////////////////
 
@@ -596,8 +842,8 @@ void Input::vCollectCpp(void)
   
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
 
-  char* azTermCrs = m_pToken->azChars();
-  m_pToken->vReset();
+  char* azTermCrs = m_pCurrTkn->azChars();
+  m_pCurrTkn->vReset();
 
   vGetAnnCharStripped();
   
@@ -610,7 +856,7 @@ void Input::vCollectCpp(void)
   // end of input?
   if (bHitEOF()) {
     *azTermCrs = '\0';
-    m_pToken->vToken(TN_EOF);
+    m_pCurrTkn->vToken(TN_EOF);
   }
   
   // collect integer literal?
@@ -638,7 +884,7 @@ void Input::vCollectCpp(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
   // cross check valid normal tokens
-  switch (m_pToken->eToken()) {
+  switch (m_pCurrTkn->eToken()) {
      
     // the expected tokens
     case TN_EOF:
@@ -664,7 +910,7 @@ void Input::vCollectCppInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 iNoDigits = 0;
@@ -700,7 +946,7 @@ void Input::vCollectCppInteger(void)
   // terminate the integer literal
   *z = '\0';
   
-  m_pToken->vToken(TN_INTEGER);
+  m_pCurrTkn->vToken(TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -710,7 +956,7 @@ void Input::vCollectCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppName());
@@ -727,7 +973,7 @@ void Input::vCollectCppName(void)
   // terminate the name
   *z = '\0';
   
-  m_pToken->vToken(TN_NAME);
+  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -737,7 +983,7 @@ void Input::vCollectCppOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppOther());
@@ -750,7 +996,7 @@ void Input::vCollectCppOther(void)
       *z++ = ']';
       *z++ = ']';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -772,7 +1018,7 @@ void Input::vCollectCppOther(void)
       *z++ = ':';
       *z++ = ':';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -794,7 +1040,7 @@ void Input::vCollectCppOther(void)
       *z++ = '.';
       *z++ = '.';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -814,7 +1060,7 @@ void Input::vCollectCppOther(void)
       *z++ = '=';
       *z++ = '=';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -834,7 +1080,7 @@ void Input::vCollectCppOther(void)
       *z++ = '>';
       *z++ = '=';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -854,7 +1100,7 @@ void Input::vCollectCppOther(void)
       *z++ = '<';
       *z++ = '=';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -874,7 +1120,7 @@ void Input::vCollectCppOther(void)
       *z++ = '[';
       *z++ = '[';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -896,7 +1142,7 @@ void Input::vCollectCppOther(void)
       *z++ = '|';
       *z++ = '|';
       *z = '\0';
-      m_pToken->vToken(TN_STRING);
+      m_pCurrTkn->vToken(TN_STRING);
       return;
     }
     else {
@@ -914,7 +1160,7 @@ void Input::vCollectCppOther(void)
   
   // terminate the other token
   *z = '\0';
-  m_pToken->vToken(TN_OTHER);
+  m_pCurrTkn->vToken(TN_OTHER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -924,7 +1170,7 @@ void Input::vCollectCppString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -951,7 +1197,7 @@ void Input::vCollectCppString(void)
   // terminate the string literal
   *z = '\0';
   
-  m_pToken->vToken(TN_STRING);
+  m_pCurrTkn->vToken(TN_STRING);
 }
 
 //
@@ -967,9 +1213,9 @@ void Input::vCollectSen(void)
   
   ASSERT(UF_SEN_TOKENS == m_eTknForm);
   
-  char* azTermCrs = m_pToken->azChars();
+  char* azTermCrs = m_pCurrTkn->azChars();
   
-  m_pToken->vReset();
+  m_pCurrTkn->vReset();
 
   vGetAnnCharStripped();
   
@@ -982,7 +1228,7 @@ void Input::vCollectSen(void)
   // end of input?
   if (bHitEOF()) {
     *azTermCrs = '\0';
-    m_pToken->vToken(TN_EOF);
+    m_pCurrTkn->vToken(TN_EOF);
   }
   
   // collect integer literal?
@@ -1013,13 +1259,13 @@ void Input::vCollectSen(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // cross check valid SEN tokens
-  switch (m_pToken->eToken()) {
+  switch (m_pCurrTkn->eToken()) {
       
     // the expected tokens
     case TN_INTEGER:
     case TN_NAME:
     case TN_TAG:
-//      if (m_pToken->szChars()->bSame(""_Stz)) {
+//      if (m_pCurrTkn->szChars()->bSame(""_Stz)) {
 //        vInspect();
 //        Correctness::vDebugPoint();
 //      }
@@ -1046,7 +1292,7 @@ void Input::vCollectSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 iNoDigits = 0;
@@ -1099,7 +1345,7 @@ void Input::vCollectSenInteger(void)
     
     // terminate an intlit
     *z = '\0';
-    m_pToken->vToken(TN_INTEGER);
+    m_pCurrTkn->vToken(TN_INTEGER);
     return;
   }
   
@@ -1114,7 +1360,7 @@ void Input::vCollectSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   //ASSERT(bStartSenName());
@@ -1131,7 +1377,7 @@ void Input::vCollectSenName(void)
   // terminate a namelit
   *z = '\0';
 
-  m_pToken->vToken(TN_NAME);
+  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1141,7 +1387,7 @@ void Input::vCollectSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -1171,7 +1417,7 @@ void Input::vCollectSenString(void)
   // terminate the strlit
   *z = '\0';
 
-  m_pToken->vToken(TN_STRING);
+  m_pCurrTkn->vToken(TN_STRING);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1181,7 +1427,7 @@ void Input::vCollectSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pToken->azChars());
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenTag());
@@ -1195,7 +1441,7 @@ void Input::vCollectSenTag(void)
     // terminate a namelit
     *z = '\0';
 
-    m_pToken->vToken(TN_NAME);
+    m_pCurrTkn->vToken(TN_NAME);
     
     return;
   }
@@ -1214,7 +1460,7 @@ void Input::vCollectSenTag(void)
   // terminate a namelit
   *z = '\0';
 
-  m_pToken->vToken(TN_TAG);
+  m_pCurrTkn->vToken(TN_TAG);
 }
 
 
@@ -1450,14 +1696,14 @@ void Input::vTokenCollectBegin(void)
 //
 //  * szLatter->azChar() = '\0';
 //
-//  m_pToken->vChars(szLatter);
+//  m_pCurrTkn->vChars(szLatter);
   
-  m_pTknVec->vCollectBegin(m_pToken);
+  m_pTknVec->vCollectBegin(m_pCurrTkn);
   
 #endif
   
-  m_pToken->vLineNo(m_xAnnChar.m_iLine);
-  m_pToken->vColNo(m_xAnnChar.m_iCol);
+  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
+  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1469,16 +1715,16 @@ void Input::vTokenCollectEnd(void)
 
 #ifdef __WITH_CHARS_SET
   
-//  i8 nChars = m_pToken->nChars();
+//  i8 nChars = m_pCurrTkn->nChars();
 //
 //  m_pTknVec->vTakeCharsBytes(nChars + 1);
 //
 //  Stz* szLatter = m_pTknVec->szLaterChars();
 //  * szLatter->azChar() = '\0';
 //
-//  vTrace("Chars: %s\n"_Stz,m_pToken->szChars());
+//  vTrace("Chars: %s\n"_Stz,m_pCurrTkn->szChars());
   
-  m_pTknVec->vCollectEnd(m_pToken);
+  m_pTknVec->vCollectEnd(m_pCurrTkn);
 
 #endif
 }
@@ -1494,6 +1740,30 @@ bool Input::bHitEOF(void)
     return true;
   
   return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* reset the token vector and current token cursor pair                       */
+/*----------------------------------------------------------------------------*/
+void Input::vCursorAdvance(void)
+{
+#ifdef __WITH_INPUT_CURSOR
+  m_pTknVec->vAdvanceCurr(true);
+#else
+  m_pTknVec->vAdvanceCurr(false);
+#endif
+  
+  m_pCurrTkn = m_pTknVec->pCurrToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the token vector and current token cursor pair                       */
+/*----------------------------------------------------------------------------*/
+void Input::vCursorReset(void)
+{
+  m_pTknVec->vSoftReset();
+  m_pCurrTkn = nullptr;
 }
 
 /*============================================================================*/

@@ -42,6 +42,9 @@ namespace LexicalAnalysis
     bool     m_bRead;     // prompt user for more input
     bool     m_bSeenEOF;  // eof seen?
   
+    // some debugging aids
+    bool      d_iDebugMode;  // debug mode?
+ 
     // must be last
     Footer m_xFooter;
     
@@ -85,6 +88,8 @@ namespace LexicalAnalysis
     bool bSingleLineCmd(void);
     bool bIsStdin(void);
 
+    void vDebugMode(i8 iDebugMode);
+  
   private:
     
     void vResetCharser(void);

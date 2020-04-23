@@ -148,11 +148,14 @@ TokenVec* TokenVec::pTokenise(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* advance current token                                                      */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAdvanceCurr(void)
+void TokenVec::vAdvanceCurr(bool bIncItems)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   m_iCurTkn++;
+  
+  if (bIncItems)
+    vIncItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -497,7 +500,6 @@ void TokenVec::vListTokens(void)
     
     vTrace("  %s\n"_Stz,spTkn.sz(pToken));
   }
-  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -94,6 +94,9 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   m_iSectionNo = 0;
 
+  d_iDebugMode = gxArgs.m_iPromptDebug;
+  m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+  
   _checkInitialised_(CN_SEPROMPT);
   
   vInitialSettings();
@@ -307,6 +310,18 @@ BPA* SePrompt::pBPA(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pBPA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set debug mode                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDebugMode(i8 iDebugMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  d_iDebugMode = iDebugMode;
+
+  m_pSession->m_pInput->vDebugMode(d_iDebugMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -928,7 +943,7 @@ void SePrompt::vPromptUser(void)
 
   vInfo("[%s %lld] "
         "%s%s%s"
-        "se %s%c %s> "_Stz,
+        "se %s%c %s%s> "_Stz,
         
         szNodeNm,
         iPid,
@@ -938,12 +953,17 @@ void SePrompt::vPromptUser(void)
         AM::pStepTiming()     ? "*STEPTIMING* " : "",
         
         RAPIDSSE_VERSION_STRING,
-  #ifdef WITH_DEBUG_VERSION
+#ifdef WITH_DEBUG_VERSION
         'd',
-  #else
+#else
         'r',
-  #endif
-        bHasStarted           ? "booted" : "not-booted"
+#endif
+        bHasStarted           ? "booted" : "not-booted",
+#ifdef ___WITH_CHARS_SET
+        " __WITH_CHARS_SET"_Stz
+#else
+        ""_Stz
+#endif
         );
 
   fflush(stdin);
@@ -960,6 +980,9 @@ bool SePrompt::bReadNextCommand(void)
  
   pTknVec->vIntegrityCheck();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // special case: initial command supplied as an SE command line argument
+  
   if (gxArgs.m_bInitial) {
     gxArgs.m_bInitial = false;
     
@@ -971,6 +994,8 @@ bool SePrompt::bReadNextCommand(void)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // special case: run one command only
   
   if (m_bOneCommand && ! m_bOneRun) {
     m_bOneRun = true;
@@ -984,6 +1009,7 @@ bool SePrompt::bReadNextCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // special case: a previous command has requested to prompt to do something
   
   if (* m_pSession->m_sToDo.azChar()) {
     pTknVec->vTokenise(m_pSession->m_sToDo);
@@ -996,20 +1022,19 @@ bool SePrompt::bReadNextCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  // special case:
+  
   if (m_bOneCommand && m_pSession->m_pInput->bIsStdin()) {
-    vDebugPoint();
+    pTknVec->vIntegrityCheck();
     return false;
   }
 
-  pTknVec->vIntegrityCheck();
-  //m_pSession->m_pInput->vInspect();
-
-  pTknVec->vIntegrityCheck();
-  m_pSession->m_pInput->vReadCommand();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // general case
   
-  //pTknVec->vListTokens();
+  m_pSession->m_pInput->vReadCommand();
   pTknVec->vIntegrityCheck();
+
   return true;
 }
 

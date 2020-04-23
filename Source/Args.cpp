@@ -6,8 +6,9 @@
 
 extern Args       gxArgs;
 extern AttachMap* gpAttachMap;
-extern bool       gbSHM;
+extern bool       gbJot;
 extern Log*       gpLog;
+extern bool       gbSHM;
 
 int    gi_argc;
 char** gi_argv;
@@ -73,24 +74,26 @@ Args::Args(void)
   m_nEntries         = 0;
   m_bFreeCB          = false;
   m_bGridTest        = false;
-  m_bLock            = false;
   m_bHugePages       = false;
+  m_bJot             = false;
   m_bKillPrev        = false;
+  m_bLock            = false;
   m_bLog             = false;
   m_bNoMunge         = false;
   m_nMaxLoadErrors   = 0;
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
+  m_nPeriodicSleep   = 10;
   m_bProgress        = true;
+  m_iPromptDebug     = 0;
   m_bReload          = false;
   m_bRestart         = true;
   m_nSubIngesters    = 4;
   m_nSubLoaders      = 4;
+  m_nSupervisorSleep = 10;
   m_iThisNode        = C_UNKNOWN;
   m_nThreads         = 12;
-  m_nPeriodicSleep   = 10;
-  m_nSupervisorSleep = 10;
   m_bTouch           = false;
   m_bTracepoint      = false;
   m_bTracing         = false;
@@ -297,6 +300,12 @@ bool Args::bParse(int argc, Stz* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--jot"_Stz)) {
+      m_bJot = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--killPrev"_Stz)) {
       m_bKillPrev = true;
       continue;
@@ -448,6 +457,12 @@ bool Args::bParse(int argc, Stz* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--promptDebug"_Stz)) {
+      m_iPromptDebug = argv[++i_Arg]->iToI8();
+      continue;
+    }
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--region"_Stz)) {
       m_sRegionName = (Stz*)argv[++i_Arg];

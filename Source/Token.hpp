@@ -8,13 +8,14 @@ namespace LexicalAnalysis
   class Token : public Object
   {
   private:
+    i8    m_i_Token; // which token
     eTN   m_eToken;  // kind of token
     Stz*  m_szChars; // the charsed characters of this token
     i8    m_iLineNo; // line number where term can be found in input
     i8    m_iColNo;  // column number where term can be found in input
 
     TokenVec* m_p_ExoTknVec; // which token vector this 
-    i8        m_i_Token;      // which token
+
     
     s256  m__sCharsBuff; // temp buffer for charsed characters
 

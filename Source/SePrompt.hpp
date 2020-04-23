@@ -39,7 +39,9 @@ namespace Prompt
    
     i8        m_iSectionNo;  // section numbering
 
-
+    // some debugging aids
+    bool      d_iDebugMode;   // debug mode?
+  
     // must be last
     Footer m_xFooter;
   
@@ -58,6 +60,7 @@ namespace Prompt
     void vBeginRequest(void);
     bool bBlankLine(void);
     BPA* pBPA(void);
+    void vDebugMode(i8 iDebugMode);
     void vCheckJobCtl(void);
     void vCheckTimed(void);
     i8   iCommandFocal(void);
