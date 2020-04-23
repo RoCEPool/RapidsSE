@@ -108,6 +108,8 @@ namespace Pipelines
     
     Footer* aFooter(void);
     
+  private:
+    void vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
