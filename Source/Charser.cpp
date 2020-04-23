@@ -74,7 +74,7 @@ void Charser::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  vTrace("Charser[%lld] (L%lld C%lld) : "
+  vJot("Charser[%lld] (L%lld C%lld) : "
          "Source %s Path %s %s %s %s %s %s %s : "
          "Loaded %lld %c %c\n"_Stz,
          

@@ -4,7 +4,206 @@
 
 #include "Correctness.h"
 
-bool gbJotting = false;
+bool  _m_bJotting = false;
+
+i8    _m_nTab = 0;
+i8    _m_iSection = 0;
+char* _m_sSubject;
+
+
+//
+// joting //////////////////////////////////////////////////////////////////////
+//
+
+/*----------------------------------------------------------------------------*/
+/* report a trace message                                                     */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJot(Stz* aFormat, ...)
+{
+  if (! _m_bJotting)
+    return;
+  
+  va_list xVaArgs;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x# "_Stz,_m_sSubject,_m_iSection);
+  
+  if (_m_nTab) {
+    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_m_nTab));
+  }
+    
+  va_start(xVaArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+  va_end(xVaArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line 1                                                        */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDiv1(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "----------------------------------------"
+    "----------------------------------------"
+    "----------------------------------------"
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line 2                                                        */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDiv2(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "========================================"
+    "========================================"
+    "========================================"
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line minus&space                                               */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivMS(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "- - - - - - - - - - - - - - - - - - - - "
+    "- - - - - - - - - - - - - - - - - - - - "
+    "- - - - - - - - - - - - - - - - - - - - "
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line minus&space                                               */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivPS(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "+ + + + + + + + + + + + + + + + + + + + "
+    "+ + + + + + + + + + + + + + + + + + + + "
+    "+ + + + + + + + + + + + + + + + + + + + "
+  );
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line A                                                        */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivA(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "++++++++++++++++++++++++++++++++++++++++"
+    "++++++++++++++++++++++++++++++++++++++++"
+    "++++++++++++++++++++++++++++++++++++++++"
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line B                                                        */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivB(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "+ + + + + + + + + + + + + + + + + + + + "
+    "+ + + + + + + + + + + + + + + + + + + + "
+    "+ + + + + + + + + + + + + + + + + + + + "
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot dividing line B                                                        */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivC(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "########################################"
+    "########################################"
+    "########################################"
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* jot section                                                                */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivX(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+    "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+    "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* tab in for next jotting                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotSet(bool bJot)
+{
+  _m_bJotting = bJot;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* tab in for next jotting                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotSection(Stz* szSubject)
+{
+  _m_sSubject = szSubject->azChar();
+  
+  _m_iSection++;
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "########################################"
+    "########################################"
+    "########################################"
+    );
+  
+  vJot("%s\n"_Stz,szSubject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tab in for next jotting                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotTabIn(void)
+{
+  _m_nTab++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tab out for next jotting                                                   */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotTabOut(void)
+{
+  if (_m_nTab)
+    _m_nTab--;
+}
+
+//
+// tracing /////////////////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */
@@ -14,7 +213,7 @@ void Correctness::vInfo(Stz* aFormat, ...)
   va_list xVaArgs;
   
   va_start(xVaArgs,aFormat);
-  AM::vWriteTrace(YA_SYS_INFO,aFormat,xVaArgs);
+  AM::vWriteTrace_vargs(YA_SYS_INFO,aFormat,xVaArgs);
   va_end(xVaArgs);
 }
 
@@ -26,7 +225,7 @@ void Correctness::vTrace(Stz* aFormat, ...)
   va_list xVaArgs;
 
   va_start(xVaArgs,aFormat);
-  AM::vWriteTrace(YA_SYS_TRACE,aFormat,xVaArgs);
+  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
   va_end(xVaArgs);
 }
 
@@ -38,7 +237,7 @@ void Correctness::vWarn(Stz* aFormat, ...)
   va_list xVaArgs;
   
   va_start(xVaArgs,aFormat);
-  AM::vWriteTrace(YA_SYS_WARN,aFormat,xVaArgs);
+  AM::vWriteTrace_vargs(YA_SYS_WARN,aFormat,xVaArgs);
   va_end(xVaArgs);
 }
 

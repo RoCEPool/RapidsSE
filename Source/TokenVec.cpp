@@ -491,6 +491,12 @@ void TokenVec::vListTokens(void)
   SP_Token spTkn;
   
   i8 nTkns = nTokens();
+  
+  if (! nTkns) {
+    vJot("  **Empty TokenVec**\n"_Stz);
+    return;
+  }
+  
   for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
     
     Token* pToken = pGet(i_Token);
@@ -498,7 +504,7 @@ void TokenVec::vListTokens(void)
     //if (! pToken->szChars())
     //  break;
     
-    vTrace("  %s\n"_Stz,spTkn.sz(pToken));
+    vJot("  %s\n"_Stz,spTkn.sz(pToken));
   }
 }
 
