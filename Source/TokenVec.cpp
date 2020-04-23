@@ -545,6 +545,21 @@ Token* TokenVec::pPrevToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove the ';' token                                                       */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vRemoveSemicolon(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  i8 i_Semi = iFindToken(";"_Stz);
+  
+  if (C_UNKNOWN == i_Semi)
+    return;
+  
+  vRemoveToken(i_Semi);
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove a token from token vector                                           */
 /*----------------------------------------------------------------------------*/
 #ifndef __WITH_CHARS_SET
