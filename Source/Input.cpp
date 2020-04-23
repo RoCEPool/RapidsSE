@@ -296,8 +296,7 @@ void Input::vReadCommand(void)
   }
   
   // if empty line just return                                      ** NON-SENSE
-  if ( ! m_pTknVec->nTokens() ||
-       ! m_pTknVec->pGet(0)->bHasChars() ) {
+  if (1 == m_pTknVec->nTokens() && m_pCurrTkn->bIsEOF()) {
     m_pTknVec->vIntegrityCheck();
     goto L_Exit;
   }
@@ -317,7 +316,6 @@ void Input::vReadCommand(void)
   
   if (m_pTknVec->bHasSemicolon()) {
     m_pTknVec->vStripSemicolon();
-    m_pTknVec->vSetTokens();
     m_pTknVec->vIntegrityCheck();
     goto L_Exit;
   }
@@ -347,8 +345,6 @@ void Input::vReadCommand(void)
   m_pTknVec->vStripAmpersand();
   m_pTknVec->vIntegrityCheck();
 
-  // set no of tokens in token vector
-  m_pTknVec->vSetTokens();
   m_pTknVec->vIntegrityCheck();
   
   
@@ -461,9 +457,9 @@ void Input::vReadToken(void)
   
   ASSERT(m_pCharser->bUseBegun());
   
-  m_pTknVec->vSoftReset();
+  vCursorReset();
 
-  m_pTknVec->vAdvanceCurr(false);
+  vCursorAdvance();
 
   vCollectOneToken();
 }
@@ -629,9 +625,6 @@ void Input::vCollectOneToken(void)
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
-
-  m_pCurrTkn = m_pTknVec->pCurrToken();;
-
   if (UF_CPP_TOKENS == m_eTknForm)
     vCollectCpp();
   else
@@ -677,57 +670,22 @@ void Input::vCollectVecFirstLine(void)
 
   m_pTknVec->vSoftReset();
   
-  Token* pToken = nullptr;
-  
   for (;;) {
+
+    vCursorAdvance();
     
-    m_pTknVec->vAdvanceCurr(false);
-    pToken = m_pTknVec->pGet(m_pTknVec->nTokens(),true);
-              
     vCollectOneToken();
     
-    if (TN_EOF == pToken->eToken())
+    if (m_pCurrTkn->bIsEOF())
       break;
-
-    m_pTknVec->vIncTokens();
-    ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
   }
 
-  if (d_iDebugMode) {
-    m_pTknVec->vListTokens();
-  }
-  
-//  ASSERT( (! m_pTknVec->nTokens() &&   bSeenEOF() ) ||
-//         (  m_pTknVec->nTokens() && ! bSeenEOF() ) );
-
-  // end of file? if so, pop and retry
   if (! m_pTknVec->nTokens() && bSeenEOF()) {
     bool b = bPopCharser();
     ASSERT(b);
   }
-    
   
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  i8 nTkns = m_pTknVec->nTokens();
-//  if (! nTkns)
-//    return;
-//
-//  Token* pLastTkn = m_pTknVec->pGet(nTkns - 1);
-//
-//  if (pLastTkn->bIsEOF()) {
-//    m_pTknVec->vListTokens();
-//    m_pTknVec->vIntegrityCheck();
-//    m_pTknVec->vRemoveToken(pLastTkn->i_Token());
-//    m_pTknVec->vIntegrityCheck();
-//  }
-//  else {
-//    m_pTknVec->vListTokens();
-//  }
-//
-//  Correctness::vDebugPoint();
-}
+ }
 #else
 /*----------------------------------------------------------------------------*/
 void Input::vCollectVecFirstLine(void)
@@ -816,33 +774,28 @@ void Input::vCollectVecTillSemicolon(void)
   ASSERT(m_pCharser->bUseBegun());
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(m_pTknVec->pGet(0)->bHasChars());
+  //ASSERT(m_pTknVec->pGet(0)->bHasChars());
   
   // we should not have seen ';'
   ASSERT( ! m_pTknVec->bHasSemicolon());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_Token = m_pTknVec->iCountTokens();
-  
-  // get tokens delimited by ';'
-  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
-    Token* pToken = m_pTknVec->pGet(i_Token,true);
+  // get tokens delimited by ';'
+  for (;;) {
+
+    vCursorAdvance();
     
     vCollectOneToken();
-    ASSERT(TN_EOF != pToken->eToken());
+    
+    ASSERT(TN_EOF != m_pCurrTkn->eToken());
     
     // look for terminal
-    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
+    if (m_pCurrTkn->bIsSemicolon())
       break;
-
-    m_pTknVec->vAdvanceCurr(false);
   }
-  
-  //m_pTknVec->vListTokens();
-  
-  Correctness::vDebugPoint();
+
+  ASSERT(m_pTknVec->bHasSemicolon());
 }
 #else
 /*----------------------------------------------------------------------------*/
