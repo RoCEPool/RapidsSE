@@ -383,6 +383,7 @@ void Input::vReadCommand(void)
   vSingleLineCmd(true);
   
   vCollectVecFirstLine();
+  
   m_pTknVec->vIntegrityCheck();
 
   if (d_iDebugMode) {
@@ -660,13 +661,19 @@ void Input::vCollectOneToken(void)
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
-
+  vJotTabIn();
+  vJot("::vCollectOneToke\n"_Stz);
+  
   m_pCurrTkn = m_pTknVec->pCurrToken();;
 
   if (UF_CPP_TOKENS == m_eTknForm)
     vCollectCpp();
   else
     vCollectSen();
+  
+  SP_Token spTkn;
+  vJot("Collected %s\n"_Stz,spTkn.sz(m_pCurrTkn));
+  vJotTabOut();
 }
 #endif
 
