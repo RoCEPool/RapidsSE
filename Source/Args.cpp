@@ -6,7 +6,6 @@
 
 extern Args       gxArgs;
 extern AttachMap* gpAttachMap;
-extern bool       gbJot;
 extern Log*       gpLog;
 extern bool       gbSHM;
 
@@ -301,7 +300,7 @@ bool Args::bParse(int argc, Stz* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--jot"_Stz)) {
-      m_bJot = true;
+      vJotSet(true);
       continue;
     }
     

@@ -550,7 +550,20 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
+void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
+{
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+  va_end(xVaArgs);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* write to trace file etc                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
   static Lock oLock(LK_TRACE,nullptr);
   static char caFormatted[C_1MB] = {'\0'};
