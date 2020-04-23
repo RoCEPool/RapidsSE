@@ -382,9 +382,8 @@ void Input::vReadCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read more until we encounter a ';'
-  
   // have we already seen the ';'
+  
   if (m_pTknVec->bHasSemicolon()) {
     m_pTknVec->vStripSemicolon();
     m_pTknVec->vSetTokens();
@@ -394,6 +393,9 @@ void Input::vReadCommand(void)
     }
     return;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read more until we encounter a ';'
   
   // switch to multi-line command
   vSingleLineCmd(false);
