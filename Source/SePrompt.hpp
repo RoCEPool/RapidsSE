@@ -40,7 +40,7 @@ namespace Prompt
     i8        m_iSectionNo;  // section numbering
 
     // some debugging aids
-    bool      d_iDebugMode;   // debug mode?
+    i8        d_iDebugMode;   // debug mode?
   
     // must be last
     Footer m_xFooter;

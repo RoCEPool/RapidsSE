@@ -94,7 +94,10 @@ void Input::vDebugMode(i8 iDebugMode)
   
   d_iDebugMode = iDebugMode;
   
-  m_pCharser->vDebugMode(d_iDebugMode);
+  if (d_iDebugMode > 2)
+    m_pCharser->vDebugMode(d_iDebugMode);
+  else
+    m_pCharser->vDebugMode(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,11 +389,7 @@ void Input::vReadCommand(void)
   
   m_pTknVec->vIntegrityCheck();
 
-  if (d_iDebugMode) {
-    vJot("Collected FirstLine\n"_Stz);
-    m_pTknVec->vListTokens();
-  }
-  
+ 
   // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
        ! m_pTknVec->pGet(0)->bHasChars() ) {
@@ -662,7 +661,7 @@ void Input::vCollectOneToken(void)
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
   vJotTabIn();
-  vJot("::vCollectOneToke\n"_Stz);
+  vJot("::vCollectOneToken\n"_Stz);
   
   m_pCurrTkn = m_pTknVec->pCurrToken();;
 
@@ -746,10 +745,6 @@ void Input::vCollectVecFirstLine(void)
     m_pTknVec->vIncTokens();
     ASSERT(m_pTknVec->nTokens() < C_MAX_TOKENS);
   }
-
-  if (d_iDebugMode) {
-    m_pTknVec->vListTokens();
-  }
   
 //  ASSERT( (! m_pTknVec->nTokens() &&   bSeenEOF() ) ||
 //         (  m_pTknVec->nTokens() && ! bSeenEOF() ) );
@@ -760,6 +755,10 @@ void Input::vCollectVecFirstLine(void)
     ASSERT(b);
   }
     
+   if (d_iDebugMode) {
+     vJot("Collected FirstLine\n"_Stz);
+     m_pTknVec->vListTokens();
+   }
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

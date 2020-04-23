@@ -324,7 +324,11 @@ void SePrompt::vDebugMode(i8 iDebugMode)
   
   d_iDebugMode = iDebugMode;
 
-  m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+  if (d_iDebugMode > 1)
+    m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+  else
+    m_pSession->m_pInput->vDebugMode(0);
+
 }
 
 /*----------------------------------------------------------------------------*/

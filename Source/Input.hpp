@@ -16,7 +16,7 @@ namespace LexicalAnalysis
     AnnChar   m_xAnnChar;   // annotated char from charser
 
     // some debugging aids
-    bool      d_iDebugMode;    // debug mode?
+    i8        d_iDebugMode;    // debug mode?
     i8        d_nUseBegin;     //
     i8        d_nReadCommand;  //
     i8        d_nCollectToken; //
