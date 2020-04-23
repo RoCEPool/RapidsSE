@@ -200,18 +200,15 @@ procedure load
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodicOp once | chunk $file | stageB
 
-  stage stageB on origin:
-    chunk $file | stageC
+  stage stageB on all partitions on origin:
+    readChunk $file | toCrwH $table | stageC Hashed
 
-  stage stageC on all partitions on origin:
-    readChunk $file | toCrwH $table | stageD Hashed
+  stage stageC on all partitions:
+    insert $table | stageD
 
-  stage stageD on all partitions:
-    insert $table | stageE
-
-  stage stageE on origin:
+  stage stageD on origin:
     progress "Load" | sink | stageA
 
 end
