@@ -890,6 +890,9 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  i8 i_Ptn;
+  i8 i_Nde;
+  
   // there shold be a next Stage
   ASSERT (m_iNextStage != C_UNKNOWN);
   
@@ -900,14 +903,17 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   
-  bool bIsMarker;
-  eXK eXmitKind = XK_NORMAL;
-  i8 i_Ptn;
-  i8 i_Nde;
-  i8 i_Slt;
-  i8 i_Strand;
-  Strand* pStrand;
-
+  // figure out the xmit kind
+  eXK eXmitKind = m_eXmitKind;
+  
+  // is the operand is a marker or a streamDef ?
+  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+    eXmitKind = XK_NORMAL;
+  
+  // is the operand an InfoSet ?
+  if (pOperand->bIsInfoSet())
+    eXmitKind = XK_ROBIN;
+  
   switch(m_eTopologyX) {
       
     case PX_ALL_NODES_TO_ORIGIN:
@@ -920,11 +926,6 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     }
       
     case PX_ORIGIN_TO_ALL_PARTITIONS: {
-      
-      bIsMarker = pOperand->bIsMarker();
-      if ( ! bIsMarker && pOperand->eClass() != CN_STREAMDEF) {
-        eXmitKind = m_eXmitKind;
-      }
       
       // check the XmitKind
       switch (eXmitKind) {
@@ -961,17 +962,12 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
       
-      bIsMarker = pOperand->bIsMarker();
-      if ( ! bIsMarker && pOperand->eClass() != CN_STREAMDEF) {
-        eXmitKind = m_eXmitKind;
-      }
-      
       // check the XmitKind
       switch (eXmitKind) {
           
         case XK_ROBIN : {
           m_iRobin++;
-          i_Slt = m_iRobin % AM::pGrid()->nSlotsPerNode();
+          i8 i_Slt = m_iRobin % AM::pGrid()->nSlotsPerNode();
           i_Ptn = TablePtn::iSlotToPartition(i_Slt);
           
           // xmitNode is the partition node
@@ -989,9 +985,9 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
           
         case XK_NORMAL: {
           
-          for (i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
+          for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
             
-            pStrand = pNextStage->pGet(i_Strand);
+            Strand* pStrand = pNextStage->pGet(i_Strand);
             i_Ptn = pStrand->i_Ptn();
             
             // xmitNode is the partition node
@@ -1011,11 +1007,6 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     }
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      
-      bIsMarker = pOperand->bIsMarker();
-      if ( ! bIsMarker && pOperand->eClass() != CN_STREAMDEF) {
-        eXmitKind = m_eXmitKind;
-      }
       
       // check the XmitKind
       switch (eXmitKind) {
@@ -1065,7 +1056,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
     }
       
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      pStrand = pNextStage->pGetPartitionStrand(m_nPartition);
+      Strand* pStrand = pNextStage->pGetPartitionStrand(m_nPartition);
       i_Ptn = pStrand->i_Ptn();
       
       // xmitNode is the partition node

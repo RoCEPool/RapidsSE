@@ -81,6 +81,16 @@ bool Operand::bIsMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this operand a streamDef ?                                              */
+/*----------------------------------------------------------------------------*/
+bool Operand::bIsStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return eClass() == CN_STREAMDEF ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
 void Operand::vTailProcessing(eTP eTailProcessing)
