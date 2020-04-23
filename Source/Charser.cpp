@@ -124,10 +124,13 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   vConsumeFirst(rxAnnChar);
   
   if (d_iDebugMode) {
-    vJot("Got AnnChar (L%lld C%lld) : %c\n"_Stz,
+    SP_Char spChar;
+    vJot("Got AnnChar (L%lld C%lld) : %s\n"_Stz,
          rxAnnChar.m_iLine,
          rxAnnChar.m_iCol,
-         rxAnnChar.m_cChar);
+         spChar.sz(m_xRegOne.m_cChar)
+         );
+
     vJotTabOut();
   }
 }
@@ -540,10 +543,11 @@ void Charser::vDiscardFirst(void)
   ASSERT(m_nLoaded);
   
   if (d_iDebugMode) {
-    vJot("Discarding (L%lld C%lld) : '%c'\n"_Stz,
+    SP_Char spChar;
+    vJot("Discarding (L%lld C%lld) : %s\n"_Stz,
          m_xRegOne.m_iLine,
          m_xRegOne.m_iCol,
-         m_xRegOne.m_cChar
+         spChar.sz(m_xRegOne.m_cChar)
          );
   }
   
@@ -698,6 +702,10 @@ void Charser::vBlockCommentSkip(void)
   }
   
   vClearRegs();
+  
+  if (d_iDebugMode) {
+    vJot("...*/ Skipped BlockComment\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -763,6 +771,10 @@ void Charser::vLineCommentSkip(void)
   }
   
   ASSERT('\n' == m_xRegOne.m_cChar || '\0' == m_xRegOne.m_cChar);
+  
+  if (d_iDebugMode) {
+    vJot("...*/ Skipped LineComment\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
