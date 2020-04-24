@@ -25,7 +25,7 @@ namespace Correctness
   void  vJotDivZ(void);
 
   i8    iJotDivision(void);
-  i8    iJotDivision(char cFlag, Stz* szFun, Stz* szDivision);
+  i8    iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* szDivision);
 
   i8    iJotSection(void);
   i8    iJotSection(char cFlag, Stz* szFun, Stz* szSection);

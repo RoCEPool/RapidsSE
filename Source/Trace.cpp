@@ -6,16 +6,18 @@
 
 bool  _g_bJotting = false;
 
-i8    _g_nDepth = 0;
-i8    _g_iSection = 0;
-char* _g_sSection;
+char* _g_sArea;
 
 i8    _g_iDivision = 0;
 char* _g_sDivision;
 
+i8    _g_iSection = 0;
+char* _g_sSection;
+
 i8    _g_iSummary = 0;
 char* _g_sSummary;
 
+i8    _g_nDepth = 0;
 i8    _g_iLine = 0;
 
 //
@@ -32,7 +34,8 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
   
   va_list xVaArgs;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x.%02x.%03x# %x%c "_Stz,
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
+                  _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
                   _g_iSection,
@@ -64,7 +67,8 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   
   va_list xVaArgs;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x.%02x.%03x# %x%c "_Stz,
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
+                  _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
                   _g_iSection,
@@ -313,8 +317,9 @@ i8 Correctness::iJotDivision(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotDivision(char cFlag, Stz* szFun, Stz* SzInfo)
+i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
 {
+  _g_sArea     = szArea->azChar();
   _g_sDivision = szFun->azChar();
   
   _g_iDivision++;
