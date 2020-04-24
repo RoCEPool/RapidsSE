@@ -6,6 +6,7 @@
 namespace Correctness
 {
   void  vJot(char cFlag, Stz* szFormat,...);
+  void  vJot2(char cFlag, Stz* szFun, Stz* szFormat,...);
 
   void  vJotDiv1(void);
   void  vJotDiv2(void);
@@ -24,13 +25,13 @@ namespace Correctness
   void  vJotDivZ(void);
 
   i8    iJotDivision(void);
-  i8    iJotDivision(char cFlag, Stz* szDivision);
+  i8    iJotDivision(char cFlag, Stz* szFun, Stz* szDivision);
 
   i8    iJotSection(void);
-  i8    iJotSection(char cFlag, Stz* szSection);
+  i8    iJotSection(char cFlag, Stz* szFun, Stz* szSection);
 
   i8    iJotSummary(void);
-  i8    iJotSummary(char cFlag, Stz* szSection);
+  i8    iJotSummary(char cFlag, Stz* szFun, Stz* szSection);
 
   void  vJotSet(bool bJot);
   void  vJotTabIn(void);

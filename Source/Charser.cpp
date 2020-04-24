@@ -80,7 +80,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
     SP_Charser spCharser;
 
     vJotTabIn();
-    vJot('>',"::vGetAnnChar() { %s }\n"_Stz,spCharser.sz(this));
+    vJot2('>',(Stz*)__func__," { %s }\n"_Stz,spCharser.sz(this));
     
     if (0x29 == iJotSection())
       vDebugPoint();
@@ -119,7 +119,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (! m_nLoaded) {
     rxAnnChar.vReset();
     if (d_iDebugMode) {
-      vJot(';',"No more AnnChar\n"_Stz);
+      vJot2('<',(Stz*)__func__,"No more AnnChar\n"_Stz);
       vJotTabOut();
     }
     return;
@@ -131,7 +131,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (d_iDebugMode) {
     SP_Char spChar;
     SP_String spStr;
-    vJot('<',"Got AnnChar (L%lld C%lld) %s [>%s<]\n"_Stz,
+    vJot2('<',(Stz*)__func__,"Got AnnChar (L%lld C%lld) %s [>%s<]\n"_Stz,
          rxAnnChar.m_iLine,
          rxAnnChar.m_iCol,
          spChar.sz(rxAnnChar.m_cChar),

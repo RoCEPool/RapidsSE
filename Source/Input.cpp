@@ -290,7 +290,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i_Section = iJotDivision("Input::vReadCommand()"_Stz);
+    i8 i_Section = iJotDivision("Input::vReadCommand()"_Stz,""_Stz);
     vJotTabIn();
   }
 
@@ -375,7 +375,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i_Section = iJotDivision('>',"Input::vReadCommand()"_Stz);
+    i8 i_Section = iJotDivision('>',"Input::vReadCommand()"_Stz,""_Stz);
     vJotTabIn();
   }
   
@@ -446,7 +446,7 @@ void Input::vReadCommand(void)
   
 L_Exit:
   if (d_iDebugMode) {
-    i8 i = iJotSummary('<',"Command:"_Stz);
+    i8 i = iJotSummary('<',(Stz*)__func__,"Command:"_Stz);
     m_pTknVec->vListTokens();
     vJotTabOut();
   }
@@ -657,7 +657,7 @@ void Input::vCollectOneToken(void)
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
   vJotTabIn();
-  vJot('>',"::vCollectOneToken()\n"_Stz);
+  vJot2('>',(Stz*)__func__,"\n"_Stz);
   
   m_pCurrTkn = m_pTknVec->pCurrToken();;
 
@@ -667,7 +667,7 @@ void Input::vCollectOneToken(void)
     vCollectSen();
   
   SP_Token spTkn;
-  vJot('<',"Collected %s\n"_Stz,spTkn.sz(m_pCurrTkn));
+  vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn));
   vJotTabOut();
 }
 #endif
@@ -717,7 +717,7 @@ void Input::vCollectVecFirstLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
    if (d_iDebugMode) {
-     i8 i = iJotSection('@',"::vCollectVecFirstLine()"_Stz);
+     i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
      //vInspect();
    }
   
@@ -830,7 +830,7 @@ void Input::vCollectVecTillSemicolon(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (d_iDebugMode) {
-    i8 i = iJotSection('@',"::vCollectVecTillSemicolon()"_Stz);
+    i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
     vInspect();
   }
   
