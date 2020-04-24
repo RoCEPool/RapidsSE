@@ -13,7 +13,7 @@ namespace Utilities
     static void vHeapDump(Heap* pBuffer, i8 iEpoch);
     static void vObjectList(void);
     static void vObjectSummary(void);
-    static void vObjectSnapshot(i8* pCountObjects);
+    static void vObjectSnapshot(ObjectsInPool* pCountObjects);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vPoolAnalyze(void);
     static void vPoolDump(void);

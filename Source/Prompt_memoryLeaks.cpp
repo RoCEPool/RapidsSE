@@ -37,15 +37,15 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   if (2 == iNumTokens && pTokenVec->pGet(1)->bSame("fatal"_Stz))
     bFatal = true;
-
-  i8 iSnapshotObjects[CN_ENUMS];
-  PoolHelper::vObjectSnapshot(&iSnapshotObjects[0]);
   
   if (AM::bMetadata()) {
     vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
   }
   
-  i8* iaObjectsInPool = pPrompt->iaObjectsInPool();
+  ObjectsInPool* pObjectsInPool = pPrompt->pObjectsInPool();
+  ObjectsInPool* pSnapshotObjects = pPrompt->pSnapshotObjects();
+  
+  PoolHelper::vObjectSnapshot(pSnapshotObjects);
   
   for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
     
@@ -54,13 +54,14 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
       continue;
     
-    i8 iCount = iSnapshotObjects[eClass] - iaObjectsInPool[eClass];
-    if ( iCount == 0 )
+    i8 nCount = pSnapshotObjects->m_nObjects[eClass] -
+      pObjectsInPool->m_nObjects[eClass];
+    if ( nCount == 0 )
       continue;
     
     vTrace("row: ('%s',  %lld)\n"_Stz,
            aCN[eClass],
-           iSnapshotObjects[eClass] - iaObjectsInPool[eClass]
+           nCount
            );
     iRowsProcessed++;
   }
