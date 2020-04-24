@@ -131,6 +131,8 @@
         "OP_eatAll.sen"               include
         "OP_exemplar.sen"             include
 
+        "OP_fetch.sen"                include
+
         "OP_genCsv.sen"               include
         "OP_gridSanity.sen"           include
 

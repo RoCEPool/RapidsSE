@@ -963,8 +963,10 @@ public:
   void vPlannerDelete(void);
   void vPlannerFetchTechniqueFetch(void);
   void vPlannerGenPaths(void);
+  void vPlannerGet(void);
   void vPlannerHighKeyFetch(void);
   void vPlannerIndexNmFetch(void);
+  void vPlannerIsNull(void);
   void vPlannerKeyFetch(void);
   void vPlannerLowKeyFetch(void);
   void vPlannerMatchPaths(void);
@@ -972,6 +974,7 @@ public:
   void vPlannerParseWhere(void);
   void vPlannerPhrasesFetch(void);
   void vPlannerScorePaths(void);
+  void vPlannerSet(void);
   void vPlannerShowPaths(void);
   void vPlannerTableFetch(void);
   void vPlannerTableStore(void);
