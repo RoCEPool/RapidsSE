@@ -4,12 +4,17 @@
 
 #include "Correctness.h"
 
-bool  _m_bJotting = false;
+bool  _g_bJotting = false;
 
-i8    _m_nTab = 0;
-i8    _m_iSection = 0;
-char* _m_sSubject;
+i8    _g_nTab = 0;
+i8    _g_iSection = 0;
+char* _g_sSection;
 
+i8    _g_iDivision = 0;
+char* _g_sDivision;
+
+i8    _g_iSummary = 0;
+char* _g_sSummary;
 
 //
 // joting //////////////////////////////////////////////////////////////////////
@@ -20,15 +25,15 @@ char* _m_sSubject;
 /*----------------------------------------------------------------------------*/
 void Correctness::vJot(Stz* aFormat, ...)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
   
   va_list xVaArgs;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x# "_Stz,_m_sSubject,_m_iSection);
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x# "_Stz,_g_sDivision,_g_iDivision);
   
-  if (_m_nTab) {
-    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_m_nTab));
+  if (_g_nTab) {
+    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nTab));
   }
     
   va_start(xVaArgs,aFormat);
@@ -41,7 +46,7 @@ void Correctness::vJot(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDiv1(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -56,7 +61,7 @@ void Correctness::vJotDiv1(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDiv2(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -71,7 +76,7 @@ void Correctness::vJotDiv2(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivES(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -86,7 +91,7 @@ void Correctness::vJotDivES(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivMS(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -101,7 +106,7 @@ void Correctness::vJotDivMS(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivPS(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -117,7 +122,7 @@ void Correctness::vJotDivPS(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivA(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -132,7 +137,7 @@ void Correctness::vJotDivA(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivB(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -147,7 +152,7 @@ void Correctness::vJotDivB(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivC(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -162,7 +167,7 @@ void Correctness::vJotDivC(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivX(void)
 {
-  if (! _m_bJotting)
+  if (! _g_bJotting)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -177,7 +182,7 @@ void Correctness::vJotDivX(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotSet(bool bJot)
 {
-  _m_bJotting = bJot;
+  _g_bJotting = bJot;
 }
 
 
@@ -186,27 +191,83 @@ void Correctness::vJotSet(bool bJot)
 /*----------------------------------------------------------------------------*/
 i8 Correctness::iJotSection(void)
 {
-  return _m_iSection;
+  return _g_iSection;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSection(Stz* szSubject)
+i8 Correctness::iJotSection(Stz* szSection)
 {
-  _m_sSubject = szSubject->azChar();
+  _g_sSection = szSection->azChar();
   
-  _m_iSection++;
+  _g_iSection++;
   
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
-    "########################################"
-    "########################################"
-    "########################################"
+    "- - - - - - - - - - - - - - - - - - - - "
+    "- - - - - - - - - - - - - - - - - - - - "
+    "- - - - - - - - - - - - - - - - - - - - "
     );
   
-  vJot("%s\n"_Stz,szSubject);
+  vJot("%s\n"_Stz,szSection);
   
-  return _m_iSection;
+  return _g_iSection;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current jot section                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Correctness::iJotSummary(void)
+{
+  return _g_iSummary;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new jot section                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Correctness::iJotSummary(Stz* szSummary)
+{
+  _g_sSummary = szSummary->azChar();
+  
+  _g_iSummary++;
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "= = = = = = = = = = = = = = = = = = = = "
+    "= = = = = = = = = = = = = = = = = = = = "
+    "= = = = = = = = = = = = = = = = = = = = "
+    );
+  
+  vJot("%s\n"_Stz,szSummary);
+  
+  return _g_iSummary;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current jot division                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Correctness::iJotDivision(void)
+{
+  return _g_iDivision;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new jot section                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Correctness::iJotDivision(Stz* szDivision)
+{
+  _g_sDivision = szDivision->azChar();
+  
+  _g_iDivision++;
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "////////////////////////////////////////"
+    "////////////////////////////////////////"
+    "////////////////////////////////////////"
+    );
+  
+  vJot("%s\n"_Stz,szDivision);
+  
+  return _g_iDivision;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +275,7 @@ i8 Correctness::iJotSection(Stz* szSubject)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotTabIn(void)
 {
-  _m_nTab++;
+  _g_nTab++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,8 +283,8 @@ void Correctness::vJotTabIn(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotTabOut(void)
 {
-  if (_m_nTab)
-    _m_nTab--;
+  if (_g_nTab)
+    _g_nTab--;
 }
 
 //

@@ -23,8 +23,14 @@ namespace Correctness
   void  vJotDivY(void);
   void  vJotDivZ(void);
 
+  i8    iJotDivision(void);
+  i8    iJotDivision(Stz* szDivision);
+
   i8    iJotSection(void);
-  i8    iJotSection(Stz* szSubject);
+  i8    iJotSection(Stz* szSection);
+
+  i8    iJotSummary(void);
+  i8    iJotSummary(Stz* szSection);
 
   void  vJotSet(bool bJot);
   void  vJotTabIn(void);

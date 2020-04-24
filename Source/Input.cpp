@@ -290,21 +290,18 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i_Section = iJotSection("::vReadCommand"_Stz);
+    i8 i_Section = iJotDivision("Input::vReadCommand()"_Stz);
+    vJotTabIn();
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first line so we can test if its a command file to be executed
   
   vSingleLineCmd(true);
   
   vCollectVecFirstLine();
+  
   m_pTknVec->vIntegrityCheck();
-
-  if (d_iDebugMode) {
-    vJot("Collected FirstLine\n"_Stz);
-    m_pTknVec->vListTokens();
-  }
   
   // if empty line just return                                      ** NON-SENSE
   if (1 == m_pTknVec->nTokens() && m_pCurrTkn->bIsNull()) {
@@ -365,6 +362,7 @@ L_Exit:
     vJotDivES();
     vJot("Read Command\n"_Stz);
     m_pTknVec->vListTokens();
+    vJotTabOut();
   }
 
 }
@@ -377,7 +375,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i_Section = iJotSection("::vReadCommand"_Stz);
+    i8 i_Section = iJotDivision("Input::vReadCommand()"_Stz);
     vJotTabIn();
   }
   
@@ -389,7 +387,6 @@ void Input::vReadCommand(void)
   
   m_pTknVec->vIntegrityCheck();
 
- 
   // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
        ! m_pTknVec->pGet(0)->bHasChars() ) {
@@ -702,6 +699,8 @@ void Input::vCollectVecFirstLine(void)
     
     vCollectOneToken();
     
+    m_pTknVec->vListTokens();
+
     if (m_pCurrTkn->bIsNull())
       break;
   }
