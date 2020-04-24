@@ -77,8 +77,10 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   ASSERT(IS_NONE != m_eSource);
 
   if (d_iDebugMode) {
+    SP_Charser spCharser;
+
     vJotTabIn();
-    vJot("::vGetAnnChar\n"_Stz);
+    vJot(':',"::vGetAnnChar { %s }\n"_Stz,spCharser.sz(this));
     
     if (0x29 == iJotSection())
       vDebugPoint();
@@ -117,7 +119,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (! m_nLoaded) {
     rxAnnChar.vReset();
     if (d_iDebugMode) {
-      vJot("No more AnnChar\n"_Stz);
+      vJot('!',"No more AnnChar\n"_Stz);
       vJotTabOut();
     }
     return;
@@ -129,7 +131,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (d_iDebugMode) {
     SP_Char spChar;
     SP_String spStr;
-    vJot("Got AnnChar (L%lld C%lld) %s [>%s<]\n"_Stz,
+    vJot('!',"Got AnnChar (L%lld C%lld) %s [>%s<]\n"_Stz,
          rxAnnChar.m_iLine,
          rxAnnChar.m_iCol,
          spChar.sz(rxAnnChar.m_cChar),
@@ -245,7 +247,7 @@ void Charser::vInspect(void)
   
   SP_String spStr;
   
-  vJot("Charser[%lld] (L%lld C%lld) : "
+  vJot('!',"Charser[%lld] (L%lld C%lld) : "
          "Source %s Path %s %s %s %s %s %s %s : "
          "Loaded %lld %c %c [>%s<]\n"_Stz,
          
@@ -573,6 +575,9 @@ void Charser::vClearRegs(void)
   
   ASSERT(IS_NONE != m_eSource);
   
+  if (d_iDebugMode)
+    vJot('!',"Clear both registers\n"_Stz);
+  
   m_nLoaded = 0;
   m_xRegOne.vReset();
   m_xRegTwo.vReset();
@@ -587,6 +592,9 @@ void Charser::vConsumeFirst(AnnChar& rxAnnChar)
   
   ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded);
+
+  if (d_iDebugMode)
+    vJot('!',"Consume first char\n"_Stz);
 
   rxAnnChar = m_xRegOne;
   m_xRegOne = m_xRegTwo;
@@ -608,10 +616,7 @@ void Charser::vDiscardFirst(void)
   
   if (d_iDebugMode) {
     SP_Charser spCharser;
-
-    vJot("Discarding RegOne { %s }\n"_Stz,
-         spCharser.sz(this)
-         );
+    vJot('!',"vDiscardFirst() { %s }\n"_Stz,spCharser.sz(this));
   }
   
   m_xRegOne.m_cChar  = m_xRegTwo.m_cChar;
@@ -630,6 +635,11 @@ void Charser::vLoadBoth(void)
   
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot('!',"vLoadBoth() { %s }\n"_Stz,spCharser.sz(this));
+  }
   
   vLoadRegWithRawChar(m_xRegOne);
   
@@ -658,6 +668,9 @@ void Charser::vLoadFirst(void)
   
   if (m_xRegOne.m_cChar)
     m_nLoaded++;
+  
+  if (d_iDebugMode)
+    vJot('!',"Loaded first\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -743,7 +756,7 @@ void Charser::vBlockCommentSkip(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
     
   if (d_iDebugMode) {
-    vJot("Skipping BlockComment /* ...\n"_Stz);
+    vJot('!',"Skipping BlockComment /* ...\n"_Stz);
   }
   
   vClearRegs();
@@ -767,7 +780,7 @@ void Charser::vBlockCommentSkip(void)
   vClearRegs();
   
   if (d_iDebugMode) {
-    vJot("...*/ Skipped BlockComment\n"_Stz);
+    vJot('!',"...*/ Skipped BlockComment\n"_Stz);
   }
 }
 
@@ -821,7 +834,7 @@ void Charser::vLineCommentSkip(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if (d_iDebugMode) {
-    vJot("Skipping LineComment //...\n"_Stz);
+    vJot('!',"Skipping LineComment //...\n"_Stz);
   }
   
   vClearRegs();
@@ -840,7 +853,7 @@ void Charser::vLineCommentSkip(void)
   ASSERT('\n' == m_xRegOne.m_cChar || '\0' == m_xRegOne.m_cChar);
   
   if (d_iDebugMode) {
-    vJot("...*/ Skipped LineComment\n"_Stz);
+    vJot('!',"...*/ Skipped LineComment\n"_Stz);
   }
 }
 
@@ -884,6 +897,10 @@ void Charser::vStripComment(void)
   ASSERT(IS_NONE != m_eSource);
   
   AnnChar xReplaceWith;
+  
+  if (d_iDebugMode)
+    vJot('!',"Stripping comment\n"_Stz);
+
   
   xReplaceWith.vReset();
   xReplaceWith.m_cChar = ' ';
@@ -1122,7 +1139,7 @@ void Charser::vReadFileIntoRawBuff(void)
   
   if (d_iDebugMode) {
     SP_String spStr;
-    vJot("ReadFileIntoRawBuff : [>%s<]\n"_Stz,
+    vJot('!',"ReadFileIntoRawBuff : [>%s<]\n"_Stz,
          spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
          );
   }

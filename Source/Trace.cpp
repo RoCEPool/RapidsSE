@@ -25,18 +25,20 @@ i8    _g_iLine = 0;
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJot(Stz* aFormat, ...)
+void Correctness::vJot(char cFlag, Stz* aFormat, ...)
 {
   if (! _g_bJotting)
     return;
   
   va_list xVaArgs;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x.%02x.%03x# "_Stz,
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x.%02x.%x.%03x# %c "_Stz,
                   _g_sDivision,
                   _g_iDivision,
                   _g_iSection,
-                  _g_iLine++
+                  _g_nTab,
+                  _g_iLine++,
+                  cFlag
                   );
   
   if (_g_nTab) {
@@ -216,13 +218,13 @@ i8 Correctness::iJotSection(Stz* szSection)
 //    "- - - - - - - - - - - - - - - - - - - - "
 //    );
   
-  vJot("%s\n"_Stz,
+  vJot('-',"%s\n"_Stz,
        "- - - - - - - - - - - - - - - - - - - - "
        "- - - - - - - - - - - - - - - - - - - - "
        "- - - - - - - - - - - - - - - - - - - - "
        );
   
-  vJot("%s\n"_Stz,szSection);
+  vJot('-',"%s\n"_Stz,szSection);
   
   return _g_iSection;
 }
@@ -251,13 +253,13 @@ i8 Correctness::iJotSummary(Stz* szSummary)
 //    "= = = = = = = = = = = = = = = = = = = = "
 //    );
   
-  vJot("%s\n"_Stz,
+  vJot('=',"%s\n"_Stz,
       "= = = = = = = = = = = = = = = = = = = = "
       "= = = = = = = = = = = = = = = = = = = = "
       "= = = = = = = = = = = = = = = = = = = = "
        );
   
-  vJot("%s\n"_Stz,szSummary);
+  vJot('=',"%s\n"_Stz,szSummary);
   
   return _g_iSummary;
 }
@@ -287,7 +289,7 @@ i8 Correctness::iJotDivision(Stz* szDivision)
     "////////////////////////////////////////"
     );
   
-  vJot("%s\n"_Stz,szDivision);
+  vJot('/',"%s\n"_Stz,szDivision);
   
   return _g_iDivision;
 }

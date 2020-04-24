@@ -5,7 +5,7 @@
 
 namespace Correctness
 {
-  void  vJot(Stz* szFormat,...);
+  void  vJot(char cFlag, Stz* szFormat,...);
 
   void  vJotDiv1(void);
   void  vJotDiv2(void);
