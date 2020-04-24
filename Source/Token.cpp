@@ -267,7 +267,7 @@ bool Token::bIsEOF(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  if (TN_EOF == m_eToken)
+  if (TN_NULL == m_eToken)
     return true;
   else
     return false;
