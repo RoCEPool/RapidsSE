@@ -193,6 +193,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_NUMBAT
 
   /*    */ &Finalize::vUndefined,         // CN__O__
+  /* 28 */ &Finalize::vUndefined,         // CN_OBJECTSINPOOL
   /* 28 */ &Finalize::vUndefined,         // CN_OP
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPEC

@@ -32,7 +32,9 @@ namespace Prompt
     i8        m_iRequestId;     // id of last command
 
     BPA*      m_pBPA;           // object delta reporting
-    i8        m_nObjectsInPool[CN_ENUMS];
+    ObjectsInPool* m_pObjectsInPool;
+    ObjectsInPool* m_pSnapshotObjects;
+    
     EnameSet  m_oSettings;
     ShortCutVec m_oShortCutVec; // vector of short cuts
     Timer     m_oTimer;         // the timer
@@ -89,7 +91,7 @@ namespace Prompt
     void vLogFreeSpace(void);
     i8   iNextSectionNo(void);
     bool bNoWait(void);
-    i8*  iaObjectsInPool(void);
+    ObjectsInPool*  pObjectsInPool(void);
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
     void vPostJob(void);
@@ -113,6 +115,7 @@ namespace Prompt
     EnameSet* pSettings(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
+    ObjectsInPool*  pSnapshotObjects(void);
     void vSpawnJob(void);
     bool bStdIn(void);
     bool bSubLet(void);

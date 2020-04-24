@@ -218,7 +218,7 @@ end
 /* fetch rows from a partition of a table                                     */
 /*----------------------------------------------------------------------------*/
 procedure partitionFetch
-  parameters $table $partition
+  parameters $table $partition 
 begin
 
   stage stageA on origin:
@@ -368,6 +368,43 @@ stage stageC on origin :
 
 end;
 
+ procedure join
+ parameters $table1 $table2
+ begin
+ 
+ stage stageA on origin:
+ start | periodicOp once | stageB , stageC
+ 
+ stage stageB on all partitions:
+ scan $table1 | stageD left
+ 
+ stage stageC on all partitions:
+ scan $table2 | stageD right
+ 
+ stage stageD on all partitions:
+ join "a b ==" | stageE
+ 
+ stage stageE on origin:
+ output | sink | stageA
+ 
+ end
+ ;
+ 
+ procedure predicateFetch
+ parameters $table $predicate
+ begin
+ 
+ stage stageA on origin:
+ start | periodicOp once | stageB
+ 
+ stage stageB on all partitions :
+ fetch $table $predicate | stageC
+ 
+ stage stageC on origin:
+ output | sink | stageA
+ 
+ end
+ ;
 
 */
 

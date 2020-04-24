@@ -43,7 +43,7 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "HeapBuffer.hpp"
 #include "HeapMem.hpp"
 #include "Heap.hpp"
-
+#include "ObjectsInPool.hpp"
 #include "Region.hpp"
 
 

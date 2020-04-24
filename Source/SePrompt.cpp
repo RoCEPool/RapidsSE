@@ -81,8 +81,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   //else
   m_pSession->m_sToDo = "_seprompt"_Stz;
   
-  for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
-    m_nObjectsInPool[i_enum] = 0;
+  m_pObjectsInPool = new ObjectsInPool;
+  m_pSnapshotObjects = new ObjectsInPool;
   
   m_pRequest = nullptr;
   m_i_RequestFocal = C_UNKNOWN;
@@ -112,6 +112,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   RapidsSE_DeleteSession(0,&m_pSession);
   
   delete m_pBPA;
+  delete m_pObjectsInPool;
+  delete m_pSnapshotObjects;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -815,11 +817,11 @@ bool SePrompt::bNoWait(void)
 /*----------------------------------------------------------------------------*/
 /* no wait                                                                    */
 /*----------------------------------------------------------------------------*/
-i8* SePrompt::iaObjectsInPool(void)
+ObjectsInPool* SePrompt::pObjectsInPool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_nObjectsInPool;
+  return m_pObjectsInPool;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1289,6 +1291,16 @@ bool SePrompt::bShortCut(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* no wait                                                                    */
+/*----------------------------------------------------------------------------*/
+ObjectsInPool* SePrompt::pSnapshotObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotObjects;
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vSpawnJob(void)
@@ -1423,7 +1435,7 @@ void SePrompt::vTrackingMemory(bool bTrackMemory)
     m_oSettings.vDelete(C_PMT_MEMTRACK);
 
   if (bTrackingMemory())
-    PoolHelper::vObjectSnapshot(m_nObjectsInPool);
+    PoolHelper::vObjectSnapshot(m_pObjectsInPool);
 }
 
 /*----------------------------------------------------------------------------*/
