@@ -49,7 +49,7 @@ void Task::vAddAxioms(void)
   //" \"((b))\" .put input::token . "
   // -- -- -- -- -- -- --
   // test for end of input?
-  "  input::kind@ TN_EOF == if"
+  "  input::kind@ TN_NULL == if"
   "    exit_rt"
   "  then"
   
@@ -338,7 +338,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   
   pInput->vReadToken();
   
-  while (TN_EOF != pInput->eToken()) {
+  while (TN_NULL != pInput->eToken()) {
     
     szChars = pInput->szChars();
     //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);

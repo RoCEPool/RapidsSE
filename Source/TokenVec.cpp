@@ -815,7 +815,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   for (i8 i_Token = 0; ; i_Token++) {
     
     pInput->vReadToken();
-    if (TN_EOF == pInput->eToken())
+    if (TN_NULL == pInput->eToken())
       break;
     
     vIncTokens();
@@ -853,7 +853,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   for (i8 i_Token = 0; ; i_Token++) {
     
     pInput->vReadToken();
-    if (TN_EOF == pInput->eToken())
+    if (TN_NULL == pInput->eToken())
       break;
       
     vAppendToken(pInput->szChars(),pInput->eToken());
@@ -924,7 +924,7 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
-      case TN_EOF:
+      case TN_NULL:
         break;
         
       case TN_OTHER:

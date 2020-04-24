@@ -739,7 +739,7 @@ void Input::vCollectVecFirstLine(void)
               
     vCollectOneToken();
     
-    if (TN_EOF == pToken->eToken())
+    if (pToken->bIsNull())
       break;
 
     m_pTknVec->vIncTokens();
@@ -814,7 +814,7 @@ void Input::vCollectVecTillSemicolon(void)
     
     vCollectOneToken();
     
-    ASSERT(TN_EOF != m_pCurrTkn->eToken());
+    ASSERT(TN_NULL != m_pCurrTkn->eToken());
     
     // look for terminal
     if (m_pCurrTkn->bIsSemicolon())
@@ -853,7 +853,7 @@ void Input::vCollectVecTillSemicolon(void)
     Token* pToken = m_pTknVec->pGet(i_Token,true);
     
     vCollectOneToken();
-    ASSERT(TN_EOF != pToken->eToken());
+    ASSERT(TN_NULL != pToken->eToken());
     
     // look for terminal
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz))
@@ -892,22 +892,24 @@ void Input::vCollectCpp(void)
 
   // end of input?
   if (bHitEOF()) {
-    *azTermCrs = '\0';
-    m_pCurrTkn->vToken(TN_EOF);
+    m_pCurrTkn->vSetNull();
   }
   
   // collect integer literal?
-  else if (bStartCppInteger()) {
+  else
+  if (bStartCppInteger()) {
     vCollectCppInteger();
   }
   
   // collect string literal?
-  else if (bStartCppString()) {
+  else
+  if (bStartCppString()) {
     vCollectCppString();
   }
   
   // collect name token?
-  else if (bStartCppName()) {
+  else
+  if (bStartCppName()) {
     vCollectCppName();
   }
   
@@ -924,9 +926,9 @@ void Input::vCollectCpp(void)
   switch (m_pCurrTkn->eToken()) {
      
     // the expected tokens
-    case TN_EOF:
     case TN_INTEGER:
     case TN_NAME:
+    case TN_NULL:
     case TN_STRING:
     case TN_OTHER:
       break;
@@ -1264,8 +1266,7 @@ void Input::vCollectSen(void)
 
   // end of input?
   if (bHitEOF()) {
-    *azTermCrs = '\0';
-    m_pCurrTkn->vToken(TN_EOF);
+    m_pCurrTkn->vSetNull();
   }
   
   // collect integer literal?
@@ -1275,13 +1276,15 @@ void Input::vCollectSen(void)
   }
   
   // collect string literal?
-  else if (bStartSenString()) {
+  else
+  if (bStartSenString()) {
     vCollectSenString();
   }
 
 #ifdef WITH_SEN_TAGS
   // collect sen tag?
-  else if (bStartSenTag()) {
+  else
+  if (bStartSenTag()) {
     vCollectSenTag();
   }
 #endif
@@ -1308,7 +1311,7 @@ void Input::vCollectSen(void)
 //      }
       break;
       
-    case TN_EOF:
+    case TN_NULL:
     case TN_STRING:
       break;
 

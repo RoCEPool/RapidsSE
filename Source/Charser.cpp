@@ -242,7 +242,7 @@ void Charser::vInspect(void)
   
   vJot("Charser[%lld] (L%lld C%lld) : "
          "Source %s Path %s %s %s %s %s %s %s : "
-         "Loaded %lld %c %c [%s]\n"_Stz,
+         "Loaded %lld %c %c [>%s<]\n"_Stz,
          
          m_iDepth,
          m_iSrcLine,
@@ -261,7 +261,7 @@ void Charser::vInspect(void)
          m_xRegOne.m_cChar ? m_xRegOne.m_cChar : ' ',
          m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' ',
        
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
        
          );
 }
@@ -551,11 +551,11 @@ void Charser::vDiscardFirst(void)
     SP_Char spChar;
     SP_String spStr;
 
-    vJot("Discarding (L%lld C%lld) : %s %s\n"_Stz,
+    vJot("Discarding (L%lld C%lld) : %s [>%s<]\n"_Stz,
          m_xRegOne.m_iLine,
          m_xRegOne.m_iCol,
          spChar.sz(m_xRegOne.m_cChar),
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
          );
   }
   
@@ -1063,8 +1063,8 @@ void Charser::vReadFileIntoRawBuff(void)
   
   if (d_iDebugMode) {
     SP_String spStr;
-    vJot("ReadFileIntoRawBuff : [%s]\n"_Stz,
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
+    vJot("ReadFileIntoRawBuff : [>%s<]\n"_Stz,
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
          );
   }
 }

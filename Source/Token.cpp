@@ -261,19 +261,6 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this token an EOF?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Token::bIsEOF(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  if (TN_EOF == m_eToken)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this token an integer?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsInteger(void)
@@ -294,6 +281,19 @@ bool Token::bIsName(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   if (TN_NAME == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token a \0 null?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsNull(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_NULL == m_eToken)
     return true;
   else
     return false;
@@ -407,6 +407,17 @@ i8 Token::iToI8(void)
   i8 i = m_szChars->iToI8();
   
   return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* strip single quotes from token                                             */
+/*----------------------------------------------------------------------------*/
+void Token::vSetNull(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  m_eToken = TN_NULL;
+  *m_szChars->azChar() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
