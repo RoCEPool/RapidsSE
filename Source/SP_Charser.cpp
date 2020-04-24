@@ -36,10 +36,29 @@ Stz* SP_Charser::sz(Charser* pCharser)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
-  StrLib::vSprint(m_caResult,
-                  "%p"_Stz,
+  SP_Char spChar1;
+  SP_Char spChar2;
+  SP_String spBuff;
+  
+  i8 nLoaded = pCharser->nLoaded();
+  AnnChar* aRegOne = pCharser->aRegOne();
+  AnnChar* aRegTwo = pCharser->aRegTwo();
+  char* azRawBuff = pCharser->azRawBuff();
+  char* acRawChar = pCharser->acRawChar();
 
-                  pCharser
+  StrLib::vSprint(m_caResult,
+                  "R1 %s L%lld C%lld ; R2 %s L%lld C%lld [>%s<]"_Stz,
+                  
+                  spChar1.sz(aRegOne->m_cChar),
+                  aRegOne->m_iLine,
+                  aRegOne->m_iCol,
+                  
+                  spChar2.sz(aRegTwo->m_cChar),
+                  aRegTwo->m_iLine,
+                  aRegTwo->m_iCol,
+                  
+                  spBuff.szSample((Stz*)azRawBuff,(Stz*)acRawChar,-1)
+
                   );
 
   return (Stz*) &m_caResult[0];

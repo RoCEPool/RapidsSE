@@ -607,14 +607,10 @@ void Charser::vDiscardFirst(void)
   ASSERT(m_nLoaded);
   
   if (d_iDebugMode) {
-    SP_Char spChar;
-    SP_String spStr;
+    SP_Charser spCharser;
 
-    vJot("Discarding RegOne (L%lld C%lld) %s [>%s<]\n"_Stz,
-         m_xRegOne.m_iLine,
-         m_xRegOne.m_iCol,
-         spChar.sz(m_xRegOne.m_cChar),
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
+    vJot("Discarding RegOne { %s }\n"_Stz,
+         spCharser.sz(this)
          );
   }
   
