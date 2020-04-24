@@ -261,7 +261,7 @@ void Charser::vInspect(void)
          m_xRegOne.m_cChar ? m_xRegOne.m_cChar : ' ',
          m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' ',
        
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 0, 16)
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
        
          );
 }
@@ -555,7 +555,7 @@ void Charser::vDiscardFirst(void)
          m_xRegOne.m_iLine,
          m_xRegOne.m_iCol,
          spChar.sz(m_xRegOne.m_cChar),
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 0, 16)
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
          );
   }
   
@@ -1064,7 +1064,7 @@ void Charser::vReadFileIntoRawBuff(void)
   if (d_iDebugMode) {
     SP_String spStr;
     vJot("ReadFileIntoRawBuff : [%s]\n"_Stz,
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 0, 16)
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
          );
   }
 }

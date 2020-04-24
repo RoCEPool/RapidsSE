@@ -53,16 +53,34 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iBefore, i8 iAfter)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
-  char caTemp[1024];
+  char caSubStrBefore[1024];
+  char caEscapedBefore[1024];
+
+  Stz* szStart = aSubtract<Stz*>(szString,iBefore);
   
-  StrLib::vCopyLen(caTemp,szCursor->azChar(),iAfter);
+  if (szStart < szCursor)
+    szStart = szCursor;
+  
+  i8 nBytes = nDifference(szStart,szString);
+  
+  StrLib::vCopyLen(caSubStrBefore,szStart->azChar(),nBytes);
+  StrLib::vEscape(caEscapedBefore,caSubStrBefore);
+  
+  StrLib::vCopy(m_caResult,caEscapedBefore);
 
-  StrLib::vCopy(m_caResult,aOC[OC_CURSOR]->azChar());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  StrLib::vConcat(m_caResult,caTemp);
+  char caSubStrAfter[1024];
+  char caEscapedAfter[1024];
+
+  StrLib::vCopyLen(caSubStrAfter,szCursor->azChar(),iAfter);
+  StrLib::vEscape(caEscapedAfter,caSubStrAfter);
+  
+  StrLib::vConcat(m_caResult,aOC[OC_CURSOR]->azChar());
+  StrLib::vConcat(m_caResult,caEscapedAfter);
 
   if (StrLib::iSize(szCursor->azChar()) < iAfter)
-    StrLib::vConcat(m_caResult,"<END>");
+    StrLib::vConcat(m_caResult,"\\0");
   else
     StrLib::vConcat(m_caResult,"...");
 
