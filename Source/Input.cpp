@@ -375,7 +375,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i_Section = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
+    i8 i = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
     vJotTabIn();
   }
   

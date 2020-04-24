@@ -160,7 +160,7 @@ static Stz* aOC[]
    /*    */ "📎"_Stz, // task
    /*    */ "〰️"_Stz, // thread
 
-   /*    */ "♦️"_Stz, // cursor
+   /*    */ "🔸"_Stz, // cursor
 
 
    /*    */ "ENUMS"_Stz,
