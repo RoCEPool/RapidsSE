@@ -96,6 +96,7 @@ namespace LexicalAnalysis
     i8       iDepth(void);
     
     // debug
+    i8       nLoaded(void);
     AnnChar* aRegOne(void);
     AnnChar* aRegTwo(void);
     char*    azRawBuff(void);
