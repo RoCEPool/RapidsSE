@@ -95,6 +95,12 @@ namespace LexicalAnalysis
     void     vNext(Charser* pNext);
     i8       iDepth(void);
     
+    // debug
+    AnnChar* aRegOne(void);
+    AnnChar* aRegTwo(void);
+    char*    azRawBuff(void);
+    char*    acRawChar(void);
+
   private:
     
     void vResetCharser(void);
