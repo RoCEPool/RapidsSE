@@ -504,7 +504,7 @@ void TokenVec::vListTokens(void)
     //if (! pToken->szChars())
     //  break;
     
-    vJot1(':',"  %s\n"_Stz,spTkn.sz(pToken));
+    vJot1(':',"  %s"_Stz,spTkn.sz(pToken));
   }
 }
 

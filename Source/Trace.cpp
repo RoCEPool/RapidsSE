@@ -41,13 +41,17 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
                   cFlag
                   );
   
-  if (_g_nDepth) {
+  if (_g_nDepth)
     AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nDepth));
-  }
-    
+
+  if ('r' == cFlag)
+    AM::vWriteTrace(YA_SYS_TRACE,"- "_Stz, Stz::szTab(_g_nDepth));
+
   va_start(xVaArgs,aFormat);
   AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
   va_end(xVaArgs);
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +84,8 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   va_start(xVaArgs,aFormat);
   AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
   va_end(xVaArgs);
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,9 +244,9 @@ i8 Correctness::iJotSection(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szSection)
+i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
 {
-  _g_sSection = szSection->azChar();
+  _g_sSection = szFun->azChar();
   
   _g_iSection++;
   
@@ -250,13 +256,13 @@ i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szSection)
 //    "- - - - - - - - - - - - - - - - - - - - "
 //    );
   
-  vJot1('-',"%s\n"_Stz,
+  vJot1('-',"%s"_Stz,
          "- - - - - - - - - - - - - - - - - - - - "
          "- - - - - - - - - - - - - - - - - - - - "
          "- - - - - - - - - - - - - - - - - - - - "
        );
   
-  vJot2(cFlag,szFun,"%s\n"_Stz,szSection);
+  vJot2(cFlag,szFun,"%s"_Stz,szInfo);
   
   return _g_iSection;
 }
@@ -272,9 +278,9 @@ i8 Correctness::iJotSummary(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSummary(char cFlag, Stz* szFun, Stz* szSummary)
+i8 Correctness::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
 {
-  _g_sSummary = szSummary->azChar();
+  _g_sSummary = szFun->azChar();
   
   _g_iSection++;
   _g_iSummary++;
@@ -285,13 +291,13 @@ i8 Correctness::iJotSummary(char cFlag, Stz* szFun, Stz* szSummary)
 //    "= = = = = = = = = = = = = = = = = = = = "
 //    );
   
-  vJot1(cFlag,"%s\n"_Stz,
+  vJot1(cFlag,"%s"_Stz,
          "= = = = = = = = = = = = = = = = = = = = "
          "= = = = = = = = = = = = = = = = = = = = "
          "= = = = = = = = = = = = = = = = = = = = "
        );
   
-  vJot1(cFlag,"%s\n"_Stz,szSummary);
+  vJot1(cFlag,"%s"_Stz,szInfo);
   
   return _g_iSummary;
 }
@@ -307,9 +313,9 @@ i8 Correctness::iJotDivision(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotDivision(char cFlag, Stz* szFun, Stz* szDivision)
+i8 Correctness::iJotDivision(char cFlag, Stz* szFun, Stz* SzInfo)
 {
-  _g_sDivision = szDivision->azChar();
+  _g_sDivision = szFun->azChar();
   
   _g_iDivision++;
   _g_iSection = 0;
@@ -321,7 +327,7 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szFun, Stz* szDivision)
     "////////////////////////////////////////"
     );
   
-  vJot2(cFlag,"%s\n"_Stz,szFun,szDivision);
+  vJot2(cFlag,szFun,"%s"_Stz,SzInfo);
   
   return _g_iDivision;
 }
