@@ -16,6 +16,8 @@ char* _g_sDivision;
 i8    _g_iSummary = 0;
 char* _g_sSummary;
 
+i8    _g_iLine = 0;
+
 //
 // joting //////////////////////////////////////////////////////////////////////
 //
@@ -30,7 +32,12 @@ void Correctness::vJot(Stz* aFormat, ...)
   
   va_list xVaArgs;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x# "_Stz,_g_sDivision,_g_iDivision);
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s.%04x.%02x.%03x# "_Stz,
+                  _g_sDivision,
+                  _g_iDivision,
+                  _g_iSection,
+                  _g_iLine++
+                  );
   
   if (_g_nTab) {
     AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nTab));
@@ -203,11 +210,17 @@ i8 Correctness::iJotSection(Stz* szSection)
   
   _g_iSection++;
   
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
-    "- - - - - - - - - - - - - - - - - - - - "
-    "- - - - - - - - - - - - - - - - - - - - "
-    "- - - - - - - - - - - - - - - - - - - - "
-    );
+//  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+//    "- - - - - - - - - - - - - - - - - - - - "
+//    "- - - - - - - - - - - - - - - - - - - - "
+//    "- - - - - - - - - - - - - - - - - - - - "
+//    );
+  
+  vJot("%s\n"_Stz,
+       "- - - - - - - - - - - - - - - - - - - - "
+       "- - - - - - - - - - - - - - - - - - - - "
+       "- - - - - - - - - - - - - - - - - - - - "
+       );
   
   vJot("%s\n"_Stz,szSection);
   
@@ -229,13 +242,20 @@ i8 Correctness::iJotSummary(Stz* szSummary)
 {
   _g_sSummary = szSummary->azChar();
   
+  _g_iSection++;
   _g_iSummary++;
   
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
-    "= = = = = = = = = = = = = = = = = = = = "
-    "= = = = = = = = = = = = = = = = = = = = "
-    "= = = = = = = = = = = = = = = = = = = = "
-    );
+//  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+//    "= = = = = = = = = = = = = = = = = = = = "
+//    "= = = = = = = = = = = = = = = = = = = = "
+//    "= = = = = = = = = = = = = = = = = = = = "
+//    );
+  
+  vJot("%s\n"_Stz,
+      "= = = = = = = = = = = = = = = = = = = = "
+      "= = = = = = = = = = = = = = = = = = = = "
+      "= = = = = = = = = = = = = = = = = = = = "
+       );
   
   vJot("%s\n"_Stz,szSummary);
   
@@ -258,6 +278,8 @@ i8 Correctness::iJotDivision(Stz* szDivision)
   _g_sDivision = szDivision->azChar();
   
   _g_iDivision++;
+  _g_iSection = 0;
+  _g_iLine = 0;
   
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
     "////////////////////////////////////////"
