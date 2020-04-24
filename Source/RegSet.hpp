@@ -29,6 +29,7 @@ namespace Registers
   
     REG<Index>       m_xpIndex;
     REG<IndexPtn>    m_xpIndexPtn;
+    REG<Planner>     m_xpPlanner;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
     REG<Loader>      m_xpLoader;

@@ -11,6 +11,7 @@ void Step::vAddSteps_Planner(void)
 {
   vAddStep("planner::new"_Stz,           &Step::vPlannerNew);
   
+  vAddStep("planner[]"_Stz,              &Step::vPlannerGet);
   vAddStep("planner.choosePaths"_Stz,    &Step::vPlannerChoosePaths);
   vAddStep("planner.chosenPath"_Stz,     &Step::vPlannerChosenPath);
   vAddStep("planner.delete"_Stz,         &Step::vPlannerDelete);
@@ -18,12 +19,14 @@ void Step::vAddSteps_Planner(void)
   vAddStep("planner.genPaths"_Stz,       &Step::vPlannerGenPaths);
   vAddStep("planner.highkey@"_Stz,       &Step::vPlannerHighKeyFetch);
   vAddStep("planner.indexNm@"_Stz,       &Step::vPlannerIndexNmFetch);
+  vAddStep("planner[].isNull"_Stz,       &Step::vPlannerIsNull);
   vAddStep("planner.key@"_Stz,           &Step::vPlannerKeyFetch);
   vAddStep("planner.lowkey@"_Stz,        &Step::vPlannerLowKeyFetch);
   vAddStep("planner.matchPaths"_Stz,     &Step::vPlannerMatchPaths);
   vAddStep("planner.phrases@"_Stz,       &Step::vPlannerPhrasesFetch);
   vAddStep("planner.parseWhere"_Stz,     &Step::vPlannerParseWhere);
   vAddStep("planner.scorePaths"_Stz,     &Step::vPlannerScorePaths);
+  vAddStep("planner[].set"_Stz,          &Step::vPlannerSet);
   vAddStep("planner.showPaths"_Stz,      &Step::vPlannerShowPaths);
   vAddStep("planner.table@"_Stz,         &Step::vPlannerTableFetch);
   vAddStep("planner.table!"_Stz,         &Step::vPlannerTableStore);
@@ -109,6 +112,20 @@ void Step::vPlannerGenPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* planner[] -- get planner                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vPlannerGet(void)
+{
+  ENTRY();
+  
+  Planner* pPlanner = _pPlanner(*m_pRegSet->m_xpPlanner);
+  
+  m_pDataStack->vPushPtr(pPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerHighKeyFetch(void)
@@ -145,6 +162,18 @@ void Step::vPlannerIndexNmFetch(void)
   
   s32 sIndexNm = pChosenIndex->szIndexNm();
   m_pDataStack->vPushStr(sIndexNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner[].isNull -- is planner null ?                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPlannerIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pRegSet->m_xpPlanner.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -273,6 +302,20 @@ void Step::vPlannerScorePaths(void)
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
   pPlanner->vScorePaths();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner[].set -- set planner                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vPlannerSet(void)
+{
+  ENTRY();
+  
+  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pPlanner || m_pRegSet->m_xpPlanner.bIsNull());
+  m_pRegSet->m_xpPlanner = _pPlanner(pPlanner);
   
   EXIT();
 }

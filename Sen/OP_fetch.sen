@@ -1,0 +1,231 @@
+/*============================================================================*/
+/* OP_fetch.sen -- Operator fetch                                             */
+/*============================================================================*/
+
+" OP_fetch.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate plan for the fetch                                                */
+/*----------------------------------------------------------------------------*/
+: generatePlan ( -- ^pPlanner )
+
+  0 locals| pPlanner |
+
+  //sWhere "generatePlan" "%v %v" str.format .
+
+  ( cdt_0 ) planner::new to pPlanner
+  ( cdt_1 ) table[] pPlanner Planner.table!
+
+  ( cdt_2 ) <sPredicate> pPlanner Planner.parseWhere  //"parseWheres" .
+
+  ( cdt_3 ) pPlanner Planner.genPaths           //"genPaths" .
+  ( cdt_4 ) pPlanner Planner.scorePaths         //"scorePaths" .
+  //( cdt_5 ) pPlanner Planner.showPaths
+
+  ( cdt_6 ) pPlanner Planner.matchPaths         //"matchPaths" .
+  //( cdt_6 ) pPlanner Planner.showPaths
+
+  ( cdt_7 ) pPlanner Planner.choosePaths        //"choosePaths" .
+
+  // return planner
+  pPlanner
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: fetch_CancelMarker \handler
+
+  //"ZK_CANCELMARKER_handler" .verbose
+  nullptr to Operand[]
+  Pipein[].pipeOut
+  Op.ackPipelineJob
+  false
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: fetch_CrwBuffer \handler
+
+  //"Operand:- ZK_CRWBUFFER" .verbose
+
+  // pipeout the set
+  Operand[].pipeoutSet
+
+  // new an eos marker
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: fetch_PulseMarker \handler
+
+  0 locals| rateSecs |
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Pipein[].pipeOut
+
+  // new a stream def
+  Operand[].newStreamDef
+  Operand[].pipeOut
+/*
+  planner[].phrases@ to iPhrases
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the sub fetch jobs
+  //iPhrases 0
+  //do
+  //  I pPlanner pJob_FetchRows spawnSub
+  //loop
+  iPhrases 1 == assert
+
+  iPhrase planner[].fetchTechnique@
+  case
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an exact select using index
+    AT_EXACT of
+      0 assert
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound select using index
+    AT_LOWER of
+      // find the index
+      iPhrase planner.indexNm@ to sIndexNm
+      sIndexNm <tableNm> op_index
+
+      // now get excat key rows from index
+      tablePtn[].get tablePtnGrabRead2
+      iPhrase planner[].lowKey@
+      index[].lowerBound to Operand[]
+      tablePtn[].get tablePtnDropRead2
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an upper bound select using index
+    AT_UPPER of
+      0 assert
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // a range select using index
+    AT_RANGE of
+      0 assert
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // full scan (no index)
+    AT_SCAN of
+      0 assert
+    endof
+
+  endcase
+*/
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: fetch_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  0 0 0 locals| iPhrases sPredicate pPlanner |
+
+  <tableNm> op__table if
+    table[].tablePtn@ to tablePtn[]
+    Pipein[].pipeOut
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the predicate clause from the job
+  <predicate> to sPredicate
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the plan for the fetch
+  generatePlan to planner[]
+
+  //pPlanner planner.showPaths
+
+  // assert we have a plan
+  planner[].isNull not assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* fetch request                                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: fetch_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: fetch_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: fetch_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: fetch_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: fetch_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+opSyntax: fetch :: fetch <tableNm> <predicate> ;
+
+//opInfo: scan
+//{
+//  <jobDesc>  = "--description of operator--"
+//
+//  <jobKind>  = JK_LOCAL
+//  <rspKind>  = RS_PARTICIPANT_RESPONSE
+//  <ddlLock>  = DL_GRAB_READ
+//
+//  <preCheck> = bClusterStarted
+//}
+//;
+//
+
+: fetch opInfo tagCopy: localOp_tags
+  tags{ <jobDesc> = "--description of operator--" }
+;
+
+
+//find: scan_info word.dump
+//find: scan_info word.enameset@ enameset.asStr .
+  
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+//: abcOp_req \operator
+//;
+//
+//: abcOp opInfo tagCopy: localOp_tags
+//  tags{
+//    <jobDesc> = "--description of operator--"
+//  }
+//  opFill
+//;
+//
+//find: abcOp_info word.dump
+//abcOp_info enameset.asStr .
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

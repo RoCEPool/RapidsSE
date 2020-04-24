@@ -234,6 +234,24 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
+/* fetch rows from a a table matching given predicate                         */
+/*----------------------------------------------------------------------------*/
+procedure predicateFetch
+  parameters $table $predicate
+begin
+
+  stage stageA on origin:
+    start | periodicOp once | stageB
+
+  stage stageB on all partitions :
+    fetch $table $predicate | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+
+  end
+;
+/*----------------------------------------------------------------------------*/
 /* stored procedure with two-part name syntax test                            */
 /*----------------------------------------------------------------------------*/
 procedure Select Table
@@ -389,22 +407,7 @@ end;
  
  end
  ;
- 
- procedure predicateFetch
- parameters $table $predicate
- begin
- 
- stage stageA on origin:
- start | periodicOp once | stageB
- 
- stage stageB on all partitions :
- fetch $table $predicate | stageC
- 
- stage stageC on origin:
- output | sink | stageA
- 
- end
- ;
+
 
 */
 

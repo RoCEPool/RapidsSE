@@ -129,6 +129,54 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* verify and set folder to <indexNm>                                         */
+/*----------------------------------------------------------------------------*/
+: op__index ( tableNmm indexNm )
+
+  params| sIndexNm sTableNm |
+
+  // check in tables folder
+  folder[].checkInTables not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    false
+    exit
+  then
+
+  // move to table folder
+  sTableNm path[].pushTableFolder assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // move to indexes folder
+  path[].pushIndexesFolder assert
+
+  sIndexNm name::checkIsIndex not if
+    op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    path[].discardTableFolder
+    path[].discardIndexesFolder
+    false
+    exit
+  then
+
+  sIndexNm find execute to index[]
+
+  // cross-check
+  index[] assert
+
+  path[].discardTableFolder
+  path[].discardIndexesFolder
+
+  //pathStr .
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm>, then to <indexNm>                      */
 /*----------------------------------------------------------------------------*/
 : op__table_index ( tableNm indexNm )
@@ -156,8 +204,8 @@
   then
 
   // move to table folder and find the table
-  <tableNm> path[].pushTableFolder assert
-  <tableNm> find execute to table[]
+  sTableNm path[].pushTableFolder assert
+  sTableNm find execute to table[]
 
   // cross-check
   table[] assert
