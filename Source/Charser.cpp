@@ -79,6 +79,9 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (d_iDebugMode) {
     vJotTabIn();
     vJot("::vGetAnnChar\n"_Stz);
+    
+    if (0x29 == iJotSection())
+      vDebugPoint();
   }
   
   // debug
@@ -125,10 +128,12 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   
   if (d_iDebugMode) {
     SP_Char spChar;
-    vJot("Got AnnChar (L%lld C%lld) : %s\n"_Stz,
+    SP_String spStr;
+    vJot("Got AnnChar (L%lld C%lld) %s [>%s<]\n"_Stz,
          rxAnnChar.m_iLine,
          rxAnnChar.m_iCol,
-         spChar.sz(m_xRegOne.m_cChar)
+         spChar.sz(rxAnnChar.m_cChar),
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
          );
 
     vJotTabOut();
@@ -551,7 +556,7 @@ void Charser::vDiscardFirst(void)
     SP_Char spChar;
     SP_String spStr;
 
-    vJot("Discarding (L%lld C%lld) : %s [>%s<]\n"_Stz,
+    vJot("Discarding RegOne (L%lld C%lld) %s [>%s<]\n"_Stz,
          m_xRegOne.m_iLine,
          m_xRegOne.m_iCol,
          spChar.sz(m_xRegOne.m_cChar),
@@ -773,7 +778,11 @@ void Charser::vLineCommentSkip(void)
   
   vLoadFirst();
   
+  //char cEndChar = ' ';
   while (! bLineCommentEnd()) {
+    
+    //cEndChar = m_xRegOne.m_cChar;
+    
     vDiscardFirst();
     vLoadFirst();
   }
@@ -816,7 +825,7 @@ bool Charser::bPossibleComment(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* strip a possible line or block comment                                     */
+/* strip a possible line or block comment, replace with a single ' '          */
 /*----------------------------------------------------------------------------*/
 void Charser::vStripComment(void)
 {
