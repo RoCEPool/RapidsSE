@@ -67,6 +67,21 @@ void Correctness::vJotDiv2(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* jot dividing line equals&space                                             */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDivES(void)
+{
+  if (! _m_bJotting)
+    return;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+    "= = = = = = = = = = = = = = = = = = = = "
+    "= = = = = = = = = = = = = = = = = = = = "
+    "= = = = = = = = = = = = = = = = = = = = "
+  );
+}
+
+/*----------------------------------------------------------------------------*/
 /* jot dividing line minus&space                                               */
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivMS(void)
@@ -169,7 +184,7 @@ void Correctness::vJotSet(bool bJot)
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotSection(Stz* szSubject)
+i8 Correctness::iJotSection(Stz* szSubject)
 {
   _m_sSubject = szSubject->azChar();
   
@@ -182,6 +197,8 @@ void Correctness::vJotSection(Stz* szSubject)
     );
   
   vJot("%s\n"_Stz,szSubject);
+  
+  return _m_iSection;
 }
 
 /*----------------------------------------------------------------------------*/

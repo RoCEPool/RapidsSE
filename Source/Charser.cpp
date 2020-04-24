@@ -21,7 +21,7 @@ __aFooterFunction(Charser)
 /*----------------------------------------------------------------------------*/
 Charser::Charser(Charser* pNext)
 : Object(CN_CHARSER)
-, m_oRawFile(nullptr)
+, m_oSrcFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -47,8 +47,8 @@ Charser::~Charser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  if (m_oRawFile.bIsOpen())
-    m_oRawFile.vClose();
+  if (m_oSrcFile.bIsOpen())
+    m_oSrcFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,76 +68,19 @@ void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* insepct                                                                    */
-/*----------------------------------------------------------------------------*/
-void Charser::vInspect(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  vJot("Charser[%lld] (L%lld C%lld) : "
-         "Source %s Path %s %s %s %s %s %s %s : "
-         "Loaded %lld %c %c\n"_Stz,
-         
-         m_iDepth,
-         m_iLineRaw,
-         m_iColRaw,
-         
-         aIS[m_eSource],
-         m_sPath.szStz(),
-         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
-         m_bUseBegun       ? "UseBegun"    : "Not-UseBegun",
-         m_bUseEnded       ? "UseEnded"    : "Not-UseEnded",
-         m_bUseOpened      ? "UseOpened"   : "Not-UseOpened",
-         m_bUseClosed      ? "UseClosed"   : "Not-UseClosed",
-         m_bSeenEOF        ? "SeenEOF"     : "Not-SeenEOF",
-
-         m_nLoaded,
-         m_xRegOne.m_cChar ? m_xRegOne.m_cChar : ' ',
-         m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' '
-         );
-}
-
-/*----------------------------------------------------------------------------*/
-/* get line number of raw char                                                */
-/*----------------------------------------------------------------------------*/
-i8 Charser::iLineRaw(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_iLineRaw;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column number of raw char                                              */
-/*----------------------------------------------------------------------------*/
-i8 Charser::iLineCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_iColRaw;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get path                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Charser::szPath(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_sPath;
-}
-
-// Options /////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
 /* get next annotated char                                                    */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
+void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(IS_NONE != m_eSource);
 
+  if (d_iDebugMode) {
+    vJotTabIn();
+    vJot("::vGetAnnChar\n"_Stz);
+  }
+  
   // debug
   
   if (IS_FILE == m_eSource) {
@@ -166,15 +109,30 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments)
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
-    vLoadRegs(bStripComments);
+    vLoadRegs(bStrip);
   
   if (! m_nLoaded) {
     rxAnnChar.vReset();
+    if (d_iDebugMode) {
+      vJot("No more AnnChar\n"_Stz);
+      vJotTabOut();
+    }
     return;
   }
   
   // consume the first char reg
   vConsumeFirst(rxAnnChar);
+  
+  if (d_iDebugMode) {
+    SP_Char spChar;
+    vJot("Got AnnChar (L%lld C%lld) : %s\n"_Stz,
+         rxAnnChar.m_iLine,
+         rxAnnChar.m_iCol,
+         spChar.sz(m_xRegOne.m_cChar)
+         );
+
+    vJotTabOut();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +143,35 @@ void Charser::vUngetAnnChar(AnnChar& rxAnnChar)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   vRewindRegs(rxAnnChar);
+}
+
+//
+// Source //////////////////////////////////////////////////////////////////////
+//
+
+/*----------------------------------------------------------------------------*/
+/* is stdin?                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Charser::bIsStdin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  if (IS_STDIN != m_eSource)
+    return false;
+
+  bool bIsStdin = m_oSrcFile.bIsStdin();
+
+  return bIsStdin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get path                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Charser::szPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,29 +185,29 @@ bool Charser::bSeenEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* single line mode?                                                          */
+/* get column number of source                                                */
 /*----------------------------------------------------------------------------*/
-bool Charser::bSingleLineCmd(void)
+i8 Charser::iSrcCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  return m_bSingleLineCmd;
+  return m_iSrcCol;
 }
 
 /*----------------------------------------------------------------------------*/
-/* stdin?                                                                     */
+/* get line number of source                                                  */
 /*----------------------------------------------------------------------------*/
-bool Charser::bIsStdin(void)
+i8 Charser::iSrcLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  if (IS_STDIN != m_eSource)
-    return false;
-
-  bool bIsStdin = m_oRawFile.bIsStdin();
-
-  return bIsStdin;
+  return m_iSrcLine;
 }
+
+
+//
+// Control /////////////////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* set debug mode                                                             */
@@ -231,9 +218,6 @@ void Charser::vDebugMode(i8 iDebugMode)
   
   d_iDebugMode = iDebugMode;
 }
-
-
-// Options /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* complete reset after fork                                                  */
@@ -248,6 +232,55 @@ void Charser::vForkReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insepct                                                                    */
+/*----------------------------------------------------------------------------*/
+void Charser::vInspect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  SP_String spStr;
+  
+  vJot("Charser[%lld] (L%lld C%lld) : "
+         "Source %s Path %s %s %s %s %s %s %s : "
+         "Loaded %lld %c %c [%s]\n"_Stz,
+         
+         m_iDepth,
+         m_iSrcLine,
+         m_iSrcCol,
+         
+         aIS[m_eSource],
+         m_sPath.szStz(),
+         m_bSingleLineCmd  ? "SingleLine"  : "MultiLine",
+         m_bUseBegun       ? "UseBegun"    : "Not-UseBegun",
+         m_bUseEnded       ? "UseEnded"    : "Not-UseEnded",
+         m_bUseOpened      ? "UseOpened"   : "Not-UseOpened",
+         m_bUseClosed      ? "UseClosed"   : "Not-UseClosed",
+         m_bSeenEOF        ? "SeenEOF"     : "Not-SeenEOF",
+
+         m_nLoaded,
+         m_xRegOne.m_cChar ? m_xRegOne.m_cChar : ' ',
+         m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' ',
+       
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
+       
+         );
+}
+
+//
+// Mode ////////////////////////////////////////////////////////////////////////
+//
+
+/*----------------------------------------------------------------------------*/
+/* single line mode?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Charser::bSingleLineCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_bSingleLineCmd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
 void Charser::vSingleLineCmd(bool bSingleLineCmd)
@@ -256,6 +289,10 @@ void Charser::vSingleLineCmd(bool bSingleLineCmd)
   
   m_bSingleLineCmd = bSingleLineCmd;
 }
+
+//
+// Usage ///////////////////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* usage of this charser begins                                               */
@@ -299,8 +336,8 @@ void Charser::vUseClose(void)
   switch (m_eSource) {
       
     case IS_FILE:
-      ASSERT( m_oRawFile.bIsOpen() );
-      m_oRawFile.vClose();
+      ASSERT( m_oSrcFile.bIsOpen() );
+      m_oSrcFile.vClose();
       break;
       
     case IS_STDIN:
@@ -345,7 +382,7 @@ bool Charser::bUseFile(Stz* szPath)
   
   m_sPath.vSprint("file: %s"_Stz,szPath);
   
-  m_bUseOpened = m_oRawFile.bOpenRead(szPath);
+  m_bUseOpened = m_oSrcFile.bOpenRead(szPath);
    
   return m_bUseOpened;
 }
@@ -359,7 +396,7 @@ void Charser::vUseStdin(void)
   
   ASSERT(IS_NONE == m_eSource);
   
-  m_oRawFile.vUseStdin();
+  m_oSrcFile.vUseStdin();
   m_eSource = IS_STDIN;
   m_bRead = true;
   
@@ -382,9 +419,9 @@ void Charser::vUseString(Stz* szString)
   m_sPath = "string"_Stz;
 }
 
-
-
-// charser /////////////////////////////////////////////////////////////////////
+//
+// Charser Stack ///////////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* get next charser in stack                                                  */
@@ -433,22 +470,27 @@ void Charser::vResetCharser(void)
   ASSERT(m_bUseEnded);
 
   // source definition
-  m_bUseBegun  = false;
-  
-  m_bUseClosed = false;
-  m_bUseEnded  = false;
-  m_bUseOpened = false;
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
-  m_bSingleLineCmd  = false;
-
-  // sources
-  m_oRawFile.vReset();
+  
+  // source
+  m_oSrcFile.vReset();
+  m_iSrcLine   = 0;
+  m_iSrcCol    = 0;
+  
+  // raw buffer
   m_sRawBuff   = ""_Stz;
   m_azRawBuff  = m_sRawBuff.azChar();
   m_acRawChar  = m_sRawBuff.azChar();
-  m_iLineRaw   = 0;
-  m_iColRaw    = 0;
+
+  // use state
+  m_bUseBegun  = false;
+  m_bUseClosed = false;
+  m_bUseEnded  = false;
+  m_bUseOpened = false;
+  
+  // mode
+  m_bSingleLineCmd  = false;
 
   // registers
   m_nLoaded    = 0;
@@ -459,10 +501,9 @@ void Charser::vResetCharser(void)
   m_bSeenEOF   = false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Character Processing ----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+//
+// Character Processing ////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* clear character registers                                                  */
@@ -497,7 +538,7 @@ void Charser::vConsumeFirst(AnnChar& rxAnnChar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard the character in the first register                                */
+/* discard the character in the first register (its part of a comment)        */
 /*----------------------------------------------------------------------------*/
 void Charser::vDiscardFirst(void)
 {
@@ -505,6 +546,18 @@ void Charser::vDiscardFirst(void)
   
   ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded);
+  
+  if (d_iDebugMode) {
+    SP_Char spChar;
+    SP_String spStr;
+
+    vJot("Discarding (L%lld C%lld) : %s %s\n"_Stz,
+         m_xRegOne.m_iLine,
+         m_xRegOne.m_iCol,
+         spChar.sz(m_xRegOne.m_cChar),
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
+         );
+  }
   
   m_xRegOne.m_cChar  = m_xRegTwo.m_cChar;
   
@@ -523,13 +576,13 @@ void Charser::vLoadBoth(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  vGetAnnChar(m_xRegOne);
+  vLoadRegWithRawChar(m_xRegOne);
   
   if (m_xRegOne.m_cChar) {
     
     m_nLoaded++;
     
-    vGetAnnChar(m_xRegTwo);
+    vLoadRegWithRawChar(m_xRegTwo);
     
     if (m_xRegTwo.m_cChar)
       m_nLoaded++;
@@ -546,7 +599,7 @@ void Charser::vLoadFirst(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  vGetAnnChar(m_xRegOne);
+  vLoadRegWithRawChar(m_xRegOne);
   
   if (m_xRegOne.m_cChar)
     m_nLoaded++;
@@ -555,7 +608,7 @@ void Charser::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load first (& maybe) second register from raw input stream, strip comments */
 /*----------------------------------------------------------------------------*/
-void Charser::vLoadRegs(bool bStripComments)
+void Charser::vLoadRegs(bool bStrip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -569,8 +622,8 @@ void Charser::vLoadRegs(bool bStripComments)
     if (! m_nLoaded)
       break;
     
-    if (! bStripComments || ! bPossibleComment())
-      continue;               // this may leave a char in second register e.g. /t
+    if (! bStrip || ! bPossibleComment())
+      continue;              // this may leave a char in second register e.g. /t
     
     vStripComment();
   }
@@ -587,7 +640,7 @@ void Charser::vLoadSecond(void)
   ASSERT(1 == m_nLoaded);
   ASSERT(m_xRegOne.m_cChar);
   
-  vGetAnnChar(m_xRegTwo);
+  vLoadRegWithRawChar(m_xRegTwo);
   
   if (m_xRegTwo.m_cChar)
     m_nLoaded++;
@@ -610,45 +663,9 @@ void Charser::vRewindRegs(AnnChar& rxAnnChar)
   m_nLoaded++;
 }
 
-/*----------------------------------------------------------------------------*/
-/* strip a possible line or block comment                                     */
-/*----------------------------------------------------------------------------*/
-void Charser::vStripComment(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  ASSERT(IS_NONE != m_eSource);
-  
-  AnnChar xRewAnnChar;
-  
-  xRewAnnChar.vReset();
-  xRewAnnChar.m_cChar = ' ';
-
-  switch (eCommentStyle()) {
-      
-    case CS_BLOCK:
-      vBlockCommentSkip();
-      xRewAnnChar.m_iLine = m_iLineRaw;
-      xRewAnnChar.m_iCol  = m_iColRaw;
-      vRewindRegs(xRewAnnChar);
-      break;
-      
-    case CS_LINE:
-      vLineCommentSkip();
-      xRewAnnChar.m_iLine = m_iLineRaw;
-      xRewAnnChar.m_iCol  = m_iColRaw;
-      vRewindRegs(xRewAnnChar);
-      break;
-      
-    default:
-      break;
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* -- Comment Processing -----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+//
+// Comment Processing //////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* test for end of block comment                                              */
@@ -670,6 +687,10 @@ void Charser::vBlockCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
     
+  if (d_iDebugMode) {
+    vJot("Skipping BlockComment /* ...\n"_Stz);
+  }
+  
   vClearRegs();
   
   vLoadBoth();
@@ -689,6 +710,10 @@ void Charser::vBlockCommentSkip(void)
   }
   
   vClearRegs();
+  
+  if (d_iDebugMode) {
+    vJot("...*/ Skipped BlockComment\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,23 +727,6 @@ bool Charser::bBlockCommentStart(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for possible start of comment                                         */
-/*----------------------------------------------------------------------------*/
-bool Charser::bPossibleComment(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-    
-  if ('/' == m_xRegOne.m_cChar) {
-    if (1 == m_nLoaded)
-      vLoadSecond();
-    return true;
-  }
-  else {
-    return false;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,6 +765,10 @@ void Charser::vLineCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  if (d_iDebugMode) {
+    vJot("Skipping LineComment //...\n"_Stz);
+  }
+  
   vClearRegs();
   
   vLoadFirst();
@@ -767,6 +779,10 @@ void Charser::vLineCommentSkip(void)
   }
   
   ASSERT('\n' == m_xRegOne.m_cChar || '\0' == m_xRegOne.m_cChar);
+  
+  if (d_iDebugMode) {
+    vJot("...*/ Skipped LineComment\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -782,15 +798,66 @@ bool Charser::bLineCommentStart(void)
     return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for possible start of comment                                         */
+/*----------------------------------------------------------------------------*/
+bool Charser::bPossibleComment(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+    
+  if ('/' == m_xRegOne.m_cChar) {
+    if (1 == m_nLoaded)
+      vLoadSecond();
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
-/* -- Reading ----------------------------------------------------------------*/
+/* strip a possible line or block comment                                     */
 /*----------------------------------------------------------------------------*/
+void Charser::vStripComment(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  ASSERT(IS_NONE != m_eSource);
+  
+  AnnChar xReplaceWith;
+  
+  xReplaceWith.vReset();
+  xReplaceWith.m_cChar = ' ';
+
+  switch (eCommentStyle()) {
+      
+    case CS_BLOCK:
+      vBlockCommentSkip();
+      xReplaceWith.m_iLine = m_iSrcLine;
+      xReplaceWith.m_iCol  = m_iSrcCol;
+      vRewindRegs(xReplaceWith);
+      break;
+      
+    case CS_LINE:
+      vLineCommentSkip();
+      xReplaceWith.m_iLine = m_iSrcLine;
+      xReplaceWith.m_iCol  = m_iSrcCol;
+      vRewindRegs(xReplaceWith);
+      break;
+      
+    default:
+      break;
+  }
+}
+
+//
+// Loading /////////////////////////////////////////////////////////////////////
+//
 
 /*----------------------------------------------------------------------------*/
 /* get next raw character from input source                                   */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnChar(AnnChar& rxAnnChar)
+void Charser::vLoadRegWithRawChar(AnnChar& rxReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -800,61 +867,60 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar)
   switch (m_eSource) {
       
     case IS_FILE:
-      vGetAnnCharFile(rxAnnChar);
+      vLoadRegWithRawCharFromFile(rxReg);
       
       
-      if (! rxAnnChar.m_cChar) {
+      if (! rxReg.m_cChar) {
         
       }
       
       
-      ASSERT( (rxAnnChar.m_cChar) ||
-              (! rxAnnChar.m_cChar && (m_bSeenEOF || m_bSingleLineCmd)) );
+      ASSERT( (rxReg.m_cChar) ||
+              (! rxReg.m_cChar && (m_bSeenEOF || m_bSingleLineCmd)) );
       break;
       
     case IS_STDIN:
-      vGetAnnCharStdin(rxAnnChar);
+      vLoadRegWithRawCharFromStdin(rxReg);
       ASSERT(! m_bSeenEOF);
       break;
       
     case IS_STRING:
-      vGetAnnCharString(rxAnnChar);
+      vLoadRegWithRawCharFromString(rxReg);
       ASSERT(m_bSeenEOF);
       break;
       
     default:
-      rxAnnChar.vReset();
+      rxReg.vReset();
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid m_eSource %lld"_Stz,m_eSource);
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
 /* get next raw character from line-buffered source file                      */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnCharFile(AnnChar& rxAnnChar)
+void Charser::vLoadRegWithRawCharFromFile(AnnChar& rxReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_bUseBegun);
   ASSERT(! m_bUseEnded);
 
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vReadRawCharFromRawBuff(rxReg);
   
-  if (rxAnnChar.m_cChar)
+  if (rxReg.m_cChar)
     return ;
   
   if (m_bSeenEOF) {
-    rxAnnChar.m_cChar = '\0';
+    rxReg.m_cChar = '\0';
     return;
   }
   
-  ASSERT(m_oRawFile.bIsOpen());
+  ASSERT(m_oSrcFile.bIsOpen());
   
   if (! m_bSingleLineCmd) {
     vReadFileIntoRawBuff();
-    vNextAnnCharFromRawBuff(rxAnnChar);
+    vReadRawCharFromRawBuff(rxReg);
     return;
   }
   
@@ -867,15 +933,15 @@ void Charser::vGetAnnCharFile(AnnChar& rxAnnChar)
   
   m_bRead = false;
   vReadFileIntoRawBuff();
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vReadRawCharFromRawBuff(rxReg);
   
-  ASSERT( (rxAnnChar.m_cChar) || (!rxAnnChar.m_cChar && m_bSeenEOF) );
+  ASSERT( (rxReg.m_cChar) || (!rxReg.m_cChar && m_bSeenEOF) );
 }
 
 /*----------------------------------------------------------------------------*/
 /* get next raw character from line-buffered stdin                            */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
+void Charser::vLoadRegWithRawCharFromStdin(AnnChar& rxReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -883,19 +949,19 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
   ASSERT(! m_bUseEnded);
   ASSERT(! m_bSeenEOF);
     
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vReadRawCharFromRawBuff(rxReg);
   
-  if (rxAnnChar.m_cChar) {
+  if (rxReg.m_cChar) {
     ASSERT(! m_bSeenEOF);
     return;
   }
   
-  ASSERT(m_oRawFile.bIsStdin());
-  ASSERT(m_oRawFile.bIsOpen());
+  ASSERT(m_oSrcFile.bIsStdin());
+  ASSERT(m_oSrcFile.bIsOpen());
   
   if (! m_bSingleLineCmd) {
     vReadStdinIntoRawBuff();
-    vNextAnnCharFromRawBuff(rxAnnChar);
+    vReadRawCharFromRawBuff(rxReg);
     ASSERT(! m_bSeenEOF);
     return;
   }
@@ -904,14 +970,14 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
     m_bRead = true;
     m_acRawChar = m_sRawBuff.azChar();
     *m_acRawChar = '\0';
-    rxAnnChar.m_cChar = '\0';
+    rxReg.m_cChar = '\0';
     ASSERT(! m_bSeenEOF);
     return ;
   }
   
   m_bRead = false;
   vReadStdinIntoRawBuff();
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vReadRawCharFromRawBuff(rxReg);
   
   ASSERT(! m_bSeenEOF);
 }
@@ -919,7 +985,7 @@ void Charser::vGetAnnCharStdin(AnnChar& rxAnnChar)
 /*----------------------------------------------------------------------------*/
 /* get next raw character from buffered string                                */
 /*----------------------------------------------------------------------------*/
-void Charser::vGetAnnCharString(AnnChar& rxAnnChar)
+void Charser::vLoadRegWithRawCharFromString(AnnChar& rxReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -927,29 +993,33 @@ void Charser::vGetAnnCharString(AnnChar& rxAnnChar)
   ASSERT(! m_bUseEnded);
   ASSERT(m_bSeenEOF);
     
-  vNextAnnCharFromRawBuff(rxAnnChar);
+  vReadRawCharFromRawBuff(rxReg);
   
-  if (rxAnnChar.m_cChar)
+  if (rxReg.m_cChar)
     return;
   
   ASSERT(m_bSeenEOF);
-  ASSERT('\0' == rxAnnChar.m_cChar);
+  ASSERT('\0' == rxReg.m_cChar);
 }
 
+//
+// Reading /////////////////////////////////////////////////////////////////////
+//
+
 /*----------------------------------------------------------------------------*/
-/* get next annotated character from raw buffer                               */
+/* read next raw character from raw buffer                                    */
 /*----------------------------------------------------------------------------*/
-void Charser::vNextAnnCharFromRawBuff(AnnChar& rxAnnChar)
+void Charser::vReadRawCharFromRawBuff(AnnChar& rxReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(m_bUseBegun);
   ASSERT(! m_bUseEnded);
 
-  rxAnnChar.m_cChar = *m_acRawChar++;
+  rxReg.m_cChar = *m_acRawChar++;
   
-  rxAnnChar.m_iLine = m_iLineRaw;
-  rxAnnChar.m_iCol  = ++m_iColRaw;
+  rxReg.m_iLine = m_iSrcLine;
+  rxReg.m_iCol  = ++m_iSrcCol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -971,7 +1041,7 @@ void Charser::vReadFileIntoRawBuff(void)
   
   do {
     
-    cInput = m_oRawFile.cGetChar();
+    cInput = m_oSrcFile.cGetChar();
     
     *acRawLineCrs++ = cInput;
     
@@ -986,10 +1056,17 @@ void Charser::vReadFileIntoRawBuff(void)
   
   *acRawLineCrs++ = '\0';
   
-  m_iLineRaw++;
-  m_iColRaw = 0;
+  m_iSrcLine++;
+  m_iSrcCol = 0;
   
   m_acRawChar = m_sRawBuff.azChar();
+  
+  if (d_iDebugMode) {
+    SP_String spStr;
+    vJot("ReadFileIntoRawBuff : [%s]\n"_Stz,
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 8, 16)
+         );
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1007,7 +1084,7 @@ void Charser::vReadStdinIntoRawBuff(void)
       
   for (;;) {
     
-    char cInput = m_oRawFile.cGetChar();
+    char cInput = m_oSrcFile.cGetChar();
     
     *acRawLine++ = cInput;
     
@@ -1017,8 +1094,8 @@ void Charser::vReadStdinIntoRawBuff(void)
   
   *acRawLine++ = '\0';
   
-  m_iLineRaw++;
-  m_iColRaw = 0;
+  m_iSrcLine++;
+  m_iSrcCol = 0;
 
   m_acRawChar = m_sRawBuff.azChar();
   

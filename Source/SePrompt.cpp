@@ -148,6 +148,9 @@ void SePrompt::vPromptLoop(void)
   m_pSession->m_pInput->vUseBegin();
   //m_pSession->m_pInput->vInspect();
 
+  if (d_iDebugMode)
+    vJotSet(true);
+  
   vVerifyJobSeeds();
   
   while (bContinue()) {
@@ -323,7 +326,11 @@ void SePrompt::vDebugMode(i8 iDebugMode)
   
   d_iDebugMode = iDebugMode;
 
-  m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+  if (d_iDebugMode > 1)
+    m_pSession->m_pInput->vDebugMode(d_iDebugMode);
+  else
+    m_pSession->m_pInput->vDebugMode(0);
+
 }
 
 /*----------------------------------------------------------------------------*/

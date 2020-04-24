@@ -36,7 +36,16 @@ bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
       if (i_Char && 0 == (i_Char+1) % 8)
         vTrace("\n"_Stz);
     }
-    
+
+//    vTrace("\n"_Stz);
+//    for (i4 i_Char = 0; i_Char < 32; i_Char++) {
+//      vTrace("%02x %-3s %c\n"_Stz,
+//             i_Char,
+//             StrLib::azAscii(i_Char),
+//             128 + i_Char);
+//    }
+
+    vTrace("\n"_Stz);
     for (i4 i_Char = 0; i_Char < 32; i_Char++)
       vTrace("%s"_Stz,aOC[i_Char]);
     vTrace("\n"_Stz);
@@ -58,6 +67,7 @@ bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
     vTrace(" %c "_Stz,*aChar++);
   vTrace("\n"_Stz);
     
+  
   return true;
 }
 

@@ -146,7 +146,7 @@ void Step::vStrEscape(void)
   // get the arguments
   m_pDataStack->vPopStr(xArg,__func__);
   
-  StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
+  StrLib::vEscapeDblQuote(xArg.azChar(),xEscaped.azChar());
   
   m_pDataStack->vPushStr(xEscaped);
   

@@ -15,6 +15,7 @@ namespace Correctness
   void  vJotDivB(void);
   void  vJotDivC(void);
 
+  void  vJotDivES(void);
   void  vJotDivMS(void);
   void  vJotDivPS(void);
 
@@ -22,7 +23,7 @@ namespace Correctness
   void  vJotDivY(void);
   void  vJotDivZ(void);
 
-  void  vJotSection(Stz* szSubject);
+  i8    iJotSection(Stz* szSubject);
 
   void  vJotSet(bool bJot);
   void  vJotTabIn(void);

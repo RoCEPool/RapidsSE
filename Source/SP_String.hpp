@@ -17,6 +17,7 @@ namespace Gadgets
     ~SP_String(void) noexcept(false);
   
     Stz* szRight(Stz* szString, i8 iLength);
+    Stz* szSample(Stz* szString, Stz* szCursor, i8 iBefore, i8 iAfter);
 
   private:
     Footer* aFooter(void);

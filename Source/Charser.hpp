@@ -17,22 +17,26 @@ namespace LexicalAnalysis
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
   
-    // sources
-    File     m_oRawFile;  // given file
+    // source
+    File     m_oSrcFile;  // given file
+    i8       m_iSrcLine;  // line number of raw char in source
+    i8       m_iSrcCol;   // column number of raw char in source
+  
+    // raw buffer
     s48K     m_sRawBuff;  // raw buffer
     char*    m_azRawBuff; // ptr into m_sRawBuff -- debug help
     char*    m_acRawChar; // next raw char in raw buffer
-    i8       m_iLineRaw;  // line number of raw char
-    i8       m_iColRaw;   // column number of raw char
 
-    // uses
+    // use state
     bool     m_bUseBegun; // has use of this charser begun?
     bool     m_bUseClosed;// has use of this charser closed?
     bool     m_bUseEnded; // has use of this charser ended?
     bool     m_bUseOpened;// has use of this charser opened?
-  
-    // registers
+
+    // mode
     bool     m_bSingleLineCmd; // single line command?
+
+    // registers
     i8       m_nLoaded;   // 0: neither register has char
                           // 1: m_xRegOne has char
                           // 2: m_xRegOne and m_xRegTwo each have a char
@@ -41,7 +45,7 @@ namespace LexicalAnalysis
     eCS      m_eComment;  // comment style currently being processed
     bool     m_bRead;     // prompt user for more input
     bool     m_bSeenEOF;  // eof seen?
-  
+
     // some debugging aids
     bool      d_iDebugMode;  // debug mode?
  
@@ -58,16 +62,26 @@ namespace LexicalAnalysis
     static Charser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
+    void vGetAnnChar(AnnChar& rxAnnChar, bool bStrip);
+    void vUngetAnnChar(AnnChar& rxAnnChar);
+
+    // Source
+    bool bIsStdin(void);
+    Stz* szPath(void);
+    bool bSeenEOF(void);
+    i8   iSrcCol(void);
+    i8   iSrcLine(void);
+
+    // Control
+    void vDebugMode(i8 iDebugMode);
     void vForkReset(void);
     void vInspect(void);
-    Stz* szPath(void);
-    i8   iLineRaw(void);
-    i8   iLineCol(void);
-
-    // Options
+ 
+    // Mode
+    bool bSingleLineCmd(void);
     void vSingleLineCmd(bool bLineMode);
     
-    // Use What
+    // Usage
     void vUseBegin(void);
     bool bUseBegun(void);
     void vUseClose(void);
@@ -81,15 +95,6 @@ namespace LexicalAnalysis
     void     vNext(Charser* pNext);
     i8       iDepth(void);
     
-    // Processing Functions
-    void vGetAnnChar(AnnChar& rxAnnChar, bool bStripComments);
-    void vUngetAnnChar(AnnChar& rxAnnChar);
-    bool bSeenEOF(void);
-    bool bSingleLineCmd(void);
-    bool bIsStdin(void);
-
-    void vDebugMode(i8 iDebugMode);
-  
   private:
     
     void vResetCharser(void);
@@ -108,21 +113,21 @@ namespace LexicalAnalysis
     bool bBlockCommentEnd(void);
     void vBlockCommentSkip(void);
     bool bBlockCommentStart(void);
-    bool bPossibleComment(void);
     eCS  eCommentStyle(void);
     bool bLineCommentEnd(void);
     void vLineCommentSkip(void);
     bool bLineCommentStart(void);
+    bool bPossibleComment(void);
     void vStripComment(void);
     
-    // Get next annotated char
-    void vGetAnnChar(AnnChar& rxAnnChar);
-    void vGetAnnCharFile(AnnChar& rxAnnChar);
-    void vGetAnnCharStdin(AnnChar& rxAnnChar);
-    void vGetAnnCharString(AnnChar& rxAnnChar);
+    // Loading Register With Next Raw char
+    void vLoadRegWithRawChar(AnnChar& rxReg);
+    void vLoadRegWithRawCharFromFile(AnnChar& rxReg);
+    void vLoadRegWithRawCharFromStdin(AnnChar& rxReg);
+    void vLoadRegWithRawCharFromString(AnnChar& rxReg);
 
-    // Reading
-    void vNextAnnCharFromRawBuff(AnnChar& rxAnnChar);
+    // Reading Next Raw Char
+    void vReadRawCharFromRawBuff(AnnChar& rxReg);
     void vReadFileIntoRawBuff(void);
     void vReadStdinIntoRawBuff(void);
     
