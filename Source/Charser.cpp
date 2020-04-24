@@ -247,7 +247,7 @@ void Charser::vInspect(void)
   
   SP_String spStr;
   
-  vJot(';',"Charser[%lld] (L%lld C%lld) : "
+  vJot1(';',"Charser[%lld] (L%lld C%lld) : "
          "Source %s Path %s %s %s %s %s %s %s : "
          "Loaded %lld %c %c [>%s<]\n"_Stz,
          
@@ -576,7 +576,7 @@ void Charser::vClearRegs(void)
   ASSERT(IS_NONE != m_eSource);
   
   if (d_iDebugMode)
-    vJot(';',"Clear both registers\n"_Stz);
+    vJot1(';',"Clear both registers\n"_Stz);
   
   m_nLoaded = 0;
   m_xRegOne.vReset();
@@ -594,7 +594,7 @@ void Charser::vConsumeFirst(AnnChar& rxAnnChar)
   ASSERT(m_nLoaded);
 
   if (d_iDebugMode)
-    vJot(';',"Consume first char\n"_Stz);
+    vJot1(';',"Consume first char\n"_Stz);
 
   rxAnnChar = m_xRegOne;
   m_xRegOne = m_xRegTwo;
@@ -616,7 +616,7 @@ void Charser::vDiscardFirst(void)
   
   if (d_iDebugMode) {
     SP_Charser spCharser;
-    vJot(';',"vDiscardFirst() { %s }\n"_Stz,spCharser.sz(this));
+    vJot1(';',"vDiscardFirst() { %s }\n"_Stz,spCharser.sz(this));
   }
   
   m_xRegOne.m_cChar  = m_xRegTwo.m_cChar;
@@ -638,7 +638,7 @@ void Charser::vLoadBoth(void)
   
   if (d_iDebugMode) {
     SP_Charser spCharser;
-    vJot(';',"vLoadBoth() { %s }\n"_Stz,spCharser.sz(this));
+    vJot1(';',"vLoadBoth() { %s }\n"_Stz,spCharser.sz(this));
   }
   
   vLoadRegWithRawChar(m_xRegOne);
@@ -670,7 +670,7 @@ void Charser::vLoadFirst(void)
     m_nLoaded++;
   
   if (d_iDebugMode)
-    vJot(';',"Loaded first\n"_Stz);
+    vJot1(';',"Loaded first\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,7 +756,7 @@ void Charser::vBlockCommentSkip(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
     
   if (d_iDebugMode) {
-    vJot(';',"Skipping BlockComment /* ...\n"_Stz);
+    vJot1(';',"Skipping BlockComment /* ...\n"_Stz);
   }
   
   vClearRegs();
@@ -780,7 +780,7 @@ void Charser::vBlockCommentSkip(void)
   vClearRegs();
   
   if (d_iDebugMode) {
-    vJot(';',"...*/ Skipped BlockComment\n"_Stz);
+    vJot1(';',"...*/ Skipped BlockComment\n"_Stz);
   }
 }
 
@@ -834,7 +834,7 @@ void Charser::vLineCommentSkip(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if (d_iDebugMode) {
-    vJot(';',"Skipping LineComment //...\n"_Stz);
+    vJot1(';',"Skipping LineComment //...\n"_Stz);
   }
   
   vClearRegs();
@@ -853,7 +853,7 @@ void Charser::vLineCommentSkip(void)
   ASSERT('\n' == m_xRegOne.m_cChar || '\0' == m_xRegOne.m_cChar);
   
   if (d_iDebugMode) {
-    vJot(';',"...*/ Skipped LineComment\n"_Stz);
+    vJot1(';',"...*/ Skipped LineComment\n"_Stz);
   }
 }
 
@@ -899,7 +899,7 @@ void Charser::vStripComment(void)
   AnnChar xReplaceWith;
   
   if (d_iDebugMode)
-    vJot(';',"Stripping comment\n"_Stz);
+    vJot1(';',"Stripping comment\n"_Stz);
 
   
   xReplaceWith.vReset();
@@ -1139,7 +1139,7 @@ void Charser::vReadFileIntoRawBuff(void)
   
   if (d_iDebugMode) {
     SP_String spStr;
-    vJot(';',"ReadFileIntoRawBuff : [>%s<]\n"_Stz,
+    vJot1(';',"ReadFileIntoRawBuff : [>%s<]\n"_Stz,
          spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
          );
   }

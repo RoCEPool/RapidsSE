@@ -25,7 +25,7 @@ i8    _g_iLine = 0;
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJot(char cFlag, Stz* aFormat, ...)
+void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
 {
   if (! _g_bJotting)
     return;
@@ -250,10 +250,10 @@ i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szSection)
 //    "- - - - - - - - - - - - - - - - - - - - "
 //    );
   
-  vJot('-',"%s\n"_Stz,
-       "- - - - - - - - - - - - - - - - - - - - "
-       "- - - - - - - - - - - - - - - - - - - - "
-       "- - - - - - - - - - - - - - - - - - - - "
+  vJot1('-',"%s\n"_Stz,
+         "- - - - - - - - - - - - - - - - - - - - "
+         "- - - - - - - - - - - - - - - - - - - - "
+         "- - - - - - - - - - - - - - - - - - - - "
        );
   
   vJot2(cFlag,szFun,"%s\n"_Stz,szSection);
@@ -285,13 +285,13 @@ i8 Correctness::iJotSummary(char cFlag, Stz* szFun, Stz* szSummary)
 //    "= = = = = = = = = = = = = = = = = = = = "
 //    );
   
-  vJot(cFlag,"%s\n"_Stz,
-      "= = = = = = = = = = = = = = = = = = = = "
-      "= = = = = = = = = = = = = = = = = = = = "
-      "= = = = = = = = = = = = = = = = = = = = "
+  vJot1(cFlag,"%s\n"_Stz,
+         "= = = = = = = = = = = = = = = = = = = = "
+         "= = = = = = = = = = = = = = = = = = = = "
+         "= = = = = = = = = = = = = = = = = = = = "
        );
   
-  vJot(cFlag,"%s\n"_Stz,szSummary);
+  vJot1(cFlag,"%s\n"_Stz,szSummary);
   
   return _g_iSummary;
 }

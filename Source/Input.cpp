@@ -198,7 +198,7 @@ void Input::vInspect(void)
 //         );
 
   if (! m_pCurrTkn) {
-    vJot(';',"Input #UseBegin.%lld #ReadCommand.%lld #CollectToken.%lld : "
+    vJot1(';',"Input #UseBegin.%lld #ReadCommand.%lld #CollectToken.%lld : "
          "]>NoToken<[\n"_Stz,
            d_nUseBegin,
            d_nReadCommand,
@@ -210,7 +210,7 @@ void Input::vInspect(void)
   
   SP_Token spTkn;
 
-  vJot(';',"Input #UseBegin.%lld #ReadCommand.%lld #CollectToken.%lld : "
+  vJot1(';',"Input #UseBegin.%lld #ReadCommand.%lld #CollectToken.%lld : "
        "%s\n"_Stz,
          d_nUseBegin,
          d_nReadCommand,
@@ -424,7 +424,7 @@ void Input::vReadCommand(void)
   vCollectVecTillSemicolon();
   m_pTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
-    vJot(';',"Collected TillSemicolon\n"_Stz);
+    vJot1(';',"Collected TillSemicolon\n"_Stz);
     m_pTknVec->vListTokens();
   }
 
@@ -738,7 +738,7 @@ void Input::vCollectVecFirstLine(void)
     
     if (pToken->bIsNull()) {
       if (d_iDebugMode)
-        vJot(';',"Null token detected\n"_Stz);
+        vJot1(';',"Null token detected\n"_Stz);
       break;
     }
     
@@ -756,7 +756,7 @@ void Input::vCollectVecFirstLine(void)
   }
     
    if (d_iDebugMode) {
-     vJot(';',"Collected vector is:\n"_Stz);
+     vJot1(';',"Collected vector is:\n"_Stz);
      m_pTknVec->vListTokens();
    }
   

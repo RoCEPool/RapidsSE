@@ -493,7 +493,7 @@ void TokenVec::vListTokens(void)
   i8 nTkns = nTokens();
   
   if (! nTkns) {
-    vJot(':',"  **Empty TokenVec**\n"_Stz);
+    vJot1(':',"  **Empty TokenVec**"_Stz,""_Stz);
     return;
   }
   
@@ -504,7 +504,7 @@ void TokenVec::vListTokens(void)
     //if (! pToken->szChars())
     //  break;
     
-    vJot(':',"  %s\n"_Stz,spTkn.sz(pToken));
+    vJot1(':',"  %s\n"_Stz,spTkn.sz(pToken));
   }
 }
 
