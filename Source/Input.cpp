@@ -739,7 +739,7 @@ void Input::vCollectVecFirstLine(void)
               
     vCollectOneToken();
     
-    if (TN_NULL == pToken->eToken())
+    if (pToken->bIsNull())
       break;
 
     m_pTknVec->vIncTokens();
