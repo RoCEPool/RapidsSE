@@ -40,7 +40,7 @@ namespace Correctness
 
 #include "Addressing.hpp"
 #include "SizedHeader.hpp"
-#include "Report.hpp"
+#include "Trace.hpp"
 #include "IntLib.hpp"
 
 #include "Statistics.hpp"
