@@ -307,7 +307,7 @@ void Input::vReadCommand(void)
   }
   
   // if empty line just return                                      ** NON-SENSE
-  if (1 == m_pTknVec->nTokens() && m_pCurrTkn->bIsEOF()) {
+  if (1 == m_pTknVec->nTokens() && m_pCurrTkn->bIsNull()) {
     m_pTknVec->vIntegrityCheck();
     goto L_Exit;
   }
@@ -702,7 +702,7 @@ void Input::vCollectVecFirstLine(void)
     
     vCollectOneToken();
     
-    if (m_pCurrTkn->bIsEOF())
+    if (m_pCurrTkn->bIsNull())
       break;
   }
 
