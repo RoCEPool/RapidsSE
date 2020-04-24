@@ -46,6 +46,28 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
   return (Stz*) &m_caResult[0];
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint a sample of string and return Stz* to result                        */
+/*----------------------------------------------------------------------------*/
+Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iBefore, i8 iAfter)
+{
+  _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  
+  char caTemp[1024];
+  
+  StrLib::vCopyLen(caTemp,szCursor->azChar(),iAfter);
+
+  StrLib::vCopy(m_caResult,aOC[OC_CURSOR]->azChar());
+
+  StrLib::vConcat(m_caResult,caTemp);
+
+  if (StrLib::iSize(szCursor->azChar()) < iAfter)
+    StrLib::vConcat(m_caResult,"<END>");
+  else
+    StrLib::vConcat(m_caResult,"...");
+
+  return (Stz*) &m_caResult[0];
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

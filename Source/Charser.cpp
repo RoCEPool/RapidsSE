@@ -238,9 +238,11 @@ void Charser::vInspect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
+  SP_String spStr;
+  
   vJot("Charser[%lld] (L%lld C%lld) : "
          "Source %s Path %s %s %s %s %s %s %s : "
-         "Loaded %lld %c %c\n"_Stz,
+         "Loaded %lld %c %c [%s]\n"_Stz,
          
          m_iDepth,
          m_iSrcLine,
@@ -257,7 +259,10 @@ void Charser::vInspect(void)
 
          m_nLoaded,
          m_xRegOne.m_cChar ? m_xRegOne.m_cChar : ' ',
-         m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' '
+         m_xRegTwo.m_cChar ? m_xRegOne.m_cChar : ' ',
+       
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 0, 16)
+       
          );
 }
 
@@ -1052,6 +1057,13 @@ void Charser::vReadFileIntoRawBuff(void)
   m_iSrcCol = 0;
   
   m_acRawChar = m_sRawBuff.azChar();
+  
+  if (d_iDebugMode) {
+    SP_String spStr;
+    vJot("ReadFileIntoRawBuff : [%s]\n"_Stz,
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 0, 16)
+         );
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -79,6 +79,8 @@ enum eOC // other characters
   /*    */ OC_TASK,
   /*    */ OC_THREAD,
 
+  /*    */ OC_CURSOR,
+
   /*    */ OC_ENUMS,
 };
 
@@ -157,6 +159,8 @@ static Stz* aOC[]
    /*    */ "❓"_Stz, // prompt
    /*    */ "📎"_Stz, // task
    /*    */ "〰️"_Stz, // thread
+
+   /*    */ "♦️"_Stz, // cursor
 
 
    /*    */ "ENUMS"_Stz,
