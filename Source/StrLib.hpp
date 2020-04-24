@@ -61,13 +61,15 @@ namespace Strings
     static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(char* sArg, char* sEnd);
-    static void  vEscape(const char* sArg, char* sEscaped);
+    static void  vEscape(char* azDst, char* azSrc);
     static bool  bEscapeConvert(const char cArg,
                                 char cEnclosedBy_Leading, char cEnclosedBy_Trailing,
                                 char cEscapeChar, char cDelimiter, char cTerminator);
     static bool  bEscapeConvertDefault(const char cArg,
                                 char cEscapeChar, char cDelimiter);
     static char  cEscapeConvert(const char cArg);
+    static void  vEscapeDblQuote(const char* sArg, char* sEscaped);
+    static char  cEscapeFor(const char cArg);
     static char  cEscapeInverse(const char cArg);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);
     static bool  bEscapedSpecial(const char cArg);
@@ -129,6 +131,7 @@ namespace Strings
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
     static bool  bIsDigit(const char c);
+    static bool  bIsEscapable(const char cArg);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
     static bool  bIsNumeric(char* ps);

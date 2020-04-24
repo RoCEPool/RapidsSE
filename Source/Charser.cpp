@@ -549,10 +549,13 @@ void Charser::vDiscardFirst(void)
   
   if (d_iDebugMode) {
     SP_Char spChar;
-    vJot("Discarding (L%lld C%lld) : %s\n"_Stz,
+    SP_String spStr;
+
+    vJot("Discarding (L%lld C%lld) : %s %s\n"_Stz,
          m_xRegOne.m_iLine,
          m_xRegOne.m_iCol,
-         spChar.sz(m_xRegOne.m_cChar)
+         spChar.sz(m_xRegOne.m_cChar),
+         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, 0, 16)
          );
   }
   
