@@ -31,7 +31,7 @@ i8    _g_iLine = 0;
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
+void Correctness::vJot1(char cFlag, Stz* szFormat, ...)
 {
   if (! _g_bJotting)
     return;
@@ -62,14 +62,18 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
   if ('r' == cFlag)
     StrLib::vSprintCat((Stz*)caBuff,"- "_Stz);
 
-  va_start(xVaArgs,aFormat);
-  StrLib::vSprintCat(caBuff,xVaArgs,aFormat->azChar());
+  va_start(xVaArgs,szFormat);
+  StrLib::vSprintCat(caBuff,xVaArgs,szFormat->azChar());
   va_end(xVaArgs);
   
   if ('>' == cFlag || '<' == cFlag)
-    StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,aFormat);
+    StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,szFormat);
 
-  AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+  if (! _g_sPhrase)
+    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+  else
+  if (szFormat->bContains((Stz*)_g_sPhrase))
+    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
 
   if ('>' == cFlag)
      _g_nDepth++;
@@ -79,7 +83,7 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
+void Correctness::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 {
   if (! _g_bJotting)
     return;
@@ -117,7 +121,7 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (*aFormat->azChar()) {
+  if (*szFormat->azChar()) {
     StrLib::vPad(caBuff,C_JOT_BUFF-1,' ');
   
     char* aczCursor = StrLib::aczTabLoc(caBuff,C_JOT_TAB,' ');
@@ -126,13 +130,17 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   
     StrLib::vSprintCat((Stz*)caBuff,"+ "_Stz,szFun);
   
-    va_start(xVaArgs,aFormat);
-    StrLib::vSprintCat(caBuff,xVaArgs,aFormat->azChar());
+    va_start(xVaArgs,szFormat);
+    StrLib::vSprintCat(caBuff,xVaArgs,szFormat->azChar());
     va_end(xVaArgs);
   }
   
-  AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
-  
+  if (! _g_sPhrase)
+    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+  else
+  if (szFun->bContains((Stz*)_g_sPhrase))
+    AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+
   if ('>' == cFlag)
      _g_nDepth++;
 }
