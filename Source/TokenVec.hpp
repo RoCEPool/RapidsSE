@@ -39,6 +39,7 @@ namespace LexicalAnalysis
     void vCopyVector(TokenVec* pTokenVec);
     i8   iCurrToken(void);
     Token* pCurrToken(void);
+    void vDumpVec(i8 nPlusMore);
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     Token* pFirstToken(void);

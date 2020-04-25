@@ -711,6 +711,8 @@ void Input::vCollectVecFirstLine(void)
       if (d_iDebugMode)
         vJot1('r',"null token detected"_Stz);
       vCursorRewind();
+      if (d_iDebugMode)
+        vJot1('r',"cursor rewound"_Stz);
       break;
     }
   }
@@ -825,6 +827,8 @@ void Input::vCollectVecTillSemicolon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+  //m_pTknVec->vDumpVec(4);
+  
   // get tokens delimited by ';'
   for (;;) {
 

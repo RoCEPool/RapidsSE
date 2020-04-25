@@ -342,6 +342,44 @@ Token* TokenVec::pCurrToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump token vector                                                          */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vDumpVec(i8 nPlusMore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  SP_Token spTkn;
+  
+  i8 nTkns = nTokens();
+  i8 i_Limit = nTkns + nPlusMore;
+  
+  vTrace("TokenVec %p:\n"_Stz,this);
+  vTrace("  items %lld\n"_Stz,nItems());
+  vTrace("  curr token %lld\n"_Stz,m_iCurTkn);
+  vTrace("  latter %p\n"_Stz,_szLaterChars());
+
+  if (! nTkns) {
+    vTrace("  **Empty TokenVec**"_Stz,""_Stz);
+    return;
+  }
+  
+  for (i8 i_Token = 0; i_Token < i_Limit; i_Token++) {
+    
+    Token* pToken = pGet(i_Token,true);
+
+    //if (! pToken->szChars())
+    //  break;
+    
+    vTrace("  Chars %p : %s ; Size %lldB (next %p)\n"_Stz,
+           pToken->azChars(),
+           spTkn.sz(pToken),
+           pToken->nChars() + 1,
+           aAdd<char*>(pToken->azChars(),pToken->nChars() + 1)
+           );
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iFindToken(Stz* szArgChars)
@@ -475,6 +513,15 @@ void TokenVec::vIntegrityCheck(void)
     Stz* szCharsB = pTknB->szChars();
 
     i8 nBytesA = szCharsA->nSize();
+    
+    if (szCharsB != aAdd<Stz*>(szCharsA,nBytesA)) {
+      vTrace("Error at [%lld] - [%lld] %p\n"_Stz,
+             i_TknA,
+             i_TknA + 1,
+             aAdd<char*>(szCharsA,nBytesA)
+             );
+      vDumpVec(4);
+    }
     
     ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));
   }
