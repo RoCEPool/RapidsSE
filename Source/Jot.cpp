@@ -268,13 +268,15 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
   _g_iSection = 0;
   _g_iLine = 0;
   
-  AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
-    "////////////////////////////////////////"
-    "////////////////////////////////////////"
-    "////////////////////////////////////////"
+  if (! _g_sPhrase) {
+    AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
+      "////////////////////////////////////////"
+      "////////////////////////////////////////"
+      "////////////////////////////////////////"
     );
   
-  vJot2(cFlag,szFun,SzInfo);
+    vJot2(cFlag,szFun,SzInfo);
+  }
   
   return _g_iDivision;
 }
