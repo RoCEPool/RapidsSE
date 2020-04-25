@@ -100,6 +100,7 @@ namespace LexicalAnalysis
   
     void vCursorAdvance(void);
     void vCursorReset(void);
+    void vCursorRewind(void);
 
     bool bHitEOF(void);
     

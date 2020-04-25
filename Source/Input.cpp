@@ -387,7 +387,8 @@ void Input::vReadCommand(void)
   // if empty line just return                                      ** NON-SENSE
   if ( ! m_pTknVec->nTokens() ||
        ! m_pTknVec->pGet(0)->bHasChars() ) {
-    m_pTknVec->vIntegrityCheck();
+    if (d_iDebugMode)
+      vJot1('r',"empty line return"_Stz);
     goto L_Exit;
   }
     
@@ -397,7 +398,8 @@ void Input::vReadCommand(void)
   // if its a command file just return
   if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
       File::bExists(m_pTknVec->pGet(0)->szChars())) {
-    m_pTknVec->vIntegrityCheck();
+    if (d_iDebugMode)
+      vJot1('r',"is cmd file return"_Stz);
     goto L_Exit;
   }
   
@@ -408,6 +410,8 @@ void Input::vReadCommand(void)
     m_pTknVec->vStripSemicolon();
     m_pTknVec->vSetTokens();
     m_pTknVec->vIntegrityCheck();
+    if (d_iDebugMode)
+      vJot1('r',"detected ';'"_Stz);
     goto L_Exit;
   }
   
@@ -421,7 +425,7 @@ void Input::vReadCommand(void)
   vCollectVecTillSemicolon();
   m_pTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
-    vJot1('r',"collected till semicolon"_Stz);
+    vJot1('r',"collected ';'"_Stz);
     m_pTknVec->vListTokens();
   }
 
@@ -694,8 +698,12 @@ void Input::vCollectVecFirstLine(void)
     
     m_pTknVec->vListTokens();
 
-    if (m_pCurrTkn->bIsNull())
+    if (m_pCurrTkn->bIsNull()) {
+      if (d_iDebugMode)
+        vJot1('r',"null token detected"_Stz);
+      vCursorRewind();
       break;
+    }
   }
 
   if (! m_pTknVec->nTokens() && bSeenEOF()) {
@@ -1805,6 +1813,21 @@ void Input::vCursorReset(void)
 {
   m_pTknVec->vSoftReset();
   m_pCurrTkn = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the current token vector and move back to prior token                */
+/*----------------------------------------------------------------------------*/
+void Input::vCursorRewind(void)
+{
+#ifdef __WITH_INPUT_CURSOR
+  m_pCurrTkn->vReset();
+  m_pTknVec->vRewindCurr();
+#else
+  ASSERT(0);
+#endif
+  
+  m_pCurrTkn = m_pTknVec->pCurrToken();
 }
 
 /*============================================================================*/

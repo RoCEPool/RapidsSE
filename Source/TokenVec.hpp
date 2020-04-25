@@ -51,6 +51,7 @@ namespace LexicalAnalysis
     Token* pPrevToken(void);
     void vRemoveSemicolon(void);
     void vRemoveToken(i8 i_Tkn);
+    void vRewindCurr(void);
     void vReplaceToken(Token* pDstToken, Token* pSrcToken);
     void vSetAllTokens(void);
     void vSetTokens(void);

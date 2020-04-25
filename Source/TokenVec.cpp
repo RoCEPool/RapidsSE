@@ -686,6 +686,18 @@ void TokenVec::vReplaceToken(Token* pDstToken, Token* pSrcToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rewind current                                                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vRewindCurr(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_iCurTkn--;
+  
+  vDecItems();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the number of tokens                                                   */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vSetAllTokens(void)
