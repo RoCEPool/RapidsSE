@@ -131,7 +131,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (d_iDebugMode) {
     SP_AnnChar spAnnChar;
     vJot1('r',"got next AnnChar"_Stz);
-    vJot2(':',"AnnChar:"_Stz,"%s"_Stz,spAnnChar.sz(&rxAnnChar));
+    vJot2(':',"AnnChar:(some)"_Stz,"%s"_Stz,spAnnChar.sz(&rxAnnChar));
     vJot2('<',(Stz*)__func__,""_Stz);
   }
 }

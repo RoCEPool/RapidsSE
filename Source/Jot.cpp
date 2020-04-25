@@ -5,17 +5,18 @@
 #include "Correctness.h"
 
 bool  _g_bJotting = false;
+char* _g_sPhrase = nullptr;
 
-char* _g_sArea;
+char* _g_sArea = nullptr;
 
 i8    _g_iDivision = 0;
 char* _g_sDivision;
 
 i8    _g_iSection = 0;
-char* _g_sSection;
+char* _g_sSection = nullptr;
 
 i8    _g_iSummary = 0;
-char* _g_sSummary;
+char* _g_sSummary = nullptr;
 
 i8    _g_nDepth = 0;
 i8    _g_iLine = 0;
@@ -37,12 +38,15 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
   
   va_list xVaArgs;
   
+  char caBuff[C_JOT_BUFF];
+
   ASSERT(cFlag != '>' && cFlag != '<');
   
   if ('<' == cFlag && _g_nDepth)
     _g_nDepth--;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
+  StrLib::vSprint(caBuff,
+                  "#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -53,20 +57,20 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
                   );
   
   if (_g_nDepth)
-    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nDepth));
-
+    StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz, Stz::szTab(_g_nDepth));
+  
   if ('r' == cFlag)
-    AM::vWriteTrace(YA_SYS_TRACE,"- "_Stz);
+    StrLib::vSprintCat((Stz*)caBuff,"- "_Stz);
 
   va_start(xVaArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+  StrLib::vSprintCat(caBuff,xVaArgs,aFormat->azChar());
   va_end(xVaArgs);
   
   if ('>' == cFlag || '<' == cFlag)
-    AM::vWriteTrace(YA_SYS_TRACE,"()"_Stz,aFormat);
+    StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,aFormat);
 
-  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
-  
+  AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+
   if ('>' == cFlag)
      _g_nDepth++;
 
@@ -103,7 +107,7 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
     StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz, Stz::szTab(_g_nDepth));
   
   if ('r' == cFlag)
-    StrLib::vSprintCat((Stz*)caBuff,"- "_Stz,szFun);
+    StrLib::vSprintCat((Stz*)caBuff,"- "_Stz);
   
   StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz,szFun);
   
@@ -166,15 +170,6 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
 //
 //  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
 //}
-
-/*----------------------------------------------------------------------------*/
-/* tab in for next jotting                                                    */
-/*----------------------------------------------------------------------------*/
-void Correctness::vJotSet(bool bJot)
-{
-  _g_bJotting = bJot;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get current jot section                                                    */
@@ -275,6 +270,24 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
   
   return _g_iDivision;
 }
+
+/*----------------------------------------------------------------------------*/
+/* tab in for next jotting                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotFilter(Stz* szPhrase)
+{
+  _g_sPhrase = szPhrase->azChar();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* tab in for next jotting                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotSet(bool bJot)
+{
+  _g_bJotting = bJot;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */

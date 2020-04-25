@@ -33,6 +33,7 @@ namespace Correctness
   i8    iJotSummary(void);
   i8    iJotSummary(char cFlag, Stz* szFun, Stz* szSection);
 
+  void  vJotFilter(Stz* szPhrase);
   void  vJotSet(bool bJot);
   void  vJotTabIn(void);
   void  vJotTabOut(void);
