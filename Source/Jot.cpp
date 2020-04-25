@@ -36,8 +36,8 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
     return;
   
   va_list xVaArgs;
-
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c"_Stz,
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c  "_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -58,6 +58,12 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
   va_end(xVaArgs);
   
   AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
+  
+  if ('>' == cFlag)
+     _g_nDepth++;
+
+  if ('<' == cFlag && _g_nDepth)
+    _g_nDepth--;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,9 +78,8 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   
   char caBuff[C_JOT_BUFF];
 
-  
-  StrLib::vSprint(caBuff,
-                  "#%s::%s.%04x.%02x.%03x# %x%c"_Stz,
+   StrLib::vSprint(caBuff,
+                  "#%s::%s.%04x.%02x.%03x# %x%c  "_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -114,6 +119,13 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   }
   
   AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
+  
+  if ('>' == cFlag)
+     _g_nDepth++;
+   
+  if ('<' == cFlag && _g_nDepth)
+    _g_nDepth--;
+
 }
 /*----------------------------------------------------------------------------*/
 //void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
@@ -264,7 +276,7 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotTabIn(void)
 {
-  _g_nDepth++;
+  //_g_nDepth++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,8 +284,8 @@ void Correctness::vJotTabIn(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotTabOut(void)
 {
-  if (_g_nDepth)
-    _g_nDepth--;
+//  if (_g_nDepth)
+//    _g_nDepth--;
 }
 
 

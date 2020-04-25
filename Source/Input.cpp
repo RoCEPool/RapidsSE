@@ -448,7 +448,7 @@ L_Exit:
   if (d_iDebugMode) {
     i8 i = iJotSummary(':',(Stz*)__func__,"Command Is:"_Stz);
     m_pTknVec->vListTokens();
-    vJotTabOut();
+    vJot1('<',(Stz*)__func__);
   }
 
 }
@@ -755,10 +755,11 @@ void Input::vCollectVecFirstLine(void)
     ASSERT(b);
   }
     
-   if (d_iDebugMode) {
-     vJot1('r',"collected vector is:"_Stz);
-     m_pTknVec->vListTokens();
-   }
+  if (d_iDebugMode) {
+    vJot1(':',"collected vector is:"_Stz);
+    m_pTknVec->vListTokens();
+    vJot1('<',(Stz*)__func__);
+  }
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -861,9 +862,11 @@ void Input::vCollectVecTillSemicolon(void)
     m_pTknVec->vAdvanceCurr(false);
   }
   
-  //m_pTknVec->vListTokens();
-  
-  Correctness::vDebugPoint();
+  if (d_iDebugMode) {
+    vJot1(':',"collected vector is:"_Stz);
+    m_pTknVec->vListTokens();
+    vJot1('<',(Stz*)__func__);
+  }
 }
 #endif
 
