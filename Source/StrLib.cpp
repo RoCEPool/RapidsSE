@@ -3147,13 +3147,17 @@ char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
   _static_
 
   char* aczLoc = acLast(azArg);
+
+  i8 nTab = nDifference(azArg,aczLoc);
   
-  while (aczLoc > azArg) {
+  while (aczLoc > azArg && nTab > i_Tab) {
     if (cPad != *aczLoc) {
       aczLoc++;
       aczLoc++;
       break;
     }
+    aczLoc--;
+    nTab--;
   }
   
   return aczLoc;

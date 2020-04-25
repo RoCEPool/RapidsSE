@@ -20,6 +20,8 @@ char* _g_sSummary;
 i8    _g_nDepth = 0;
 i8    _g_iLine = 0;
 
+#define C_JOT_BUFF 1024 EndDefine
+
 //
 // joting //////////////////////////////////////////////////////////////////////
 //
@@ -66,8 +68,12 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
     return;
   
   va_list xVaArgs;
+  
+  char caBuff[C_JOT_BUFF];
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
+  
+  StrLib::vSprint(caBuff,
+                  "#%s::%s.%04x.%02x.%03x# %x%c"_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -76,23 +82,68 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
                   _g_nDepth,
                   cFlag
                   );
+
   
-  if (_g_nDepth) {
-    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nDepth));
-  }
+  if (_g_nDepth)
+    StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz, Stz::szTab(_g_nDepth));
   
-  AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz,szFun);
+  StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz,szFun);
+  
   if ('>' == cFlag || '<' == cFlag)
-    AM::vWriteTrace(YA_SYS_TRACE,"()"_Stz,szFun);
+    StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,szFun);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  StrLib::vPad(caBuff,C_JOT_BUFF-1,' ');
+  
+  char* aczCursor = StrLib::aczTabLoc(caBuff,80,' ');
 
+  *aczCursor = '\0';
+  
+  StrLib::vSprintCat((Stz*)caBuff,"+ "_Stz,szFun);
+  
   va_start(xVaArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+  StrLib::vSprintCat(caBuff,xVaArgs,aFormat->azChar());
   va_end(xVaArgs);
   
-  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
+  
+  
+  AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
 }
+/*----------------------------------------------------------------------------*/
+//void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
+//{
+//  if (! _g_bJotting)
+//    return;
+//
+//  va_list xVaArgs;
+//
+//  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
+//                  _g_sArea,
+//                  _g_sDivision,
+//                  _g_iDivision,
+//                  _g_iSection,
+//                  _g_iLine++,
+//                  _g_nDepth,
+//                  cFlag
+//                  );
+//
+//  if (_g_nDepth) {
+//    AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nDepth));
+//  }
+//
+//  AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz,szFun);
+//  if ('>' == cFlag || '<' == cFlag)
+//    AM::vWriteTrace(YA_SYS_TRACE,"()"_Stz,szFun);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  va_start(xVaArgs,aFormat);
+//  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+//  va_end(xVaArgs);
+//
+//  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
