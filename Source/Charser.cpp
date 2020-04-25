@@ -80,10 +80,9 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
     SP_Charser spCharser;
 
     vJotTabIn();
-    vJot2('>',(Stz*)__func__,"{ %s }"_Stz,spCharser.sz(this));
-    
-    if (0x29 == iJotSection())
-      vDebugPoint();
+    vJot2('>',(Stz*)__func__,"Charser[%lld] %s %s"_Stz,
+          m_iDepth,aIS[m_eSource],m_sPath.szStz());
+    vJot2('r',"charser"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
   
   // debug
