@@ -21,6 +21,7 @@ i8    _g_nDepth = 0;
 i8    _g_iLine = 0;
 
 #define C_JOT_BUFF 1024 EndDefine
+#define C_JOT_TAB    70 EndDefine
 
 //
 // joting //////////////////////////////////////////////////////////////////////
@@ -94,19 +95,19 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  StrLib::vPad(caBuff,C_JOT_BUFF-1,' ');
+  if (*aFormat->azChar()) {
+    StrLib::vPad(caBuff,C_JOT_BUFF-1,' ');
   
-  char* aczCursor = StrLib::aczTabLoc(caBuff,80,' ');
+    char* aczCursor = StrLib::aczTabLoc(caBuff,C_JOT_TAB,' ');
 
-  *aczCursor = '\0';
+    *aczCursor = '\0';
   
-  StrLib::vSprintCat((Stz*)caBuff,"+ "_Stz,szFun);
+    StrLib::vSprintCat((Stz*)caBuff,"+ "_Stz,szFun);
   
-  va_start(xVaArgs,aFormat);
-  StrLib::vSprintCat(caBuff,xVaArgs,aFormat->azChar());
-  va_end(xVaArgs);
-  
-  
+    va_start(xVaArgs,aFormat);
+    StrLib::vSprintCat(caBuff,xVaArgs,aFormat->azChar());
+    va_end(xVaArgs);
+  }
   
   AM::vWriteTrace(YA_SYS_TRACE,"%s\n"_Stz,caBuff);
 }
@@ -183,7 +184,7 @@ i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
          "- - - - - - - - - - - - - - - - - - - - "
        );
   
-  vJot2(cFlag,szFun,"%s"_Stz,szInfo);
+  vJot2(cFlag,szFun,szInfo);
   
   return _g_iSection;
 }
@@ -249,7 +250,7 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
     "////////////////////////////////////////"
     );
   
-  vJot2(cFlag,szFun,"%s"_Stz,SzInfo);
+  vJot2(cFlag,szFun,SzInfo);
   
   return _g_iDivision;
 }

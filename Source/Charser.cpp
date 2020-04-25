@@ -80,7 +80,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
     SP_Charser spCharser;
 
     vJotTabIn();
-    vJot2('>',(Stz*)__func__," { %s }"_Stz,spCharser.sz(this));
+    vJot2('>',(Stz*)__func__,"{ %s }"_Stz,spCharser.sz(this));
     
     if (0x29 == iJotSection())
       vDebugPoint();
@@ -119,7 +119,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (! m_nLoaded) {
     rxAnnChar.vReset();
     if (d_iDebugMode) {
-      vJot2('<',(Stz*)__func__,"No more AnnChar"_Stz);
+      vJot2('<',(Stz*)__func__,"no more AnnChar"_Stz);
       vJotTabOut();
     }
     return;
@@ -131,7 +131,7 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (d_iDebugMode) {
     SP_Char spChar;
     SP_String spStr;
-    vJot2('<',(Stz*)__func__,"Got AnnChar (L%lld C%lld) %s [>%s<]"_Stz,
+    vJot2('<',(Stz*)__func__,"got AnnChar (L%lld C%lld) %s [>%s<]"_Stz,
          rxAnnChar.m_iLine,
          rxAnnChar.m_iCol,
          spChar.sz(rxAnnChar.m_cChar),
@@ -1139,8 +1139,9 @@ void Charser::vReadFileIntoRawBuff(void)
   
   if (d_iDebugMode) {
     SP_String spStr;
-    vJot1('r',"read file into RawBuff : [>%s<]"_Stz,
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
+    vJot2('r',"read file into RawBuff"_Stz,
+          "[>%s<]"_Stz,
+          spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
          );
   }
 }

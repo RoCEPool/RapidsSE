@@ -446,7 +446,7 @@ void Input::vReadCommand(void)
   
 L_Exit:
   if (d_iDebugMode) {
-    i8 i = iJotSummary(':',(Stz*)__func__,"Command:"_Stz);
+    i8 i = iJotSummary(':',(Stz*)__func__,"Command Is:"_Stz);
     m_pTknVec->vListTokens();
     vJotTabOut();
   }
