@@ -119,7 +119,8 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (! m_nLoaded) {
     rxAnnChar.vReset();
     if (d_iDebugMode) {
-      vJot2('<',(Stz*)__func__,"no more AnnChar"_Stz);
+      vJot1('r',"no more AnnChar"_Stz);
+      vJot2('<',(Stz*)__func__,""_Stz);
       vJotTabOut();
     }
     return;
@@ -129,15 +130,9 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   vConsumeFirst(rxAnnChar);
   
   if (d_iDebugMode) {
-    SP_Char spChar;
-    SP_String spStr;
-    vJot2('<',(Stz*)__func__,"got AnnChar (L%lld C%lld) %s [>%s<]"_Stz,
-         rxAnnChar.m_iLine,
-         rxAnnChar.m_iCol,
-         spChar.sz(rxAnnChar.m_cChar),
-         spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
-         );
-
+    SP_Charser spCharser;
+    vJot2('r',"got AnnChar"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+    vJot2('<',(Stz*)__func__,""_Stz);
     vJotTabOut();
   }
 }
@@ -574,13 +569,16 @@ void Charser::vClearRegs(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   ASSERT(IS_NONE != m_eSource);
-  
-  if (d_iDebugMode)
-    vJot1('r',"clear both registers"_Stz);
-  
+    
   m_nLoaded = 0;
   m_xRegOne.vReset();
   m_xRegTwo.vReset();
+
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"cleared both regs"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,15 +591,17 @@ void Charser::vConsumeFirst(AnnChar& rxAnnChar)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(m_nLoaded);
 
-  if (d_iDebugMode)
-    vJot1('r',"consume first char"_Stz);
-
   rxAnnChar = m_xRegOne;
   m_xRegOne = m_xRegTwo;
   
   m_xRegTwo.vReset();
   
   m_nLoaded--;
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"consumed R1"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -616,7 +616,7 @@ void Charser::vDiscardFirst(void)
   
   if (d_iDebugMode) {
     SP_Charser spCharser;
-    vJot1('r',"discard first reg { %s }"_Stz,spCharser.sz(this));
+    vJot2('r',"discard R1"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
   
   m_xRegOne.m_cChar  = m_xRegTwo.m_cChar;
@@ -624,6 +624,11 @@ void Charser::vDiscardFirst(void)
   m_xRegTwo.vReset();
 
   m_nLoaded--;
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"discarded R1"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -636,11 +641,6 @@ void Charser::vLoadBoth(void)
   ASSERT(IS_NONE != m_eSource);
   ASSERT(! m_nLoaded);
   
-  if (d_iDebugMode) {
-    SP_Charser spCharser;
-    vJot1('r',"load both regs { %s }"_Stz,spCharser.sz(this));
-  }
-  
   vLoadRegWithRawChar(m_xRegOne);
   
   if (m_xRegOne.m_cChar) {
@@ -651,6 +651,11 @@ void Charser::vLoadBoth(void)
     
     if (m_xRegTwo.m_cChar)
       m_nLoaded++;
+  }
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"loaded both R1 & R2"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
 }
 
@@ -669,8 +674,10 @@ void Charser::vLoadFirst(void)
   if (m_xRegOne.m_cChar)
     m_nLoaded++;
   
-  if (d_iDebugMode)
-    vJot1('r',"loaded first"_Stz);
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"loaded R1"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -695,6 +702,11 @@ void Charser::vLoadRegs(bool bStrip)
     
     vStripComment();
   }
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"loaded R1 & R2"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -712,6 +724,11 @@ void Charser::vLoadSecond(void)
   
   if (m_xRegTwo.m_cChar)
     m_nLoaded++;
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"loaded R2"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -729,6 +746,11 @@ void Charser::vRewindRegs(AnnChar& rxAnnChar)
   m_xRegOne = rxAnnChar;
   
   m_nLoaded++;
+  
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"rewound regs"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+  }
 }
 
 //
@@ -756,7 +778,7 @@ void Charser::vBlockCommentSkip(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
     
   if (d_iDebugMode) {
-    vJot1('r',"skipping block comment /* ..."_Stz);
+    vJot1('r',"skipping block comment"_Stz);
   }
   
   vClearRegs();
@@ -780,7 +802,7 @@ void Charser::vBlockCommentSkip(void)
   vClearRegs();
   
   if (d_iDebugMode) {
-    vJot1('r',"...*/ skipped block comment"_Stz);
+    vJot1('r',"skipped block comment"_Stz);
   }
 }
 
@@ -1138,11 +1160,8 @@ void Charser::vReadFileIntoRawBuff(void)
   m_acRawChar = m_sRawBuff.azChar();
   
   if (d_iDebugMode) {
-    SP_String spStr;
-    vJot2('r',"read file into RawBuff"_Stz,
-          "[>%s<]"_Stz,
-          spStr.szSample(m_sRawBuff, (Stz*)m_acRawChar, -1)
-         );
+    SP_Charser spCharser;
+    vJot2('r',"read file into RawBuff"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
 }
 

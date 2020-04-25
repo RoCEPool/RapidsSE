@@ -37,7 +37,7 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
   
   va_list xVaArgs;
 
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c"_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -88,11 +88,15 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   if (_g_nDepth)
     StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz, Stz::szTab(_g_nDepth));
   
+  if ('r' == cFlag)
+    StrLib::vSprintCat((Stz*)caBuff,"- "_Stz,szFun);
+  
   StrLib::vSprintCat((Stz*)caBuff,"%s"_Stz,szFun);
   
   if ('>' == cFlag || '<' == cFlag)
     StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,szFun);
-  
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (*aFormat->azChar()) {
