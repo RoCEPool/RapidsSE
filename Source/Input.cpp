@@ -302,9 +302,12 @@ void Input::vReadCommand(void)
   
   m_pTknVec->vIntegrityCheck();
   
-  // if empty line just return                                      ** NON-SENSE
-  if (1 == m_pTknVec->nTokens() && m_pCurrTkn->bIsNull()) {
-    m_pTknVec->vIntegrityCheck();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for empty file
+
+  if (0 == m_pTknVec->nTokens()) {
+    if (d_iDebugMode)
+      vJot1('r',"empty line return"_Stz);
     goto L_Exit;
   }
     
@@ -314,7 +317,8 @@ void Input::vReadCommand(void)
   // if its a command file just return
   if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
       File::bExists(m_pTknVec->pGet(0)->szChars())) {
-    m_pTknVec->vIntegrityCheck();
+    if (d_iDebugMode)
+      vJot1('r',"is cmd file return"_Stz);
     goto L_Exit;
   }
   
@@ -384,7 +388,9 @@ void Input::vReadCommand(void)
   
   m_pTknVec->vIntegrityCheck();
 
-  // if empty line just return                                      ** NON-SENSE
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for empty file
+
   if ( ! m_pTknVec->nTokens() ||
        ! m_pTknVec->pGet(0)->bHasChars() ) {
     if (d_iDebugMode)
@@ -696,8 +702,6 @@ void Input::vCollectVecFirstLine(void)
     
     vCollectOneToken();
     
-    m_pTknVec->vListTokens();
-
     if (m_pCurrTkn->bIsNull()) {
       if (d_iDebugMode)
         vJot1('r',"null token detected"_Stz);
@@ -711,6 +715,11 @@ void Input::vCollectVecFirstLine(void)
     ASSERT(b);
   }
   
+  if (d_iDebugMode) {
+    vJot1(':',"TokenVec:"_Stz);
+    m_pTknVec->vListTokens();
+    vJot2('<',(Stz*)__func__,""_Stz);
+  }
  }
 #else
 /*----------------------------------------------------------------------------*/
