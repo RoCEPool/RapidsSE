@@ -291,7 +291,6 @@ void Input::vReadCommand(void)
 
   if (d_iDebugMode) {
     i8 i_Section = iJotDivision("Input"_Stz,(Stz*)__func__,""_Stz);
-    vJotTabIn();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -362,7 +361,6 @@ L_Exit:
     vJotDivES();
     vJot("Read Command"_Stz);
     m_pTknVec->vListTokens();
-    vJotTabOut();
   }
 
 }
@@ -376,8 +374,7 @@ void Input::vReadCommand(void)
 
   if (d_iDebugMode) {
     i8 i = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
-    vJotTabIn();
-  }
+   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first line so we can test if its a command file to be executed
@@ -446,9 +443,9 @@ void Input::vReadCommand(void)
   
 L_Exit:
   if (d_iDebugMode) {
-    i8 i = iJotSummary(':',(Stz*)__func__,"Command Is:"_Stz);
+    i8 i = iJotSummary(':',(Stz*)__func__,"TokenVec:"_Stz);
     m_pTknVec->vListTokens();
-    vJot1('<',(Stz*)__func__);
+    vJot2('<',(Stz*)__func__,""_Stz);
   }
 
 }
@@ -656,7 +653,6 @@ void Input::vCollectOneToken(void)
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
-  vJotTabIn();
   vJot2('>',(Stz*)__func__,""_Stz);
   
   m_pCurrTkn = m_pTknVec->pCurrToken();;
@@ -668,7 +664,6 @@ void Input::vCollectOneToken(void)
   
   SP_Token spTkn;
   vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn));
-  vJotTabOut();
 }
 #endif
 
@@ -756,9 +751,9 @@ void Input::vCollectVecFirstLine(void)
   }
     
   if (d_iDebugMode) {
-    vJot1(':',"collected vector is:"_Stz);
+    vJot1(':',"TokenVec:"_Stz);
     m_pTknVec->vListTokens();
-    vJot1('<',(Stz*)__func__);
+    vJot2('<',(Stz*)__func__,""_Stz);
   }
   
   
@@ -863,9 +858,9 @@ void Input::vCollectVecTillSemicolon(void)
   }
   
   if (d_iDebugMode) {
-    vJot1(':',"collected vector is:"_Stz);
+    vJot1(':',"TokenVec:"_Stz);
     m_pTknVec->vListTokens();
-    vJot1('<',(Stz*)__func__);
+    vJot2('<',(Stz*)__func__,""_Stz);
   }
 }
 #endif

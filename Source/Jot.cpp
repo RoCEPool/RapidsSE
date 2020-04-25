@@ -37,7 +37,12 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
   
   va_list xVaArgs;
   
-  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c  "_Stz,
+  ASSERT(cFlag != '>' && cFlag != '<');
+  
+  if ('<' == cFlag && _g_nDepth)
+    _g_nDepth--;
+
+  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -51,19 +56,20 @@ void Correctness::vJot1(char cFlag, Stz* aFormat, ...)
     AM::vWriteTrace(YA_SYS_TRACE,"%s"_Stz, Stz::szTab(_g_nDepth));
 
   if ('r' == cFlag)
-    AM::vWriteTrace(YA_SYS_TRACE,"- "_Stz, Stz::szTab(_g_nDepth));
+    AM::vWriteTrace(YA_SYS_TRACE,"- "_Stz);
 
   va_start(xVaArgs,aFormat);
   AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
   va_end(xVaArgs);
   
+  if ('>' == cFlag || '<' == cFlag)
+    AM::vWriteTrace(YA_SYS_TRACE,"()"_Stz,aFormat);
+
   AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
   
   if ('>' == cFlag)
      _g_nDepth++;
 
-  if ('<' == cFlag && _g_nDepth)
-    _g_nDepth--;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,8 +84,11 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   
   char caBuff[C_JOT_BUFF];
 
-   StrLib::vSprint(caBuff,
-                  "#%s::%s.%04x.%02x.%03x# %x%c  "_Stz,
+  if ('<' == cFlag && _g_nDepth)
+     _g_nDepth--;
+
+  StrLib::vSprint(caBuff,
+                  "#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
                   _g_sArea,
                   _g_sDivision,
                   _g_iDivision,
@@ -122,10 +131,6 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
   
   if ('>' == cFlag)
      _g_nDepth++;
-   
-  if ('<' == cFlag && _g_nDepth)
-    _g_nDepth--;
-
 }
 /*----------------------------------------------------------------------------*/
 //void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)

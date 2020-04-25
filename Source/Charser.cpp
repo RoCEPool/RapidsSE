@@ -79,10 +79,9 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   if (d_iDebugMode) {
     SP_Charser spCharser;
 
-    vJotTabIn();
     vJot2('>',(Stz*)__func__,"Charser[%lld] %s %s"_Stz,
           m_iDepth,aIS[m_eSource],m_sPath.szStz());
-    vJot2('r',"charser"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+    vJot2(':',"Charser"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
   
   // debug
@@ -119,8 +118,9 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
     rxAnnChar.vReset();
     if (d_iDebugMode) {
       vJot1('r',"no more AnnChar"_Stz);
+      SP_AnnChar spAnnChar;
+      vJot2(':',"AnnChar:(null)"_Stz,"%s"_Stz,spAnnChar.sz(&rxAnnChar));
       vJot2('<',(Stz*)__func__,""_Stz);
-      vJotTabOut();
     }
     return;
   }
@@ -130,9 +130,9 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   
   if (d_iDebugMode) {
     SP_AnnChar spAnnChar;
-    vJot2('r',"got AnnChar"_Stz,"%s"_Stz,spAnnChar.sz(&rxAnnChar));
+    vJot1('r',"got next AnnChar"_Stz);
+    vJot2(':',"AnnChar:"_Stz,"%s"_Stz,spAnnChar.sz(&rxAnnChar));
     vJot2('<',(Stz*)__func__,""_Stz);
-    vJotTabOut();
   }
 }
 
