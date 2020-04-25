@@ -41,6 +41,7 @@ namespace Correctness
 #include "Addressing.hpp"
 #include "SizedHeader.hpp"
 #include "Trace.hpp"
+#include "Jot.hpp"
 #include "IntLib.hpp"
 
 #include "Statistics.hpp"
