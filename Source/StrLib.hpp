@@ -138,7 +138,7 @@ namespace Strings
     static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);
    
-    static char* sLast(const char* s);
+    static char* acLast(const char* s);
     static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     
@@ -147,7 +147,7 @@ namespace Strings
 
     static bool  bOneOf(char** asaSet, char* sWord);
   
-    static void  vPad(char* w, i8 iToLength, const char cWith);
+    static void  vPad(char* azDst, i8 iToLength, const char cWith);
     
     static void  vRemove(char* azArg, const char cLeading);
     static void  vRemovePrefix(char* azArg, char cIntro);
@@ -182,6 +182,7 @@ namespace Strings
     static void  vStrip(char* s, char cTrailing);
     static void  vSubPath(char* azDst, char* azSrc);
 
+    static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);
     static bool  bToBool(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);

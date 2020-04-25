@@ -38,7 +38,7 @@ bool MagLib::bToBytes(Stz* psBuf, i8& iBytes)
     iMagnitude = C_1PB;
   }
   else if (sString.bContains("b"_Stz)) {
-    if (!StrLib::bEqualTo(StrLib::sLast(sString.azChar()), "b")) {
+    if (!StrLib::bEqualTo(StrLib::acLast(sString.azChar()), "b")) {
       return false;
     }
     sNumber.vCopyTill(sString,'b');

@@ -467,24 +467,24 @@ void Step::vStrTailInt(void)
   m_pDataStack->vPopStr(sString,__func__);
   
   // get last char in string
-  char* aLast = StrLib::sLast(sString.azChar());
+  char* acLast = StrLib::acLast(sString.azChar());
   
   // return false if not a digit
-  if ( ! StrLib::bIsDigit(*aLast) ) {
+  if ( ! StrLib::bIsDigit(*acLast) ) {
     m_pDataStack->vPushInt(false);
     return;
   }
   
   // move backward to start of digit sequence
-  char* aDigit = aLast;
-  while (StrLib::bIsDigit(*aDigit))
-    aDigit--;
-  aDigit++;
+  char* acDigit = acLast;
+  while (StrLib::bIsDigit(*acDigit))
+    acDigit--;
+  acDigit++;
   
   // step forward through each digit, computing int
   i8 iInt = 0;
-  while (StrLib::bIsDigit(*aDigit))
-    iInt = (iInt * 10) + (*aDigit++ - '0');
+  while (StrLib::bIsDigit(*acDigit))
+    iInt = (iInt * 10) + (*acDigit++ - '0');
   
   // return ( int true )
   m_pDataStack->vPushInt(iInt);

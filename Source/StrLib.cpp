@@ -238,7 +238,7 @@ void StrLib::vClick(char* aArg)
 {
   _static_
   
-  char* aChar = sLast(aArg);
+  char* aChar = acLast(aArg);
   
   for (;;) {
     
@@ -698,7 +698,7 @@ bool StrLib::bEnds(const char* s, const char c)
 {
   _static_
   
-  const char* z = sLast(s);
+  const char* z = acLast(s);
   
   if (c == *z)
     return true;
@@ -2481,9 +2481,9 @@ bool StrLib::bIsWhite(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sLast: return pointer to last char in s                                    */
+/* sLast: return address of last char in arg                                  */
 /*----------------------------------------------------------------------------*/
-char* StrLib::sLast(const char* s)
+char* StrLib::acLast(const char* s)
 {
   _static_
   
@@ -2585,20 +2585,21 @@ bool StrLib::bOneOf(char** asaSet, char* sWord)
 /*----------------------------------------------------------------------------*/
 /* vPad: pad string to given length with char                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPad(char* w, i8 iToLength, const char cWith)
+void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
 {
   _static_
   
-  i8 iCurrLength = nLength(w);
+  i8 iCurrLength = nLength(azDst);
   
   if (iCurrLength >= iToLength)
     return;
   
-  char* z = zNullTerminator(w);
+  char* z = zNullTerminator(azDst);
   i8 nChars = iToLength - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
     *z++ = cWith;
+  
   *z = '\0';
 }
 
@@ -3127,7 +3128,7 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
   
   char* ps;
   
-  ps = StrLib::sLast(azSrc);
+  ps = StrLib::acLast(azSrc);
   
   StrLib::bBackward(&ps,azSrc,'/');
   bool bBackSlash = StrLib::bBackward(&ps,azSrc,'/');
@@ -3136,6 +3137,26 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
     StrLib::vCopy(azDst,ps+1);
   else
     StrLib::vCopy(azDst,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find tab location in given arg                                             */
+/*----------------------------------------------------------------------------*/
+char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
+{
+  _static_
+
+  char* aczLoc = acLast(azArg);
+  
+  while (aczLoc > azArg) {
+    if (cPad != *aczLoc) {
+      aczLoc++;
+      aczLoc++;
+      break;
+    }
+  }
+  
+  return aczLoc;
 }
 
 /*----------------------------------------------------------------------------*/

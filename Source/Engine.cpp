@@ -596,12 +596,12 @@ void Engine::vErrorHandler(Error* pError)
 {
   char caFileName[256];
   
-  char* ps;
+  char* acEnd;
   
   if (pError) {
-    ps = StrLib::sLast(pError->aFileName()->azChar());
-    StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-    StrLib::vCopy(caFileName,ps+1);
+    acEnd = StrLib::acLast(pError->aFileName()->azChar());
+    StrLib::bBackward(&acEnd,(char*)pError->aFileName(),'/');
+    StrLib::vCopy(caFileName,acEnd+1);
     vTrace("%s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),
