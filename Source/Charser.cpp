@@ -130,8 +130,8 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   vConsumeFirst(rxAnnChar);
   
   if (d_iDebugMode) {
-    SP_Charser spCharser;
-    vJot2('r',"got AnnChar"_Stz,"{ %s }"_Stz,spCharser.sz(this));
+    SP_AnnChar spAnnChar;
+    vJot2('r',"got AnnChar"_Stz,"%s"_Stz,spAnnChar.sz(&rxAnnChar));
     vJot2('<',(Stz*)__func__,""_Stz);
     vJotTabOut();
   }
@@ -802,7 +802,8 @@ void Charser::vBlockCommentSkip(void)
   vClearRegs();
   
   if (d_iDebugMode) {
-    vJot1('r',"skipped block comment"_Stz);
+    SP_Charser spCharser;
+    vJot2('r',"skipped block comment"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
 }
 
@@ -856,7 +857,7 @@ void Charser::vLineCommentSkip(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
   if (d_iDebugMode) {
-    vJot1('r',"skipping line comment //..."_Stz);
+    vJot1('r',"skipping line comment"_Stz);
   }
   
   vClearRegs();
@@ -875,7 +876,8 @@ void Charser::vLineCommentSkip(void)
   ASSERT('\n' == m_xRegOne.m_cChar || '\0' == m_xRegOne.m_cChar);
   
   if (d_iDebugMode) {
-    vJot1('r',"...*/ skipped line comment"_Stz);
+    SP_Charser spCharser;
+    vJot2('r',"skipped line comment"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
 }
 
@@ -920,10 +922,6 @@ void Charser::vStripComment(void)
   
   AnnChar xReplaceWith;
   
-  if (d_iDebugMode)
-    vJot1('r',"stripping comment"_Stz);
-
-  
   xReplaceWith.vReset();
   xReplaceWith.m_cChar = ' ';
 
@@ -945,6 +943,11 @@ void Charser::vStripComment(void)
       
     default:
       break;
+  }
+
+  if (d_iDebugMode) {
+    SP_Charser spCharser;
+    vJot2('r',"stripping comment"_Stz,"{ %s }"_Stz,spCharser.sz(this));
   }
 }
 
