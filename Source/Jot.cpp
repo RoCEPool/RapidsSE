@@ -276,6 +276,19 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
   _g_iSection = 0;
   _g_iLine = 0;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (_g_iDivision == _g_iDisableDivision)
+    _g_iDebug = _g_iDisableDebug;
+    
+  if (_g_iDivision == _g_iTriggerDivision)
+    _g_iDebug = _g_iTriggerDebug;
+  
+  if (! _g_iDebug)
+    return _g_iDivision;
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (! _g_sPhrase) {
     AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
       "////////////////////////////////////////"

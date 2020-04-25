@@ -150,8 +150,8 @@ void SePrompt::vPromptLoop(void)
 
   if (d_iDebugMode) {
     vJotDebug(d_iDebugMode);
-    //vJotFilter("AnnChar:(some)"_Stz);
-    vJotTrigger(0x0e,3);
+    vJotFilter("AnnChar:(some)"_Stz);
+    vJotTrigger(0x0e,d_iDebugMode);
     vJotDisable(0x27,0);
   }
   
