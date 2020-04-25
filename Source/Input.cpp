@@ -290,8 +290,8 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i_Section = iJotDivision("Input"_Stz,(Stz*)__func__,""_Stz);
-  }
+    i8 i = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
+   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first line so we can test if its a command file to be executed
@@ -338,7 +338,7 @@ void Input::vReadCommand(void)
   vCollectVecTillSemicolon();
   m_pTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
-    vJot("Collected TillSemicolon"_Stz);
+    vJot1('r',"collected till semicolon"_Stz);
     m_pTknVec->vListTokens();
   }
 
@@ -358,9 +358,9 @@ void Input::vReadCommand(void)
   
 L_Exit:
   if (d_iDebugMode) {
-    vJotDivES();
-    vJot("Read Command"_Stz);
+    i8 i = iJotSummary(':',(Stz*)__func__,"TokenVec:"_Stz);
     m_pTknVec->vListTokens();
+    vJot2('<',(Stz*)__func__,""_Stz);
   }
 
 }
@@ -630,7 +630,7 @@ void Input::vCollectOneToken(void)
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
 
   if (d_iDebugMode) {
-    vInspect();
+    vJot2('>',(Stz*)__func__,""_Stz);
   }
   
   if (UF_CPP_TOKENS == m_eTknForm)
@@ -640,7 +640,7 @@ void Input::vCollectOneToken(void)
   
   if (d_iDebugMode) {
     SP_Token spTkn;
-    vJot("Collected %s"_Stz,spTkn.sz(m_pCurrTkn));
+    vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn));
   }
 }
 #else
@@ -676,11 +676,10 @@ void Input::vCollectVecFirstLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
    if (d_iDebugMode) {
-     vJotDivMS();
-     vJot("::vCollectVecFirstLine"_Stz);
+     i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
      //vInspect();
    }
-  
+
   ASSERT(m_pCharser->bUseBegun());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -788,11 +787,10 @@ void Input::vCollectVecTillSemicolon(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (d_iDebugMode) {
-    vJotDivMS();
-    vJot("::vCollectVecTillSemicolon"_Stz);
+    i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
     vInspect();
   }
-  
+
   ASSERT(m_pCharser->bUseBegun());
   
   // we should have a first token (e.g. create or drop)
@@ -818,6 +816,12 @@ void Input::vCollectVecTillSemicolon(void)
   }
 
   ASSERT(m_pTknVec->bHasSemicolon());
+  
+  if (d_iDebugMode) {
+    vJot1(':',"TokenVec:"_Stz);
+    m_pTknVec->vListTokens();
+    vJot2('<',(Stz*)__func__,""_Stz);
+  }
 }
 #else
 /*----------------------------------------------------------------------------*/
