@@ -20,14 +20,18 @@ namespace Esses
    ~Bytes_t(void) noexcept(false);
   
     i8   iAppend(Stz* szStr);
+    Stz* szArea(void);
+    Stz* szBoundary(void);
     Stz* szGet(i8 i_Area);
     void vGive(i8 nBytes);
+    i8   i_Latter(void);
     Stz* szLatter(void);
     void vListAll(void);
     void vMoveLeft(Stz* szAtAddr, i8 nBytes);
     void vMoveRight(Stz* szAtAddr, i8 nBytes);
     void vPrintAll(void);
     void vReset(void);
+    i8   nSize(void);
     void vTake(i8 nBytes);
   
     Footer* aFooter(void);
@@ -96,14 +100,40 @@ i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stz at given subscript in m_yaArea                                     */
+/* get get the address of the byte area                                       */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+Stz* Bytes_t<BYTES>::szArea(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  char* azStr = (char*) m_yaArea;
+  
+  return (Stz*)azStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last accessible byte in the byte area                                  */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+Stz* Bytes_t<BYTES>::szBoundary(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  char* azStr = (char*) &m_yaArea[BYTES - 1];
+  
+  return (Stz*)azStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address at given offset in m_yaArea                                    */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
-  char* azStr = (char*)& m_yaArea[i_Area];
+  char* azStr = (char*) &m_yaArea[i_Area];
   
   return (Stz*)azStr;
 }
@@ -117,6 +147,17 @@ void Bytes_t<BYTES>::vGive(i8 nBytes)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the offset of the latter portion                                       */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+i8 Bytes_t<BYTES>::i_Latter(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+    
+  return m_i_Latter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,6 +268,17 @@ void Bytes_t<BYTES>::vReset(void)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of the area in bytes                                              */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+i8 Bytes_t<BYTES>::nSize(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  return BYTES;
 }
 
 /*----------------------------------------------------------------------------*/

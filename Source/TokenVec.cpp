@@ -356,11 +356,14 @@ void TokenVec::vDumpVec(i8 nPlusMore)
   vTrace("TokenVec %p:\n"_Stz,this);
   vTrace("  items %lld\n"_Stz,nItems());
   vTrace("  curr token %lld\n"_Stz,m_iCurTkn);
+  vTrace("  area %p\n"_Stz,m_xyByteSpace.szArea());
+  vTrace("  size %lld\n"_Stz,m_xyByteSpace.nSize());
+  vTrace("  boundary %p\n"_Stz,m_xyByteSpace.szBoundary());
+  vTrace("  i_Latter %lld\n"_Stz,m_xyByteSpace.i_Latter());
   vTrace("  latter %p\n"_Stz,_szLaterChars());
 
   if (! nTkns) {
-    vTrace("  **Empty TokenVec**"_Stz,""_Stz);
-    return;
+    vTrace("  **Empty TokenVec**\n"_Stz,""_Stz);
   }
   
   for (i8 i_Token = 0; i_Token < i_Limit; i_Token++) {
@@ -520,7 +523,7 @@ void TokenVec::vIntegrityCheck(void)
              i_TknA + 1,
              aAdd<char*>(szCharsA,nBytesA)
              );
-      vDumpVec(4);
+      vDumpVec(16);
     }
     
     ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));

@@ -33,13 +33,15 @@ Input::Input(void)
   m_pTknVec  = new TokenVec;
   m_pCurrTkn = nullptr;
   
-  d_iDebugMode    = false;
-  d_nUseBegin     = 0;
-  d_nReadCommand  = 0;
+  // debugging aids
+  d_iDebugMode               = false;
   
+  d_i_Division               = 0;
   d_nCollectOneToken         = 0;
   d_nCollectVecFirstLine     = 0;
   d_nCollectVecTillSemicolon = 0;
+  d_nReadCommand             = 0;
+  d_nUseBegin                = 0;
 
   _checkInitialised_(CN_INPUT);
     
@@ -293,7 +295,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
+    d_i_Division = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
    }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -301,8 +303,10 @@ void Input::vReadCommand(void)
   
   vSingleLineCmd(true);
   
+  m_pTknVec->vDumpVec(16);
   vCollectVecFirstLine();
-  
+  m_pTknVec->vDumpVec(16);
+
   m_pTknVec->vIntegrityCheck();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -342,7 +346,10 @@ void Input::vReadCommand(void)
   vSingleLineCmd(false);
   
   // read more till ;
+  m_pTknVec->vDumpVec(16);
   vCollectVecTillSemicolon();
+  m_pTknVec->vDumpVec(16);
+
   m_pTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
     vJot1('r',"collected till semicolon"_Stz);
@@ -380,7 +387,7 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    i8 i = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
+    g_i_Division = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
    }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -705,8 +712,10 @@ void Input::vCollectVecFirstLine(void)
 
     vCursorAdvance();
     
+    m_pTknVec->vDumpVec(16);
     vCollectOneToken();
-    
+    m_pTknVec->vDumpVec(16);
+
     if (m_pCurrTkn->bIsNull()) {
       if (d_iDebugMode)
         vJot1('r',"null token detected"_Stz);
@@ -827,7 +836,7 @@ void Input::vCollectVecTillSemicolon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  //m_pTknVec->vDumpVec(4);
+  m_pTknVec->vDumpVec(16);
   
   // get tokens delimited by ';'
   for (;;) {
