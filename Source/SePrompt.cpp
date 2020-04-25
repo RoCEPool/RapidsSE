@@ -149,8 +149,10 @@ void SePrompt::vPromptLoop(void)
   //m_pSession->m_pInput->vInspect();
 
   if (d_iDebugMode) {
-    vJotSet(true);
-    vJotFilter("AnnChar:(some)"_Stz);
+    vJotDebug(d_iDebugMode);
+    //vJotFilter("AnnChar:(some)"_Stz);
+    vJotTrigger(0x0e,3);
+    vJotDisable(0x27,0);
   }
   
   vVerifyJobSeeds();

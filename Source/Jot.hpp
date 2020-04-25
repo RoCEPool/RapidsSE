@@ -33,10 +33,12 @@ namespace Correctness
   i8    iJotSummary(void);
   i8    iJotSummary(char cFlag, Stz* szFun, Stz* szSection);
 
+  void  vJotDebug(i8 iDebug);
+  void  vJotDisable(i8 iDivision, i8 iDebug);
   void  vJotFilter(Stz* szPhrase);
-  void  vJotSet(bool bJot);
   void  vJotTabIn(void);
   void  vJotTabOut(void);
+  void  vJotTrigger(i8 iDivision, i8 iDebug);
 }
 
 /*============================================================================*/

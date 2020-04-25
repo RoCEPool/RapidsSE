@@ -4,8 +4,8 @@
 
 #include "Correctness.h"
 
-bool  _g_bJotting = false;
-char* _g_sPhrase = nullptr;
+i8    _g_iDebug   = 0;
+char* _g_sPhrase  = nullptr;
 
 char* _g_sArea = nullptr;
 
@@ -19,7 +19,15 @@ i8    _g_iSummary = 0;
 char* _g_sSummary = nullptr;
 
 i8    _g_nDepth = 0;
-i8    _g_iLine = 0;
+i8    _g_iLine  = 0;
+
+i8    _g_iTriggerDivision = 0;
+i8    _g_iTriggerDebug    = 0;
+
+
+i8    _g_iDisableDivision = 0;
+i8    _g_iDisableDebug    = 0;
+
 
 #define C_JOT_BUFF 1024 EndDefine
 #define C_JOT_TAB    70 EndDefine
@@ -33,7 +41,7 @@ i8    _g_iLine = 0;
 /*----------------------------------------------------------------------------*/
 void Correctness::vJot1(char cFlag, Stz* szFormat, ...)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
   
   va_list xVaArgs;
@@ -85,7 +93,7 @@ void Correctness::vJot1(char cFlag, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
   
   va_list xVaArgs;
@@ -281,6 +289,16 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
   return _g_iDivision;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* tab in for next jotting                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDebug(i8 iDebug)
+{
+  _g_iDebug = iDebug;
+}
+
+
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
 /*----------------------------------------------------------------------------*/
@@ -289,14 +307,6 @@ void Correctness::vJotFilter(Stz* szPhrase)
   _g_sPhrase = szPhrase->azChar();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* tab in for next jotting                                                    */
-/*----------------------------------------------------------------------------*/
-void Correctness::vJotSet(bool bJot)
-{
-  _g_bJotting = bJot;
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -316,6 +326,24 @@ void Correctness::vJotTabOut(void)
 //    _g_nDepth--;
 }
 
+/*----------------------------------------------------------------------------*/
+/* tab out for next jotting                                                   */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotTrigger(i8 iDivision, i8 iDebug)
+{
+  _g_iTriggerDivision = iDivision;
+  _g_iTriggerDebug    = iDebug;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tab out for next jotting                                                   */
+/*----------------------------------------------------------------------------*/
+void Correctness::vJotDisable(i8 iDivision, i8 iDebug)
+{
+  _g_iDisableDivision = iDivision;
+  _g_iDisableDebug    = iDebug;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -327,7 +355,7 @@ void Correctness::vJotTabOut(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDiv1(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -342,7 +370,7 @@ void Correctness::vJotDiv1(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDiv2(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -357,7 +385,7 @@ void Correctness::vJotDiv2(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivES(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -372,7 +400,7 @@ void Correctness::vJotDivES(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivMS(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -387,7 +415,7 @@ void Correctness::vJotDivMS(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivPS(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -403,7 +431,7 @@ void Correctness::vJotDivPS(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivA(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -418,7 +446,7 @@ void Correctness::vJotDivA(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivB(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -433,7 +461,7 @@ void Correctness::vJotDivB(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivC(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -448,7 +476,7 @@ void Correctness::vJotDivC(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vJotDivX(void)
 {
-  if (! _g_bJotting)
+  if (! _g_iDebug)
     return;
 
   AM::vWriteTrace(YA_SYS_TRACE,"\n%s\n"_Stz,
@@ -457,7 +485,6 @@ void Correctness::vJotDivX(void)
     "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
   );
 }
-
 
 /*============================================================================*/
 /* end of file                                                                */

@@ -300,7 +300,7 @@ bool Args::bParse(int argc, Stz* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--jot"_Stz)) {
-      vJotSet(true);
+      vJotDebug(3);
       continue;
     }
     
