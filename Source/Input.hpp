@@ -18,9 +18,12 @@ namespace LexicalAnalysis
     // some debugging aids
     i8        d_iDebugMode;    // debug mode?
     i8        d_nUseBegin;     //
-    i8        d_nReadCommand;  //
-    i8        d_nCollectToken; //
   
+    i8        d_nCollectOneToken;         // function counter
+    i8        d_nCollectVecFirstLine;     // function counter
+    i8        d_nCollectVecTillSemicolon; // function counter
+    i8        d_nReadCommand;             // function counter
+
     // must be last
     Footer m_xFooter;    
     

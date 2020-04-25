@@ -36,7 +36,10 @@ Input::Input(void)
   d_iDebugMode    = false;
   d_nUseBegin     = 0;
   d_nReadCommand  = 0;
-  d_nCollectToken = 0;
+  
+  d_nCollectOneToken         = 0;
+  d_nCollectVecFirstLine     = 0;
+  d_nCollectVecTillSemicolon = 0;
 
   _checkInitialised_(CN_INPUT);
     
@@ -202,7 +205,7 @@ void Input::vInspect(void)
          "]>NoToken<[\n"_Stz,
            d_nUseBegin,
            d_nReadCommand,
-           d_nCollectToken
+           d_nCollectOneToken
            );
     m_pCharser->vInspect();
     return;
@@ -214,7 +217,7 @@ void Input::vInspect(void)
        "%s\n"_Stz,
          d_nUseBegin,
          d_nReadCommand,
-         d_nCollectToken,
+         d_nCollectOneToken,
          spTkn.sz(m_pCurrTkn)
          );
 
@@ -634,7 +637,7 @@ void Input::vCollectOneToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  d_nCollectToken++;
+  d_nCollectOneToken++;
   
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
@@ -658,7 +661,7 @@ void Input::vCollectOneToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  d_nCollectToken++;
+  d_nCollectOneToken++;
   
   ASSERT(m_pCharser->bUseBegun());
   ASSERT(UF_CPP_TOKENS == m_eTknForm || UF_SEN_TOKENS == m_eTknForm);
@@ -684,6 +687,8 @@ void Input::vCollectOneToken(void)
 void Input::vCollectVecFirstLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+   d_nCollectVecFirstLine++;
   
    if (d_iDebugMode) {
      i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
@@ -802,6 +807,8 @@ void Input::vCollectVecFirstLine(void)
 void Input::vCollectVecTillSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  d_nCollectVecTillSemicolon++;
   
   if (d_iDebugMode) {
     i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
