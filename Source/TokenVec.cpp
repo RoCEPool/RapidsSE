@@ -281,7 +281,7 @@ void TokenVec::vCollectEnd(Token* pToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* count tokens in token array                                                */
+/* count tokens in token array                                         REMOVE */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iCountTokens(void)
 {

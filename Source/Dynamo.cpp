@@ -16,6 +16,34 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_CHARS_BYTE_SPACE
+Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
+: Object(CN_DYNAMO)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the pipeline
+  
+  m_p_Job = p_Job;
+  
+  m_pTknVec = new TokenVec;
+  m_pTknVec->vTokenise(sCmd);
+  
+  //m_pTknVec->vRemoveToken(m_pTknVec->nTokens());
+  
+  m_pPipelineSpec = nullptr;
+  m_pStageSpec   = nullptr;
+  
+  m_i_Tkn        = 0;
+  m_pTkn         = nullptr;
+  
+  _checkInitialised_(CN_DYNAMO);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+}
+#else
+/*----------------------------------------------------------------------------*/
 Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
 : Object(CN_DYNAMO)
 {
@@ -41,6 +69,7 @@ Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
