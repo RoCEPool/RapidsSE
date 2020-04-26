@@ -1222,7 +1222,7 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   i8 nTkns = nTokens();
   i8 i_CutTkn = pTknCut->i_Token();
   SP_Token spTkn;
-  vTrace("Cutting:- %s\n"_Stz,spTkn.sz(pTknCut));
+  vTrace("Cutting:- %s %p\n"_Stz,spTkn.sz(pTknCut),pTknCut->azChars());
 
   
   // * * * * * * * * * * * * * * * * * * * * * *
@@ -1233,6 +1233,7 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   i8 nBytesToCut = pTknCut->nChars() + 1;
   
   _vByteSpaceRemove(szCutAt,nBytesToCut);
+
   _vVecRippleLeft(i_CutTkn,(- nBytesToCut)); // observe minus sign
     
   // * * * * * * * * * * * * * * * * * * * * * *

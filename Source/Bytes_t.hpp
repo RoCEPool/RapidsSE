@@ -27,8 +27,8 @@ namespace Esses
     i8   i_Latter(void);
     Stz* szLatter(void);
     void vListAll(void);
-    void vMoveLeft(Stz* szAtAddr, i8 nBytes);
-    void vMoveRight(Stz* szAtAddr, i8 nBytes);
+    void vMoveLeft(Stz* szAtAddr, i8 nBytesRem);
+    void vMoveRight(Stz* szAtAddr, i8 nBytesIns);
     void vPrintAll(void);
     void vReset(void);
     i8   nSize(void);
@@ -191,7 +191,7 @@ void Bytes_t<BYTES>::vListAll(void)
     if (bMarkup) {
       bMarkup = false;
       i8 nLen = StrLib::nLength((char*)ayByte);
-      vTrace("[%02lld-%04lld] %p : "_Stz,i_String,nLen,ayByte);
+      vTrace("[%02lld-%04lld+1B] %p : "_Stz,i_String,nLen,ayByte);
     }
 
     if (* ayByte) {
@@ -209,18 +209,28 @@ void Bytes_t<BYTES>::vListAll(void)
 /* cut nBytes starting at given offset                                        */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
-void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytes)
+void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   Stz* szDst = szAtAddr;
-  Stz* szSrc = aAdd<Stz*>(szAtAddr,nBytes);
+  Stz* szSrc = aAdd<Stz*>(szAtAddr,nBytesRem);
   
-  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
+  Stz* szLat = szLatter();
   
-  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
+  i8 nBytesMove = nDifference(szSrc,szLat);
   
-  m_i_Latter -= nBytes;
+  
+  vListAll();
+
+  vTrace("\nMoving to %p from %p -- %lld bytes\n\n"_Stz,szDst,szSrc,nBytesMove);
+  
+ 
+  MemLib::vMove(szDst,szSrc,nBytesMove,CN_BYTES_T);
+  
+  m_i_Latter -= nBytesRem;
+  
+  vListAll();
 }
 
 /*----------------------------------------------------------------------------*/
