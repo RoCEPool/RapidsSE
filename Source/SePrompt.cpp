@@ -972,8 +972,8 @@ void SePrompt::vPromptUser(void)
         'r',
 #endif
         bHasStarted           ? "booted" : "not-booted",
-#ifdef ___WITH_CHARS_SET
-        " __WITH_CHARS_SET"_Stz
+#ifdef ___WITH_CHARS_BYTE_SPACE
+        " __WITH_CHARS_BYTE_SPACE"_Stz
 #else
         ""_Stz
 #endif

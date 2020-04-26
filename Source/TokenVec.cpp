@@ -161,7 +161,7 @@ void TokenVec::vAdvanceCurr(bool bIncItems)
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
 void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -204,7 +204,7 @@ void TokenVec::vAppendToken(Token* pToken)
   
   vAppendToken(pToken->szChars(),pToken->eToken());
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -221,7 +221,7 @@ void TokenVec::vAppendVector(TokenVec* pTknVec)
     vAppendToken(pToken);
   }
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -275,7 +275,7 @@ void TokenVec::vCollectEnd(Token* pToken)
   if (pToken->szChars()->bSame(""_Stz))
     Correctness::vDebugPoint();
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -312,7 +312,7 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
     pToken_dst->vCopyToken_restricted(pToken_src,this);
   }
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -490,7 +490,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   pTkn_ins->vCopyChars_restricted(szArgChars,this);
   pTkn_ins->vToken(eToken);
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -502,7 +502,7 @@ void TokenVec::vIntegrityCheck(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
 
   i8 nTkns = nTokens();
 
@@ -616,7 +616,7 @@ void TokenVec::vRemoveSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* remove a token from token vector                                           */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
 void TokenVec::vRemoveToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -661,7 +661,7 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
   }
   
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -734,7 +734,7 @@ void TokenVec::vReplaceToken(Token* pDstToken, Token* pSrcToken)
   pDstToken->vLineNo(pSrcToken->iLineNo());
   pDstToken->vColNo(pSrcToken->iColNo());
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -768,7 +768,7 @@ void TokenVec::vSetTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
    // get count of words in pWords
   i8 i_Token;
   for (i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
@@ -831,7 +831,7 @@ void TokenVec::vStripSingleQuotes(void)
 /*----------------------------------------------------------------------------*/
 /* strip off ';'                                                              */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
 void TokenVec::vStripSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -863,13 +863,13 @@ void TokenVec::vStripSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
 void TokenVec::vTokenise(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   vSoftReset();
-  #ifdef __WITH_CHARS_SET
+  #ifdef __WITH_CHARS_BYTE_SPACE
     vIntegrityCheck();
   #endif
 
@@ -889,7 +889,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
     Token* pToken = pGet(i_Token);
     pToken->vToken(pInput->eToken());
     
-    #ifdef __WITH_CHARS_SET
+    #ifdef __WITH_CHARS_BYTE_SPACE
       vIntegrityCheck();
     #endif
 
@@ -907,7 +907,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   vSoftReset();
-  #ifdef __WITH_CHARS_SET
+  #ifdef __WITH_CHARS_BYTE_SPACE
     vIntegrityCheck();
   #endif
 
@@ -954,7 +954,7 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
   else
     _vCharsCopyInterior(pDstToken,szArgChars);
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -1086,7 +1086,7 @@ void TokenVec::_vByteSpaceTrim(i8 nBytes)
 void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  #ifdef __WITH_CHARS_SET
+  #ifdef __WITH_CHARS_BYTE_SPACE
     vIntegrityCheck();
   #endif
 
@@ -1120,7 +1120,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   vTrace("--- --- --- --- --- ---\n"_Stz);
   vListTokens();
   
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif
 }
@@ -1132,7 +1132,7 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  #ifdef __WITH_CHARS_SET
+  #ifdef __WITH_CHARS_BYTE_SPACE
     vListTokens();
     vIntegrityCheck();
   #endif
@@ -1143,7 +1143,7 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
   pDstToken->vChars(szExtension);
 
   szExtension->vCopy(szArgChars);
-#ifdef __WITH_CHARS_SET
+#ifdef __WITH_CHARS_BYTE_SPACE
   vListTokens();
   vIntegrityCheck();
 #endif

@@ -80,7 +80,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
 void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
@@ -104,7 +104,7 @@ void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
 /*----------------------------------------------------------------------------*/
 /* copy given token into this token                                           */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
 void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
@@ -158,7 +158,7 @@ void Token::vRippleCopy_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
 /*----------------------------------------------------------------------------*/
 void Token::vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec)
 {
-#ifndef __WITH_CHARS_SET
+#ifndef __WITH_CHARS_BYTE_SPACE
   RASSERT(0);
 #endif
   
@@ -360,6 +360,20 @@ void Token::vLineNo(i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_CHARS_BYTE_SPACE
+void Token::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_szChars = nullptr;
+
+  m_eToken  = TN_NONE;
+  
+  m_iLineNo = C_UNKNOWN;
+  m_iColNo  = C_UNKNOWN;
+}
+#else
+/*----------------------------------------------------------------------------*/
 void Token::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
@@ -374,6 +388,7 @@ void Token::vReset(void)
   m_iLineNo  = C_UNKNOWN;
   m_iColNo   = C_UNKNOWN;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* are the chars of this token the same as given arg?                         */
