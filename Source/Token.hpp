@@ -34,7 +34,8 @@ namespace LexicalAnalysis
 
     void  vCopyChars_restricted(Stz* szArg, TokenVec* pExoTknVec);
     void  vCopyToken_restricted(Token* pToken_src, TokenVec* pExoTknVec);
-    void  vRippleCopy_restricted(Token* pToken_src, TokenVec* pExoTknVec);
+    void  vRippleCopy_restricted(Token* pToken_src, i8 nBytesAdjust,
+                                 TokenVec* pExoTknVec);
     void  vInitToken_restricted(i8 i_Token, TokenVec* pExoTknVec);
     void  vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec);
 

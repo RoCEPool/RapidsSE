@@ -1215,7 +1215,7 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   vTrace("_vTokenCutInterior::\n"_Stz);
-  vListTokens();
+  vDumpVec(16);
   
   vIntegrityCheck();
 
@@ -1233,13 +1233,13 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
   i8 nBytesToCut = pTknCut->nChars() + 1;
   
   _vByteSpaceRemove(szCutAt,nBytesToCut);
-  _vVecRippleLeft(i_CutTkn);
+  _vVecRippleLeft(i_CutTkn,(- nBytesToCut)); // observe minus sign
     
   // * * * * * * * * * * * * * * * * * * * * * *
 
   
   vTrace("--- --- --- --- --- ---\n"_Stz);
-  vListTokens();
+  vDumpVec(16);
 
   vIntegrityCheck();
 
@@ -1280,7 +1280,7 @@ void TokenVec::_vVecAdjustChars(i8 i_Tkn, i8 nByBytes)
 /*----------------------------------------------------------------------------*/
 /* ripple the tokens leftward, overwriting the i_Tkn, dec no of tokens        */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vVecRippleLeft(i8 i_Tkn)
+void TokenVec::_vVecRippleLeft(i8 i_Tkn, i8 nAdjCharsBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -1291,7 +1291,7 @@ void TokenVec::_vVecRippleLeft(i8 i_Tkn)
     Token* pTknSrc = pGet(i_Ripple);
     Token* pTknDst = pGet(i_Ripple - 1);
  
-    pTknDst->vRippleCopy_restricted(pTknSrc,this);
+    pTknDst->vRippleCopy_restricted(pTknSrc,nAdjCharsBytes,this);
   }
 
   vDecItems();
@@ -1300,7 +1300,7 @@ void TokenVec::_vVecRippleLeft(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* inc no tokens, ripple tokens rightward from i_Tkn, leaving i_Tkn for reuse */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vVecRippleRight(i8 i_Tkn)
+void TokenVec::_vVecRippleRight(i8 i_Tkn, i8 nAdjCharsByte)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -1313,7 +1313,7 @@ void TokenVec::_vVecRippleRight(i8 i_Tkn)
     Token* pTknSrc = pGet(i_Ripple);
     Token* pTknDst = pGet(i_Ripple + 1);
     
-    pTknDst->vRippleCopy_restricted(pTknSrc,this);
+    pTknDst->vRippleCopy_restricted(pTknSrc,nAdjCharsByte,this);
   }
 }
 
