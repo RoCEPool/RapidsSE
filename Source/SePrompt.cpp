@@ -1433,12 +1433,16 @@ bool SePrompt::bTranslateProcedure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pCommandVec = this->pTokenVec();
+  TokenVec* pCmdTknVec = this->pTokenVec();
   
   
   s4K sPipelineSmt;
+
+  //Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
+  Word* pProcWord = nullptr;
   
-  if (! Procedure::bTranslateProcedure(sPipelineSmt.pString(),pCommandVec))
+  if (! Procedure::bTranslateProcedure(sPipelineSmt.pString(),
+                                       pCmdTknVec,pProcWord))
     return false;
   
   m_pSession->m_sToDo = sPipelineSmt.szStz();

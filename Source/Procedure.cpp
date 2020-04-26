@@ -309,7 +309,8 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 #else
 /*----------------------------------------------------------------------------*/
 bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
-                                    TokenVec* pCmdTokenVec)
+                                    TokenVec* pCmdTokenVec,
+                                    Word* pProcCatg__)
 {
   _static_
 

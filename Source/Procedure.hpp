@@ -11,7 +11,8 @@ namespace DynamoCompiler
     static void  vAddProcedure(TokenVec* pTokenVec);
     static Word* pFindProcedure(TokenVec* pCmdTokenVec);
     static bool  bTranslateProcedure(String* pToPipelineStmt,
-                                     TokenVec* pCmdTokenVec);
+                                     TokenVec* pCmdTokenVec,
+                                     Word* pProcCatg__);
 
   private:
     static void  vParseParameters(Word* pProcWord, TokenVec* pTokenVec);
