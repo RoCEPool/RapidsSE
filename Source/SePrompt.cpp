@@ -203,13 +203,7 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    if (bFindMatch_procedure()) {
-      
-    }
-    else
-    if (bFindMatch_job()) {
-    }
-    else {
+    if (! bFindMatch_job()) {
       vUnknownCommand();
       if (AM::bDeveloper())
         vDumpTokenVec(true);
@@ -621,16 +615,6 @@ bool SePrompt::bFindMatch_job(void)
   m_aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find a procedure which matches the command tokens               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bFindMatch_procedure(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

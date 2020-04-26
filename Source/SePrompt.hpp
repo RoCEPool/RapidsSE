@@ -80,7 +80,6 @@ namespace Prompt
     bool bExecutePipeline(void);
     bool bFindJobClass(void);
     bool bFindMatch_job(void);
-    bool bFindMatch_procedure(void);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
     bool bIsPromptWord(void);
