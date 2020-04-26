@@ -66,7 +66,7 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     
     Token* pWithToken = pWithVec->pGet(i_Find);
 
-    pThisToken->vCopyChars_restricted(pWithToken->szChars(),pThisVec);
+    pThisToken->vUpdateChars(pWithToken->szChars(),pThisVec);
   }
 }
 
@@ -168,7 +168,7 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 
   Token* pToken = pGet(nTokens(),true);
   
-  pToken->vCopyChars_restricted(szArgChars,this);
+  pToken->vUpdateChars(szArgChars,this);
   pToken->vToken(eToken);
 
   vIncItems();
@@ -495,7 +495,7 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   
   Token* pTkn_ins = pGet(i_Tkn);
   
-  pTkn_ins->vCopyChars_restricted(szArgChars,this);
+  pTkn_ins->vUpdateChars(szArgChars,this);
   pTkn_ins->vToken(eToken);
   
 #ifdef __WITH_CHARS_BYTE_SPACE
@@ -905,7 +905,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
       vIntegrityCheck();
     #endif
 
-    pToken->vCopyChars_restricted(pInput->szChars(),this);
+    pToken->vUpdateChars(pInput->szChars(),this);
     
   }
   

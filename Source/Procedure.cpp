@@ -37,7 +37,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
     pTokenVec->vRemoveToken(2);
     pTokenVec->vIntegrityCheck();
 
-    pTkn1_ProcNm->vCopyChars_restricted(sProcNm,pTokenVec);
+    pTkn1_ProcNm->vUpdateChars(sProcNm,pTokenVec);
     pTokenVec->vIntegrityCheck();
 
     //pTokenVec->vDumpTokens();
@@ -138,7 +138,7 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   
   pCmdTokenVec->vRemoveToken(1);
   
-  pTkn0_CalledProcNm_a->vCopyChars_restricted(sProcNm_compound,pCmdTokenVec);
+  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pCmdTokenVec);
   
   if (iJotDebug())
     pCmdTokenVec->vListTokens();
@@ -178,7 +178,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   Token* pTkn0 = pProcTextVec->pGet(0);
 
-  pTkn0->vCopyChars_restricted("pipeline"_Stz,pProcTextVec);
+  pTkn0->vUpdateChars("pipeline"_Stz,pProcTextVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // substitute parameters in procedure text with command arguments
@@ -270,7 +270,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   
   Token* pTkn0 = pProcTextVec->pGet(0);
 
-  pTkn0->vCopyChars_restricted("pipeline"_Stz,pProcTextVec);
+  pTkn0->vUpdateChars("pipeline"_Stz,pProcTextVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // substitute parameters in procedure text with command arguments

@@ -81,7 +81,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
 #ifndef __WITH_CHARS_BYTE_SPACE
-void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
+void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -91,7 +91,7 @@ void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
 }
 #else
 /*----------------------------------------------------------------------------*/
-void Token::vCopyChars_restricted(Stz* szArgChars, TokenVec* pExoTknVec)
+void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
