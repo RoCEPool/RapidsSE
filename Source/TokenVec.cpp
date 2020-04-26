@@ -1055,21 +1055,21 @@ Stz* TokenVec::_szByteSpaceExtend(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* insert byte space for chars, adjust all following tokens upwards to match  */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vByteSpaceInsert(Stz* szAtChars, i8 nBytes)
+void TokenVec::_vByteSpaceInsert(Stz* szAtChars, i8 nBytesIns)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_xyByteSpace.vMoveRight(szAtChars,nBytes);
+  m_xyByteSpace.vMoveRight(szAtChars,nBytesIns);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove byte space for chars, adjust all following tokens downwards to match*/
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vByteSpaceRemove(Stz* szAtChars, i8 nBytes)
+void TokenVec::_vByteSpaceRemove(Stz* szAtChars, i8 nBytesRem)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
-  m_xyByteSpace.vMoveLeft(szAtChars,nBytes);
+  m_xyByteSpace.vMoveLeft(szAtChars,nBytesRem);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1103,7 +1103,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   #endif
 
   vTrace("_vCharsCopyInterior::\n"_Stz);
-  vListTokens();
+  vDumpVec(16);
 
   SP_Token spTkn;
   vTrace("Copying:- %s <= %s\n"_Stz,spTkn.sz(pDstToken),szArgChars);
@@ -1115,23 +1115,21 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   
   i8 nRemSize = pDstToken->nChars() + 1;
   _vByteSpaceRemove(szInsitui,nRemSize);
-  _vVecAdjustChars(i_Tkn + 1,(- nRemSize)); // observe the minus sign
-  
+  _vVecRippleLeft(i_Tkn,(- nRemSize)); // observe minus sign
+
   vTrace("--- --- --- --- --- ---\n"_Stz);
-  vListTokens();
 
   i8 nInsSize = szArgChars->nSize();
   _vByteSpaceInsert(szInsitui,nInsSize);
-  _vVecAdjustChars(i_Tkn + 1,nInsSize);
+  _vVecRippleRight(i_Tkn,nInsSize);
 
-  
   szInsitui->vCopy(szArgChars);
   // * * * * * * * * * * * * * * * * * * * *
 
   
   vTrace("--- --- --- --- --- ---\n"_Stz);
-  vListTokens();
-  
+  vDumpVec(16);
+
 #ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
 #endif

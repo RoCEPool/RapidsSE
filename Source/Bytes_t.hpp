@@ -220,7 +220,6 @@ void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
   
   i8 nBytesMove = nDifference(szSrc,szLat);
   
-  
   vListAll();
 
   vTrace("\nMoving to %p from %p -- %lld bytes\n\n"_Stz,szDst,szSrc,nBytesMove);
@@ -237,18 +236,24 @@ void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
 /* insert space for n-bytes starting at given offset                          */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
-void Bytes_t<BYTES>::vMoveRight(Stz* szAtAddr, i8 nBytes)
+void Bytes_t<BYTES>::vMoveRight(Stz* szAtAddr, i8 nBytesIns)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   Stz* szSrc = szAtAddr;
-  Stz* szDst = aAdd<Stz*>(szAtAddr,nBytes);
+  Stz* szDst = aAdd<Stz*>(szAtAddr,nBytesIns);
   
-  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytes);
+  Stz* szLat = szLatter();
   
-  MemLib::vMove(szDst,szSrc,nBytes,CN_BYTES_T);
+  i8 nBytesMove = nDifference(szSrc,szLat);
   
-  m_i_Latter += nBytes;
+  vListAll();
+
+  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytesMove);
+  
+  MemLib::vMove(szDst,szSrc,nBytesMove,CN_BYTES_T);
+  
+  m_i_Latter += nBytesIns;
 }
 
 /*----------------------------------------------------------------------------*/
