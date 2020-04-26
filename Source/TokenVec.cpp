@@ -476,29 +476,36 @@ void TokenVec::vIncTokens(void)
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef __WITH_CHARS_BYTE_SPACE
-void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
+void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  // open up a token at _i_Tkn
-  for (i8 i_Token = nTokens() - 1; i_Token >= i_Tkn ; i_Token--) {
-    
-    Token* pTkn_dst = pGet(i_Token + 1,true);
-    Token* pTkn_src = pGet(i_Token);
-    
-    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
-  }
+  // calc the action
   
-  vIncItems();
+  vDumpVec(16);
+
+  Token* pTkn_insAt = pGet(i_At);
+  Stz* szInsAt = pTkn_insAt->szChars();
+  i8 nBytesToIns = szArgChars->nSize();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open up byte space for new chars
+  
+  _vByteSpaceInsert(szInsAt,nBytesToIns);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now copy the inserting token into place
+  // open a token
   
-  Token* pTkn_ins = pGet(i_Tkn);
+  _vVecRippleRight(i_At,nBytesToIns);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy the inserting token into place
   
-  pTkn_ins->vUpdateChars(szArgChars,this);
-  pTkn_ins->vToken(eToken);
+  szInsAt->vCopy(szArgChars);
+  pTkn_insAt->vToken(eToken);
   
+  vDumpVec(16);
+
   vIntegrityCheck();
 }
 #else
