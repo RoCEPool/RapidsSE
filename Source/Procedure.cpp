@@ -74,81 +74,6 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
 /*----------------------------------------------------------------------------*/
-#ifdef __WITH_CHARS_BYTE_SPACE
-Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
-{
-  _static_
-  
-  // check we have prcoedure category defined
-  
-  Dic* pRootDic = AM::pRootDic();
-
-  Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
-  
-  if (! pProcCatg)
-    return nullptr;
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // debug: print the original command typed in by the user
-  
-
-#ifdef WITH_TRACE_PROCEDURE
-  vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // attempt to find the procedure which matches the command
-  
-  i8 nTokens = pCmdTokenVec->nTokens();
-
-  Token* pTkn_ProcNm = pCmdTokenVec->pGet(0);
-
-  s4K sProcNm = pTkn_ProcNm->szChars();
-  
-  // one-part name
-  Word* pProcWord = pRootDic->pFindWord(sProcNm);
-  
-  if (! pProcWord) {
-    //return false;
-
-    if (1 == nTokens)
-      return nullptr;
-
-    // try two-part name
-    Token* pTkn1_ProcNmTwo = pCmdTokenVec->pGet(1);
-
-    sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(pTkn1_ProcNmTwo->szChars());
-
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
-#endif
-
-    pProcWord = pRootDic->pFindWord(sProcNm);
-    if (! pProcWord)
-      return nullptr;
-    
-    // -- -- -- -- -- --
-    // found two-part; correct the token vector
-    pCmdTokenVec->vRemoveToken(1);
-    
-    pTkn_ProcNm->vCopyChars_restricted(sProcNm,pCmdTokenVec);
-    
-    //pCmdTokenVec->vListTokens();
-
-    Correctness::vDebugPoint();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test that the found word is a procedure
-
-  if (pProcWord->pCategory() != pProcCatg)
-    return nullptr;
-
-  return pProcWord;
-}
-#else
-/*----------------------------------------------------------------------------*/
 Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
 {
   _static_
@@ -169,16 +94,17 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // try one part name
   
-  Token* pTkn_ProcNm_a = pCmdTokenVec->pGet(0);
+  Token* pTkn0_CalledProcNm_a = pCmdTokenVec->pGet(0);
 
-  s4K sProcNm = pTkn_ProcNm_a->szChars();
+  s256 sProcNm_single = pTkn0_CalledProcNm_a->szChars();
   
-  Word* pProcWord = pRootDic->pFindWord(sProcNm);
+  Word* pProcWord = pRootDic->pFindWord(sProcNm_single);
   
   if (pProcWord) {
     if (pProcWord->pCategory() != pProcCatg)
       return nullptr;
 
+    // found procedure which matches token0
     return pProcWord;
   }
 
@@ -189,16 +115,17 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   if (1 == nTokens)
     return nullptr;
 
-  Token* pTkn1_ProcNm_b = pCmdTokenVec->pGet(1);
+  Token* pTkn1_CalledProcNm_b = pCmdTokenVec->pGet(1);
 
-  sProcNm.vConcat("__"_Stz);
-  sProcNm.vConcat(pTkn1_ProcNm_b->szChars());
+  s256 sProcNm_compound = sProcNm_single;
+  sProcNm_compound.vConcat("__"_Stz);
+  sProcNm_compound.vConcat(pTkn1_CalledProcNm_b->szChars());
 
 #ifdef WITH_TRACE_PROCEDURE
-  vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
+  vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm_compound.szStz());
 #endif
 
-  pProcWord = pRootDic->pFindWord(sProcNm);
+  pProcWord = pRootDic->pFindWord(sProcNm_compound);
 
   if (! pProcWord)
     return nullptr;
@@ -211,13 +138,14 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   
   pCmdTokenVec->vRemoveToken(1);
   
-  pTkn_ProcNm_a->vCopyChars_restricted(sProcNm,pCmdTokenVec);
+  pTkn0_CalledProcNm_a->vCopyChars_restricted(sProcNm_compound,pCmdTokenVec);
   
-  //pCmdTokenVec->vListTokens();
+  if (iJotDebug())
+    pCmdTokenVec->vListTokens();
 
+  // found procedure which matches token0_token1
   return pProcWord;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* translate stored procedure command into a pipeline command                 */
