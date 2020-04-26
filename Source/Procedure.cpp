@@ -74,6 +74,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_CHARS_BYTE_SPACE
 Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
 {
   _static_
@@ -146,31 +147,24 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
 
   return pProcWord;
 }
-
+#else
 /*----------------------------------------------------------------------------*/
-/* translate stored procedure command into a pipeline command                 */
-/*----------------------------------------------------------------------------*/
-#ifdef __WITH_CHARS_BYTE_SPACE
-bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
-                                    TokenVec* pCmdTokenVec)
+Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
 {
   _static_
-
+  
   // check we have prcoedure category defined
   
   Dic* pRootDic = AM::pRootDic();
 
   Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
-  i8 i_Cut;
   
   if (! pProcCatg)
-    return false;
+    return nullptr;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // debug: print the original command typed in by the user
   
-  s4K sOriginalCmd;
-  pCmdTokenVec->vVecToString(sOriginalCmd,0,false);
 
 #ifdef WITH_TRACE_PROCEDURE
   vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
@@ -192,7 +186,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
     //return false;
 
     if (1 == nTokens)
-      return false;
+      return nullptr;
 
     // try two-part name
     Token* pTkn1_ProcNmTwo = pCmdTokenVec->pGet(1);
@@ -206,7 +200,7 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 
     pProcWord = pRootDic->pFindWord(sProcNm);
     if (! pProcWord)
-      return false;
+      return nullptr;
     
     // -- -- -- -- -- --
     // found two-part; correct the token vector
@@ -223,7 +217,27 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // test that the found word is a procedure
 
   if (pProcWord->pCategory() != pProcCatg)
-    return false;
+    return nullptr;
+
+  return pProcWord;
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* translate stored procedure command into a pipeline command                 */
+/*----------------------------------------------------------------------------*/
+#ifdef __WITH_CHARS_BYTE_SPACE
+bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
+                                    TokenVec* pCmdTokenVec,
+                                    Word* pProcWord)
+{
+  _static_
+
+  i8 i_Cut;
+  i8 nTokens = pCmdTokenVec->nTokens();
+
+  s4K sOriginalCmd;
+  pCmdTokenVec->vVecToString(sOriginalCmd,0,false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the procedure text and toeknise it
@@ -311,78 +325,6 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 {
   _static_
 
-//  // check we have prcoedure category defined
-//
-//  Dic* pRootDic = AM::pRootDic();
-//
-//  Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
-//  i8 i_Cut;
-//
-//  if (! pProcCatg)
-//    return false;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // debug: print the original command typed in by the user
-//
-//  s4K sOriginalCmd;
-//  pCmdTokenVec->vVecToString(sOriginalCmd,0,false);
-//
-//#ifdef WITH_TRACE_PROCEDURE
-//  vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
-//#endif
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // attempt to find the procedure which matches the command
-//
-//  i8 nTokens = pCmdTokenVec->nTokens();
-//
-//  Token* pTkn_ProcNm = pCmdTokenVec->pGet(0);
-//
-//  s4K sProcNm = pTkn_ProcNm->szChars();
-//
-//  // one-part name
-//  Word* pProcWord = pRootDic->pFindWord(sProcNm);
-//
-//  if (! pProcWord) {
-//    //return false;
-//
-//    if (1 == nTokens)
-//      return false;
-//
-//    // try two-part name
-//    Token* pTkn1_ProcNmTwo = pCmdTokenVec->pGet(1);
-//
-//    sProcNm.vConcat("__"_Stz);
-//    sProcNm.vConcat(pTkn1_ProcNmTwo->szChars());
-//
-//#ifdef WITH_TRACE_PROCEDURE
-//    vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
-//#endif
-//
-//    pProcWord = pRootDic->pFindWord(sProcNm);
-//    if (! pProcWord)
-//      return false;
-//
-//    // -- -- -- -- -- --
-//    // found two-part; correct the token vector
-//    pCmdTokenVec->vRemoveToken(1);
-//
-//    pTkn_ProcNm->vCopyChars_restricted(sProcNm,pCmdTokenVec);
-//
-//    //pCmdTokenVec->vListTokens();
-//
-//    Correctness::vDebugPoint();
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test that the found word is a procedure
-//
-//  if (pProcWord->pCategory() != pProcCatg)
-//    return false;
-
-  
-  
-  
   i8 i_Cut;
   i8 nTokens = pCmdTokenVec->nTokens();
 
