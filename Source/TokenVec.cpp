@@ -377,12 +377,20 @@ void TokenVec::vDumpVec(i8 nPlusMore)
     //if (! pToken->szChars())
     //  break;
     
-    vTrace("  Chars %p : %s ; Size %lldB (next %p)\n"_Stz,
-           pToken->azChars(),
-           spTkn.sz(pToken),
-           pToken->nChars() + 1,
-           aAdd<char*>(pToken->azChars(),pToken->nChars() + 1)
-           );
+    if (pToken->azChars()) {
+      vTrace("  Chars %p : %s ; Size %lldB (next %p)\n"_Stz,
+             pToken->azChars(),
+             spTkn.sz(pToken),
+             pToken->nChars() + 1,
+             aAdd<char*>(pToken->azChars(),pToken->nChars() + 1)
+             );
+    }
+    else {
+      vTrace("  Chars %p\n"_Stz,
+             pToken->azChars()
+             );
+
+    }
   }
 }
 
@@ -746,6 +754,10 @@ void TokenVec::vRewindCurr(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  i8 nBytes = pCurrToken()->nChars() + 1;
+  
+  _vByteSpaceTrim(nBytes);
+
   m_iCurTkn--;
   
   vDecItems();

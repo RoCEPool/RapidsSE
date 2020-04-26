@@ -4,7 +4,7 @@
 
 #include "LexicalAnalysis.h"
 
-//#define __WITH_INPUT_CURSOR
+#define __WITH_INPUT_CURSOR
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -446,7 +446,11 @@ void Input::vReadCommand(void)
   vSingleLineCmd(false);
   
   // read more till ;
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
   vCollectVecTillSemicolon();
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
   m_pTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
     vJot1('r',"collected ';'"_Stz);
@@ -1861,8 +1865,13 @@ void Input::vCursorReset(void)
 void Input::vCursorRewind(void)
 {
 #ifdef __WITH_INPUT_CURSOR
-  m_pCurrTkn->vReset();
+  
+  Token* pTkn = m_pCurrTkn;
+  
   m_pTknVec->vRewindCurr();
+  
+  pTkn->vReset();
+  
 #else
   ASSERT(0);
 #endif
