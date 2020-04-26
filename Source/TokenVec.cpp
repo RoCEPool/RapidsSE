@@ -401,8 +401,10 @@ i8 TokenVec::iFindToken(Stz* szArgChars)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = pGet(i_Token,true);
+  i8 nTkns = nTokens();
+  
+  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+    Token* pToken = pGet(i_Token);
     if (szArgChars->bSame(pToken->szChars()))
       return i_Token;
   }
@@ -417,7 +419,9 @@ Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i_Token++; i_Token < nTokens(); i_Token++) {
+  i8 nTkns = nTokens();
+
+  for (i_Token++; i_Token < nTkns; i_Token++) {
     Token* pToken = pGet(i_Token);
     if (pToken->szChars()->bSame(szArgChars))
       return pToken;
