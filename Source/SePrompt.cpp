@@ -1435,11 +1435,13 @@ bool SePrompt::bTranslateProcedure(void)
   
   TokenVec* pCmdTknVec = this->pTokenVec();
   
-  
   s4K sPipelineSmt;
 
-  //Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
-  Word* pProcWord = nullptr;
+  Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
+  //Word* pProcWord = nullptr;
+  
+  if (! pProcWord)
+    return false;
   
   if (! Procedure::bTranslateProcedure(sPipelineSmt.pString(),
                                        pCmdTknVec,pProcWord))
