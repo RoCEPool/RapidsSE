@@ -289,7 +289,11 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
       return false;
     }
     
+    if (iJotDebug())
+      pProcTextVec->vListTokens();
     TokenVec::vReplace(pProcTextVec,pParamsVec,pArgsVec);
+    if (iJotDebug())
+      pProcTextVec->vListTokens();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove the parameters clause from the modified text vector
