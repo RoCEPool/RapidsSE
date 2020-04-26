@@ -486,7 +486,7 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   
   // calc the action
   
-  vDumpVec(16);
+  //vDumpVec(16);
 
   Token* pTkn_insAt = pGet(i_At);
   Stz* szInsAt = pTkn_insAt->szChars();
@@ -508,7 +508,7 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   szInsAt->vCopy(szArgChars);
   pTkn_insAt->vToken(eToken);
   
-  vDumpVec(16);
+  //vDumpVec(16);
 
   vIntegrityCheck();
 }
