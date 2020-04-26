@@ -263,7 +263,7 @@ void TokenVec::vCollectEnd(Token* pToken)
   
   i8 nChars = pToken->nChars();
 
-  _vBytesSpaceTake(nChars + 1);
+  _vByteSpaceTake(nChars + 1);
 
   Stz* szLatter = _szLaterChars();
   * szLatter->azChar() = '\0';
@@ -1047,7 +1047,7 @@ Stz* TokenVec::_szByteSpaceExtend(i8 nBytes)
   
   * szExtension->azChar() = '\0';
 
-  _vBytesSpaceTake(nBytes);
+  _vByteSpaceTake(nBytes);
 
   return szExtension;
 }
@@ -1075,7 +1075,7 @@ void TokenVec::_vByteSpaceRemove(Stz* szAtChars, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* take bytes (for token chars) from xyCharsSet                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vBytesSpaceTake(i8 nBytes)
+void TokenVec::_vByteSpaceTake(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   

@@ -69,7 +69,7 @@ namespace LexicalAnalysis
     Stz* _szByteSpaceExtend(i8 nBytes);
     void _vByteSpaceInsert(Stz* szAtChars, i8 nBytess);
     void _vByteSpaceRemove(Stz* szAtChars, i8 nBytes);
-    void _vBytesSpaceTake(i8 nBytes);
+    void _vByteSpaceTake(i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
     void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
