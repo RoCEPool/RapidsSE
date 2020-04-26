@@ -153,7 +153,7 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
 {
   _static_
   
-  // check we have prcoedure category defined
+  // check we have procedure category defined
   
   Dic* pRootDic = AM::pRootDic();
 
@@ -162,62 +162,58 @@ Word* Procedure::pFindProcedure(TokenVec* pCmdTokenVec)
   if (! pProcCatg)
     return nullptr;
  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // debug: print the original command typed in by the user
-  
-
 #ifdef WITH_TRACE_PROCEDURE
   vTrace("bTranslateProcedure: %s\n"_Stz,sOriginalCmd.szStz());
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // attempt to find the procedure which matches the command
+  // try one part name
   
-  i8 nTokens = pCmdTokenVec->nTokens();
+  Token* pTkn_ProcNm_a = pCmdTokenVec->pGet(0);
 
-  Token* pTkn_ProcNm = pCmdTokenVec->pGet(0);
-
-  s4K sProcNm = pTkn_ProcNm->szChars();
+  s4K sProcNm = pTkn_ProcNm_a->szChars();
   
-  // one-part name
   Word* pProcWord = pRootDic->pFindWord(sProcNm);
   
-  if (! pProcWord) {
-    //return false;
-
-    if (1 == nTokens)
+  if (pProcWord) {
+    if (pProcWord->pCategory() != pProcCatg)
       return nullptr;
 
-    // try two-part name
-    Token* pTkn1_ProcNmTwo = pCmdTokenVec->pGet(1);
-
-    sProcNm.vConcat("__"_Stz);
-    sProcNm.vConcat(pTkn1_ProcNmTwo->szChars());
-
-#ifdef WITH_TRACE_PROCEDURE
-    vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
-#endif
-
-    pProcWord = pRootDic->pFindWord(sProcNm);
-    if (! pProcWord)
-      return nullptr;
-    
-    // -- -- -- -- -- --
-    // found two-part; correct the token vector
-    pCmdTokenVec->vRemoveToken(1);
-    
-    pTkn_ProcNm->vCopyChars_restricted(sProcNm,pCmdTokenVec);
-    
-    //pCmdTokenVec->vListTokens();
-
-    Correctness::vDebugPoint();
+    return pProcWord;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test that the found word is a procedure
+  // try two-part name
+
+  i8 nTokens = pCmdTokenVec->nTokens();
+  if (1 == nTokens)
+    return nullptr;
+
+  Token* pTkn1_ProcNm_b = pCmdTokenVec->pGet(1);
+
+  sProcNm.vConcat("__"_Stz);
+  sProcNm.vConcat(pTkn1_ProcNm_b->szChars());
+
+#ifdef WITH_TRACE_PROCEDURE
+  vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm.szStz());
+#endif
+
+  pProcWord = pRootDic->pFindWord(sProcNm);
+
+  if (! pProcWord)
+    return nullptr;
 
   if (pProcWord->pCategory() != pProcCatg)
     return nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // found two-part; correct the command token vector
+  
+  pCmdTokenVec->vRemoveToken(1);
+  
+  pTkn_ProcNm_a->vCopyChars_restricted(sProcNm,pCmdTokenVec);
+  
+  //pCmdTokenVec->vListTokens();
 
   return pProcWord;
 }
