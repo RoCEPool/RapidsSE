@@ -1138,11 +1138,11 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
     vIntegrityCheck();
   #endif
 
-  vTrace("_vCharsCopyInterior::\n"_Stz);
-  vDumpVec(16);
+  //vTrace("_vCharsCopyInterior\n"_Stz);
+  //vDumpVec(16);
 
   SP_Token spTkn;
-  vTrace("Copying:- %s <= %s\n"_Stz,spTkn.sz(pDstToken),szArgChars);
+  //vTrace("Copying:- %s <= %s\n"_Stz,spTkn.sz(pDstToken),szArgChars);
 
   
   // * * * * * * * * * * * * * * * * * * * *
@@ -1153,7 +1153,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   _vByteSpaceRemove(szInsitui,nRemSize);
   _vVecRippleLeft(i_Tkn,(- nRemSize)); // observe minus sign
 
-  vTrace("--- --- --- --- --- ---\n"_Stz);
+  //vTrace("--- --- --- --- --- ---\n"_Stz);
 
   i8 nInsSize = szArgChars->nSize();
   _vByteSpaceInsert(szInsitui,nInsSize);
@@ -1163,8 +1163,8 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   // * * * * * * * * * * * * * * * * * * * *
 
   
-  vTrace("--- --- --- --- --- ---\n"_Stz);
-  vDumpVec(16);
+  //vTrace("--- --- --- --- --- ---\n"_Stz);
+  //vDumpVec(16);
 
 #ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
@@ -1248,15 +1248,15 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  vTrace("_vTokenRemoveInterior::\n"_Stz);
-  vDumpVec(16);
+  //vTrace("_vTokenRemoveInterior::\n"_Stz);
+  //vDumpVec(16);
   
-  vIntegrityCheck();
+  //vIntegrityCheck();
 
   i8 nTkns = nTokens();
   i8 i_CutTkn = pTknCut->i_Token();
   SP_Token spTkn;
-  vTrace("Cutting:- %s %p\n"_Stz,spTkn.sz(pTknCut),pTknCut->azChars());
+  //vTrace("Cutting:- %s %p\n"_Stz,spTkn.sz(pTknCut),pTknCut->azChars());
 
   
   // * * * * * * * * * * * * * * * * * * * * * *
@@ -1273,8 +1273,8 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
   // * * * * * * * * * * * * * * * * * * * * * *
 
   
-  vTrace("--- --- --- --- --- ---\n"_Stz);
-  vDumpVec(16);
+  //vTrace("--- --- --- --- --- ---\n"_Stz);
+  //vDumpVec(16);
 
   vIntegrityCheck();
 

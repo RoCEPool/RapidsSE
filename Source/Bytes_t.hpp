@@ -220,16 +220,14 @@ void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
   
   i8 nBytesMove = nDifference(szSrc,szLat);
   
-  vListAll();
-
-  vTrace("\nMoving to %p from %p -- %lld bytes\n\n"_Stz,szDst,szSrc,nBytesMove);
+  //vListAll();
+  //vTrace("\nMoving to %p from %p -- %lld bytes\n\n"_Stz,szDst,szSrc,nBytesMove);
   
- 
   MemLib::vMove(szDst,szSrc,nBytesMove,CN_BYTES_T);
   
   m_i_Latter -= nBytesRem;
   
-  vListAll();
+  //vListAll();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,9 +245,8 @@ void Bytes_t<BYTES>::vMoveRight(Stz* szAtAddr, i8 nBytesIns)
   
   i8 nBytesMove = nDifference(szSrc,szLat);
   
-  vListAll();
-
-  vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytesMove);
+  //vListAll();
+  //vTrace("Moving to %p from %p -- %lld bytes\n"_Stz,szDst,szSrc,nBytesMove);
   
   MemLib::vMove(szDst,szSrc,nBytesMove,CN_BYTES_T);
   
