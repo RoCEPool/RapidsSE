@@ -4,7 +4,7 @@
 
 #include "LexicalAnalysis.h"
 
-#define __WITH_INPUT_CURSOR
+//#define __WITH_INPUT_CURSOR
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -303,9 +303,11 @@ void Input::vReadCommand(void)
   
   vSingleLineCmd(true);
   
-  m_pTknVec->vDumpVec(16);
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
   vCollectVecFirstLine();
-  m_pTknVec->vDumpVec(16);
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
 
   m_pTknVec->vIntegrityCheck();
   
@@ -346,9 +348,11 @@ void Input::vReadCommand(void)
   vSingleLineCmd(false);
   
   // read more till ;
-  m_pTknVec->vDumpVec(16);
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
   vCollectVecTillSemicolon();
-  m_pTknVec->vDumpVec(16);
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
 
   m_pTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
@@ -387,15 +391,19 @@ void Input::vReadCommand(void)
   ASSERT(m_pCharser->bUseBegun());
 
   if (d_iDebugMode) {
-    g_i_Division = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
+    d_i_Division = iJotDivision('>',"Input"_Stz,(Stz*)__func__,""_Stz);
    }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first line so we can test if its a command file to be executed
   vSingleLineCmd(true);
   
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
   vCollectVecFirstLine();
-  
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
+
   m_pTknVec->vIntegrityCheck();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -712,9 +720,11 @@ void Input::vCollectVecFirstLine(void)
 
     vCursorAdvance();
     
-    m_pTknVec->vDumpVec(16);
+    if (d_iDebugMode)
+      m_pTknVec->vDumpVec(16);
     vCollectOneToken();
-    m_pTknVec->vDumpVec(16);
+    if (d_iDebugMode)
+      m_pTknVec->vDumpVec(16);
 
     if (m_pCurrTkn->bIsNull()) {
       if (d_iDebugMode)
@@ -836,7 +846,8 @@ void Input::vCollectVecTillSemicolon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  m_pTknVec->vDumpVec(16);
+  if (d_iDebugMode)
+    m_pTknVec->vDumpVec(16);
   
   // get tokens delimited by ';'
   for (;;) {

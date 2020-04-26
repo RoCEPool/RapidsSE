@@ -353,8 +353,12 @@ void TokenVec::vDumpVec(i8 nPlusMore)
   i8 nTkns = nTokens();
   i8 i_Limit = nTkns + nPlusMore;
   
-  vTrace("TokenVec %p:\n"_Stz,this);
-  vTrace("  items %lld\n"_Stz,nItems());
+  if (nTkns)
+    vTrace("TokenVec Dump (tokens %lld) %p:\n"_Stz,nTkns,this);
+  else
+    vTrace("TokenVec Dump (no tokens) %p:\n"_Stz,this);
+  
+  vTrace("  tokens %lld\n"_Stz,nTkns);
   vTrace("  curr token %lld\n"_Stz,m_iCurTkn);
   vTrace("  area %p\n"_Stz,m_xyByteSpace.szArea());
   vTrace("  size %lld\n"_Stz,m_xyByteSpace.nSize());
