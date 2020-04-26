@@ -81,8 +81,8 @@ namespace LexicalAnalysis
 
     Stz* _szLaterChars(void);
   
-    void _vTokenCutInterior(Token* pCutToken);
-    void _vTokenCutLast(Token* pCutToken);
+    void _vTokenRemoveInterior(Token* pCutToken);
+    void _vTokenRemoveLast(Token* pCutToken);
 
     void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
     void _vVecRippleLeft(i8 i_Tkn, i8 iAdjCharsBytes);

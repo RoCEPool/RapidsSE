@@ -662,10 +662,10 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
   Token* pTknCut = pGet(i_CutTkn);
 
   if (i_CutTkn < nTkns - 1) {
-    _vTokenCutInterior(pTknCut);
+    _vTokenRemoveInterior(pTknCut);
   }
   else {
-    _vTokenCutLast(pTknCut);
+    _vTokenRemoveLast(pTknCut);
   }
   
   
@@ -1208,11 +1208,11 @@ Stz* TokenVec::_szLaterChars(void)
 /*----------------------------------------------------------------------------*/
 /* cut / erase a non-last token                                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vTokenCutInterior(Token* pTknCut)
+void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  vTrace("_vTokenCutInterior::\n"_Stz);
+  vTrace("_vTokenRemoveInterior::\n"_Stz);
   vDumpVec(16);
   
   vIntegrityCheck();
@@ -1248,7 +1248,7 @@ void TokenVec::_vTokenCutInterior(Token* pTknCut)
 /*----------------------------------------------------------------------------*/
 /* cut / erase the last token                                                 */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vTokenCutLast(Token* pTknCut)
+void TokenVec::_vTokenRemoveLast(Token* pTknCut)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
