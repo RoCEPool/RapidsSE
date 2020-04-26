@@ -325,6 +325,9 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   pProcTextVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
   pProcTextVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
+  if (iJotDebug())
+    pProcTextVec->vListTokens();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stringise the modified text vector into a pipeline statement
   
