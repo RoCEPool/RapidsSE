@@ -475,6 +475,7 @@ void TokenVec::vIncTokens(void)
 /*----------------------------------------------------------------------------*/
 /* insert a token                                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_CHARS_BYTE_SPACE
 void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -498,10 +499,34 @@ void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
   pTkn_ins->vUpdateChars(szArgChars,this);
   pTkn_ins->vToken(eToken);
   
-#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
-#endif
 }
+#else
+/*----------------------------------------------------------------------------*/
+void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  // open up a token at _i_Tkn
+  for (i8 i_Token = nTokens() - 1; i_Token >= i_Tkn ; i_Token--) {
+    
+    Token* pTkn_dst = pGet(i_Token + 1,true);
+    Token* pTkn_src = pGet(i_Token);
+    
+    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
+  }
+  
+  vIncItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now copy the inserting token into place
+  
+  Token* pTkn_ins = pGet(i_Tkn);
+  
+  pTkn_ins->vUpdateChars(szArgChars,this);
+  pTkn_ins->vToken(eToken);
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* step thru tokens checking the address of the next tokens chars             */
