@@ -132,24 +132,6 @@ opSyntax: scan :: scan <tableNm> <rateSecs> ;
 //find: scan_info word.dump
 //find: scan_info word.enameset@ enameset.asStr .
   
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-
-//: abcOp_req \operator
-//;
-//
-//: abcOp opInfo tagCopy: localOp_tags
-//  tags{
-//    <jobDesc> = "--description of operator--"
-//  }
-//  opFill
-//;
-//
-//find: abcOp_info word.dump
-//abcOp_info enameset.asStr .
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
