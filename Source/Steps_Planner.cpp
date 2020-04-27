@@ -64,7 +64,7 @@ void Step::vPlannerChoosePathsN(void)
   
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  Planner* pPlanner = _pPlanner(*m_pRegSet->m_xpPlanner);
   
   for (i8 i_Phrase = 0; i_Phrase < pPlanner->nPhrases(); i_Phrase++)
     pPlanner->vChoosePath(i_Phrase);
@@ -79,7 +79,7 @@ void Step::vPlannerChosenPathN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  Planner* pPlanner = _pPlanner(*m_pRegSet->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* pChosenPlan = pPlanner->pChosenPath(i_Phrase);
@@ -96,7 +96,7 @@ void Step::vPlannerDeleteN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  Planner* pPlanner = _pPlanner(*m_pRegSet->m_xpPlanner);
   
   delete pPlanner;
   
@@ -110,7 +110,7 @@ void Step::vPlannerFetchTechniqueFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  Planner* mpPlanner = _pPlanner(*m_pRegSet->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
@@ -223,7 +223,7 @@ void Step::vPlannerKeyFetchN(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.lowKey@ -- fetch low key for given phrase ( -- )                   */
+/* planner[].lowKey@ -- fetch low key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerLowKeyFetchN(void)
 {
@@ -265,8 +265,6 @@ void Step::vPlannerNewN(void)
   ENTRY();
   
   m_pRegSet->m_xpPlanner = new Planner;
-  
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpPlanner);
   
   EXIT();
 }

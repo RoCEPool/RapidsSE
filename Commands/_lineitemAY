@@ -37,7 +37,7 @@ time create table LineItem                 // SF * 6,000,000 rows
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-//create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
@@ -51,12 +51,14 @@ space;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10K.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+
+load lineitem "/DATA/TPCH/lineitem10.csv";
 
 space;
 sztbl lineitem;
@@ -64,12 +66,18 @@ sztbl lineitem;
 vistbl lineitem;
 visidx lineitem lineitem_idx1;
 
+partitionFetch lineitem 1;
+
+fetch lineitem "l_orderkey 1 >";
+
+//predicateFetch lineitem "l_orderkey 1 >";
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
 
 //create table x ( i integer, j integer) partition by (j);
 
 //dumptbl lineitem;
+/*
 ;
 time create table LineItem2                 // SF * 6,000,000 rows
 (
@@ -107,7 +115,7 @@ tableFetch Lineitem;
 //tableFetch lineitem;
 partitionFetch lineitem 1;
 
-/*
+
 docol epochTake;
 
 time pipeline passThru

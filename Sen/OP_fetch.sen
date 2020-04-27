@@ -9,19 +9,23 @@
 /*----------------------------------------------------------------------------*/
 : generatePlan ( -- )
 
+  0 locals| sPredicate |
+
   //sWhere "generatePlan" "%v %v" str.format .
 
   ( cdt_0 ) planner[].new
   ( cdt_1 ) table[] Planner[].table!
 
-  ( cdt_2 ) <sPredicate> Planner[].parseWhere  //"parseWheres" .
+  "l_orderkey 1 >" to sPredicate
+
+  ( cdt_2 ) sPredicate Planner[].parseWhere  //"parseWheres" .
 
   ( cdt_3 ) Planner[].genPaths           //"genPaths" .
   ( cdt_4 ) Planner[].scorePaths         //"scorePaths" .
   //( cdt_5 ) Planner[].showPaths
 
   ( cdt_6 ) Planner[].matchPaths         //"matchPaths" .
-  //( cdt_6 ) Planner[].showPaths
+  ( cdt_6 ) Planner[].showPaths
 
   ( cdt_7 ) Planner[].choosePaths        //"choosePaths" .
 ;
@@ -29,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: fetch_CancelMarker \handler
+: fetchOP_CancelMarker \handler
 
   //"ZK_CANCELMARKER_handler" .verbose
   nullptr to Operand[]
@@ -42,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: fetch_CrwBuffer \handler
+: fetchOP_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
@@ -59,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: fetch_PulseMarker \handler
+: fetchOP_PulseMarker \handler
 
   0 0 locals| iPhrases sIndexNm |
 
@@ -74,6 +78,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the fetch technique
+  iPhrases "iPhrases %v" str.format .
   iPhrases 1 == assert
   0 planner[].fetchTechnique@
   case
@@ -81,26 +86,29 @@
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // an exact select using index
     AT_EXACT of
+     "*exact*" .
       0 assert
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lower bound select using index
     AT_LOWER of
+      "*lower*" .
       // find the index
       0 planner[].indexNm@ to sIndexNm
-      sIndexNm <tableNm> op__index
+      <tableNm> sIndexNm op__index assert
 
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
       0 planner[].lowKey@
-      index[].lowerBound to Operand[]
+      tablePtn[].get index[].lowerBound to Operand[]
       tablePtn[].get tablePtnDropRead2
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // an upper bound select using index
     AT_UPPER of
+      "*upper*" .
       0 assert
     endof
 
@@ -113,6 +121,7 @@
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // full scan (no index)
     AT_SCAN of
+      "*scan*" .
       0 assert
     endof
 
@@ -124,20 +133,16 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: fetch_StartMarker \handler
+: fetchOP_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  0 0 locals| iPhrases sPredicate |
+  0 locals| iPhrases |
 
   <tableNm> op__table if
     table[].tablePtn@ to tablePtn[]
     Pipein[].pipeOut
   then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the predicate clause from the job
-  <predicate> to sPredicate
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the plan for the fetch
@@ -154,16 +159,16 @@
 /*----------------------------------------------------------------------------*/
 /* fetch request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: fetch_req \operator
+: fetchOP_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: fetch_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: fetch_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: fetch_PulseMarker  ZK_PULSEMARKER  op[].handler!
-  find: fetch_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: fetchOP_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: fetchOP_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: fetchOP_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: fetchOP_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
 
@@ -175,9 +180,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: fetch :: fetch <tableNm> <predicate> ;
+opSyntax: fetchOP :: fetchOP <tableNm> <predicate> ;
 
-: fetch opInfo tagCopy: localOp_tags
+: fetchOP opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

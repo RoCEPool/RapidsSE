@@ -506,32 +506,28 @@ void Step::vIndexLowerBoundN(void)
   Datum xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get members from subFetch
+  // get the index
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
+  TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the key
   m_pDataStack->vPopVal(xVariable,__func__);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get members from subFetch
-  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob_SubFetch->m_pParentJob);
-  i8 iSlot = pJob_SubFetch->i_Slot();
-  i8 iPhrase = pJob_SubFetch->m_iPhrase;
-  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
-  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
+  i8 iPhrase = 0;
   
   EntBuffer* aLowerEntBuffer;
   Ent* aLowerEntry = nullptr;
   eRO eLowerRelnOp;
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
-  TablePtn* pPartition = pTable->pPartition(iSlot);
-  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
   
+  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
   pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -628,7 +624,7 @@ LastBuffer:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
+  */
   EXIT();
 }
 
