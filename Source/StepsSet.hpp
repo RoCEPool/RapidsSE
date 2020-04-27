@@ -371,16 +371,23 @@ public:
   // handler
   void vHandlerServiceSleepQueue(void);
 
+
   // index
-  void vIndexColumnFetch(void);
   void vIndexColumnCountFetch(void);
-  void vIndexColumnName(void);
-  void vIndexColumnType(void);
   void vIndexCompact(void);
-  void vIndexDelete(void);
   void vIndexDump(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
+  void vIndexLowerBoundN(void);
+  void vIndexSize(void);
+  void vIndexVerify(void);
+  void vIndexVisualize(void);
+
+  // index steps - to go
+  void vIndexColumnFetch(void);
+  void vIndexColumnName(void);
+  void vIndexColumnType(void);
+  void vIndexDelete(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexIndexPtn(void);
@@ -395,13 +402,11 @@ public:
   void vIndexNew(void);
   void vIndexPopulate(void);
   void vIndexRange(void);
-  void vIndexSize(void);
   void vIndexTableFetch(void);
   void vIndexTableStore(void);
   void vIndexTruncate(void);
   void vIndexUpperBound(void);
-  void vIndexVerify(void);
-  void vIndexVisualize(void);
+
 
   // index definition
   void vIndexDefParse(void);
@@ -958,15 +963,34 @@ public:
   void vPlanShow(void);
 
   // planner
+  void vPlannerChoosePathsN(void);
+  void vPlannerChosenPathN(void);
+  void vPlannerDeleteN(void);
+  void vPlannerFetchTechniqueFetchN(void);
+  void vPlannerGenPathsN(void);
+  void vPlannerGetN(void);
+  void vPlannerHighKeyFetchN(void);
+  void vPlannerIndexNmFetchN(void);
+  void vPlannerIsNullN(void);
+  void vPlannerKeyFetchN(void);
+  void vPlannerLowKeyFetchN(void);
+  void vPlannerMatchPathsN(void);
+  void vPlannerNewN(void);
+  void vPlannerParseWhereN(void);
+  void vPlannerPhrasesFetchN(void);
+  void vPlannerScorePathsN(void);
+  void vPlannerSetN(void);
+  void vPlannerShowPathsN(void);
+  void vPlannerTableFetchN(void);
+  void vPlannerTableStoreN(void);
+
   void vPlannerChoosePaths(void);
   void vPlannerChosenPath(void);
   void vPlannerDelete(void);
   void vPlannerFetchTechniqueFetch(void);
   void vPlannerGenPaths(void);
-  void vPlannerGet(void);
   void vPlannerHighKeyFetch(void);
   void vPlannerIndexNmFetch(void);
-  void vPlannerIsNull(void);
   void vPlannerKeyFetch(void);
   void vPlannerLowKeyFetch(void);
   void vPlannerMatchPaths(void);
@@ -974,7 +998,6 @@ public:
   void vPlannerParseWhere(void);
   void vPlannerPhrasesFetch(void);
   void vPlannerScorePaths(void);
-  void vPlannerSet(void);
   void vPlannerShowPaths(void);
   void vPlannerTableFetch(void);
   void vPlannerTableStore(void);
