@@ -68,11 +68,6 @@ namespace Gadgets
   };
   
   EnameSet* _pEnameSet(void* aAddr);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  class JobTags : public EnameSet { };
-
 }
 
 /*============================================================================*/
