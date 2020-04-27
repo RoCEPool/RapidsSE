@@ -69,7 +69,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__E__
   /*  7 */ &Finalize::vUndefined,         // CN_EDTVAL
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
-  /* 37 */ &Finalize::vUndefined,         // CN_ENMSET
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
@@ -300,6 +299,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TABLEDEF
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
+  /* 37 */ &Finalize::vUndefined,         // CN_TAGSET
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE

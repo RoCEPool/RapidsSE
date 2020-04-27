@@ -72,7 +72,6 @@ enum eCN : u2 // Class Number
   /*  45 0x02D        5B Heap:I */ CN__E__,
   /*  99 0x063       16B Heap:I */ CN_EDTVAL,
   /*  47 0x02F    27264B Heap:L */ CN_ENCODING,
-  /*  49 0x031     5584B Heap:M */ CN_ENMSET,
   /*  50 0x032       32B Heap:I */ CN_ENT,
   /*  51 0x033  1043952B Heap:L */ CN_ENTBUFFER,
   /*  52 0x034      304B Heap:I */ CN_ENTWRK,
@@ -303,6 +302,7 @@ enum eCN : u2 // Class Number
   /* 262 0x106     4112B Heap:M */ CN_TABLEDEF,
   /* 263 0x107      296B Heap:S */ CN_TABLEPTN,
   /* 264 0x108     1048B Heap:M */ CN_TABLEPTNVEC,
+  /*  49 0x031     5584B Heap:M */ CN_TAGSET,
   /* 265 0x109      432B Heap:M */ CN_TASK,
   /* 266 0x10A      256B Heap:S */ CN_TASKLIST,
   /* 267 0x10B      224B Heap:S */ CN_TASKQUEUE,
@@ -404,7 +404,6 @@ static Stz* aCN[]
   /*  45 0x02D */ "_E__"_Stz,                // CN__E__
   /*  99 0x063 */ "EDTVAL"_Stz,              // CN_EDTVAL
   /*  47 0x02F */ "ENCODING"_Stz,            // CN_ENCODING
-  /*  49 0x031 */ "ENMSET"_Stz,              // CN_ENMSET
   /*  50 0x032 */ "ENT"_Stz,                 // CN_ENT
   /*  51 0x033 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  52 0x034 */ "ENTWRK"_Stz,              // CN_ENTWRK
@@ -635,6 +634,7 @@ static Stz* aCN[]
   /* 262 0x106 */ "TABLEDEF"_Stz,            // CN_TABLEDEF
   /* 263 0x107 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 264 0x108 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
+  /*  49 0x031 */ "TAGSET"_Stz,              // CN_TAGSET
   /* 265 0x109 */ "TASK"_Stz,                // CN_TASK
   /* 266 0x10A */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 267 0x10B */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE

@@ -11,7 +11,7 @@ EnameSet* Gadgets::_pEnameSet(void* aAddr)
 {
   EnameSet* pEnameSet = reinterpret_cast<EnameSet*>(aAddr);
   
-  RASSERT_TYPE(pEnameSet,CN_ENMSET);
+  RASSERT_TYPE(pEnameSet,CN_TAGSET);
   
   return pEnameSet;
 }
@@ -21,7 +21,7 @@ EnameSet* Gadgets::_pEnameSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* EnameSet::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_ENMSET);
+  void* pObject = HeapMem::pAllocate(CN_TAGSET);
   
   return pObject;
 }
@@ -40,9 +40,9 @@ void EnameSet::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EnameSet::EnameSet(void)
-: Object(CN_ENMSET)
+: Object(CN_TAGSET)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
  
   m_nEnames = 0;
   
@@ -52,9 +52,9 @@ EnameSet::EnameSet(void)
     m_xEname[i_Eno].m_eToken  = TN_NONE;
   }
   
-  _checkInitialised_(CN_ENMSET);
+  _checkInitialised_(CN_TAGSET);
   
-  _postcondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ EnameSet::EnameSet(void)
 /*----------------------------------------------------------------------------*/
 EnameSet::~EnameSet(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ EnameSet::~EnameSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vAppend(Stz* szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   i8 i_Ename = m_nEnames;
 
@@ -95,7 +95,7 @@ void EnameSet::vAppend(Stz* szName)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vAppend(Stz* szName, i8 iValue)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   i8 i_Ename = m_nEnames;
 
@@ -116,7 +116,7 @@ void EnameSet::vAppend(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vAppend(Stz* szName, Stz* szValue)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   i8 i_Ename = m_nEnames;
 
@@ -137,7 +137,7 @@ void EnameSet::vAppend(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vConcat(Stz* szCmd)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     
@@ -161,7 +161,7 @@ void EnameSet::vConcat(Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vConcat(Stz* szCmd, i8 i_Ename)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   szCmd->vConcat(" "_Stz);
   
@@ -183,7 +183,7 @@ void EnameSet::vConcat(Stz* szCmd, i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vContentDump(void)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   vTrace("\n"_Stz);
   vTrace("Ename Set\n"_Stz);
@@ -197,7 +197,7 @@ void EnameSet::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vCopy(EnameSet* pScrEnameSet)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Ename = 0; i_Ename < pScrEnameSet->nEnames(); i_Ename++) {
     
@@ -227,7 +227,7 @@ void EnameSet::vCopy(EnameSet* pScrEnameSet)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vDelete(Stz* szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   EnameSet xEnameSet;
   
@@ -253,7 +253,7 @@ void EnameSet::vDelete(Stz* szName)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vDumpSet(bool bCarriageReturns)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   vTrace("{ "_Stz);
   if (bCarriageReturns)
@@ -299,7 +299,7 @@ void EnameSet::vDumpSet(bool bCarriageReturns)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vDumpSetDetailed(void)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
@@ -324,7 +324,7 @@ void EnameSet::vDumpSetDetailed(void)
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::nEnames(void)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   return m_nEnames;
 }
@@ -334,7 +334,7 @@ i8 EnameSet::nEnames(void)
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::i_Find(Stz *szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     if (m_xyStrings.szGet(m_xEname[i_Ename].m_i_Name)->bSame(szName))
@@ -349,7 +349,7 @@ i8 EnameSet::i_Find(Stz *szName)
 /*----------------------------------------------------------------------------*/
 bool EnameSet::bHasName(Stz *szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   i8 i_Ename = i_Find(szName);
   
@@ -364,7 +364,7 @@ bool EnameSet::bHasName(Stz *szName)
 /*----------------------------------------------------------------------------*/
 //void EnameSet::vInsert(Stz* szName)
 //{
-//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 //
 //  i8 i_Ename = m_nEnames;
 //
@@ -382,7 +382,7 @@ bool EnameSet::bHasName(Stz *szName)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vInsert(Stz* szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   i8 i_Ename = i_InsertPoint(szName);
   vShiftDown(i_Ename);
@@ -402,7 +402,7 @@ void EnameSet::vInsert(Stz* szName)
 /*----------------------------------------------------------------------------*/
 //void EnameSet::vInsert(Stz* szName, i8 iValue)
 //{
-//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 //
 //  i8 i_Ename = m_nEnames;
 //
@@ -420,7 +420,7 @@ void EnameSet::vInsert(Stz* szName)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vInsert(Stz* szName, i8 iValue)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   i8 i_Ename = i_InsertPoint(szName);
   vShiftDown(i_Ename);
@@ -440,7 +440,7 @@ void EnameSet::vInsert(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 //void EnameSet::vInsert(Stz* szName, Stz* szValue)
 //{
-//  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 //
 //  i8 i_Ename = m_nEnames;
 //
@@ -458,7 +458,7 @@ void EnameSet::vInsert(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vInsert(Stz* szName, Stz* szValue)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   i8 i_Ename = i_InsertPoint(szName);
   vShiftDown(i_Ename);
@@ -478,7 +478,7 @@ void EnameSet::vInsert(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::nItems(void)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   return m_nEnames;
 }
@@ -488,7 +488,7 @@ i8 EnameSet::nItems(void)
 /*----------------------------------------------------------------------------*/
 Stz* EnameSet::szName(i8 i_Ename)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   Stz* szName = m_xyStrings.szGet(m_xEname[i_Ename].m_i_Name);
   
@@ -500,7 +500,7 @@ Stz* EnameSet::szName(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vNamesString(String* pString)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   char* azStr = pString->azStr();
   char* azCrs = pString->azStr();
@@ -518,7 +518,7 @@ void EnameSet::vNamesString(String* pString)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vReplace(Stz* szName, i8 iValue)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   EnameSet xEnameSet;
   
@@ -552,7 +552,7 @@ void EnameSet::vReplace(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vReplace(Stz* szName, Stz* szValue)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   EnameSet xEnameSet;
   
@@ -586,7 +586,7 @@ void EnameSet::vReplace(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   m_nEnames = 0;
   
@@ -598,7 +598,7 @@ void EnameSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vSprint(Stz* sArgs)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   sArgs->vCopy("("_Stz);
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
@@ -624,7 +624,7 @@ void EnameSet::vSprint(Stz* sArgs)
 /*----------------------------------------------------------------------------*/
 eTN EnameSet::eToken(i8 i_Ename)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   eTN eToken = m_xEname[i_Ename].m_eToken;
   
@@ -636,7 +636,7 @@ eTN EnameSet::eToken(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::iValue(i8 i_Ename)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   //Stz* szValue = m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value);
   //i8 iValue = szValue->iToI8();
@@ -653,7 +653,7 @@ i8 EnameSet::iValue(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 Stz* EnameSet::szValue(i8 i_Ename)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   ASSERT(TN_INTEGER != m_xEname[i_Ename].m_eToken);
   Stz* szValue = m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value);
@@ -666,7 +666,7 @@ Stz* EnameSet::szValue(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::iValue(Stz *szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   i8 i_Ename = i_Find(szName);
   
@@ -684,7 +684,7 @@ i8 EnameSet::iValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 Stz* EnameSet::szValue(Stz *szName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   i8 i_Ename = i_Find(szName);
   
@@ -706,7 +706,7 @@ Stz* EnameSet::szValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::i_InsertPoint(Stz* szNewName)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   if (! m_nEnames)
     return 0;
@@ -724,7 +724,7 @@ i8 EnameSet::i_InsertPoint(Stz* szNewName)
 /*----------------------------------------------------------------------------*/
 void EnameSet::vShiftDown(i8 i_From)
 {
-  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Dst = m_nEnames; i_Dst > i_From; i_Dst--) {
     m_xEname[i_Dst].m_i_Name  = m_xEname[i_Dst - 1].m_i_Name;

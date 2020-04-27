@@ -73,7 +73,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__E__
   /* */ &Dump::vInvalid,         // CN_EDTVAL
   /* */ &Dump::vUndefined,       // CN_ENCODING
-  /* */ &Dump::vDummy,           // CN_ENMSET
   /* */ &Dump::vDummy,           // CN_ENT
   /* */ &Dump::vDummy,           // CN_ENTBUFFER
   /* */ &Dump::vInvalid,         // CN_ENTWRK
@@ -304,6 +303,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_TABLEDEF
   /* */ &TablePtn::vDump,        // CN_TABLEPTN
   /* */ &Dump::vDummy,           // CN_TABLEPTNVEC
+  /* */ &Dump::vDummy,           // CN_TAGSET
   /* */ &Task::vDump,            // CN_TASK
   /* */ &Dump::vUndefined,       // CN_TASKLIST
   /* */ &Dump::vUndefined,       // CN_TASKQUEUE
@@ -405,7 +405,6 @@ i8 gnClassSize[]
   /* */ 'E' - ('A' - 1),            // CN__E__
   /* */ sizeof(EdtVal),             // CN_EDTVAL
   /* */ sizeof(Encoding),           // CN_ENCODING
-  /* */ sizeof(EnameSet),           // CN_ENMSET
   /* */ sizeof(Ent),                // CN_ENT
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
@@ -636,6 +635,7 @@ i8 gnClassSize[]
   /* */ sizeof(TableDef),           // CN_TABLEDEF
   /* */ sizeof(TablePtn),           // CN_TABLEPTN
   /* */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
+  /* */ sizeof(EnameSet),           // CN_TAGSET
   /* */ sizeof(Task),               // CN_TASK
   /* */ sizeof(TaskList),           // CN_TASKLIST
   /* */ sizeof(TaskQueue),          // CN_TASKQUEUE
@@ -737,7 +737,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__E__
   /* */ HT_INVALID,           // CN_EDTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_ENCODING
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_ENMSET
   /* */ HT_INVALID,           // CN_ENT
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
@@ -968,6 +967,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLEDEF
   /* */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_TAGSET
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TASK
   /* */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /* */ HT_TRANSIENT_SMALL,   // CN_TEMPNAME
