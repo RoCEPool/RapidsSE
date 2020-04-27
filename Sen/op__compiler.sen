@@ -129,7 +129,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  pWord .fillOutEnameSet
+  pWord fillOut.enameSet
 
   //pEnameSet EnameSet.asStr .
 ;
@@ -174,7 +174,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info for all ops                                              */
 /*----------------------------------------------------------------------------*/
-: fillOutOps
+: fillOut::ops
 
   find: opInfo: locals| pOpInfo: |
 
@@ -186,7 +186,7 @@
     object@ word.category@ pOpInfo: eql if
       // object@ word.dump
       // object@ word.enameSet@ enameSet.asStr .
-      object@ .fillOutEnameSet            // fill out the ename set of the op
+      object@ fillOut.enameSet            // fill out the ename set of the op
     then
 
     object@ word.prev object!             // advance cursor backwards thru words

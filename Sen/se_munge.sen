@@ -194,6 +194,8 @@
 /*----------------------------------------------------------------------------*/
 : munge prompt
 
+  "munging" .
+
   // create a directory accessor
   file::new dir::new "" locals| origDir pSenDir pCppFile |
 
@@ -227,6 +229,8 @@
   // change back to original dir
   origDir dir::changeCurrent
   dir::getCurrent "Current working directory now: %v" str.format .
+
+  "munged" .
 ;
 
 /*============================================================================*/

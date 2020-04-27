@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* jobInfo.sen -- Job Info Compiler                                           */
+/* job__compiler.sen -- Job Compiler                                          */
 /*============================================================================*/
 
-" jobInfo.sen" .verbose
+" job__compiler.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
 /* test if the job is a generic job                                           */
@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet_dist params| pWord |
+: fillOut.enameSet_dist params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
 
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a local job                                          */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet_local params| pWord |
+: fillOut.enameSet_local params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -150,7 +150,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a generic job                                        */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet_generic params| pWord |
+: fillOut.enameSet_generic params| pWord |
 
   "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -159,7 +159,7 @@
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: .fillOutEnameSet params| pWord |
+: fillOut.enameSet params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.enameSet@  locals| pEnameSet |
@@ -199,10 +199,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pWord job::isgenericJob if
-    pWord .fillOutEnameSet_generic
+    pWord fillOut.enameSet_generic
   else
   pWord job::isDistJob if
-    pWord .fillOutEnameSet_dist
+    pWord fillOut.enameSet_dist
   else
 
     "<liteOp>" pEnameSet EnameSet.hasName if
@@ -251,7 +251,7 @@
 
     then
 
-    pWord .fillOutEnameSet_local
+    pWord fillOut.enameSet_local
 
   then then
 
@@ -412,7 +412,7 @@
 
   //pEnameSet EnameSet.asStr .
 
-  pWord .fillOutEnameSet
+  pWord fillOut.enameSet
 
   //pEnameSet EnameSet.asStr .
 

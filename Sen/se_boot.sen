@@ -39,7 +39,7 @@
         "op__liteOp.sen"          include
 
 4 .put
-        "jobInfo.sen"             include
+        "job__compiler.sen"       include
         "jobOperand.sen"          include
         "OPERAND__handlers.sen"   include
         "jobSyntax.sen"           include
@@ -207,7 +207,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        
-fillOutOps
+fillOut::ops
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
