@@ -942,8 +942,8 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
 
   m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
 
-  EnameSet* pOpJobEnameSet = AM::pEnameSet(m_pOpJob);
-  EnameSet* pPipeLineJobEnameSet = AM::pEnameSet(m_pPipelineJob);
+  EnameSet* pOpJobEnameSet = AM::pJobTags(m_pOpJob);
+  EnameSet* pPipeLineJobEnameSet = AM::pJobTags(m_pPipelineJob);
 
   pOpJobEnameSet->vInsert(C_TAG_PATH,
                           pPipeLineJobEnameSet->szValue(C_TAG_PATH));
@@ -953,9 +953,9 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job* pJob_pipeline = AM::pThisTLSJob();
-  EnameSet* pEnameSet_pipeline = AM::pEnameSet(pJob_pipeline);
+  EnameSet* pEnameSet_pipeline = AM::pJobTags(pJob_pipeline);
  
-  EnameSet* pEnameSet_op = AM::pEnameSet(m_pOpJob);
+  EnameSet* pEnameSet_op = AM::pJobTags(m_pOpJob);
 
   pEnameSet_op->vCopy(pEnameSet_pipeline);
   
@@ -973,14 +973,14 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
   
   // now append the hidden topology ename pairs to the job ename set
-  AM::vAppendEnameSet(m_pOpJob, &m_oTopologyEnameSet);
+  AM::vAppendJobTags(m_pOpJob, &m_oTopologyEnameSet);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
-  //AM::pEnameSet(m_pOpJob)->vAdd(C_TAG_API);
-  //AM::pEnameSet(m_pOpJob)->vAdd(C_TAG_TAGS);
+  //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_API);
+  //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_TAGS);
 
   bool bSpawned = AM::bSpawnJob(m_pOpJob);
   

@@ -275,12 +275,12 @@ bool AM::bAttached(void) {
     return false;
 }
 
-void AM::vAppendEnameSet(Job* pJob, EnameSet* pEnameSet)
+void AM::vAppendJobTags(Job* pJob, EnameSet* pTagSet)
 {
-  pJob->pJobTags()->vCopy(pEnameSet);
+  pJob->pJobTags()->vCopy(pTagSet);
 }
 
-EnameSet* AM::pEnameSet(Job* pJob)
+EnameSet* AM::pJobTags(Job* pJob)
 {
   return pJob->pJobTags();
 }
