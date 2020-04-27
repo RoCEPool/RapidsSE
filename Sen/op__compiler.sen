@@ -186,8 +186,31 @@
     object@ word.category@ pOpInfo: eql if
       // object@ word.dump
       // object@ word.enameSet@ enameSet.asStr .
+
+      object@ word.name@ "Filling out: %v" .printf
+      
       object@ fillOut.enameSet            // fill out the ename set of the op
     then
+
+    object@ word.prev object!             // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: wordCats prompt
+
+  0 0 locals| pWord pCatg |
+
+  dic::root dic.lastWord dup
+  iterate                                 // iterate word cursor
+
+    object@ to pWord
+
+    pWord word.category@ to pCatg
+
+    pCatg word.name@  pWord word.name@   "Word: %v Category: %v" .printf
 
     object@ word.prev object!             // advance cursor backwards thru words
   next
