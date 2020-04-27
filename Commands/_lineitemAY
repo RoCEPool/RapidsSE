@@ -66,11 +66,11 @@ sztbl lineitem;
 vistbl lineitem;
 visidx lineitem lineitem_idx1;
 
-partitionFetch lineitem 1;
+//partitionFetch lineitem 1;
 
-fetch lineitem "l_orderkey 1 >";
+//fetch lineitem "l_orderkey 1 >";
 
-//predicateFetch lineitem "l_orderkey 1 >";
+predicateFetch lineitem "l_orderkey 1 >";
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
 

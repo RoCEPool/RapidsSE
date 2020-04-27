@@ -16,9 +16,7 @@
   ( cdt_0 ) planner[].new
   ( cdt_1 ) table[] Planner[].table!
 
-  "l_orderkey 1 >" to sPredicate
-
-  ( cdt_2 ) sPredicate Planner[].parseWhere  //"parseWheres" .
+  ( cdt_2 ) <predicate> Planner[].parseWhere  //"parseWheres" .
 
   ( cdt_3 ) Planner[].genPaths           //"genPaths" .
   ( cdt_4 ) Planner[].scorePaths         //"scorePaths" .
@@ -162,6 +160,7 @@
 : fetchOP_req \operator
 
   LogReqEntry SEED_REQ
+  <tableNm> <predicate> "PARAMETERS %v %v" str.format .
 
   op__topology
 
