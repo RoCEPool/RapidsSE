@@ -103,6 +103,7 @@
 
 3 .put
         "op__common.sen"             include
+        "op__compiler.sen"           include
         "op__tagSets.sen"            include
 
         "OP_analyzeIndex.sen"        include
