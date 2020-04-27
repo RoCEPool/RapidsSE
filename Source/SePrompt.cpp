@@ -369,8 +369,15 @@ void SePrompt::vCheckJobCtl(void)
 bool SePrompt::bCheckJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  Token* pTkn0 = pTkn(0);
   
+  if (pTkn0->bSame("tag"_Stz))
+    return true;
+
   TokenVec* pTknVec = this->pTokenVec();
+  
+
 
   i8 i_TagBegin = pTknVec->iFindToken("<"_Stz,TN_OTHER);
 
