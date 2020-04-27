@@ -27,6 +27,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
   vAddStep("index.isValidUniqueIndex"_Stz,&Step::vIndexIsValidUniqueIndex);
+  vAddStep("index[].lowerBound"_Stz,      &Step::vIndexLowerBoundN);
   vAddStep("index.lowerBound"_Stz,      &Step::vIndexLowerBound);
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
@@ -489,6 +490,144 @@ void Step::vIndexIsValidUniqueIndex(void)
   }
   
   m_pDataStack->vPushInt(bValid ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].lowerBound -- return rows with lower bound                         */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexLowerBoundN(void)
+{
+  ENTRY();
+  
+  FetchBuffer* pFetchBuffer;
+  
+  Datum xVariable;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get members from subFetch
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
+  
+  // get the key
+  m_pDataStack->vPopVal(xVariable,__func__);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get members from subFetch
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob_SubFetch->m_pParentJob);
+  i8 iSlot = pJob_SubFetch->i_Slot();
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
+  
+  EntBuffer* aLowerEntBuffer;
+  Ent* aLowerEntry = nullptr;
+  eRO eLowerRelnOp;
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  TablePtn* pPartition = pTable->pPartition(iSlot);
+  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a result buffer for the results
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of columns in the index
+  i8 nIdxCols = pIndex->pIdxColVec()->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  EntWrk xEntWrkLower;
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  Format* pFmt = AM::pFmt();
+  Stz* szStz = xVariable.szStz();
+  
+  KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szStz,pFmt);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xEntWrkLower.vAppendMinusInfinity();
+  }
+  //xEntWrk.vShow();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first position at a level 0 buffer with keyLower
+  aLowerEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkLower.aKey());
+  eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we get an entry buffer ?
+  if (aLowerEntBuffer) {
+    // position in the index buffer at an entry prior to the lower key
+    //aLowerEntry = aLowerEntBuffer->aPositionQuery(xEntWrkLower, eLowerRelnOp);
+    
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
+    
+    if (eLowerRelnOp == RO_GREATER_THAN) {
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
+                                                       xEntWrkLower.aKey(),
+                                                       &aLowerEntBuffer);
+    }
+    else {
+      RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aKey(), &aLowerEntBuffer);
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we get a lower entry ?
+  if ( ! aLowerEntry) {
+    goto LastBuffer;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffer till no more entries
+  while (aLowerEntry) {
+    
+    // insert row from entry in fetchBuffer
+    if ( ! Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
+      
+      // Buffer is Full;
+      // put this tempEntBuffer in session bufferQueue
+      pQueue->vAppend(pFetchBuffer);
+      
+      // create another fetchBuffer for the results
+      pFetchBuffer = new FetchBuffer(pTable, iSlot);
+      
+      // insert row from entry in fetchBuffer
+      bool bResult = Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
+      RASSERT(bResult);
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move to next entry in the buffer
+    aLowerEntry = aLowerEntBuffer->aNextEntry(aLowerEntry, 0);
+    
+    if ( ! aLowerEntry ) {
+      // get next buffer from the current indexBuffer
+      aLowerEntBuffer = aLowerEntBuffer->pNextBuffer();
+      
+      if ( aLowerEntBuffer )
+        aLowerEntry = aLowerEntBuffer->aLeadEntry();
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check if session exiting
+    //if (pSession->m_bSessionExiting)
+    //  aLowerEntry = nullptr;
+  }
+  
+LastBuffer:
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark this buffer as the last buffer
+  pFetchBuffer->vIsLast(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put the buffer in the session bufferQueue
+  pQueue->vAppend(pFetchBuffer);
   
   EXIT();
 }
