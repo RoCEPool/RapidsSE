@@ -99,7 +99,7 @@
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
       0 planner[].lowKey@
-      tablePtn[].get index[].lowerBound to Operand[]
+      planner[] tablePtn[].get index[].lowerBound to Operand[]
       tablePtn[].get tablePtnDropRead2
     endof
 
