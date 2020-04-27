@@ -197,6 +197,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* show details of given word                                                 */
+/*----------------------------------------------------------------------------*/
+: word.show params| pWord |
+
+  pWord word.name@     locals| sWordName |
+  pWord word.category@ locals| pCatg |
+  pCatg word.name@     locals| sCatgName |
+
+  sCatgName sWordName
+    "Word: %v Category: %v" .printf
+;
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : wordCats prompt
@@ -208,9 +221,7 @@
 
     object@ to pWord
 
-    pWord word.category@ to pCatg
-
-    pCatg word.name@  pWord word.name@   "Word: %v Category: %v" .printf
+    pWord word.show
 
     object@ word.prev object!             // advance cursor backwards thru words
   next
