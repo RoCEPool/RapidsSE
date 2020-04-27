@@ -413,6 +413,25 @@ i8 TokenVec::iFindToken(Stz* szArgChars)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find token in token array                                                  */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFindToken(Stz* szArgChars, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nTokens();
+  
+  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+    Token* pToken = pGet(i_Token);
+    if (eToken == pToken->eToken() &&
+        szArgChars->bSame(pToken->szChars()))
+      return i_Token;
+  }
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
@@ -649,7 +668,7 @@ void TokenVec::vRemoveSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  i8 i_Semi = iFindToken(";"_Stz);
+  i8 i_Semi = iFindToken(";"_Stz,TN_OTHER);
   
   if (C_UNKNOWN == i_Semi)
     return;

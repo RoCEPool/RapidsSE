@@ -41,6 +41,7 @@ namespace LexicalAnalysis
     Token* pCurrToken(void);
     void vDumpVec(i8 nPlusMore);
     i8   iFindToken(Stz* pLookFor);
+    i8   iFindToken(Stz* pLookFor, eTN eToken);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     Token* pFirstToken(void);
     bool bHasSemicolon(void);
