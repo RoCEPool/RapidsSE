@@ -501,7 +501,7 @@ void Step::vIndexLowerBoundN(void)
 {
   ENTRY();
   
-  FetchBuffer* pFetchBuffer;
+  CrwBuffer* pCrwBuffer;
   
   Datum xVariable;
   
@@ -513,6 +513,8 @@ void Step::vIndexLowerBoundN(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table partition
   TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  
+  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the key
@@ -527,11 +529,14 @@ void Step::vIndexLowerBoundN(void)
   Table* pTable = pIndex->pTable();
   
   IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
-  /*
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, iSlot);
+  // create a root result buffer for the results
+  CrwBuffer* pRootCrwBuffer = new CrwBuffer;
+  pRootCrwBuffer->vTable(pPartition->pTable());
+  pRootCrwBuffer->vPartitionNo(pPartition->iPartitionId()) ;
   
+  pCrwBuffer = pRootCrwBuffer;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of columns in the index
   i8 nIdxCols = pIndex->pIdxColVec()->nItems();
@@ -572,28 +577,47 @@ void Step::vIndexLowerBoundN(void)
     }
   }
   
+  HV_Row hRow(pTable->pStreamDef(),C_ALL);
+  
+  // create a row compactor for the crw buffer
+  RowCompactor* pRowCompactor = new RowCompactor;
+  pCrwBuffer->vAppendOpen(pRowCompactor, false);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
   if ( ! aLowerEntry) {
-    goto LastBuffer;
+    goto L_Exit;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
   while (aLowerEntry) {
     
-    // insert row from entry in fetchBuffer
-    if ( ! Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
+    Crw* aCrw = CrwBuffer::pRefdCrw(aLowerEntry->xRef());
+ 
+    RowInflator::vInflateRow(hRow,aCrw);
+    
+    // insert row from entry in crwBuffer
+    if ( ! pCrwBuffer->bAppendRow(hRow)) {
       
       // Buffer is Full;
-      // put this tempEntBuffer in session bufferQueue
-      pQueue->vAppend(pFetchBuffer);
+       pCrwBuffer->vAppendClose();
       
-      // create another fetchBuffer for the results
-      pFetchBuffer = new FetchBuffer(pTable, iSlot);
+      // create another crwbuffer for the results
+      CrwBuffer* pNewCrwBuffer = new CrwBuffer;
+      pNewCrwBuffer->vTable(pPartition->pTable());
+      pNewCrwBuffer->vPartitionNo(pPartition->iPartitionId());
+      pRowCompactor = new RowCompactor;
+      pNewCrwBuffer->vAppendOpen(pRowCompactor, false);
+      
+      // link the old buffer with this buffer
+      pCrwBuffer->vNextBuffer(pNewCrwBuffer);
+      
+      // now append to new buffer
+      pCrwBuffer = pNewCrwBuffer;
       
       // insert row from entry in fetchBuffer
-      bool bResult = Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
+      bool bResult = pCrwBuffer->bAppendCrw(aCrw);
       RASSERT(bResult);
     }
     
@@ -614,17 +638,11 @@ void Step::vIndexLowerBoundN(void)
     //if (pSession->m_bSessionExiting)
     //  aLowerEntry = nullptr;
   }
+
+L_Exit:
+  //pRootCrwBuffer->vDump();
+  m_pDataStack->vPushPtr(pRootCrwBuffer);
   
-LastBuffer:
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark this buffer as the last buffer
-  pFetchBuffer->vIsLast(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put the buffer in the session bufferQueue
-  pQueue->vAppend(pFetchBuffer);
-  */
   EXIT();
 }
 

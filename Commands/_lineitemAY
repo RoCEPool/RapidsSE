@@ -58,7 +58,7 @@ space;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 
-load lineitem "/DATA/TPCH/lineitem10.csv";
+load lineitem "/DATA/TPCH/lineitem20K.csv";
 
 space;
 sztbl lineitem;
