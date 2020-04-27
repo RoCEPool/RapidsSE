@@ -188,7 +188,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //    return EC_INVALID_COMMAND;
 //  }
 
-  bool b = JobHelper::bParseCmd(pEnameSet(),pTknVec);
+  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
   if (! b) {
     //vTrace("Unable to match job syntax\n"_Stz);
     vParticipantHasError(true);
@@ -205,7 +205,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     Stz* szJobNm = pEnameSet_ji->szValue(C_TAG_JOBNM);
     vJobNm(szJobNm);
     
-    pEnameSet()->vCopy(pEnameSet_ji);
+    pJobTags()->vCopy(pEnameSet_ji);
     
     
 //    s32 sJob_info = szJobNm;

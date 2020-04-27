@@ -145,12 +145,12 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
     TokenVec* pTknVec = pSession->pTokenVec();
     pTknVec->vVecToString(sCmd,0,true);
     
-    pJob->pEnameSet()->vInsert(C_TAG_CMD,sCmd);
+    pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy the semantic ename-set into the job
     
-    pJob->pEnameSet()->vCopy(pSession->m_pSemantic->pEnameSet());
+    pJob->pJobTags()->vCopy(pSession->m_pSemantic->pEnameSet());
     
     //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
     //                       pJob->m_aJobClass->m_eKind,_EG_JK);

@@ -28,7 +28,7 @@ void Step::vLoaderCreate(void)
   
   Job* pJob = m_pTask->pJob();
   
-  EnameSet* pEnameSet = pJob->pEnameSet();
+  EnameSet* pEnameSet = pJob->pJobTags();
   pEnameSet->vContentDump();
   
   Loader* pLoader = new Loader(*m_pRegSet->m_xpTable);

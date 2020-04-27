@@ -302,7 +302,7 @@ void JobList::vContentDump(void)
            pJob->iParticipantNode(),
            pNode->m_nRight);
     
-    pJob->pEnameSet()->vDumpSet();
+    pJob->pJobTags()->vDumpSet();
     
     pNode = pSkipList->pNext(pNode, iLevel);
   }
@@ -341,7 +341,7 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
              pJob->iParticipantNode(),
              pNode->m_nRight);
       
-      pJob->pEnameSet()->vDumpSet();
+      pJob->pJobTags()->vDumpSet();
              
       pNode = pSkipList->pNext(pNode, iLevel);
     }

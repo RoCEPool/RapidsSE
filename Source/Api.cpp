@@ -394,7 +394,7 @@ bool Api::bSpawnJob(Job* pJob)
   
   if (pJob->bHasTag(C_TAG_TAGS) ||
       (pThisJob && pThisJob->bHasTag(C_TAG_TAGS)))
-    pJob->pEnameSet()->vDumpSet();
+    pJob->pJobTags()->vDumpSet();
 
   if (! pJob->bHasTag(C_TAG_TAGS))
     Correctness::vDebugPoint();

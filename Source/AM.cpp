@@ -277,12 +277,12 @@ bool AM::bAttached(void) {
 
 void AM::vAppendEnameSet(Job* pJob, EnameSet* pEnameSet)
 {
-  pJob->pEnameSet()->vCopy(pEnameSet);
+  pJob->pJobTags()->vCopy(pEnameSet);
 }
 
 EnameSet* AM::pEnameSet(Job* pJob)
 {
-  return pJob->pEnameSet();
+  return pJob->pJobTags();
 }
 
 
@@ -1511,7 +1511,7 @@ DicStack* AM::pTaskDicStack(void) {
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
-  pJob->pEnameSet()->vInsert(C_TAG_TABLENM,szObjectName);
+  pJob->pJobTags()->vInsert(C_TAG_TABLENM,szObjectName);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

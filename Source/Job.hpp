@@ -77,7 +77,6 @@ namespace Jobs
     Queue* pBufferQueue(void);
     void vContentDump(void);
     void vCopyTags(JobClass* aJobClass);
-    EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     void vIncRowsProcessed(void);
@@ -98,6 +97,7 @@ namespace Jobs
     void vJobPhase(eJP eJobPhase);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
+    EnameSet* pJobTags(void);
     EnameSet* pJobInfoEnameSet(void);
     void vLockJobMutex(void);
     void vMarkJob(void);

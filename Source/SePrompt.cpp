@@ -541,7 +541,7 @@ bool SePrompt::bDontSpawn(void)
     return false;
   
   if (m_pJob->bHasTag(C_TAG_TAGS))
-    m_pJob->pEnameSet()->vDumpSet();
+    m_pJob->pJobTags()->vDumpSet();
   
   vCompletedTask();
   vDeleteJob();
@@ -1291,14 +1291,14 @@ void SePrompt::vSetJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s32 sJobNm = m_pJob->pEnameSet()->szValue(C_TAG_JOBNM);
+  s32 sJobNm = m_pJob->pJobTags()->szValue(C_TAG_JOBNM);
   
   m_pJob->vJobNm(sJobNm);
   
-  m_pJob->pEnameSet()->vInsert(C_TAG_BYPROMPT,1);
+  m_pJob->pJobTags()->vInsert(C_TAG_BYPROMPT,1);
   
-  m_pJob->pEnameSet()->vInsert(C_TAG_DISTID,m_pJob->m_iFocalId);
-  m_pJob->pEnameSet()->vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+  m_pJob->pJobTags()->vInsert(C_TAG_DISTID,m_pJob->m_iFocalId);
+  m_pJob->pJobTags()->vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   
   if (m_oJobTags.bHasName(C_TAG_INFO)) {
     
@@ -1307,11 +1307,11 @@ void SePrompt::vSetJob(void)
       pJobInfo_es->vDumpSet();
   }
 
-  m_pJob->pEnameSet()->vCopy(&m_oJobTags);
+  m_pJob->pJobTags()->vCopy(&m_oJobTags);
   
   if (m_pJob->bHasTag(C_TAG_LIFE)) {
     SP_EnmSet spEnameSet;
-    m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(m_pJob->pEnameSet()));
+    m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(m_pJob->pJobTags()));
     //m_pJob->pEnameSet()->vPrint();
   }
   
