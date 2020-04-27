@@ -64,6 +64,7 @@ namespace Prompt
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
     void vCheckJobCtl(void);
+    void vCheckJobTags(void);
     void vCheckTimed(void);
     i8   iCommandFocal(void);
     void vCompletedTask(void);

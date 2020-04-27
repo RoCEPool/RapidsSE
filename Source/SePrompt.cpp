@@ -186,6 +186,7 @@ void SePrompt::vPromptLoop(void)
       {;}
 
     vCheckJobCtl();
+    
     vCheckTimed();
 
     vLogCommand();
@@ -360,6 +361,17 @@ void SePrompt::vCheckJobCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check for job tags                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckJobTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTokenVec();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* check for timed function                                                   */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCheckTimed(void)
@@ -396,16 +408,6 @@ void SePrompt::vCompletedTask(void)
   Task* pTask = m_pJob->pTask();
   
   pTask->vState(TS_COMPLETED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command id                                                             */
-/*----------------------------------------------------------------------------*/
-i8 SePrompt::iRequestId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_iRequestId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1073,6 +1075,16 @@ void SePrompt::vReformatCommand(void)
 
   // -- -- -- -- -- --
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command id                                                             */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iRequestId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_iRequestId;
 }
 
 /*----------------------------------------------------------------------------*/
