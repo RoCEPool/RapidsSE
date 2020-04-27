@@ -369,13 +369,22 @@ void SePrompt::vCheckJobCtl(void)
 bool SePrompt::bCheckJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  Token* pTkn0 = pTkn(0);
   
+  if (pTkn0->bSame("tag"_Stz))
+    return true;
+
   TokenVec* pTknVec = this->pTokenVec();
+  
+
 
   i8 i_TagBegin = pTknVec->iFindToken("<"_Stz,TN_OTHER);
-    
+
   if (C_UNKNOWN == i_TagBegin)
     return true;
+
+  Token* pTkn_begin = pTknVec->pGet(i_TagBegin);
 
   i8 nTkns = pTknVec->nTokens();
 
@@ -413,20 +422,15 @@ bool SePrompt::bCheckJobTags(void)
     m_oJobTags.vAppend(sName,pTkn_value->szChars());
   }
   
-  m_oJobTags.vDumpSet();
+  //m_oJobTags.vDumpSet();
   
-  vDebugPoint();
+  //pTknVec->vDumpVec(16);
+  
+  pTknVec->vTrimTokens(i_TagBegin);
+  
+  //pTknVec->vDumpVec(16);
   
   return true;
-    
-//  i8 nTkns;
-//
-//  nTkns = pTknVec->nTokens();
-//  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
-//
-//  }
-
-  
 }
 
 /*----------------------------------------------------------------------------*/

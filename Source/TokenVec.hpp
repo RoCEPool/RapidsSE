@@ -61,6 +61,7 @@ namespace LexicalAnalysis
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
+    void vTrimTokens(i8 i_Tkn);
     void vTokenise(Stz* szString);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);

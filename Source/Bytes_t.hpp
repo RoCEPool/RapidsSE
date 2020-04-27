@@ -33,6 +33,7 @@ namespace Esses
     void vReset(void);
     i8   nSize(void);
     void vTake(i8 nBytes);
+    void vTrim(Stz* szTrim);
   
     Footer* aFooter(void);
   };
@@ -302,6 +303,19 @@ void Bytes_t<BYTES>::vTake(i8 nBytes)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter += nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset latter to given argument                                             */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vTrim(Stz* szTrim)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  m_i_Latter = nDifference(szArea(),szTrim);
+  
+  m_yaArea[m_i_Latter] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
