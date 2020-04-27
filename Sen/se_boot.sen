@@ -36,6 +36,8 @@
         "se_tags.sen"             include
         "se_requests.sen"         include
 
+        "op__liteOp.sen"          include
+
 4 .put
         "jobInfo.sen"             include
         "jobOperand.sen"          include
