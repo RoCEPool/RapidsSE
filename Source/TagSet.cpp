@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnameSet.cpp -- ename-value set                                            */
+/* TagSet.cpp -- ename-value set                                            */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EnameSet* Gadgets::_pEnameSet(void* aAddr)
+TagSet* Gadgets::_pEnameSet(void* aAddr)
 {
-  EnameSet* pEnameSet = reinterpret_cast<EnameSet*>(aAddr);
+  TagSet* pEnameSet = reinterpret_cast<TagSet*>(aAddr);
   
   RASSERT_TYPE(pEnameSet,CN_TAGSET);
   
@@ -19,7 +19,7 @@ EnameSet* Gadgets::_pEnameSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* EnameSet::operator new(size_t)
+void* TagSet::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_TAGSET);
   
@@ -29,7 +29,7 @@ void* EnameSet::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void EnameSet::operator delete(void* aAddr)
+void TagSet::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
@@ -39,7 +39,7 @@ void EnameSet::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EnameSet::EnameSet(void)
+TagSet::TagSet(void)
 : Object(CN_TAGSET)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
@@ -60,7 +60,7 @@ EnameSet::EnameSet(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EnameSet::~EnameSet(void) noexcept(false)
+TagSet::~TagSet(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 }
@@ -72,7 +72,7 @@ EnameSet::~EnameSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append name only                                                           */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vAppend(Stz* szName)
+void TagSet::vAppend(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -93,7 +93,7 @@ void EnameSet::vAppend(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* append name = int                                                          */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vAppend(Stz* szName, i8 iValue)
+void TagSet::vAppend(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -114,7 +114,7 @@ void EnameSet::vAppend(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* append name = str                                                          */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vAppend(Stz* szName, Stz* szValue)
+void TagSet::vAppend(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -135,7 +135,7 @@ void EnameSet::vAppend(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* concat enameset to cmd string                                              */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vConcat(Stz* szCmd)
+void TagSet::vConcat(Stz* szCmd)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -159,7 +159,7 @@ void EnameSet::vConcat(Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 /* append enameset to cmd string                                              */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vConcat(Stz* szCmd, i8 i_Ename)
+void TagSet::vConcat(Stz* szCmd, i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -181,7 +181,7 @@ void EnameSet::vConcat(Stz* szCmd, i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 /* content dump                                                               */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vContentDump(void)
+void TagSet::vContentDump(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -195,7 +195,7 @@ void EnameSet::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set                                  */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vCopy(EnameSet* pScrEnameSet)
+void TagSet::vCopy(TagSet* pScrEnameSet)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -225,11 +225,11 @@ void EnameSet::vCopy(EnameSet* pScrEnameSet)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vDelete(Stz* szName)
+void TagSet::vDelete(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  EnameSet xEnameSet;
+  TagSet xEnameSet;
   
   bool bWasCopied = false;
   
@@ -251,7 +251,7 @@ void EnameSet::vDelete(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vDumpSet(bool bCarriageReturns)
+void TagSet::vDumpSet(bool bCarriageReturns)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -297,7 +297,7 @@ void EnameSet::vDumpSet(bool bCarriageReturns)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vDumpSetDetailed(void)
+void TagSet::vDumpSetDetailed(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -322,7 +322,7 @@ void EnameSet::vDumpSetDetailed(void)
 /*----------------------------------------------------------------------------*/
 /* get nEnames                                                                */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::nEnames(void)
+i8 TagSet::nEnames(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -332,7 +332,7 @@ i8 EnameSet::nEnames(void)
 /*----------------------------------------------------------------------------*/
 /* find name                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::i_Find(Stz *szName)
+i8 TagSet::i_Find(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -347,7 +347,7 @@ i8 EnameSet::i_Find(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* test if ename-set has a pair with given name                               */
 /*----------------------------------------------------------------------------*/
-bool EnameSet::bHasName(Stz *szName)
+bool TagSet::bHasName(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -362,7 +362,7 @@ bool EnameSet::bHasName(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* add name only                                                              */
 /*----------------------------------------------------------------------------*/
-//void EnameSet::vInsert(Stz* szName)
+//void TagSet::vInsert(Stz* szName)
 //{
 //  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 //
@@ -380,7 +380,7 @@ bool EnameSet::bHasName(Stz *szName)
 //  }
 //}
 /*----------------------------------------------------------------------------*/
-void EnameSet::vInsert(Stz* szName)
+void TagSet::vInsert(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -400,7 +400,7 @@ void EnameSet::vInsert(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-//void EnameSet::vInsert(Stz* szName, i8 iValue)
+//void TagSet::vInsert(Stz* szName, i8 iValue)
 //{
 //  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 //
@@ -418,7 +418,7 @@ void EnameSet::vInsert(Stz* szName)
 //  }
 //}
 /*----------------------------------------------------------------------------*/
-void EnameSet::vInsert(Stz* szName, i8 iValue)
+void TagSet::vInsert(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -438,7 +438,7 @@ void EnameSet::vInsert(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* add name and value                                                         */
 /*----------------------------------------------------------------------------*/
-//void EnameSet::vInsert(Stz* szName, Stz* szValue)
+//void TagSet::vInsert(Stz* szName, Stz* szValue)
 //{
 //  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 //
@@ -456,7 +456,7 @@ void EnameSet::vInsert(Stz* szName, i8 iValue)
 //  }
 //}
 /*----------------------------------------------------------------------------*/
-void EnameSet::vInsert(Stz* szName, Stz* szValue)
+void TagSet::vInsert(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -476,7 +476,7 @@ void EnameSet::vInsert(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* get nItems                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::nItems(void)
+i8 TagSet::nItems(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -486,7 +486,7 @@ i8 EnameSet::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* EnameSet::szName(i8 i_Ename)
+Stz* TagSet::szName(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -498,7 +498,7 @@ Stz* EnameSet::szName(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 /* produce names string                                                       */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vNamesString(String* pString)
+void TagSet::vNamesString(String* pString)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -516,11 +516,11 @@ void EnameSet::vNamesString(String* pString)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vReplace(Stz* szName, i8 iValue)
+void TagSet::vReplace(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  EnameSet xEnameSet;
+  TagSet xEnameSet;
   
   bool bWasCopied = false;
   
@@ -550,11 +550,11 @@ void EnameSet::vReplace(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vReplace(Stz* szName, Stz* szValue)
+void TagSet::vReplace(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  EnameSet xEnameSet;
+  TagSet xEnameSet;
   
   bool bWasCopied = false;
   
@@ -584,7 +584,7 @@ void EnameSet::vReplace(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vReset(void)
+void TagSet::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
@@ -596,7 +596,7 @@ void EnameSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vSprint(Stz* sArgs)
+void TagSet::vSprint(Stz* sArgs)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -622,7 +622,7 @@ void EnameSet::vSprint(Stz* sArgs)
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
-eTN EnameSet::eToken(i8 i_Ename)
+eTN TagSet::eToken(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -634,7 +634,7 @@ eTN EnameSet::eToken(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::iValue(i8 i_Ename)
+i8 TagSet::iValue(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -651,7 +651,7 @@ i8 EnameSet::iValue(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* EnameSet::szValue(i8 i_Ename)
+Stz* TagSet::szValue(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -664,7 +664,7 @@ Stz* EnameSet::szValue(i8 i_Ename)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::iValue(Stz *szName)
+i8 TagSet::iValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -682,7 +682,7 @@ i8 EnameSet::iValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* EnameSet::szValue(Stz *szName)
+Stz* TagSet::szValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -704,7 +704,7 @@ Stz* EnameSet::szValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* find where to add the given name                                           */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::i_InsertPoint(Stz* szNewName)
+i8 TagSet::i_InsertPoint(Stz* szNewName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -722,7 +722,7 @@ i8 EnameSet::i_InsertPoint(Stz* szNewName)
 /*----------------------------------------------------------------------------*/
 /* shift sub set down so as to open up i_From                                 */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vShiftDown(i8 i_From)
+void TagSet::vShiftDown(i8 i_From)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -736,7 +736,7 @@ void EnameSet::vShiftDown(i8 i_From)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(EnameSet)
+__aFooterFunction(TagSet)
 
 /*============================================================================*/
 /* end                                                                        */

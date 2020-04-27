@@ -513,7 +513,7 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.enameSet@ -- push ptr to job EnameSet                                   */
+/* job.enameSet@ -- push ptr to job TagSet                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEnameSetFetch(void)
 {
@@ -1348,7 +1348,7 @@ void Step::vJobSeedDecode(void)
   eSS eSeed = SS_SEED_RCV;
   
   if (JK_GENERIC == pJob->eJobKind()) {
-    EnameSet* pEnameSet_ji = Job::pJobInfo_enameSet(pJob->szJobNm());
+    TagSet* pEnameSet_ji = Job::pJobInfo_enameSet(pJob->szJobNm());
     
     s32 sSeed = pEnameSet_ji->szValue(C_TAG_SEEDRUN);
     
@@ -1587,7 +1587,7 @@ void Step::vJobSpawnUniversal(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get the ename set from the job info
-  EnameSet* pEnameSet_jobInfo = Job::pJobInfo_enameSet(sJobNm);
+  TagSet* pEnameSet_jobInfo = Job::pJobInfo_enameSet(sJobNm);
   
   // find the job class
   JobClass* aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
@@ -1600,7 +1600,7 @@ void Step::vJobSpawnUniversal(void)
   pJob_Universal->vJobKind((eJK) pEnameSet_jobInfo->iValue(C_TAG_JOBKIND));
 
   // add the necessary ename tags
-  EnameSet* pEnameSet_job = pJob_Universal->pJobTags();
+  TagSet* pEnameSet_job = pJob_Universal->pJobTags();
   
   //pEnameSet_jobInfo->vContentDump();
   //pEnameSet_job->vContentDump();

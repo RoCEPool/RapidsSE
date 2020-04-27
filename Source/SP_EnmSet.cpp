@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_EnmSet.cpp - EnameSet sprint helper                          (on c stack) */
+/* SP_EnmSet.cpp - TagSet sprint helper                          (on c stack) */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -32,7 +32,7 @@ SP_EnmSet::~SP_EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint SP_EnmSet and return Stz* to result                                 */
 /*----------------------------------------------------------------------------*/
-Stz* SP_EnmSet::sz(EnameSet* pEnameSet)
+Stz* SP_EnmSet::sz(TagSet* pEnameSet)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
   

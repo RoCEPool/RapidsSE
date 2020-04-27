@@ -179,7 +179,7 @@ void Step::vWordEmbObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.EnameSet@ -- fetch ename set                                          */
+/* word.TagSet@ -- fetch ename set                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetFetch(void)
 {
@@ -187,7 +187,7 @@ void Step::vWordEnmSetFetch(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  EnameSet* pEnameSet = pWord->pEnameSet();
+  TagSet* pEnameSet = pWord->pEnameSet();
   
    m_pDataStack->vPushPtr(pEnameSet);
   
@@ -195,7 +195,7 @@ void Step::vWordEnmSetFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.EnameSet! -- store ename set                                          */
+/* word.TagSet! -- store ename set                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetStore(void)
 {
@@ -203,7 +203,7 @@ void Step::vWordEnmSetStore(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  EnameSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
   
   pWord->vEnameSet(pEnameSet);
   

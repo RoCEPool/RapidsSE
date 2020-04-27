@@ -160,7 +160,7 @@ void MetaType::vPrint(i8 i_Tab)
 
       vTrace("%s"_Stz,pInherit->sInheritedType()->azChar());
       
-      EnameSet* pTplArgs = pInherit->pTplArgs();
+      TagSet* pTplArgs = pInherit->pTplArgs();
       if (pTplArgs) {
         vTrace("<"_Stz);
         i8 nArgs = pTplArgs->nItems();
@@ -211,7 +211,7 @@ Stz* MetaType::szTypeNm(void)
 /*----------------------------------------------------------------------------*/
 /* get template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-EnameSet* MetaType::pTplParams(void)
+TagSet* MetaType::pTplParams(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
     
@@ -221,12 +221,12 @@ EnameSet* MetaType::pTplParams(void)
 /*----------------------------------------------------------------------------*/
 /* set template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-void MetaType::vTplParams(EnameSet* pTplParams)
+void MetaType::vTplParams(TagSet* pTplParams)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
   if (! m_pTplParams)
-    m_pTplParams = new EnameSet;
+    m_pTplParams = new TagSet;
     
   m_pTplParams->vCopy(pTplParams);
 }

@@ -24,7 +24,7 @@ namespace Prompt
 
     i8        m_iCmdNo;     // command no
     JobClass* m_aJobClass;  // job class
-    EnameSet  m_oJobTags;   // job level tags
+    TagSet  m_oJobTags;   // job level tags
     Job*      m_pJob;       // job
 
     Request*  m_pRequest;       // current request being executed by SE
@@ -35,7 +35,7 @@ namespace Prompt
     ObjectsInPool* m_pObjectsInPool;
     ObjectsInPool* m_pSnapshotObjects;
     
-    EnameSet  m_oSettings;
+    TagSet  m_oSettings;
     ShortCutVec m_oShortCutVec; // vector of short cuts
     Timer     m_oTimer;         // the timer
    
@@ -112,7 +112,7 @@ namespace Prompt
     i8   iRequestId(void);
     Session* pSession(void);
     void vSetJob(void);
-    EnameSet* pSettings(void);
+    TagSet* pSettings(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     ObjectsInPool*  pSnapshotObjects(void);

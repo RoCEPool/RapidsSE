@@ -386,7 +386,7 @@ bool Dynamo::bCollectTag(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  EnameSet* pEnameSet = m_p_Job->pJobTags();
+  TagSet* pEnameSet = m_p_Job->pJobTags();
   
   pEnameSet->vInsert(sTagNm,sTagValue);
   

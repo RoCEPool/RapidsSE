@@ -127,7 +127,7 @@ void Op::vDump(i8 i_Op)
   
   s256 sArgs;
   
-  EnameSet* pTopologyEnameSet = this->pTopologyEnameSet();
+  TagSet* pTopologyEnameSet = this->pTopologyEnameSet();
   
   pTopologyEnameSet->vSprint(sArgs);
   
@@ -145,7 +145,7 @@ void Op::vDump(i8 i_Op)
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
-  EnameSet* pEnameSet = this->pEnameSet();
+  TagSet* pEnameSet = this->pEnameSet();
   i8 iXmits =  pEnameSet->iValue(C_TAG_Xmits);
   i8 iLeftMarkers = iXmits ? iXmits : 1;
   
@@ -283,9 +283,9 @@ void Op::vDropTaskLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the EnameSet                                                           */
+/* get the TagSet                                                           */
 /*----------------------------------------------------------------------------*/
-EnameSet* Op::pEnameSet(void)
+TagSet* Op::pEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -942,8 +942,8 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
 
   m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
 
-  EnameSet* pOpJobEnameSet = AM::pJobTags(m_pOpJob);
-  EnameSet* pPipeLineJobEnameSet = AM::pJobTags(m_pPipelineJob);
+  TagSet* pOpJobEnameSet = AM::pJobTags(m_pOpJob);
+  TagSet* pPipeLineJobEnameSet = AM::pJobTags(m_pPipelineJob);
 
   pOpJobEnameSet->vInsert(C_TAG_PATH,
                           pPipeLineJobEnameSet->szValue(C_TAG_PATH));
@@ -953,9 +953,9 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job* pJob_pipeline = AM::pThisTLSJob();
-  EnameSet* pEnameSet_pipeline = AM::pJobTags(pJob_pipeline);
+  TagSet* pEnameSet_pipeline = AM::pJobTags(pJob_pipeline);
  
-  EnameSet* pEnameSet_op = AM::pJobTags(m_pOpJob);
+  TagSet* pEnameSet_op = AM::pJobTags(m_pOpJob);
 
   pEnameSet_op->vCopy(pEnameSet_pipeline);
   
@@ -1020,9 +1020,9 @@ void Op::vToCmdStr(Stz* szCmdStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the topology EnameSet                                                  */
+/* get the topology TagSet                                                  */
 /*----------------------------------------------------------------------------*/
-EnameSet* Op::pTopologyEnameSet(void)
+TagSet* Op::pTopologyEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   

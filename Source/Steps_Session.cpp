@@ -63,7 +63,7 @@ void Step::vSessionEnameSetFetch(void)
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
-  EnameSet* pEnameSet = pSession->m_pSemantic->pEnameSet();
+  TagSet* pEnameSet = pSession->m_pSemantic->pEnameSet();
   
   m_pDataStack->vPushPtr(pEnameSet);
   

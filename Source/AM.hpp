@@ -163,7 +163,7 @@ namespace Oblique
   
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vAppendJobTags(Job* pJob, EnameSet* pTagSet);
+    static void vAppendJobTags(Job* pJob, TagSet* pTagSet);
     static bool bAttached(void);
     static i8   iAMTimePoint(void);
 
@@ -183,7 +183,7 @@ namespace Oblique
     static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static EnameSet* pJobTags(Job* pJob);
+    static TagSet* pJobTags(Job* pJob);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vFocalAdd(Focal* pFocal);

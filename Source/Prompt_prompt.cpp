@@ -36,7 +36,7 @@ bool Prompt::bPrompt_prompt(SePrompt* pPrompt)
   TokenVec* pTknVec   = pPrompt->pTokenVec();
   i8 nTokens = pTknVec->nTokens();
 
-  EnameSet* pSettings = pPrompt->pSettings();
+  TagSet* pSettings = pPrompt->pSettings();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

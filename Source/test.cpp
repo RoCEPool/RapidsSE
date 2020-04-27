@@ -1264,7 +1264,7 @@ void vTest25(void)
   bStrings.iAppend("abc"_Stz);  bStrings.vPrintAll();
   bStrings.iAppend("defg"_Stz); bStrings.vPrintAll();
 
-  EnameSet* pEnameSet = new EnameSet();
+  TagSet* pEnameSet = new TagSet();
   
   pEnameSet->vInsert("name1"_Stz,"value1"_Stz);
   pEnameSet->vInsert("name2"_Stz,"value2"_Stz);

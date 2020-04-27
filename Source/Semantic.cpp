@@ -70,7 +70,7 @@ Semantic::~Semantic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get ename-value set                                                        */
 /*----------------------------------------------------------------------------*/
-EnameSet* Semantic::pEnameSet(void)
+TagSet* Semantic::pEnameSet(void)
 {
   _precondition_(_MAGIC_,CN_SEMANTIC,_FOOTER_);
  

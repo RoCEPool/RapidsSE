@@ -60,7 +60,7 @@ MetaMember::~MetaMember(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test if term set can be recogised as a member variable                     */
 /*----------------------------------------------------------------------------*/
-bool MetaMember::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
+bool MetaMember::bIsMemberVar(Stz* szClassNm, TagSet* pTerms)
 {
   _static_
   
@@ -127,7 +127,7 @@ bool MetaMember::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /* get member name from given terms                                           */
 /*----------------------------------------------------------------------------*/
-Stz* MetaMember::szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
+Stz* MetaMember::szMemberNm(TagSet* pTerms, Stz*& rszTypeNm,
                             i8& rnAsterisks, bool& rbFunPtr,
                             i8& rnElements, i8& rnBits)
 {
@@ -354,7 +354,7 @@ i8 MetaMember::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get the optional template arguments                                        */
 /*----------------------------------------------------------------------------*/
-EnameSet* MetaMember::pTplArgs(void)
+TagSet* MetaMember::pTplArgs(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
@@ -364,12 +364,12 @@ EnameSet* MetaMember::pTplArgs(void)
 /*----------------------------------------------------------------------------*/
 /* set template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-void MetaMember::vTplArgs(EnameSet* pTplArgs)
+void MetaMember::vTplArgs(TagSet* pTplArgs)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
   if (!m_pTplArgs)
-    m_pTplArgs = new EnameSet;
+    m_pTplArgs = new TagSet;
   
   m_pTplArgs->vCopy(pTplArgs);
 }

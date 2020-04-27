@@ -57,7 +57,7 @@ Stz* MetaInherit::sInheritedType(void)
 /*----------------------------------------------------------------------------*/
 /* get the optional template arguments                                        */
 /*----------------------------------------------------------------------------*/
-EnameSet* MetaInherit::pTplArgs(void)
+TagSet* MetaInherit::pTplArgs(void)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
@@ -67,12 +67,12 @@ EnameSet* MetaInherit::pTplArgs(void)
 /*----------------------------------------------------------------------------*/
 /* set template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-void MetaInherit::vTplArgs(EnameSet* pTplArgs)
+void MetaInherit::vTplArgs(TagSet* pTplArgs)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
   if (!m_pTplArgs)
-    m_pTplArgs = new EnameSet;
+    m_pTplArgs = new TagSet;
   
   m_pTplArgs->vCopy(pTplArgs);
 }

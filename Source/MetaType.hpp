@@ -17,7 +17,7 @@ namespace Reflection
     eMT           m_eMetaType;     // kind of type
     eCP           m_eCppPart;      // c++ part
   
-    EnameSet*     m_pTplParams;    // template parameters of this type
+    TagSet*     m_pTplParams;    // template parameters of this type
   
     MetaInherits* m_pMetaInherits; // set of inherited types
 
@@ -49,8 +49,8 @@ namespace Reflection
   
     i8   nSize(void);
   
-    EnameSet* pTplParams(void);
-    void vTplParams(EnameSet* pTplParams);
+    TagSet* pTplParams(void);
+    void vTplParams(TagSet* pTplParams);
   
     Stz* szTypeNm(void);
   

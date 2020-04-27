@@ -11,7 +11,7 @@ namespace Sessions
   
   private:
   
-    EnameSet m_oEnameSet; // ename-value set
+    TagSet m_oEnameSet; // ename-value set
 
     // must be last
     Footer m_xFooter;
@@ -23,7 +23,7 @@ namespace Sessions
     Semantic(void);
    ~Semantic(void) noexcept(false);
   
-    EnameSet* pEnameSet(void);
+    TagSet* pEnameSet(void);
 
   private:
     Footer* aFooter(void);

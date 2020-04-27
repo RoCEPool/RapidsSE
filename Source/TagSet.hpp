@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnameSet.hpp -- ename-value set                                            */
+/* TagSet.hpp -- ename-value set                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Gadgets
 {
   static const i8 C_ENAME_SET = 256;
   
-  class EnameSet : public Object
+  class TagSet : public Object
   {
   public:
   
@@ -28,8 +28,8 @@ namespace Gadgets
     void* operator new(size_t);
     void operator delete(void*);
   
-    EnameSet(void);
-   ~EnameSet() noexcept(false);
+    TagSet(void);
+   ~TagSet() noexcept(false);
   
     void vAppend(Stz* szName);
     void vAppend(Stz* szName, i8 iValue);
@@ -37,7 +37,7 @@ namespace Gadgets
     void vConcat(Stz* szCmd);
     void vConcat(Stz* szCmd, i8 i_Ename);
     void vContentDump(void);
-    void vCopy(EnameSet* pSrcEnameSet);
+    void vCopy(TagSet* pSrcEnameSet);
     void vDelete(Stz* szName);
     void vDumpSet(bool bCarriageReturns=false);
     void vDumpSetDetailed(void);
@@ -67,7 +67,7 @@ namespace Gadgets
     Footer* aFooter(void);
   };
   
-  EnameSet* _pEnameSet(void* aAddr);
+  TagSet* _pEnameSet(void* aAddr);
 }
 
 /*============================================================================*/

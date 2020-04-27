@@ -635,7 +635,7 @@ i8 gnClassSize[]
   /* */ sizeof(TableDef),           // CN_TABLEDEF
   /* */ sizeof(TablePtn),           // CN_TABLEPTN
   /* */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
-  /* */ sizeof(EnameSet),           // CN_TAGSET
+  /* */ sizeof(TagSet),           // CN_TAGSET
   /* */ sizeof(Task),               // CN_TASK
   /* */ sizeof(TaskList),           // CN_TASKLIST
   /* */ sizeof(TaskQueue),          // CN_TASKQUEUE

@@ -11,7 +11,7 @@ namespace Jobs
   private:
     JobClass* m_aJobClass;    // job class THIS WILL GO
     s32       m_sJobNm;       // name of job
-    EnameSet  m_oJobTags;     // tags for the job
+    TagSet  m_oJobTags;     // tags for the job
     i8        m_iParentId;    // job id of parent job which spawned this job
     Timer     m_oTimer;       // timer
 
@@ -63,7 +63,7 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
   
-    static EnameSet* pJobInfo_enameSet(Stz* szJobNm);
+    static TagSet* pJobInfo_enameSet(Stz* szJobNm);
 
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
@@ -97,8 +97,8 @@ namespace Jobs
     void vJobPhase(eJP eJobPhase);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
-    EnameSet* pJobTags(void);
-    EnameSet* pJobInfoEnameSet(void);
+    TagSet* pJobTags(void);
+    TagSet* pJobInfoEnameSet(void);
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
+bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
                           TokenVec* pTknVec)
 {
   Dic* pRootDic = AM::pRootDic();
@@ -56,8 +56,8 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse token vec of command and extract arguments                           */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractArgs(EnameSet* pArgEnmSet,
-                             EnameSet* pSynEnmSet,
+bool JobHelper::bExtractArgs(TagSet* pArgEnmSet,
+                             TagSet* pSynEnmSet,
                              TokenVec* pTknVec
                              )
 {
@@ -110,8 +110,8 @@ bool JobHelper::bExtractArgs(EnameSet* pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
-                             EnameSet*   pSynEnmSet,
+bool JobHelper::bExtractJson(TagSet*   pArgEnmSet,
+                             TagSet*   pSynEnmSet,
                              i8&       i_Syn_,
                              TokenVec* pTknVec,
                              i8&       i_Tkn_
@@ -159,8 +159,8 @@ bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
-                             EnameSet*   pSynEnmSet,
+bool JobHelper::bExtractMeta(TagSet*   pArgEnmSet,
+                             TagSet*   pSynEnmSet,
                              i8&       i_Syn_,
                              TokenVec* pTknVec,
                              i8&       i_Tkn_
@@ -184,7 +184,7 @@ bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* test if the token vector matches the given job syntax                      */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
+bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynEnmSet)
 {
   i8 nTokens = pTknVec->nTokens();
   

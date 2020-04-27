@@ -354,7 +354,7 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* get the ename set of the named (universal) job                             */
 /*----------------------------------------------------------------------------*/
-EnameSet* Job::pJobInfo_enameSet(Stz* szJobNm)
+TagSet* Job::pJobInfo_enameSet(Stz* szJobNm)
 {
   s32 sJobNm_info = szJobNm;
   sJobNm_info.vConcat("_info"_Stz);
@@ -364,7 +364,7 @@ EnameSet* Job::pJobInfo_enameSet(Stz* szJobNm)
   if (!pWord_jobInfo)
     return nullptr;
   
-  EnameSet* pEnameSet = pWord_jobInfo->pEnameSet();
+  TagSet* pEnameSet = pWord_jobInfo->pEnameSet();
   
   return pEnameSet;
 }
@@ -779,7 +779,7 @@ void Job::vJobState(eJS eJobState)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-EnameSet* Job::pJobTags(void)
+TagSet* Job::pJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -789,7 +789,7 @@ EnameSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* get the ename set of job information                                       */
 /*----------------------------------------------------------------------------*/
-EnameSet* Job::pJobInfoEnameSet(void)
+TagSet* Job::pJobInfoEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -808,7 +808,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
   
   Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
   
-  EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
+  TagSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
 
   return pJobInfoEnameSet;
 }
@@ -1410,7 +1410,7 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   
   if (CN_JOB_UNIVERSAL == eClass) {
     
-    EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
+    TagSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
     
     
     if (pJobInfoEnameSet)

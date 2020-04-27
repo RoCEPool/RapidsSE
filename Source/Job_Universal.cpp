@@ -195,7 +195,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     return EC_INVALID_COMMAND;
   }
   
-  EnameSet* pEnameSet_ji = pJobInfoEnameSet();
+  TagSet* pEnameSet_ji = pJobInfoEnameSet();
   //pEnameSet_ji->vPrint();
   
   if (pEnameSet_ji) {
@@ -215,7 +215,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //
 //    Word* pJob_info = pRootDic->pFindWord(sJob_info);
 //    if (pJob_info) {
-//      EnameSet* pEnameSet_class = pJob_info->pEnameSet();
+//      TagSet* pEnameSet_class = pJob_info->pEnameSet();
 //      pEnameSet()->vCopy(pEnameSet_class);
 //    }
   }

@@ -15,7 +15,7 @@ namespace Reflection
     s32 m_sConstNm;   // name of the constant
     i8  m_iConst;     // value of the constant
   
-    EnameSet m_oTerms; // terms of this constant
+    TagSet m_oTerms; // terms of this constant
 
     // must be last
     Footer m_xFooter;
@@ -27,8 +27,8 @@ namespace Reflection
     ConstDef(ConstSet* p_ConstSet);
    ~ConstDef(void) noexcept(false);
   
-    static bool bIsConstDef(Stz* szConstNm, EnameSet* pTerms);
-    static Stz* szConstNm(EnameSet* pTerms);
+    static bool bIsConstDef(Stz* szConstNm, TagSet* pTerms);
+    static Stz* szConstNm(TagSet* pTerms);
 
     Stz* szConstNm(void);
     void vConstNm(Stz* szConstNm);
@@ -37,7 +37,7 @@ namespace Reflection
 
     void vPrint(i8 i_Tab);
 
-    void vTerms(EnameSet& roTerms);
+    void vTerms(TagSet& roTerms);
 
     Footer* aFooter(void);
   };

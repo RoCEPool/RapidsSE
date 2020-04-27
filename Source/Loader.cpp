@@ -169,7 +169,7 @@ bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* set the formatter from the tags in the ename set                           */
 /*----------------------------------------------------------------------------*/
-bool Loader::bSetFormat(EnameSet* pEnameSet)
+bool Loader::bSetFormat(TagSet* pEnameSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   

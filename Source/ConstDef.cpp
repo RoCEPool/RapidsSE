@@ -50,7 +50,7 @@ ConstDef::~ConstDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test if term set can be recogised as a member variable                     */
 /*----------------------------------------------------------------------------*/
-bool ConstDef::bIsConstDef(Stz* szConstNm, EnameSet* pTerms)
+bool ConstDef::bIsConstDef(Stz* szConstNm, TagSet* pTerms)
 {
   _static_
   
@@ -60,7 +60,7 @@ bool ConstDef::bIsConstDef(Stz* szConstNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /* get constant name from given terms                                         */
 /*----------------------------------------------------------------------------*/
-Stz* ConstDef::szConstNm(EnameSet* pTerms)
+Stz* ConstDef::szConstNm(TagSet* pTerms)
 {
   _static_
   
@@ -126,7 +126,7 @@ void ConstDef::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* get const terms                                                            */
 /*----------------------------------------------------------------------------*/
-void ConstDef::vTerms(EnameSet& roTerms)
+void ConstDef::vTerms(TagSet& roTerms)
 {
   _precondition_(_MAGIC_,CN_CONSTDEF,_FOOTER_);
     

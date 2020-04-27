@@ -1302,7 +1302,7 @@ void SePrompt::vSetJob(void)
   
   if (m_oJobTags.bHasName(C_TAG_INFO)) {
     
-    EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
+    TagSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
     if (pJobInfo_es)
       pJobInfo_es->vDumpSet();
   }
@@ -1321,7 +1321,7 @@ void SePrompt::vSetJob(void)
 /*----------------------------------------------------------------------------*/
 /* get the prompt settings tag set                                            */
 /*----------------------------------------------------------------------------*/
-EnameSet* SePrompt::pSettings(void)
+TagSet* SePrompt::pSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

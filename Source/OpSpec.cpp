@@ -102,9 +102,9 @@ bool OpSpec::bAppendRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the EnameSet                                                           */
+/* get the TagSet                                                           */
 /*----------------------------------------------------------------------------*/
-EnameSet* OpSpec::pEnameSet(void)
+TagSet* OpSpec::pEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -172,9 +172,9 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the topology EnameSet                                                  */
+/* get the topology TagSet                                                  */
 /*----------------------------------------------------------------------------*/
-EnameSet* OpSpec::pTopologyEnameSet(void)
+TagSet* OpSpec::pTopologyEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   

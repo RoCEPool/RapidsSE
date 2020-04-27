@@ -46,7 +46,7 @@ MetaGraph::~MetaGraph(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* print term sequence                                                        */
 /*----------------------------------------------------------------------------*/
-void MetaGraph::vPrintTermSeq(EnameSet& roTerms)
+void MetaGraph::vPrintTermSeq(TagSet& roTerms)
 {
   i8 nTerms = roTerms.nEnames();
   

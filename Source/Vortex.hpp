@@ -39,7 +39,7 @@ namespace Utilities
     bool        m_baPart[VP_ENUMS]; // which cpp syntax parts are active?
   
     s32         m_sConstNm;      // const name
-    EnameSet    m_oConstTerms;   // collected terms of const
+    TagSet    m_oConstTerms;   // collected terms of const
 
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
@@ -48,26 +48,26 @@ namespace Utilities
     s32         m_sClassNm;      // current class name
   
     bool        m_bInTemplate;   // currently in a namespace?
-    EnameSet    m_oTplSpec;      // working set of collected template terms
+    TagSet    m_oTplSpec;      // working set of collected template terms
     s4K         m_sTplSpec;      // current template specification
   
     i8          m_iNextStruct;   // next anonymous c++ struct
     i8          m_iNextUnion;    // next anonymous c++ union
 
     s32         m_sTypeNm;       // current type name
-    EnameSet    m_oTypeSpec;     // working set of collected specifier terms
+    TagSet    m_oTypeSpec;     // working set of collected specifier terms
     i8          m_nAsterisks;
-    EnameSet    m_oFunVarNm;     // working set of collected funvar name terms
+    TagSet    m_oFunVarNm;     // working set of collected funvar name terms
     bool        m_bIsFunPtr;     //
     i8          m_nFieldBits;   
     bool        m_bIsArray;      //
-    EnameSet    m_oArraySpec;    // working set of collected array spec terms
+    TagSet    m_oArraySpec;    // working set of collected array spec terms
     bool        m_bIsFun;        //
-    EnameSet    m_oFunSpec;      // working set of collected function spec terms
-    EnameSet    m_oTypeArgs;     // working set of collected template args terms
-    EnameSet    m_oClassArgs;    // working set of collected template args terms
+    TagSet    m_oFunSpec;      // working set of collected function spec terms
+    TagSet    m_oTypeArgs;     // working set of collected template args terms
+    TagSet    m_oClassArgs;    // working set of collected template args terms
 
-    EnameSet    m_oOtherTerms;   // working set of collected other terms
+    TagSet    m_oOtherTerms;   // working set of collected other terms
  
     // correctness section
   
@@ -181,13 +181,13 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
 
-    void vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose);
-    void vCollectBalancedAngles(EnameSet& roTerms);
-    void vCollectBalancedBraces(EnameSet& roTerms);
-    void vCollectBalancedParenthesis(EnameSet& roTerms);
-    void vCollectRemainingTerms(EnameSet& roTerms);
-    void vCollectTemplateSpec(EnameSet& roTplSepc);
-    void vCollectTypeArgs(EnameSet& roTypeArgs);
+    void vCollectBalanced(TagSet& roTerms, Stz* szOpen, Stz* szClose);
+    void vCollectBalancedAngles(TagSet& roTerms);
+    void vCollectBalancedBraces(TagSet& roTerms);
+    void vCollectBalancedParenthesis(TagSet& roTerms);
+    void vCollectRemainingTerms(TagSet& roTerms);
+    void vCollectTemplateSpec(TagSet& roTplSepc);
+    void vCollectTypeArgs(TagSet& roTypeArgs);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(void);

@@ -27,7 +27,7 @@ void Step::vTagGet(void)
   
   Job* pJob = m_pTask->pJob();
       
-  EnameSet* pEnameSet = pJob->pJobTags();
+  TagSet* pEnameSet = pJob->pJobTags();
 
   i8 i_Tag = pEnameSet->i_Find(sTagNm.szStz());
   
@@ -69,7 +69,7 @@ void Step::vTagSet(void)
 
   Job* pJob = m_pTask->pJob();
       
-  EnameSet* pEnameSet = pJob->pJobTags();
+  TagSet* pEnameSet = pJob->pJobTags();
 
   pEnameSet->vInsert(sTagNm,sTagValue);
 }

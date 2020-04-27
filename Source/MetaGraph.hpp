@@ -22,7 +22,7 @@ namespace Reflection
     MetaGraph(void);
    ~MetaGraph(void) noexcept(false);
   
-    static void vPrintTermSeq(EnameSet& roTerms);
+    static void vPrintTermSeq(TagSet& roTerms);
   
     void  vAddMetaType(MetaType* pMetaType);
 

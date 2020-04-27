@@ -2086,7 +2086,7 @@ void Vortex::vTemplateEnd(void)
 /*----------------------------------------------------------------------------*/
 /* collect delimited tokens (potentially nested)                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
+void Vortex::vCollectBalanced(TagSet& roTerms, Stz* szOpen, Stz* szClose)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -2112,7 +2112,7 @@ void Vortex::vCollectBalanced(EnameSet& roTerms, Stz* szOpen, Stz* szClose)
 /*----------------------------------------------------------------------------*/
 /* collect balanced angle brackets pair: < ... >                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedAngles(EnameSet& roTerms)
+void Vortex::vCollectBalancedAngles(TagSet& roTerms)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -2123,7 +2123,7 @@ void Vortex::vCollectBalancedAngles(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 /* collect balanced curly braces pair: { ... }                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedBraces(EnameSet& roTerms)
+void Vortex::vCollectBalancedBraces(TagSet& roTerms)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -2134,7 +2134,7 @@ void Vortex::vCollectBalancedBraces(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 /* collect balanced parenthesis pair: ( ... )                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectBalancedParenthesis(EnameSet& roTerms)
+void Vortex::vCollectBalancedParenthesis(TagSet& roTerms)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -2145,7 +2145,7 @@ void Vortex::vCollectBalancedParenthesis(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 /* collect other terms: <other> ... | ; | { ... }                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
+void Vortex::vCollectRemainingTerms(TagSet& roTerms)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -2177,7 +2177,7 @@ void Vortex::vCollectRemainingTerms(EnameSet& roTerms)
 /*----------------------------------------------------------------------------*/
 /* collect all template parameters : TEMPLATE  < _^_ ... >                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
+void Vortex::vCollectTemplateSpec(TagSet& roTplSepc)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -2206,7 +2206,7 @@ void Vortex::vCollectTemplateSpec(EnameSet& roTplSepc)
 /*----------------------------------------------------------------------------*/
 /* collect all template arguments : < _^_ ... >                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTypeArgs(EnameSet& roTypeArgs)
+void Vortex::vCollectTypeArgs(TagSet& roTypeArgs)
 {
   vTraceEnter_short((char*)__func__);
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);

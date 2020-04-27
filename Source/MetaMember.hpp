@@ -19,7 +19,7 @@ namespace Reflection
     // type specifier
     s32       m_sTypeNm;    // name of specified type (such as i8, Footer, List_t<..>)
     MetaType* m_p_MetaType; // the type of this member
-    EnameSet* m_pTplArgs;   //   opt. specified with these template arguments
+    TagSet* m_pTplArgs;   //   opt. specified with these template arguments
     i8        m_nAsterisks; // number of asterisks after the specified type
     bool      m_bFunPtr;    // is this member a function pointer?
 
@@ -37,8 +37,8 @@ namespace Reflection
     MetaMember(Stz* szMemberNm, MetaType* p_WithinType);
    ~MetaMember(void) noexcept(false);
   
-    static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
-    static Stz* szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
+    static bool bIsMemberVar(Stz* szClassNm, TagSet* pTerms);
+    static Stz* szMemberNm(TagSet* pTerms, Stz*& rszTypeNm,
                            i8& rnAsterisks, bool& rbFunPtr,
                            i8& rnElements, i8& rnBits);
 
@@ -68,8 +68,8 @@ namespace Reflection
   
     i8   nSize(void);
   
-    EnameSet* pTplArgs(void);
-    void vTplArgs(EnameSet* pTplArgs);
+    TagSet* pTplArgs(void);
+    void vTplArgs(TagSet* pTplArgs);
 
     Stz* szTypeNm(void);
     void vTypeNm(Stz* szTypeNm);

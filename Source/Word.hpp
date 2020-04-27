@@ -19,7 +19,7 @@ namespace SenVM
     bool      m_bBreakPt;     // this work gas a break point set
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
-    EnameSet* m_pEnameSet;    // optional ename set
+    TagSet* m_pEnameSet;    // optional ename set
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
     s32       m_sExceptionHook;    // routine to be called on exception
@@ -91,8 +91,8 @@ namespace SenVM
     void  vEntryStep(StepFp fpIntrinsic);
     StepFp fpEntryStep(void);
     StepFp* afpEntryStep(void);
-    EnameSet* pEnameSet(bool bCreateNew = false);
-    void  vEnameSet(EnameSet* pEnameSet);
+    TagSet* pEnameSet(bool bCreateNew = false);
+    void  vEnameSet(TagSet* pEnameSet);
     void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, Cell* aCell);

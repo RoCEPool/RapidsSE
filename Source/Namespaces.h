@@ -42,7 +42,7 @@ namespace Esses         { template <int BYTES> class String_t;
                                                                               }
 namespace Focals        { class ReqTuple;                                     }
 namespace Folders       {                                                     }
-namespace Gadgets       { class EnumFlags; class EnameSet;                    }
+namespace Gadgets       { class EnumFlags; class TagSet;                    }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }

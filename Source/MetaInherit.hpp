@@ -12,7 +12,7 @@ namespace Reflection
     MetaInherits* m_p_WithinInherits; // this inherit is within which interits set
   
     s32           m_sInheritedType; // type that is inherited
-    EnameSet*     m_pTplArgs;       // opt. with these template arguments
+    TagSet*     m_pTplArgs;       // opt. with these template arguments
 
     // must be last
     Footer m_xFooter;
@@ -26,8 +26,8 @@ namespace Reflection
   
     Stz* sInheritedType(void);
   
-    EnameSet* pTplArgs(void);
-    void vTplArgs(EnameSet* pTplArgs);
+    TagSet* pTplArgs(void);
+    void vTplArgs(TagSet* pTplArgs);
   
     Footer* aFooter(void);
   };

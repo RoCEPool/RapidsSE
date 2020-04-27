@@ -485,12 +485,12 @@ void Word::vEncodePush(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-EnameSet* Word::pEnameSet(bool bCreateNew)
+TagSet* Word::pEnameSet(bool bCreateNew)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   if (! m_pEnameSet && bCreateNew)
-    m_pEnameSet = new EnameSet;
+    m_pEnameSet = new TagSet;
   
   return m_pEnameSet;
 }
@@ -498,7 +498,7 @@ EnameSet* Word::pEnameSet(bool bCreateNew)
 /*----------------------------------------------------------------------------*/
 /* set ename set                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vEnameSet(EnameSet* pEnameSet)
+void Word::vEnameSet(TagSet* pEnameSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
