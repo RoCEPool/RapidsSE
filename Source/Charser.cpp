@@ -790,7 +790,7 @@ void Charser::vBlockCommentSkip(void)
       vDiscardFirst();
     
     if (0 == m_nLoaded)
-      vLoadFirst();
+      vLoadBoth();
     else
       vLoadSecond();
     
