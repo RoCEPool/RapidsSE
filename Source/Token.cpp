@@ -262,6 +262,19 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token a = ?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsAssign(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_OTHER == m_eToken && bSame("="_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token an integer?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsInteger(void)
@@ -269,6 +282,32 @@ bool Token::bIsInteger(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   if (TN_INTEGER == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token a < ?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsGreaterThan(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_OTHER == m_eToken && bSame(">"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token a > ?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsLessThan(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_OTHER == m_eToken && bSame("<"_Stz))
     return true;
   else
     return false;
@@ -333,6 +372,19 @@ bool Token::bIsSemicolon(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   if (TN_OTHER == m_eToken && bSame(";"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token a string?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsString(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_STRING == m_eToken)
     return true;
   else
     return false;

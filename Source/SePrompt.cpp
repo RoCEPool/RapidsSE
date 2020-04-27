@@ -186,7 +186,10 @@ void SePrompt::vPromptLoop(void)
       {;}
 
     vCheckJobCtl();
-    
+
+    if (! bCheckJobTags())
+      continue;
+
     vCheckTimed();
 
     vLogCommand();
@@ -363,12 +366,67 @@ void SePrompt::vCheckJobCtl(void)
 /*----------------------------------------------------------------------------*/
 /* check for job tags                                                         */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCheckJobTags(void)
+bool SePrompt::bCheckJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   TokenVec* pTknVec = this->pTokenVec();
 
+  i8 i_TagBegin = pTknVec->iFindToken("<"_Stz,TN_OTHER);
+    
+  if (C_UNKNOWN == i_TagBegin)
+    return true;
+
+  i8 nTkns = pTknVec->nTokens();
+
+  i8 i_Scan = i_TagBegin;
+  while (i_Scan < nTkns) {
+  
+    Token* pScan = pTknVec->pGet(i_Scan++);        // <
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pScan->bIsLessThan())
+      return false;
+    
+    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // name
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pTkn_name->bIsName())
+      return false;
+
+    pScan = pTknVec->pGet(i_Scan++);               // >
+    if (! pScan->bIsGreaterThan())
+      return false;
+    
+    pScan = pTknVec->pGet(i_Scan++);               // =
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pScan->bIsAssign())
+      return false;
+
+    Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
+    if (! pTkn_value->bIsString())
+      return false;
+
+    s32 sName;
+    sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
+    m_oJobCtl.vAppend(sName,pTkn_value->szChars());
+  }
+  
+  m_oJobCtl.vDumpSet();
+  
+  vDebugPoint();
+  
+  return true;
+    
+//  i8 nTkns;
+//
+//  nTkns = pTknVec->nTokens();
+//  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+//
+//  }
+
+  
 }
 
 /*----------------------------------------------------------------------------*/
