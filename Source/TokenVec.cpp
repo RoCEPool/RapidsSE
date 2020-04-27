@@ -67,6 +67,7 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     Token* pWithToken = pWithVec->pGet(i_Find);
 
     pThisToken->vUpdateChars(pWithToken->szChars(),pThisVec);
+    pThisToken->vToken(pWithToken->eToken());
   }
 }
 

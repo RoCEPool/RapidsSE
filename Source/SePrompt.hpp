@@ -24,7 +24,7 @@ namespace Prompt
 
     i8        m_iCmdNo;     // command no
     JobClass* m_aJobClass;  // job class
-    EnameSet  m_oJobCtl;    // job control tags
+    EnameSet  m_oJobTags;   // job level tags
     Job*      m_pJob;       // job
 
     Request*  m_pRequest;       // current request being executed by SE
@@ -64,7 +64,7 @@ namespace Prompt
     BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
     void vCheckJobCtl(void);
-    void vCheckJobTags(void);
+    bool bCheckJobTags(void);
     void vCheckTimed(void);
     i8   iCommandFocal(void);
     void vCompletedTask(void);

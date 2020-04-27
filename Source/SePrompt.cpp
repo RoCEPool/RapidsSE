@@ -186,7 +186,10 @@ void SePrompt::vPromptLoop(void)
       {;}
 
     vCheckJobCtl();
-    
+
+    if (! bCheckJobTags())
+      continue;
+
     vCheckTimed();
 
     vLogCommand();
@@ -339,7 +342,7 @@ void SePrompt::vCheckJobCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_oJobCtl.vReset();
+  m_oJobTags.vReset();
   
   Token* pTkn0 = pTkn(0);
   
@@ -350,25 +353,80 @@ void SePrompt::vCheckJobCtl(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("</%s>"_Stz,pTkn1->szChars());
     
-    m_oJobCtl.vInsert(sTag,1);
+    m_oJobTags.vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
   }
   
-  //if (m_oJobCtl.nEnames())
-  //  m_oJobCtl.vPrint();
+  //if (m_oJobTags.nEnames())
+  //  m_oJobTags.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
 /* check for job tags                                                         */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCheckJobTags(void)
+bool SePrompt::bCheckJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   TokenVec* pTknVec = this->pTokenVec();
 
+  i8 i_TagBegin = pTknVec->iFindToken("<"_Stz,TN_OTHER);
+    
+  if (C_UNKNOWN == i_TagBegin)
+    return true;
+
+  i8 nTkns = pTknVec->nTokens();
+
+  i8 i_Scan = i_TagBegin;
+  while (i_Scan < nTkns) {
+  
+    Token* pScan = pTknVec->pGet(i_Scan++);        // <
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pScan->bIsLessThan())
+      return false;
+    
+    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // name
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pTkn_name->bIsName())
+      return false;
+
+    pScan = pTknVec->pGet(i_Scan++);               // >
+    if (! pScan->bIsGreaterThan())
+      return false;
+    
+    pScan = pTknVec->pGet(i_Scan++);               // =
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pScan->bIsAssign())
+      return false;
+
+    Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
+    if (! pTkn_value->bIsString())
+      return false;
+
+    s32 sName;
+    sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
+    m_oJobTags.vAppend(sName,pTkn_value->szChars());
+  }
+  
+  m_oJobTags.vDumpSet();
+  
+  vDebugPoint();
+  
+  return true;
+    
+//  i8 nTkns;
+//
+//  nTkns = pTknVec->nTokens();
+//  for (i8 i_Token = 0; i_Token < nTkns; i_Token++) {
+//
+//  }
+
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,7 +441,7 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_oJobCtl.vInsert(C_TAG_TIME,1);
+  m_oJobTags.vInsert(C_TAG_TIME,1);
 
   vCutToken(0);
 }
@@ -1238,14 +1296,14 @@ void SePrompt::vSetJob(void)
   m_pJob->pEnameSet()->vInsert(C_TAG_DISTID,m_pJob->m_iFocalId);
   m_pJob->pEnameSet()->vInsert(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   
-  if (m_oJobCtl.bHasName(C_TAG_INFO)) {
+  if (m_oJobTags.bHasName(C_TAG_INFO)) {
     
     EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
     if (pJobInfo_es)
       pJobInfo_es->vDumpSet();
   }
 
-  m_pJob->pEnameSet()->vCopy(&m_oJobCtl);
+  m_pJob->pEnameSet()->vCopy(&m_oJobTags);
   
   if (m_pJob->bHasTag(C_TAG_LIFE)) {
     SP_EnmSet spEnameSet;
