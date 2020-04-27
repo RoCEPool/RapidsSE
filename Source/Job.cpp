@@ -228,8 +228,8 @@ Job::~Job(void) noexcept(false)
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
 //    SP_EnmSet spEnameSet;
-//    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oEnameSet));
-//    //m_oEnameSet.vPrint();
+//    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oJobTags));
+//    //m_oJobTags.vPrint();
 //  }
 
   vIncStepNo();
@@ -534,7 +534,7 @@ void Job::vContentDump(void)
     m_pPipeline->pJob()->vContentDump();
   }
   
-  m_oEnameSet.vContentDump();
+  m_oJobTags.vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -580,7 +580,7 @@ bool Job::bHasTag(Stz* szEnameTag)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_oEnameSet.bHasName(szEnameTag))
+  if (m_oJobTags.bHasName(szEnameTag))
     return true;
   
   return false;
@@ -783,7 +783,7 @@ EnameSet* Job::pJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return & m_oEnameSet;
+  return & m_oJobTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -793,7 +793,7 @@ EnameSet* Job::pJobInfoEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* szJobNm = m_oEnameSet.szValue(C_TAG_JOBNM);
+  Stz* szJobNm = m_oJobTags.szValue(C_TAG_JOBNM);
   
   // did we get a job name ?
   if ( szJobNm->bEqual(""_Stz) ) {
@@ -1211,10 +1211,10 @@ void Job::vSeed(eSS eSeed)
   
   m_eSeed = eSeed;
   
-  if (m_oEnameSet.bHasName("<seed>"_Stz))
-    m_oEnameSet.vReplace("<seed>"_Stz,aSS[eSeed]);
+  if (m_oJobTags.bHasName("<seed>"_Stz))
+    m_oJobTags.vReplace("<seed>"_Stz,aSS[eSeed]);
   else
-    m_oEnameSet.vInsert("<seed>"_Stz,aSS[eSeed]);
+    m_oJobTags.vInsert("<seed>"_Stz,aSS[eSeed]);
 
   m_aJobClass->m_bSeedsSpawned[eSeed] = true;
 }
