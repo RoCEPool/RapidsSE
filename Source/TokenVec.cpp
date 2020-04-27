@@ -928,6 +928,30 @@ void TokenVec::vStripSemicolon(void)
   }
 }
 #endif
+
+/*----------------------------------------------------------------------------*/
+/* trim / remove all tokens from given token                                  */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vTrimTokens(i8 i_Tkn)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  Token* pToken = pGet(i_Tkn);
+  Stz* szTrimmedLatter = pToken->szChars();
+  
+  i8 nHadTkns = nTokens();
+  
+  
+  m_xyByteSpace.vTrim(szTrimmedLatter);
+  
+  for (i8 i_Reset = i_Tkn; i_Reset < nHadTkns; i_Reset++) {
+    Token* pToken_reset = pGet(i_Reset);
+    pToken_reset->vReset();
+  }
+  
+  vItems(i_Tkn);
+}
+
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
@@ -1312,6 +1336,8 @@ void TokenVec::_vTokenRemoveLast(Token* pTknCut)
   i8 nBytes = pTknCut->nChars() + 1;
   _vByteSpaceTrim(nBytes);
     
+  pTknCut->vReset();
+  
   // decrement te number of tokens
   vDecItems();
 }
@@ -1339,16 +1365,22 @@ void TokenVec::_vVecRippleLeft(i8 i_Tkn, i8 nAdjCharsBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  Token* pTknSrc = nullptr;
+  Token* pTknDst = nullptr;
+  
   i8 i_Limit = nTokens();
 
   for (i8 i_Ripple = i_Tkn + 1; i_Ripple < i_Limit ; i_Ripple++) {
     
-    Token* pTknSrc = pGet(i_Ripple);
-    Token* pTknDst = pGet(i_Ripple - 1);
+    pTknSrc = pGet(i_Ripple);
+    pTknDst = pGet(i_Ripple - 1);
  
     pTknDst->vRippleCopy_restricted(pTknSrc,nAdjCharsBytes,this);
   }
 
+  if (pTknSrc)
+    pTknSrc->vReset();
+  
   vDecItems();
 }
 
@@ -1359,17 +1391,22 @@ void TokenVec::_vVecRippleRight(i8 i_Tkn, i8 nAdjCharsByte)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  Token* pTknSrc = nullptr;
+  Token* pTknDst = nullptr;
+  
   i8 i_Start = nTokens() - 1;
 
   vIncItems();
   
   for (i8 i_Ripple = i_Start; i_Ripple >= i_Tkn; i_Ripple--) {
     
-    Token* pTknSrc = pGet(i_Ripple);
-    Token* pTknDst = pGet(i_Ripple + 1);
+    pTknSrc = pGet(i_Ripple);
+    pTknDst = pGet(i_Ripple + 1);
     
     pTknDst->vRippleCopy_restricted(pTknSrc,nAdjCharsByte,this);
   }
+  
+  pTknSrc = pGet(i_Start);
 }
 
 /*============================================================================*/
