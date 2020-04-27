@@ -244,7 +244,7 @@ begin
     start | periodicOp once | stageB
 
   stage stageB on all partitions :
-    fetch $table $predicate | stageC
+    fetchOP $table $predicate | stageC
 
   stage stageC on origin:
     output | sink | stageA

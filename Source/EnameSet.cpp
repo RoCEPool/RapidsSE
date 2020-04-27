@@ -150,8 +150,9 @@ void EnameSet::vConcat(Stz* szCmd)
              );
       continue;
     }
-    
+    szCmd->vConcat("\""_Stz);
     szCmd->vConcat(m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value));
+    szCmd->vConcat("\""_Stz);
   }
 }
 
@@ -170,8 +171,11 @@ void EnameSet::vConcat(Stz* szCmd, i8 i_Ename)
                       m_xEname[i_Ename].m_i_Value
                       );
   }
-  else
+  else {
+    szCmd->vConcat("\""_Stz);
     szCmd->vConcat(m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value));
+    szCmd->vConcat("\""_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
