@@ -1,8 +1,20 @@
 bc;
 
-create table bolTbl (
-  bol_col1   BOOLEAN     NOT NULL,
-  vch_col2   VARCHAR(32) NOT NULL
+create table vch (
+vch_testno  INTEGER     NOT NULL,
+vch_field   VARCHAR(32),
+vch_comment VARCHAR(64) NOT NULL
 );
 
-lscol bolTbl;
+// create an index
+create index idx on vch (vch_testno);
+
+//ld vch "../DATA/Load/vch_enclosedBy.csv" enclosed_by_leading "'" ;
+
+// load data into the table with default formatter settings
+//tag <enclosedby_leading> = "'";
+//load vch "../DATA/Load/vch_enclosedBy.csv"  ;
+//tag delete <enclosedby_leading>;
+
+
+load vch "../DATA/Load/vch_enclosedBy.csv" <enclosedby_leading> = "'" ;

@@ -381,6 +381,7 @@ public:
   void vIndexGenEntBuffers(void);
   void vIndexLowerBoundN(void);
   void vIndexPositionLowerN(void);
+  void vIndexPositionUpperN(void);
   void vIndexSize(void);
   void vIndexVerify(void);
   void vIndexVisualize(void);

@@ -16,7 +16,7 @@ void Step::vAddSteps_Planner(void)
   vAddStep("planner[].fetchTechnique@"_Stz,&Step::vPlannerFetchTechniqueFetchN);
   vAddStep("planner[]"_Stz,                &Step::vPlannerGetN);
   vAddStep("planner[].genPaths"_Stz,       &Step::vPlannerGenPathsN);
-  vAddStep("planner[].highkey@"_Stz,       &Step::vPlannerHighKeyFetchN);
+  vAddStep("planner[].upperkey@"_Stz,      &Step::vPlannerHighKeyFetchN);
   vAddStep("planner[].indexNm@"_Stz,       &Step::vPlannerIndexNmFetchN);
   vAddStep("planner[].isNull"_Stz,         &Step::vPlannerIsNullN);
   vAddStep("planner[].key@"_Stz,           &Step::vPlannerKeyFetchN);
