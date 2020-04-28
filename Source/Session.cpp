@@ -118,8 +118,6 @@ Session::Session(void)
   m_sToDo           = ""_Stz;
   
   m_pNmStrLst       = nullptr;
-
-  m_pSemanticX       = new Semantic;
     
   _checkInitialised_(CN_SESSION);
   
@@ -151,9 +149,7 @@ Session::~Session(void) noexcept(false)
   delete m_pInput;
 
   delete m_pNmStrLst;
-  
-  delete m_pSemanticX;
-  
+    
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
               "Session destruct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
