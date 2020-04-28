@@ -24,7 +24,7 @@ namespace Prompt
 
     i8        m_iCmdNo;     // command no
     JobClass* m_aJobClass;  // job class
-    TagSet  m_oJobTags;   // job level tags
+    TagSet    m_oCmdTags;   // tags gleaned from the command
     Job*      m_pJob;       // job
 
     Request*  m_pRequest;       // current request being executed by SE
