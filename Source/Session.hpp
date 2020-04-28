@@ -50,6 +50,8 @@ namespace Sessions
     Stack*   m_pJobStack;        // stack of jobs
     Input*   m_pInput;           // input stream
 
+    TagSet   m_oSsnTags;         // session level tags
+
     Job*     m_pJob;             // job session currently executing
     Tx*      m_pTx;              // current transaction
   
