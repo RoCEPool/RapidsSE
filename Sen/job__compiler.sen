@@ -172,32 +172,32 @@
 
   // default for command kind
   "<cmdKind>" pWordTagSet tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pWord word.addTag
+    "<cmdKind>" "CK_COMMAND" pWord word.TagSet@ tagSet.addTag
   then
 
   // default for ddl lock
   "<ddlLock>" pWordTagSet tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pWord word.addTag
+    "<ddlLock>" "DL_NONE" pWord word.TagSet@ tagSet.addTag
   then
 
   // default for job desc
   "<jobDesc>" pWordTagSet tagSet.hasName not if
-    "<jobDesc>" "--description of job--" pWord word.addTag
+    "<jobDesc>" "--description of job--" pWord word.TagSet@ tagSet.addTag
   then
 
   // default for job kind
   "<jobKind>" pWordTagSet tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pWord word.addTag
+    "<jobKind>" "JK_LOCAL" pWord word.TagSet@ tagSet.addTag
   then
 
   // default for priority
   "<priority>" pWordTagSet tagSet.hasName not if
-    "<priority>" "PY_NORMAL" pWord word.addTag
+    "<priority>" "PY_NORMAL" pWord word.TagSet@ tagSet.addTag
   then
 
   // default for response kind
   "<rspKind>" pWordTagSet tagSet.hasName not if
-    "<rspKind>" "RS_NONE" pWord word.addTag
+    "<rspKind>" "RS_NONE" pWord word.TagSet@ tagSet.addTag
   then
 
 
@@ -401,7 +401,7 @@
     to sEname
     input::next discard
     input::next to sEvalue
-    sEname sEvalue pWord word.addTag
+    sEname sEvalue pWord word.TagSet@ tagSet.addTag
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

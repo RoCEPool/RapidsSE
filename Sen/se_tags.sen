@@ -7,9 +7,8 @@
 /*----------------------------------------------------------------------------*/
 /* add given tag to word's tag set  (with support for constant translation)   */
 /*----------------------------------------------------------------------------*/
-: word.addTag params| pWord sTagValue sTagName |
+: tagSet.addTag params| pWordTagSet sTagValue sTagName |
 
-  pWord word.TagSet@ locals| pWordTagSet |
   sTagValue find     locals| pConstantWord |
 
   // test for a (int) constant and translate value
@@ -31,9 +30,8 @@
 /*----------------------------------------------------------------------------*/
 /* add/replace given tag to word's tag set (support for constant translation) */
 /*----------------------------------------------------------------------------*/
-: word.addReplaceTag params| pWord sTagValue sTagName |
+: tagSet.addReplaceTag params| pWordTagSet sTagValue sTagName |
 
-  pWord word.TagSet@ locals| pWordTagSet |
   sTagValue find     locals| pConstantWord |
 
   // test for a (int) constant and translate value
@@ -67,7 +65,7 @@
   
   // add tag set name
   
-  "<TagSetNm>" compiler::current@ word.name@ compiler::current@ word.addTag
+  "<TagSetNm>" compiler::current@ word.name@ compiler::current@ word.TagSet@ tagSet.addTag
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
@@ -92,7 +90,7 @@
     input::next to sTagValue
     
     // add the decoded
-    sTagName sTagValue compiler::current@ word.addReplaceTag
+    sTagName sTagValue compiler::current@ word.TagSet@ tagSet.addReplaceTag
   
   repeat
 
