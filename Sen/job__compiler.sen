@@ -159,39 +159,40 @@
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: fillOut.tagSet params| pWord |
+: fillOut.tagSet_ofInfoWord params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.tagSet@  locals| pTagSet |
+  pWord word.tagSet@    locals| pWordTagSet |
+
   0 0 locals| iParams sStreamDef |
 
   // default for command kind
-  "<cmdKind>" pTagSet tagSet.hasName not if
+  "<cmdKind>" pWordTagSet tagSet.hasName not if
     "<cmdKind>" "CK_COMMAND" pWord jobInfo::addEname
   then
 
   // default for ddl lock
-  "<ddlLock>" pTagSet tagSet.hasName not if
+  "<ddlLock>" pWordTagSet tagSet.hasName not if
     "<ddlLock>" "DL_NONE" pWord jobInfo::addEname
   then
 
   // default for job desc
-  "<jobDesc>" pTagSet tagSet.hasName not if
+  "<jobDesc>" pWordTagSet tagSet.hasName not if
     "<jobDesc>" "--description of job--" pWord jobInfo::addEname
   then
 
   // default for job kind
-  "<jobKind>" pTagSet tagSet.hasName not if
+  "<jobKind>" pWordTagSet tagSet.hasName not if
     "<jobKind>" "JK_LOCAL" pWord jobInfo::addEname
   then
 
   // default for priority
-  "<priority>" pTagSet tagSet.hasName not if
+  "<priority>" pWordTagSet tagSet.hasName not if
     "<priority>" "PY_NORMAL" pWord jobInfo::addEname
   then
 
   // default for response kind
-  "<rspKind>" pTagSet tagSet.hasName not if
+  "<rspKind>" pWordTagSet tagSet.hasName not if
     "<rspKind>" "RS_NONE" pWord jobInfo::addEname
   then
 
@@ -205,15 +206,15 @@
     pWord fillOut.tagSet_dist
   else
 
-    "<liteOp>" pTagSet tagSet.hasName if
+    "<liteOp>" pWordTagSet tagSet.hasName if
       sWordNm_trunc "LiteOP: %v" .printf
 
       "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
 
       // add procedure depending on no of parameters
-      "<params>" pTagSet tagSet.hasName assert
-      "<params>" pTagSet tagSet.getStr >int to iParams
+      "<params>" pWordTagSet tagSet.hasName assert
+      "<params>" pWordTagSet tagSet.getStr >int to iParams
       iParams 2 == if
         "/liteOp/" sWordNm_trunc __liteOp_procedure2 str.replace procedure::add
       else
@@ -226,7 +227,7 @@
       then
     else
 
-      "<localLiteOp>" pTagSet tagSet.hasName if
+      "<localLiteOp>" pWordTagSet tagSet.hasName if
         sWordNm_trunc "LocalLiteOP: %v" .printf
 
       "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
@@ -234,8 +235,8 @@
       "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
 
         // add procedure depending on no of parameters
-        "<params>" pTagSet tagSet.hasName assert
-        "<params>" pTagSet tagSet.getStr >int to iParams
+        "<params>" pWordTagSet tagSet.hasName assert
+        "<params>" pWordTagSet tagSet.getStr >int to iParams
         iParams 2 == if
           "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
         else
@@ -255,7 +256,7 @@
 
   then then
 
-  // pTagSet tagSet.asStr .
+  // pWordTagSet tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -412,7 +413,7 @@
 
   //pTagSet tagSet.asStr .
 
-  pWord fillOut.tagSet
+  pWord fillOut.tagSet_ofInfoWord
 
   //pTagSet tagSet.asStr .
 

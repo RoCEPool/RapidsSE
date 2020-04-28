@@ -129,7 +129,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  pWord fillOut.tagSet
+  pWord fillOut.tagSet_ofInfoWord
 
   //pTagSet tagSet.asStr .
 ;
@@ -180,7 +180,7 @@
   // iterate thru all opSynatx: words
 
   dic::root dic.lastWord dup
-  iterate                                 // iterate word cursor
+  iterate                                // iterate word cursor
 
     object@ word.category@ pOpInfo eql if
       // object@ word.dump
@@ -188,24 +188,11 @@
 
       object@ word.name@ "Filling out: %v" .printf
       
-      object@ fillOut.tagSet            // fill out the ename set of the op
+      object@ fillOut.tagSet_ofInfoWord  // fill out the tag set of the op
     then
 
-    object@ word.prev object!             // advance cursor backwards thru words
+    object@ word.prev object!            // advance cursor backwards thru words
   next
-;
-
-/*----------------------------------------------------------------------------*/
-/* show details of given word                                                 */
-/*----------------------------------------------------------------------------*/
-: word.show params| pWord |
-
-  pWord word.name@     locals| sWordName |
-  pWord word.category@ locals| pCatg |
-  pCatg word.name@     locals| sCatgName |
-
-  sCatgName sWordName
-    "Word: %24v Category: %16v" .printf
 ;
 
 /*----------------------------------------------------------------------------*/
