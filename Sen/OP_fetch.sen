@@ -48,18 +48,35 @@
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
-  begin
-    Operand[].isNull
-  not while
-    Operand[].pipeout
-    tablePtn[].get index[].fetchNext to Operand[]
-  repeat
-
-  tablePtn[].get tablePtnDropRead2
-
-  // new an eos marker
-  Operand[].newEosMarker
   Operand[].pipeOut
+
+  0 planner[].fetchTechnique@
+  case
+    AT_SCAN of
+      Subset[].nextBuffer to Operand[]
+    endof
+
+    tablePtn[].get index[].fetchNext to Operand[]
+/*
+    begin
+      Operand[].isNull
+    not while
+      Operand[].pipeout
+      tablePtn[].get index[].fetchNext to Operand[]
+    repeat
+*/
+    tablePtn[].get tablePtnDropRead2
+
+    // new an eos marker
+    Operand[].newEosMarker
+    Operand[].pipeOut
+
+  endcase
+
+  Operand[].isNull if
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
 
   true
 ;
@@ -91,7 +108,19 @@
     // an exact select using index
     AT_EXACT of
      "*exact*" .
-      0 assert
+
+    // find the index
+    0 planner[].indexNm@ to sIndexNm
+    <tableNm> sIndexNm op__index assert
+
+    // now get excat key rows from index
+    tablePtn[].get tablePtnGrabRead2
+
+    0 planner[].key@ 0 planner[].key@
+    planner[] tablePtn[].get index[].position
+
+    tablePtn[].get index[].fetchNext to Operand[]
+
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,14 +161,28 @@
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // a range select using index
     AT_RANGE of
-      0 assert
+      "*range" .
+      // find the index
+      0 planner[].indexNm@ to sIndexNm
+      <tableNm> sIndexNm op__index assert
+
+      // now get excat key rows from index
+      tablePtn[].get tablePtnGrabRead2
+
+      0 planner[].lowKey@ 0 planner[].upperKey@
+      planner[] tablePtn[].get index[].position
+
+      tablePtn[].get index[].fetchNext to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // full scan (no index)
     AT_SCAN of
       "*scan*" .
-      0 assert
+      // now get excat key rows from index
+      tablePtn[].get tablePtnGrabRead2
+      tablePtn[].root to Subset[]
+      Subset[]@ to Operand[]
     endof
 
   endcase
