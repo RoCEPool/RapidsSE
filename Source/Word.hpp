@@ -19,7 +19,7 @@ namespace SenVM
     bool      m_bBreakPt;     // this work gas a break point set
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
-    TagSet* m_pTagSet;    // optional ename set
+    TagSet*   m_pWordTags;    // optional tag set
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
     s32       m_sExceptionHook;    // routine to be called on exception

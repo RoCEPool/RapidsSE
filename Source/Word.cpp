@@ -86,7 +86,7 @@ Word::Word(Stz* szWordNm)
   m_bBreakPt   = false;
   m_pCategory  = AM::pRootWord() ? AM::pRootWord() : this;
   //m_pDic     = pDic;
-  m_pTagSet  = nullptr;
+  m_pWordTags  = nullptr;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
   m_eWord      = WK_ROUTINE;
@@ -129,7 +129,7 @@ Word::~Word(void) noexcept(false)
   }
   
   delete m_pArticle;
-  delete m_pTagSet;
+  delete m_pWordTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,10 +489,10 @@ TagSet* Word::pTagSet(bool bCreateNew)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  if (! m_pTagSet && bCreateNew)
-    m_pTagSet = new TagSet;
+  if (! m_pWordTags && bCreateNew)
+    m_pWordTags = new TagSet;
   
-  return m_pTagSet;
+  return m_pWordTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -502,7 +502,7 @@ void Word::vTagSet(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pTagSet = pTagSet;
+  m_pWordTags = pTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

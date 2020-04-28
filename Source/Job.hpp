@@ -11,7 +11,7 @@ namespace Jobs
   private:
     JobClass* m_aJobClass;    // job class THIS WILL GO
     s32       m_sJobNm;       // name of job
-    TagSet  m_oJobTags;     // tags for the job
+    TagSet    m_oJobTags;     // tags for the job
     i8        m_iParentId;    // job id of parent job which spawned this job
     Timer     m_oTimer;       // timer
 
