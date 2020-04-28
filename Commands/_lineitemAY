@@ -76,8 +76,9 @@ visidx lineitem lineitem_idx1;
 predicateFetch lineitem "l_orderkey 1 >";
 predicateFetch lineitem "l_orderkey 3 <";
 predicateFetch lineitem "l_orderkey 3 ==";
-
 predicateFetch lineitem "l_orderkey 1 > l_orderkey 3 < and";
+predicateFetch lineitem "l_orderkey 3 > l_orderkey 1 < and";
+
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
 

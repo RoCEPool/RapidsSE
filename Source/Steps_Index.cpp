@@ -506,25 +506,37 @@ void Step::vIndexFetchNextN(void)
   ENTRY();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index from the register
+  // get the index and the table
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  Table* pTable = pIndex->pTable();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
   TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
-  CrwBuffer* pCrwBuffer = nullptr;
-  HV_Row hRow(pTable->pStreamDef(),C_ALL);
-  RowCompactor* pRowCompactor;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table
+  Table* pTable = pIndex->pTable();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the lower and upper entries
+  Ent* aLowerEntry = m_pRegSet->m_aLowerEntry;
+  Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the entry buffer to start from
   EntBuffer* pEntBuffer = m_pRegSet->m_pEntBuffer;
   
-  Ent* aItem = m_pRegSet->m_aLowerEntry;
-  Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  CrwBuffer* pCrwBuffer = nullptr;
+  RowCompactor* pRowCompactor = nullptr;
+  HV_Row hRow(pTable->pStreamDef(),C_ALL);
+  
   bool bBefore = true;
-  bool bIsEqual;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
-  if ( ! aItem) {
+  if ( ! aLowerEntry) {
     goto L_Exit;
   }
   
@@ -538,46 +550,51 @@ void Step::vIndexFetchNextN(void)
   pRowCompactor = new RowCompactor;
   pCrwBuffer->vAppendOpen(pRowCompactor, false);
   
-  //---------------------------------------------------------------------------
-  // iterate thru the buffers till no more entries starting from
-  while (aItem) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffers starting from aLowerEntry
+  while (aLowerEntry) {
     
-    bIsEqual = false;
-    
+    // is lowerEntry before upperEntry ?
     if (aUpperEntry)
-      bBefore = (aItem == aUpperEntry) ? false : true;
+      bBefore = (aLowerEntry == aUpperEntry) ? false : true;
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lowerEntry is before upperEntry
     if (bBefore) {
       
-      Crw* aCrw = CrwBuffer::pRefdCrw(aItem->xRef());
-      
+      // get the crw entry from the lowerEntry
+      Crw* aCrw = CrwBuffer::pRefdCrw(aLowerEntry->xRef());
       RowInflator::vInflateRow(hRow,aCrw);
       
       // insert row from entry in crwBuffer
       if ( ! pCrwBuffer->bAppendRow(hRow)) {
         
-        // Buffer is Full;
+        // Buffer is full ?
         pCrwBuffer->vAppendClose();
-        
-        m_pRegSet->m_aLowerEntry = aItem;
-        
         goto L_Exit;
       }
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
-      aItem = pEntBuffer->aNextEntry(aItem, 0);
+      aLowerEntry = pEntBuffer->aNextEntry(aLowerEntry, 0);
       
-      if ( ! aItem ) {
-        // get next buffer from the current indexBuffer
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // no more entries ?
+      if ( ! aLowerEntry ) {
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // move to next buffer
         pEntBuffer = pEntBuffer->pNextBuffer();
         
+        // next buffer ?
         if ( pEntBuffer )
-          aItem = pEntBuffer->aLeadEntry();
+          aLowerEntry = pEntBuffer->aLeadEntry();
       }
     }
     else {
-      aItem = nullptr;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // we are done
+      aLowerEntry = nullptr;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -588,8 +605,9 @@ void Step::vIndexFetchNextN(void)
   
 L_Exit:
   m_pRegSet->m_pEntBuffer = pEntBuffer;
-  m_pRegSet->m_aLowerEntry = aItem;
+  m_pRegSet->m_aLowerEntry = aLowerEntry;
   
+  // return the buffer
   m_pDataStack->vPushPtr(pCrwBuffer);
   
   EXIT();
@@ -601,6 +619,15 @@ L_Exit:
 void Step::vIndexPositionN(void)
 {
   ENTRY();
+  
+  EntBuffer* aUpperEntBuffer;
+  Ent* aUpperEntry = nullptr;
+  
+  eRO eUpperRelnOp;
+  eRO eLowerRelnOp;
+  
+  EntWrk xEntWrkLower;
+  EntWrk xEntWrkUpper;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index
@@ -619,74 +646,84 @@ void Step::vIndexPositionN(void)
   // get the upper bound key
   Datum xUpperVariable;
   m_pDataStack->vPopVal(xUpperVariable,__func__);
+  Stz* szUpperKey = xUpperVariable.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower bound key
   Datum xLowerVariable;
   m_pDataStack->vPopVal(xLowerVariable,__func__);
+  Stz* szLowerKey = xLowerVariable.szStz();
   
   i8 iPhrase = 0;
   
   EntBuffer* aLowerEntBuffer = nullptr;
   Ent* aLowerEntry = nullptr;
   
-  eRO eLowerRelnOp;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get indexPtn
   i8 iIndexNo = pIndex->iIndexNo();
-  
   IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of columns in the index
   i8 nIdxCols = pIndex->pIdxColVec()->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Stz* szStz;
+  // get column0 of the index
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Format* pFmt = AM::pFmt();
-  
-  EntBuffer* aUpperEntBuffer;
-  Ent* aUpperEntry = nullptr;
-  eRO eUpperRelnOp;
-  
-  EntWrk xEntWrkLower;
-  EntWrk xEntWrkUpper;
   
   bool bExactQuery = false;
+  bool bHaveLowerKey = false;
+  bool bHaveUpperKey = false;
   
+  Format* pFmt = AM::pFmt();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the lower key
-  szStz = xLowerVariable.szStz();
+  // Lower Key
   
-  // there is no lower key
-  if ( StrLib::bSame(szStz->azChar(), "") ) {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // position at the first level 0 buffer
-    aLowerEntBuffer = pIndexPtn->pFirstH0Buffer();
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // did we get an entryBuffer ?
-    if ( ! aLowerEntBuffer) {
-      goto L_Exit;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the first entry in the buffer
-    aLowerEntry = aLowerEntBuffer->aLeadEntry();
-    
-  }
-  else {
+  if ( ! StrLib::bSame(szLowerKey->azChar(), "") ) {
+    bHaveLowerKey = true;
     
     // form the lower key
-    KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szStz,pFmt);
+    KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szLowerKey,pFmt);
     for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
       xEntWrkLower.vAppendMinusInfinity();
     }
-    //xEntWrk.vShow();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Upper Key
+  
+  if ( ! StrLib::bSame(szUpperKey->azChar(), "") ) {
+    bHaveUpperKey = true;
+    
+    // form the upper key
+    KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szUpperKey,pFmt);
+    for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+      xEntWrkUpper.vAppendPlusInfinity();
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if we have both upper and lower keys
+  if ( bHaveLowerKey && bHaveUpperKey) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // first position at a level 0 buffer with keyLower
+    // check if upperKey > lowerKey
+    eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+                                 xEntWrkLower.aKey());
+    
+    if (eCompare == KC_BEFORE)
+      goto L_Exit;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Position for Lower Key
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (bHaveLowerKey ) {
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // first position at a level 0 buffer with lowerKey
     aLowerEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkLower.aKey());
     eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
     
@@ -694,7 +731,7 @@ void Step::vIndexPositionN(void)
     // did we get an entry buffer ?
     if (aLowerEntBuffer) {
       
-      // position in the index buffer at an entry prior to the lower key
+      // position in the index buffer at an entry prior to the lowerKey
       aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
       
       if (eLowerRelnOp == RO_EQUAL_TO) {
@@ -712,39 +749,49 @@ void Step::vIndexPositionN(void)
       }
     }
   }
+  else {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // no lower key
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // position at the first level 0 buffer
+    aLowerEntBuffer = pIndexPtn->pFirstH0Buffer();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // did we get an entryBuffer ?
+    if ( ! aLowerEntBuffer) {
+      goto L_Exit;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the first entry in the buffer
+    aLowerEntry = aLowerEntBuffer->aLeadEntry();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Position for Upper Key
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the upper key
-  szStz = xUpperVariable.szStz();
-  
   // there is no upper key ?
-  if ( StrLib::bSame(szStz->azChar(), "") )
+  if ( ! bHaveUpperKey )
     goto L_Exit;
   
-  KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
-  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xEntWrkUpper.vAppendPlusInfinity();
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if upperKey > lowerKey
-  //eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
-  //                             xEntWrkLower.aKey());
-  
-  //if (eCompare == KC_BEFORE)
-  //  goto L_Exit;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now position at a level 0 buffer for the upper key
-  aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
-  
+  // get upper relational OP
   if (bExactQuery) {
     eUpperRelnOp = RO_LESS_EQUAL;
   }
   else {
     eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now position at a level 0 buffer for the upper key
+  aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // do we have an upper Entry buffer ?
   if (aUpperEntBuffer) {
     
     aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
@@ -758,6 +805,9 @@ void Step::vIndexPositionN(void)
   }
   
 L_Exit:
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set registers
   m_pRegSet->m_aLowerEntry = aLowerEntry;
   m_pRegSet->m_aUpperEntry = aUpperEntry;
   m_pRegSet->m_pEntBuffer  = aLowerEntBuffer;
