@@ -86,7 +86,7 @@ Word::Word(Stz* szWordNm)
   m_bBreakPt   = false;
   m_pCategory  = AM::pRootWord() ? AM::pRootWord() : this;
   //m_pDic     = pDic;
-  m_pEnameSet  = nullptr;
+  m_pTagSet  = nullptr;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
   m_eWord      = WK_ROUTINE;
@@ -129,7 +129,7 @@ Word::~Word(void) noexcept(false)
   }
   
   delete m_pArticle;
-  delete m_pEnameSet;
+  delete m_pTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -485,24 +485,24 @@ void Word::vEncodePush(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-TagSet* Word::pEnameSet(bool bCreateNew)
+TagSet* Word::pTagSet(bool bCreateNew)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  if (! m_pEnameSet && bCreateNew)
-    m_pEnameSet = new TagSet;
+  if (! m_pTagSet && bCreateNew)
+    m_pTagSet = new TagSet;
   
-  return m_pEnameSet;
+  return m_pTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set ename set                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vEnameSet(TagSet* pEnameSet)
+void Word::vTagSet(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pEnameSet = pEnameSet;
+  m_pTagSet = pTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

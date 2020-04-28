@@ -58,8 +58,8 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pStage    = pStage;
   m_pPipeline = pPipeline;
 
-  m_oEnameSet.vCopy(pOpSpec->pEnameSet());
-  m_oTopologyEnameSet.vCopy(pOpSpec->pTopologyEnameSet());
+  m_oTagSet.vCopy(pOpSpec->pTagSet());
+  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
   
   m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
@@ -127,26 +127,26 @@ void Op::vDump(i8 i_Op)
   
   s256 sArgs;
   
-  TagSet* pTopologyEnameSet = this->pTopologyEnameSet();
+  TagSet* pTopologyTagSet = this->pTopologyTagSet();
   
-  pTopologyEnameSet->vSprint(sArgs);
+  pTopologyTagSet->vSprint(sArgs);
   
   // get the next stage
-  i8 iNextStage = pTopologyEnameSet->iValue(C_TAG_NEXTSTAGE);
+  i8 iNextStage = pTopologyTagSet->iValue(C_TAG_NEXTSTAGE);
   Stage* pNextStage = m_pPipeline->pGet(iNextStage);
   
   // get the next op
-  i8 iNextOp = pTopologyEnameSet->iValue(C_TAG_NEXTOP);
+  i8 iNextOp = pTopologyTagSet->iValue(C_TAG_NEXTOP);
   Strand* pNextStrand = pNextStage->pGet(0);
   Op* pNextOp = pNextStrand->pGet(iNextOp);
 
   // get the cross topology
-  ePX eTopology = (ePX)(pTopologyEnameSet->iValue(C_TAG_TOPOLOGY));
+  ePX eTopology = (ePX)(pTopologyTagSet->iValue(C_TAG_TOPOLOGY));
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
-  TagSet* pEnameSet = this->pEnameSet();
-  i8 iXmits =  pEnameSet->iValue(C_TAG_Xmits);
+  TagSet* pTagSet = this->pTagSet();
+  i8 iXmits =  pTagSet->iValue(C_TAG_Xmits);
   i8 iLeftMarkers = iXmits ? iXmits : 1;
   
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
@@ -285,11 +285,11 @@ void Op::vDropTaskLock(void)
 /*----------------------------------------------------------------------------*/
 /* get the TagSet                                                           */
 /*----------------------------------------------------------------------------*/
-TagSet* Op::pEnameSet(void)
+TagSet* Op::pTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oEnameSet;
+  return &m_oTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -942,22 +942,22 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
 
   m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
 
-  TagSet* pOpJobEnameSet = AM::pJobTags(m_pOpJob);
-  TagSet* pPipeLineJobEnameSet = AM::pJobTags(m_pPipelineJob);
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
+  TagSet* pPipeLineJobTagSet = AM::pJobTags(m_pPipelineJob);
 
-  pOpJobEnameSet->vInsert(C_TAG_PATH,
-                          pPipeLineJobEnameSet->szValue(C_TAG_PATH));
-  pOpJobEnameSet->vInsert(C_TAG_JOBNM,
+  pOpJobTagSet->vInsert(C_TAG_PATH,
+                          pPipeLineJobTagSet->szValue(C_TAG_PATH));
+  pOpJobTagSet->vInsert(C_TAG_JOBNM,
                           m_sOpNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job* pJob_pipeline = AM::pThisTLSJob();
-  TagSet* pEnameSet_pipeline = AM::pJobTags(pJob_pipeline);
+  TagSet* pTagSet_pipeline = AM::pJobTags(pJob_pipeline);
  
-  TagSet* pEnameSet_op = AM::pJobTags(m_pOpJob);
+  TagSet* pTagSet_op = AM::pJobTags(m_pOpJob);
 
-  pEnameSet_op->vCopy(pEnameSet_pipeline);
+  pTagSet_op->vCopy(pTagSet_pipeline);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -973,7 +973,7 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
   
   // now append the hidden topology ename pairs to the job ename set
-  AM::vAppendJobTags(m_pOpJob, &m_oTopologyEnameSet);
+  AM::vAppendJobTags(m_pOpJob, &m_oTopologyTagSet);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();
@@ -1015,18 +1015,18 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sOpNm);
-  m_oEnameSet.vConcat(szCmdStr);
+  m_oTagSet.vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the topology TagSet                                                  */
 /*----------------------------------------------------------------------------*/
-TagSet* Op::pTopologyEnameSet(void)
+TagSet* Op::pTopologyTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oTopologyEnameSet;
+  return &m_oTopologyTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

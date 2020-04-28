@@ -169,20 +169,20 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
 //    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().szStz());
 //
-//    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnameSet())) {
+//    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pTagSet())) {
 //      vTrace("    matches\n"_Stz);
 //
-//      m_oEnameSet.vAdd(C_TAG_JOBCLASS, CN_JOB_UNIVERSAL,TN_INTEGER);
+//      m_oTagSet.vAdd(C_TAG_JOBCLASS, CN_JOB_UNIVERSAL,TN_INTEGER);
 //      s32 sJobName(pWord_jobdef->sName());
 //      StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-//      m_oEnameSet.vAdd(C_TAG_JOBNM,sJobName);
+//      m_oTagSet.vAdd(C_TAG_JOBNM,sJobName);
 //      break;
 //    }
 //  }
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  bool b = JobHelper::bExtractArgs(&m_oEnameSet,pWord_jobdef->pEnameSet(),pTknVec);
+//  bool b = JobHelper::bExtractArgs(&m_oTagSet,pWord_jobdef->pTagSet(),pTknVec);
 //  if (! b) {
 //    vTrace("Unable to match job syntax\n"_Stz);
 //    return EC_INVALID_COMMAND;
@@ -195,17 +195,17 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     return EC_INVALID_COMMAND;
   }
   
-  TagSet* pEnameSet_ji = pJobInfoEnameSet();
-  //pEnameSet_ji->vPrint();
+  TagSet* pTagSet_ji = pJobInfoTagSet();
+  //pTagSet_ji->vPrint();
   
-  if (pEnameSet_ji) {
-    eJK eJobKind = (eJK) pEnameSet_ji->iValue(C_TAG_JOBKIND);
+  if (pTagSet_ji) {
+    eJK eJobKind = (eJK) pTagSet_ji->iValue(C_TAG_JOBKIND);
     vJobKind(eJobKind);
     
-    Stz* szJobNm = pEnameSet_ji->szValue(C_TAG_JOBNM);
+    Stz* szJobNm = pTagSet_ji->szValue(C_TAG_JOBNM);
     vJobNm(szJobNm);
     
-    pJobTags()->vCopy(pEnameSet_ji);
+    pJobTags()->vCopy(pTagSet_ji);
     
     
 //    s32 sJob_info = szJobNm;
@@ -215,8 +215,8 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //
 //    Word* pJob_info = pRootDic->pFindWord(sJob_info);
 //    if (pJob_info) {
-//      TagSet* pEnameSet_class = pJob_info->pEnameSet();
-//      pEnameSet()->vCopy(pEnameSet_class);
+//      TagSet* pTagSet_class = pJob_info->pTagSet();
+//      pTagSet()->vCopy(pTagSet_class);
 //    }
   }
   

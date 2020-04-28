@@ -39,7 +39,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   Session*  pSession  = pPrompt->pSession();
   
   Semantic* pSemantic = pSession->m_pSemantic;
-  TagSet* pEnameSet = pSemantic->pEnameSet();
+  TagSet* pTagSet = pSemantic->pTagSet();
   
   Token* pTkn;
   i8 i_Tkn = 0;
@@ -74,7 +74,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bDelete) {
-    pEnameSet->vDelete(sTagNm);
+    pTagSet->vDelete(sTagNm);
     vTrace("success: 0 rows affected\n"_Stz);
     return true;
   }
@@ -86,10 +86,10 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
 
   sTagValue = pTkn->szChars();
 
-  if (pEnameSet->bHasName(sTagNm))
-    pEnameSet->vReplace(sTagNm,sTagValue);
+  if (pTagSet->bHasName(sTagNm))
+    pTagSet->vReplace(sTagNm,sTagValue);
   else
-    pEnameSet->vInsert(sTagNm,sTagValue);
+    pTagSet->vInsert(sTagNm,sTagValue);
   vTrace("success: 0 rows affected\n"_Stz);
   
   return true;

@@ -1264,18 +1264,18 @@ void vTest25(void)
   bStrings.iAppend("abc"_Stz);  bStrings.vPrintAll();
   bStrings.iAppend("defg"_Stz); bStrings.vPrintAll();
 
-  TagSet* pEnameSet = new TagSet();
+  TagSet* pTagSet = new TagSet();
   
-  pEnameSet->vInsert("name1"_Stz,"value1"_Stz);
-  pEnameSet->vInsert("name2"_Stz,"value2"_Stz);
-  pEnameSet->vInsert("name3"_Stz,"value3"_Stz);
+  pTagSet->vInsert("name1"_Stz,"value1"_Stz);
+  pTagSet->vInsert("name2"_Stz,"value2"_Stz);
+  pTagSet->vInsert("name3"_Stz,"value3"_Stz);
 
-  for (i8 i_Ename = 0; i_Ename < pEnameSet->nEnames(); i_Ename++)
+  for (i8 i_Ename = 0; i_Ename < pTagSet->nEnames(); i_Ename++)
     vTrace("  [%lld] %s,%s (%s)\n"_Stz,
-           i_Ename,pEnameSet->szName(i_Ename),pEnameSet->szValue(i_Ename),
-           aTN[pEnameSet->eToken(i_Ename)]);
+           i_Ename,pTagSet->szName(i_Ename),pTagSet->szValue(i_Ename),
+           aTN[pTagSet->eToken(i_Ename)]);
 
-  delete pEnameSet;
+  delete pTagSet;
 }
 
 /*============================================================================*/

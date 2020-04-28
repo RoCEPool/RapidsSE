@@ -41,8 +41,8 @@ void Step::vJob_SubLoaderSpawn(void)
   
   pJob_SubLoader->vParentId(pJob_LoadTable->m_iFocalId);
 
-  //pJob_SubLoader->m_oEnameSet.vAdd(C_TAG_TABLENM,
-  //                               pJob_LoadTable->m_oEnameSet.szValue(C_TAG_TABLENM));
+  //pJob_SubLoader->m_oTagSet.vAdd(C_TAG_TABLENM,
+  //                               pJob_LoadTable->m_oTagSet.szValue(C_TAG_TABLENM));
   
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   

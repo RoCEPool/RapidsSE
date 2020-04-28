@@ -21,8 +21,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
   vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);
-  vAddStep("word.enameSet@"_Stz,    &Step::vWordEnmSetFetch);
-  vAddStep("word.enameSet!"_Stz,    &Step::vWordEnmSetStore);
+  vAddStep("word.tagSet@"_Stz,    &Step::vWordEnmSetFetch);
+  vAddStep("word.tagSet!"_Stz,    &Step::vWordEnmSetStore);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
   vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
@@ -187,9 +187,9 @@ void Step::vWordEnmSetFetch(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pEnameSet = pWord->pEnameSet();
+  TagSet* pTagSet = pWord->pTagSet();
   
-   m_pDataStack->vPushPtr(pEnameSet);
+   m_pDataStack->vPushPtr(pTagSet);
   
   EXIT();
 }
@@ -203,9 +203,9 @@ void Step::vWordEnmSetStore(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  pWord->vEnameSet(pEnameSet);
+  pWord->vTagSet(pTagSet);
   
   EXIT();
 }

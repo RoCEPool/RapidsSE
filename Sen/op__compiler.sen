@@ -20,14 +20,14 @@
   find: jobSyntax: compiler::current@ word.category!
 
   // attach an ename set to the word being created
-  tagSet::new locals| pEnameSet |
+  tagSet::new locals| pTagSet |
 
-  pEnameSet compiler::current@ word.EnameSet!
+  pTagSet compiler::current@ word.TagSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__name__" sOpNm
-    pEnameSet tagSet.appendStr
+    pTagSet tagSet.appendStr
 
   // skip the :: token from input source
   input::next discard
@@ -35,7 +35,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__job__" "CN_JOB_UNIVERSAL"
-  pEnameSet tagSet.appendStr
+  pTagSet tagSet.appendStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
@@ -47,20 +47,20 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" .printf
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap pEnameSet tagSet.appendStr
+        "__meta__" swap pTagSet tagSet.appendStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" .printf
         // add ("*",json,TN_STRING) in ename set
-        "__json__" swap pEnameSet tagSet.appendStr
+        "__json__" swap pTagSet tagSet.appendStr
 
       else dup "__etc__" str.equal if
-        "__etc__"  swap pEnameSet tagSet.appendStr
+        "__etc__"  swap pTagSet tagSet.appendStr
 
       else
         // dup "%v is a normal token" .printf
         // add (word,"",TN_STRING) in ename set
-        dup pEnameSet tagSet.appendStr
+        dup pTagSet tagSet.appendStr
 
       then then then
   repeat
@@ -68,7 +68,7 @@
   // discard the ";" from dstack
   discard
 
-  // pEnameSet tagSet.asStr .
+  // pTagSet tagSet.asStr .
 
   does>
     // ..to be written
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : opInfo:
 
-  0 0 0 0 locals| pWord sEname sEvalue pEnameSet |
+  0 0 0 0 locals| pWord sEname sEvalue pTagSet |
 
   // create a word using next token from input source as the word name
   input::next "_info" str.cat :create
@@ -94,13 +94,13 @@
   [ compiler::current@ encode::push ] pWord word.category!
 
   // attach an ename set to the word being created
-  tagSet::new to pEnameSet
+  tagSet::new to pTagSet
 
-  pEnameSet pWord word.EnameSet!
+  pTagSet pWord word.TagSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pEnameSet tagSet.insertStr
+  "<jobNm>" pWord word.name_trunc pTagSet tagSet.insertStr
 
   // skip the "{" token from input source
   input::next discard
@@ -129,9 +129,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  pWord fillOut.enameSet
+  pWord fillOut.tagSet
 
-  //pEnameSet tagSet.asStr .
+  //pTagSet tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@
 /*----------------------------------------------------------------------------*/
 : opInfo immediate
 
-  0 0 0 0 locals| pWord sEname sEvalue pEnameSet |
+  0 0 0 0 locals| pWord sEname sEvalue pTagSet |
 
   compiler::current@ to pWord
 
@@ -153,14 +153,14 @@
   find: opInfo: pWord word.category!
 
   // attach an ename set to the word being created
-  tagSet::new to pEnameSet
-    pEnameSet pWord word.EnameSet!
+  tagSet::new to pTagSet
+    pTagSet pWord word.TagSet!
 
   // add <jobNm> tag
-  "<jobNm>" pWord word.name_trunc pEnameSet tagSet.insertStr
+  "<jobNm>" pWord word.name_trunc pTagSet tagSet.insertStr
 
   pWord encode::call
-    POSTPONE word.enameset@
+    POSTPONE word.tagSet@
 
   //does>
 ;
@@ -185,11 +185,11 @@
 
     object@ word.category@ pOpInfo: eql if
       // object@ word.dump
-      // object@ word.enameSet@ tagSet.asStr .
+      // object@ word.tagSet@ tagSet.asStr .
 
       object@ word.name@ "Filling out: %v" .printf
       
-      object@ fillOut.enameSet            // fill out the ename set of the op
+      object@ fillOut.tagSet            // fill out the ename set of the op
     then
 
     object@ word.prev object!             // advance cursor backwards thru words

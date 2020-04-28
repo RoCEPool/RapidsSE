@@ -37,7 +37,7 @@ namespace Gadgets
     void vConcat(Stz* szCmd);
     void vConcat(Stz* szCmd, i8 i_Ename);
     void vContentDump(void);
-    void vCopy(TagSet* pSrcEnameSet);
+    void vCopy(TagSet* pSrcTagSet);
     void vDelete(Stz* szName);
     void vDumpSet(bool bCarriageReturns=false);
     void vDumpSetDetailed(void);
@@ -67,7 +67,7 @@ namespace Gadgets
     Footer* aFooter(void);
   };
   
-  TagSet* _pEnameSet(void* aAddr);
+  TagSet* _pTagSet(void* aAddr);
 }
 
 /*============================================================================*/

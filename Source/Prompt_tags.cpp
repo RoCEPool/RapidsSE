@@ -31,9 +31,9 @@ bool Prompt::bPrompt_tags(SePrompt* pPrompt)
   
   vTrace("Session Tags:\n"_Stz);
 
-  TagSet* pEnameSet = pSemantic->pEnameSet();
+  TagSet* pTagSet = pSemantic->pTagSet();
 
-  pEnameSet->vDumpSet();
+  pTagSet->vDumpSet();
 
   return true;
 }

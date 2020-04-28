@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_EnameSet.cpp - ename-set step group                                  */
+/* Steps_TagSet.cpp - tag-set step group                                      */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,34 +7,34 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_EnameSet(void)
+void Step::vAddSteps_TagSet(void)
 {
-  vAddStep("tagSet::new"_Stz,       &Step::vEnameSetNew);
+  vAddStep("tagSet::new"_Stz,       &Step::vTagSetNew);
   
-  vAddStep("tagSet.appendInt"_Stz,  &Step::vEnameSetAppendInt);
-  vAddStep("tagSet.appendStr"_Stz,  &Step::vEnameSetAppendStr);
-  vAddStep("tagSet.asStr"_Stz,      &Step::vEnameSetAsStr);
-  vAddStep("tagSet.copy"_Stz,       &Step::vEnameSetCopy);
-  vAddStep("tagSet.getInt"_Stz,     &Step::vEnameSetGetInt);
-  vAddStep("tagSet.getStr"_Stz,     &Step::vEnameSetGetStr);
-  vAddStep("tagSet.hasName"_Stz,    &Step::vEnameSetHasName);
-  vAddStep("tagSet.insertInt"_Stz,  &Step::vEnameSetInsertInt);
-  vAddStep("tagSet.insertStr"_Stz,  &Step::vEnameSetInsertStr);
-  vAddStep("tagSet.replaceInt"_Stz, &Step::vEnameSetReplaceInt);
-  vAddStep("tagSet.replaceStr"_Stz, &Step::vEnameSetReplaceStr);
-  vAddStep("tagSet.upsertStr"_Stz,  &Step::vEnameSetUpsertStr);
+  vAddStep("tagSet.appendInt"_Stz,  &Step::vTagSetAppendInt);
+  vAddStep("tagSet.appendStr"_Stz,  &Step::vTagSetAppendStr);
+  vAddStep("tagSet.asStr"_Stz,      &Step::vTagSetAsStr);
+  vAddStep("tagSet.copy"_Stz,       &Step::vTagSetCopy);
+  vAddStep("tagSet.getInt"_Stz,     &Step::vTagSetGetInt);
+  vAddStep("tagSet.getStr"_Stz,     &Step::vTagSetGetStr);
+  vAddStep("tagSet.hasName"_Stz,    &Step::vTagSetHasName);
+  vAddStep("tagSet.insertInt"_Stz,  &Step::vTagSetInsertInt);
+  vAddStep("tagSet.insertStr"_Stz,  &Step::vTagSetInsertStr);
+  vAddStep("tagSet.replaceInt"_Stz, &Step::vTagSetReplaceInt);
+  vAddStep("tagSet.replaceStr"_Stz, &Step::vTagSetReplaceStr);
+  vAddStep("tagSet.upsertStr"_Stz,  &Step::vTagSetUpsertStr);
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet::new -- new ename-set                                             */
+/* TagSet::new -- new ename-set                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetNew(void)
+void Step::vTagSetNew(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = new TagSet;
+  TagSet* pTagSet = new TagSet;
   
-  m_pDataStack->vPushPtr(pEnameSet);
+  m_pDataStack->vPushPtr(pTagSet);
   
   EXIT();
 }
@@ -43,33 +43,33 @@ void Step::vEnameSetNew(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* tagSet.appendInt -- append a name-integer pair to ename-set              */
+/* tagSet.appendInt -- append a name-integer pair to ename-set                */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetAppendInt(void)
+void Step::vTagSetAppendInt(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   i8 iValue = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vAppend(sName,iValue);
-  // pEnameSet->vPrint();
+  pTagSet->vAppend(sName,iValue);
+  // pTagSet->vPrint();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* tagSet.AppendStr -- append a name-string pair to ename-set               */
+/* tagSet.AppendStr -- append a name-string pair to ename-set                 */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetAppendStr(void)
+void Step::vTagSetAppendStr(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   s256 sValue;
   m_pDataStack->vPopStr(sValue,__func__);
@@ -77,23 +77,23 @@ void Step::vEnameSetAppendStr(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vAppend(sName,sValue);
-  //pEnameSet->vPrint();
+  pTagSet->vAppend(sName,sValue);
+  //pTagSet->vPrint();
   
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
-/* TagSet.asStr -- get ename-set as a single string                         */
+/* TagSet.asStr -- get ename-set as a single string                           */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetAsStr(void)
+void Step::vTagSetAsStr(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s4K sStr;
-  SP_EnmSet spEnameSet;
-  sStr = spEnameSet.sz(pEnameSet);
+  SP_EnmSet spTagSet;
+  sStr = spTagSet.sz(pTagSet);
   
   m_pDataStack->vPushStr(sStr);
   
@@ -101,36 +101,36 @@ void Step::vEnameSetAsStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.copy -- copy source set into this destination set                 */
+/* TagSet.copy -- copy source set into this destination set                   */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetCopy(void)
+void Step::vTagSetCopy(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet_dst = _pEnameSet(m_pDataStack->pPopPtr(__func__));
-  TagSet* pEnameSet_src = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet_dst = _pTagSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet_src = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pEnameSet_dst->vCopy(pEnameSet_src);
+  pTagSet_dst->vCopy(pTagSet_src);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.getInt -- get int value from ename-set with given name            */
+/* TagSet.getInt -- get int value from ename-set with given name              */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetGetInt(void)
+void Step::vTagSetGetInt(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
   i8 iValue;
-  iValue = pEnameSet->iValue(sName);
+  iValue = pTagSet->iValue(sName);
   
   m_pDataStack->vPushInt(iValue);
   
@@ -138,13 +138,13 @@ void Step::vEnameSetGetInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.getStr -- get str value from ename-set with given name            */
+/* TagSet.getStr -- get str value from ename-set with given name              */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetGetStr(void)
+void Step::vTagSetGetStr(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
@@ -154,8 +154,8 @@ void Step::vEnameSetGetStr(void)
   
   s4K sValue = ""_Stz;
   
-  if (pEnameSet->bHasName(sName)) {
-    sValue = pEnameSet->szValue(sName);
+  if (pTagSet->bHasName(sName)) {
+    sValue = pTagSet->szValue(sName);
   }
   
   m_pDataStack->vPushStr(sValue);
@@ -164,18 +164,18 @@ void Step::vEnameSetGetStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.hasName -- test if ename-set has a pair with given name           */
+/* TagSet.hasName -- test if ename-set has a pair with given name             */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetHasName(void)
+void Step::vTagSetHasName(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
 
-  bool bHas = pEnameSet->bHasName(sName);
+  bool bHas = pTagSet->bHasName(sName);
   
   m_pDataStack->vPushInt(bHas);
   
@@ -183,33 +183,33 @@ void Step::vEnameSetHasName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tagSet.insertInt -- add a name-integer pair to ename-set                 */
+/* tagSet.insertInt -- add a name-integer pair to ename-set                   */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetInsertInt(void)
+void Step::vTagSetInsertInt(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   i8 iValue = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vInsert(sName,iValue);
-  // pEnameSet->vPrint();
+  pTagSet->vInsert(sName,iValue);
+  // pTagSet->vPrint();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* tagSet.insertStr -- add a name-string pair to ename-set                     */
+/* tagSet.insertStr -- add a name-string pair to ename-set                    */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetInsertStr(void)
+void Step::vTagSetInsertStr(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   s256 sValue;
   m_pDataStack->vPopStr(sValue,__func__);
@@ -217,40 +217,40 @@ void Step::vEnameSetInsertStr(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vInsert(sName,sValue);
-  //pEnameSet->vPrint();
+  pTagSet->vInsert(sName,sValue);
+  //pTagSet->vPrint();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.replaceInt -- replace a name-integer pair to ename-set            */
+/* TagSet.replaceInt -- replace a name-integer pair to ename-set              */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetReplaceInt(void)
+void Step::vTagSetReplaceInt(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   i8 iValue = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vReplace(sName,iValue);
-  //pEnameSet->vPrint();
+  pTagSet->vReplace(sName,iValue);
+  //pTagSet->vPrint();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.replaceStr -- replace a name-string pair to ename-set             */
+/* TagSet.replaceStr -- replace a name-string pair to ename-set               */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetReplaceStr(void)
+void Step::vTagSetReplaceStr(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   s256 sValue;
   m_pDataStack->vPopStr(sValue,__func__);
@@ -258,20 +258,20 @@ void Step::vEnameSetReplaceStr(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pEnameSet->vReplace(sName,sValue);
-  //pEnameSet->vPrint();
+  pTagSet->vReplace(sName,sValue);
+  //pTagSet->vPrint();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TagSet.upsertStr -- replace/add a name-string pair to ename-set          */
+/* TagSet.upsertStr -- replace/add a name-string pair to ename-set            */
 /*----------------------------------------------------------------------------*/
-void Step::vEnameSetUpsertStr(void)
+void Step::vTagSetUpsertStr(void)
 {
   ENTRY();
   
-  TagSet* pEnameSet = _pEnameSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s256 sValue;
   m_pDataStack->vPopStr(sValue,__func__);
@@ -279,16 +279,16 @@ void Step::vEnameSetUpsertStr(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  bool bHas = pEnameSet->bHasName(sName);
+  bool bHas = pTagSet->bHasName(sName);
   
   if (bHas) {
-    pEnameSet->vReplace(sName,sValue);
+    pTagSet->vReplace(sName,sValue);
   }
   else {
-    pEnameSet->vInsert(sName,sValue);
+    pTagSet->vInsert(sName,sValue);
   }
   
-  //pEnameSet->vPrint();
+  //pTagSet->vPrint();
   
   EXIT();
 }

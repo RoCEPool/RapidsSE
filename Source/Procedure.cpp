@@ -63,12 +63,12 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   
   pProcWord->vCategory(pProcCatg);
   
-  if (! pProcWord->pEnameSet())
-    pProcWord->vEnameSet(new TagSet);
+  if (! pProcWord->pTagSet())
+    pProcWord->vTagSet(new TagSet);
 
   vParseParameters(pProcWord,pTokenVec);
 
-  pProcWord->pEnameSet()->vInsert("procText"_Stz,sProcText);
+  pProcWord->pTagSet()->vInsert("procText"_Stz,sProcText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,9 +164,9 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the procedure text and toeknise it
-  TagSet* pEnameSet = pProcWord->pEnameSet();
+  TagSet* pTagSet = pProcWord->pTagSet();
   
-  Stz* szProcText = pEnameSet->szValue("procText"_Stz);
+  Stz* szProcText = pTagSet->szValue("procText"_Stz);
   
   TokenVec* pProcTextVec = TokenVec::pTokenise(szProcText);
   
@@ -273,7 +273,7 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
   if (! pTkn)
     return;
   
-  TagSet* pEnameSet = pProcWord->pEnameSet(true);
+  TagSet* pTagSet = pProcWord->pTagSet(true);
   
   for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
     pTkn = pTokenVec->pGet(i_Tkn);
@@ -285,7 +285,7 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
     vTrace("%s: adding parameter %s\n"_Stz,pProcWord->szWordNm(),pTkn->szChars());
 #endif
     
-    pEnameSet->vInsert(pTkn->szChars());
+    pTagSet->vInsert(pTkn->szChars());
   }
 
 }

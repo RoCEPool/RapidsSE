@@ -40,9 +40,9 @@ void Step::vNodeNew(void)
   Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
 
   Job* pJob = AM::pThisTLSJob();
-  TagSet* pEnameSet = pJob->pJobTags();
+  TagSet* pTagSet = pJob->pJobTags();
   
-  //pEnameSet->vPrint();
+  //pTagSet->vPrint();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
@@ -51,8 +51,8 @@ void Step::vNodeNew(void)
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
                          sNodeNm,
-                         pEnameSet->szValue("IPADDR"_Stz),
-                         pEnameSet->szValue("PORTNO"_Stz)->iToI8());
+                         pTagSet->szValue("IPADDR"_Stz),
+                         pTagSet->szValue("PORTNO"_Stz)->iToI8());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

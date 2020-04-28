@@ -370,7 +370,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 //    API_LOC(360);
 //
 //    // set the row in the insertRow job
-//    pJob_InsertRow->pEnameSet()->vInsert(C_TAG_TABLENM, szTableNm);
+//    pJob_InsertRow->pTagSet()->vInsert(C_TAG_TABLENM, szTableNm);
 //    pJob_InsertRow->m_pRecord->vRecStr(szRecord);
 //
 //    //pJob_InsertRow->m_nRawDataBytes = iRawDataLength;

@@ -16,7 +16,7 @@ namespace Gadgets
     SP_EnmSet(void);
    ~SP_EnmSet(void) noexcept(false);
   
-    Stz* sz(TagSet* pEnameSet);
+    Stz* sz(TagSet* pTagSet);
 
   private:
     Footer* aFooter(void);

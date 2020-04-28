@@ -960,7 +960,7 @@ void SePrompt::vPrepareSpawn(void)
   m_pJob->vSeed(SS_SEED_REQ);
   
 //  if (m_pJob->bHasTag(C_TAG_TAGS))
-//    m_pJob->pEnameSet()->vDumpSet();
+//    m_pJob->pTagSet()->vDumpSet();
   
   //! ALKA: Come back to this : 3 feb 2020
   m_pJob->vJobClass(nullptr, (char*)__func__);
@@ -1256,7 +1256,7 @@ void SePrompt::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //m_pJob->pEnameSet()->vPrint();
+  //m_pJob->pTagSet()->vPrint();
   
   if (! m_pJob->bTimeTag())
     return;
@@ -1302,7 +1302,7 @@ void SePrompt::vSetJob(void)
   
   if (m_oJobTags.bHasName(C_TAG_INFO)) {
     
-    TagSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
+    TagSet* pJobInfo_es = Job::pJobInfo_tagSet(sJobNm);
     if (pJobInfo_es)
       pJobInfo_es->vDumpSet();
   }
@@ -1310,12 +1310,12 @@ void SePrompt::vSetJob(void)
   m_pJob->pJobTags()->vCopy(&m_oJobTags);
   
   if (m_pJob->bHasTag(C_TAG_LIFE)) {
-    SP_EnmSet spEnameSet;
-    m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(m_pJob->pJobTags()));
-    //m_pJob->pEnameSet()->vPrint();
+    SP_EnmSet spTagSet;
+    m_pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(m_pJob->pJobTags()));
+    //m_pJob->pTagSet()->vPrint();
   }
   
-  //m_pJob->pEnameSet()->vContentDump();
+  //m_pJob->pTagSet()->vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/

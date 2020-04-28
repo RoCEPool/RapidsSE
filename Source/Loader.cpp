@@ -169,7 +169,7 @@ bool Loader::bReadRecords(Job* pPipelineJob, Stz* aDataArea, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* set the formatter from the tags in the ename set                           */
 /*----------------------------------------------------------------------------*/
-bool Loader::bSetFormat(TagSet* pEnameSet)
+bool Loader::bSetFormat(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
@@ -179,9 +179,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_TERMINATOR
-  i_Tag = pEnameSet->i_Find(C_TAG_RECORD_TERMINATOR);
+  i_Tag = pTagSet->i_Find(C_TAG_RECORD_TERMINATOR);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     m_oFormatter.m_cRecordTerminator = *sTagValue.azChar();
     if (m_oFormatter.m_cRecordTerminator == '0')
       m_oFormatter.m_cRecordTerminator = '\0';
@@ -191,9 +191,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_RECORD_ENDS
-  i_Tag = pEnameSet->i_Find(C_TAG_RECORD_ENDS);
+  i_Tag = pTagSet->i_Find(C_TAG_RECORD_ENDS);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     char cRecordEnds = *sTagValue.azChar();
     
     // is record_ends 1 character ?
@@ -234,9 +234,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_FIELD_DELIMITER
-  i_Tag = pEnameSet->i_Find(C_TAG_FIELD_DELIMITER);
+  i_Tag = pTagSet->i_Find(C_TAG_FIELD_DELIMITER);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     if (sTagValue.bSame("\\t"_Stz))
       m_oFormatter.m_cFieldDelimiter = '\t';
     else
@@ -248,9 +248,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
 
   // - - - - - - - - - - - - - - - - - - - - -
   // C_ENCLOSED_BY_LEADING
-  i_Tag = pEnameSet->i_Find(C_TAG_ENCLOSED_BY_LEADING);
+  i_Tag = pTagSet->i_Find(C_TAG_ENCLOSED_BY_LEADING);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     m_oFormatter.m_cEnclosedBy_Leading = *sTagValue.azChar();
     if (m_oFormatter.m_cEnclosedBy_Leading == '0')
       m_oFormatter.m_cEnclosedBy_Leading = '\0';
@@ -264,9 +264,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_ENCLOSED_BY_TRAILING
-  i_Tag = pEnameSet->i_Find(C_TAG_ENCLOSED_BY_TRAILING);
+  i_Tag = pTagSet->i_Find(C_TAG_ENCLOSED_BY_TRAILING);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     // if trailing is specified, leading should also have been specified
     if (m_oFormatter.m_cEnclosedBy_Trailing == '\0') {
       if (! AM::bMetadata())
@@ -285,9 +285,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
   //
   // - - - - - - - - - - - - - - - - - - - - -
   // C_DATE_FORMAT
-  i_Tag = pEnameSet->i_Find(C_TAG_DATE_FORMAT);
+  i_Tag = pTagSet->i_Find(C_TAG_DATE_FORMAT);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     // extract date format
     if ( ! bExtractDateFormat(sTagValue.szStz()) ) {
       if ( ! AM::bMetadata())
@@ -299,9 +299,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_ESCAPE_CHAR
-  i_Tag = pEnameSet->i_Find(C_TAG_ESCAPE_CHAR);
+  i_Tag = pTagSet->i_Find(C_TAG_ESCAPE_CHAR);
   if (i_Tag != C_UNKNOWN) {
-    sTagValue = pEnameSet->szValue(i_Tag);
+    sTagValue = pTagSet->szValue(i_Tag);
     m_oFormatter.m_cEscapeChar = *sTagValue.azChar();
     if (m_oFormatter.m_cEscapeChar == '0')
       m_oFormatter.m_cEscapeChar = '\0';
@@ -311,9 +311,9 @@ bool Loader::bSetFormat(TagSet* pEnameSet)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // C_MAX_ERRORS
-  i_Tag = pEnameSet->i_Find(C_TAG_MAX_ERRORS);
+  i_Tag = pTagSet->i_Find(C_TAG_MAX_ERRORS);
   if (i_Tag != C_UNKNOWN) {
-    iTagValue = pEnameSet->iValue(i_Tag);
+    iTagValue = pTagSet->iValue(i_Tag);
     
     m_oFormatter.m_nMaxErrors = iTagValue;
     

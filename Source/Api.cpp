@@ -383,7 +383,7 @@ bool Api::bSpawnJob(Job* pJob)
 //    SP_Job spJob;
 //    vTrace("+ + + + + + + + + + + + + + + + + + \n"_Stz);
 //    vTrace("Api Spawn: spawning job %s\n"_Stz,spJob.sz_api(pThisJob));
-//    pThisJob->pEnameSet()->vDumpSet();
+//    pThisJob->pTagSet()->vDumpSet();
 //  }
 
   if (pJob->bHasTag(C_TAG_API) ||

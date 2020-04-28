@@ -258,19 +258,19 @@ public:
   void vEncodeUntil(void);
 
   // ename-set
-  void vEnameSetAppendInt(void);
-  void vEnameSetAppendStr(void);
-  void vEnameSetAsStr(void);
-  void vEnameSetCopy(void);
-  void vEnameSetGetInt(void);
-  void vEnameSetGetStr(void);
-  void vEnameSetHasName(void);
-  void vEnameSetInsertInt(void);
-  void vEnameSetInsertStr(void);
-  void vEnameSetReplaceInt(void);
-  void vEnameSetReplaceStr(void);
-  void vEnameSetUpsertStr(void);
-  void vEnameSetNew(void);
+  void vTagSetAppendInt(void);
+  void vTagSetAppendStr(void);
+  void vTagSetAsStr(void);
+  void vTagSetCopy(void);
+  void vTagSetGetInt(void);
+  void vTagSetGetStr(void);
+  void vTagSetHasName(void);
+  void vTagSetInsertInt(void);
+  void vTagSetInsertStr(void);
+  void vTagSetReplaceInt(void);
+  void vTagSetReplaceStr(void);
+  void vTagSetUpsertStr(void);
+  void vTagSetNew(void);
 
   // enter
   void vEnterObject(void);
@@ -521,7 +521,7 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
 
-  void vJobEnameSetFetch(void);
+  void vJobTagSetFetch(void);
   void vJobErrorStore(void);
   void vJobErrorFetch(void);
   void vJobExecuteFetch(void);
@@ -1270,7 +1270,7 @@ public:
   void vSessionCommand(void);
   void vSessionDicStackFetch(void);
   void vSessionDump(void);
-  void vSessionEnameSetFetch(void);
+  void vSessionTagSetFetch(void);
   void vSessionIsExiting(void);
   void vSessionPid(void);
   void vSessionSlotFetch(void);

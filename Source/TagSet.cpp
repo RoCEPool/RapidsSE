@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TagSet* Gadgets::_pEnameSet(void* aAddr)
+TagSet* Gadgets::_pTagSet(void* aAddr)
 {
-  TagSet* pEnameSet = reinterpret_cast<TagSet*>(aAddr);
+  TagSet* pTagSet = reinterpret_cast<TagSet*>(aAddr);
   
-  RASSERT_TYPE(pEnameSet,CN_TAGSET);
+  RASSERT_TYPE(pTagSet,CN_TAGSET);
   
-  return pEnameSet;
+  return pTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +133,7 @@ void TagSet::vAppend(Stz* szName, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* concat enameset to cmd string                                              */
+/* concat tagSet to cmd string                                              */
 /*----------------------------------------------------------------------------*/
 void TagSet::vConcat(Stz* szCmd)
 {
@@ -157,7 +157,7 @@ void TagSet::vConcat(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append enameset to cmd string                                              */
+/* append tagSet to cmd string                                              */
 /*----------------------------------------------------------------------------*/
 void TagSet::vConcat(Stz* szCmd, i8 i_Ename)
 {
@@ -195,28 +195,28 @@ void TagSet::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set                                  */
 /*----------------------------------------------------------------------------*/
-void TagSet::vCopy(TagSet* pScrEnameSet)
+void TagSet::vCopy(TagSet* pScrTagSet)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  for (i8 i_Ename = 0; i_Ename < pScrEnameSet->nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < pScrTagSet->nEnames(); i_Ename++) {
     
-    Stz* szName = pScrEnameSet->szName(i_Ename);
+    Stz* szName = pScrTagSet->szName(i_Ename);
     
     if (bHasName(szName)) {
-      if (TN_STRING == pScrEnameSet->eToken(i_Ename)) {
-        vReplace(szName,pScrEnameSet->szValue(i_Ename));
+      if (TN_STRING == pScrTagSet->eToken(i_Ename)) {
+        vReplace(szName,pScrTagSet->szValue(i_Ename));
       }
       else {
-        vReplace(szName,pScrEnameSet->iValue(i_Ename));
+        vReplace(szName,pScrTagSet->iValue(i_Ename));
       }
     }
     else {
-      if (TN_STRING == pScrEnameSet->eToken(i_Ename)) {
-        vInsert(szName,pScrEnameSet->szValue(i_Ename));
+      if (TN_STRING == pScrTagSet->eToken(i_Ename)) {
+        vInsert(szName,pScrTagSet->szValue(i_Ename));
       }
       else {
-        vInsert(szName,pScrEnameSet->iValue(i_Ename));
+        vInsert(szName,pScrTagSet->iValue(i_Ename));
       }
     }
   }
@@ -229,22 +229,22 @@ void TagSet::vDelete(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  TagSet xEnameSet;
+  TagSet xTagSet;
   
   bool bWasCopied = false;
   
-  xEnameSet.vCopy(this);
+  xTagSet.vCopy(this);
   vReset();
   
-  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
     
-    if (xEnameSet.szName(i_Ename)->bSame(szName))
+    if (xTagSet.szName(i_Ename)->bSame(szName))
       continue;
     
-    if (TN_STRING == xEnameSet.eToken(i_Ename))
-      vInsert(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
+    if (TN_STRING == xTagSet.eToken(i_Ename))
+      vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
     else
-      vInsert(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+      vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
   }
 }
 
@@ -520,25 +520,25 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  TagSet xEnameSet;
+  TagSet xTagSet;
   
   bool bWasCopied = false;
   
-  xEnameSet.vCopy(this);
+  xTagSet.vCopy(this);
   vReset();
   
-  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
     
-    if (TN_STRING == xEnameSet.eToken(i_Ename)) {
-      vInsert(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
+    if (TN_STRING == xTagSet.eToken(i_Ename)) {
+      vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
     }
     else {
-      if (xEnameSet.szName(i_Ename)->bSame(szName)) {
-        vInsert(xEnameSet.szName(i_Ename),iValue);
+      if (xTagSet.szName(i_Ename)->bSame(szName)) {
+        vInsert(xTagSet.szName(i_Ename),iValue);
         bWasCopied = true;
       }
       else {
-        vInsert(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+        vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
       }
     }
   }
@@ -554,27 +554,27 @@ void TagSet::vReplace(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  TagSet xEnameSet;
+  TagSet xTagSet;
   
   bool bWasCopied = false;
   
-  xEnameSet.vCopy(this);
+  xTagSet.vCopy(this);
   vReset();
   
-  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < xTagSet.nEnames(); i_Ename++) {
     
-    if (TN_STRING == xEnameSet.eToken(i_Ename)) {
+    if (TN_STRING == xTagSet.eToken(i_Ename)) {
       
-      if (xEnameSet.szName(i_Ename)->bSame(szName)) {
-        vInsert(xEnameSet.szName(i_Ename),szValue);
+      if (xTagSet.szName(i_Ename)->bSame(szName)) {
+        vInsert(xTagSet.szName(i_Ename),szValue);
         bWasCopied = true;
       }
       else {
-        vInsert(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
+        vInsert(xTagSet.szName(i_Ename),xTagSet.szValue(i_Ename));
       }
     }
     else
-      vInsert(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+      vInsert(xTagSet.szName(i_Ename),xTagSet.iValue(i_Ename));
   }
   
   if (! bWasCopied)

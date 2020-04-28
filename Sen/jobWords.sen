@@ -120,11 +120,11 @@
 : job::</seeXfer/>
 
   "</xfer/>"
-  job[] job.enameSet@ tagSet.hasName
+  job[] job.tagSet@ tagSet.hasName
   if
 
    r@ locate .
-   job[] job.enameSet@ tagSet.asStr .
+   job[] job.tagSet@ tagSet.asStr .
 
   then
 ;
@@ -288,11 +288,11 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: findJobClassEnmSet ( sJobNm -- pEnameSet )
+: findJobClassEnmSet ( sJobNm -- pTagSet )
 
   params| sJobNm |
 
-  sJobNm "_info" str.cat find word.EnameSet@
+  sJobNm "_info" str.cat find word.TagSet@
 ;
 
 
@@ -331,11 +331,11 @@
 : job::</seeFlow/>
 
   "</flow/>"
-    job[] job.enameSet@ tagSet.hasName
+    job[] job.tagSet@ tagSet.hasName
   if
 
     r@ locate .
-    job[] job.enameSet@ tagSet.asStr .
+    job[] job.tagSet@ tagSet.asStr .
 
   then
 ;

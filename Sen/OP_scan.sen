@@ -24,7 +24,7 @@
 
   0 locals| rateSecs |
 
-  "<rateSecs>" job[] job.enameset@ tagSet.hasName if
+  "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 
@@ -130,7 +130,7 @@ opSyntax: scan :: scan <tableNm> <rateSecs> ;
 
 
 //find: scan_info word.dump
-//find: scan_info word.enameset@ tagSet.asStr .
+//find: scan_info word.tagSet@ tagSet.asStr .
   
 /*============================================================================*/
 /* end                                                                        */

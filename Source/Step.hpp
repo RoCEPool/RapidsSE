@@ -46,7 +46,7 @@ namespace Steps
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
   
-    static void vAddSteps_EnameSet(void);
+    static void vAddSteps_TagSet(void);
     static void vAddSteps_Encode(void);
     static void vAddSteps_EntBuffer(void);
     static void vAddSteps_Enter(void);

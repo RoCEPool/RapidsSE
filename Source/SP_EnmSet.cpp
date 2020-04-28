@@ -32,23 +32,23 @@ SP_EnmSet::~SP_EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint SP_EnmSet and return Stz* to result                                 */
 /*----------------------------------------------------------------------------*/
-Stz* SP_EnmSet::sz(TagSet* pEnameSet)
+Stz* SP_EnmSet::sz(TagSet* pTagSet)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
   
    StrLib::vSprint(m_caResult,"{ "_Stz);
   
-  for (i8 i_Ename = 0; i_Ename < pEnameSet->nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < pTagSet->nEnames(); i_Ename++) {
     
     if (i_Ename)
       StrLib::vSprintCat((Stz*)m_caResult,", "_Stz);
 
-    if (TN_INTEGER == pEnameSet->eToken(i_Ename)) {
+    if (TN_INTEGER == pTagSet->eToken(i_Ename)) {
       
       StrLib::vSprintCat((Stz*)m_caResult,"%s=%lld"_Stz,
               
-                         pEnameSet->szName(i_Ename),
-                         pEnameSet->iValue(i_Ename),
+                         pTagSet->szName(i_Ename),
+                         pTagSet->iValue(i_Ename),
              
                          C_VARGS_END
                         );
@@ -57,8 +57,8 @@ Stz* SP_EnmSet::sz(TagSet* pEnameSet)
     
     StrLib::vSprintCat((Stz*)m_caResult,"%s=%s"_Stz,
            
-                       pEnameSet->szName(i_Ename),
-                       pEnameSet->szValue(i_Ename),
+                       pTagSet->szName(i_Ename),
+                       pTagSet->szValue(i_Ename),
 
                        C_VARGS_END
                       );

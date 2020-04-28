@@ -63,7 +63,7 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
   
-    static TagSet* pJobInfo_enameSet(Stz* szJobNm);
+    static TagSet* pJobInfo_tagSet(Stz* szJobNm);
 
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
@@ -98,7 +98,7 @@ namespace Jobs
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    TagSet* pJobInfoEnameSet(void);
+    TagSet* pJobInfoTagSet(void);
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);

@@ -27,25 +27,25 @@ void Step::vTagGet(void)
   
   Job* pJob = m_pTask->pJob();
       
-  TagSet* pEnameSet = pJob->pJobTags();
+  TagSet* pTagSet = pJob->pJobTags();
 
-  i8 i_Tag = pEnameSet->i_Find(sTagNm.szStz());
+  i8 i_Tag = pTagSet->i_Find(sTagNm.szStz());
   
   if (C_UNKNOWN == i_Tag) {
     vTrace("vTagGet: unknown tag: %s\n"_Stz,sTagNm.szStz());
-    pEnameSet->vContentDump();
+    pTagSet->vContentDump();
     
     THROW("Step::vTagGet : unknown tag\n"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (TN_STRING == pEnameSet->eToken(i_Tag)) {
-    Stz* szValue = pEnameSet->szValue(i_Tag);
+  if (TN_STRING == pTagSet->eToken(i_Tag)) {
+    Stz* szValue = pTagSet->szValue(i_Tag);
     m_pDataStack->vPushStz(szValue);
   }
   else {
-    i8 iValue = pEnameSet->iValue(i_Tag);
+    i8 iValue = pTagSet->iValue(i_Tag);
     m_pDataStack->vPushInt(iValue);
   }
 
@@ -69,9 +69,9 @@ void Step::vTagSet(void)
 
   Job* pJob = m_pTask->pJob();
       
-  TagSet* pEnameSet = pJob->pJobTags();
+  TagSet* pTagSet = pJob->pJobTags();
 
-  pEnameSet->vInsert(sTagNm,sTagValue);
+  pTagSet->vInsert(sTagNm,sTagValue);
 }
 
 /*============================================================================*/

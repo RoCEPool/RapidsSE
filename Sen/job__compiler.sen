@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isGenericJob params| pWord |
 
-  pWord word.EnameSet@ locals| pEnameSet |
+  pWord word.TagSet@ locals| pTagSet |
 
-  "<jobKind>" pEnameSet tagSet.getInt
+  "<jobKind>" pTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -33,9 +33,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isLocalJob params| pWord |
 
-  pWord word.EnameSet@ locals| pEnameSet |
+  pWord word.TagSet@ locals| pTagSet |
 
-  "<jobKind>" pEnameSet tagSet.getInt
+  "<jobKind>" pTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -57,9 +57,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isDistJob params| pWord |
 
-  pWord word.EnameSet@ locals| pEnameSet |
+  pWord word.TagSet@ locals| pTagSet |
 
- "<jobKind>" pEnameSet tagSet.getInt
+ "<jobKind>" pTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -81,9 +81,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isServiceCmd params| pWord |
 
-  pWord word.EnameSet@ locals| pEnameSet |
+  pWord word.TagSet@ locals| pTagSet |
 
-  "<cmdKind>" pEnameSet tagSet.getInt
+  "<cmdKind>" pTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -114,19 +114,19 @@
 /*----------------------------------------------------------------------------*/
 : seedEnameAdd params| pWord sDefaultSeed sSuffix sSeedEname |
 
-  pWord word.EnameSet@ locals| pEnameSet |
+  pWord word.TagSet@ locals| pTagSet |
 
   sSuffix pWord seedExists?
     if pWord word.name_trunc else sDefaultSeed then
     sSuffix str.cat locals| pWordName |
 
-  sSeedEname pWordName pEnameSet tagSet.insertStr
+  sSeedEname pWordName pTagSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
-: fillOut.enameSet_dist params| pWord |
+: fillOut.tagSet_dist params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
 
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a local job                                          */
 /*----------------------------------------------------------------------------*/
-: fillOut.enameSet_local params| pWord |
+: fillOut.tagSet_local params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -150,7 +150,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a generic job                                        */
 /*----------------------------------------------------------------------------*/
-: fillOut.enameSet_generic params| pWord |
+: fillOut.tagSet_generic params| pWord |
 
   "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -159,39 +159,39 @@
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: fillOut.enameSet params| pWord |
+: fillOut.tagSet params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.enameSet@  locals| pEnameSet |
+  pWord word.tagSet@  locals| pTagSet |
   0 0 locals| iParams sStreamDef |
 
   // default for command kind
-  "<cmdKind>" pEnameSet tagSet.hasName not if
+  "<cmdKind>" pTagSet tagSet.hasName not if
     "<cmdKind>" "CK_COMMAND" pWord jobInfo::addEname
   then
 
   // default for ddl lock
-  "<ddlLock>" pEnameSet tagSet.hasName not if
+  "<ddlLock>" pTagSet tagSet.hasName not if
     "<ddlLock>" "DL_NONE" pWord jobInfo::addEname
   then
 
   // default for job desc
-  "<jobDesc>" pEnameSet tagSet.hasName not if
+  "<jobDesc>" pTagSet tagSet.hasName not if
     "<jobDesc>" "--description of job--" pWord jobInfo::addEname
   then
 
   // default for job kind
-  "<jobKind>" pEnameSet tagSet.hasName not if
+  "<jobKind>" pTagSet tagSet.hasName not if
     "<jobKind>" "JK_LOCAL" pWord jobInfo::addEname
   then
 
   // default for priority
-  "<priority>" pEnameSet tagSet.hasName not if
+  "<priority>" pTagSet tagSet.hasName not if
     "<priority>" "PY_NORMAL" pWord jobInfo::addEname
   then
 
   // default for response kind
-  "<rspKind>" pEnameSet tagSet.hasName not if
+  "<rspKind>" pTagSet tagSet.hasName not if
     "<rspKind>" "RS_NONE" pWord jobInfo::addEname
   then
 
@@ -199,21 +199,21 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pWord job::isgenericJob if
-    pWord fillOut.enameSet_generic
+    pWord fillOut.tagSet_generic
   else
   pWord job::isDistJob if
-    pWord fillOut.enameSet_dist
+    pWord fillOut.tagSet_dist
   else
 
-    "<liteOp>" pEnameSet tagSet.hasName if
+    "<liteOp>" pTagSet tagSet.hasName if
       sWordNm_trunc "LiteOP: %v" .printf
 
       "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
       "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
 
       // add procedure depending on no of parameters
-      "<params>" pEnameSet tagSet.hasName assert
-      "<params>" pEnameSet tagSet.getStr >int to iParams
+      "<params>" pTagSet tagSet.hasName assert
+      "<params>" pTagSet tagSet.getStr >int to iParams
       iParams 2 == if
         "/liteOp/" sWordNm_trunc __liteOp_procedure2 str.replace procedure::add
       else
@@ -226,7 +226,7 @@
       then
     else
 
-      "<localLiteOp>" pEnameSet tagSet.hasName if
+      "<localLiteOp>" pTagSet tagSet.hasName if
         sWordNm_trunc "LocalLiteOP: %v" .printf
 
       "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
@@ -234,8 +234,8 @@
       "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
 
         // add procedure depending on no of parameters
-        "<params>" pEnameSet tagSet.hasName assert
-        "<params>" pEnameSet tagSet.getStr >int to iParams
+        "<params>" pTagSet tagSet.hasName assert
+        "<params>" pTagSet tagSet.getStr >int to iParams
         iParams 2 == if
           "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
         else
@@ -251,11 +251,11 @@
 
     then
 
-    pWord fillOut.enameSet_local
+    pWord fillOut.tagSet_local
 
   then then
 
-  // pEnameSet tagSet.asStr .
+  // pTagSet tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -364,7 +364,7 @@
 /*----------------------------------------------------------------------------*/
 : jobInfo:
 
-  0 0 0 0 locals| pWord sEname sEvalue pEnameSet |
+  0 0 0 0 locals| pWord sEname sEvalue pTagSet |
 
   // create a word using next token from input source as the word name
   input::next "_info" str.cat :create
@@ -375,13 +375,13 @@
   [ compiler::current@ encode::push ] pWord word.category!
 
   // attach an ename set to the word being created
-  tagSet::new to pEnameSet
+  tagSet::new to pTagSet
 
-  pEnameSet pWord word.EnameSet!
+  pTagSet pWord word.TagSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pEnameSet tagSet.insertStr
+  "<jobNm>" pWord word.name_trunc pTagSet tagSet.insertStr
 
   // skip the "{" token from input source
   input::next discard
@@ -410,11 +410,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  //pEnameSet tagSet.asStr .
+  //pTagSet tagSet.asStr .
 
-  pWord fillOut.enameSet
+  pWord fillOut.tagSet
 
-  //pEnameSet tagSet.asStr .
+  //pTagSet tagSet.asStr .
 
   pWord job::isServiceCmd if .generateService then
 ;

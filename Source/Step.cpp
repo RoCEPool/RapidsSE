@@ -67,7 +67,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
   
-  Step::vAddSteps_EnameSet();
+  Step::vAddSteps_TagSet();
   Step::vAddSteps_Encode();
   Step::vAddSteps_Enter();
   Step::vAddSteps_EntBuffer();

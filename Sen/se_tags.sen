@@ -8,12 +8,12 @@
 /*----------------------------------------------------------------------------*/
 /* ensure the word has an ename set                                           */
 /*----------------------------------------------------------------------------*/
-: word.EnsureEnameSet ( pWord -- )
+: word.EnsureTagSet ( pWord -- )
 
   params| pWord |
 
-  pWord word.enameset@ not if
-    tagSet::new pWord word.enameSet!
+  pWord word.tagSet@ not if
+    tagSet::new pWord word.tagSet!
   then
 ;
 
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : jobInfo::addEname params| pWord sEvalue sEname |
 
-  pWord word.EnameSet@ locals| pEnameSet |
+  pWord word.TagSet@ locals| pTagSet |
 
   sEvalue find locals| pEvalueWord |
 
@@ -30,14 +30,14 @@
     pEvalueWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
-       sEname pEvalueWord execute pEnameSet tagSet.insertInt
+       sEname pEvalueWord execute pTagSet tagSet.insertInt
       exit
 
     then
   then
 
   // -- -- --
-  sEname sEvalue pEnameSet tagSet.insertStr
+  sEname sEvalue pTagSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : tagSet::addReplace params| sEvalue sEname |
 
-  compiler::current@ word.EnameSet@ locals| pEnameSet |
+  compiler::current@ word.TagSet@ locals| pTagSet |
 
   sEvalue find locals| pEvalueWord |
 
@@ -53,14 +53,14 @@
     pEvalueWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
-       sEname pEvalueWord execute pEnameSet tagSet.replaceInt
+       sEname pEvalueWord execute pTagSet tagSet.replaceInt
       exit
 
     then
   then
 
   // -- -- --
-  sEname sEvalue pEnameSet tagSet.replaceStr
+  sEname sEvalue pTagSet tagSet.replaceStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -72,9 +72,9 @@
 
   // attach a new ename set to the word being created
   //tagSet::new to pTagSet
-  //pTagSet compiler::current@ word.EnameSet!
-  compiler::current@ word.EnsureEnameSet
-  compiler::current@ word.EnameSet@ to pTagSet
+  //pTagSet compiler::current@ word.TagSet!
+  compiler::current@ word.EnsureTagSet
+  compiler::current@ word.TagSet@ to pTagSet
   
   // add tag set name
   
@@ -116,7 +116,7 @@
 
   //compiler::current@ encode::push
   
-  //POSTPONE word.enameset@
+  //POSTPONE word.tagSet@
 ;
 
 
@@ -130,9 +130,9 @@
   // get the ename set of the word being compiled
   compiler::current@ to pDstTagWord
   
-  pDstTagWord word.EnsureEnameSet
+  pDstTagWord word.EnsureTagSet
 
-  pDstTagWord word.enameset@ to pEnamSetDst
+  pDstTagWord word.tagSet@ to pEnamSetDst
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -142,7 +142,7 @@
   pSrcTagWord not if
   then
     
-  pSrcTagWord word.enameSet@ to pEnamSetSrc
+  pSrcTagWord word.tagSet@ to pEnamSetSrc
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

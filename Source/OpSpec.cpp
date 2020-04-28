@@ -40,8 +40,8 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   m_i_OpSpec     = C_UNKNOWN;
   m_eXmitKind    = XK_NORMAL;
 
-  //m_oEnameSet
-  //m_oTopologyEnameSet
+  //m_oTagSet
+  //m_oTopologyTagSet
   
   _checkInitialised_(CN_OPSPEC);
   
@@ -68,7 +68,7 @@ void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnameSet.vInsert(sName, sValue);
+  m_oTagSet.vInsert(sName, sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnameSet.vInsert(sName, iValue);
+  m_oTagSet.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTopologyEnameSet.vInsert(sName, iValue);
+  m_oTopologyTagSet.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,11 +104,11 @@ bool OpSpec::bAppendRight(void)
 /*----------------------------------------------------------------------------*/
 /* get the TagSet                                                           */
 /*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pEnameSet(void)
+TagSet* OpSpec::pTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return &m_oEnameSet;
+  return &m_oTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnameSet.vReplace(szName, szValue);
+  m_oTagSet.vReplace(szName, szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,17 +168,17 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTopologyEnameSet.vReplace(szName, iValue);
+  m_oTopologyTagSet.vReplace(szName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the topology TagSet                                                  */
 /*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pTopologyEnameSet(void)
+TagSet* OpSpec::pTopologyTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return &m_oTopologyEnameSet;
+  return &m_oTopologyTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +213,7 @@ void OpSpec::vPrint(void)
   
   vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
     
-  m_oEnameSet.vDumpSet();
+  m_oTagSet.vDumpSet();
 }
 
 /*----------------------------------------------------------------------------*/

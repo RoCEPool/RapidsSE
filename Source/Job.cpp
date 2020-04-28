@@ -227,8 +227,8 @@ Job::~Job(void) noexcept(false)
   
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
-//    SP_EnmSet spEnameSet;
-//    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oJobTags));
+//    SP_EnmSet spTagSet;
+//    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
 //    //m_oJobTags.vPrint();
 //  }
 
@@ -354,7 +354,7 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* get the ename set of the named (universal) job                             */
 /*----------------------------------------------------------------------------*/
-TagSet* Job::pJobInfo_enameSet(Stz* szJobNm)
+TagSet* Job::pJobInfo_tagSet(Stz* szJobNm)
 {
   s32 sJobNm_info = szJobNm;
   sJobNm_info.vConcat("_info"_Stz);
@@ -364,9 +364,9 @@ TagSet* Job::pJobInfo_enameSet(Stz* szJobNm)
   if (!pWord_jobInfo)
     return nullptr;
   
-  TagSet* pEnameSet = pWord_jobInfo->pEnameSet();
+  TagSet* pTagSet = pWord_jobInfo->pTagSet();
   
-  return pEnameSet;
+  return pTagSet;
 }
 
 
@@ -789,7 +789,7 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* get the ename set of job information                                       */
 /*----------------------------------------------------------------------------*/
-TagSet* Job::pJobInfoEnameSet(void)
+TagSet* Job::pJobInfoTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -808,9 +808,9 @@ TagSet* Job::pJobInfoEnameSet(void)
   
   Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
   
-  TagSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
+  TagSet* pJobInfoTagSet = pJobInfo->pTagSet();
 
-  return pJobInfoEnameSet;
+  return pJobInfoTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1410,19 +1410,19 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   
   if (CN_JOB_UNIVERSAL == eClass) {
     
-    TagSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
+    TagSet* pJobInfoTagSet = pJob->pJobInfoTagSet();
     
     
-    if (pJobInfoEnameSet)
-      eResponse = (eRS) pJobInfoEnameSet->iValue("<rspKind>"_Stz);
+    if (pJobInfoTagSet)
+      eResponse = (eRS) pJobInfoTagSet->iValue("<rspKind>"_Stz);
 
     
     
     
-//    if ( ! pJobInfoEnameSet )
+//    if ( ! pJobInfoTagSet )
 //      return;
 //
-//    eResponse = (eRS) pJobInfoEnameSet->iValue("<rspKind>"_Stz);
+//    eResponse = (eRS) pJobInfoTagSet->iValue("<rspKind>"_Stz);
     
     
     

@@ -126,7 +126,7 @@ Session::Session(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
   
   // set initial session <path>
-  m_pSemantic->pEnameSet()->vInsert(C_TAG_PATH,C_SE_PATH);
+  m_pSemantic->pTagSet()->vInsert(C_TAG_PATH,C_SE_PATH);
   
   ++ gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,

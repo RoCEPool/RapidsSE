@@ -386,9 +386,9 @@ bool Dynamo::bCollectTag(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TagSet* pEnameSet = m_p_Job->pJobTags();
+  TagSet* pTagSet = m_p_Job->pJobTags();
   
-  pEnameSet->vInsert(sTagNm,sTagValue);
+  pTagSet->vInsert(sTagNm,sTagValue);
   
   return true;
 }
@@ -883,7 +883,7 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 
   
   // arg-2 is the op of the next stage for the xmit
   pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
-  //pOpSpec->pEnameSet()->vPrint();
+  //pOpSpec->pTagSet()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -943,7 +943,7 @@ void Dynamo::vReplaceTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage,
   
   // arg-2 is the op of the next stage for the xmit
   pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
-  //pOpSpec->pEnameSet()->vPrint();
+  //pOpSpec->pTagSet()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
