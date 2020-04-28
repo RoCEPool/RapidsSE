@@ -16,7 +16,7 @@ namespace PipelineSpecs
     eXK        m_eXmitKind;
     
     TagSet     m_oOpSpecTags;
-    TagSet     m_oTopologyTagSet;
+    TagSet     m_oTopologyTags;
     
     // must be last
     Footer m_xFooter;
@@ -39,7 +39,7 @@ namespace PipelineSpecs
     TagSet* pOpSpecTags(void);
     void vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken);
     void vReplaceTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
-    TagSet* pTopologyTagSet(void);
+    TagSet* pTopologyTags(void);
     eXK  eXmitKind(void);
     void vXmitKind(eXK eStageKind);
     StageSpec* pStageSpec(void);

@@ -58,7 +58,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pPipeline = pPipeline;
 
   m_oOpTags.vCopy(pOpSpec->pOpSpecTags());
-  m_oTopologyTags.vCopy(pOpSpec->pTopologyTagSet());
+  m_oTopologyTags.vCopy(pOpSpec->pTopologyTags());
   
   m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
