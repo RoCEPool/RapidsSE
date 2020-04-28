@@ -55,6 +55,10 @@ RegSet::RegSet(Task* pTask)
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
+  
+  m_aLowerEntry = nullptr;
+  m_aUpperEntry = nullptr;
+  m_pEntBuffer  = nullptr;
 
   _checkInitialised_(CN_REGSET);
   
