@@ -105,8 +105,8 @@
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
 
-      0 planner[].lowKey@
-      planner[] tablePtn[].get index[].positionLower
+      0 planner[].lowKey@ ""
+      planner[] tablePtn[].get index[].position
 
       tablePtn[].get index[].fetchNext to Operand[]
 
@@ -123,8 +123,8 @@
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
 
-      0 planner[].upperKey@
-      planner[] tablePtn[].get index[].positionUpper
+      "" 0 planner[].upperKey@
+      planner[] tablePtn[].get index[].position
 
       tablePtn[].get index[].fetchNext to Operand[]
     endof
