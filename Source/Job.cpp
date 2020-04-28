@@ -364,7 +364,7 @@ TagSet* Job::pJobInfo_tagSet(Stz* szJobNm)
   if (!pWord_jobInfo)
     return nullptr;
   
-  TagSet* pTagSet = pWord_jobInfo->pTagSet();
+  TagSet* pTagSet = pWord_jobInfo->pWordTags();
   
   return pTagSet;
 }
@@ -808,7 +808,7 @@ TagSet* Job::pJobInfoTagSet(void)
   
   Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
   
-  TagSet* pJobInfoTagSet = pJobInfo->pTagSet();
+  TagSet* pJobInfoTagSet = pJobInfo->pWordTags();
 
   return pJobInfoTagSet;
 }

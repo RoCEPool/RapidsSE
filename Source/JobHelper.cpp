@@ -23,12 +23,12 @@ bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();
     
-    if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pTagSet())) {
+    if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pWordTags())) {
       
       //vTrace("    matches\n"_Stz);
       
       pArgEnmSet->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
-      s32 sJobName(pSyntax->pTagSet()->szValue("__Name__"_Stz));
+      s32 sJobName(pSyntax->pWordTags()->szValue("__Name__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
       pArgEnmSet->vInsert(C_TAG_JOBNM,sJobName);
       break;
@@ -42,7 +42,7 @@ bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool b = bExtractArgs(pArgEnmSet,pSyntax->pTagSet(),pTknVec);
+  bool b = bExtractArgs(pArgEnmSet,pSyntax->pWordTags(),pTknVec);
   if (! b) {
     //vTrace("Unable to match job syntax\n"_Stz);
     return false;
