@@ -288,11 +288,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: findJobClassEnmSet ( sJobNm -- pTagSet )
+: opInfo::findTagSet params| sWordNm |
 
-  params| sJobNm |
-
-  sJobNm "_info" str.cat find word.TagSet@
+  sWordNm "_info" str.cat find word.TagSet@
 ;
 
 
@@ -300,7 +298,7 @@
 /*----------------------------------------------------------------------------*/
 : job::acquireDdlLock
 
-  "<ddlLock>" <jobNm> findJobClassEnmSet tagSet.getInt
+  "<ddlLock>" <jobNm> opInfo::findTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
