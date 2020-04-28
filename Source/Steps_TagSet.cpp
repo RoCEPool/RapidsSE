@@ -92,7 +92,7 @@ void Step::vTagSetAsStr(void)
   TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s4K sStr;
-  SP_EnmSet spTagSet;
+  SP_TagSet spTagSet;
   sStr = spTagSet.sz(pTagSet);
   
   m_pDataStack->vPushStr(sStr);

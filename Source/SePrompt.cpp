@@ -1310,7 +1310,7 @@ void SePrompt::vSetJob(void)
   m_pJob->pJobTags()->vCopy(&m_oCmdTags);
   
   if (m_pJob->bHasTag(C_TAG_LIFE)) {
-    SP_EnmSet spTagSet;
+    SP_TagSet spTagSet;
     m_pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(m_pJob->pJobTags()));
     //m_pJob->pTagSet()->vPrint();
   }

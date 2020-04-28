@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_EnmSet.cpp - TagSet sprint helper                          (on c stack) */
+/* SP_TagSet.cpp - TagSet sprint helper                          (on c stack) */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_EnmSet::SP_EnmSet(void)
+SP_TagSet::SP_TagSet(void)
 : SP(CN_SPELAPSED)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
@@ -20,7 +20,7 @@ SP_EnmSet::SP_EnmSet(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_EnmSet::~SP_EnmSet(void) noexcept(false)
+SP_TagSet::~SP_TagSet(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
 }
@@ -30,9 +30,9 @@ SP_EnmSet::~SP_EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint SP_EnmSet and return Stz* to result                                 */
+/* sprint SP_TagSet and return Stz* to result                                 */
 /*----------------------------------------------------------------------------*/
-Stz* SP_EnmSet::sz(TagSet* pTagSet)
+Stz* SP_TagSet::sz(TagSet* pTagSet)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
   
@@ -73,7 +73,7 @@ Stz* SP_EnmSet::sz(TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SP_EnmSet)
+__aFooterFunction(SP_TagSet)
 
 /*============================================================================*/
 /* end                                                                        */

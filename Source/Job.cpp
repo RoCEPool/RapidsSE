@@ -227,7 +227,7 @@ Job::~Job(void) noexcept(false)
   
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
-//    SP_EnmSet spTagSet;
+//    SP_TagSet spTagSet;
 //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
 //    //m_oJobTags.vPrint();
 //  }

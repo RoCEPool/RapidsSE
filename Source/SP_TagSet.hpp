@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_EnmSet.hpp - TagSet sprint helper                         (on c stack)  */
+/* SP_TagSet.hpp - TagSet sprint helper                         (on c stack)  */
 /*============================================================================*/
 #pragma once
 
 namespace Gadgets
 {
-  class SP_EnmSet : public SP
+  class SP_TagSet : public SP
   {
   public:
 
@@ -13,8 +13,8 @@ namespace Gadgets
     Footer m_xFooter;
     
   public:
-    SP_EnmSet(void);
-   ~SP_EnmSet(void) noexcept(false);
+    SP_TagSet(void);
+   ~SP_TagSet(void) noexcept(false);
   
     Stz* sz(TagSet* pTagSet);
 
