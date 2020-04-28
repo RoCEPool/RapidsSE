@@ -37,8 +37,8 @@
   nullptr to Operand[]
   Pipein[].pipeOut
   Op.ackPipelineJob
-  false
 
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,8 +48,14 @@
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
-  // pipeout the set
-  Operand[].pipeoutSet
+  begin
+    Operand[].isNull
+  not while
+    Operand[].pipeout
+    tablePtn[].get index[].fetchNext to Operand[]
+  repeat
+
+  tablePtn[].get tablePtnDropRead2
 
   // new an eos marker
   Operand[].newEosMarker
@@ -98,9 +104,12 @@
 
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
+
       0 planner[].lowKey@
-      planner[] tablePtn[].get index[].lowerBound to Operand[]
-      tablePtn[].get tablePtnDropRead2
+      planner[] tablePtn[].get index[].positionLower
+
+      tablePtn[].get index[].fetchNext to Operand[]
+
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

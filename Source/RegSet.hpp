@@ -58,7 +58,11 @@ namespace Registers
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter
-  
+    
+    Ent*             m_aLowerEntry;
+    Ent*             m_aUpperEntry;
+    EntBuffer*       m_pEntBuffer;
+    
     REG<Object>      m_xpRegister0; // general purpose reg 0[]
     REG<Object>      m_xpRegister1; // general purpose reg 1[]
     REG<Object>      m_xpRegister2; // general purpose reg 2[]

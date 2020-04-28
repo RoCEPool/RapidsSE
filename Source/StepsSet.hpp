@@ -376,9 +376,11 @@ public:
   void vIndexColumnCountFetch(void);
   void vIndexCompact(void);
   void vIndexDump(void);
+  void vIndexFetchNextN(void);
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
   void vIndexLowerBoundN(void);
+  void vIndexPositionLowerN(void);
   void vIndexSize(void);
   void vIndexVerify(void);
   void vIndexVisualize(void);
