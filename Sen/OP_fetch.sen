@@ -23,9 +23,32 @@
   //( cdt_5 ) Planner[].showPaths
 
   ( cdt_6 ) Planner[].matchPaths         //"matchPaths" .
-  ( cdt_6 ) Planner[].showPaths
+  //( cdt_6 ) Planner[].showPaths
 
   ( cdt_7 ) Planner[].choosePaths        //"choosePaths" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* position and begin fetch                                                   */
+/*----------------------------------------------------------------------------*/
+: positionBeginFetch ( "lowerKey" "upperKey" )
+
+  params| upperKey lowerKey |
+  0 locals| sIndexNm |
+
+  // find the index
+  0 planner[].indexNm@ to sIndexNm
+  <tableNm> sIndexNm op__index assert
+
+  // grab the table ptn read lock
+  tablePtn[].get tablePtnGrabRead2
+
+  // position in the index
+  lowerKey upperKey
+  planner[] tablePtn[].get index[].position
+
+  // fetch next buffer
+  tablePtn[].get index[].fetchNext
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,32 +71,33 @@
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
+  /*
+   begin
+     Operand[].isNull
+   not while
+     Operand[].pipeout
+     tablePtn[].get index[].fetchNext to Operand[]
+   repeat
+   */
+
+  // pipeout the Operand
   Operand[].pipeOut
 
+  // get the fetchTechnique
   0 planner[].fetchTechnique@
   case
     AT_SCAN of
       Subset[].nextBuffer to Operand[]
     endof
 
+    // all other types of fetches, just fetchNext
     tablePtn[].get index[].fetchNext to Operand[]
-/*
-    begin
-      Operand[].isNull
-    not while
-      Operand[].pipeout
-      tablePtn[].get index[].fetchNext to Operand[]
-    repeat
-*/
-    tablePtn[].get tablePtnDropRead2
-
-    // new an eos marker
-    Operand[].newEosMarker
-    Operand[].pipeOut
 
   endcase
 
+  // no more data ?
   Operand[].isNull if
+    tablePtn[].get tablePtnDropRead2
     Operand[].newEosMarker
     Operand[].pipeOut
   then
@@ -86,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 : fetchOP_PulseMarker \handler
 
-  0 0 locals| iPhrases sIndexNm |
+  0 locals| iPhrases |
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
@@ -95,90 +119,56 @@
   Operand[].newStreamDef
   Operand[].pipeOut
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be one phrase
   planner[].phrases@ to iPhrases
+  iPhrases 1 == assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the fetch technique
-  iPhrases "iPhrases %v" str.format .
-  iPhrases 1 == assert
   0 planner[].fetchTechnique@
   case
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // an exact select using index
     AT_EXACT of
-     "*exact*" .
+     "*exact*" .verbose
 
-    // find the index
-    0 planner[].indexNm@ to sIndexNm
-    <tableNm> sIndexNm op__index assert
-
-    // now get excat key rows from index
-    tablePtn[].get tablePtnGrabRead2
-
-    0 planner[].key@ 0 planner[].key@
-    planner[] tablePtn[].get index[].position
-
-    tablePtn[].get index[].fetchNext to Operand[]
-
+      0 planner[].key@ 0 planner[].key@
+      positionBeginFetch to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lower bound select using index
     AT_LOWER of
-      "*lower*" .
-      // find the index
-      0 planner[].indexNm@ to sIndexNm
-      <tableNm> sIndexNm op__index assert
-
-      // now get excat key rows from index
-      tablePtn[].get tablePtnGrabRead2
+      "*lower*" .verbose
 
       0 planner[].lowKey@ ""
-      planner[] tablePtn[].get index[].position
-
-      tablePtn[].get index[].fetchNext to Operand[]
-
+      positionBeginFetch to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // an upper bound select using index
     AT_UPPER of
-      "*upper*" .
-      // find the index
-      0 planner[].indexNm@ to sIndexNm
-      <tableNm> sIndexNm op__index assert
-
-      // now get excat key rows from index
-      tablePtn[].get tablePtnGrabRead2
+      "*upper*" .verbose
 
       "" 0 planner[].upperKey@
-      planner[] tablePtn[].get index[].position
-
-      tablePtn[].get index[].fetchNext to Operand[]
+      positionBeginFetch to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // a range select using index
     AT_RANGE of
-      "*range" .
-      // find the index
-      0 planner[].indexNm@ to sIndexNm
-      <tableNm> sIndexNm op__index assert
-
-      // now get excat key rows from index
-      tablePtn[].get tablePtnGrabRead2
+      "*range" .verbose
 
       0 planner[].lowKey@ 0 planner[].upperKey@
-      planner[] tablePtn[].get index[].position
-
-      tablePtn[].get index[].fetchNext to Operand[]
+      positionBeginFetch to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // full scan (no index)
     AT_SCAN of
-      "*scan*" .
+      "*scan*" .verbose
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
       tablePtn[].root to Subset[]
