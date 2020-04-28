@@ -115,7 +115,7 @@
     to sEname
     input::next discard
     input::next to sEvalue
-    sEname sEvalue pWord jobInfo::addEname
+    sEname sEvalue pWord word.addTag
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

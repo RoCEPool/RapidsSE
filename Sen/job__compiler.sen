@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isGenericJob params| pWord |
 
-  pWord word.TagSet@ locals| pTagSet |
+  pWord word.TagSet@ locals| pWordTagSet |
 
-  "<jobKind>" pTagSet tagSet.getInt
+  "<jobKind>" pWordTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -33,9 +33,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isLocalJob params| pWord |
 
-  pWord word.TagSet@ locals| pTagSet |
+  pWord word.TagSet@ locals| pWordTagSet |
 
-  "<jobKind>" pTagSet tagSet.getInt
+  "<jobKind>" pWordTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -57,9 +57,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isDistJob params| pWord |
 
-  pWord word.TagSet@ locals| pTagSet |
+  pWord word.TagSet@ locals| pWordTagSet |
 
- "<jobKind>" pTagSet tagSet.getInt
+ "<jobKind>" pWordTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -81,9 +81,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isServiceCmd params| pWord |
 
-  pWord word.TagSet@ locals| pTagSet |
+  pWord word.TagSet@ locals| pWordTagSet |
 
-  "<cmdKind>" pTagSet tagSet.getInt
+  "<cmdKind>" pWordTagSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -114,14 +114,18 @@
 /*----------------------------------------------------------------------------*/
 : seedEnameAdd params| pWord sDefaultSeed sSuffix sSeedEname |
 
-  pWord word.TagSet@ locals| pTagSet |
+  pWord word.TagSet@ locals| pWordTagSet |
 
   sSuffix pWord seedExists?
     if pWord word.name_trunc else sDefaultSeed then
     sSuffix str.cat locals| pWordName |
 
-  sSeedEname pWordName pTagSet tagSet.insertStr
+  sSeedEname pWordName pWordTagSet tagSet.insertStr
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a distributed job                                    */
@@ -168,32 +172,32 @@
 
   // default for command kind
   "<cmdKind>" pWordTagSet tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pWord jobInfo::addEname
+    "<cmdKind>" "CK_COMMAND" pWord word.addTag
   then
 
   // default for ddl lock
   "<ddlLock>" pWordTagSet tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pWord jobInfo::addEname
+    "<ddlLock>" "DL_NONE" pWord word.addTag
   then
 
   // default for job desc
   "<jobDesc>" pWordTagSet tagSet.hasName not if
-    "<jobDesc>" "--description of job--" pWord jobInfo::addEname
+    "<jobDesc>" "--description of job--" pWord word.addTag
   then
 
   // default for job kind
   "<jobKind>" pWordTagSet tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pWord jobInfo::addEname
+    "<jobKind>" "JK_LOCAL" pWord word.addTag
   then
 
   // default for priority
   "<priority>" pWordTagSet tagSet.hasName not if
-    "<priority>" "PY_NORMAL" pWord jobInfo::addEname
+    "<priority>" "PY_NORMAL" pWord word.addTag
   then
 
   // default for response kind
   "<rspKind>" pWordTagSet tagSet.hasName not if
-    "<rspKind>" "RS_NONE" pWord jobInfo::addEname
+    "<rspKind>" "RS_NONE" pWord word.addTag
   then
 
 
@@ -365,7 +369,7 @@
 /*----------------------------------------------------------------------------*/
 : jobInfo:
 
-  0 0 0 0 locals| pWord sEname sEvalue pTagSet |
+  0 0 0 0 locals| pWord sEname sEvalue pWordTagSet |
 
   // create a word using next token from input source as the word name
   input::next "_info" str.cat :create
@@ -376,13 +380,13 @@
   [ compiler::current@ encode::push ] pWord word.category!
 
   // attach an ename set to the word being created
-  tagSet::new to pTagSet
+  tagSet::new to pWordTagSet
 
-  pTagSet pWord word.TagSet!
+  pWordTagSet pWord word.TagSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pTagSet tagSet.insertStr
+  "<jobNm>" pWord word.name_trunc pWordTagSet tagSet.insertStr
 
   // skip the "{" token from input source
   input::next discard
@@ -397,7 +401,7 @@
     to sEname
     input::next discard
     input::next to sEvalue
-    sEname sEvalue pWord jobInfo::addEname
+    sEname sEvalue pWord word.addTag
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -411,11 +415,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  //pTagSet tagSet.asStr .
+  //pWordTagSet tagSet.asStr .
 
   pWord fillOut.tagSet_ofInfoWord
 
-  //pTagSet tagSet.asStr .
+  //pWordTagSet tagSet.asStr .
 
   pWord job::isServiceCmd if .generateService then
 ;

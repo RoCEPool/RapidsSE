@@ -11,6 +11,7 @@
         "se_core.sen"             include
         "se_word.sen"             include
         "se_str.sen"              include
+        "se_tags.sen"             include
         "se_log.sen"              include
         "se_prompt.sen"           include
 
@@ -33,7 +34,6 @@
         "db_tenant.sen"           include
 
 5 .put
-        "se_tags.sen"             include
         "se_requests.sen"         include
 
         "op__liteOp.sen"          include
