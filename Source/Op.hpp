@@ -27,15 +27,15 @@ namespace Pipelines
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    i8             m_nNode;            // node no
-    i8             m_nPartition;       // partition no
+    i8             m_nNode;          // node no
+    i8             m_nPartition;     // partition no
     
-    ePX            m_eTopologyX;      // cross topology
-    i8             m_iNextStage;      // next stage in the cross topology
-    i8             m_iNextOp;         // next Op in the stage
-    i8             m_iXmitNode;       // xmit node (for xmit)
-    eXK            m_eXmitKind;       // xmit kind
-    i8             m_iRobin;          // xmit Round Robin partition/node/thread
+    ePX            m_eTopologyX;     // cross topology
+    i8             m_iNextStage;     // next stage in the cross topology
+    i8             m_iNextOp;        // next Op in the stage
+    i8             m_iXmitNode;      // xmit node (for xmit)
+    eXK            m_eXmitKind;      // xmit kind
+    i8             m_iRobin;         // xmit Round Robin partition/node/thread
   
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     

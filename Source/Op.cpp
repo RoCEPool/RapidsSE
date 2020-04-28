@@ -47,7 +47,6 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
 : Focal(CN_OP,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
-
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -58,7 +57,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pStage    = pStage;
   m_pPipeline = pPipeline;
 
-  m_oOpTags.vCopy(pOpSpec->pTagSet());
+  m_oOpTags.vCopy(pOpSpec->pOpSpecTags());
   m_oTopologyTags.vCopy(pOpSpec->pTopologyTagSet());
   
   m_pPipelineJob  = pPipeline->pJob();
