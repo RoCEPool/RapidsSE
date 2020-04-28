@@ -59,7 +59,7 @@ namespace Sessions
   
     NmStrList* m_pNmStrLst;      // name-string list
   
-    Semantic*  m_pSemantic;
+    Semantic*  m_pSemanticX;
   
   private:
 

@@ -26,14 +26,12 @@ PromptFun __Prompt_tags (
 bool Prompt::bPrompt_tags(SePrompt* pPrompt)
 {
   Session*  pSession  = pPrompt->pSession();
-
-  Semantic* pSemantic = pSession->m_pSemantic;
   
   vTrace("Session Tags:\n"_Stz);
 
-  TagSet* pTagSet = pSemantic->pTagSet();
+  TagSet* pSsnTags = & pSession->m_oSsnTags;
 
-  pTagSet->vDumpSet();
+  pSsnTags->vDumpSet();
 
   return true;
 }

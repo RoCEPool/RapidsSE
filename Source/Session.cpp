@@ -119,14 +119,14 @@ Session::Session(void)
   
   m_pNmStrLst       = nullptr;
 
-  m_pSemantic       = new Semantic;
+  m_pSemanticX       = new Semantic;
     
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
   
   // set initial session <path>
-  m_pSemantic->pTagSet()->vInsert(C_TAG_PATH,C_SE_PATH);
+  m_oSsnTags.vInsert(C_TAG_PATH,C_SE_PATH);
   
   ++ gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,
@@ -152,7 +152,7 @@ Session::~Session(void) noexcept(false)
 
   delete m_pNmStrLst;
   
-  delete m_pSemantic;
+  delete m_pSemanticX;
   
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
