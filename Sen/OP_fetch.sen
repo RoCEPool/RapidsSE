@@ -116,7 +116,17 @@
     // an upper bound select using index
     AT_UPPER of
       "*upper*" .
-      0 assert
+      // find the index
+      0 planner[].indexNm@ to sIndexNm
+      <tableNm> sIndexNm op__index assert
+
+      // now get excat key rows from index
+      tablePtn[].get tablePtnGrabRead2
+
+      0 planner[].upperKey@
+      planner[] tablePtn[].get index[].positionUpper
+
+      tablePtn[].get index[].fetchNext to Operand[]
     endof
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

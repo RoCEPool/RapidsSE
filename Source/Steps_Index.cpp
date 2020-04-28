@@ -33,6 +33,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("index[].positionLower"_Stz, &Step::vIndexPositionLowerN);
+  vAddStep("index[].positionUpper"_Stz, &Step::vIndexPositionUpperN);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
   vAddStep("index[].size"_Stz,          &Step::vIndexSize);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
@@ -497,32 +498,32 @@ void Step::vIndexIsValidUniqueIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].fetchNext -- fetch next row                                        */
+/* index[].fetchNext -- return rows within range                              */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexFetchNextN(void)
 {
   ENTRY();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the index
+  // get index from the register
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-
-  Table* pTable = pIndex->pTable();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table partition
+  Table* pTable = pIndex->pTable();
   TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
-
-  Ent* aLowerEntry = m_pRegSet->m_aLowerEntry;
-  EntBuffer* aLowerEntBuffer = m_pRegSet->m_pEntBuffer;
   CrwBuffer* pCrwBuffer = nullptr;
   HV_Row hRow(pTable->pStreamDef(),C_ALL);
   RowCompactor* pRowCompactor;
+  EntBuffer* pEntBuffer = m_pRegSet->m_pEntBuffer;
+  
+  Ent* aItem = m_pRegSet->m_aLowerEntry;
+  Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
+  bool bBefore = true;
+  bool bIsEqual;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
-  if ( ! aLowerEntry) {
+  if ( ! aItem) {
     goto L_Exit;
   }
   
@@ -536,48 +537,58 @@ void Step::vIndexFetchNextN(void)
   pRowCompactor = new RowCompactor;
   pCrwBuffer->vAppendOpen(pRowCompactor, false);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iterate thru the buffer till no more entries
-  while (aLowerEntry) {
+  //---------------------------------------------------------------------------
+  // iterate thru the buffers till no more entries starting from
+  while (aItem) {
     
-    Crw* aCrw = CrwBuffer::pRefdCrw(aLowerEntry->xRef());
- 
-    RowInflator::vInflateRow(hRow,aCrw);
+    bIsEqual = false;
     
-    // insert row from entry in crwBuffer
-    if ( ! pCrwBuffer->bAppendRow(hRow)) {
+    if (aUpperEntry)
+      bBefore = (aItem == aUpperEntry) ? false : true;
+    
+    if (bBefore) {
       
-      // Buffer is Full;
-      pCrwBuffer->vAppendClose();
+      Crw* aCrw = CrwBuffer::pRefdCrw(aItem->xRef());
       
-      m_pRegSet->m_aLowerEntry = aLowerEntry;
+      RowInflator::vInflateRow(hRow,aCrw);
       
-      goto L_Exit;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // move to next entry in the buffer
-    aLowerEntry = aLowerEntBuffer->aNextEntry(aLowerEntry, 0);
-    
-    
-    if ( ! aLowerEntry ) {
-      // get next buffer from the current indexBuffer
-      aLowerEntBuffer = aLowerEntBuffer->pNextBuffer();
-      m_pRegSet->m_pEntBuffer = aLowerEntBuffer;
-      m_pRegSet->m_aLowerEntry = aLowerEntry;
+      // insert row from entry in crwBuffer
+      if ( ! pCrwBuffer->bAppendRow(hRow)) {
+        
+        // Buffer is Full;
+        pCrwBuffer->vAppendClose();
+        
+        m_pRegSet->m_aLowerEntry = aItem;
+        
+        goto L_Exit;
+      }
       
-      if ( aLowerEntBuffer ) {
-        aLowerEntry = aLowerEntBuffer->aLeadEntry();
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // move to next entry in the buffer
+      aItem = pEntBuffer->aNextEntry(aItem, 0);
+      
+      if ( ! aItem ) {
+        // get next buffer from the current indexBuffer
+        pEntBuffer = pEntBuffer->pNextBuffer();
+        
+        if ( pEntBuffer )
+          aItem = pEntBuffer->aLeadEntry();
       }
     }
+    else {
+      aItem = nullptr;
+    }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     //if (pSession->m_bSessionExiting)
-    //  aLowerEntry = nullptr;
+    //  aItem = nullptr;
   }
-
+  
 L_Exit:
+  m_pRegSet->m_pEntBuffer = pEntBuffer;
+  m_pRegSet->m_aLowerEntry = aItem;
+  
   m_pDataStack->vPushPtr(pCrwBuffer);
   
   EXIT();
@@ -601,6 +612,8 @@ void Step::vIndexPositionLowerN(void)
   // get the table partition
   TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
   Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -660,6 +673,103 @@ void Step::vIndexPositionLowerN(void)
   
   m_pRegSet->m_aLowerEntry = aLowerEntry;
   m_pRegSet->m_pEntBuffer = aLowerEntBuffer;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].positionUpperN -- position with upper bound                        */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexPositionUpperN(void)
+{
+  ENTRY();
+  
+  Datum xVariable;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get parameters for the primitive
+  Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
+  TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
+  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the key
+  m_pDataStack->vPopVal(xVariable,__func__);
+  
+  EntBuffer* pEntBuffer;
+  EntBuffer* aUpperEntBuffer;
+  
+  Ent* aUpperEntry = nullptr;
+  Ent* aItem      = nullptr;
+  
+  eRO eUpperRelnOp;
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of columns in the index
+  i8 nIdxCols = pIndex->pIdxColVec()->nItems();
+  i8 iPhrase = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the upper key
+  EntWrk xEntWrkUpper;
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  Format* pFmt = AM::pFmt();
+  Stz* szStz = xVariable.szStz();
+  
+  KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xEntWrkUpper.vAppendPlusInfinity();
+  }
+  //xEntWrkUpper.vShow();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position at the first level 0 buffer
+  pEntBuffer = pIndexPtn->pFirstH0Buffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we get an entryBuffer ?
+  if ( ! pEntBuffer) {
+    goto L_Exit;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the first entry in the buffer
+  aItem = pEntBuffer->aLeadEntry();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now position at a level 0 buffer for the upper key
+  aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
+  
+  eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  
+  if (aUpperEntBuffer) {
+    
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, &aUpperEntBuffer);
+    
+    if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
+                                                       xEntWrkUpper.aKey(),
+                                                       &aUpperEntBuffer);
+    }
+  }
+  
+  //aUpperEntry->vShow(0,pIndex,true);
+  m_pRegSet->m_aLowerEntry = aItem;
+  m_pRegSet->m_aUpperEntry = aUpperEntry;
+  m_pRegSet->m_pEntBuffer  = pEntBuffer;
+  
+L_Exit:
   
   EXIT();
 }
