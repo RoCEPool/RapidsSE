@@ -506,25 +506,37 @@ void Step::vIndexFetchNextN(void)
   ENTRY();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index from the register
+  // get the index and the table
   Index* pIndex = _pIndex(*m_pRegSet->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  Table* pTable = pIndex->pTable();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table partition
   TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
-  CrwBuffer* pCrwBuffer = nullptr;
-  HV_Row hRow(pTable->pStreamDef(),C_ALL);
-  RowCompactor* pRowCompactor;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table
+  Table* pTable = pIndex->pTable();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the lower and upper entries
+  Ent* aLowerEntry = m_pRegSet->m_aLowerEntry;
+  Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the entry buffer to start from
   EntBuffer* pEntBuffer = m_pRegSet->m_pEntBuffer;
   
-  Ent* aItem = m_pRegSet->m_aLowerEntry;
-  Ent* aUpperEntry = m_pRegSet->m_aUpperEntry;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  CrwBuffer* pCrwBuffer = nullptr;
+  RowCompactor* pRowCompactor = nullptr;
+  HV_Row hRow(pTable->pStreamDef(),C_ALL);
+  
   bool bBefore = true;
-  bool bIsEqual;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
-  if ( ! aItem) {
+  if ( ! aLowerEntry) {
     goto L_Exit;
   }
   
@@ -538,46 +550,51 @@ void Step::vIndexFetchNextN(void)
   pRowCompactor = new RowCompactor;
   pCrwBuffer->vAppendOpen(pRowCompactor, false);
   
-  //---------------------------------------------------------------------------
-  // iterate thru the buffers till no more entries starting from
-  while (aItem) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffers starting from aLowerEntry
+  while (aLowerEntry) {
     
-    bIsEqual = false;
-    
+    // is lowerEntry before upperEntry ?
     if (aUpperEntry)
-      bBefore = (aItem == aUpperEntry) ? false : true;
+      bBefore = (aLowerEntry == aUpperEntry) ? false : true;
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lowerEntry is before upperEntry
     if (bBefore) {
       
-      Crw* aCrw = CrwBuffer::pRefdCrw(aItem->xRef());
-      
+      // get the crw entry from the lowerEntry
+      Crw* aCrw = CrwBuffer::pRefdCrw(aLowerEntry->xRef());
       RowInflator::vInflateRow(hRow,aCrw);
       
       // insert row from entry in crwBuffer
       if ( ! pCrwBuffer->bAppendRow(hRow)) {
         
-        // Buffer is Full;
+        // Buffer is full ?
         pCrwBuffer->vAppendClose();
-        
-        m_pRegSet->m_aLowerEntry = aItem;
-        
         goto L_Exit;
       }
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
-      aItem = pEntBuffer->aNextEntry(aItem, 0);
+      aLowerEntry = pEntBuffer->aNextEntry(aLowerEntry, 0);
       
-      if ( ! aItem ) {
-        // get next buffer from the current indexBuffer
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // no more entries ?
+      if ( ! aLowerEntry ) {
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // move to next buffer
         pEntBuffer = pEntBuffer->pNextBuffer();
         
+        // next buffer ?
         if ( pEntBuffer )
-          aItem = pEntBuffer->aLeadEntry();
+          aLowerEntry = pEntBuffer->aLeadEntry();
       }
     }
     else {
-      aItem = nullptr;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // we are done
+      aLowerEntry = nullptr;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -588,8 +605,9 @@ void Step::vIndexFetchNextN(void)
   
 L_Exit:
   m_pRegSet->m_pEntBuffer = pEntBuffer;
-  m_pRegSet->m_aLowerEntry = aItem;
+  m_pRegSet->m_aLowerEntry = aLowerEntry;
   
+  // return the buffer
   m_pDataStack->vPushPtr(pCrwBuffer);
   
   EXIT();
