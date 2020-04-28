@@ -206,7 +206,7 @@
   pCatg word.name@     locals| sCatgName |
 
   sCatgName sWordName
-    "Word: %v Category: %v" .printf
+    "Word: %24v Category: %16v" .printf
 ;
 
 /*----------------------------------------------------------------------------*/

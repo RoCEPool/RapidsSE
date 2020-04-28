@@ -8,6 +8,8 @@ Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;
 
+// MARK: Life Cycle
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1170,28 +1172,46 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  char* pf = sFormat.azChar();
-  char* ps = sString.azChar();
+  char* acFmt = sFormat.azChar();
+  char* acDst = sString.azChar();
   
-  while (*pf) {
-    
+  while (*acFmt) {
+  
     // test for ordinary character
-    if ('%' != *pf) {
-      *ps++ = *pf++;
+    if ('%' != *acFmt) {
+      *acDst++ = *acFmt++;
       continue;
     }
-    
+        
     // we have a '%'
-    pf++;
+    acFmt++;
     
-    // test for %%
-    if ('%' == *pf) {
-      *ps++ = *pf++;
+    // test for the %% case
+    if ('%' == *acFmt) {
+      *acDst++ = *acFmt++;
       continue;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // we have a %[width]v field
     
+    i8 nWidth = 0;
+
+    // record where output for this value began
+    char* acFieldBegan = acDst;
+    
+    // do we have a %v of the form: %widthV ?
+    if (StrLib::bIsDigit( * acFmt )) {
+      i8 nDigits = 0;
+      StrLib::bExtractInteger(&acFmt,&nWidth,nDigits);
+      ASSERT(nDigits);
+    }
+        
     // should be %v or %V
-    ASSERT('v' == *pf || 'V' == *pf);
+    ASSERT('v' == *acFmt || 'V' == *acFmt);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle a StzVal, IntVal or a PtrVal
     
     AnyVal* aAnyVal0 = m_pForth->m_pDataStack->aPeekVal(0);
     eCN eClass = aAnyVal0->eClass();
@@ -1199,29 +1219,24 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     // test for StzVal
     if (CN_STZVAL == eClass) {
       
-      //*pf = 's';                                                    //! Defect??
-      
       s48K sStr;
       m_pForth->m_pDataStack->vPopStr(sStr,__func__);
       
-      if ('V' == *pf)
-        *ps++ = '"';
+      if ('V' == *acFmt)
+        *acDst++ = '"';
       
       for (char* pv = sStr.azChar(); *pv; )
-        *ps++ = *pv++;
+        *acDst++ = *pv++;
       
-      if ('V' == *pf)
-        *ps++ = '"';
+      if ('V' == *acFmt)
+        *acDst++ = '"';
       
-      pf++;
-      
-      continue;
+      acFmt++;
     }
     
-    // test for intval
+    // test for IntVal
+    else
     if (CN_INTVAL == eClass) {
-      
-      //*pf = 'i';                                                    //! Defect??
       
       i8 iInt = m_pForth->m_pDataStack->iPopInt(__func__);
       
@@ -1229,17 +1244,14 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
       StrLib::wToString(iInt,caValue);
       
       for (char* pv = caValue; *pv; )
-        *ps++ = *pv++;
+        *acDst++ = *pv++;
       
-      pf++;
-      
-      continue;
+      acFmt++;
     }
     
-    // test for ptrval
+    // test for PtrVal
+    else
     if (CN_PTRVAL == eClass) {
-      
-      //*pf = 'i';                                                    //! Defect??
       
       Object* pObject = m_pForth->m_pDataStack->pPopPtr(__func__);
       
@@ -1247,21 +1259,36 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
       StrLib::wToPointer(pObject,caValue);
       
       for (char* pv = caValue; *pv; )
-        *ps++ = *pv++;
+        *acDst++ = *pv++;
       
-      pf++;
-      
-      continue;
+      acFmt++;
     }
     
-    // just copy %?
-    *ps++ = '%';
-    *ps++ = *pf++;
+    // just copy % ???
+    else {
+      *acDst++ = '%';
+      *acDst++ = *acFmt++;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // handle optional field width case
+    
+    // test for field width
+    if (! nWidth)
+      continue;
+    
+    i8 nDiff = nDifference(acDst,acFieldBegan);
+    
+    if (nDiff >= nWidth)
+      continue;
+    
+    i8 nPad = nWidth - nDiff;
+    StrLib::vPad(acDst,nPad,' ');
+    acDst += nPad;
   }
   
-  //*pf = '\0';                                                       //! Defect??
-  *ps = '\0';
-  
+  // final termination
+  *acDst = '\0';
 }
 
 
