@@ -177,7 +177,7 @@
 
   find: opInfo locals| pOpInfo |
 
-  // iterate thru all opSynatx: words
+  // iterate thru all pOpInfo words
 
   dic::root dic.lastWord dup
   iterate                                // iterate word cursor

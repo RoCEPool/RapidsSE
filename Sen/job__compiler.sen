@@ -160,6 +160,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: fillout.missingDefaults params| pWordTagSet |
+
+  // test and add default for: command kind
+  "<cmdKind>" pWordTagSet tagSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" pWordTagSet tagSet.addTag
+  then
+
+  // test and add default for: ddl lock
+  "<ddlLock>" pWordTagSet tagSet.hasName not if
+    "<ddlLock>" "DL_NONE" pWordTagSet tagSet.addTag
+  then
+
+  // test and add default for: job desc
+  "<jobDesc>" pWordTagSet tagSet.hasName not if
+    "<jobDesc>" "--description of job--" pWordTagSet tagSet.addTag
+  then
+
+  // test and add default for: job kind
+  "<jobKind>" pWordTagSet tagSet.hasName not if
+    "<jobKind>" "JK_LOCAL" pWordTagSet tagSet.addTag
+  then
+
+  // test and add default for:  priority
+  "<priority>" pWordTagSet tagSet.hasName not if
+    "<priority>" "PY_NORMAL" pWordTagSet tagSet.addTag
+  then
+
+  // test and add default for:  response kind
+  "<rspKind>" pWordTagSet tagSet.hasName not if
+    "<rspKind>" "RS_NONE" pWordTagSet tagSet.addTag
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
@@ -170,36 +205,39 @@
 
   0 0 locals| iParams sStreamDef |
 
-  // default for command kind
+  pWordTagSet fillout.missingDefaults
+
+/*
+  // test and add default for: command kind
   "<cmdKind>" pWordTagSet tagSet.hasName not if
     "<cmdKind>" "CK_COMMAND" pWord word.TagSet@ tagSet.addTag
   then
 
-  // default for ddl lock
+  // test and add default for: ddl lock
   "<ddlLock>" pWordTagSet tagSet.hasName not if
     "<ddlLock>" "DL_NONE" pWord word.TagSet@ tagSet.addTag
   then
 
-  // default for job desc
+  // test and add default for: job desc
   "<jobDesc>" pWordTagSet tagSet.hasName not if
     "<jobDesc>" "--description of job--" pWord word.TagSet@ tagSet.addTag
   then
 
-  // default for job kind
+  // test and add default for: job kind
   "<jobKind>" pWordTagSet tagSet.hasName not if
     "<jobKind>" "JK_LOCAL" pWord word.TagSet@ tagSet.addTag
   then
 
-  // default for priority
+  // test and add default for:  priority
   "<priority>" pWordTagSet tagSet.hasName not if
     "<priority>" "PY_NORMAL" pWord word.TagSet@ tagSet.addTag
   then
 
-  // default for response kind
+  // test and add default for:  response kind
   "<rspKind>" pWordTagSet tagSet.hasName not if
     "<rspKind>" "RS_NONE" pWord word.TagSet@ tagSet.addTag
   then
-
+*/
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
