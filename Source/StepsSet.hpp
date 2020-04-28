@@ -380,6 +380,7 @@ public:
   void vIndexGenEntBuffer(void);
   void vIndexGenEntBuffers(void);
   void vIndexLowerBoundN(void);
+  void vIndexPositionN(void);
   void vIndexPositionLowerN(void);
   void vIndexPositionUpperN(void);
   void vIndexSize(void);
