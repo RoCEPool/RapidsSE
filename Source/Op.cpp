@@ -941,12 +941,12 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
 
   m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
 
-  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
-  TagSet* pPipeLineJobTagSet = AM::pJobTags(m_pPipelineJob);
+  TagSet* pOpJobTags = AM::pJobTags(m_pOpJob);
+  TagSet* pPipeLineJobTags = AM::pJobTags(m_pPipelineJob);
 
-  pOpJobTagSet->vInsert(C_TAG_PATH,
-                          pPipeLineJobTagSet->szValue(C_TAG_PATH));
-  pOpJobTagSet->vInsert(C_TAG_JOBNM,
+  pOpJobTags->vInsert(C_TAG_PATH,
+                          pPipeLineJobTags->szValue(C_TAG_PATH));
+  pOpJobTags->vInsert(C_TAG_JOBNM,
                           m_sOpNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

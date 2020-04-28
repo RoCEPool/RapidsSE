@@ -1166,7 +1166,7 @@ u8 Task::uWakeupTime(void)
 /*----------------------------------------------------------------------------*/
 /* sprint of stack using given format string                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSprint(s48K& sFormat, s48K& sString)
+void Task::vValSprint(s48K& sFormat, s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

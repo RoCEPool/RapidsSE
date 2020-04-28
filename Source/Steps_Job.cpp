@@ -1600,16 +1600,16 @@ void Step::vJobSpawnUniversal(void)
   pJob_Universal->vJobKind((eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND));
 
   // add the necessary ename tags
-  TagSet* pJobTagSet = pJob_Universal->pJobTags();
+  TagSet* pJobTags = pJob_Universal->pJobTags();
   
   //pTagSet_jobInfo->vContentDump();
   //pTagSet_job->vContentDump();
   
-  pJobTagSet->vCopy(pJobInfoTagSet);
+  pJobTags->vCopy(pJobInfoTagSet);
   
-  pJobTagSet->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
+  pJobTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
   //pTagSet_job->vAdd(C_TAG_JOBNM,sJobNm);
-  pJobTagSet->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
 
   // seed the job for request
   pJob_Universal->vSeed(SS_SEED_REQ);

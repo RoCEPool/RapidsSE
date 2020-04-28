@@ -97,7 +97,7 @@ namespace Tasks
     Node* pSendNode(void);
     void vSendNode(Node* pSendNode);
     void vSleepUsec(i8 iMicroSeconds);
-    void vSprint(s48K& sFormat, s48K& sString);
+    void vValSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);

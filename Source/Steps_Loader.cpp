@@ -28,11 +28,11 @@ void Step::vLoaderCreate(void)
   
   Job* pJob = m_pTask->pJob();
   
-  TagSet* pJobTagSet = pJob->pJobTags();
-  pJobTagSet->vContentDump();
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vContentDump();
   
   Loader* pLoader = new Loader(*m_pRegSet->m_xpTable);
-  bool bResult = pLoader->bSetFormat(pJobTagSet);
+  bool bResult = pLoader->bSetFormat(pJobTags);
   
   if (bResult) {
     m_pDataStack->vPushInt(true);
