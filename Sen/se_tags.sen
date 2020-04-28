@@ -13,7 +13,7 @@
   params| pWord |
 
   pWord word.enameset@ not if
-    enameSet::new pWord word.enameSet!
+    tagSet::new pWord word.enameSet!
   then
 ;
 
@@ -30,14 +30,14 @@
     pEvalueWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
-       sEname pEvalueWord execute pEnameSet enameSet.insertInt
+       sEname pEvalueWord execute pEnameSet tagSet.insertInt
       exit
 
     then
   then
 
   // -- -- --
-  sEname sEvalue pEnameSet enameSet.insertStr
+  sEname sEvalue pEnameSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -53,14 +53,14 @@
     pEvalueWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
-       sEname pEvalueWord execute pEnameSet EnameSet.replaceInt
+       sEname pEvalueWord execute pEnameSet tagSet.replaceInt
       exit
 
     then
   then
 
   // -- -- --
-  sEname sEvalue pEnameSet EnameSet.replaceStr
+  sEname sEvalue pEnameSet tagSet.replaceStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@
   0 locals| pTagSet |
 
   // attach a new ename set to the word being created
-  //EnameSet::new to pTagSet
+  //tagSet::new to pTagSet
   //pTagSet compiler::current@ word.EnameSet!
   compiler::current@ word.EnsureEnameSet
   compiler::current@ word.EnameSet@ to pTagSet
@@ -147,7 +147,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   // copy source ename set into destination
-  pEnamSetSrc pEnamSetDst enameSet.copy
+  pEnamSetSrc pEnamSetDst tagSet.copy
 ;
   
 /*============================================================================*/

@@ -20,14 +20,14 @@
   find: jobSyntax: compiler::current@ word.category!
 
   // attach an ename set to the word being created
-  EnameSet::new locals| pEnameSet |
+  tagSet::new locals| pEnameSet |
 
   pEnameSet compiler::current@ word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__name__" sOpNm
-    pEnameSet enameSet.appendStr
+    pEnameSet tagSet.appendStr
 
   // skip the :: token from input source
   input::next discard
@@ -35,7 +35,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__job__" "CN_JOB_UNIVERSAL"
-  pEnameSet enameSet.appendStr
+  pEnameSet tagSet.appendStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
@@ -47,20 +47,20 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" .printf
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap pEnameSet enameSet.appendStr
+        "__meta__" swap pEnameSet tagSet.appendStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" .printf
         // add ("*",json,TN_STRING) in ename set
-        "__json__" swap pEnameSet enameSet.appendStr
+        "__json__" swap pEnameSet tagSet.appendStr
 
       else dup "__etc__" str.equal if
-        "__etc__"  swap pEnameSet enameSet.appendStr
+        "__etc__"  swap pEnameSet tagSet.appendStr
 
       else
         // dup "%v is a normal token" .printf
         // add (word,"",TN_STRING) in ename set
-        dup pEnameSet enameSet.appendStr
+        dup pEnameSet tagSet.appendStr
 
       then then then
   repeat
@@ -68,7 +68,7 @@
   // discard the ";" from dstack
   discard
 
-  // pEnameSet EnameSet.asStr .
+  // pEnameSet tagSet.asStr .
 
   does>
     // ..to be written
@@ -94,13 +94,13 @@
   [ compiler::current@ encode::push ] pWord word.category!
 
   // attach an ename set to the word being created
-  EnameSet::new to pEnameSet
+  tagSet::new to pEnameSet
 
   pEnameSet pWord word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
+  "<jobNm>" pWord word.name_trunc pEnameSet tagSet.insertStr
 
   // skip the "{" token from input source
   input::next discard
@@ -131,7 +131,7 @@
 
   pWord fillOut.enameSet
 
-  //pEnameSet EnameSet.asStr .
+  //pEnameSet tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -153,11 +153,11 @@
   find: opInfo: pWord word.category!
 
   // attach an ename set to the word being created
-  EnameSet::new to pEnameSet
+  tagSet::new to pEnameSet
     pEnameSet pWord word.EnameSet!
 
   // add <jobNm> tag
-  "<jobNm>" pWord word.name_trunc pEnameSet enameSet.insertStr
+  "<jobNm>" pWord word.name_trunc pEnameSet tagSet.insertStr
 
   pWord encode::call
     POSTPONE word.enameset@
@@ -185,7 +185,7 @@
 
     object@ word.category@ pOpInfo: eql if
       // object@ word.dump
-      // object@ word.enameSet@ enameSet.asStr .
+      // object@ word.enameSet@ tagSet.asStr .
 
       object@ word.name@ "Filling out: %v" .printf
       

@@ -9,20 +9,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_EnameSet(void)
 {
-  vAddStep("enameSet::new"_Stz,       &Step::vEnameSetNew);
+  vAddStep("tagSet::new"_Stz,       &Step::vEnameSetNew);
   
-  vAddStep("enameSet.appendInt"_Stz,  &Step::vEnameSetAppendInt);
-  vAddStep("enameSet.appendStr"_Stz,  &Step::vEnameSetAppendStr);
-  vAddStep("enameSet.asStr"_Stz,      &Step::vEnameSetAsStr);
-  vAddStep("enameSet.copy"_Stz,       &Step::vEnameSetCopy);
-  vAddStep("enameSet.getInt"_Stz,     &Step::vEnameSetGetInt);
-  vAddStep("enameSet.getStr"_Stz,     &Step::vEnameSetGetStr);
-  vAddStep("enameSet.hasName"_Stz,    &Step::vEnameSetHasName);
-  vAddStep("enameSet.insertInt"_Stz,  &Step::vEnameSetInsertInt);
-  vAddStep("enameSet.insertStr"_Stz,  &Step::vEnameSetInsertStr);
-  vAddStep("enameSet.replaceInt"_Stz, &Step::vEnameSetReplaceInt);
-  vAddStep("enameSet.replaceStr"_Stz, &Step::vEnameSetReplaceStr);
-  vAddStep("enameSet.upsertStr"_Stz,  &Step::vEnameSetUpsertStr);
+  vAddStep("tagSet.appendInt"_Stz,  &Step::vEnameSetAppendInt);
+  vAddStep("tagSet.appendStr"_Stz,  &Step::vEnameSetAppendStr);
+  vAddStep("tagSet.asStr"_Stz,      &Step::vEnameSetAsStr);
+  vAddStep("tagSet.copy"_Stz,       &Step::vEnameSetCopy);
+  vAddStep("tagSet.getInt"_Stz,     &Step::vEnameSetGetInt);
+  vAddStep("tagSet.getStr"_Stz,     &Step::vEnameSetGetStr);
+  vAddStep("tagSet.hasName"_Stz,    &Step::vEnameSetHasName);
+  vAddStep("tagSet.insertInt"_Stz,  &Step::vEnameSetInsertInt);
+  vAddStep("tagSet.insertStr"_Stz,  &Step::vEnameSetInsertStr);
+  vAddStep("tagSet.replaceInt"_Stz, &Step::vEnameSetReplaceInt);
+  vAddStep("tagSet.replaceStr"_Stz, &Step::vEnameSetReplaceStr);
+  vAddStep("tagSet.upsertStr"_Stz,  &Step::vEnameSetUpsertStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ void Step::vEnameSetNew(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* enameSet.appendInt -- append a name-integer pair to ename-set              */
+/* tagSet.appendInt -- append a name-integer pair to ename-set              */
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAppendInt(void)
 {
@@ -63,7 +63,7 @@ void Step::vEnameSetAppendInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* enameSet.AppendStr -- append a name-string pair to ename-set               */
+/* tagSet.AppendStr -- append a name-string pair to ename-set               */
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAppendStr(void)
 {
@@ -183,7 +183,7 @@ void Step::vEnameSetHasName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* enameSet.insertInt -- add a name-integer pair to ename-set                 */
+/* tagSet.insertInt -- add a name-integer pair to ename-set                 */
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetInsertInt(void)
 {
@@ -203,7 +203,7 @@ void Step::vEnameSetInsertInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* enameSet.insertStr -- add a name-string pair to ename-set                     */
+/* tagSet.insertStr -- add a name-string pair to ename-set                     */
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetInsertStr(void)
 {

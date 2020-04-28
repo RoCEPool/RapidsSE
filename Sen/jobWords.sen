@@ -120,11 +120,11 @@
 : job::</seeXfer/>
 
   "</xfer/>"
-  job[] job.enameSet@ enameSet.hasName
+  job[] job.enameSet@ tagSet.hasName
   if
 
    r@ locate .
-   job[] job.enameSet@ enameSet.asStr .
+   job[] job.enameSet@ tagSet.asStr .
 
   then
 ;
@@ -300,7 +300,7 @@
 /*----------------------------------------------------------------------------*/
 : job::acquireDdlLock
 
-  "<ddlLock>" <jobNm> findJobClassEnmSet EnameSet.getInt
+  "<ddlLock>" <jobNm> findJobClassEnmSet tagSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -331,11 +331,11 @@
 : job::</seeFlow/>
 
   "</flow/>"
-    job[] job.enameSet@ enameSet.hasName
+    job[] job.enameSet@ tagSet.hasName
   if
 
     r@ locate .
-    job[] job.enameSet@ enameSet.asStr .
+    job[] job.enameSet@ tagSet.asStr .
 
   then
 ;

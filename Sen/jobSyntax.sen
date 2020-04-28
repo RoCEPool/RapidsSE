@@ -19,14 +19,14 @@
   [ compiler::current@ encode::push ] compiler::current@ word.category!
 
   // attach an ename set to the word being created
-  EnameSet::new locals| pEnameSet |
+  tagSet::new locals| pEnameSet |
 
   pEnameSet compiler::current@ word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__name__" sJobNm
-    pEnameSet enameSet.appendStr
+    pEnameSet tagSet.appendStr
 
   // skip the :: token from input source
   input::next discard
@@ -34,7 +34,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__job__" "CN_JOB_UNIVERSAL"
-  pEnameSet enameSet.appendStr
+  pEnameSet tagSet.appendStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
@@ -46,20 +46,20 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" .printf
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap pEnameSet enameSet.appendStr
+        "__meta__" swap pEnameSet tagSet.appendStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" .printf
         // add ("*",json,TN_STRING) in ename set
-        "__json__" swap pEnameSet enameSet.appendStr
+        "__json__" swap pEnameSet tagSet.appendStr
 
       else dup "__etc__" str.equal if
-        "__etc__"  swap pEnameSet enameSet.appendStr
+        "__etc__"  swap pEnameSet tagSet.appendStr
 
       else
         // dup "%v is a normal token" .printf
         // add (word,"",TN_STRING) in ename set
-        dup pEnameSet enameSet.appendStr
+        dup pEnameSet tagSet.appendStr
 
       then then then
   repeat
@@ -67,7 +67,7 @@
   // discard the ";" from dstack
   discard
 
-  //pEnameSet EnameSet.asStr .
+  //pEnameSet tagSet.asStr .
 
   does>
     // ..to be written

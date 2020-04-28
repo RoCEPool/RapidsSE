@@ -39,7 +39,7 @@
 
   job::</seeFlow/>
 
-  "<preCheck>" job[] job.enameSet@ enameSet.hasName if
+  "<preCheck>" job[] job.enameSet@ tagSet.hasName if
     <preCheck> find execute not if
       task::seedInitially task::doneFinally
       job[] ERROR_JOB

@@ -335,7 +335,7 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodeCall("job.session@"_Stz);
     pCurrentWord->vEncodeCall("session.enameSet@"_Stz);
     
-    pCurrentWord->vEncodeCall("enameSet.upsertStr"_Stz);
+    pCurrentWord->vEncodeCall("tagSet.upsertStr"_Stz);
     
     EXIT();
     return;

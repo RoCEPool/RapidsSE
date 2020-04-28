@@ -97,7 +97,7 @@
     // examine job
     //pReceivedJob job.kind@ JK_GENERIC == if
       //"received a generic job" .
-    //  pReceivedJob job.enameSet@ enameSet.asStr .
+    //  pReceivedJob job.enameSet@ tagSet.asStr .
     //then
 
     // -- -- -- -- -- -- -- --
