@@ -63,9 +63,9 @@ void Step::vSessionTagSetFetch(void)
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pTagSet = & pSession->m_oSsnTags;
+  TagSet* pSsnTagSet = & pSession->m_oSsnTags;
   
-  m_pDataStack->vPushPtr(pTagSet);
+  m_pDataStack->vPushPtr(pSsnTagSet);
   
   EXIT();
 }

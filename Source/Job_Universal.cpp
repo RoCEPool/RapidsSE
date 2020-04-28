@@ -158,36 +158,6 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
-//  Dic* pRootDic = AM::pRootDic();
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  Word* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
-//
-//  Word* pWord_jobdef = nullptr;
-//
-//  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
-//    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().szStz());
-//
-//    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pTagSet())) {
-//      vTrace("    matches\n"_Stz);
-//
-//      m_oTagSet.vAdd(C_TAG_JOBCLASS, CN_JOB_UNIVERSAL,TN_INTEGER);
-//      s32 sJobName(pWord_jobdef->sName());
-//      StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-//      m_oTagSet.vAdd(C_TAG_JOBNM,sJobName);
-//      break;
-//    }
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  bool b = JobHelper::bExtractArgs(&m_oTagSet,pWord_jobdef->pTagSet(),pTknVec);
-//  if (! b) {
-//    vTrace("Unable to match job syntax\n"_Stz);
-//    return EC_INVALID_COMMAND;
-//  }
-
   bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
   if (! b) {
     //vTrace("Unable to match job syntax\n"_Stz);
@@ -195,30 +165,19 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     return EC_INVALID_COMMAND;
   }
   
-  TagSet* pTagSet_ji = pJobInfoTagSet();
+  TagSet* pJobInfoTagSet = this->pJobInfoTagSet();
   //pTagSet_ji->vPrint();
   
-  if (pTagSet_ji) {
-    eJK eJobKind = (eJK) pTagSet_ji->iValue(C_TAG_JOBKIND);
+  if (pJobInfoTagSet) {
+    eJK eJobKind = (eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND);
     vJobKind(eJobKind);
     
-    Stz* szJobNm = pTagSet_ji->szValue(C_TAG_JOBNM);
+    Stz* szJobNm = pJobInfoTagSet->szValue(C_TAG_JOBNM);
     vJobNm(szJobNm);
     
-    pJobTags()->vCopy(pTagSet_ji);
+    pJobTags()->vCopy(pJobInfoTagSet);
     
-    
-//    s32 sJob_info = szJobNm;
-//    sJob_info.vConcat("_info"_Stz);
-//
-//    Dic* pRootDic = AM::pRootDic();
-//
-//    Word* pJob_info = pRootDic->pFindWord(sJob_info);
-//    if (pJob_info) {
-//      TagSet* pTagSet_class = pJob_info->pTagSet();
-//      pTagSet()->vCopy(pTagSet_class);
-//    }
-  }
+}
   
   return EC_NONE;
 }

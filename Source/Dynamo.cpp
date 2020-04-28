@@ -386,9 +386,9 @@ bool Dynamo::bCollectTag(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TagSet* pTagSet = m_p_Job->pJobTags();
+  TagSet* pJobTagSet = m_p_Job->pJobTags();
   
-  pTagSet->vInsert(sTagNm,sTagValue);
+  pJobTagSet->vInsert(sTagNm,sTagValue);
   
   return true;
 }
