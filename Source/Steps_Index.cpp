@@ -635,31 +635,70 @@ void Step::vIndexPositionN(void)
   
   IndexPtn* pIndexPtn = pPartition->pIndexPtn(iIndexNo);
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of columns in the index
   i8 nIdxCols = pIndex->pIdxColVec()->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Stz* szStz;
+  Stz* szLowerKey = xLowerVariable.szStz();
+  Stz* szUpperKey = xUpperVariable.szStz();
+  
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Format* pFmt = AM::pFmt();
   
   EntBuffer* aUpperEntBuffer;
   Ent* aUpperEntry = nullptr;
+
   eRO eUpperRelnOp;
   
   EntWrk xEntWrkLower;
   EntWrk xEntWrkUpper;
   
   bool bExactQuery = false;
+  bool bHaveLowerKey = false;
+  bool bHaveUpperKey = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the lower key
-  szStz = xLowerVariable.szStz();
+  // get the lower key
+  
+  if ( ! StrLib::bSame(szLowerKey->azChar(), "") ) {
+    bHaveLowerKey = true;
+    
+    // form the lower key
+    KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szLowerKey,pFmt);
+    for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+      xEntWrkLower.vAppendMinusInfinity();
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the upper key
+  
+  if ( ! StrLib::bSame(szUpperKey->azChar(), "") ) {
+    bHaveUpperKey = true;
+    
+    // form the upper key
+    KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szUpperKey,pFmt);
+    for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+      xEntWrkUpper.vAppendPlusInfinity();
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if we have both upper and lower keys
+  if ( bHaveLowerKey && bHaveUpperKey) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check if upperKey > lowerKey
+    eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+                                 xEntWrkLower.aKey());
+    
+    if (eCompare == KC_BEFORE)
+      goto L_Exit;
+  }
   
   // there is no lower key
-  if ( StrLib::bSame(szStz->azChar(), "") ) {
+  if ( ! bHaveLowerKey ) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // position at the first level 0 buffer
@@ -677,13 +716,6 @@ void Step::vIndexPositionN(void)
     
   }
   else {
-    
-    // form the lower key
-    KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szStz,pFmt);
-    for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-      xEntWrkLower.vAppendMinusInfinity();
-    }
-    //xEntWrk.vShow();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first position at a level 0 buffer with keyLower
@@ -713,26 +745,9 @@ void Step::vIndexPositionN(void)
     }
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the upper key
-  szStz = xUpperVariable.szStz();
-  
   // there is no upper key ?
-  if ( StrLib::bSame(szStz->azChar(), "") )
+  if ( ! bHaveUpperKey )
     goto L_Exit;
-  
-  KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
-  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xEntWrkUpper.vAppendPlusInfinity();
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if upperKey > lowerKey
-  //eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
-  //                             xEntWrkLower.aKey());
-  
-  //if (eCompare == KC_BEFORE)
-  //  goto L_Exit;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
