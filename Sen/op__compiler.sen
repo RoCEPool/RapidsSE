@@ -75,65 +75,6 @@
     discard
 ;
 
-
-
-/*----------------------------------------------------------------------------*/
-/* the op info compiler                                                       */
-/*----------------------------------------------------------------------------*/
-: opInfo:
-
-  0 0 0 0 locals| pWord sEname sEvalue pTagSet |
-
-  // create a word using next token from input source as the word name
-  input::next "_info" str.cat :create
-
-  compiler::current@ to pWord
-
-  // set the word kind to be jobClass
-  //[ compiler::current@ , ] compiler::current@ word.category!
-  [ compiler::current@ encode::push ] pWord word.category!
-
-  // attach an ename set to the word being created
-  tagSet::new to pTagSet
-
-  pTagSet pWord word.TagSet!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  "<jobNm>" pWord word.name_trunc pTagSet tagSet.insertStr
-
-  // skip the "{" token from input source
-  input::next discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse each input token till "}", build ename set representing the syntax
-
-  begin
-    input::next
-    dup "}" str.equal not
-  while
-    to sEname
-    input::next discard
-    input::next to sEvalue
-    sEname sEvalue pWord word.TagSet@ tagSet.addTag
-  repeat
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // discard the "}" from dstack
-  discard
-
-  // get and discard ";"
-  input::next discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // complete the ename-set
-
-  pWord fillOut::tagSet_ofInfoWord
-
-  //pTagSet tagSet.asStr .
-;
-
 /*----------------------------------------------------------------------------*/
 /* the op info compiler                                                       */
 /*----------------------------------------------------------------------------*/
