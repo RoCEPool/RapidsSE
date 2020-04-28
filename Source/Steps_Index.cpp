@@ -649,6 +649,7 @@ void Step::vIndexPositionN(void)
   Ent* aUpperEntry = nullptr;
   eRO eUpperRelnOp;
   EntWrk xEntWrkUpper;
+  bool bExactQuery = false;
   
   // is there a lower ?
   if ( StrLib::bSame(szStz->azChar(), "") ) {
@@ -688,6 +689,10 @@ void Step::vIndexPositionN(void)
       
       aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
       
+      if (eLowerRelnOp == RO_EQUAL_TO) {
+        bExactQuery = true;
+        eLowerRelnOp = RO_GREATER_EQUAL;
+      }
       if (eLowerRelnOp == RO_GREATER_THAN) {
         aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
                                                          xEntWrkLower.aKey(),
@@ -706,9 +711,7 @@ void Step::vIndexPositionN(void)
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
   szStz = xUpperVariable.szStz();
   
-  
-  
-  // is there a lower ?
+  // is there an upper ?
   if ( ! StrLib::bSame(szStz->azChar(), "") ) {
     
     KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
@@ -717,10 +720,23 @@ void Step::vIndexPositionN(void)
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check if upperKey > lowerKey
+    //eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+    //                             xEntWrkLower.aKey());
+    
+    //if (eCompare == KC_BEFORE)
+    //  goto L_Exit;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now position at a level 0 buffer for the upper key
     aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
     
-    eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+    if (bExactQuery) {
+      eUpperRelnOp = RO_LESS_EQUAL;
+    }
+    else {
+      eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+    }
     
     if (aUpperEntBuffer) {
       
