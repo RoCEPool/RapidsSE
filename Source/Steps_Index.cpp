@@ -641,18 +641,26 @@ void Step::vIndexPositionN(void)
   i8 nIdxCols = pIndex->pIdxColVec()->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  EntWrk xEntWrkLower;
+  Stz* szStz;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Format* pFmt = AM::pFmt();
-  Stz* szStz = xLowerVariable.szStz();
+  
   EntBuffer* aUpperEntBuffer;
   Ent* aUpperEntry = nullptr;
   eRO eUpperRelnOp;
+  
+  EntWrk xEntWrkLower;
   EntWrk xEntWrkUpper;
+  
   bool bExactQuery = false;
   
-  // is there a lower ?
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the lower key
+  szStz = xLowerVariable.szStz();
+  
+  // there is no lower key
   if ( StrLib::bSame(szStz->azChar(), "") ) {
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // position at the first level 0 buffer
     aLowerEntBuffer = pIndexPtn->pFirstH0Buffer();
@@ -670,6 +678,7 @@ void Step::vIndexPositionN(void)
   }
   else {
     
+    // form the lower key
     KeyBuilder::vAddElement(&xEntWrkLower,pColumn0,szStz,pFmt);
     for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
       xEntWrkLower.vAppendMinusInfinity();
@@ -684,9 +693,8 @@ void Step::vIndexPositionN(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we get an entry buffer ?
     if (aLowerEntBuffer) {
-      // position in the index buffer at an entry prior to the lower key
-      //aLowerEntry = aLowerEntBuffer->aPositionQuery(xEntWrkLower, eLowerRelnOp);
       
+      // position in the index buffer at an entry prior to the lower key
       aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
       
       if (eLowerRelnOp == RO_EQUAL_TO) {
@@ -707,47 +715,45 @@ void Step::vIndexPositionN(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the upper key
-  
-  pColumn0 = pIndex->pIdxColVec()->pGet(0);
   szStz = xUpperVariable.szStz();
   
-  // is there an upper ?
-  if ( ! StrLib::bSame(szStz->azChar(), "") ) {
+  // there is no upper key ?
+  if ( StrLib::bSame(szStz->azChar(), "") )
+    goto L_Exit;
+  
+  KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xEntWrkUpper.vAppendPlusInfinity();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if upperKey > lowerKey
+  //eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+  //                             xEntWrkLower.aKey());
+  
+  //if (eCompare == KC_BEFORE)
+  //  goto L_Exit;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now position at a level 0 buffer for the upper key
+  aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
+  
+  if (bExactQuery) {
+    eUpperRelnOp = RO_LESS_EQUAL;
+  }
+  else {
+    eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  }
+  
+  if (aUpperEntBuffer) {
     
-    KeyBuilder::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
-    for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-      xEntWrkUpper.vAppendPlusInfinity();
-    }
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, &aUpperEntBuffer);
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // check if upperKey > lowerKey
-    //eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
-    //                             xEntWrkLower.aKey());
-    
-    //if (eCompare == KC_BEFORE)
-    //  goto L_Exit;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // now position at a level 0 buffer for the upper key
-    aUpperEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkUpper.aKey());
-    
-    if (bExactQuery) {
-      eUpperRelnOp = RO_LESS_EQUAL;
-    }
-    else {
-      eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
-    }
-    
-    if (aUpperEntBuffer) {
-      
-      aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
-      aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, &aUpperEntBuffer);
-      
-      if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-        aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
-                                                         xEntWrkUpper.aKey(),
-                                                         &aUpperEntBuffer);
-      }
+    if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
+                                                       xEntWrkUpper.aKey(),
+                                                       &aUpperEntBuffer);
     }
   }
   
