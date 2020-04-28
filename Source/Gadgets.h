@@ -92,11 +92,11 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "SP_AggTimer.hpp"
 #include "SP_Char.hpp"
 #include "SP_Elapsed.hpp"
-#include "SP_EnmSet.hpp"
 #include "SP_Footer.hpp"
 #include "SP_Header.hpp"
 #include "SP_ReqTuple.hpp"
 #include "SP_String.hpp"
+#include "SP_TagSet.hpp"
 #include "SP_Timer.hpp"
 
 typedef void (*FNADDR)(void*);
