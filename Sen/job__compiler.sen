@@ -130,7 +130,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
-: fillOut.tagSet_dist params| pWord |
+: fillOut::tagSet_dist params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
 
@@ -146,7 +146,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a local job                                          */
 /*----------------------------------------------------------------------------*/
-: fillOut.tagSet_local params| pWord |
+: fillOut::tagSet_local params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -154,14 +154,14 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a generic job                                        */
 /*----------------------------------------------------------------------------*/
-: fillOut.tagSet_generic params| pWord |
+: fillOut::tagSet_generic params| pWord |
 
   "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: fillout.missingDefaults params| pWordTagSet |
+: fillOut::missingDefaults params| pWordTagSet |
 
   // test and add default for: command kind
   "<cmdKind>" pWordTagSet tagSet.hasName not if
@@ -198,14 +198,14 @@
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: fillOut.tagSet_ofInfoWord params| pWord |
+: fillOut::tagSet_ofInfoWord params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.tagSet@    locals| pWordTagSet |
 
   0 0 locals| iParams sStreamDef |
 
-  pWordTagSet fillout.missingDefaults
+  pWordTagSet fillOut::missingDefaults
 
 /*
   // test and add default for: command kind
@@ -242,10 +242,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pWord job::isgenericJob if
-    pWord fillOut.tagSet_generic
+    pWord fillOut::tagSet_generic
   else
   pWord job::isDistJob if
-    pWord fillOut.tagSet_dist
+    pWord fillOut::tagSet_dist
   else
 
     "<liteOp>" pWordTagSet tagSet.hasName if
@@ -294,7 +294,7 @@
 
     then
 
-    pWord fillOut.tagSet_local
+    pWord fillOut::tagSet_local
 
   then then
 
@@ -455,7 +455,7 @@
 
   //pWordTagSet tagSet.asStr .
 
-  pWord fillOut.tagSet_ofInfoWord
+  pWord fillOut::tagSet_ofInfoWord
 
   //pWordTagSet tagSet.asStr .
 
