@@ -59,7 +59,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pPipeline = pPipeline;
 
   m_oOpTags.vCopy(pOpSpec->pTagSet());
-  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
+  m_oTopologyTags.vCopy(pOpSpec->pTopologyTagSet());
   
   m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
@@ -127,7 +127,7 @@ void Op::vDump(i8 i_Op)
   
   s256 sArgs;
   
-  TagSet* pTopologyTagSet = this->pTopologyTagSet();
+  TagSet* pTopologyTagSet = this->pTopologyTags();
   
   pTopologyTagSet->vSprint(sArgs);
   
@@ -973,7 +973,7 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
   
   // now append the hidden topology ename pairs to the job ename set
-  AM::vAppendJobTags(m_pOpJob, &m_oTopologyTagSet);
+  AM::vAppendJobTags(m_pOpJob, &m_oTopologyTags);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();
@@ -1020,13 +1020,13 @@ void Op::vToCmdStr(Stz* szCmdStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the topology TagSet                                                  */
+/* get the topology TagSet                                                    */
 /*----------------------------------------------------------------------------*/
-TagSet* Op::pTopologyTagSet(void)
+TagSet* Op::pTopologyTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oTopologyTagSet;
+  return &m_oTopologyTags;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,8 +16,8 @@ namespace Pipelines
     Job*           m_pPipelineJob;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
   
-    TagSet         m_oOpTags;         // ename set of cmd
-    TagSet         m_oTopologyTagSet; // topology tagSet
+    TagSet         m_oOpTags;        // op tag set
+    TagSet         m_oTopologyTags;  // topology tag set
     
     bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
@@ -97,7 +97,7 @@ namespace Pipelines
     bool bSpawnOperatorJob(i8 iSessionId);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
-    TagSet* pTopologyTagSet(void);
+    TagSet* pTopologyTags(void);
     ePX  eTopologyX(void);
     void vTopologyX(ePX eTopologyX);
     void vWorkQuanta(i8 iWorkQuanta);
