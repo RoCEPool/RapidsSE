@@ -40,8 +40,8 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   m_i_OpSpec     = C_UNKNOWN;
   m_eXmitKind    = XK_NORMAL;
 
-  //m_oTagSet
-  //m_oTopologyTagSet
+  //m_oOpSpecTags
+  //m_oTopologyTags
   
   _checkInitialised_(CN_OPSPEC);
   
@@ -68,7 +68,7 @@ void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTagSet.vInsert(sName, sValue);
+  m_oOpSpecTags.vInsert(sName, sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTagSet.vInsert(sName, iValue);
+  m_oOpSpecTags.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTopologyTagSet.vInsert(sName, iValue);
+  m_oTopologyTags.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,16 +99,6 @@ bool OpSpec::bAppendRight(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_bAppendRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the TagSet                                                           */
-/*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return &m_oTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,13 +142,23 @@ void OpSpec::v_OpSpec(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the TagSet                                                             */
+/*----------------------------------------------------------------------------*/
+TagSet* OpSpec::pOpSpecTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return &m_oOpSpecTags;
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace an ename value                                                     */
 /*----------------------------------------------------------------------------*/
 void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTagSet.vReplace(szName, szValue);
+  m_oOpSpecTags.vReplace(szName, szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,17 +168,17 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oTopologyTagSet.vReplace(szName, iValue);
+  m_oTopologyTags.vReplace(szName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the topology TagSet                                                  */
+/* get the topology TagSet                                                    */
 /*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pTopologyTagSet(void)
+TagSet* OpSpec::pTopologyTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return &m_oTopologyTagSet;
+  return & m_oTopologyTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +213,7 @@ void OpSpec::vPrint(void)
   
   vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
     
-  m_oTagSet.vDumpSet();
+  m_oOpSpecTags.vDumpSet();
 }
 
 /*----------------------------------------------------------------------------*/

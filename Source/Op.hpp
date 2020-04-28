@@ -16,8 +16,8 @@ namespace Pipelines
     Job*           m_pPipelineJob;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
   
-    TagSet       m_oTagSet;         // ename set of cmd
-    TagSet       m_oTopologyTagSet; // topology tagSet
+    TagSet         m_oOpTags;        // op tag set
+    TagSet         m_oTopologyTags;  // topology tag set
     
     bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
@@ -27,15 +27,15 @@ namespace Pipelines
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    i8             m_nNode;            // node no
-    i8             m_nPartition;       // partition no
+    i8             m_nNode;          // node no
+    i8             m_nPartition;     // partition no
     
-    ePX            m_eTopologyX;      // cross topology
-    i8             m_iNextStage;      // next stage in the cross topology
-    i8             m_iNextOp;         // next Op in the stage
-    i8             m_iXmitNode;       // xmit node (for xmit)
-    eXK            m_eXmitKind;       // xmit kind
-    i8             m_iRobin;          // xmit Round Robin partition/node/thread
+    ePX            m_eTopologyX;     // cross topology
+    i8             m_iNextStage;     // next stage in the cross topology
+    i8             m_iNextOp;        // next Op in the stage
+    i8             m_iXmitNode;      // xmit node (for xmit)
+    eXK            m_eXmitKind;      // xmit kind
+    i8             m_iRobin;         // xmit Round Robin partition/node/thread
   
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     
@@ -60,7 +60,6 @@ namespace Pipelines
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     void vDropTaskLock(void);
-    TagSet* pTagSet(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
@@ -77,6 +76,7 @@ namespace Pipelines
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     Job* pOpJob(void);
     Stz* szOpNm(void);
+    TagSet* pOpTags(void);
     void vPartition(i8 iPartition);
     i8   nPartition(void);
     bool bPause(void);
@@ -97,7 +97,7 @@ namespace Pipelines
     bool bSpawnOperatorJob(i8 iSessionId);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
-    TagSet* pTopologyTagSet(void);
+    TagSet* pTopologyTags(void);
     ePX  eTopologyX(void);
     void vTopologyX(ePX eTopologyX);
     void vWorkQuanta(i8 iWorkQuanta);

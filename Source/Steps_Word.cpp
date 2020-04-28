@@ -21,8 +21,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
   vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);
-  vAddStep("word.tagSet@"_Stz,    &Step::vWordEnmSetFetch);
-  vAddStep("word.tagSet!"_Stz,    &Step::vWordEnmSetStore);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
   vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
@@ -40,6 +38,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.prompt!"_Stz,      &Step::vWordPromptStore);
   vAddStep("word.resetRoutine"_Stz, &Step::vWordResetRoutine);
   vAddStep("word.see"_Stz,          &Step::vWordSee);
+  vAddStep("word.tagSet@"_Stz,      &Step::vWordEnmSetFetch);
+  vAddStep("word.tagSet!"_Stz,      &Step::vWordEnmSetStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,9 +187,9 @@ void Step::vWordEnmSetFetch(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pTagSet = pWord->pTagSet();
+  TagSet* pWordTags = pWord->pWordTags();
   
-   m_pDataStack->vPushPtr(pTagSet);
+   m_pDataStack->vPushPtr(pWordTags);
   
   EXIT();
 }
@@ -203,9 +203,9 @@ void Step::vWordEnmSetStore(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pWordTags = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  pWord->vTagSet(pTagSet);
+  pWord->vWordTags(pWordTags);
   
   EXIT();
 }

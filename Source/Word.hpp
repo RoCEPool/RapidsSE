@@ -91,8 +91,6 @@ namespace SenVM
     void  vEntryStep(StepFp fpIntrinsic);
     StepFp fpEntryStep(void);
     StepFp* afpEntryStep(void);
-    TagSet* pTagSet(bool bCreateNew = false);
-    void  vTagSet(TagSet* pTagSet);
     void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, Cell* aCell);
@@ -124,6 +122,8 @@ namespace SenVM
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);
     void  vWordNm(Stz* szWordNm);
+    TagSet* pWordTags(bool bCreateNew = false);
+    void  vWordTags(TagSet* pWordTags);
     char* aWspArea(void);
 
     Footer* aFooter(void);

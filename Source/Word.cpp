@@ -483,29 +483,6 @@ void Word::vEncodePush(AnyVal* aAnyVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ename set                                                              */
-/*----------------------------------------------------------------------------*/
-TagSet* Word::pTagSet(bool bCreateNew)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  if (! m_pWordTags && bCreateNew)
-    m_pWordTags = new TagSet;
-  
-  return m_pWordTags;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set ename set                                                              */
-/*----------------------------------------------------------------------------*/
-void Word::vTagSet(TagSet* pTagSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pWordTags = pTagSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get exception hook                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Word::szExceptionHook(void)
@@ -770,6 +747,29 @@ void Word::vWord(eWK eWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_eWord = eWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ename set                                                              */
+/*----------------------------------------------------------------------------*/
+TagSet* Word::pWordTags(bool bCreateNew)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  if (! m_pWordTags && bCreateNew)
+    m_pWordTags = new TagSet;
+  
+  return m_pWordTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ename set                                                              */
+/*----------------------------------------------------------------------------*/
+void Word::vWordTags(TagSet* pWordTags)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_pWordTags = pWordTags;
 }
 
 /*----------------------------------------------------------------------------*/
