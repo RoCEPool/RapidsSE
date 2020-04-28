@@ -5,30 +5,6 @@
 " se_word.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* add given tag to word's tag set  (with support for constant translation)   */
-/*----------------------------------------------------------------------------*/
-: word.addTag params| pWord sTagValue sTagName |
-
-  pWord word.TagSet@ locals| pWordTagSet |
-  sTagValue find     locals| pConstantWord |
-
-  // test for a (int) constant and translate value
-  pConstantWord if
-    pConstantWord word.category@ find: rootConstant eql if
-
-      // sEvalue "  %v is a constant" .printf
-      // add <name> = <constant>
-      sTagName pConstantWord execute pWordTagSet tagSet.insertInt
-      exit
-
-    then
-  then
-
-  // add <name> = <string>
-  sTagName sTagValue pWordTagSet tagSet.insertStr
-;
-
-/*----------------------------------------------------------------------------*/
 /* ensure the word has an ename set                                           */
 /*----------------------------------------------------------------------------*/
 : word.ensureTagSet params| pWord |

@@ -4,28 +4,52 @@
 
 " se_tags.sen" .verbose
 
-
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add given tag to word's tag set  (with support for constant translation)   */
 /*----------------------------------------------------------------------------*/
-: tagSet::addReplace params| sEvalue sEname |
+: word.addTag params| pWord sTagValue sTagName |
 
-  compiler::current@ word.TagSet@ locals| pTagSet |
+  pWord word.TagSet@ locals| pWordTagSet |
+  sTagValue find     locals| pConstantWord |
 
-  sEvalue find locals| pEvalueWord |
-
-  pEvalueWord if
-    pEvalueWord word.category@ find: rootConstant eql if
+  // test for a (int) constant and translate value
+  pConstantWord if
+    pConstantWord word.category@ find: rootConstant eql if
 
       // sEvalue "  %v is a constant" .printf
-       sEname pEvalueWord execute pTagSet tagSet.replaceInt
+      // add <name> = <constant>
+      sTagName pConstantWord execute pWordTagSet tagSet.insertInt
       exit
 
     then
   then
 
-  // -- -- --
-  sEname sEvalue pTagSet tagSet.replaceStr
+  // add <name> = <string>
+  sTagName sTagValue pWordTagSet tagSet.insertStr
+;
+
+/*----------------------------------------------------------------------------*/
+/* add/replace given tag to word's tag set (support for constant translation) */
+/*----------------------------------------------------------------------------*/
+: word.addReplaceTag params| pWord sTagValue sTagName |
+
+  pWord word.TagSet@ locals| pWordTagSet |
+  sTagValue find     locals| pConstantWord |
+
+  // test for a (int) constant and translate value
+  pConstantWord if
+    pConstantWord word.category@ find: rootConstant eql if
+
+      // sEvalue "  %v is a constant" .printf
+      // add/replace <name> = <constant>
+      sTagName pConstantWord execute pWordTagSet tagSet.replaceInt
+      exit
+
+    then
+  then
+
+  // add/replace <name> = <string>
+  sTagName sTagValue pWordTagSet tagSet.replaceStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +92,7 @@
     input::next to sTagValue
     
     // add the decoded
-    sTagName sTagValue tagSet::addReplace
+    sTagName sTagValue compiler::current@ word.addReplaceTag
   
   repeat
 
