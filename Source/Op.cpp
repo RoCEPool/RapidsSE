@@ -58,7 +58,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pStage    = pStage;
   m_pPipeline = pPipeline;
 
-  m_oTagSet.vCopy(pOpSpec->pTagSet());
+  m_oOpTags.vCopy(pOpSpec->pTagSet());
   m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
   
   m_pPipelineJob  = pPipeline->pJob();
@@ -145,8 +145,8 @@ void Op::vDump(i8 i_Op)
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
-  TagSet* pTagSet = this->pTagSet();
-  i8 iXmits =  pTagSet->iValue(C_TAG_Xmits);
+  TagSet* pOpTags = this->pOpTags();
+  i8 iXmits =  pOpTags->iValue(C_TAG_Xmits);
   i8 iLeftMarkers = iXmits ? iXmits : 1;
   
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
@@ -280,16 +280,6 @@ void Op::vDropTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   AM::vDropTaskLock(AM::pExecutingTask(m_pOpJob));
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the TagSet                                                           */
-/*----------------------------------------------------------------------------*/
-TagSet* Op::pTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return &m_oTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,6 +464,16 @@ Stz* Op::szOpNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_sOpNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the TagSet                                                             */
+/*----------------------------------------------------------------------------*/
+TagSet* Op::pOpTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return &m_oOpTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1015,7 +1015,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sOpNm);
-  m_oTagSet.vConcat(szCmdStr);
+  m_oOpTags.vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 
