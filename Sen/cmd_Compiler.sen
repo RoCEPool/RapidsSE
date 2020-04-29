@@ -1,0 +1,431 @@
+/*============================================================================*/
+/* cmd_Compiler.sen -- Command Compiler                                       */
+/*============================================================================*/
+
+" cmd_compiler.sen" .verbose
+    
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a distributed job                               */
+/*----------------------------------------------------------------------------*/
+: _info.aboutDistJob params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<jobKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a generic job                                   */
+/*----------------------------------------------------------------------------*/
+: _info.aboutGenericJob params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<jobKind>" pInfTagSet tagSet.getInt JK_GENERIC == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a local job                                     */
+/*----------------------------------------------------------------------------*/
+: _info.aboutLocalJob params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<jobKind>" pInfTagSet tagSet.getInt JK_LOCAL == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a lite op                                       */
+/*----------------------------------------------------------------------------*/
+: _info.aboutLiteOp params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<liteOp>" pInfTagSet tagSet.hasName if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a local lite op                                 */
+/*----------------------------------------------------------------------------*/
+: _info.aboutLocalLiteOp params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<localLiteOp>" pInfTagSet tagSet.hasName if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is a service command                                     */
+/*----------------------------------------------------------------------------*/
+: _info.aboutServiceCmd_info params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<cmdKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* does a seed by the name of Cmd_Suffix exist ?                              */
+/*----------------------------------------------------------------------------*/
+: _info.doesSeedExist? params| pInfoWrd sSeedSuffix |
+
+  pInfoWrd word.name_trunc locals| sCmdNm |
+
+  sCmdNm sSeedSuffix str.cat locals| sSeedNm |
+
+  sSeedNm find if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* add <seedNm> = Cmd_Suffix | DefaultSeed to tag set of given infor word     */
+/*----------------------------------------------------------------------------*/
+: _info.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
+
+  0 locals| sSeedNm_Suffix |
+
+  sSeedSuffix pInfoWrd _info.doesSeedExist? if
+    pInfoWrd word.name_trunc
+      sSeedSuffix str.cat to sSeedNm_Suffix
+  else
+    sDefaultSeed
+      sSeedSuffix str.cat to sSeedNm_Suffix
+  then
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  sSeedNm sSeedNm_Suffix pInfTagSet tagSet.insertStr
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add missing/default tags to an info word                                   */
+/*----------------------------------------------------------------------------*/
+: cmd::addDefaultTags params| pInfoWrd |
+
+  pInfoWrd word.tagSet@ locals| pInfTagSet |
+
+  // test and add default for: command kind
+  "<cmdKind>" pInfTagSet tagSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" pInfTagSet tagSet.addTag
+  then
+
+  // test and add default for: ddl lock
+  "<ddlLock>" pInfTagSet tagSet.hasName not if
+    "<ddlLock>" "DL_NONE" pInfTagSet tagSet.addTag
+  then
+
+  // test and add default for: job desc
+  "<jobDesc>" pInfTagSet tagSet.hasName not if
+    "<jobDesc>" "--description  --" pInfTagSet tagSet.addTag
+  then
+
+  // test and add default for: job kind
+  "<jobKind>" pInfTagSet tagSet.hasName not if
+    "<jobKind>" "JK_LOCAL" pInfTagSet tagSet.addTag
+  then
+
+  // test and add default for:  priority
+  "<priority>" pInfTagSet tagSet.hasName not if
+    "<priority>" "PY_NORMAL" pInfTagSet tagSet.addTag
+  then
+
+  // test and add default for:  response kind
+  "<rspKind>" pInfTagSet tagSet.hasName not if
+    "<rspKind>" "RS_NONE" pInfTagSet tagSet.addTag
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* add default seed tags to a distributed info word                           */
+/*----------------------------------------------------------------------------*/
+: cmd::addSeedsFor_distJob params| pInfoWrd |
+
+  "<SeedReq>" "defaultSeedDist" "_req" pInfoWrd _info.addSeedToTagSet
+
+  "<SeedRcv>" "defaultSeedDist" "_beg" pInfoWrd _info.addSeedToTagSet
+
+  "<SeedExe>" "defaultSeedDist" "_exe" pInfoWrd _info.addSeedToTagSet
+
+  "<SeedEnd>" "defaultSeedDist" "_end" pInfoWrd _info.addSeedToTagSet
+
+  "<SeedCan>" "defaultSeedDist" "_can" pInfoWrd _info.addSeedToTagSet
+;
+
+/*----------------------------------------------------------------------------*/
+/* add default seed tags to a generic info word                               */
+/*----------------------------------------------------------------------------*/
+: cmd::addSeedsFor_genericJob params| pInfoWrd |
+
+  "<SeedReq>" "defaultSeedLocal" "_run" pInfoWrd _info.addSeedToTagSet
+;
+
+/*----------------------------------------------------------------------------*/
+/* add default seed tags to a local op word                                   */
+/*----------------------------------------------------------------------------*/
+: cmd::addSeedsFor_localOp params| pInfoWrd |
+
+  "<SeedReq>" "defaultSeedLocal" "_req" pInfoWrd _info.addSeedToTagSet
+;
+
+/*----------------------------------------------------------------------------*/
+/* synthesize a procedure for given lite op info word                         */
+/*----------------------------------------------------------------------------*/
+: cmd::synthProcFor_liteOp params| pInfoWrd |
+
+  pInfoWrd word.name_trunc locals| sWordNm_trunc |
+  pInfoWrd word.tagSet@    locals| pInfTagSet   |
+
+  0 locals| iParams |
+
+  sWordNm_trunc "LiteOP: %v" .printf
+
+  "/liteOp/" sWordNm_trunc __liteOp_PulseMarker
+    str.replace >interpret
+  "/liteOp/" sWordNm_trunc __liteOp_req
+    str.replace >interpret
+
+  // add procedure depending on no of parameters
+  "<params>" pInfTagSet tagSet.hasName assert
+  "<params>" pInfTagSet tagSet.getStr >int to iParams
+
+  iParams 2 == if
+    "/liteOp/" sWordNm_trunc __liteOp_procedure2
+      str.replace procedure::add
+  else
+  iParams 1 == if
+    "/liteOp/" sWordNm_trunc __liteOp_procedure1
+      str.replace procedure::add
+  else
+  iParams 0 == assert
+    "/liteOp/" sWordNm_trunc __liteOp_procedure0
+      str.replace procedure::add
+  then then
+
+  pInfoWrd cmd::addSeedsFor_localOp
+;
+
+/*----------------------------------------------------------------------------*/
+/* synthesize a procedure for given local lite op info word                   */
+/*----------------------------------------------------------------------------*/
+: cmd::synthProcFor_localLiteOp params| pInfoWrd |
+
+  pInfoWrd word.name_trunc locals| sWordNm_trunc |
+  pInfoWrd word.tagSet@    locals| pInfTagSet   |
+
+  0 locals| iParams |
+
+  sWordNm_trunc "LocalLiteOP: %v" .printf
+
+  "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker
+     str.replace >interpret
+  "/localLiteOp/" sWordNm_trunc __localLiteOp_req
+     str.replace >interpret
+
+  // add procedure depending on no of parameters
+  "<params>" pInfTagSet tagSet.hasName assert
+  "<params>" pInfTagSet tagSet.getStr >int to iParams
+
+  iParams 2 == if
+    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2
+      str.replace procedure::add
+  else
+  iParams 1 == if
+    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1
+      str.replace procedure::add
+  else
+  iParams 0 == assert
+    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0
+      str.replace procedure::add
+  then  then
+
+  pInfoWrd cmd::addSeedsFor_localOp
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for a command                             */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_a_cmd params| pInfoWrd |
+
+  pInfoWrd cmd::addDefaultTags
+
+       pInfoWrd _info.aboutGenericJob  if pInfoWrd cmd::addSeedsFor_genericJob
+  else pInfoWrd _info.aboutDistJob     if pInfoWrd cmd::addSeedsFor_distJob
+  else pInfoWrd _info.aboutLiteOp      if pInfoWrd cmd::synthProcFor_liteOp
+  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd cmd::synthProcFor_localLiteOp
+  else                                    pInfoWrd cmd::addSeedsFor_localOp
+  then then then then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* consume service arguments                                                  */
+/*----------------------------------------------------------------------------*/
+: .consumeArgs
+
+  0 locals| nArgs |
+
+  //".consumeArgs" .
+
+  begin
+    input::next
+    dup ";&" str.equal not
+  while
+    nArgs 1 + to nArgs
+  repeat
+
+  // discard the ";&" from dstack
+  discard
+
+  nArgs
+
+  // for the moment we discard the arg vector from the data stack
+  dropN
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate two words, one which parses and another which spawns a service    */
+/*----------------------------------------------------------------------------*/
+: .generateService
+
+  // calc the name of the service
+  "_" compiler::current@ word.name@ str.removeSuffix locals| sServiceNm |
+
+  // calc the name of the spawner
+  sServiceNm "_spawner" str.cat locals| sSpawnerNm |
+
+
+  //----------------------------------------------------------------------------
+  // SPAWNER
+
+  // create a word by the spawner name
+  sSpawnerNm :create
+  compiler::current@ locals| pSpawnerWd |
+
+  // debug
+  //pSpawnerWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service spawning word -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // sServiceNm encode::push "++ this is service spawner for: %v" encode::push POSTPONE .printf
+
+  sServiceNm encode::push POSTPONE job::spawnUniversal
+
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // debug
+  //pSpawnerWd word.dump
+
+
+  //----------------------------------------------------------------------------
+  // PARSER
+
+  // create an immediate word by the service name
+
+  sServiceNm :create
+  compiler::current@ locals| pServiceWd |
+  true pServiceWd word.immediate!
+
+  // debug
+  //pServiceWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service parsing word  -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // in : <serviceNm> add call(.printf)
+  // sServiceNm encode::push "++ this is the service parser for: %v" encode::push POSTPONE .printf
+
+  // in : <serviceNm> add call(.consumeArgs)
+  POSTPONE .consumeArgs
+
+  // in : <serviceNm> add code which adds call(` pSpawnerWd) in caller of service
+  pSpawnerWd encode::push POSTPONE encode::call
+
+  // in : <serviceNm> add exit
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // debug
+  //pServiceWd word.dump
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* the job info compiler                                                      */
+/*----------------------------------------------------------------------------*/
+: jobInfo:
+
+  0 0 0 0 locals| pInfoWrd sEname sEvalue pInfTagSet |
+
+  // create a word using next token from input source as the word name
+  input::next "_info" str.cat :create
+
+  compiler::current@ to pInfoWrd
+
+  // set the word kind to be jobClass
+  [ compiler::current@ encode::push ] pInfoWrd word.category!
+
+  // attach an ename set to the word being created
+  tagSet::new to pInfTagSet
+
+  pInfTagSet pInfoWrd word.TagSet!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "<jobNm>" pInfoWrd word.name_trunc pInfTagSet tagSet.insertStr
+
+  // skip the "{" token from input source
+  input::next discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse each input token till "}", build ename set representing the syntax
+
+  begin
+    input::next
+    dup "}" str.equal not
+  while
+    to sEname
+    input::next discard
+    input::next to sEvalue
+    sEname sEvalue pInfoWrd word.TagSet@ tagSet.addTag
+  repeat
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // discard the "}" from dstack
+  discard
+
+  // get and discard ";"
+  input::next discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // complete the ename-set
+
+  //pInfTagSet tagSet.asStr .
+
+  pInfoWrd cmd::fillOut_a_cmd
+
+  //pInfTagSet tagSet.asStr .
+
+  pInfoWrd _info.aboutServiceCmd_info if .generateService then
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

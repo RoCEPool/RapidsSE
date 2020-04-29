@@ -39,6 +39,7 @@
         "op__liteOp.sen"          include
 
 4 .put
+        "cmd_Compiler.sen"        include
         "job__compiler.sen"       include
         "jobOperand.sen"          include
         "OPERAND__handlers.sen"   include
