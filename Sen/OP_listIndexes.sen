@@ -87,7 +87,7 @@ opSyntax: lsidx :: lsidx <tableNm> ;
 
 : lsidx _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __listIndex
     <params>      = 1

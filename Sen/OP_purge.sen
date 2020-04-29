@@ -67,7 +67,7 @@
 opSyntax: Purge :: Purge <tableNm> ;
 
 : Purge _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

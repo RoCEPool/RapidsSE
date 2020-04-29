@@ -79,7 +79,7 @@ opSyntax: tableSizes :: tableSizes ;
 
 : tableSizes _opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
+    <jobDesc>   = "--op desc--"
     <liteOp>    = true
     <streamDef> = __tableSizes
     <params>    = 0

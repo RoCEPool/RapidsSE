@@ -114,7 +114,7 @@
 opSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
 
 : BM_InflateCrwOp _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

@@ -41,7 +41,7 @@ opSyntax: ping :: ping ;
 
 : ping _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <params>      = 0
     <streamDef>   = __pingInfo

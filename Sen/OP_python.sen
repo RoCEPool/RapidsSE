@@ -56,7 +56,7 @@
 opSyntax: python :: python <pythonFile> <pythonFunction> ;
 
 : python _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

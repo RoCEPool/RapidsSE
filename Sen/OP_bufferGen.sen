@@ -51,7 +51,7 @@
 opSyntax: bufferGen :: bufferGen <nBuffers> ;
 
 : bufferGen _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

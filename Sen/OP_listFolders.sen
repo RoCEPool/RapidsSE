@@ -63,7 +63,7 @@ opSyntax: lf :: lf ;
 
 : lf _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __listFolder
     <params>      = 0

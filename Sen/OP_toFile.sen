@@ -77,7 +77,7 @@
 opSyntax: ToFileOp :: ToFileOp <fileNm> ;
 
 : ToFileOp _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc>  = "--description of operator--" }
+  tags{ <jobDesc>  = "--op desc--" }
 ;
 
 /*============================================================================*/

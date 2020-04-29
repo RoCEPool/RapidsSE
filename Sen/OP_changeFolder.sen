@@ -98,7 +98,7 @@ opSyntax: cf :: cf <folderNm> ;
 
 : cf _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <params>      = 1
   }

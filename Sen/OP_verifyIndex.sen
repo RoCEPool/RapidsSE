@@ -44,7 +44,7 @@ opSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
 
 : vfyidx _opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
+    <jobDesc>   = "--op desc--"
     <liteOp>    = true
     <streamDef> = __verifyIndex
     <params>    = 2

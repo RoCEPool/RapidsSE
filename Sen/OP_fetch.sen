@@ -225,7 +225,7 @@
 opSyntax: fetchOP :: fetchOP <tableNm> <predicate> ;
 
 : fetchOP _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

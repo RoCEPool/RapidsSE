@@ -99,7 +99,7 @@
 opSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
 
 : BM_GenEntOp _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc>  = "--description of operator--" }
+  tags{ <jobDesc>  = "--op desc--" }
 ;
 
 /*============================================================================*/

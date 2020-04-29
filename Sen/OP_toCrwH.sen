@@ -134,7 +134,7 @@
 opSyntax: toCrwH :: toCrwH <tableNm> ;
 
 : toCrwH _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

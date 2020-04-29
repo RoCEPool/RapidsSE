@@ -49,7 +49,7 @@ opSyntax: showCluster :: showCluster ;
 
 : showCluster _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __showCluster
     <params>      = 0

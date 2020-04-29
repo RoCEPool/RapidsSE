@@ -37,7 +37,7 @@ opSyntax: status :: status ;
 
 : status _opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
+    <jobDesc>   = "--op desc--"
     <liteOp>    = true
     <streamDef> = __status
     <params>    = 0

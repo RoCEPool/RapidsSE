@@ -120,7 +120,7 @@
 opSyntax: start :: start ;
 
 : start _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

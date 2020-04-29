@@ -40,7 +40,7 @@
 opSyntax: print :: print <string> ;
 
 : print _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/

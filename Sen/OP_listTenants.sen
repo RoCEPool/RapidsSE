@@ -61,7 +61,7 @@ opSyntax: lsten :: lsten ;
 
 : lsten _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __listContents
     <params>      = 0

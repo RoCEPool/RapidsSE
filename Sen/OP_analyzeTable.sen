@@ -51,7 +51,7 @@ opSyntax: antbl :: antbl <tableNm> ;
 
 : antbl _opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
+    <jobDesc>   = "--op desc--"
     <liteOp>    = true
     <streamDef> = __analyzeTable
     <params>    = 1

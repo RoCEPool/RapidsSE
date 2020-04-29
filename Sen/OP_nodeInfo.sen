@@ -31,7 +31,7 @@ opSyntax: NodeInfo :: NodeInfo ;
 
 : nodeInfo _opInfo tagCopy: liteOp_tags
 tags{
-  <jobDesc>   = "--description of operator--"
+  <jobDesc>   = "--op desc--"
   <liteOp>    = true
   <streamDef> = __nodeInfo
   <params>    = 0

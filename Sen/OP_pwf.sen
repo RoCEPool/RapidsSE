@@ -53,7 +53,7 @@ opSyntax: pwf :: pwf ;
 
 : pwf _opInfo tagCopy: localLiteOp_tags
   tags{
-    <jobDesc>     = "--description of operator--"
+    <jobDesc>     = "--op desc--"
     <localLiteOp> = true
     <streamDef>   = __pwf
     <params>      = 0

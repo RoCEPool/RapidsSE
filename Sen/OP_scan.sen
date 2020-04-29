@@ -113,7 +113,7 @@ opSyntax: scan :: scan <tableNm> <rateSecs> ;
 
 //_opInfo: scan
 //{
-//  <jobDesc>  = "--description of operator--"
+//  <jobDesc>  = "--op desc--"
 //
 //  <jobKind>  = JK_LOCAL
 //  <rspKind>  = RS_PARTICIPANT_RESPONSE
@@ -125,7 +125,7 @@ opSyntax: scan :: scan <tableNm> <rateSecs> ;
 //
 
 : scan _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 

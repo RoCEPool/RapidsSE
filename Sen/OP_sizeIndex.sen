@@ -44,7 +44,7 @@ opSyntax: szidx :: szidx <tableNm> <indexNm> ;
 
 : szidx _opInfo tagCopy: liteOp_tags
   tags{
-    <jobDesc>   = "--description of operator--"
+    <jobDesc>   = "--op desc--"
     <liteOp>    = true
     <streamDef> = __sizeIndex
     <params>    = 2

@@ -54,7 +54,7 @@ opSyntax: dropTable :: dropTable <tableNm> ;
 
 : dropTable _opInfo tagCopy: localOp_tags
   tags{
-    <jobDesc>   = "--description of operator--" }
+    <jobDesc>   = "--op desc--" }
 ;
     
 /*============================================================================*/

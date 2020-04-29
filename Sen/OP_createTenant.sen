@@ -76,7 +76,7 @@ opSyntax: createTenant :: createTenant <tenantNm> ;
 
 : createTenant _opInfo tagCopy: localOp_tags
   tags{
-    <jobDesc>   = "--description of operator--" }
+    <jobDesc>   = "--op desc--" }
 ;
     
 /*============================================================================*/

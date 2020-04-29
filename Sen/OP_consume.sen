@@ -156,7 +156,7 @@
 opSyntax: ConsumeOp :: ConsumeOp <Xmits> ;
 
 : ConsumeOp _opInfo tagCopy: localOp_tags
-  tags{ <jobDesc> = "--description of operator--" }
+  tags{ <jobDesc> = "--op desc--" }
 ;
 
 /*============================================================================*/
