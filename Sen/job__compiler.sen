@@ -5,37 +5,9 @@
 " job__compiler.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* test if the job is a generic job                                           */
+/* test if the word is info about a distributed job                           */
 /*----------------------------------------------------------------------------*/
-: job::isGenericJob params| pWord |
-
-  pWord word.TagSet@ locals| pWordTagSet |
-
-  "<jobKind>" pWordTagSet tagSet.getInt JK_GENERIC == if
-    true exit
-  else
-    false exit
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: job::isLocalJob params| pWord |
-
-  pWord word.TagSet@ locals| pWordTagSet |
-
-  "<jobKind>" pWordTagSet tagSet.getInt JK_LOCAL == if
-    true exit
-  else
-    false exit
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: job::isDistJob params| pWord |
+: word.isDistJob_info params| pWord |
 
   pWord word.TagSet@ locals| pWordTagSet |
 
@@ -47,9 +19,37 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* test if the word is info about a generic job                               */
 /*----------------------------------------------------------------------------*/
-: job::isLiteOp params| pWord |
+: word.isGenericJob_info params| pWord |
+
+  pWord word.TagSet@ locals| pWordTagSet |
+
+  "<jobKind>" pWordTagSet tagSet.getInt JK_GENERIC == if
+    true exit
+  else
+    false exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if the word is info about a local job                                 */
+/*----------------------------------------------------------------------------*/
+: word.isLocalJob_info params| pWord |
+
+  pWord word.TagSet@ locals| pWordTagSet |
+
+  "<jobKind>" pWordTagSet tagSet.getInt JK_LOCAL == if
+    true exit
+  else
+    false exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if the word is info about a lite op                                   */
+/*----------------------------------------------------------------------------*/
+: word.isLiteOp_info params| pWord |
 
   pWord word.TagSet@ locals| pWordTagSet |
 
@@ -61,9 +61,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* test if the word is info about a local lite op                             */
 /*----------------------------------------------------------------------------*/
-: job::isLocalLiteOp params| pWord |
+: word.isLocalLiteOp_info params| pWord |
 
   pWord word.TagSet@ locals| pWordTagSet |
 
@@ -75,9 +75,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* test if the word is info about a service command                           */
 /*----------------------------------------------------------------------------*/
-: job::isServiceCmd params| pWord |
+: word.isServiceCmd_info params| pWord |
 
   pWord word.TagSet@ locals| pWordTagSet |
 
@@ -116,38 +116,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add default seeds for a distributed job                                    */
-/*----------------------------------------------------------------------------*/
-: fillOut::infoFor_distJob params| pWord |
-
-  "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
-
-  "<SeedRcv>" "_beg" "defaultSeedDist" pWord seedEnameAdd
-
-  "<SeedExe>" "_exe" "defaultSeedDist" pWord seedEnameAdd
-
-  "<SeedEnd>" "_end" "defaultSeedDist" pWord seedEnameAdd
-
-  "<SeedCan>" "_can" "defaultSeedDist" pWord seedEnameAdd
-;
-
-/*----------------------------------------------------------------------------*/
-/* add default seeds for a local job                                          */
-/*----------------------------------------------------------------------------*/
-: fillOut::procFor_localOp params| pWord |
-
-  "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
-;
-
-/*----------------------------------------------------------------------------*/
-/* add default seeds for a generic job                                        */
-/*----------------------------------------------------------------------------*/
-: fillOut::infoFor_genericJob params| pWord |
-
-  "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
-;
-
-/*----------------------------------------------------------------------------*/
+/* add missing/default tags to an info word                                   */
 /*----------------------------------------------------------------------------*/
 : fillOut::addDefaultTags params| pWord |
 
@@ -185,11 +154,44 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add default seed tags to a distributed info word                           */
 /*----------------------------------------------------------------------------*/
-: fillOut::procFor_liteOp params| pWord |
+: fillOut::addSeedsFor_distJob params| pWord |
+
+  "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
+
+  "<SeedRcv>" "_beg" "defaultSeedDist" pWord seedEnameAdd
+
+  "<SeedExe>" "_exe" "defaultSeedDist" pWord seedEnameAdd
+
+  "<SeedEnd>" "_end" "defaultSeedDist" pWord seedEnameAdd
+
+  "<SeedCan>" "_can" "defaultSeedDist" pWord seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
+/* add default seed tags to a generic info word                               */
+/*----------------------------------------------------------------------------*/
+: fillOut::addSeedsFor_genericJob params| pWord |
+
+  "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
+/* add default seed tags to a local op word                                   */
+/*----------------------------------------------------------------------------*/
+: fillOut::addSeedsFor_localOp params| pWord |
+
+  "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a procedure for given lite op info word                             */
+/*----------------------------------------------------------------------------*/
+: fillOut::createProcFor_liteOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.tagSet@    locals| pWordTagSet |
+  pWord word.tagSet@    locals| pWordTagSet   |
 
   0 locals| iParams |
 
@@ -212,15 +214,16 @@
     "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
   then then
 
-  pWord fillOut::procFor_localOp
+  pWord fillOut::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create a procedure for given local lite op info word                       */
 /*----------------------------------------------------------------------------*/
-: fillOut::procFor_localLiteOp params| pWord |
+: fillOut::createProcFor_localLiteOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.tagSet@    locals| pWordTagSet |
+  pWord word.tagSet@    locals| pWordTagSet   |
 
   0 locals| iParams |
 
@@ -244,7 +247,7 @@
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
   then  then
 
-  pWord fillOut::procFor_localOp
+  pWord fillOut::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -256,11 +259,11 @@
 
   pWord fillOut::addDefaultTags
 
-       pWord job::isGenericJob  if pWord fillOut::infoFor_genericJob
-  else pWord job::isDistJob     if pWord fillOut::infoFor_distJob
-  else pWord job::isLiteOp      if pWord fillOut::procFor_liteOp
-  else pWord job::isLocalLiteOp if pWord fillOut::procFor_localLiteOp
-  else                             pWord fillOut::procFor_localOp
+       pWord word.isGenericJob_info  if pWord fillOut::addSeedsFor_genericJob
+  else pWord word.isDistJob_info     if pWord fillOut::addSeedsFor_distJob
+  else pWord word.isLiteOp_info      if pWord fillOut::createProcFor_liteOp
+  else pWord word.isLocalLiteOp_info if pWord fillOut::createProcFor_localLiteOp
+  else                                  pWord fillOut::addSeedsFor_localOp
   then then then then
 
   // pWordTagSet tagSet.asStr .
@@ -424,7 +427,7 @@
 
   //pWordTagSet tagSet.asStr .
 
-  pWord job::isServiceCmd if .generateService then
+  pWord word.isServiceCmd_info if .generateService then
 ;
 
 /*============================================================================*/
