@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: vistbl :: vistbl <tableNm> ;
 
-: vistbl _opInfo tagCopy: localLiteOp_tags
+: vistbl _info tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: UpsertOp :: UpsertOp <tableNm> ;
 
-: UpsertOp _opInfo tagCopy: localOp_tags
+: UpsertOp _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

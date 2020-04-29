@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Snapshot :: Snapshot <tableNm> ;
 
-: Snapshot _opInfo tagCopy: localOp_tags
+: Snapshot _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

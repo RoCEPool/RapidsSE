@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: NodeInfo :: NodeInfo ;
 
-: nodeInfo _opInfo tagCopy: liteOp_tags
+: nodeInfo _info tagCopy: liteOp_tags
 tags{
   <jobDesc>   = "--op desc--"
   <liteOp>    = true

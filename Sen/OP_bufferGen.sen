@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: bufferGen :: bufferGen <nBuffers> ;
 
-: bufferGen _opInfo tagCopy: localOp_tags
+: bufferGen _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

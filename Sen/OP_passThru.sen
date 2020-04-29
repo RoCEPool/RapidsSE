@@ -95,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: PassThru :: PassThru ;
 
-: PassThru _opInfo tagCopy: localOp_tags
+: PassThru _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

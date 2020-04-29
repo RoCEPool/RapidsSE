@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: tableSizes :: tableSizes ;
 
-: tableSizes _opInfo tagCopy: liteOp_tags
+: tableSizes _info tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

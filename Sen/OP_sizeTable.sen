@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: sztbl :: sztbl <tableNm> ;
 
-: sztbl _opInfo tagCopy: liteOp_tags
+: sztbl _info tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

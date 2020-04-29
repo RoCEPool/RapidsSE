@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: burst :: burst ;
 
-: burst _opInfo tagCopy: localOp_tags
+: burst _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

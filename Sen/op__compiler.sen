@@ -79,9 +79,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* promote current word to be an _opInfo word                                 */
+/* promote current word to be an _info word                                 */
 /*----------------------------------------------------------------------------*/
-: _opInfo immediate
+: _info immediate
 
   compiler::current@ locals| pWord |
 
@@ -90,8 +90,8 @@
     "_info" str.cat
     pWord word.name!
 
-  // set the word category to be _opInfo
-  find: _opInfo pWord word.category!
+  // set the word category to be _info
+  find: _info pWord word.category!
 
   // attach an ename set to the word being created
   tagSet::new locals| pWordTagSet |
@@ -117,7 +117,7 @@
 /*----------------------------------------------------------------------------*/
 : fillOut::tagsFor_allOps
 
-  find: _opInfo locals| pOpInfo |
+  find: _info locals| pOpInfo |
 
   // iterate thru all pOpInfo words
 
@@ -176,11 +176,11 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* show all words that are of _opInfo                                         */
+/* show all words that are of _info                                         */
 /*----------------------------------------------------------------------------*/
 : opInfos prompt
 
-  find: _opInfo wordsof
+  find: _info wordsof
 ;
 
 /*----------------------------------------------------------------------------*/

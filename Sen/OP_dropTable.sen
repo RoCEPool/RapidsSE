@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: dropTable :: dropTable <tableNm> ;
 
-: dropTable _opInfo tagCopy: localOp_tags
+: dropTable _info tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;
