@@ -115,7 +115,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info for all ops                                              */
 /*----------------------------------------------------------------------------*/
-: fillOut::tagsFor_allOps
+: fillOut::all_info
 
   find: _info locals| pOpInfo |
 
@@ -130,7 +130,7 @@
 
       object@ word.name@ "Filling out: %v" .printf
       
-      object@ fillOut::tagsFor_op  // fill out the tag set of the op
+      object@ fillOut::an_info  // fill out the tag set of the op
     then
 
     object@ word.prev object!            // advance cursor backwards thru words

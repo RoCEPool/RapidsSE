@@ -252,7 +252,7 @@
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
 
-: fillOut::tagsFor_op params| pWord |
+: fillOut::an_info params| pWord |
 
   pWord fillOut::addDefaultTags
 
@@ -420,7 +420,7 @@
 
   //pWordTagSet tagSet.asStr .
 
-  pWord fillOut::tagsFor_op
+  pWord fillOut::an_info
 
   //pWordTagSet tagSet.asStr .
 

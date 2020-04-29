@@ -64,7 +64,11 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   // no match
   
   if (! pSyntax) {
-    //vTrace("Unable to match job syntax\n"_Stz);
+    if (AM::bDeveloper()) {
+      SP_TknVecStr spTvs;
+      vTrace("Unable to match job syntax:-\n"_Stz);
+      vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pTknVec));
+    }
     return false;
   }
   
@@ -75,7 +79,13 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   
   bool b = bExtractArgs(pArgTags,pSyntax->pWordTags(),pTknVec);
   if (! b) {
-    //vTrace("Unable to match job syntax\n"_Stz);
+    if (AM::bDeveloper()) {
+      SP_TknVecStr spTvs;
+      SP_TagSet spTags;
+      vTrace("Unable to extract arguments:-\n"_Stz);
+      vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pTknVec));
+      vTrace("  Syntax: %s\n"_Stz,spTags.sz(pSyntax->pWordTags()));
+    }
     return false;
   }
   
