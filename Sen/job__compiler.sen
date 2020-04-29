@@ -91,24 +91,30 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: seedExists? params| pWord sSuffix |
+: word.doesSeedExist? params| pInfoWrd sSeedSuffix |
 
-  pWord word.name_trunc sSuffix str.cat
+  pInfoWrd word.name_trunc sSeedSuffix str.cat
     find if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add <tagNm> = WordNM_Suffix to tag set of info word                        */
+/* add <seedNm> = WordNm_Suffix to info word tags                             */
 /*----------------------------------------------------------------------------*/
-: word.addSeedToTagSet params| pInfoWrd sSuffix sSeed sTagNm |
+: word.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
 
-  sSuffix pInfoWrd seedExists?
-    if pInfoWrd word.name_trunc else sSeed then
-      sSuffix str.cat locals| sSeed_Suffix |
+  0 locals| sSeedNm_Suffix |
+
+  sSeedSuffix pInfoWrd word.doesSeedExist? if
+    pInfoWrd word.name_trunc
+      sSeedSuffix str.cat to sSeedNm_Suffix
+  else
+    sDefaultSeed
+      sSeedSuffix str.cat to sSeedNm_Suffix
+  then
 
   pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  sTagNm sSeed_Suffix pInfoWrdTagSet tagSet.insertStr
+  sSeedNm sSeedNm_Suffix pInfoWrdTagSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
