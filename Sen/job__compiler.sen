@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a distributed info word                           */
 /*----------------------------------------------------------------------------*/
-: fillOut::infoFor_distJob params| pWord |
+: fillOut::addSeedsFor_distJob params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
 
@@ -172,7 +172,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a generic info word                               */
 /*----------------------------------------------------------------------------*/
-: fillOut::infoFor_genericJob params| pWord |
+: fillOut::addSeedsFor_genericJob params| pWord |
 
   "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -180,7 +180,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a local op word                                   */
 /*----------------------------------------------------------------------------*/
-: fillOut::infoFor_localOp params| pWord |
+: fillOut::addSeedsFor_localOp params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -214,7 +214,7 @@
     "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
   then then
 
-  pWord fillOut::infoFor_localOp
+  pWord fillOut::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +247,7 @@
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
   then  then
 
-  pWord fillOut::infoFor_localOp
+  pWord fillOut::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -259,11 +259,11 @@
 
   pWord fillOut::addDefaultTags
 
-       pWord word.isGenericJob_info  if pWord fillOut::infoFor_genericJob
-  else pWord word.isDistJob_info     if pWord fillOut::infoFor_distJob
+       pWord word.isGenericJob_info  if pWord fillOut::addSeedsFor_genericJob
+  else pWord word.isDistJob_info     if pWord fillOut::addSeedsFor_distJob
   else pWord word.isLiteOp_info      if pWord fillOut::procFor_liteOp
   else pWord word.isLocalLiteOp_info if pWord fillOut::procFor_localLiteOp
-  else                                  pWord fillOut::infoFor_localOp
+  else                                  pWord fillOut::addSeedsFor_localOp
   then then then then
 
   // pWordTagSet tagSet.asStr .
