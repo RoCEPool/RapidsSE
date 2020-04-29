@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 /* add missing/default tags to an info word                                   */
 /*----------------------------------------------------------------------------*/
-: fillOut::addDefaultTags params| pInfoWrd |
+: cmd::addDefaultTags params| pInfoWrd |
 
   pInfoWrd word.tagSet@ locals| pInfoWrdTagSet |
 
@@ -162,7 +162,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a distributed info word                           */
 /*----------------------------------------------------------------------------*/
-: fillOut::addSeedsFor_distJob params| pInfoWrd |
+: cmd::addSeedsFor_distJob params| pInfoWrd |
 
   "<SeedReq>" "defaultSeedDist" "_req" pInfoWrd word.addSeedToTagSet
 
@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a generic info word                               */
 /*----------------------------------------------------------------------------*/
-: fillOut::addSeedsFor_genericJob params| pInfoWrd |
+: cmd::addSeedsFor_genericJob params| pInfoWrd |
 
   "<SeedReq>" "defaultSeedLocal" "_run" pInfoWrd word.addSeedToTagSet
 ;
@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a local op word                                   */
 /*----------------------------------------------------------------------------*/
-: fillOut::addSeedsFor_localOp params| pInfoWrd |
+: cmd::addSeedsFor_localOp params| pInfoWrd |
 
   "<SeedReq>" "defaultSeedLocal" "_req" pInfoWrd word.addSeedToTagSet
 ;
@@ -194,7 +194,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a procedure for given lite op info word                             */
 /*----------------------------------------------------------------------------*/
-: fillOut::createProcFor_liteOp params| pInfoWrd |
+: cmd::createProcFor_liteOp params| pInfoWrd |
 
   pInfoWrd word.name_trunc locals| sWordNm_trunc |
   pInfoWrd word.tagSet@    locals| pInfoWrdTagSet   |
@@ -220,13 +220,13 @@
     "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
   then then
 
-  pInfoWrd fillOut::addSeedsFor_localOp
+  pInfoWrd cmd::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a procedure for given local lite op info word                       */
 /*----------------------------------------------------------------------------*/
-: fillOut::createProcFor_localLiteOp params| pInfoWrd |
+: cmd::createProcFor_localLiteOp params| pInfoWrd |
 
   pInfoWrd word.name_trunc locals| sWordNm_trunc |
   pInfoWrd word.tagSet@    locals| pInfoWrdTagSet   |
@@ -253,26 +253,22 @@
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
   then  then
 
-  pInfoWrd fillOut::addSeedsFor_localOp
+  pInfoWrd cmd::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
-/* populate the JobInfo ename-set with the names of the seeds for the job     */
-/* being compiled.  Use default seeds where appropropriate                    */
+/* complete the info and procedures for a command                             */
 /*----------------------------------------------------------------------------*/
+: cmd::fillOut_a_cmd params| pInfoWrd |
 
-: fillOut::an_info params| pInfoWrd |
+  pInfoWrd cmd::addDefaultTags
 
-  pInfoWrd fillOut::addDefaultTags
-
-       pInfoWrd _info.aboutGenericJob  if pInfoWrd fillOut::addSeedsFor_genericJob
-  else pInfoWrd _info.aboutDistJob     if pInfoWrd fillOut::addSeedsFor_distJob
-  else pInfoWrd _info.aboutLiteOp      if pInfoWrd fillOut::createProcFor_liteOp
-  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd fillOut::createProcFor_localLiteOp
-  else                                    pInfoWrd fillOut::addSeedsFor_localOp
+       pInfoWrd _info.aboutGenericJob  if pInfoWrd cmd::addSeedsFor_genericJob
+  else pInfoWrd _info.aboutDistJob     if pInfoWrd cmd::addSeedsFor_distJob
+  else pInfoWrd _info.aboutLiteOp      if pInfoWrd cmd::createProcFor_liteOp
+  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd cmd::createProcFor_localLiteOp
+  else                                    pInfoWrd cmd::addSeedsFor_localOp
   then then then then
-
-  // pInfoWrdTagSet tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -429,7 +425,7 @@
 
   //pInfoWrdTagSet tagSet.asStr .
 
-  pInfoWrd fillOut::an_info
+  pInfoWrd cmd::fillOut_a_cmd
 
   //pInfoWrdTagSet tagSet.asStr .
 
