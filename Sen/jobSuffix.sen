@@ -28,17 +28,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* suffix sets the category of word being being compiled as suffix            */
+/* _suffix sets the category of word being being compiled as _suffix            */
 /*----------------------------------------------------------------------------*/
-: suffix immediate
+: _suffix immediate
 
-  find: suffix compiler::current@ word.category!
+  find: _suffix compiler::current@ word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _req makes the word being compile a request seed with name: <wordNm>_req   */
+/* _req makes the word being compile a request seed with name: /wordNm/_req   */
 /*----------------------------------------------------------------------------*/
-: _req immediate suffix
+: _req immediate _suffix
 
   // append _req to name of word being compiled
   "_req" word::addSuffix
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* _beg makes the word being compile a seed with name: <wordNm>_beg           */
 /*----------------------------------------------------------------------------*/
-: _beg immediate suffix
+: _beg immediate _suffix
 
   // append _beg to name of word being compiled
   "_beg" word::addSuffix
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /* _exe makes the word being compile a seed with name: <wordNm>_exe           */
 /*----------------------------------------------------------------------------*/
-: _exe immediate suffix
+: _exe immediate _suffix
 
   // append _exe to name of word being compiled
   "_exe" word::addSuffix
@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* _end makes the word being compile a end seed with name: <wordNm>_end       */
 /*----------------------------------------------------------------------------*/
-: _end immediate suffix
+: _end immediate _suffix
 
   // append _end to name of word being compiled
   "_end" word::addSuffix
@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 /* _can makes the word being compile a cancel seed with name: <wordNm>_can    */
 /*----------------------------------------------------------------------------*/
-: _can immediate suffix
+: _can immediate _suffix
 
   // append _can to name of word being compiled
   "_can" word::addSuffix
@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 /* _run makes the word being compile a seed with name: <wordNm>_run           */
 /*----------------------------------------------------------------------------*/
-: _run immediate suffix
+: _run immediate _suffix
 
   // append _beg to name of word being compiled
   "_run" word::addSuffix
@@ -143,7 +143,7 @@
 /*----------------------------------------------------------------------------*/
 /* adds a standard entry and exit hook to word being compiled                 */
 /*----------------------------------------------------------------------------*/
-: _eeh immediate suffix
+: _eeh immediate _suffix
 
   "std_exitHook" compiler::current@ word.exitHook!
 

@@ -100,15 +100,15 @@
 /*----------------------------------------------------------------------------*/
 /* add <tagNm> = WordNM_Suffix to tag set of info word                        */
 /*----------------------------------------------------------------------------*/
-: word.addSeedToTagSet params| pWord sSuffix sSeed sTagNm |
+: word.addSeedToTagSet params| pInfoWrd sSuffix sSeed sTagNm |
 
-  pWord word.TagSet@ locals| pWordTagSet |
-
-  sSuffix pWord seedExists? 
-    if pWord word.name_trunc else sSeed then
+  sSuffix pInfoWrd seedExists?
+    if pInfoWrd word.name_trunc else sSeed then
       sSuffix str.cat locals| sSeed_Suffix |
 
-  sTagNm sSeed_Suffix pWordTagSet tagSet.insertStr
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
+
+  sTagNm sSeed_Suffix pInfoWrdTagSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
