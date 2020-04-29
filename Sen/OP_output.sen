@@ -166,7 +166,7 @@ true
 /*----------------------------------------------------------------------------*/
 opSyntax: output :: output ;
 
-: output opInfo tagCopy: localOp_tags
+: output _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

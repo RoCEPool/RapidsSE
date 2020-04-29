@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: lsten :: lsten ;
 
-: lsten opInfo tagCopy: localLiteOp_tags
+: lsten _opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true

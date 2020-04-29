@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: dropSchema :: dropSchema <schemaNm> ;
 
-: dropSchema opInfo tagCopy: localOp_tags
+: dropSchema _opInfo tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--description of operator--" }
 ;

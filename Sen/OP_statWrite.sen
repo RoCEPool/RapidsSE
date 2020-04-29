@@ -87,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: statWrite :: statWrite ;
 
-: statWrite opInfo tagCopy: localOp_tags
+: statWrite _opInfo tagCopy: localOp_tags
   tags{ <jobDesc>  = "--description of operator--" }
 ;
 

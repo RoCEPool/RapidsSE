@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Insert :: Insert <tableNm> ;
 
-: Insert opInfo tagCopy: localOp_tags
+: Insert _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

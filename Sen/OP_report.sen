@@ -151,7 +151,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: report :: report <fileNm> ;
 
-: report opInfo tagCopy: localOp_tags
+: report _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

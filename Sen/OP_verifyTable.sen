@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: vfytbl :: vfytbl <tableNm> ;
 
-: vfytbl opInfo tagCopy: liteOp_tags
+: vfytbl _opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true

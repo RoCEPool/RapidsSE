@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: showCluster :: showCluster ;
 
-: showCluster opInfo tagCopy: localLiteOp_tags
+: showCluster _opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true

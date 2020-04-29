@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toDemonOp :: toDemonOp ;
 
-: toDemonOp opInfo tagCopy: localOp_tags
+: toDemonOp _opInfo tagCopy: localOp_tags
   tags{ <?jobDesc?>  = "--description of operator--" }
 ;
 

@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: dropTenant :: dropTenant <tenantNm> ;
 
-: dropTenant opInfo tagCopy: localOp_tags
+: dropTenant _opInfo tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--description of operator--" }
 ;

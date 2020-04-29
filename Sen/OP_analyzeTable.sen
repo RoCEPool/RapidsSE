@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: antbl :: antbl <tableNm> ;
 
-: antbl opInfo tagCopy: liteOp_tags
+: antbl _opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true

@@ -102,7 +102,7 @@ opSyntax: periodicOp :: periodicOp once ;
 opSyntax: periodicOp :: periodicOp min <minutes> ;
 opSyntax: periodicOp :: periodicOp hour <hours> ;
 
-: periodicOp opInfo tagCopy: localOp_tags
+: periodicOp _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

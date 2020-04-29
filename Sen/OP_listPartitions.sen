@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: lsparts :: lsparts ;
 
-: lsparts opInfo tagCopy: liteOp_tags
+: lsparts _opInfo tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--description of operator--"
     <liteOp>    = true

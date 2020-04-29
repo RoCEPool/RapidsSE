@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Chunk :: Chunk <fileNm> ;
 
-: Chunk opInfo tagCopy: localOp_tags
+: Chunk _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

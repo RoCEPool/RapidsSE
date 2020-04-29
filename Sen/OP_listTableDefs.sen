@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: lstbldef :: lstbldef ;
 
-: lstbldef opInfo tagCopy: localLiteOp_tags
+: lstbldef _opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true
