@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: dropCatalog :: dropCatalog <catalogNm> ;
 
-: dropCatalog opInfo tagCopy: localOp_tags
+: dropCatalog _opInfo tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--description of operator--" }
 ;

@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToCrw :: ToCrw <tableNm> ;
 
-: ToCrw opInfo tagCopy: localOp_tags
+: ToCrw _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

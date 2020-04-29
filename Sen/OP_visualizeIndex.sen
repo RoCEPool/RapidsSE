@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: visidx :: visidx <tableNm> <indexNm> ;
 
-: visidx opInfo tagCopy: localLiteOp_tags
+: visidx _opInfo tagCopy: localLiteOp_tags
 tags{
   <jobDesc>     = "--description of operator--"
   <localLiteOp> = true

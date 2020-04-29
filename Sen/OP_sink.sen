@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: sink :: sink ;
 
-: sink opInfo tagCopy: localOp_tags
+: sink _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

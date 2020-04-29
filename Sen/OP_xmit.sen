@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: Xmit :: Xmit <xmitKind> ;
 
-: Xmit opInfo tagCopy: localOp_tags
+: Xmit _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

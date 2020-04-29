@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: createCatalog :: createCatalog <catalogNm> ;
 
-: createCatalog opInfo tagCopy: localOp_tags
+: createCatalog _opInfo tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--description of operator--" }
 ;

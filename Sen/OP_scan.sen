@@ -111,7 +111,7 @@
 opSyntax: scan :: scan <tableNm> ;
 opSyntax: scan :: scan <tableNm> <rateSecs> ;
 
-//opInfo: scan
+//_opInfo: scan
 //{
 //  <jobDesc>  = "--description of operator--"
 //
@@ -124,7 +124,7 @@ opSyntax: scan :: scan <tableNm> <rateSecs> ;
 //;
 //
 
-: scan opInfo tagCopy: localOp_tags
+: scan _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

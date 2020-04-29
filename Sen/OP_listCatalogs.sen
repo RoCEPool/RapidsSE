@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: lscat :: lscat ;
 
-: lscat opInfo tagCopy: localLiteOp_tags
+: lscat _opInfo tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--description of operator--"
     <localLiteOp> = true

@@ -131,7 +131,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
-: BM_InsIdxOp opInfo tagCopy: localOp_tags
+: BM_InsIdxOp _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 

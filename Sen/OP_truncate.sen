@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: truncateOp :: truncateOp <tableNm> ;
 
-: truncateOp opInfo tagCopy: localOp_tags
+: truncateOp _opInfo tagCopy: localOp_tags
   tags{ <jobDesc>  = "--description of operator--" }
 ;
 

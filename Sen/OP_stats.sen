@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: stats :: stats ;
 
-: stats opInfo tagCopy: localOp_tags
+: stats _opInfo tagCopy: localOp_tags
   tags{ <jobDesc> = "--description of operator--" }
 ;
 
