@@ -431,6 +431,7 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   Input* pInput = m_pForth->pInput();
 
   pInput->vUseString(sDefinition);
+  pInput->vUseBegin();
   
   // get string
   pInput->vReadToken();

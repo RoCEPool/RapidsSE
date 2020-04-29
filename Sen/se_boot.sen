@@ -14,17 +14,17 @@
         "se_tags.sen"             include
         "se_log.sen"              include
         "se_prompt.sen"           include
-
+words
 8 .put
         "se_path.sen"             include
         "se_folder.sen"           include
         "se_object.sen"           include
         "se_socket.sen"           include
- 
+words
 7 .put
         "grid_grid.sen"           include
         "grid_node.sen"           include
-
+words
 6 .put
         "db_table.sen"            include
         "db_partition.sen"        include
@@ -32,12 +32,12 @@
         "db_schema.sen"           include
         "db_catalog.sen"          include
         "db_tenant.sen"           include
-
+words
 5 .put
         "se_requests.sen"         include
 
         "op__liteOp.sen"          include
-
+words
 4 .put
         "job__compiler.sen"       include
         "jobOperand.sen"          include
@@ -102,7 +102,7 @@
         "job_Start.sen"           include // last
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+words
 3 .put
         "op__common.sen"             include
         "op__compiler.sen"           include
@@ -210,7 +210,7 @@
 fillOut::tagsFor_allOps
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+words
 2 .put
         "test_encodingData.sen"   include
 
@@ -227,12 +227,12 @@ fillOut::tagsFor_allOps
         "test_sleep.sen"          include
 
         "test_rjh.sen"            include
-
+words
 1 .put
         "se_docols.sen"           include
         "se_munge.sen"            include
         "se_vortex.sen"           include
-
+words
 0 .put
 
 .\n
