@@ -186,6 +186,71 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+: fillOut::tags_forLiteOp params| pWord |
+
+  pWord word.name_trunc locals| sWordNm_trunc |
+  pWord word.tagSet@    locals| pWordTagSet |
+
+  0 locals| iParams |
+
+  sWordNm_trunc "LiteOP: %v" .printf
+
+  "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
+  "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
+
+  // add procedure depending on no of parameters
+  "<params>" pWordTagSet tagSet.hasName assert
+  "<params>" pWordTagSet tagSet.getStr >int to iParams
+
+  iParams 2 == if
+    "/liteOp/" sWordNm_trunc __liteOp_procedure2 str.replace procedure::add
+  else
+  iParams 1 == if
+    "/liteOp/" sWordNm_trunc __liteOp_procedure1 str.replace procedure::add
+  else
+    iParams 0 == assert
+    "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
+  then then
+
+  pWord fillOut::tagSet_local
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: fillOut::tags_forLocalLiteOp params| pWord |
+
+  pWord word.name_trunc locals| sWordNm_trunc |
+  pWord word.tagSet@    locals| pWordTagSet |
+
+  0 locals| iParams |
+
+  sWordNm_trunc "LocalLiteOP: %v" .printf
+
+  "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
+
+  "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
+
+  // add procedure depending on no of parameters
+  "<params>" pWordTagSet tagSet.hasName assert
+  "<params>" pWordTagSet tagSet.getStr >int to iParams
+
+  iParams 2 == if
+    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
+  else
+  iParams 1 == if
+      "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1   str.replace procedure::add
+  else
+    iParams 0 == assert
+    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
+  then  then
+
+  pWord fillOut::tagSet_local
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : fillOut::tags_forAnOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |

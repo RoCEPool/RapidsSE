@@ -284,7 +284,6 @@ namespace Oblique
     static i8   iTaskState(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static i8   iThreadId(Thread* pThread);
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
     static Object* pToLargeObect(i8 iBufferNo);

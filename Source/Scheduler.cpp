@@ -719,8 +719,8 @@ void Scheduler::vTask_Execute(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
               "Task to TS_EXECUTING state; added to ExecutingSet"_Stz); //!format-LogTsk
   
-  AM::vLogThd(SL_INF,pTask->pThread(),HA_THD_EXECUTING,
-              "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
+//  AM::vLogThd(SL_INF,pTask->pThread(),HA_THD_EXECUTING,
+//              "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/

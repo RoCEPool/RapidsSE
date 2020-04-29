@@ -49,15 +49,19 @@ Stz* SP_Task::sz_log(Task* pTask)
   SP_Gid spThreadId;
   
   StrLib::vSprint(m_caResult,
-                  "{%s %s %s %s}"_Stz,
+                  "{%s %s %s}"_Stz,
 
                   aTS[pTask->eState()],
                   aQK[pTask->eQueue()],
                   aSA[pTask->eSchedulerAct()],
-                  
-                  spThreadId.sz(pTask->pThread()
-                                  ? AM::iThreadId(pTask->pThread())
-                                  : C_UNKNOWN),
+  
+// AY+RH : 29th Apr 2020 : TaskA should never attempt pTaskB->pThread()
+//                         TaskA can never assume existence of
+//                         some other tasks thread
+//
+//                  spThreadId.sz(pTask->pThread()
+//                                  ? AM::iThreadId(pTask->pThread())
+//                                  : C_UNKNOWN),
 
                   C_VARGS_END);
 

@@ -398,9 +398,6 @@ PsxThd* AM::pThisTLSPsxThd(void) {
   PsxThd* pPsxThd =pThread->m_pPsxThd;
   return pPsxThd;
 }
-i8 AM::iThreadId(Thread* pThread) {
-  return pThread->m_iFocalId;
-}
 
 HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
   

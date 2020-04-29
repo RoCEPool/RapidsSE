@@ -345,7 +345,7 @@ void Thread::vLoop_general(void)
     
     // either this thread no longer has a task
     //     or the task no longer has this thread
-    ASSERT( (! m_pTask) || (! m_pTask->pThread()) );
+    ASSERT( (! m_pTask) || (! m_pTask->pvThread_DONT_DEREF()) );
   }
   
   NEVER_REACH;

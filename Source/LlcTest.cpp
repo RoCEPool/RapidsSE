@@ -15,74 +15,74 @@ void LlcTest::vTest(Forth* pForth)
 {
 #ifdef WITH_APPLE
   
-  PsxThd* pPsxThd = pForth->pTask()->pThread()->m_pPsxThd;
-  
-  pPsxThd->vEnableRealtime_2();
-  
-  pPsxThd->iGetInfo();
-  
-  // create an identity array
-  for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++)
-    xArray[i_Element] = i_Element;
-  
-  i8 iIteration = 0;
-  
-
-  //           Step   Miss
-  //           Length Ratio
-  vAnIteration(iIteration++, 1,     1);
-  vAnIteration(iIteration++, 1,     3);
-  vAnIteration(iIteration++, 1,     5);
-
-  vAnIteration(iIteration++, 3,     1);
-  vAnIteration(iIteration++, 3,     3);
-  vAnIteration(iIteration++, 3,     5);
-  
-  vAnIteration(iIteration++, 5,     1);
-  vAnIteration(iIteration++, 5,     3);
-  vAnIteration(iIteration++, 5,     5);
-  
-  vAnIteration(iIteration++, 10,    1);
-  vAnIteration(iIteration++, 10,    3);
-  vAnIteration(iIteration++, 10,    5);
-  
-  vAnIteration(iIteration++, 30,    1);
-  vAnIteration(iIteration++, 30,    3);
-  vAnIteration(iIteration++, 30,    5);
-  
-  vAnIteration(iIteration++, 50,    1);
-  vAnIteration(iIteration++, 50,    3);
-  vAnIteration(iIteration++, 50,    5);
-  
-  vAnIteration(iIteration++, 100,   1);
-  vAnIteration(iIteration++, 100,   3);
-  vAnIteration(iIteration++, 100,   5);
-  
-  vAnIteration(iIteration++, 300,   1);
-  vAnIteration(iIteration++, 300,   3);
-  vAnIteration(iIteration++, 300,   5);
-  
-  vAnIteration(iIteration++, 500,   1);
-  vAnIteration(iIteration++, 500,   3);
-  vAnIteration(iIteration++, 500,   5);
-  
-  vAnIteration(iIteration++, 1000,  1);
-  vAnIteration(iIteration++, 1000,  3);
-  vAnIteration(iIteration++, 1000,  5);
-  
-  vAnIteration(iIteration++, 3000,  1);
-  vAnIteration(iIteration++, 3000,  3);
-  vAnIteration(iIteration++, 3000,  5);
-  
-  vAnIteration(iIteration++, 5000,  1);
-  vAnIteration(iIteration++, 5000,  3);
-  vAnIteration(iIteration++, 5000,  5);
-  
-  vAnIteration(iIteration++, 10000, 1);
-  vAnIteration(iIteration++, 10000, 3);
-  vAnIteration(iIteration++, 10000, 5);
-  
-  //vAnIteration(iIteration++, 10,    10);
+//  PsxThd* pPsxThd = pForth->pTask()->pThread()->m_pPsxThd;
+//  
+//  pPsxThd->vEnableRealtime_2();
+//  
+//  pPsxThd->iGetInfo();
+//  
+//  // create an identity array
+//  for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++)
+//    xArray[i_Element] = i_Element;
+//  
+//  i8 iIteration = 0;
+//  
+//
+//  //           Step   Miss
+//  //           Length Ratio
+//  vAnIteration(iIteration++, 1,     1);
+//  vAnIteration(iIteration++, 1,     3);
+//  vAnIteration(iIteration++, 1,     5);
+//
+//  vAnIteration(iIteration++, 3,     1);
+//  vAnIteration(iIteration++, 3,     3);
+//  vAnIteration(iIteration++, 3,     5);
+//  
+//  vAnIteration(iIteration++, 5,     1);
+//  vAnIteration(iIteration++, 5,     3);
+//  vAnIteration(iIteration++, 5,     5);
+//  
+//  vAnIteration(iIteration++, 10,    1);
+//  vAnIteration(iIteration++, 10,    3);
+//  vAnIteration(iIteration++, 10,    5);
+//  
+//  vAnIteration(iIteration++, 30,    1);
+//  vAnIteration(iIteration++, 30,    3);
+//  vAnIteration(iIteration++, 30,    5);
+//  
+//  vAnIteration(iIteration++, 50,    1);
+//  vAnIteration(iIteration++, 50,    3);
+//  vAnIteration(iIteration++, 50,    5);
+//  
+//  vAnIteration(iIteration++, 100,   1);
+//  vAnIteration(iIteration++, 100,   3);
+//  vAnIteration(iIteration++, 100,   5);
+//  
+//  vAnIteration(iIteration++, 300,   1);
+//  vAnIteration(iIteration++, 300,   3);
+//  vAnIteration(iIteration++, 300,   5);
+//  
+//  vAnIteration(iIteration++, 500,   1);
+//  vAnIteration(iIteration++, 500,   3);
+//  vAnIteration(iIteration++, 500,   5);
+//  
+//  vAnIteration(iIteration++, 1000,  1);
+//  vAnIteration(iIteration++, 1000,  3);
+//  vAnIteration(iIteration++, 1000,  5);
+//  
+//  vAnIteration(iIteration++, 3000,  1);
+//  vAnIteration(iIteration++, 3000,  3);
+//  vAnIteration(iIteration++, 3000,  5);
+//  
+//  vAnIteration(iIteration++, 5000,  1);
+//  vAnIteration(iIteration++, 5000,  3);
+//  vAnIteration(iIteration++, 5000,  5);
+//  
+//  vAnIteration(iIteration++, 10000, 1);
+//  vAnIteration(iIteration++, 10000, 3);
+//  vAnIteration(iIteration++, 10000, 5);
+//  
+//  //vAnIteration(iIteration++, 10,    10);
 
 #endif
 }
