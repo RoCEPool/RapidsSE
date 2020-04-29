@@ -5,13 +5,13 @@
 " job__compiler.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* test if the word is info about a distributed job                           */
+/* test if info word is about a distributed job                               */
 /*----------------------------------------------------------------------------*/
-: word.isDistJob_info params| pWord |
+: _info.aboutDistJob params| pInfoWrd |
 
-  pWord word.TagSet@ locals| pWordTagSet |
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  "<jobKind>" pWordTagSet tagSet.getInt JK_DIST2PC == if
+  "<jobKind>" pInfoWrdTagSet tagSet.getInt JK_DIST2PC == if
     true exit
   else
     false exit
@@ -19,13 +19,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if the word is info about a generic job                               */
+/* test if info word is about a generic job                                   */
 /*----------------------------------------------------------------------------*/
-: word.isGenericJob_info params| pWord |
+: _info.aboutGenericJob params| pInfoWrd |
 
-  pWord word.TagSet@ locals| pWordTagSet |
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  "<jobKind>" pWordTagSet tagSet.getInt JK_GENERIC == if
+  "<jobKind>" pInfoWrdTagSet tagSet.getInt JK_GENERIC == if
     true exit
   else
     false exit
@@ -33,13 +33,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if the word is info about a local job                                 */
+/* test if info word is about a local job                                     */
 /*----------------------------------------------------------------------------*/
-: word.isLocalJob_info params| pWord |
+: _info.aboutLocalJob params| pInfoWrd |
 
-  pWord word.TagSet@ locals| pWordTagSet |
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  "<jobKind>" pWordTagSet tagSet.getInt JK_LOCAL == if
+  "<jobKind>" pInfoWrdTagSet tagSet.getInt JK_LOCAL == if
     true exit
   else
     false exit
@@ -47,13 +47,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if the word is info about a lite op                                   */
+/* test if info word is about a lite op                                       */
 /*----------------------------------------------------------------------------*/
-: word.isLiteOp_info params| pWord |
+: _info.aboutLiteOp params| pInfoWrd |
 
-  pWord word.TagSet@ locals| pWordTagSet |
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  "<liteOp>" pWordTagSet tagSet.hasName if
+  "<liteOp>" pInfoWrdTagSet tagSet.hasName if
     true exit
   else
     false exit
@@ -61,13 +61,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if the word is info about a local lite op                             */
+/* test if info word is about a local lite op                                 */
 /*----------------------------------------------------------------------------*/
-: word.isLocalLiteOp_info params| pWord |
+: _info.aboutLocalLiteOp params| pInfoWrd |
 
-  pWord word.TagSet@ locals| pWordTagSet |
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  "<localLiteOp>" pWordTagSet tagSet.hasName if
+  "<localLiteOp>" pInfoWrdTagSet tagSet.hasName if
     true exit
   else
     false exit
@@ -75,13 +75,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if the word is info about a service command                           */
+/* test if info word is a service command                                     */
 /*----------------------------------------------------------------------------*/
-: word.isServiceCmd_info params| pWord |
+: _info.aboutServiceCmd_info params| pInfoWrd |
 
-  pWord word.TagSet@ locals| pWordTagSet |
+  pInfoWrd word.TagSet@ locals| pInfoWrdTagSet |
 
-  "<cmdKind>" pWordTagSet tagSet.getInt JK_DIST2PC  == if
+  "<cmdKind>" pInfoWrdTagSet tagSet.getInt JK_DIST2PC  == if
     true exit
   else
     false exit
@@ -124,80 +124,80 @@
 /*----------------------------------------------------------------------------*/
 /* add missing/default tags to an info word                                   */
 /*----------------------------------------------------------------------------*/
-: fillOut::addDefaultTags params| pWord |
+: fillOut::addDefaultTags params| pInfoWrd |
 
-  pWord word.tagSet@ locals| pWordTagSet |
+  pInfoWrd word.tagSet@ locals| pInfoWrdTagSet |
 
   // test and add default for: command kind
-  "<cmdKind>" pWordTagSet tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pWordTagSet tagSet.addTag
+  "<cmdKind>" pInfoWrdTagSet tagSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" pInfoWrdTagSet tagSet.addTag
   then
 
   // test and add default for: ddl lock
-  "<ddlLock>" pWordTagSet tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pWordTagSet tagSet.addTag
+  "<ddlLock>" pInfoWrdTagSet tagSet.hasName not if
+    "<ddlLock>" "DL_NONE" pInfoWrdTagSet tagSet.addTag
   then
 
   // test and add default for: job desc
-  "<jobDesc>" pWordTagSet tagSet.hasName not if
-    "<jobDesc>" "--description of job--" pWordTagSet tagSet.addTag
+  "<jobDesc>" pInfoWrdTagSet tagSet.hasName not if
+    "<jobDesc>" "--description  --" pInfoWrdTagSet tagSet.addTag
   then
 
   // test and add default for: job kind
-  "<jobKind>" pWordTagSet tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pWordTagSet tagSet.addTag
+  "<jobKind>" pInfoWrdTagSet tagSet.hasName not if
+    "<jobKind>" "JK_LOCAL" pInfoWrdTagSet tagSet.addTag
   then
 
   // test and add default for:  priority
-  "<priority>" pWordTagSet tagSet.hasName not if
-    "<priority>" "PY_NORMAL" pWordTagSet tagSet.addTag
+  "<priority>" pInfoWrdTagSet tagSet.hasName not if
+    "<priority>" "PY_NORMAL" pInfoWrdTagSet tagSet.addTag
   then
 
   // test and add default for:  response kind
-  "<rspKind>" pWordTagSet tagSet.hasName not if
-    "<rspKind>" "RS_NONE" pWordTagSet tagSet.addTag
+  "<rspKind>" pInfoWrdTagSet tagSet.hasName not if
+    "<rspKind>" "RS_NONE" pInfoWrdTagSet tagSet.addTag
   then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a distributed info word                           */
 /*----------------------------------------------------------------------------*/
-: fillOut::addSeedsFor_distJob params| pWord |
+: fillOut::addSeedsFor_distJob params| pInfoWrd |
 
-  "<SeedReq>" "defaultSeedDist" "_req" pWord word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedDist" "_req" pInfoWrd word.addSeedToTagSet
 
-  "<SeedRcv>" "defaultSeedDist" "_beg" pWord word.addSeedToTagSet
+  "<SeedRcv>" "defaultSeedDist" "_beg" pInfoWrd word.addSeedToTagSet
 
-  "<SeedExe>" "defaultSeedDist" "_exe" pWord word.addSeedToTagSet
+  "<SeedExe>" "defaultSeedDist" "_exe" pInfoWrd word.addSeedToTagSet
 
-  "<SeedEnd>" "defaultSeedDist" "_end" pWord word.addSeedToTagSet
+  "<SeedEnd>" "defaultSeedDist" "_end" pInfoWrd word.addSeedToTagSet
 
-  "<SeedCan>" "defaultSeedDist" "_can" pWord word.addSeedToTagSet
+  "<SeedCan>" "defaultSeedDist" "_can" pInfoWrd word.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a generic info word                               */
 /*----------------------------------------------------------------------------*/
-: fillOut::addSeedsFor_genericJob params| pWord |
+: fillOut::addSeedsFor_genericJob params| pInfoWrd |
 
-  "<SeedReq>" "defaultSeedLocal" "_run" pWord word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_run" pInfoWrd word.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a local op word                                   */
 /*----------------------------------------------------------------------------*/
-: fillOut::addSeedsFor_localOp params| pWord |
+: fillOut::addSeedsFor_localOp params| pInfoWrd |
 
-  "<SeedReq>" "defaultSeedLocal" "_req" pWord word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_req" pInfoWrd word.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a procedure for given lite op info word                             */
 /*----------------------------------------------------------------------------*/
-: fillOut::createProcFor_liteOp params| pWord |
+: fillOut::createProcFor_liteOp params| pInfoWrd |
 
-  pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.tagSet@    locals| pWordTagSet   |
+  pInfoWrd word.name_trunc locals| sWordNm_trunc |
+  pInfoWrd word.tagSet@    locals| pInfoWrdTagSet   |
 
   0 locals| iParams |
 
@@ -207,8 +207,8 @@
   "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
 
   // add procedure depending on no of parameters
-  "<params>" pWordTagSet tagSet.hasName assert
-  "<params>" pWordTagSet tagSet.getStr >int to iParams
+  "<params>" pInfoWrdTagSet tagSet.hasName assert
+  "<params>" pInfoWrdTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
     "/liteOp/" sWordNm_trunc __liteOp_procedure2 str.replace procedure::add
@@ -220,16 +220,16 @@
     "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
   then then
 
-  pWord fillOut::addSeedsFor_localOp
+  pInfoWrd fillOut::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a procedure for given local lite op info word                       */
 /*----------------------------------------------------------------------------*/
-: fillOut::createProcFor_localLiteOp params| pWord |
+: fillOut::createProcFor_localLiteOp params| pInfoWrd |
 
-  pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.tagSet@    locals| pWordTagSet   |
+  pInfoWrd word.name_trunc locals| sWordNm_trunc |
+  pInfoWrd word.tagSet@    locals| pInfoWrdTagSet   |
 
   0 locals| iParams |
 
@@ -240,8 +240,8 @@
   "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
 
   // add procedure depending on no of parameters
-  "<params>" pWordTagSet tagSet.hasName assert
-  "<params>" pWordTagSet tagSet.getStr >int to iParams
+  "<params>" pInfoWrdTagSet tagSet.hasName assert
+  "<params>" pInfoWrdTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
@@ -253,7 +253,7 @@
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
   then  then
 
-  pWord fillOut::addSeedsFor_localOp
+  pInfoWrd fillOut::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -261,18 +261,18 @@
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
 
-: fillOut::an_info params| pWord |
+: fillOut::an_info params| pInfoWrd |
 
-  pWord fillOut::addDefaultTags
+  pInfoWrd fillOut::addDefaultTags
 
-       pWord word.isGenericJob_info  if pWord fillOut::addSeedsFor_genericJob
-  else pWord word.isDistJob_info     if pWord fillOut::addSeedsFor_distJob
-  else pWord word.isLiteOp_info      if pWord fillOut::createProcFor_liteOp
-  else pWord word.isLocalLiteOp_info if pWord fillOut::createProcFor_localLiteOp
-  else                                  pWord fillOut::addSeedsFor_localOp
+       pInfoWrd _info.aboutGenericJob  if pInfoWrd fillOut::addSeedsFor_genericJob
+  else pInfoWrd _info.aboutDistJob     if pInfoWrd fillOut::addSeedsFor_distJob
+  else pInfoWrd _info.aboutLiteOp      if pInfoWrd fillOut::createProcFor_liteOp
+  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd fillOut::createProcFor_localLiteOp
+  else                                    pInfoWrd fillOut::addSeedsFor_localOp
   then then then then
 
-  // pWordTagSet tagSet.asStr .
+  // pInfoWrdTagSet tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -381,24 +381,24 @@
 /*----------------------------------------------------------------------------*/
 : jobInfo:
 
-  0 0 0 0 locals| pWord sEname sEvalue pWordTagSet |
+  0 0 0 0 locals| pInfoWrd sEname sEvalue pInfoWrdTagSet |
 
   // create a word using next token from input source as the word name
   input::next "_info" str.cat :create
 
-  compiler::current@ to pWord
+  compiler::current@ to pInfoWrd
 
   // set the word kind to be jobClass
-  [ compiler::current@ encode::push ] pWord word.category!
+  [ compiler::current@ encode::push ] pInfoWrd word.category!
 
   // attach an ename set to the word being created
-  tagSet::new to pWordTagSet
+  tagSet::new to pInfoWrdTagSet
 
-  pWordTagSet pWord word.TagSet!
+  pInfoWrdTagSet pInfoWrd word.TagSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<jobNm>" pWord word.name_trunc pWordTagSet tagSet.insertStr
+  "<jobNm>" pInfoWrd word.name_trunc pInfoWrdTagSet tagSet.insertStr
 
   // skip the "{" token from input source
   input::next discard
@@ -413,7 +413,7 @@
     to sEname
     input::next discard
     input::next to sEvalue
-    sEname sEvalue pWord word.TagSet@ tagSet.addTag
+    sEname sEvalue pInfoWrd word.TagSet@ tagSet.addTag
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -427,13 +427,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  //pWordTagSet tagSet.asStr .
+  //pInfoWrdTagSet tagSet.asStr .
 
-  pWord fillOut::an_info
+  pInfoWrd fillOut::an_info
 
-  //pWordTagSet tagSet.asStr .
+  //pInfoWrdTagSet tagSet.asStr .
 
-  pWord word.isServiceCmd_info if .generateService then
+  pInfoWrd _info.aboutServiceCmd_info if .generateService then
 ;
 
 /*============================================================================*/
