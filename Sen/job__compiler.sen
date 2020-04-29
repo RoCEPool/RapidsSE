@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a distributed job                                    */
 /*----------------------------------------------------------------------------*/
-: fillOut::tagSet_dist params| pWord |
+: fillOut::tagsFor_distJob params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedDist" pWord seedEnameAdd
 
@@ -134,7 +134,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a local job                                          */
 /*----------------------------------------------------------------------------*/
-: fillOut::tagSet_local params| pWord |
+: fillOut::tagsFor_localOp params| pWord |
 
   "<SeedReq>" "_req" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 /* add default seeds for a generic job                                        */
 /*----------------------------------------------------------------------------*/
-: fillOut::tagSet_generic params| pWord |
+: fillOut::tagsFor_genericJob params| pWord |
 
   "<SeedReq>" "_run" "defaultSeedLocal" pWord seedEnameAdd
 ;
@@ -186,7 +186,7 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: fillOut::tags_forLiteOp params| pWord |
+: fillOut::tagsFor_liteOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.tagSet@    locals| pWordTagSet |
@@ -212,12 +212,12 @@
     "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
   then then
 
-  pWord fillOut::tagSet_local
+  pWord fillOut::tagsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: fillOut::tags_forLocalLiteOp params| pWord |
+: fillOut::tagsFor_localLiteOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.tagSet@    locals| pWordTagSet |
@@ -238,99 +238,30 @@
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
   else
   iParams 1 == if
-      "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1   str.replace procedure::add
+    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1   str.replace procedure::add
   else
     iParams 0 == assert
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
   then  then
 
-  pWord fillOut::tagSet_local
-;
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-: fillOut::tags_forAnOp params| pWord |
-
-  pWord word.name_trunc locals| sWordNm_trunc |
-  pWord word.tagSet@    locals| pWordTagSet |
-
-  0 locals| iParams |
-
-  pWord job::isLiteOp if
-
-
-    sWordNm_trunc "LiteOP: %v" .printf
-
-    "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
-    "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
-
-    // add procedure depending on no of parameters
-    "<params>" pWordTagSet tagSet.hasName assert
-    "<params>" pWordTagSet tagSet.getStr >int to iParams
-    iParams 2 == if
-      "/liteOp/" sWordNm_trunc __liteOp_procedure2 str.replace procedure::add
-    else
-      iParams 1 == if
-        "/liteOp/" sWordNm_trunc __liteOp_procedure1 str.replace procedure::add
-      else
-       iParams 0 == assert
-       "/liteOp/" sWordNm_trunc __liteOp_procedure0 str.replace procedure::add
-      then
-    then
-
-
-  else
-  pWord job::isLocalLiteOp if
-
-
-    sWordNm_trunc "LocalLiteOP: %v" .printf
-
-    "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
-
-    "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
-
-    // add procedure depending on no of parameters
-    "<params>" pWordTagSet tagSet.hasName assert
-    "<params>" pWordTagSet tagSet.getStr >int to iParams
-    iParams 2 == if
-      "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2   str.replace procedure::add
-    else
-    iParams 1 == if
-        "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1   str.replace procedure::add
-    else
-      iParams 0 == assert
-      "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0   str.replace procedure::add
-    then
-
-    then
-
-  then
-
-  then
-
-  pWord fillOut::tagSet_local
+  pWord fillOut::tagsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: fillOut::tagSet_ofInfoWord params| pWord |
+
+: fillOut::tagsFor_op params| pWord |
 
   pWord fillOut::addDefaultTags
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pWord job::isGenericJob if
-    pWord fillOut::tagSet_generic
-  else
-  pWord job::isDistJob if
-    pWord fillOut::tagSet_dist
-  else
-    pWord fillOut::tags_forAnOp
-  then then
+       pWord job::isGenericJob  if pWord fillOut::tagsFor_genericJob
+  else pWord job::isDistJob     if pWord fillOut::tagsFor_distJob
+  else pWord job::isLiteOp      if pWord fillOut::tagsFor_liteOp
+  else pWord job::isLocalLiteOp if pWord fillOut::tagsFor_localLiteOp
+  else                             pWord fillOut::tagsFor_localOp
+  then then then then
 
   // pWordTagSet tagSet.asStr .
 ;
@@ -489,7 +420,7 @@
 
   //pWordTagSet tagSet.asStr .
 
-  pWord fillOut::tagSet_ofInfoWord
+  pWord fillOut::tagsFor_op
 
   //pWordTagSet tagSet.asStr .
 
