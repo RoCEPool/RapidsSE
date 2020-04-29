@@ -6,7 +6,6 @@
 #include <assert.h>
 #include <ctype.h>
 #include <dirent.h>
-#include <errno.h>
 #include <fcntl.h>
 #include <float.h>
 #include <iostream>
@@ -26,6 +25,7 @@
 #include <unistd.h>
 #include <typeinfo>
 
+#include <sys/errno.h>
 #include <sys/mman.h>
 #include <sys/param.h>
 #include <sys/socket.h>
