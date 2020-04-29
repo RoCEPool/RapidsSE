@@ -917,6 +917,30 @@ void Scheduler::vTask_Schedule(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SCHEDULE,
               "Task is being scheduled"_Stz); //!format-LogTsk
   
+  eTS eTaskState = pTask->eState();
+  eQK eQueue = pTask->eQueue();
+  eSA eSchedulerAct = pTask->eSchedulerAct();
+  
+  if (TS_ABLE != pTask->eState()) {
+    fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
+            (char*)aTS[eTaskState],
+            (char*)aQK[eQueue],
+            (char*)aSA[eSchedulerAct]);
+  }
+  
+  if (QK_NONE != pTask->eQueue()) {
+    fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
+            (char*)aTS[eTaskState],
+            (char*)aQK[eQueue],
+            (char*)aSA[eSchedulerAct]);  }
+  
+  if (SA_NONE != pTask->eSchedulerAct()) {
+    fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
+            (char*)aTS[eTaskState],
+            (char*)aQK[eQueue],
+            (char*)aSA[eSchedulerAct]);
+  }
+  
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(SA_NONE == pTask->eSchedulerAct());
