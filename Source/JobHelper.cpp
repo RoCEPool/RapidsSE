@@ -7,16 +7,18 @@
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
-                          TokenVec* pTknVec)
+bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
 {
   Dic* pRootDic = AM::pRootDic();
-  
+
+  Word* pCategory = nullptr;
+  Word* pSyntax   = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can we find a job which matches the syntax?
   
-  Word* pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
-  
-  Word* pSyntax = nullptr;
+  pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
+  pSyntax   = nullptr;
   
   while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
     
@@ -27,13 +29,39 @@ bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
       
       //vTrace("    matches\n"_Stz);
       
-      pArgEnmSet->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
+      pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
       s32 sJobName(pSyntax->pWordTags()->szValue("__Name__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-      pArgEnmSet->vInsert(C_TAG_JOBNM,sJobName);
-      break;
+      pArgTags->vInsert(C_TAG_JOBNM,sJobName);
+      goto L_Matched;
     }
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can we find an operator which matches the syntax?
+
+  pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
+  pSyntax   = nullptr;
+  
+  while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
+    
+    //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
+    //pSyntax->pTagSet()->vDumpSet();
+    
+    if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pWordTags())) {
+      
+      //vTrace("    matches\n"_Stz);
+      
+      pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
+      s32 sJobName(pSyntax->pWordTags()->szValue("__Name__"_Stz));
+      //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
+      pArgTags->vInsert(C_TAG_JOBNM,sJobName);
+      goto L_Matched;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no match
   
   if (! pSyntax) {
     //vTrace("Unable to match job syntax\n"_Stz);
@@ -41,8 +69,11 @@ bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract arguments
   
-  bool b = bExtractArgs(pArgEnmSet,pSyntax->pWordTags(),pTknVec);
+  L_Matched:
+  
+  bool b = bExtractArgs(pArgTags,pSyntax->pWordTags(),pTknVec);
   if (! b) {
     //vTrace("Unable to match job syntax\n"_Stz);
     return false;
@@ -56,13 +87,13 @@ bool JobHelper::bParseCmd(TagSet* pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse token vec of command and extract arguments                           */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractArgs(TagSet* pArgEnmSet,
-                             TagSet* pSynEnmSet,
+bool JobHelper::bExtractArgs(TagSet* pArgTags,
+                             TagSet* pSynTags,
                              TokenVec* pTknVec
                              )
 {
   i8 nTokens = pTknVec->nTokens();
-  i8 nEnames = pSynEnmSet->nEnames();
+  i8 nEnames = pSynTags->nEnames();
   
 //  if (nEnames != nTokens)
 //    return false;
@@ -72,30 +103,30 @@ bool JobHelper::bExtractArgs(TagSet* pArgEnmSet,
 
   while (i_Tkn < nTokens && i_Syn < nEnames) {
     
-    if (pSynEnmSet->szName(i_Syn)->bSame("__job__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bSame("__job__"_Stz)) {
       i_Syn++;
       continue;
     }
     
-    if (pSynEnmSet->szName(i_Syn)->bSame("__name__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bSame("__name__"_Stz)) {
       i_Syn++;
       continue;
     }
     
-    if (pSynEnmSet->szName(i_Syn)->bSame("__meta__"_Stz)) {
-      if (! bExtractMeta(pArgEnmSet,pSynEnmSet,i_Syn,pTknVec,i_Tkn))
+    if (pSynTags->szName(i_Syn)->bSame("__meta__"_Stz)) {
+      if (! bExtractMeta(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
       continue;
     }
    
-    if (pSynEnmSet->szName(i_Syn)->bSame("__json__"_Stz)) {
-      if (! bExtractJson(pArgEnmSet,pSynEnmSet,i_Syn,pTknVec,i_Tkn))
+    if (pSynTags->szName(i_Syn)->bSame("__json__"_Stz)) {
+      if (! bExtractJson(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
       //pArgEnmSet->vPrint();
       continue;
     }
     
-    if (pSynEnmSet->szName(i_Syn)->bSame("__etc__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bSame("__etc__"_Stz)) {
 
       break;
     }

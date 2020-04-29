@@ -14,13 +14,13 @@
   input::next locals| sOpNm |
 
   // MARK: OPINFO
-  sOpNm series-name-job "_syntax" str.cat :create
-  //sOpNm series-name-op "_syntax" str.cat :create
+  //sOpNm series-name-job "_syntax" str.cat :create
+  sOpNm series-name-op "_syntax" str.cat :create
 
   // set the word category to be jobSyntax
   //[ compiler::current@ , ] compiler::current@ word.category!
-  find: jobSyntax: compiler::current@ word.category!
-  //find: opSyntax: compiler::current@ word.category!
+  //find: jobSyntax: compiler::current@ word.category!
+  find: opSyntax: compiler::current@ word.category!
 
   // attach an ename set to the word being created
   tagSet::new locals| pTagSet |
