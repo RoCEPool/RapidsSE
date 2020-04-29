@@ -89,22 +89,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* does a seed by the name of Cmd_Suffix exist ?                              */
 /*----------------------------------------------------------------------------*/
-: word.doesSeedExist? params| pInfoWrd sSeedSuffix |
+: _info.doesSeedExist? params| pInfoWrd sSeedSuffix |
 
-  pInfoWrd word.name_trunc sSeedSuffix str.cat
-    find if true else false then
+  pInfoWrd word.name_trunc locals| sCmdNm |
+
+  sCmdNm sSeedSuffix str.cat locals| sSeedNm |
+
+  sSeedNm find if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add <seedNm> = WordNm_Suffix to info word tags                             */
+/* add <seedNm> = Cmd_Suffix | DefaultSeed to tag set of given infor word     */
 /*----------------------------------------------------------------------------*/
-: word.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
+: _info.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
 
   0 locals| sSeedNm_Suffix |
 
-  sSeedSuffix pInfoWrd word.doesSeedExist? if
+  sSeedSuffix pInfoWrd _info.doesSeedExist? if
     pInfoWrd word.name_trunc
       sSeedSuffix str.cat to sSeedNm_Suffix
   else
@@ -164,15 +167,15 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_distJob params| pInfoWrd |
 
-  "<SeedReq>" "defaultSeedDist" "_req" pInfoWrd word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedDist" "_req" pInfoWrd _info.addSeedToTagSet
 
-  "<SeedRcv>" "defaultSeedDist" "_beg" pInfoWrd word.addSeedToTagSet
+  "<SeedRcv>" "defaultSeedDist" "_beg" pInfoWrd _info.addSeedToTagSet
 
-  "<SeedExe>" "defaultSeedDist" "_exe" pInfoWrd word.addSeedToTagSet
+  "<SeedExe>" "defaultSeedDist" "_exe" pInfoWrd _info.addSeedToTagSet
 
-  "<SeedEnd>" "defaultSeedDist" "_end" pInfoWrd word.addSeedToTagSet
+  "<SeedEnd>" "defaultSeedDist" "_end" pInfoWrd _info.addSeedToTagSet
 
-  "<SeedCan>" "defaultSeedDist" "_can" pInfoWrd word.addSeedToTagSet
+  "<SeedCan>" "defaultSeedDist" "_can" pInfoWrd _info.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_genericJob params| pInfoWrd |
 
-  "<SeedReq>" "defaultSeedLocal" "_run" pInfoWrd word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_run" pInfoWrd _info.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -188,7 +191,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeedsFor_localOp params| pInfoWrd |
 
-  "<SeedReq>" "defaultSeedLocal" "_req" pInfoWrd word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_req" pInfoWrd _info.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
