@@ -47,7 +47,7 @@ load bolTbl "../DATA/Datums/boolean.csv" ;
 failure contains: '19 invalid'
 
 // check no of rows
-tableFetch bolTbl;
+tableScan bolTbl;
 rows: 101
 
 partitionScan bolTbl 0;
@@ -100,7 +100,7 @@ success
 truncate bolTbl;
 success
 
-tableFetch bolTbl;
+tableScan bolTbl;
 rows: 0
 
 partitionScan bolTbl 0;
@@ -131,7 +131,7 @@ load bolTbl "/tmp/bolTbl.csv" ;
 success
 
 // check no of rows
-tableFetch bolTbl;
+tableScan bolTbl;
 rows: 101
 
 partitionScan bolTbl 0;

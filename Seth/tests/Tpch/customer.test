@@ -45,7 +45,7 @@ rows:
 ld customer "/TPCH/SF1/customer.tbl"  field_delimiter "|";
 success
 
-tableFetch customer;
+tableScan customer;
 rows: 150000
 
 -----------------------------------------------------------------------

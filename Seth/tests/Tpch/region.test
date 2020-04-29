@@ -15,7 +15,7 @@ success
 ld region "/TPCH/SF1/region.tbl" field_delimiter "|";
 success
 
-tableFetch region;
+tableScan region;
 rows: 5
 
 -----------------------------------------------------------------------

@@ -27,7 +27,7 @@ load OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
-tableFetch OpTable1;
+tableScan OpTable1;
 rows: 26
 
 // export to non-existent dir
@@ -52,7 +52,7 @@ load OpTable1 "/tmp/opTable1.csv" ;
 success
 
 // check no of rows
-tableFetch OpTable1;
+tableScan OpTable1;
 rows: 26
 
 // drop the table

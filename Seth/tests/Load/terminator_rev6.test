@@ -17,10 +17,10 @@ ld T1 "../Seth/tests/Load/terminatorVch_rev6.csv" record_terminator "|" record_e
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 1
 
-tableFetch T1;
+tableScan T1;
 rows:
   (300,'ABC')
 
@@ -43,7 +43,7 @@ ld T1 ".../DATA/Load/terminatorInt_rev6.csv" record_terminator "|" record_ends "
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 1
 
 // drop the table

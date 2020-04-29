@@ -23,7 +23,7 @@ load T1 "../DATA/Load/enclosedBy1.csv" ;
 failure contains: '5 invalid'
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -60,7 +60,7 @@ ld T1 "../DATA/Load/enclosedBy2.csv" enclosed_by_leading "'";
 failure contains: '1 invalid'
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -97,7 +97,7 @@ ld T1 "../DATA/Load/enclosedBy3.csv" enclosed_by_leading "[" enclosed_by_trailin
 failure contains: '7 invalid'
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 6
 
 fetch T1 "col_id 1 =";

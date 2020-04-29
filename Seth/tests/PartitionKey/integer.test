@@ -25,7 +25,7 @@ load dataTable "../DATA/PartitionKey/data.csv";
 success
 
 // select rows from the table
-tableFetch dataTable;
+tableScan dataTable;
 rows:
 1000
 

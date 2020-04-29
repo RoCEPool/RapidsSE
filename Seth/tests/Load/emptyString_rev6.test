@@ -18,7 +18,7 @@ load T1 "../DATA/Load/emptyString1.csv" ;
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -57,7 +57,7 @@ tag delete <enclosedby_leading>;
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -102,7 +102,7 @@ tag delete <enclosedby_trailing>;
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 2
 
 fetch T1 "col_id 1 =";
@@ -119,13 +119,13 @@ success
 truncate T1;
 success
 
-tableFetch T1;
+tableScan T1;
 rows: 0
 
 load T1 "/tmp/T1.csv";
 success
 
-tableFetch T1;
+tableScan T1;
 rows: 2
 
 //! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed

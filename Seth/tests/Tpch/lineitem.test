@@ -65,7 +65,7 @@ rows:
 ld lineitem "/TPCH/SF1/lineitem.tbl" field_delimiter "|";
 success
 
-//tableFetch lineitem;
+//tableScan lineitem;
 //rows: 6001215
 
 -----------------------------------------------------------------------
@@ -131,7 +131,7 @@ rows: 231001
 compactidx lineitem lineitem_idx1;
 success
 
-//tableFetch lineitem;
+//tableScan lineitem;
 //rows: 6001215
 
 -----------------------------------------------------------------------

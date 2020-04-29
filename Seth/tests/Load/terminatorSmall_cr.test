@@ -24,7 +24,7 @@ fetch terminator_cr "c1 1 =";
 rows: 2534
 
 // fetch
-tableFetch terminator_cr;
+tableScan terminator_cr;
 rows: 2534
 
 CLEANUP {

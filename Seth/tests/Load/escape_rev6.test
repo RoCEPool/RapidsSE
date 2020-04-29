@@ -17,10 +17,10 @@ load T1 "../DATA/Load/escape_defaults.csv";
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 9
 
-tableFetch T1 ;
+tableScan T1 ;
 rows:
   (1, null)
   (2, '''N''')
@@ -52,10 +52,10 @@ ld T1 "../DATA/Load/escape_enclosed.csv" enclosed_by_leading "'";
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 9
 
-tableFetch T1 ;
+tableScan T1 ;
 rows:
   (1, null)
   (2, null)
@@ -87,10 +87,10 @@ ld T1 "../DATA/Load/escape_enclosedByCurly.csv" enclosed_by_leading "{" enclosed
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 10
 
-tableFetch T1 ;
+tableScan T1 ;
 rows:
   (1, null)
   (2, null)

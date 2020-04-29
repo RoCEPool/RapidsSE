@@ -32,7 +32,7 @@ success
 
 //------------------------------------------------------------------------------
 // SCAN
-tableFetch jCdt;
+tableScan jCdt;
 rows: 16
 
 // this will be a scan because no index with leading col is jB

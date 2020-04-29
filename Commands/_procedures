@@ -271,9 +271,9 @@ begin
 end;
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows from a table (all nodes)                                        */
+/* scan a table (all nodes)                                                   */
 /*----------------------------------------------------------------------------*/
-procedure tableFetch
+procedure tableScan
 parameters $table
 begin
 

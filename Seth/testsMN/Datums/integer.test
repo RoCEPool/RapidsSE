@@ -42,7 +42,7 @@ load IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
-tableFetch IntTbl;
+tableScan IntTbl;
 rows: 101
 
 // dump index int_idx1
@@ -83,7 +83,7 @@ success
 truncate IntTbl;
 success
 
-tableFetch IntTbl;
+tableScan IntTbl;
 rows: 0
 
 partitionScan IntTbl 0;
@@ -115,7 +115,7 @@ load IntTbl "/tmp/integer.csv" ;
 success
 
 // check no of rows
-tableFetch IntTbl;
+tableScan IntTbl;
 rows: 101
 
 // dump index int_idx1

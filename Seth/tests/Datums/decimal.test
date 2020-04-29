@@ -46,7 +46,7 @@ load decTbl "../DATA/Datums/decimal.csv" ;
 failure contains: '15 invalid'
 
 // check no of rows
-tableFetch decTbl;
+tableScan decTbl;
 rows: 101
 
 // dump dec_idx1

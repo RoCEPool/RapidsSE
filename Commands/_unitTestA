@@ -251,10 +251,10 @@ print section "partition scan";
 partitionScan lineitem 1;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection tableFetch;
-print section "table Fetch";
+logSection tableScan;
+print section "table Scan";
 
-tableFetch lineitem;
+tableScan lineitem;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection filteredFetch;
@@ -359,10 +359,10 @@ print section "Load Table";
 Load lineitem "/tmp/lineitem_export.csv" ;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection tableFetch;
-print section "table Fetch";
+logSection tableScan;
+print section "table Scan";
 
-tableFetch lineitem;
+tableScan lineitem;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection dropIndex;

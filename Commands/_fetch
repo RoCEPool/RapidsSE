@@ -25,7 +25,7 @@ create index T1_idx on T1 (jidx_key);
 
 ld T1 "../DATA/Operators/operators1_1.csv" ;
 
-tableFetch T1;
+tableScan T1;
 
 partitionScan T1, 0;
 partitionScan T1, 1;

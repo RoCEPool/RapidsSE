@@ -118,9 +118,9 @@ print "*************************************************************************
 
 fetch lineitem;
 
-tableFetch Lineitem;
+tableScan Lineitem;
 //truncate lineitem;
-//tableFetch lineitem;
+//tableScan lineitem;
 partitionScan lineitem 1;
 
 

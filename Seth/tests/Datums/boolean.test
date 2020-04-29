@@ -47,7 +47,7 @@ load bolTbl "../DATA/Datums/boolean.csv" ;
 failure contains: '19 invalid'
 
 // check no of rows
-tableFetch bolTbl;
+tableScan bolTbl;
 rows: 101
 
 // dump index bol_idx1

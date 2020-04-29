@@ -18,7 +18,7 @@ success;
 ld vch "../DATA/Load/vch_term_no_enclosed_no_escape.csv" record_terminator ";" enclosed_by_leading "\0" escape_char "\0" ;
 success
 
-//tableFetch vch;
+//tableScan vch;
 //rows: 16
 
 fetch vch "vch_testno 701 =";

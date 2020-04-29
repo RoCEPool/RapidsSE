@@ -18,10 +18,10 @@ load T1 "../DATA/Load/spaces.csv" ;
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 4
 
-tableFetch T1;
+tableScan T1;
 rows:
   (1,'   3 leading',3)
   (2,'   ''3 leading''',3)
@@ -48,10 +48,10 @@ ld T1 "../DATA/Load/spaces_enclosedBy.csv" enclosed_by_leading "'" ;
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 4
 
-tableFetch T1;
+tableScan T1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)
@@ -78,10 +78,10 @@ ld T1 "../DATA/Load/spaces_enclosedByCurly.csv" enclosed_by_leading "{" enclosed
 success
 
 // fetch rows
-tableFetch T1;
+tableScan T1;
 rows: 4
 
-tableFetch T1;
+tableScan T1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)

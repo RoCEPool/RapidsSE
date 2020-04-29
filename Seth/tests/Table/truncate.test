@@ -53,7 +53,7 @@ truncate lineitem;
 success
 
 // fetch
-tableFetch lineitem;
+tableScan lineitem;
 rows: 0
 
 // load the table
@@ -65,7 +65,7 @@ truncate lineitem;
 success
 
 // fetch
-tableFetch lineitem;
+tableScan lineitem;
 rows: 0
 
 // now drop the table

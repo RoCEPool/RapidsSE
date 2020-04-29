@@ -17,7 +17,7 @@ success
 load T1 "../DATA/Select/rangeCombo.csv";
 success
 
-tableFetch T1;
+tableScan T1;
 rows: 5
 
 fetch T1 "jA 2 <=" ;

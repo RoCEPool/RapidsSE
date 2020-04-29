@@ -18,7 +18,7 @@ success;
 ld vch "../DATA/Load/vch_no_escape.csv" escape_char "\0" enclosed_by_leading "'";
 success
 
-//tableFetch vch;
+//tableScan vch;
 //rows: 18
 
 fetch vch "vch_testno 401 =";

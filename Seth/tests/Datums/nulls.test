@@ -23,7 +23,7 @@ load nulTbl "../DATA/Datums/nulls.csv" ;
 success
 
 // check no of rows
-tableFetch nulTbl;
+tableScan nulTbl;
 rows: 50
 
 // drop the table

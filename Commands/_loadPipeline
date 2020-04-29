@@ -41,7 +41,7 @@ antbl lineitem;
 anidx lineitem lineitem_idx1;
 
 partitionScan lineitem 0;
-//tableFetch lineitem;
+//tableScan lineitem;
 
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */

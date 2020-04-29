@@ -36,7 +36,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // SCAN
-tableFetch jCdt;
+tableScan jCdt;
 rows: 26
 
 //dumpidx jCdt jCdt_idx1;

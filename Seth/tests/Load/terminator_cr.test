@@ -29,7 +29,7 @@ rows:
   (2, 'A', 'Also terminated by <CR>')
 
 // fetch
-tableFetch terminator_cr;
+tableScan terminator_cr;
 rows: 2
 
 CLEANUP {
