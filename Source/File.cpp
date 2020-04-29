@@ -510,7 +510,8 @@ bool File::bOpenMode(Stz* szFilePath, Stz* aOpenMode)
   
   if (! m_aFile) {
     m_oSysCall.vError(errno);
-    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
+    fprintf(stderr, "OpenMode failed\n");
+    vTrace("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
           m_sFilePath.azChar(),m_sOpenMode.azChar(),errno);
     return false;
   }

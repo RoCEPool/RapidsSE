@@ -598,6 +598,15 @@ void Engine::vErrorHandler(Error* pError)
   
   char* acEnd;
   
+  fprintf(stderr, "%s: line %lld\n",
+          pError->aErrorMsg()->azChar(),
+          pError->iLineNo());
+  
+  fprintf(stderr, "%s: line %lld in %s\n",
+         pError->aErrorMsg()->azChar(),
+         pError->iLineNo(),
+         (char*)pError->aFileName());
+  
   if (pError) {
     acEnd = StrLib::acLast(pError->aFileName()->azChar());
     StrLib::bBackward(&acEnd,(char*)pError->aFileName(),'/');

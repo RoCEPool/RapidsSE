@@ -122,8 +122,16 @@ eEC RapidsSE_NewSession(i8 iTrace,
     *aaSession = pSession;
     pSession = nullptr;
   }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  catch (Error* pError) {
+    fprintf(stderr,"catch1 in RapidsSE_NewSession\n");
+    fprintf(stderr, "%s\n", szCatalog->azChar());
+    fprintf(stderr, "%s\n", szSchema->azChar());
+    API_CATCH(pError); }
+  catch (...) {
+    fprintf(stderr,"catch2 in RapidsSE_NewSession\n");
+    fprintf(stderr, "%s\n", szCatalog->azChar());
+    fprintf(stderr, "%s\n", szSchema->azChar());
+    Error* pError = nullptr; API_CATCH(pError); }
 
   API_RETURN();
 }
