@@ -152,6 +152,35 @@
   next
 ;
 
+/*----------------------------------------------------------------------------*/
+/* show all words that of given catg                                          */
+/*----------------------------------------------------------------------------*/
+: wordsOf params| pCatg |
+
+  dic::root dic.lastWord dup
+  iterate                                 // iterate word cursor
+
+    object@ locals| pWord |
+
+    pWord word.category@ pCatg eql if
+      pWord word.show
+    then
+
+    object@ word.prev object!             // advance cursor backwards thru words
+  next
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/* show all words that are of _opInfo                                         */
+/*----------------------------------------------------------------------------*/
+: opInfos prompt
+
+  find: _opInfo wordsof
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
