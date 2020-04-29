@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: ToCsv :: ToCsv ;
 
-: ToCsv _opInfo tagCopy: localOp_tags
+: ToCsv _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

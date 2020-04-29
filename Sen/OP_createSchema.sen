@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: createSchema :: createSchema <schemaNm> ;
 
-: createSchema _opInfo tagCopy: localOp_tags
+: createSchema _info tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;

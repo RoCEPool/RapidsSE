@@ -50,7 +50,7 @@
 opSyntax: anidx :: anidx <tableNm> <indexNm> ;
 opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
 
-: anidx _opInfo tagCopy: liteOp_tags
+: anidx _info tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

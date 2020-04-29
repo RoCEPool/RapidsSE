@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: pwf :: pwf ;
 
-: pwf _opInfo tagCopy: localLiteOp_tags
+: pwf _info tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

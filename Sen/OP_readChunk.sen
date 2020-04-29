@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: readChunk :: readChunk <fileNm> ;
 
-: readChunk _opInfo tagCopy: localOp_tags
+: readChunk _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

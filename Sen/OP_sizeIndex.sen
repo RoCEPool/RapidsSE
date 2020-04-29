@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: szidx :: szidx <tableNm> <indexNm> ;
 
-: szidx _opInfo tagCopy: liteOp_tags
+: szidx _info tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

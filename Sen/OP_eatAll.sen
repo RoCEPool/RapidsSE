@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: eatAll :: eatAll ;
 
-: eatAll _opInfo tagCopy: localOp_tags
+: eatAll _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

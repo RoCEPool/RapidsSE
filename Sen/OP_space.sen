@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: space :: space ;
 
-: space _opInfo tagCopy: liteOp_tags
+: space _info tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

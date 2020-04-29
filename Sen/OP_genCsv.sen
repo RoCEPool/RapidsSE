@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: genCsv :: genCsv <tableNm> ;
 
-: genCsv _opInfo tagCopy: localOp_tags
+: genCsv _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

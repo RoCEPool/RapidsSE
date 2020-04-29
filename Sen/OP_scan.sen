@@ -111,7 +111,7 @@
 opSyntax: scan :: scan <tableNm> ;
 opSyntax: scan :: scan <tableNm> <rateSecs> ;
 
-//_opInfo: scan
+//_info: scan
 //{
 //  <jobDesc>  = "--op desc--"
 //
@@ -124,7 +124,7 @@ opSyntax: scan :: scan <tableNm> <rateSecs> ;
 //;
 //
 
-: scan _opInfo tagCopy: localOp_tags
+: scan _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

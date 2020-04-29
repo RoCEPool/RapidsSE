@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: dumpTbl :: dumpTbl <tableNm> ;
 
-: dumpTbl _opInfo tagCopy: localLiteOp_tags
+: dumpTbl _info tagCopy: localLiteOp_tags
   tags{
     <jobDesc>     = "--op desc--"
     <localLiteOp> = true

@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: toCrwH :: toCrwH <tableNm> ;
 
-: toCrwH _opInfo tagCopy: localOp_tags
+: toCrwH _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

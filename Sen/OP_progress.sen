@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: progress :: progress <string> ;
 
-: progress _opInfo tagCopy: localOp_tags
+: progress _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

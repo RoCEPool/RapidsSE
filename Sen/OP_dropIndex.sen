@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 opSyntax: dropIndex :: dropIndex <tableNm> <indexNm> ;
 
-: dropIndex _opInfo tagCopy: localOp_tags
+: dropIndex _info tagCopy: localOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;
