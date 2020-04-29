@@ -9,8 +9,10 @@
 /*----------------------------------------------------------------------------*/
 Dic* SenVM::_pDic(void* aAddr)
 {
+  RASSERT(aAddr);
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);
   
+  RASSERT(pDic);
   RASSERT_TYPE(pDic,CN_DIC);
 
   return pDic;
