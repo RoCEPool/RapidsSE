@@ -215,9 +215,9 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows from a partition of a table                                     */
+/* scan rows from a partition of a table                                     */
 /*----------------------------------------------------------------------------*/
-procedure partitionFetch
+procedure partitionScan
   parameters $table $partition 
 begin
 

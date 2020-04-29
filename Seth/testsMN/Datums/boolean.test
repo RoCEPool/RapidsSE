@@ -50,28 +50,28 @@ failure contains: '19 invalid'
 tableFetch bolTbl;
 rows: 101
 
-partitionFetch bolTbl 0;
+partitionScan bolTbl 0;
 rows: 0
 
-partitionFetch bolTbl 1;
+partitionScan bolTbl 1;
 rows: 88
 
-partitionFetch bolTbl 2;
+partitionScan bolTbl 2;
 rows: 0
 
-partitionFetch bolTbl 3;
+partitionScan bolTbl 3;
 rows: 13
 
-partitionFetch bolTbl 4;
+partitionScan bolTbl 4;
 rows: 0
 
-partitionFetch bolTbl 5;
+partitionScan bolTbl 5;
 rows: 0
 
-partitionFetch bolTbl 6;
+partitionScan bolTbl 6;
 rows: 0
 
-partitionFetch bolTbl 7;
+partitionScan bolTbl 7;
 rows: 0
 
 // dump index bol_idx1
@@ -103,28 +103,28 @@ success
 tableFetch bolTbl;
 rows: 0
 
-partitionFetch bolTbl 0;
+partitionScan bolTbl 0;
 rows: 0
 
-partitionFetch bolTbl 1;
+partitionScan bolTbl 1;
 rows: 0
 
-partitionFetch bolTbl 2;
+partitionScan bolTbl 2;
 rows: 0
 
-partitionFetch bolTbl 3;
+partitionScan bolTbl 3;
 rows: 0
 
-partitionFetch bolTbl 4;
+partitionScan bolTbl 4;
 rows: 0
 
-partitionFetch bolTbl 5;
+partitionScan bolTbl 5;
 rows: 0
 
-partitionFetch bolTbl 6;
+partitionScan bolTbl 6;
 rows: 0
 
-partitionFetch bolTbl 7;
+partitionScan bolTbl 7;
 rows: 0
 
 load bolTbl "/tmp/bolTbl.csv" ;
@@ -134,28 +134,28 @@ success
 tableFetch bolTbl;
 rows: 101
 
-partitionFetch bolTbl 0;
+partitionScan bolTbl 0;
 rows: 0
 
-partitionFetch bolTbl 1;
+partitionScan bolTbl 1;
 rows: 88
 
-partitionFetch bolTbl 2;
+partitionScan bolTbl 2;
 rows: 0
 
-partitionFetch bolTbl 3;
+partitionScan bolTbl 3;
 rows: 13
 
-partitionFetch bolTbl 4;
+partitionScan bolTbl 4;
 rows: 0
 
-partitionFetch bolTbl 5;
+partitionScan bolTbl 5;
 rows: 0
 
-partitionFetch bolTbl 6;
+partitionScan bolTbl 6;
 rows: 0
 
-partitionFetch bolTbl 7;
+partitionScan bolTbl 7;
 rows: 0
 
 // drop the table
