@@ -5,6 +5,9 @@
 
 namespace StorageEngine
 {
+  static const u8 C_CREATED = 0x2444455441455243;   // $CREATED
+  static const u8 C_READY   = 0x2424594441455224;   // $READY$$
+  
   class AttachMap : public Focal
   {
   friend class Oblique::AM;
@@ -97,8 +100,12 @@ namespace StorageEngine
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove?
   
-    i8            m_nIndexEntries;  // no of entries per buffer
-  
+    i8            m_nIndexEntries;     // no of entries per buffer
+    union {
+      u8    m_uAttachMapState;         // attachmap is ready
+      char  m_caAttachMapState[8];
+    };
+    
     // must be last
     Footer m_xFooter;
     
@@ -111,6 +118,8 @@ namespace StorageEngine
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    void vAttachMapState(u8 uState);
+    u8   uAttachMapState(void);
     eAC  eFindApi(Stz* aApiNm);
     void vFocalOutline(s4K& sOutline);
     void vGetGlobals(void);
