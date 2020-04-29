@@ -317,37 +317,38 @@
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: fillOut::tagSet_ofInfoWord params| pWord |
-
-  pWord fillOut::addDefaultTags
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pWord job::isGenericJob if
-    pWord fillOut::tagSet_generic
-  else
-  pWord job::isDistJob if
-    pWord fillOut::tagSet_dist
-  else
-    pWord fillOut::tags_forAnOp
-  then then
-
-  // pWordTagSet tagSet.asStr .
-;
-
-/*----------------------------------------------------------------------------*/
 //: fillOut::tagSet_ofInfoWord params| pWord |
 //
 //  pWord fillOut::addDefaultTags
 //
-//       pWord job::isGenericJob  if pWord fillOut::tagSet_generic
-//  else pWord job::isDistJob     if pWord fillOut::tagSet_dist
-//  else pWord job::isLiteOp      if pWord fillOut::tags_forLiteOp
-//  else pWord job::isLocalLiteOp if pWord fillOut::tags_forLocalLiteOp
-//  then then then then
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pWord job::isGenericJob if
+//    pWord fillOut::tagSet_generic
+//  else
+//  pWord job::isDistJob if
+//    pWord fillOut::tagSet_dist
+//  else
+//    pWord fillOut::tags_forAnOp
+//  then then
 //
 //  // pWordTagSet tagSet.asStr .
 //;
+
+/*----------------------------------------------------------------------------*/
+: fillOut::tagSet_ofInfoWord params| pWord |
+
+  pWord fillOut::addDefaultTags
+
+       pWord job::isGenericJob  if pWord fillOut::tagSet_generic
+  else pWord job::isDistJob     if pWord fillOut::tagSet_dist
+  else pWord job::isLiteOp      if pWord fillOut::tags_forLiteOp
+  else pWord job::isLocalLiteOp if pWord fillOut::tags_forLocalLiteOp
+  else                             pWord fillOut::tagSet_local
+  then then then then
+
+  // pWordTagSet tagSet.asStr .
+;
 
 /*----------------------------------------------------------------------------*/
 /* consume service arguments                                                  */
