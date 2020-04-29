@@ -124,13 +124,26 @@ eEC RapidsSE_NewSession(i8 iTrace,
   }
   catch (Error* pError) {
     fprintf(stderr,"catch1 in RapidsSE_NewSession\n");
-    fprintf(stderr, "%s\n", szCatalog->azChar());
-    fprintf(stderr, "%s\n", szSchema->azChar());
+    fprintf(stderr, "%p (%s)\n", szCatalog->azChar(), szCatalog->azChar());
+    fprintf(stderr, "\n");
+    fprintf(stderr, "%p (%s)\n", szSchema->azChar(), szSchema->azChar());
+    fprintf(stderr, "\n");
     API_CATCH(pError); }
-  catch (...) {
+  
+  catch (Exception xException) {
     fprintf(stderr,"catch2 in RapidsSE_NewSession\n");
-    fprintf(stderr, "%s\n", szCatalog->azChar());
-    fprintf(stderr, "%s\n", szSchema->azChar());
+    fprintf(stderr, "%p (%s)\n", szCatalog->azChar(), szCatalog->azChar());
+    fprintf(stderr, "\n");
+    fprintf(stderr, "%p (%s)\n", szSchema->azChar(), szSchema->azChar());
+    fprintf(stderr, "\n");
+    xException.vPrint(); }
+  
+  catch (...) {
+    fprintf(stderr,"catch3 in RapidsSE_NewSession\n");
+    fprintf(stderr, "%p (%s)\n", szCatalog->azChar(), szCatalog->azChar());
+    fprintf(stderr, "\n");
+    fprintf(stderr, "%p (%s)\n", szSchema->azChar(), szSchema->azChar());
+    fprintf(stderr, "\n");
     Error* pError = nullptr; API_CATCH(pError); }
 
   API_RETURN();
