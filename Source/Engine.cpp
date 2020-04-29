@@ -175,11 +175,23 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_PROMPT:
+        // wait for the attachmap to be ready
+        if (gpAttachMap->uAttachMapState() != C_READY)
+          vTrace("Waiting for SE to start...\n"_Stz);
+        while (gpAttachMap->uAttachMapState() != C_READY) {
+          AM::vNapMsec(1,CN_NONE);
+        }
         vOpenLog();
         vCallPrompt();
         break;
         
       case BO_SETH_PROMPT:
+        // wait for the attachmap to be ready
+        if (gpAttachMap->uAttachMapState() != C_READY)
+          vTrace("Waiting for SE to start...\n"_Stz);
+        while (gpAttachMap->uAttachMapState() != C_READY) {
+          AM::vNapMsec(1,CN_NONE);
+        }
         vCallPrompt();
         break;
         
@@ -1468,6 +1480,8 @@ void Engine::vStartSystem(void)
            *gixSocket
            );
 
+    // mark attachmap to be ready for connections
+    gpAttachMap->vAttachMapState(C_READY);
     
     vInfo("\n++\n++ System Started\n++\n"_Stz);
   }

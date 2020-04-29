@@ -59,7 +59,9 @@ AttachMap::AttachMap(void)
     vInfo("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
           gpAttachMap,
           sizeof(AttachMap));
-
+  
+  m_uAttachMapState = C_CREATED;
+  
   // the attach map must always be the first buffer in the buffer pool
   //ASSERT(nPoolBufferNo() == 1_bn);
   
@@ -372,6 +374,27 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->nSlotsPerNode());
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* find api which matches given name                                          */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vAttachMapState(u8 uState)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_uAttachMapState = uState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find api which matches given name                                          */
+/*----------------------------------------------------------------------------*/
+u8 AttachMap::uAttachMapState(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return m_uAttachMapState;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* find api which matches given name                                          */
