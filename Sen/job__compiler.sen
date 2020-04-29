@@ -188,7 +188,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a procedure for given lite op info word                             */
 /*----------------------------------------------------------------------------*/
-: fillOut::procFor_liteOp params| pWord |
+: fillOut::createProcFor_liteOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.tagSet@    locals| pWordTagSet   |
@@ -220,7 +220,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a procedure for given local lite op info word                       */
 /*----------------------------------------------------------------------------*/
-: fillOut::procFor_localLiteOp params| pWord |
+: fillOut::createProcFor_localLiteOp params| pWord |
 
   pWord word.name_trunc locals| sWordNm_trunc |
   pWord word.tagSet@    locals| pWordTagSet   |
@@ -261,8 +261,8 @@
 
        pWord word.isGenericJob_info  if pWord fillOut::addSeedsFor_genericJob
   else pWord word.isDistJob_info     if pWord fillOut::addSeedsFor_distJob
-  else pWord word.isLiteOp_info      if pWord fillOut::procFor_liteOp
-  else pWord word.isLocalLiteOp_info if pWord fillOut::procFor_localLiteOp
+  else pWord word.isLiteOp_info      if pWord fillOut::createProcFor_liteOp
+  else pWord word.isLocalLiteOp_info if pWord fillOut::createProcFor_localLiteOp
   else                                  pWord fillOut::addSeedsFor_localOp
   then then then then
 
