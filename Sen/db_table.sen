@@ -244,14 +244,14 @@
 
   0 locals| pTable |
 
-//"A" . symbols
+//"A" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to table folder
   sTableNm path[].pushTableFolder assert
 
-//"B" . symbols
+//"B" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
 
   // truncate the table
@@ -265,30 +265,33 @@
 
   // forget the words in the indexes folder
   "indexes" find execute folder.forgetAllWords
-//"C1" . symbols
+//"C1" . //symbols
 
   // forget the indexes folder itself
   "indexes" folder::remove
-//"C2" . symbols
+//"C2" . //symbols
 
   // forget the partitions folder itself
-  "partitions" folder::remove
-//"C3" . symbols
+  //"partitions" folder::remove
+//"C3" . //symbols
 
-  // forget the table folder itself
-  sTableNm folder::remove
-//"C4" . symbols
+  // forget the table itself
+  //sTableNm folder::remove
+  sTableNm :forget
+
+//"C4" . //symbols
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   path[].discardTableFolder
 
-//"D" . symbols
+//"D" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 
+  // forget the table folder itself
   sTableNm folder::remove
 
-//"E" . symbols
+//"E" . //symbols
 ;
 
 /*============================================================================*/
