@@ -193,7 +193,7 @@
 
   0 locals| iParams |
 
-  "<liteOp>" pWordTagSet tagSet.hasName if
+  pWord job::isLiteOp if
 
 
     sWordNm_trunc "LiteOP: %v" .printf
@@ -217,7 +217,7 @@
 
 
   else
-  "<localLiteOp>" pWordTagSet tagSet.hasName if
+  pWord job::isLocalLiteOp if
 
 
     sWordNm_trunc "LocalLiteOP: %v" .printf
