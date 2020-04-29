@@ -245,10 +245,10 @@ print section "size Index";
 szidx lineitem LineItem_Idx1;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection partitionFetch;
-print section "partition Fetch";
+logSection partitionScan;
+print section "partition scan";
 
-partitionFetch lineitem 0;
+partitionScan lineitem 1;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection tableFetch;

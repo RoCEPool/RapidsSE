@@ -40,7 +40,7 @@ time load lineitem "/DATA/TPCH/lineitem10.csv";
 antbl lineitem;
 anidx lineitem lineitem_idx1;
 
-partitionFetch lineitem 0;
+partitionScan lineitem 0;
 //tableFetch lineitem;
 
 /*----------------------------------------------------------------------------*/
