@@ -285,9 +285,9 @@ void TaskList::vContentDump(void)
            aCN[pJob->eClass()]
            );
     
-    if (Thread* pThread = pTask->pThread()) {
+    if (void* aThread = pTask->pvThread_DONT_DEREF()) {
      vTrace(" Thread %p"_Stz,
-            pThread);
+            aThread);
 
     }
 

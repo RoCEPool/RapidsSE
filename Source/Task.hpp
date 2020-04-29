@@ -104,7 +104,7 @@ namespace Tasks
     i8   iTaskId(void);
     void vTaskLoop(void);
     void vThisTLSTask(void);
-    Thread* pThread(void);
+    Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);

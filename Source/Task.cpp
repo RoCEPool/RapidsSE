@@ -972,7 +972,7 @@ void Task::vThisTLSTask(void)
 /*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
-Threads::Thread* Task::pThread(void)
+Threads::Thread* Task::pvThread_DONT_DEREF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
