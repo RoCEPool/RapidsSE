@@ -129,7 +129,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
     fprintf(stderr, "%p (%s)\n", szSchema->azChar(), szSchema->azChar());
     fprintf(stderr, "\n");
     API_CATCH(pError); }
-  
+/*
   catch (Exception xException) {
     fprintf(stderr,"catch2 in RapidsSE_NewSession\n");
     fprintf(stderr, "%p (%s)\n", szCatalog->azChar(), szCatalog->azChar());
@@ -145,7 +145,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
     fprintf(stderr, "%p (%s)\n", szSchema->azChar(), szSchema->azChar());
     fprintf(stderr, "\n");
     Error* pError = nullptr; API_CATCH(pError); }
-
+*/
   API_RETURN();
 }
 
