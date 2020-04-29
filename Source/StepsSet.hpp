@@ -338,7 +338,8 @@ public:
   void vPostpone(void);
   void vSee(void);
   void vSemicolon(void);
-  void vSeriesName(void);
+  void vSeriesNameJob(void);
+  void vSeriesNameOp(void);
 
   // grid
   void vGridConnectedNodes(void);

@@ -13,7 +13,7 @@
 
   input::next locals| sOpNm |
 
-  sOpNm series-name "_syntax" str.cat :create
+sOpNm series-name-job "_syntax" str.cat :create
 
   // set the word category to be jobSyntax
   //[ compiler::current@ , ] compiler::current@ word.category!
