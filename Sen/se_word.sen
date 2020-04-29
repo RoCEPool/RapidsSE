@@ -37,11 +37,19 @@
 : word.show params| pWord |
 
   pWord word.name@     locals| sWordName |
-  pWord word.category@ locals| pCatg |
+  pWord word.category@ locals| pCatg     |
   pCatg word.name@     locals| sCatgName |
 
+  pWord word.tagSet@   locals| pWordTags |
+
   sCatgName sWordName
-    "Word: %24v Category: %16v" .printf
+    "Word: %24v Category: %8v" .putf
+
+  pWordTags if
+    pWordTags tagSet.asStr "  %v" .putf
+  then
+
+  .\n
 ;
 
 /*----------------------------------------------------------------------------*/
