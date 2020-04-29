@@ -71,15 +71,6 @@
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
-  /*
-   begin
-     Operand[].isNull
-   not while
-     Operand[].pipeout
-     tablePtn[].get index[].fetchNext to Operand[]
-   repeat
-   */
-
   // pipeout the Operand
   Operand[].pipeOut
 
