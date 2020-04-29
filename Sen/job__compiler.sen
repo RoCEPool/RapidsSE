@@ -49,6 +49,34 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: job::isLiteOp params| pWord |
+
+  pWord word.TagSet@ locals| pWordTagSet |
+
+  "<liteOp>" pWordTagSet tagSet.hasName if
+    true exit
+  else
+    false exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: job::isLocalLiteOp params| pWord |
+
+  pWord word.TagSet@ locals| pWordTagSet |
+
+  "<localLiteOp>" pWordTagSet tagSet.hasName if
+    true exit
+  else
+    false exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : job::isServiceCmd params| pWord |
 
   pWord word.TagSet@ locals| pWordTagSet |
