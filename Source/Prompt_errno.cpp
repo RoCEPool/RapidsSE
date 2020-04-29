@@ -34,10 +34,20 @@ bool Prompt::bPrompt_errno(SePrompt* pPrompt)
     
     // get the no of indexEntries to set
     iErrNo = pTokenVec->pGet(1)->iToI8();
+
+    vTrace("  %s\n"_Stz,strerror((int)iErrNo));
+    
+    return true;
   }
   
-  vTrace("  %s\n"_Stz,strerror((int)iErrNo));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  for (iErrNo = 0; iErrNo < 128; iErrNo++) {
+    if (StrLib::bContains(strerror((int)iErrNo),"Unknown error"))
+      break;
+    vTrace("  %lld %s\n"_Stz,iErrNo,strerror((int)iErrNo));
+  }
+
   return true;
 }
 
