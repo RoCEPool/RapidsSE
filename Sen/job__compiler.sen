@@ -98,17 +98,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add <tagNm> = WordNM_Suffix to tag set of info word                        */
 /*----------------------------------------------------------------------------*/
-: word.addSeedToTagSet params| pWord sDefaultSeed sSuffix sTagNm |
+: word.addSeedToTagSet params| pWord sSuffix sSeed sTagNm |
 
   pWord word.TagSet@ locals| pWordTagSet |
 
   sSuffix pWord seedExists? 
-    if pWord word.name_trunc else sDefaultSeed then
-      sSuffix str.cat locals| sWordName |
+    if pWord word.name_trunc else sSeed then
+      sSuffix str.cat locals| sSeed_Suffix |
 
-  sTagNm sWordName pWordTagSet tagSet.insertStr
+  sTagNm sSeed_Suffix pWordTagSet tagSet.insertStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -158,15 +158,15 @@
 /*----------------------------------------------------------------------------*/
 : fillOut::addSeedsFor_distJob params| pWord |
 
-  "<SeedReq>" "_req" "defaultSeedDist" pWord word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedDist" "_req" pWord word.addSeedToTagSet
 
-  "<SeedRcv>" "_beg" "defaultSeedDist" pWord word.addSeedToTagSet
+  "<SeedRcv>" "defaultSeedDist" "_beg" pWord word.addSeedToTagSet
 
-  "<SeedExe>" "_exe" "defaultSeedDist" pWord word.addSeedToTagSet
+  "<SeedExe>" "defaultSeedDist" "_exe" pWord word.addSeedToTagSet
 
-  "<SeedEnd>" "_end" "defaultSeedDist" pWord word.addSeedToTagSet
+  "<SeedEnd>" "defaultSeedDist" "_end" pWord word.addSeedToTagSet
 
-  "<SeedCan>" "_can" "defaultSeedDist" pWord word.addSeedToTagSet
+  "<SeedCan>" "defaultSeedDist" "_can" pWord word.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -174,7 +174,7 @@
 /*----------------------------------------------------------------------------*/
 : fillOut::addSeedsFor_genericJob params| pWord |
 
-  "<SeedReq>" "_run" "defaultSeedLocal" pWord word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_run" pWord word.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@
 /*----------------------------------------------------------------------------*/
 : fillOut::addSeedsFor_localOp params| pWord |
 
-  "<SeedReq>" "_req" "defaultSeedLocal" pWord word.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_req" pWord word.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
