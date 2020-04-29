@@ -29,7 +29,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set path to the default tenants schemas folder                            */
+/* set path to the default tenants schemas folder                             */
 /*----------------------------------------------------------------------------*/
 : setSchemas ( )
   "/tenants/boray/catalogs/rapidsse/schemas"
