@@ -11,21 +11,11 @@
 
   pWord word.TagSet@ locals| pWordTagSet |
 
-  "<jobKind>" pWordTagSet tagSet.getInt
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  JK_GENERIC
-  == if
-    // "job::isGenericJob - job is a generic job" .
-    true
-    exit
+  "<jobKind>" pWordTagSet tagSet.getInt JK_GENERIC == if
+    true exit
+  else
+    false exit
   then
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // "job::isGenericJob - job is not a generic job" .
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,21 +25,11 @@
 
   pWord word.TagSet@ locals| pWordTagSet |
 
-  "<jobKind>" pWordTagSet tagSet.getInt
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  JK_LOCAL
-  == if
-    // "job::isLocalJob - job is a local job" .
-    true
-    exit
+  "<jobKind>" pWordTagSet tagSet.getInt JK_LOCAL == if
+    true exit
+  else
+    false exit
   then
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // "job::isLocalJob - job is not a local job" .
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,21 +39,11 @@
 
   pWord word.TagSet@ locals| pWordTagSet |
 
- "<jobKind>" pWordTagSet tagSet.getInt
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  JK_DIST2PC
-  == if
-    // "job::isDistJob - job is a distributed job" .
-    true
-    exit
+  "<jobKind>" pWordTagSet tagSet.getInt JK_DIST2PC == if
+    true exit
+  else
+    false exit
   then
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // "job::isDistJob - job is not a distributed job" .
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -83,21 +53,11 @@
 
   pWord word.TagSet@ locals| pWordTagSet |
 
-  "<cmdKind>" pWordTagSet tagSet.getInt
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  JK_DIST2PC
-  == if
-   // "job::isDistJob - job is a distributed job" .
-   true
-   exit
+  "<cmdKind>" pWordTagSet tagSet.getInt JK_DIST2PC  == if
+    true exit
+  else
+    false exit
   then
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // "job::isDistJob - job is not a distributed job" .
-  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +230,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pWord job::isgenericJob if
+  pWord job::isGenericJob if
     pWord fillOut::tagSet_generic
   else
   pWord job::isDistJob if
