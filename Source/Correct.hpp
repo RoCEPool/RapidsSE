@@ -25,6 +25,13 @@ namespace Correctness
                              i8    iLineNo,
                              Stz*  szFormat,...);
   
+  [[ noreturn ]] void vThrowUser(eFK   eKind,
+                             eVL   eSeverity,
+                             const char* azFunc,
+                             const char* azFilePath,
+                             i8    iLineNo,
+                             Stz*  szFormat,...);
+  
   [[ noreturn ]] void vThrowType(eFK   eKind,
                                  eVL   eSeverity,
                                  const char* azFunc,

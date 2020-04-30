@@ -42,7 +42,7 @@ i8 SN_Dte::i(char** aacCrs, Column* pCol, Format* pFmt)
                                iYear, iMonth, iDay,
                                pFmt->m_eDateComponent,
                                pFmt->m_cDateSeparator) )
-    THROW("StrLib::bExtractDate2"_Stz);
+    THROW_USER("StrLib::bExtractDate2"_Stz);
 
   m_wDtm.m_wDte.m_uYearDelta  = iYear - C_YEAR_BASE;
   m_wDtm.m_wDte.m_uMonth = iMonth;

@@ -63,6 +63,15 @@ EndDefine
 EndDefine
 
 /*----------------------------------------------------------------------------*/
+/* THROW_EXCEPTION macro                                                      */
+/*----------------------------------------------------------------------------*/
+#define THROW_USER(szDescription) \
+  Correctness::vThrowUser(FK_THROW,VL_FATAL,\
+                          __func__,__FILE__,__LINE__,\
+                         szDescription); \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached             */
 /*----------------------------------------------------------------------------*/
 #define NEVER_REACH \

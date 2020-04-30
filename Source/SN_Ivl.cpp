@@ -39,7 +39,7 @@ i8 SN_Ivl::i(char** aacCrs, Column* pCol, Format* pFmt)
   i8 iSecond, iMilli;
   
   if ( ! StrLib::bExtractInterval(aacCrs, iSecond, iMilli) )
-    THROW("StrLib::bExtractInterval"_Stz);
+    THROW_USER("StrLib::bExtractInterval"_Stz);
 
   m_wDtm.m_wIvl.m_uSecond = iSecond;
   m_wDtm.m_wIvl.m_uMicro  = iMilli * C_1K;
