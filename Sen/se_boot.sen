@@ -34,8 +34,6 @@
         "db_tenant.sen"           include
 
 5 .put
-        "se_requests.sen"         include
-
         "op__liteOp.sen"          include
         "cmd_compiler.sen"        include
 
