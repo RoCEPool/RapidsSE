@@ -46,7 +46,7 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" .printf
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap pTagSet tagSet.appendStr
+        "__arg__" swap pTagSet tagSet.appendStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" .printf

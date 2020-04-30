@@ -130,7 +130,7 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
     }
     else
     // argument
-    if (pSynTags->szName(i_Syn)->bSame("__meta__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bSame("__arg__"_Stz)) {
       if (! bExtractArg(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
     }
@@ -140,7 +140,6 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
       if (! bExtractJson(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
       //pArgTags->vPrint();
-      continue;
     }
     else
     // remainder
@@ -240,27 +239,31 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
     
     if (pSynTags->szName(i_Syn)->bEqual("__job__"_Stz)) {
       i_Syn++;
-      continue;
     }
     
+    else
     if (pSynTags->szName(i_Syn)->bEqual("__name__"_Stz)) {
       i_Syn++;
-      continue;
     }
     
-    if (pSynTags->szName(i_Syn)->bEqual("__meta__"_Stz)) {
+    else
+    // TODO: shouldnt we match all args as well?
+    if (pSynTags->szName(i_Syn)->bEqual("__arg__"_Stz)) {
       //pSynTags->vPrint();
       return true;
     }
     
+    else
     if (! pTkn->bSame((pSynTags->szValue(i_Syn)))) {
 //      vTrace("%s\n"_Stz, pTkn->szChars());
 //      pSynTags->vDumpSetDetailed();
       return false;
     }
     
-    i_Syn++;
-    i_Tkn++;
+    else {
+      i_Syn++;
+      i_Tkn++;
+    }
   }
 
   return true;
