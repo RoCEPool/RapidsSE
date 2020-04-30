@@ -357,10 +357,8 @@ void Step::vSeriesName(void)
   
   Dic* pRootDic = AM::pRootDic();
   
-  Word* pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
-
   Word* pWord = nullptr;
-  while ( (pWord = pRootDic->pEachWord(pWord,pCategory)) ) {
+  while ( (pWord = pRootDic->pEachWord(pWord)) ) {
 
     s32 sStr;
     s32 sInt;
