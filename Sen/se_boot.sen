@@ -37,7 +37,7 @@
         "se_requests.sen"         include
 
         "op__liteOp.sen"          include
-        "cmd_Compiler.sen"        include
+        "cmd_compiler.sen"        include
 
 4 .put
         "job__compiler.sen"       include

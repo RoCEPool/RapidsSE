@@ -16296,11 +16296,11 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of cmd_Compiler.sen
+  // munge of cmd_compiler.sen
 
   sFileContents =
     "\""
-    "\\\"munged cmd_Compiler.sen \\\" .verbose \n"
+    "\\\"munged cmd_compiler.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
     "/* cmd_Compiler.sen -- Command Compiler                                       */\n"
     "/*============================================================================*/\n"
@@ -16791,7 +16791,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT cmd_Compiler.sen"_Stz
+  " CONSTANT cmd_compiler.sen"_Stz
   ;
 
   vCompileMungedColon(sFileContents);
@@ -17152,7 +17152,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"se_requests.sen\\\"         include\n"
     "\n"
     "        \\\"op__liteOp.sen\\\"          include\n"
-    "        \\\"cmd_Compiler.sen\\\"        include\n"
+    "        \\\"cmd_compiler.sen\\\"        include\n"
     "\n"
     "4 .put\n"
     "        \\\"job__compiler.sen\\\"       include\n"
