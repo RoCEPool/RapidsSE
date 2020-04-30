@@ -570,7 +570,6 @@ void Step::vIndexFetchNextN(void)
       if ( ! pCrwBuffer->bAppendRow(hRow)) {
         
         // Buffer is full ?
-        pCrwBuffer->vAppendClose();
         goto L_Exit;
       }
       
@@ -607,7 +606,11 @@ L_Exit:
   m_pRegSet->m_pEntBuffer = pEntBuffer;
   m_pRegSet->m_aLowerEntry = aLowerEntry;
   
-  // return the buffer
+  // cleanup and return the buffer
+  if (pCrwBuffer) {
+    pCrwBuffer->vAppendClose();
+    delete pRowCompactor;
+  }
   m_pDataStack->vPushPtr(pCrwBuffer);
   
   EXIT();
