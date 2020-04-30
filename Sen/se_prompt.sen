@@ -27,7 +27,7 @@
   // is token an integer?
   input::kind@ TN_INTEGER == if
 
-    input::token >int        // convert str to int, leave on stack
+    input::chars >int        // convert str to int, leave on stack
 
     compiler::isPostponing if
       "SHOULD NOT BE POSTPONING AN INT" .put
@@ -48,7 +48,7 @@
   // is token a string?
   input::kind@ TN_STRING == if
 
-    input::token             // put str on stack
+    input::chars             // put str on stack
 
     compiler::isPostponing if
       "SHOULD NOT BE POSTPONING A STR" .put
@@ -74,13 +74,13 @@
 
   // -- -- -- -- -- -- --
   // test for bye
-  input::token "bye" str.equal if
+  input::chars "bye" str.equal if
     false exit_rt
   then
 
   // -- -- -- -- -- -- --
   // is token a known word?
-  input::token word::find
+  input::chars word::find
   dup not if
     discard                     // token is an unknown word
     input::unknown

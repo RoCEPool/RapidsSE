@@ -455,6 +455,7 @@ public:
   void vInfoSetTableSet(void);
 
   // input
+  void vInputChars(void);
   void vInputClose(void);
   void vInputCppTokens(void);
   void vInputDump(void);
@@ -467,11 +468,10 @@ public:
   void vInputRead(void);
   void vInputSenTokens(void);
   void vInputStdin(void);
-  void vInputTerm(void);
-  void vInputText(void);
   void vInputUnknown(void);
   void vInputUseBegin(void);
   void vInputUseEnd(void);
+  void vInputUseString(void);
 
   // int
   void vIntAdd(void);

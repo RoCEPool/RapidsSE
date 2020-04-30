@@ -57,6 +57,8 @@ opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
     <streamDef> = __analyzeIndex
     <params>    = 2
   }
+
+  [ compiler::current@ word.TagSet@ tagSet.asStr . ]
 ;
     
 /*============================================================================*/

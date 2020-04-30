@@ -46,7 +46,7 @@ void Task::vAddAxioms(void)
   "  input::read"
   
   
-  //" \"((b))\" .put input::token . "
+  //" \"((b))\" .put input::chars . "
   // -- -- -- -- -- -- --
   // test for end of input?
   "  input::kind@ TN_NULL == if"
@@ -64,7 +64,7 @@ void Task::vAddAxioms(void)
   "      process::quit"
   "    then"
 
-  "    input::token"             // push str token onto stack
+  "    input::chars"             // push str token onto stack
   "    >int"                     // convert to int, leave on stack
 
   "    compiler::isCompiling if"
@@ -87,7 +87,7 @@ void Task::vAddAxioms(void)
   "      process::quit"
   "    then"
   
-  "    input::token"             // push str token onto stack
+  "    input::chars"             // push str token onto stack
   
   "    compiler::isCompiling if"
   "      encode::push"           // compile : encode push str
@@ -111,7 +111,7 @@ void Task::vAddAxioms(void)
   "    then"
 
   "    compiler::isCompiling if"
-  "      input::token"           // compile : encode push "<tagNm>"
+  "      input::chars"           // compile : encode push "<tagNm>"
   "      encode::push"           //         :
   "      \"tag::get\""           //         : encode tag::get
   "        word::find"           //         :
@@ -119,7 +119,7 @@ void Task::vAddAxioms(void)
   "      reenter"
   "    then"
   
-  "    input::token"             // interpret : push <tagNm> onto stack
+  "    input::chars"             // interpret : push <tagNm> onto stack
   "    tag::get"                 //           : translate to <tagValue>
   "    reenter" 
 
@@ -136,12 +136,12 @@ void Task::vAddAxioms(void)
   "  then"
   
   // push name token onto stack
-  "  input::token"
+  "  input::chars"
 
   // find word using name on stack
   "  word::find"
   "  dup not if "
-  "    \"Unable to find: \" . input::token ."
+  "    \"Unable to find: \" . input::chars ."
   "    input::dump"
   "    process::quit "
   "  then "
@@ -236,7 +236,7 @@ void Task::vAddAxioms(void)
   ": include-string"
   "  input::push"
   //"  dup ."
-  "  input::text!"
+  "  input::useString"
   "  input::useBegin"
   "  interpret"
   "  input::inspect"

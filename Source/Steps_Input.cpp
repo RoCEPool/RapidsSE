@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Input(void)
 {
+  vAddStep("input::chars"_Stz,     &Step::vInputChars);
   vAddStep("input::close"_Stz,     &Step::vInputClose);
   vAddStep("input::cppTokens"_Stz, &Step::vInputCppTokens);
   vAddStep("input::dump"_Stz,      &Step::vInputDump);
@@ -21,11 +22,24 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::read"_Stz,      &Step::vInputRead);
   vAddStep("input::senTokens"_Stz, &Step::vInputSenTokens);
   vAddStep("input::stdin"_Stz,     &Step::vInputStdin);
-  vAddStep("input::token"_Stz,     &Step::vInputTerm);
-  vAddStep("input::text!"_Stz,     &Step::vInputText);
   vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
   vAddStep("input::useBegin"_Stz,  &Step::vInputUseBegin);
   vAddStep("input::useEnd"_Stz,    &Step::vInputUseEnd);
+  vAddStep("input::useString"_Stz, &Step::vInputUseString);
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::term -- push term of current token onto data stack                  */
+/*----------------------------------------------------------------------------*/
+void Step::vInputChars(void)
+{
+  ENTRY();
+  
+  s48K sTkn(m_pInput->szChars());
+  
+  m_pDataStack->vPushStr(sTkn);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,40 +204,6 @@ void Step::vInputStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::term -- push term of current token onto data stack                  */
-/*----------------------------------------------------------------------------*/
-void Step::vInputTerm(void)
-{
-  ENTRY();
-  
-  s48K sTkn(m_pInput->szChars());
-  
-  m_pDataStack->vPushStr(sTkn);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* input::text! -- use string as input stream                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vInputText(void)
-{
-  ENTRY();
-  
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
-  }
-  
-  s48K sInput;                                             //! NEED STACK CHECKS
-  
-  m_pDataStack->vPopStr(sInput,__func__);
-    
-  m_pInput->vUseString(sInput);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* input::unknown -- unknown current token                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vInputUnknown(void)
@@ -262,6 +242,26 @@ void Step::vInputUseEnd(void)
   
   m_pInput->vUseEnd();
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::useString -- use string as input stream                             */
+/*----------------------------------------------------------------------------*/
+void Step::vInputUseString(void)
+{
+  ENTRY();
+  
+  if (m_pTask->m_iTraceMask) {
+    ASSERT(m_pTask->m_iTraceMask);
+  }
+  
+  s48K sInput;                                             //! NEED STACK CHECKS
+  
+  m_pDataStack->vPopStr(sInput,__func__);
+    
+  m_pInput->vUseString(sInput);
+  
   EXIT();
 }
 
