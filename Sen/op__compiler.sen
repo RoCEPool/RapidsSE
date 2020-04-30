@@ -39,28 +39,28 @@
 
   begin
 
-    input::next dup ";" str.equal not
+    input::next ";" str.equal not
 
     while
 
-      dup str.isMetaToken if
-         "__meta__" swap pSynTags tagSet.appendStr
+      input::chars str.isMetaToken if
+         "__meta__" input::chars pSynTags tagSet.appendStr
 
-      else dup str.isJsonToken if
-        "__json__" swap pSynTags tagSet.appendStr
+      else input::chars str.isJsonToken if
+        "__json__" input::chars pSynTags tagSet.appendStr
 
-      else dup "__etc__" str.equal if
-        "__etc__"  swap pSynTags tagSet.appendStr
+      else input::chars "__etc__" str.equal if
+        "__etc__"  input::chars pSynTags tagSet.appendStr
 
       else
-        dup pSynTags tagSet.appendStr
+        input::chars input::chars pSynTags tagSet.appendStr
 
       then then then
 
   repeat
 
   // discard the ";" from dstack
-  discard
+//discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
