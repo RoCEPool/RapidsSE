@@ -86,6 +86,19 @@
 
 jobSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
+/*
+: pipeline _info tags{
+  <jobDesc>  = "--description of job--"
+
+  <jobKind>  = JK_DIST2PC
+  <rspKind>  = RS_PARTICIPANT_ERROR
+  <ddlLock>  = DL_GRAB_READ
+
+  <preCheck> = bClusterStarted
+  }
+}
+*/
+
 jobInfo: pipeline
 {
   <jobDesc>  = "--description of job--"
@@ -97,6 +110,7 @@ jobInfo: pipeline
   <preCheck> = bClusterStarted
 }
 ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
