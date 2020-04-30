@@ -25,7 +25,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
   pSyntax   = nullptr;
   
-  while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
+  while ( (pSyntax = pRootDic->pEachWord(pSyntax,pCategory)) ) {
     
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();
@@ -48,7 +48,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
   pSyntax   = nullptr;
   
-  while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
+  while ( (pSyntax = pRootDic->pEachWord(pSyntax,pCategory)) ) {
     
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();

@@ -32,7 +32,7 @@ namespace SenVM
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
     Word* pEachWord(Word* pPrior);
-    Word* pEachWord(Word* pCategory, Word* pPrior);
+    Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindStep(StepFp fpStep);
     bool  bHasWords(void);

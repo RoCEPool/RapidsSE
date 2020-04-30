@@ -157,7 +157,7 @@ Word* Dic::pEachWord(Word* pPrior)
 /*----------------------------------------------------------------------------*/
 /* progressively return each word which is of given kind                      */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pEachWord(Word* pCategory, Word* pPrior)
+Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

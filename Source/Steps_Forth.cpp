@@ -20,8 +20,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
   vAddStep("see"_Stz,               &Step::vSee,              true);
   vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
-  vAddStep("series-name-job"_Stz,   &Step::vSeriesNameJob);
-  vAddStep("series-name-op"_Stz,    &Step::vSeriesNameOp);
+  vAddStep("series-name"_Stz,       &Step::vSeriesName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -345,51 +344,7 @@ void Step::vSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* series-name -- generate next name within series for word named on stack    */
 /*----------------------------------------------------------------------------*/
-void Step::vSeriesNameJob(void)
-{
-  ENTRY();
-  
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 iNext = 0;
-  
-  Dic* pRootDic = AM::pRootDic();
-  
-  Word* pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
-
-  Word* pWord = nullptr;
-  while ( (pWord = pRootDic->pEachWord(pCategory,pWord)) ) {
-
-    s32 sStr;
-    s32 sInt;
-    
-    StrLib::vSplit_si(sStr.azChar(),sInt.azChar(),pWord->szWordNm()->azChar());
-    
-    // vTrace("  %s - %lld\n"_Stz,sStr.azChar(),sInt.iToI8());
-    
-    if (sStr.bSame(sName)) {
-      iNext = sInt.iToI8() + 1;
-      break;
-    }
-  }
-
-  s32 sNextName(sName);
-  sNextName.vCatSprint("%02lld"_Stz,iNext);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_pDataStack->vPushStr(sNextName);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* series-name -- generate next name within series for word named on stack    */
-/*----------------------------------------------------------------------------*/
-void Step::vSeriesNameOp(void)
+void Step::vSeriesName(void)
 {
   ENTRY();
   
@@ -405,12 +360,12 @@ void Step::vSeriesNameOp(void)
   Word* pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
 
   Word* pWord = nullptr;
-  while ( (pWord = pRootDic->pEachWord(pCategory,pWord)) ) {
+  while ( (pWord = pRootDic->pEachWord(pWord,pCategory)) ) {
 
     s32 sStr;
     s32 sInt;
     
-    StrLib::vSplit_si(sStr.azChar(),sInt.azChar(),pWord->szWordNm()->azChar());
+    StrLib::vSplitSeries(sStr.azChar(),sInt.azChar(),pWord->szWordNm()->azChar());
     
     // vTrace("  %s - %lld\n"_Stz,sStr.azChar(),sInt.iToI8());
     

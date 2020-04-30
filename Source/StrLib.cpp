@@ -3013,9 +3013,9 @@ void StrLib::vSkipWhite(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSplit_si: split src into string and integer components                    */
+/* vSplitSeries: split src into string and integer components                    */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSplit_si(char* azStr, char* azInt, char* azSrc)
+void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
 {
   _static_
   
