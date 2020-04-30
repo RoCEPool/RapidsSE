@@ -91,16 +91,17 @@ void Step::vInputKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::next -- read next token and push its term                           */
+/* input::next -- read next token and push its chars                          */
 /*----------------------------------------------------------------------------*/
 void Step::vInputNext(void)
 {
   ENTRY();
   
+  // read next token
   m_pInput->vReadToken();
   
+  // push the token
   s48K sTkn(m_pInput->szChars());
-  
   m_pDataStack->vPushStr(sTkn);
   
   EXIT();

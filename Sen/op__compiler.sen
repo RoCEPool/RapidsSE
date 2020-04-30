@@ -5,7 +5,7 @@
 " op__compiler.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* the op syntax definer. creates a syntax definition for an operator cmd     */
 /*----------------------------------------------------------------------------*/
 : opSyntax:
 
@@ -13,14 +13,14 @@
 
   input::next locals| sOpNm |
 
-  // MARK: OPINFO
-  //sOpNm series-name-job "_syntax" str.cat :create
   sOpNm series-name-op "_syntax" str.cat :create
 
   // set the word category to be jobSyntax
   //[ compiler::current@ , ] compiler::current@ word.category!
   //find: jobSyntax: compiler::current@ word.category!
-  find: opSyntax: compiler::current@ word.category!
+
+//find: opSyntax:                     compiler::current@ word.category!
+  [ compiler::current@ encode::push ] compiler::current@ word.category!
 
   // attach an ename set to the word being created
   tagSet::new locals| pTagSet |
@@ -41,8 +41,10 @@
   pTagSet tagSet.appendStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse each input token till ';', build ename set representing the syntax
+  // parse each input token till ';', building tag set representing the syntax
+
   begin
+
     input::next
     dup ";" str.equal not
     while
