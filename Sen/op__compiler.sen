@@ -43,13 +43,13 @@
 
     while
 
-      input::chars str.isMetaToken if
+      input::isMetaToken if
          "__meta__" input::chars pSynTags tagSet.appendStr
 
-      else input::chars str.isJsonToken if
+      else input::isJsonToken if
         "__json__" input::chars pSynTags tagSet.appendStr
 
-      else input::chars "__etc__" str.equal if
+      else input::isEtcToken if
         "__etc__"  input::chars pSynTags tagSet.appendStr
 
       else
@@ -58,9 +58,6 @@
       then then then
 
   repeat
-
-  // discard the ";" from dstack
-//discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
