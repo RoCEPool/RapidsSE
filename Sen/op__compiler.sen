@@ -7,6 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* the op syntax definer. creates a syntax definition for an operator cmd     */
 /*----------------------------------------------------------------------------*/
+
+: opSyntax:
+
+  jobSyntax:
+;
+
+/*
 : opSyntax:
 
   // create a word using next token from input source as the word name
@@ -57,6 +64,7 @@
     // ..to be written
     discard
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* promote current word to be an _info word                                   */
