@@ -56,10 +56,6 @@
 : memoryReset memory::reset ;
 : memoryStats memory::statistics ;
 
-: forth prompt
-
-  task_interpreter
-;
 
 /*============================================================================*/
 /* end                                                                        */

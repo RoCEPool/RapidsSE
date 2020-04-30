@@ -1184,46 +1184,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of JobOperand.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged JobOperand.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* jobOperand.sen -- Job Operand                                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" jobOperand.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* install demon pipeline job                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": demon::install\n"
-    "\n"
-    "  ddlLock[].dropRead\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  \\\"__\\\" <pipelineNm> str.cat locals| sDemonNm |\n"
-    "\n"
-    "  sDemonNm \\\"installing demon pipeline job: %v\\\" .printf\n"
-    "\n"
-    "  sDemonNm >createInRoot locals| pDemonWd |\n"
-    "\n"
-    "  job[] pDemonWd word.object!\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT JobOperand.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_object.sen
 
   sFileContents =
@@ -3758,85 +3718,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_Universal.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of se_docols.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged se_docols.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_docols.sen -- docol shorthands                                          */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" se_docols.sen\\\" .verbose\n"
-    "\n"
-    ": schemaTest \\\"\\\" utility::schemaTest ;\n"
-    "\n"
-    ": schemaTestAll\n"
-    "\n"
-    "  \\\"A\\\" utility::schemaTest\n"
-    "  \\\"B\\\" utility::schemaTest\n"
-    "  \\\"C\\\" utility::schemaTest\n"
-    "  \\\"D\\\" utility::schemaTest\n"
-    "  \\\"E\\\" utility::schemaTest\n"
-    "  \\\"F\\\" utility::schemaTest\n"
-    "  \\\"G\\\" utility::schemaTest\n"
-    "  \\\"H\\\" utility::schemaTest\n"
-    "  \\\"I\\\" utility::schemaTest\n"
-    "  \\\"J\\\" utility::schemaTest\n"
-    " ;\n"
-    "\n"
-    ": test0 prompt test::test0 ;\n"
-    ": test1 prompt test::test1 ;\n"
-    ": test2 prompt test::test2 ;\n"
-    ": test3 prompt test::test3 ;\n"
-    ": test4 prompt test::test4 ;\n"
-    ": test5 prompt test::test5 ;\n"
-    ": test6 prompt test::test6 ;\n"
-    ": test7 prompt test::test7 ;\n"
-    ": test8 prompt test::test8 ;\n"
-    ": test9 prompt test::test9 ;\n"
-    ": test10 prompt test::test10 ;\n"
-    ": test11 prompt test::test11 ;\n"
-    ": test12 prompt test::test12 ;\n"
-    ": test13 prompt test::test13 ;\n"
-    ": test14 prompt test::test14 ;\n"
-    ": test15 prompt test::test15 ;\n"
-    ": test16 prompt test::test16 ;\n"
-    ": test17 prompt test::test17 ;\n"
-    ": test18 prompt test::test18 ;\n"
-    ": test19 prompt test::test19 ;\n"
-    ": test20 prompt test::test20 ;\n"
-    ": test21 prompt test::test21 ;\n"
-    ": test22 prompt test::test22 ;\n"
-    ": test23 prompt test::test23 ;\n"
-    ": test24 prompt test::test24 ;\n"
-    ": test25 prompt test::test25 ;\n"
-    "\n"
-    ": llc test::test0 ;\n"
-    "\n"
-    ": stepTimingReset StepTiming::reset ;\n"
-    ": stepTimingStart StepTiming::start ;\n"
-    ": stepTimingWrite StepTiming::write ;\n"
-    "\n"
-    ": memoryReset memory::reset ;\n"
-    ": memoryStats memory::statistics ;\n"
-    "\n"
-    ": forth prompt\n"
-    "\n"
-    "  task_interpreter\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_docols.sen"_Stz
   ;
 
   vCompileMungedColon(sFileContents);
@@ -11626,6 +11507,46 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_demons.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_demons.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_demon.sen -- demons                                                     */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_demon.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* install demon pipeline job                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": demon::install\n"
+    "\n"
+    "  ddlLock[].dropRead\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  \\\"__\\\" <pipelineNm> str.cat locals| sDemonNm |\n"
+    "\n"
+    "  sDemonNm \\\"installing demon pipeline job: %v\\\" .printf\n"
+    "\n"
+    "  sDemonNm >createInRoot locals| pDemonWd |\n"
+    "\n"
+    "  job[] pDemonWd word.object!\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_demons.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_output.sen
 
   sFileContents =
@@ -13201,6 +13122,11 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  input::useEnd\n"
     "  input::pop\n"
+    " ;\n"
+    "\n"
+    ": forth prompt\n"
+    "\n"
+    "  task_interpreter\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
@@ -17097,7 +17023,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"se_str.sen\\\"              include\n"
     "        \\\"se_tags.sen\\\"             include\n"
     "        \\\"se_log.sen\\\"              include\n"
-    "        \\\"se_prompt.sen\\\"           include\n"
     "\n"
     "8 .put\n"
     "        \\\"se_path.sen\\\"             include\n"
@@ -17122,7 +17047,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"cmd_compiler.sen\\\"        include\n"
     "\n"
     "4 .put\n"
-    "        \\\"jobOperand.sen\\\"          include\n"
     "        \\\"OPERAND__handlers.sen\\\"   include\n"
     "        \\\"jobSyntax.sen\\\"           include\n"
     "        \\\"jobWords.sen\\\"            include\n"
@@ -17310,8 +17234,10 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"test_rjh.sen\\\"            include\n"
     "\n"
     "1 .put\n"
-    "        \\\"se_docols.sen\\\"           include\n"
+    "        \\\"se_demons.sen\\\"           include\n"
+    "        \\\"se_misc.sen\\\"             include\n"
     "        \\\"se_munge.sen\\\"            include\n"
+    "        \\\"se_prompt.sen\\\"           include\n"
     "        \\\"se_vortex.sen\\\"           include\n"
     "\n"
     "0 .put\n"
@@ -19822,6 +19748,81 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job__End.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_misc.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_misc.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_docols.sen -- docol shorthands                                          */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_docols.sen\\\" .verbose\n"
+    "\n"
+    ": schemaTest \\\"\\\" utility::schemaTest ;\n"
+    "\n"
+    ": schemaTestAll\n"
+    "\n"
+    "  \\\"A\\\" utility::schemaTest\n"
+    "  \\\"B\\\" utility::schemaTest\n"
+    "  \\\"C\\\" utility::schemaTest\n"
+    "  \\\"D\\\" utility::schemaTest\n"
+    "  \\\"E\\\" utility::schemaTest\n"
+    "  \\\"F\\\" utility::schemaTest\n"
+    "  \\\"G\\\" utility::schemaTest\n"
+    "  \\\"H\\\" utility::schemaTest\n"
+    "  \\\"I\\\" utility::schemaTest\n"
+    "  \\\"J\\\" utility::schemaTest\n"
+    " ;\n"
+    "\n"
+    ": test0 prompt test::test0 ;\n"
+    ": test1 prompt test::test1 ;\n"
+    ": test2 prompt test::test2 ;\n"
+    ": test3 prompt test::test3 ;\n"
+    ": test4 prompt test::test4 ;\n"
+    ": test5 prompt test::test5 ;\n"
+    ": test6 prompt test::test6 ;\n"
+    ": test7 prompt test::test7 ;\n"
+    ": test8 prompt test::test8 ;\n"
+    ": test9 prompt test::test9 ;\n"
+    ": test10 prompt test::test10 ;\n"
+    ": test11 prompt test::test11 ;\n"
+    ": test12 prompt test::test12 ;\n"
+    ": test13 prompt test::test13 ;\n"
+    ": test14 prompt test::test14 ;\n"
+    ": test15 prompt test::test15 ;\n"
+    ": test16 prompt test::test16 ;\n"
+    ": test17 prompt test::test17 ;\n"
+    ": test18 prompt test::test18 ;\n"
+    ": test19 prompt test::test19 ;\n"
+    ": test20 prompt test::test20 ;\n"
+    ": test21 prompt test::test21 ;\n"
+    ": test22 prompt test::test22 ;\n"
+    ": test23 prompt test::test23 ;\n"
+    ": test24 prompt test::test24 ;\n"
+    ": test25 prompt test::test25 ;\n"
+    "\n"
+    ": llc test::test0 ;\n"
+    "\n"
+    ": stepTimingReset StepTiming::reset ;\n"
+    ": stepTimingStart StepTiming::start ;\n"
+    ": stepTimingWrite StepTiming::write ;\n"
+    "\n"
+    ": memoryReset memory::reset ;\n"
+    ": memoryStats memory::statistics ;\n"
+    "\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_misc.sen"_Stz
   ;
 
   vCompileMungedColon(sFileContents);

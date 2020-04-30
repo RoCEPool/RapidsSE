@@ -13,7 +13,6 @@
         "se_str.sen"              include
         "se_tags.sen"             include
         "se_log.sen"              include
-        "se_prompt.sen"           include
 
 8 .put
         "se_path.sen"             include
@@ -38,7 +37,6 @@
         "cmd_compiler.sen"        include
 
 4 .put
-        "jobOperand.sen"          include
         "OPERAND__handlers.sen"   include
         "jobSyntax.sen"           include
         "jobWords.sen"            include
@@ -226,8 +224,10 @@ cmd::fillOut_all_cmd
         "test_rjh.sen"            include
 
 1 .put
-        "se_docols.sen"           include
+        "se_demons.sen"           include
+        "se_misc.sen"             include
         "se_munge.sen"            include
+        "se_prompt.sen"           include
         "se_vortex.sen"           include
 
 0 .put
