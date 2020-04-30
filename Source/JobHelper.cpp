@@ -5,6 +5,11 @@
 #include "Jobs.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
 bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
@@ -77,7 +82,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   
   L_Matched:
   
-  bool b = bExtractArgs(pArgTags,pSyntax->pWordTags(),pTknVec);
+  bool b = bExtractAllArgs(pArgTags,pSyntax->pWordTags(),pTknVec);
   if (! b) {
     if (AM::bDeveloper()) {
       SP_TknVecStr spTvs;
@@ -89,60 +94,64 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
     return false;
   }
   
-  // pArgEnmSet->vPrint();
+  // pArgTags->vPrint();
   
   return true;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* parse token vec of command and extract arguments                           */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractArgs(TagSet* pArgTags,
-                             TagSet* pSynTags,
-                             TokenVec* pTknVec
-                             )
+bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
+                                TagSet* pSynTags,
+                                TokenVec* pTknVec)
 {
+  i8 nTags = pSynTags->nEnames();
   i8 nTokens = pTknVec->nTokens();
-  i8 nEnames = pSynTags->nEnames();
-  
-//  if (nEnames != nTokens)
-//    return false;
-  
+    
   i8 i_Syn = 0;
   i8 i_Tkn = 0;
 
-  while (i_Tkn < nTokens && i_Syn < nEnames) {
+  while (i_Tkn < nTokens && i_Syn < nTags) {
     
+    // job class
     if (pSynTags->szName(i_Syn)->bSame("__job__"_Stz)) {
       i_Syn++;
-      continue;
     }
-    
+    else
+    // name of command
     if (pSynTags->szName(i_Syn)->bSame("__name__"_Stz)) {
       i_Syn++;
-      continue;
     }
-    
+    else
+    // argument
     if (pSynTags->szName(i_Syn)->bSame("__meta__"_Stz)) {
-      if (! bExtractMeta(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
+      if (! bExtractArg(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
-      continue;
     }
-   
+    else
+    // json argument
     if (pSynTags->szName(i_Syn)->bSame("__json__"_Stz)) {
       if (! bExtractJson(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
         return false;
-      //pArgEnmSet->vPrint();
+      //pArgTags->vPrint();
       continue;
     }
-    
+    else
+    // remainder
     if (pSynTags->szName(i_Syn)->bSame("__etc__"_Stz)) {
-
       break;
     }
-    
-    i_Syn++;
-    i_Tkn++;
+    // command noun/verb
+    else {
+      i_Syn++;
+      i_Tkn++;
+    }
   }
   
   return true;
@@ -151,16 +160,13 @@ bool JobHelper::bExtractArgs(TagSet* pArgTags,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractJson(TagSet*   pArgEnmSet,
-                             TagSet*   pSynEnmSet,
-                             i8&       i_Syn_,
-                             TokenVec* pTknVec,
-                             i8&       i_Tkn_
-                             )
+bool JobHelper::bExtractJson(TagSet*   pArgTags,
+                             TagSet*   pSynTags, i8& i_Syn_,
+                             TokenVec* pTknVec,  i8& i_Tkn_)
 {
   Token* pTkn = nullptr;
 
-  ASSERT(pSynEnmSet->szName(i_Syn_)->bSame("__json__"_Stz));
+  ASSERT(pSynTags->szName(i_Syn_)->bSame("__json__"_Stz));
   
   pTkn = pTknVec->pGet(i_Tkn_);
   ASSERT(pTkn->bSame("{"_Stz));
@@ -177,10 +183,10 @@ bool JobHelper::bExtractJson(TagSet*   pArgEnmSet,
     vTrace("  %s\n"_Stz,pTkn->szChars());
     Token* pTkn_value = pTkn;
     
-    pArgEnmSet->vInsert(pTkn_name->szChars(),
+    pArgTags->vInsert(pTkn_name->szChars(),
                      pTkn_value->szChars());
     
-    //pArgEnmSet->vPrint();
+    //pArgTags->vPrint();
 
 
     pTkn = pTknVec->pGet(++i_Tkn_);
@@ -200,21 +206,18 @@ bool JobHelper::bExtractJson(TagSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractMeta(TagSet*   pArgEnmSet,
-                             TagSet*   pSynEnmSet,
-                             i8&       i_Syn_,
-                             TokenVec* pTknVec,
-                             i8&       i_Tkn_
-                             )
+bool JobHelper::bExtractArg(TagSet*   pArgTags,
+                            TagSet*   pSynTags, i8& i_Syn_,
+                            TokenVec* pTknVec,  i8& i_Tkn_)
 {
-  Stz* szValue = pSynEnmSet->szValue(i_Syn_);
+  Stz* szValue = pSynTags->szValue(i_Syn_);
   
   Token* pTkn = pTknVec->pGet(i_Tkn_);
   Stz* szTerm = pTkn->szChars();
   
-  pArgEnmSet->vInsert(szValue,szTerm);
+  pArgTags->vInsert(szValue,szTerm);
   
-  // pArgEnmSet->vPrint();
+  // pArgTags->vPrint();
   
   i_Tkn_++;
   i_Syn_++;
@@ -225,7 +228,7 @@ bool JobHelper::bExtractMeta(TagSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* test if the token vector matches the given job syntax                      */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynEnmSet)
+bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
 {
   i8 nTokens = pTknVec->nTokens();
   
@@ -235,24 +238,24 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynEnmSet)
   while (i_Tkn < nTokens) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
-    if (pSynEnmSet->szName(i_Syn)->bEqual("__job__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bEqual("__job__"_Stz)) {
       i_Syn++;
       continue;
     }
     
-    if (pSynEnmSet->szName(i_Syn)->bEqual("__name__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bEqual("__name__"_Stz)) {
       i_Syn++;
       continue;
     }
     
-    if (pSynEnmSet->szName(i_Syn)->bEqual("__meta__"_Stz)) {
-      //pSynEnmSet->vPrint();
+    if (pSynTags->szName(i_Syn)->bEqual("__meta__"_Stz)) {
+      //pSynTags->vPrint();
       return true;
     }
     
-    if (! pTkn->bSame((pSynEnmSet->szValue(i_Syn)))) {
+    if (! pTkn->bSame((pSynTags->szValue(i_Syn)))) {
 //      vTrace("%s\n"_Stz, pTkn->szChars());
-//      pSynEnmSet->vDumpSetDetailed();
+//      pSynTags->vDumpSetDetailed();
       return false;
     }
     

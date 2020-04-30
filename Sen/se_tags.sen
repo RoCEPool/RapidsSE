@@ -138,27 +138,27 @@
 ;
   
 /*----------------------------------------------------------------------------*/
-/* are current input chars a meta token ?  <tag>                              */
+/* are current input chars a json token ?                                     */
 /*----------------------------------------------------------------------------*/
-: input::isMetaToken
+: input::isEtc
 
-  input::chars str.isMetaToken
+  input::chars "__etc__" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
 /* are current input chars a json token ?                                     */
 /*----------------------------------------------------------------------------*/
-: input::isJsonToken
+: input::isJson
 
   input::chars str.isJsonToken
 ;
 
 /*----------------------------------------------------------------------------*/
-/* are current input chars a json token ?                                     */
+/* are current input chars a meta token ?  <tag>                              */
 /*----------------------------------------------------------------------------*/
-: input::isEtcToken
+: input::isTag
 
-  input::chars "__etc__" str.equal
+  input::chars str.isMetaToken
 ;
 
 

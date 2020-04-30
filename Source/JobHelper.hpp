@@ -9,32 +9,24 @@ namespace Jobs
   {
   public:
   
-    static bool bParseCmd(TagSet*   pArgEnmSet,
-                          TokenVec* pTknVec
-                          );
+    static bool bParseCmd(TagSet*   pArgTags,
+                          TokenVec* pTknVec);
   
-    static bool bExtractArgs(TagSet*   pArgEnmSet,
-                             TagSet*   pSynEnmSet,
-                             TokenVec* pTknVec
-                             );
+  private:
+    static bool bExtractAllArgs(TagSet*   pArgTags,
+                                TagSet*   pSynTags,
+                                TokenVec* pTknVec);
 
-    static bool bExtractJson(TagSet*   pArgEnmSet,
-                             TagSet*   pSynEnmSet,
-                             i8&       i_Syn_,
-                             TokenVec* pTknVec,
-                             i8&       i_Tkn_
-                             );
-  
-    static bool bExtractMeta(TagSet*   pArgEnmSet,
-                             TagSet*   pSynEnmSet,
-                             i8&       i_Syn_,
-                             TokenVec* pTknVec,
-                             i8&       i_Tkn_
-                             );
+    static bool bExtractArg(TagSet*    pArgTags,
+                             TagSet*   pSynTags, i8& i_Syn_,
+                             TokenVec* pTknVec,  i8& i_Tkn_);
+    
+    static bool bExtractJson(TagSet*   pArgTags,
+                             TagSet*   pSynTags, i8& i_Syn_,
+                             TokenVec* pTknVec,  i8& i_Tkn_);
   
     static bool bMatchesSyntax(TokenVec* pTknVec,
-                               TagSet*   pSynEnmSet
-                              );
+                               TagSet*   pSynTags);
 
   };
 }
