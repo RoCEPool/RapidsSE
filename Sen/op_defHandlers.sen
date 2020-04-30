@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OPERAND__handlers.sen -- Default Operand Handlers                          */
+/* op_defHandlers.sen -- Default Operand Handlers                             */
 /*============================================================================*/
 
 " OPERAND__handlers.sen" .verbose

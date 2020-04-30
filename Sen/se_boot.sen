@@ -37,7 +37,6 @@
         "cmd_compiler.sen"        include
 
 4 .put
-        "OPERAND__handlers.sen"   include
         "jobSyntax.sen"           include
         "jobWords.sen"            include
         "job2pc.sen"              include
@@ -100,6 +99,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 3 .put
+        "op_defHandlers.sen"         include
         "op__common.sen"             include
         "op__tagSets.sen"            include
 
