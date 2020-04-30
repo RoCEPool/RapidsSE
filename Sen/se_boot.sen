@@ -34,7 +34,7 @@
         "db_tenant.sen"           include
 
 5 .put
-        "op__liteOp.sen"          include
+        "tpl_procedures.sen"      include
         "cmd_compiler.sen"        include
 
 4 .put
