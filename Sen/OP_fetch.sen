@@ -89,6 +89,7 @@
   // no more data ?
   Operand[].isNull if
     tablePtn[].get tablePtnDropRead2
+    planner[].delete
     Operand[].newEosMarker
     Operand[].pipeOut
   then

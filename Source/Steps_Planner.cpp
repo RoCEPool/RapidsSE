@@ -13,6 +13,7 @@ void Step::vAddSteps_Planner(void)
   
   vAddStep("planner[].chosenPath"_Stz,     &Step::vPlannerChosenPathN);
   vAddStep("planner[].choosePaths"_Stz,    &Step::vPlannerChoosePathsN);
+  vAddStep("planner[].delete"_Stz,         &Step::vPlannerDeleteN);
   vAddStep("planner[].fetchTechnique@"_Stz,&Step::vPlannerFetchTechniqueFetchN);
   vAddStep("planner[]"_Stz,                &Step::vPlannerGetN);
   vAddStep("planner[].genPaths"_Stz,       &Step::vPlannerGenPathsN);
