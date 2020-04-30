@@ -38,7 +38,6 @@
         "cmd_compiler.sen"        include
 
 4 .put
-        "job__compiler.sen"       include
         "jobOperand.sen"          include
         "OPERAND__handlers.sen"   include
         "jobSyntax.sen"           include
