@@ -129,6 +129,12 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
       i_Syn++;
     }
     else
+    // command noun/verb
+    if (pSynTags->szName(i_Syn)->bSame("__cmd__"_Stz)) {
+      i_Syn++;
+      i_Tkn++;
+    }
+    else
     // argument
     if (pSynTags->szName(i_Syn)->bSame("__arg__"_Stz)) {
       if (! bExtractArg(pArgTags,pSynTags,i_Syn,pTknVec,i_Tkn))
@@ -146,10 +152,8 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
     if (pSynTags->szName(i_Syn)->bSame("__etc__"_Stz)) {
       break;
     }
-    // command noun/verb
     else {
-      i_Syn++;
-      i_Tkn++;
+      RASSERT(0);
     }
   }
   
