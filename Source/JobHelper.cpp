@@ -22,7 +22,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can we find a job which matches the syntax?
   
-  pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
+  pCategory = pRootDic->pFindWord("cmdSyntax:"_Stz);
   pSyntax   = nullptr;
   
   while ( (pSyntax = pRootDic->pEachWord(pSyntax,pCategory)) ) {
@@ -41,30 +41,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
       goto L_Matched;
     }
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // can we find an operator which matches the syntax?
-
-  pCategory = pRootDic->pFindWord("opSyntax:"_Stz);
-  pSyntax   = nullptr;
-  
-  while ( (pSyntax = pRootDic->pEachWord(pSyntax,pCategory)) ) {
     
-    //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
-    //pSyntax->pTagSet()->vDumpSet();
-    
-    if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pWordTags())) {
-      
-      //vTrace("    matches\n"_Stz);
-      
-      pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
-      s32 sJobName(pSyntax->pWordTags()->szValue("__Name__"_Stz));
-      //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-      pArgTags->vInsert(C_TAG_JOBNM,sJobName);
-      goto L_Matched;
-    }
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no match
   
