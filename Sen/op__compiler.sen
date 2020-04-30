@@ -16,29 +16,23 @@
   sOpNm series-name-op "_syntax" str.cat :create
 
   // set the word category to be jobSyntax
-  //[ compiler::current@ , ] compiler::current@ word.category!
-  //find: jobSyntax: compiler::current@ word.category!
-
 //find: opSyntax:                     compiler::current@ word.category!
   [ compiler::current@ encode::push ] compiler::current@ word.category!
 
-  // attach an ename set to the word being created
-  tagSet::new locals| pTagSet |
+  // attach  tag set to hold syntax to the word being created
+  tagSet::new locals| pSynTags |
 
-  pTagSet compiler::current@ word.TagSet!
+  pSynTags compiler::current@ word.TagSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "__name__" sOpNm
-    pTagSet tagSet.appendStr
+  "__name__" sOpNm pSynTags tagSet.appendStr
 
   // skip the :: token from input source
   input::next discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   "__job__" "CN_JOB_UNIVERSAL"
-  pTagSet tagSet.appendStr
+  pSynTags tagSet.appendStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', building tag set representing the syntax
@@ -50,28 +44,24 @@
     while
 
       dup str.isMetaToken if
-        // dup "%v is a meta token" .printf
-        // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap pTagSet tagSet.appendStr
+         "__meta__" swap pSynTags tagSet.appendStr
 
       else dup str.isJsonToken if
-        // dup "%v is a json token" .printf
-        // add ("*",json,TN_STRING) in ename set
-        "__json__" swap pTagSet tagSet.appendStr
+        "__json__" swap pSynTags tagSet.appendStr
 
       else dup "__etc__" str.equal if
-        "__etc__"  swap pTagSet tagSet.appendStr
+        "__etc__"  swap pSynTags tagSet.appendStr
 
       else
-        // dup "%v is a normal token" .printf
-        // add (word,"",TN_STRING) in ename set
-        dup pTagSet tagSet.appendStr
+        dup pSynTags tagSet.appendStr
 
       then then then
   repeat
 
   // discard the ";" from dstack
   discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // pTagSet tagSet.asStr .
 
@@ -81,7 +71,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* promote current word to be an _info word                                 */
+/* promote current word to be an _info word                                   */
 /*----------------------------------------------------------------------------*/
 : _info immediate
 
