@@ -26,13 +26,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  "__job__" "CN_JOB_UNIVERSAL" pSynTags tagSet.appendStr
+
   "__name__" sOpNm pSynTags tagSet.appendStr
 
   // skip the :: token from input source
   input::next discard
-
-  "__job__" "CN_JOB_UNIVERSAL"
-  pSynTags tagSet.appendStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', building tag set representing the syntax

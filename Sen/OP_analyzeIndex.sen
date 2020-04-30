@@ -47,8 +47,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: anidx :: anidx <tableNm> <indexNm> ;
-opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
+//           name     cmd          arg       arg
+   opSyntax: anidx :: anidx        <tableNm> <indexNm> ;
+   opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
 
 : anidx _info tagCopy: liteOp_tags
   tags{
