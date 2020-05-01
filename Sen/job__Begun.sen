@@ -130,8 +130,7 @@
 
 cmdSyntax: _Begun :: _Begun ;
 
-jobInfo: _Begun
-{
+jobInfo: _Begun {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC

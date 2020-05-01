@@ -122,8 +122,7 @@
 
 cmdSyntax: _Cancelled :: _Cancelled ;
 
-jobInfo: _Cancelled
-{
+jobInfo: _Cancelled {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC

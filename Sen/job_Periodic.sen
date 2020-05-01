@@ -45,8 +45,7 @@
 
 cmdSyntax: periodic :: periodic ;
 
-jobInfo: periodic
-{
+jobInfo: periodic {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL
