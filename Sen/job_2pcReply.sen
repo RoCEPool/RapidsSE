@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job2pc.sen -- Distributed 2PC Job related words                            */
+/* job_2pcReply.sen -- Distributed 2PC Job related words                      */
 /*============================================================================*/
 
-" job2pc.sen" .verbose
+" job_2pcReply.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distribute current originating job to all participating nodes              */
