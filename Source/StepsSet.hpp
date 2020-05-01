@@ -862,7 +862,6 @@ public:
   void vLockDropWrite(void);
   void vLockGrabRead(void);
   void vLockGrabWrite(void);
-  void vLockInit(void);
 
   // locks
   void vLockTrackerList(void);

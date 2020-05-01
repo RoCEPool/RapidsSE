@@ -13,7 +13,6 @@ void Step::vAddSteps_Lock(void)
   vAddStep("lock.dropWrite"_Stz,  &Step::vLockDropWrite);
   vAddStep("lock.grabRead"_Stz,   &Step::vLockGrabRead);
   vAddStep("lock.grabWrite"_Stz,  &Step::vLockGrabWrite);
-  vAddStep("lock.init"_Stz,       &Step::vLockInit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,25 +75,6 @@ void Step::vLockGrabWrite(void)
   ASSERT(CN_LOCK == pLock->eClass());
   
   pLock->vGrabWrite();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* lock.init -- initialise lock                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vLockInit(void)
-{
-  ENTRY();
-  
-  Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
-  
-  new(pLock) Lock(LK_UNKNOWN,nullptr);
-  
-  ASSERT(pLock);
-  ASSERT(CN_LOCK == pLock->eClass());
-  
-  Word* pLockWord = Word::pToWord(pLock);
   
   EXIT();
 }
