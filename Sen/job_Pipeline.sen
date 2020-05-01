@@ -86,7 +86,6 @@
 
 cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
-/*
 : pipeline _info tags{
   <jobDesc>  = "--description of job--"
 
@@ -97,10 +96,9 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
   <preCheck> = bClusterStarted
 }
 ;
-*/
 
-jobInfo: pipeline
-{
+/*
+jobInfo: pipeline {
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC
@@ -110,6 +108,7 @@ jobInfo: pipeline
   <preCheck> = bClusterStarted
 }
 ;
+*/
 
 /*============================================================================*/
 /* end                                                                        */
