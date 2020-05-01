@@ -1273,7 +1273,9 @@ void Engine::vSignalHandler(int iSignal)
 {
   fprintf(stderr,
           "Engine::vSignalHandler:\n"
+          "Node = %s\n"
           "iSignal = %lld\n",
+          AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
           (i8)iSignal);
   
   vThreadCallStackDump();

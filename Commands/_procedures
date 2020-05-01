@@ -126,11 +126,14 @@ begin
   stage stageA on origin :
     start | periodicOp once | stageB
 
-  stage stageB on all nodes :
-    dropTable $tableNm | stageC
+  stage stageB on all partitions :
+    truncateOp $tableNm | stageC
 
-  stage stageC on origin :
-    sink | stageA
+  stage stageC on all nodes :
+    dropTable $tableNm | stageD
+
+  stage stageD on origin :
+     sink | stageA
 
 end;
 

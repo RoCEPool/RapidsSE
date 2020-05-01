@@ -113,6 +113,7 @@ namespace Pipelines
     void vSendToAllNodes(Operand* pOperand, bool bSet, eXK eXmitKind);
     void vSendToAllOriginPartitions(Operand* pOperand, bool bSet, eXK eXmitKind);
     void vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind);
+    void vSendToNode(Operand* pOperand, bool bSet, eXK eXmitKind,i8 i_Nde);
     void vSendToOrigin(Operand* pOperand, bool bSet, eXK eXmitKind);
     void vSendToPartition(Operand* pOperand, bool bSet, eXK eXmitKind, i8 i_Ptn);
   };
