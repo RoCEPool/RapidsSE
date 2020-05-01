@@ -39,7 +39,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: supervisor :: supervisor ;
+cmdSyntax: supervisor :: supervisor ;
 
 jobInfo: supervisor
 {

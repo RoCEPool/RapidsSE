@@ -67,7 +67,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: _Cancel :: _Cancel ;
+cmdSyntax: _Cancel :: _Cancel ;
 
 jobInfo: _Cancel
 {

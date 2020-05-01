@@ -104,8 +104,8 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: createTable :: create table <tableNm> etc ;
-jobSyntax: createTable :: create table definition <tableNm> etc ;
+cmdSyntax: createTable :: create table <tableNm> etc ;
+cmdSyntax: createTable :: create table definition <tableNm> etc ;
 
 jobInfo: createTable
 {

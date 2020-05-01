@@ -84,7 +84,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: pipeline :: pipeline <pipelineNm> etc ;
+cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
 /*
 : pipeline _info tags{

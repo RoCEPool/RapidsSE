@@ -72,7 +72,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: defineNode :: define node <nodeNm> {name:value} ;
+cmdSyntax: defineNode :: define node <nodeNm> {name:value} ;
 
 jobInfo: defineNode
 {
