@@ -47,10 +47,10 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-//           name     cmd          arg       arg
-   opSyntax: anidx :: anidx        <tableNm> <indexNm> ;
-   opSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
-
+//          opname    cmd           arg       arg
+   opSyntax: anidx :: anidx         <tableNm> <indexNm> ;
+   opSyntax: anidx :: analize Index <tableNm> <indexNm> ;
+//                    verb    noun
 : anidx _info tagCopy: liteOp_tags
   tags{
     <jobDesc>   = "--op desc--"
