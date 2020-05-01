@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#define __WITH_INDEP_ROUTINE EndDefine
+
 namespace SenVM
 {
   static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
@@ -55,7 +57,9 @@ namespace SenVM
                               //     m_fpIntrinsic
   
     // the encoded routine
+    Routine*  m_pRoutine;
     Routine   m_xRoutine;
+  
   
     // must be last
     Footer m_xFooter;
