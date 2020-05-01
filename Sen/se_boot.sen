@@ -40,10 +40,10 @@
         "jobSyntax.sen"           include
         "job_words.sen"           include
         "job_2pcReply.sen"        include
-        "job_markers.sen"         include
+        "job_seedMarkers.sen"     include
         "job_seedHooks.sen"       include
         "job_seedSuffixs.sen"     include
-        "job_defaultSeeds.sen"    include
+        "job_seedDefaults.sen"    include
 
         // -- -- -- -- -- -- -- -- -- --
 
@@ -99,6 +99,8 @@
         "op_defHandlers.sen"         include
         "op__common.sen"             include
         "op__tagSets.sen"            include
+
+        // -- -- -- -- -- -- -- -- -- --
 
         "OP_analyzeIndex.sen"        include
         "OP_analyzeTable.sen"        include
