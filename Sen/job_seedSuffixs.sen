@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* jobSuffix.sen -- Job Suffixes                                              */
+/* job_seedSuffixs.sen -- Job Seed Suffixes                                   */
 /*============================================================================*/
 
-" jobSuffix.sen" .verbose
+" job_seedSuffixs.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* append a suffix to name of word being compiled                             */
@@ -28,7 +28,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _suffix sets the category of word being being compiled as _suffix            */
+/* _suffix sets the category of word being being compiled as _suffix          */
 /*----------------------------------------------------------------------------*/
 : _suffix immediate
 

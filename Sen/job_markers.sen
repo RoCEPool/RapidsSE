@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* jobMarkers.sen -- Job Seed <Marker> words                                  */
+/* job_markers.sen -- Job Seed Marker words                                   */
 /*============================================================================*/
 
-" jobMarkers.sen" .verbose
+" job_markers.sen" .verbose
 
 0 constant JM_SEED_RUN
 1 constant JM_SEED_REQ

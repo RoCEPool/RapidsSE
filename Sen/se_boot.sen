@@ -41,12 +41,11 @@
         "jobWords.sen"            include
         "job2pc.sen"              include
 
-        "jobMarkers.sen"          include
+        "job_markers.sen"         include
 
-        "jobHooks.sen"            include
-        "jobSuffix.sen"           include
-
-        "jobSeeds.sen"            include
+        "job_seedHooks.sen"       include
+        "job_seedSuffixs.sen"     include
+        "job_defaultSeeds.sen"    include
 
         // -- -- -- -- -- -- -- -- -- --
 
@@ -60,7 +59,7 @@
 
         "job_Receiver.sen"        include
         "job_Connector.sen"       include
-        "Job_Answer.sen"          include
+        "job_Answer.sen"          include
 
         "job_Alarm.sen"           include
 
