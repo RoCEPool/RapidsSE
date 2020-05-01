@@ -301,10 +301,10 @@
     input::next ";" str.equal not
 
     while
-           input::isTag  if "__arg__" input::chars pSynTags tagSet.appendStr
+           input::isTag  if "__arg__"  input::chars pSynTags tagSet.appendStr
       else input::isJson if "__json__" input::chars pSynTags tagSet.appendStr
-      else input::isEtc  if  "__etc__" input::chars pSynTags tagSet.appendStr
-      else                   input::chars input::chars pSynTags tagSet.appendStr
+      else input::isEtc  if "__etc__"  input::chars pSynTags tagSet.appendStr
+      else                  "__cmd__"  input::chars pSynTags tagSet.appendStr
       then then then
 
   repeat
