@@ -144,7 +144,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-jobSyntax: bootCluster :: bootCluster ;
+cmdSyntax: bootCluster :: bootCluster ;
 
 jobInfo: bootCluster
 {

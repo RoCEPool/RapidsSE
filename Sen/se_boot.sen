@@ -37,7 +37,6 @@
         "cmd_compiler.sen"        include
 
 4 .put
-        "jobSyntax.sen"           include
         "job_words.sen"           include
         "job_2pcReply.sen"        include
         "job_seedMarkers.sen"     include
