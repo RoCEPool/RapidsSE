@@ -108,8 +108,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: scan :: scan <tableNm> ;
-opSyntax: scan :: scan <tableNm> <rateSecs> ;
+cmdSyntax: scan :: scan <tableNm> ;
+cmdSyntax: scan :: scan <tableNm> <rateSecs> ;
 
 //_info: scan
 //{

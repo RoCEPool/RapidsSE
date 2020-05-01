@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ToFileOp :: ToFileOp <fileNm> ;
+cmdSyntax: ToFileOp :: ToFileOp <fileNm> ;
 
 : ToFileOp _info tagCopy: localOp_tags
   tags{ <jobDesc>  = "--op desc--" }

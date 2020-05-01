@@ -129,7 +129,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
+cmdSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;
 
 : BM_InsIdxOp _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

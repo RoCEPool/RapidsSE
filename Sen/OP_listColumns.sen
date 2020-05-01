@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lscol :: lscol <tableNm> ;
+cmdSyntax: lscol :: lscol <tableNm> ;
 
 : lscol _info tagCopy: localLiteOp_tags
   tags{

@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: dropCatalog :: dropCatalog <catalogNm> ;
+cmdSyntax: dropCatalog :: dropCatalog <catalogNm> ;
 
 : dropCatalog _info tagCopy: localOp_tags
   tags{

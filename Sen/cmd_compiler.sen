@@ -276,7 +276,7 @@
   sOpNm series-name "_syntax" str.cat :create
 
   // set the word category to be jobSyntax
-//find: opSyntax:                     compiler::current@ word.category!
+//find: cmdSyntax:                     compiler::current@ word.category!
   [ compiler::current@ encode::push ] compiler::current@ word.category!
 
   // attach  tag set to hold syntax to the word being created
@@ -482,15 +482,6 @@
   //pInfTagSet tagSet.asStr .
 
   pInfoWrd _info.aboutServiceCmd_info if .generateService then
-;
-
-/*----------------------------------------------------------------------------*/
-/* the op syntax definer. creates a syntax definition for an operator cmd     */
-/*----------------------------------------------------------------------------*/
-
-: opSyntax:
-
-  cmdSyntax:
 ;
 
 /*----------------------------------------------------------------------------*/

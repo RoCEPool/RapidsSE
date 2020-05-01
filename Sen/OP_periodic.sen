@@ -98,9 +98,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: periodicOp :: periodicOp once ;
-opSyntax: periodicOp :: periodicOp min <minutes> ;
-opSyntax: periodicOp :: periodicOp hour <hours> ;
+cmdSyntax: periodicOp :: periodicOp once ;
+cmdSyntax: periodicOp :: periodicOp min <minutes> ;
+cmdSyntax: periodicOp :: periodicOp hour <hours> ;
 
 : periodicOp _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

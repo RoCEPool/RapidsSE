@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ToCrw :: ToCrw <tableNm> ;
+cmdSyntax: ToCrw :: ToCrw <tableNm> ;
 
 : ToCrw _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

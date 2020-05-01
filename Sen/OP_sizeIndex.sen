@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: szidx :: szidx <tableNm> <indexNm> ;
+cmdSyntax: szidx :: szidx <tableNm> <indexNm> ;
 
 : szidx _info tagCopy: liteOp_tags
   tags{

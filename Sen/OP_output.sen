@@ -164,7 +164,7 @@ true
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: output :: output ;
+cmdSyntax: output :: output ;
 
 : output _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

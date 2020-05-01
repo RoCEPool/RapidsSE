@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: toStatDOp :: toStatDOp ;
+cmdSyntax: toStatDOp :: toStatDOp ;
 
 : toStatDOp _info tagCopy: localOp_tags
   tags{ <?jobDesc?>  = "--op desc--" }

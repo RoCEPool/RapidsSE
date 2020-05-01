@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: showCluster :: showCluster ;
+cmdSyntax: showCluster :: showCluster ;
 
 : showCluster _info tagCopy: localLiteOp_tags
   tags{

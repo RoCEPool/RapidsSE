@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: visidx :: visidx <tableNm> <indexNm> ;
+cmdSyntax: visidx :: visidx <tableNm> <indexNm> ;
 
 : visidx _info tagCopy: localLiteOp_tags
 tags{

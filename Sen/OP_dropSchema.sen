@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: dropSchema :: dropSchema <schemaNm> ;
+cmdSyntax: dropSchema :: dropSchema <schemaNm> ;
 
 : dropSchema _info tagCopy: localOp_tags
   tags{

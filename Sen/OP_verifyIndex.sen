@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
+cmdSyntax: vfyidx :: vfyidx <tableNm> <indexNm> ;
 
 : vfyidx _info tagCopy: liteOp_tags
   tags{

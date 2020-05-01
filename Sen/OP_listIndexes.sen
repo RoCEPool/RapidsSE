@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lsidx :: lsidx <tableNm> ;
+cmdSyntax: lsidx :: lsidx <tableNm> ;
 
 : lsidx _info tagCopy: localLiteOp_tags
   tags{

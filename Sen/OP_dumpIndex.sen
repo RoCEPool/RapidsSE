@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
+cmdSyntax: dumpIdx :: dumpIdx <tableNm> <indexNm> ;
 
 : dumpIdx _info tagCopy: localLiteOp_tags
 tags{

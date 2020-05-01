@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: truncateOp :: truncateOp <tableNm> ;
+cmdSyntax: truncateOp :: truncateOp <tableNm> ;
 
 : truncateOp _info tagCopy: localOp_tags
   tags{ <jobDesc>  = "--op desc--" }

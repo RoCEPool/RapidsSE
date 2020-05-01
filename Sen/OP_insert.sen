@@ -140,7 +140,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: Insert :: Insert <tableNm> ;
+cmdSyntax: Insert :: Insert <tableNm> ;
 
 : Insert _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

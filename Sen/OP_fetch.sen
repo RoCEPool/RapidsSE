@@ -223,7 +223,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: fetchOP :: fetchOP <tableNm> <predicate> ;
+cmdSyntax: fetchOP :: fetchOP <tableNm> <predicate> ;
 
 : fetchOP _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

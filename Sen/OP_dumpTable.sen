@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: dumpTbl :: dumpTbl <tableNm> ;
+cmdSyntax: dumpTbl :: dumpTbl <tableNm> ;
 
 : dumpTbl _info tagCopy: localLiteOp_tags
   tags{

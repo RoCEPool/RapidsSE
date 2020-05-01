@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: Chunk :: Chunk <fileNm> ;
+cmdSyntax: Chunk :: Chunk <fileNm> ;
 
 : Chunk _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

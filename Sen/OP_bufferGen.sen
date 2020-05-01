@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: bufferGen :: bufferGen <nBuffers> ;
+cmdSyntax: bufferGen :: bufferGen <nBuffers> ;
 
 : bufferGen _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
