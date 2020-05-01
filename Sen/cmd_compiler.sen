@@ -288,7 +288,7 @@
 
   "__job__" "CN_JOB_UNIVERSAL" pSynTags tagSet.appendStr
 
-  "__name__" sOpNm pSynTags tagSet.appendStr
+  "__cmdNm__" sOpNm pSynTags tagSet.appendStr
 
   // skip the :: token from input source
   input::next discard

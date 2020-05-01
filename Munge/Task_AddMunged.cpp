@@ -15653,7 +15653,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  \\\"__job__\\\" \\\"CN_JOB_UNIVERSAL\\\" pSynTags tagSet.appendStr\n"
     "\n"
-    "  \\\"__name__\\\" sOpNm pSynTags tagSet.appendStr\n"
+    "  \\\"__cmdNm__\\\" sOpNm pSynTags tagSet.appendStr\n"
     "\n"
     "  // skip the :: token from input source\n"
     "  input::next discard\n"
