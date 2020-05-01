@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* jobWords.sen -- Job related words                                          */
+/* job_words.sen -- Job related words                                         */
 /*============================================================================*/
 
-" jobWords.sen" .verbose
+" job_words.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* set dictionary path of this task back into session                         */
