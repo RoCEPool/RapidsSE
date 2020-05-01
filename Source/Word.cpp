@@ -163,24 +163,13 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the outer word of this cell ptr                                        */
+/* get the outer word of given address (which should be within some word)     */
 /*----------------------------------------------------------------------------*/
-//Word* Word::pToWord(void* aAddrWithinWord)
-//{
-//  _static_
-//
-//  u8 uWord = ((u8)aAddrWithinWord & ~C_MASK_MEDIUM_OBJECT) + sizeof(HeapBuffer);
-//
-//  Word* pWord = _pWord((void*)uWord);
-//
-//  return pWord;
-//}
-/*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* aEndoAddr)
+Word* Word::pToWord(void* aAddrWithinWord)
 {
   _static_
     
-  Word* pWord = _pMaskDownToObject<Word*>(aEndoAddr,C_MASK_MEDIUM_OBJECT);
+  Word* pWord = _pMaskDownToObject<Word*>(aAddrWithinWord,C_MASK_MEDIUM_OBJECT);
     
   return pWord;
 }
@@ -715,6 +704,16 @@ void Word::vResetRoutine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_xRoutine.m_xWsp.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get routine                                                                */
+/*----------------------------------------------------------------------------*/
+Routine* Word::pRoutine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  return & m_xRoutine;
 }
 
 /*----------------------------------------------------------------------------*/
