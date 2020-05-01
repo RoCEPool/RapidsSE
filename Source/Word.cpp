@@ -351,65 +351,16 @@ Dic* Word::pDic(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get epoch when word was created                                            */
+/* encode a cell* argument                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Word::iEpoch(void)
+void* Word::aEncodeArg(Cell* aArgCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_iEpoch;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get entry step                                                             */
-/*----------------------------------------------------------------------------*/
-StepFp Word::fpEntryStep(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  Cell* aAllottedCell = (Cell*)aAppend(aArgCell);
   
-  return m_fpIntrinsic;
+  return aAllottedCell;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set entry step                                                             */
-/*----------------------------------------------------------------------------*/
-void Word::vEntryStep(StepFp fpIntrinsic)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_fpIntrinsic = fpIntrinsic;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get which cell to start executing from                                     */
-/*----------------------------------------------------------------------------*/
-Cell* Word::aEntryCell(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_aInxPtr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set which cell to start executing from                                     */
-/*----------------------------------------------------------------------------*/
-void Word::vEntryCell(Cell* aInxPtr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_aInxPtr = aInxPtr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of this words entry step                                       */
-/*----------------------------------------------------------------------------*/
-StepFp* Word::afpEntryStep(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return &m_fpIntrinsic;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* encode call of entry step                                                  */
@@ -469,6 +420,66 @@ void Word::vEncodePush(AnyVal* aAnyVal)
   }
 
   vAppend(aAnyVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get entry step                                                             */
+/*----------------------------------------------------------------------------*/
+StepFp Word::fpEntryStep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_fpIntrinsic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry step                                                             */
+/*----------------------------------------------------------------------------*/
+void Word::vEntryStep(StepFp fpIntrinsic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_fpIntrinsic = fpIntrinsic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get which cell to start executing from                                     */
+/*----------------------------------------------------------------------------*/
+Cell* Word::aEntryCell(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_aInxPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set which cell to start executing from                                     */
+/*----------------------------------------------------------------------------*/
+void Word::vEntryCell(Cell* aInxPtr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_aInxPtr = aInxPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of this words entry step                                       */
+/*----------------------------------------------------------------------------*/
+StepFp* Word::afpEntryStep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return &m_fpIntrinsic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get epoch when word was created                                            */
+/*----------------------------------------------------------------------------*/
+i8 Word::iEpoch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iEpoch;
 }
 
 /*----------------------------------------------------------------------------*/

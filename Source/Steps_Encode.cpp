@@ -54,7 +54,7 @@ void Step::vEncodeAhead(void)
   
   // append : jump to unknown forward address
   pCurrentWord->vEncodeCall("jump"_Stz);
-  Cell* aUnknownOrigin = (Cell*)pCurrentWord->aAppend((Cell*)nullptr);
+  Cell* aUnknownOrigin = (Cell*)pCurrentWord->aEncodeArg((Cell*)nullptr);
   
   // cstack: push unknown forward address
   m_pDataStack->vPushFip(aUnknownOrigin);
@@ -129,7 +129,7 @@ void Step::vEncodeIf(void)
   
   // append : jumpFalse to unknown forward address
   pCurrentWord->vEncodeCall("jumpFalse"_Stz);
-  Cell* aUnknownOrigin = (Cell*)pCurrentWord->aAppend((Cell*)nullptr);
+  Cell* aUnknownOrigin = (Cell*)pCurrentWord->aEncodeArg((Cell*)nullptr);
   
   // cstack: push unknown forward address
   m_pDataStack->vPushFip(aUnknownOrigin);
