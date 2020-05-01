@@ -127,7 +127,7 @@ begin
     start | periodicOp once | stageB
 
   stage stageB on all partitions :
-    truncateOp $tableNm | stageC
+    truncateTable $tableNm | stageC
 
   stage stageC on all nodes :
     dropTable $tableNm | stageD
@@ -303,7 +303,7 @@ begin
     start | periodicOp once | stageB
 
   stage stageB on all partitions:
-    truncateOp $table | stageC
+    truncateTable $table | stageC
 
   stage stageC on origin:
     output | sink | stageA

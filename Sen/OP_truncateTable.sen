@@ -1,33 +1,21 @@
 /*============================================================================*/
-/* OP_truncate.sen -- Operator truncate                                       */
+/* OP_truncateTable.sen -- Operator truncate table                            */
 /*============================================================================*/
 
-" OP_truncate.sen" .verbose
+" OP_truncateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: TruncateOp_PulseMarker \handler
+: truncateTable_PulseMarker \handler
 
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   Pipein[].pipeOut
 
-  // new a stream def
-  //Operand[].newStreamDef
-  //Operand[].pipeOut
-
   // truncate the buffers of the tablePtn
   tablePtn[].truncate
-/*
-  Subset[]@ to Operand[]
-  begin
-    Operand[].isNull
-  not while
-    Operand[].pipeOut
-    Subset[].nextBuffer to Operand[]
-  repeat
-*/
+
   Operand[].newEosMarker
   Operand[].pipeOut
 
@@ -37,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: TruncateOp_StartMarker \handler
+: truncateTable_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -54,14 +42,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute for TruncateOp req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : TruncateOp_req \operator
+ : truncateTable_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: TruncateOp_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: TruncateOp_StartMarker ZK_STARTMARKER op[].handler!
+  find: truncateTable_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: truncateTable_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -74,9 +62,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: truncateOp :: truncateOp <tableNm> ;
+opSyntax: truncateTable :: truncateTable <tableNm> ;
 
-: truncateOp _info tagCopy: localOp_tags
+: truncateTable _info tagCopy: localOp_tags
   tags{ <jobDesc>  = "--op desc--" }
 ;
 
