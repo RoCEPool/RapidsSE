@@ -724,11 +724,21 @@ void Step::vIndexPositionN(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bHaveLowerKey ) {
-      
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the lower relational OP
+    eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // exact key ?
+    if (eLowerRelnOp == RO_EQUAL_TO) {
+      bExactQuery = true;
+      eLowerRelnOp = RO_GREATER_EQUAL;
+    }
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first position at a level 0 buffer with lowerKey
     aLowerEntBuffer = pIndexPtn->pPositionH0Buffer(xEntWrkLower.aKey());
-    eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we get an entry buffer ?
@@ -737,10 +747,6 @@ void Step::vIndexPositionN(void)
       // position in the index buffer at an entry prior to the lowerKey
       aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
       
-      if (eLowerRelnOp == RO_EQUAL_TO) {
-        bExactQuery = true;
-        eLowerRelnOp = RO_GREATER_EQUAL;
-      }
       if (eLowerRelnOp == RO_GREATER_THAN) {
         aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
                                                          xEntWrkLower.aKey(),
