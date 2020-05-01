@@ -70,7 +70,7 @@ namespace SenVM
   
     static void vArtFun(Object* pObject, SP& spObject);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Word* pToWord(void* aAddrWithinWord);
+    static Word* pToWord(void* aEmbeddedObject);
 
     byte* ayAllot(i8 iBytes);
     void* aAppend(Cell* aCell);

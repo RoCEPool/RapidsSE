@@ -165,11 +165,11 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of given address (which should be within some word)     */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* aAddrWithinWord)
+Word* Word::pToWord(void* aEmbeddedObject)
 {
   _static_
     
-  Word* pWord = _pMaskDownToObject<Word*>(aAddrWithinWord,C_MASK_MEDIUM_OBJECT);
+  Word* pWord = _pMaskDownToObject<Word*>(aEmbeddedObject,C_MASK_MEDIUM_OBJECT);
     
   return pWord;
 }

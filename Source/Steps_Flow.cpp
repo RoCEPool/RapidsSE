@@ -142,7 +142,7 @@ void Step::vFlowReenter(void)
 {
   ENTRY();
   
-  Word* pExecuting = Word::pToWord(m_aInxPtr);
+  Word* pExecuting = Routine::pToWord(m_aInxPtr);
   
   m_aInxPtr = pExecuting->aEntryCell();
   

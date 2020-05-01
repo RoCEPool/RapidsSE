@@ -16,13 +16,13 @@ Routine::Routine(Word* p_ExoWord)
 /*----------------------------------------------------------------------------*/
 /* get the outer routine of given instruction ptr                             */
 /*----------------------------------------------------------------------------*/
-Routine* Routine::pToRoutine(void* aInxPtr)
+Routine* Routine::pToRoutine(Cell* aInxPtr)
 {
   _static_
     
   Word* pWord = pToWord(aInxPtr);
   
-  Routine* pRoutine = nullptr;
+  Routine* pRoutine = pWord->pRoutine();
     
   return pRoutine;
 }
@@ -30,7 +30,7 @@ Routine* Routine::pToRoutine(void* aInxPtr)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of given instruction ptr                                */
 /*----------------------------------------------------------------------------*/
-Word* Routine::pToWord(void* aInxPtr)
+Word* Routine::pToWord(Cell* aInxPtr)
 {
   _static_
     

@@ -114,7 +114,7 @@ void Forth::vCheckBreakPt(void)
   if (! m_aInxPtr)
     return;
   
-  Word* pThisWord = Word::pToWord(m_aInxPtr);
+  Word* pThisWord = Routine::pToWord(m_aInxPtr);
   
   if (! pThisWord->bBreakPt())
     return;

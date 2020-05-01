@@ -17,8 +17,8 @@ namespace SenVM
   public:
     Routine(Word* p_Word);
   
-    static Routine* pToRoutine(void* aInxPtr);
-    static Word*    pToWord(void* aInxPtr);
+    static Routine* pToRoutine(Cell* aInxPtr);
+    static Word*    pToWord(Cell* aInxPtr);
   
   private:
 
