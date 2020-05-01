@@ -41,6 +41,7 @@
   Subset[].nextBuffer to Operand[]
 
   Operand[].isNull if
+    tablePtn[].get tablePtnDropRead2
     Operand[].newEosMarker
     Operand[].pipeOut
   then
@@ -62,9 +63,18 @@
   Operand[].newStreamDef
   Operand[].pipeOut
 
+  // grab the table ptn read lock
+  tablePtn[].get tablePtnGrabRead2
+
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
   Subset[]@ to Operand[]
+
+  Operand[].isNull if
+    tablePtn[].get tablePtnDropRead2
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
 
   true
 ;
