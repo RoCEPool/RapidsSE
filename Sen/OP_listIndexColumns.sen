@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
+cmdSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
 : lsidxcol _info tagCopy: localLiteOp_tags
   tags{

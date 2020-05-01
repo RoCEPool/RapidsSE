@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: createTenant :: createTenant <tenantNm> ;
+cmdSyntax: createTenant :: createTenant <tenantNm> ;
 
 : createTenant _info tagCopy: localOp_tags
   tags{

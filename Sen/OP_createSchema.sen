@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: createSchema :: createSchema <schemaNm> ;
+cmdSyntax: createSchema :: createSchema <schemaNm> ;
 
 : createSchema _info tagCopy: localOp_tags
   tags{

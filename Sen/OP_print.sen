@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: print :: print <string> ;
+cmdSyntax: print :: print <string> ;
 
 : print _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

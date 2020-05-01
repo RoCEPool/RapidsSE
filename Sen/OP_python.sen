@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: python :: python <pythonFile> <pythonFunction> ;
+cmdSyntax: python :: python <pythonFile> <pythonFunction> ;
 
 : python _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

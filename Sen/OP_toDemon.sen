@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: toDemonOp :: toDemonOp ;
+cmdSyntax: toDemonOp :: toDemonOp ;
 
 : toDemonOp _info tagCopy: localOp_tags
   tags{ <?jobDesc?>  = "--op desc--" }

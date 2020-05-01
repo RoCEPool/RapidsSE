@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: tableSizes :: tableSizes ;
+cmdSyntax: tableSizes :: tableSizes ;
 
 : tableSizes _info tagCopy: liteOp_tags
   tags{

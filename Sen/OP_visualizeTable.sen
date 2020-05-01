@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vistbl :: vistbl <tableNm> ;
+cmdSyntax: vistbl :: vistbl <tableNm> ;
 
 : vistbl _info tagCopy: localLiteOp_tags
   tags{

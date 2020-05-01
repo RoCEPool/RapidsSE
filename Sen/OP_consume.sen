@@ -153,7 +153,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: ConsumeOp :: ConsumeOp <Xmits> ;
+cmdSyntax: ConsumeOp :: ConsumeOp <Xmits> ;
 
 : ConsumeOp _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

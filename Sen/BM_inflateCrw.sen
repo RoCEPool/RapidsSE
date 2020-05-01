@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
+cmdSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;
 
 : BM_InflateCrwOp _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

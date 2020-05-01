@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
+cmdSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
 
 : compactIdx _info tagCopy: liteOp_tags
   tags{

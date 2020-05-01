@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: dropTable :: dropTable <tableNm> ;
+cmdSyntax: dropTable :: dropTable <tableNm> ;
 
 : dropTable _info tagCopy: localOp_tags
   tags{

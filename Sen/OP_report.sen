@@ -149,7 +149,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-opSyntax: report :: report <fileNm> ;
+cmdSyntax: report :: report <fileNm> ;
 
 : report _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

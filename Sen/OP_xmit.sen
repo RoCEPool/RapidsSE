@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: Xmit :: Xmit <xmitKind> ;
+cmdSyntax: Xmit :: Xmit <xmitKind> ;
 
 : Xmit _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

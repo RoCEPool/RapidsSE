@@ -64,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: Purge :: Purge <tableNm> ;
+cmdSyntax: Purge :: Purge <tableNm> ;
 
 : Purge _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

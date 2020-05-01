@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: exemplar :: exemplar ;
+cmdSyntax: exemplar :: exemplar ;
 
 : exemplar _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

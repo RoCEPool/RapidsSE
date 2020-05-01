@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: lspartcol :: lspartcol <tableNm> ;
+cmdSyntax: lspartcol :: lspartcol <tableNm> ;
 
 : lspartcol _info tagCopy: localLiteOp_tags
   tags{

@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: GridSanity :: GridSanity ;
+cmdSyntax: GridSanity :: GridSanity ;
 
 : GridSanity _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }

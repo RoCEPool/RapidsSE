@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: dropTenant :: dropTenant <tenantNm> ;
+cmdSyntax: dropTenant :: dropTenant <tenantNm> ;
 
 : dropTenant _info tagCopy: localOp_tags
   tags{

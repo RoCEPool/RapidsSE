@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: vfytbl :: vfytbl <tableNm> ;
+cmdSyntax: vfytbl :: vfytbl <tableNm> ;
 
 : vfytbl _info tagCopy: liteOp_tags
   tags{

@@ -48,8 +48,8 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 //          opname    cmd           arg       arg
-   opSyntax: anidx :: anidx         <tableNm> <indexNm> ;
-   opSyntax: anidx :: analize Index <tableNm> <indexNm> ;
+   cmdSyntax: anidx :: anidx         <tableNm> <indexNm> ;
+   cmdSyntax: anidx :: analize Index <tableNm> <indexNm> ;
 //                    verb    noun
 : anidx _info tagCopy: liteOp_tags
   tags{

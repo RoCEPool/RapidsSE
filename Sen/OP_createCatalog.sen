@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-opSyntax: createCatalog :: createCatalog <catalogNm> ;
+cmdSyntax: createCatalog :: createCatalog <catalogNm> ;
 
 : createCatalog _info tagCopy: localOp_tags
   tags{
