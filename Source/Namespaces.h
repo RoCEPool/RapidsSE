@@ -46,7 +46,7 @@ namespace Gadgets       { class EnumFlags; class TagSet;                    }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
-namespace Indexing      { class EntBuffer; class IndexPtn;                    }
+namespace Indexing      { class EntBuffer; class IndexTree;                    }
 namespace InfoData      {                                                     }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;

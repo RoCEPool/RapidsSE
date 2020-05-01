@@ -27,7 +27,7 @@ namespace Indexing
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
-#include "IndexPtn.hpp"
+#include "IndexTree.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

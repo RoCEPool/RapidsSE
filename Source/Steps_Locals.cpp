@@ -206,8 +206,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("IndexPtn[]"_Stz)) {
-    pCurrentWord->vEncodeCall("IndexPtn[].set"_Stz);
+  else if (szTerm->bSame("IndexTree[]"_Stz)) {
+    pCurrentWord->vEncodeCall("IndexTree[].set"_Stz);
     EXIT();
     return;
   }

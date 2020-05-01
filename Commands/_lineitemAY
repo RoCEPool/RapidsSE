@@ -58,13 +58,13 @@ space;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 
-load lineitem "/DATA/TPCH/lineitem20K.csv";
+load lineitem "/DATA/TPCH/lineitem10.csv";
+//drop table lineitem;
+//space;
+//sztbl lineitem;
 
-space;
-sztbl lineitem;
-
-vistbl lineitem;
-visidx lineitem lineitem_idx1;
+//vistbl lineitem;
+//visidx lineitem lineitem_idx1;
 
 //partitionScan lineitem 1;
 
@@ -73,14 +73,14 @@ visidx lineitem lineitem_idx1;
 //fetch lineitem "l_orderkey 3 ==";
 //fetch lineitem "l_orderkey 1 > l_orderkey 3 < and";
 trackMemory;
-//predicateFetch lineitem "l_orderkey 1 >";
-
-
-predicateFetch lineitem "l_orderkey 3 <";
+predicateFetch lineitem "l_orderkey 1 >";
 memoryLeaks;
+
+//predicateFetch lineitem "l_orderkey 3 <";
 //predicateFetch lineitem "l_orderkey 3 ==";
 //predicateFetch lineitem "l_orderkey 1 > l_orderkey 3 < and";
 //predicateFetch lineitem "l_orderkey 3 > l_orderkey 1 < and";
+
 
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;

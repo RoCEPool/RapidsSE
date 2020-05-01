@@ -65,10 +65,10 @@ namespace Steps
   
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
-    static void vAddSteps_IndexPtn(void);
+    static void vAddSteps_IndexTree(void);
     static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetTable(void);
-    static void vAddSteps_RegIndexPtn(void);
+    static void vAddSteps_RegIndexTree(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
   

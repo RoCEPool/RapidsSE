@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexPtn.hpp -- Index Partition                                            */ 
+/* IndexTree.hpp -- Index Partition                                           */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@ namespace Indexing
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-  class IndexPtn : public Object
+  class IndexTree : public Object
   {
   private:
     Lock   m_okLock;        // lock on the buffer tree
@@ -22,11 +22,11 @@ namespace Indexing
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, IndexPtn* pIndexPtn);
+    void* operator new(size_t, IndexTree* pIndexTree);
     void  operator delete(void*);
     
-    IndexPtn(Index* pIndex, i8 iPartitionNo);
-   ~IndexPtn(void) noexcept(false);
+    IndexTree(Index* pIndex, i8 iPartitionNo);
+   ~IndexTree(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
@@ -66,7 +66,7 @@ namespace Indexing
     EntBuffer* pPopSubList(EntBuffer** ppSubList);
   };
   
-  IndexPtn* _pIndexPtn(void* pAddr);
+  IndexTree* _pIndexTree(void* pAddr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

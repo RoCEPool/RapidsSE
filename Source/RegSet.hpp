@@ -28,7 +28,7 @@ namespace Registers
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
     REG<Index>       m_xpIndex;
-    REG<IndexPtn>    m_xpIndexPtn;
+    REG<IndexTree>   m_xpIndexTree;
     REG<Planner>     m_xpPlanner;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;

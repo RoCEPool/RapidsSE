@@ -63,7 +63,7 @@ print "** 5/7) information";
 
 filecat "/tmp/bm_insidx_rep.csv" 100;
 
-//stepTiming show "vIndexPtnInsEntBuffer";
+//stepTiming show "vIndexTreeInsEntBuffer";
 
 sizeIndex ALLCOLS_TABLE ALLCOLS_INDEX_int ;
 

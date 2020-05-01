@@ -12,7 +12,7 @@ namespace Indexing
   class EntBuffer : public DataBuffer,
                     public MiniHeap_t<Ent>
   {
-  friend class IndexPtn;
+  friend class IndexTree;
 
   protected:
     Index*    m_pIndex;     // index this buffer belongs to
