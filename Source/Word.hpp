@@ -73,11 +73,6 @@ namespace SenVM
     static Word* pToWord(void* aEmbeddedObject);
 
     byte* ayAllot(i8 iBytes);
-    void* aAppend(Cell* aCell);
-    void  vAppend(Cell* aCell);
-    void  vAppend(i8 iInt);
-    void  vAppend(StepFp* afpStep);
-    void  vAppend(AnyVal* aAnyVal);
     Article* pArticle(void);
     void  vArticle(Article* pArticle);
     bool  bBreakPt(void);
@@ -128,6 +123,14 @@ namespace SenVM
     void  vWordTags(TagSet* pWordTags);
     char* aWspArea(void);
 
+  private:
+    void* aRoutineAppend(Cell* aCell);
+    void  vRoutineAppend(Cell* aCell);
+    void  vRoutineAppend(i8 iInt);
+    void  vRoutineAppend(StepFp* afpStep);
+    void  vRoutineAppend(AnyVal* aAnyVal);
+  
+  private:
     Footer* aFooter(void);
   };
   

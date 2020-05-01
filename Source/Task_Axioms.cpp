@@ -363,7 +363,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
           if (pCalledWord->bImmediate())
             ((Step*)(*m_pForth)->*fpStep)();
           else {
-            pNewWord->vAppend(pCalledWord->afpEntryStep());
+            pNewWord->vEncodeCall(pCalledWord->afpEntryStep());
           }
         }
         else if (WK_ROUTINE == pCalledWord->eWord()) {
@@ -389,7 +389,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
         pNewWord->vEncodePush(xVariable);
         
         pCalledWord = m_pForth->m_oDicStack.pFindWord("tag::get"_Stz);
-        pNewWord->vAppend(pCalledWord->afpEntryStep());
+        pNewWord->vEncodeCall(pCalledWord->afpEntryStep());
         break;
       }
               
