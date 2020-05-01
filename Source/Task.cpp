@@ -356,7 +356,8 @@ void Task::vCaught(Exception xException)
 {
   vTrace("\n\n"_Stz);
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Task::vCaught(xException) for job %s\n"_Stz,
+  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
+         AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
          aCN[m_pJob->eClass()]
          );
   
