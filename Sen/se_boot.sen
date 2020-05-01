@@ -43,10 +43,9 @@
 
         "jobMarkers.sen"          include
 
-        "jobHooks.sen"            include
-        "jobSuffix.sen"           include
-
-        "jobSeeds.sen"            include
+        "job_seedHooks.sen"       include
+        "job_seedSuffixs.sen"     include
+        "job_defaultSeeds.sen"    include
 
         // -- -- -- -- -- -- -- -- -- --
 
