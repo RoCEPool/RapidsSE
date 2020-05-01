@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegIndexPtn.cpp - indexPtn[] step group                              */
+/* Steps_RegIndexTree.cpp - indexTree[] step group                              */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,32 +7,32 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegIndexPtn(void)
+void Step::vAddSteps_RegIndexTree(void)
 {
-  vAddStep("IndexPtn[].get"_Stz,  &Step::vRegIndexPtnGet);
-  vAddStep("IndexPtn[].set"_Stz,  &Step::vRegIndexPtnSet);
+  vAddStep("IndexTree[].get"_Stz,  &Step::vRegIndexTreeGet);
+  vAddStep("IndexTree[].set"_Stz,  &Step::vRegIndexTreeSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexPtn[].get -- get index tree                                           */
+/* IndexTree[].get -- get index tree                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegIndexPtnGet(void)
+void Step::vRegIndexTreeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexPtn);
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpIndexTree);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexPtn[].set -- set index tree                                           */
+/* IndexTree[].set -- set index tree                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vRegIndexPtnSet(void)
+void Step::vRegIndexTreeSet(void)
 {
   ENTRY();
   
-  m_pRegSet->m_xpIndexPtn = _pIndexPtn(m_pDataStack->pPopPtr(__func__));
+  m_pRegSet->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

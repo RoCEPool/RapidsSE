@@ -85,7 +85,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Index();
   Step::vAddSteps_IndexDef();
-  Step::vAddSteps_IndexPtn();
+  Step::vAddSteps_IndexTree();
   Step::vAddSteps_InfoSet();
   Step::vAddSteps_InfoSetTable();
   Step::vAddSteps_Input();
@@ -140,7 +140,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_RegFolder();
   Step::vAddSteps_RegIndex();
-  Step::vAddSteps_RegIndexPtn();
+  Step::vAddSteps_RegIndexTree();
   Step::vAddSteps_RegJob();
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegOp();

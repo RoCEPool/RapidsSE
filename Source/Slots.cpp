@@ -221,7 +221,7 @@ void Slots::vTidyUp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   // get IdxDataVec from any one partition
-  IndexPtnVec* pIndexPtnVec = m_pTablePtnVec->pGet(0)->pIndexPtnVec();
+  IndexTreeVec* pIndexTreeVec = m_pTablePtnVec->pGet(0)->pIndexTreeVec();
   
   // run the finalize for the partitions
   for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
@@ -257,7 +257,7 @@ void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  m_pTablePtnVec->pGet(iPartitionNO)->pIndexPtn(iIndexNo)->vTruncate();
+  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

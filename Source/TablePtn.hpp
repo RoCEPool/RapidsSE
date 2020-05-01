@@ -5,7 +5,7 @@
 
 namespace Partitioning
 {
-  typedef VectorNL_t<CN_INDEXPTNVEC, IndexPtn, C_MAX_INDEXES> IndexPtnVec;
+  typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -27,7 +27,7 @@ namespace Partitioning
     CrwBuffer* m_pRootCrwBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentCrwBuffer; // the data current buffer for insert
     
-    IndexPtnVec* m_pIndexPtnVec;  // vector of index trees
+    IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
   
     ReadApi* m_pReadApi;            // read consistency api
   
@@ -48,7 +48,7 @@ namespace Partitioning
   
     void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
     void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
-    void vAddIndex(IndexPtn* pIndexPtn);
+    void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     Crw* aAllotFixedSizeCrw(Ref& xRowRef);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
@@ -62,8 +62,8 @@ namespace Partitioning
     bool bGrabRead(void);
     bool bGrabWrite(void);
     void vIncBuffersWritten(void);
-    IndexPtn* pIndexPtn(i8 iIndexNo);
-    IndexPtnVec* pIndexPtnVec(void);
+    IndexTree* pIndexTree(i8 iIndexNo);
+    IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(Crw* aCrw, Ref& xRowRef);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);

@@ -394,7 +394,7 @@ public:
   void vIndexDelete(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
-  void vIndexIndexPtn(void);
+  void vIndexIndexTree(void);
   void vIndexInit(void);
   void vIndexIsPrimaryKeyFetch(void);
   void vIndexIsPrimaryKeyStore(void);
@@ -421,11 +421,11 @@ public:
   void vRegIndexSet(void);
 
   // index tree
-  void vIndexPtnInsEntBuffer(void);
+  void vIndexTreeInsEntBuffer(void);
 
   // index reg
-  void vRegIndexPtnGet(void);
-  void vRegIndexPtnSet(void);
+  void vRegIndexTreeGet(void);
+  void vRegIndexTreeSet(void);
 
   // reg info set
   void vInfoSetAddLockStats(void);
