@@ -13,6 +13,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::find"_Stz,        &Step::vWordFind);
   vAddStep("word::locate"_Stz,      &Step::vWordLocate);
   vAddStep("word::new"_Stz,         &Step::vWordNew);
+  vAddStep("word::xcheckInxPtr"_Stz,&Step::vWordXcheckInxPtr);
   
   vAddStep("word.allotObject"_Stz,  &Step::vWordAllotObject);
   vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
@@ -562,6 +563,22 @@ void Step::vWordSee(void)
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   AM::vWordSee(pWord,&m_oDicStack);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word::xcheck -- cross check this word                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vWordXcheckInxPtr(void)
+{
+  ENTRY();
+  
+  Word* pTestWord = _pWord(m_pDataStack->pPopPtr(__func__));
+    
+  Word* pExeWord  = Word::pToWord(m_aInxPtr);
+
+  ASSERT(pExeWord == pTestWord);
   
   EXIT();
 }

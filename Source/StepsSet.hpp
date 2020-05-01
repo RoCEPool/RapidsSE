@@ -1625,6 +1625,7 @@ public:
   void vWordPromptStore(void);
   void vWordResetRoutine(void);
   void vWordSee(void);
+  void vWordXcheckInxPtr(void);
 
   // write behind
   void vWriteBehindCreate(void);

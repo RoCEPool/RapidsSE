@@ -245,6 +245,12 @@ cmd::fillOut_all_cmd
 
   assert::stack_0
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  [ compiler::current@ encode::push ] word::xcheckInxPtr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // make the tenants root folder"
   //  /tenants
   "tenants" :makeFolder attachMap::tenants!

@@ -16,12 +16,13 @@ namespace Correctness
   {
   private:
     union {
-      u4   m_uMagic;
+      u4   m_uMagic;      // 4 byte magic signature
       char m_caMagic[4];
     };
-    eCN  m_eClass;
-    bool m_bWordBody;
-  
+    eCN  m_eClass;        // 2 byte class enum
+    u1   m_bWordBody;     // 1 byte boolean flag indicating embedded in routine
+    u1   m__spareByte;    // 1 byte spare
+
     //! observe there are no constructors
   
   /*--------------------------------------------------------------------------*/
@@ -86,11 +87,12 @@ namespace Correctness
   {
   protected:
     union {
-      u4   m_uMagic;
+      u4   m_uMagic;       // 4 byte magic signature
       char m_caMagic[4];
     };
-    eCN  m_eClass;
-    bool m_bWordBody;
+    eCN  m_eClass;         // 2 byte class enum
+    u1   m_bWordBody;      // 1 byte boolean flag indicating embedded in routine
+    u1   m__spareByte;     // 1 byte spare
   
   public:
     Header(void);
