@@ -62,11 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-<<<<<<< HEAD:Sen/OP_truncate.sen
-cmdSyntax: truncateOp :: truncateOp <tableNm> ;
-=======
-opSyntax: truncateTable :: truncateTable <tableNm> ;
->>>>>>> 5144a2180fcd4c4491ed8e543e7f9fea5d962153:Sen/OP_truncateTable.sen
+cmdSyntax: truncateTable :: truncateTable <tableNm> ;
 
 : truncateTable _info tagCopy: localOp_tags
   tags{ <jobDesc>  = "--op desc--" }
