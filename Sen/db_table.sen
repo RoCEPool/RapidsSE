@@ -143,15 +143,15 @@
   params| sTableNm |
 
   // check in tables folder
-  folder[].checkInTables not if false exit then
+  folder[].checkInTables not if "X1" . false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
+  sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm path[].pushTableFolder assert
 
-  sTableNm name::checkIsTable not if path[].discardTableFolder false exit then
+  sTableNm name::checkIsTable not if "X3" . path[].discardTableFolder false exit then
   //sTableNm tableInUse if path[].discardTableFolder EC_TABLE_IN_USE false exit then
 
   // pop table folder
@@ -255,11 +255,11 @@
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
 
   // truncate the table
-  sTableNm find execute to pTable
-  args.partitionsPerNode 0
-  do
-    I pTable table.truncate
-  loop
+//  sTableNm find execute to pTable
+//  args.partitionsPerNode 0
+//  do
+//    I pTable table.truncate
+//  loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

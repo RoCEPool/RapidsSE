@@ -127,7 +127,7 @@ void Op::vDump(i8 i_Op)
   s256 sArgs;
   
   TagSet* pTopologyTagSet = this->pTopologyTags();
-  
+  //pTopologyTagSet->vDumpSet();
   pTopologyTagSet->vSprint(sArgs);
   
   // get the next stage
@@ -174,7 +174,11 @@ void Op::vAckJob(void)
               "Acking job task"_Stz); //!format-LogOpr
   
   if (AM::bVerbose())
-    vTrace("Op %s: acking pipeline job\n"_Stz, AM::szJobName(m_pOpJob));
+    vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+           AM::szJobName(m_pOpJob),
+           m_pStage->szStageNm(),
+           m_nNode,
+           m_nPartition);
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
 }
@@ -907,7 +911,9 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      RASSERT(0);
+      i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
+      vSendToNode(pOperand, bSet, eXmitKind,i_Nde);
+      break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1282,6 +1288,24 @@ void Op::vSendToAllPartitions(Operand* pOperand, bool bSet, eXK eXmitKind)
     default:
       ASSERT(0);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* send the operand to a specific node                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vSendToNode(Operand* pOperand, bool bSet, eXK eXmitKind,i8 i_Nde)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
+  
+  // get the next stage
+  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  RASSERT(pNextStage);
+  
+  ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
+  
+  vSend(pOperand, bSet, i_Nde, C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
