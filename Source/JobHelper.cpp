@@ -105,6 +105,18 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
     if (pSynTags->szName(i_Syn)->bSame("__cmdNm__"_Stz)) {
       i_Syn++;
     }
+      
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    else
+    // command verb/noun
+    if (pSynTags->szName(i_Syn)->bSame("__cmd__"_Stz)) {
+      i_Syn++;
+      i_Tkn++;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
     else
     // argument
     if (pSynTags->szName(i_Syn)->bSame("__arg__"_Stz)) {
@@ -123,10 +135,10 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
     if (pSynTags->szName(i_Syn)->bSame("__etc__"_Stz)) {
       break;
     }
-    // command noun/verb
+    // unknown tag in syntax tag set
     else {
-      i_Syn++;
-      i_Tkn++;
+      vTrace("unknown tag in syntax tag set\n"_Stz);
+      RASSERT(0);
     }
   }
   
