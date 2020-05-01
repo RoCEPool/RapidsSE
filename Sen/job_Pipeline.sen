@@ -95,8 +95,8 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
   <ddlLock>  = DL_GRAB_READ
 
   <preCheck> = bClusterStarted
-  }
 }
+;
 */
 
 jobInfo: pipeline
