@@ -39,10 +39,8 @@
 4 .put
         "jobSyntax.sen"           include
         "jobWords.sen"            include
-        "job2pc.sen"              include
-
+        "job_2pcReply.sen"        include
         "job_markers.sen"         include
-
         "job_seedHooks.sen"       include
         "job_seedSuffixs.sen"     include
         "job_defaultSeeds.sen"    include
