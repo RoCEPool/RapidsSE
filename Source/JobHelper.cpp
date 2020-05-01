@@ -109,7 +109,7 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
     else
-    // command verb/noun
+    // command verb+noun
     if (pSynTags->szName(i_Syn)->bSame("__cmd__"_Stz)) {
       i_Syn++;
       i_Tkn++;
@@ -236,23 +236,31 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
     }
     
     else
-    // TODO: shouldnt we match all args as well?
-    if (pSynTags->szName(i_Syn)->bEqual("__arg__"_Stz)) {
-      //pSynTags->vPrint();
-      return true;
-    }
-    
-    else
-    if (! pTkn->bSame((pSynTags->szValue(i_Syn)))) {
-//      vTrace("%s\n"_Stz, pTkn->szChars());
-//      pSynTags->vDumpSetDetailed();
-      return false;
-    }
-    
-    else {
+    if (pSynTags->szName(i_Syn)->bEqual("__cmd__"_Stz)) {
+      if (! pTkn->bSame((pSynTags->szValue(i_Syn)))) {
+        return false;
+      }
       i_Syn++;
       i_Tkn++;
     }
+    
+    else
+    if (pSynTags->szName(i_Syn)->bEqual("__arg__"_Stz)) {
+      i_Syn++;
+      i_Tkn++;
+    }
+    
+    else
+    if (pSynTags->szName(i_Syn)->bEqual("__etc__"_Stz)) {
+      return true;
+    }
+        
+    // unknown tag in syntax tag set
+    else {
+      vTrace("unknown tag in syntax tag set\n"_Stz);
+      RASSERT(0);
+    }
+
   }
 
   return true;
