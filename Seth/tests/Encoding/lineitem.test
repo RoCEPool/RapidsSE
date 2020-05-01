@@ -27,16 +27,16 @@ time load lineitem "../DATA/tpch/lineitem10.csv";
 success
 
 // check no of rows
-fetch lineitem;
+predicateFetch lineitem;
 rows: 10
 
 // dump table
 //dumpTbl bolTbl;
 
-fetch retrieve lineitem L_ORDERKEY;
+predicateFetch retrieve lineitem L_ORDERKEY;
 affected: 10
 
-fetch retrieve lineitem L_ORDERKEY print;
+predicateFetch retrieve lineitem L_ORDERKEY print;
 rows :
   (1)
   (1)
@@ -49,10 +49,10 @@ rows :
   (3)
   (3)
 
-fetch retrieve lineitem L_PARTKEY;
+predicateFetch retrieve lineitem L_PARTKEY;
 affected: 10
 
-fetch retrieve lineitem L_PARTKEY print;
+predicateFetch retrieve lineitem L_PARTKEY print;
 rows:
   (1551894)
   (673091)
@@ -65,10 +65,10 @@ rows:
   (190355)
   (1284483)
 
-fetch retrieve lineitem L_SUPPKEY;
+predicateFetch retrieve lineitem L_SUPPKEY;
 affected: 10
 
-fetch retrieve lineitem L_SUPPKEY print;
+predicateFetch retrieve lineitem L_SUPPKEY print;
 rows:
   (76910)
   (73092)
@@ -81,10 +81,10 @@ rows:
   (65359)
   (34508)
 
-fetch retrieve lineitem L_LINENUMBER;
+predicateFetch retrieve lineitem L_LINENUMBER;
 affected: 10
 
-fetch retrieve lineitem L_LINENUMBER print;
+predicateFetch retrieve lineitem L_LINENUMBER print;
 rows:
   (1)
   (2)
@@ -97,10 +97,10 @@ rows:
   (2)
   (3)
 
-fetch retrieve lineitem L_QUANTITY;
+predicateFetch retrieve lineitem L_QUANTITY;
 affected: 10
 
-fetch retrieve lineitem L_QUANTITY print;
+predicateFetch retrieve lineitem L_QUANTITY print;
 rows:
   (17)
   (36)
@@ -113,10 +113,10 @@ rows:
   (49)
   (27)
 
-fetch retrieve lineitem L_EXTENDEDPRICE;
+predicateFetch retrieve lineitem L_EXTENDEDPRICE;
 affected: 10
 
-fetch retrieve lineitem L_EXTENDEDPRICE print;
+predicateFetch retrieve lineitem L_EXTENDEDPRICE print;
 rows:
   (33078.94)
   (38306.16)
@@ -129,10 +129,10 @@ rows:
   (70822.15)
   (39620.34)
 
-fetch retrieve lineitem L_DISCOUNT;
+predicateFetch retrieve lineitem L_DISCOUNT;
 affected: 10
 
-fetch retrieve lineitem L_DISCOUNT print;
+predicateFetch retrieve lineitem L_DISCOUNT print;
 rows:
   (0.04)
   (0.09)
@@ -145,10 +145,10 @@ rows:
   (0.10)
   (0.06)
 
-fetch retrieve lineitem L_TAX;
+predicateFetch retrieve lineitem L_TAX;
 affected: 10
 
-fetch retrieve lineitem L_TAX print;
+predicateFetch retrieve lineitem L_TAX print;
 rows:
   (0.02)
   (0.06)
@@ -161,10 +161,10 @@ rows:
   (0.00)
   (0.07)
 
-fetch retrieve lineitem L_RETURNFLAG;
+predicateFetch retrieve lineitem L_RETURNFLAG;
 affected: 10
 
-fetch retrieve lineitem L_RETURNFLAG print;
+predicateFetch retrieve lineitem L_RETURNFLAG print;
 rows:
   ('N')
   ('N')
@@ -177,10 +177,10 @@ rows:
   ('R')
   ('A')
 
-fetch retrieve lineitem L_LINESTATUS;
+predicateFetch retrieve lineitem L_LINESTATUS;
 affected: 10
 
-fetch retrieve lineitem L_LINESTATUS print;
+predicateFetch retrieve lineitem L_LINESTATUS print;
 rows:
   ('O')
   ('O')
@@ -193,10 +193,10 @@ rows:
   ('F')
   ('F')
 
-fetch retrieve lineitem L_SHIPDATE;
+predicateFetch retrieve lineitem L_SHIPDATE;
 affected: 10
 
-fetch retrieve lineitem L_SHIPDATE print;
+predicateFetch retrieve lineitem L_SHIPDATE print;
 rows:
   ('1996-03-13')
   ('1996-04-12')
@@ -209,10 +209,10 @@ rows:
   ('1993-11-09')
   ('1994-01-16')
 
-fetch retrieve lineitem L_COMMITDATE;
+predicateFetch retrieve lineitem L_COMMITDATE;
 affected: 10
 
-fetch retrieve lineitem L_COMMITDATE print;
+predicateFetch retrieve lineitem L_COMMITDATE print;
 rows:
   ('1996-02-12')
   ('1996-02-28')
@@ -225,10 +225,10 @@ rows:
   ('1993-12-20')
   ('1993-11-22')
 
-fetch retrieve lineitem L_RECEIPTDATE;
+predicateFetch retrieve lineitem L_RECEIPTDATE;
 affected: 10
 
-fetch retrieve lineitem L_RECEIPTDATE print;
+predicateFetch retrieve lineitem L_RECEIPTDATE print;
 rows:
   ('1996-03-22')
   ('1996-04-20')
@@ -241,10 +241,10 @@ rows:
   ('1993-11-24')
   ('1994-01-23')
 
-fetch retrieve lineitem L_SHIPINSTRUCT;
+predicateFetch retrieve lineitem L_SHIPINSTRUCT;
 affected: 10
 
-fetch retrieve lineitem L_SHIPINSTRUCT print;
+predicateFetch retrieve lineitem L_SHIPINSTRUCT print;
 rows:
   ('DELIVER IN PERSON')
   ('TAKE BACK RETURN')
@@ -257,10 +257,10 @@ rows:
   ('TAKE BACK RETURN')
   ('DELIVER IN PERSON')
 
-fetch retrieve lineitem L_SHIPMODE;
+predicateFetch retrieve lineitem L_SHIPMODE;
 affected: 10
 
-fetch retrieve lineitem L_SHIPMODE print;
+predicateFetch retrieve lineitem L_SHIPMODE print;
 rows:
   ('TRUCK')
   ('MAIL')
@@ -274,10 +274,10 @@ rows:
   ('SHIP')
 
 
-fetch retrieve lineitem L_COMMENT;
+predicateFetch retrieve lineitem L_COMMENT;
 affected: 10
 
-fetch retrieve lineitem L_COMMENT print;
+predicateFetch retrieve lineitem L_COMMENT print;
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')

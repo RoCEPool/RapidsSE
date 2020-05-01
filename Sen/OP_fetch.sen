@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-: fetchOP_CancelMarker \handler
+: fetch_CancelMarker \handler
 
   //"ZK_CANCELMARKER_handler" .verbose
   nullptr to Operand[]
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: fetchOP_CrwBuffer \handler
+: fetch_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: fetchOP_PulseMarker \handler
+: fetch_PulseMarker \handler
 
   0 locals| iPhrases |
 
@@ -183,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: fetchOP_StartMarker \handler
+: fetch_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -209,17 +209,17 @@
 /*----------------------------------------------------------------------------*/
 /* fetch request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: fetchOP_req \operator
+: fetch_req \operator
 
   LogReqEntry SEED_REQ
   <tableNm> <predicate> "PARAMETERS %v %v" str.format .
 
   op__topology
 
-  find: fetchOP_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: fetchOP_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: fetchOP_PulseMarker  ZK_PULSEMARKER  op[].handler!
-  find: fetchOP_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: fetch_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: fetch_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: fetch_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: fetch_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
 
@@ -231,9 +231,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: fetchOP :: fetchOP <tableNm> <predicate> ;
+cmdSyntax: fetch :: fetch <tableNm> <predicate> ;
 
-: fetchOP _info tagCopy: localOp_tags
+: fetch _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

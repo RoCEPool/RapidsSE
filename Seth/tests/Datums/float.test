@@ -53,7 +53,7 @@ dumpidx fltTbl flt_idx1;
 dumpidx fltTbl flt_idx2;
 
 // fetch
-fetch fltTbl "flt_col1 1011.011 =";
+predicateFetch fltTbl "flt_col1 1011.011 =";
 rows:
   (1011.01e0,'oneone',111,1,11.01,null)
 

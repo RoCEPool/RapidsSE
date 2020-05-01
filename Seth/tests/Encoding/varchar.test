@@ -27,58 +27,58 @@ load vchTbl "../DATA/Encoding/varchar.csv" ;
 success
 
 // check no of rows
-fetch vchTbl;
+predicateFetch vchTbl;
 rows: 1000000
 
 // dump table
 //dumpTbl vchTbl;
 
-fetch retrieve vchTbl vch_col0;
+predicateFetch retrieve vchTbl vch_col0;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col1;
+predicateFetch retrieve vchTbl vch_col1;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col2;
+predicateFetch retrieve vchTbl vch_col2;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col3;
+predicateFetch retrieve vchTbl vch_col3;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col4;
+predicateFetch retrieve vchTbl vch_col4;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col5;
+predicateFetch retrieve vchTbl vch_col5;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col6;
+predicateFetch retrieve vchTbl vch_col6;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col7;
+predicateFetch retrieve vchTbl vch_col7;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col8;
+predicateFetch retrieve vchTbl vch_col8;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col9;
+predicateFetch retrieve vchTbl vch_col9;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col10;
+predicateFetch retrieve vchTbl vch_col10;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col11;
+predicateFetch retrieve vchTbl vch_col11;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col12;
+predicateFetch retrieve vchTbl vch_col12;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col13;
+predicateFetch retrieve vchTbl vch_col13;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col14;
+predicateFetch retrieve vchTbl vch_col14;
 affected: 1000000
 
-fetch retrieve vchTbl vch_col15;
+predicateFetch retrieve vchTbl vch_col15;
 affected: 1000000
 
 // drop the table

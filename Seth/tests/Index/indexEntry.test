@@ -28,7 +28,7 @@ success
 create index tblidx6 on table9(cole9);
 success
 
-fetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
+predicateFetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
 rows: 12
 
 // now drop the table

@@ -27,58 +27,58 @@ load intTbl "../DATA/Encoding/integer.csv" ;
 success
 
 // check no of rows
-fetch intTbl;
+predicateFetch intTbl;
 rows: 1000000
 
 // dump table
 //dumpTbl intTbl;
 
-fetch retrieve intTbl int_col0;
+predicateFetch retrieve intTbl int_col0;
 affected: 1000000
 
-fetch retrieve intTbl int_col1;
+predicateFetch retrieve intTbl int_col1;
 affected: 1000000
 
-fetch retrieve intTbl int_col2;
+predicateFetch retrieve intTbl int_col2;
 affected: 1000000
 
-fetch retrieve intTbl int_col3;
+predicateFetch retrieve intTbl int_col3;
 affected: 1000000
 
-fetch retrieve intTbl int_col4;
+predicateFetch retrieve intTbl int_col4;
 affected: 1000000
 
-fetch retrieve intTbl int_col5;
+predicateFetch retrieve intTbl int_col5;
 affected: 1000000
 
-fetch retrieve intTbl int_col6;
+predicateFetch retrieve intTbl int_col6;
 affected: 1000000
 
-fetch retrieve intTbl int_col7;
+predicateFetch retrieve intTbl int_col7;
 affected: 1000000
 
-fetch retrieve intTbl int_col8;
+predicateFetch retrieve intTbl int_col8;
 affected: 1000000
 
-fetch retrieve intTbl int_col9;
+predicateFetch retrieve intTbl int_col9;
 affected: 1000000
 
-fetch retrieve intTbl int_col10;
+predicateFetch retrieve intTbl int_col10;
 affected: 1000000
 
-fetch retrieve intTbl int_col11;
+predicateFetch retrieve intTbl int_col11;
 affected: 1000000
 
-fetch retrieve intTbl int_col12;
+predicateFetch retrieve intTbl int_col12;
 affected: 1000000
 
-fetch retrieve intTbl int_col13;
+predicateFetch retrieve intTbl int_col13;
 affected: 1000000
 
-fetch retrieve intTbl int_col14;
+predicateFetch retrieve intTbl int_col14;
 affected: 1000000
 
-fetch retrieve intTbl int_col15;
+predicateFetch retrieve intTbl int_col15;
 affected: 1000000
 
 // drop the table

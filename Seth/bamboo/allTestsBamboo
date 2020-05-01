@@ -12,7 +12,7 @@
 ../tests/Operators/testList
 ../tests/PartitionKey/testList
 ../tests/Queries/testList
-../tests/Retrieve/testList
+//../tests/Retrieve/testList
 ../tests/Select/testList
 ../tests/Table/testList
 ../tests/Index/testList

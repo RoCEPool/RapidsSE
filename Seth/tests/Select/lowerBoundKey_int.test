@@ -42,130 +42,130 @@ rows: 26
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-fetch jCdt "jA 9223372036854775806 >";
+predicateFetch jCdt "jA 9223372036854775806 >";
 rows: 0
 
-fetch jCdt "jA 9223372036854775806 >=";
+predicateFetch jCdt "jA 9223372036854775806 >=";
 rows: 1
 
-fetch jCdt "jA 19 >" ;
+predicateFetch jCdt "jA 19 >" ;
 rows: 5
 
-fetch jCdt "jA 19 >=" ;
+predicateFetch jCdt "jA 19 >=" ;
 rows: 6
 
-fetch jCdt "jA 18 >" ;
+predicateFetch jCdt "jA 18 >" ;
 rows: 6
 
-fetch jCdt "jA 18 >=" ;
+predicateFetch jCdt "jA 18 >=" ;
 rows: 7
 
-fetch jCdt "jA 17 >";
+predicateFetch jCdt "jA 17 >";
 rows: 7
 
-fetch jCdt "jA 17 >=";
+predicateFetch jCdt "jA 17 >=";
 rows: 8
 
-fetch jCdt "jA 16 >";
+predicateFetch jCdt "jA 16 >";
 rows: 8
 
-fetch jCdt "jA 16 >=";
+predicateFetch jCdt "jA 16 >=";
 rows: 9
 
-fetch jCdt "jA 15 >";
+predicateFetch jCdt "jA 15 >";
 rows: 9
 
-fetch jCdt "jA 15 >=";
+predicateFetch jCdt "jA 15 >=";
 rows: 10
 
-fetch jCdt "jA 14 >";
+predicateFetch jCdt "jA 14 >";
 rows: 10
 
-fetch jCdt "jA 14 >=";
+predicateFetch jCdt "jA 14 >=";
 rows: 11
 
-fetch jCdt "jA 13 >";
+predicateFetch jCdt "jA 13 >";
 rows: 11
 
-fetch jCdt "jA 13 >=";
+predicateFetch jCdt "jA 13 >=";
 rows: 12
 
-fetch jCdt "jA 12 >";
+predicateFetch jCdt "jA 12 >";
 rows: 12
 
-fetch jCdt "jA 12 >=";
+predicateFetch jCdt "jA 12 >=";
 rows: 13
 
-fetch jCdt "jA 11 >";
+predicateFetch jCdt "jA 11 >";
 rows: 13
 
-fetch jCdt "jA 11 >=";
+predicateFetch jCdt "jA 11 >=";
 rows: 14
 
-fetch jCdt "jA 10 >";
+predicateFetch jCdt "jA 10 >";
 rows: 14
 
-fetch jCdt "jA 10 >=";
+predicateFetch jCdt "jA 10 >=";
 rows: 15
 
-fetch jCdt "jA 9 >";
+predicateFetch jCdt "jA 9 >";
 rows: 15
 
-fetch jCdt "jA 9 >=";
+predicateFetch jCdt "jA 9 >=";
 rows: 16
 
-fetch jCdt "jA 8 >";
+predicateFetch jCdt "jA 8 >";
 rows: 16
 
-fetch jCdt "jA 8 >=";
+predicateFetch jCdt "jA 8 >=";
 rows: 17
 
-fetch jCdt "jA 7 >";
+predicateFetch jCdt "jA 7 >";
 rows: 17
 
-fetch jCdt "jA 7 >=";
+predicateFetch jCdt "jA 7 >=";
 rows: 18
 
-fetch jCdt "jA 6 >";
+predicateFetch jCdt "jA 6 >";
 rows: 18
 
-fetch jCdt "jA 6 >=";
+predicateFetch jCdt "jA 6 >=";
 rows: 19
 
-fetch jCdt "jA 5 >";
+predicateFetch jCdt "jA 5 >";
 rows: 19
 
-fetch jCdt "jA 5 >=";
+predicateFetch jCdt "jA 5 >=";
 rows: 20
 
-fetch jCdt "jA 4 >";
+predicateFetch jCdt "jA 4 >";
 rows: 20
 
-fetch jCdt "jA 4 >=";
+predicateFetch jCdt "jA 4 >=";
 rows: 21
 
-fetch jCdt "jA 3 >";
+predicateFetch jCdt "jA 3 >";
 rows: 21
 
-fetch jCdt "jA 3 >=";
+predicateFetch jCdt "jA 3 >=";
 rows: 22
 
-fetch jCdt "jA 2 >";
+predicateFetch jCdt "jA 2 >";
 rows: 22
 
-fetch jCdt "jA 2 >=";
+predicateFetch jCdt "jA 2 >=";
 rows: 23
 
-fetch jCdt "jA 1 >";
+predicateFetch jCdt "jA 1 >";
 rows: 23
 
-fetch jCdt "jA 1 >=";
+predicateFetch jCdt "jA 1 >=";
 rows: 24
 
-fetch jCdt "jA -9223372036854775806 >";
+predicateFetch jCdt "jA -9223372036854775806 >";
 rows: 24
 
-fetch jCdt "jA -9223372036854775806 >=";
+predicateFetch jCdt "jA -9223372036854775806 >=";
 rows: 25
 
 drop table jCdt;

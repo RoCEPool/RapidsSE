@@ -38,10 +38,10 @@ rows: 10000
 dynamic scan orders | limit 1 | output;
 rows : 1
 
-dynamic fetch orders orders_idx1 | output;
+dynamic predicateFetch orders orders_idx1 | output;
 rows: 10000
 
-dynamic fetch orders orders_idx1 | limit 5000 | output;
+dynamic predicateFetch orders orders_idx1 | limit 5000 | output;
 rows: 5000
 
 // drop the table

@@ -45,50 +45,50 @@ rows: 26
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-fetch jCdt "jA 19 ==" ;
+predicateFetch jCdt "jA 19 ==" ;
 rows: 1
 
-fetch jCdt "jA 18 ==" ;
+predicateFetch jCdt "jA 18 ==" ;
 rows:
   (18,18,*,*,*)
 
-fetch jCdt "jA 17 ==";
+predicateFetch jCdt "jA 17 ==";
 rows:
   (17,*,*,*,*)
 
-fetch jCdt "jA -9223372036854775806 ==";
+predicateFetch jCdt "jA -9223372036854775806 ==";
 rows:
   (-9223372036854775806,*,*,*,*)
 
-fetch jCdt "jA 9223372036854775806 ==";
+predicateFetch jCdt "jA 9223372036854775806 ==";
 rows:
   (9223372036854775806,*,*,*,*)
 
-fetch jCdt "jA 16 ==";
+predicateFetch jCdt "jA 16 ==";
 rows:
   (16,*,*,*,*)
 
-fetch jCdt "jA 15 ==";
+predicateFetch jCdt "jA 15 ==";
 rows:
   (15,*,*,*,*)
 
-fetch jCdt "jA 14 ==";
+predicateFetch jCdt "jA 14 ==";
 rows:
   (14,*,*,*,*)
 
-fetch jCdt "jA 13 ==";
+predicateFetch jCdt "jA 13 ==";
 rows:
   (13,*,*,*,*)
 
-fetch jCdt "jA 12 ==";
+predicateFetch jCdt "jA 12 ==";
 rows:
   (12,*,*,*,*)
 
-fetch jCdt "jA 11 ==";
+predicateFetch jCdt "jA 11 ==";
 rows:
   (11,*,*,*,'bb1')
 
-fetch jCdt "jA 10 ==";
+predicateFetch jCdt "jA 10 ==";
 rows:
   (10,*,*,*,*)
 

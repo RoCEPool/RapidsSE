@@ -22,7 +22,7 @@ success
 tableScan retTbl;
 rows: 10
 
-fetch retrieve retTbl dec_col1 print;
+predicateFetch retrieve retTbl dec_col1 print;
 rows:
   (1007.008)
   (-1008.008)
@@ -35,7 +35,7 @@ rows:
   (1005.006)
   (1009.009)
 
-fetch retrieve retTbl vch_col2 print;
+predicateFetch retrieve retTbl vch_col2 print;
 rows:
   ('one')
   ('five')
@@ -48,7 +48,7 @@ rows:
   ('three')
   ('six')
 
-fetch retrieve retTbl int_col3 print;
+predicateFetch retrieve retTbl int_col3 print;
 rows:
   (102)
   (103)
@@ -61,7 +61,7 @@ rows:
   (105)
   (109)
 
-fetch retrieve retTbl int_col4 print;
+predicateFetch retrieve retTbl int_col4 print;
 rows:
   (1)
   (5)
@@ -74,7 +74,7 @@ rows:
   (0)
   (3)
 
-fetch retrieve retTbl ivl_col5 print;
+predicateFetch retrieve retTbl ivl_col5 print;
 rows:
   (2.00)
   (3.00)
@@ -87,7 +87,7 @@ rows:
   (7.01)
   (8.01)
 
-fetch retrieve retTbl dec_col6 print;
+predicateFetch retrieve retTbl dec_col6 print;
 rows:
   (1007)
   (9223372036854776)
@@ -100,7 +100,7 @@ rows:
   (9223372036854775806)
   (-9223372036854776)
 
-fetch retrieve retTbl tsp_col7 print;
+predicateFetch retrieve retTbl tsp_col7 print;
 rows:
   (TIMESTAMP '1907-01-01 00:00:00')
   (TIMESTAMP '1908-01-01 00:00:00')
@@ -113,7 +113,7 @@ rows:
   (TIMESTAMP '1900-01-01 00:00:00')
   (TIMESTAMP '1903-01-01 00:00:00')
 
-fetch retrieve retTbl bol_col8 print;
+predicateFetch retrieve retTbl bol_col8 print;
 rows:
   (false)
   (true)
