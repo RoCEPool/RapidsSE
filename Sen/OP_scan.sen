@@ -66,6 +66,11 @@
   tablePtn[].root to Subset[]
   Subset[]@ to Operand[]
 
+  Operand[].isNull if
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
+
   true
 ;
 
