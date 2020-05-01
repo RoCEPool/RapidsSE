@@ -35,7 +35,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
       //vTrace("    matches\n"_Stz);
       
       pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
-      s32 sJobName(pSyntax->pWordTags()->szValue("__Name__"_Stz));
+      s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
       pArgTags->vInsert(C_TAG_JOBNM,sJobName);
       goto L_Matched;
@@ -48,7 +48,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
   if (! pSyntax) {
     if (AM::bDeveloper()) {
       SP_TknVecStr spTvs;
-      vTrace("Unable to match job syntax:-\n"_Stz);
+      vTrace("Unable to match command syntax:-\n"_Stz);
       vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pTknVec));
     }
     return false;
@@ -102,7 +102,7 @@ bool JobHelper::bExtractAllArgs(TagSet* pArgTags,
     }
     else
     // name of command
-    if (pSynTags->szName(i_Syn)->bSame("__name__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bSame("__cmdNm__"_Stz)) {
       i_Syn++;
     }
     else
@@ -219,7 +219,7 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
     }
     
     else
-    if (pSynTags->szName(i_Syn)->bEqual("__name__"_Stz)) {
+    if (pSynTags->szName(i_Syn)->bEqual("__cmdNm__"_Stz)) {
       i_Syn++;
     }
     
