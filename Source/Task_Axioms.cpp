@@ -218,8 +218,8 @@ void Task::vAddAxioms(void)
   ": include-file"
   "  input::push"
   
-//  "  dup"
-//  "    word::new input::useInclude"
+  "  dup"
+  "    word::new input::useInclude"
   
   "  args.senDir str.prepend"
   "  input::open"

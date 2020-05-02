@@ -25,6 +25,7 @@ void Step::vAddSteps_Input(void)
   vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
   vAddStep("input::useBegin"_Stz,  &Step::vInputUseBegin);
   vAddStep("input::useEnd"_Stz,    &Step::vInputUseEnd);
+  vAddStep("input::useInclude"_Stz,&Step::vInputUseInclude);
   vAddStep("input::useString"_Stz, &Step::vInputUseString);
 }
 
@@ -74,18 +75,6 @@ void Step::vInputDump(void)
   ENTRY();
     
   m_pInput->vInspect();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* input::include -- include group/file                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vInputInclude(void)
-{
-  ENTRY();
-    
-  Word* pInclude = _pWord(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }
@@ -254,6 +243,20 @@ void Step::vInputUseEnd(void)
   
   m_pInput->vUseEnd();
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::useInclude --                                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vInputUseInclude(void)
+{
+  ENTRY();
+  
+  Word* pInclude = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  m_pInput->vUseInclude(pInclude);
+  
   EXIT();
 }
 

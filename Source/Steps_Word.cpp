@@ -452,6 +452,9 @@ void Step::vWordNew(void)
     pDic = AM::pRootDic();
 
   Word* pNewWord = new(pDic) Word(sWordNm);
+  
+  Word* pInclude = m_pInput->pUseInclude();
+  pNewWord->vInclude(pInclude);
 
   m_pDataStack->vPushPtr(pNewWord);
   //m_pCompiler->vCurrentWord(pNewWord);

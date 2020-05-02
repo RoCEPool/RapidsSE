@@ -47,6 +47,9 @@ void Step::vColon(void)
   
   Word* pNewWord = new(pDic) Word(sName);
   
+  Word* pInclude = m_pInput->pUseInclude();
+  pNewWord->vInclude(pInclude);
+  
   m_pCompiler->vCurrentWord(pNewWord);
   
   m_pCompiler->vNestedWord(0,pNewWord);
