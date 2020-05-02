@@ -9,7 +9,7 @@ namespace SenVM
   
   class Routine : public Object
   {
-  public:
+  private:
     Word* m_p_ExoWord;
   
     Wsp_t<C_WSP_ROUTINE> m_xWsp;
