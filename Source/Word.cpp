@@ -100,8 +100,8 @@ Word::Word(Stz* szWordNm)
   m_fpIntrinsic = gfpEntryStep;
   m_aInxPtr     = aFirstCell();
   
-  m_pRoutine    = nullptr;
   m_xRoutine.vReset();
+  m_pRoutine    = & m_xRoutine;
   
   _setFooter_();
   
@@ -133,7 +133,7 @@ Word::~Word(void) noexcept(false)
   delete m_pArticle;
   delete m_pWordTags;
   
-  delete m_pRoutine;
+  //delete m_pRoutine;
 }
 
 /*----------------------------------------------------------------------------*/
