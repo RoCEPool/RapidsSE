@@ -230,10 +230,10 @@ void Task::vAddAxioms(void)
   pCompileAxiomaticColon(sDefinition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // : include-string
+  // : include munged file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
-  ": include-string"
+  ": include-munged"
   "  input::push"
   //"  dup ."
   "  input::useString"
@@ -254,7 +254,7 @@ void Task::vAddAxioms(void)
   //"  traceon"
   "  args.munged if"
   "    dup word::find if"
-  "      word::find execute include-string"
+  "      word::find execute include-munged"
   "      exit_rt"
   "    then"
   "    . debug::trap"
