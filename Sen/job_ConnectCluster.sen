@@ -146,7 +146,7 @@
 
 cmdSyntax: connectCluster :: connectCluster ;
 
-jobInfo: connectCluster {
+: connectCluster _info tags{
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_NONE
   <ddlLock>  = DL_NONE

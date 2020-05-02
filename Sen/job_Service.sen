@@ -46,7 +46,7 @@
 
 cmdSyntax: service :: service ;
 
-jobInfo: service {
+: service _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

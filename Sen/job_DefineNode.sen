@@ -74,7 +74,7 @@
 
 cmdSyntax: defineNode :: define node <nodeNm> {name:value} ;
 
-jobInfo: defineNode {
+: defineNode _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC

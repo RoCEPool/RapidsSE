@@ -108,7 +108,7 @@ Word::Word(Stz* szWordNm)
   
   
 #ifdef __WITH_INDEP_ROUTINE
-  m_pRoutine    = new Routine;
+  m_pRoutine    = new Routine(this);
 #else
   m__xRoutine.vReset();
   m_pRoutine    = & m__xRoutine;
@@ -187,8 +187,12 @@ Word* Word::pToWord(void* aEmbeddedObject)
 {
   _static_
     
+#ifdef __WITH_INDEP_ROUTINE
+  Word* pWord = Routine::pToWord((Cell*)aEmbeddedObject);
+#else
   Word* pWord = _pMaskDownToObject<Word*>(aEmbeddedObject,C_MASK_MEDIUM_OBJECT);
-    
+#endif
+  
   return pWord;
 }
 

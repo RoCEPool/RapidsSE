@@ -90,7 +90,6 @@
 
       //"otherJobs"               include-subdir
 
-        "job_Start.sen"           include // last
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -200,8 +199,6 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        
-cmd::fillOut_all_cmd
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 2 .put
@@ -222,10 +219,13 @@ cmd::fillOut_all_cmd
         "test_rjh.sen"            include
 
 1 .put
+        cmd::fillOut_all_cmd
+
         "se_demons.sen"           include
         "se_misc.sen"             include
         "se_munge.sen"            include
         "se_prompt.sen"           include
+        "se_start.sen"            include // last
         "se_vortex.sen"           include
 
 0 .put

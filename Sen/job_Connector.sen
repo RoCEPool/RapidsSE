@@ -148,7 +148,7 @@
 
 cmdSyntax: connector :: connector ;
 
-jobInfo: connector {
+: connector _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

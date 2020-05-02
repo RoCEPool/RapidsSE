@@ -33,7 +33,7 @@
 
 cmdSyntax: waker :: waker ;
 
-jobInfo: waker {
+: waker _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

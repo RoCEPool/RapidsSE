@@ -38,7 +38,7 @@
 
 cmdSyntax: docol :: docol <routineNm> ;
 
-jobInfo: docol {
+: docol _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

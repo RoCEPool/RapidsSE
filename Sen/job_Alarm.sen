@@ -34,7 +34,7 @@
 
 cmdSyntax: alarm :: alarm ;
 
-jobInfo: alarm {
+: alarm _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL
