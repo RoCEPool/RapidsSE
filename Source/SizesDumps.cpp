@@ -895,7 +895,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_RESULT
   /* */ HT_INVALID,           // CN_RN_RAND
 #ifdef __WITH_INDEP_ROUTINE
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_ROUTINE
+  /* */ HT_TRANSIENT_SMALL,   // CN_ROUTINE
 #else
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ROUTINE
 #endif
