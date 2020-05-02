@@ -189,7 +189,7 @@ byte* Word::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  byte* ayAddress = m_xRoutine.m_xWsp.ayAllot(nBytes);
+  byte* ayAddress = m_xRoutine.ayAllot(nBytes);
   
   _setFooter_();
   

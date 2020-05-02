@@ -134,6 +134,8 @@
   // calc the name of the service
   "_" compiler::current@ word.name@ str.removeSuffix locals| sServiceNm |
 
+  sServiceNm "Service name: %v\n" .printf
+
   // calc the name of the spawner
   sServiceNm "_spawner" str.cat locals| sSpawnerNm |
 

@@ -20,6 +20,14 @@ namespace SenVM
     static Routine* pToRoutine(Cell* aInxPtr);
     static Word*    pToWord(Cell* aInxPtr);
   
+    byte* ayAllot(i8 iBytes);
+
+    void* aAppend(Cell* aCell);
+    void  vAppend(Cell* aCell);
+    void  vAppend(i8 iInt);
+    void  vAppend(StepFp* afpStep);
+    void  vAppend(AnyVal* aAnyVal);
+
   private:
 
   };
