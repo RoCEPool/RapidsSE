@@ -16,7 +16,8 @@ namespace LexicalAnalysis
     // source definition
     eIS      m_eSource;   // what source are we parsing? given file or string?
     s256     m_sPath;     // the source path
-  
+    Word*    m_pInclude;  // the include file/group
+
     // source
     File     m_oSrcFile;  // given file
     i8       m_iSrcLine;  // line number of raw char in source
@@ -87,6 +88,8 @@ namespace LexicalAnalysis
     void vUseClose(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
+    Word* pUseInclude(void);
+    void vUseInclude(Word* pInclude);
     void vUseStdin(void);
     void vUseString(Stz* szString);
 

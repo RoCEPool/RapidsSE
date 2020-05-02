@@ -79,6 +79,18 @@ void Step::vInputDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* input::include -- include group/file                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vInputInclude(void)
+{
+  ENTRY();
+    
+  Word* pInclude = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* input::inpsect -- inspect input                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vInputInspect(void)

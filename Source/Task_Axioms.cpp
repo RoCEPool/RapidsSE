@@ -219,7 +219,7 @@ void Task::vAddAxioms(void)
   "  input::push"
   
 //  "  dup"
-//  "    word::new "
+//  "    word::new input::useInclude"
   
   "  args.senDir str.prepend"
   "  input::open"

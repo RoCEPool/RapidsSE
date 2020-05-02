@@ -620,6 +620,28 @@ bool Input::bUseFile(Stz* szPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* use include                                                                */
+/*----------------------------------------------------------------------------*/
+Word* Input::pUseInclude(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Word* pInclude = m_pCharser->pUseInclude();
+  
+  return pInclude;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use include                                                                */
+/*----------------------------------------------------------------------------*/
+void Input::vUseInclude(Word* pInclude)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  m_pCharser->vUseInclude(pInclude);
+}
+
+/*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
 void Input::vUseStdin(void)

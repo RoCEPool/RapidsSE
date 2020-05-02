@@ -33,6 +33,7 @@ Charser::Charser(Charser* pNext)
   
   m_bUseClosed = true;
   m_bUseEnded  = true;
+  
   vResetCharser();
   
   _checkInitialised_(CN_CHARSER);
@@ -151,7 +152,7 @@ void Charser::vUngetAnnChar(AnnChar& rxAnnChar)
 //
 
 /*----------------------------------------------------------------------------*/
-/* is stdin?                                                                   */
+/* is stdin?                                                                  */
 /*----------------------------------------------------------------------------*/
 bool Charser::bIsStdin(void)
 {
@@ -389,6 +390,26 @@ bool Charser::bUseFile(Stz* szPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get include                                                                */
+/*----------------------------------------------------------------------------*/
+Word* Charser::pUseInclude(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_pInclude;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use is given include group/file                                            */
+/*----------------------------------------------------------------------------*/
+void Charser::vUseInclude(Word* pInclude)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+
+  m_pInclude = pInclude;
+}
+
+/*----------------------------------------------------------------------------*/
 /* use stdin for charsing                                                     */
 /*----------------------------------------------------------------------------*/
 void Charser::vUseStdin(void)
@@ -527,6 +548,7 @@ void Charser::vResetCharser(void)
   // source definition
   m_eSource    = IS_NONE;
   m_sPath      = C_NO_NAME;
+  m_pInclude   = nullptr;
   
   // source
   m_oSrcFile.vReset();

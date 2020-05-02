@@ -458,6 +458,7 @@ public:
   void vInputClose(void);
   void vInputCppTokens(void);
   void vInputDump(void);
+  void vInputInclude(void);
   void vInputInspect(void);
   void vInputKind(void);
   void vInputNext(void);
