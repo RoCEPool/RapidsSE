@@ -14,6 +14,9 @@ namespace SenVM
   
     Wsp_t<C_WSP_ROUTINE> m_xWsp;
   
+    // must be last
+    Footer m_xFooter;
+
   public:
     Routine(Word* p_Word);
   
@@ -35,8 +38,10 @@ namespace SenVM
     i8    nWspUsed(void);
 
   private:
-
+    Footer* aFooter(void);
   };
+
+  //Routine* _pRoutine(void* aAddr);
 }
 
 /*============================================================================*/

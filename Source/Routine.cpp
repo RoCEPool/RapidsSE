@@ -5,15 +5,28 @@
 #include "SenVM.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Routine::Routine(Word* p_ExoWord)
 : Object(CN_ROUTINE)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+
   m_p_ExoWord = p_ExoWord;
   
   m_xWsp.vZero(CN_ROUTINE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get the outer routine of given instruction ptr                             */
@@ -51,7 +64,7 @@ Word* Routine::pToWord(Cell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 byte* Routine::ayAllot(i8 nBytes)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   byte* ayAddress = m_xWsp.ayAllot(nBytes);
     
@@ -66,7 +79,7 @@ byte* Routine::ayAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(Cell* aCell)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   IGNORE_RETURN(aAppend(aCell));
 }
@@ -76,7 +89,7 @@ void Routine::vAppend(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 void* Routine::aAppend(Cell* aCell)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   Cell* aAllottedCell = (Cell*)ayAllot(sizeof(aCell));
   
@@ -90,7 +103,7 @@ void* Routine::aAppend(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(i8 iInt)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
 
@@ -102,7 +115,7 @@ void Routine::vAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(StepFp* afpStepFp)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
 
   StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
 
@@ -114,7 +127,7 @@ void Routine::vAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(AnyVal* aAnyVal)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   i8 nBytes = aAnyVal->nStackUsage();
   
@@ -128,7 +141,7 @@ void Routine::vAppend(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 void Routine::vReset(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   m_xWsp.vReset();
 }
@@ -138,7 +151,7 @@ void Routine::vReset(void)
 /*----------------------------------------------------------------------------*/
 byte* Routine::ayWspArea(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   return m_xWsp.ayArea();
 }
@@ -148,7 +161,7 @@ byte* Routine::ayWspArea(void)
 /*----------------------------------------------------------------------------*/
 byte* Routine::ayWspLatter(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   return m_xWsp.ayLatter();
 }
@@ -158,10 +171,15 @@ byte* Routine::ayWspLatter(void)
 /*----------------------------------------------------------------------------*/
 i8 Routine::nWspUsed(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   return m_xWsp.nUsed();
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(Routine)
 
 
 /*============================================================================*/
