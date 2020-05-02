@@ -20,18 +20,19 @@ namespace SenVM
     bool      m_bBreakPt;     // this work gas a break point set
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
-    TagSet*   m_pWordTags;    // optional tag set
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
-    s32       m_sExceptionHook;    // routine to be called on exception
+    s32       m_sExceptionHook; // routine to be called on exception
     bool      m_bImmediate;   // immediate execution during compile?
+    Word*     m_pInclude;     // include group
     i8        m_iLocalNo;     // local number (for a local variable)
     Object*   m_pObject;      // optional associated object
     i8        m_iParams;      // number of parameters
     bool      m_bPersistent;  // is on persistent heap
     bool      m_bPrompt;      // can be executed by prompt?
     i8        m_iTrace;       // trace level
-  
+    TagSet*   m_pWordTags;    // optional tag set
+
     //*
     //* the following two must be together in this order
     //
@@ -105,6 +106,8 @@ namespace SenVM
     bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
+    Word* pInclude(void);
+    void  vInclude(Word* pInclude);
     bool  bIsName(s32& sName);
     Cell* aLastCell(void);
     i8    iLocalNo(void);

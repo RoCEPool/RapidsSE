@@ -89,22 +89,22 @@ Word::Word(Stz* szWordNm)
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
 
   m_sWordNm    = szWordNm;
-  
+  m_eWord      = WK_ROUTINE;
+
   m_bBreakPt   = false;
   m_pCategory  = AM::pRootWord() ? AM::pRootWord() : this;
   //m_pDic     = pDic;
-  m_pWordTags  = nullptr;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
-  m_eWord      = WK_ROUTINE;
+  m_pInclude   = nullptr;
   m_iLocalNo   = 0;
   m_pObject    = nullptr;
   m_iParams    = 0;
   //m_bPersistent   = false;
   m_bPrompt    = false;
   m_iTrace     = 0;
+  m_pWordTags  = nullptr;
 
-  m_fpIntrinsic = gfpEntryStep;
   
   
 #ifdef __WITH_INDEP_ROUTINE
@@ -115,6 +115,7 @@ Word::Word(Stz* szWordNm)
   m_pRoutine->vReset();
 #endif
   
+  m_fpIntrinsic = gfpEntryStep;
   m_aInxPtr     = aFirstCell();
 
   _setFooter_();
@@ -257,7 +258,7 @@ void Word::vBreakPt(bool bBreakPt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get word kind                                                              */
+/* get word category                                                          */
 /*----------------------------------------------------------------------------*/
 Word* Word::pCategory(void)
 {
@@ -267,7 +268,7 @@ Word* Word::pCategory(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set word kind                                                              */
+/* set word category                                                          */
 /*----------------------------------------------------------------------------*/
 void Word::vCategory(Word* pCategory)
 {
@@ -525,6 +526,26 @@ void Word::vImmediate(bool bImmediate)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_bImmediate = bImmediate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get word include                                                           */
+/*----------------------------------------------------------------------------*/
+Word* Word::pInclude(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_pInclude;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set word category                                                          */
+/*----------------------------------------------------------------------------*/
+void Word::vInclude(Word* pInclude)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_pInclude = pInclude;
 }
 
 /*----------------------------------------------------------------------------*/
