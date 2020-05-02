@@ -70,7 +70,7 @@
 
 cmdSyntax: _End :: _End ;
 
-jobInfo: _End {
+: _End _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC

@@ -146,7 +146,7 @@
 
 cmdSyntax: bootCluster :: bootCluster ;
 
-jobInfo: bootCluster {
+: bootCluster _info tags{
   <jobKind>  = JK_DIST2PC
   <rspKind>  = RS_NONE
   <ddlLock>  = DL_NONE

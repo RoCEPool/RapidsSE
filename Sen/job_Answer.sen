@@ -112,7 +112,6 @@
 
 cmdSyntax: answer :: answer ;
 
-//jobInfo: answer {
 : answer _info tags{
   <jobDesc>  = "--description of job--"
   

@@ -107,7 +107,7 @@
 cmdSyntax: createTable :: create table <tableNm> etc ;
 cmdSyntax: createTable :: create table definition <tableNm> etc ;
 
-jobInfo: createTable {
+: createTable _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_DIST2PC

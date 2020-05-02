@@ -91,7 +91,7 @@
 
 cmdSyntax: _Ended :: _Ended ;
 
-jobInfo: _Ended {
+: _Ended _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC

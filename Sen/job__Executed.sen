@@ -119,7 +119,7 @@
 
 cmdSyntax: _Executed :: _Executed ;
 
-jobInfo: _Executed {
+: _Executed _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_GENERIC
