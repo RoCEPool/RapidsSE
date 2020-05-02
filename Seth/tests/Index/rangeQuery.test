@@ -41,46 +41,46 @@ create index T1_idx6 on T1 (jE,jA);
 success
 
 // exact bound
-predicateFetch T1 "jA 5 ==" ;
+fetch T1 "jA 5 ==" ;
 rows: 0
 
 // exact bound
-predicateFetch T1 "jA -10 ==" ;
+fetch T1 "jA -10 ==" ;
 rows:
  (-10,20,30,40,'aa')
 
 // exact bound
-predicateFetch T1 "jA 12 ==" ;
+fetch T1 "jA 12 ==" ;
 rows:
   (12,22,32,42,'cc')
 
 // exact bound with multiple matching rows
-predicateFetch T1 "jA 18 ==" ;
+fetch T1 "jA 18 ==" ;
 rows:
   (18,28,38,48,'ii')
   (18,18,38,38,'ii')
 
 // upper bound
-predicateFetch T1 "jA 7 <=";
+fetch T1 "jA 7 <=";
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
   (-10,20,30,40,'aa')
 
 // upper bound
-predicateFetch T1 "jA 7 <";
+fetch T1 "jA 7 <";
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
   (-10,20,30,40,'aa')
 
 // upper bound
-predicateFetch T1 "jA -9223372036854775806 <";
+fetch T1 "jA -9223372036854775806 <";
 rows:
   (null,27,37,47,'hh')
   
 // upper bound
-predicateFetch T1 "jA 14 <= ";
+fetch T1 "jA 14 <= ";
 rows:
   (14,24,34,44,'ee')
   (11,21,31,41,'bb')
@@ -92,7 +92,7 @@ rows:
   (-10,20,30,40,'aa')
 
 // upper bound
-predicateFetch T1 "jA 14 < ";
+fetch T1 "jA 14 < ";
 rows:
   (11,21,31,41,'bb')
   (12,22,32,42,'cc')
@@ -103,7 +103,7 @@ rows:
   (-10,20,30,40,'aa')
 
 // lower bound
-predicateFetch T1 "jA 5 >=" ;
+fetch T1 "jA 5 >=" ;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -119,15 +119,15 @@ rows:
   (19,29,39,49,'jj')
 
 // range bound
-predicateFetch T1 "jA 1 >= jA 8 <= and" ;
+fetch T1 "jA 1 >= jA 8 <= and" ;
 rows: 0
 
 // range bound
-predicateFetch T1 "jA 8 <= jA 1 >= and" ;
+fetch T1 "jA 8 <= jA 1 >= and" ;
 rows: 0
 
 // range bound
-predicateFetch T1 "jA 17 <= jA 10 >= and" ;
+fetch T1 "jA 17 <= jA 10 >= and" ;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -139,7 +139,7 @@ rows:
   (17,27,37,47,'hh')
 
 // range bound
-predicateFetch T1 "jA 17 < jA 10 >= and" ;
+fetch T1 "jA 17 < jA 10 >= and" ;
 rows:
 
   (14,24,34,44,'ee')
@@ -151,7 +151,7 @@ rows:
   (16,26,36,46,'gg')
 
 // range bound
-predicateFetch T1 "jA 17 <= jA 10 > and" ;
+fetch T1 "jA 17 <= jA 10 > and" ;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -161,7 +161,7 @@ rows:
   (16,26,36,46,'gg')
   (17,27,37,47,'hh')
 
-predicateFetch T1 "jA 1 >= jB 2 >= and" ;
+fetch T1 "jA 1 >= jB 2 >= and" ;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -239,7 +239,7 @@ rows:
  It only uses leading portion of the index
  
 // complex range
-predicateFetch T1 "JA 1 >= JB 25 < JA 18 <= AND OR";
+fetch T1 "JA 1 >= JB 25 < JA 18 <= AND OR";
 rows:
   ( 14,24,34,44,'ee')
   ( 15,25,35,45,'ff')
@@ -258,7 +258,7 @@ rows:
   ( 9223372036854775806,27,37,47,'hh')
 
 // complex range
-predicateFetch T1 "JA 11 >= JB 25 < JA 18 <= AND OR";
+fetch T1 "JA 11 >= JB 25 < JA 18 <= AND OR";
 rows:
   ( 14,24,34,44,'ee')
   ( 15,25,35,45,'ff')
@@ -296,7 +296,7 @@ rows:
   ( null,27,37,47,'hh')
 
 // full scan bound
-predicateFetch T1 "jB 1 >=" ;
+fetch T1 "jB 1 >=" ;
 rows:
   ( null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
