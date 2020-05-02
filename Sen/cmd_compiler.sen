@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if info word is a service command                                     */
 /*----------------------------------------------------------------------------*/
-: _info.aboutServiceCmd_info params| pInfoWrd |
+: _info.aboutServiceCmd params| pInfoWrd |
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
@@ -95,6 +95,112 @@
 
   sSeedNm sSeedNm_Suffix pInfTagSet tagSet.insertStr
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* consume service arguments                                                  */
+/*----------------------------------------------------------------------------*/
+: .consumeArgs
+
+  0 locals| nArgs |
+
+  //".consumeArgs" .
+
+  begin
+    input::next
+    dup ";&" str.equal not
+  while
+    nArgs 1 + to nArgs
+  repeat
+
+  // discard the ";&" from dstack
+  discard
+
+  nArgs
+
+  // for the moment we discard the arg vector from the data stack
+  dropN
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate two words, one which parses and another which spawns a service    */
+/*----------------------------------------------------------------------------*/
+: .generateService
+
+  // calc the name of the service
+  "_" compiler::current@ word.name@ str.removeSuffix locals| sServiceNm |
+
+  sServiceNm "Service name: %v\n" .printf
+
+  // calc the name of the spawner
+  sServiceNm "_spawner" str.cat locals| sSpawnerNm |
+
+
+  //----------------------------------------------------------------------------
+  // SPAWNER
+
+  // create a word by the spawner name
+  sSpawnerNm :create
+  compiler::current@ locals| pSpawnerWd |
+
+  // debug
+  //pSpawnerWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service spawning word -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // sServiceNm encode::push "++ this is service spawner for: %v" encode::push POSTPONE .printf
+
+  sServiceNm encode::push POSTPONE job::spawnUniversal
+
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // debug
+  //pSpawnerWd word.dump
+
+
+  //----------------------------------------------------------------------------
+  // PARSER
+
+  // create an immediate word by the service name
+
+  sServiceNm :create
+  compiler::current@ locals| pServiceWd |
+  true pServiceWd word.immediate!
+
+  // debug
+  //pServiceWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service parsing word  -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // in : <serviceNm> add call(.printf)
+  // sServiceNm encode::push "++ this is the service parser for: %v" encode::push POSTPONE .printf
+
+  // in : <serviceNm> add call(.consumeArgs)
+  POSTPONE .consumeArgs
+
+  // in : <serviceNm> add code which adds call(` pSpawnerWd) in caller of service
+  pSpawnerWd encode::push POSTPONE encode::call
+
+  // in : <serviceNm> add exit
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // debug
+  //pServiceWd word.dump
+;
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -182,10 +288,8 @@
 
   sWordNm_trunc "LiteOP: %v" .printf
 
-  "/liteOp/" sWordNm_trunc __liteOp_PulseMarker
-    str.replace >interpret
-  "/liteOp/" sWordNm_trunc __liteOp_req
-    str.replace >interpret
+  "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
+  "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
 
   // add procedure depending on no of parameters
   "<params>" pInfTagSet tagSet.hasName assert
@@ -219,10 +323,8 @@
 
   sWordNm_trunc "LocalLiteOP: %v" .printf
 
-  "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker
-     str.replace >interpret
-  "/localLiteOp/" sWordNm_trunc __localLiteOp_req
-     str.replace >interpret
+  "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
+  "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
 
   // add procedure depending on no of parameters
   "<params>" pInfTagSet tagSet.hasName assert
@@ -257,7 +359,13 @@
   else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd cmd::synthProcFor_localLiteOp
   else                                    pInfoWrd cmd::addSeedsFor_localOp
   then then then then
+
+  pInfoWrd _info.aboutServiceCmd if .generateService then
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -316,108 +424,6 @@
   does>
     // ..to be written
     discard
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* consume service arguments                                                  */
-/*----------------------------------------------------------------------------*/
-: .consumeArgs
-
-  0 locals| nArgs |
-
-  //".consumeArgs" .
-
-  begin
-    input::next
-    dup ";&" str.equal not
-  while
-    nArgs 1 + to nArgs
-  repeat
-
-  // discard the ";&" from dstack
-  discard
-
-  nArgs
-
-  // for the moment we discard the arg vector from the data stack
-  dropN
-;
-
-/*----------------------------------------------------------------------------*/
-/* generate two words, one which parses and another which spawns a service    */
-/*----------------------------------------------------------------------------*/
-: .generateService
-
-  // calc the name of the service
-  "_" compiler::current@ word.name@ str.removeSuffix locals| sServiceNm |
-
-  // calc the name of the spawner
-  sServiceNm "_spawner" str.cat locals| sSpawnerNm |
-
-
-  //----------------------------------------------------------------------------
-  // SPAWNER
-
-  // create a word by the spawner name
-  sSpawnerNm :create
-  compiler::current@ locals| pSpawnerWd |
-
-  // debug
-  //pSpawnerWd word.dump
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // -- encode the service spawning word -- -- -- -- -- --
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // sServiceNm encode::push "++ this is service spawner for: %v" encode::push POSTPONE .printf
-
-  sServiceNm encode::push POSTPONE job::spawnUniversal
-
-  POSTPONE exit
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // debug
-  //pSpawnerWd word.dump
-
-
-  //----------------------------------------------------------------------------
-  // PARSER
-
-  // create an immediate word by the service name
-
-  sServiceNm :create
-  compiler::current@ locals| pServiceWd |
-  true pServiceWd word.immediate!
-
-  // debug
-  //pServiceWd word.dump
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // -- encode the service parsing word  -- -- -- -- -- --
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // in : <serviceNm> add call(.printf)
-  // sServiceNm encode::push "++ this is the service parser for: %v" encode::push POSTPONE .printf
-
-  // in : <serviceNm> add call(.consumeArgs)
-  POSTPONE .consumeArgs
-
-  // in : <serviceNm> add code which adds call(` pSpawnerWd) in caller of service
-  pSpawnerWd encode::push POSTPONE encode::call
-
-  // in : <serviceNm> add exit
-  POSTPONE exit
-
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  // debug
-  //pServiceWd word.dump
 ;
 
 
@@ -481,7 +487,7 @@
 
   //pInfTagSet tagSet.asStr .
 
-  pInfoWrd _info.aboutServiceCmd_info if .generateService then
+  //pInfoWrd _info.aboutServiceCmd if .generateService then
 ;
 
 /*----------------------------------------------------------------------------*/
