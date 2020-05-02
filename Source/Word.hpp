@@ -127,12 +127,6 @@ namespace SenVM
     void  vWordTags(TagSet* pWordTags);
     char* aWspArea(void);
 
-  private:
-    void* aRoutineAppend(Cell* aCell);
-    void  vRoutineAppend(Cell* aCell);
-    void  vRoutineAppend(i8 iInt);
-    void  vRoutineAppend(StepFp* afpStep);
-    void  vRoutineAppend(AnyVal* aAnyVal);
   
   private:
     Footer* aFooter(void);

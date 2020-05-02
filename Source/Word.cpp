@@ -183,7 +183,7 @@ Word* Word::pToWord(void* aEmbeddedObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot data space                                                           */
+/* allot bytes in routine                                                     */
 /*----------------------------------------------------------------------------*/
 byte* Word::ayAllot(i8 nBytes)
 {
@@ -299,7 +299,7 @@ void* Word::aEncodeArg(Cell* aArgCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aAllottedCell = (Cell*)aRoutineAppend(aArgCell);
+  Cell* aAllottedCell = (Cell*)m_xRoutine.aAppend(aArgCell);
   
   return aAllottedCell;
 }
@@ -311,7 +311,7 @@ void Word::vEncodeCall(StepFp* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vRoutineAppend(afpEntryStep);
+  m_xRoutine.vAppend(afpEntryStep);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,7 +325,7 @@ void Word::vEncodeCall(Stz* aWordNm)
   Word* pCalledWord = pRootDic->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
-  vRoutineAppend(pCalledWord->afpEntryStep());
+  m_xRoutine.vAppend(pCalledWord->afpEntryStep());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +337,7 @@ void Word::vEncodeJump(Stz* aWordNm, Cell* aCell)
   
   vEncodeCall(aWordNm);
   
-  vRoutineAppend(aCell);
+  m_xRoutine.vAppend(aCell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,7 +361,7 @@ void Word::vEncodePush(AnyVal* aAnyVal)
     NEVER_REACH;
   }
 
-  vRoutineAppend(aAnyVal);
+  m_xRoutine.vAppend(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,73 +756,6 @@ char* Word::aWspArea(void)
   char* aBody = (char*)m_xRoutine.m_xWsp.ayArea();
   
   return pPoolCheck<char*>((void*)aBody);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* append a pointer to a cell                                                 */
-/*----------------------------------------------------------------------------*/
-void Word::vRoutineAppend(Cell* aCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  IGNORE_RETURN(aRoutineAppend(aCell));
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a pointer to a cell, return the address of the allotted cell        */
-/*----------------------------------------------------------------------------*/
-void* Word::aRoutineAppend(Cell* aCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Cell* aAllottedCell = (Cell*)ayAllot(sizeof(aCell));
-  
-  aAllottedCell->m_aJumpTo = aCell;
-  
-  return aAllottedCell;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append an i8 integer                                                       */
-/*----------------------------------------------------------------------------*/
-void Word::vRoutineAppend(i8 iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
-
-  *aAllottedInt = iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append address of pointer to step function                                 */
-/*----------------------------------------------------------------------------*/
-void Word::vRoutineAppend(StepFp* afpStepFp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
-
-  * aafpStepFp = afpStepFp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a value (the entire value, not a pointer to it)                     */
-/*----------------------------------------------------------------------------*/
-void Word::vRoutineAppend(AnyVal* aAnyVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  i8 nBytes = aAnyVal->nStackUsage();
-  
-  char* aValueAddress = (char*)ayAllot(nBytes);
-  
-  MemLib::vCopy(aValueAddress,aAnyVal,nBytes,CN_WORD);
 }
 
 

@@ -18940,7 +18940,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": ALLOT\n"
     "\n"
-    "  compiler::current@ word.allotObject discard\n"
+    "  compiler::current@ word.allot discard\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

@@ -15,7 +15,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::new"_Stz,         &Step::vWordNew);
   vAddStep("word::xcheckInxPtr"_Stz,&Step::vWordXcheckInxPtr);
   
-  vAddStep("word.allotObject"_Stz,  &Step::vWordAllotObject);
+  vAddStep("word.allot"_Stz,        &Step::vWordAllot);
   vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
   vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
@@ -55,7 +55,7 @@ void Step::vWord(void)
 /*----------------------------------------------------------------------------*/
 /* word.allotObject -- allot an embedded object of n bytes in wsp             */
 /*----------------------------------------------------------------------------*/
-void Step::vWordAllotObject(void)
+void Step::vWordAllot(void)
 {
   ENTRY();
   

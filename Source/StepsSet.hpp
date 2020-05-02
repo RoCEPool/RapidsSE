@@ -1594,7 +1594,7 @@ public:
 
   // word
   void vWord(void);
-  void vWordAllotObject(void);
+  void vWordAllot(void);
   void vWordBreakPtFetch(void);
   void vWordBreakPtStore(void);
   void vWordCategoryFetch(void);
