@@ -112,8 +112,8 @@
 
 cmdSyntax: answer :: answer ;
 
-jobInfo: answer {
-//: answer _info tags{
+//jobInfo: answer {
+: answer _info tags{
   <jobDesc>  = "--description of job--"
   
   <jobKind>  = JK_LOCAL

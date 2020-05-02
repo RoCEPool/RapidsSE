@@ -129,10 +129,10 @@
 /*----------------------------------------------------------------------------*/
 /* generate two words, one which parses and another which spawns a service    */
 /*----------------------------------------------------------------------------*/
-: .generateService
+: .generateService params| pInfoWrd |
 
   // calc the name of the service
-  "_" compiler::current@ word.name@ str.removeSuffix locals| sServiceNm |
+  "_" pInfoWrd word.name@ str.removeSuffix locals| sServiceNm |
 
   sServiceNm "Service name: %v\n" .printf
 
@@ -144,8 +144,7 @@
   // SPAWNER
 
   // create a word by the spawner name
-  sSpawnerNm :create
-  compiler::current@ locals| pSpawnerWd |
+  sSpawnerNm :create compiler::current@ locals| pSpawnerWd |
 
   // debug
   //pSpawnerWd word.dump
@@ -171,8 +170,8 @@
 
   // create an immediate word by the service name
 
-  sServiceNm :create
-  compiler::current@ locals| pServiceWd |
+  sServiceNm :create compiler::current@ locals| pServiceWd |
+
   true pServiceWd word.immediate!
 
   // debug
@@ -360,7 +359,7 @@
   else                                    pInfoWrd cmd::addSeedsFor_localOp
   then then then then
 
-  pInfoWrd _info.aboutServiceCmd if .generateService then
+  pInfoWrd _info.aboutServiceCmd if pInfoWrd .generateService then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -3442,6 +3442,57 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_start.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_start.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_start.sen -- Start System                                               */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" job_Start.sen\\\" .verbose\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* start system                                                               */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": start_run ( -- <R> )\n"
+    "\n"
+    "  LogEntry SEED_RUN\n"
+    "\n"
+    "  nullptr locals| pParentJob |\n"
+    "\n"
+    "  \\\"start_run\\\" .verbose\n"
+    "\n"
+    "  //supervisor ;&\n"
+    "  periodic ;&\n"
+    "  waker ;&\n"
+    "\n"
+    "  answer ;&\n"
+    "  connector ;&\n"
+    "\n"
+    "  //service egArgA egArgB egArgC ;&\n"
+    "\n"
+    "  \\\"end start_run\\\" .verbose\n"
+    "\n"
+    "  DONE_RUN\n"
+    "  job::completed\n"
+    "\n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_start.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Docol.sen
 
   sFileContents =
@@ -10695,57 +10746,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_Start.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_Start.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_Start.sen -- Start System                                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_Start.sen\\\" .verbose\n"
-    "\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* start system                                                               */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": start_run ( -- <R> )\n"
-    "\n"
-    "  LogEntry SEED_RUN\n"
-    "\n"
-    "  nullptr locals| pParentJob |\n"
-    "\n"
-    "  \\\"start_run\\\" .verbose\n"
-    "\n"
-    "  //supervisor ;&\n"
-    "  periodic ;&\n"
-    "  waker ;&\n"
-    "\n"
-    "  answer ;&\n"
-    "  connector ;&\n"
-    "\n"
-    "  //service egArgA egArgB egArgC ;&\n"
-    "\n"
-    "  \\\"end start_run\\\" .verbose\n"
-    "\n"
-    "  DONE_RUN\n"
-    "  job::completed\n"
-    "\n"
-    "  HAZARD\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Start.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Execute.sen
 
   sFileContents =
@@ -15498,10 +15498,10 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate two words, one which parses and another which spawns a service    */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": .generateService\n"
+    ": .generateService params| pInfoWrd |\n"
     "\n"
     "  // calc the name of the service\n"
-    "  \\\"_\\\" compiler::current@ word.name@ str.removeSuffix locals| sServiceNm |\n"
+    "  \\\"_\\\" pInfoWrd word.name@ str.removeSuffix locals| sServiceNm |\n"
     "\n"
     "  sServiceNm \\\"Service name: %v\\\\n\\\" .printf\n"
     "\n"
@@ -15513,8 +15513,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // SPAWNER\n"
     "\n"
     "  // create a word by the spawner name\n"
-    "  sSpawnerNm :create\n"
-    "  compiler::current@ locals| pSpawnerWd |\n"
+    "  sSpawnerNm :create compiler::current@ locals| pSpawnerWd |\n"
     "\n"
     "  // debug\n"
     "  //pSpawnerWd word.dump\n"
@@ -15540,8 +15539,8 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // create an immediate word by the service name\n"
     "\n"
-    "  sServiceNm :create\n"
-    "  compiler::current@ locals| pServiceWd |\n"
+    "  sServiceNm :create compiler::current@ locals| pServiceWd |\n"
+    "\n"
     "  true pServiceWd word.immediate!\n"
     "\n"
     "  // debug\n"
@@ -15729,7 +15728,7 @@ void Task::vAddMunged(Forth* pForth)
     "  else                                    pInfoWrd cmd::addSeedsFor_localOp\n"
     "  then then then then\n"
     "\n"
-    "  pInfoWrd _info.aboutServiceCmd if .generateService then\n"
+    "  pInfoWrd _info.aboutServiceCmd if pInfoWrd .generateService then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -16398,7 +16397,6 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "      //\\\"otherJobs\\\"               include-subdir\n"
     "\n"
-    "        \\\"job_Start.sen\\\"           include // last\n"
     "\n"
     "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
@@ -16508,8 +16506,6 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "       \n"
-    "cmd::fillOut_all_cmd\n"
-    "\n"
     "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "2 .put\n"
@@ -16530,10 +16526,13 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"test_rjh.sen\\\"            include\n"
     "\n"
     "1 .put\n"
+    "        cmd::fillOut_all_cmd\n"
+    "\n"
     "        \\\"se_demons.sen\\\"           include\n"
     "        \\\"se_misc.sen\\\"             include\n"
     "        \\\"se_munge.sen\\\"            include\n"
     "        \\\"se_prompt.sen\\\"           include\n"
+    "        \\\"se_start.sen\\\"            include // last\n"
     "        \\\"se_vortex.sen\\\"           include\n"
     "\n"
     "0 .put\n"
@@ -19908,8 +19907,8 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "cmdSyntax: answer :: answer ;\n"
     "\n"
-    "jobInfo: answer {\n"
-    "//: answer _info tags{\n"
+    "//jobInfo: answer {\n"
+    ": answer _info tags{\n"
     "  <jobDesc>  = \\\"--description of job--\\\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
