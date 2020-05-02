@@ -14,6 +14,8 @@ namespace SenVM
 
 //------------------------------------------------------------------------------
 
+//#define __WITH_INDEP_ROUTINE EndDefine
+
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"

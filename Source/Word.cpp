@@ -108,7 +108,7 @@ Word::Word(Stz* szWordNm)
   
   
 #ifdef __WITH_INDEP_ROUTINE
-  m_pRoutine    = new Routine;
+  m_pRoutine    = new Routine(this);
 #else
   m__xRoutine.vReset();
   m_pRoutine    = & m__xRoutine;
