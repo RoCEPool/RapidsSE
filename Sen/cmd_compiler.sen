@@ -429,65 +429,6 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* the job info compiler                                                      */
-/*----------------------------------------------------------------------------*/
-: jobInfo:
-
-  0 0 0 0 locals| pInfoWrd sEname sEvalue pInfTagSet |
-
-  // create a word using next token from input source as the word name
-  input::next "_info" str.cat :create
-
-  compiler::current@ to pInfoWrd
-
-  // set the word kind to be jobClass
-  [ compiler::current@ encode::push ] pInfoWrd word.category!
-
-  // attach an ename set to the word being created
-  tagSet::new to pInfTagSet
-
-  pInfTagSet pInfoWrd word.TagSet!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  "<jobNm>" pInfoWrd word.name_trunc pInfTagSet tagSet.insertStr
-
-  // skip the "{" token from input source
-  input::next discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse each input token till "}", build ename set representing the syntax
-
-  begin
-    input::next
-    dup "}" str.equal not
-  while
-    to sEname
-    input::next discard
-    input::next to sEvalue
-    sEname sEvalue pInfoWrd word.TagSet@ tagSet.addTag
-  repeat
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // discard the "}" from dstack
-  discard
-
-  // get and discard ";"
-  input::next discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // complete the ename-set
-
-  //pInfTagSet tagSet.asStr .
-
-  pInfoWrd cmd::fillOut_a_cmd
-
-  //pInfTagSet tagSet.asStr .
-
-  //pInfoWrd _info.aboutServiceCmd if .generateService then
-;
 
 /*----------------------------------------------------------------------------*/
 /* promote current word to be an _info word                                   */
