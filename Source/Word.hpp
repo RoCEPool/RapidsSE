@@ -15,7 +15,8 @@ namespace SenVM
     Article*  m_pArticle;     // the word article
 
     s32       m_sWordNm;      // the name of this word
-  
+    eWK       m_eWord;        // kind of word
+
     bool      m_bBreakPt;     // this work gas a break point set
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
@@ -24,7 +25,6 @@ namespace SenVM
     s32       m_sExitHook;    // routine to be called on exit
     s32       m_sExceptionHook;    // routine to be called on exception
     bool      m_bImmediate;   // immediate execution during compile?
-    eWK       m_eWord;        // kind of word
     i8        m_iLocalNo;     // local number (for a local variable)
     Object*   m_pObject;      // optional associated object
     i8        m_iParams;      // number of parameters
