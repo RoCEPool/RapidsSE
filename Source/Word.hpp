@@ -58,7 +58,7 @@ namespace SenVM
   
     // the encoded routine
     Routine*  m_pRoutine;
-    Routine   m_xRoutine;
+    Routine   m__xRoutine;
   
   
     // must be last
