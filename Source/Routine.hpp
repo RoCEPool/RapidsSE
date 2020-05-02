@@ -27,6 +27,12 @@ namespace SenVM
     void  vAppend(i8 iInt);
     void  vAppend(StepFp* afpStep);
     void  vAppend(AnyVal* aAnyVal);
+  
+    void  vReset(void);
+  
+    byte* ayWspArea(void);
+    byte* ayWspLatter(void);
+    i8    nWspUsed(void);
 
   private:
 

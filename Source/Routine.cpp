@@ -11,6 +11,8 @@ Routine::Routine(Word* p_ExoWord)
 : Object(CN_ROUTINE)
 {
   m_p_ExoWord = p_ExoWord;
+  
+  m_xWsp.vZero(CN_ROUTINE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,11 +51,11 @@ Word* Routine::pToWord(Cell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 byte* Routine::ayAllot(i8 nBytes)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   byte* ayAddress = m_xWsp.ayAllot(nBytes);
     
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   return ayAddress;
 }
@@ -64,7 +66,7 @@ byte* Routine::ayAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(Cell* aCell)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   IGNORE_RETURN(aAppend(aCell));
 }
@@ -74,7 +76,7 @@ void Routine::vAppend(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 void* Routine::aAppend(Cell* aCell)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   Cell* aAllottedCell = (Cell*)ayAllot(sizeof(aCell));
   
@@ -88,7 +90,7 @@ void* Routine::aAppend(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(i8 iInt)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
 
@@ -100,7 +102,7 @@ void Routine::vAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(StepFp* afpStepFp)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
 
   StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
 
@@ -112,13 +114,53 @@ void Routine::vAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 void Routine::vAppend(AnyVal* aAnyVal)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
   i8 nBytes = aAnyVal->nStackUsage();
   
   char* aValueAddress = (char*)ayAllot(nBytes);
   
-  MemLib::vCopy(aValueAddress,aAnyVal,nBytes,CN_WORD);
+  MemLib::vCopy(aValueAddress,aAnyVal,nBytes,CN_ROUTINE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a value (the entire value, not a pointer to it)                     */
+/*----------------------------------------------------------------------------*/
+void Routine::vReset(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  
+  m_xWsp.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the start of the wsp area                                              */
+/*----------------------------------------------------------------------------*/
+byte* Routine::ayWspArea(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  
+  return m_xWsp.ayArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the latter portion of the wsp area                                     */
+/*----------------------------------------------------------------------------*/
+byte* Routine::ayWspLatter(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  
+  return m_xWsp.ayLatter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the latter portion of the wsp area                                     */
+/*----------------------------------------------------------------------------*/
+i8 Routine::nWspUsed(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  
+  return m_xWsp.nUsed();
 }
 
 
