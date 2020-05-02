@@ -18,8 +18,12 @@ namespace SenVM
     Footer m_xFooter;
 
   public:
-    Routine(Word* p_Word);
+   void* operator new(size_t);
+   void  operator delete(void* aAddress);
   
+    Routine(Word* p_Word);
+   ~Routine(void) noexcept(false);
+
     static Routine* pToRoutine(Cell* aInxPtr);
     static Word*    pToWord(Cell* aInxPtr);
   
@@ -41,7 +45,7 @@ namespace SenVM
     Footer* aFooter(void);
   };
 
-  //Routine* _pRoutine(void* aAddr);
+  Routine* _pRoutine(void* aAddr);
 }
 
 /*============================================================================*/
