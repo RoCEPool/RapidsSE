@@ -216,6 +216,9 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   //
   // called from Api::bSpawnJob()
   //
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
   
   vTask_Schedule(pTask);
 }
@@ -312,8 +315,8 @@ void Scheduler::vPulsePausedTask(Task* pTask)
   //
   // called from ???()
   //
-  
-  vTask_Pulse(pTask);
+  NEVER_REACH;
+  //vTask_Pulse(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -827,6 +830,11 @@ void Scheduler::vTask_Pulse(Task* pTask)
   pTask->vDropTaskLock();
   
   vTask_Able(pTask);
+  
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
   vTask_Schedule(pTask);
   // **do not touch task**
 }
@@ -891,6 +899,11 @@ void Scheduler::vTask_Resume(Task* pTask)
   pQueues->vRemoveWaitingSet(pTask);
   
   vTask_Able(pTask);
+  
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
   vTask_Schedule(pTask);
   // **do not touch task**
 }
@@ -1063,6 +1076,10 @@ void Scheduler::vTask_Trigger(Task* pTask)
   vTask_Able(pTask);
   pTask->vDropTaskLock();
   
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
   vTask_Schedule(pTask);
   // **do not touch task**
 }
@@ -1107,6 +1124,11 @@ void Scheduler::vTask_Wakeup(Task* pTask)
   
   while (Task* pTask = pQueues->pPopSleepingQueue()) {
     vTask_Able(pTask);
+    
+    RASSERT(TS_ABLE == pTask->eState());
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+    
     vTask_Schedule(pTask);
     // **do not touch task**
   }
@@ -1149,6 +1171,11 @@ void Scheduler::vTask_Yield(Task* pTask)
   // other ready to run tasks, task is scheduled
 
   vTask_Able(pTask);
+  
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
   vTask_Schedule(pTask);
   // **do not touch task**
 }

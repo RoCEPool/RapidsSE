@@ -450,7 +450,7 @@ void Lock::vDropWrite(void)
   vAssertWrite();
   
   i8 iResult = Lock::iLockDropWrite(&m_uLockWord);
-  ASSERT(iResult); // logic check
+  RASSERT(iResult); // logic check
   
   //m_uLockWord = 0;
   
