@@ -63,9 +63,16 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INDEP_ROUTINE
+
+Word::Word(Stz* szWordNm)
+: Object(CN_WORD)
+#else
 Word::Word(Stz* szWordNm)
 : Object(CN_WORD)
 , m__xRoutine(this)
+#endif
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
@@ -100,10 +107,14 @@ Word::Word(Stz* szWordNm)
   m_fpIntrinsic = gfpEntryStep;
   
   
+#ifdef __WITH_INDEP_ROUTINE
+  m_pRoutine    = new Routine;
+#else
   m__xRoutine.vReset();
   m_pRoutine    = & m__xRoutine;
   m_pRoutine->vReset();
-
+#endif
+  
   m_aInxPtr     = aFirstCell();
 
   _setFooter_();
