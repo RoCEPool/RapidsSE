@@ -9,14 +9,21 @@ namespace SenVM
   
   class Routine : public Object
   {
-  public:
+  private:
     Word* m_p_ExoWord;
   
     Wsp_t<C_WSP_ROUTINE> m_xWsp;
   
+    // must be last
+    Footer m_xFooter;
+
   public:
-    Routine(Word* p_Word);
+   void* operator new(size_t);
+   void  operator delete(void* aAddress);
   
+    Routine(Word* p_Word);
+   ~Routine(void) noexcept(false);
+
     static Routine* pToRoutine(Cell* aInxPtr);
     static Word*    pToWord(Cell* aInxPtr);
   
@@ -35,8 +42,10 @@ namespace SenVM
     i8    nWspUsed(void);
 
   private:
-
+    Footer* aFooter(void);
   };
+
+  Routine* _pRoutine(void* aAddr);
 }
 
 /*============================================================================*/

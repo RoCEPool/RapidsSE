@@ -63,9 +63,16 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef __WITH_INDEP_ROUTINE
+
 Word::Word(Stz* szWordNm)
 : Object(CN_WORD)
-, m_xRoutine(this)
+#else
+Word::Word(Stz* szWordNm)
+: Object(CN_WORD)
+, m__xRoutine(this)
+#endif
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
@@ -98,11 +105,18 @@ Word::Word(Stz* szWordNm)
   m_iTrace     = 0;
 
   m_fpIntrinsic = gfpEntryStep;
+  
+  
+#ifdef __WITH_INDEP_ROUTINE
+  m_pRoutine    = new Routine;
+#else
+  m__xRoutine.vReset();
+  m_pRoutine    = & m__xRoutine;
+  m_pRoutine->vReset();
+#endif
+  
   m_aInxPtr     = aFirstCell();
-  
-  m_pRoutine    = nullptr;
-  m_xRoutine.m_xWsp.vZero(CN_WORD);
-  
+
   _setFooter_();
   
   _checkInitialised_(CN_WORD);
@@ -124,7 +138,7 @@ Word::~Word(void) noexcept(false)
   
   // invoke the finalize function for embedded objects
   if (m_eWord == WK_EMBOBJECT) {
-    Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.m_xWsp.ayArea());
+    Object* pEmbObject = reinterpret_cast<Object*>(m_pRoutine->ayWspArea());
     eCN eClass = pEmbObject->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
     (pFinalizeFun)(eClass, pEmbObject);
@@ -133,7 +147,7 @@ Word::~Word(void) noexcept(false)
   delete m_pArticle;
   delete m_pWordTags;
   
-  delete m_pRoutine;
+  //delete m_pRoutine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,7 +203,7 @@ byte* Word::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  byte* ayAddress = m_xRoutine.ayAllot(nBytes);
+  byte* ayAddress = m_pRoutine->ayAllot(nBytes);
   
   _setFooter_();
   
@@ -275,7 +289,7 @@ void Word::vContentDump(void)
          aWK[m_eWord]->azChar(),
          m_pCategory->m_sWordNm.azChar(),
          m_bImmediate ? "immediate" : "not-immediate",
-         m_xRoutine.m_xWsp.nUsed(),
+         m_pRoutine->nWspUsed(),
          m_fpIntrinsic,
          pStepWord ? pStepWord->szWordNm() : "<not-found>"_Stz,
          aFirstCell()
@@ -299,7 +313,7 @@ void* Word::aEncodeArg(Cell* aArgCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aAllottedCell = (Cell*)m_xRoutine.aAppend(aArgCell);
+  Cell* aAllottedCell = (Cell*)m_pRoutine->aAppend(aArgCell);
   
   return aAllottedCell;
 }
@@ -311,7 +325,7 @@ void Word::vEncodeCall(StepFp* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_xRoutine.vAppend(afpEntryStep);
+  m_pRoutine->vAppend(afpEntryStep);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,7 +339,7 @@ void Word::vEncodeCall(Stz* aWordNm)
   Word* pCalledWord = pRootDic->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
-  m_xRoutine.vAppend(pCalledWord->afpEntryStep());
+  m_pRoutine->vAppend(pCalledWord->afpEntryStep());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +351,7 @@ void Word::vEncodeJump(Stz* aWordNm, Cell* aCell)
   
   vEncodeCall(aWordNm);
   
-  m_xRoutine.vAppend(aCell);
+  m_pRoutine->vAppend(aCell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,7 +375,7 @@ void Word::vEncodePush(AnyVal* aAnyVal)
     NEVER_REACH;
   }
 
-  m_xRoutine.vAppend(aAnyVal);
+  m_pRoutine->vAppend(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,7 +485,7 @@ Cell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aFirst = reinterpret_cast<Cell*>(m_xRoutine.m_xWsp.ayArea());
+  Cell* aFirst = reinterpret_cast<Cell*>(m_pRoutine->ayWspArea());
   
   return pPoolCheck<Cell*>(aFirst);
 }
@@ -528,7 +542,7 @@ Cell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aLast = reinterpret_cast<Cell*>(m_xRoutine.m_xWsp.ayLatter());
+  Cell* aLast = reinterpret_cast<Cell*>(m_pRoutine->ayWspLatter());
   
   return pPoolCheck<Cell*>(aLast);
 }
@@ -587,7 +601,7 @@ void Word::vObjectDump(Stz* aTab)
          m_pDic ? m_pDic->szName() : C_NO_NAME,
          aWK[m_eWord]->azChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
-         m_xRoutine.m_xWsp.nUsed(),
+         m_pRoutine->nWspUsed(),
          m_fpIntrinsic,
          aFirstCell()
          );
@@ -656,7 +670,7 @@ void Word::vResetRoutine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_xRoutine.m_xWsp.vReset();
+  m_pRoutine->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -666,7 +680,7 @@ Routine* Word::pRoutine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  return & m_xRoutine;
+  return m_pRoutine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -676,7 +690,7 @@ i8 Word::nRoutineUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  i8 nUsed = m_xRoutine.m_xWsp.nUsed();
+  i8 nUsed = m_pRoutine->nWspUsed();
   
   return nUsed;
 }
@@ -753,7 +767,7 @@ char* Word::aWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = (char*)m_xRoutine.m_xWsp.ayArea();
+  char* aBody = (char*)m_pRoutine->ayWspArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }

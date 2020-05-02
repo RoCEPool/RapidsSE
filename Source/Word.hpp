@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define __WITH_INDEP_ROUTINE EndDefine
+//#define __WITH_INDEP_ROUTINE EndDefine
 
 namespace SenVM
 {
@@ -55,11 +55,14 @@ namespace SenVM
                               //   IMPORTANT:
                               //   m_aInxPtr must be immediately after
                               //     m_fpIntrinsic
-  
-    // the encoded routine
-    Routine*  m_pRoutine;
-    Routine   m_xRoutine;
-  
+
+#ifdef __WITH_INDEP_ROUTINE
+    Routine*  m_pRoutine;    // the encoded routine
+
+#else
+    Routine*  m_pRoutine;    // the encoded routine
+    Routine   m__xRoutine;
+#endif
   
     // must be last
     Footer m_xFooter;
