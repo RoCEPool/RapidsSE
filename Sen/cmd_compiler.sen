@@ -383,8 +383,7 @@
 
   find: _info locals| pOpInfo |
 
-  dic::root dic.lastWord dup
-  iterate                                // iterate word cursor
+  iterate-words
 
     object@ word.category@ pOpInfo eql if
 
@@ -397,8 +396,7 @@
 
     then
 
-    object@ word.prev object!            // advance cursor backwards thru words
-  next
+  next-word
 ;
 
 /*----------------------------------------------------------------------------*/
