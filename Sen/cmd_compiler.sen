@@ -249,7 +249,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for a command                             */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_a_cmd params| pInfoWrd |
+: cmd::fillOut_a_cmd_info params| pInfoWrd |
 
   pInfoWrd cmd::addDefaultTags
 
@@ -262,6 +262,15 @@
 
   pInfoWrd _info.aboutServiceCmd if pInfoWrd .generateService then
 ;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for a command                             */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_a_cmd_syntax params| pCmdSyntax |
+
+
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -362,7 +371,7 @@
 
       object@ word.name@ "Filling out (using _info) : %v" .printf
       
-      object@ cmd::fillOut_a_cmd  // fill out the tag set of the op
+      object@ cmd::fillOut_a_cmd_info    // fill out the tag set of the op
     then
 
     object@ word.prev object!            // advance cursor backwards thru words
@@ -387,7 +396,7 @@
 
       object@ word.name@ "Filling out (using cmdSyntax:) : %v" .printf
       
-      object@ cmd::fillOut_a_cmd  // fill out the tag set of the op
+      object@ cmd::fillOut_a_cmd_syntax  // fill out the tag set of the op
     then
 
     object@ word.prev object!            // advance cursor backwards thru words
