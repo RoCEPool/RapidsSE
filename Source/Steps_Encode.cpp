@@ -18,6 +18,7 @@ void Step::vAddSteps_Encode(void)
   vAddStep("loop"_Stz,                &Step::vEncodeLoop,          true );
   vAddStep("+loop"_Stz,               &Step::vEncodeLoopPlus,      true );
   vAddStep("next"_Stz,                &Step::vEncodeNext,          true );
+  vAddStep("next+"_Stz,               &Step::vEncodeNextPlus,      true );
   vAddStep("then"_Stz,                &Step::vEncodeThen,          true );
   vAddStep("until"_Stz,               &Step::vEncodeUntil,         true );
   
@@ -264,6 +265,31 @@ void Step::vEncodeNext(void)
   pCurrentWord->vEncodeCall("r@"_Stz); // copy index limit to dstack
   
   pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoLimitTest+1);
+  
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
+  pCurrentWord->vEncodeCall("rdiscard"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* next -- encode runtime for : NEXT                                immediate */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeNextPlus(void)
+{
+  ENTRY();
+  
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  
+  // cstack: pop destination address of backward jump
+  Cell* aDoLimitTest = m_pDataStack->aPopFip(__func__);
+  aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
+  
+  i8 iPlus = m_pDataStack->iPopInt(__func__);
+  
+  pCurrentWord->vEncodeCall("r@"_Stz); // copy index limit to dstack
+  
+  pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoLimitTest+iPlus);
   
   pCurrentWord->vEncodeCall("rdiscard"_Stz);
   pCurrentWord->vEncodeCall("rdiscard"_Stz);

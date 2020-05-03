@@ -181,6 +181,10 @@
   POSTPONE DUP
   POSTPONE 2>R    // encode >r into future word
   POSTPONE AHEAD
+
+
+  //HERE
+  //POSTPONE AHEAD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,10 +200,16 @@
 /*----------------------------------------------------------------------------*/
 : NEXT-WORD immediate
 
+  //POSTPONE THEN
+  //DISCARD
+
+
   POSTPONE object@
   POSTPONE word.prev
   POSTPONE object!
  
+  //POSTPONE 1
+  //POSTPONE NEXT+
   POSTPONE NEXT
 ;
 

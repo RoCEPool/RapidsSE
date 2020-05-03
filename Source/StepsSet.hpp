@@ -253,6 +253,7 @@ public:
   void vEncodeLoop(void);
   void vEncodeLoopPlus(void);
   void vEncodeNext(void);
+  void vEncodeNextPlus(void);
   void vEncodePush(void);
   void vEncodeThen(void);
   void vEncodeUntil(void);
