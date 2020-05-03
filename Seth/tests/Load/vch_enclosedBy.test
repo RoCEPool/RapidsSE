@@ -21,88 +21,88 @@ success
 tableScan vch;
 rows: 21
 
-predicateFetch vch "vch_testno 101 ==";
+fetch vch "vch_testno 101 ==";
 rows:
  ( 101, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 102 =";
+fetch vch "vch_testno 102 =";
 rows:
   ( 102, 'quick, brown fox', *)
 
-predicateFetch vch "vch_testno 103 =";
+fetch vch "vch_testno 103 =";
 rows:
   ( 103, 'quick brown fox''s', *)
 
-predicateFetch vch "vch_testno 104 =";
+fetch vch "vch_testno 104 =";
 rows:
   ( 104, 'quick brown fox''s', *)
 
-predicateFetch vch "vch_testno 105 =";
+fetch vch "vch_testno 105 =";
 rows:
   ( 105, 'quick brow\n foxs', *)
 
-predicateFetch vch "vch_testno 106 =";
+fetch vch "vch_testno 106 =";
 rows:
   ( 106, 'quick brown fox
 s', *)
 
-predicateFetch vch "vch_testno 107 =";
+fetch vch "vch_testno 107 =";
 rows:
   ( 107, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 108 =";
+fetch vch "vch_testno 108 =";
 rows:
   ( 108, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 109 =";
+fetch vch "vch_testno 109 =";
 rows:
   ( 109, '', *)
 
-predicateFetch vch "vch_testno 110 =";
+fetch vch "vch_testno 110 =";
 rows:
   ( 110, null, *)
 
-predicateFetch vch "vch_testno 111 =";
+fetch vch "vch_testno 111 =";
 rows:
   ( 111, null, *)
 
-predicateFetch vch "vch_testno 112 =";
+fetch vch "vch_testno 112 =";
 rows:
   ( 112, 'quick brown N fox', *)
 
-predicateFetch vch "vch_testno 113 =";
+fetch vch "vch_testno 113 =";
 rows:
   ( 113, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 114 =";
+fetch vch "vch_testno 114 =";
 rows:
   ( 114, '   quick brown fox   ', *)
 
-predicateFetch vch "vch_testno 115 =";
+fetch vch "vch_testno 115 =";
 rows:
 ( 115, 'quick brown fox''s', *)
 
-predicateFetch vch "vch_testno 116 =";
+fetch vch "vch_testno 116 =";
 rows:
   ( 116, null, *)
 
-predicateFetch vch "vch_testno 117 =";
+fetch vch "vch_testno 117 =";
 rows:
   ( 117, null, *)
 
-predicateFetch vch "vch_testno 118 =";
+fetch vch "vch_testno 118 =";
 rows:
   ( 118, 'nulla', *)
 
-predicateFetch vch "vch_testno 119 =";
+fetch vch "vch_testno 119 =";
 rows:
   ( 119, 'null a', *)
 
-predicateFetch vch "vch_testno 120 =";
+fetch vch "vch_testno 120 =";
 rows:
 ( 120, null, *)
 
-predicateFetch vch "vch_testno 121 =";
+fetch vch "vch_testno 121 =";
 rows:
   ( 121, 'quick brown fox
 s', *)

@@ -20,18 +20,18 @@ success
 tableScan T1;
 rows: 5
 
-predicateFetch T1 "jA 2 <=" ;
+fetch T1 "jA 2 <=" ;
 rows: 2
 
-predicateFetch T1 "jC 2 <=" ;
+fetch T1 "jC 2 <=" ;
 rows: 5
 
-predicateFetch T1 "jA 4 >= jC ddd >= and";
+fetch T1 "jA 4 >= jC ddd >= and";
 rows:
   (4,14,'ddd',' mood')
   (5,15,'eee',' boat')
 
-predicateFetch T1 "jA 4 == jC ddd == and";
+fetch T1 "jA 4 == jC ddd == and";
 rows:
   (4,14,'ddd',' mood')
 

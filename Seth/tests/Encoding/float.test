@@ -31,58 +31,58 @@ Loop 1000 {
 }
 
 // check no of rows
-predicateFetch fltTbl;
+fetch fltTbl;
 rows: 100000
 
 // dump table
 //dumpTbl fltTbl;
 
-predicateFetch retrieve fltTbl flt_col0;
+fetch retrieve fltTbl flt_col0;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col1;
+fetch retrieve fltTbl flt_col1;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col2;
+fetch retrieve fltTbl flt_col2;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col3;
+fetch retrieve fltTbl flt_col3;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col4;
+fetch retrieve fltTbl flt_col4;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col5;
+fetch retrieve fltTbl flt_col5;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col6;
+fetch retrieve fltTbl flt_col6;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col7;
+fetch retrieve fltTbl flt_col7;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col8;
+fetch retrieve fltTbl flt_col8;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col9;
+fetch retrieve fltTbl flt_col9;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col10;
+fetch retrieve fltTbl flt_col10;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col11;
+fetch retrieve fltTbl flt_col11;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col12;
+fetch retrieve fltTbl flt_col12;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col13;
+fetch retrieve fltTbl flt_col13;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col14;
+fetch retrieve fltTbl flt_col14;
 affected: 100000
 
-predicateFetch retrieve fltTbl flt_col15;
+fetch retrieve fltTbl flt_col15;
 affected: 100000
 
 // drop the table

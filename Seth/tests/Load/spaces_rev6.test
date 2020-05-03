@@ -17,7 +17,7 @@ success
 load T1 "../DATA/Load/spaces.csv" ;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 4
 
@@ -47,7 +47,7 @@ success
 ld T1 "../DATA/Load/spaces_enclosedBy.csv" enclosed_by_leading "'" ;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 4
 
@@ -77,7 +77,7 @@ success
 ld T1 "../DATA/Load/spaces_enclosedByCurly.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 4
 

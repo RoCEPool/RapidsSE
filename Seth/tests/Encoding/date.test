@@ -27,58 +27,58 @@ load dteTbl "../DATA/Encoding/date.csv" ;
 success
 
 // check no of rows
-predicateFetch dteTbl;
+fetch dteTbl;
 rows: 1000000
 
 // dump table
 //dumpTbl dteTbl;
 
-predicateFetch retrieve dteTbl dte_col0;
+fetch retrieve dteTbl dte_col0;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col1;
+fetch retrieve dteTbl dte_col1;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col2;
+fetch retrieve dteTbl dte_col2;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col3;
+fetch retrieve dteTbl dte_col3;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col4;
+fetch retrieve dteTbl dte_col4;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col5;
+fetch retrieve dteTbl dte_col5;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col6;
+fetch retrieve dteTbl dte_col6;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col7;
+fetch retrieve dteTbl dte_col7;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col8;
+fetch retrieve dteTbl dte_col8;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col9;
+fetch retrieve dteTbl dte_col9;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col10;
+fetch retrieve dteTbl dte_col10;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col11;
+fetch retrieve dteTbl dte_col11;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col12;
+fetch retrieve dteTbl dte_col12;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col13;
+fetch retrieve dteTbl dte_col13;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col14;
+fetch retrieve dteTbl dte_col14;
 affected: 1000000
 
-predicateFetch retrieve dteTbl dte_col15;
+fetch retrieve dteTbl dte_col15;
 affected: 1000000
 
 // drop the table

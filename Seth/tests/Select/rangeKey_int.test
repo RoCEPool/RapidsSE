@@ -41,34 +41,34 @@ rows: 26
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-predicateFetch jCdt "jA 19 > jA 22 == and" ;
+fetch jCdt "jA 19 > jA 22 == and" ;
 rows: 1
 
-predicateFetch jCdt "jA 19 >= jA 22 == and" ;
+fetch jCdt "jA 19 >= jA 22 == and" ;
 rows: 1
 
-predicateFetch jCdt "jA 10 > jA 19 < and" ;
+fetch jCdt "jA 10 > jA 19 < and" ;
 rows: 8
 
-predicateFetch jCdt "jA 10 > jA 19 <= and" ;
+fetch jCdt "jA 10 > jA 19 <= and" ;
 rows: 9
 
-predicateFetch jCdt "jA 10 >= jA 19 < and" ;
+fetch jCdt "jA 10 >= jA 19 < and" ;
 rows: 9
 
-predicateFetch jCdt "jA 10 >= jA 19 <= and" ;
+fetch jCdt "jA 10 >= jA 19 <= and" ;
 rows: 10
 
-predicateFetch jCdt "jA 1 > jA 10 <= and" ;
+fetch jCdt "jA 1 > jA 10 <= and" ;
 rows: 9
 
-predicateFetch jCdt "jA 1 >= jA 10 <= and" ;
+fetch jCdt "jA 1 >= jA 10 <= and" ;
 rows: 10
 
-predicateFetch jCdt "jA -9223372036854775806 > jA 0 < and";
+fetch jCdt "jA -9223372036854775806 > jA 0 < and";
 rows: 0
 
-predicateFetch jCdt "jA -9223372036854775806 > jA 1 <= and";
+fetch jCdt "jA -9223372036854775806 > jA 1 <= and";
 rows: 1
 
 drop table jCdt;

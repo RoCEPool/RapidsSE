@@ -27,58 +27,58 @@ load bolTbl "../DATA/Encoding/boolean.csv" ;
 success
 
 // check no of rows
-predicateFetch bolTbl;
+fetch bolTbl;
 rows: 1000000
 
 // dump table
 //dumpTbl bolTbl;
 
-predicateFetch retrieve bolTbl bol_col0;
+fetch retrieve bolTbl bol_col0;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col1;
+fetch retrieve bolTbl bol_col1;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col2;
+fetch retrieve bolTbl bol_col2;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col3;
+fetch retrieve bolTbl bol_col3;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col4;
+fetch retrieve bolTbl bol_col4;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col5;
+fetch retrieve bolTbl bol_col5;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col6;
+fetch retrieve bolTbl bol_col6;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col7;
+fetch retrieve bolTbl bol_col7;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col8;
+fetch retrieve bolTbl bol_col8;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col9;
+fetch retrieve bolTbl bol_col9;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col10;
+fetch retrieve bolTbl bol_col10;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col11;
+fetch retrieve bolTbl bol_col11;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col12;
+fetch retrieve bolTbl bol_col12;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col13;
+fetch retrieve bolTbl bol_col13;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col14;
+fetch retrieve bolTbl bol_col14;
 affected: 1000000
 
-predicateFetch retrieve bolTbl bol_col15;
+fetch retrieve bolTbl bol_col15;
 affected: 1000000
 
 // drop the table

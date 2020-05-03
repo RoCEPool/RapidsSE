@@ -17,15 +17,15 @@ success
 load T1 "../DATA/Load/emptyString1.csv" ;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+fetch T1 "col_id 1 =";
 rows:
   (1,'''''',3)
 
-predicateFetch T1 "col_id 2 =";
+fetch T1 "col_id 2 =";
 rows:
   (2,null,3)
 
@@ -56,15 +56,15 @@ success
 tag delete <enclosedby_leading>;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+fetch T1 "col_id 1 =";
 rows:
   (1,'',3)
 
-predicateFetch T1 "col_id 2 =";
+fetch T1 "col_id 2 =";
 rows:
   (2,null,3)
 
@@ -101,15 +101,15 @@ success
 tag delete <enclosedby_trailing>;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+fetch T1 "col_id 1 =";
 rows:
   (1,'',3)
 
-predicateFetch T1 "col_id 2 =";
+fetch T1 "col_id 2 =";
 rows:
   (2,null,3)
 
@@ -129,11 +129,11 @@ tableScan T1;
 rows: 2
 
 //! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed
-//predicateFetch T1 "col_id 1 =";
+//fetch T1 "col_id 1 =";
 //rows:
 //  (1,'',3)
 
-//predicateFetch T1 "col_id 2 =";
+//fetch T1 "col_id 2 =";
 //rows:
 //  (2,null,3)
 

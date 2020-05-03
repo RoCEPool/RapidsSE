@@ -27,58 +27,58 @@ load decTbl "../DATA/Encoding/decimal.csv" ;
 success
 
 // check no of rows
-predicateFetch decTbl;
+fetch decTbl;
 rows: 1000000
 
 // dump table
 //dumpTbl decTbl;
 
-predicateFetch retrieve decTbl dec_col0;
+fetch retrieve decTbl dec_col0;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col1;
+fetch retrieve decTbl dec_col1;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col2;
+fetch retrieve decTbl dec_col2;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col3;
+fetch retrieve decTbl dec_col3;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col4;
+fetch retrieve decTbl dec_col4;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col5;
+fetch retrieve decTbl dec_col5;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col6;
+fetch retrieve decTbl dec_col6;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col7;
+fetch retrieve decTbl dec_col7;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col8;
+fetch retrieve decTbl dec_col8;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col9;
+fetch retrieve decTbl dec_col9;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col10;
+fetch retrieve decTbl dec_col10;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col11;
+fetch retrieve decTbl dec_col11;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col12;
+fetch retrieve decTbl dec_col12;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col13;
+fetch retrieve decTbl dec_col13;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col14;
+fetch retrieve decTbl dec_col14;
 affected: 1000000
 
-predicateFetch retrieve decTbl dec_col15;
+fetch retrieve decTbl dec_col15;
 affected: 1000000
 
 // drop the table

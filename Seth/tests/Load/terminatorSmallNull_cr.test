@@ -20,7 +20,7 @@ create index idx on terminator_cr(c1);
 success
 
 // fetch
-predicateFetch terminator_cr "c1 1 =";
+fetch terminator_cr "c1 1 =";
 rows: 2533
 
 // fetch

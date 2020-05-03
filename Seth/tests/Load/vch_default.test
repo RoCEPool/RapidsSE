@@ -21,72 +21,72 @@ success
 tableScan vch;
 rows: 17
 
-predicateFetch vch "vch_testno 201 =";
+fetch vch "vch_testno 201 =";
 rows:
   ( 201, '''quick brown fox''', *)
 
-predicateFetch vch "vch_testno 202 =";
+fetch vch "vch_testno 202 =";
 rows:
   ( 202, '''quick brown fox''s''', *)
 
-predicateFetch vch "vch_testno 203 =";
+fetch vch "vch_testno 203 =";
 rows:
   ( 203, '''quick brown fox''''s''', *)
 
-predicateFetch vch "vch_testno 204 =";
+fetch vch "vch_testno 204 =";
 rows:
   ( 204, '''quick brow\n foxs''', *)
 
-predicateFetch vch "vch_testno 205 =";
+fetch vch "vch_testno 205 =";
 rows:
   ( 205, '''quick brown fox
 s''', *)
 
-predicateFetch vch "vch_testno 206 =";
+fetch vch "vch_testno 206 =";
 rows:
   ( 206, '''quick brown fox''', *)
 
-predicateFetch vch "vch_testno 207 =";
+fetch vch "vch_testno 207 =";
 rows:
   ( 207, '   ''quick brown fox''   ', *)
 
-predicateFetch vch "vch_testno 208 =";
+fetch vch "vch_testno 208 =";
 rows:
   ( 208, '''''', *)
 
-predicateFetch vch "vch_testno 209 =";
+fetch vch "vch_testno 209 =";
 rows:
   ( 209, '''null''', *)
 
-predicateFetch vch "vch_testno 210 =";
+fetch vch "vch_testno 210 =";
 rows:
   ( 210, '''N''', *)
 
-predicateFetch vch "vch_testno 211 =";
+fetch vch "vch_testno 211 =";
 rows:
   ( 211, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 212 =";
+fetch vch "vch_testno 212 =";
 rows:
   ( 212, '   quick brown fox   ', *)
 
-predicateFetch vch "vch_testno 213 =";
+fetch vch "vch_testno 213 =";
 rows:
   ( 213, 'quick brown fox''s''', *)
 
-predicateFetch vch "vch_testno 214 =";
+fetch vch "vch_testno 214 =";
 rows:
   ( 214, null, *)
 
-predicateFetch vch "vch_testno 215 =";
+fetch vch "vch_testno 215 =";
 rows:
   ( 215, null, *)
 
-predicateFetch vch "vch_testno 216 =";
+fetch vch "vch_testno 216 =";
 rows:
   ( 216, null, *)
 
-predicateFetch vch "vch_testno 217 =";
+fetch vch "vch_testno 217 =";
 rows:
   ( 217, 'quick brown fox
 s', *)
@@ -113,72 +113,72 @@ success
 tableScan vch;
 rows: 17
 
-predicateFetch vch "vch_testno 201 =";
+fetch vch "vch_testno 201 =";
 rows:
   ( 201, '''quick brown fox''', *)
 
-predicateFetch vch "vch_testno 202 =";
+fetch vch "vch_testno 202 =";
 rows:
   ( 202, '''quick brown fox''s''', *)
 
-predicateFetch vch "vch_testno 203 =";
+fetch vch "vch_testno 203 =";
 rows:
   ( 203, '''quick brown fox''''s''', *)
 
-predicateFetch vch "vch_testno 204 =";
+fetch vch "vch_testno 204 =";
 rows:
   ( 204, '''quick brow\n foxs''', *)
 
-predicateFetch vch "vch_testno 205 =";
+fetch vch "vch_testno 205 =";
 rows:
   ( 205, '''quick brown fox
 s''', *)
 
-predicateFetch vch "vch_testno 206 =";
+fetch vch "vch_testno 206 =";
 rows:
   ( 206, '''quick brown fox''', *)
 
-predicateFetch vch "vch_testno 207 =";
+fetch vch "vch_testno 207 =";
 rows:
   ( 207, '   ''quick brown fox''   ', *)
 
-predicateFetch vch "vch_testno 208 =";
+fetch vch "vch_testno 208 =";
 rows:
   ( 208, '''''', *)
 
-predicateFetch vch "vch_testno 209 =";
+fetch vch "vch_testno 209 =";
 rows:
   ( 209, '''null''', *)
 
-predicateFetch vch "vch_testno 210 =";
+fetch vch "vch_testno 210 =";
 rows:
   ( 210, '''N''', *)
 
-predicateFetch vch "vch_testno 211 =";
+fetch vch "vch_testno 211 =";
 rows:
   ( 211, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 212 =";
+fetch vch "vch_testno 212 =";
 rows:
   ( 212, '   quick brown fox   ', *)
 
-predicateFetch vch "vch_testno 213 =";
+fetch vch "vch_testno 213 =";
 rows:
   ( 213, 'quick brown fox''s''', *)
 
-predicateFetch vch "vch_testno 214 =";
+fetch vch "vch_testno 214 =";
 rows:
   ( 214, null, *)
 
-predicateFetch vch "vch_testno 215 =";
+fetch vch "vch_testno 215 =";
 rows:
   ( 215, null, *)
 
-predicateFetch vch "vch_testno 216 =";
+fetch vch "vch_testno 216 =";
 rows:
   ( 216, null, *)
 
-predicateFetch vch "vch_testno 217 =";
+fetch vch "vch_testno 217 =";
 rows:
   ( 217, 'quick brown fox
 s', *)

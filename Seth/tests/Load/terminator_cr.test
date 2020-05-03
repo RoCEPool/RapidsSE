@@ -19,12 +19,12 @@ create index idx on terminator_cr(c1);
 success
 
 // fetch
-predicateFetch terminator_cr "c1 1 =";
+fetch terminator_cr "c1 1 =";
 rows:
   (1, 'A', 'This is terminated by <CR>')
 
 // fetch
-predicateFetch terminator_cr "c1 2 =";
+fetch terminator_cr "c1 2 =";
 rows:
   (2, 'A', 'Also terminated by <CR>')
 
