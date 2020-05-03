@@ -26,6 +26,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
   vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
   vAddStep("word.immediate!"_Stz,   &Step::vWordImmediateSet);
+  vAddStep("word.include@"_Stz,     &Step::vWordIncludeFetch);
+  vAddStep("word.include!"_Stz,     &Step::vWordIncludeStore);
   vAddStep("word.isImmediate"_Stz,  &Step::vWordIsImmediate);
   vAddStep("word.isIntrinsic"_Stz,  &Step::vWordIsIntrinsic);
   vAddStep("word.kind@"_Stz,        &Step::vWordKindFetch);
@@ -180,7 +182,7 @@ void Step::vWordEmbObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.TagSet@ -- fetch ename set                                          */
+/* word.TagSet@ -- fetch ename set                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetFetch(void)
 {
@@ -196,7 +198,7 @@ void Step::vWordEnmSetFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.TagSet! -- store ename set                                          */
+/* word.TagSet! -- store ename set                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetStore(void)
 {
@@ -308,6 +310,38 @@ void Step::vWordImmediateSet(void)
   i8 iImmediate = m_pDataStack->iPopInt(__func__);
   
   pWord->vImmediate(iImmediate);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.include@ -- word include group fetch                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vWordIncludeFetch(void)
+{
+  ENTRY();
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  Word* pInclude = pWord->pInclude();
+  
+  m_pDataStack->vPushPtr(pInclude);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.include! -- word include group store                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vWordIncludeStore(void)
+{
+  ENTRY();
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  Word* pInclude = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  pWord->vInclude(pInclude);
   
   EXIT();
 }
