@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 /* add missing/default tags to an info word                                   */
 /*----------------------------------------------------------------------------*/
-: cmd::addDefaultTags params| pInfoWd |
+: cmd::addDefaultTags_info params| pInfoWd |
 
   pInfoWd word.name@ "Adding default tags for : %v" .printf
 
@@ -282,19 +282,6 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for a command                             */
-/*----------------------------------------------------------------------------*/
-: cmd::fillOut_a_cmd_syntax params| pCmdSyntax |
-
-  pCmdSyntax word.name@ "Filling out cmd using cmdSyntax: %v" .printf
-
-;
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -381,24 +368,11 @@
 
   find: _info locals| pOpInfo |
 
-  // iterate thru all pOpInfo words
-
   dic::root dic.lastWord dup
   iterate                                // iterate word cursor
 
     object@ word.category@ pOpInfo eql if
-      object@ cmd::addDefaultTags
-    then
-
-    object@ word.prev object!            // advance cursor backwards thru words
-  next
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  dic::root dic.lastWord dup
-  iterate                                // iterate word cursor
-
-    object@ word.category@ pOpInfo eql if
+      object@ cmd::addDefaultTags_info
       object@ cmd::synthProc_info
       object@ cmd::addSeeds_info
       object@ cmd::genService_info
@@ -422,7 +396,6 @@
 
     object@ word.category@ pCmdSyntax eql if
       
-      object@ cmd::fillOut_a_cmd_syntax  // fill out the tag set of the op
     then
 
     object@ word.prev object!            // advance cursor backwards thru words
