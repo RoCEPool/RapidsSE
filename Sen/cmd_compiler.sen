@@ -268,6 +268,42 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for a command                             */
 /*----------------------------------------------------------------------------*/
+: cmd::addSeeds_info params| pInfoWrd |
+
+  pInfoWrd word.name@ "Adding seeds using _info : %v" .printf
+
+       pInfoWrd _info.aboutGenericJob  if pInfoWrd cmd::addSeedsFor_genericJob
+  else pInfoWrd _info.aboutDistJob     if pInfoWrd cmd::addSeedsFor_distJob
+  else                                    pInfoWrd cmd::addSeedsFor_localOp
+  then then
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for a command                             */
+/*----------------------------------------------------------------------------*/
+: cmd::genService_info params| pInfoWrd |
+
+  pInfoWrd word.name@ "Generating service using _info : %v" .printf
+
+  pInfoWrd _info.aboutServiceCmd if pInfoWrd .generateService then
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for a command                             */
+/*----------------------------------------------------------------------------*/
+: cmd::synthProc_info params| pInfoWrd |
+
+  pInfoWrd word.name@ "Synth proc using _info : %v" .printf
+
+       pInfoWrd _info.aboutLiteOp      if pInfoWrd cmd::synthProcFor_liteOp
+  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd cmd::synthProcFor_localLiteOp
+  then then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for a command                             */
+/*----------------------------------------------------------------------------*/
 : cmd::fillOut_a_cmd_syntax params| pCmdSyntax |
 
   pCmdSyntax word.name@ "Filling out cmd using cmdSyntax: %v" .printf
