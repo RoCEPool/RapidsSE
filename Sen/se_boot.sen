@@ -93,25 +93,25 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 4 .put
-        "op_defHandlers.sen"         include
-        "op__common.sen"             include
-        "op__tagSets.sen"            include
+        "op_defHandlers.sen"          include
+        "op__common.sen"              include
+        "op__tagSets.sen"             include
 
         // -- -- -- -- -- -- -- -- -- --
 
-        "OP_analyzeIndex.sen"        include
-        "OP_analyzeTable.sen"        include
+        "OP_analyzeIndex.sen"         include
+        "OP_analyzeTable.sen"         include
 
-        "OP_bufferGen.sen"           include
-        "OP_burst.sen"               include
+        "OP_bufferGen.sen"            include
+        "OP_burst.sen"                include
 
-        "OP_changeFolder.sen"        include
-        "OP_chunk.sen"               include
-        "OP_compactIndex.sen"        include
-        "OP_consume.sen"             include
-        "OP_createCatalog.sen"       include
-        "OP_createSchema.sen"        include
-        "OP_createTenant.sen"        include
+        "OP_changeFolder.sen"         include
+        "OP_chunk.sen"                include
+        "OP_compactIndex.sen"         include
+        "OP_consume.sen"              include
+        "OP_createCatalog.sen"        include
+        "OP_createSchema.sen"         include
+        "OP_createTenant.sen"         include
 
         //"OP_docol.sen"            include
         "OP_dropCatalog.sen"          include
@@ -198,31 +198,29 @@
         "BM_insIdx.sen"               include
 
 2 .put
-        "test_encodingData.sen"   include
-
-        "test_jData.sen"          include
-        "test_misc.sen"           include
-        "test_str.sen"            include
-        "test_unit.sen"           include
-        "test_tData.sen"          include
-
-        "test_gGen.sen"           include
-        "test_iData.sen"          include
-        "test_dData.sen"          include
-        "test_1m.sen"             include
-        "test_sleep.sen"          include
-
-        "test_rjh.sen"            include
+        "test_dData.sen"              include
+        "test_encodingData.sen"       include
+        "test_gGen.sen"               include
+        "test_iData.sen"              include
+        "test_jData.sen"              include
+        "test_misc.sen"               include
+        "test_rjh.sen"                include
+        "test_sleep.sen"              include
+        "test_str.sen"                include
+        "test_tData.sen"              include
+        "test_unit.sen"               include
+        "test_1m.sen"                 include
 
 1 .put
-        cmd::fillOut_all_cmd
+        "se_demons.sen"               include
+        "se_misc.sen"                 include
+        "se_munge.sen"                include
+        "se_prompt.sen"               include
+        "se_vortex.sen"               include
 
-        "se_demons.sen"           include
-        "se_misc.sen"             include
-        "se_munge.sen"            include
-        "se_prompt.sen"           include
-        "se_start.sen"            include // last
-        "se_vortex.sen"           include
+cmd::fillOut_all_cmd
+
+        "se_start.sen"                include // last
 
 0 .put
 
