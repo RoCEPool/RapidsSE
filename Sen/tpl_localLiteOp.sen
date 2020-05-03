@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_PULSEMARKER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: __localLiteOp_PulseMarker
+: tpl_localLiteOp_PulseMarker
 
 "
   : /localLiteOp/_PulseMarker \\handler
@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for localLiteOp req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: __localLiteOp_req
+: tpl_localLiteOp_req
 
 "
   : /localLiteOp/_req \\operator
@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* local liteOp procedure with 0 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: __localLiteOp_procedure0
+: tpl_localLiteOp_procedure0
 
 "
   procedure /localLiteOp/
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* local liteOp procedure with 1 parameter                                    */
 /*----------------------------------------------------------------------------*/
-: __localLiteOp_procedure1
+: tpl_localLiteOp_procedure1
 
 "
   procedure /localLiteOp/
@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* local liteOp procedure with 2 parameters                                   */
 /*----------------------------------------------------------------------------*/
-: __localLiteOp_procedure2
+: tpl_localLiteOp_procedure2
 
   "
     procedure /localLiteOp/

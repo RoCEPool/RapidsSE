@@ -218,23 +218,23 @@
 
   sWordNm_trunc "LiteOP: %v" .printf
 
-  "/liteOp/" sWordNm_trunc __liteOp_PulseMarker str.replace >interpret
-  "/liteOp/" sWordNm_trunc __liteOp_req         str.replace >interpret
+  "/liteOp/" sWordNm_trunc tpl_liteOp_PulseMarker str.replace >interpret
+  "/liteOp/" sWordNm_trunc tpl_liteOp_req         str.replace >interpret
 
   // add procedure depending on no of parameters
   "<params>" pInfTagSet tagSet.hasName assert
   "<params>" pInfTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
-    "/liteOp/" sWordNm_trunc __liteOp_procedure2
+    "/liteOp/" sWordNm_trunc tpl_liteOp_procedure2
       str.replace procedure::add
   else
   iParams 1 == if
-    "/liteOp/" sWordNm_trunc __liteOp_procedure1
+    "/liteOp/" sWordNm_trunc tpl_liteOp_procedure1
       str.replace procedure::add
   else
   iParams 0 == assert
-    "/liteOp/" sWordNm_trunc __liteOp_procedure0
+    "/liteOp/" sWordNm_trunc tpl_liteOp_procedure0
       str.replace procedure::add
   then then
 ;
@@ -251,23 +251,23 @@
 
   sWordNm_trunc "LocalLiteOP: %v" .printf
 
-  "/localLiteOp/" sWordNm_trunc __localLiteOp_PulseMarker str.replace >interpret
-  "/localLiteOp/" sWordNm_trunc __localLiteOp_req         str.replace >interpret
+  "/localLiteOp/" sWordNm_trunc tpl_localLiteOp_PulseMarker str.replace >interpret
+  "/localLiteOp/" sWordNm_trunc tpl_localLiteOp_req         str.replace >interpret
 
   // add procedure depending on no of parameters
   "<params>" pInfTagSet tagSet.hasName assert
   "<params>" pInfTagSet tagSet.getStr >int to iParams
 
   iParams 2 == if
-    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure2
+    "/localLiteOp/" sWordNm_trunc tpl_localLiteOp_procedure2
       str.replace procedure::add
   else
   iParams 1 == if
-    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure1
+    "/localLiteOp/" sWordNm_trunc tpl_localLiteOp_procedure1
       str.replace procedure::add
   else
   iParams 0 == assert
-    "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0
+    "/localLiteOp/" sWordNm_trunc tpl_localLiteOp_procedure0
       str.replace procedure::add
   then  then
 ;
