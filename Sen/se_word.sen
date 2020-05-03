@@ -42,8 +42,8 @@
 
   pWord word.tagSet@   locals| pWordTags |
 
-  sCatgName sWordName
-    "Word: %24v Category: %8v" .putf
+  sWordName sCatgName
+    "%8v : %24v" .putf
 
   pWordTags if
     pWordTags tagSet.asStr "  %v" .putf
