@@ -214,12 +214,17 @@
   pInfoWd word.name_trunc locals| sCmdNm |
   pInfoWd word.tagSet@    locals| pInfTagSet |
 
-  0 locals| iParams |
+  0 0 locals| iParams sText |
 
   sCmdNm "LiteOP: %v" .printf
 
-  "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace >interpret
-  "/liteOp/" sCmdNm tpl_liteOp_req         str.replace >interpret
+  // add : cmdNm_PulseMarker
+  "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace to sText
+  sText >interpret
+
+  // add : cmdNm_req
+  "/liteOp/" sCmdNm tpl_liteOp_req str.replace to sText
+  sText >interpret
 
   // add procedure depending on no of parameters
   "<params>" pInfTagSet tagSet.hasName assert
