@@ -32,10 +32,10 @@
 /*----------------------------------------------------------------------------*/
 /* generate two words, one which parses and another which spawns a service    */
 /*----------------------------------------------------------------------------*/
-: .generateService params| pInfoWrd |
+: .generateService params| pInfoWd |
 
   // calc the name of the service
-  "_" pInfoWrd word.name@ str.removeSuffix locals| sServiceNm |
+  "_" pInfoWd word.name@ str.removeSuffix locals| sServiceNm |
 
   sServiceNm "Service name: %v\n" .printf
 
@@ -109,11 +109,11 @@
 /*----------------------------------------------------------------------------*/
 /* add missing/default tags to an info word                                   */
 /*----------------------------------------------------------------------------*/
-: cmd::addDefaultTags params| pInfoWrd |
+: cmd::addDefaultTags params| pInfoWd |
 
-  pInfoWrd word.name@ "Adding default tags for : %v" .printf
+  pInfoWd word.name@ "Adding default tags for : %v" .printf
 
-  pInfoWrd word.tagSet@ locals| pInfTagSet |
+  pInfoWd word.tagSet@ locals| pInfTagSet |
 
   // test and add default for: command kind
   "<cmdKind>" pInfTagSet tagSet.hasName not if
@@ -149,42 +149,42 @@
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a distributed info word                           */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedsFor_distJob params| pInfoWrd |
+: cmd::addSeedsFor_distJob params| pInfoWd |
 
-  "<SeedReq>" "defaultSeedDist" "_req" pInfoWrd _info.addSeedToTagSet
+  "<SeedReq>" "defaultSeedDist" "_req" pInfoWd _info.addSeedToTagSet
 
-  "<SeedRcv>" "defaultSeedDist" "_beg" pInfoWrd _info.addSeedToTagSet
+  "<SeedRcv>" "defaultSeedDist" "_beg" pInfoWd _info.addSeedToTagSet
 
-  "<SeedExe>" "defaultSeedDist" "_exe" pInfoWrd _info.addSeedToTagSet
+  "<SeedExe>" "defaultSeedDist" "_exe" pInfoWd _info.addSeedToTagSet
 
-  "<SeedEnd>" "defaultSeedDist" "_end" pInfoWrd _info.addSeedToTagSet
+  "<SeedEnd>" "defaultSeedDist" "_end" pInfoWd _info.addSeedToTagSet
 
-  "<SeedCan>" "defaultSeedDist" "_can" pInfoWrd _info.addSeedToTagSet
+  "<SeedCan>" "defaultSeedDist" "_can" pInfoWd _info.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a generic info word                               */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedsFor_genericJob params| pInfoWrd |
+: cmd::addSeedsFor_genericJob params| pInfoWd |
 
-  "<SeedReq>" "defaultSeedLocal" "_run" pInfoWrd _info.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_run" pInfoWd _info.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
 /* add default seed tags to a local op word                                   */
 /*----------------------------------------------------------------------------*/
-: cmd::addSeedsFor_localOp params| pInfoWrd |
+: cmd::addSeedsFor_localOp params| pInfoWd |
 
-  "<SeedReq>" "defaultSeedLocal" "_req" pInfoWrd _info.addSeedToTagSet
+  "<SeedReq>" "defaultSeedLocal" "_req" pInfoWd _info.addSeedToTagSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize a procedure for given lite op info word                         */
+/* synthesize a procedure for lite op given its info word                     */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProcFor_liteOp params| pInfoWrd |
+: cmd::synthProcFor_liteOp params| pInfoWd |
 
-  pInfoWrd word.name_trunc locals| sWordNm_trunc |
-  pInfoWrd word.tagSet@    locals| pInfTagSet   |
+  pInfoWd word.name_trunc locals| sWordNm_trunc |
+  pInfoWd word.tagSet@    locals| pInfTagSet   |
 
   0 locals| iParams |
 
@@ -210,16 +210,16 @@
       str.replace procedure::add
   then then
 
-  pInfoWrd cmd::addSeedsFor_localOp
+  //pInfoWd cmd::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize a procedure for given local lite op info word                   */
+/* synthesize a procedure for local lite op given its info word               */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProcFor_localLiteOp params| pInfoWrd |
+: cmd::synthProcFor_localLiteOp params| pInfoWd |
 
-  pInfoWrd word.name_trunc locals| sWordNm_trunc |
-  pInfoWrd word.tagSet@    locals| pInfTagSet   |
+  pInfoWd word.name_trunc locals| sWordNm_trunc |
+  pInfoWd word.tagSet@    locals| pInfTagSet   |
 
   0 locals| iParams |
 
@@ -245,61 +245,74 @@
       str.replace procedure::add
   then  then
 
-  pInfoWrd cmd::addSeedsFor_localOp
+  //pInfoWd cmd::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for a command                             */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_a_cmd_info params| pInfoWrd |
+: cmd::addSeeds_info params| pInfoWd |
 
-  pInfoWrd word.name@ "Filling out cmd using _info : %v" .printf
+  pInfoWd word.name@ "Add seeds using _info : %v" .printf
 
-       pInfoWrd _info.aboutGenericJob  if pInfoWrd cmd::addSeedsFor_genericJob
-  else pInfoWrd _info.aboutDistJob     if pInfoWrd cmd::addSeedsFor_distJob
-  else pInfoWrd _info.aboutLiteOp      if pInfoWrd cmd::synthProcFor_liteOp
-  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd cmd::synthProcFor_localLiteOp
-  else                                    pInfoWrd cmd::addSeedsFor_localOp
-  then then then then
-
-  pInfoWrd _info.aboutServiceCmd if pInfoWrd .generateService then
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for a command                             */
-/*----------------------------------------------------------------------------*/
-: cmd::addSeeds_info params| pInfoWrd |
-
-  pInfoWrd word.name@ "Adding seeds using _info : %v" .printf
-
-       pInfoWrd _info.aboutGenericJob  if pInfoWrd cmd::addSeedsFor_genericJob
-  else pInfoWrd _info.aboutDistJob     if pInfoWrd cmd::addSeedsFor_distJob
-  else                                    pInfoWrd cmd::addSeedsFor_localOp
+       pInfoWd _info.aboutGenericJob  if pInfoWd cmd::addSeedsFor_genericJob
+  else pInfoWd _info.aboutDistJob     if pInfoWd cmd::addSeedsFor_distJob
+  else                                   pInfoWd cmd::addSeedsFor_localOp
   then then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for a command                             */
 /*----------------------------------------------------------------------------*/
-: cmd::genService_info params| pInfoWrd |
+: cmd::genService_info params| pInfoWd |
 
-  pInfoWrd word.name@ "Generating service using _info : %v" .printf
+  pInfoWd word.name@ "Gen service using _info : %v" .printf
 
-  pInfoWrd _info.aboutServiceCmd if pInfoWrd .generateService then
+  pInfoWd _info.aboutServiceCmd if pInfoWd .generateService then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for a command                             */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProc_info params| pInfoWrd |
+: cmd::synthProc_info params| pInfoWd |
 
-  pInfoWrd word.name@ "Synth proc using _info : %v" .printf
+  pInfoWd word.name@ "Synth proc using _info : %v" .printf
 
-       pInfoWrd _info.aboutLiteOp      if pInfoWrd cmd::synthProcFor_liteOp
-  else pInfoWrd _info.aboutLocalLiteOp if pInfoWrd cmd::synthProcFor_localLiteOp
+       pInfoWd _info.aboutLiteOp      if pInfoWd cmd::synthProcFor_liteOp
+  else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthProcFor_localLiteOp
   then then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for a command                             */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_a_cmd_info params| pInfoWd |
+
+  pInfoWd word.name@ "Filling out cmd using _info : %v" .printf
+
+  pInfoWd cmd::synthProc_info
+  pInfoWd cmd::addSeeds_info
+  pInfoWd cmd::genService_info
+
+;
+/*----------------------------------------------------------------------------*/
+//: cmd::fillOut_a_cmd_info params| pInfoWd |
+//
+//  pInfoWd word.name@ "Filling out cmd using _info : %v" .printf
+//
+//       pInfoWd _info.aboutGenericJob  if pInfoWd cmd::addSeedsFor_genericJob
+//  else pInfoWd _info.aboutDistJob     if pInfoWd cmd::addSeedsFor_distJob
+//  else pInfoWd _info.aboutLiteOp      if pInfoWd cmd::synthProcFor_liteOp
+//  else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthProcFor_localLiteOp
+//  else                                    pInfoWd cmd::addSeedsFor_localOp
+//  then then then then
+//
+//  pInfoWd _info.aboutServiceCmd if pInfoWd .generateService then
+//;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for a command                             */
