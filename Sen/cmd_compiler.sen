@@ -209,8 +209,6 @@
     "/liteOp/" sWordNm_trunc __liteOp_procedure0
       str.replace procedure::add
   then then
-
-  //pInfoWd cmd::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -244,8 +242,6 @@
     "/localLiteOp/" sWordNm_trunc __localLiteOp_procedure0
       str.replace procedure::add
   then  then
-
-  //pInfoWd cmd::addSeedsFor_localOp
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -282,33 +278,6 @@
   else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthProcFor_localLiteOp
   then then
 ;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for a command                             */
-/*----------------------------------------------------------------------------*/
-: cmd::fillOut_a_cmd_info params| pInfoWd |
-
-  pInfoWd word.name@ "Filling out cmd using _info : %v" .printf
-
-  pInfoWd cmd::synthProc_info
-  pInfoWd cmd::addSeeds_info
-  pInfoWd cmd::genService_info
-
-;
-/*----------------------------------------------------------------------------*/
-//: cmd::fillOut_a_cmd_info params| pInfoWd |
-//
-//  pInfoWd word.name@ "Filling out cmd using _info : %v" .printf
-//
-//       pInfoWd _info.aboutGenericJob  if pInfoWd cmd::addSeedsFor_genericJob
-//  else pInfoWd _info.aboutDistJob     if pInfoWd cmd::addSeedsFor_distJob
-//  else pInfoWd _info.aboutLiteOp      if pInfoWd cmd::synthProcFor_liteOp
-//  else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthProcFor_localLiteOp
-//  else                                    pInfoWd cmd::addSeedsFor_localOp
-//  then then then then
-//
-//  pInfoWd _info.aboutServiceCmd if pInfoWd .generateService then
-//;
 
 
 /*----------------------------------------------------------------------------*/
@@ -430,7 +399,9 @@
   iterate                                // iterate word cursor
 
     object@ word.category@ pOpInfo eql if
-      object@ cmd::fillOut_a_cmd_info    // fill out the tag set of the op
+      object@ cmd::synthProc_info
+      object@ cmd::addSeeds_info
+      object@ cmd::genService_info
     then
 
     object@ word.prev object!            // advance cursor backwards thru words
