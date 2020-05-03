@@ -214,7 +214,7 @@ affected: 0
 dynamic scan OpTable1 | limit 1 | output;
 rows: 1
 
-dynamic predicateFetch OpTable1 OpTable1_idx | output;
+dynamic fetch OpTable1 OpTable1_idx | output;
 rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -244,7 +244,7 @@ rows:
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
 // fetchOp (EntBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx | limit 10 | output;
 rows: 10
 
 // scan (CrwBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
@@ -278,7 +278,7 @@ unordered rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | limit 5 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | limit 5 | output;
 unordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   (  2, 'two'     ,  102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
@@ -287,7 +287,7 @@ unordered rows:
   (  5, 'five'    ,  105, 5,  5, 1.005000e+03, TIMESTAMP '1905-01-01 00:00:00.0', DATE '1905-01-01' )
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | project jidx_100, jidx_key | limit 5 | output;
+dynamic fetch OpTable1 OpTable1_idx | project jidx_100, jidx_key | limit 5 | output;
 rows: 5
 
 // Scan (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
@@ -307,7 +307,7 @@ dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_name | p
 rows: 5
 
 // FetchOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | project jidx_100_2, jidx_key | limit 5 | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | project jidx_100_2, jidx_key | limit 5 | output;
 rows: 5
 
 ///////////////////////////
@@ -315,11 +315,11 @@ rows: 5
 ///////////////////////////
 
 // FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | count | output;
+dynamic fetch OpTable1 OpTable1_idx | count | output;
 rows: (26)
 
 // FetchOp (EntBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | limit 10 | count | output;
+dynamic fetch OpTable1 OpTable1_idx | limit 10 | count | output;
 rows: (10)
 
 // Scan (CrwBuffer->IrwBuffer->IrwBuffer)
@@ -331,11 +331,11 @@ dynamic scan OpTable1 | project jidx_100 | count | output;
 rows: (26)
 
 // Scan (EntBuffer->SrtBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | output;
 rows: 41
 
 // Scan (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | count | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | count | output;
 rows: (41)
 
 ///////////////////////////
@@ -343,11 +343,11 @@ rows: (41)
 ///////////////////////////
 
 // FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | agg jidx_100 | output;
+dynamic fetch OpTable1 OpTable1_idx | agg jidx_100 | output;
 rows: (3826)
 
 // FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | limit 10 | agg jidx_100 | output;
+dynamic fetch OpTable1 OpTable1_idx | limit 10 | agg jidx_100 | output;
 rows: 1
 
 // Scan (CrwBuffer->IrwBuffer->IrwBuffer)
@@ -359,11 +359,11 @@ dynamic scan OpTable1 | project jidx_100 | agg jidx_100 | output;
 rows: (3826)
 
 // Scan (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | agg jidx_100 | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | agg jidx_100 | output;
 rows: (4441)
 
 // Scan (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | agg jidx_100_2 | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | agg jidx_100_2 | output;
 rows: (2655)
 
 ///////////////////////////
@@ -371,15 +371,15 @@ rows: (2655)
 ///////////////////////////
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | output;
 rows: 26
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 10 | output;
 rows: 10
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 50 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 50 | output;
 rows: 26
 
 // Scan (CrwBuffer->SrtBuffer->SrtBuffer)
@@ -391,11 +391,11 @@ rows: 26
 //rows: (3826)
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100 | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | output;
 rows: 41
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | output;
 rows: 41
 
 ///////////////////////////
@@ -403,11 +403,11 @@ rows: 41
 ///////////////////////////
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | output;
 rows: 26
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 10 | output;
 rows: 10
 
 // Scan (CrwBuffer->SrtBuffer->SrtBuffer)
@@ -419,11 +419,11 @@ rows: 26
 //rows: (3826)
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | output;
 rows: 41
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | output;
 rows: 41
 
 ///////////////////////////
@@ -431,11 +431,11 @@ rows: 41
 ///////////////////////////
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | output;
 rows: 26
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | limit 10 | output;
 rows: 10
 
 // Scan (CrwBuffer->SrtBuffer->SrtBuffer)
@@ -447,11 +447,11 @@ rows: 26
 //rows: (3826)
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | output;
 rows: 41
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | output;
 rows: 41
 
 ///////////////////////////
@@ -459,7 +459,7 @@ rows: 41
 ///////////////////////////
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | output;
 ordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   (  2, 'two'     ,  102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
@@ -489,7 +489,7 @@ ordered rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | limit 10 | output;
 ordered rows:
   ( 1, 'one'  ,  101, 1, 1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   ( 2, 'two'  ,  102, 2, 2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
@@ -539,7 +539,7 @@ ordered rows:
 //rows: (3826)
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | superMerge | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | superMerge | output;
 rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   29, 'twonine'   ,  129,    9,   29, 1.029030e+03, TIMESTAMP '1929-01-01 00:00:00.0', DATE '1929-01-01' )
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   28, 'twoeight'  ,  128,    8,   28, 1.028030e+03, TIMESTAMP '1928-01-01 00:00:00.0', DATE '1928-01-01' )
@@ -584,7 +584,7 @@ rows:
   (    0, 'zero'    , 1001,    0,    0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
 
 // Scan (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx || predicateFetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | superMerge | output;
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | superMerge | output;
 rows:
   (   13, 'onethree',  113,    3,   13, 1.013010e+03, TIMESTAMP '1913-01-01 00:00:00.0', DATE '1913-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
   (   12, 'onetwo'  ,  112,    2,   12, 1.012010e+03, TIMESTAMP '1912-01-01 00:00:00.0', DATE '1912-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
@@ -663,7 +663,7 @@ rows:
   (19,'onenine',119,9,19,1019.02,TIMESTAMP '1919-01-01 00:00:00',1919-01-01)
 
 // FetchOP (EntBuffer->IrwBuffer->IrwBuffer)
-dynamic predicateFetch OpTable1 OpTable1_idx | filter jidx_100 120 <  | output;
+dynamic fetch OpTable1 OpTable1_idx | filter jidx_100 120 <  | output;
 rows:
   (10,'onezero',110,0,10,1010.01,TIMESTAMP '1910-01-01 00:00:00',1910-01-01)
   (11,'oneone',111,1,11,1011.01,TIMESTAMP '1911-01-01 00:00:00',1911-01-01)

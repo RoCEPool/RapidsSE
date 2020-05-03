@@ -17,7 +17,7 @@ success
 load T1 "../DATA/Load/null.csv" ;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 11
 
@@ -54,7 +54,7 @@ success
 ld T1 "../DATA/Load/null_enclosedBy.csv" enclosed_by_leading "'" ;
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 11
 
@@ -91,7 +91,7 @@ success
 ld T1 "../DATA/Load/null_enclosedByCurly.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 11
 

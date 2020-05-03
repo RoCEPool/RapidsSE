@@ -16,7 +16,7 @@ success
 ld T1 "../Seth/tests/Load/terminatorVch_rev6.csv" record_terminator "|" record_ends "\n";
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 1
 
@@ -42,7 +42,7 @@ success
 ld T1 ".../DATA/Load/terminatorInt_rev6.csv" record_terminator "|" record_ends "\n";
 success
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 1
 

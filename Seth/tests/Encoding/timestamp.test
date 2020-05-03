@@ -31,58 +31,58 @@ Loop 1000 {
 }
 
 // check no of rows
-predicateFetch tspTbl;
+fetch tspTbl;
 rows: 100000
 
 // dump table
 //dumpTbl tspTbl;
 
-predicateFetch retrieve tspTbl tsp_col0;
+fetch retrieve tspTbl tsp_col0;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col1;
+fetch retrieve tspTbl tsp_col1;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col2;
+fetch retrieve tspTbl tsp_col2;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col3;
+fetch retrieve tspTbl tsp_col3;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col4;
+fetch retrieve tspTbl tsp_col4;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col5;
+fetch retrieve tspTbl tsp_col5;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col6;
+fetch retrieve tspTbl tsp_col6;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col7;
+fetch retrieve tspTbl tsp_col7;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col8;
+fetch retrieve tspTbl tsp_col8;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col9;
+fetch retrieve tspTbl tsp_col9;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col10;
+fetch retrieve tspTbl tsp_col10;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col11;
+fetch retrieve tspTbl tsp_col11;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col12;
+fetch retrieve tspTbl tsp_col12;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col13;
+fetch retrieve tspTbl tsp_col13;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col14;
+fetch retrieve tspTbl tsp_col14;
 affected: 100000
 
-predicateFetch retrieve tspTbl tsp_col15;
+fetch retrieve tspTbl tsp_col15;
 affected: 100000
 
 // drop the table

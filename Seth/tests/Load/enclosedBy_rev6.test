@@ -22,15 +22,15 @@ success
 load T1 "../DATA/Load/enclosedBy1.csv" ;
 failure contains: '5 invalid'
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+fetch T1 "col_id 1 =";
 rows:
   (1,'''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
-predicateFetch T1 "col_id 7 =";
+fetch T1 "col_id 7 =";
 rows:
   (7,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
@@ -59,15 +59,15 @@ success
 ld T1 "../DATA/Load/enclosedBy2.csv" enclosed_by_leading "'";
 failure contains: '1 invalid'
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 2
 
-predicateFetch T1 "col_id 1 =";
+fetch T1 "col_id 1 =";
 rows:
   (1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
-predicateFetch T1 "col_id 3 =";
+fetch T1 "col_id 3 =";
 rows:
   (3,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
@@ -96,31 +96,31 @@ success
 ld T1 "../DATA/Load/enclosedBy3.csv" enclosed_by_leading "[" enclosed_by_trailing "]";
 failure contains: '7 invalid'
 
-// predicateFetch rows
+// fetch rows
 tableScan T1;
 rows: 6
 
-predicateFetch T1 "col_id 1 =";
+fetch T1 "col_id 1 =";
 rows:
   (1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
-predicateFetch T1 "col_id 2 =";
+fetch T1 "col_id 2 =";
 rows:
   (2,'WITH []',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
-predicateFetch T1 "col_id 4 =";
+fetch T1 "col_id 4 =";
 rows:
   (4,' ''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
-predicateFetch T1 "col_id 10 =";
+fetch T1 "col_id 10 =";
 rows:
   (10,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
-predicateFetch T1 "col_id 12 =";
+fetch T1 "col_id 12 =";
 rows:
   (12,' DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
-predicateFetch T1 "col_id 13 =";
+fetch T1 "col_id 13 =";
 rows:
  (13,' ''[DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 

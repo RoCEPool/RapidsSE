@@ -21,74 +21,74 @@ ld vch "../DATA/Load/vch_no_enclosed_no_escape.csv"
   enclosed_by_leading "\0" escape_char "\0" ;
 success
 
-//predicateFetch vch;
+//fetch vch;
 //rows: 18
 
-predicateFetch vch "vch_testno 301 =";
+fetch vch "vch_testno 301 =";
 rows:
   ( 301, '''quick brown fox''', *);
  
-predicateFetch vch "vch_testno 302 =";
+fetch vch "vch_testno 302 =";
 rows:
   ( 302, '''quick, brown fox\\''', *);
 
-predicateFetch vch "vch_testno 303 =";
+fetch vch "vch_testno 303 =";
 rows:
   ( 303, '''quick brown fox''s''', *);
 
-predicateFetch vch "vch_testno 304 =";
+fetch vch "vch_testno 304 =";
 rows:
   ( 304, '''quick brow\\\\n foxs''', *);
 
-predicateFetch vch "vch_testno 305 =";
+fetch vch "vch_testno 305 =";
 rows:
   ( 305, '''quick brown fox\\ns''', *);
 
-predicateFetch vch "vch_testno 306 =";
+fetch vch "vch_testno 306 =";
 rows:
   ( 306, '''quick brown fox''', *);
 
-predicateFetch vch "vch_testno 307 =";
+fetch vch "vch_testno 307 =";
 rows:
   ( 307, '   ''quick brown fox''   ', *);
 
-predicateFetch vch "vch_testno 308 =";
+fetch vch "vch_testno 308 =";
 rows:
   ( 308, '''''', *);
 
-predicateFetch vch "vch_testno 309 =";
+fetch vch "vch_testno 309 =";
 rows:
   ( 309, '''null''', *);
 
-predicateFetch vch "vch_testno 310 =";
+fetch vch "vch_testno 310 =";
 rows:
   ( 310, '''\\N''', *);
 
-predicateFetch vch "vch_testno 311 =";
+fetch vch "vch_testno 311 =";
 rows:
   ( 311, 'quick brown fox', *);
 
-predicateFetch vch "vch_testno 312 =";
+fetch vch "vch_testno 312 =";
 rows:
   ( 312, '   quick brown fox   ', *);
 
-predicateFetch vch "vch_testno 313 =";
+fetch vch "vch_testno 313 =";
 rows:
   ( 313, 'quick brown fox''s', *);
 
-predicateFetch vch "vch_testno 314 =";
+fetch vch "vch_testno 314 =";
 rows:
   ( 314, '', *);
 
-predicateFetch vch "vch_testno 315 =";
+fetch vch "vch_testno 315 =";
 rows:
   ( 315, null, *);
 
-predicateFetch vch "vch_testno 316 =";
+fetch vch "vch_testno 316 =";
 rows:
   ( 316, null, *);
 
-predicateFetch vch "vch_testno 317 =";
+fetch vch "vch_testno 317 =";
 rows:
   ( 317, 'quick brown fox\\ns', *);
 
