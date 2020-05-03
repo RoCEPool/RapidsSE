@@ -157,36 +157,36 @@
 
   pInfoWd word.name@ "Adding default tags for : %v" .printf
 
-  pInfoWd word.tagSet@ locals| pInfTagSet |
+  pInfoWd word.tagSet@ locals| pInfTags |
 
   // test and add default for: command kind
-  "<cmdKind>" pInfTagSet tagSet.hasName not if
-    "<cmdKind>" "CK_COMMAND" pInfTagSet tagSet.addTag
+  "<cmdKind>" pInfTags tagSet.hasName not if
+    "<cmdKind>" "CK_COMMAND" pInfTags tagSet.addTag
   then
 
   // test and add default for: ddl lock
-  "<ddlLock>" pInfTagSet tagSet.hasName not if
-    "<ddlLock>" "DL_NONE" pInfTagSet tagSet.addTag
+  "<ddlLock>" pInfTags tagSet.hasName not if
+    "<ddlLock>" "DL_NONE" pInfTags tagSet.addTag
   then
 
   // test and add default for: job desc
-  "<jobDesc>" pInfTagSet tagSet.hasName not if
-    "<jobDesc>" "--description  --" pInfTagSet tagSet.addTag
+  "<jobDesc>" pInfTags tagSet.hasName not if
+    "<jobDesc>" "--description  --" pInfTags tagSet.addTag
   then
 
   // test and add default for: job kind
-  "<jobKind>" pInfTagSet tagSet.hasName not if
-    "<jobKind>" "JK_LOCAL" pInfTagSet tagSet.addTag
+  "<jobKind>" pInfTags tagSet.hasName not if
+    "<jobKind>" "JK_LOCAL" pInfTags tagSet.addTag
   then
 
   // test and add default for:  priority
-  "<priority>" pInfTagSet tagSet.hasName not if
-    "<priority>" "PY_NORMAL" pInfTagSet tagSet.addTag
+  "<priority>" pInfTags tagSet.hasName not if
+    "<priority>" "PY_NORMAL" pInfTags tagSet.addTag
   then
 
   // test and add default for:  response kind
-  "<rspKind>" pInfTagSet tagSet.hasName not if
-    "<rspKind>" "RS_NONE" pInfTagSet tagSet.addTag
+  "<rspKind>" pInfTags tagSet.hasName not if
+    "<rspKind>" "RS_NONE" pInfTags tagSet.addTag
   then
 ;
 
@@ -212,7 +212,7 @@
 : cmd::synthProcFor_liteOp params| pInfoWd |
 
   pInfoWd word.name_trunc locals| sCmdNm |
-  pInfoWd word.tagSet@    locals| pInfTagSet |
+  pInfoWd word.tagSet@    locals| pInfTags |
 
   0 0 locals| iParams sText |
 
@@ -227,20 +227,20 @@
   sText >interpret
 
   // add procedure depending on no of parameters
-  "<params>" pInfTagSet tagSet.hasName assert
-  "<params>" pInfTagSet tagSet.getStr >int to iParams
+  "<params>" pInfTags tagSet.hasName assert
+  "<params>" pInfTags tagSet.getStr >int to iParams
 
   iParams 2 == if
-    "/liteOp/" sCmdNm tpl_liteOp_procedure2
-      str.replace procedure::add
+    "/liteOp/" sCmdNm tpl_liteOp_procedure2 str.replace to sText
+    sText procedure::add
   else
   iParams 1 == if
-    "/liteOp/" sCmdNm tpl_liteOp_procedure1
-      str.replace procedure::add
+    "/liteOp/" sCmdNm tpl_liteOp_procedure1 str.replace to sText
+    sText procedure::add
   else
   iParams 0 == assert
-    "/liteOp/" sCmdNm tpl_liteOp_procedure0
-      str.replace procedure::add
+    "/liteOp/" sCmdNm tpl_liteOp_procedure0 str.replace to sText
+    sText procedure::add
   then then
 ;
 
@@ -250,31 +250,36 @@
 : cmd::synthProcFor_localLiteOp params| pInfoWd |
 
   pInfoWd word.name_trunc locals| sCmdNm |
-  pInfoWd word.tagSet@    locals| pInfTagSet |
+  pInfoWd word.tagSet@    locals| pInfTags |
 
-  0 locals| iParams |
+  0 0 locals| iParams sText |
 
   sCmdNm "LocalLiteOP: %v" .printf
 
-  "/localLiteOp/" sCmdNm tpl_localLiteOp_PulseMarker str.replace >interpret
-  "/localLiteOp/" sCmdNm tpl_localLiteOp_req         str.replace >interpret
+  // add : cmdNm_PulseMarker
+  "/localLiteOp/" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText
+  sText >interpret
+
+  // add : cmdNm_req
+  "/localLiteOp/" sCmdNm tpl_localLiteOp_req str.replace to sText
+  sText >interpret
 
   // add procedure depending on no of parameters
-  "<params>" pInfTagSet tagSet.hasName assert
-  "<params>" pInfTagSet tagSet.getStr >int to iParams
+  "<params>" pInfTags tagSet.hasName assert
+  "<params>" pInfTags tagSet.getStr >int to iParams
 
   iParams 2 == if
-    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure2
-      str.replace procedure::add
+    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure2 str.replace to sText
+    sText procedure::add
   else
   iParams 1 == if
-    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure1
-      str.replace procedure::add
+    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure1 str.replace to sText
+    sText procedure::add
   else
   iParams 0 == assert
-    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure0
-      str.replace procedure::add
-  then  then
+    "/localLiteOp/" sCmdNm tpl_localLiteOp_procedure0 str.replace to sText
+    sText procedure::add
+  then then
 ;
 
 /*----------------------------------------------------------------------------*/
