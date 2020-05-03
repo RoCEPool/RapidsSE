@@ -69,6 +69,42 @@
   next
 ;
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: lw prompt
+
+  0 0 locals| pWord pCatg |
+
+  dic::root dic.lastWord dup
+  iterate                                 // iterate word cursor
+
+    object@ to pWord
+
+    pWord word.show
+
+    object@ word.prev object!             // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/* show all words that of given catg                                          */
+/*----------------------------------------------------------------------------*/
+: word::ofCatg params| pCatg |
+
+  dic::root dic.lastWord dup
+  iterate                                 // iterate word cursor
+
+    object@ locals| pWord |
+
+    pWord word.category@ pCatg eql if
+      pWord word.show
+    then
+
+    object@ word.prev object!             // advance cursor backwards thru words
+  next
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
