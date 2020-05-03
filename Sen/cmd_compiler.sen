@@ -151,9 +151,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add any tags that are missing in a commands info tag set                   */
+/* add any setting tags that are missing                                      */
 /*----------------------------------------------------------------------------*/
-: cmd::addTags_info params| pInfoWd |
+: cmd::addSettings_info params| pInfoWd |
 
   pInfoWd word.name@ "Adding default tags for : %v" .printf
 
@@ -194,7 +194,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* generate words for a serice (these should be demons)       TO BE REMOVED   */
+/* generate words for a serice (these should be demons)         TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 : cmd::genService_info params| pInfoWd |
 
@@ -292,7 +292,7 @@
 /*----------------------------------------------------------------------------*/
 /* define the syntax for a command                                            */
 /*----------------------------------------------------------------------------*/
-: cmdSyntax: 
+: cmdSyntax:
 
   //
   //            name     cmd   arg       arg
@@ -378,10 +378,13 @@
 
     object@ word.category@ pOpInfo eql if
 
+      // multiple words get synthesized
       object@ cmd::synthProc_info
-      object@ cmd::addTags_info
       object@ cmd::addSeeds_info
-      object@ cmd::genService_info
+
+      object@ cmd::addSettings_info
+
+      object@ cmd::genService_info       // TO BE REMOVED
 
     then
 
