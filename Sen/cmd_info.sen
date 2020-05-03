@@ -1,0 +1,141 @@
+/*============================================================================*/
+/* cmd_Info.sen -- the _info words                                            */
+/*============================================================================*/
+
+" cmd_info.sen" .verbose
+    
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a distributed job                               */
+/*----------------------------------------------------------------------------*/
+: _info.aboutDistJob params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<jobKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a generic job                                   */
+/*----------------------------------------------------------------------------*/
+: _info.aboutGenericJob params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<jobKind>" pInfTagSet tagSet.getInt JK_GENERIC == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a local job                                     */
+/*----------------------------------------------------------------------------*/
+: _info.aboutLocalJob params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<jobKind>" pInfTagSet tagSet.getInt JK_LOCAL == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a lite op                                       */
+/*----------------------------------------------------------------------------*/
+: _info.aboutLiteOp params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<liteOp>" pInfTagSet tagSet.hasName if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is about a local lite op                                 */
+/*----------------------------------------------------------------------------*/
+: _info.aboutLocalLiteOp params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<localLiteOp>" pInfTagSet tagSet.hasName if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if info word is a service command                                     */
+/*----------------------------------------------------------------------------*/
+: _info.aboutServiceCmd params| pInfoWrd |
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  "<cmdKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* does a seed by the name of Cmd_Suffix exist ?                              */
+/*----------------------------------------------------------------------------*/
+: _info.doesSeedExist? params| pInfoWrd sSeedSuffix |
+
+  pInfoWrd word.name_trunc locals| sCmdNm |
+
+  sCmdNm sSeedSuffix str.cat locals| sSeedNm |
+
+  sSeedNm find if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* add <seedNm> = Cmd_Suffix | DefaultSeed to tag set of given infor word     */
+/*----------------------------------------------------------------------------*/
+: _info.addSeedToTagSet params| pInfoWrd sSeedSuffix sDefaultSeed sSeedNm |
+
+  0 locals| sSeedNm_Suffix |
+
+  sSeedSuffix pInfoWrd _info.doesSeedExist? if
+    pInfoWrd word.name_trunc
+      sSeedSuffix str.cat to sSeedNm_Suffix
+  else
+    sDefaultSeed
+      sSeedSuffix str.cat to sSeedNm_Suffix
+  then
+
+  pInfoWrd word.TagSet@ locals| pInfTagSet |
+
+  sSeedNm sSeedNm_Suffix pInfTagSet tagSet.insertStr
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* promote current word to be an _info word                                   */
+/*----------------------------------------------------------------------------*/
+: _info immediate
+
+  compiler::current@ locals| pWord |
+
+  // set the name of the word to be _info
+  pWord word.name@
+    "_info" str.cat
+    pWord word.name!
+
+  // set the word category to be _info
+  find: _info pWord word.category!
+
+  // attach an ename set to the word being created
+  tagSet::new locals| pWordTagSet |
+  pWordTagSet pWord word.TagSet!
+
+  // add <jobNm> tag
+  "<jobNm>" pWord word.name_trunc pWordTagSet tagSet.insertStr
+
+  pWord encode::call
+    POSTPONE word.tagSet@
+
+  //does>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: _info::findTagSet params| sWordNm |
+
+  sWordNm "_info" str.cat find word.TagSet@
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

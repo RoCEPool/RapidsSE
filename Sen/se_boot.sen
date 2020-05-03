@@ -13,18 +13,16 @@
         "se_str.sen"              include
         "se_tags.sen"             include
         "se_log.sen"              include
-
-8 .put
         "se_path.sen"             include
         "se_folder.sen"           include
         "se_object.sen"           include
         "se_socket.sen"           include
 
-7 .put
+8 .put
         "grid_grid.sen"           include
         "grid_node.sen"           include
 
-6 .put
+7 .put
         "db_table.sen"            include
         "db_partition.sen"        include
         "db_index.sen"            include
@@ -32,11 +30,12 @@
         "db_catalog.sen"          include
         "db_tenant.sen"           include
 
-5 .put
+6 .put
         "tpl_procedures.sen"      include
+        "cmd_info.sen"            include
         "cmd_compiler.sen"        include
 
-4 .put
+5 .put
         "job_words.sen"           include
         "job_2pcReply.sen"        include
         "job_seedMarkers.sen"     include
@@ -93,7 +92,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-3 .put
+4 .put
         "op_defHandlers.sen"         include
         "op__common.sen"             include
         "op__tagSets.sen"            include
@@ -192,14 +191,11 @@
         "OP_visualizeTable.sen"       include
         "OP_xmit.sen"                 include
 
+3 .put
         "BM_genEnt.sen"               include
         "BM_genCrw.sen"               include
         "BM_inflateCrw.sen"           include
         "BM_insIdx.sen"               include
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-       
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 2 .put
         "test_encodingData.sen"   include
