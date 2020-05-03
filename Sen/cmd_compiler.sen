@@ -385,18 +385,20 @@
 
   iterate-words
 
-    object@ word.category@ pOpInfo eql if
+    word@ word.category@ pOpInfo eql if
 
-      object@ cmd::synthWords_info
-      object@ cmd::addSeeds_info
+      word@ cmd::synthWords_info
+      word@ cmd::addSeeds_info
 
-      object@ cmd::addSettings_info
+      word@ cmd::addSettings_info
 
-      object@ cmd::genService_info       // TO BE REMOVED
+      word@ cmd::genService_info       // TO BE REMOVED
 
     then
 
   next-word
+
+  [ compiler::current@ word.see ]
 ;
 
 /*----------------------------------------------------------------------------*/
