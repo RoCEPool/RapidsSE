@@ -28,6 +28,7 @@ shortcut s  _select;
 shortcut t  _unitTestA;
 shortcut u  _upsertRJH;
 shortcut v  vortex;
+shortcut z  _ray;
 
 // shortcut;
 

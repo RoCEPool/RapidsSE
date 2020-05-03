@@ -4,20 +4,38 @@
 
 bc;
 
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection createTable;
+print section "Create LineItem";
 
-create table t (a integer);
+_lineItem
 
-trackMemory;
-symbols;
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection createIndex;
+print section "Create Index";
 
-create index idx on t (a);
-symbols;
+_lineItemIndex
 
-//drop table t;
-drop index t idx;
-symbols;
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection load;
+print section "Load Table";
 
-memoryLeaks;
+time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection analyse1
+print section "Analyse Index (via anidx)";
+
+anidx lineItem lineitem_idx1;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection analyse2
+print section "Analyse Index (via analizeIndex)";
+
+analizeIndex lineItem lineitem_idx1;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "**end of _lineItemRJH**";
 
 /*============================================================================*/
 /* end                                                                        */

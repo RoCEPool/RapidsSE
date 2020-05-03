@@ -20,13 +20,13 @@
 
 : liteOp_tags tagCopy: localOp_tags
   tags{
-    <liteOp>   = 1
+    <liteOp> = 1
   }
 ;
 
 : localLiteOp_tags tagCopy: localOp_tags
   tags{
-    <localLiteOp>   = 1
+    <localLiteOp> = 1
   }
 ;
         
