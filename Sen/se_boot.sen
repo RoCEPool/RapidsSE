@@ -4,6 +4,8 @@
 
 "se_boot.sen" .verbose
 
+assert::stack_0
+
 "Compilation progress: " .put
 
 9 .put
@@ -113,7 +115,6 @@
         "OP_createSchema.sen"         include
         "OP_createTenant.sen"         include
 
-        //"OP_docol.sen"            include
         "OP_dropCatalog.sen"          include
         "OP_dropIndex.sen"            include
         "OP_dropSchema.sen"           include
@@ -153,7 +154,6 @@
         "OP_ping.sen"                 include
         "OP_print.sen"                include
         "OP_progress.sen"             include
-
         "OP_purge.sen"                include
         "OP_pwf.sen"                  include
         "OP_python.sen"               include
@@ -189,6 +189,7 @@
         "OP_verifyTable.sen"          include
         "OP_visualizeIndex.sen"       include
         "OP_visualizeTable.sen"       include
+
         "OP_xmit.sen"                 include
 
 3 .put
@@ -218,7 +219,7 @@
         "se_prompt.sen"               include
         "se_vortex.sen"               include
 
-cmd::fillOut_all_cmd
+cmd::fillOut_all_cmd_usingInfo
 
         "se_start.sen"                include // last
 
@@ -226,6 +227,7 @@ cmd::fillOut_all_cmd
 
 .\n
 
+assert::stack_0
 
 //............................................................................//
 //                            ...continues below...                           //

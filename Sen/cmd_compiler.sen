@@ -283,8 +283,8 @@
 
   sOpNm series-name "_syntax" str.cat :create
 
-  // set the word category to be jobSyntax
-//find: cmdSyntax:                     compiler::current@ word.category!
+  // set the word category to be cmdSyntax:
+  //find: cmdSyntax: compiler::current@ word.category!
   [ compiler::current@ encode::push ] compiler::current@ word.category!
 
   // attach  tag set to hold syntax to the word being created
@@ -347,7 +347,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_all_cmd
+: cmd::fillOut_all_cmd_usingInfo
 
   find: _info locals| pOpInfo |
 
@@ -360,7 +360,32 @@
       // object@ word.dump
       // object@ word.tagSet@ tagSet.asStr .
 
-      object@ word.name@ "Filling out: %v" .printf
+      object@ word.name@ "Filling out (using _info) : %v" .printf
+      
+      object@ cmd::fillOut_a_cmd  // fill out the tag set of the op
+    then
+
+    object@ word.prev object!            // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_all_cmd_usingCmdSyntax:
+
+  find: cmdSyntax: locals| pCmdSyntax |
+
+  // iterate thru all pOpInfo words
+
+  dic::root dic.lastWord dup
+  iterate                                // iterate word cursor
+
+    object@ word.category@ pCmdSyntax eql if
+      // object@ word.dump
+      // object@ word.tagSet@ tagSet.asStr .
+
+      object@ word.name@ "Filling out (using cmdSyntax:) : %v" .printf
       
       object@ cmd::fillOut_a_cmd  // fill out the tag set of the op
     then
