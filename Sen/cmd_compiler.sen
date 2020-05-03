@@ -207,9 +207,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* synthesize a procedure for a lite op given its info word                   */
+/* synthesize the words for a lite op given its info word                     */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProcFor_liteOp params| pInfoWd |
+: cmd::synthWordsFor_liteOp params| pInfoWd |
 
   pInfoWd word.name_trunc locals| sCmdNm |
   pInfoWd word.tagSet@    locals| pInfTags |
@@ -218,15 +218,15 @@
 
   sCmdNm "LiteOP: %v" .printf
 
-  // add : cmdNm_PulseMarker
+  // synthesize : cmdNm_PulseMarker
   "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace to sText
   sText >interpret
 
-  // add : cmdNm_req
+  // synthesize : cmdNm_req
   "/liteOp/" sCmdNm tpl_liteOp_req str.replace to sText
   sText >interpret
 
-  // add procedure depending on no of parameters
+  // synthesize procedure depending on no of parameters
   "<params>" pInfTags tagSet.hasName assert
   "<params>" pInfTags tagSet.getStr >int to iParams
 
@@ -245,9 +245,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize a procedure for a local lite op given its info word             */
+/* synthesize the words for a local lite op given its info word               */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProcFor_localLiteOp params| pInfoWd |
+: cmd::synthWordsFor_localLiteOp params| pInfoWd |
 
   pInfoWd word.name_trunc locals| sCmdNm |
   pInfoWd word.tagSet@    locals| pInfTags |
@@ -256,15 +256,15 @@
 
   sCmdNm "LocalLiteOP: %v" .printf
 
-  // add : cmdNm_PulseMarker
+  // synthesize : cmdNm_PulseMarker
   "/localLiteOp/" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText
   sText >interpret
 
-  // add : cmdNm_req
+  // synthesize : cmdNm_req
   "/localLiteOp/" sCmdNm tpl_localLiteOp_req str.replace to sText
   sText >interpret
 
-  // add procedure depending on no of parameters
+  // synthesize procedure depending on no of parameters
   "<params>" pInfTags tagSet.hasName assert
   "<params>" pInfTags tagSet.getStr >int to iParams
 
@@ -285,12 +285,12 @@
 /*----------------------------------------------------------------------------*/
 /* synthesize procedures for lite and local lite operators given info word    */
 /*----------------------------------------------------------------------------*/
-: cmd::synthProc_info params| pInfoWd |
+: cmd::synthWords_info params| pInfoWd |
 
   pInfoWd word.name@ "Synth proc using _info : %v" .printf
 
-       pInfoWd _info.aboutLiteOp      if pInfoWd cmd::synthProcFor_liteOp
-  else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthProcFor_localLiteOp
+       pInfoWd _info.aboutLiteOp      if pInfoWd cmd::synthWordsFor_liteOp
+  else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthWordsFor_localLiteOp
   then then
 ;
 
@@ -305,8 +305,10 @@
 : cmdSyntax:
 
   //
-  //            cmdNm    cmd   arg       arg
-  // cmdSyntax: anidx :: anidx <tableNm> <indexNm> ;
+  //            cmdNm    cmd          arg       arg
+  // cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
+  // cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
+  //                     verb   noun
   //
 
   // create a word using next token from input source as the word name
@@ -377,7 +379,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_all_cmd_usingInfo
+: cmd::fillOut_allCmds_usingInfo
 
   find: _info locals| pOpInfo |
 
@@ -386,8 +388,7 @@
 
     object@ word.category@ pOpInfo eql if
 
-      // multiple words get synthesized
-      object@ cmd::synthProc_info
+      object@ cmd::synthWords_info
       object@ cmd::addSeeds_info
 
       object@ cmd::addSettings_info
@@ -403,7 +404,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_all_cmd_usingCmdSyntax
+: cmd::fillOut_allCmds_usingCmdSyntax
 
   find: cmdSyntax: locals| pCmdSyntax |
 

@@ -220,8 +220,8 @@ assert::stack_0
         "se_prompt.sen"               include
         "se_vortex.sen"               include
 
-cmd::fillOut_all_cmd_usingInfo
-cmd::fillOut_all_cmd_usingCmdSyntax
+cmd::fillOut_allCmds_usingInfo
+cmd::fillOut_allCmds_usingCmdSyntax
 
         "se_start.sen"                include // last
 
