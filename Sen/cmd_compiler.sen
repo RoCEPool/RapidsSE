@@ -144,9 +144,13 @@
 
   pInfoWd word.name@ "Add seeds using _info : %v" .printf
 
-       pInfoWd _info.aboutGenericJob  if pInfoWd cmd::addSeedsFor_genericJob
-  else pInfoWd _info.aboutDistJob     if pInfoWd cmd::addSeedsFor_distJob
-  else                                   pInfoWd cmd::addSeedsFor_localOp
+  pInfoWd _info.aboutGenericJob if
+    pInfoWd cmd::addSeedsFor_genericJob
+  else
+  pInfoWd _info.aboutDistJob if
+    pInfoWd cmd::addSeedsFor_distJob
+  else
+    pInfoWd cmd::addSeedsFor_localOp
   then then
 ;
 
@@ -200,7 +204,9 @@
 
   pInfoWd word.name@ "Gen service using _info : %v" .printf
 
-  pInfoWd _info.aboutServiceCmd if pInfoWd .generateService then
+  pInfoWd _info.aboutServiceCmd if
+    pInfoWd .generateService
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +220,7 @@
   pInfoWd word.name_trunc locals| sCmdNm |
   pInfoWd word.tagSet@    locals| pInfTags |
 
-  0 0 locals| iParams sText |
+  0 locals| sText |
 
   sCmdNm "LiteOP: %v" .printf
 
@@ -225,6 +231,19 @@
   // synthesize : cmdNm_req
   "/liteOp/" sCmdNm tpl_liteOp_req str.replace to sText
   sText >interpret
+;
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the procedure for a lite op given its info word                 */
+/*----------------------------------------------------------------------------*/
+: cmd::synthProcFor_liteOp params| pInfoWd |
+
+  pInfoWd word.name_trunc locals| sCmdNm |
+  pInfoWd word.tagSet@    locals| pInfTags |
+
+  0 0 locals| sText iParams |
+
+  sCmdNm "LiteOP: %v" .printf
 
   // synthesize procedure depending on no of parameters
   "<params>" pInfTags tagSet.hasName assert
@@ -252,7 +271,7 @@
   pInfoWd word.name_trunc locals| sCmdNm |
   pInfoWd word.tagSet@    locals| pInfTags |
 
-  0 0 locals| iParams sText |
+  0 locals| sText |
 
   sCmdNm "LocalLiteOP: %v" .printf
 
@@ -263,6 +282,19 @@
   // synthesize : cmdNm_req
   "/localLiteOp/" sCmdNm tpl_localLiteOp_req str.replace to sText
   sText >interpret
+;
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the procedure for a local lite op given its info word           */
+/*----------------------------------------------------------------------------*/
+: cmd::synthProcFor_localLiteOp params| pInfoWd |
+
+  pInfoWd word.name_trunc locals| sCmdNm |
+  pInfoWd word.tagSet@    locals| pInfTags |
+
+  0 0 locals| sText iParams |
+
+  sCmdNm "LocalLiteOP: %v" .printf
 
   // synthesize procedure depending on no of parameters
   "<params>" pInfTags tagSet.hasName assert
@@ -289,8 +321,13 @@
 
   pInfoWd word.name@ "Synth proc using _info : %v" .printf
 
-       pInfoWd _info.aboutLiteOp      if pInfoWd cmd::synthWordsFor_liteOp
-  else pInfoWd _info.aboutLocalLiteOp if pInfoWd cmd::synthWordsFor_localLiteOp
+  pInfoWd _info.aboutLiteOp if
+    pInfoWd cmd::synthWordsFor_liteOp
+    pInfoWd cmd::synthProcFor_liteOp
+  else
+  pInfoWd _info.aboutLocalLiteOp if
+    pInfoWd cmd::synthWordsFor_localLiteOp
+    pInfoWd cmd::synthProcFor_localLiteOp
   then then
 ;
 

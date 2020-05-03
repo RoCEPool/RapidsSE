@@ -121,26 +121,9 @@
 cmdSyntax: scan :: scan <tableNm> ;
 cmdSyntax: scan :: scan <tableNm> <rateSecs> ;
 
-//_info: scan
-//{
-//  <jobDesc>  = "--op desc--"
-//
-//  <jobKind>  = JK_LOCAL
-//  <rspKind>  = RS_PARTICIPANT_RESPONSE
-//  <ddlLock>  = DL_GRAB_READ
-//
-//  <preCheck> = bClusterStarted
-//}
-//;
-//
-
 : scan _info tagCopy: localOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
-
-
-//find: scan_info word.dump
-//find: scan_info word.tagSet@ tagSet.asStr .
   
 /*============================================================================*/
 /* end                                                                        */

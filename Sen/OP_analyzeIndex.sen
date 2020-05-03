@@ -53,7 +53,9 @@ cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
 cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
 //                  verb   noun
 
-: anidx _info tagCopy: liteOp_tags
+
+//
+: anidx _info tagCopy: liteOp_tags  // => procedure andix
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true
