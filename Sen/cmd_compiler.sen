@@ -111,6 +111,8 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addDefaultTags params| pInfoWrd |
 
+  pInfoWrd word.name@ "Adding default tags for : %v" .printf
+
   pInfoWrd word.tagSet@ locals| pInfTagSet |
 
   // test and add default for: command kind
@@ -251,7 +253,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::fillOut_a_cmd_info params| pInfoWrd |
 
-  pInfoWrd cmd::addDefaultTags
+  pInfoWrd word.name@ "Filling out cmd using _info : %v" .printf
 
        pInfoWrd _info.aboutGenericJob  if pInfoWrd cmd::addSeedsFor_genericJob
   else pInfoWrd _info.aboutDistJob     if pInfoWrd cmd::addSeedsFor_distJob
@@ -268,6 +270,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::fillOut_a_cmd_syntax params| pCmdSyntax |
 
+  pCmdSyntax word.name@ "Filling out cmd using cmdSyntax: %v" .printf
 
 ;
 
@@ -366,11 +369,18 @@
   iterate                                // iterate word cursor
 
     object@ word.category@ pOpInfo eql if
-      // object@ word.dump
-      // object@ word.tagSet@ tagSet.asStr .
+      object@ cmd::addDefaultTags
+    then
 
-      object@ word.name@ "Filling out (using _info) : %v" .printf
-      
+    object@ word.prev object!            // advance cursor backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  dic::root dic.lastWord dup
+  iterate                                // iterate word cursor
+
+    object@ word.category@ pOpInfo eql if
       object@ cmd::fillOut_a_cmd_info    // fill out the tag set of the op
     then
 
@@ -381,7 +391,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_all_cmd_usingCmdSyntax:
+: cmd::fillOut_all_cmd_usingCmdSyntax
 
   find: cmdSyntax: locals| pCmdSyntax |
 
@@ -391,10 +401,6 @@
   iterate                                // iterate word cursor
 
     object@ word.category@ pCmdSyntax eql if
-      // object@ word.dump
-      // object@ word.tagSet@ tagSet.asStr .
-
-      object@ word.name@ "Filling out (using cmdSyntax:) : %v" .printf
       
       object@ cmd::fillOut_a_cmd_syntax  // fill out the tag set of the op
     then
