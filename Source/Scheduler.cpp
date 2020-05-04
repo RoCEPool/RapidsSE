@@ -17,17 +17,26 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
-  Task* pTask = pThread->m_pTask;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move task out of executing queue
   
+  Task* pTask = pThread->m_pTask;
+  RASSERT(pThread == pTask->pvThread_DONT_DEREF());
+  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
+
   // remove task from the executing set
   vTask_Desist(pTask);
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   // disconnect / de-assign task from calling thread
   vThread_UnassignTask(pThread);
+  RASSERT(nullptr == pTask->pvThread_DONT_DEREF());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // transition task to different state+queue depending on transition request
+  
   switch (pTask->eSchedulerAct()) {
       
     case SA_BIDE_FOR_OPERAND:  vTaskTransit_BideForOperand(pTask);   break;
@@ -48,43 +57,51 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_BideForOperand(Task* pTask)
 {
+  RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
-  
+
   RASSERT(pTask->bIsLocked());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
-  
+
   Queues* pQueues = AM::pQueues();
-  
+
   pTask->vSchedulerActClear();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   pTask->vState(TS_BIDING);
   
   pQueues->vAddBidingSet(pTask);
+  
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
-/* desisted task transitions to TS_COMPLETED state and is deleted                */
+/* desisted task transitions to TS_COMPLETED state and is deleted             */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
 {
+  RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
-
   pTask->vSchedulerActClear();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pTask->vState(TS_COMPLETED);
 
-  //vTrace("Exited Task %p\n"_Stz,pTask);
+  // **do not touch task** (other than to delete it)
   
   delete pTask;
   // **do not touch task**
@@ -95,23 +112,25 @@ void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
 {
+  RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
-  
   pTask->vSchedulerActClear();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pTask->vState(TS_COMPLETED);
   
   pTask->vMutexLock();
   pTask->vMutexSignal();
   pTask->vMutexUnlock();
 
-  // **do not touch task**
+  // **do not touch task. task is reponsibiluty of signaled thread **
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,18 +139,20 @@ void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
 {
+  RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
-
   Queues* pQueues = AM::pQueues();
   
   pTask->vSchedulerActClear();
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
@@ -158,23 +179,26 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
 {
+  RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
   RASSERT(pTask->bIsLocked());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
   pTask->vSchedulerActClear();
-  pTask->vState(TS_WAITING);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pTask->vState(TS_WAITING);
+  
   pQueues->vAddWaitingSet(pTask);
+  
   // **do not touch task** (other than to drop lock)
 
   pTask->vDropTaskLock();
@@ -185,19 +209,18 @@ void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
 {
+  RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
-
   Queues* pQueues = AM::pQueues();
-  
-  pTask->vSchedulerActClear();
-
   Thread* pThread = Thread::pThisTLSThread();
+
+  pTask->vSchedulerActClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no other ready to run tasks, so thread continues executing the task
@@ -223,6 +246,7 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
   RASSERT(SA_NONE == pTask->eSchedulerAct());
   
   vTask_Schedule(pTask);
+  
   // **do not touch task**
 }
 
