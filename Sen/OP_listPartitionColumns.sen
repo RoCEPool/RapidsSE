@@ -17,11 +17,7 @@
     exit
   then
 
-  // get the table column count
-  table[].slots@ to pSlots
-  pSlots slots.columnCount@ to iPartitionCols
-
-  // find the __ table
+  // find the streamSet table
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
@@ -33,9 +29,13 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
+  // get the ptn stream def from the table
+  table[].ptnStreamDef@ to streamDef[]
+  streamDef[].columnCount@ to iPartitionCols
+
   // insert a row in the infoset for each column
   iPartitionCols 0 do
-    I pSlots slots.column@
+    I streamDef[].column@
     streamSetTable[] StreamSet[].addColumnDef  not if
       StreamSet[].pipeout
       streamSetTable[] streamSet[].new

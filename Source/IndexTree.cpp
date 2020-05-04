@@ -386,8 +386,6 @@ i8 IndexTree::nEntBuffers(void)
 void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  //m_okLock.vGrabWrite();
 
   //pEntBuffer->vShow();
 
@@ -405,8 +403,6 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     //bVerify();
     ASSERT(bInserted);
   }
-  
-  //m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

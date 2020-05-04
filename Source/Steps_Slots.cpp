@@ -23,12 +23,12 @@ void Step::vSlotsColumnFetch(void)
 {
   ENTRY();
   
-  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SLOTS == pSlots->eClass());
-  
-  i8 iColumn = m_pDataStack->iPopInt(__func__);
-  
-  m_pDataStack->vPushPtr(pSlots->pPtnStreamDef()->pGetColumn(iColumn));
+//  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
+//  ASSERT(CN_SLOTS == pSlots->eClass());
+//
+//  i8 iColumn = m_pDataStack->iPopInt(__func__);
+//
+//  m_pDataStack->vPushPtr(pSlots->pPtnStreamDef()->pGetColumn(iColumn));
   
   EXIT();
 }
@@ -40,10 +40,10 @@ void Step::vSlotsColumnCountFetch(void)
 {
   ENTRY();
   
-  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SLOTS == pSlots->eClass());
-  
-  m_pDataStack->vPushInt(pSlots->pPtnStreamDef()->nColumns(C_ALL));
+//  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
+//  ASSERT(CN_SLOTS == pSlots->eClass());
+//
+//  m_pDataStack->vPushInt(pSlots->pPtnStreamDef()->nColumns(C_ALL));
   
   EXIT();
 }
@@ -55,17 +55,17 @@ void Step::vSlotsColumnName(void)
 {
   ENTRY();
   
-  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SLOTS == pSlots->eClass());
-  
-  i8 iIndex = m_pDataStack->iPopInt(__func__);
-  
-  ASSERT(iIndex < pSlots->pPtnStreamDef()->nColumns(C_ALL));
-  Column* pColumn = pSlots->pPtnStreamDef()->pGetColumn(iIndex);
-  
-  s32 sColNm(pColumn->szColNm());
-  
-  m_pDataStack->vPushStr(sColNm);
+//  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
+//  ASSERT(CN_SLOTS == pSlots->eClass());
+//
+//  i8 iIndex = m_pDataStack->iPopInt(__func__);
+//
+//  ASSERT(iIndex < pSlots->pPtnStreamDef()->nColumns(C_ALL));
+//  Column* pColumn = pSlots->pPtnStreamDef()->pGetColumn(iIndex);
+//
+//  s32 sColNm(pColumn->szColNm());
+//
+//  m_pDataStack->vPushStr(sColNm);
   
   EXIT();
 }
@@ -77,10 +77,10 @@ void Step::vSlotsCreateStreamDef(void)
 {
   ENTRY();
   
-  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SLOTS == pSlots->eClass());
-  
-  pSlots->vCreateStreamDef();
+//  Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
+//  ASSERT(CN_SLOTS == pSlots->eClass());
+//
+//  pSlots->vCreateStreamDef();
   
   EXIT();
 }

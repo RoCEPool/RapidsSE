@@ -18,7 +18,7 @@ namespace MetaData
   {
   private:
     Table*        m_pTable;        // table this slots belongs to
-    StreamDef*    m_pPtnStreamDef; // partition stream def
+    //StreamDef*    m_pPtnStreamDef; // partition stream def
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
   
     // must be last
@@ -37,7 +37,6 @@ namespace MetaData
     void       vCreateStreamDef(void);
     TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
-    StreamDef* pPtnStreamDef(void);
     void       vPublishTable(i8 iPartitionNo);
     bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
     void       vTable(Table* pTable);

@@ -11,6 +11,8 @@ void Step::vAddSteps_RegStreamDef(void)
 {
   vAddStep("StreamDef[]"_Stz,                 &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].asStr"_Stz,           &Step::vRegStreamDefAsStr);
+  vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vRegStreamDefColumnCountFetch);
+  vAddStep("StreamDef[].column@"_Stz,         &Step::vRegStreamDefColumnFetch);
   vAddStep("StreamDef[].delete"_Stz,          &Step::vRegStreamDefDelete);
   vAddStep("StreamDef[].get"_Stz,             &Step::vRegStreamDefGet);
   vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vRegStreamDefNewCount);
@@ -35,6 +37,36 @@ void Step::vRegStreamDefAsStr(void)
   pStreamDef->vAsString(sStreamDef.pString());
   
   m_pDataStack->vPushStr(sStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].column@ -- get column from streamDef                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefColumnFetch(void)
+{
+  ENTRY();
+  
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpStreamDef);
+                                      
+  i8 iColumn = m_pDataStack->iPopInt(__func__);
+  
+  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumn));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].columnCount@ -- get column count from streamDef                */
+/*----------------------------------------------------------------------------*/
+void Step::vRegStreamDefColumnCountFetch(void)
+{
+  ENTRY();
+  
+  StreamDef* pStreamDef = _pStreamDef(*m_pRegSet->m_xpStreamDef);
+  
+  m_pDataStack->vPushInt(pStreamDef->nColumns(C_ALL));
   
   EXIT();
 }

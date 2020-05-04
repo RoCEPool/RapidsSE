@@ -26,6 +26,8 @@ namespace MetaData
     bool       m_bIsLoading; // data is loading
     Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
   
+    StreamDef*    m_pPtnStreamDef; // partition stream def
+    
     // must be last
     Footer m_xFooter;
     
@@ -49,6 +51,7 @@ namespace MetaData
     void vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);
     void vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     void vCompactIndex(Index* pIndex);
+    void vCreatePtnDef(void);
     i8   nCrwBuffers(void);
     void vContentDump(void);
     Column* pFindColumn(Stz* szColNm);

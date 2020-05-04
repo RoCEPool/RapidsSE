@@ -1195,6 +1195,8 @@ public:
 
   // reg stream def
   void vRegStreamDefAsStr(void);
+  void vRegStreamDefColumnFetch(void);
+  void vRegStreamDefColumnCountFetch(void);
   void vRegStreamDefDelete(void);
   void vRegStreamDefGet(void);
   void vRegStreamDefNew(void);
@@ -1403,7 +1405,9 @@ public:
   void vTableInit(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnly(void);
+  void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);
+  void vTableCreatePtnDef(void);
   void vTablePublish(void);
   void vTablePurge(void);
   void vTableRemoveIndex(void);
