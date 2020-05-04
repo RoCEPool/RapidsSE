@@ -1067,6 +1067,16 @@ void Task::vTraceStep(Stz* aStepNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule sleep                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleSleep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_SLEEP;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get acheduler action                                                       */
 /*----------------------------------------------------------------------------*/
 eSA Task::eSchedulerAct(void)
@@ -1082,6 +1092,8 @@ eSA Task::eSchedulerAct(void)
 void Task::vSchedulerAct(eSA eSchedulerAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  ASSERT(SA_SLEEP != eSchedulerAct);
   
   m_eScheduler = eSchedulerAct;
 }
