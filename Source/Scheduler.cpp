@@ -369,7 +369,7 @@ void Scheduler::vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired)
   // called from ???
   //
   
-  vTask_Requires(pTask,nAcksRequired);
+  pTask->vAcksRmg(nAcksRequired);
 }
 
 
@@ -739,19 +739,6 @@ void Scheduler::vTask_Resume(Task* pTask)
   
   vTask_Schedule(pTask);
   // **do not touch task**
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of acks required by (soon to be) waiting task                   */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_REQUIRES,
-              "%lld acks"_Stz, //!format-LogTsk
-              nAcksRequired);
-
-  pTask->vAcksRmg(nAcksRequired);
 }
 
 /*----------------------------------------------------------------------------*/
