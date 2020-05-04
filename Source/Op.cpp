@@ -670,13 +670,14 @@ Operand* Op::pPopQueue(void)
   else
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue no operand on left queue"_Stz); //!format-LogOpr
-  
-  if (pOperand)
-    vDropTaskLock();
+
+  if (! pOperand)
+    return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (AM::bVerbose() && pOperand) {
+  vDropTaskLock();
+    
+  if (AM::bVerbose()) {
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
