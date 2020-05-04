@@ -1139,22 +1139,6 @@ eSA Task::eSchedulerAct(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set scheduler action                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerAct(eSA eSchedulerAct)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  ASSERT(SA_BIDE_FOR_OPERAND  != eSchedulerAct);
-  ASSERT(SA_SIGNAL_COMPLETION != eSchedulerAct);
-  ASSERT(SA_DELETE_THIS_TASK  != eSchedulerAct);
-  ASSERT(SA_SLEEP_SOME_TIME   != eSchedulerAct);
-  ASSERT(SA_YIELD_FOR_OTHERS  != eSchedulerAct);
-
-  m_eScheduler = eSchedulerAct;
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear scheduler action                                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerActClear()
