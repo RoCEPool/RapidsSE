@@ -164,7 +164,7 @@
       // now get excat key rows from index
       tablePtn[].get tablePtnGrabRead2
       tablePtn[].root to Subset[]
-      Subset[]@ to Operand[]
+      Subset[] to Operand[]
     endof
 
   endcase

@@ -19,7 +19,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vRegOperandFirstRowFetch);
-  vAddStep("Operand[].get"_Stz,            &Step::vRegOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vRegOperandHandleAggEnd);
   vAddStep("Operand[].isNull"_Stz,         &Step::vRegOperandIsNull);
   vAddStep("Operand[].isReport"_Stz,       &Step::vRegOperandIsReport);

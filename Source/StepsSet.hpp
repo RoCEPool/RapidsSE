@@ -1386,7 +1386,7 @@ public:
   void vSubLoaderDelete(void);
 
   // subset
-  void vSubsetFetch(void);
+  void vSubsetGet(void);
   void vSubsetNext(void);
   void vSubsetNextBuffer(void);
   void vSubsetSet(void);

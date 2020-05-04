@@ -11,7 +11,7 @@
 
   "OP_burst_EntBuffer" .
 
-  operand[].get OperandC[].collect
+  operand[] OperandC[].collect
 
   //ZK_ENTBUFFER_handler
   true

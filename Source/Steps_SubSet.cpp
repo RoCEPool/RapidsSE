@@ -9,16 +9,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Subset(void)
 {
-  vAddStep("Subset[]@"_Stz,           &Step::vSubsetFetch);
+  vAddStep("Subset[]"_Stz,            &Step::vSubsetGet);
   vAddStep("Subset[].next"_Stz,       &Step::vSubsetNext);
   vAddStep("Subset[].nextBuffer"_Stz, &Step::vSubsetNextBuffer);
   vAddStep("Subset[].set"_Stz,        &Step::vSubsetSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Subset[]@ -- fetch subset                                                  */
+/* Subset[] -- get subset                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vSubsetFetch(void)
+void Step::vSubsetGet(void)
 {
   ENTRY();
   
@@ -60,13 +60,13 @@ void Step::vSubsetNextBuffer(void)
     if (m_pRegSet->m_xpSubset->eClass() == CN_CRWBUFFER) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextBuffer();
-      m_pRegSet->m_xpSubset = pNextOperand;
+      //m_pRegSet->m_xpSubset = pNextOperand;
     }
     else
       if (m_pRegSet->m_xpSubset->eClass() == CN_CSVBUFFER) {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
-      m_pRegSet->m_xpSubset = pNextOperand;
+      //m_pRegSet->m_xpSubset = pNextOperand;
     }
     else {
       vTrace("Subset class %s\n"_Stz, aCN[m_pRegSet->m_xpSubset->eClass()]);

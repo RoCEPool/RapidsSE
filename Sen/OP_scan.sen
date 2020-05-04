@@ -29,6 +29,11 @@
   then
 
   //"Operand:- ZK_CRWBUFFER" .verbose
+
+  // get next buffer
+  Subset[].nextBuffer to Subset[]
+
+  // pipeout the operand
   Operand[].pipeOut
 
   // check for rate
@@ -38,7 +43,8 @@
     "Scan awake" .
   then
 
-  Subset[].nextBuffer to Operand[]
+  // move next buffer to Operand
+  Subset[] to Operand[]
 
   Operand[].isNull if
     tablePtn[].get tablePtnDropRead2
@@ -68,7 +74,7 @@
 
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
-  Subset[]@ to Operand[]
+  Subset[] to Operand[]
 
   Operand[].isNull if
     tablePtn[].get tablePtnDropRead2
