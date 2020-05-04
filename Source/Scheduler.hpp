@@ -7,11 +7,13 @@ namespace Threads
 {
   class Scheduler
   {
-  public:
-
+ 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task transition
+  
+  public:
     static void vTaskLoopTransition(Thread* pThread);
+  private:
     static void vTaskTransit_BideForOperand(Task* pTask);
     static void vTaskTransit_DeleteThisTask(Task* pTask);
     static void vTaskTransit_SignalCompletion(Task* pTask);
@@ -22,6 +24,7 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
   
+  public:
     static void vAddOriginatingJob(Job* pJob);
     static void vAddParticipatingJob(Job* pJob);
     static void vDumpOriginatingJobs(void);
@@ -34,6 +37,7 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
   
+  public:
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
@@ -54,6 +58,7 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread interface
   
+  public:
     static void vAddDedicatedThread(Thread* pThread);
     static void vAddGeneralThread(Thread* pThread);
     static void vBeginThreadLoop(Thread* pThread);
@@ -63,10 +68,10 @@ namespace Threads
     static void vRemoveGeneralThread(Thread* pThread);
     static void vWaitForTaskAssignment(Thread* pThread);
 
-  private:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for tasks
   
+  private:
     static void vTask_Able(Task* pTask);
     static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTask_Add(Task* pTask);
@@ -91,6 +96,7 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for threads
   
+  private:
     static void vThread_AddDedicated(Thread* pThread);
     static void vThread_AddGeneral(Thread* pThread);
     static void vThread_AppendIdle(Thread* pThread);
