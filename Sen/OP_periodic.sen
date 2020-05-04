@@ -102,7 +102,7 @@ cmdSyntax: periodicOp :: periodicOp once ;
 cmdSyntax: periodicOp :: periodicOp min <minutes> ;
 cmdSyntax: periodicOp :: periodicOp hour <hours> ;
 
-: periodicOp _info tagCopy: localOp_tags
+: periodicOp _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

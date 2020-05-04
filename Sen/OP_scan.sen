@@ -121,7 +121,7 @@
 cmdSyntax: scan :: scan <tableNm> ;
 cmdSyntax: scan :: scan <tableNm> <rateSecs> ;
 
-: scan _info tagCopy: localOp_tags
+: scan _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
   

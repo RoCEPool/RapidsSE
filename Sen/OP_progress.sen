@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: progress :: progress <string> ;
 
-: progress _info tagCopy: localOp_tags
+: progress _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: Chunk :: Chunk <fileNm> ;
 
-: Chunk _info tagCopy: localOp_tags
+: Chunk _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 
