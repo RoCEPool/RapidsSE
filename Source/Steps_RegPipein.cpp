@@ -31,7 +31,7 @@ void Step::vRegPipeinBide(void)
   
   if (m_pRegSet->m_xpPipein.bIsNull()) {
     ASSERT(m_pTask->bIsLocked());
-    m_pTask->vSchedulerAct(SA_BIDE);
+    m_pTask->vScheduleBide();
   }
   
   EXIT();

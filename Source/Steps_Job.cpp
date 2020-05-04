@@ -392,7 +392,7 @@ void Step::vJobBideOperand(void)
   
   if (m_pRegSet->m_xpOperandA.bIsNull()) {
     ASSERT(m_pTask->bIsLocked());
-    m_pTask->vSchedulerAct(SA_BIDE);
+    m_pTask->vScheduleBide();
   }
   
   EXIT();

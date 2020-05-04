@@ -1067,6 +1067,16 @@ void Task::vTraceStep(Stz* aStepNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule bide                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleBide(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_BIDE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vScheduleDelete(void)
@@ -1113,6 +1123,7 @@ void Task::vSchedulerAct(eSA eSchedulerAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  ASSERT(SA_BIDE   != eSchedulerAct);
   ASSERT(SA_DELETE != eSchedulerAct);
   ASSERT(SA_SLEEP  != eSchedulerAct);
   ASSERT(SA_YIELD  != eSchedulerAct);
