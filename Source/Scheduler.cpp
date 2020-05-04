@@ -26,9 +26,11 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
 
   // remove task from the executing set
-  vTask_Desist(pTask);
-  RASSERT(TS_DESISTED == pTask->eState());
+  
+  Queues* pQueues = AM::pQueues();
+  pQueues->vRemoveExecutingSet(pTask);
   RASSERT(QK_NONE == pTask->eQueue());
+  pTask->vState(TS_DESISTED);
 
   // disconnect / de-assign task from calling thread
   vThread_UnassignTask(pThread);
@@ -669,26 +671,6 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   return bAmDecider;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove executing task from executing set and change state to TS_DESISTED   */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Desist(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_DESIST,
-              "Task removed from ExecutingSet; transitions to TS_DESISTED"_Stz); //!format-LogTsk
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
-  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
-  RASSERT(SA_NONE != pTask->eSchedulerAct());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->vRemoveExecutingSet(pTask);
-  
-  pTask->vState(TS_DESISTED);
 }
 
 /*----------------------------------------------------------------------------*/
