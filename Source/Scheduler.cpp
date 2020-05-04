@@ -147,7 +147,8 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
   Queues* pQueues = AM::pQueues();
-  
+  Thread* pThread = Thread::pThisTLSThread();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RASSERT(TS_DESISTED == pTask->eState());
@@ -167,8 +168,8 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
   
   pTask->vWakeupClear();
   
-  Thread* pThread = Thread::pThisTLSThread();
-  vTask_Execute(pTask);
+  pTask->vState(TS_EXECUTING);
+  pQueues->vAddExecutingSet(pTask);
   vThread_ContinueSame(pThread,pTask);
   /** do not touch task **/
   pTask->vDropTaskLock();
@@ -228,7 +229,8 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
   if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL) {
     i8 iLengthReadyQueue = pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
-      vTask_Execute(pTask);
+      pTask->vState(TS_EXECUTING);
+      pQueues->vAddExecutingSet(pTask);
       vThread_ContinueSame(pThread,pTask);
       
       /** do not touch task **/
@@ -625,12 +627,16 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   //
   // called from Thread::vLoop_general()
   //
+  Queues* pQueues = AM::pQueues();
   
   vThread_WaitAssignment(pThread);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vTask_Thread(pThread->m_pTask,pThread);
 
-  vTask_Execute(pThread->m_pTask);
+  pThread->m_pTask->vState(TS_EXECUTING);
+  pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 
@@ -683,29 +689,6 @@ void Scheduler::vTask_Desist(Task* pTask)
   pQueues->vRemoveExecutingSet(pTask);
   
   pTask->vState(TS_DESISTED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* change able-to-run task to TS_EXECUTING state and add to executing set     */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Execute(Task* pTask)
-{
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pTask->vState(TS_EXECUTING);
-  
-  pQueues->vAddExecutingSet(pTask);
-
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
-              "Task to TS_EXECUTING state; added to ExecutingSet"_Stz); //!format-LogTsk
-  
-//  AM::vLogThd(SL_INF,pTask->pThread(),HA_THD_EXECUTING,
-//              "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/

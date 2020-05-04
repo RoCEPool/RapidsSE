@@ -71,7 +71,6 @@ namespace Threads
     static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTask_Add(Task* pTask);
     static void vTask_Desist(Task* pTask);
-    static void vTask_Execute(Task* pTask);
     static Task* pTask_Pop(Thread* pThread);
     static void vTask_Ready(Task* pTask);
     static void vTask_Remove(Task* pTask);
