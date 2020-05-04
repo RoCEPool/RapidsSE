@@ -1084,6 +1084,7 @@ void Task::vScheduleCompletion(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(bIsLocked());
   m_eScheduler = SA_SIGNAL_COMPLETION;
 }
 

@@ -1510,6 +1510,7 @@ void Step::vJobSignalCompletion(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleCompletion();
   
   EXIT();

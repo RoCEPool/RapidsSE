@@ -122,6 +122,8 @@ void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
+  RASSERT(pTask->bIsLocked());
+  
   pTask->vSchedulerActClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
