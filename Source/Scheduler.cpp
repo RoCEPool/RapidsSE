@@ -831,18 +831,6 @@ void Scheduler::vTask_Desist(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Drop(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_DROP,
-              "Task drop task lock"_Stz); //!format-LogTsk
-  
-  pTask->vDropTaskLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* change able-to-run task to TS_EXECUTING state and add to executing set     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
@@ -863,21 +851,6 @@ void Scheduler::vTask_Execute(Task* pTask)
   
 //  AM::vLogThd(SL_INF,pTask->pThread(),HA_THD_EXECUTING,
 //              "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Grab(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_GRAB,
-              "attempt"_Stz); //!format-LogTsk
-  
-  pTask->vGrabTaskLock();
-  
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_GRABBED,
-              "grabbed"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/

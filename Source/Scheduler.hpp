@@ -79,9 +79,7 @@ namespace Threads
     static void vTask_DdlDropWrite(Task* pTask);
     static void vTask_DdlGrabRead(Task* pTask);
     static void vTask_DdlGrabWrite(Task* pTask);
-    static void vTask_Drop(Task* pTask);
     static void vTask_Execute(Task* pTask);
-    static void vTask_Grab(Task* pTask);
     static Task* pTask_Pop(Thread* pThread);
     static void vTask_Ready(Task* pTask);
     static void vTask_Remove(Task* pTask);
