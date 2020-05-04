@@ -57,24 +57,22 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_BideForOperand(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
   RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pTask->vSchedulerActClear();
 
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
 
-  RASSERT(pTask->bIsLocked());
-
   Queues* pQueues = AM::pQueues();
-
-  pTask->vSchedulerActClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vState(TS_BIDING);
-  
   pQueues->vAddBidingSet(pTask);
   
   // **do not touch task** (other than to drop lock)
@@ -87,19 +85,18 @@ void Scheduler::vTaskTransit_BideForOperand(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
   RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
+  pTask->vSchedulerActClear();
+  
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
-  
-  RASSERT(pTask->bIsLocked());
-
-  pTask->vSchedulerActClear();
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_COMPLETED);
 
@@ -114,20 +111,19 @@ void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
   RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pTask->vSchedulerActClear();
 
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  RASSERT(pTask->bIsLocked());
-  
-  pTask->vSchedulerActClear();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
   pTask->vState(TS_COMPLETED);
   
   pTask->vMutexLock();
@@ -143,21 +139,20 @@ void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
   RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
+  pTask->vSchedulerActClear();
+  
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  RASSERT(pTask->bIsLocked());
-  
   Queues* pQueues = AM::pQueues();
   
-  pTask->vSchedulerActClear();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
@@ -177,7 +172,6 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
   vTask_Able(pTask);
   vTask_Execute(pTask);
   vThread_ContinueSame(pThread,pTask);
-
   // **do not touch task**
   pTask->vDropTaskLock();
 }
@@ -187,24 +181,22 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
   RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
+  pTask->vSchedulerActClear();
+  
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
-  RASSERT(pTask->bIsLocked());
-
   Queues* pQueues = AM::pQueues();
   
-  pTask->vSchedulerActClear();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vState(TS_WAITING);
-  
   pQueues->vAddWaitingSet(pTask);
   
   // **do not touch task** (other than to drop lock)
@@ -217,22 +209,22 @@ void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
   RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pTask->vSchedulerActClear();
 
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
-  RASSERT(pTask->bIsLocked());
-
   Queues* pQueues = AM::pQueues();
   Thread* pThread = Thread::pThisTLSThread();
 
-  pTask->vSchedulerActClear();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   // no other ready to run tasks, so thread continues executing the task
   
   if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL) {
@@ -689,84 +681,6 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   return bAmDecider;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_DdlDropRead(Task* pTask)
-{
-  SP_Gid spId;
-  
-  AM::pDdlLock()->vDropRead();
-  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_NO_LOCK;
-  
-  pTask->vIncStepNo();
-//  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
-//              "success by %s"_Stz, //!format-LogTsk
-//              spId.sz(IK_JOB,pTask->pJob()->m_iFocalId)
-//              );
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_DdlDropWrite(Task* pTask)
-{
-  SP_Gid spId;
-  
-  AM::pDdlLock()->vDropWrite();
-  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_NO_LOCK;
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_DROPPED,
-              "success by %s"_Stz, //!format-LogTsk
-              spId.sz(IK_JOB,pTask->pJob()->m_iFocalId)
-              );
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_DdlGrabRead(Task* pTask)
-{
-  SP_Gid spId;
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRAB,
-              "attempt by %s (blocking call)"_Stz,//!format-LogTsk
-              spId.sz(IK_JOB,pTask->pJob()->m_iFocalId)
-              );
-  
-  AM::pDdlLock()->vGrabRead();
-  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_READ_LOCK;
-  
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRABBED,
-              "success by %s"_Stz, //!format-LogTsk
-              spId.sz(IK_JOB,pTask->pJob()->m_iFocalId)
-              );
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_DdlGrabWrite(Task* pTask)
-{
-  SP_Gid spId;
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRAB,
-              "attempt by %s (blocking call)"_Stz, //!format-LogTsk
-              spId.sz(IK_JOB,pTask->pJob()->m_iFocalId)
-              );
-
-  AM::pDdlLock()->vGrabWrite();
-  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
-  
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRABBED,
-              "success by %s"_Stz, //!format-LogTsk
-              spId.sz(IK_JOB,pTask->pJob()->m_iFocalId)
-              );
 }
 
 /*----------------------------------------------------------------------------*/
