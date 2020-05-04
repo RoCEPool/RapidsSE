@@ -192,8 +192,6 @@ void Task::vTaskLoop(void)
   
   vAssertStructure();
   
-  RASSERT(!bIsLocked());
-
   while (SA_NONE == m_eScheduler) {
     
     // UNUSUAL CODE:
