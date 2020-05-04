@@ -425,7 +425,7 @@ void Step::vJobCompleted(void)
   
   pJob->vJobState(JS_COMPLETED);
   
-  m_pTask->vSchedulerAct(SA_DELETE);
+  m_pTask->vScheduleDelete();
   
   EXIT();
 }

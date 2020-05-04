@@ -141,7 +141,7 @@ void Step::vTaskDelete(void)
   
   m_pTask->vUnlinkJob();
   
-  m_pTask->vSchedulerAct(SA_DELETE);
+  m_pTask->vScheduleDelete();
 
   EXIT();
 }
