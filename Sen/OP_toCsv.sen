@@ -14,13 +14,24 @@
   nullptr to Pipein[]
 
   Operand[].crwToCsv
-  Operand[].get to Subset[]
+  Operand[] to Subset[]
+
   begin
     Operand[].isNull
+
   not while
+
     assert::stack_0
+
+    // get the next buffer
+    Subset[].nextBuffer to Subset[]
+
+    // now pipeout the Operand
     Operand[].pipeOut
-    Subset[].nextBuffer to Operand[]
+
+    // move Subset to Operand
+    Subset[] to Operand[]
+
     assert::stack_0
   repeat
 

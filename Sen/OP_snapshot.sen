@@ -24,13 +24,13 @@
 
   // pipeout all subsets from tablePtn
   tablePtn[].root to Subset[]
-  Subset[]@ to Operand[]
+  Subset[] to Operand[]
   begin
     Operand[].isNull
   not while
-    Operand[].get crwBuffer.snapshot Op::pipeOut
-    nullptr Operand[].set
-    Subset[].nextBuffer to Operand[]
+    Subset[].nextBuffer to Subset[]
+    Operand[] crwBuffer.snapshot Op::pipeOut
+    Subset[] to Operand[]
   repeat
 
   // end a read transaction

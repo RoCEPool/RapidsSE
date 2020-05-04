@@ -28,7 +28,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  operand[].get to infoset[]
+  operand[] to infoset[]
   nullptr to operand[]
 
   InfoSet[].writeCsv
