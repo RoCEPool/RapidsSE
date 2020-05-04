@@ -2,7 +2,7 @@
 /* job_seedMarkers.sen -- Job Seed Marker words                               */
 /*============================================================================*/
 
-" job_seeMmarkers.sen" .verbose
+" job_seedMarkers.sen" .verbose
 
 0 constant JM_SEED_RUN
 1 constant JM_SEED_REQ

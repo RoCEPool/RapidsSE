@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : lspartcol_action
 
-  0 0 locals| iPartitionCols pSlots |
+  0 locals| iPartitionCols |
 
   // find the table
   <tableNm> op__table not if
@@ -39,7 +39,7 @@
     streamSetTable[] StreamSet[].addColumnDef  not if
       StreamSet[].pipeout
       streamSetTable[] streamSet[].new
-      I pSlots slots.column@
+      I streamDef[].column@
       streamSetTable[] StreamSet[].addColumnDef assert
     then
   loop
