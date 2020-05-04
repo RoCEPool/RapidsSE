@@ -31,11 +31,11 @@ bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
   i8 iJobId = pTokenVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob_Pipeline = Scheduler::pFindParticipatingJob(iJobId);
+  Job* pJob_Pipeline = Scheduler::pJob_FindParticipating(iJobId);
   
   if ( ! pJob_Pipeline ) {
     vTrace("job %lld not found\n"_Stz, iJobId);
-    Scheduler::vDumpParticipatingJobs();
+    Scheduler::vJob_DumpParticipating();
     return false;
   }
   else

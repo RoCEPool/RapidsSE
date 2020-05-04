@@ -23,7 +23,7 @@ void Step::vJob_OperandPipeOut(void)
   
   // find the parent participant job
   i8 iParentJob = pJob_Operand->iParentId();
-  Job* pParentJob = Scheduler::pFindParticipatingJob(iParentJob);
+  Job* pParentJob = Scheduler::pJob_FindParticipating(iParentJob);
 
   // get the next stage the xmit is supposed to xmit to
   Stage* pStage = pParentJob->m_pPipeline->pGet(pJob_Operand->m_iNextStage);

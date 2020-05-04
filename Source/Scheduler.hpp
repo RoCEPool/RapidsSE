@@ -42,14 +42,14 @@ namespace Threads
     // job interface
   
   public:
-    static void vAddOriginatingJob(Job* pJob);
-    static void vAddParticipatingJob(Job* pJob);
-    static void vDumpOriginatingJobs(void);
-    static void vDumpParticipatingJobs(void);
-    static Job* pFindOriginatingJob(i8 iJobId);
-    static Job* pFindParticipatingJob(i8 iJobId);
-    static bool bRemoveOriginatingJob(Job* pJob, bool bDump=false);
-    static bool bRemoveParticipatingJob(Job* pJob, bool bDump=false);
+    static void vJob_AddOriginating(Job* pJob);
+    static void vJob_AddParticipating(Job* pJob);
+    static void vJob_DumpOriginating(void);
+    static void vJob_DumpParticipating(void);
+    static Job* pJob_FindOriginating(i8 iJobId);
+    static Job* pJob_FindParticipating(i8 iJobId);
+    static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
+    static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread interface

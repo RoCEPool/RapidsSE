@@ -377,7 +377,7 @@ void Scheduler::vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired)
 /*----------------------------------------------------------------------------*/
 /* add job to originating list                                                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAddOriginatingJob(Job* pJob)
+void Scheduler::vJob_AddOriginating(Job* pJob)
 {
   
   Queues* pQueues = AM::pQueues();
@@ -394,7 +394,7 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* add job to participating list                                              */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAddParticipatingJob(Job* pJob)
+void Scheduler::vJob_AddParticipating(Job* pJob)
 {
   Queues* pQueues = AM::pQueues();
   
@@ -411,7 +411,7 @@ void Scheduler::vAddParticipatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* dump originating job list                                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vDumpOriginatingJobs(void)
+void Scheduler::vJob_DumpOriginating(void)
 {
   Queues* pQueues = AM::pQueues();
   
@@ -426,7 +426,7 @@ void Scheduler::vDumpOriginatingJobs(void)
 /*----------------------------------------------------------------------------*/
 /* dump participating job list                                                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vDumpParticipatingJobs(void)
+void Scheduler::vJob_DumpParticipating(void)
 {
   Queues* pQueues = AM::pQueues();
   
@@ -441,7 +441,7 @@ void Scheduler::vDumpParticipatingJobs(void)
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* Scheduler::pFindOriginatingJob(i8 iJobId)
+Job* Scheduler::pJob_FindOriginating(i8 iJobId)
 {
   Queues* pQueues = AM::pQueues();
   
@@ -466,7 +466,7 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* Scheduler::pFindParticipatingJob(i8 iJobId)
+Job* Scheduler::pJob_FindParticipating(i8 iJobId)
 {
   Queues* pQueues = AM::pQueues();
 
@@ -491,7 +491,7 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
+bool Scheduler::bJob_RemoveOriginating(Job* pJob, bool bDump)
 {
   Queues* pQueues = AM::pQueues();
   
@@ -514,7 +514,7 @@ bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
+bool Scheduler::bJob_RemoveParticipating(Job* pJob, bool bDump)
 {
   Queues* pQueues = AM::pQueues();
   

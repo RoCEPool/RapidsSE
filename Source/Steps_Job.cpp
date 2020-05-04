@@ -138,7 +138,7 @@ void Step::vJobAddOriginator(void)
 //  AM::pOriginatingJobs()->vAddJob(pJob);
 //  AM::pOriginatingJobs()->vDropLock();
   
-  Scheduler::vAddOriginatingJob(pJob);
+  Scheduler::vJob_AddOriginating(pJob);
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
   
@@ -165,7 +165,7 @@ void Step::vJobAddParticipant(void)
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
   
-  Scheduler::vAddParticipatingJob(pJob);
+  Scheduler::vJob_AddParticipating(pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
   
@@ -594,7 +594,7 @@ void Step::vJobFindOriginator(void)
   
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
   
-  Job* pJobFound = Scheduler::pFindOriginatingJob(iJobId);
+  Job* pJobFound = Scheduler::pJob_FindOriginating(iJobId);
   RASSERT(pJobFound);
   
   
@@ -616,7 +616,7 @@ void Step::vJobFindParticipant(void)
   
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
     
-  Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
+  Job* pJobFound = Scheduler::pJob_FindParticipating(iJobId);
   RASSERT(pJobFound);
   
   
@@ -1128,7 +1128,7 @@ void Step::vJobRemoveOriginator(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  bool bRemove = Scheduler::bRemoveOriginatingJob(pJob);
+  bool bRemove = Scheduler::bJob_RemoveOriginating(pJob);
 
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
@@ -1136,7 +1136,7 @@ void Step::vJobRemoveOriginator(void)
            aCN[pJob->eClass()],pJob->m_iFocalId);
     vTrace("------------------------------------\n"_Stz);
     
-    bRemove = Scheduler::bRemoveOriginatingJob(pJob,true);
+    bRemove = Scheduler::bJob_RemoveOriginating(pJob,true);
   }
   
   if (pJob->m_xReqTuple.m_iDetail) {
@@ -1159,7 +1159,7 @@ void Step::vJobRemoveParticipant(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  bool bRemove = Scheduler::bRemoveParticipatingJob(pJob);
+  bool bRemove = Scheduler::bJob_RemoveParticipating(pJob);
 
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
@@ -1167,7 +1167,7 @@ void Step::vJobRemoveParticipant(void)
            aCN[pJob->eClass()],pJob->m_iFocalId);
     vTrace("------------------------------------\n"_Stz);
     
-    bRemove = Scheduler::bRemoveParticipatingJob(pJob,true);
+    bRemove = Scheduler::bJob_RemoveParticipating(pJob,true);
   }
   
   if (pJob->m_xReqTuple.m_iDetail) {
