@@ -97,7 +97,7 @@ void Step::vJob_SubLoaderChunk(void)
   if (AM::pQueues()->m_pReadyQueueLP->nTasks() >
       AM::nMaxReadyLP()) {
     m_pTask->vSleepUsec(1000);
-    m_pTask->vSchedulerAct(SA_SLEEP);
+    m_pTask->vScheduleSleep();
     m_pDataStack->vPushInt(true);
   }
   else {

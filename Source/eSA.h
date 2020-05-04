@@ -6,29 +6,29 @@
 enum eSA // Scheduler Action
 {
   /* 0 */ SA_NONE=0,
-  /* 1 */ SA_BIDE,    // task to bide (for an operand (data arrival))
-  /* 2 */ SA_DELETE,  // task to be deleted
-  /* 3 */ SA_EXECUTE, // task to execute
-  /* 4 */ SA_PAUSE,   // task to pause
-  /* 5 */ SA_SIGNAL,  // task to signal waiter
-  /* 6 */ SA_SLEEP,   // task to sleep (time arrival)
-  /* 6 */ SA_WAIT,    // task to wait (for a signal (signal arrival))
-  /* 8 */ SA_YIELD,   // task to yield (move back to ready queue (nice))
-  /* 8 */ SA_ENUMS
+  
+  /* 1 */ SA_BIDE_FOR_OPERAND,   // bide for an operand (data arrival)
+  /* 2 */ SA_DELETE_THIS_TASK,   // task to be deleted
+  /* 3 */ SA_SIGNAL_COMPLETION,  // signal cond-waiting thread & task completes
+  /* 4 */ SA_SLEEP_SOME_TIME,    // task to sleep (time arrival)
+  /* 5 */ SA_WAIT_FOR_RESUME,    // wait for a resume from another tsk
+  /* 6 */ SA_YIELD_FOR_OTHERS,   // yield so as to give tasks a thread
+  
+  /* 7 */ SA_ENUMS
 };
   
 static Stz* aSA[]
 {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "BIDE"_Stz,
-  /* 2 */ "DELETE"_Stz,
-  /* 3 */ "EXECUTE"_Stz,
-  /* 4 */ "PAUSE"_Stz,
-  /* 5 */ "SIGNAL"_Stz,
-  /* 6 */ "SLEEP"_Stz,
-  /* 7 */ "WAIT"_Stz,
-  /* 8 */ "YIELD"_Stz,
-  /* 9 */ "ENUMS"_Stz,
+  /* 0 */ "SA_NONE"_Stz,
+  
+  /* 1 */ "SA_BIDE_FOR_OPERAND"_Stz,
+  /* 2 */ "SA_DELETE_THIS_TASK"_Stz,
+  /* 3 */ "SA_SIGNAL_COMPLETION"_Stz,
+  /* 4 */ "SA_SLEEP_SOME_TIME"_Stz,
+  /* 5 */ "SA_WAIT_FOR_RESUME"_Stz,
+  /* 6 */ "SA_YIELD_FOR_OTHERS"_Stz,
+  
+  /* 7 */ "SA_ENUMS"_Stz,
 };
 
 /*============================================================================*/

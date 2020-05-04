@@ -141,7 +141,7 @@ void Step::vTaskDelete(void)
   
   m_pTask->vUnlinkJob();
   
-  m_pTask->vSchedulerAct(SA_DELETE);
+  m_pTask->vScheduleDelete();
 
   EXIT();
 }
@@ -289,7 +289,7 @@ void Step::vTaskSleepMsec(void)
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
   m_pTask->vSleepUsec(nMicroSeconds);
-  m_pTask->vSchedulerAct(SA_SLEEP);
+  m_pTask->vScheduleSleep();
 
   EXIT();
 }
@@ -305,7 +305,7 @@ void Step::vTaskSleepSsec(void)
   i8 nMicroSeconds = nSeconds * C_1M;
   
   m_pTask->vSleepUsec(nMicroSeconds);
-  m_pTask->vSchedulerAct(SA_SLEEP);
+  m_pTask->vScheduleSleep();
 
   EXIT();
 }
@@ -320,7 +320,7 @@ void Step::vTaskSleepUsec(void)
   i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
   
   m_pTask->vSleepUsec(nMicroSeconds);
-  m_pTask->vSchedulerAct(SA_SLEEP);
+  m_pTask->vScheduleSleep();
 
   EXIT();
 }
@@ -364,7 +364,7 @@ void Step::vTaskWait(void)
 {
   ENTRY();
   
-  m_pTask->vSchedulerAct(SA_WAIT);
+  m_pTask->vScheduleWait();
 
   EXIT();
 }
@@ -376,7 +376,7 @@ void Step::vTaskYield(void)
 {
   ENTRY();
     
-  m_pTask->vSchedulerAct(SA_YIELD);
+  m_pTask->vScheduleYield();
 
   EXIT();
 }

@@ -1067,6 +1067,58 @@ void Task::vTraceStep(Stz* aStepNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule bide                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleBide(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eScheduler = SA_BIDE_FOR_OPERAND;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule delete                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleDelete(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_DELETE_THIS_TASK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule sleep                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleSleep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_SLEEP_SOME_TIME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule wait                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eScheduler = SA_WAIT_FOR_RESUME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule yield                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleYield(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_YIELD_FOR_OTHERS;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get acheduler action                                                       */
 /*----------------------------------------------------------------------------*/
 eSA Task::eSchedulerAct(void)
@@ -1083,6 +1135,11 @@ void Task::vSchedulerAct(eSA eSchedulerAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  ASSERT(SA_BIDE_FOR_OPERAND   != eSchedulerAct);
+  ASSERT(SA_DELETE_THIS_TASK != eSchedulerAct);
+  ASSERT(SA_SLEEP_SOME_TIME  != eSchedulerAct);
+  ASSERT(SA_YIELD_FOR_OTHERS  != eSchedulerAct);
+
   m_eScheduler = eSchedulerAct;
 }
 

@@ -81,8 +81,7 @@ void Step::vRegOperandBide(void)
   m_pRegSet->m_xpOperandA = m_pTask->m_pJob->m_pOp->pPopQueue();
   
   if (m_pRegSet->m_xpOperandA.bIsNull()) {
-    ASSERT(m_pTask->bIsLocked());
-    m_pTask->vSchedulerAct(SA_BIDE);
+    m_pTask->vScheduleBide();
   }
   
   EXIT();

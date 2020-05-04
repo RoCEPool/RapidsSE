@@ -391,8 +391,7 @@ void Step::vJobBideOperand(void)
   m_pRegSet->m_xpOperandA = pJob_Universal->m_pOp->pPopQueue();
   
   if (m_pRegSet->m_xpOperandA.bIsNull()) {
-    ASSERT(m_pTask->bIsLocked());
-    m_pTask->vSchedulerAct(SA_BIDE);
+    m_pTask->vScheduleBide();
   }
   
   EXIT();
@@ -425,7 +424,7 @@ void Step::vJobCompleted(void)
   
   pJob->vJobState(JS_COMPLETED);
   
-  m_pTask->vSchedulerAct(SA_DELETE);
+  m_pTask->vScheduleDelete();
   
   EXIT();
 }
@@ -1510,7 +1509,7 @@ void Step::vJobSignalWaiter(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vSchedulerAct(SA_SIGNAL);
+  m_pTask->vSchedulerAct(SA_SIGNAL_COMPLETION);
   
   EXIT();
 }
