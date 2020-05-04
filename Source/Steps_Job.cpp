@@ -391,7 +391,6 @@ void Step::vJobBideOperand(void)
   m_pRegSet->m_xpOperandA = pJob_Universal->m_pOp->pPopQueue();
   
   if (m_pRegSet->m_xpOperandA.bIsNull()) {
-    ASSERT(m_pTask->bIsLocked());
     m_pTask->vScheduleBide();
   }
   
