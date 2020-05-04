@@ -52,7 +52,11 @@ void Step::vJob_SubLoaderSpawn(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  Task* pTask = pJob_SubLoader->pTask();
+  if (pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+  }
   IGNORE_RETURN(Api::bSpawnJob(pJob_SubLoader));
   
   EXIT();

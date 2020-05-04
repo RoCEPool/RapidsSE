@@ -1545,6 +1545,11 @@ void Step::vJobSpawn(void)
               aCN[m_pTask->m_pJob->eClass()],
               C_VARGS_END);
 
+  Task* pTask = pJob->pTask();
+  if ( pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+  }
   
   IGNORE_RETURN(Api::bSpawnJob(pJob));
   
@@ -1615,6 +1620,11 @@ void Step::vJobSpawnUniversal(void)
   pJob_Universal->vSeed(SS_SEED_REQ);
 
   // spawn the job
+  Task* pTask = pJob_Universal->pTask();
+  if ( pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+  }
   IGNORE_RETURN(Api::bSpawnJob(pJob_Universal));
 
   EXIT();

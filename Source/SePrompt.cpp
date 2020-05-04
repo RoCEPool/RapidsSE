@@ -1370,7 +1370,13 @@ void SePrompt::vSpawnJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RASSERT(JS_LOCKED == m_pJob->eJobState());
-    
+  
+  Task* pTask = m_pJob->pTask();
+  if ( pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+  }
+  
   bool bSpawned = Api::bSpawnJob(m_pJob);
   RASSERT(bSpawned);
 }

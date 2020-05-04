@@ -141,7 +141,11 @@ void Step::vJob_FetchRowsSpawnSub(void)
   pJob_SubFetch->m_pBufferQueue = pJob_FetchRows->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  Task* pTask = pJob_SubFetch->pTask();
+  if (pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+  }
   IGNORE_RETURN(Api::bSpawnJob(pJob_SubFetch));
 
   EXIT();

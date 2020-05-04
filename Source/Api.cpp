@@ -365,13 +365,19 @@ bool Api::bSpawnJob(Job* pJob)
   //if (CN_JOB_STARTCLUSTER == pJob->eClass())
   //  vDebugPoint();
 
-  if (pJob->pTask()) {
-    pJob->pTask()->vState(TS_ABLE);
+  Task* pTask = pJob->pTask();
+  if ( pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
   else {
-    Task* pNewTask = new Task(pJob);
-    pNewTask->vState(TS_ABLE);
+    pTask = new Task(pJob);
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
+  
+  pTask->vState(TS_ABLE);
+  RASSERT(TS_ABLE == pTask->eState());
   
 //  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
 //              "pJob=%p"_Stz, //!format-LogPrm
