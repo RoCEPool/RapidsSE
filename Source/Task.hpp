@@ -109,6 +109,7 @@ namespace Tasks
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
     void vScheduleSleep(void);
+    void vScheduleYield(void);
     eSA  eSchedulerAct(void);
     void vSchedulerAct(eSA eSchedulerAct);
     void vSchedulerActClear(void);

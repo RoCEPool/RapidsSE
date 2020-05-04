@@ -376,7 +376,7 @@ void Step::vTaskYield(void)
 {
   ENTRY();
     
-  m_pTask->vSchedulerAct(SA_YIELD);
+  m_pTask->vScheduleYield();
 
   EXIT();
 }

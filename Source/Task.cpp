@@ -1077,6 +1077,16 @@ void Task::vScheduleSleep(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule yield                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleYield(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_YIELD;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get acheduler action                                                       */
 /*----------------------------------------------------------------------------*/
 eSA Task::eSchedulerAct(void)
@@ -1094,7 +1104,8 @@ void Task::vSchedulerAct(eSA eSchedulerAct)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   ASSERT(SA_SLEEP != eSchedulerAct);
-  
+  ASSERT(SA_YIELD != eSchedulerAct);
+
   m_eScheduler = eSchedulerAct;
 }
 
