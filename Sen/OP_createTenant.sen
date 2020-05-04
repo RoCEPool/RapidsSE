@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createTenant :: createTenant <tenantNm> ;
 
-: createTenant _info tagCopy: localOp_tags
+: createTenant _info tagCopy: stageOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;

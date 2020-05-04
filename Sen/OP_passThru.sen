@@ -95,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: PassThru :: PassThru ;
 
-: PassThru _info tagCopy: localOp_tags
+: PassThru _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

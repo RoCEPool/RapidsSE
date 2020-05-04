@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toDemonOp :: toDemonOp ;
 
-: toDemonOp _info tagCopy: localOp_tags
+: toDemonOp _info tagCopy: stageOp_tags
   tags{ <?jobDesc?>  = "--op desc--" }
 ;
 

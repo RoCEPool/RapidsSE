@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;
 
-: BM_GenCrwOp _info tagCopy: localOp_tags
+: BM_GenCrwOp _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

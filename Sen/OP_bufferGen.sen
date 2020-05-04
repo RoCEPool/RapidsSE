@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: bufferGen :: bufferGen <nBuffers> ;
 
-: bufferGen _info tagCopy: localOp_tags
+: bufferGen _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: readChunk :: readChunk <fileNm> ;
 
-: readChunk _info tagCopy: localOp_tags
+: readChunk _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

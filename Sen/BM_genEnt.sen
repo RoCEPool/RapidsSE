@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;
 
-: BM_GenEntOp _info tagCopy: localOp_tags
+: BM_GenEntOp _info tagCopy: stageOp_tags
   tags{ <jobDesc>  = "--op desc--" }
 ;
 

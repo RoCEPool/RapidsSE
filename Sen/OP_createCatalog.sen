@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createCatalog :: createCatalog <catalogNm> ;
 
-: createCatalog _info tagCopy: localOp_tags
+: createCatalog _info tagCopy: stageOp_tags
   tags{
     <jobDesc>   = "--op desc--" }
 ;

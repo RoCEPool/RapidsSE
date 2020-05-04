@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: print :: print <string> ;
 
-: print _info tagCopy: localOp_tags
+: print _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

@@ -48,14 +48,14 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-//         cmdNm    cmd          arg       arg
-cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
-cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
-//                  verb   noun
-
-
-//
-: anidx _info tagCopy: liteOp_tags  // => procedure andix
+//         cmdNm    cmd / procNm arg       arg
+cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ; // proc anidx      
+cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
+//           ^        ^
+//           |        |  [needs to be]
+//  +--------+--------+
+//  |
+: anidx _info tagCopy: liteOp_tags  // +-> procedure andix [currently]
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true

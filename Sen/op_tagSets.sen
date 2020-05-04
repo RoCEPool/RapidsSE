@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: localOp_tags
+: stageOp_tags
   tags{
     <jobKind>  = JK_LOCAL
     <rspKind>  = RS_PARTICIPANT_RESPONSE
@@ -18,13 +18,13 @@
   }
 ;
 
-: liteOp_tags tagCopy: localOp_tags
+: liteOp_tags tagCopy: stageOp_tags
   tags{
     <liteOp> = 1
   }
 ;
 
-: localLiteOp_tags tagCopy: localOp_tags
+: localLiteOp_tags tagCopy: stageOp_tags
   tags{
     <localLiteOp> = 1
   }

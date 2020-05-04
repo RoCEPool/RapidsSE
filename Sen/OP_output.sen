@@ -166,7 +166,7 @@ true
 /*----------------------------------------------------------------------------*/
 cmdSyntax: output :: output ;
 
-: output _info tagCopy: localOp_tags
+: output _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

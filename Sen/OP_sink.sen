@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: sink :: sink ;
 
-: sink _info tagCopy: localOp_tags
+: sink _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: Snapshot :: Snapshot <tableNm> ;
 
-: Snapshot _info tagCopy: localOp_tags
+: Snapshot _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

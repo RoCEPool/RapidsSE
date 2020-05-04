@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: ToCsv :: ToCsv ;
 
-: ToCsv _info tagCopy: localOp_tags
+: ToCsv _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

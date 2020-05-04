@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: exemplar :: exemplar ;
 
-: exemplar _info tagCopy: localOp_tags
+: exemplar _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

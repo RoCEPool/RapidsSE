@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: GridSanity :: GridSanity ;
 
-: GridSanity _info tagCopy: localOp_tags
+: GridSanity _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 

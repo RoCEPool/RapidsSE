@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: Xmit :: Xmit <xmitKind> ;
 
-: Xmit _info tagCopy: localOp_tags
+: Xmit _info tagCopy: stageOp_tags
   tags{ <jobDesc> = "--op desc--" }
 ;
 
