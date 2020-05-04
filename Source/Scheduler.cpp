@@ -219,6 +219,8 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
+  RASSERT(pTask->bIsLocked());
+
   Queues* pQueues = AM::pQueues();
   Thread* pThread = Thread::pThisTLSThread();
 
@@ -234,6 +236,7 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
       vTask_Execute(pTask);
       vThread_ContinueSame(pThread,pTask);
       // **do not touch task**
+      pTask->vDropTaskLock();
       return;
     }
   }
@@ -250,6 +253,8 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
   vTask_Schedule(pTask);
   
   // **do not touch task**
+  
+  pTask->vDropTaskLock();
 }
 
 

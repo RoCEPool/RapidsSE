@@ -377,6 +377,7 @@ void Step::vTaskYield(void)
 {
   ENTRY();
     
+  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleYield();
 
   EXIT();

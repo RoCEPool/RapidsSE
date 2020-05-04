@@ -1125,6 +1125,7 @@ void Task::vScheduleYield(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(bIsLocked());
   m_eScheduler = SA_YIELD_FOR_OTHERS;
 }
 
