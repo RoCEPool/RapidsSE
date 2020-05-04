@@ -31,7 +31,6 @@ namespace Threads
   
     TaskList*  m_pBidingSet;       // set of op tasks biding to be triggered
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
-    TaskList*  m_pPausedSet;       // set of op tasks paused to be continued
     TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,7 +58,6 @@ namespace Threads
   private:
     void vAddBidingSet(Task* pTask);
     void vAddExecutingSet(Task* pTask);
-    void vAddPausedSet(Task* pTask);
     void vAddWaitingSet(Task* pTask);
     void vAddSleepingQueue(Task* pTask);
 
@@ -72,7 +70,6 @@ namespace Threads
   
     void vRemoveBidingSet(Task* pTask);
     void vRemoveExecutingSet(Task* pTask);
-    void vRemovePausedSet(Task* pTask);
     void vRemoveWaitingSet(Task* pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - -

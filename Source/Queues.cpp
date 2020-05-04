@@ -70,7 +70,6 @@ Queues::Queues(void)
   
   m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
-  m_pPausedSet     = new TaskList(QK_PAUSED_SET);
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -248,31 +247,6 @@ void Queues::vAddExecutingSet(Task* pTask)
   m_pExecutingSet->vDropLock();
   
   // **do not touch task**
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to paused set                                                     */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddPausedSet(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
-  
-  // note:
-  
-  RASSERT(pTask->bIsLocked());
-  
-  RASSERT(TS_PAUSED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  pTask->vQueue(QK_PAUSED_SET);
-  
-  m_pPausedSet->vGrabLock();
-    
-  m_pPausedSet->vAddTask(pTask);
-  
-  m_pPausedSet->vDropLock();
-  
-  // **do not touch task** (other than to drop lock)
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,22 +486,6 @@ void Queues::vRemoveExecutingSet(Task* pTask)
   m_pExecutingSet->vGrabLock();
   m_pExecutingSet->vRemoveTask(pTask);
   m_pExecutingSet->vDropLock();
-  
-  pTask->vQueue(QK_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove task from paused set                                                */
-/*----------------------------------------------------------------------------*/
-void Queues::vRemovePausedSet(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
-  
-  RASSERT(QK_PAUSED_SET == pTask->eQueue());
-  
-  m_pPausedSet->vGrabLock();
-  m_pPausedSet->vRemoveTask(pTask);
-  m_pPausedSet->vDropLock();
   
   pTask->vQueue(QK_NONE);
 }

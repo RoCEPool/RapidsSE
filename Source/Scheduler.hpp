@@ -71,9 +71,7 @@ namespace Threads
     static void vTask_Execute(Task* pTask);
     static void vTask_Delete(Task* pTask);
     static void vTask_Grab(Task* pTask);
-    static void vTask_Pause(Task* pTask);
     static Task* pTask_Pop(Thread* pThread);
-    static void vTask_Pulse(Task* pTask);
     static void vTask_Ready(Task* pTask);
     static void vTask_Remove(Task* pTask);
     static void vTask_Requires(Task* pTask, i8 nAcksRequired);
