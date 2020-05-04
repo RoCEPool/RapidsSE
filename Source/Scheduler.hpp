@@ -22,6 +22,9 @@ namespace Threads
     static void vTaskTransit_YieldForOthers(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // cross task
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
   
   public:
@@ -48,9 +51,7 @@ namespace Threads
     static void vDropTaskLock(Task* pTask);
     static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
     static void vGrabTaskLock(Task* pTask);
-    static void vPulsePausedTask(Task* pTask);
-    static void vRemoveTaskDedicated(Task* pTask);
-    static void vRemoveTaskGeneral(Task* pTask);
+
     static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
     static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(Task* pTask);

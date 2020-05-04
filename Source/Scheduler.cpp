@@ -566,40 +566,6 @@ void Scheduler::vGrabTaskLock(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pulse a paused task                                                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vPulsePausedTask(Task* pTask)
-{
-  //
-  // called from ???()
-  //
-  NEVER_REACH;
-  //vTask_Pulse(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove dedicated task from system                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vRemoveTaskDedicated(Task* pTask)
-{
-  //
-  // called from ???
-  //
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove general task from system                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vRemoveTaskGeneral(Task* pTask)
-{
-  //
-  // called from ???
-  //
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* set number of acks required by (soon to be) waiting task                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskRequiresAcks(Task* pTask, i8 nAcksRequired)
