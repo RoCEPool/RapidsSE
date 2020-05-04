@@ -305,13 +305,23 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* check to see if any tasks in the sleeping queue can be woken               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskCross_WakeSleepers(Task* pTask)
+void Scheduler::vTaskCross_WakeSleepers(Task* pCallingTask)
 {
   //
   // called from Step::vQueuesCheckSleeping()
   //
   
-  vTask_Wakeup(pTask);
+  Queues* pQueues = AM::pQueues();
+  
+  while (Task* pTask = pQueues->pPopSleepingQueue()) {
+        
+    RASSERT(TS_DESISTED == pTask->eState());
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+    
+    vTask_Schedule(pTask);
+    // **do not touch task**
+  }
 }
 
 // /////////////////////////////////////////////////////////////////////////////
@@ -840,27 +850,6 @@ void Scheduler::vTask_Trigger(Task* pTask)
   // **do not touch task**
 }
 
-/*----------------------------------------------------------------------------*/
-/* wakeup any sleeping tasks whose wakeup time has arrived                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Wakeup(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_WAKEUP,
-              "Wakeup any sleeping tasks whose wakeup time has arrived"_Stz); //!format-LogTsk
-  
-  Queues* pQueues = AM::pQueues();
-  
-  while (Task* pTask = pQueues->pPopSleepingQueue()) {
-        
-    RASSERT(TS_DESISTED == pTask->eState());
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(SA_NONE == pTask->eSchedulerAct());
-    
-    vTask_Schedule(pTask);
-    // **do not touch task**
-  }
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////
