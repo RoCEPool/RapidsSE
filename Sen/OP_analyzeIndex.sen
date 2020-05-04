@@ -48,9 +48,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-//         cmdNm    cmd          arg       arg
-cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
-cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
+//         cmdNm    cmd / procNm arg       arg
+cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ; // proc anidx      
+cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
 //           ^        ^
 //           |        |  [needs to be]
 //  +--------+--------+
