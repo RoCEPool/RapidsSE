@@ -78,7 +78,7 @@ void Step::vTaskAcksStore(void)
     AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
-  Scheduler::vTaskRequiresAcks(pGivenTask,nAcksRequired);
+  Scheduler::vTaskApi_RequiredAcks(pGivenTask,nAcksRequired);
   
   EXIT();
 }

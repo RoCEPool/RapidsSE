@@ -36,6 +36,7 @@ namespace Threads
     static void vTaskApi_AddDedicated(Task* pTask);
     static void vTaskApi_AddGeneral(Task* pTask);
     static void vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread);
+    static void vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
@@ -59,8 +60,7 @@ namespace Threads
     static void vDdlDropWrite(Task* pTask);
     static void vDdlGrabRead(Task* pTask);
     static void vDdlGrabWrite(Task* pTask);
-    static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
-
+ 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread interface
   

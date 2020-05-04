@@ -356,6 +356,18 @@ void Scheduler::vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread)
   vThread_ExecuteDedicated(pThread);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set number of acks required by (soon to be) waiting task                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired)
+{
+  //
+  // called from ???
+  //
+  
+  vTask_Requires(pTask,nAcksRequired);
+}
+
 
 
 // /////////////////////////////////////////////////////////////////////////////
@@ -573,18 +585,6 @@ void Scheduler::vDdlGrabWrite(Task* pTask)
   //
   
   vTask_DdlGrabWrite(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of acks required by (soon to be) waiting task                   */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskRequiresAcks(Task* pTask, i8 nAcksRequired)
-{
-  //
-  // called from ???
-  //
-  
-  vTask_Requires(pTask,nAcksRequired);
 }
 
 
