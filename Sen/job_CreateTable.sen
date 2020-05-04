@@ -67,7 +67,7 @@
 
   //----------------------------------------------------------------------------
   // add partition columns
-  pTable table.slots slots.createStreamDef
+  pTable table.createPtnDef
 
   //----------------------------------------------------------------------------
   // move back to tables

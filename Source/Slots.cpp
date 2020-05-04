@@ -91,7 +91,7 @@ Slots::Slots(void)
     
   }
   
-  m_pPtnStreamDef = new StreamDef;
+  //m_pPtnStreamDef = new StreamDef;
   
   _checkInitialised_(CN_SLOTS);
 }
@@ -113,7 +113,8 @@ Slots::~Slots(void) noexcept(false)
 void Slots::vCreateStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
+  RASSERT(0);
+  /*
   Column* pColumn = nullptr;
   
   m_pPtnStreamDef->m_nDefSets = 1;
@@ -131,6 +132,7 @@ void Slots::vCreateStreamDef(void)
 
     }
   }
+   */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,16 +162,6 @@ bool Slots::bPopulateIndex(i8 iIndexNo)
   }
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ptnColVec                                                              */
-/*----------------------------------------------------------------------------*/
-StreamDef* Slots::pPtnStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  return m_pPtnStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,7 +226,7 @@ void Slots::vTidyUp(void)
   delete m_pTablePtnVec;
   
   // delete the partition stream def
-  delete m_pPtnStreamDef;
+  //delete m_pPtnStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/

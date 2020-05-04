@@ -15,6 +15,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
   vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
+  vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
   vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
@@ -23,6 +24,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table[].isDefinitionOnly"_Stz, &Step::vTableIsDefinitionOnly);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
+  vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
@@ -101,6 +103,21 @@ void Step::vTableLazyBuildIndexes(void)
   iSlot = sString.iToI8();
   
   pTable->vLazyBuildIndexes(iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.createPtnDef -- create the table ptn def (stream def)                */
+/*----------------------------------------------------------------------------*/
+void Step::vTableCreatePtnDef(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vCreatePtnDef();
   
   EXIT();
 }
@@ -371,6 +388,21 @@ void Step::vTableIsDefinitionOnly(void)
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].ptnStreamDef@ -- get the table ptn stream def                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnStreamDefFetch(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  m_pDataStack->vPushPtr(pTable->pPtnStreamDef());
   
   EXIT();
 }

@@ -81,7 +81,9 @@ Table::Table(void)
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
   m_bIsLoading = false;
-    
+  
+  m_pPtnStreamDef = new StreamDef;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
@@ -401,6 +403,32 @@ void Table::vCompactIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create ptn stream def                                                      */
+/*----------------------------------------------------------------------------*/
+void Table::vCreatePtnDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  Column* pColumn = nullptr;
+  
+  m_pPtnStreamDef->m_nDefSets = 1;
+  m_pPtnStreamDef->m_i_DefStart[0] = 0;
+  m_pPtnStreamDef->m_nDefColumns[0] = 0;
+  
+  // find the column from the table columnVector
+  i8 iColumns = pStreamDef()->nColumns(C_ALL);
+  
+  for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
+    pColumn = pStreamDef()->pGetColumn(i_Col);
+    if (pColumn->bIsPtnKey()) {
+      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
+      m_pPtnStreamDef->m_nDefColumns[0]++;
+      
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of row buffers in this table                                    */
 /*----------------------------------------------------------------------------*/
 i8 Table::nCrwBuffers(void)
@@ -609,7 +637,7 @@ StreamDef*  Table::pPtnStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_xSlots.pPtnStreamDef();
+  return m_pPtnStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,6 +784,7 @@ void Table::vTidyUp(void)
   delete m_pBucketMap;
     
   delete m_pTableDef;
+  delete m_pPtnStreamDef;
   
   m_xSlots.vTidyUp();
 }
