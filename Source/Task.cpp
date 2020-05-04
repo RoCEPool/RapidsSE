@@ -1074,7 +1074,7 @@ void Task::vScheduleBide(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_BIDE;
+  m_eScheduler = SA_BIDE_FOR_OPERAND;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1084,7 +1084,7 @@ void Task::vScheduleDelete(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eScheduler = SA_DELETE;
+  m_eScheduler = SA_DELETE_THIS_TASK;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1094,7 +1094,7 @@ void Task::vScheduleSleep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eScheduler = SA_SLEEP;
+  m_eScheduler = SA_SLEEP_SOME_TIME;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1105,7 +1105,7 @@ void Task::vScheduleWait(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_WAIT;
+  m_eScheduler = SA_WAIT_FOR_RESUME;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1115,7 +1115,7 @@ void Task::vScheduleYield(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eScheduler = SA_YIELD;
+  m_eScheduler = SA_YIELD_FOR_OTHERS;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1135,10 +1135,10 @@ void Task::vSchedulerAct(eSA eSchedulerAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(SA_BIDE   != eSchedulerAct);
-  ASSERT(SA_DELETE != eSchedulerAct);
-  ASSERT(SA_SLEEP  != eSchedulerAct);
-  ASSERT(SA_YIELD  != eSchedulerAct);
+  ASSERT(SA_BIDE_FOR_OPERAND   != eSchedulerAct);
+  ASSERT(SA_DELETE_THIS_TASK != eSchedulerAct);
+  ASSERT(SA_SLEEP_SOME_TIME  != eSchedulerAct);
+  ASSERT(SA_YIELD_FOR_OTHERS  != eSchedulerAct);
 
   m_eScheduler = eSchedulerAct;
 }

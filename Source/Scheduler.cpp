@@ -363,12 +363,12 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   // transition task to different state+queue depending on transition request
   switch (pTask->eSchedulerAct()) {
       
-    case SA_BIDE:   vTask_Bide(pTask);   break;
-    case SA_DELETE: vTask_Delete(pTask); break;
-    case SA_SIGNAL: vTask_Signal(pTask); break;
-    case SA_SLEEP:  vTask_Sleep(pTask);  break;
-    case SA_WAIT:   vTask_Wait(pTask);   break;
-    case SA_YIELD:  vTask_Yield(pTask);  break;
+    case SA_BIDE_FOR_OPERAND:   vTask_Bide(pTask);   break;
+    case SA_DELETE_THIS_TASK: vTask_Delete(pTask); break;
+    case SA_SIGNAL_COMPLETION: vTask_Signal(pTask); break;
+    case SA_SLEEP_SOME_TIME:  vTask_Sleep(pTask);  break;
+    case SA_WAIT_FOR_RESUME:   vTask_Wait(pTask);   break;
+    case SA_YIELD_FOR_OTHERS:  vTask_Yield(pTask);  break;
       
     default:
       NEVER_REACH;
@@ -579,7 +579,7 @@ void Scheduler::vTask_Bide(Task* pTask)
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_BIDE == pTask->eSchedulerAct());
+  RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
   
   Queues* pQueues = AM::pQueues();
   
@@ -736,7 +736,7 @@ void Scheduler::vTask_Delete(Task* pTask)
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_DELETE == pTask->eSchedulerAct());
+  RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
 
   pTask->vSchedulerActClear();
   pTask->vState(TS_COMPLETED);
@@ -926,7 +926,7 @@ void Scheduler::vTask_Signal(Task* pTask)
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_SIGNAL == pTask->eSchedulerAct());
+  RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
   
   pTask->vSchedulerActClear();
   
@@ -951,7 +951,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_SLEEP == pTask->eSchedulerAct());
+  RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
@@ -1038,7 +1038,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_WAIT == pTask->eSchedulerAct());
+  RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
@@ -1087,7 +1087,7 @@ void Scheduler::vTask_Yield(Task* pTask)
 
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_YIELD == pTask->eSchedulerAct());
+  RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
