@@ -75,7 +75,6 @@ namespace Threads
     static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);
     static void vTask_Thread(Task* pTask, Thread* pThread);
-    static void vTask_Trigger(Task* pTask);
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for threads

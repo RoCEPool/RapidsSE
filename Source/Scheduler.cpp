@@ -299,7 +299,23 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTask)
   // called from Op::vAppendOperand()
   //
   
-  vTask_Trigger(pTask);
+  RASSERT(pTask->bIsLocked());
+  RASSERT(TS_BIDING == pTask->eState());
+  RASSERT(QK_BIDING_SET == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemoveBidingSet(pTask);
+  
+  pTask->vDropTaskLock();
+  
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
+  vTask_Schedule(pTask);
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
@@ -820,34 +836,6 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_THREAD,
               "Task has been assigned a thread"_Stz); //!format-LogTsk
-}
-
-/*----------------------------------------------------------------------------*/
-/* trigger biding task                                                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Trigger(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_TRIGGER,
-              "Remove biding task from BidingSet and schedule it"_Stz); //!format-LogTsk
-  
-  RASSERT(pTask->bIsLocked());
-  RASSERT(TS_BIDING == pTask->eState());
-  RASSERT(QK_BIDING_SET == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->vRemoveBidingSet(pTask);
-  
-  pTask->vDropTaskLock();
-  
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-  
-  vTask_Schedule(pTask);
-  // **do not touch task**
 }
 
 
