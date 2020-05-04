@@ -12,12 +12,12 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task transition
     static void vTaskLoopTransition(Thread* pThread);
-    static void vTask_Bide(Task* pTask);
-    static void vTask_Delete(Task* pTask);
-    static void vTask_Signal(Task* pTask);
-    static void vTask_Sleep(Task* pTask);
-    static void vTask_Wait(Task* pTask);
-    static void vTask_Yield(Task* pTask);
+    static void vTaskTransit_BideForOperand(Task* pTask);
+    static void vTaskTransit_DeleteThisTask(Task* pTask);
+    static void vTaskTransit_SignalCompletion(Task* pTask);
+    static void vTaskTransit_SleepSomeTime(Task* pTask);
+    static void vTaskTransit_WaitForResume(Task* pTask);
+    static void vTaskTransit_YieldForOthers(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface

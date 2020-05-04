@@ -30,12 +30,12 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   // transition task to different state+queue depending on transition request
   switch (pTask->eSchedulerAct()) {
       
-    case SA_BIDE_FOR_OPERAND:  vTask_Bide(pTask);   break;
-    case SA_DELETE_THIS_TASK:  vTask_Delete(pTask); break;
-    case SA_SIGNAL_COMPLETION: vTask_Signal(pTask); break;
-    case SA_SLEEP_SOME_TIME:   vTask_Sleep(pTask);  break;
-    case SA_WAIT_FOR_RESUME:   vTask_Wait(pTask);   break;
-    case SA_YIELD_FOR_OTHERS:  vTask_Yield(pTask);  break;
+    case SA_BIDE_FOR_OPERAND:  vTaskTransit_BideForOperand(pTask);   break;
+    case SA_DELETE_THIS_TASK:  vTaskTransit_DeleteThisTask(pTask);   break;
+    case SA_SIGNAL_COMPLETION: vTaskTransit_SignalCompletion(pTask); break;
+    case SA_SLEEP_SOME_TIME:   vTaskTransit_SleepSomeTime(pTask);    break;
+    case SA_WAIT_FOR_RESUME:   vTaskTransit_WaitForResume(pTask);    break;
+    case SA_YIELD_FOR_OTHERS:  vTaskTransit_YieldForOthers(pTask);   break;
       
     default:
       NEVER_REACH;
@@ -46,7 +46,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 /* op-task with empty operand queue transitions to TS_BIDING and              */
 /*   is added to biding set                                                   */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Bide(Task* pTask)
+void Scheduler::vTaskTransit_BideForOperand(Task* pTask)
 {
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_BIDE,
@@ -71,7 +71,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* desisted task transitions to TS_COMPLETED state and is deleted                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Delete(Task* pTask)
+void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
 {
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
@@ -93,7 +93,7 @@ void Scheduler::vTask_Delete(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task has completed; signal the thread waiting on the tasks mutex           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Signal(Task* pTask)
+void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
 {
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
@@ -118,7 +118,7 @@ void Scheduler::vTask_Signal(Task* pTask)
 /* transition desisted task to TS_SLEEPING state and add to sleeping queue    */
 /*   (if wakeup time has already arrived, calling thread re-executes task)    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Sleep(Task* pTask)
+void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
 {
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
@@ -156,7 +156,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting set                                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Wait(Task* pTask)
+void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
 {
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
@@ -183,7 +183,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* desisted task has yielded and is scheduled                                 */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Yield(Task* pTask)
+void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
 {
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_YIELD,
