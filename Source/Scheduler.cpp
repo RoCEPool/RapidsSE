@@ -149,6 +149,8 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
+  RASSERT(pTask->bIsLocked());
+  
   Queues* pQueues = AM::pQueues();
   
   pTask->vSchedulerActClear();
@@ -160,6 +162,7 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
     pTask->vState(TS_SLEEPING);
     pQueues->vAddSleepingQueue(pTask);
     // **do not touch task**
+    pTask->vDropTaskLock();
     return;
   }
   
@@ -174,6 +177,7 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
   vThread_ContinueSame(pThread,pTask);
 
   // **do not touch task**
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/

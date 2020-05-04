@@ -290,6 +290,7 @@ void Step::vTaskSleepMsec(void)
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
   m_pTask->vSleepUsec(nMicroSeconds);
+  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleSleep();
 
   EXIT();
@@ -306,6 +307,7 @@ void Step::vTaskSleepSsec(void)
   i8 nMicroSeconds = nSeconds * C_1M;
   
   m_pTask->vSleepUsec(nMicroSeconds);
+  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleSleep();
 
   EXIT();
@@ -321,6 +323,7 @@ void Step::vTaskSleepUsec(void)
   i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
   
   m_pTask->vSleepUsec(nMicroSeconds);
+  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleSleep();
 
   EXIT();
