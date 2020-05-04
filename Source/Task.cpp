@@ -1073,7 +1073,7 @@ void Task::vScheduleBide(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(bIsLocked());
+  RASSERT(bIsLocked());
   m_eScheduler = SA_BIDE;
 }
 
@@ -1098,6 +1098,17 @@ void Task::vScheduleSleep(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule wait                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eScheduler = SA_WAIT;
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule yield                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vScheduleYield(void)
@@ -1105,16 +1116,6 @@ void Task::vScheduleYield(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eScheduler = SA_YIELD;
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule wait                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vScheduleWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eScheduler = SA_WAIT;
 }
 
 /*----------------------------------------------------------------------------*/
