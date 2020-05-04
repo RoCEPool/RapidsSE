@@ -112,7 +112,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     pThread->vThreadEntry();
     pThread->m_pPsxThd->vThreadEntry();
     
-    Scheduler::vAddDedicatedThread(pThread);
+    Scheduler::vThread_AddDedicatedThread(pThread);
     
     if (AM::bVerbose())
       vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
@@ -140,7 +140,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
                 "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
                 pThread);
     
-    Scheduler::vRemoveDedicatedThread(pThread);
+    Scheduler::vThread_RemoveDedicatedThread(pThread);
     
     pThread->m_pPsxThd->vThreadExit();
     
@@ -177,7 +177,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     pThread->vThreadEntry();
     pThread->m_pPsxThd->vThreadEntry();
 
-    Scheduler::vAddGeneralThread(pThread);
+    Scheduler::vThread_AddGeneralThread(pThread);
     
     if (AM::bVerbose())
       vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
@@ -205,7 +205,7 @@ void* Thread::aEntryPoint_general(void* pArg)
                 "Thead exit (general) : %p"_Stz, //!format-LogRes
                 pThread);
     
-    Scheduler::vRemoveGeneralThread(pThread);
+    Scheduler::vThread_RemoveGeneralThread(pThread);
     
     pThread->m_pPsxThd->vThreadExit();
 
@@ -304,14 +304,14 @@ void Thread::vLoop_dedicated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Scheduler::vBeginThreadLoop(this);
+  Scheduler::vThread_BeginThreadLoop(this);
 
   Scheduler::vTaskApi_ExecuteDedicated(m_pTask,this);
   
   while (m_pTask && m_pTask->pJob())
     m_pTask->vTaskLoop();
 
-  Scheduler::vEndThreadLoop(this);
+  Scheduler::vThread_EndThreadLoop(this);
 
   vTrace("Exiting dedicated thread loop\n"_Stz);
 }
@@ -323,13 +323,13 @@ void Thread::vLoop_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Scheduler::vBeginThreadLoop(this);
+  Scheduler::vThread_BeginThreadLoop(this);
   
   for (;;) {
     
     // wait for task to be assigned to this thread
     if (! m_pTask)
-      Scheduler::vWaitForTaskAssignment(this);
+      Scheduler::vThread_WaitForTaskAssignment(this);
     ASSERT(m_pTask);
     
     // ensure the task has this thread

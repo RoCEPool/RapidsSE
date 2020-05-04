@@ -55,14 +55,14 @@ namespace Threads
     // thread interface
   
   public:
-    static void vAddDedicatedThread(Thread* pThread);
-    static void vAddGeneralThread(Thread* pThread);
-    static void vBeginThreadLoop(Thread* pThread);
-    static void vEndThreadLoop(Thread* pThread);
-    static void vPauseTillGeneralThreads(void);
-    static void vRemoveDedicatedThread(Thread* pThread);
-    static void vRemoveGeneralThread(Thread* pThread);
-    static void vWaitForTaskAssignment(Thread* pThread);
+    static void vThread_AddDedicatedThread(Thread* pThread);
+    static void vThread_AddGeneralThread(Thread* pThread);
+    static void vThread_BeginThreadLoop(Thread* pThread);
+    static void vThread_EndThreadLoop(Thread* pThread);
+    static void vThread_PauseTillGeneralThreads(void);
+    static void vThread_RemoveDedicatedThread(Thread* pThread);
+    static void vThread_RemoveGeneralThread(Thread* pThread);
+    static void vThread_WaitForTaskAssignment(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for tasks

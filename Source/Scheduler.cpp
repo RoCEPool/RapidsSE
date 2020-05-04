@@ -544,7 +544,7 @@ bool Scheduler::bJob_RemoveParticipating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 /* add new dedicated thread into dedicated thread vector                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAddDedicatedThread(Thread* pThread)
+void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -556,7 +556,7 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* add new dedicated thread into general thread vector                        */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAddGeneralThread(Thread* pThread)
+void Scheduler::vThread_AddGeneralThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_general()
@@ -568,7 +568,7 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* beginning of thread loop                                                   */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vBeginThreadLoop(Thread* pThread)
+void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
@@ -580,7 +580,7 @@ void Scheduler::vBeginThreadLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* end of thread loop                                                         */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vEndThreadLoop(Thread* pThread)
+void Scheduler::vThread_EndThreadLoop(Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated()
@@ -592,7 +592,7 @@ void Scheduler::vEndThreadLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* pause till all general threads are idle (at system startup)                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vPauseTillGeneralThreads(void)
+void Scheduler::vThread_PauseTillGeneralThreads(void)
 {
   //
   // called from Engine::vStartSystem()
@@ -604,7 +604,7 @@ void Scheduler::vPauseTillGeneralThreads(void)
 /*----------------------------------------------------------------------------*/
 /* remove dedicated thread from dedicated thread vector                       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemoveDedicatedThread(Thread* pThread)
+void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -616,7 +616,7 @@ void Scheduler::vRemoveDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* remove general thread from general thread vector                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemoveGeneralThread(Thread* pThread)
+void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_general()
@@ -629,7 +629,7 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 /* general thread waits in idle state for task to be assigned,                */
 /*   then executes task that was assigned                                     */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vWaitForTaskAssignment(Thread* pThread)
+void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 {
   //
   // called from Thread::vLoop_general()
