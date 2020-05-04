@@ -265,6 +265,56 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
 
 
 // /////////////////////////////////////////////////////////////////////////////
+//                               cross task                                   //
+// /////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* ack a waiting task (returns true if task was resumed)                      */
+/*----------------------------------------------------------------------------*/
+bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
+{
+  //
+  // called from Step::vTaskAck()
+  //
+  
+  bool bAmDecider = bTask_Ack(pTaskWaiting,pTaskAcking);
+  
+  if (! bAmDecider)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTask_Resume(pTaskWaiting);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trigger op-task that operand has arrived while it is biding                */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskCross_TriggerBiding(Task* pTask)
+{
+  //
+  // called from Op::vAppendOperand()
+  //
+  
+  vTask_Trigger(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check to see if any tasks in the sleeping queue can be woken               */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskCross_WakeSleepers(Task* pTask)
+{
+  //
+  // called from Step::vQueuesCheckSleeping()
+  //
+  
+  vTask_Wakeup(pTask);
+}
+
+
+// /////////////////////////////////////////////////////////////////////////////
 //                              job interface                                 //
 // /////////////////////////////////////////////////////////////////////////////
 
@@ -434,27 +484,6 @@ bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* ack a waiting task (returns true if task was resumed)                      */
-/*----------------------------------------------------------------------------*/
-bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
-{
-  //
-  // called from Step::vTaskAck()
-  //
-  
-  bool bAmDecider = bTask_Ack(pTaskWaiting,pTaskAcking);
-  
-  if (! bAmDecider)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vTask_Resume(pTaskWaiting);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add new dedicated task into system (spawn a dedicated thread for it)       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskDedicated(Task* pTask)
@@ -553,29 +582,6 @@ void Scheduler::vTaskRequiresAcks(Task* pTask, i8 nAcksRequired)
   vTask_Requires(pTask,nAcksRequired);
 }
 
-/*----------------------------------------------------------------------------*/
-/* trigger op-task that operand has arrived while it is biding                */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTriggerBidingTask(Task* pTask)
-{
-  //
-  // called from Op::vAppendOperand()
-  //
-  
-  vTask_Trigger(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check to see if any tasks in the sleeping queue can be woken               */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vWakeSleepingTasks(Task* pTask)
-{
-  //
-  // called from Step::vQueuesCheckSleeping()
-  //
-  
-  vTask_Wakeup(pTask);
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////

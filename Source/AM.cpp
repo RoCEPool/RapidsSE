@@ -131,7 +131,7 @@ bool AM::bVerboseProgress(void)  {
 
 //
 void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {
-  IGNORE_RETURN(Scheduler::bAckWaitingTask(pTaskWaiting,pTaskAcking));
+  IGNORE_RETURN(Scheduler::bTaskCross_AckWaiting(pTaskWaiting,pTaskAcking));
 }
 void AM::vAddConstant(Stz* szName,Stz* szValue) {
   Constants::vAddConstant(szName,szValue);
@@ -260,7 +260,7 @@ void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
 void AM::vTriggerBidingTask(Task* pTask) {
-  Scheduler::vTriggerBidingTask(pTask);
+  Scheduler::vTaskCross_TriggerBiding(pTask);
 }
 
 //

@@ -24,7 +24,7 @@ void Step::vQueuesCheckSleeping(void)
 {
   ENTRY();
   
-  Scheduler::vWakeSleepingTasks(m_pTask);
+  Scheduler::vTaskCross_WakeSleepers(m_pTask);
   
   EXIT();
 }
