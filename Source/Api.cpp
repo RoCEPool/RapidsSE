@@ -352,19 +352,6 @@ bool Api::bSpawnJob(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  if (pJob->pTask())
-//    AM::vLogWriteCsv(false);
-//
-//  ASSERT(! pJob->pTask());
-  
-//  vTrace("Spawning %s %s %s\n"_Stz,
-//         aCN[pJob->eClass()],
-//         pJob->m_bWasReceived ? "wasReceived" : "notReceived",
-//         pJob->pTask()        ? "hasTask"     : "noTask"
-//         );
-  //if (CN_JOB_STARTCLUSTER == pJob->eClass())
-  //  vDebugPoint();
-
   Task* pTask = pJob->pTask();
   if ( pTask) {
     RASSERT(QK_NONE == pTask->eQueue());
@@ -376,21 +363,7 @@ bool Api::bSpawnJob(Job* pJob)
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
   
-  pTask->vState(TS_ABLE);
-  RASSERT(TS_ABLE == pTask->eState());
-  
-//  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
-//              "pJob=%p"_Stz, //!format-LogPrm
-//              pJob,
-//              C_VARGS_END);
-  
   Job* pThisJob = AM::pThisTLSJob();
-//  if (pThisJob) {
-//    SP_Job spJob;
-//    vTrace("+ + + + + + + + + + + + + + + + + + \n"_Stz);
-//    vTrace("Api Spawn: spawning job %s\n"_Stz,spJob.sz_api(pThisJob));
-//    pThisJob->pTagSet()->vDumpSet();
-//  }
 
   if (pJob->bHasTag(C_TAG_API) ||
       (pThisJob && pThisJob->bHasTag(C_TAG_TAGS))) {
@@ -502,7 +475,6 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   
   ASSERT(! pJob->pTask());
   Task* pNewTask = new Task(pJob);
-  pNewTask->vState(TS_ABLE);
   
   pJob->vTimerStart();
   

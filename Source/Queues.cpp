@@ -452,7 +452,8 @@ Task* Queues::pPopSleepingQueue(void)
   m_pSleepingQueue->vDropLock();
   
   pPopTask->vQueue(QK_NONE);
-  
+  pPopTask->vState(TS_DESISTED);
+
   pPopTask->vWakeupClear();
     
   return pPopTask;
@@ -472,6 +473,7 @@ void Queues::vRemoveBidingSet(Task* pTask)
   m_pBidingSet->vDropLock();
   
   pTask->vQueue(QK_NONE);
+  pTask->vState(TS_DESISTED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -488,6 +490,7 @@ void Queues::vRemoveExecutingSet(Task* pTask)
   m_pExecutingSet->vDropLock();
   
   pTask->vQueue(QK_NONE);
+  pTask->vState(TS_DESISTED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,7 +512,7 @@ void Queues::vRemoveWaitingSet(Task* pTask)
   m_pWaitingSet->vDropLock();
   
   pTask->vQueue(QK_NONE);
-  
+  pTask->vState(TS_DESISTED);
 }
 
 
