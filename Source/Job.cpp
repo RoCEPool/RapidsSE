@@ -899,7 +899,7 @@ void Job::vLockJobMutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* signal the job mutex                                                       */
+/* signal the job mutex                             DOESN'T SEEM TO BE CALLED */
 /*----------------------------------------------------------------------------*/
 void Job::vSignalJobMutex(void)
 {
