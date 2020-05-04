@@ -10,6 +10,16 @@ namespace Threads
   public:
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // task transition
+    static void vTaskLoopTransition(Thread* pThread);
+    static void vTask_Bide(Task* pTask);
+    static void vTask_Delete(Task* pTask);
+    static void vTask_Signal(Task* pTask);
+    static void vTask_Sleep(Task* pTask);
+    static void vTask_Wait(Task* pTask);
+    static void vTask_Yield(Task* pTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
   
     static void vAddOriginatingJob(Job* pJob);
@@ -37,7 +47,6 @@ namespace Threads
     static void vPulsePausedTask(Task* pTask);
     static void vRemoveTaskDedicated(Task* pTask);
     static void vRemoveTaskGeneral(Task* pTask);
-    static void vTaskLoopTransition(Thread* pThread);
     static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
     static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(Task* pTask);
@@ -61,7 +70,6 @@ namespace Threads
     static void vTask_Able(Task* pTask);
     static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTask_Add(Task* pTask);
-    static void vTask_Bide(Task* pTask);
     static void vTask_Desist(Task* pTask);
     static void vTask_DdlDropRead(Task* pTask);
     static void vTask_DdlDropWrite(Task* pTask);
@@ -69,7 +77,6 @@ namespace Threads
     static void vTask_DdlGrabWrite(Task* pTask);
     static void vTask_Drop(Task* pTask);
     static void vTask_Execute(Task* pTask);
-    static void vTask_Delete(Task* pTask);
     static void vTask_Grab(Task* pTask);
     static Task* pTask_Pop(Thread* pThread);
     static void vTask_Ready(Task* pTask);
@@ -77,13 +84,9 @@ namespace Threads
     static void vTask_Requires(Task* pTask, i8 nAcksRequired);
     static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);
-    static void vTask_Signal(Task* pTask);
-    static void vTask_Sleep(Task* pTask);
     static void vTask_Thread(Task* pTask, Thread* pThread);
     static void vTask_Trigger(Task* pTask);
-    static void vTask_Wait(Task* pTask);
     static void vTask_Wakeup(Task* pTask);
-    static void vTask_Yield(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for threads
