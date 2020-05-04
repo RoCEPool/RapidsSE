@@ -1039,13 +1039,6 @@ void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-void AM::vDdlDropRead (Task* pTask)  { Scheduler::vDdlDropRead (pTask);        }
-void AM::vDdlDropWrite(Task* pTask)  { Scheduler::vDdlDropWrite(pTask);        }
-void AM::vDdlGrabRead (Task* pTask)  { Scheduler::vDdlGrabRead (pTask);        }
-void AM::vDdlGrabWrite(Task* pTask)  { Scheduler::vDdlGrabWrite(pTask);        }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

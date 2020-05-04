@@ -107,12 +107,14 @@ void Step::vDdlLockTestDrop(void)
   
   if (LH_HAVE_READ_LOCK == m_pRegSet->m_eDdlLocked) {
     
-    AM::vDdlDropRead(m_pTask);
+    AM::pDdlLock()->vDropRead();
+    m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   else
   if (LH_HAVE_WRITE_LOCK == m_pRegSet->m_eDdlLocked) {
     
-    AM::vDdlDropWrite(m_pTask);
+    AM::pDdlLock()->vDropWrite();
+    m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   
   EXIT();

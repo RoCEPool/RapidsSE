@@ -50,17 +50,7 @@ namespace Threads
     static Job* pFindParticipatingJob(i8 iJobId);
     static bool bRemoveOriginatingJob(Job* pJob, bool bDump=false);
     static bool bRemoveParticipatingJob(Job* pJob, bool bDump=false);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task interface
-  
-  public:
-
-    static void vDdlDropRead(Task* pTask);
-    static void vDdlDropWrite(Task* pTask);
-    static void vDdlGrabRead(Task* pTask);
-    static void vDdlGrabWrite(Task* pTask);
- 
+   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread interface
   

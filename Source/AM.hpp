@@ -174,10 +174,6 @@ namespace Oblique
     static Crv* aCrv(DataBuffer* pDataBuffer, i8 iItem);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vDdlDropRead(Task* pTask);
-    static void vDdlDropWrite(Task* pTask);
-    static void vDdlGrabRead(Task* pTask);
-    static void vDdlGrabWrite(Task* pTask);
     static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
