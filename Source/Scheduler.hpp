@@ -23,10 +23,19 @@ namespace Threads
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
+  
   public:
     static bool bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTaskCross_TriggerBiding(Task* pTask);
     static void vTaskCross_WakeSleepers(Task* pTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // task api
+  
+  public:
+    static void vTaskApi_AddDedicated(Task* pTask);
+    static void vTaskApi_AddGeneral(Task* pTask);
+    static void vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
@@ -46,13 +55,10 @@ namespace Threads
   
   public:
 
-    static void vAddTaskDedicated(Task* pTask);
-    static void vAddTaskGeneral(Task* pTask);
     static void vDdlDropRead(Task* pTask);
     static void vDdlDropWrite(Task* pTask);
     static void vDdlGrabRead(Task* pTask);
     static void vDdlGrabWrite(Task* pTask);
-    static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
     static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

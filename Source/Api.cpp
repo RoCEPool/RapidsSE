@@ -407,7 +407,7 @@ bool Api::bSpawnJob(Job* pJob)
   
   pJob->vTimerStart();
 
-  Scheduler::vAddTaskGeneral(pJob->pTask());
+  Scheduler::vTaskApi_AddGeneral(pJob->pTask());
   
   return true;
 }
@@ -506,7 +506,7 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   
   pJob->vTimerStart();
   
-  Scheduler::vAddTaskDedicated(pNewTask);
+  Scheduler::vTaskApi_AddDedicated(pNewTask);
   
   return true;
 }

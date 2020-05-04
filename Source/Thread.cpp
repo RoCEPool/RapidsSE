@@ -306,7 +306,7 @@ void Thread::vLoop_dedicated(void)
   
   Scheduler::vBeginThreadLoop(this);
 
-  Scheduler::vExecuteDedicatedTask(m_pTask,this);
+  Scheduler::vTaskApi_ExecuteDedicated(m_pTask,this);
   
   while (m_pTask && m_pTask->pJob())
     m_pTask->vTaskLoop();

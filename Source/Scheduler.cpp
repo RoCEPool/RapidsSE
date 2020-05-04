@@ -313,6 +313,50 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pTask)
   vTask_Wakeup(pTask);
 }
 
+// /////////////////////////////////////////////////////////////////////////////
+//                                task api                                    //
+// /////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add new dedicated task into system (spawn a dedicated thread for it)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddDedicated(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJobDedicated()
+  //
+  
+  vThread_SpawnDedicated(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
+  vTask_Schedule(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dedicated task to be executed by dedicated thread                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread)
+{
+  //
+  // called from Thread::vLoop_dedicated()
+  //
+  
+  vThread_ExecuteDedicated(pThread);
+}
+
+
 
 // /////////////////////////////////////////////////////////////////////////////
 //                              job interface                                 //
@@ -484,33 +528,6 @@ bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add new dedicated task into system (spawn a dedicated thread for it)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAddTaskDedicated(Task* pTask)
-{
-  //
-  // called from Api::bSpawnJobDedicated()
-  //
-  
-  vThread_SpawnDedicated(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAddTaskGeneral(Task* pTask)
-{
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_ABLE == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-  
-  vTask_Schedule(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vDdlDropRead(Task* pTask)
@@ -556,18 +573,6 @@ void Scheduler::vDdlGrabWrite(Task* pTask)
   //
   
   vTask_DdlGrabWrite(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set dedicated task to be executed by dedicated thread                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
-{
-  //
-  // called from Thread::vLoop_dedicated()
-  //
-  
-  vThread_ExecuteDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
