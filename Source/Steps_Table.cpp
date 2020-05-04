@@ -271,12 +271,14 @@ void Step::vTableTablePtnFetch(void)
 {
   ENTRY();
   
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  
   Job* pJob = m_pTask->m_pJob;
   
   i8 iPtn = pJob->m_pOp->nPartition();
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
-  TablePtn* pTablePtn = m_pRegSet->m_xpTable->pSlots()->pPartition(iSlot);
+  TablePtn* pTablePtn = pTable->pPartition(iSlot);
   
   m_pDataStack->vPushPtr(pTablePtn);
   
@@ -570,10 +572,11 @@ void Step::vTableSubLoaders(void)
 void Step::vTableSlots(void)
 {
   ENTRY();
+  RASSERT(0);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  //Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pTable->pSlots());
+  //m_pDataStack->vPushPtr(pTable->pSlots());
   
   EXIT();
 }
@@ -585,9 +588,10 @@ void Step::vTableSlotsFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  RASSERT(0);
+  //Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   
-  m_pDataStack->vPushPtr(pTable->pSlots());
+  //m_pDataStack->vPushPtr(pTable->pSlots());
   
   EXIT();
 }

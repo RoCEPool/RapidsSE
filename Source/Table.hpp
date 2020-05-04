@@ -21,11 +21,11 @@ namespace MetaData
     Atomic     m_ixIndexNo;  // next index no
 
     BucketMap* m_pBucketMap; // bucket (to partition) map
-    Slots      m_xSlots;     // slots
   
     bool       m_bIsLoading; // data is loading
     Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
   
+    TablePtnVec*  m_pTablePtnVec;  // table partition vector
     StreamDef*    m_pPtnStreamDef; // partition stream def
     
     // must be last
@@ -70,7 +70,6 @@ namespace MetaData
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     void vSubLoaders(i8 iSubLoaders);
-    Slots* pSlots(void);
     StreamDef* pStreamDef(void);
     TableDef* pTableDef(void);
     void vTableDef(TableDef* pTableDef);

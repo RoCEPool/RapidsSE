@@ -36,13 +36,13 @@ void Slots::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Slots::vFinalize(eCN eClass, Object* pObject)
 {
-  ASSERT(eClass == CN_SLOTS);
-  ASSERT(pObject->eClass() == CN_SLOTS);
-  
-  Slots* pSlots = reinterpret_cast<Slots*>(pObject);
-  ASSERT(pSlots->bWordBody());
-  
-  pSlots->vTidyUp();
+//  ASSERT(eClass == CN_SLOTS);
+//  ASSERT(pObject->eClass() == CN_SLOTS);
+//
+//  Slots* pSlots = reinterpret_cast<Slots*>(pObject);
+//  ASSERT(pSlots->bWordBody());
+//
+//  pSlots->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,165 +102,165 @@ Slots::Slots(void)
 Slots::~Slots(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  vTidyUp();
+  //vTidyUp();
   
-  delete m_pTablePtnVec;
+  //delete m_pTablePtnVec;
 }
 
 /*----------------------------------------------------------------------------*/
 /* create stream def                                                          */
 /*----------------------------------------------------------------------------*/
-void Slots::vCreateStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  RASSERT(0);
-  /*
-  Column* pColumn = nullptr;
-  
-  m_pPtnStreamDef->m_nDefSets = 1;
-  m_pPtnStreamDef->m_i_DefStart[0] = 0;
-  m_pPtnStreamDef->m_nDefColumns[0] = 0;
-
-  // find the column from the table columnVector
-  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
-  
-  for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
-    if (pColumn->bIsPtnKey()) {
-      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
-      m_pPtnStreamDef->m_nDefColumns[0]++;
-
-    }
-  }
-   */
-}
+//void Slots::vCreateStreamDef(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  RASSERT(0);
+//  /*
+//  Column* pColumn = nullptr;
+//  
+//  m_pPtnStreamDef->m_nDefSets = 1;
+//  m_pPtnStreamDef->m_i_DefStart[0] = 0;
+//  m_pPtnStreamDef->m_nDefColumns[0] = 0;
+//
+//  // find the column from the table columnVector
+//  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
+//  
+//  for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
+//    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
+//    if (pColumn->bIsPtnKey()) {
+//      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
+//      m_pPtnStreamDef->m_nDefColumns[0]++;
+//
+//    }
+//  }
+//   */
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get partition                                                              */
 /*----------------------------------------------------------------------------*/
-TablePtn* Slots::pPartition(i8 iSlot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  //vTrace("Partition %lld\n"_Stz,iPartition);
-  
-  return m_pTablePtnVec->pGet(iSlot);
-}
+//TablePtn* Slots::pPartition(i8 iSlot)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  //vTrace("Partition %lld\n"_Stz,iPartition);
+//  
+//  return m_pTablePtnVec->pGet(iSlot);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* populate index of all partitions                                           */
 /*----------------------------------------------------------------------------*/
-bool Slots::bPopulateIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  for (i8 i_Partn = 0; i_Partn < AM::nSlotsPerNode(); i_Partn++) {
-    bool bPopulated = m_pTablePtnVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
-    
-    if (! bPopulated)
-      return false;
-  }
-  
-  return true;
-}
+//bool Slots::bPopulateIndex(i8 iIndexNo)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  for (i8 i_Partn = 0; i_Partn < AM::nSlotsPerNode(); i_Partn++) {
+//    bool bPopulated = m_pTablePtnVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
+//    
+//    if (! bPopulated)
+//      return false;
+//  }
+//  
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* publish partition buffers for table                                        */
 /*----------------------------------------------------------------------------*/
-void Slots::vPublishTable(i8 iPartitionNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
-  
-  pTablePtn->vPublish();
-}
+//void Slots::vPublishTable(i8 iPartitionNo)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
+//  
+//  pTablePtn->vPublish();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to purge oldest buffer of table                                    */
 /*----------------------------------------------------------------------------*/
-bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
-  
-  bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
-  
-  return bPurged;
-}
+//bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
+//  
+//  bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
+//  
+//  return bPurged;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set table                                                                  */
 /*----------------------------------------------------------------------------*/
-void Slots::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  m_pTable = pTable;
-  
-  // set the table pointer in the tablePtn's
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
-    m_pTablePtnVec->pGet(i_Slot)->vTable(m_pTable);
-  }
-}
+//void Slots::vTable(Table* pTable)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  m_pTable = pTable;
+//  
+//  // set the table pointer in the tablePtn's
+//  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+//    m_pTablePtnVec->pGet(i_Slot)->vTable(m_pTable);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* tidyup                                                                     */
 /*----------------------------------------------------------------------------*/
-void Slots::vTidyUp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  // get IdxDataVec from any one partition
-  IndexTreeVec* pIndexTreeVec = m_pTablePtnVec->pGet(0)->pIndexTreeVec();
-  
-  // run the finalize for the partitions
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
-    //m_pTablePtnVec->pGet(i_Slot)->vTidyUp();
-    delete m_pTablePtnVec->pGet(i_Slot);
-  }
-  m_pTablePtnVec->vClear();
-  
-  // delete the partition vector
-  delete m_pTablePtnVec;
-  
-  // delete the partition stream def
-  //delete m_pPtnStreamDef;
-}
+//void Slots::vTidyUp(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  // get IdxDataVec from any one partition
+//  IndexTreeVec* pIndexTreeVec = m_pTablePtnVec->pGet(0)->pIndexTreeVec();
+//  
+//  // run the finalize for the partitions
+//  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+//    //m_pTablePtnVec->pGet(i_Slot)->vTidyUp();
+//    delete m_pTablePtnVec->pGet(i_Slot);
+//  }
+//  m_pTablePtnVec->vClear();
+//  
+//  // delete the partition vector
+//  delete m_pTablePtnVec;
+//  
+//  // delete the partition stream def
+//  //delete m_pPtnStreamDef;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* tidyup a particular index                                                  */
 /*----------------------------------------------------------------------------*/
-void Slots::vTidyUpIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  // run the finalize for the partitions
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
-    m_pTablePtnVec->pGet(i_Slot)->vTidyUpIndex(iIndexNo);
-  }
-}
+//void Slots::vTidyUpIndex(i8 iIndexNo)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  // run the finalize for the partitions
+//  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+//    m_pTablePtnVec->pGet(i_Slot)->vTidyUpIndex(iIndexNo);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* tuncate partition for the index                                            */
 /*----------------------------------------------------------------------------*/
-void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vTruncate();
-}
+//void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//
+//  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vTruncate();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* tuncate table data                                                         */
 /*----------------------------------------------------------------------------*/
-void Slots::vTruncateTable(i8 iPartitionNO)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  m_pTablePtnVec->pGet(iPartitionNO)->vTruncate();
-}
+//void Slots::vTruncateTable(i8 iPartitionNO)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+//  
+//  m_pTablePtnVec->pGet(iPartitionNO)->vTruncate();
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

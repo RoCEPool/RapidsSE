@@ -34,16 +34,16 @@ namespace MetaData
     Slots(void);
     ~Slots(void) noexcept(false);
     
-    void       vCreateStreamDef(void);
-    TablePtn*  pPartition(i8 iSlot);
-    bool       bPopulateIndex(i8 iIndexNo);
-    void       vPublishTable(i8 iPartitionNo);
-    bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
-    void       vTable(Table* pTable);
-    void       vTidyUp(void);
-    void       vTidyUpIndex(i8 iIndexNo);
-    void       vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
-    void       vTruncateTable(i8 iPartitionNo);
+    //void       vCreateStreamDef(void);
+    //TablePtn*  pPartition(i8 iSlot);
+    //bool       bPopulateIndex(i8 iIndexNo);
+    //void       vPublishTable(i8 iPartitionNo);
+    //bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
+    //void       vTable(Table* pTable);
+    //void       vTidyUp(void);
+    //void       vTidyUpIndex(i8 iIndexNo);
+    //void       vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    //void       vTruncateTable(i8 iPartitionNo);
     
     Footer*    aFooter(void);
   };
