@@ -31,6 +31,9 @@ Charser::Charser(Charser* pNext)
   
   d_iDebugMode = false;
   
+  m_bUseOpened = true;
+  m_bUseBegun  = true;
+  
   m_bUseClosed = true;
   m_bUseEnded  = true;
   

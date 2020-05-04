@@ -900,8 +900,8 @@ void TablePtn::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   // first truncate all indexes for this table ptn
-  for (i8 iIdxPtn = 0; iIdxPtn < m_pIndexTreeVec->nItems(); iIdxPtn++) {
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxPtn);
+  for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
     pIndexTree->vTruncate();
   }
   

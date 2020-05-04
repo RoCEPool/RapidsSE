@@ -236,6 +236,9 @@ success
 lscol T1;
 rows: 150
 
+lsidx T1;
+rows: 0
+
 // (10) drop table
 drop table T1 ;
 success

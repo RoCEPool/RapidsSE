@@ -289,7 +289,7 @@
 
       else
 
-        // execure operand handler
+        // execute operand handler
         Operand[].kind op[].handler@ execute
 
       then

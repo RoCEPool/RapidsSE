@@ -52,6 +52,8 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 #define WITH_RELEASE_VERSION EndDefine       // compile as release version
 
+#define WITH_ASSERT_MACRO EndDefine          // Assert() macro
+
 //#define WITH_ACTION_SEQUENCE EndDefine     // code for ActionLog compiled in
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
 //#define WITH_CORECTNESS_ALGEBRA EndDefine  // known class, magic, footer

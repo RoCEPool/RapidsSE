@@ -69,6 +69,7 @@ void Step::vSubsetNextBuffer(void)
       m_pRegSet->m_xpSubset = pNextOperand;
     }
     else {
+      vTrace("Subset class %s\n"_Stz, aCN[m_pRegSet->m_xpSubset->eClass()]);
       ASSERT(0);
     }
   }
