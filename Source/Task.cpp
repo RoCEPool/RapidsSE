@@ -1094,6 +1094,7 @@ void Task::vScheduleDelete(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(bIsLocked());
   m_eScheduler = SA_DELETE_THIS_TASK;
 }
 
