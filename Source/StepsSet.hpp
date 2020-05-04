@@ -590,7 +590,7 @@ public:
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobSignalWaiter(void);
+  void vJobSignalCompletion(void);
   void vJobSlotFetch(void);
   void vJobSpawn(void);
   void vJobSpawnDedicated(void);

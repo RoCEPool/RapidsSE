@@ -129,7 +129,7 @@
   //"Signalling the thread waiting on job completion" .
   Done_Finally
 
-  job[] job.signalWaiter
+  job[] job.signalCompletion
 
   HAZARD
 ;
@@ -343,7 +343,7 @@
   Done_Finally
 
   //"Signalling the thread waiting on job completion" .
-  pJob job.signalWaiter
+  pJob job.signalCompletion
 
   HAZARD
 ;

@@ -95,7 +95,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.signalWaiter"_Stz,     &Step::vJobSignalWaiter);
+  vAddStep("job.signalCompletion"_Stz, &Step::vJobSignalCompletion);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
@@ -1473,9 +1473,9 @@ void Step::vJobShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.signalWaiter -- signal the connector thread                            */
+/* job.signalCompletion -- signal the connector thread                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSignalWaiter(void)
+void Step::vJobSignalCompletion(void)
 {
   ENTRY();
   
