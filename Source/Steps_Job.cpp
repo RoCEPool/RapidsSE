@@ -1509,7 +1509,7 @@ void Step::vJobSignalWaiter(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vSchedulerAct(SA_SIGNAL_COMPLETION);
+  m_pTask->vScheduleCompletion();
   
   EXIT();
 }

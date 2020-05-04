@@ -1078,6 +1078,16 @@ void Task::vScheduleBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule bide                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleCompletion(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eScheduler = SA_SIGNAL_COMPLETION;
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vScheduleDelete(void)
@@ -1135,9 +1145,10 @@ void Task::vSchedulerAct(eSA eSchedulerAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(SA_BIDE_FOR_OPERAND   != eSchedulerAct);
-  ASSERT(SA_DELETE_THIS_TASK != eSchedulerAct);
-  ASSERT(SA_SLEEP_SOME_TIME  != eSchedulerAct);
+  ASSERT(SA_BIDE_FOR_OPERAND  != eSchedulerAct);
+  ASSERT(SA_SIGNAL_COMPLETION != eSchedulerAct);
+  ASSERT(SA_DELETE_THIS_TASK  != eSchedulerAct);
+  ASSERT(SA_SLEEP_SOME_TIME   != eSchedulerAct);
   ASSERT(SA_YIELD_FOR_OTHERS  != eSchedulerAct);
 
   m_eScheduler = eSchedulerAct;

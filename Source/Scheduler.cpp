@@ -363,10 +363,10 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   // transition task to different state+queue depending on transition request
   switch (pTask->eSchedulerAct()) {
       
-    case SA_BIDE_FOR_OPERAND:   vTask_Bide(pTask);   break;
-    case SA_DELETE_THIS_TASK: vTask_Delete(pTask); break;
+    case SA_BIDE_FOR_OPERAND:  vTask_Bide(pTask);   break;
+    case SA_DELETE_THIS_TASK:  vTask_Delete(pTask); break;
     case SA_SIGNAL_COMPLETION: vTask_Signal(pTask); break;
-    case SA_SLEEP_SOME_TIME:  vTask_Sleep(pTask);  break;
+    case SA_SLEEP_SOME_TIME:   vTask_Sleep(pTask);  break;
     case SA_WAIT_FOR_RESUME:   vTask_Wait(pTask);   break;
     case SA_YIELD_FOR_OTHERS:  vTask_Yield(pTask);  break;
       
