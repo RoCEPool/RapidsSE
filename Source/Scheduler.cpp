@@ -95,6 +95,8 @@ void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
   
+  RASSERT(pTask->bIsLocked());
+
   pTask->vSchedulerActClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

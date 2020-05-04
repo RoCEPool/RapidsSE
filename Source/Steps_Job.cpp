@@ -424,6 +424,7 @@ void Step::vJobCompleted(void)
   
   pJob->vJobState(JS_COMPLETED);
   
+  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleDelete();
   
   EXIT();
