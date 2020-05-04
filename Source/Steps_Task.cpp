@@ -364,7 +364,7 @@ void Step::vTaskWait(void)
 {
   ENTRY();
   
-  m_pTask->vSchedulerAct(SA_WAIT);
+  m_pTask->vScheduleWait();
 
   EXIT();
 }

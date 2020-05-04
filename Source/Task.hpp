@@ -112,6 +112,7 @@ namespace Tasks
     void vScheduleDelete(void);
     void vScheduleSleep(void);
     void vScheduleYield(void);
+    void vScheduleWait(void);
     eSA  eSchedulerAct(void);
     void vSchedulerAct(eSA eSchedulerAct);
     void vSchedulerActClear(void);
