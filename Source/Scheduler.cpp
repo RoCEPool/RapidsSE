@@ -268,8 +268,17 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   //
   // called from Step::vTaskAck()
   //
+    
+  RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
   
-  bool bAmDecider = bTask_Ack(pTaskWaiting,pTaskAcking);
+  RASSERT(TS_EXECUTING == pTaskAcking->eState());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // decrement the acks remaining
+  bool bAmDecider = pTaskWaiting->bAcksRmgDec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! bAmDecider)
     return false;
@@ -645,33 +654,6 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 //                          implementation for tasks                          //
 ////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* ack a waiting job-task                                                     */
-/*----------------------------------------------------------------------------*/
-bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
-{
-  pTaskWaiting->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTaskWaiting,TA_TSK_ACK,
-              "Task is ack'd"_Stz); //!format-LogTsk
-  
-  // note: the 'waiting' task may not yet be waiting.  there is an indefinite
-  //       period between when the task grabs its lock + sets the number of
-  //       acks and when it enters the waiting state and drops the lock
-  
-  RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
-  
-  RASSERT(TS_EXECUTING == pTaskAcking->eState());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // decrement the acks remaining
-  bool bAmDecider = pTaskWaiting->bAcksRmgDec();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  return bAmDecider;
-}
 
 /*----------------------------------------------------------------------------*/
 /* pop a task from the ready/readyLP queue                                    */

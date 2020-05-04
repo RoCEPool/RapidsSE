@@ -68,7 +68,6 @@ namespace Threads
     // implementation for tasks
   
   private:
-    static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTask_Add(Task* pTask);
     static Task* pTask_Pop(Thread* pThread);
     static void vTask_Ready(Task* pTask);
