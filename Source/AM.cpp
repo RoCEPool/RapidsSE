@@ -218,7 +218,7 @@ void AM::vDeleteOperand(Operand* pOperand)
   }
 }
 void AM::vDropTaskLock(Task* pTask) {
-  Scheduler::vDropTaskLock(pTask);
+  pTask->vDropTaskLock();
 }
 void AM::vRootConstant(Word* pRootConstant) {
   gpAttachMap->m_pRootConstant = pRootConstant;
@@ -227,7 +227,7 @@ void AM::vRootWord(Word* pRootWord) {
   gpAttachMap->m_pRootWord = pRootWord;
 }
 void AM::vGrabTaskLock(Task* pTask) {
-  Scheduler::vGrabTaskLock(pTask);
+  pTask->vGrabTaskLock();
 }
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;

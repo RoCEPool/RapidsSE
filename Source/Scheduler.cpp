@@ -530,18 +530,6 @@ void Scheduler::vDdlGrabWrite(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vDropTaskLock(Task* pTask)
-{
-  //
-  // called from
-  //
-  
-  vTask_Drop(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
@@ -551,18 +539,6 @@ void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
   //
   
   vThread_ExecuteDedicated(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vGrabTaskLock(Task* pTask)
-{
-  //
-  // called from
-  //
-  
-  vTask_Grab(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -48,9 +48,7 @@ namespace Threads
     static void vDdlDropWrite(Task* pTask);
     static void vDdlGrabRead(Task* pTask);
     static void vDdlGrabWrite(Task* pTask);
-    static void vDropTaskLock(Task* pTask);
     static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
-    static void vGrabTaskLock(Task* pTask);
 
     static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
     static void vTriggerBidingTask(Task* pTask);

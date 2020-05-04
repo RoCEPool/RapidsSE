@@ -114,8 +114,7 @@ void Step::vTaskDropLock(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  Scheduler::vDropTaskLock(pThatTask);
-  //pThatTask->vDropLock();
+  pThatTask->vDropTaskLock();
   
   EXIT();
 }
@@ -156,7 +155,7 @@ void Step::vTaskGrabLock(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  Scheduler::vGrabTaskLock(pThatTask);
+  pThatTask->vGrabTaskLock();
 
   EXIT();
 }
