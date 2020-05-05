@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* task has returned from task loop, action depends on transition request     */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskLoopTransition(Thread* pThread)
+void Scheduler::vTaskSelf_LoopTransition(Task* pTask, Thread* pThread)
 {
   //
   // called from Thread::vLoop_general()
@@ -20,7 +20,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move task out of executing queue
   
-  Task* pTask = pThread->m_pTask;
+  RASSERT(pTask == pThread->m_pTask);
   RASSERT(pThread == pTask->pvThread_DONT_DEREF());
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());

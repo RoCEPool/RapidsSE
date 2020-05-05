@@ -12,7 +12,7 @@ namespace Threads
     // self task transition
   
   public:
-    static void vTaskLoopTransition(Thread* pThread);
+    static void vTaskSelf_LoopTransition(Task* pTask, Thread* pThread);
   private:
     static void vTaskSelf_BideForOperand(Task* pTask, Thread* pThread);
     static void vTaskSelf_DeleteThisTask(Task* pTask, Thread* pThread);

@@ -331,15 +331,18 @@ void Thread::vLoop_general(void)
     if (! m_pTask)
       Scheduler::vThread_WaitForTaskAssignment(this);
     ASSERT(m_pTask);
-    
-    // ensure the task has this thread
+    ASSERT(SA_NONE == m_pTask->eSchedulerAct());
+
+    // ensure the task has this thread  WHY ISNT THIS ALREADY SET??
     m_pTask->vThread(this);
+    //RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     
     // call the task loop. will return when Task::m_eScheduler is set
     m_pTask->vTaskLoop();
+    ASSERT(SA_NONE != m_pTask->eSchedulerAct());
 
     // handle task return event
-    Scheduler::vTaskLoopTransition(this);
+    Scheduler::vTaskSelf_LoopTransition(m_pTask,this);
     
     // note: task may not be null in case of yield
     
