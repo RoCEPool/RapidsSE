@@ -69,7 +69,6 @@ namespace Threads
   
   private:
     static Task* pTask_Pop(Thread* pThread);
-    static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

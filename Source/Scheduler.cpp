@@ -263,29 +263,47 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task (returns true if task was resumed)                      */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
+bool Scheduler::bTaskCross_AckWaiting(Task* pTask, Task* pTaskAcking)
 {
   //
   // called from Step::vTaskAck()
   //
     
-  RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
+  RASSERT(pTask->iAcksRmg_assert_only_() > 0);
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  bool bAmDecider = pTaskWaiting->bAcksRmgDec();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  bool bAmDecider = pTask->bAcksRmgDec();
+    
   if (! bAmDecider)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTask_Resume(pTaskWaiting);
+  RASSERT(! pTask->iAcksRmg_assert_only_());
+  
+  // cycle the task lock to ensure task has fully entered wait state
+  pTask->vGrabTaskLock();
+  pTask->vDropTaskLock();
+    
+  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemoveWaitingSet(pTask);
+    
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
+  vTask_Schedule(pTask);
+  // **do not touch task**
 
   return true;
 }
@@ -708,43 +726,6 @@ Task* Scheduler::pTask_Pop(Thread* pThread)
   return pTask;
 }
 
-/*----------------------------------------------------------------------------*/
-/* resume a fully ack'd waiting task                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Resume(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_RESUME,
-              "Task removed from WaitingSet; and scheduled"_Stz); //!format-LogTsk
-  
-  // note: the 'waiting' task may not yet be waiting.  there is an indefinite
-  //       period between when the task grabs its lock + sets the number of
-  //       acks and when it enters the waiting state and drops the lock
-  
-  RASSERT(! pTask->iAcksRmg_assert_only_());
-  
-  // cycle the task lock to ensure task has fully entered wait state
-  pTask->vGrabTaskLock();
-  pTask->vDropTaskLock();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->vRemoveWaitingSet(pTask);
-    
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-  
-  vTask_Schedule(pTask);
-  // **do not touch task**
-}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to assign a thread to able-to-run task, else add to ready queue    */
