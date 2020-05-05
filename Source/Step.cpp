@@ -114,6 +114,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
   
+  Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Metrics();

@@ -96,6 +96,7 @@ namespace Steps
     static void vAddSteps_Log(void);
     static void vAddSteps_Logic(void);
   
+    static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
     static void vAddSteps_Memory(void);
     static void vAddSteps_Metrics(void);

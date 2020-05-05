@@ -886,7 +886,14 @@ public:
   void vLogicNot(void);
   void vLogicOr(void);
 
+  // machine
+  void vMachineCoreCount(void);
+  void vMachineCpuFreq(void);
+  void vMachineHostName(void);
+  void vMachineMemory(void);
+
   // magnitude
+
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
   void vToDigitName(void);

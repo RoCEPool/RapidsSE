@@ -7,8 +7,8 @@
 /*----------------------------------------------------------------------------*/
 /* command path for SE                                                        */
 /*----------------------------------------------------------------------------*/
-"../OS\\ X/Build/Products/Debug/SE" constant SE_COMMAND
-//"../OS\\ X/Build/Products/Release/SE" constant SE_COMMAND
+//"../OS\\ X/Build/Products/Debug/SE" constant SE_COMMAND
+"../OS\\ X/Build/Products/Release/SE" constant SE_COMMAND
 
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning and starting a node etc                */
@@ -35,8 +35,8 @@
   " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
   " --subLoaders "        str.cat args.subLoaders        >str   str.cat
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
-  " --commands /Users/alka/rapidsse/Commands" str.cat
-  //" --commands /Users/ray/rapidsse/Commands"  str.cat
+  //" --commands /Users/alka/rapidsse/Commands" str.cat
+  " --commands /Users/ray/rapidsse/Commands"  str.cat
 
   args.tracepoint  if " --tracepoint"  str.cat then
   args.verbose     if " --verbose"     str.cat then
