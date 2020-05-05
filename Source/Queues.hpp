@@ -11,6 +11,8 @@ namespace Threads
   
   public:
   
+    Lock m_okQueues;
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
@@ -47,7 +49,7 @@ namespace Threads
     void  operator delete(void*);
     
     Queues(void);
-    ~Queues(void) noexcept(false);
+   ~Queues(void) noexcept(false);
   
     static void vThreadsReport(void);
   

@@ -30,19 +30,20 @@ enum eLK // lock kind
   /* 22 */ LK_PARTITION,
   /* 23 */ LK_PIPE,
   /* 24 */ LK_QUEUE,
-  /* 25 */ LK_SOCKET,
-  /* 26 */ LK_SUBINSERTER,
-  /* 27 */ LK_STEP_ARRAY,
-  /* 28 */ LK_TASK,
-  /* 29 */ LK_TASK_QUEUE,
-  /* 30 */ LK_TASK_SET,
-  /* 31 */ LK_TEMP_NAME,
-  /* 32 */ LK_THREAD_QUEUE,
-  /* 33 */ LK_THREAD_VECTOR,
-  /* 34 */ LK_TRACE,
-  /* 35 */ LK_TX_SET,
-  /* 36 */ LK_UNKNOWN,
-  /* 37 */ LK_ENUMS
+  /* 25 */ LK_QUEUES,
+  /* 26 */ LK_SOCKET,
+  /* 27 */ LK_SUBINSERTER,
+  /* 28 */ LK_STEP_ARRAY,
+  /* 29 */ LK_TASK,
+  /* 30 */ LK_TASK_QUEUE,
+  /* 31 */ LK_TASK_SET,
+  /* 32 */ LK_TEMP_NAME,
+  /* 33 */ LK_THREAD_QUEUE,
+  /* 34 */ LK_THREAD_VECTOR,
+  /* 35 */ LK_TRACE,
+  /* 36 */ LK_TX_SET,
+  /* 37 */ LK_UNKNOWN,
+  /* 38 */ LK_ENUMS
 };
 
 static Stz* aLK[]
@@ -73,20 +74,21 @@ static Stz* aLK[]
   /* 22 */ "LK_PARTITION"_Stz,
   /* 23 */ "LK_PIPE"_Stz,
   /* 24 */ "LK_QUEUE"_Stz,
-  /* 25 */ "LK_SOCKET"_Stz,
-  /* 26 */ "LK_SUBINSERTER"_Stz,
-  /* 27 */ "LK_STEP_ARRAY"_Stz,
-  /* 28 */ "LK_TASK"_Stz,
-  /* 29 */ "LK_TASK_QUEUE"_Stz,
-  /* 30 */ "LK_TASK_SET"_Stz,
-  /* 31 */ "LK_TEMP_NAME"_Stz,
-  /* 32 */ "LK_THREAD_QUEUE"_Stz,
-  /* 33 */ "LK_THREAD_VECTOR"_Stz,
-  /* 34 */ "LK_TRACE"_Stz,
-  /* 35 */ "LK_TX_SET"_Stz,
-  /* 36 */ "LK_UNKNOWN"_Stz,
+  /* 25 */ "LK_QUEUES"_Stz,
+  /* 26 */ "LK_SOCKET"_Stz,
+  /* 27 */ "LK_SUBINSERTER"_Stz,
+  /* 28 */ "LK_STEP_ARRAY"_Stz,
+  /* 29 */ "LK_TASK"_Stz,
+  /* 30 */ "LK_TASK_QUEUE"_Stz,
+  /* 31 */ "LK_TASK_SET"_Stz,
+  /* 32 */ "LK_TEMP_NAME"_Stz,
+  /* 33 */ "LK_THREAD_QUEUE"_Stz,
+  /* 34 */ "LK_THREAD_VECTOR"_Stz,
+  /* 35 */ "LK_TRACE"_Stz,
+  /* 36 */ "LK_TX_SET"_Stz,
+  /* 37 */ "LK_UNKNOWN"_Stz,
   
-  /* 37 */ "ENUMS"_Stz
+  /* 38 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
