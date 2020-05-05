@@ -42,12 +42,39 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pTask, Thread* pThread)
   
   switch (pTask->eSchedulerAct()) {
       
-    case SA_BIDE_FOR_OPERAND:  vTaskSelf_BideForOperand(pTask,pThread);   break;
-    case SA_DELETE_THIS_TASK:  vTaskSelf_DeleteThisTask(pTask,pThread);   break;
-    case SA_SIGNAL_COMPLETION: vTaskSelf_SignalCompletion(pTask,pThread); break;
-    case SA_SLEEP_SOME_TIME:   vTaskSelf_SleepSomeTime(pTask,pThread);    break;
-    case SA_WAIT_FOR_RESUME:   vTaskSelf_WaitForResume(pTask,pThread);    break;
-    case SA_YIELD_FOR_OTHERS:  vTaskSelf_YieldForOthers(pTask,pThread);   break;
+    // cases where task is either same or inaccesible -- -- -- -- -- -- -- -- --
+      
+    case SA_BIDE_FOR_OPERAND:
+      vTaskSelf_BideForOperand(pTask,pThread);
+      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      break;
+      
+    case SA_SLEEP_SOME_TIME:
+      vTaskSelf_SleepSomeTime(pTask,pThread);
+      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      break;
+      
+    case SA_WAIT_FOR_RESUME:
+      vTaskSelf_WaitForResume(pTask,pThread);
+      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      break;
+      
+    case SA_YIELD_FOR_OTHERS:
+      vTaskSelf_YieldForOthers(pTask,pThread);
+      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      break;
+      
+    // cases where task is either deleted or inaccesible -- -- -- -- -- -- -- --
+      
+    case SA_DELETE_THIS_TASK:
+      vTaskSelf_DeleteThisTask(pTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
+      
+    case SA_SIGNAL_COMPLETION:
+      vTaskSelf_SignalCompletion(pTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
       
     default:
       NEVER_REACH;
@@ -753,17 +780,19 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pTask = pThread->m_pTask;
-
   RASSERT(TS_DESISTED == pTask->eState());
 
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pTask == pThread->m_pTask);
 
   pTask->vThread(pThread);
+  
   // ok to touch task
   
   pThread->m_pTask->vState(TS_EXECUTING);
   pQueues->vAddExecutingSet(pThread->m_pTask);
+  
+  RASSERT(pThread == pTask->pvThread_DONT_DEREF());
 }
 
 
@@ -855,6 +884,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
     pThread->m_eThreadState = HS_IDLE;
+    RASSERT(! pThread->m_pTask);
     pQueues->vThreadAppendIdle(pThread);
 
     ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
