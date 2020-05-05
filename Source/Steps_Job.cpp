@@ -1548,6 +1548,7 @@ void Step::vJobSpawn(void)
 
   Task* pTask = pJob->pTask();
   if ( pTask) {
+    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
@@ -1711,3 +1712,4 @@ void Step::vJobWaitParticipant(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
