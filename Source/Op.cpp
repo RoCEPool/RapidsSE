@@ -196,7 +196,7 @@ void Op::vAddWorkDone(i8 iWorkDone)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendLeft(Operand* pOperand, bool bSet)
+void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -226,13 +226,13 @@ void Op::vAppendLeft(Operand* pOperand, bool bSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask);
+  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendRight(Operand* pOperand, bool bSet)
+void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
@@ -252,9 +252,9 @@ void Op::vAppendRight(Operand* pOperand, bool bSet)
   }
   pQueueRight()->vAppendOperand(pOperand);
   
-  Task* pTask = AM::pExecutingTask(m_pOpJob);
+  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pTask)) {
+  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
     vDropTaskLock();
     return;
   }
@@ -262,7 +262,7 @@ void Op::vAppendRight(Operand* pOperand, bool bSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pTask);
+  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -549,7 +549,7 @@ Pipeline* Op::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeOut_nextOp(Operand* pOperand, bool bSet)
+void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -578,9 +578,9 @@ void Op::vPipeOut_nextOp(Operand* pOperand, bool bSet)
                                    m_nPartition,
                                    m_iNextOp);
     if (m_bAppendRight)
-      pOp->vAppendRight(pOperand, bSet);
+      pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
     else
-      pOp->vAppendLeft(pOperand, bSet);
+      pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
     
     AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                 "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
@@ -594,7 +594,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, bool bSet)
 /*----------------------------------------------------------------------------*/
 /* append operand to specific operand                                         */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeOut_thisOp(Operand* pOperand, bool bSet)
+void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -609,7 +609,7 @@ void Op::vPipeOut_thisOp(Operand* pOperand, bool bSet)
            AM::pOperandName(pOperand),
            pOperand);
   
-  vAppendLeft(pOperand, bSet);
+  vAppendLeft(pOperand,pTriggeringTask,bSet);
     
   AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
               "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr

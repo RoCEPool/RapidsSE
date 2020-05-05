@@ -35,7 +35,7 @@ namespace Pipelines
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
-    bool     bCancel(void);
+    bool     bCancel(Task* pTriggeringTask);
     void     vCancelled(bool bCancelled);
     bool     bCancelled(void);
     bool     bErrored(void);

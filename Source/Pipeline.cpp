@@ -55,7 +55,7 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
 /*----------------------------------------------------------------------------*/
-bool Pipeline::bCancel(void)
+bool Pipeline::bCancel(Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -67,7 +67,7 @@ bool Pipeline::bCancel(void)
   Stage* pStage = pGet(0);
   
   // send cancelMarker to the start Op of the first stage of the pipeline
-  pStage->vCancelPipeline();
+  pStage->vCancelPipeline(pTriggeringTask);
   
   return true;
 }

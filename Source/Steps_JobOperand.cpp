@@ -36,7 +36,7 @@ void Step::vJob_OperandPipeOut(void)
   
   //! ALKA come back to this. May need a m_bAppendLeft in pJob_Operand
   // append to left queue
-  pOp->vAppendLeft(pJob_Operand->m_pOperand);
+  pOp->vAppendLeft(pJob_Operand->m_pOperand,m_pTask);
   
   // now delete the job_operand
   delete pJob_Operand;

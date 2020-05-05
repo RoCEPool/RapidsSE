@@ -263,46 +263,46 @@ void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task (returns true if task was resumed)                      */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bTaskCross_AckWaiting(Task* pTask, Task* pTaskAcking)
+bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
 {
   //
   // called from Step::vTaskAck()
   //
     
-  RASSERT(pTask->iAcksRmg_assert_only_() > 0);
+  RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  bool bAmDecider = pTask->bAcksRmgDec();
+  bool bAmDecider = pTaskWaiting->bAcksRmgDec();
     
   if (! bAmDecider)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(! pTask->iAcksRmg_assert_only_());
+  RASSERT(! pTaskWaiting->iAcksRmg_assert_only_());
   
   // cycle the task lock to ensure task has fully entered wait state
-  pTask->vGrabTaskLock();
-  pTask->vDropTaskLock();
+  pTaskWaiting->vGrabTaskLock();
+  pTaskWaiting->vDropTaskLock();
     
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(TS_WAITING == pTaskWaiting->eState());
+  RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
+  RASSERT(SA_NONE == pTaskWaiting->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
-  pQueues->vRemoveWaitingSet(pTask);
+  pQueues->vRemoveWaitingSet(pTaskWaiting);
     
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTaskWaiting->eState());
+  RASSERT(QK_NONE == pTaskWaiting->eQueue());
+  RASSERT(SA_NONE == pTaskWaiting->eSchedulerAct());
   
-  vScheduleTask(pTask);
+  vScheduleTask(pTaskWaiting);
   // **do not touch task**
 
   return true;
@@ -311,28 +311,28 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTask, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 /* trigger op-task that operand has arrived while it is biding                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskCross_TriggerBiding(Task* pTask)
+void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
 {
   //
   // called from Op::vAppendOperand()
   //
   
-  RASSERT(pTask->bIsLocked());
-  RASSERT(TS_BIDING == pTask->eState());
-  RASSERT(QK_BIDING_SET == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(pTaskBiding->bIsLocked());
+  RASSERT(TS_BIDING == pTaskBiding->eState());
+  RASSERT(QK_BIDING_SET == pTaskBiding->eQueue());
+  RASSERT(SA_NONE == pTaskBiding->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
-  pQueues->vRemoveBidingSet(pTask);
+  pQueues->vRemoveBidingSet(pTaskBiding);
   
-  pTask->vDropTaskLock();
+  pTaskBiding->vDropTaskLock();
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pTaskBiding->eState());
+  RASSERT(QK_NONE == pTaskBiding->eQueue());
+  RASSERT(SA_NONE == pTaskBiding->eSchedulerAct());
   
-  vScheduleTask(pTask);
+  vScheduleTask(pTaskBiding);
   // **do not touch task**
 }
 

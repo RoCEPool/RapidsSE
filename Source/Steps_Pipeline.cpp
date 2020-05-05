@@ -30,7 +30,7 @@ void Step::vPipelinePipeout(void)
   Strand*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 
-  pOp0->vPipeOut_thisOp(pOperand);
+  pOp0->vPipeOut_thisOp(pOperand,m_pTask);
 
   EXIT();
 }

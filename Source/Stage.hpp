@@ -24,13 +24,13 @@ namespace Pipelines
   
     void vDump(Pipeline* pPipeline);
     
-    void    vCancelPipeline(void);
+    void    vCancelPipeline(Task* pTriggeringTask);
     Strand* pGetPartitionStrand(i8 i_Ptn);
     Strand* pGetNodeStrand(i8 i_Nde);
     i8      nOpsOnNode(i8 iNode);
     Op*     pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
     Stz*    szStageNm(void);
-    void    vStartPipeline(void);
+    void    vStartPipeline(Task* pTriggeringTask);
   
   private:
     void    vCreateStrands(void);

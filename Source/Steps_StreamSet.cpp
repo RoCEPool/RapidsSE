@@ -818,7 +818,7 @@ void Step::vStreamSetPipeOut(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpStreamSet);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpStreamSet,m_pTask);
   
   m_pRegSet->m_xpStreamSet = nullptr;
   

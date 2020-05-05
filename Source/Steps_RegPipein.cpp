@@ -160,7 +160,7 @@ void Step::vRegPipeinPipeOut(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
 
-  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpPipein);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpPipein,m_pTask);
   
   m_pRegSet->m_xpPipein = nullptr;
   
