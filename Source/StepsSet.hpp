@@ -303,6 +303,10 @@ public:
   void vExtractRowCreate(void);
   void vExtractRowDelete(void);
 
+  // executable
+  void vExecutableIsDebug(void);
+  void vExecutableIsRelease(void);
+
   // file
   void vFile0Get(void);
   void vFile0GetEofLocation(void);

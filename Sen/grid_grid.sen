@@ -23,6 +23,7 @@
   ""
 
   SE_COMMAND str.cat
+
   " --start" str.cat
   bAdd if
     " --addNode" str.cat
@@ -35,8 +36,12 @@
   " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
   " --subLoaders "        str.cat args.subLoaders        >str   str.cat
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
-  //" --commands /Users/alka/rapidsse/Commands" str.cat
-  " --commands /Users/ray/rapidsse/Commands"  str.cat
+
+  user::name "ray" str.equal if
+    " --commands /Users/ray/rapidsse/Commands"  str.cat
+  else
+    " --commands /Users/alka/rapidsse/Commands" str.cat
+  then
 
   args.tracepoint  if " --tracepoint"  str.cat then
   args.verbose     if " --verbose"     str.cat then
@@ -45,7 +50,9 @@
   args.metadata    if " --metadata"    str.cat then
   args.log         if " --log"         str.cat then
 
-  " &" str.cat
+  " &" str.cat locals| sShellCmd |
+ 
+  sShellCmd
 ;
 
 /*----------------------------------------------------------------------------*/
