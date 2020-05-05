@@ -772,26 +772,6 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append unassigned general thread onto idle thread queue                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_AppendIdle(Thread* pThread)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_APPEND_IDLE,
-              "Thread moves onto IdleThreadQueue (no ready task available)"_Stz); //!format-LogThd
-  
-  RASSERT(! pThread->m_pTask);
-  ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  RASSERT(CN_NONE == pThread->m_eDedicated);
-  RASSERT(pThread->m_pMutex->bIsLocked());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pThread->m_eThreadState = HS_IDLE;
-  pQueues->vThreadAppendIdle(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to pop an idle general thread and assign given task to it          */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
@@ -891,8 +871,9 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    vThread_AppendIdle(pThread);
-        
+    pThread->m_eThreadState = HS_IDLE;
+    pQueues->vThreadAppendIdle(pThread);
+
     ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
     pThread->m_pMutex->vWait(pThread);
     ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));

@@ -68,7 +68,6 @@ namespace Threads
     // implementation for threads
   
   private:
-    static void vThread_AppendIdle(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
     static void vThread_ContinueSame(Thread* pThread, Task* pTask);
     static void vThread_WaitAssignment(Thread* pThread);
