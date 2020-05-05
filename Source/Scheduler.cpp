@@ -339,7 +339,7 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* check to see if any tasks in the sleeping queue can be woken               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskCross_WakeSleepers(Task* pCallingTask)
+void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
 {
   //
   // called from Step::vQueuesCheckSleeping()

@@ -216,9 +216,9 @@ void Op::vAppendLeft(Operand* pOperand, bool bSet)
   else
     pQueueLeft()->vAppendOperand(pOperand);
 
-  Task* pTask = AM::pExecutingTask(m_pOpJob);
+  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pTask)) {
+  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
     vDropTaskLock();
     return;
   }
@@ -226,7 +226,7 @@ void Op::vAppendLeft(Operand* pOperand, bool bSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pTask);
+  AM::vTriggerBidingTask(pBidingTask);
 }
 
 /*----------------------------------------------------------------------------*/

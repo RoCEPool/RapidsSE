@@ -25,9 +25,9 @@ namespace Threads
     // cross task
   
   public:
-    static bool bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking);
-    static void vTaskCross_TriggerBiding(Task* pTask);
-    static void vTaskCross_WakeSleepers(Task* pTask);
+    static bool bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pAckingTask);
+    static void vTaskCross_TriggerBiding(Task* pBidingTask);
+    static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task api
