@@ -58,11 +58,14 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
-    <pipelineNm> "%v waiting on task::wait" .printf
+    <pipelineNm> grid::thisNodeName@ "(%v) %v waiting on task::wait" .printf
     task::wait
-    <pipelineNm> "%v running" .printf
+    <pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
+  //else
+    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
+  then
 
- then
+  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .printf
 ;
 
 /*----------------------------------------------------------------------------*/

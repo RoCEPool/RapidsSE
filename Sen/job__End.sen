@@ -33,6 +33,7 @@
   grid::definedNodes 0
   do
     I grid::node node.isConnected if
+      //I grid::thisNodeName@ "(%v) (%v) Job__End::distribute" .printf
       I pJob__End job.forward
     then
   loop
@@ -51,7 +52,7 @@
   //
   // where: on the participating node
   //
-
+  //grid::thisNodeName@ "(%v) RECEIVED END" .printf
   job[] locals| pJob__End |
 
   // find the job to be executed in the participating jobs

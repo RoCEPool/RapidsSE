@@ -107,6 +107,7 @@
     //pReceivedJob job.hasOperand if
       pReceivedJob Job_operand.pipeOut
     else
+      //grid::thisNodeName@ "(%v) receiver_loop" .printf
       pReceivedJob job.seedDecode
       pReceivedJob job.seed!
       pReceivedJob job.spawn
