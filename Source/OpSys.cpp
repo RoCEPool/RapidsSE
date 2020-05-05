@@ -83,11 +83,11 @@ i8 OpSys::iSchedulerPeriod_us(void)
 void OpSys::vTraceInfo(void)
 {
   vTrace("OpSys::vGetInfo:\n"_Stz);
-  vTrace("  sysname : %s\n"_Stz,aSysName());
-  vTrace("  nodename: %s\n"_Stz,aNodeName());
-  vTrace("  release : %s\n"_Stz,aRelease());
-  vTrace("  version : %s\n"_Stz,aVersion());
-  vTrace("  machine : %s\n"_Stz,aMachine());
+  vTrace("  sysname : %s\n"_Stz,azSysName());
+  vTrace("  nodename: %s\n"_Stz,azNodeName());
+  vTrace("  release : %s\n"_Stz,azRelease());
+  vTrace("  version : %s\n"_Stz,azVersion());
+  vTrace("  machine : %s\n"_Stz,azMachine());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ void OpSys::vTraceInfo(void)
 /*----------------------------------------------------------------------------*/
 /* get utsnamme.machine (Hardware type)                                       */
 /*----------------------------------------------------------------------------*/
-char* OpSys::aMachine(void)
+char* OpSys::azMachine(void)
 {
   return gxUtsName.machine;
 }
@@ -103,7 +103,7 @@ char* OpSys::aMachine(void)
 /*----------------------------------------------------------------------------*/
 /* get utsnamme.nodename (Name of this network node)                          */
 /*----------------------------------------------------------------------------*/
-char* OpSys::aNodeName(void)
+char* OpSys::azNodeName(void)
 {
   return gxUtsName.nodename;
 }
@@ -111,7 +111,7 @@ char* OpSys::aNodeName(void)
 /*----------------------------------------------------------------------------*/
 /* get utsnamme.release (Release level)                                       */
 /*----------------------------------------------------------------------------*/
-char* OpSys::aRelease(void)
+char* OpSys::azRelease(void)
 {
   return gxUtsName.release;
 }
@@ -119,7 +119,7 @@ char* OpSys::aRelease(void)
 /*----------------------------------------------------------------------------*/
 /* get utsnamme.sysname (Name of OS)                                          */
 /*----------------------------------------------------------------------------*/
-char* OpSys::aSysName(void)
+char* OpSys::azSysName(void)
 {
   return gxUtsName.sysname;
 }
@@ -127,7 +127,7 @@ char* OpSys::aSysName(void)
 /*----------------------------------------------------------------------------*/
 /* get utsnamme.version (Version level)                                       */
 /*----------------------------------------------------------------------------*/
-char* OpSys::aVersion(void)
+char* OpSys::azVersion(void)
 {
   return gxUtsName.version;
 }
