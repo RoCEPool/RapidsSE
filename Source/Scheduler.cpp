@@ -46,22 +46,30 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pTask, Thread* pThread)
       
     case SA_BIDE_FOR_OPERAND:
       vTaskSelf_BideForOperand(pTask,pThread);
-      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      RASSERT(! pThread->pTask() ||
+              (pTask == pThread->pTask() &&
+               pThread == pTask->pvThread_DONT_DEREF()));
       break;
       
     case SA_SLEEP_SOME_TIME:
       vTaskSelf_SleepSomeTime(pTask,pThread);
-      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      RASSERT(! pThread->pTask() ||
+              (pTask == pThread->pTask() &&
+               pThread == pTask->pvThread_DONT_DEREF()));
       break;
       
     case SA_WAIT_FOR_RESUME:
       vTaskSelf_WaitForResume(pTask,pThread);
-      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      RASSERT(! pThread->pTask() ||
+              (pTask == pThread->pTask() &&
+               pThread == pTask->pvThread_DONT_DEREF()));
       break;
       
     case SA_YIELD_FOR_OTHERS:
       vTaskSelf_YieldForOthers(pTask,pThread);
-      RASSERT(! pThread->pTask() || pTask == pThread->pTask());
+      RASSERT(! pThread->pTask() ||
+              (pTask == pThread->pTask() &&
+               pThread == pTask->pvThread_DONT_DEREF()));
       break;
       
     // cases where task is either deleted or inaccesible -- -- -- -- -- -- -- --
@@ -252,35 +260,34 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pTask, Thread* pThread)
 
   Queues* pQueues = AM::pQueues();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
-  // no other ready to run tasks, so thread continues executing the task
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL) {
-    i8 iLengthReadyQueue = pQueues->nTasksReady();
-    if (0 == iLengthReadyQueue) {
-      pTask->vState(TS_EXECUTING);
-      pQueues->vAddExecutingSet(pTask);
-      pThread->m_pTask = pTask;
-      pThread->m_eThreadState = HS_ASSIGNED;
-      pTask->vDropTaskLock();
-      return;
-    }
+  // are there other tasks to run?
+  
+  i8 nReadyTasks = pQueues->nTasksReady() + pQueues->nTasksReadyLP();
+  if (nReadyTasks) {
+
+    // other ready to run tasks, self task is scheduled
+    vScheduleTask(pTask);
+    /** do not touch task **/
+    pTask->vDropTaskLock();
+    
+    return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // other ready to run tasks, task is scheduled
-  
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-  
-  vScheduleTask(pTask);
-  
-  /** do not touch task **/
+  // no other ready to run tasks, so thread continues executing self task
 
+  pTask->vState(TS_EXECUTING);
+  pTask->vThread(pThread);
+  
+  pThread->m_pTask = pTask;
+  pThread->m_eThreadState = HS_ASSIGNED;
+
+  pQueues->vAddExecutingSet(pTask);
   pTask->vDropTaskLock();
 }
 

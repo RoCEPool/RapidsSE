@@ -327,15 +327,15 @@ void Thread::vLoop_general(void)
   
   for (;;) {
     
-    // wait for task to be assigned to this thread
     if (! m_pTask)
       Scheduler::vThread_WaitForTaskAssignment(this);
+    
     ASSERT(m_pTask);
     ASSERT(SA_NONE == m_pTask->eSchedulerAct());
 
     // ensure the task has this thread  WHY ISNT THIS ALREADY SET??
-    m_pTask->vThread(this);
-    //RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+    //m_pTask->vThread(this);
+    RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     
     // call the task loop. will return when Task::m_eScheduler is set
     m_pTask->vTaskLoop();
@@ -348,7 +348,7 @@ void Thread::vLoop_general(void)
     
     // either this thread no longer has a task
     //     or the task no longer has this thread
-    ASSERT( (! m_pTask) || (! m_pTask->pvThread_DONT_DEREF()) );
+    ASSERT(! m_pTask || this == m_pTask->pvThread_DONT_DEREF());
   }
   
   NEVER_REACH;
