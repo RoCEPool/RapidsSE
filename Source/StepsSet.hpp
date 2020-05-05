@@ -951,6 +951,10 @@ public:
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
 
+  // opsys
+  void vOpSysIsLinux(void);
+  void vOpSysIsMacOs(void);
+
   // persistence
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
