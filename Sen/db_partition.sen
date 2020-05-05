@@ -52,21 +52,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* find the partition sub folder and push it onto task dictionary             */
-/*----------------------------------------------------------------------------*/
-/*
-: pushPartitionSub ( "<tableNm>" -- )
-  find execute table.slots slots.subDic path[].pushFolder
-  true
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* pop the partition sub folder                                               */
 /*----------------------------------------------------------------------------*/
 : popPartitionSub
   path[].discardFolder
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* assert top of task dictionary stack is partitions                          */

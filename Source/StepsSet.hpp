@@ -1428,8 +1428,6 @@ public:
   void vTableRemoveIndex(void);
   void vTableScan(void);
   void vTableSet(void);
-  void vTableSlotsFetch(void);
-  void vTableSlots(void);
   void vTableSize(void);
   void vTableSubLoaders(void);
   void vTableTableDefFetch(void);
