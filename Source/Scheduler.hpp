@@ -65,12 +65,6 @@ namespace Threads
     static void vThread_WaitForTaskAssignment(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // implementation for tasks
-  
-  private:
-    static void vTask_Schedule(Task* pTask);
- 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for threads
   
   private:
@@ -88,6 +82,16 @@ namespace Threads
     static void vThread_SpawnDedicated(Task* pTask);
     static void vThread_UnassignTask(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
+  
+  
+  
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // core task scheduler
+   
+   private:
+     static void vScheduleTask(Task* pTask);
+  
+
   };
 }
 
