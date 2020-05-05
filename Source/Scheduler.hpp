@@ -9,17 +9,17 @@ namespace Threads
   {
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task transition
+    // self task transition
   
   public:
     static void vTaskLoopTransition(Thread* pThread);
   private:
-    static void vTaskTransit_BideForOperand(Task* pTask);
-    static void vTaskTransit_DeleteThisTask(Task* pTask);
-    static void vTaskTransit_SignalCompletion(Task* pTask);
-    static void vTaskTransit_SleepSomeTime(Task* pTask);
-    static void vTaskTransit_WaitForResume(Task* pTask);
-    static void vTaskTransit_YieldForOthers(Task* pTask);
+    static void vTaskSelf_BideForOperand(Task* pTask);
+    static void vTaskSelf_DeleteThisTask(Task* pTask);
+    static void vTaskSelf_SignalCompletion(Task* pTask);
+    static void vTaskSelf_SleepSomeTime(Task* pTask);
+    static void vTaskSelf_WaitForResume(Task* pTask);
+    static void vTaskSelf_YieldForOthers(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
@@ -82,8 +82,6 @@ namespace Threads
     static void vThread_SpawnDedicated(Task* pTask);
     static void vThread_UnassignTask(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
-  
-  
   
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // core task scheduler

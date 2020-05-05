@@ -41,12 +41,12 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   
   switch (pTask->eSchedulerAct()) {
       
-    case SA_BIDE_FOR_OPERAND:  vTaskTransit_BideForOperand(pTask);   break;
-    case SA_DELETE_THIS_TASK:  vTaskTransit_DeleteThisTask(pTask);   break;
-    case SA_SIGNAL_COMPLETION: vTaskTransit_SignalCompletion(pTask); break;
-    case SA_SLEEP_SOME_TIME:   vTaskTransit_SleepSomeTime(pTask);    break;
-    case SA_WAIT_FOR_RESUME:   vTaskTransit_WaitForResume(pTask);    break;
-    case SA_YIELD_FOR_OTHERS:  vTaskTransit_YieldForOthers(pTask);   break;
+    case SA_BIDE_FOR_OPERAND:  vTaskSelf_BideForOperand(pTask);   break;
+    case SA_DELETE_THIS_TASK:  vTaskSelf_DeleteThisTask(pTask);   break;
+    case SA_SIGNAL_COMPLETION: vTaskSelf_SignalCompletion(pTask); break;
+    case SA_SLEEP_SOME_TIME:   vTaskSelf_SleepSomeTime(pTask);    break;
+    case SA_WAIT_FOR_RESUME:   vTaskSelf_WaitForResume(pTask);    break;
+    case SA_YIELD_FOR_OTHERS:  vTaskSelf_YieldForOthers(pTask);   break;
       
     default:
       NEVER_REACH;
@@ -57,7 +57,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 /* op-task with empty operand queue transitions to TS_BIDING and              */
 /*   is added to biding set                                                   */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskTransit_BideForOperand(Task* pTask)
+void Scheduler::vTaskSelf_BideForOperand(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
@@ -85,7 +85,7 @@ void Scheduler::vTaskTransit_BideForOperand(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* desisted task transitions to TS_COMPLETED state and is deleted             */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
+void Scheduler::vTaskSelf_DeleteThisTask(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
@@ -110,7 +110,7 @@ void Scheduler::vTaskTransit_DeleteThisTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task has completed; signal the thread waiting on the tasks mutex           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
+void Scheduler::vTaskSelf_SignalCompletion(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
@@ -138,7 +138,7 @@ void Scheduler::vTaskTransit_SignalCompletion(Task* pTask)
 /* transition desisted task to TS_SLEEPING state and add to sleeping queue    */
 /*   (if wakeup time has already arrived, calling thread re-executes task)    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
+void Scheduler::vTaskSelf_SleepSomeTime(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
@@ -180,7 +180,7 @@ void Scheduler::vTaskTransit_SleepSomeTime(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting set                                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
+void Scheduler::vTaskSelf_WaitForResume(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
@@ -208,7 +208,7 @@ void Scheduler::vTaskTransit_WaitForResume(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* desisted task has yielded and is scheduled                                 */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskTransit_YieldForOthers(Task* pTask)
+void Scheduler::vTaskSelf_YieldForOthers(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
