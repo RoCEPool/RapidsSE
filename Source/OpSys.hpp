@@ -12,11 +12,11 @@ namespace Host
     static i8   iSchedulerPeriod_us(void);
     static void vTraceInfo(void);
   
-    static char* aMachine(void);
-    static char* aNodeName(void);
-    static char* aRelease(void);
-    static char* aSysName(void);
-    static char* aVersion(void);
+    static char* azMachine(void);
+    static char* azNodeName(void);
+    static char* azRelease(void);
+    static char* azSysName(void);
+    static char* azVersion(void);
   };
 }
 

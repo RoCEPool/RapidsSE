@@ -259,8 +259,8 @@ void AM::vTakenBytes(i8 nTakenBytes) {
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
-void AM::vTriggerBidingTask(Task* pTask) {
-  Scheduler::vTaskCross_TriggerBiding(pTask);
+void AM::vTriggerBidingTask(Task* pTaskBiding, Task* pTriggeringTask) {
+  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
 }
 
 //

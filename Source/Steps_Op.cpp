@@ -92,7 +92,7 @@ void Step::vOpPipeOut(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vPipeOut_nextOp(pOperand);
+  pOp->vPipeOut_nextOp(pOperand,m_pTask);
 
   EXIT();
 }

@@ -53,7 +53,8 @@ namespace Steps
     static void vAddSteps_Env(void);
     static void vAddSteps_Error(void);
     static void vAddSteps_ExtractRow(void);
-  
+    static void vAddSteps_Executable(void);
+
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
     static void vAddSteps_Flow(void);
@@ -96,6 +97,7 @@ namespace Steps
     static void vAddSteps_Log(void);
     static void vAddSteps_Logic(void);
   
+    static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
     static void vAddSteps_Memory(void);
     static void vAddSteps_Metrics(void);
@@ -106,6 +108,7 @@ namespace Steps
     static void vAddSteps_Object(void);
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
+    static void vAddSteps_OpSys(void);
 
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
@@ -164,6 +167,7 @@ namespace Steps
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
   
+    static void vAddSteps_User(void);
     static void vAddSteps_Utility(void);
  
     static void vAddSteps_Vortex(void);

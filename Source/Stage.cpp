@@ -47,7 +47,7 @@ Stage::~Stage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* send cancel marker to start ops of the stage                               */
 /*----------------------------------------------------------------------------*/
-void Stage::vCancelPipeline(void)
+void Stage::vCancelPipeline(Task* pTriggeringTask)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -67,7 +67,7 @@ void Stage::vCancelPipeline(void)
       
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
       // append a CANCELMARKER onto first operator
-      pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
+      pOp->vAppendLeft(new Marker(OM_CANCELMARKER),pTriggeringTask);
     }
   }
 }
@@ -239,7 +239,7 @@ Stz* Stage::szStageNm(void)
 /*----------------------------------------------------------------------------*/
 /* send startMarker to start op of the stage                                  */
 /*----------------------------------------------------------------------------*/
-void Stage::vStartPipeline(void)
+void Stage::vStartPipeline(Task* pTriggeringTask)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -259,7 +259,7 @@ void Stage::vStartPipeline(void)
 
       RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
       // append a STARTMARKER onto first operator
-      pOp->vAppendLeft(new Marker(OM_STARTMARKER));
+      pOp->vAppendLeft(new Marker(OM_STARTMARKER),pTriggeringTask);
     }
   }
 }

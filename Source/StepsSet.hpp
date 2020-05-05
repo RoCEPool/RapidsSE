@@ -303,6 +303,10 @@ public:
   void vExtractRowCreate(void);
   void vExtractRowDelete(void);
 
+  // executable
+  void vExecutableIsDebug(void);
+  void vExecutableIsRelease(void);
+
   // file
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
@@ -886,7 +890,14 @@ public:
   void vLogicNot(void);
   void vLogicOr(void);
 
+  // machine
+  void vMachineCoreCount(void);
+  void vMachineCpuFreq(void);
+  void vMachineHostName(void);
+  void vMachineMemory(void);
+
   // magnitude
+
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
   void vToDigitName(void);
@@ -943,6 +954,10 @@ public:
   void vOpPipeOut(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
+
+  // opsys
+  void vOpSysIsLinux(void);
+  void vOpSysIsMacOs(void);
 
   // persistence
   void vPersistenceCheckpoint(void);
@@ -1585,6 +1600,9 @@ public:
   void vTxRefInit(void);
   void vTxRefNew(void);
   void vTxRefRollback(void);
+
+  // user
+  void vUserName(void);
 
   // utility
   void vUtilityPrefetch(void);

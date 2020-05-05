@@ -409,7 +409,7 @@ void Step::vInfoSetPipeOut(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpInfoSet);
+  pOp->vPipeOut_nextOp(*m_pRegSet->m_xpInfoSet,m_pTask);
   
   m_pRegSet->m_xpInfoSet = nullptr;
   

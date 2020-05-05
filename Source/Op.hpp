@@ -54,8 +54,8 @@ namespace Pipelines
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);
-    void vAppendLeft(Operand* pOperand, bool bSet = false);
-    void vAppendRight(Operand* pOperand, bool bSet = false);
+    void vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
+    void vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
@@ -82,8 +82,8 @@ namespace Pipelines
     bool bPause(void);
     bool bPeekQueueOoO(void);
     Pipeline* pPipeline(void);
-    void vPipeOut_nextOp(Operand* pOperand, bool bSet = false);
-    void vPipeOut_thisOp(Operand* pOperand, bool bSet = false);
+    void vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
+    void vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
     void vPipeToJob(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueOoO(void);

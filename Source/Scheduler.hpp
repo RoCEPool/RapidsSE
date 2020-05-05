@@ -9,24 +9,24 @@ namespace Threads
   {
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task transition
+    // self task transition
   
   public:
     static void vTaskLoopTransition(Thread* pThread);
   private:
-    static void vTaskTransit_BideForOperand(Task* pTask);
-    static void vTaskTransit_DeleteThisTask(Task* pTask);
-    static void vTaskTransit_SignalCompletion(Task* pTask);
-    static void vTaskTransit_SleepSomeTime(Task* pTask);
-    static void vTaskTransit_WaitForResume(Task* pTask);
-    static void vTaskTransit_YieldForOthers(Task* pTask);
+    static void vTaskSelf_BideForOperand(Task* pTask);
+    static void vTaskSelf_DeleteThisTask(Task* pTask);
+    static void vTaskSelf_SignalCompletion(Task* pTask);
+    static void vTaskSelf_SleepSomeTime(Task* pTask);
+    static void vTaskSelf_WaitForResume(Task* pTask);
+    static void vTaskSelf_YieldForOthers(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
   
   public:
     static bool bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pAckingTask);
-    static void vTaskCross_TriggerBiding(Task* pBidingTask);
+    static void vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,22 +68,11 @@ namespace Threads
     // implementation for threads
   
   private:
-    static void vThread_AddDedicated(Thread* pThread);
-    static void vThread_AddGeneral(Thread* pThread);
     static void vThread_AppendIdle(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
-    static void vThread_BeginLoop(Thread* pThread);
     static void vThread_ContinueSame(Thread* pThread, Task* pTask);
-    static void vThread_EndLoop(Thread* pThread);
-    static void vThread_ExecuteDedicated(Thread* pThread);
-    static void vThread_PauseGeneral(void);
-    static void vThread_RemoveDedicated(Thread* pThread);
-    static void vThread_RemoveGeneral(Thread* pThread);
-    static void vThread_SpawnDedicated(Task* pTask);
     static void vThread_UnassignTask(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
-  
-  
   
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // core task scheduler

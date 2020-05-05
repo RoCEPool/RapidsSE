@@ -142,7 +142,7 @@ namespace Oblique
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
-    static void vTriggerBidingTask(Task* pTask);
+    static void vTriggerBidingTask(Task* pTaskBiding, Task* pTriggeringTask);
 
     //
     static Task* pExecutingTask(Job* pJob);

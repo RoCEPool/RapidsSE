@@ -74,6 +74,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
   Step::vAddSteps_ExtractRow();
+  Step::vAddSteps_Executable();
   
   Step::vAddSteps_File();
   Step::vAddSteps_Flow();
@@ -114,6 +115,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
   
+  Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Metrics();
@@ -124,7 +126,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Object();
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
-  
+  Step::vAddSteps_OpSys();
+
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipeline();
   Step::vAddSteps_Planner();
@@ -184,6 +187,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Tx();
   Step::vAddSteps_TxSet();
   
+  Step::vAddSteps_User();
   Step::vAddSteps_Utility();
   
   Step::vAddSteps_Vortex();
