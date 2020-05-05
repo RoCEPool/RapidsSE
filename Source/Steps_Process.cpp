@@ -9,13 +9,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Process(void)
 {
-  vAddStep("process.getPid"_Stz,  &Step::vProcessGetPid);
-  vAddStep("process::quit"_Stz,   &Step::vProcessQuit);
-  vAddStep("process.testPid"_Stz, &Step::vProcessTestPid);
+  vAddStep("process::getPid"_Stz,  &Step::vProcessGetPid);
+  vAddStep("process::quit"_Stz,    &Step::vProcessQuit);
+  vAddStep("process::testPid"_Stz, &Step::vProcessTestPid);
 }
 
 /*----------------------------------------------------------------------------*/
-/* process.getpid -- get pid of this process                                  */
+/* process::getPid -- get pid of this process                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vProcessGetPid(void)
 {
@@ -44,7 +44,7 @@ void Step::vProcessQuit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* process.testpid -- test pid on stack                                       */
+/*process::testPid -- test pid on stack                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vProcessTestPid(void)
 {

@@ -13,7 +13,7 @@ void Step::vAddSteps_Procedure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* process.getpid -- get pid of this process                                  */
+/* process::getPid -- get pid of this process                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vProcedureAdd(void)
 {
