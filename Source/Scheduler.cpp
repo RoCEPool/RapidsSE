@@ -701,35 +701,6 @@ Task* Scheduler::pTask_Pop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change able-to-run task to TS_READY state and append to a ready queue      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Ready(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_READY,
-              "Task to TS_READY state; appended to ReadyQueue[LP]"_Stz); //!format-LogTsk
-  
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pTask->vState(TS_READY);
-
-  //! ALKA: only catering to Normal priority
-  //! Only job that is Low priority is WriteBuffer
-  //! which should go
-      if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
-        pQueues->vAppendReadyQueue(pTask);
-      else
-        pQueues->vAppendReadyQueueLP(pTask);
-   //pQueues->vAppendReadyQueue(pTask);
-  
-  // **do not touch task**
-}
-
-/*----------------------------------------------------------------------------*/
 /* resume a fully ack'd waiting task                                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
@@ -815,8 +786,20 @@ void Scheduler::vTask_Schedule(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vTask_Ready(pTask);
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  
+  pTask->vState(TS_READY);
+
+  if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
+    pQueues->vAppendReadyQueue(pTask);
+  else
+    pQueues->vAppendReadyQueueLP(pTask);
+ 
   pQueues->vDropThreadIdleQueue();
+  
+  // **do not touch task*
 }
 
 /*----------------------------------------------------------------------------*/
