@@ -33,8 +33,9 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   pTask->vState(TS_DESISTED);
 
   // disconnect / de-assign task from calling thread
-  vThread_UnassignTask(pThread);
-  RASSERT(nullptr == pTask->pvThread_DONT_DEREF());
+  pTask->vThread(nullptr);
+  pThread->m_pTask = nullptr;
+  pThread->m_eThreadState = HS_UNASSIGNED;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // transition task to different state+queue depending on transition request
@@ -849,21 +850,6 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
   
   pThread->m_pTask = pTask;
   pThread->m_eThreadState = HS_ASSIGNED;
-}
-
-/*----------------------------------------------------------------------------*/
-/* unassign task from thread                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_UnassignTask(Thread* pThread)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
-              "Thread unassigns its task"_Stz); //!format-LogThd
-  
-  pThread->m_pTask->vThread(nullptr);
-  
-  pThread->m_pTask = nullptr;
-  pThread->m_eThreadState = HS_UNASSIGNED;
 }
 
 /*----------------------------------------------------------------------------*/
