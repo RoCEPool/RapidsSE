@@ -185,6 +185,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Tx();
   Step::vAddSteps_TxSet();
   
+  Step::vAddSteps_User();
   Step::vAddSteps_Utility();
   
   Step::vAddSteps_Vortex();

@@ -165,6 +165,7 @@ namespace Steps
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
   
+    static void vAddSteps_User(void);
     static void vAddSteps_Utility(void);
  
     static void vAddSteps_Vortex(void);

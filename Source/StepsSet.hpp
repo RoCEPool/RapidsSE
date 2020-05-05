@@ -1593,6 +1593,9 @@ public:
   void vTxRefNew(void);
   void vTxRefRollback(void);
 
+  // user
+  void vUserName(void);
+
   // utility
   void vUtilityPrefetch(void);
   void vUtilitySchemaTest(void);
