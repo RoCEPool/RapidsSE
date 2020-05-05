@@ -5,24 +5,18 @@
 " grid_grid.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* command path for SE                                                        */
-/*----------------------------------------------------------------------------*/
-//"../OS\\ X/Build/Products/Debug/SE" constant SE_COMMAND
-"../OS\\ X/Build/Products/Release/SE" constant SE_COMMAND
-
-/*----------------------------------------------------------------------------*/
 /* form the shell command for spawning and starting a node etc                */
 /*----------------------------------------------------------------------------*/
-: .formShellCommand ( bAdd sNodeName sNodeList -- "<command>" )
-
-  params| sNodeList |
-  params| sNodeName |
-  params| bAdd      |
+: .formShellCommand params| sNodeList sNodeName bAdd |
 
   //  "nohup "
   ""
 
-  SE_COMMAND str.cat
+  executable::isDebug if
+    "../OS\\ X/Build/Products/Debug/SE" str.cat
+  else
+    "../OS\\ X/Build/Products/Release/SE" str.cat
+  then
 
   " --start" str.cat
   bAdd if
