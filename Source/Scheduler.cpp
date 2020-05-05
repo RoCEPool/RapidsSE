@@ -97,7 +97,8 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pTask, Thread* pThread)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_BIDE,
@@ -107,8 +108,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pTask, Thread* pThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pTask->vSchedulerActClear();
 
   pTask->vState(TS_BIDING);
   pQueues->vAddBidingSet(pTask);
@@ -125,17 +125,17 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pTask, Thread* pThread)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
-  
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
+  pTask->vSchedulerActClear();
+  
   pTask->vState(TS_COMPLETED);
   
   /** do not touch task, leave task locked **/
@@ -150,17 +150,17 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pTask, Thread* pThread)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
   
+  pTask->vSchedulerActClear();
+
   pTask->vState(TS_COMPLETED);
   
   pTask->vMutexLock();
@@ -178,8 +178,9 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pTask, Thread* pThread)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
-  
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
@@ -188,9 +189,8 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pTask, Thread* pThread)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
+  pTask->vSchedulerActClear();
+  
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
@@ -224,8 +224,9 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pTask, Thread* pThread)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
-  
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
@@ -234,9 +235,8 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pTask, Thread* pThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
+  pTask->vSchedulerActClear();
+  
   pTask->vState(TS_WAITING);
   pQueues->vAddWaitingSet(pTask);
   
@@ -252,7 +252,8 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pTask, Thread* pThread)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_YIELD,
@@ -260,10 +261,9 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pTask, Thread* pThread)
 
   Queues* pQueues = AM::pQueues();
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pTask->vSchedulerActClear();
   
   // are there other tasks to run?
   

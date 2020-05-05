@@ -11,7 +11,7 @@ namespace Threads
   
   public:
   
-    Lock m_okQueues;
+    Lock m_okScheduling;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
