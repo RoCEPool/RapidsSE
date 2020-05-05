@@ -59,7 +59,7 @@ namespace Threads
     static void vThread_AddGeneralThread(Thread* pThread);
     static void vThread_BeginThreadLoop(Thread* pThread);
     static void vThread_EndThreadLoop(Thread* pThread);
-    static void vThread_PauseTillGeneralThreads(void);
+    static void vThread_NapTillGeneralThreads(void);
     static void vThread_RemoveDedicatedThread(Thread* pThread);
     static void vThread_RemoveGeneralThread(Thread* pThread);
     static void vThread_WaitForTaskAssignment(Thread* pThread);

@@ -620,14 +620,11 @@ bool Scheduler::bJob_RemoveParticipating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_dedicated()
-  //
+  RASSERT(CN_NONE != pThread->m_eDedicated);
+  
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
               "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
-  
-  RASSERT(CN_NONE != pThread->m_eDedicated);
   
   Queues* pQueues = AM::pQueues();
   
@@ -640,15 +637,11 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneralThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_general()
-  //
+  RASSERT(CN_NONE == pThread->m_eDedicated);
   
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
               "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
-  
-  RASSERT(CN_NONE == pThread->m_eDedicated);
   
   Queues* pQueues = AM::pQueues();
   
@@ -661,9 +654,8 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
 {
-  //
-  // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
-  //
+  RASSERT(HS_IDLE == pThread->m_eThreadState);
+  
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_BEGIN_LOOP,
               "Thread is at beginning of it's thread loop"_Stz); //!format-LogThd
@@ -683,9 +675,6 @@ void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndThreadLoop(Thread* pThread)
 {
-  //
-  // called from Thread::vLoop_dedicated()
-  //
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Thread has ended it's thread loop"_Stz); //!format-LogThd
@@ -694,13 +683,11 @@ void Scheduler::vThread_EndThreadLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pause till all general threads are idle (at system startup)                */
+/* nap loop till all general threads are idle (main thread at system startup) */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThread_PauseTillGeneralThreads(void)
+void Scheduler::vThread_NapTillGeneralThreads(void)
 {
-  //
-  // called from Engine::vStartSystem()
-  //
+
   AM::vLogSys(SL_INF,nullptr,YA_SYS_PAUSE_GENERAL,
               "Pause till all general threads are all idle"_Stz); //!format-LogSys
   
@@ -711,8 +698,6 @@ void Scheduler::vThread_PauseTillGeneralThreads(void)
     AM::vNapMsec(10,CN_NONE);
   
   RASSERT(pQueues->m_pGeneralThreadVec->nItems() == AM::nThreads());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // pause till all general threads are in idle state
   i8 nGeneralThreads = pQueues->m_pGeneralThreadVec->nItems();
@@ -730,17 +715,10 @@ void Scheduler::vThread_PauseTillGeneralThreads(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_dedicated()
-  //
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
               "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
-  
-  //
-  // called from Thread::aEntryPoint_dedicated()
-  //
-  
+    
   Queues* pQueues = AM::pQueues();
   
   pQueues->vRemoveDedicatedThread(pThread);
@@ -751,16 +729,9 @@ void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_general()
-  //
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
               "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
-  
-  //
-  // called from Thread::aEntryPoint_general()
-  //
   
   Queues* pQueues = AM::pQueues();
   
@@ -773,9 +744,6 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 {
-  //
-  // called from Thread::vLoop_general()
-  //
   Queues* pQueues = AM::pQueues();
   
   vThread_WaitAssignment(pThread);

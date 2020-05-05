@@ -1434,7 +1434,7 @@ void Engine::vStartSystem(void)
   }
   
   // pause till all general threads are operational 
-  Scheduler::vThread_PauseTillGeneralThreads();
+  Scheduler::vThread_NapTillGeneralThreads();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
