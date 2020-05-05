@@ -875,46 +875,52 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_GET_TASK,
               "Thread attempts task assignment"_Stz); //!format-LogThd
   
-  ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutex->bIsLocked());
-  
+  RASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
+  RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
+  RASSERT(! pThread->m_pTask);
+
   Queues* pQueues = AM::pQueues();
 
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mutex-based loop waiting for
+//for (;;) {
   while (! pThread->m_pTask) {
-        
-    Task* pTask = pQueues->pPopReadyQueue();
-    if (! pTask)
-      pTask = pQueues->pPopReadyQueueLP();
     
-    RASSERT(! pTask || TS_READY == pTask->eState());
+    // attempt to po a task from one of the ready queues
+    Task* pPoppedTask = pQueues->pPopReadyQueue();
+    if (! pPoppedTask)
+      pPoppedTask = pQueues->pPopReadyQueueLP();
+    
+    // was a task popped?
+    if (pPoppedTask) {
+      RASSERT(TS_READY == pPoppedTask->eState());
+      pPoppedTask->vState(TS_DESISTED);
 
-    if (pTask) {
-      pThread->m_pTask = pTask;
-      pThread->m_nAssignedTasks++;
-      
+      pThread->m_pTask = pPoppedTask;
       pThread->m_eThreadState = HS_ASSIGNED;
-      pTask->vState(TS_DESISTED);
+      pThread->m_nAssignedTasks++;
+      break;
     }
-    else {
-      vThread_AppendIdle(pThread);
-      
-      pThread->vIncStepNo();
-      AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
-                  "Thread waits for task assignment"_Stz); //!format-LogThd
-      pThread->m_pMutex->vWait(pThread);
-    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    vThread_AppendIdle(pThread);
+        
+    ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
+    pThread->m_pMutex->vWait(pThread);
+    ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
+
+    if (pThread->m_pTask)
+      break;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // HS_ASSIGNED state will have been set by
-  //
-  //   ... -> vScheduleTask() -> bThread_AssignIdle()
-  //
   
   RASSERT(pThread->m_pMutex->bIsLocked());
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pTask);
+  RASSERT(TS_DESISTED == pThread->m_pTask->eState());
 }
 
 // /////////////////////////////////////////////////////////////////////////////
