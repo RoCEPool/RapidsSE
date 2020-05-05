@@ -68,7 +68,6 @@ namespace Threads
     // implementation for tasks
   
   private:
-    static Task* pTask_Pop(Thread* pThread);
     static void vTask_Schedule(Task* pTask);
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

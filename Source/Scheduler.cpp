@@ -707,25 +707,6 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 //                          implementation for tasks                          //
 ////////////////////////////////////////////////////////////////////////////////
 
-/*----------------------------------------------------------------------------*/
-/* pop a task from the ready/readyLP queue                                    */
-/*----------------------------------------------------------------------------*/
-Task* Scheduler::pTask_Pop(Thread* pThread)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_POP_READY,
-              "Thread attempts pop of task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
-  
-  Queues* pQueues = AM::pQueues();
-
-  Task* pTask = pQueues->pPopReadyQueue();
-  if ( ! pTask )
-    pTask = pQueues->pPopReadyQueueLP();
-  
-  RASSERT(! pTask || TS_READY == pTask->eState());
-  return pTask;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* attempt to assign a thread to able-to-run task, else add to ready queue    */
@@ -1078,12 +1059,17 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutex->bIsLocked());
   
+  Queues* pQueues = AM::pQueues();
+
+
   while (! pThread->m_pTask) {
+        
+    Task* pTask = pQueues->pPopReadyQueue();
+    if (! pTask)
+      pTask = pQueues->pPopReadyQueueLP();
     
-    // pop a ready task
-    // RAY TO LOOK AT ????????????
-    Task* pTask = pTask_Pop(pThread);
-    
+    RASSERT(! pTask || TS_READY == pTask->eState());
+
     if (pTask) {
       pThread->m_pTask = pTask;
       pThread->m_nAssignedTasks++;
