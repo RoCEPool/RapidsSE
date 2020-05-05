@@ -372,7 +372,19 @@ void Scheduler::vTaskApi_AddDedicated(Task* pTask)
   //
   
   pTask->vState(TS_DESISTED);
-  vThread_SpawnDedicated(pTask);
+  
+  pTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_SPAWN_DEDICATED,
+              "Thread spawned for dedicated task"_Stz); //!format-LogTsk
+  
+  RASSERT(TS_DESISTED == pTask->eState());
+  
+  Thread* pThread = new Thread;
+  
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
+  
+  pThread->vSpawnPsxThd_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -742,8 +754,17 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
   //
   // called from Thread::aEntryPoint_general()
   //
+  pThread->vIncStepNo();
+  AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
+              "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
   
-  vThread_RemoveGeneral(pThread);
+  //
+  // called from Thread::aEntryPoint_general()
+  //
+  
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemoveGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -860,43 +881,6 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
   
   pThread->m_pTask = pTask;
   pThread->m_eThreadState = HS_ASSIGNED;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove general thread from general thread vector                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_RemoveGeneral(Thread* pThread)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
-              "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
-  
-  //
-  // called from Thread::aEntryPoint_general()
-  //
-  
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->vRemoveGeneralThread(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn dedicated thread for given task                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_SpawnDedicated(Task* pTask)
-{
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_SPAWN_DEDICATED,
-              "Thread spawned for dedicated task"_Stz); //!format-LogTsk
-  
-  RASSERT(TS_DESISTED == pTask->eState());
-  
-  Thread* pThread = new Thread;
-  
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
-  
-  pThread->vSpawnPsxThd_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/

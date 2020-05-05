@@ -71,8 +71,6 @@ namespace Threads
     static void vThread_AppendIdle(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
     static void vThread_ContinueSame(Thread* pThread, Task* pTask);
-    static void vThread_RemoveGeneral(Thread* pThread);
-    static void vThread_SpawnDedicated(Task* pTask);
     static void vThread_UnassignTask(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
   
