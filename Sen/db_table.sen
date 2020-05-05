@@ -253,14 +253,6 @@
 
 //"B" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
-
-  // truncate the table
-//  sTableNm find execute to pTable
-//  args.partitionsPerNode 0
-//  do
-//    I pTable table.truncate
-//  loop
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // forget the words in the indexes folder

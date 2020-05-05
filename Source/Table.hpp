@@ -20,10 +20,12 @@ namespace MetaData
     Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap; // bucket (to partition) map
     bool       m_bIsLoading; // data is loading
-    Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
     
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
     StreamDef*    m_pPtnStreamDef; // partition stream def
+    
+    // TO GO
+    Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
     
     // must be last
     Footer m_xFooter;
@@ -41,39 +43,36 @@ namespace MetaData
     static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static void  vMonitorPortrait(s48K& sPortrait);
     
-    void vAddIndex(Index* pIndex);
-    //Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
-    //Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
-    void vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);
-    void vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
-    void vCompactIndex(Index* pIndex);
-    void vCreatePtnDef(void);
-    i8   nCrwBuffers(void);
-    void vContentDump(void);
+    void    vAddIndex(Index* pIndex);
+    void    vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);
+    void    vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
+    void    vCompactIndex(Index* pIndex);
+    void    vCreatePtnDef(void);
+    i8      nCrwBuffers(void);
+    void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
-    i8   nIndexBuffers(i8 iIndexNo);
-    bool bIsDefinitionOnly(void);
-    void vIsLoading(bool bIsLoading);
-    bool bIsLoading(void);
-    void vLazyBuildIndexes(i8 iSlot);
-    void vMarkTable(void);
+    i8      nIndexBuffers(i8 iIndexNo);
+    bool    bIsDefinitionOnly(void);
+    void    vIsLoading(bool bIsLoading);
+    bool    bIsLoading(void);
+    void    vLazyBuildIndexes(i8 iSlot);
+    void    vMarkTable(void);
     TablePtn* pPartition(i8 iSlot);
-    bool bPopulateIndex(i8 iIndexNo);
-    void vRemoveIndex(Index* pIndex);
-    StreamDef*  pPtnStreamDef(void);
-    void vPublish(i8 iPartitionNo);
-    bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
+    bool    bPopulateIndex(i8 iIndexNo);
+    void    vRemoveIndex(Index* pIndex);
+    StreamDef* pPtnStreamDef(void);
+    void    vPublish(i8 iPartitionNo);
+    bool    bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    void vSubLoaders(i8 iSubLoaders);
     StreamDef* pStreamDef(void);
+    void    vSubLoaders(i8 iSubLoaders);
     TableDef* pTableDef(void);
-    void vTableDef(TableDef* pTableDef);
-    Stz* szTableNm(void);
-    void vTidyUp(void);
-    void vTidyUpIndex(i8 iIndexNo);
-    i8   iToPartition(i8 iRowHash);
-    void vTruncate(i8 iPartitionNo);
+    void    vTableDef(TableDef* pTableDef);
+    Stz*    szTableNm(void);
+    void    vTidyUp(void);
+    void    vTidyUpIndex(i8 iIndexNo);
+    i8      iToPartition(i8 iRowHash);
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
     void vUpsertBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);

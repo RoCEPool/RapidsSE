@@ -1435,7 +1435,6 @@ public:
   void vTableTableDefFetch(void);
   void vTableTableDefStore(void);
   void vTableTablePtnFetch(void);
-  void vTableTruncate(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 

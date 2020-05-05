@@ -73,8 +73,11 @@ Table::Table(void)
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPartitions());
+  m_bIsLoading = false;
   m_pTablePtnVec = new TablePtnVec;
+  m_pPtnStreamDef = new StreamDef;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
   for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
     
@@ -83,14 +86,12 @@ Table::Table(void)
     
     i8 iPartition = TablePtn::iSlotToPartition(i_Slot);
     m_pTablePtnVec->pGet(i_Slot)->vPartitionId(iPartition);
-    
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the subLoaders
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
-  
-  m_bIsLoading = false;
-  m_pPtnStreamDef = new StreamDef;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -115,8 +116,8 @@ Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  // table is a word
-  // direct destructor should never be invoked
+  // Table is a word
+  // destructor should never be invoked
   ASSERT(0);
 }
 
@@ -210,111 +211,6 @@ void Table::vAddIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze index                                                              */
-/*----------------------------------------------------------------------------*/
-/*
-Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
- 
-  i8 nEntriesTotal = 0;
-  i8 nBuffersTotal = 0;
-  s48K sAnalysis;
-  
-  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
-    
-    i8 iPartition = TablePtn::iSlotToPartition(iSlot);
-    
-    EntBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRootBuffer();
-    
-    i8 nBuffers = 0;
-    i8 nEntries = 0;
-
-    if (pIndexBuffer)
-      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
-    
-    nEntriesTotal += nEntries;
-    nBuffersTotal += nBuffers;
-    
-    if ( ! bDetailed ) {
-      sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           AM::szNodeNm(),
-                           iPartition,
-                           nBuffers,
-                           nEntries);
-
-    }
-  }
-  
-//  if ( ! gpAttachMap->m_bMetadata   || bDetailed)
-//    sAnalysis.vCatSprint(
-//                         "        total: %3lld buffers; %5lld entries\n"_Stz,
-//                         nBuffersTotal,
-//                         nEntriesTotal);
-  
-  if (bDetailed)
-    nRows = nBuffersTotal;
-  else
-    nRows = 1;
-  
-  return sAnalysis;
-}
-*/
-
-/*----------------------------------------------------------------------------*/
-/* analyze index                                                              */
-/*----------------------------------------------------------------------------*/
-/*
-Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 nRowsTotal    = 0;
-  i8 nBuffersTotal = 0;
-  s48K sAnalysis;
-  
-  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
-    
-    i8 iPartition = TablePtn::iSlotToPartition(iSlot);
-    
-    TablePtn *pPartition = this->pPartition(iSlot);
-    
-    CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
-    
-    i8 nBuffers = 0;
-    i8 nRows    = 0;
-    
-    if (pCrwBuffer)
-      pCrwBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nRows);
-    
-    nRowsTotal += nRows;
-    nBuffersTotal += nBuffers;
-    
-    if ( ! bDetailed ) {
-      sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           AM::szNodeNm(),
-                           iPartition,
-                           nBuffers,
-                           nRows);
-      
-    }
-  }
-  
-  //  if ( ! gpAttachMap->m_bMetadata   || bDetailed)
-  //    sAnalysis.vCatSprint(
-  //                         "        total: %3lld buffers; %5lld entries\n"_Stz,
-  //                         nBuffersTotal,
-  //                         nEntriesTotal);
-  
-  if (bDetailed)
-    nRows = nBuffersTotal;
-  else
-    nRows = 1;
-  
-  return sAnalysis;
-}
-*/
-/*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
 void Table::vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows)
@@ -323,12 +219,8 @@ void Table::vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows)
   
   i8 nRowsTotal    = 0;
   i8 nBuffersTotal = 0;
-  s48K sAnalysis;
   
-    
-  i8 iPartition = TablePtn::iSlotToPartition(iSlot);
-  
-  TablePtn *pPartition = this->pPartition(iSlot);
+  TablePtn* pPartition = this->pPartition(iSlot);
   
   CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
   
@@ -381,13 +273,8 @@ void Table::vCompactIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
-    
-    i8 iPartition = TablePtn::iSlotToPartition(iSlot);
-    
     IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
-    
     pIndexTree->vCompact();
-    
   }
 }
 
@@ -412,13 +299,12 @@ void Table::vCreatePtnDef(void)
     if (pColumn->bIsPtnKey()) {
       m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
       m_pPtnStreamDef->m_nDefColumns[0]++;
-      
     }
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of row buffers in this table                                    */
+/* get number of crw buffers in this table                                    */
 /*----------------------------------------------------------------------------*/
 i8 Table::nCrwBuffers(void)
 {
@@ -473,6 +359,24 @@ IdxVec* Table::pIdxVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pIdxVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of index buffers in this table                                  */
+/*----------------------------------------------------------------------------*/
+i8 Table::nIndexBuffers(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 iBuffers = 0;
+  
+  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+    IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
+    
+    iBuffers += pIndexTree->nEntBuffers();
+  }
+  
+  return iBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,7 +438,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark job to activity map                                                   */
+/* mark table to activity map                                                 */
 /*----------------------------------------------------------------------------*/
 void Table::vMarkTable(void)
 {
@@ -604,24 +508,6 @@ void Table::vRemoveIndex(Index* pIndex)
   
   // remove index from the table
   m_pIdxVec->vRemove(pIndex);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of index buffers in this table                                  */
-/*----------------------------------------------------------------------------*/
-i8 Table::nIndexBuffers(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iBuffers = 0;
-  
-  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
-    IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
-
-    iBuffers += pIndexTree->nEntBuffers();
-  }
-  
-  return iBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -720,7 +606,6 @@ void Table::vSubLoaders(i8 iSubLoaders)
   
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = iSubLoaders;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -801,29 +686,6 @@ void Table::vTidyUpIndex(i8 iIndexNo)
   for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
     m_pTablePtnVec->pGet(i_Slot)->vTidyUpIndex(iIndexNo);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* release all rows/buffers                                                   */
-/*----------------------------------------------------------------------------*/
-void Table::vTruncate(i8 iPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // should never be called
-  RASSERT(0);
-  
-//  TablePtn* pTablePtn;
-//
-//  // truncate all indices
-//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-//    pTablePtn = m_pTablePtnVec->pGet(iPartition);
-//    pTablePtn->pIndexTree(iIndexNo)->vTruncate();
-//  }
-//
-//  // now truncate the table data
-//  pTablePtn = m_pTablePtnVec->pGet(iPartition);
-//  pTablePtn->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -982,7 +844,6 @@ Footer* Table::aFooter(void)
   
   return &m_xFooter;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

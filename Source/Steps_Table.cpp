@@ -35,7 +35,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
-  vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
   vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
   
@@ -638,22 +637,6 @@ void Step::vTableTableDefStore(void)
   TableDef* pTableDef = _pTableDef(m_pDataStack->pPopPtr(__func__));
 
   pTable->vTableDef(pTableDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.truncate -- release all rows/buffers in table on data stack          */
-/*----------------------------------------------------------------------------*/
-void Step::vTableTruncate(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iSlot = m_pDataStack->iPopAsInt(__func__);
-  
-  pTable->vTruncate(iSlot);
   
   EXIT();
 }
