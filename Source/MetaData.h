@@ -18,7 +18,6 @@ namespace MetaData
 #include "TableDef.hpp"
 #include "IndexDef.hpp"
 
-#include "Slots.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
 #include "IdxColVec.hpp"

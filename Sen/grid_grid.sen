@@ -43,6 +43,7 @@
   args.freeCB      if " --freeCB"      str.cat then
   args.metadata    if " --metadata"    str.cat then
   args.log         if " --log"         str.cat then
+  args.munged      if " --munged"      str.cat then
 
   " &" str.cat locals| sShellCmd |
  

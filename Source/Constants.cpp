@@ -347,7 +347,6 @@ void Constants::vAddConstantsCpp(void)
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
   /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
   /* 64 */ vAddConstant("CN_SKIPNODE"_Stz,     CN_SKIPNODE);
-  /*    */ vAddConstant("CN_SLOTS"_Stz,        CN_SLOTS);
   /*    */ vAddConstant("CN_SMALLPERSISTENT"_Stz, CN_SMALLPERSISTENT);
   /* 65 */ vAddConstant("CN_SMALLTRANSIENT"_Stz, CN_SMALLTRANSIENT);
   /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
@@ -676,7 +675,6 @@ void Constants::vAddConstantsCpp(void)
   /* 46 */ //vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
-  /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));
   /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
   /* 52 */ vAddConstant("SIZEOF_SOCKET"_Stz,       sizeof(Socket));
   /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));

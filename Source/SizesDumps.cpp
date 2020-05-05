@@ -255,7 +255,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_SLAB
   /* */ &Dump::vUndefined,       // CN_SLABALLOCATOR
   /* */ &Dump::vUndefined,       // CN_SLEEP
-  /* */ &Slots::vDump,           // CN_SLOTS
   /* */ &Heap::vDump,            // SN_SMALLPERSISTENT
   /* */ &Heap::vDump,            // SN_SMALLTRANSIENT
   /* */ &Dump::vInvalid,         // CN_SNBCD
@@ -586,7 +585,6 @@ i8 gnClassSize[]
   /* */ sizeof(Slab),               // CN_SLAB
   /* */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
   /* */ sizeof(Sleep),              // CN_SLEEP
-  /* */ sizeof(Slots),              // CN_SLOTS
   /* */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /* */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
   /* */ sizeof(SN_Bcd),             // CN_SNBCD
@@ -921,7 +919,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_SLAB
   /* */ HT_TRANSIENT_SMALL,   // CN_SLABALLOCATOR
   /* */ HT_INVALID,           // CN_SLEEP
-  /* */ HT_INVALID,           // CN_SLOTS
   /* */ HT_INVALID,           // SN_SMALLPERSISTENT
   /* */ HT_INVALID,           // SN_SMALLTRANSIENT
   /* */ HT_INVALID,           // CN_SNBCD
