@@ -15,7 +15,8 @@ void Step::vAddSteps_TablePartition2(void)
   vAddStep("tablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
   vAddStep("tablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("tablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
-  vAddStep("tablePtn[].truncate"_Stz, &Step::vTablePtnTruncate);
+  vAddStep("tablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
+  vAddStep("tablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +196,7 @@ void Step::vTablePtnSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].truncate -- truncate the tablePtn                               */
+/* tablePtn[].truncate -- truncate the tablePtn for the table                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnTruncate(void)
 {
@@ -207,6 +208,21 @@ void Step::vTablePtnTruncate(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].truncateIndex -- truncate the tablePtn for the index            */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnTruncateIndex(void)
+{
+  ENTRY();
+  
+  // get the index to be truncated
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  
+  TablePtn* pTablePtn = *m_pRegSet->m_xpTablePtn;
+  pTablePtn->vTruncateIndex(pIndex);
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

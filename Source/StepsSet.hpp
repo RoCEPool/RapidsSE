@@ -1456,6 +1456,7 @@ public:
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
+  void vTablePtnTruncateIndex(void);
 
   // tag
   void vTagGet(void);

@@ -199,15 +199,6 @@
 //;
 
 /*----------------------------------------------------------------------------*/
-/* tidy up of the index                                                       */
-/*----------------------------------------------------------------------------*/
-: index.tidyUp params| pIndex |
-
-  // truncate the index
-  pIndex index.truncate
-;
-
-/*----------------------------------------------------------------------------*/
 /* delete all index objects                                                   */
 /*----------------------------------------------------------------------------*/
 : deleteIndexObjects
@@ -261,7 +252,7 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
-  pIndex index.tidyUp
+  //pIndex index.tidyUp
 "F" .
   sIndexNm :forget
 "G" .

@@ -39,7 +39,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].size"_Stz,          &Step::vIndexSize);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
-  vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
+  vAddStep("index[].truncate"_Stz,      &Step::vIndexTruncate);
   vAddStep("index.upperBound"_Stz,      &Step::vIndexUpperBound);
   vAddStep("index[].verify"_Stz,        &Step::vIndexVerify);
   vAddStep("index[].visualize"_Stz,     &Step::vIndexVisualize);
@@ -1618,7 +1618,7 @@ void Step::vIndexTableStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.truncate -- truncate the index                                       */
+/* index[].truncate -- truncate the index                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTruncate(void)
 {

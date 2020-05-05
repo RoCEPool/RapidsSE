@@ -84,6 +84,7 @@ namespace Partitioning
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
+    void vTruncateIndex(Index* pIndex);
     void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
     void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
                            Encoding* pEncoding_upsert, t8 tPerspective);

@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* OP_truncateIndex.sen -- Operator truncate index                            */
+/*============================================================================*/
+
+" OP_truncateIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: TruncateIndex_PulseMarker \handler
+
+
+  //"Operand:- ZK_PULSEMARKER" .verbose
+  Pipein[].pipeOut
+
+  // truncate the buffers of the tablePtn
+  index[] tablePtn[].truncateIndex
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: TruncateIndex_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  // check if we can scan the table
+  <tableNm> <indexNm> op__table_index if
+    table[].tablePtn@ to tablePtn[]
+    Pipein[].pipeOut
+  then
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* execute for Truncate req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : TruncateIndex_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: TruncateIndex_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: TruncateIndex_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: truncateIndex :: truncateIndex <tableNm> <indexNm> ;
+
+: truncateIndex _info tagCopy: stageOp_tags
+  tags{ <jobDesc>  = "--op desc--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

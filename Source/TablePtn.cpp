@@ -913,6 +913,30 @@ void TablePtn::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* truncate the index data for given index                                    */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vTruncateIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  bool bFoundIndex = false;
+  
+  // find the index to be truncated for this table ptn
+  for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
+    
+    if (pIndexTree->pIndex() == pIndex) {
+      bFoundIndex = true;
+      // truncate the index
+      pIndexTree->vTruncate();
+      break;
+    }
+  }
+  
+  ASSERT(bFoundIndex);
+}
+
+/*----------------------------------------------------------------------------*/
 /* WIP: upsert entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
@@ -926,7 +950,6 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
   StreamDef* pStreamDef = pCrwBuffer_upsert->pStreamDef();
   
   IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
-  IdxColVec* pIdxColVec = pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
   HV_Row hvRow_upsert(pStreamDef,C_ALL);
   

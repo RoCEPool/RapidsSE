@@ -90,10 +90,13 @@ begin
   stage stageA on origin :
     start | periodicOp once | stageB
 
-  stage stageB on all nodes :
-    dropIndex $tableNm $indexNm | stageC
+  stage stageB on all partitions :
+    truncateIndex $tableNm $indexNm | stageC
 
-  stage stageC on origin :
+  stage stageC on all nodes :
+    dropIndex $tableNm $indexNm | stageD
+
+  stage stageD on origin :
     sink | stageA
 
 end;
