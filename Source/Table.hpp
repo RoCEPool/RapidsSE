@@ -15,17 +15,13 @@ namespace MetaData
   {
   private:
     TableDef*  m_pTableDef;   // definition of this table
-  
     s32        m_sTableNm;    // table name (leave for the moment)
-  
-    IdxVec*    m_pIdxVec;    // index vector
-    Atomic     m_ixIndexNo;  // next index no
-
+    IdxVec*    m_pIdxVec;     // index vector
+    Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap; // bucket (to partition) map
-  
     bool       m_bIsLoading; // data is loading
     Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
-  
+    
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
     StreamDef*    m_pPtnStreamDef; // partition stream def
     
@@ -42,7 +38,6 @@ namespace MetaData
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
-    static Index* pFindIndex(DicStack* pDicStack, Stz* aTableNm, Stz* aIndexNm);
     static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static void  vMonitorPortrait(s48K& sPortrait);
     

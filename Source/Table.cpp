@@ -69,14 +69,10 @@ Table::Table(void)
   Word* pWord = Word::pToWord(this);
   
   m_pTableDef  = nullptr;
-  
   m_sTableNm = pWord->szWordNm();
-
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
-
   m_pBucketMap = new BucketMap(AM::nPartitions());
-
   m_pTablePtnVec = new TablePtnVec;
   
   // create the table partitions
@@ -92,8 +88,8 @@ Table::Table(void)
   
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
-  m_bIsLoading = false;
   
+  m_bIsLoading = false;
   m_pPtnStreamDef = new StreamDef;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -119,11 +115,9 @@ Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Table.m_nDrops++;
-#endif
-  
-  vTidyUp();
+  // table is a word
+  // direct destructor should never be invoked
+  ASSERT(0);
 }
 
 
@@ -148,32 +142,15 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Table::vFinalize(eCN eClass, Object* pObject)
 {
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.Table.m_nDrops++;
+#endif
+  
   Table* pTable = _pTable(pObject);
   ASSERT(pTable->bWordBody());
   
   pTable->vTidyUp();
-}
-
-/*----------------------------------------------------------------------------*/
-/* find index                                                                 */
-/*----------------------------------------------------------------------------*/
-Index* Table::pFindIndex(DicStack* pDicStack, Stz* aTableNm, Stz* aIndexNm)
-{
-  Dic* pDic = pDicStack->pTop();
-  
-  Word* pTableDicWord = pDic->pFindWord(aTableNm);
-  
-  Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
-
-  Word* pIndexesDicWord = pTableDic->pFindWord("Indexes"_Stz);
-  
-  Dic* pIndexesDic = _pDic(pIndexesDicWord->aWspArea());
-  
-  Word* pIndexDicWord = pIndexesDic->pFindWord(aIndexNm);
-  
-  Index* pIndex = _pIndex(pIndexDicWord->aWspArea());
-  
-  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
