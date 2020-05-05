@@ -48,7 +48,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_AttachMap();
   
   Step::vAddSteps_Bp();
-  
+  Step::vAddSteps_Build();
+
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
   Step::vAddSteps_Compiler();

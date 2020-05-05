@@ -112,6 +112,13 @@ public:
   void vBpInUseSpace(void);
   void vBpTotalSpace(void);
 
+  // build
+  void vBuildBranch(void);
+  void vBuildDate(void);
+  void vBuildGitHash(void);
+  void vBuildHostName(void);
+  void vBuildUserName(void);
+
   // class
   void vClassName(void);
 
