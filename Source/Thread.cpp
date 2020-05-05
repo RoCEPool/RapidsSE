@@ -330,6 +330,25 @@ void Thread::vLoop_general(void)
   RASSERT(m_pTask);
 
   for (;;) {
+
+    ASSERT(m_pTask);
+    ASSERT(SA_NONE == m_pTask->eSchedulerAct());
+    RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+    
+    m_pTask->vTaskLoop();
+    ASSERT(SA_NONE != m_pTask->eSchedulerAct());
+
+    Scheduler::vTaskSelf_LoopTransition(m_pTask,this);
+
+    if (m_pTask)
+      continue;
+    
+    Scheduler::vThread_WaitForTaskAssignment(this);
+    RASSERT(m_pTask);
+  }
+   
+  /*
+  for (;;) {
     
     if (! m_pTask)
       Scheduler::vThread_WaitForTaskAssignment(this);
@@ -345,6 +364,7 @@ void Thread::vLoop_general(void)
     
     ASSERT(! m_pTask || this == m_pTask->pvThread_DONT_DEREF());
   }
+  */
   
   NEVER_REACH;
 }
