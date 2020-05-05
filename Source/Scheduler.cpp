@@ -667,11 +667,19 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   Queues* pQueues = AM::pQueues();
   
   vThread_WaitAssignment(pThread);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vTask_Thread(pThread->m_pTask,pThread);
+  Task* pTask = pThread->m_pTask;
 
+  RASSERT(TS_DESISTED == pTask->eState());
+
+  RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
+  RASSERT(pTask == pThread->m_pTask);
+
+  pTask->vThread(pThread);
+  // ok to touch task
+  
   pThread->m_pTask->vState(TS_EXECUTING);
   pQueues->vAddExecutingSet(pThread->m_pTask);
 }
@@ -802,24 +810,6 @@ void Scheduler::vTask_Schedule(Task* pTask)
   // **do not touch task*
 }
 
-/*----------------------------------------------------------------------------*/
-/* able-to-run task has been assigned the given thread                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
-{
-  
-  RASSERT(TS_DESISTED == pTask->eState());
-  
-  RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
-  RASSERT(pTask == pThread->m_pTask);
-  
-  pTask->vThread(pThread);
-  // ok to touch task
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_THREAD,
-              "Task has been assigned a thread"_Stz); //!format-LogTsk
-}
 
 
 
