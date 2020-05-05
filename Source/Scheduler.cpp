@@ -171,9 +171,14 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pTask)
   
   pTask->vWakeupClear();
   
+  // continue with same hread
+  pThread->m_pTask = pTask;
+  pThread->m_eThreadState = HS_ASSIGNED;
+
+  // task becomes executing again
   pTask->vState(TS_EXECUTING);
   pQueues->vAddExecutingSet(pTask);
-  vThread_ContinueSame(pThread,pTask);
+
   /** do not touch task **/
   pTask->vDropTaskLock();
 }
@@ -234,10 +239,8 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pTask)
     if (0 == iLengthReadyQueue) {
       pTask->vState(TS_EXECUTING);
       pQueues->vAddExecutingSet(pTask);
-      vThread_ContinueSame(pThread,pTask);
-      
-      /** do not touch task **/
-
+      pThread->m_pTask = pTask;
+      pThread->m_eThreadState = HS_ASSIGNED;
       pTask->vDropTaskLock();
       return;
     }
@@ -812,24 +815,6 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   // DO NOT TOUCH TASK
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Thread continues executing same task (tried sleep or yield but continued)  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_CONTINUE_TASK,
-              "Thread continues executing same task"_Stz); //!format-LogThd
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
-  
-  RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  RASSERT(! pThread->m_pTask);
-  
-  pThread->m_pTask = pTask;
-  pThread->m_eThreadState = HS_ASSIGNED;
 }
 
 /*----------------------------------------------------------------------------*/

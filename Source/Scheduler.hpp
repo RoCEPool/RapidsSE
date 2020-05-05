@@ -69,7 +69,6 @@ namespace Threads
   
   private:
     static bool bThread_AssignIdle(Task* pTask);
-    static void vThread_ContinueSame(Thread* pThread, Task* pTask);
     static void vThread_WaitAssignment(Thread* pThread);
   
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
