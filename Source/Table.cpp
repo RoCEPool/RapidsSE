@@ -718,17 +718,6 @@ i8 Table::iToPartition(i8 iRowHash)
 }
 
 /*----------------------------------------------------------------------------*/
-/* truncate the index                                                         */
-/*----------------------------------------------------------------------------*/
-void Table::vTruncateIndex(i8 iPartitionNo, i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
-  pTablePtn->pIndexTree(iIndexNo)->vTruncate();
-}
-
-/*----------------------------------------------------------------------------*/
 /* upsert row buffer into the table indexes                    */
 /*----------------------------------------------------------------------------*/
 void Table::vUpsertBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)

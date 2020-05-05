@@ -39,7 +39,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index[].size"_Stz,          &Step::vIndexSize);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
-  vAddStep("index[].truncate"_Stz,      &Step::vIndexTruncate);
   vAddStep("index.upperBound"_Stz,      &Step::vIndexUpperBound);
   vAddStep("index[].verify"_Stz,        &Step::vIndexVerify);
   vAddStep("index[].visualize"_Stz,     &Step::vIndexVisualize);
@@ -1613,25 +1612,6 @@ void Step::vIndexTableStore(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pIndex->vTable(pTable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index[].truncate -- truncate the index                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexTruncate(void)
-{
-  ENTRY();
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->nSlotsPerNode(); iSlot++)
-    pTable->vTruncateIndex(iSlot, iIndexNo);
   
   EXIT();
 }

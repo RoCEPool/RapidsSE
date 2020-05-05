@@ -81,7 +81,6 @@ namespace Partitioning
     CrwBuffer* pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective);
     void vTable(Table* pTable);
     Table* pTable(void);
-    void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);

@@ -82,7 +82,11 @@ TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  vTidyUp();
+  // delete the index data vector
+  delete m_pIndexTreeVec;
+  
+  // delete the readApi
+  delete m_pReadApi;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -863,19 +867,6 @@ Table* TablePtn::pTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tidy up                                                                    */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vTidyUp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // delete the index data vector
-  delete m_pIndexTreeVec;
-  
-  delete m_pReadApi;
 }
 
 /*----------------------------------------------------------------------------*/

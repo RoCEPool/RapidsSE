@@ -73,7 +73,7 @@ namespace MetaData
     void    vTidyUp(void);
     void    vTidyUpIndex(i8 iIndexNo);
     i8      iToPartition(i8 iRowHash);
-    void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    
     void vUpsertBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);

@@ -413,7 +413,6 @@ public:
   void vIndexRange(void);
   void vIndexTableFetch(void);
   void vIndexTableStore(void);
-  void vIndexTruncate(void);
   void vIndexUpperBound(void);
 
 
@@ -807,10 +806,6 @@ public:
 
   void vJob_SubPurgerSlotFetch(void);
   void vJob_SubPurgerPurgeJobIdFetch(void);
-
-  // Job SubTruncate
-  void vJob_SubTruncateSlotFetch(void);
-  void vJob_SubTruncateTruncateJobIdFetch(void);
 
   // job SubWalker
   void vJob_SubWalkerBegin(void);
