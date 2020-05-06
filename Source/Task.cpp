@@ -109,8 +109,10 @@ void Task::vInit(void)
   // m_oDicStack
 
   m_eState       = TS_NONE;
-  m_eScheduler  = SA_NONE;
+  m_eScheduler   = SA_NONE;
   m_eQueue       = QK_NONE;
+  m_eEntryPoint  = EP_NONE;
+  
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
@@ -459,6 +461,26 @@ void Task::vDump(void)
   m_pForth->vContentDump();
   
   vTrace("== End Task Dump ============================================\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get entry point                                                            */
+/*----------------------------------------------------------------------------*/
+eEP Task::eEntryPoint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_eEntryPoint;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry point                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryPoint(eEP eEntryPoint)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eEntryPoint = eEntryPoint;
 }
 
 /*----------------------------------------------------------------------------*/

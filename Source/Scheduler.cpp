@@ -408,6 +408,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   // called from Api::bSpawnJobDedicated()
   //
   
+  pNewTask->vEntryPoint(EP_DEDICATED);
   pNewTask->vState(TS_DESISTED);
   
   pNewTask->vIncStepNo();
@@ -453,6 +454,7 @@ void Scheduler::vTaskApi_AddGeneral_connector(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_CONNECTOR);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -470,6 +472,7 @@ void Scheduler::vTaskApi_AddGeneral_internal(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_INTERNAL);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -487,6 +490,7 @@ void Scheduler::vTaskApi_AddGeneral_prompt(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_PROMPT);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -504,6 +508,7 @@ void Scheduler::vTaskApi_AddGeneral_received(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_RECEIVED);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -521,6 +526,7 @@ void Scheduler::vTaskApi_AddGeneral_2pc(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_2PC);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);

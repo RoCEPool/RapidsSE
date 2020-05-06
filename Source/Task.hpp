@@ -29,7 +29,8 @@ namespace Tasks
     eTS          m_eState;       // state (running, sleeping, ...)
     eSA          m_eScheduler;   // schedulre transition action
     eQK          m_eQueue;       // which queue the task is currently in
-  
+    eEP          m_eEntryPoint;  // task entry point
+    
     Decider      m_oAcksRmg;     // number of acks still waiting for
     Sleep        m_oWakeup;      // wakeup time from sleeping
 
@@ -69,6 +70,8 @@ namespace Tasks
     static void vDebug(void);
     void vDropTaskLock(void);
     void vDump(void);
+    void vEntryPoint(eEP eEntryPoint);
+    eEP  eEntryPoint(void);
     void vFocalOutline(s4K& sOutline);
     Forth* pForth(void);
     void vGrabTaskLock(void);
