@@ -45,7 +45,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__End on participating node                                */
+/* run received Job__End on participating node       recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
 : _End _run
 
