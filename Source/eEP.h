@@ -13,8 +13,9 @@ enum eEP // Entry Point
   /*  5 */ EP_OTHER,
   /*  6 */ EP_PROMPT,
   /*  7 */ EP_RECEIVED,
-  /*  8 */ EP_2PC,
-  /*  9 */ EP_ENUMS
+  /*  8 */ EP_SYSTEM,
+  /*  9 */ EP_2PC,
+  /* 10 */ EP_ENUMS
 };
 
 static Stz* aEP[]
@@ -27,8 +28,9 @@ static Stz* aEP[]
   /*  5 */ "OTHER"_Stz,
   /*  6 */ "PROMPT"_Stz,
   /*  7 */ "RECEIVED"_Stz,
-  /*  8 */ "2PC"_Stz,
-  /*  9 */ "ENUMS"_Stz
+  /*  8 */ "SYSTEM"_Stz,
+  /*  9 */ "2PC"_Stz,
+  /* 10 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
