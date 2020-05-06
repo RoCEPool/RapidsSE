@@ -52,6 +52,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
   
+  vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.nextOperand"_Stz,      &Step::vJobNextOperand);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
@@ -754,21 +755,16 @@ void Step::vJobMetadataStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.nextOperand -- get next operand                                        */
+/* job.name@ -- get name of job                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJobNextOperand(void)
+void Step::vJobNameFetch(void)
 {
   ENTRY();
   
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Op* pOp = pJob_Universal->m_pOp;
-  
-  if (m_pRegSet->m_xpOperandA.bIsNull())
-    m_pRegSet->m_xpOperandA = pOp->pPopQueue();
-  ASSERT(*m_pRegSet->m_xpOperandA);
+  s32 szName = pJob->szJobNm();
+  m_pDataStack->vPushStr(szName);
   
   EXIT();
 }

@@ -558,6 +558,7 @@ public:
 
   void vJobMetadataStore(void);
 
+  void vJobNameFetch(void);
   void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
 
