@@ -209,7 +209,8 @@ pDUMPFUN *gpDump[]
   /* */ &Plan::vDump,            // CN_PLAN
   /* */ &Dump::vUndefined,       // CN_PLANNER
   /* */ &Dump::vUndefined,       // CN_PREDICATE
-  /* */ &Dump::vUndefined,       // CN_PREDVEC
+  /* */ &Dump::vUndefined,       // CN_PREDICATEVEC
+  /* */ &Dump::vUndefined,       // CN_PROFILE
   /* */ &Dump::vUndefined,       // CN_PSXTHD
   /* */ &Dump::vDummy,           // CN_PTNCOLVEC
   /* */ &Dump::vInvalid,         // CN_PTRVAL
@@ -540,6 +541,7 @@ i8 gnClassSize[]
   /* */ sizeof(Planner),            // CN_PLANNER
   /* */ sizeof(Predicate),          // CN_PREDICATE
   /* */ sizeof(PredicateVec),       // CN_PREDICATEVEC
+  /* */ 0,//sizeof(Profile),       // CN_PROFILE
   /* */ sizeof(PsxThd),             // CN_PSXTHD
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL
@@ -870,6 +872,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
   /* */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_PROFILE
   /* */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
   /* */ HT_INVALID,           // CN_PTRVAL

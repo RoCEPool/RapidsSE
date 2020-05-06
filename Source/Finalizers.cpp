@@ -206,6 +206,7 @@ pFINALIZE *gpFinalize[]
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 91 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
+  /* 91 */ &Finalize::vUndefined,         // CN_PROFILE
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL

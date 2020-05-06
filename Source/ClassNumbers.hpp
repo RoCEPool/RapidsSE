@@ -209,6 +209,7 @@ enum eCN : u2 // Class Number
   /* 174 0x0AE     3112B Heap:M */ CN_PLANNER,
   /* 175 0x0AF       48B Heap:S */ CN_PREDICATE,
   /* 176 0x0B0      184B Heap:M */ CN_PREDICATEVEC,
+  /* 176 0x0B0      184B Heap:M */ CN_PROFILE,
   /* 177 0x0B1      104B Heap:S */ CN_PSXTHD,
   /* 178 0x0B2     8216B Heap:M */ CN_PTNCOLVEC,
   /* 179 0x0B3       16B Heap:I */ CN_PTRVAL,
@@ -539,6 +540,7 @@ static Stz* aCN[]
   /* 174 0x0AE */ "PLANNER"_Stz,             // CN_PLANNER
   /* 175 0x0AF */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* 176 0x0B0 */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
+  /* 176 0x0B0 */ "PROFILE"_Stz,             // CN_PROFILE
   /* 177 0x0B1 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 178 0x0B2 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* 179 0x0B3 */ "PTRVAL"_Stz,              // CN_PTRVAL
