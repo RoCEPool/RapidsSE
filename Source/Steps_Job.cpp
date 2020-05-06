@@ -770,6 +770,26 @@ void Step::vJobNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.nextOperand -- get next operand                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNextOperand(void)
+{
+  ENTRY();
+  
+  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  
+  if (m_pRegSet->m_xpOperandA.bIsNull())
+    m_pRegSet->m_xpOperandA = pOp->pPopQueue();
+  ASSERT(*m_pRegSet->m_xpOperandA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.noWait@ -- fetch no-wait                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobNoWaitFetch(void)

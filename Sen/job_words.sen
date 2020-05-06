@@ -183,7 +183,7 @@
 : job.send params| pJob |
 
 
-  //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
+  pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
 
   socket[] locals| pSocket |
 
