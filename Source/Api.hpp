@@ -15,7 +15,6 @@ namespace Interface
   static void vMonitorPortrait(s48K& sPortrait);
   static bool bReseedJob(Session* pSession, Job* pJob);
 
-  static bool bSpawnJob(Job* pJob);
   static bool bSpawnJob_connector(Job* pJob);
   static bool bSpawnJob_internal(Job* pJob);
   static bool bSpawnJob_op(Job* pJob);

@@ -478,16 +478,6 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob(Job* pJob)
-{
-  bool bResult = Api::bSpawnJob(pJob);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 bool AM::bSpawnJob_connector(Job* pJob)
 {
   bool bResult = Api::bSpawnJob_connector(pJob);

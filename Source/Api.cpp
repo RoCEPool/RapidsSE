@@ -334,21 +334,6 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob(Job* pJob)
-{
-
-  if (! bSpawnTheJob(pJob))
-    return false;
-  
-  Scheduler::vTaskApi_AddGeneral_connector(pJob->pTask());
-  
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_connector(Job* pJob)
 {
 
@@ -532,7 +517,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   
 
   // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob(pJob));
+  IGNORE_RETURN(Api::bSpawnJob_prompt(pJob));
   //! ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
