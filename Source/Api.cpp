@@ -432,13 +432,14 @@ bool Api::bSpawnJob_system(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bPerformNextPhase(Job* pJob)
+bool Api::bScheduleNextPhase(Job* pJobRef)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bSpawnTheJob(pJobRef)) // POORLY NAMED
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_2pc(pJob->pTask());
+  Task* pTask = pJobRef->pTask();
+  Scheduler::vTaskApi_AddGeneral_nextPhase(pTask);
   
   return true;
 }

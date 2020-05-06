@@ -57,7 +57,7 @@
 
   // execute the job on this participating node
   JM_SEED_EXE JobRef[] job.seed!
-  JobRef[] job.performNextPhase // job in participant list ; perform next phase
+  JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
   JobRef[].return
 ;
 

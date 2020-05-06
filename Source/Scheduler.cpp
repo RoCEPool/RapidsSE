@@ -554,19 +554,19 @@ void Scheduler::vTaskApi_AddGeneral_system(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_2pc(Task* pNewTask)
+void Scheduler::vTaskApi_AddGeneral_nextPhase(Task* pNewTaskOfRefJob)
 {
   //
   // called from Api::bSpawnJob()
   //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TS_NONE == pNewTaskOfRefJob->eState());
+  RASSERT(QK_NONE == pNewTaskOfRefJob->eQueue());
+  RASSERT(SA_NONE == pNewTaskOfRefJob->eSchedulerAct());
   
-  RASSERT(EP_RECEIVED == pNewTask->eEntryPoint());
-  pNewTask->vState(TS_DESISTED);
+  pNewTaskOfRefJob->vEntryPoint(EP_NEXTPHASE);
+  pNewTaskOfRefJob->vState(TS_DESISTED);
 
-  vScheduleTask(pNewTask);
+  vScheduleTask(pNewTaskOfRefJob);
 }
 /*----------------------------------------------------------------------------*/
 /* set dedicated task to be executing by dedicated thread                     */

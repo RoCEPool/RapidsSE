@@ -98,7 +98,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalCompletion"_Stz, &Step::vJobSignalCompletion);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
-  vAddStep("job.performNextPhase"_Stz, &Step::vJobPerformNextPhase);
+  vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
@@ -1554,27 +1554,28 @@ void Step::vJobSlotFetch(void)
 /*----------------------------------------------------------------------------*/
 /* job.spawn -- spawn the job on the stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobPerformNextPhase(void)
+void Step::vJobScheduleNextPhase(void)
 {
   ENTRY();
   
+  // example: this job is _execute and the jobRef is bootcluster (in ptp list)
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJobRef = _pJob(m_pDataStack->pPopPtr(__func__));
   
   AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJob->eClass()],
+              aCN[pJobRef->eClass()],
               aCN[m_pTask->m_pJob->eClass()],
               C_VARGS_END);
 
-  Task* pTask = pJob->pTask();
+  Task* pTask = pJobRef->pTask();
   if ( pTask) {
-    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
+    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJobRef->szJobNm());
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
   
-  IGNORE_RETURN(AM::bPerformNextPhase(pJob));
+  IGNORE_RETURN(AM::bScheduleNextPhase(pJobRef));
   
   EXIT();
 }

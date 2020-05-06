@@ -42,7 +42,7 @@ namespace Threads
     static void vTaskApi_AddGeneral_prompt(Task* pNewTask);
     static void vTaskApi_AddGeneral_received(Task* pNewTask);
     static void vTaskApi_AddGeneral_system(Task* pNewTask);
-    static void vTaskApi_AddGeneral_2pc(Task* pNewTask);
+    static void vTaskApi_AddGeneral_nextPhase(Task* pNewTask);
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
