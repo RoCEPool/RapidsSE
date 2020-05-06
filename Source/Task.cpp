@@ -120,6 +120,8 @@ void Task::vInit(void)
   
   m_pForth       = nullptr;
   m_pRegSet      = nullptr;
+  
+  m_pProfile     = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +142,8 @@ Task::~Task(void) noexcept(false)
     Job::vDeleteJobViaClass(m_pJob);
   
   delete m_pRegSet;
+  
+  delete m_pProfile;
   
   delete m_pMutex;
   
@@ -540,9 +544,10 @@ void Task::vInitExeContext(void)
   if (m_pForth)
     return;
   
-  m_pRegSet = new RegSet(this);
-  m_pForth  = new Forth(this,m_pRegSet);
-  
+  m_pRegSet  = new RegSet(this);
+  m_pForth   = new Forth(this,m_pRegSet);
+  m_pProfile = new Profile;
+
 //  Compiler* pCompiler =
 //    (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
 //  

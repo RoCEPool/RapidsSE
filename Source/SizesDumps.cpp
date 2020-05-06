@@ -541,7 +541,7 @@ i8 gnClassSize[]
   /* */ sizeof(Planner),            // CN_PLANNER
   /* */ sizeof(Predicate),          // CN_PREDICATE
   /* */ sizeof(PredicateVec),       // CN_PREDICATEVEC
-  /* */ 0,//sizeof(Profile),       // CN_PROFILE
+  /* */ sizeof(Profile),            // CN_PROFILE
   /* */ sizeof(PsxThd),             // CN_PSXTHD
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL

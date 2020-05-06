@@ -39,16 +39,20 @@ namespace Tasks
 
     i8           m_iTraceMask;   // tracing mask
     eCN          m_eWhatJob;     // what job this task is/was for (debugging)
+  
+    Profile*     m_pProfile;     // runtime profile
 
     // always last
     Footer m_xFooter;
 
+  private:
+    void vInit(void);
+  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
     Task(Job* pJob);
-    void vInit(void);
     ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);
