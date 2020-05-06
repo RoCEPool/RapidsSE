@@ -377,6 +377,34 @@ bool Api::bSpawnJob_internal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_op(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_op(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_other(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_other(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_prompt(Job* pJob)
 {
 

@@ -481,6 +481,40 @@ void Scheduler::vTaskApi_AddGeneral_internal(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_op(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_other(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
 void Scheduler::vTaskApi_AddGeneral_prompt(Task* pNewTask)
 {
   //
