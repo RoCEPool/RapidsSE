@@ -67,10 +67,25 @@ Task::Task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vInit();
+  m_pJob         = pJob;
+  m_pThread      = nullptr;
+  m_pMutex       = new Mutex(MK_TASK,this);
+
+  m_eState       = TS_NONE;
+  m_eScheduler   = SA_NONE;
+  m_eQueue       = QK_NONE;
+  m_eEntryPoint  = EP_NONE;
+
+  m_oAcksRmg.vCheckInit();
+  // m_oWakeup
   
-  m_pJob     = pJob;
-  m_eWhatJob = pJob->eClass();
+  m_pForth       = nullptr;
+  m_pRegSet      = nullptr;
+
+  m_iTraceMask   = C_TRACE_NONE;
+  m_eWhatJob     = pJob->eClass();
+
+  m_pProfile     = nullptr;
 
   _checkInitialised_(CN_TASK);
   
@@ -92,36 +107,6 @@ Task::Task(Job* pJob)
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* init task                                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vInit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pJob         = nullptr;
-
-  m_pThread      = nullptr;
-  m_pMutex       = new Mutex(MK_TASK,this);
-  
-  // m_oDicStack
-
-  m_eState       = TS_NONE;
-  m_eScheduler   = SA_NONE;
-  m_eQueue       = QK_NONE;
-  m_eEntryPoint  = EP_NONE;
-  
-  m_oAcksRmg.vCheckInit();
-  // m_oWakeup
-  
-  m_iTraceMask     = C_TRACE_NONE;
-  
-  m_pForth       = nullptr;
-  m_pRegSet      = nullptr;
-  
-  m_pProfile     = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

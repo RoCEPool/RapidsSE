@@ -44,9 +44,6 @@ namespace Tasks
 
     // always last
     Footer m_xFooter;
-
-  private:
-    void vInit(void);
   
   public:
     void* operator new(size_t);
