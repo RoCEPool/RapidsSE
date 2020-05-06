@@ -268,7 +268,7 @@ namespace Oblique
     static bool bSpawnJob_other(Job* pJob);
     static bool bSpawnJob_prompt(Job* pJob);
     static bool bSpawnJob_received(Job* pJob);
-    static bool bSpawnJob_2pc(Job* pJob);
+    static bool bPerformNextPhase(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -22,7 +22,7 @@ namespace Interface
   static bool bSpawnJob_prompt(Job* pJob);
   static bool bSpawnJob_received(Job* pJob);
   static bool bSpawnJob_system(Job* pJob);
-  static bool bSpawnJob_2pc(Job* pJob);
+  static bool bPerformNextPhase(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob);
   
   static bool bSpawnJobDedicated(Job* pJob);

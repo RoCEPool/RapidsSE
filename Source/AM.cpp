@@ -538,9 +538,9 @@ bool AM::bSpawnJob_received(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_2pc(Job* pJob)
+bool AM::bPerformNextPhase(Job* pJob)
 {
-  bool bResult = Api::bSpawnJob_2pc(pJob);
+  bool bResult = Api::bPerformNextPhase(pJob);
   
   return bResult;
 }

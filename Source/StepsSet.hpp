@@ -602,7 +602,7 @@ public:
   void vJobShow(void);
   void vJobSignalCompletion(void);
   void vJobSlotFetch(void);
-  void vJobSpawn2PC(void);
+  void vJobPerformNextPhase(void);
   void vJobSpawnReceived(void);
   void vJobSpawnDedicated(void);
   void vJobSpawnUniversal(void);

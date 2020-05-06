@@ -563,7 +563,7 @@ void Scheduler::vTaskApi_AddGeneral_2pc(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
-  pNewTask->vEntryPoint(EP_2PC);
+  RASSERT(EP_RECEIVED == pNewTask->eEntryPoint());
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);

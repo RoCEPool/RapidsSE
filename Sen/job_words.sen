@@ -180,9 +180,10 @@
 /*----------------------------------------------------------------------------*/
 /* send job (to the node which is in task)                                    */
 /*----------------------------------------------------------------------------*/
-: job.send ( pJob -- )
+: job.send params| pJob |
 
-  params| pJob |
+
+  //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
 
   socket[] locals| pSocket |
 

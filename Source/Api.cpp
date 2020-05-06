@@ -432,7 +432,7 @@ bool Api::bSpawnJob_system(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_2pc(Job* pJob)
+bool Api::bPerformNextPhase(Job* pJob)
 {
 
   if (! bSpawnTheJob(pJob))

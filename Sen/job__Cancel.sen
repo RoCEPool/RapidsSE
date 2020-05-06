@@ -59,7 +59,7 @@
 
   // execute the cancel seed of the job on this participating node
   JM_SEED_CAN JobRef[] job.seed!
-  JobRef[] job.spawn_2PC
+  JobRef[] job.performNextPhase
   JobRef[].return
 ;
 
