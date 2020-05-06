@@ -440,7 +440,7 @@ bool Api::bScheduleNextPhase(Job* pJobRef)
     return false;
   
   Task* pTask = pJobRef->pTask();
-  Scheduler::vTaskApi_AddGeneral_nextPhase(pTask);
+  Scheduler::vTaskCross_ScheduleNextPhase(pTask);
   
   return true;
 }
