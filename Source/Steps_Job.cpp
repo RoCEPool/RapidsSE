@@ -1569,11 +1569,12 @@ void Step::vJobScheduleNextPhase(void)
               C_VARGS_END);
 
   Task* pTask = pJobRef->pTask();
-  if ( pTask) {
-    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJobRef->szJobNm());
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(SA_NONE == pTask->eSchedulerAct());
-  }
+  RASSERT(! pTask);
+//  if ( pTask) {
+//    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJobRef->szJobNm());
+//    RASSERT(QK_NONE == pTask->eQueue());
+//    RASSERT(SA_NONE == pTask->eSchedulerAct());
+//  }
   
   IGNORE_RETURN(AM::bScheduleNextPhase(pJobRef));
   
