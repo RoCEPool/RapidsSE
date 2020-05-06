@@ -14,6 +14,7 @@ namespace Tasks
 
 //------------------------------------------------------------------------------
 
+#include "RegSet.hpp"
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskQueue.hpp"
