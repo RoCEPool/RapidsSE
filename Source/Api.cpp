@@ -433,13 +433,27 @@ bool Api::bSpawnJob_received(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_system(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_system(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_2pc(Job* pJob)
 {
 
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_received(pJob->pTask());
+  Scheduler::vTaskApi_AddGeneral_2pc(pJob->pTask());
   
   return true;
 }

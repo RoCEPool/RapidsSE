@@ -1378,7 +1378,7 @@ void SePrompt::vSpawnJob(void)
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
   
-  bool bSpawned = Api::bSpawnJob(m_pJob);
+  bool bSpawned = Api::bSpawnJob_prompt(m_pJob);
   RASSERT(bSpawned);
 }
 

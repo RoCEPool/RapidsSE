@@ -146,7 +146,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
-  IGNORE_RETURN(Api::bSpawnJob_internal(pJob_SubFetch));
+  IGNORE_RETURN(Api::bSpawnJob_other(pJob_SubFetch));
 
   EXIT();
 }

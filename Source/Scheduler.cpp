@@ -553,6 +553,24 @@ void Scheduler::vTaskApi_AddGeneral_received(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_system(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vEntryPoint(EP_SYSTEM);
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
 void Scheduler::vTaskApi_AddGeneral_2pc(Task* pNewTask)
 {
   //

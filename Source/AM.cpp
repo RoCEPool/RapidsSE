@@ -508,6 +508,26 @@ bool AM::bSpawnJob_internal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_op(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_op(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_other(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_other(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
 bool AM::bSpawnJob_prompt(Job* pJob)
 {
   bool bResult = Api::bSpawnJob_prompt(pJob);

@@ -1558,7 +1558,7 @@ void Step::vJobSpawn2PC(void)
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
   
-  IGNORE_RETURN(Api::bSpawnJob(pJob));
+  IGNORE_RETURN(AM::bSpawnJob_2pc(pJob));
   
   EXIT();
 }
@@ -1586,7 +1586,7 @@ void Step::vJobSpawnReceived(void)
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
   
-  IGNORE_RETURN(Api::bSpawnJob(pJob));
+  IGNORE_RETURN(Api::bSpawnJob_received(pJob));
   
   EXIT();
 }
@@ -1660,7 +1660,7 @@ void Step::vJobSpawnUniversal(void)
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(SA_NONE == pTask->eSchedulerAct());
   }
-  IGNORE_RETURN(Api::bSpawnJob(pJob_Universal));
+  IGNORE_RETURN(Api::bSpawnJob_other(pJob_Universal));
 
   EXIT();
 }

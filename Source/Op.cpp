@@ -988,7 +988,7 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_API);
   //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_TAGS);
 
-  bool bSpawned = AM::bSpawnJob(m_pOpJob);
+  bool bSpawned = AM::bSpawnJob_op(m_pOpJob);
   
   return bSpawned;
 }
