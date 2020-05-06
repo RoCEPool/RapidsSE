@@ -442,9 +442,9 @@ void Scheduler::vTaskApi_AddGeneral(Task* pNewTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set dedicated task to be executed by dedicated thread                      */
+/* set dedicated task to be executing by dedicated thread                     */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_ExecuteDedicated(Task* pNewTask, Thread* pThread)
+void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated()

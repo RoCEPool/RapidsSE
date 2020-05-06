@@ -12,14 +12,14 @@ namespace Threads
     // self task transition
   
   public:
-    static void vTaskSelf_LoopTransition(Task* pTask, Thread* pThread);
+    static void vTaskSelf_LoopTransition(Task* pKnownTask, Thread* pThread);
   private:
-    static void vTaskSelf_BideForOperand(Task* pTask, Thread* pThread);
-    static void vTaskSelf_DeleteThisTask(Task* pTask, Thread* pThread);
-    static void vTaskSelf_SignalCompletion(Task* pTask, Thread* pThread);
-    static void vTaskSelf_SleepSomeTime(Task* pTask, Thread* pThread);
-    static void vTaskSelf_WaitForResume(Task* pTask, Thread* pThread);
-    static void vTaskSelf_YieldForOthers(Task* pTask, Thread* pThread);
+    static void vTaskSelf_BideForOperand(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_DeleteThisTask(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_SignalCompletion(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_SleepSomeTime(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_WaitForResume(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_YieldForOthers(Task* pKnownTask, Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
@@ -35,7 +35,7 @@ namespace Threads
   public:
     static void vTaskApi_AddDedicated(Task* pNewTask);
     static void vTaskApi_AddGeneral(Task* pNewTask);
-    static void vTaskApi_ExecuteDedicated(Task* pNewTask, Thread* pThread);
+    static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
@@ -67,14 +67,14 @@ namespace Threads
     // implementation for threads
   
   private:
-    static bool bThread_AssignIdle(Task* pTask);
+    static bool bThread_AssignIdle(Task* pKnownTask);
     static void vThread_WaitAssignment(Thread* pThread);
   
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // core task scheduler
    
    private:
-     static void vScheduleTask(Task* pTask);
+     static void vScheduleTask(Task* pKnownTask);
   
 
   };
