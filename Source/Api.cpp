@@ -433,14 +433,14 @@ bool Api::bSpawnJob_system(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bScheduleNextPhase(Job* pJobRef)
+bool Api::bScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
-
-  if (! bSpawnTheJob(pJobRef)) // POORLY NAMED
+  // THIS NOW DOESNT READ CORRECTLY
+  if (! bSpawnTheJob(pParticipantJob)) // POORLY NAMED
     return false;
   
-  Task* pTask = pJobRef->pTask();
-  Scheduler::vTaskCross_ScheduleNextPhase(pTask);
+  Task* pTaskParticipant = pParticipantJob->pTask();
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
   
   return true;
 }

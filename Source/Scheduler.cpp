@@ -348,7 +348,8 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant)
+void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
+                                             Task* pActiviating2PcTask)
 {
   //
   // called from Api::bSpawnJob()
