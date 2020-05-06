@@ -78,7 +78,7 @@
     // -- -- -- -- -- -- -- --
     // log received job
 
-    pReceivedJob job_receiver::jobReceived
+    //pReceivedJob job_receiver::jobReceived
 
     // -- -- -- -- -- -- -- --
     // run post receive function

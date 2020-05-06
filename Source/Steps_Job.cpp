@@ -1063,6 +1063,10 @@ void Step::vJobPostRecv(void)
   
   if (aJobClass->m_fpRecv)
     (*aJobClass->m_fpRecv)(pJob);
+  else {
+    vTrace("job.postRecv: %s\n"_Stz, pJob->szJobNm());
+    RASSERT(0);
+  }
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
