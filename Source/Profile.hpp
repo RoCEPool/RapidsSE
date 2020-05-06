@@ -9,6 +9,8 @@ namespace Tasks
   {
   private:
     
+    RU_Memory m_oMemUse;
+  
     // must be last
     Footer m_xFooter;
     
@@ -19,6 +21,8 @@ namespace Tasks
     Profile(void);
    ~Profile(void) noexcept(false);
     
+    RU_Memory* pMemUse();
+
     Footer* aFooter(void);
   };
   

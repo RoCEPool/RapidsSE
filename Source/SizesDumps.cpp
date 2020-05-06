@@ -583,7 +583,7 @@ i8 gnClassSize[]
   /* */ 0,//sizeof(RU_Cpu),            // CN_RUCPU
   /* */ 0,//sizeof(RU_Dir),            // CN_RUDIR
   /* */ 0,//sizeof(RU_File),            // CN_RUFILE
-  /* */ 0,//sizeof(RU_Memory),            // CN_RUMEMORY
+  /* */ sizeof(RU_Memory),          // CN_RUMEMORY
   /* */ 0,//sizeof(RU_Mutex),            // CN_RUMUTEX
   /* */ 0,//sizeof(RU_Pass),            // CN_RUPASS
   /* */ 0,//sizeof(RU_Socket),            // CN_RUSOCKET
