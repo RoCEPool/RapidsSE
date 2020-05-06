@@ -467,18 +467,6 @@ void Scheduler::vTaskApi_ExecuteDedicated(Task* pNewTask, Thread* pThread)
   pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
-/*----------------------------------------------------------------------------*/
-/* set number of acks required by (soon to be) waiting task                   */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired)
-{
-  //
-  // called from ???
-  //
-  
-  pTask->vAcksRmg(nAcksRequired);
-}
-
 
 
 // /////////////////////////////////////////////////////////////////////////////

@@ -36,7 +36,6 @@ namespace Threads
     static void vTaskApi_AddDedicated(Task* pNewTask);
     static void vTaskApi_AddGeneral(Task* pNewTask);
     static void vTaskApi_ExecuteDedicated(Task* pNewTask, Thread* pThread);
-    static void vTaskApi_RequiredAcks(Task* pNewTask, i8 nAcksRequired);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface

@@ -60,15 +60,15 @@ void Step::vTaskAcksStore(void)
 {
   ENTRY();
   
-  Task* pGivenTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
   
-  ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
+  ASSERT(0 == pTask->m_oAcksRmg.iPrintOnlyValue());
 
-  RASSERT(pGivenTask->bIsLocked());
+  RASSERT(pTask->bIsLocked());
   
-  Job* pJob = pGivenTask->m_pJob;
+  Job* pJob = pTask->m_pJob;
   
   if (pJob && pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,"Setting acks: %s %p to %lld"_Stz,
@@ -78,7 +78,7 @@ void Step::vTaskAcksStore(void)
     AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
-  Scheduler::vTaskApi_RequiredAcks(pGivenTask,nAcksRequired);
+  pTask->vAcksRmg(nAcksRequired);
   
   EXIT();
 }
