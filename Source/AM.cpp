@@ -476,11 +476,61 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
 }
 
 /*----------------------------------------------------------------------------*/
-/* state diagram                                                              */
+/* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
 bool AM::bSpawnJob(Job* pJob)
 {
   bool bResult = Api::bSpawnJob(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_connector(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_connector(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_internal(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_internal(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_prompt(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_prompt(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_received(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_received(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_2pc(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_2pc(pJob);
   
   return bResult;
 }
