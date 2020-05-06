@@ -490,6 +490,7 @@ void Scheduler::vTaskApi_AddGeneral_op(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_OP);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -507,6 +508,7 @@ void Scheduler::vTaskApi_AddGeneral_other(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
+  pNewTask->vEntryPoint(EP_OTHER);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
