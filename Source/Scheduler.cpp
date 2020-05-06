@@ -442,6 +442,90 @@ void Scheduler::vTaskApi_AddGeneral(Task* pNewTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_connector(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_internal(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_prompt(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_received(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddGeneral_2pc(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
+  
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executing by dedicated thread                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)

@@ -57,7 +57,7 @@
 
   // execute the job on this participating node
   JM_SEED_EXE JobRef[] job.seed!
-  JobRef[] job.spawn
+  JobRef[] job.spawn_2PC
   JobRef[].return
 ;
 

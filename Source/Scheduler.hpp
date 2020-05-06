@@ -35,6 +35,11 @@ namespace Threads
   public:
     static void vTaskApi_AddDedicated(Task* pNewTask);
     static void vTaskApi_AddGeneral(Task* pNewTask);
+    static void vTaskApi_AddGeneral_connector(Task* pNewTask);
+    static void vTaskApi_AddGeneral_internal(Task* pNewTask);
+    static void vTaskApi_AddGeneral_prompt(Task* pNewTask);
+    static void vTaskApi_AddGeneral_received(Task* pNewTask);
+    static void vTaskApi_AddGeneral_2pc(Task* pNewTask);
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

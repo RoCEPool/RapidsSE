@@ -97,7 +97,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalCompletion"_Stz, &Step::vJobSignalCompletion);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
-  vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
+  vAddStep("job.spawn_2PC"_Stz,        &Step::vJobSpawn2PC);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
@@ -1534,7 +1534,7 @@ void Step::vJobSlotFetch(void)
 /*----------------------------------------------------------------------------*/
 /* job.spawn -- spawn the job on the stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSpawn(void)
+void Step::vJobSpawn2PC(void)
 {
   ENTRY();
   
