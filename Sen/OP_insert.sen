@@ -11,16 +11,15 @@
 
   //"Operand:- ZK_CRWBUFFER" .verbose
 
-  // to go
-  Pipein[] to Operand[]
-  nullptr to Pipein[]
-
   // insert the buffer into the table ptn
   tablePtn[].get tablePtnGrabWrite2
-  Operand[].insertIntoTable
+  Pipein[] tablePtn[].appendBuffer
   tablePtn[].get tablePtnDropWrite2
 
-  // increement no of buffers inserted
+  // null the Pipein
+  nullptr to Pipein[]
+
+  // increment no of buffers inserted
   Counter0[] 1 + to Counter0[]
 
   // send out an infoSet of ProgressUnits every 10 buffers

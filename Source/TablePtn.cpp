@@ -45,14 +45,14 @@ void TablePtn::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TablePtn::TablePtn(void)
+TablePtn::TablePtn(Table* pTable)
 : Object(CN_TABLEPTN)
 , m_okLock(LK_PARTITION,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   m_iPartitionId = -1;
-  m_pTable = nullptr;
+  m_pTable = pTable;
   
   m_nSubLoadersDone  = 0;
   m_nSubInsertersDone = 0;
@@ -315,9 +315,26 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
 #endif
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pCrwBuffer->nRowCount() == 0) {
+    delete pCrwBuffer;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark crwBuffer as permanent
+  pCrwBuffer->vIsPermanent(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the table in the buffer
+  pCrwBuffer->vTable(m_pTable);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT(m_okLock.bIsLocked());
-  //m_okLock.vGrabWrite();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the root buffer
   if (m_pRootCrwBuffer == nullptr) {
     ASSERT( ! m_pCurrentCrwBuffer )
     m_pRootCrwBuffer = pCrwBuffer;
@@ -328,9 +345,14 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the root buffer
   m_pCurrentCrwBuffer = pCrwBuffer;
   
-  //m_okLock.vDropWrite();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now insert entries from the buffer into the indexes
+  vInsertIndexEntries(pCrwBuffer);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -850,16 +872,6 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
 Table* TablePtn::pTable(void)
@@ -1165,6 +1177,43 @@ void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(TablePtn);
+
+
+/*----------------------------------------------------------------------------*/
+/*--- TO GO ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append a row buffer into the TablePtn                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAppendBufferOLD(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  RASSERT(m_okLock.bIsLocked());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the root buffer
+  if (m_pRootCrwBuffer == nullptr) {
+    ASSERT( ! m_pCurrentCrwBuffer )
+    m_pRootCrwBuffer = pCrwBuffer;
+  }
+  else {
+    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the root buffer
+  m_pCurrentCrwBuffer = pCrwBuffer;
+  
+}
 
 /*============================================================================*/
 /* end                                                                        */

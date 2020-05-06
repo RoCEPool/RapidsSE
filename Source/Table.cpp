@@ -81,7 +81,7 @@ Table::Table(void)
   // create the table partitions
   for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
     
-    TablePtn* pPartition = new TablePtn;
+    TablePtn* pPartition = new TablePtn(this);
     m_pTablePtnVec->vAdd(pPartition);
     
     i8 iPartition = TablePtn::iSlotToPartition(i_Slot);
@@ -231,52 +231,6 @@ void Table::vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows)
   nBuffersTotal += nBuffers;
 }
 
-/*----------------------------------------------------------------------------*/
-/* insert entries from a row buffer into the table indexes                    */
-/*----------------------------------------------------------------------------*/
-void Table::vAppendBufferInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
-{ //# indexTuning
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // This function is invoked when we insert rows into a table via a
-  // begin/insert/end and via the API's insert-select
-  
-  ASSERT(iSlot < AM::nSlotsPerNode());
-  
-  // if buffer has 0 entries (only head) then should be last buffer
-  if (pCrwBuffer->nRowCount() == 0) {
-    delete pCrwBuffer;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent before its appended to the table
-  
-  pCrwBuffer->vIsPermanent(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the buffer entries into the table
-  
-  TablePtn* pPartition = this->pPartition(iSlot);
-  pPartition->vAppendBuffer(pCrwBuffer);
-  
-  pPartition->vInsertIndexEntries(pCrwBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compact index                                                              */
-/*----------------------------------------------------------------------------*/
-void Table::vCompactIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
-    IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
-    pIndexTree->vCompact();
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* create ptn stream def                                                      */
@@ -832,6 +786,58 @@ Footer* Table::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact index                                                              */
+/*----------------------------------------------------------------------------*/
+void Table::vCompactIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
+    IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
+    pIndexTree->vCompact();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*--- TO GO ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert entries from a row buffer into the table indexes                    */
+/*----------------------------------------------------------------------------*/
+//! TO GO
+void Table::vAppendBufferInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
+{ //# indexTuning
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // This function is invoked when we insert rows into a table via a
+  // begin/insert/end and via the API's insert-select
+  
+  ASSERT(iSlot < AM::nSlotsPerNode());
+  
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pCrwBuffer->nRowCount() == 0) {
+    delete pCrwBuffer;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark crwBuffer as permanent before its appended to the table
+  
+  pCrwBuffer->vIsPermanent(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the buffer entries into the table
+  
+  TablePtn* pPartition = this->pPartition(iSlot);
+  pPartition->vAppendBufferOLD(pCrwBuffer);
+  
+  pPartition->vInsertIndexEntries(pCrwBuffer);
 }
 
 /*============================================================================*/
