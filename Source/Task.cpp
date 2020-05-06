@@ -129,7 +129,7 @@ Task::~Task(void) noexcept(false)
 
   RASSERT(! m_pThread);
 
-  RASSERT(TS_COMPLETED == m_eState);
+  RASSERT(TS_DELETING == m_eState);
   //RASSERT(! m_pJob);
   RASSERT(! bWordBody());
 

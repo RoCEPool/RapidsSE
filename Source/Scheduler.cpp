@@ -137,7 +137,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete case: task is to be deleted
 
-  pSelfTask->vState(TS_COMPLETED);
+  pSelfTask->vState(TS_DELETING);
   
   delete pSelfTask;
 
