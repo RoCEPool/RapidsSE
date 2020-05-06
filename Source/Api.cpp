@@ -336,6 +336,91 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Job* pJob)
 {
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_connector(pJob->pTask());
+  
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_connector(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_connector(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_internal(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_internal(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_prompt(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_prompt(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_received(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_received(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob_2pc(Job* pJob)
+{
+
+  if (! bSpawnTheJob(pJob))
+    return false;
+  
+  Scheduler::vTaskApi_AddGeneral_received(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnTheJob(Job* pJob)
+{
   //ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
 
@@ -379,8 +464,6 @@ bool Api::bSpawnJob(Job* pJob)
     Correctness::vDebugPoint();
   
   pJob->vTimerStart();
-
-  Scheduler::vTaskApi_AddGeneral(pJob->pTask());
   
   return true;
 }
