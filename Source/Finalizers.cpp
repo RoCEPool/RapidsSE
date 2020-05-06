@@ -236,7 +236,16 @@ pFINALIZE *gpFinalize[]
   /*105 */ &Finalize::vUndefined,         // CN_ROWONCE
   /*    */ &Finalize::vUndefined,         // CN_ROWSINGLE
   /*    */ &Finalize::vUndefined,         // CN_ROWTRAY
-  
+  /*    */ &Finalize::vUndefined,         // CN_RUCPU
+  /*    */ &Finalize::vUndefined,         // CN_RUDIR
+  /*    */ &Finalize::vUndefined,         // CN_RUFILE
+  /*    */ &Finalize::vUndefined,         // CN_RUMEMORY
+  /*    */ &Finalize::vUndefined,         // CN_RUMUTEX
+  /*    */ &Finalize::vUndefined,         // CN_RUPASS
+  /*    */ &Finalize::vUndefined,         // CN_RUSOCKET
+  /*    */ &Finalize::vUndefined,         // CN_RUTIME
+  /*    */ &Finalize::vUndefined,         // CN_RUWORK
+
   /*    */ &Finalize::vUndefined,         // CN__S__
   /*    */ &Finalize::vUndefined,         // CN_SCHEMA
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST

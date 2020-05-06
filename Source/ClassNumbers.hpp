@@ -239,7 +239,16 @@ enum eCN : u2 // Class Number
   /* 196 0x0C4      216B Heap:S */ CN_ROWONCE,
   /* 197 0x0C5  1043608B Heap:L */ CN_ROWSINGLE,
   /* 197 0x0C5  1043608B Heap:L */ CN_ROWTRAY,
-  
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUCPU,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUDIR,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUFILE,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUMEMORY,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUMUTEX,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUPASS,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUSOCKET,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUTIME,
+  /* 197 0x0C5  1043608B Heap:L */ CN_RUWORK,
+
   /* 198 0x0C6       19B Heap:I */ CN__S__,
   /* 199 0x0C7       16B Heap:S */ CN_SCHEMA,
   /* 200 0x0C8    50336B Heap:L */ CN_SCHEMATEST,
@@ -570,7 +579,16 @@ static Stz* aCN[]
   /* 196 0x0C4 */ "ROWONCE"_Stz,             // CN_ROWONCE
   /* 197 0x0C5 */ "ROWSINGLE"_Stz,           // CN_ROWSINGLE
   /* 197 0x0C5 */ "ROWTRAY"_Stz,             // CN_ROWTRAY
-  
+  /* 197 0x0C5 */ "RUCPU"_Stz,               // CN_RUCPU
+  /* 197 0x0C5 */ "RUDIR"_Stz,               // CN_RUDIR
+  /* 197 0x0C5 */ "RUFILE"_Stz,              // CN_RUFILE
+  /* 197 0x0C5 */ "RUMEMORY"_Stz,            // CN_RUMEMORY
+  /* 197 0x0C5 */ "RUMUTEX"_Stz,             // CN_RUMUTEX
+  /* 197 0x0C5 */ "RUPASS"_Stz,              // CN_RUPASS
+  /* 197 0x0C5 */ "RUSOCKET"_Stz,            // CN_RUSOCKET
+  /* 197 0x0C5 */ "RUTIME"_Stz,              // CN_RUTIME
+  /* 197 0x0C5 */ "RUWORK"_Stz,              // CN_RUWORK
+
   /* 198 0x0C6 */ "_S__"_Stz,                // CN__S__
   /* 199 0x0C7 */ "SCHEMA"_Stz,              // CN_SCHEMA
   /* 200 0x0C8 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST

@@ -240,7 +240,16 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_ROWONCE
   /* */ &Dump::vUndefined,       // CN_ROWSINGLE
   /* */ &Dump::vUndefined,       // CN_ROWTRAY
-  
+  /* */ &Dump::vUndefined,       // CN_RUCPU
+  /* */ &Dump::vUndefined,       // CN_RUDIR
+  /* */ &Dump::vUndefined,       // CN_RUFILE
+  /* */ &Dump::vUndefined,       // CN_RUMEMORY
+  /* */ &Dump::vUndefined,       // CN_RUMUTEX
+  /* */ &Dump::vUndefined,       // CN_RUPASS
+  /* */ &Dump::vUndefined,       // CN_RUSOCKET
+  /* */ &Dump::vUndefined,       // CN_RUTIME
+  /* */ &Dump::vUndefined,       // CN_RUWORK
+
   /* */ &Dump::vInvalid,         // CN__S__
   /* */ &Dump::vUndefined,       // CN_SCHEMA
   /* */ &Dump::vUndefined,       // CN_SCHEMATEST
@@ -571,7 +580,16 @@ i8 gnClassSize[]
   /* */ sizeof(RowOnce),            // CN_ROWONCE
   /* */ sizeof(RowSingle),          // CN_ROWSINGLE
   /* */ sizeof(RowTray),            // CN_ROWTRAY
-  
+  /* */ 0,//sizeof(RU_Cpu),            // CN_RUCPU
+  /* */ 0,//sizeof(RU_Dir),            // CN_RUDIR
+  /* */ 0,//sizeof(RU_File),            // CN_RUFILE
+  /* */ 0,//sizeof(RU_Memory),            // CN_RUMEMORY
+  /* */ 0,//sizeof(RU_Mutex),            // CN_RUMUTEX
+  /* */ 0,//sizeof(RU_Pass),            // CN_RUPASS
+  /* */ 0,//sizeof(RU_Socket),            // CN_RUSOCKET
+  /* */ 0,//sizeof(RU_Time),            // CN_RUTIME
+  /* */ 0,//sizeof(RU_Word),            // CN_RUWORD
+
   /* */ 'S' - ('A' - 1),            // CN__S__
   /* */ sizeof(Schema),             // CN_SCHEMA
   /* */ sizeof(SchemaTest),         // CN_SCHEMATEST
@@ -906,7 +924,16 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWSINGLE
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWTRAY
-  
+  /* */ HT_INVALID,           // CN_RUCPU
+  /* */ HT_INVALID,           // CN_RUDIR
+  /* */ HT_INVALID,           // CN_RUFILE
+  /* */ HT_INVALID,           // CN_RUMEMORY
+  /* */ HT_INVALID,           // CN_RUMUTEX
+  /* */ HT_INVALID,           // CN_RUPASS
+  /* */ HT_INVALID,           // CN_RUSOCKET
+  /* */ HT_INVALID,           // CN_RUTIME
+  /* */ HT_INVALID,           // CN_RUWORK
+
   /* */ HT_INVALID,           // CN__S__
   /* */ HT_TRANSIENT_SMALL,   // CN_SCHEMA
   /* */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
