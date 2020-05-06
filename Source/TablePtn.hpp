@@ -43,7 +43,7 @@ namespace Partitioning
     void* operator new(size_t);
     void  operator delete(void*);
     
-    TablePtn(void);
+    TablePtn(Table* pTable);
     ~TablePtn(void) noexcept(false);
   
     void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
@@ -79,7 +79,6 @@ namespace Partitioning
     void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
     CrwBuffer* pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective);
-    void vTable(Table* pTable);
     Table* pTable(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
@@ -94,6 +93,9 @@ namespace Partitioning
     i8   nWriteBehindBuffers(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
 
+    //! TO GO
+    void vAppendBufferOLD(CrwBuffer* pCrwBuffer);
+    
   private:
     Footer* aFooter(void);
   };

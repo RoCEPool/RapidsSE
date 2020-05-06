@@ -41,7 +41,7 @@ namespace MetaData
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
-    static void  vMonitorPortrait(s48K& sPortrait);
+    static void   vMonitorPortrait(s48K& sPortrait);
     
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);

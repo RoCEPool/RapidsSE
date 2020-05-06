@@ -10,6 +10,8 @@
 void Step::vAddSteps_TablePartition2(void)
 {
   vAddStep("tablePtn[].get"_Stz,              &Step::vTablePtnGet);
+  
+  vAddStep("tablePtn[].appendBuffer"_Stz,     &Step::vTablePtnAppendBuffer);
   vAddStep("tablePtn[].genCrwBuffers"_Stz,    &Step::vTablePtnGenCrwBuffers);
   vAddStep("tablePtn[].inflateCrwBuffer"_Stz, &Step::vTablePtnInflateCrwBuffer);
   vAddStep("tablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
@@ -17,6 +19,25 @@ void Step::vAddSteps_TablePartition2(void)
   vAddStep("tablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
   vAddStep("tablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
   vAddStep("tablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].appendBuffer -- append a buffer into the tablePtn               */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnAppendBuffer(void)
+{
+  ENTRY();
+  
+  // get the CrwBuffer
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
+  
+  // append the buffer to the tablePtn
+  pTablePtn->vAppendBuffer(pCrwBuffer);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
