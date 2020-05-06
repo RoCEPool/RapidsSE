@@ -175,6 +175,8 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(! bIsLocked());
+
   ASSERT(! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
   
   // TODO: shouldn't have to refind it everytime!!!
