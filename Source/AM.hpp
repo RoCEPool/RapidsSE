@@ -261,9 +261,13 @@ namespace Oblique
     static void vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand);
     static Session* pSessionGet(ReqTuple* aReqTuple);
     static void vSetOperand(Job_Operand* pJobOperand, Operand* pOperand);
+  
     static bool bSpawnJob(Job* pJob);
+  
     static bool bSpawnJob_connector(Job* pJob);
     static bool bSpawnJob_internal(Job* pJob);
+    static bool bSpawnJob_op(Job* pJob);
+    static bool bSpawnJob_other(Job* pJob);
     static bool bSpawnJob_prompt(Job* pJob);
     static bool bSpawnJob_received(Job* pJob);
     static bool bSpawnJob_2pc(Job* pJob);
