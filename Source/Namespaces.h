@@ -42,11 +42,11 @@ namespace Esses         { template <int BYTES> class String_t;
                                                                               }
 namespace Focals        { class ReqTuple;                                     }
 namespace Folders       {                                                     }
-namespace Gadgets       { class EnumFlags; class TagSet;                    }
+namespace Gadgets       { class EnumFlags; class TagSet;                      }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
-namespace Host          {                                                     }
-namespace Indexing      { class EntBuffer; class IndexTree;                    }
+namespace Host          { class RU_Memory;                                    }
+namespace Indexing      { class EntBuffer; class IndexTree;                   }
 namespace InfoData      {                                                     }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;

@@ -1574,6 +1574,24 @@ ReqTuple* AM::aReqTuple_tls(void) {
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
+RU_Memory* AM::pRU_Memory(void)
+{
+  Task* pTask = AM::pThisTLSTask();
+  
+  if (! pTask)
+    return nullptr;
+  
+  Profile* pProfile = pTask->pProfile();
+  if (! pProfile)
+    return nullptr;
+  
+  RU_Memory* pRU_Memory = pProfile->pRU_Memory();
+  return pRU_Memory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump routine of word                                                       */
+/*----------------------------------------------------------------------------*/
 void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 {
   s48K sString;

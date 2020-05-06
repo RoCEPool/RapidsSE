@@ -42,11 +42,11 @@ Profile::~Profile(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get memory usage                                                           */
 /*----------------------------------------------------------------------------*/
-RU_Memory* Profile::pMemUse(void)
+RU_Memory* Profile::pRU_Memory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
   
-  return & m_oMemUse;
+  return & m_oRU_Memory;
 }
 
 /*============================================================================*/

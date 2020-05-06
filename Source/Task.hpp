@@ -90,6 +90,7 @@ namespace Tasks
     void vMutexUnlock(void);
     void vMutexWait(void);
     i8&  i_NextRnd(void);
+    Profile* pProfile(void);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     void vRefindJobClass(void);

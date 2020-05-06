@@ -89,9 +89,6 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "Peruse.hpp"
 #include "Numbat.hpp"
 
-#include "RU.hpp"
-#include "RU_Memory.hpp"
-
 #include "SP_AggTimer.hpp"
 #include "SP_Char.hpp"
 #include "SP_Elapsed.hpp"
