@@ -266,6 +266,22 @@ bool Mutex::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if a mutex is locked                                                  */
+/*----------------------------------------------------------------------------*/
+bool Mutex::bIsLockedByCaller(Focal* pLockedby)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  if (! bIsLocked())
+    return false;
+  
+  if (pLockedby != m_pLockedBy)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to lock this mutex by calling thread                               */
 /*----------------------------------------------------------------------------*/
 bool Mutex::bLock(Focal* pLockFor)

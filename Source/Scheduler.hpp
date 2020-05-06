@@ -12,14 +12,14 @@ namespace Threads
     // self task transition
   
   public:
-    static void vTaskLoopTransition(Thread* pThread);
+    static void vTaskSelf_LoopTransition(Task* pTask, Thread* pThread);
   private:
-    static void vTaskSelf_BideForOperand(Task* pTask);
-    static void vTaskSelf_DeleteThisTask(Task* pTask);
-    static void vTaskSelf_SignalCompletion(Task* pTask);
-    static void vTaskSelf_SleepSomeTime(Task* pTask);
-    static void vTaskSelf_WaitForResume(Task* pTask);
-    static void vTaskSelf_YieldForOthers(Task* pTask);
+    static void vTaskSelf_BideForOperand(Task* pTask, Thread* pThread);
+    static void vTaskSelf_DeleteThisTask(Task* pTask, Thread* pThread);
+    static void vTaskSelf_SignalCompletion(Task* pTask, Thread* pThread);
+    static void vTaskSelf_SleepSomeTime(Task* pTask, Thread* pThread);
+    static void vTaskSelf_WaitForResume(Task* pTask, Thread* pThread);
+    static void vTaskSelf_YieldForOthers(Task* pTask, Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
@@ -59,7 +59,7 @@ namespace Threads
     static void vThread_AddGeneralThread(Thread* pThread);
     static void vThread_BeginThreadLoop(Thread* pThread);
     static void vThread_EndThreadLoop(Thread* pThread);
-    static void vThread_PauseTillGeneralThreads(void);
+    static void vThread_NapTillGeneralThreads(void);
     static void vThread_RemoveDedicatedThread(Thread* pThread);
     static void vThread_RemoveGeneralThread(Thread* pThread);
     static void vThread_WaitForTaskAssignment(Thread* pThread);
@@ -68,10 +68,7 @@ namespace Threads
     // implementation for threads
   
   private:
-    static void vThread_AppendIdle(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
-    static void vThread_ContinueSame(Thread* pThread, Task* pTask);
-    static void vThread_UnassignTask(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
   
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* task has returned from task loop, action depends on transition request     */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskLoopTransition(Thread* pThread)
+void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
 {
   //
   // called from Thread::vLoop_general()
@@ -20,33 +20,69 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move task out of executing queue
   
-  Task* pTask = pThread->m_pTask;
-  RASSERT(pThread == pTask->pvThread_DONT_DEREF());
-  RASSERT(TS_EXECUTING == pTask->eState());
-  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
+  RASSERT(pSelfTask == pThread->m_pTask);
+  RASSERT(pThread == pSelfTask->pvThread_DONT_DEREF());
+  RASSERT(TS_EXECUTING == pSelfTask->eState());
+  RASSERT(QK_EXECUTING_SET == pSelfTask->eQueue());
 
   // remove task from the executing set
   
   Queues* pQueues = AM::pQueues();
-  pQueues->vRemoveExecutingSet(pTask);
-  RASSERT(QK_NONE == pTask->eQueue());
-  pTask->vState(TS_DESISTED);
+  pQueues->vRemoveExecutingSet(pSelfTask);
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+  pSelfTask->vState(TS_DESISTED);
 
   // disconnect / de-assign task from calling thread
-  vThread_UnassignTask(pThread);
-  RASSERT(nullptr == pTask->pvThread_DONT_DEREF());
+  pSelfTask->vThread(nullptr);
+  pThread->m_pTask = nullptr;
+  pThread->m_eThreadState = HS_UNASSIGNED;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // transition task to different state+queue depending on transition request
   
-  switch (pTask->eSchedulerAct()) {
+  switch (pSelfTask->eSchedulerAct()) {
       
-    case SA_BIDE_FOR_OPERAND:  vTaskSelf_BideForOperand(pTask);   break;
-    case SA_DELETE_THIS_TASK:  vTaskSelf_DeleteThisTask(pTask);   break;
-    case SA_SIGNAL_COMPLETION: vTaskSelf_SignalCompletion(pTask); break;
-    case SA_SLEEP_SOME_TIME:   vTaskSelf_SleepSomeTime(pTask);    break;
-    case SA_WAIT_FOR_RESUME:   vTaskSelf_WaitForResume(pTask);    break;
-    case SA_YIELD_FOR_OTHERS:  vTaskSelf_YieldForOthers(pTask);   break;
+    // cases where task is either same or inaccesible -- -- -- -- -- -- -- -- --
+      
+    case SA_BIDE_FOR_OPERAND:
+      vTaskSelf_BideForOperand(pSelfTask,pThread);
+      RASSERT(! pThread->pTask() ||
+              (pSelfTask == pThread->pTask() &&
+               pThread == pSelfTask->pvThread_DONT_DEREF()));
+      break;
+      
+    case SA_SLEEP_SOME_TIME:
+      vTaskSelf_SleepSomeTime(pSelfTask,pThread);
+      RASSERT(! pThread->pTask() ||
+              (pSelfTask == pThread->pTask() &&
+               pThread == pSelfTask->pvThread_DONT_DEREF()));
+      break;
+      
+    case SA_WAIT_FOR_RESUME:
+      vTaskSelf_WaitForResume(pSelfTask,pThread);
+      RASSERT(! pThread->pTask() ||
+              (pSelfTask == pThread->pTask() &&
+               pThread == pSelfTask->pvThread_DONT_DEREF()));
+      break;
+      
+    case SA_YIELD_FOR_OTHERS:
+      vTaskSelf_YieldForOthers(pSelfTask,pThread);
+      RASSERT(! pThread->pTask() ||
+              (pSelfTask == pThread->pTask() &&
+               pThread == pSelfTask->pvThread_DONT_DEREF()));
+      break;
+      
+    // cases where task is either deleted or inaccesible -- -- -- -- -- -- -- --
+      
+    case SA_DELETE_THIS_TASK:
+      vTaskSelf_DeleteThisTask(pSelfTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
+      
+    case SA_SIGNAL_COMPLETION:
+      vTaskSelf_SignalCompletion(pSelfTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
       
     default:
       NEVER_REACH;
@@ -54,205 +90,206 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op-task with empty operand queue transitions to TS_BIDING and              */
-/*   is added to biding set                                                   */
+/* operator task bides for operand                                            */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskSelf_BideForOperand(Task* pTask)
+void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
 {
-  RASSERT(pTask->bIsLocked());
-  RASSERT(SA_BIDE_FOR_OPERAND == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(SA_BIDE_FOR_OPERAND == pSelfTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
 
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_BIDE,
+  pSelfTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
 
   Queues* pQueues = AM::pQueues();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pSelfTask->vSchedulerActClear();
 
-  pTask->vState(TS_BIDING);
-  pQueues->vAddBidingSet(pTask);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // queued case: operator task bides for operand
+
+  pSelfTask->vState(TS_BIDING);
+  pQueues->vAddBidingSet(pSelfTask);
+  
+  pSelfTask->vDropTaskLock();
   
   /** do not touch task **/
-  
-  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
-/* desisted task transitions to TS_COMPLETED state and is deleted             */
+/* task transitions to TS_COMPLETED state and is deleted                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskSelf_DeleteThisTask(Task* pTask)
+void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 {
-  RASSERT(pTask->bIsLocked());
-  RASSERT(SA_DELETE_THIS_TASK == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(SA_DELETE_THIS_TASK == pSelfTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+
+  pSelfTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
     
+  pSelfTask->vSchedulerActClear();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete case: task is to be deleted
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pSelfTask->vState(TS_COMPLETED);
+  
+  delete pSelfTask;
 
-  pTask->vState(TS_COMPLETED);
-  
-  /** do not touch task, leave task locked **/
-  
-  delete pTask;
+  /** do not touch task **/
 }
 
 /*----------------------------------------------------------------------------*/
 /* task has completed; signal the thread waiting on the tasks mutex           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskSelf_SignalCompletion(Task* pTask)
+void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
 {
-  RASSERT(pTask->bIsLocked());
-  RASSERT(SA_SIGNAL_COMPLETION == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(SA_SIGNAL_COMPLETION == pSelfTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
 
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
+  pSelfTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
+  pSelfTask->vSchedulerActClear();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // completion case: task has completed
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  pSelfTask->vState(TS_COMPLETED);
   
-  pTask->vState(TS_COMPLETED);
-  
-  pTask->vMutexLock();
-  pTask->vMutexSignal();
-  pTask->vMutexUnlock();
+  pSelfTask->vMutexLock();
+  pSelfTask->vMutexSignal();
+  pSelfTask->vMutexUnlock();
 
-  /**do not touch task, leave locked. task is reponsibility of signaled thread **/
+  /** do not touch task, leave locked. task is reponsibility of signaled thread **/
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition desisted task to TS_SLEEPING state and add to sleeping queue    */
-/*   (if wakeup time has already arrived, calling thread re-executes task)    */
+/* put task to sleep                                                          */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskSelf_SleepSomeTime(Task* pTask)
+void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
 {
-  RASSERT(pTask->bIsLocked());
-  RASSERT(SA_SLEEP_SOME_TIME == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(SA_SLEEP_SOME_TIME == pSelfTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+
+  pSelfTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
   Queues* pQueues = AM::pQueues();
-  Thread* pThread = Thread::pThisTLSThread();
 
+  pSelfTask->vSchedulerActClear();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // queued case: wakeup time has not arrived
+  
+  if (! pSelfTask->bWakeupNow()) {
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  // is the task to actually sleep?
-  if (! pTask->bWakeupNow()) {
-    pTask->vState(TS_SLEEPING);
-    pQueues->vAddSleepingQueue(pTask);
+    pSelfTask->vState(TS_SLEEPING);
+    pQueues->vAddSleepingQueue(pSelfTask);
+    
+    pSelfTask->vDropTaskLock();
     /** do not touch task **/
-    pTask->vDropTaskLock();
     return;
   }
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tasks wake up time has already arrived. run it
+  // continue case: wakeup time has passed
+    
+  pSelfTask->vWakeupClear();
   
-  pTask->vWakeupClear();
+  pThread->m_pTask = pSelfTask;
+  pThread->m_eThreadState = HS_ASSIGNED;
+
+  pSelfTask->vState(TS_EXECUTING);
+  pQueues->vAddExecutingSet(pSelfTask);
+
+  pSelfTask->vDropTaskLock();
   
-  pTask->vState(TS_EXECUTING);
-  pQueues->vAddExecutingSet(pTask);
-  vThread_ContinueSame(pThread,pTask);
-  /** do not touch task **/
-  pTask->vDropTaskLock();
+  // calling thread continues with self task
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to waiting set                                                    */
+/* task waitS for a resume /ack from a cross acking task                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskSelf_WaitForResume(Task* pTask)
+void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
 {
-  RASSERT(pTask->bIsLocked());
-  RASSERT(SA_WAIT_FOR_RESUME == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
-  
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(SA_WAIT_FOR_RESUME == pSelfTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+
+  pSelfTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
   Queues* pQueues = AM::pQueues();
   
+  pSelfTask->vSchedulerActClear();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // queued case:
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  pTask->vState(TS_WAITING);
-  pQueues->vAddWaitingSet(pTask);
+  pSelfTask->vState(TS_WAITING);
+  pQueues->vAddWaitingSet(pSelfTask);
   
+  pSelfTask->vDropTaskLock();
   /** do not touch task **/
-
-  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
 /* desisted task has yielded and is scheduled                                 */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskSelf_YieldForOthers(Task* pTask)
+void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
 {
-  RASSERT(pTask->bIsLocked());
-  RASSERT(SA_YIELD_FOR_OTHERS == pTask->eSchedulerAct());
-  pTask->vSchedulerActClear();
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(SA_YIELD_FOR_OTHERS == pSelfTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
 
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_YIELD,
+  pSelfTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
   Queues* pQueues = AM::pQueues();
-  Thread* pThread = Thread::pThisTLSThread();
 
+  pSelfTask->vSchedulerActClear();
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // queued case: there are queued ready to run tasks
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  i8 nReadyTasks = pQueues->nTasksReady() + pQueues->nTasksReadyLP();
+  if (nReadyTasks) {
 
-  // no other ready to run tasks, so thread continues executing the task
-  
-  if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL) {
-    i8 iLengthReadyQueue = pQueues->nTasksReady();
-    if (0 == iLengthReadyQueue) {
-      pTask->vState(TS_EXECUTING);
-      pQueues->vAddExecutingSet(pTask);
-      vThread_ContinueSame(pThread,pTask);
-      
-      /** do not touch task **/
-
-      pTask->vDropTaskLock();
-      return;
-    }
+    vScheduleTask(pSelfTask);
+    pSelfTask->vDropTaskLock();
+    /** do not touch task **/
+    return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // other ready to run tasks, task is scheduled
-  
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
-  
-  vScheduleTask(pTask);
-  
-  /** do not touch task **/
+  // continue case: no other ready to run task
 
-  pTask->vDropTaskLock();
+  pSelfTask->vState(TS_EXECUTING);
+  pSelfTask->vThread(pThread);
+  
+  pThread->m_pTask = pSelfTask;
+  pThread->m_eThreadState = HS_ASSIGNED;
+
+  pQueues->vAddExecutingSet(pSelfTask);
+  pSelfTask->vDropTaskLock();
+  
+  // calling thread continues with self task
 }
 
 
@@ -620,14 +657,11 @@ bool Scheduler::bJob_RemoveParticipating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_dedicated()
-  //
+  RASSERT(CN_NONE != pThread->m_eDedicated);
+  
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
               "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
-  
-  RASSERT(CN_NONE != pThread->m_eDedicated);
   
   Queues* pQueues = AM::pQueues();
   
@@ -640,15 +674,11 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneralThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_general()
-  //
+  RASSERT(CN_NONE == pThread->m_eDedicated);
   
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
               "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
-  
-  RASSERT(CN_NONE == pThread->m_eDedicated);
   
   Queues* pQueues = AM::pQueues();
   
@@ -661,9 +691,8 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
 {
-  //
-  // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
-  //
+  RASSERT(HS_IDLE == pThread->m_eThreadState);
+  
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_BEGIN_LOOP,
               "Thread is at beginning of it's thread loop"_Stz); //!format-LogThd
@@ -683,9 +712,6 @@ void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndThreadLoop(Thread* pThread)
 {
-  //
-  // called from Thread::vLoop_dedicated()
-  //
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Thread has ended it's thread loop"_Stz); //!format-LogThd
@@ -694,13 +720,11 @@ void Scheduler::vThread_EndThreadLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pause till all general threads are idle (at system startup)                */
+/* nap loop till all general threads are idle (main thread at system startup) */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThread_PauseTillGeneralThreads(void)
+void Scheduler::vThread_NapTillGeneralThreads(void)
 {
-  //
-  // called from Engine::vStartSystem()
-  //
+
   AM::vLogSys(SL_INF,nullptr,YA_SYS_PAUSE_GENERAL,
               "Pause till all general threads are all idle"_Stz); //!format-LogSys
   
@@ -711,8 +735,6 @@ void Scheduler::vThread_PauseTillGeneralThreads(void)
     AM::vNapMsec(10,CN_NONE);
   
   RASSERT(pQueues->m_pGeneralThreadVec->nItems() == AM::nThreads());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // pause till all general threads are in idle state
   i8 nGeneralThreads = pQueues->m_pGeneralThreadVec->nItems();
@@ -730,17 +752,10 @@ void Scheduler::vThread_PauseTillGeneralThreads(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_dedicated()
-  //
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
               "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
-  
-  //
-  // called from Thread::aEntryPoint_dedicated()
-  //
-  
+    
   Queues* pQueues = AM::pQueues();
   
   pQueues->vRemoveDedicatedThread(pThread);
@@ -751,16 +766,9 @@ void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 {
-  //
-  // called from Thread::aEntryPoint_general()
-  //
   pThread->vIncStepNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
               "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
-  
-  //
-  // called from Thread::aEntryPoint_general()
-  //
   
   Queues* pQueues = AM::pQueues();
   
@@ -773,9 +781,6 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 {
-  //
-  // called from Thread::vLoop_general()
-  //
   Queues* pQueues = AM::pQueues();
   
   vThread_WaitAssignment(pThread);
@@ -783,17 +788,19 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pTask = pThread->m_pTask;
-
   RASSERT(TS_DESISTED == pTask->eState());
 
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pTask == pThread->m_pTask);
 
   pTask->vThread(pThread);
+  
   // ok to touch task
   
   pThread->m_pTask->vState(TS_EXECUTING);
   pQueues->vAddExecutingSet(pThread->m_pTask);
+  
+  RASSERT(pThread == pTask->pvThread_DONT_DEREF());
 }
 
 
@@ -801,26 +808,6 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 //                          implementation for threads                        //
 ////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* append unassigned general thread onto idle thread queue                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_AppendIdle(Thread* pThread)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_APPEND_IDLE,
-              "Thread moves onto IdleThreadQueue (no ready task available)"_Stz); //!format-LogThd
-  
-  RASSERT(! pThread->m_pTask);
-  ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  RASSERT(CN_NONE == pThread->m_eDedicated);
-  RASSERT(pThread->m_pMutex->bIsLocked());
-
-  Queues* pQueues = AM::pQueues();
-  
-  pThread->m_eThreadState = HS_IDLE;
-  pQueues->vThreadAppendIdle(pThread);
-}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to pop an idle general thread and assign given task to it          */
@@ -866,39 +853,6 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Thread continues executing same task (tried sleep or yield but continued)  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_CONTINUE_TASK,
-              "Thread continues executing same task"_Stz); //!format-LogThd
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
-  
-  RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  RASSERT(! pThread->m_pTask);
-  
-  pThread->m_pTask = pTask;
-  pThread->m_eThreadState = HS_ASSIGNED;
-}
-
-/*----------------------------------------------------------------------------*/
-/* unassign task from thread                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_UnassignTask(Thread* pThread)
-{
-  pThread->vIncStepNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
-              "Thread unassigns its task"_Stz); //!format-LogThd
-  
-  pThread->m_pTask->vThread(nullptr);
-  
-  pThread->m_pTask = nullptr;
-  pThread->m_eThreadState = HS_UNASSIGNED;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append unassigned general thread onto idle queue, wait for task assignment */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
@@ -907,46 +861,54 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_GET_TASK,
               "Thread attempts task assignment"_Stz); //!format-LogThd
   
-  ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutex->bIsLocked());
-  
+  RASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
+  RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
+  RASSERT(! pThread->m_pTask);
+
   Queues* pQueues = AM::pQueues();
 
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mutex-based loop waiting for
+//for (;;) {
   while (! pThread->m_pTask) {
-        
-    Task* pTask = pQueues->pPopReadyQueue();
-    if (! pTask)
-      pTask = pQueues->pPopReadyQueueLP();
     
-    RASSERT(! pTask || TS_READY == pTask->eState());
+    // attempt to po a task from one of the ready queues
+    Task* pPoppedTask = pQueues->pPopReadyQueue();
+    if (! pPoppedTask)
+      pPoppedTask = pQueues->pPopReadyQueueLP();
+    
+    // was a task popped?
+    if (pPoppedTask) {
+      RASSERT(TS_READY == pPoppedTask->eState());
+      pPoppedTask->vState(TS_DESISTED);
 
-    if (pTask) {
-      pThread->m_pTask = pTask;
-      pThread->m_nAssignedTasks++;
-      
+      pThread->m_pTask = pPoppedTask;
       pThread->m_eThreadState = HS_ASSIGNED;
-      pTask->vState(TS_DESISTED);
+      pThread->m_nAssignedTasks++;
+      break;
     }
-    else {
-      vThread_AppendIdle(pThread);
-      
-      pThread->vIncStepNo();
-      AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
-                  "Thread waits for task assignment"_Stz); //!format-LogThd
-      pThread->m_pMutex->vWait(pThread);
-    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    pThread->m_eThreadState = HS_IDLE;
+    RASSERT(! pThread->m_pTask);
+    pQueues->vThreadAppendIdle(pThread);
+
+    ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
+    pThread->m_pMutex->vWait(pThread);
+    ASSERT(pThread->m_pMutex->bIsLockedByCaller(pThread));
+
+    if (pThread->m_pTask)
+      break;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // HS_ASSIGNED state will have been set by
-  //
-  //   ... -> vScheduleTask() -> bThread_AssignIdle()
-  //
   
   RASSERT(pThread->m_pMutex->bIsLocked());
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pTask);
+  RASSERT(TS_DESISTED == pThread->m_pTask->eState());
 }
 
 // /////////////////////////////////////////////////////////////////////////////
