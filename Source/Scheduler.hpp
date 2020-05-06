@@ -12,14 +12,14 @@ namespace Threads
     // self task transition
   
   public:
-    static void vTaskSelf_LoopTransition(Task* pTask, Thread* pThread);
+    static void vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread);
   private:
-    static void vTaskSelf_BideForOperand(Task* pTask, Thread* pThread);
-    static void vTaskSelf_DeleteThisTask(Task* pTask, Thread* pThread);
-    static void vTaskSelf_SignalCompletion(Task* pTask, Thread* pThread);
-    static void vTaskSelf_SleepSomeTime(Task* pTask, Thread* pThread);
-    static void vTaskSelf_WaitForResume(Task* pTask, Thread* pThread);
-    static void vTaskSelf_YieldForOthers(Task* pTask, Thread* pThread);
+    static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
@@ -30,13 +30,17 @@ namespace Threads
     static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task api
+    // task api (pTask is not known to scheduler)
   
   public:
-    static void vTaskApi_AddDedicated(Task* pTask);
-    static void vTaskApi_AddGeneral(Task* pTask);
-    static void vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread);
-    static void vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired);
+    static void vTaskApi_AddDedicated(Task* pNewTask);
+    static void vTaskApi_AddGeneral(Task* pNewTask);
+    static void vTaskApi_AddGeneral_connector(Task* pNewTask);
+    static void vTaskApi_AddGeneral_internal(Task* pNewTask);
+    static void vTaskApi_AddGeneral_prompt(Task* pNewTask);
+    static void vTaskApi_AddGeneral_received(Task* pNewTask);
+    static void vTaskApi_AddGeneral_2pc(Task* pNewTask);
+    static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
@@ -68,14 +72,14 @@ namespace Threads
     // implementation for threads
   
   private:
-    static bool bThread_AssignIdle(Task* pTask);
+    static bool bThread_AssignIdle(Task* pKnownTask);
     static void vThread_WaitAssignment(Thread* pThread);
   
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // core task scheduler
    
    private:
-     static void vScheduleTask(Task* pTask);
+     static void vScheduleTask(Task* pKnownTask);
   
 
   };

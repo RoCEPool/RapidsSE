@@ -524,6 +524,7 @@ void SePrompt::vDeleteJob(void)
   Task* pTask = m_pJob->pTask();
   m_pJob->vTask(nullptr);
   pTask->vJob(nullptr);
+  pTask->vState(TS_DELETING);
   delete pTask;
   
   // call the job delete function

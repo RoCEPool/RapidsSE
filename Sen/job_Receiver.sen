@@ -110,7 +110,7 @@
       //grid::thisNodeName@ "(%v) receiver_loop" .printf
       pReceivedJob job.seedDecode
       pReceivedJob job.seed!
-      pReceivedJob job.spawn
+      pReceivedJob job.spawn_received
    then
 
   again

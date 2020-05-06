@@ -129,7 +129,7 @@ Task::~Task(void) noexcept(false)
 
   RASSERT(! m_pThread);
 
-  RASSERT(TS_COMPLETED == m_eState);
+  RASSERT(TS_DELETING == m_eState);
   //RASSERT(! m_pJob);
   RASSERT(! bWordBody());
 
@@ -175,7 +175,7 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  RASSERT(! bIsLocked());
+  //RASSERT(! bIsLocked());
 
   ASSERT(! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
   

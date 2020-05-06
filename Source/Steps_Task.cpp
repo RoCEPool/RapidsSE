@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
+  vAddStep("task::acks!"_Stz,         &Step::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
   vAddStep("task::delete"_Stz,        &Step::vTaskDelete);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
@@ -20,18 +21,17 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::wait"_Stz,          &Step::vTaskWait);
   vAddStep("task::yield"_Stz,         &Step::vTaskYield);
 
-  vAddStep("task.ack"_Stz,         &Step::vTaskAck);
-  vAddStep("task.acks!"_Stz,       &Step::vTaskAcksStore);
-  vAddStep("task.dropLock"_Stz,    &Step::vTaskDropLock);
-  vAddStep("task.grabLock"_Stz,    &Step::vTaskGrabLock);
-  vAddStep("task.isAckSet"_Stz,    &Step::vTaskIsAckSet);
-  vAddStep("task.job@"_Stz,        &Step::vTaskJobFetch);
-  vAddStep("task.job!"_Stz,        &Step::vTaskJobStore);
-  vAddStep("task.name@"_Stz,       &Step::vTaskNameFetch);
-  vAddStep("task.sendNode@"_Stz,   &Step::vTaskSendNodeFetch);
-  vAddStep("task.sendNode!"_Stz,   &Step::vTaskSendNodeStore);
-  vAddStep("task.state@"_Stz,      &Step::vTaskStateFetch);
-  vAddStep("task.thread"_Stz,      &Step::vTaskThread);
+  vAddStep("task.ack"_Stz,            &Step::vTaskAck);
+  vAddStep("task.dropLock"_Stz,       &Step::vTaskDropLock);
+  vAddStep("task.grabLock"_Stz,       &Step::vTaskGrabLock);
+  vAddStep("task.isAckSet"_Stz,       &Step::vTaskIsAckSet);
+  vAddStep("task.job@"_Stz,           &Step::vTaskJobFetch);
+  vAddStep("task.job!"_Stz,           &Step::vTaskJobStore);
+  vAddStep("task.name@"_Stz,          &Step::vTaskNameFetch);
+  vAddStep("task.sendNode@"_Stz,      &Step::vTaskSendNodeFetch);
+  vAddStep("task.sendNode!"_Stz,      &Step::vTaskSendNodeStore);
+  vAddStep("task.state@"_Stz,         &Step::vTaskStateFetch);
+  vAddStep("task.thread"_Stz,         &Step::vTaskThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,21 +54,19 @@ void Step::vTaskAck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.acks! -- store value into given tasks m_oAcksRmg                      */
+/* task::acks! -- store value into given tasks m_oAcksRmg                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(void)
 {
   ENTRY();
-  
-  Task* pGivenTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
+    
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
   
-  ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
+  ASSERT(0 == m_pTask->m_oAcksRmg.iPrintOnlyValue());
 
-  RASSERT(pGivenTask->bIsLocked());
+  RASSERT(m_pTask->bIsLocked());
   
-  Job* pJob = pGivenTask->m_pJob;
+  Job* pJob = m_pTask->m_pJob;
   
   if (pJob && pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,"Setting acks: %s %p to %lld"_Stz,
@@ -78,7 +76,7 @@ void Step::vTaskAcksStore(void)
     AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
-  Scheduler::vTaskApi_RequiredAcks(pGivenTask,nAcksRequired);
+  m_pTask->vAcksRmg(nAcksRequired);
   
   EXIT();
 }

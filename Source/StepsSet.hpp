@@ -602,7 +602,8 @@ public:
   void vJobShow(void);
   void vJobSignalCompletion(void);
   void vJobSlotFetch(void);
-  void vJobSpawn(void);
+  void vJobSpawn2PC(void);
+  void vJobSpawnReceived(void);
   void vJobSpawnDedicated(void);
   void vJobSpawnUniversal(void);
   void vJobStateDiagram(void);
