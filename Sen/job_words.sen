@@ -270,7 +270,7 @@
   task[] task.grabLock
 
   // set acks for originator task
-  1 task[] task.acks!
+  1 task::acks!
 
   // send the job to each node in the grid
   grid::definedNodes 0 do
