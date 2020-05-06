@@ -30,13 +30,13 @@ namespace Threads
     static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task api
+    // task api (pTask is not known to scheduler)
   
   public:
-    static void vTaskApi_AddDedicated(Task* pTask);
-    static void vTaskApi_AddGeneral(Task* pTask);
-    static void vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread);
-    static void vTaskApi_RequiredAcks(Task* pTask, i8 nAcksRequired);
+    static void vTaskApi_AddDedicated(Task* pNewTask);
+    static void vTaskApi_AddGeneral(Task* pNewTask);
+    static void vTaskApi_ExecuteDedicated(Task* pNewTask, Thread* pThread);
+    static void vTaskApi_RequiredAcks(Task* pNewTask, i8 nAcksRequired);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface

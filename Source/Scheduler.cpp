@@ -402,24 +402,24 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
 /*----------------------------------------------------------------------------*/
 /* add new dedicated task into system (spawn a dedicated thread for it)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddDedicated(Task* pTask)
+void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJobDedicated()
   //
   
-  pTask->vState(TS_DESISTED);
+  pNewTask->vState(TS_DESISTED);
   
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_SPAWN_DEDICATED,
+  pNewTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pNewTask,TA_TSK_SPAWN_DEDICATED,
               "Thread spawned for dedicated task"_Stz); //!format-LogTsk
   
-  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(TS_DESISTED == pNewTask->eState());
   
   Thread* pThread = new Thread;
   
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
+  pThread->m_pTask = pNewTask;
+  pThread->m_eDedicated = pNewTask->pJob()->eClass();
   
   pThread->vSpawnPsxThd_dedicated();
 }
@@ -427,24 +427,24 @@ void Scheduler::vTaskApi_AddDedicated(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral(Task* pTask)
+void Scheduler::vTaskApi_AddGeneral(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
   //
-  RASSERT(TS_NONE == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(SA_NONE == pNewTask->eSchedulerAct());
   
-  pTask->vState(TS_DESISTED);
+  pNewTask->vState(TS_DESISTED);
 
-  vScheduleTask(pTask);
+  vScheduleTask(pNewTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_ExecuteDedicated(Task* pTask, Thread* pThread)
+void Scheduler::vTaskApi_ExecuteDedicated(Task* pNewTask, Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated()
