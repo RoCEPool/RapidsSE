@@ -384,13 +384,13 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
   
   Queues* pQueues = AM::pQueues();
   
-  while (Task* pTask = pQueues->pPopSleepingQueue()) {
+  while (Task* pWakingTask = pQueues->pPopSleepingQueue()) {
         
-    RASSERT(TS_DESISTED == pTask->eState());
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(SA_NONE == pTask->eSchedulerAct());
+    RASSERT(TS_DESISTED == pWakingTask->eState());
+    RASSERT(QK_NONE == pWakingTask->eQueue());
+    RASSERT(SA_NONE == pWakingTask->eSchedulerAct());
     
-    vScheduleTask(pTask);
+    vScheduleTask(pWakingTask);
     // **do not touch task**
   }
 }
@@ -775,20 +775,20 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pTask = pThread->m_pTask;
-  RASSERT(TS_DESISTED == pTask->eState());
+  Task* pKnownTask = pThread->m_pTask;
+  RASSERT(TS_DESISTED == pKnownTask->eState());
 
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
-  RASSERT(pTask == pThread->m_pTask);
+  RASSERT(pKnownTask == pThread->m_pTask);
 
-  pTask->vThread(pThread);
+  pKnownTask->vThread(pThread);
   
   // ok to touch task
   
   pThread->m_pTask->vState(TS_EXECUTING);
   pQueues->vAddExecutingSet(pThread->m_pTask);
   
-  RASSERT(pThread == pTask->pvThread_DONT_DEREF());
+  RASSERT(pThread == pKnownTask->pvThread_DONT_DEREF());
 }
 
 
@@ -800,13 +800,13 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* attempt to pop an idle general thread and assign given task to it          */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bThread_AssignIdle(Task* pTask)
+bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
 {
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGN_THREAD,
+  pKnownTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_ASSIGN_THREAD,
               "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
   
-  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(TS_DESISTED == pKnownTask->eState());
   
   Queues* pQueues = AM::pQueues();
   
@@ -819,20 +819,20 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
-  pThread->m_pTask = pTask;
+  pThread->m_pTask = pKnownTask;
   pThread->m_nAssignedTasks++;
   
   pThread->m_eThreadState = HS_ASSIGNED;
   
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_THREAD,
+  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_ASSIGNED_THREAD,
               "Task has popped and assigned an idle thread to itself"_Stz); //!format-LogTsk
   
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_SIGNAL_THREAD,
+  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_SIGNAL_THREAD,
               "Task signals its assigned thread"_Stz); //!format-LogTsk
   
-  pThread->m_pMutex->vLock(pTask);
-  pThread->m_pMutex->vSignal(pTask);
-  pThread->m_pMutex->vUnlock(pTask);
+  pThread->m_pMutex->vLock(pKnownTask);
+  pThread->m_pMutex->vSignal(pKnownTask);
+  pThread->m_pMutex->vUnlock(pKnownTask);
   
   // mutex can now be acquired by the m_pPsxThd of pThread
   
@@ -907,61 +907,61 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* attempt to assign a thread to able-to-run task, else add to ready queue    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleTask(Task* pTask)
+void Scheduler::vScheduleTask(Task* pKnownTask)
 {
-  pTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_SCHEDULE,
+  pKnownTask->vIncStepNo();
+  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_SCHEDULE,
               "Task is being scheduled"_Stz); //!format-LogTsk
   
-  eTS eTaskState = pTask->eState();
-  eQK eQueue = pTask->eQueue();
-  eSA eSchedulerAct = pTask->eSchedulerAct();
+  eTS eTaskState = pKnownTask->eState();
+  eQK eQueue = pKnownTask->eQueue();
+  eSA eSchedulerAct = pKnownTask->eSchedulerAct();
   
-  if (TS_DESISTED != pTask->eState()) {
+  if (TS_DESISTED != pKnownTask->eState()) {
     fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
             (char*)aSA[eSchedulerAct]);
   }
   
-  if (QK_NONE != pTask->eQueue()) {
+  if (QK_NONE != pKnownTask->eQueue()) {
     fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
             (char*)aSA[eSchedulerAct]);  }
   
-  if (SA_NONE != pTask->eSchedulerAct()) {
+  if (SA_NONE != pKnownTask->eSchedulerAct()) {
     fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
             (char*)aSA[eSchedulerAct]);
   }
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pKnownTask->eState());
+  RASSERT(QK_NONE == pKnownTask->eQueue());
+  RASSERT(SA_NONE == pKnownTask->eSchedulerAct());
 
   Queues* pQueues = AM::pQueues();
   
   pQueues->vGrabThreadIdleQueue();
   
-  if (bThread_AssignIdle(pTask)) {
+  if (bThread_AssignIdle(pKnownTask)) {
     pQueues->vDropThreadIdleQueue();
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(SA_NONE == pTask->eSchedulerAct());
+  RASSERT(TS_DESISTED == pKnownTask->eState());
+  RASSERT(QK_NONE == pKnownTask->eQueue());
+  RASSERT(SA_NONE == pKnownTask->eSchedulerAct());
   
-  pTask->vState(TS_READY);
+  pKnownTask->vState(TS_READY);
 
-  if (pTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
-    pQueues->vAppendReadyQueue(pTask);
+  if (pKnownTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
+    pQueues->vAppendReadyQueue(pKnownTask);
   else
-    pQueues->vAppendReadyQueueLP(pTask);
+    pQueues->vAppendReadyQueueLP(pKnownTask);
  
   pQueues->vDropThreadIdleQueue();
   

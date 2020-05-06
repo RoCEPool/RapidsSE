@@ -12,14 +12,14 @@ namespace Threads
     // self task transition
   
   public:
-    static void vTaskSelf_LoopTransition(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread);
   private:
-    static void vTaskSelf_BideForOperand(Task* pKnownTask, Thread* pThread);
-    static void vTaskSelf_DeleteThisTask(Task* pKnownTask, Thread* pThread);
-    static void vTaskSelf_SignalCompletion(Task* pKnownTask, Thread* pThread);
-    static void vTaskSelf_SleepSomeTime(Task* pKnownTask, Thread* pThread);
-    static void vTaskSelf_WaitForResume(Task* pKnownTask, Thread* pThread);
-    static void vTaskSelf_YieldForOthers(Task* pKnownTask, Thread* pThread);
+    static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // cross task
