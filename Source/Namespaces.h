@@ -78,7 +78,6 @@ namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaInherit; class MetaInherits;
                           class MetaMember; class MetaType;                   }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
-namespace Registers     {                                       }
 namespace Rows          {                                                     }
 namespace Scheduling    {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
@@ -147,7 +146,6 @@ using namespace Prompt;
 using namespace ReadConsistency;
 using namespace Records;
 using namespace Reflection;
-using namespace Registers;
 using namespace Resources;
 using namespace Rows;
 using namespace Scheduling;
