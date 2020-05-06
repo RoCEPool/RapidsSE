@@ -13797,7 +13797,7 @@ void Task::vAddMunged(Forth* pForth)
     "      //grid::thisNodeName@ \\\"(%v) receiver_loop\\\" .printf\n"
     "      pReceivedJob job.seedDecode\n"
     "      pReceivedJob job.seed!\n"
-    "      pReceivedJob job.spawn\n"
+    "      pReceivedJob job.spawn_received\n"
     "   then\n"
     "\n"
     "  again\n"

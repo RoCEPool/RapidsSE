@@ -99,6 +99,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
+  vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
   
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
@@ -1534,6 +1535,34 @@ void Step::vJobSlotFetch(void)
 /* job.spawn -- spawn the job on the stack                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSpawn(void)
+{
+  ENTRY();
+  
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
+              "%s spawned by %s"_Stz, //!format-LogSvc
+              aCN[pJob->eClass()],
+              aCN[m_pTask->m_pJob->eClass()],
+              C_VARGS_END);
+
+  Task* pTask = pJob->pTask();
+  if ( pTask) {
+    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(SA_NONE == pTask->eSchedulerAct());
+  }
+  
+  IGNORE_RETURN(Api::bSpawnJob(pJob));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.spawn -- spawn the job on the stack                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSpawnReceived(void)
 {
   ENTRY();
   
