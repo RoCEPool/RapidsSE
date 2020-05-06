@@ -392,7 +392,8 @@ bool Api::bSpawnJob_other(Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_prompt(Job* pJob)
 {
-
+  RASSERT(pJob->pTask());
+  
   if (! bSpawnTheJob(pJob))
     return false;
   
