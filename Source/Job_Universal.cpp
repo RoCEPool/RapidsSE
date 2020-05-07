@@ -101,7 +101,7 @@ void Job_Universal::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
+Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
@@ -199,12 +199,12 @@ Footer* Job_Universal::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
+Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple,p_Session);
+  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
-  TokenVec* pTokenVec = p_Session->pTokenVec();
+  TokenVec* pTokenVec = pSession->pTokenVec();
 
   eEC eError = pJob_Universal->ePopulateJob(pTokenVec);
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
 {
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple,p_Session);
+  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
   
   return pJob_Universal;
 }

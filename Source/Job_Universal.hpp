@@ -17,7 +17,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session);
+    Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_Universal(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

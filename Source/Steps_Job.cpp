@@ -1653,7 +1653,7 @@ void Step::vJobSpawnUniversal(void)
 
   // new the universal job
   ReqTuple xReqTuple("!!vJobSpawnUniversal"_Stz,false);
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,&xReqTuple,nullptr);
+  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,&xReqTuple);
 
   // translate job kind
   pJob_Universal->vJobKind((eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND));

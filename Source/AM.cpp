@@ -1212,9 +1212,7 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   Job* pParentJob = pOp->pPipeline()->pJob();
   
   Job_Universal* pJobUniversal =
-    new Job_Universal(pJobClass_Universal,
-                      pReqTuple,
-                      nullptr);
+    new Job_Universal(pJobClass_Universal,pReqTuple);
   
   pJobUniversal->m_pOp = pOp;
   pJobUniversal->vSeed(SS_SEED_REQ);
