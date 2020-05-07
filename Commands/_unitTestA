@@ -377,6 +377,12 @@ print section "drop Table";
 drop table lineitem;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+logSection bpa;
+print section "bpa";
+
+docol bpa;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection memoryLeaks;
 print section "memoryLeaks";
 
