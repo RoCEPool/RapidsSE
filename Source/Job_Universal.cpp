@@ -218,7 +218,7 @@ Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
+Job* Jobs::pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
   
