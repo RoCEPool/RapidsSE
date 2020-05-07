@@ -27,7 +27,7 @@ namespace Tasks
     SMA<Mutex>   m_pMutex;       // mutex
 
     eTS          m_eState;       // state (running, sleeping, ...)
-    eSA          m_eScheduler;   // schedulre transition action
+    eTR          m_eTransition;  // schedulre transition request
     eQK          m_eQueue;       // which queue the task is currently in
     eEP          m_eEntryPoint;  // task entry point
     
@@ -118,7 +118,7 @@ namespace Tasks
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);
-    eSA  eSchedulerAct(void);
+    eTR  eSchedulerAct(void);
     void vSchedulerActClear(void);
     void vUnlinkJob(void);
     void vWakeupClear(void);

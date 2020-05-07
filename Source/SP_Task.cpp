@@ -53,7 +53,7 @@ Stz* SP_Task::sz_log(Task* pTask)
 
                   aTS[pTask->eState()],
                   aQK[pTask->eQueue()],
-                  aSA[pTask->eSchedulerAct()],
+                  aTR[pTask->eSchedulerAct()],
   
 // AY+RH : 29th Apr 2020 : TaskA should never attempt pTaskB->pThread()
 //                         TaskA can never assume existence of

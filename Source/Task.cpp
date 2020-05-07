@@ -74,7 +74,7 @@ Task::Task(Job* pJob)
   m_pMutex       = new Mutex(MK_TASK,this);
 
   m_eState       = TS_NONE;
-  m_eScheduler   = SA_NONE;
+  m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
   m_eEntryPoint  = EP_NONE;
 
@@ -188,7 +188,7 @@ void Task::vTaskLoop(void)
   
   vAssertStructure();
   
-  while (SA_NONE == m_eScheduler) {
+  while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
@@ -419,12 +419,12 @@ void Task::vContentDump(void)
   vTrace("----\n"_Stz);
 
   vTrace("%p:\n"
-         "m_eState=%s m_eScheduler=%s m_eQueue=%s\n"_Stz,
+         "m_eState=%s m_eTransition=%s m_eQueue=%s\n"_Stz,
          
          this,
          
          aTS[m_eState]->azChar(),
-         aSA[m_eScheduler]->azChar(),
+         aTR[m_eTransition]->azChar(),
          aQK[m_eQueue]->azChar(),
 
          C_VARGS_END
@@ -1092,7 +1092,7 @@ void Task::vScheduleBide(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_BIDE_FOR_OPERAND;
+  m_eTransition = TR_BIDE_FOR_OPERAND;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1103,7 +1103,7 @@ void Task::vScheduleCompletion(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_SIGNAL_COMPLETION;
+  m_eTransition = TR_SIGNAL_COMPLETION;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1114,7 +1114,7 @@ void Task::vScheduleDelete(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_DELETE_THIS_TASK;
+  m_eTransition = TR_DELETE_THIS_TASK;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1125,7 +1125,7 @@ void Task::vScheduleSleep(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_SLEEP_SOME_TIME;
+  m_eTransition = TR_SLEEP_SOME_TIME;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1136,7 +1136,7 @@ void Task::vScheduleWait(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_WAIT_FOR_RESUME;
+  m_eTransition = TR_WAIT_FOR_RESUME;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1147,17 +1147,17 @@ void Task::vScheduleYield(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   RASSERT(bIsLocked());
-  m_eScheduler = SA_YIELD_FOR_OTHERS;
+  m_eTransition = TR_YIELD_FOR_OTHERS;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get acheduler action                                                       */
 /*----------------------------------------------------------------------------*/
-eSA Task::eSchedulerAct(void)
+eTR Task::eSchedulerAct(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_eScheduler;
+  return m_eTransition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1167,7 +1167,7 @@ void Task::vSchedulerActClear()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eScheduler = SA_NONE;
+  m_eTransition = TR_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

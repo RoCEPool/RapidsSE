@@ -469,12 +469,12 @@ bool Api::bSpawnTheJob(Job* pJob)
   Task* pTask = pJob->pTask();
   if ( pTask) {
     RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(SA_NONE == pTask->eSchedulerAct());
+    RASSERT(TR_NONE == pTask->eSchedulerAct());
   }
   else {
     pTask = new Task(pJob);
     RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(SA_NONE == pTask->eSchedulerAct());
+    RASSERT(TR_NONE == pTask->eSchedulerAct());
   }
   
   Job* pThisJob = AM::pThisTLSJob();
