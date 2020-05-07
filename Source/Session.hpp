@@ -59,6 +59,8 @@ namespace Sessions
   
     NmStrList* m_pNmStrLst;      // name-string list
     
+    Mutex*   m_pMutex;           // 
+    
   private:
 
 

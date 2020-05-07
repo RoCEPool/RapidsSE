@@ -113,11 +113,13 @@ Session::Session(void)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pInput      = new Input;
+  m_pInput          = new Input;
 
   m_sToDo           = ""_Stz;
   
   m_pNmStrLst       = nullptr;
+  
+  m_pMutex          = new Mutex(MK_JOB,this);
     
   _checkInitialised_(CN_SESSION);
   
@@ -149,6 +151,8 @@ Session::~Session(void) noexcept(false)
   delete m_pInput;
 
   delete m_pNmStrLst;
+  
+  delete m_pMutex;
     
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
