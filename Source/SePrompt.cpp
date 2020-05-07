@@ -224,6 +224,8 @@ void SePrompt::vPromptLoop(void)
     
     vPreJob();
     
+    AM::pTaskNew(m_pJob); // REMOVE
+
     // this should go
     if (m_pJob->bJobHasError()) {
       vPostJob();
