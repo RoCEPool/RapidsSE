@@ -161,6 +161,8 @@
 
   // [ compiler::current@ word.name@ encode::push ] .
 
+  //grid::thisNodeName@ "(%v) defaultSeedDist _end" .printf
+
   JP_ENDING job[] job.phase!
 
   <jobNm> "::releaseResources" str.cat find dup if
