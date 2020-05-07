@@ -839,50 +839,6 @@ bool Job::bNoWaitTag(void)
   return bNoWait;
 }
 
-#ifndef WITH_SSN_MUTEX
-
-/*----------------------------------------------------------------------------*/
-/* lock the job mutex                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vLockJobMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  AM::vTaskMutexLock(m_pTaskJ);
-}
-
-/*----------------------------------------------------------------------------*/
-/* signal the job mutex                             DOESN'T SEEM TO BE CALLED */
-/*----------------------------------------------------------------------------*/
-void Job::vSignalJobMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  AM::vTaskMutexSignal(m_pTaskJ);
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlock the job mutex                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vUnlockJobMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  AM::vTaskMutexUnlock(m_pTaskJ);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for job mutex to be signalled                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vWaitJobMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
- 
-  AM::vTaskMutexWait(m_pTaskJ);
-}
-
-#endif
-
 /*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */
 /*----------------------------------------------------------------------------*/

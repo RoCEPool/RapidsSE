@@ -749,11 +749,7 @@ void SePrompt::vJobLockMutex(void)
   
   RASSERT(JS_RUNNING == m_pJob->eJobState());
   
-#ifdef WITH_SSN_MUTEX
   m_pSession->m_pMutex->vLock(this);
-#else
-  m_pJob->vLockJobMutex();
-#endif
   
 //  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
 //  if (0 != rCode)
@@ -778,11 +774,7 @@ void SePrompt::vJobUnlockMutex(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#ifdef WITH_SSN_MUTEX
   m_pSession->m_pMutex->vUnlock(this);
-#else
-  m_pJob->vUnlockJobMutex();
-#endif
 
   m_pJob->vJobState(JS_RUNNING);
 }
@@ -806,11 +798,7 @@ void SePrompt::vJobWaitCond(void)
 
   do {
     
-    #ifdef WITH_SSN_MUTEX
       m_pSession->m_pMutex->vWait(this);
-    #else
-    m_pJob->vWaitJobMutex();
-    #endif
     
   } while (m_pJob->eJobState() != JS_SIGNALLED);
 }

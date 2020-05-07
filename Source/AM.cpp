@@ -326,13 +326,6 @@ void AM::vTaskDump(void) {
     AM::pThisTLSTask()->vDump();
 }
 
-#ifndef WITH_SSN_MUTEX
-void AM::vTaskMutexLock(Task* pTask)   { pTask->vMutexLock();   }
-void AM::vTaskMutexSignal(Task* pTask) { pTask->vMutexSignal(); }
-void AM::vTaskMutexUnlock(Task* pTask) { pTask->vMutexUnlock(); }
-void AM::vTaskMutexWait(Task* pTask)   { pTask->vMutexWait();   }
-#endif
-
 RegSet* AM::pTaskRegSet(Task* pTask)   { return pTask->pRegSet(); }
 
 i8 AM::iTaskQueue(Task* pTask) {

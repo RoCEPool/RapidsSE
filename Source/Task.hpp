@@ -24,9 +24,7 @@ namespace Tasks
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
-#ifndef WITH_SSN_MUTEX
-    SMA<Mutex>   m_pMutex;       // mutex             MOVE TO SESSION ETC
-#endif
+
     eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request
     eQK          m_eQueue;       // which queue the task is currently in
