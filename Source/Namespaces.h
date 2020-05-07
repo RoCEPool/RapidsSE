@@ -79,7 +79,6 @@ namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaMember; class MetaType;                   }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Rows          {                                                     }
-namespace Scheduling    {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
@@ -148,7 +147,6 @@ using namespace Records;
 using namespace Reflection;
 using namespace Resources;
 using namespace Rows;
-using namespace Scheduling;
 using namespace SenVM;
 using namespace Services;
 using namespace Sessions;

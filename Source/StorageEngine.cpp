@@ -53,7 +53,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   //Prompt::vCheckAssumptions();
    Reflection::vCheckAssumptions();
   Resources::vCheckAssumptions();
-  Scheduling::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Services::vCheckAssumptions();
   Sessions::vCheckAssumptions();
