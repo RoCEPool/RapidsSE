@@ -538,9 +538,9 @@ bool AM::bSpawnJob_received(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bScheduleNextPhase(Job* pRefJob)
+bool AM::bScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
-  bool bResult = Api::bScheduleNextPhase(pRefJob);
+  bool bResult = Api::bScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
   
   return bResult;
 }
@@ -1569,6 +1569,24 @@ ReqTuple* AM::aReqTuple_tls(void) {
     return &pJob_tls->m_xReqTuple;
   else
     return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump routine of word                                                       */
+/*----------------------------------------------------------------------------*/
+RU_Memory* AM::pRU_Memory(void)
+{
+  Task* pTask = AM::pThisTLSTask();
+  
+  if (! pTask)
+    return nullptr;
+  
+  Profile* pProfile = pTask->pProfile();
+  if (! pProfile)
+    return nullptr;
+  
+  RU_Memory* pRU_Memory = pProfile->pRU_Memory();
+  return pRU_Memory;
 }
 
 /*----------------------------------------------------------------------------*/

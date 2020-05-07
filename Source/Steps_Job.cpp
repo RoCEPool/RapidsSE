@@ -1560,23 +1560,23 @@ void Step::vJobScheduleNextPhase(void)
   
   // example: this job is _execute and the jobRef is bootcluster (in ptp list)
 
-  Job* pJobRef = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   
   AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJobRef->eClass()],
+              aCN[pJobParticipant->eClass()],
               aCN[m_pTask->m_pJob->eClass()],
               C_VARGS_END);
 
-  Task* pTask = pJobRef->pTask();
-  RASSERT(! pTask);
+  Task* pTaskParticipant = pJobParticipant->pTask();
+  RASSERT(! pTaskParticipant);
 //  if ( pTask) {
 //    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJobRef->szJobNm());
 //    RASSERT(QK_NONE == pTask->eQueue());
 //    RASSERT(SA_NONE == pTask->eSchedulerAct());
 //  }
   
-  IGNORE_RETURN(AM::bScheduleNextPhase(pJobRef));
+  IGNORE_RETURN(AM::bScheduleNextPhase(pJobParticipant,m_pTask));
   
   EXIT();
 }

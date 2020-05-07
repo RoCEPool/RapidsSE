@@ -15,6 +15,8 @@ namespace Interface
   static void vMonitorPortrait(s48K& sPortrait);
   static bool bReseedJob(Session* pSession, Job* pJob);
 
+  static bool bScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
+  
   static bool bSpawnJob_connector(Job* pJob);
   static bool bSpawnJob_internal(Job* pJob);
   static bool bSpawnJob_op(Job* pJob);
@@ -22,7 +24,6 @@ namespace Interface
   static bool bSpawnJob_prompt(Job* pJob);
   static bool bSpawnJob_received(Job* pJob);
   static bool bSpawnJob_system(Job* pJob);
-  static bool bScheduleNextPhase(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob);
   
   static bool bSpawnJobDedicated(Job* pJob);

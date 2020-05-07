@@ -39,16 +39,17 @@ namespace Tasks
 
     i8           m_iTraceMask;   // tracing mask
     eCN          m_eWhatJob;     // what job this task is/was for (debugging)
+  
+    Profile*     m_pProfile;     // runtime profile
 
     // always last
     Footer m_xFooter;
-
+  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
     Task(Job* pJob);
-    void vInit(void);
     ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);
@@ -89,6 +90,7 @@ namespace Tasks
     void vMutexUnlock(void);
     void vMutexWait(void);
     i8&  i_NextRnd(void);
+    Profile* pProfile(void);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     void vRefindJobClass(void);
@@ -106,7 +108,6 @@ namespace Tasks
     void vState(eTS eState);
     i8   iTaskId(void);
     void vTaskLoop(void);
-    void vThisTLSTask(void);
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);

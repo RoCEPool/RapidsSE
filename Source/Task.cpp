@@ -67,10 +67,26 @@ Task::Task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vInit();
+  m_pProfile     = nullptr;
+
+  m_pJob         = pJob;
+  m_pThread      = nullptr;
+  m_pMutex       = new Mutex(MK_TASK,this);
+
+  m_eState       = TS_NONE;
+  m_eScheduler   = SA_NONE;
+  m_eQueue       = QK_NONE;
+  m_eEntryPoint  = EP_NONE;
+
+  m_oAcksRmg.vCheckInit();
+  // m_oWakeup
   
-  m_pJob     = pJob;
-  m_eWhatJob = pJob->eClass();
+  m_pForth       = nullptr;
+  m_pRegSet      = nullptr;
+
+  m_iTraceMask   = C_TRACE_NONE;
+  m_eWhatJob     = pJob->eClass();
+
 
   _checkInitialised_(CN_TASK);
   
@@ -95,34 +111,6 @@ Task::Task(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init task                                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vInit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pJob         = nullptr;
-
-  m_pThread      = nullptr;
-  m_pMutex       = new Mutex(MK_TASK,this);
-  
-  // m_oDicStack
-
-  m_eState       = TS_NONE;
-  m_eScheduler   = SA_NONE;
-  m_eQueue       = QK_NONE;
-  m_eEntryPoint  = EP_NONE;
-  
-  m_oAcksRmg.vCheckInit();
-  // m_oWakeup
-  
-  m_iTraceMask     = C_TRACE_NONE;
-  
-  m_pForth       = nullptr;
-  m_pRegSet      = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Task::~Task(void) noexcept(false)
@@ -141,9 +129,11 @@ Task::~Task(void) noexcept(false)
   
   delete m_pRegSet;
   
+  
   delete m_pMutex;
   
-
+  delete m_pProfile;
+  m_pProfile = nullptr;
   
   -- gixTask;
   vIncStepNo();
@@ -176,7 +166,10 @@ Task* Task::pThisTLSTask(void)
 void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
+  PsxThd::vTlsSet(giTLS_TaskKey,this);
+  ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
+
   //RASSERT(! bIsLocked());
 
   ASSERT(! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
@@ -190,7 +183,6 @@ void Task::vTaskLoop(void)
   if (! bSeeded())
     vSeedTask();
   
-  vThisTLSTask();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -222,6 +214,8 @@ void Task::vTaskLoop(void)
                           "Returned from task call: %s %p"_Stz,
                           aCN[m_pJob->eClass()],
                           m_pJob);
+  
+  PsxThd::vTlsSet(giTLS_TaskKey,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,9 +534,10 @@ void Task::vInitExeContext(void)
   if (m_pForth)
     return;
   
-  m_pRegSet = new RegSet(this);
-  m_pForth  = new Forth(this,m_pRegSet);
-  
+  m_pProfile = new Profile;
+  m_pRegSet  = new RegSet(this);
+  m_pForth   = new Forth(this,m_pRegSet);
+
 //  Compiler* pCompiler =
 //    (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
 //  
@@ -701,6 +696,16 @@ void Task::vMutexWait(void)
 i8& Task::i_NextRnd(void)
 {
   return m_pRegSet->m_i_NextRnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get register set                                                           */
+/*----------------------------------------------------------------------------*/
+Profile* Task::pProfile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pProfile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -981,17 +986,6 @@ i8 Task::iTaskId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_iFocalId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this task into TLS of current pthread                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vThisTLSTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  PsxThd::vTlsSet(giTLS_TaskKey,this);
-  ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
 }
 
 /*----------------------------------------------------------------------------*/

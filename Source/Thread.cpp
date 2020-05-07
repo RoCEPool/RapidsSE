@@ -343,7 +343,7 @@ void Thread::vLoop_general(void)
     ASSERT(SA_NONE == m_pTask->eSchedulerAct());
     RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     m_pTask->vTaskLoop();
-    
+  
     RASSERT(HS_ASSIGNED == m_eThreadState);
     ASSERT(m_pTask);
     ASSERT(SA_NONE != m_pTask->eSchedulerAct());

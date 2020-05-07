@@ -2,12 +2,12 @@
 /* RegSet.hpp -- Task Register Set                                            */
 /*============================================================================*/
 
-#include "Registers.h"
+#include "Tasks.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RegSet* Registers::_pRegSet(void* aAddr)
+RegSet* Tasks::_pRegSet(void* aAddr)
 {
   RegSet* pRegSet = reinterpret_cast<RegSet*>(aAddr);
   

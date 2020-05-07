@@ -1,20 +1,19 @@
 /*============================================================================*/
-/* Registers.h -- Registers namespace                                         */
+/* RU.hpp - Resource Usage Gadget                                             */
 /*============================================================================*/
 #pragma once
 
-#include "PipelineSpecs.h"
-
-//------------------------------------------------------------------------------
-
-namespace Registers
+namespace Host
 {
-  void vCheckAssumptions(void);
+  class RU : public Object
+  {
+  public:
+      
+  public:
+    RU(eCN eClass);
+   ~RU(void) noexcept(false);
+  };
 }
-
-//------------------------------------------------------------------------------
-
-#include "RegSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

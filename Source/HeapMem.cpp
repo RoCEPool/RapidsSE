@@ -70,9 +70,9 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 {
   HeapMem* pHeapMem = AM::pHeapMem();
   
-  eHT eHeap = geWhichHeap[eAllocClass];
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Object* pObject;
+  eHT eHeap = geWhichHeap[eAllocClass];
   
   if (bPersistent) {
     switch(eHeap) {
@@ -83,6 +83,10 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
       default: break;
     }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Object* pObject = nullptr;
   
   switch(eHeap) {
     case HT_INVALID:
@@ -92,43 +96,50 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
       
     case HT_PERSISTENT_SMALL:
       pObject = pHeapMem->Persistent.m_pSmall->pAllocObject(eAllocClass);
-      return pObject;
+      break;
       
     case HT_PERSISTENT_MEDIUM:
       pObject = pHeapMem->Persistent.m_pMedium->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     case HT_PERSISTENT_LARGE:
       pObject = pHeapMem->Persistent.m_pLarge->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     case HT_PERSISTENT_JUMBO:
       pObject = pHeapMem->Persistent.m_pJumbo->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     case HT_TRANSIENT_SMALL:
       pObject = pHeapMem->Transient.m_pSmall->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     case HT_TRANSIENT_MEDIUM:
       pObject = pHeapMem->Transient.m_pMedium->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     case HT_TRANSIENT_LARGE:
       pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     case HT_TRANSIENT_JUMBO:
       pObject = pHeapMem->Transient.m_pJumbo->pAllocObject(eAllocClass);
-      return pObject;
-      
+      break;
+
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
              eHeap);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RU_Memory* pRU_Memory = AM::pRU_Memory();
   
-  return nullptr;
+  if (pRU_Memory)
+    pRU_Memory->vAllocInc(eAllocClass);
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,14 +152,21 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   HeapMem* pHeapMem = AM::pHeapMem();
   
-  eCN eClassBeingFreed = pObject->eClass();
+  eCN eFreeingClass = pObject->eClass();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RU_Memory* pRU_Memory = AM::pRU_Memory();
+  
+  if (pRU_Memory)
+    pRU_Memory->vFreeInc(eFreeingClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dont-free capability
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ENTBUFFER != eClassBeingFreed) {
+    if (CN_ENTBUFFER != eFreeingClass) {
       pObject->vClass(CN_FREEDNOT);
       return;
     }
@@ -162,7 +180,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actually free the object and return its space for reuse
   
-  eHT eHeap = geWhichHeap[eClassBeingFreed];
+  eHT eHeap = geWhichHeap[eFreeingClass];
   
   if (bPersistent) {
     switch(eHeap) {
@@ -174,12 +192,14 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
     }
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   switch(eHeap) {
     case HT_INVALID:
       MemLib::vWordDump(pObject,256,0);
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
-             eClassBeingFreed,aCN[eClassBeingFreed]);
+             eFreeingClass,aCN[eFreeingClass]);
       
     case HT_TRANSIENT_SMALL:
       pHeapMem->Transient.m_pSmall->vFreeObject(pObject);

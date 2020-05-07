@@ -26,6 +26,8 @@ namespace Threads
   
   public:
     static bool bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pAckingTask);
+    static void vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
+                                             Task* pActiviating2PcTask);
     static void vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
@@ -42,7 +44,6 @@ namespace Threads
     static void vTaskApi_AddGeneral_prompt(Task* pNewTask);
     static void vTaskApi_AddGeneral_received(Task* pNewTask);
     static void vTaskApi_AddGeneral_system(Task* pNewTask);
-    static void vTaskApi_AddGeneral_nextPhase(Task* pNewTask);
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

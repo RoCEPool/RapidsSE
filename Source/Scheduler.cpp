@@ -346,6 +346,25 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
+                                             Task* pActiviating2PcTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pTaskParticipant->eState());
+  RASSERT(QK_NONE == pTaskParticipant->eQueue());
+  RASSERT(SA_NONE == pTaskParticipant->eSchedulerAct());
+  
+  pTaskParticipant->vEntryPoint(EP_NEXTPHASE);
+  pTaskParticipant->vState(TS_DESISTED);
+
+  vScheduleTask(pTaskParticipant);
+}
+
+/*----------------------------------------------------------------------------*/
 /* trigger op-task that operand has arrived while it is biding                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
@@ -551,23 +570,6 @@ void Scheduler::vTaskApi_AddGeneral_system(Task* pNewTask)
   vScheduleTask(pNewTask);
 }
 
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_nextPhase(Task* pNewTaskOfRefJob)
-{
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTaskOfRefJob->eState());
-  RASSERT(QK_NONE == pNewTaskOfRefJob->eQueue());
-  RASSERT(SA_NONE == pNewTaskOfRefJob->eSchedulerAct());
-  
-  pNewTaskOfRefJob->vEntryPoint(EP_NEXTPHASE);
-  pNewTaskOfRefJob->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTaskOfRefJob);
-}
 /*----------------------------------------------------------------------------*/
 /* set dedicated task to be executing by dedicated thread                     */
 /*----------------------------------------------------------------------------*/

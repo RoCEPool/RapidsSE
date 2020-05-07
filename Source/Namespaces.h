@@ -42,11 +42,11 @@ namespace Esses         { template <int BYTES> class String_t;
                                                                               }
 namespace Focals        { class ReqTuple;                                     }
 namespace Folders       {                                                     }
-namespace Gadgets       { class EnumFlags; class TagSet;                    }
+namespace Gadgets       { class EnumFlags; class TagSet;                      }
 namespace GoldenGate    {                                                     }
 namespace Grids         { class Grid; class Node;                             }
-namespace Host          {                                                     }
-namespace Indexing      { class EntBuffer; class IndexTree;                    }
+namespace Host          { class RU_Memory;                                    }
+namespace Indexing      { class EntBuffer; class IndexTree;                   }
 namespace InfoData      {                                                     }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
@@ -78,7 +78,6 @@ namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaInherit; class MetaInherits;
                           class MetaMember; class MetaType;                   }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
-namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
 namespace Scheduling    {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
@@ -91,7 +90,7 @@ namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class Engine;                      }
 namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
-namespace Tasks         { class Task;                                         }
+namespace Tasks         { class RegSet; class Task;                           }
 namespace Threads       { class Scheduler;  class Thread; class Queues;       }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Utilities     { class BPA; class PoolHelper;                        }
@@ -147,7 +146,6 @@ using namespace Prompt;
 using namespace ReadConsistency;
 using namespace Records;
 using namespace Reflection;
-using namespace Registers;
 using namespace Resources;
 using namespace Rows;
 using namespace Scheduling;

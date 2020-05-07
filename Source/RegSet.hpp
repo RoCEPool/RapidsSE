@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Registers
+namespace Tasks
 {
   class RegSet : public Object
   {
