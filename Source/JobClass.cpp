@@ -134,6 +134,8 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
   
   Job* pJob = (*m_fpPre)(this,aReqTuple,pSession->pTokenVec());
   
+  
+  
   //ASSERT(this == pJob->aJobClass());
   pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;
   
