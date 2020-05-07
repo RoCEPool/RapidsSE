@@ -97,6 +97,8 @@ Job::Job(eCN eClassNo)
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
   
+  m_p_Session = nullptr;
+  
   //m_xResult
   // -- -- -- -- -- --
   
@@ -150,6 +152,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
   
+  m_p_Session = nullptr;
+  
   //m_xResult
   // -- -- -- -- -- --
   
@@ -202,6 +206,8 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
+  
+  m_p_Session = nullptr;
   
   //m_xResult
   // -- -- -- -- -- --
