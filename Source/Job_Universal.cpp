@@ -102,7 +102,7 @@ void Job_Universal::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
-: Job(aJobClass, aReqTuple, p_Session)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   

@@ -49,7 +49,7 @@ namespace Jobs
     Task*   m_pTaskJ;         // task executing the job
 
   public:
-    Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session);
+    Job(JobClass* aJobClass, ReqTuple* aReqTuple);
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClassNo);

@@ -102,7 +102,7 @@ void Job_SubFetch::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubFetch::Job_SubFetch(JobClass* aJobClass, ReqTuple* aReqTuple)
-: Job(aJobClass, aReqTuple, nullptr)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
   
