@@ -25,7 +25,8 @@ namespace Host
    ~RU_Memory(void) noexcept(false);
   
     void vInit(void);
-  
+    void vReport(void);
+
     void vAllocInc(eCN eClassNo);
     void vFreeInc(eCN eClassNo);
 
