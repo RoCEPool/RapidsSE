@@ -247,6 +247,7 @@ void Step::vRegOperandItemCountFetch(void)
 /*----------------------------------------------------------------------------*/
 /* Operand[].insertIntoTable -- insert operand into the table                 */
 /*----------------------------------------------------------------------------*/
+//! TO GO
 void Step::vRegOperandInsertIntoTable(void)
 {
   ENTRY();

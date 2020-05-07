@@ -29,7 +29,6 @@ namespace Indexing
    ~IndexTree(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vFinalize(eCN eClass, Object* pObject);
     static void vMonitorPortrait(s48K& sPortrait);
   
     Stz*       pAnalyze(void);
@@ -49,7 +48,6 @@ namespace Indexing
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
     EntBuffer* pRootBuffer(void);
     void       vRootBuffer(EntBuffer* pRootBuffer);
-    void       vTidyUp(void);
     void       vTruncate(void);
     bool       bVerify(void);
     bool       bVerifyIndex(void);

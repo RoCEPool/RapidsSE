@@ -69,8 +69,6 @@ IndexTree::~IndexTree(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
   vTruncate();
-
-  vTidyUp();  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,20 +80,6 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-}
-
-/*----------------------------------------------------------------------------*/
-/* finalize                                                                   */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vFinalize(eCN eClass, Object* pObject)
-{
-  ASSERT(eClass == CN_INDEXTREE);
-  ASSERT(pObject->eClass() == CN_INDEXTREE);
-  
-  IndexTree* pIndexTree = _pIndexTree(pObject);
-  ASSERT(pIndexTree->bWordBody());
-  
-  pIndexTree->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -566,16 +550,6 @@ void IndexTree::vRootBuffer(EntBuffer* pRootBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_pRootEntBuffer = pRootBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tidyup                                                                     */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vTidyUp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  // nothing to do
 }
 
 /*----------------------------------------------------------------------------*/

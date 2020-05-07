@@ -18,8 +18,8 @@ namespace MetaData
     s32        m_sTableNm;    // table name (leave for the moment)
     IdxVec*    m_pIdxVec;     // index vector
     Atomic     m_ixIndexNo;   // next index no
-    BucketMap* m_pBucketMap; // bucket (to partition) map
-    bool       m_bIsLoading; // data is loading
+    BucketMap* m_pBucketMap;  // bucket (to partition) map
+    bool       m_bIsLoading;  // data is loading
     
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
     StreamDef*    m_pPtnStreamDef; // partition stream def
@@ -38,14 +38,13 @@ namespace MetaData
     Table(void);
    ~Table(void) noexcept(false);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vFinalize(eCN eClass, Object* pObject);
+    static void   vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void   vFinalize(eCN eClass, Object* pObject);
     static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static void   vMonitorPortrait(s48K& sPortrait);
     
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);
-    void    vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
     i8      nCrwBuffers(void);
@@ -66,7 +65,6 @@ namespace MetaData
     bool    bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     StreamDef* pStreamDef(void);
-    void    vSubLoaders(i8 iSubLoaders);
     TableDef* pTableDef(void);
     void    vTableDef(TableDef* pTableDef);
     Stz*    szTableNm(void);
@@ -79,6 +77,10 @@ namespace MetaData
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
+    //! TO GO
+    void    vAppendBufferInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
+    void    vSubLoaders(i8 iSubLoaders);
+    
     Footer* aFooter(void);
   };
   
