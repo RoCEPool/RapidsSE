@@ -102,7 +102,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubLoader::Job_SubLoader(JobClass* aJobClass, ReqTuple* aReqTuple)
-: Job(aJobClass, aReqTuple)
+: Job(aJobClass, aReqTuple, nullptr)
 , JobWriteBehind(DS_LOAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);

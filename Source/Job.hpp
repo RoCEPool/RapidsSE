@@ -52,7 +52,7 @@ namespace Jobs
 
   public:
     Job(eCN eClassNo);
-    Job(JobClass* aJobClass, ReqTuple* aReqTuple);
+    Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session);
     Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple);
    ~Job(void) noexcept(false);
   

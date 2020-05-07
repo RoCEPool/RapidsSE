@@ -115,7 +115,7 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
+Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
 : Focal(aJobClass->m_eClass,AM::iNextJobId(),aReqTuple->m_iForId)
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
@@ -152,7 +152,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
   
-  m_p_Session = nullptr;
+  m_p_Session = p_Session;
   
   //m_xResult
   // -- -- -- -- -- --
