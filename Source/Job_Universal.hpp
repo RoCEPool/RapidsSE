@@ -17,8 +17,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple);
-    Job_Universal(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+    Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session);
     ~Job_Universal(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,7 +35,7 @@ namespace Jobs
   Job_Universal* _pJob_Universal(void* aAddr);
   
   Job* pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
-  Job* pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_Universal_delete(Job* pJob);
   void vJob_Universal_show(Job* pJob);
   

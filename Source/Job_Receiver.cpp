@@ -209,7 +209,7 @@ Footer* Job_Receiver::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Receiver_new(JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Receiver_new(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   ReqTuple xReqTuple("**RECEIVER"_Stz,false);
   

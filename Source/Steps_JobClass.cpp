@@ -85,7 +85,7 @@ void Step::vJobClassNew(void)
   i8 iJobClass_p = m_pDataStack->iPopInt(__func__);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
-  Job* pJob = pJobClass->pNewJob(nullptr);
+  Job* pJob = pJobClass->pNewJob(nullptr,nullptr);
   pJob->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
 
   m_pDataStack->vPushPtr(pJob);

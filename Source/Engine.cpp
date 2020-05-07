@@ -306,7 +306,7 @@ void Engine::vCallBoot(void)
   JobClass* pJobClass_Boot = JobClass::pFind(CN_JOB_BOOT);
   
   Job_Boot* pJob_Boot
-    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr,nullptr));
   
   pJob_Boot->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   
@@ -1298,7 +1298,7 @@ void Engine::vSpawnJobStart(void)
   JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
   
   Job_Start* pJob_Start
-    = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
+    = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr,nullptr));
   
   pJob_Start->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
   

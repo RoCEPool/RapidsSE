@@ -167,7 +167,7 @@ Footer* Job_Start::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Start_new(JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Start_new(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   ReqTuple xReqTuple("**START"_Stz,false);
   

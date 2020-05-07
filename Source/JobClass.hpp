@@ -32,7 +32,7 @@ namespace Jobs
       eEC  (*m_fpCheck)(Session* pSession);
       Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
       void (*m_fpPost)(JobClass* aJobClass, Job* pJob);
-      Job* (*m_fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple);
+      Job* (*m_fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
       void (*m_fpDelete)(Job* pJob);
       void (*m_fpSend)(Job* pJob);
       void (*m_fpRecv)(Job* pJob);
@@ -51,7 +51,7 @@ namespace Jobs
       void vDeleteJob(Job* pJob);
       void vDropDdlLock(void);
       void vGrabDdlLock(void);
-      Job* pNewJob(ReqTuple* aReqTuple);
+      Job* pNewJob(ReqTuple* aReqTuple, Session* pSession);
       void vPostJob(Job* pJob);
       Job* pPreJob(ReqTuple* aReqTuple, Session* pSession);
       void vRecvJob(Job* pJob);
