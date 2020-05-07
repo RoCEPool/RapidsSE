@@ -58,6 +58,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
     else if (HT_TRANSIENT_LARGE  == eHeap) cHeap = 'L';
     else if (HT_TRANSIENT_MEDIUM == eHeap) cHeap = 'M';
     else if (HT_TRANSIENT_SMALL  == eHeap) cHeap = 'S';
+    else if (HT_TRANSIENT_TINY   == eHeap) cHeap = 'T';
 
     vTrace("    /* %3lld 0x%03X %8lldB Heap:%c */ CN_%s,\n"_Stz,
            

@@ -323,31 +323,31 @@ void Thread::vLoop_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  RASSERT(HS_IDLE == m_eThreadState);
-  RASSERT(! m_pTask);
+        RASSERT(HS_IDLE == m_eThreadState);
+        RASSERT(! m_pTask);
   Scheduler::vThread_BeginThreadLoop(this);
 
-  RASSERT(HS_UNASSIGNED == m_eThreadState);
-  RASSERT(! m_pTask);
+        RASSERT(HS_UNASSIGNED == m_eThreadState);
+        RASSERT(! m_pTask);
   Scheduler::vThread_WaitForTaskAssignment(this);
   
-  RASSERT(HS_ASSIGNED == m_eThreadState);
-  RASSERT(m_pTask);
-  RASSERT(TR_NONE == m_pTask->eSchedulerAct());
-  RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+        RASSERT(HS_ASSIGNED == m_eThreadState);
+        RASSERT(m_pTask);
+        RASSERT(TR_NONE == m_pTask->eSchedulerAct());
+        RASSERT(this == m_pTask->pvThread_DONT_DEREF());
 
   for (;;) {
 
-    RASSERT(HS_ASSIGNED == m_eThreadState);
-    ASSERT(m_pTask);
-    ASSERT(TR_NONE == m_pTask->eSchedulerAct());
-    RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+                RASSERT(HS_ASSIGNED == m_eThreadState);
+                ASSERT(m_pTask);
+                ASSERT(TR_NONE == m_pTask->eSchedulerAct());
+                RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     m_pTask->vTaskLoop();
   
-    RASSERT(HS_ASSIGNED == m_eThreadState);
-    ASSERT(m_pTask);
-    ASSERT(TR_NONE != m_pTask->eSchedulerAct());
-    RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+                RASSERT(HS_ASSIGNED == m_eThreadState);
+                ASSERT(m_pTask);
+                ASSERT(TR_NONE != m_pTask->eSchedulerAct());
+                RASSERT(this == m_pTask->pvThread_DONT_DEREF());
     Scheduler::vTaskSelf_LoopTransition(m_pTask,this);
 
     if (m_pTask) {
@@ -356,14 +356,15 @@ void Thread::vLoop_general(void)
       continue;
     }
     
-    RASSERT(HS_UNASSIGNED == m_eThreadState);
-    RASSERT(! m_pTask);
+                RASSERT(HS_UNASSIGNED == m_eThreadState);
+                RASSERT(! m_pTask);
     Scheduler::vThread_WaitForTaskAssignment(this);
     
-    RASSERT(HS_ASSIGNED == m_eThreadState);
-    RASSERT(m_pTask);
-    ASSERT(TR_NONE == m_pTask->eSchedulerAct());
-    RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+                RASSERT(HS_ASSIGNED == m_eThreadState);
+                RASSERT(m_pTask);
+                RASSERT(TR_NONE == m_pTask->eSchedulerAct());
+                RASSERT(this == m_pTask->pvThread_DONT_DEREF());
+>>>>>>> 36fbc4924ded8d9af5de6a71d01479db39e42a0b
   }
      
   NEVER_REACH;

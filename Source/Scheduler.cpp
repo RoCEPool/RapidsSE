@@ -17,11 +17,14 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move task out of executing queue
-  
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(TR_NONE != pSelfTask->eSchedulerAct());
   RASSERT(pSelfTask == pThread->m_pTask);
   RASSERT(pThread == pSelfTask->pvThread_DONT_DEREF());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) move task out of executing queue
+  
   RASSERT(TS_EXECUTING == pSelfTask->eState());
   RASSERT(QK_EXECUTING_SET == pSelfTask->eQueue());
 
@@ -30,56 +33,64 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   Queues* pQueues = AM::pQueues();
   pQueues->vRemoveExecutingSet(pSelfTask);
   RASSERT(QK_NONE == pSelfTask->eQueue());
+  
+  // set task to be desisted to indicate its under control of the scheduler
+  
   pSelfTask->vState(TS_DESISTED);
 
-  // disconnect / de-assign task from calling thread
+  // unlink task from calling thread
+  
   pSelfTask->vThread(nullptr);
   pThread->m_pTask = nullptr;
+  
+  // this thread no longer is assigned to a task
+  
   pThread->m_eThreadState = HS_UNASSIGNED;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // transition task to different state+queue depending on transition request
+  // 2) transition task to different state+queue depending on transition request
   
-  switch (pSelfTask->eSchedulerAct()) {
+  eTR eSchedulerAct = pSelfTask->eSchedulerAct();
+  switch (eSchedulerAct) {
       
-    // cases where task is either same or inaccesible -- -- -- -- -- -- -- -- --
+    // cases where task changes state -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
-    case TR_BIDE_FOR_OPERAND:
+
+    case TR_BIDE_FOR_OPERAND: // bide / wait for operand to arrive in pipein
       vTaskSelf_BideForOperand(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
               (pSelfTask == pThread->pTask() &&
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
-    case TR_SLEEP_SOME_TIME:
+    case TR_SLEEP_SOME_TIME: // task sleeps till wakup time arrives
       vTaskSelf_SleepSomeTime(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
               (pSelfTask == pThread->pTask() &&
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
-    case TR_WAIT_FOR_RESUME:
+    case TR_WAIT_FOR_RESUME: // wait till acked from an acking cross task
       vTaskSelf_WaitForResume(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
               (pSelfTask == pThread->pTask() &&
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
-    case TR_YIELD_FOR_OTHERS:
+    case TR_YIELD_FOR_OTHERS: // be nice and let thread get assigned to other
       vTaskSelf_YieldForOthers(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
               (pSelfTask == pThread->pTask() &&
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
-    // cases where task is either deleted or inaccesible -- -- -- -- -- -- -- --
-      
-    case TR_DELETE_THIS_TASK:
+    // cases where task is over and will be deleted or signal prompt -- -- -- --
+    case TR_DELETE_THIS_TASK: // task is deleting itself
       vTaskSelf_DeleteThisTask(pSelfTask,pThread);
       RASSERT(!pThread->pTask());
       break;
       
-    case TR_SIGNAL_COMPLETION:
+    case TR_SIGNAL_COMPLETION: // task signals prompt which will delete task
       vTaskSelf_SignalCompletion(pSelfTask,pThread);
       RASSERT(!pThread->pTask());
       break;
@@ -123,6 +134,12 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 {
+  //
+  // example: op task has ack'd the pipeline job and now just self-delete
+  //
+  // who delete's the job in these cases?
+  //
+  
   RASSERT(pSelfTask->bIsLocked());
   RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eSchedulerAct());
   RASSERT(TS_DESISTED == pSelfTask->eState());
@@ -139,7 +156,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 
   pSelfTask->vState(TS_DELETING);
   
-  delete pSelfTask;
+  delete pSelfTask; // note: this is the only point where tasks get deleted
 
   /** do not touch task **/
 }

@@ -9,7 +9,7 @@ enum eTS // Task State
   /* 1 */ TS_BIDING,    // task is biding till operand arrives and triggers
   /* 2 */ TS_COMPLETED, // task has completed and can be deleted
   /* 3 */ TS_DELETING,  // task is being deleted
-  /* 4 */ TS_DESISTED,  // task has desisted / not executing
+  /* 4 */ TS_DESISTED,  // task has desisted / is under control of scheduler
   /* 5 */ TS_EXECUTING, // task is currenty being executing by a thread
   /* 6 */ TS_READY,     // task is queue ready to be executed
   /* 7 */ TS_SLEEPING,  // task is sleeping till wakeup time arrives

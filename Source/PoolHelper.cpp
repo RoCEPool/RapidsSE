@@ -40,14 +40,16 @@ void PoolHelper::vHeapDump(Heap* pHeap)
   vTrace("\n"_Stz);
   vTrace("%sObjects in %s Heap:\n"_Stz,
          Stz::szTab(1),
-         pHeap->eClass() == CN_SMALLTRANSIENT ? "Small Transient"_Stz :
-         pHeap->eClass() == CN_MEDIUMTRANSIENT ? "Medium Transient"_Stz :
-         pHeap->eClass() == CN_LARGETRANSIENT ? "Large Transient"_Stz :
-         pHeap->eClass() == CN_JUMBOTRANSIENT ? "Jumbo Transient"_Stz :
-         pHeap->eClass() == CN_SMALLPERSISTENT ? "Small Persistent"_Stz :
+         pHeap->eClass() == CN_TINYTRANSIENT    ? "Tiny Transient"_Stz :
+         pHeap->eClass() == CN_SMALLTRANSIENT   ? "Small Transient"_Stz :
+         pHeap->eClass() == CN_MEDIUMTRANSIENT  ? "Medium Transient"_Stz :
+         pHeap->eClass() == CN_LARGETRANSIENT   ? "Large Transient"_Stz :
+         pHeap->eClass() == CN_JUMBOTRANSIENT   ? "Jumbo Transient"_Stz :
+         pHeap->eClass() == CN_TINYPERSISTENT   ? "Tiny Persistent"_Stz :
+         pHeap->eClass() == CN_SMALLPERSISTENT  ? "Small Persistent"_Stz :
          pHeap->eClass() == CN_MEDIUMPERSISTENT ? "Medium Persistent"_Stz :
-         pHeap->eClass() == CN_LARGEPERSISTENT ? "Large Persistent"_Stz :
-         pHeap->eClass() == CN_JUMBOPERSISTENT ? "Jumbo Persistent"_Stz : "unknown"_Stz);
+         pHeap->eClass() == CN_LARGEPERSISTENT  ? "Large Persistent"_Stz :
+         pHeap->eClass() == CN_JUMBOPERSISTENT  ? "Jumbo Persistent"_Stz : "unknown"_Stz);
          
   pHeap->vGrabLock();
   
@@ -140,11 +142,13 @@ void PoolHelper::vObjectList(void)
   vTrace("\n"_Stz);
   vTrace("%sObjects in PoolBuffer Pool:\n"_Stz,Stz::szTab(1));
   
+  PoolBuffer* pTinyTransient   = nullptr;
   PoolBuffer* pSmallTransient  = nullptr;
   PoolBuffer* pMediumTransient = nullptr;
   PoolBuffer* pLargeTransient  = nullptr;
   PoolBuffer* pJumboTransient  = nullptr;
   
+  PoolBuffer* pTinyPersistent   = nullptr;
   PoolBuffer* pSmallPersistent  = nullptr;
   PoolBuffer* pMediumPersistent = nullptr;
   PoolBuffer* pLargePersistent  = nullptr;
@@ -155,6 +159,9 @@ void PoolHelper::vObjectList(void)
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
+    
+    if (CN_TINYTRANSIENT == pBuffer->eClass())
+      pTinyTransient = pBuffer;
     
     if (CN_SMALLTRANSIENT == pBuffer->eClass())
       pSmallTransient = pBuffer;
@@ -167,6 +174,10 @@ void PoolHelper::vObjectList(void)
     
     if (CN_JUMBOTRANSIENT == pBuffer->eClass())
       pJumboTransient = pBuffer;
+    
+    
+    if (CN_TINYPERSISTENT == pBuffer->eClass())
+      pTinyPersistent = pBuffer;
     
     if (CN_SMALLPERSISTENT == pBuffer->eClass())
       pSmallPersistent = pBuffer;
@@ -183,6 +194,9 @@ void PoolHelper::vObjectList(void)
     vBufferDump(pBuffer);
   }
   
+  if (pTinyTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pTinyTransient));
+  
   if (pSmallTransient)
     vHeapDump(reinterpret_cast<Heap*>(pSmallTransient));
   
@@ -194,6 +208,10 @@ void PoolHelper::vObjectList(void)
   
   if (pJumboTransient)
     vHeapDump(reinterpret_cast<Heap*>(pJumboTransient));
+  
+  
+  if (pTinyPersistent)
+    vHeapDump(reinterpret_cast<Heap*>(pTinyPersistent));
   
   if (pSmallPersistent)
     vHeapDump(reinterpret_cast<Heap*>(pSmallPersistent));
@@ -247,9 +265,43 @@ void PoolHelper::vObjectSummary(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 nBlockSize =0;
   
+  nBlockSize = C_SIZE_TINY_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeapMem()->Transient.m_pTiny->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
   
-  i8 nBlockSize = C_SIZE_SMALL_OBJECT;
+  vTrace("\n"_Stz);
+  vTrace("  Transient Tiny Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+    
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gnClassSize[eClass];
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+    
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+    
+    if (nObjSize < C_SIZE_SMALL_OBJECT / 2)
+      sFlag = " !savings"_Stz;
+    else
+      sFlag = ""_Stz;
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
+  }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  nBlockSize = C_SIZE_SMALL_OBJECT;
   MagLib::vByteMag(nBlockSize,sMagHeap);
   AM::pHeapMem()->Transient.m_pSmall->vAnalyse(iCountObjects);
   nObjInHeap = 0;
@@ -532,6 +584,9 @@ void PoolHelper::vPoolDump(void)
 /*----------------------------------------------------------------------------*/
 i8 PoolHelper::iPoolFree(void)
 {
+  i8 iTransientTiny =
+     AM::pHeapMem()->Transient.m_pTiny->iFreeCount() * C_SIZE_TINY_OBJECT;
+  
   i8 iTransientSmall =
      AM::pHeapMem()->Transient.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
   
@@ -541,6 +596,9 @@ i8 PoolHelper::iPoolFree(void)
   i8 iTransientLarge =
      AM::pHeapMem()->Transient.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
   
+  
+  i8 iPersistentTiny =
+     AM::pHeapMem()->Persistent.m_pTiny->iFreeCount() * C_SIZE_TINY_OBJECT;
   
   i8 iPersistentSmall =
      AM::pHeapMem()->Persistent.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
@@ -553,8 +611,10 @@ i8 PoolHelper::iPoolFree(void)
 
   
   i8 iTotalFree =
-       iTransientSmall  + iTransientMedium  + iTransientLarge +
-       iPersistentSmall + iPersistentMedium + iPersistentLarge;
+       iTransientTiny
+         + iTransientSmall  + iTransientMedium  + iTransientLarge +
+       iPersistentTiny
+         + iPersistentSmall + iPersistentMedium + iPersistentLarge;
   
   return iTotalFree;
 }
@@ -584,6 +644,7 @@ void PoolHelper::vReadBuffers(Stz* sFilePath)
 void PoolHelper::vRegionSummary()
 {
   // get MagLib of the various buffer pools
+  s32 sMagTiny;   MagLib::vByteMag(C_SIZE_TINY_OBJECT,  sMagTiny);
   s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
   s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
   s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
@@ -605,6 +666,12 @@ void PoolHelper::vRegionSummary()
          );
   
   vTrace("\n"_Stz);
+  vTrace("   Transient TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagTiny.azChar(),
+         AM::pHeapMem()->Transient.m_pTiny->iBufferCount(),
+         AM::pHeapMem()->Transient.m_pTiny->iAllocCount(),
+         AM::pHeapMem()->Transient.m_pTiny->iFreeCount());
+  
   vTrace("   Transient SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
          AM::pHeapMem()->Transient.m_pSmall->iBufferCount(),
@@ -628,6 +695,12 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Transient.m_pJumbo->iBufferCount(),
          AM::pHeapMem()->Transient.m_pJumbo->iAllocCount(),
          AM::pHeapMem()->Transient.m_pJumbo->iFreeCount());
+  
+  vTrace("  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagTiny.azChar(),
+         AM::pHeapMem()->Persistent.m_pTiny->iBufferCount(),
+         AM::pHeapMem()->Persistent.m_pTiny->iAllocCount(),
+         AM::pHeapMem()->Persistent.m_pTiny->iFreeCount());
   
   vTrace("  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
@@ -685,10 +758,10 @@ void PoolHelper::vWordList(i8 iEpoch)
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     
     if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
-    pMediumTransient = pBuffer;
+      pMediumTransient = pBuffer;
     
     if (CN_SMALLTRANSIENT == pBuffer->eClass())
-    pSmallTransient = pBuffer;
+      pSmallTransient = pBuffer;
   }
   
   if (pMediumTransient)
@@ -762,6 +835,9 @@ void PoolHelper::vWritePersistentHeapMem(Stz* sFilePath)
 {
   File* pFile = new File(nullptr);
   pFile->bOpenWrite(sFilePath);
+  
+  vTrace("Writing persistent tiny heap\n"_Stz);
+  vWriteHeap(AM::pHeapMem()->Persistent.m_pTiny,pFile);
   
   vTrace("Writing persistent small heap\n"_Stz);
   vWriteHeap(AM::pHeapMem()->Persistent.m_pSmall,pFile);

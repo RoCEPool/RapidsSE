@@ -20,6 +20,8 @@ void HeapMem::vInit(void)
   Transient.m_pLarge  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
   Transient.m_pMedium = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
   Transient.m_pSmall  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
+  Transient.m_pTiny   = new Heap(CN_TINYTRANSIENT,   C_SIZE_TINY_OBJECT);
+
   if (AM::bVerboseProgress()) {
     vInfo("Created jumbo heap %p: %lldB objects\n"_Stz,
           Transient.m_pJumbo, C_SIZE_JUMBO_OBJECT);
@@ -29,6 +31,8 @@ void HeapMem::vInit(void)
           Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
     vInfo("Created small heap %p: %lldB objects\n"_Stz,
           Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
+    vInfo("Created tiny heap %p: %lldB objects\n"_Stz,
+          Transient.m_pTiny, C_SIZE_TINY_OBJECT);
   }
   
   // set up the jumbo heap
@@ -48,6 +52,7 @@ void HeapMem::vInit(void)
   Persistent.m_pLarge  = new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
   Persistent.m_pMedium = new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
   Persistent.m_pSmall  = new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
+  Persistent.m_pTiny   = new Heap(CN_TINYPERSISTENT,   C_SIZE_SMALL_OBJECT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +62,7 @@ void HeapMem::vMonitorPortrait(s48K& sPortrait)
 {
   s48K s;
   
+  s = ""_Stz; Transient.m_pTiny->vMonitorPortrait(s);   sPortrait.vConcat(s);
   s = ""_Stz; Transient.m_pSmall->vMonitorPortrait(s);  sPortrait.vConcat(s);
   s = ""_Stz; Transient.m_pMedium->vMonitorPortrait(s); sPortrait.vConcat(s);
   s = ""_Stz; Transient.m_pLarge->vMonitorPortrait(s);  sPortrait.vConcat(s);
@@ -76,6 +82,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   
   if (bPersistent) {
     switch(eHeap) {
+      case HT_TRANSIENT_TINY:   eHeap = HT_PERSISTENT_TINY;   break;
       case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
       case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
       case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
@@ -94,38 +101,50 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
              "HeapMem::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
-    case HT_PERSISTENT_SMALL:
-      pObject = pHeapMem->Persistent.m_pSmall->pAllocObject(eAllocClass);
-      break;
+      // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case HT_TRANSIENT_TINY:
+        pObject = pHeapMem->Transient.m_pTiny->pAllocObject(eAllocClass);
+        break;
+
+      case HT_TRANSIENT_SMALL:
+        pObject = pHeapMem->Transient.m_pSmall->pAllocObject(eAllocClass);
+        break;
+
+      case HT_TRANSIENT_MEDIUM:
+        pObject = pHeapMem->Transient.m_pMedium->pAllocObject(eAllocClass);
+        break;
+
+      case HT_TRANSIENT_LARGE:
+        pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
+        break;
+
+      case HT_TRANSIENT_JUMBO:
+        pObject = pHeapMem->Transient.m_pJumbo->pAllocObject(eAllocClass);
+        break;
+
+      // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
-    case HT_PERSISTENT_MEDIUM:
-      pObject = pHeapMem->Persistent.m_pMedium->pAllocObject(eAllocClass);
-      break;
+      case HT_PERSISTENT_TINY:
+        pObject = pHeapMem->Persistent.m_pTiny->pAllocObject(eAllocClass);
+        break;
+        
+      case HT_PERSISTENT_SMALL:
+        pObject = pHeapMem->Persistent.m_pSmall->pAllocObject(eAllocClass);
+        break;
+        
+      case HT_PERSISTENT_MEDIUM:
+        pObject = pHeapMem->Persistent.m_pMedium->pAllocObject(eAllocClass);
+        break;
 
-    case HT_PERSISTENT_LARGE:
-      pObject = pHeapMem->Persistent.m_pLarge->pAllocObject(eAllocClass);
-      break;
+      case HT_PERSISTENT_LARGE:
+        pObject = pHeapMem->Persistent.m_pLarge->pAllocObject(eAllocClass);
+        break;
 
-    case HT_PERSISTENT_JUMBO:
-      pObject = pHeapMem->Persistent.m_pJumbo->pAllocObject(eAllocClass);
-      break;
-
-    case HT_TRANSIENT_SMALL:
-      pObject = pHeapMem->Transient.m_pSmall->pAllocObject(eAllocClass);
-      break;
-
-    case HT_TRANSIENT_MEDIUM:
-      pObject = pHeapMem->Transient.m_pMedium->pAllocObject(eAllocClass);
-      break;
-
-    case HT_TRANSIENT_LARGE:
-      pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
-      break;
-
-    case HT_TRANSIENT_JUMBO:
-      pObject = pHeapMem->Transient.m_pJumbo->pAllocObject(eAllocClass);
-      break;
-
+      case HT_PERSISTENT_JUMBO:
+        pObject = pHeapMem->Persistent.m_pJumbo->pAllocObject(eAllocClass);
+        break;
+      
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
@@ -184,6 +203,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   if (bPersistent) {
     switch(eHeap) {
+      case HT_TRANSIENT_TINY:   eHeap = HT_PERSISTENT_TINY;   break;
       case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
       case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
       case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
@@ -201,6 +221,12 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
              "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
              eFreeingClass,aCN[eFreeingClass]);
       
+    // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      
+    case HT_TRANSIENT_TINY:
+      pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
+      return;
+      
     case HT_TRANSIENT_SMALL:
       pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
       return;
@@ -215,6 +241,12 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
       
     case HT_TRANSIENT_JUMBO:
       pHeapMem->Transient.m_pJumbo->vFreeObject(pObject);
+      return;
+      
+    // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      
+    case HT_PERSISTENT_TINY:
+      pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_SMALL:
@@ -261,6 +293,10 @@ void HeapMem::vReport(void)
 {
   s256 sReport;
 
+  // tiny transient heap
+  AM::pHeapMem()->Transient.m_pTiny->vReport(sReport.pString());
+  vTrace(" %s\n"_Stz,sReport.szStz());
+  
   // small transient heap
   AM::pHeapMem()->Transient.m_pSmall->vReport(sReport.pString());
   vTrace(" %s\n"_Stz,sReport.szStz());
@@ -278,7 +314,11 @@ void HeapMem::vReport(void)
   vTrace(" %s\n"_Stz,sReport.szStz());
 
   
-  // small persistent heap
+//  // tiny persistent heap
+//  AM::pHeapMem()->Persistent.m_pTiny->vReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//
+//  // small persistent heap
 //  AM::pHeapMem()->Persistent.m_pSmall->vReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
@@ -330,6 +370,15 @@ void HeapMem::vValidateEnums(void)
       case HT_INVALID:
         break;
         
+      // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        
+      case HT_TRANSIENT_TINY:
+        if (iSize >= C_SIZE_TINY_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
       case HT_TRANSIENT_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -355,6 +404,15 @@ void HeapMem::vValidateEnums(void)
         if (iSize >= C_SIZE_JUMBO_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: transient jumbo class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+ 
+      // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
+      case HT_PERSISTENT_TINY:
+        if (iSize >= C_SIZE_SMALL_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
