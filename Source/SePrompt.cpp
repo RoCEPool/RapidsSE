@@ -1375,7 +1375,7 @@ void SePrompt::vSpawnJob(void)
   Task* pTask = m_pJob->pTask();
   if ( pTask) {
     RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eSchedulerAct());
+    RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
   
   bool bSpawned = Api::bSpawnJob_prompt(m_pJob);

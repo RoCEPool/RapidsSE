@@ -118,8 +118,8 @@ namespace Tasks
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);
-    eTR  eSchedulerAct(void);
-    void vSchedulerActClear(void);
+    eTR  eTranstionRequest(void);
+    void vTranstionRequestClear(void);
     void vUnlinkJob(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);

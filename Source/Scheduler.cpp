@@ -18,7 +18,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   //
   
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_NONE != pSelfTask->eSchedulerAct());
+  RASSERT(TR_NONE != pSelfTask->eTranstionRequest());
   RASSERT(pSelfTask == pThread->m_pTask);
   RASSERT(pThread == pSelfTask->pvThread_DONT_DEREF());
 
@@ -50,8 +50,8 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) transition task to different state+queue depending on transition request
   
-  eTR eSchedulerAct = pSelfTask->eSchedulerAct();
-  switch (eSchedulerAct) {
+  eTR eTranstionRequest = pSelfTask->eTranstionRequest();
+  switch (eTranstionRequest) {
       
     // cases where task changes state -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
@@ -106,7 +106,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
 void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
 {
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_BIDE_FOR_OPERAND == pSelfTask->eSchedulerAct());
+  RASSERT(TR_BIDE_FOR_OPERAND == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
@@ -116,7 +116,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
 
   Queues* pQueues = AM::pQueues();
   
-  pSelfTask->vSchedulerActClear();
+  pSelfTask->vTranstionRequestClear();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case: operator task bides for operand
@@ -141,7 +141,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   //
   
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eSchedulerAct());
+  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
@@ -149,7 +149,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
     
-  pSelfTask->vSchedulerActClear();
+  pSelfTask->vTranstionRequestClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete case: task is to be deleted
@@ -167,7 +167,7 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
 {
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_SIGNAL_COMPLETION == pSelfTask->eSchedulerAct());
+  RASSERT(TR_SIGNAL_COMPLETION == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
@@ -175,7 +175,7 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  pSelfTask->vSchedulerActClear();
+  pSelfTask->vTranstionRequestClear();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // completion case: task has completed
@@ -195,7 +195,7 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
 void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
 {
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_SLEEP_SOME_TIME == pSelfTask->eSchedulerAct());
+  RASSERT(TR_SLEEP_SOME_TIME == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
@@ -205,7 +205,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   
   Queues* pQueues = AM::pQueues();
 
-  pSelfTask->vSchedulerActClear();
+  pSelfTask->vTranstionRequestClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case: wakeup time has not arrived
@@ -242,7 +242,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
 void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
 {
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_WAIT_FOR_RESUME == pSelfTask->eSchedulerAct());
+  RASSERT(TR_WAIT_FOR_RESUME == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
@@ -252,7 +252,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   
   Queues* pQueues = AM::pQueues();
   
-  pSelfTask->vSchedulerActClear();
+  pSelfTask->vTranstionRequestClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case:
@@ -270,7 +270,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
 void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
 {
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_YIELD_FOR_OTHERS == pSelfTask->eSchedulerAct());
+  RASSERT(TR_YIELD_FOR_OTHERS == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
@@ -280,7 +280,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
 
   Queues* pQueues = AM::pQueues();
 
-  pSelfTask->vSchedulerActClear();
+  pSelfTask->vTranstionRequestClear();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case: there are queued ready to run tasks
@@ -346,7 +346,7 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTaskWaiting->eState());
   RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
-  RASSERT(TR_NONE == pTaskWaiting->eSchedulerAct());
+  RASSERT(TR_NONE == pTaskWaiting->eTranstionRequest());
 
   Queues* pQueues = AM::pQueues();
   
@@ -354,7 +354,7 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
     
   RASSERT(TS_DESISTED == pTaskWaiting->eState());
   RASSERT(QK_NONE == pTaskWaiting->eQueue());
-  RASSERT(TR_NONE == pTaskWaiting->eSchedulerAct());
+  RASSERT(TR_NONE == pTaskWaiting->eTranstionRequest());
   
   vScheduleTask(pTaskWaiting);
   // **do not touch task**
@@ -373,7 +373,7 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
   //
   RASSERT(TS_NONE == pTaskParticipant->eState());
   RASSERT(QK_NONE == pTaskParticipant->eQueue());
-  RASSERT(TR_NONE == pTaskParticipant->eSchedulerAct());
+  RASSERT(TR_NONE == pTaskParticipant->eTranstionRequest());
   
   pTaskParticipant->vEntryPoint(EP_NEXTPHASE);
   pTaskParticipant->vState(TS_DESISTED);
@@ -393,7 +393,7 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   RASSERT(pTaskBiding->bIsLocked());
   RASSERT(TS_BIDING == pTaskBiding->eState());
   RASSERT(QK_BIDING_SET == pTaskBiding->eQueue());
-  RASSERT(TR_NONE == pTaskBiding->eSchedulerAct());
+  RASSERT(TR_NONE == pTaskBiding->eTranstionRequest());
 
   Queues* pQueues = AM::pQueues();
   
@@ -403,7 +403,7 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   
   RASSERT(TS_DESISTED == pTaskBiding->eState());
   RASSERT(QK_NONE == pTaskBiding->eQueue());
-  RASSERT(TR_NONE == pTaskBiding->eSchedulerAct());
+  RASSERT(TR_NONE == pTaskBiding->eTranstionRequest());
   
   vScheduleTask(pTaskBiding);
   // **do not touch task**
@@ -424,7 +424,7 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
         
     RASSERT(TS_DESISTED == pWakingTask->eState());
     RASSERT(QK_NONE == pWakingTask->eQueue());
-    RASSERT(TR_NONE == pWakingTask->eSchedulerAct());
+    RASSERT(TR_NONE == pWakingTask->eTranstionRequest());
     
     vScheduleTask(pWakingTask);
     // **do not touch task**
@@ -471,7 +471,7 @@ void Scheduler::vTaskApi_AddGeneral_connector(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_CONNECTOR);
   pNewTask->vState(TS_DESISTED);
@@ -489,7 +489,7 @@ void Scheduler::vTaskApi_AddGeneral_internal(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_INTERNAL);
   pNewTask->vState(TS_DESISTED);
@@ -507,7 +507,7 @@ void Scheduler::vTaskApi_AddGeneral_op(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_OP);
   pNewTask->vState(TS_DESISTED);
@@ -525,7 +525,7 @@ void Scheduler::vTaskApi_AddGeneral_other(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_OTHER);
   pNewTask->vState(TS_DESISTED);
@@ -543,7 +543,7 @@ void Scheduler::vTaskApi_AddGeneral_prompt(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_PROMPT);
   pNewTask->vState(TS_DESISTED);
@@ -561,7 +561,7 @@ void Scheduler::vTaskApi_AddGeneral_received(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_RECEIVED);
   pNewTask->vState(TS_DESISTED);
@@ -579,7 +579,7 @@ void Scheduler::vTaskApi_AddGeneral_system(Task* pNewTask)
   //
   RASSERT(TS_NONE == pNewTask->eState());
   RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eSchedulerAct());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_SYSTEM);
   pNewTask->vState(TS_DESISTED);
@@ -1061,31 +1061,31 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   
   eTS eTaskState = pKnownTask->eState();
   eQK eQueue = pKnownTask->eQueue();
-  eTR eSchedulerAct = pKnownTask->eSchedulerAct();
+  eTR eTranstionRequest = pKnownTask->eTranstionRequest();
   
   if (TS_DESISTED != pKnownTask->eState()) {
     fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
-            (char*)aTR[eSchedulerAct]);
+            (char*)aTR[eTranstionRequest]);
   }
   
   if (QK_NONE != pKnownTask->eQueue()) {
     fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
-            (char*)aTR[eSchedulerAct]);  }
+            (char*)aTR[eTranstionRequest]);  }
   
-  if (TR_NONE != pKnownTask->eSchedulerAct()) {
+  if (TR_NONE != pKnownTask->eTranstionRequest()) {
     fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
-            (char*)aTR[eSchedulerAct]);
+            (char*)aTR[eTranstionRequest]);
   }
   
   RASSERT(TS_DESISTED == pKnownTask->eState());
   RASSERT(QK_NONE == pKnownTask->eQueue());
-  RASSERT(TR_NONE == pKnownTask->eSchedulerAct());
+  RASSERT(TR_NONE == pKnownTask->eTranstionRequest());
 
   Queues* pQueues = AM::pQueues();
   
@@ -1100,7 +1100,7 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   
   RASSERT(TS_DESISTED == pKnownTask->eState());
   RASSERT(QK_NONE == pKnownTask->eQueue());
-  RASSERT(TR_NONE == pKnownTask->eSchedulerAct());
+  RASSERT(TR_NONE == pKnownTask->eTranstionRequest());
   
   pKnownTask->vState(TS_READY);
 

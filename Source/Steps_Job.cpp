@@ -1573,7 +1573,7 @@ void Step::vJobScheduleNextPhase(void)
 //  if ( pTask) {
 //    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJobRef->szJobNm());
 //    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eSchedulerAct());
+//    RASSERT(TR_NONE == pTask->eTranstionRequest());
 //  }
   
   IGNORE_RETURN(AM::bScheduleNextPhase(pJobParticipant,m_pTask));
@@ -1602,7 +1602,7 @@ void Step::vJobSpawnReceived(void)
 //  if ( pTask) {
 //    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
 //    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eSchedulerAct());
+//    RASSERT(TR_NONE == pTask->eTranstionRequest());
 //  }
   
   IGNORE_RETURN(Api::bSpawnJob_received(pJob));
@@ -1677,7 +1677,7 @@ void Step::vJobSpawnUniversal(void)
   Task* pTask = pJob_Universal->pTask();
   if ( pTask) {
     RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eSchedulerAct());
+    RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
   IGNORE_RETURN(Api::bSpawnJob_other(pJob_Universal));
 

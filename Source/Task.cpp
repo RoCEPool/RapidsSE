@@ -1153,7 +1153,7 @@ void Task::vScheduleYield(void)
 /*----------------------------------------------------------------------------*/
 /* get acheduler action                                                       */
 /*----------------------------------------------------------------------------*/
-eTR Task::eSchedulerAct(void)
+eTR Task::eTranstionRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1163,7 +1163,7 @@ eTR Task::eSchedulerAct(void)
 /*----------------------------------------------------------------------------*/
 /* clear scheduler action                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSchedulerActClear()
+void Task::vTranstionRequestClear()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
