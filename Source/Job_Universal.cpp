@@ -115,7 +115,7 @@ Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Universal::Job_Universal(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
-: Job(pParentJob, aJobClass, aReqTuple)
+: Job(aJobClass, aReqTuple, nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   

@@ -168,61 +168,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
-: Focal(aJobClass->m_eClass,AM::iNextJobId(),aReqTuple->m_iForId)
-, m_xReqTuple(aReqTuple)
-, CRM<Job>(this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
-  
-  // m_xReqTuple
-  
-  m_aJobClass = aJobClass;
-
-  m_iParentId = C_UNKNOWN;
-  m_eSeed     = SS_ENUMS;
-  m_i_Slot    = C_UNKNOWN;
-  
-  m_eJobKind  = JK_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobState = JS_RUNNING;
-  
-  m_bNormalSides = true; //
-  m_bWasReceived = false;
-  
-  m_oTimer.vStart();
-  //m_oAcksRmg
-  
-  m_pTaskJ = nullptr;
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId = C_UNKNOWN;
-  
-  m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRmg_2pc.vCheckInit();
-  
-  m_pPipeline = nullptr;
-  m_pOp       = nullptr;
-  m_pOperand  = nullptr;
-  
-  m_p_Session = nullptr;
-  
-  //m_xResult
-  // -- -- -- -- -- --
-  
-  SP_Gid spId;
-  
-  vIncStepNo(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Job::~Job(void) noexcept(false)

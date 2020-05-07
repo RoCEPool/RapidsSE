@@ -51,9 +51,11 @@ namespace Jobs
     Task*   m_pTaskJ;         // task executing the job
 
   public:
-    Job(eCN eClassNo);
     Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session);
-    Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple);
+
+    // FIND CASE -- TO BE REMOVED
+    Job(eCN eClassNo);
+
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);
