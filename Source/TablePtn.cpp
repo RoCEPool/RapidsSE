@@ -140,34 +140,6 @@ i8 TablePtn::iSlotToPartition(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add no. of loadable buffers by a subloader into total for this partition   */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAddLoadWriteBehindBuffers(i8 nBuffersFromSomeSubLoader)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  ASSERT(C_UNKNOWN != nBuffersFromSomeSubLoader);
-  
-  m_nWriteBehindBuffers += nBuffersFromSomeSubLoader;
-  m_nSubLoadersDone++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add no. of insertable buffers by a subloader into total for this partition */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAddInsertWriteBehindBuffers(i8 nBuffersFromSomeSubInserter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  ASSERT(C_UNKNOWN != nBuffersFromSomeSubInserter);
-  
-  m_nWriteBehindBuffers += nBuffersFromSomeSubInserter;
-  m_nSubInsertersDone++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add index                                                                  */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree* pIndexTree)
@@ -176,86 +148,6 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
   
   ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
   m_pIndexTreeVec->vAdd(pIndexTree);
-}
-
-/*----------------------------------------------------------------------------*/
-/* have all buffers been written?                                              */
-/*----------------------------------------------------------------------------*/
-bool TablePtn::bAllBuffersWritten(eDS eDataSource)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  
-//  vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
-//         "m_nWriteBehindBuffers %lld m_nBuffersWritten %lld\n"_Stz,
-//         m_nSubLoadersDone,
-//         nSubLoadersInGrid,
-//         m_nWriteBehindBuffers,
-//         m_nBuffersWritten);
-  
-  bool bAllDone = false;
-  
-  if (eDataSource == DS_LOAD) {
-    
-    // compute the total number of subloaders in the grid
-    i8 nSubLoadersInGrid = AM::nSubLoaders();
-    
-    if (nSubLoadersInGrid) {
-      
-      if (m_nSubLoadersDone  == nSubLoadersInGrid &&
-          m_nBuffersWritten  == m_nWriteBehindBuffers) {
-        bAllDone = true;
-      }
-    }
-    else {
-      if (m_nBuffersWritten  == m_nWriteBehindBuffers) {
-        bAllDone = true;
-      }
-    }
-  }
- 
-  if (eDataSource == DS_INSERT) {
-    
-//    vTrace("SubInserters %lld SubInsertersDone %lld m_nBuffersWritten %lld m_nWriteBehindBuffers %lld\n"_Stz,
-//           gpAttachMap->m_nSubInserters,
-//           m_nSubInsertersDone,
-//           m_nBuffersWritten,
-//           m_nWriteBehindBuffers
-//           );
-    
-    // compute the total number of subInserters in the grid
-    i8 nSubInsertersInGrid = AM::nSubInserters();
-    
-    if (nSubInsertersInGrid) {
-      
-      if (m_nSubInsertersDone  == nSubInsertersInGrid &&
-          m_nBuffersWritten == m_nWriteBehindBuffers) {
-        bAllDone = true;
-      }
-    }
-    else {
-      if (m_nBuffersWritten == m_nWriteBehindBuffers) {
-        bAllDone = true;
-      }
-    }
-  }
-  
-  if (bAllDone) {
-    if (AM::bVerbose())
-      vTrace("All buffers have been loaded: %lld\n"_Stz,m_nBuffersWritten);
-    
-    // reset for next load
-    m_nSubLoadersDone     = 0;
-    m_nSubInsertersDone   = 0;
-    m_nBuffersWritten     = 0;
-    m_nWriteBehindBuffers = 0;
-    m_iParentJobId        = -1;
-    
-    m_bLowMemLoad = false;
-  }
-  
-  return bAllDone;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -405,27 +297,6 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow)
   }
   
   //m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vBuffersWritten(i8 nBuffersWritten)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  m_nBuffersWritten = nBuffersWritten;
-}
-
-/*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::nBuffersWritten(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_nBuffersWritten;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1182,6 +1053,114 @@ __aFooterFunction(TablePtn);
 /*----------------------------------------------------------------------------*/
 /*--- TO GO ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add no. of loadable buffers by a subloader into total for this partition   */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAddLoadWriteBehindBuffers(i8 nBuffersFromSomeSubLoader)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  ASSERT(C_UNKNOWN != nBuffersFromSomeSubLoader);
+  
+  m_nWriteBehindBuffers += nBuffersFromSomeSubLoader;
+  m_nSubLoadersDone++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add no. of insertable buffers by a subloader into total for this partition */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAddInsertWriteBehindBuffers(i8 nBuffersFromSomeSubInserter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  ASSERT(C_UNKNOWN != nBuffersFromSomeSubInserter);
+  
+  m_nWriteBehindBuffers += nBuffersFromSomeSubInserter;
+  m_nSubInsertersDone++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been written?                                              */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bAllBuffersWritten(eDS eDataSource)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+  
+  //  vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
+  //         "m_nWriteBehindBuffers %lld m_nBuffersWritten %lld\n"_Stz,
+  //         m_nSubLoadersDone,
+  //         nSubLoadersInGrid,
+  //         m_nWriteBehindBuffers,
+  //         m_nBuffersWritten);
+  
+  bool bAllDone = false;
+  
+  if (eDataSource == DS_LOAD) {
+    
+    // compute the total number of subloaders in the grid
+    i8 nSubLoadersInGrid = AM::nSubLoaders();
+    
+    if (nSubLoadersInGrid) {
+      
+      if (m_nSubLoadersDone  == nSubLoadersInGrid &&
+          m_nBuffersWritten  == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
+    }
+    else {
+      if (m_nBuffersWritten  == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
+    }
+  }
+  
+  if (eDataSource == DS_INSERT) {
+    
+    //    vTrace("SubInserters %lld SubInsertersDone %lld m_nBuffersWritten %lld m_nWriteBehindBuffers %lld\n"_Stz,
+    //           gpAttachMap->m_nSubInserters,
+    //           m_nSubInsertersDone,
+    //           m_nBuffersWritten,
+    //           m_nWriteBehindBuffers
+    //           );
+    
+    // compute the total number of subInserters in the grid
+    i8 nSubInsertersInGrid = AM::nSubInserters();
+    
+    if (nSubInsertersInGrid) {
+      
+      if (m_nSubInsertersDone  == nSubInsertersInGrid &&
+          m_nBuffersWritten == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
+    }
+    else {
+      if (m_nBuffersWritten == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
+    }
+  }
+  
+  if (bAllDone) {
+    if (AM::bVerbose())
+      vTrace("All buffers have been loaded: %lld\n"_Stz,m_nBuffersWritten);
+    
+    // reset for next load
+    m_nSubLoadersDone     = 0;
+    m_nSubInsertersDone   = 0;
+    m_nBuffersWritten     = 0;
+    m_nWriteBehindBuffers = 0;
+    m_iParentJobId        = -1;
+    
+    m_bLowMemLoad = false;
+  }
+  
+  return bAllDone;
+}
 
 /*----------------------------------------------------------------------------*/
 /* append a row buffer into the TablePtn                                      */

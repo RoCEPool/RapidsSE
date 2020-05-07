@@ -46,15 +46,10 @@ namespace Partitioning
     TablePtn(Table* pTable);
     ~TablePtn(void) noexcept(false);
   
-    void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
-    void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
     void vAddIndex(IndexTree* pIndexTree);
-    bool bAllBuffersWritten(eDS eDataSource);
     Crw* aAllotFixedSizeCrw(Ref& xRowRef);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow);
-    void vBuffersWritten(i8 m_nBuffersWritten);
-    i8   nBuffersWritten(void);
     i8   nCrwBuffers(void);
     void vDropRead(void);
     void vDropWrite();
@@ -94,6 +89,9 @@ namespace Partitioning
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
 
     //! TO GO
+    void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
+    void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
+    bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBufferOLD(CrwBuffer* pCrwBuffer);
     
   private:
