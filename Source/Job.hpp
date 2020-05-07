@@ -23,9 +23,11 @@ namespace Jobs
     eJL       m_eJobList;     // which job list the job is currently in
     eJP       m_eJobPhase;    // which job phase the job is currently in
     eJS       m_eJobState;    // current state of the job
-  
+
+#ifdef WITH_SSN_PTR
     Session*  m_p_Session;    // session if job created by prompt/conn
-   
+#endif
+  
   public:
     Result    m_xResult;      // result of this job
     
