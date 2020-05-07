@@ -340,7 +340,7 @@ bool Api::bSpawnJob_connector(Job* pJob)
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_connector(pJob->pTask());
+  Scheduler::vTaskApi_AddConnector(pJob->pTask());
   
   return true;
 }
@@ -354,7 +354,7 @@ bool Api::bSpawnJob_internal(Job* pJob)
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_internal(pJob->pTask());
+  Scheduler::vTaskApi_AddInternal(pJob->pTask());
   
   return true;
 }
@@ -368,7 +368,7 @@ bool Api::bSpawnJob_op(Job* pJob)
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_op(pJob->pTask());
+  Scheduler::vTaskApi_AddOp(pJob->pTask());
   
   return true;
 }
@@ -397,7 +397,7 @@ bool Api::bSpawnJob_prompt(Job* pJob)
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_prompt(pJob->pTask());
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
   
   return true;
 }
@@ -411,7 +411,7 @@ bool Api::bSpawnJob_received(Job* pJob)
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_received(pJob->pTask());
+  Scheduler::vTaskApi_AddReceived(pJob->pTask());
   
   return true;
 }
@@ -425,7 +425,7 @@ bool Api::bSpawnJob_system(Job* pJob)
   if (! bSpawnTheJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_system(pJob->pTask());
+  Scheduler::vTaskApi_AddSystem(pJob->pTask());
   
   return true;
 }

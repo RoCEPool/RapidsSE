@@ -37,13 +37,13 @@ namespace Threads
   public:
     static void vTaskApi_AddDedicated(Task* pNewTask);
   
-    static void vTaskApi_AddGeneral_connector(Task* pNewTask);
-    static void vTaskApi_AddGeneral_internal(Task* pNewTask);
-    static void vTaskApi_AddGeneral_op(Task* pNewTask);
+    static void vTaskApi_AddConnector(Task* pNewTask);
+    static void vTaskApi_AddInternal(Task* pNewTask);
+    static void vTaskApi_AddOp(Task* pNewTask);
     static void vTaskApi_AddGeneral_other(Task* pNewTask);
-    static void vTaskApi_AddGeneral_prompt(Task* pNewTask);
-    static void vTaskApi_AddGeneral_received(Task* pNewTask);
-    static void vTaskApi_AddGeneral_system(Task* pNewTask);
+    static void vTaskApi_AddPrompt(Task* pNewTask);
+    static void vTaskApi_AddReceived(Task* pNewTask);
+    static void vTaskApi_AddSystem(Task* pNewTask);
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -464,7 +464,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_connector(Task* pNewTask)
+void Scheduler::vTaskApi_AddConnector(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
@@ -482,7 +482,7 @@ void Scheduler::vTaskApi_AddGeneral_connector(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_internal(Task* pNewTask)
+void Scheduler::vTaskApi_AddInternal(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
@@ -500,7 +500,7 @@ void Scheduler::vTaskApi_AddGeneral_internal(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_op(Task* pNewTask)
+void Scheduler::vTaskApi_AddOp(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
@@ -536,7 +536,7 @@ void Scheduler::vTaskApi_AddGeneral_other(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_prompt(Task* pNewTask)
+void Scheduler::vTaskApi_AddPrompt(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
@@ -554,7 +554,7 @@ void Scheduler::vTaskApi_AddGeneral_prompt(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_received(Task* pNewTask)
+void Scheduler::vTaskApi_AddReceived(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
@@ -572,7 +572,7 @@ void Scheduler::vTaskApi_AddGeneral_received(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_system(Task* pNewTask)
+void Scheduler::vTaskApi_AddSystem(Task* pNewTask)
 {
   //
   // called from Api::bSpawnJob()
