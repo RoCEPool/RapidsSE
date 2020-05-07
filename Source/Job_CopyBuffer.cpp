@@ -246,7 +246,7 @@ Footer* Job_CopyBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CopyBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_CopyBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

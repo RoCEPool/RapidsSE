@@ -199,14 +199,11 @@ Footer* Job_Universal::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
 {
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
-  //pJob->vDicPath(pSession);
 
-  TokenVec* pTokenVec = pSession->pTokenVec();
-
-  eEC eError = pJob_Universal->ePopulateJob(pTokenVec);
+  eEC eError = pJob_Universal->ePopulateJob(pTknVec);
   
   if ( eError != EC_NONE ) {
     pJob_Universal->vJobError(eError);

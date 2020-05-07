@@ -616,14 +616,11 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
 {
   Job_FetchRows* pJob_FetchRows = new Job_FetchRows(aJobClass,aReqTuple);
-  //pJob->vDicPath(pSession);
-
-  TokenVec* pTokenVec = pSession->pTokenVec();
   
-  bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
+  bool bResult = pJob_FetchRows->bPopulateJob(pTknVec);
   
   if ( !bResult) {
     pJob_FetchRows->vJobError(EC_INVALID_COMMAND);

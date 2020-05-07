@@ -171,7 +171,7 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubFetch_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_SubFetch_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
 {
   Job_SubFetch* pJob_SubFetch = new Job_SubFetch(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

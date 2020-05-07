@@ -623,14 +623,11 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_LoadTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
 {
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(aJobClass,aReqTuple);
-  //pJob->vDicPath(pSession);
-
-  TokenVec* pTokenVec = pSession->pTokenVec();
   
-  bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
+  bool bResult = pJob_LoadTable->bPopulateJob(pTknVec);
   
   if ( !bResult) {
     pJob_LoadTable->vJobError(EC_INVALID_COMMAND);
