@@ -839,6 +839,8 @@ bool Job::bNoWaitTag(void)
   return bNoWait;
 }
 
+#ifndef WITH_SSN_MUTEX
+
 /*----------------------------------------------------------------------------*/
 /* lock the job mutex                                                         */
 /*----------------------------------------------------------------------------*/
@@ -878,6 +880,8 @@ void Job::vWaitJobMutex(void)
  
   AM::vTaskMutexWait(m_pTaskJ);
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */

@@ -502,8 +502,16 @@ bool Api::bCreateTaskForJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJobAndWait(Job* pJob)
 {
+  Task* pTask = pJob->pTask();
+  
   // lock this job's mutex
+#ifdef WITH_SSN_MUTEX
+  Session* pSession = pJob->pSession();
+  pSession->m_pMutex->vLock(pJob);
+#else
   pJob->vLockJobMutex();
+#endif
+  
   //  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
@@ -536,7 +544,11 @@ void Api::vSpawnJobAndWait(Job* pJob)
     //    vTrace("ThreadMutex:\n"_Stz);
     //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
     
-    pJob->vWaitJobMutex();
+    #ifdef WITH_SSN_MUTEX
+      pSession->m_pMutex->vWait(pJob);
+    #else
+      pJob->vWaitJobMutex();
+    #endif
     //    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
     //                              &pJob->m_xThreadMutex);
     //    if (0 != rCode)
@@ -557,7 +569,12 @@ void Api::vSpawnJobAndWait(Job* pJob)
   pJob->vJobState(JS_RUNNING);
   
   // unlock this job's mutex
+#ifdef WITH_SSN_MUTEX
+  pSession->m_pMutex->vUnlock(pJob);
+#else
   pJob->vUnlockJobMutex();
+#endif
+  
   //  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);

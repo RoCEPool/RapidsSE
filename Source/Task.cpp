@@ -71,8 +71,11 @@ Task::Task(Job* pJob)
 
   m_pJob         = pJob;
   m_pThread      = nullptr;
-  m_pMutex       = new Mutex(MK_TASK,this);
 
+#ifndef WITH_SSN_MUTEX
+  m_pMutex       = new Mutex(MK_TASK,this);
+#endif
+  
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
@@ -131,7 +134,9 @@ Task::~Task(void) noexcept(false)
   
   delete m_pRegSet;
     
+#ifndef WITH_SSN_MUTEX
   delete m_pMutex;
+#endif
   
   delete m_pProfile;
   m_pProfile = nullptr;
@@ -229,7 +234,11 @@ void Task::vAssertStructure(void)
   // must have these
   RASSERT(m_pForth);
   RASSERT(m_pJob);
+
+#ifndef WITH_SSN_MUTEX
   RASSERT(m_pMutex);
+#endif
+  
   RASSERT(m_pRegSet);
   
   RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
@@ -651,6 +660,8 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 //                    );
 }
 
+#ifndef WITH_SSN_MUTEX
+
 /*----------------------------------------------------------------------------*/
 /* lock the task mutex                                                        */
 /*----------------------------------------------------------------------------*/
@@ -690,6 +701,8 @@ void Task::vMutexWait(void)
   
   m_pMutex->vWait(this);
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get next repeatable random number subscript                                */

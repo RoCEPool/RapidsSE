@@ -189,10 +189,18 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
 
   pSelfTask->vState(TS_COMPLETED);
   
+#ifdef WITH_SSN_MUTEX
+  Job* pJob = pSelfTask->pJob();
+  Session* pSession = pJob->pSession();
+  pSession->m_pMutex->vLock(pSelfTask);
+  pSession->m_pMutex->vSignal(pSelfTask);
+  pSession->m_pMutex->vUnlock(pSelfTask);
+#else
   pSelfTask->vMutexLock();
   pSelfTask->vMutexSignal();
   pSelfTask->vMutexUnlock();
-
+#endif
+  
   /** do not touch task, leave locked. task is reponsibility of signaled thread **/
 }
 
