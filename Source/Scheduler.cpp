@@ -144,6 +144,8 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
+  
+  // add assert on entry point
 
   pSelfTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_EXIT,
@@ -156,6 +158,8 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 
   pSelfTask->vState(TS_DELETING);
   
+  pSelfTask->vDropTaskLock();
+  
   delete pSelfTask; // note: this is the only point where tasks get deleted
 
   /** do not touch task **/
@@ -164,6 +168,9 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* task has completed; signal the thread waiting on the tasks mutex           */
 /*----------------------------------------------------------------------------*/
+//
+// remove this from scheduler when the task mutex etc is sorted out
+//
 void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
 {
   RASSERT(pSelfTask->bIsLocked());

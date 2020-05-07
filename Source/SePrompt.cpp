@@ -240,7 +240,7 @@ void SePrompt::vPromptLoop(void)
     
     vSetJob();
     
-    vPrepareSpawn();
+    vPrepareSpawn();  // RENAME spawn etc
     
     if (bDontSpawn())
       continue;
@@ -1372,6 +1372,7 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->eJobState());
   
+  // WE SHOULD ASSERT THERE IS NO TASK
   Task* pTask = m_pJob->pTask();
   if ( pTask) {
     RASSERT(QK_NONE == pTask->eQueue());

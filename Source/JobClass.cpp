@@ -159,7 +159,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add a task
   
-  AM::pTaskNew(pJob);
+  AM::pTaskNew(pJob); // REMOVE 
   
   //AM::vJobContentDump(pJob);
 

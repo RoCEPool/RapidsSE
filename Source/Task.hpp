@@ -24,7 +24,7 @@ namespace Tasks
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
-    SMA<Mutex>   m_pMutex;       // mutex
+    SMA<Mutex>   m_pMutex;       // mutex             MOVE TO SESSION ETC
 
     eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request

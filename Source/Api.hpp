@@ -31,7 +31,7 @@ namespace Interface
   
   private:
   
-  static bool bSpawnTheJob(Job* pJob);
+  static bool bCreateTaskForJob(Job* pJob);
 
   };
 }
