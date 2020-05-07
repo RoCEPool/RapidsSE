@@ -16,10 +16,12 @@ namespace Pool
 
 static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
 
+static const i8 C_SIZE_TINY_OBJECT   = C_4KB;
 static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
 static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;
 static const i8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
 
+static const u8 C_MASK_TINY_OBJECT   = 0x3FF;
 static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;
 static const u8 C_MASK_MEDIUM_OBJECT = 0xFFFF;
 static const u8 C_MASK_LARGE_OBJECT  = 0xFFFFF;

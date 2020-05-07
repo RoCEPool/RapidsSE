@@ -74,19 +74,33 @@ Heap::~Heap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_SMALLTRANSIENT  || eClass == CN_MEDIUMTRANSIENT ||
-         eClass == CN_LARGETRANSIENT  || eClass == CN_JUMBOTRANSIENT  ||
-         eClass == CN_SMALLPERSISTENT || eClass == CN_MEDIUMPERSISTENT ||
-         eClass == CN_LARGEPERSISTENT || eClass == CN_JUMBOPERSISTENT);
+  RASSERT(
+          eClass == CN_TINYTRANSIENT    ||
+          eClass == CN_SMALLTRANSIENT   ||
+          eClass == CN_MEDIUMTRANSIENT  ||
+          eClass == CN_LARGETRANSIENT   ||
+          eClass == CN_JUMBOTRANSIENT   ||
+          
+          eClass == CN_TINYPERSISTENT   ||
+          eClass == CN_SMALLPERSISTENT  ||
+          eClass == CN_MEDIUMPERSISTENT ||
+          eClass == CN_LARGEPERSISTENT  ||
+          eClass == CN_JUMBOPERSISTENT
+          );
   
-  RASSERT(pObject->eClass() == CN_SMALLTRANSIENT   ||
-         pObject->eClass() == CN_MEDIUMTRANSIENT  ||
-         pObject->eClass() == CN_LARGETRANSIENT  ||
-         pObject->eClass() == CN_JUMBOTRANSIENT   ||
-         pObject->eClass() == CN_SMALLPERSISTENT  ||
-         pObject->eClass() == CN_MEDIUMPERSISTENT ||
-         pObject->eClass() == CN_LARGEPERSISTENT  ||
-         pObject->eClass() == CN_JUMBOPERSISTENT);
+  RASSERT(
+          pObject->eClass() == CN_TINYTRANSIENT    ||
+          pObject->eClass() == CN_SMALLTRANSIENT   ||
+          pObject->eClass() == CN_MEDIUMTRANSIENT  ||
+          pObject->eClass() == CN_LARGETRANSIENT   ||
+          pObject->eClass() == CN_JUMBOTRANSIENT   ||
+          
+          pObject->eClass() == CN_TINYPERSISTENT  ||
+          pObject->eClass() == CN_SMALLPERSISTENT  ||
+          pObject->eClass() == CN_MEDIUMPERSISTENT ||
+          pObject->eClass() == CN_LARGEPERSISTENT  ||
+          pObject->eClass() == CN_JUMBOPERSISTENT
+          );
   
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   

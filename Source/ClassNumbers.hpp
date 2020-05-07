@@ -321,6 +321,8 @@ enum eCN : u2 // Class Number
   /* 272 0x110      248B Heap:S */ CN_THREADQUEUE,
   /* 273 0x111     2272B Heap:M */ CN_THREADVEC,
   /* 275 0x113       32B Heap:S */ CN_TIMER,
+  /* 215 0x0D7      296B Heap:I */ CN_TINYPERSISTENT,
+  /* 216 0x0D8      296B Heap:I */ CN_TINYTRANSIENT,
   /*  99 0x063       16B Heap:I */ CN_TMEVAL,
   /* 276 0x114      304B Heap:S */ CN_TOKEN,
   /* 278 0x116     8232B Heap:M */ CN_TOKENVEC,
@@ -661,6 +663,8 @@ static Stz* aCN[]
   /* 272 0x110 */ "THREADQUEUE"_Stz,         // CN_THREADQUEUE
   /* 273 0x111 */ "THREADVEC"_Stz,           // CN_THREADVEC
   /* 275 0x113 */ "TIMER"_Stz,               // CN_TIMER
+  /* 275 0x113 */ "TINYPERSISTENT"_Stz,      // CN_TINYPERSISTENT
+  /* 275 0x113 */ "TINYTRANSIENT"_Stz,       // CN_TINYTRANSIENT
   /*  99 0x063 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* 276 0x114 */ "TOKEN"_Stz,               // CN_TOKEN
   /* 278 0x116 */ "TOKENVEC"_Stz,            // CN_TOKENVEC

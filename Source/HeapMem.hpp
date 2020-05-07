@@ -15,6 +15,7 @@ namespace Pool
       Heap* m_pLarge;
       Heap* m_pMedium;
       Heap* m_pSmall;
+      Heap* m_pTiny;
     } Transient;
   
     struct {
@@ -22,6 +23,7 @@ namespace Pool
       Heap* m_pMedium;
       Heap* m_pLarge;
       Heap* m_pSmall;
+      Heap* m_pTiny;
     } Persistent;
 
   public:

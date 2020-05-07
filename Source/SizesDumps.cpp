@@ -265,8 +265,8 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_SLAB
   /* */ &Dump::vUndefined,       // CN_SLABALLOCATOR
   /* */ &Dump::vUndefined,       // CN_SLEEP
-  /* */ &Heap::vDump,            // SN_SMALLPERSISTENT
-  /* */ &Heap::vDump,            // SN_SMALLTRANSIENT
+  /* */ &Heap::vDump,            // CN_SMALLPERSISTENT
+  /* */ &Heap::vDump,            // CN_SMALLTRANSIENT
   /* */ &Dump::vInvalid,         // CN_SNBCD
   /* */ &Dump::vInvalid,         // CN_SNBOL
   /* */ &Dump::vInvalid,         // CN_SNDTE
@@ -322,6 +322,8 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_THREADQUEUE
   /* */ &Dump::vUndefined,       // CN_THREADVEC
   /* */ &Dump::vInvalid,         // CN_TIMER
+  /* */ &Heap::vDump,            // CN_TINYPERSISTENT
+  /* */ &Heap::vDump,            // CN_TINYTRANSIENT
   /* */ &Dump::vInvalid,         // CN_TMEVAL
   /* */ &Token::vDump,           // CN_TOKEN
   /* */ &Dump::vInvalid,         // CN_TOKENVEC
@@ -605,8 +607,8 @@ i8 gnClassSize[]
   /* */ sizeof(Slab),               // CN_SLAB
   /* */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
   /* */ sizeof(Sleep),              // CN_SLEEP
-  /* */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
-  /* */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
+  /* */ sizeof(Heap), // correct    // CN_SMALLPERSISTENT
+  /* */ sizeof(Heap), // correct    // CN_SMALLTRANSIENT
   /* */ sizeof(SN_Bcd),             // CN_SNBCD
   /* */ sizeof(SN_Bol),             // CN_SNBOL
   /* */ sizeof(SN_Dte),             // CN_SNDTE
@@ -662,6 +664,8 @@ i8 gnClassSize[]
   /* */ sizeof(ThreadQueue),        // CN_THREADQUEUE
   /* */ sizeof(ThreadVec),          // CN_THREADVEC
   /* */ sizeof(Timer),              // CN_TIMER
+  /* */ sizeof(Heap), // correct    // CN_TINYPERSISTENT
+  /* */ sizeof(Heap), // correct    // CN_TINYTRANSIENT
   /* */ sizeof(TmeVal),             // CN_TMEVAL
   /* */ sizeof(Token),              // CN_TOKEN
   /* */ sizeof(TokenVec),           // CN_TOKENVEC
@@ -1006,6 +1010,8 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_THREADQUEUE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC
   /* */ HT_TRANSIENT_SMALL,   // CN_TIMER
+  /* */ HT_INVALID,           // CN_TINYPERSISTENT
+  /* */ HT_INVALID,           // CN_TINYTRANSIENT
   /* */ HT_INVALID,           // CN_TMEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_TOKEN
   /* */ HT_TRANSIENT_LARGE,   // CN_TOKENVEC
