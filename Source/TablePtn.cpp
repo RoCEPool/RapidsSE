@@ -882,9 +882,9 @@ Table* TablePtn::pTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tidy up                                                                    */
+/* remove index                                                               */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vTidyUpIndex(i8 iIndexNo)
+void TablePtn::vRemoveIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

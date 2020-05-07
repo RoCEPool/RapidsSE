@@ -316,10 +316,6 @@ void Index::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  // tidyup the index from the table partitions
-  if (m_pTable)
-    m_pTable->vTidyUpIndex(m_iIndexNo);
-  
   delete m_pIndexDef;
 }
 

@@ -76,11 +76,11 @@ namespace Partitioning
     void vPublish(void);
     bool bPurge(i8 iOlderThanSeconds);
     ReadApi* pReadApi(void);
+    void vRemoveIndex(i8 iIndexNo);
     void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
     CrwBuffer* pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective);
     Table* pTable(void);
-    void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);

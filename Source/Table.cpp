@@ -462,6 +462,11 @@ void Table::vRemoveIndex(Index* pIndex)
   
   // remove index from the table
   m_pIdxVec->vRemove(pIndex);
+  
+  // remove the index from each tablePtn
+  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+    m_pTablePtnVec->pGet(i_Slot)->vRemoveIndex(pIndex->iIndexNo());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -616,19 +621,6 @@ void Table::vTidyUp(void)
   
   // delete the partition vector
   delete m_pTablePtnVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tidyup                                                                     */
-/*----------------------------------------------------------------------------*/
-void Table::vTidyUpIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // run the finalize for the partitions
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
-    m_pTablePtnVec->pGet(i_Slot)->vTidyUpIndex(iIndexNo);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

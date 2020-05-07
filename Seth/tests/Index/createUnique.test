@@ -2,6 +2,9 @@
 /* create unqiue index tests                                                  */
 /*----------------------------------------------------------------------------*/
 
+trackMemory;
+success
+
 // (1) create an index (syntax error)
 ///create unqiue index on T1 (key);
 //failure contains: 'invalid command'
@@ -236,12 +239,18 @@ success
 drop table T1;
 success
 
+memoryLeaks;
+rows: 0
+
 CLEANUP {
   
   // drop the table
   drop table T1;
   mute
-
+  
+  memoryLeaks;
+  mute
+  
   bye;
   mute
 }
