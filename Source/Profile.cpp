@@ -18,7 +18,7 @@ __aFooterFunction(Profile)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Profile::Profile(void)
-: Object(CN_PROFILE)
+: Operand(CN_PROFILE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROFILE,_FOOTER_);
     

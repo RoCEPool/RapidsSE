@@ -5,7 +5,7 @@
 
 namespace Tasks
 {
-  class Profile : public Object
+  class Profile : public Operand
   {
   private:
     
