@@ -7,6 +7,8 @@ enum eTS // Task State
 {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_BIDING,    // task is biding till operand arrives and triggers
+  
+  // TO BE REMOVED
   /* 2 */ TS_COMPLETED, // task has completed and can be deleted
   /* 3 */ TS_DELETING,  // task is being deleted
   /* 4 */ TS_DESISTED,  // task has desisted / is under control of scheduler

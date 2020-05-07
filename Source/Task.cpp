@@ -117,19 +117,20 @@ Task::~Task(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  RASSERT(! m_pThread);
-
   RASSERT(TS_DELETING == m_eState);
-  //RASSERT(! m_pJob);
+  //RASSERT(! bIsLocked());
+  RASSERT(! m_pThread);
   RASSERT(! bWordBody());
 
+  //RASSERT(! m_pJob);
+
   delete m_pForth;
+  
   if (m_pJob)
     Job::vDeleteJobViaClass(m_pJob);
   
   delete m_pRegSet;
-  
-  
+    
   delete m_pMutex;
   
   delete m_pProfile;

@@ -9,6 +9,10 @@ namespace Tasks
   {
   private:
     
+    // timestamp
+    // version
+    // git hash
+  
     RU_Memory m_oRU_Memory;
   
     // must be last

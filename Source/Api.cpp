@@ -337,7 +337,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 bool Api::bSpawnJob_connector(Job* pJob)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddConnector(pJob->pTask());
@@ -351,7 +351,7 @@ bool Api::bSpawnJob_connector(Job* pJob)
 bool Api::bSpawnJob_internal(Job* pJob)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddInternal(pJob->pTask());
@@ -365,7 +365,7 @@ bool Api::bSpawnJob_internal(Job* pJob)
 bool Api::bSpawnJob_op(Job* pJob)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddOp(pJob->pTask());
@@ -379,7 +379,7 @@ bool Api::bSpawnJob_op(Job* pJob)
 bool Api::bSpawnJob_other(Job* pJob)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddGeneral_other(pJob->pTask());
@@ -394,7 +394,7 @@ bool Api::bSpawnJob_prompt(Job* pJob)
 {
   RASSERT(pJob->pTask());
   
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
@@ -408,7 +408,7 @@ bool Api::bSpawnJob_prompt(Job* pJob)
 bool Api::bSpawnJob_received(Job* pJob)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
@@ -422,7 +422,7 @@ bool Api::bSpawnJob_received(Job* pJob)
 bool Api::bSpawnJob_system(Job* pJob)
 {
 
-  if (! bSpawnTheJob(pJob))
+  if (! bCreateTaskForJob(pJob))
     return false;
   
   Scheduler::vTaskApi_AddSystem(pJob->pTask());
@@ -436,7 +436,7 @@ bool Api::bSpawnJob_system(Job* pJob)
 bool Api::bScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   // THIS NOW DOESNT READ CORRECTLY
-  if (! bSpawnTheJob(pParticipantJob)) // POORLY NAMED
+  if (! bCreateTaskForJob(pParticipantJob)) // POORLY NAMED
     return false;
   
   Task* pTaskParticipant = pParticipantJob->pTask();
@@ -448,7 +448,7 @@ bool Api::bScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnTheJob(Job* pJob)
+bool Api::bCreateTaskForJob(Job* pJob)
 {
   //ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
