@@ -101,8 +101,6 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 #define WITH_CPP_DIC EndDefine               // code for dic being a c++ obj
 
-//#define WITH_SSN_PTR EndDefine               // code for dic being a c++ obj
-
 // temporary
 
 //#define __WITH_INDEP_ROUTINE EndDefine

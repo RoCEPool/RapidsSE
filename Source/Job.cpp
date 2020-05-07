@@ -96,10 +96,6 @@ Job::Job(eCN eClassNo)
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
-
-#ifdef WITH_SSN_PTR
-  m_p_Session = nullptr;
-#endif
   
   //m_xResult
   // -- -- -- -- -- --
@@ -153,11 +149,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p_Session)
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
   m_pOperand  = nullptr;
-  
-#ifdef WITH_SSN_PTR
-  m_p_Session = p_Session;
-#endif
-  
+    
   //m_xResult
   // -- -- -- -- -- --
   
