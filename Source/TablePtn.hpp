@@ -16,13 +16,7 @@ namespace Partitioning
     Table* m_pTable;       // table this partition belongs to
     i8   m_iPartitionId;   // partition number
     bool m_bLowMemLoad;    // was low memory detected during this load
-  
-    i8   m_nWriteBehindBuffers;     // buffers to be written
-    i8   m_nBuffersWritten;         // buffers written so far
-    
-    i8   m_nSubLoadersDone;         // number of subloader which have completed
-    i8   m_nSubInsertersDone;       // number of subInserters which have completed
-    i8   m_iParentJobId;            // parent jobid
+
     
     CrwBuffer* m_pRootCrwBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentCrwBuffer; // the data current buffer for insert
@@ -31,6 +25,13 @@ namespace Partitioning
   
     ReadApi* m_pReadApi;            // read consistency api
   
+    //! TO GO
+    i8   m_nWriteBehindBuffers;     // buffers to be written
+    i8   m_nBuffersWritten;         // buffers written so far
+    i8   m_nSubLoadersDone;         // number of subloader which have completed
+    i8   m_nSubInsertersDone;       // number of subInserters which have completed
+    i8   m_iParentJobId;            // parent jobid
+    
     // must be last
     Footer m_xFooter;
     
@@ -56,7 +57,6 @@ namespace Partitioning
     void vDump(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
-    void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(Crw* aCrw, Ref& xRowRef);
@@ -85,14 +85,15 @@ namespace Partitioning
                            Encoding* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-    i8   nWriteBehindBuffers(void);
-    void vWriteBehindBuffers(i8 nWriteBehindBuffers);
 
     //! TO GO
     void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
     void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
     bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBufferOLD(CrwBuffer* pCrwBuffer);
+    void vIncBuffersWritten(void);
+    i8   nWriteBehindBuffers(void);
+    void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     
   private:
     Footer* aFooter(void);

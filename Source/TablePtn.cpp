@@ -373,17 +373,6 @@ bool TablePtn::bGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment buffers written so far                                           */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vIncBuffersWritten(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  m_nBuffersWritten++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get IndexTree                                                              */
 /*----------------------------------------------------------------------------*/
 IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
@@ -690,6 +679,7 @@ void TablePtn::vResetWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  //! TO GO
   m_nSubLoadersDone     = 0;
   m_nSubInsertersDone   = 0;
   m_nWriteBehindBuffers = 0;
@@ -1023,28 +1013,6 @@ void TablePtn::vVisualizeTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::nWriteBehindBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_nWriteBehindBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  m_nWriteBehindBuffers = nWriteBehindBuffers;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(TablePtn);
@@ -1191,7 +1159,38 @@ void TablePtn::vAppendBufferOLD(CrwBuffer* pCrwBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the root buffer
   m_pCurrentCrwBuffer = pCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment buffers written so far                                           */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vIncBuffersWritten(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  ASSERT(bIsLocked());
+  m_nBuffersWritten++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nWriteBehindBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_nWriteBehindBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  m_nWriteBehindBuffers = nWriteBehindBuffers;
 }
 
 /*============================================================================*/
