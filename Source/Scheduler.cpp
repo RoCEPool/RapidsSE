@@ -188,22 +188,16 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
   // completion case: task has completed
 
   Job* pJob = pSelfTask->pJob();
-  
-#ifdef WITH_PRE_TASK
-  pSelfTask->vState(TS_COMPLETED);
-#endif
-  
+    
   Session* pSession = pJob->pSession();
   pSession->m_pMutex->vLock(pSelfTask);
   pSession->m_pMutex->vSignal(pSelfTask);
   pSession->m_pMutex->vUnlock(pSelfTask);
   
-#ifndef WITH_PRE_TASK
   pSelfTask->vState(TS_DELETING);
   pSelfTask->vJob(nullptr);
   pSelfTask->vDropTaskLock();
   delete pSelfTask; // note: this is the only point where tasks get deleted
-#endif
   
   /** do not touch task, leave locked. task is reponsibility of signaled thread **/
 }

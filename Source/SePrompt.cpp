@@ -224,13 +224,6 @@ void SePrompt::vPromptLoop(void)
     
     vPreJob();
     
-    // !! !! !! !! !! !! !! !! !! !! REMOVE
-#ifdef WITH_PRE_TASK
-    AM::pTaskNew(m_pJob);
-#endif
-    // !! !! !! !! !! !! !! !! !! !!
-    
-    
     // this should go
     if (m_pJob->bJobHasError()) {
       vPostJob();
@@ -277,18 +270,6 @@ void SePrompt::vPromptLoop(void)
     vReportTime();
     
     
-    // !! !! !! !! !! !! !! !! !! !! REMOVE
-#ifdef WITH_PRE_TASK
-    Task* pTask = m_pJob->pTask();
-    if (pTask) {
-      m_pJob->vTask(nullptr);
-      pTask->vJob(nullptr);
-      pTask->vState(TS_DELETING);
-      delete pTask;
-    }
-#endif
-    // !! !! !! !! !! !! !! !! !! !!
-
     
     vDeleteJob();
     
