@@ -127,17 +127,28 @@
 /*----------------------------------------------------------------------------*/
 /* make an indexes folder under given named table                             */
 /*----------------------------------------------------------------------------*/
-: :makeIndexesSubFolder ( "<tableNm>" -- )
+//: :makeIndexesSubFolder ( "<tableNm>" -- )
+//
+//  args.tracepoint if
+//    dup "MAKING INDEXES FOR TABLE " swap str.cat
+//      " on NODE " str.cat grid::thisNode@ >str str.cat .
+//  then
+//
+//  find execute ( dic )
+//  "indexes"    ( dic "indexes" )
+//  swap         ( "indexes" dic )
+//  :makeSubFolder   ( )
+//;
+/*----------------------------------------------------------------------------*/
+: :makeIndexesSubFolder params| sTableNm |
 
   args.tracepoint if
-    dup "MAKING INDEXES FOR TABLE " swap str.cat
+    "MAKING INDEXES FOR TABLE " sTableNm str.cat
       " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  find execute ( dic )
-  "indexes"    ( dic "indexes" )
-  swap         ( "indexes" dic )
-  :makeSubFolder   ( )
+  sTableNm find execute locals| pFolder |
+  "indexes" pFolder :makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
