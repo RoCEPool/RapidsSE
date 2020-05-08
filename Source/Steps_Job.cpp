@@ -1531,14 +1531,22 @@ void Step::vJobSignalCompletion(void)
   SessionArray::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
+
+  
+  m_pTask->vJob(nullptr);
+
   pSession->m_pMutex->vLock(m_pTask);
   pSession->m_pMutex->vSignal(m_pTask);
   pSession->m_pMutex->vUnlock(m_pTask);
 
+  m_pTask->vDropTaskLock();
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vScheduleCompletion();
+  //m_pTask->vScheduleCompletion();
+  
+
   
   EXIT();
 }
