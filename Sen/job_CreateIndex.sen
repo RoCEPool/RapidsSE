@@ -70,12 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::createNamedIndex
 
-  0 0 0 0 locals| pTable sTableNm sIndexNm |
-
-  <indexNm> to sIndexNm
-  <tableNm> to sTableNm
-
-  sIndexNm sTableNm index::make locals| pwIndexTest |
+  <indexNm> <tableNm> index::make locals| pwIndexTest |
 
   pwIndexTest execute locals| pIndex |
 
@@ -86,13 +81,13 @@
   folder[].isTables assert
 
   // ../schemas/public/tables/t
-  sTableNm path[].pushNamedTableFolder assert
+  <tableNm> path[].pushNamedTableFolder assert
 
   // ../schemas/public/tables/t/indexes
   path[].pushIndexesFolder assert
 
   // find the table upwards in the path
-  sTableNm find execute to pTable
+  <tableNm> find execute locals| pTable |
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
@@ -105,7 +100,7 @@
     //pJob_CreateIndex
     DdlLock[].testDrop
     !!logError
-    sIndexNm :forget
+    <indexNm> :forget
     path[].discardIndexesFolder
     path[].discardTableFolder
     folder[].isTables assert
