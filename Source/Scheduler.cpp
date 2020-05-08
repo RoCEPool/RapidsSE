@@ -55,7 +55,6 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
       
     // cases where task changes state -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
-
     case TR_BIDE_FOR_OPERAND: // bide / wait for operand to arrive in pipein
       vTaskSelf_BideForOperand(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
@@ -84,17 +83,13 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
-    // cases where task is over and will be deleted or signal prompt -- -- -- --
+    // case where task is over and will be deleted -- -- -- -- -- -- -- -- -- --
+      
     case TR_DELETE_THIS_TASK: // task is deleting itself
       vTaskSelf_DeleteThisTask(pSelfTask,pThread);
       RASSERT(!pThread->pTask());
       break;
-      
-    case TR_SIGNAL_COMPLETION: // task signals prompt which will delete task
-      vTaskSelf_SignalCompletion(pSelfTask,pThread);
-      RASSERT(pThread->pTask());
-      break;
-      
+            
     default:
       NEVER_REACH;
   }
@@ -163,50 +158,6 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   delete pSelfTask; // note: this is the only point where tasks get deleted
 
   /** do not touch task **/
-}
-
-/*----------------------------------------------------------------------------*/
-/* task has completed; signal the thread waiting on the tasks mutex           */
-/*----------------------------------------------------------------------------*/
-//
-// remove this from scheduler when the task mutex etc is sorted out
-//
-void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
-{
-  RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_SIGNAL_COMPLETION == pSelfTask->eTranstionRequest());
-  RASSERT(TS_DESISTED == pSelfTask->eState());
-  RASSERT(QK_NONE == pSelfTask->eQueue());
-
-  pSelfTask->vIncStepNo();
-  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
-              "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
-
-  Queues* pQueues = AM::pQueues();
-
-  pSelfTask->vTranstionRequestClear();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // completion case: task has completed
-
-  Job* pJob = pSelfTask->pJob();
-  pSelfTask->vJob(nullptr);
-  
-//  Session* pSession = pJob->pSession();
-//  pSession->m_pMutex->vLock(pSelfTask);
-//  pSession->m_pMutex->vSignal(pSelfTask);
-//  pSession->m_pMutex->vUnlock(pSelfTask);
-
-  pSelfTask->vState(TS_EXECUTING);
-  pSelfTask->vThread(pThread);
-  
-  pThread->m_pTask = pSelfTask;
-  pThread->m_eThreadState = HS_ASSIGNED;
-
-  pQueues->vAddExecutingSet(pSelfTask);
-  pSelfTask->vDropTaskLock();
-  
-  // continues
 }
 
 /*----------------------------------------------------------------------------*/

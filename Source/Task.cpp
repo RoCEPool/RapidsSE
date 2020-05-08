@@ -1046,17 +1046,6 @@ void Task::vScheduleBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule bide                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vScheduleCompletion(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(bIsLocked());
-  m_eTransition = TR_SIGNAL_COMPLETION;
-}
-
-/*----------------------------------------------------------------------------*/
 /* schedule delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vScheduleDelete(void)

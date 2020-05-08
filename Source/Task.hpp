@@ -112,7 +112,6 @@ namespace Tasks
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
     void vScheduleBide(void);
-    void vScheduleCompletion(void);
     void vScheduleDelete(void);
     void vScheduleSleep(void);
     void vScheduleYield(void);

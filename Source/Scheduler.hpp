@@ -16,7 +16,6 @@ namespace Threads
   private:
     static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);
-    static void vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread);
@@ -25,10 +24,12 @@ namespace Threads
     // cross task
   
   public:
-    static bool bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pAckingTask);
+    static bool bTaskCross_AckWaiting(Task* pTaskWaiting,
+                                      Task* pAckingTask);
     static void vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
                                              Task* pActiviating2PcTask);
-    static void vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
+    static void vTaskCross_TriggerBiding(Task* pTaskBiding,
+                                         Task* pTriggeringTask);
     static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
