@@ -92,11 +92,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
       
     case TR_SIGNAL_COMPLETION: // task signals prompt which will delete task
       vTaskSelf_SignalCompletion(pSelfTask,pThread);
-#ifdef WITH_SIG_DEL
-      RASSERT(! pThread->pTask());
-#else
       RASSERT(pThread->pTask());
-#endif
       break;
       
     default:
@@ -194,23 +190,13 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
   // completion case: task has completed
 
   Job* pJob = pSelfTask->pJob();
-#ifndef WITH_SIG_DEL
   pSelfTask->vJob(nullptr);
-#endif
   
   Session* pSession = pJob->pSession();
   pSession->m_pMutex->vLock(pSelfTask);
   pSession->m_pMutex->vSignal(pSelfTask);
   pSession->m_pMutex->vUnlock(pSelfTask);
 
-#ifdef WITH_SIG_DEL
-  pSelfTask->vState(TS_DELETING);
-  pSelfTask->vJob(nullptr);
-  pSelfTask->vDropTaskLock();
-  delete pSelfTask; // note: this is the only point where tasks get deleted
-  
-  /** do not touch task, leave locked. task is reponsibility of signaled thread **/
-#else
   pSelfTask->vState(TS_EXECUTING);
   pSelfTask->vThread(pThread);
   
@@ -219,7 +205,8 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
 
   pQueues->vAddExecutingSet(pSelfTask);
   pSelfTask->vDropTaskLock();
-#endif
+  
+  // continues
 }
 
 /*----------------------------------------------------------------------------*/
