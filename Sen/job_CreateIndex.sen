@@ -18,28 +18,19 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::checkCreate ( --  true | errorCode false )
 
-  0 0 0 locals| sTableNm sIndexNm pTable |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table and index names
-  <tableNm> to sTableNm
-  <indexNm> to sIndexNm
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check in tables folder
   folder[].checkInTables not if false exit then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is a table folder
-  sTableNm folder[].checkIsTablesFolder not if false exit then
+  <tableNm> folder[].checkIsTablesFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // push table
-  sTableNm path[].pushNamedTableFolder assert
+  <tableNm> path[].pushNamedTableFolder assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
-  sTableNm find execute to pTable
+  <tableNm> find execute locals| pTable |
   pTable table.indexCount
   C_MAX_INDEXES == if
     EC_MAX_INDEXES
@@ -49,12 +40,12 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // push indexes
   path[].pushIndexesFolder assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check index already exists
-  sIndexNm checkIsNotIndex not if
+  // check if index already exists
+  <indexNm> checkIsNotIndex not if
     path[].discardIndexesFolder
     path[].discardTableFolder
     folder[].isTables assert
@@ -62,10 +53,10 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // pop indexes
   path[].discardIndexesFolder
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   path[].discardTableFolder
 
