@@ -45,6 +45,8 @@ Stz* AM::szLogTxtFile(void)   { return gpAttachMap->m_sLogTxtFile;            }
 
 //
 SessionArray* AM::pSessionArray(void) { return gpAttachMap->m_pSessionArray;  }
+
+
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 CarryOver* AM::pCarryOver(void)   { return gpAttachMap->m_pCarryOver;         }

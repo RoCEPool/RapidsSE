@@ -1519,6 +1519,8 @@ void Step::vJobSignalCompletion(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pTask->vGrabTaskLock();
+
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
   pJob->vJobState(JS_SIGNALLED);
@@ -1528,10 +1530,14 @@ void Step::vJobSignalCompletion(void)
   Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
   SessionArray::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eClass()) );
+  
+  pSession->m_pMutex->vLock(m_pTask);
+  pSession->m_pMutex->vSignal(m_pTask);
+  pSession->m_pMutex->vUnlock(m_pTask);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vGrabTaskLock();
   m_pTask->vScheduleCompletion();
   
   EXIT();

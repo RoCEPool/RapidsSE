@@ -192,10 +192,10 @@ void Scheduler::vTaskSelf_SignalCompletion(Task* pSelfTask, Thread* pThread)
   Job* pJob = pSelfTask->pJob();
   pSelfTask->vJob(nullptr);
   
-  Session* pSession = pJob->pSession();
-  pSession->m_pMutex->vLock(pSelfTask);
-  pSession->m_pMutex->vSignal(pSelfTask);
-  pSession->m_pMutex->vUnlock(pSelfTask);
+//  Session* pSession = pJob->pSession();
+//  pSession->m_pMutex->vLock(pSelfTask);
+//  pSession->m_pMutex->vSignal(pSelfTask);
+//  pSession->m_pMutex->vUnlock(pSelfTask);
 
   pSelfTask->vState(TS_EXECUTING);
   pSelfTask->vThread(pThread);
