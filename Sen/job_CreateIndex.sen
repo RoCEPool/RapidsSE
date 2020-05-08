@@ -14,9 +14,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a makeable index                                          */
+/* check if <tableNm> . <indexNm> is a creatable index                        */
 /*----------------------------------------------------------------------------*/
-: checkMakeIndex ( Job_CreateIndex --  true | errorCode false )
+: createIndex::checkCreate ( Job_CreateIndex --  true | errorCode false )
 
   params| pJob_CreateIndex |
   0 0 0 locals| sTableNm sIndexNm pTable |
@@ -212,11 +212,17 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateIndex ERROR_JOB !!logError exit then
+  node::checkEnoughBuffers not if
+    pJob_CreateIndex ERROR_JOB !!logError
+    exit
+  then
 
   //----------------------------------------------------------------------------
   // check ok to make index
-  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex ERROR_JOB !!logError exit then
+  pJob_CreateIndex createIndex::checkCreate not if
+    pJob_CreateIndex ERROR_JOB !!logError
+    exit
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
