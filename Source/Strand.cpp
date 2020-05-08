@@ -145,9 +145,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
       
       Op* pOp = pGet(i_Op);
       
-      bool bSpawned = pOp->bSpawnOperatorJob(iSessionId);
-      
-      ASSERT(bSpawned);
+      pOp->vSpawnOperatorJob(iSessionId);
     }
   }
   

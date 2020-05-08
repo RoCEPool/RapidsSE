@@ -146,7 +146,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
-  IGNORE_RETURN(Api::bSpawnJob_service(pJob_SubFetch));
+  Api::vSpawnJob_service(pJob_SubFetch);
 
   EXIT();
 }

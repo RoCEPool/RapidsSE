@@ -1585,7 +1585,7 @@ void Step::vJobScheduleNextPhase(void)
   Task* pTaskParticipant = pJobParticipant->pTask();
   RASSERT(! pTaskParticipant);
   
-  IGNORE_RETURN(AM::bScheduleNextPhase(pJobParticipant,m_pTask));
+  AM::vScheduleNextPhase(pJobParticipant,m_pTask);
   
   EXIT();
 }
@@ -1597,7 +1597,6 @@ void Step::vJobSpawnReceived(void)
 {
   ENTRY();
   
-
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
@@ -1614,7 +1613,7 @@ void Step::vJobSpawnReceived(void)
 //    RASSERT(TR_NONE == pTask->eTranstionRequest());
 //  }
   
-  IGNORE_RETURN(Api::bSpawnJob_received(pJob));
+  Api::vSpawnJob_received(pJob);
   
   EXIT();
 }
@@ -1637,7 +1636,7 @@ void Step::vJobSpawnDedicated(void)
               C_VARGS_END);
 
   pJob->vSeed((eSS)i_Seed);
-  IGNORE_RETURN(Api::bSpawnJobDedicated(pJob));
+  Api::vSpawnJobDedicated(pJob);
   
   EXIT();
 }
@@ -1688,7 +1687,7 @@ void Step::vJobSpawnUniversal(void)
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
-  IGNORE_RETURN(Api::bSpawnJob_service(pJob_Universal));
+  Api::vSpawnJob_service(pJob_Universal);
 
   EXIT();
 }

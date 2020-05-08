@@ -940,7 +940,7 @@ void Op::vSendJobOperand(Operand* pOperand, bool bSet)
 /*----------------------------------------------------------------------------*/
 /* spawn a job for this operator                                              */
 /*----------------------------------------------------------------------------*/
-bool Op::bSpawnOperatorJob(i8 iSessionId)
+void Op::vSpawnOperatorJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -988,9 +988,7 @@ bool Op::bSpawnOperatorJob(i8 iSessionId)
   //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_API);
   //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_TAGS);
 
-  bool bSpawned = AM::bSpawnJob_op(m_pOpJob);
-  
-  return bSpawned;
+  AM::vSpawnJob_op(m_pOpJob);
 }
 
 /*----------------------------------------------------------------------------*/

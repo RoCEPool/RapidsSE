@@ -94,7 +94,7 @@ namespace Pipelines
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
     void vSendJobOperand(Operand* pOperand, bool bSet);
-    bool bSpawnOperatorJob(i8 iSessionId);
+    void vSpawnOperatorJob(i8 iSessionId);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTags(void);

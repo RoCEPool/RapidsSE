@@ -1373,7 +1373,7 @@ ObjectsInPool* SePrompt::pSnapshotObjects(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
+/* spawn job : invoke API to spawn the job (creating a task)                  */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vSpawnJob(void)
 {

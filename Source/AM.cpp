@@ -487,11 +487,9 @@ bool AM::bSpawnJob_connector(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_op(Job* pJob)
+void AM::vSpawnJob_op(Job* pJob)
 {
-  bool bResult = Api::bSpawnJob_op(pJob);
-  
-  return bResult;
+  Api::vSpawnJob_op(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,31 +505,25 @@ bool AM::bSpawnJob_prompt(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_received(Job* pJob)
+void AM::vSpawnJob_received(Job* pJob)
 {
-  bool bResult = Api::bSpawnJob_received(pJob);
-  
-  return bResult;
+  Api::vSpawnJob_received(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_service(Job* pJob)
+void AM::vSpawnJob_service(Job* pJob)
 {
-  bool bResult = Api::bSpawnJob_service(pJob);
-  
-  return bResult;
+  Api::vSpawnJob_service(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
+void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
-  bool bResult = Api::bScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
-  
-  return bResult;
+  Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -185,8 +185,17 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 bool Api::bSpawnJob_connector(Job* pJob)
 {
 
-  if (! bCreateTaskForJob(pJob))
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = AM::iPid();
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
+  }
+  
+  vCreateTaskForJob(pJob);
   
   Scheduler::vTaskApi_AddConnector(pJob->pTask());
   
@@ -196,29 +205,19 @@ bool Api::bSpawnJob_connector(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_op(Job* pJob)
+void Api::vSpawnJob_op(Job* pJob)
 {
-
-  if (! bCreateTaskForJob(pJob))
-    return false;
-  
+  vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddOp(pJob->pTask());
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_service(Job* pJob)
+void Api::vSpawnJob_service(Job* pJob)
 {
-
-  if (! bCreateTaskForJob(pJob))
-    return false;
-  
+  vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddService(pJob->pTask());
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,66 +226,6 @@ bool Api::bSpawnJob_service(Job* pJob)
 bool Api::bSpawnJob_prompt(Job* pJob)
 {
   RASSERT(! pJob->pTask());
-  
-  if (! bCreateTaskForJob(pJob))
-    return false;
-  
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_received(Job* pJob)
-{
-
-  if (! bCreateTaskForJob(pJob))
-    return false;
-  
-  Scheduler::vTaskApi_AddReceived(pJob->pTask());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_system(Job* pJob)
-{
-
-  if (! bCreateTaskForJob(pJob))
-    return false;
-  
-  Scheduler::vTaskApi_AddSystem(pJob->pTask());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
-{
-  // THIS NOW DOESNT READ CORRECTLY
-  if (! bCreateTaskForJob(pParticipantJob)) // POORLY NAMED
-    return false;
-  
-  Task* pTaskParticipant = pParticipantJob->pTask();
-  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bCreateTaskForJob(Job* pJob)
-{
-  //ASSERT(pJob->aJobClass());
-  ASSERT(SS_ENUMS != pJob->eSeed());
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -297,6 +236,51 @@ bool Api::bCreateTaskForJob(Job* pJob)
     vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
+  
+  vCreateTaskForJob(pJob);
+  
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vSpawnJob_received(Job* pJob)
+{
+  vCreateTaskForJob(pJob);
+  Scheduler::vTaskApi_AddReceived(pJob->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vSpawnJob_system(Job* pJob)
+{
+  vCreateTaskForJob(pJob);
+  Scheduler::vTaskApi_AddSystem(pJob->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
+{
+  // THIS NOW DOESNT READ CORRECTLY
+  vCreateTaskForJob(pParticipantJob);
+  
+  Task* pTaskParticipant = pParticipantJob->pTask();
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vCreateTaskForJob(Job* pJob)
+{
+  //ASSERT(pJob->aJobClass());
+  ASSERT(SS_ENUMS != pJob->eSeed());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -327,8 +311,6 @@ bool Api::bCreateTaskForJob(Job* pJob)
     Correctness::vDebugPoint();
   
   pJob->vTimerStart();
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,8 +318,6 @@ bool Api::bCreateTaskForJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJobAndWait(Job* pJob)
 {
-  Task* pTask = pJob->pTask();
-  
   // lock this job's session mutex
   Session* pSession = pJob->pSession();
   pSession->m_pMutex->vLock(pJob);
@@ -405,19 +385,10 @@ void Api::vSpawnJobAndWait(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn dedicated job                                                        */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJobDedicated(Job* pJob)
+void Api::vSpawnJobDedicated(Job* pJob)
 {
   ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -430,8 +401,6 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   pJob->vTimerStart();
   
   Scheduler::vTaskApi_AddDedicated(pNewTask);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

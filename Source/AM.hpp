@@ -263,12 +263,13 @@ namespace Oblique
     static Session* pSessionGet(ReqTuple* aReqTuple);
     static void vSetOperand(Job_Operand* pJobOperand, Operand* pOperand);
     
-    static bool bScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static bool bSpawnJob_connector(Job* pJob);
-    static bool bSpawnJob_op(Job* pJob);
     static bool bSpawnJob_prompt(Job* pJob);
-    static bool bSpawnJob_received(Job* pJob);
-    static bool bSpawnJob_service(Job* pJob);
+    
+    static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
+    static void vSpawnJob_op(Job* pJob);    
+    static void vSpawnJob_received(Job* pJob);
+    static void vSpawnJob_service(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -57,7 +57,7 @@ void Step::vJob_SubLoaderSpawn(void)
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
-  IGNORE_RETURN(Api::bSpawnJob_service(pJob_SubLoader));
+  Api::vSpawnJob_service(pJob_SubLoader);
   
   EXIT();
 }

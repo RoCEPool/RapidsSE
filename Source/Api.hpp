@@ -11,17 +11,20 @@ namespace Interface
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
 
-  static bool bScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
+  static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
+  // external
   static bool bSpawnJob_connector(Job* pJob);
-  static bool bSpawnJob_op(Job* pJob);
   static bool bSpawnJob_prompt(Job* pJob);
-  static bool bSpawnJob_received(Job* pJob);
-  static bool bSpawnJob_service(Job* pJob);
-  static bool bSpawnJob_system(Job* pJob);
+  
+  // internal
+  static void vSpawnJob_op(Job* pJob);
+  static void vSpawnJob_received(Job* pJob);
+  static void vSpawnJob_service(Job* pJob);
+  static void vSpawnJob_system(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob);
   
-  static bool bSpawnJobDedicated(Job* pJob);
+  static void vSpawnJobDedicated(Job* pJob);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   
   //! TO GO
@@ -29,7 +32,7 @@ namespace Interface
     
   private:
   
-  static bool bCreateTaskForJob(Job* pJob);
+  static void vCreateTaskForJob(Job* pJob);
 
   };
 }
