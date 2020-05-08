@@ -98,7 +98,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
@@ -182,7 +182,7 @@
 : index::make params| sTableNm sIndexNm |
 
   // push folders to ../t/indexes
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
   path[].pushIndexesFolder assert
 
   // create the name index (word & object)
@@ -197,7 +197,7 @@
 //: index::make params| sTableNm sIndexNm |
 //
 //  // push folders to ../t/indexes
-//  sTableNm path[].pushTableFolder assert
+//  sTableNm path[].pushNamedTableFolder assert
 //  path[].pushIndexesFolder assert
 //
 //  // create the name index (word & object)
@@ -246,7 +246,7 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
 "B" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -24,7 +24,7 @@
   // push table
   //pJob_SubFetch job.objectName@ to sTableNm
   <tableNm> to sTableNm
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table

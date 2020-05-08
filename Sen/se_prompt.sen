@@ -156,6 +156,7 @@
 
   input::push
   input::stdin
+  input::senTokens
   input::useBegin
 
   begin

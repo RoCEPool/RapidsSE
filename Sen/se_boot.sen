@@ -19,6 +19,7 @@ assert::stack_0
         "se_folder.sen"           include
         "se_object.sen"           include
         "se_socket.sen"           include
+        "se_prompt.sen"           include
 
 8 .put
         "tpl_liteOp.sen"          include
@@ -218,7 +219,6 @@ assert::stack_0
         "se_demons.sen"               include
         "se_misc.sen"                 include
         "se_munge.sen"                include
-        "se_prompt.sen"               include
         "se_vortex.sen"               include
 
 cmd::fillOut_allCmds_usingInfo

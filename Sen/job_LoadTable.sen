@@ -58,7 +58,7 @@
 
   // set table dictionary
   <tableNm> to sTableNm
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
 
   // get table
   sTableNm find execute to pTable
@@ -176,7 +176,7 @@
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
   //path[].dump
 
   // check it is a table

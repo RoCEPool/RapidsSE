@@ -36,7 +36,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  sTableNm path[].pushTableFolder assert
+  sTableNm path[].pushNamedTableFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
@@ -86,21 +86,27 @@
   <tableNm> to sTableNm
 
   sIndexNm sTableNm index::make locals| pwIndexTest |
+
   pwIndexTest execute locals| pIndex |
 
   //----------------------------------------------------------------------------
 
-  sTableNm path[].pushTableFolder assert
+  // assert starting folder is:
+  // ../schemas/public/tables
+  folder[].isTables assert
+
+  // ../schemas/public/tables/t
+  sTableNm path[].pushNamedTableFolder assert
+
+  // ../schemas/public/tables/t/indexes
   path[].pushIndexesFolder assert
 
-
-  // find the table in the path (even though we are in ../tables/t/indexes)
+  // find the table upwards in the path
   sTableNm find execute to pTable
 
-
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error while creating indexdef
@@ -112,6 +118,7 @@
     sIndexNm :forget
     path[].discardIndexesFolder
     path[].discardTableFolder
+    folder[].isTables assert
     exit
   then
 
@@ -135,6 +142,7 @@
     not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
       path[].discardIndexesFolder
       path[].discardTableFolder
+      folder[].isTables assert
       exit
     then
   then
@@ -146,12 +154,14 @@
     ERROR_JOB
     path[].discardIndexesFolder
     path[].discardTableFolder
+    folder[].isTables assert
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   path[].discardIndexesFolder
   path[].discardTableFolder
+  folder[].isTables assert
 ;
 
 /*----------------------------------------------------------------------------*/
