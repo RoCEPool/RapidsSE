@@ -14,49 +14,6 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
-                          bool bPostJob, bool bFromPrompt)
-{
-  SessionArray::vMarkApiLoc(pSession,101);
-    
-  TokenVec* pTknVec = pSession->pTokenVec();
-  
-  pTknVec->vTokenise(sCommand);
-  Stz* aCommand1 = pTknVec->pGet(0)->szChars();
-  Stz* aCommand2 = pTknVec->pGet(1,true)->szChars();
-  
-  JobClass* pJobClass = JobClass::pFind(aCommand1, aCommand2);
-  if (! pJobClass)
-    return nullptr;
-  
-  ReqTuple xReqTuple("!!EXECUTE_COMMAND"_Stz,false);
-  
-  Job* pJob = pJobClass->pPreJob(&xReqTuple,pSession);
-  if (! pJob) {
-    return nullptr;
-  }
-  
-  if (pJob->bParticipantHasError()) {
-    //vTrace("job has error (maybe syntax error)\n"_Stz);
-    //pJobClass->vPostJob();
-    return pJob;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn and wait for job
-  
-  Api::vSpawnJobAndWait(pJob);
-  
-  // run post ?
-  if (bPostJob)
-    pJobClass->vPostJob(pJob);
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
 void Api::vIncStatistics(eAC eApiCall)

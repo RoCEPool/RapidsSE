@@ -8,8 +8,6 @@ namespace Interface
   class Api
   {
   public:
-  static Job* pExecuteCommand(Session* pSession, Stz* sCommand,
-                              bool bPostJob, bool bFromPrompt);
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
   static bool bReseedJob(Session* pSession, Job* pJob);
