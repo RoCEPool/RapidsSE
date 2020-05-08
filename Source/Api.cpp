@@ -14,6 +14,28 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allocate a session                                                         */
+/*----------------------------------------------------------------------------*/
+Session* Api::pAllocSession(void)
+{
+  SessionArray* pSessionArray = AM::pSessionArray();
+  
+  Session* pSession = pSessionArray->pAllocSession();
+  
+  return pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free a session                                                             */
+/*----------------------------------------------------------------------------*/
+void Api::vFreeSession(Session* pSession)
+{
+  SessionArray* pSessionArray = AM::pSessionArray();
+
+  pSessionArray->vFreeSession(pSession);
+}
+
+/*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
 void Api::vIncStatistics(eAC eApiCall)

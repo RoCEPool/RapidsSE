@@ -8,6 +8,10 @@ namespace Interface
   class Api
   {
   public:
+
+  static Session* pAllocSession(void);
+  static void     vFreeSession(Session* pSession);
+  
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
 
