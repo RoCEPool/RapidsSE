@@ -5,7 +5,7 @@
 " job_CreateIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check in indexes folder                                                    */
+/* check if word is not a known index/symbol                                  */
 /*----------------------------------------------------------------------------*/
 : checkIsNotIndex ( "<word>" )
 
@@ -18,21 +18,21 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::checkCreate ( --  true | errorCode false )
 
-  // check in tables folder
+  // check in tables folder: ../schemas/public/tables
   folder[].checkInTables not if false exit then
 
-  // check there is a table folder
+  // check there is a sub-folder by the name of the table
+  // ../schemas/public/tables/t
   <tableNm> folder[].checkIsTablesFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // push table
+  // push into t: ../schemas/public/tables/t
   <tableNm> path[].pushNamedTableFolder assert
 
   // check if max indexes already on table
   <tableNm> find execute locals| pTable |
-  pTable table.indexCount
-  C_MAX_INDEXES == if
+  pTable table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
     path[].discardTableFolder
     folder[].isTables assert
@@ -41,10 +41,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // push indexes
+  // push into indexes: ../schemas/public/tables/t/indexes
   path[].pushIndexesFolder assert
+  folder[].isIndexes assert
 
-  // check if index already exists
+  // error if index by given name already exists
   <indexNm> checkIsNotIndex not if
     path[].discardIndexesFolder
     path[].discardTableFolder
@@ -54,21 +55,20 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // pop indexes
+  // pop upto t: ../schemas/public/tables/t
   path[].discardIndexesFolder
 
-  // pop table
+  // pop upto tables: ../schemas/public/tables
   path[].discardTableFolder
-
   folder[].isTables assert
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make an index (run by all participants)                                     */
+/* create index <tableNm> . <indexNm> on this particpating node               */
 /*----------------------------------------------------------------------------*/
-: createIndex::createAnIndex
+: createIndex::createNamedIndex
 
   0 0 0 0 locals| pTable sTableNm sIndexNm |
 
@@ -158,7 +158,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateIndex job check resources                                */
+/* check resources for Job_CreateIndex on this participating node             */
 /*----------------------------------------------------------------------------*/
 : createIndex::checkResources _eeh
 
@@ -167,19 +167,21 @@
 
   // check if we have enough buffers
   node::checkEnoughBuffers not if
-    job[] ERROR_JOB !!logError
+    job[] ERROR_JOB
+    !!logError
     exit
   then
 
   // check ok to make index
   createIndex::checkCreate not if
-    job[] ERROR_JOB !!logError
+    job[] ERROR_JOB
+    !!logError
     exit
   then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateIndex job on each node                                   */
+/* execute Job_CreateIndex on this participating node                         */
 /*----------------------------------------------------------------------------*/
 : createIndex::execute _eeh ( -- )
 
@@ -187,20 +189,21 @@
   folder[].isTables assert
 
   // create the index
-  createIndex::createAnIndex
+  createIndex::createNamedIndex
 
   // should be in tables
   folder[].isTables assert
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create index request (on originating node)                                 */
+/* request originating node to execute Job_CreateIndex across the grid        */
 /*----------------------------------------------------------------------------*/
 : createIndex::request _eeh ( -- <R> )
 
   // check create index syntax
   <cmd> IndexDef::syntax dup EC_NONE != if
-    job[] ERROR_JOB !!logError
+    job[] ERROR_JOB
+    !!logError
   else
     discard
   then

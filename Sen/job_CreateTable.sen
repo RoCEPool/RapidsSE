@@ -18,15 +18,9 @@
 /*----------------------------------------------------------------------------*/
 : createTable::checkCreate ( -- true | errorCode false )
 
-  folder[].checkInTables not if
-    false
-    exit
-  then
+  folder[].checkInTables not if false exit then
   
-  <tableNm> checkIsNotTable not if
-    false
-    exit
-  then
+  <tableNm> checkIsNotTable not if false exit then
 
   true
 ;
@@ -83,13 +77,15 @@
 
   // check if we have enough buffers
   node::checkEnoughBuffers not if
-    job[] ERROR_JOB !!logError
+    job[] ERROR_JOB
+    !!logError
     exit
   then
 
   // check if we can make the table
   createTable::checkCreate not if
-    job[] ERROR_JOB !!logError
+    job[] ERROR_JOB
+    !!logError
     exit
   then
 ;
@@ -116,7 +112,8 @@
 
   // check create table syntax
   <cmd> TableDef::syntax dup EC_NONE != if
-    job[] ERROR_JOB !!logError
+    job[] ERROR_JOB
+    !!logError
   else
     discard
   then
