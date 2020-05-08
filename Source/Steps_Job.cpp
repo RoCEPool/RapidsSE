@@ -1566,7 +1566,7 @@ void Step::vJobSlotFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.spawn -- spawn the job on the stack                                    */
+/* job.scheduleNextPhase -- schedule next phase for the job                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobScheduleNextPhase(void)
 {
@@ -1584,11 +1584,6 @@ void Step::vJobScheduleNextPhase(void)
 
   Task* pTaskParticipant = pJobParticipant->pTask();
   RASSERT(! pTaskParticipant);
-//  if ( pTask) {
-//    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJobRef->szJobNm());
-//    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eTranstionRequest());
-//  }
   
   IGNORE_RETURN(AM::bScheduleNextPhase(pJobParticipant,m_pTask));
   

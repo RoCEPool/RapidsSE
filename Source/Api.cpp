@@ -180,47 +180,6 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reseed job                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Api::bReseedJob(Session* pSession, Job* pJob)
-{
-  ASSERT(pJob->aJobClass());
-  ASSERT(SS_ENUMS != pJob->eSeed());
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (! pJob->pTask())
-    AM::vLogWriteCsv(false);
-  
-  ASSERT(pJob->pTask());
-  Task* pTask = pJob->pTask();
-  pTask->vReseed();
-  
-  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
-              "pJob=%p"_Stz, //!format-LogPrm
-              pJob,
-              C_VARGS_END);
-  
-  
-  //Scheduler::vAddTaskGeneral(pTask);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_connector(Job* pJob)
@@ -500,6 +459,49 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
   }
   
   return EC_NONE;
+}
+
+//! TO GO
+
+/*----------------------------------------------------------------------------*/
+/* reseed job                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Api::bReseedJob(Session* pSession, Job* pJob)
+{
+  ASSERT(pJob->aJobClass());
+  ASSERT(SS_ENUMS != pJob->eSeed());
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = AM::iPid();
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (! pJob->pTask())
+    AM::vLogWriteCsv(false);
+  
+  ASSERT(pJob->pTask());
+  Task* pTask = pJob->pTask();
+  pTask->vReseed();
+  
+  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
+              "pJob=%p"_Stz, //!format-LogPrm
+              pJob,
+              C_VARGS_END);
+  
+  
+  //Scheduler::vAddTaskGeneral(pTask);
+  
+  return true;
 }
 
 /*============================================================================*/

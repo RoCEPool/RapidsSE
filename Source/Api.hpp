@@ -10,7 +10,6 @@ namespace Interface
   public:
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
-  static bool bReseedJob(Session* pSession, Job* pJob);
 
   static bool bScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
@@ -25,6 +24,9 @@ namespace Interface
   static bool bSpawnJobDedicated(Job* pJob);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   
+  //! TO GO
+  static bool bReseedJob(Session* pSession, Job* pJob);
+    
   private:
   
   static bool bCreateTaskForJob(Job* pJob);
