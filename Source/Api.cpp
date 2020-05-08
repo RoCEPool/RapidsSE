@@ -362,13 +362,13 @@ bool Api::bSpawnJob_op(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_other(Job* pJob)
+bool Api::bSpawnJob_service(Job* pJob)
 {
 
   if (! bCreateTaskForJob(pJob))
     return false;
   
-  Scheduler::vTaskApi_AddGeneral_other(pJob->pTask());
+  Scheduler::vTaskApi_AddService(pJob->pTask());
   
   return true;
 }

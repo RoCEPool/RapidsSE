@@ -497,16 +497,6 @@ bool AM::bSpawnJob_op(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_other(Job* pJob)
-{
-  bool bResult = Api::bSpawnJob_other(pJob);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 bool AM::bSpawnJob_prompt(Job* pJob)
 {
   bool bResult = Api::bSpawnJob_prompt(pJob);
@@ -520,6 +510,16 @@ bool AM::bSpawnJob_prompt(Job* pJob)
 bool AM::bSpawnJob_received(Job* pJob)
 {
   bool bResult = Api::bSpawnJob_received(pJob);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob_service(Job* pJob)
+{
+  bool bResult = Api::bSpawnJob_service(pJob);
   
   return bResult;
 }

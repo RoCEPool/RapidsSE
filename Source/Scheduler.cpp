@@ -471,24 +471,6 @@ void Scheduler::vTaskApi_AddOp(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddGeneral_other(Task* pNewTask)
-{
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
-  
-  pNewTask->vEntryPoint(EP_OTHER);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
 void Scheduler::vTaskApi_AddPrompt(Task* pNewTask)
 {
   //
@@ -517,6 +499,24 @@ void Scheduler::vTaskApi_AddReceived(Task* pNewTask)
   RASSERT(TR_NONE == pNewTask->eTranstionRequest());
   
   pNewTask->vEntryPoint(EP_RECEIVED);
+  pNewTask->vState(TS_DESISTED);
+
+  vScheduleTask(pNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskApi_AddService(Task* pNewTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
+  
+  pNewTask->vEntryPoint(EP_SERVICE);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);

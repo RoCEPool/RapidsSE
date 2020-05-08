@@ -40,9 +40,9 @@ namespace Threads
   
     static void vTaskApi_AddConnector(Task* pNewTask);
     static void vTaskApi_AddOp(Task* pNewTask);
-    static void vTaskApi_AddGeneral_other(Task* pNewTask);
     static void vTaskApi_AddPrompt(Task* pNewTask);
     static void vTaskApi_AddReceived(Task* pNewTask);
+    static void vTaskApi_AddService(Task* pNewTask);
     static void vTaskApi_AddSystem(Task* pNewTask);
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 

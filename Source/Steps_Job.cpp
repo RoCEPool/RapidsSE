@@ -1693,7 +1693,7 @@ void Step::vJobSpawnUniversal(void)
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
-  IGNORE_RETURN(Api::bSpawnJob_other(pJob_Universal));
+  IGNORE_RETURN(Api::bSpawnJob_service(pJob_Universal));
 
   EXIT();
 }
