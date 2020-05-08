@@ -130,6 +130,7 @@
   Done_Finally
 
   job[] job.signalCompletion
+  // task has no job 
   task::delete
 
   HAZARD
@@ -345,6 +346,7 @@
 
   //"Signalling the thread waiting on job completion" .
   pJob job.signalCompletion
+  // task has no job
   task::delete
 
   HAZARD

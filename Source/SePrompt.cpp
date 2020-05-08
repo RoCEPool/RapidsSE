@@ -223,6 +223,7 @@ void SePrompt::vPromptLoop(void)
     vBeginRequest();
     
     vPreJob();
+    ASSERT(! m_pJob->pTask());
     
     // this should go
     if (m_pJob->bJobHasError()) {
@@ -1370,12 +1371,7 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->eJobState());
   
-  // WE SHOULD ASSERT THERE IS NO TASK
-  Task* pTask = m_pJob->pTask();
-  if ( pTask) {
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
+  RASSERT(! m_pJob->pTask());
   
   bool bSpawned = Api::bSpawnJob_prompt(m_pJob);
   RASSERT(bSpawned);
