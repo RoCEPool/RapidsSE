@@ -115,7 +115,6 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_rmfifo.hpp"
 #include "Prompt_rnd.hpp"
 
-#include "Prompt_se.hpp"
 #include "Prompt_setDbg.hpp"
 #include "Prompt_shell.hpp"
 #include "Prompt_shortcut.hpp"
