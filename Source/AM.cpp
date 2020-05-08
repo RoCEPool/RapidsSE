@@ -487,16 +487,6 @@ bool AM::bSpawnJob_connector(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_internal(Job* pJob)
-{
-  bool bResult = Api::bSpawnJob_internal(pJob);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 bool AM::bSpawnJob_op(Job* pJob)
 {
   bool bResult = Api::bSpawnJob_op(pJob);

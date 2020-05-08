@@ -18,7 +18,6 @@ namespace Interface
   static bool bScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
   static bool bSpawnJob_connector(Job* pJob);
-  static bool bSpawnJob_internal(Job* pJob);
   static bool bSpawnJob_op(Job* pJob);
   static bool bSpawnJob_other(Job* pJob);
   static bool bSpawnJob_prompt(Job* pJob);

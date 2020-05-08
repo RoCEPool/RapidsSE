@@ -453,24 +453,6 @@ void Scheduler::vTaskApi_AddConnector(Task* pNewTask)
 /*----------------------------------------------------------------------------*/
 /* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddInternal(Task* pNewTask)
-{
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTranstionRequest());
-  
-  pNewTask->vEntryPoint(EP_INTERNAL);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
 void Scheduler::vTaskApi_AddOp(Task* pNewTask)
 {
   //

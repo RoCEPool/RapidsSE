@@ -348,20 +348,6 @@ bool Api::bSpawnJob_connector(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_internal(Job* pJob)
-{
-
-  if (! bCreateTaskForJob(pJob))
-    return false;
-  
-  Scheduler::vTaskApi_AddInternal(pJob->pTask());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob_op(Job* pJob)
 {
 

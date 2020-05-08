@@ -39,7 +39,6 @@ namespace Threads
     static void vTaskApi_AddDedicated(Task* pNewTask);
   
     static void vTaskApi_AddConnector(Task* pNewTask);
-    static void vTaskApi_AddInternal(Task* pNewTask);
     static void vTaskApi_AddOp(Task* pNewTask);
     static void vTaskApi_AddGeneral_other(Task* pNewTask);
     static void vTaskApi_AddPrompt(Task* pNewTask);
