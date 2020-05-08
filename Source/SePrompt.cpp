@@ -55,12 +55,21 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iPartition = 0;
-  eEC eResult = RapidsSE_NewSession(0,
-                                  "rapidsse"_Stz,
-                                  "public"_Stz,
-                                  iPartition,
-                                  (void**)&m_pSession);
-  ASSERT(EC_NONE == eResult);
+//  eEC eResult = RapidsSE_NewSession(0,
+//                                  "rapidsse"_Stz,
+//                                  "public"_Stz,
+//                                  iPartition,
+//                                  (void**)&m_pSession);
+  
+  
+  //pSession = new Session(iPartition);
+  m_pSession = AM::pSessionArray()->pAllocSession();
+  m_pSession->vPartition(iPartition);
+  
+  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+
+  ASSERT(EC_NONE == eError);
+  
   
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
@@ -108,8 +117,9 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  RapidsSE_DeleteSession(0,&m_pSession);
+    
+  Engine::vDeleteSession(m_pSession);
+  m_pSession = nullptr;
   
   delete m_pBPA;
   delete m_pObjectsInPool;

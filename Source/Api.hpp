@@ -8,7 +8,6 @@ namespace Interface
   class Api
   {
   public:
-  static void vDeleteJobs(Session* pSession);
   static Job* pExecuteCommand(Session* pSession, Stz* sCommand,
                               bool bPostJob, bool bFromPrompt);
   static void vIncStatistics(eAC eApiCall);

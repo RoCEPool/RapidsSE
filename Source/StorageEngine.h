@@ -16,8 +16,6 @@ namespace StorageEngine
 
 //------------------------------------------------------------------------------
 
-#include "RapidsSE.hpp"
-
 #include "FocalObjects.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
