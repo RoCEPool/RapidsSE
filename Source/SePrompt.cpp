@@ -230,7 +230,7 @@ void SePrompt::vPromptLoop(void)
       vPostJob();
       if (AM::bDeveloper())
         vDumpTokenVec(true);
-      vCompletedTask();
+      //vCompletedTask();
       vDeleteJob();
       vEndRequest();
       continue;
