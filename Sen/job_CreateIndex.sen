@@ -5,7 +5,7 @@
 " job_CreateIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is not a known index/symbol                                  */
+/* check word is not a known index/symbol                                     */
 /*----------------------------------------------------------------------------*/
 : checkIsNotIndex ( "<word>" )
 
@@ -45,7 +45,7 @@
   path[].pushIndexesFolder assert
   folder[].isIndexes assert
 
-  // error if index by given name already exists
+  // error if given name already exists
   <indexNm> checkIsNotIndex not if
     path[].discardIndexesFolder
     path[].discardTableFolder

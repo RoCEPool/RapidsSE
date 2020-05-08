@@ -5,7 +5,7 @@
 " job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check word is not a table                                                  */
+/* check word is not a known table/symbol                                     */
 /*----------------------------------------------------------------------------*/
 : checkIsNotTable ( "<wordNm>" -- t|f )
 
@@ -18,17 +18,19 @@
 /*----------------------------------------------------------------------------*/
 : createTable::checkCreate ( -- true | errorCode false )
 
+  // check in tables folder: ../schemas/public/tables
   folder[].checkInTables not if false exit then
   
+  // error if given name already exists
   <tableNm> checkIsNotTable not if false exit then
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make an table (run by all participants)                                    */
+/* create table <tableNm> on this particpating node                           */
 /*----------------------------------------------------------------------------*/
-: createTable::createATable
+: createTable::createNamedTable
 
   job[] locals| pJob_CreateTable |
 
@@ -68,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job check resources                                */
+/* check resources for Job_CreateTable on this participating node             */
 /*----------------------------------------------------------------------------*/
 : createTable::checkResources _eeh
 
@@ -91,7 +93,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job on each node                                   */
+/* execute Job_CreateTable on this participating node                         */
 /*----------------------------------------------------------------------------*/
 : createTable::execute _eeh ( -- )
 
@@ -99,14 +101,14 @@
   folder[].isTables assert
 
   // create the table
-  createTable::createATable
+  createTable::createNamedTable
 
   // should be in tables
   folder[].isTables assert
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create table request (on originating node)                                 */
+/* request originating node to 2pc execute Job_CreateTable across the grid    */
 /*----------------------------------------------------------------------------*/
 : createTable::request _eeh ( -- <R> )
 
