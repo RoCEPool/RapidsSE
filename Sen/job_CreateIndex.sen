@@ -16,9 +16,8 @@
 /*----------------------------------------------------------------------------*/
 /* check if <tableNm> . <indexNm> is a creatable index                        */
 /*----------------------------------------------------------------------------*/
-: createIndex::checkCreate ( Job_CreateIndex --  true | errorCode false )
+: createIndex::checkCreate ( --  true | errorCode false )
 
-  params| pJob_CreateIndex |
   0 0 0 locals| sTableNm sIndexNm pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 /* make an index (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: createIndex::createAnIndex params| pJob_CreateIndex |
+: createIndex::createAnIndex
 
   0 0 0 0 locals| pTable sTableNm sIndexNm |
 
@@ -105,13 +104,13 @@
   sTableNm find execute to pTable
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |
+  <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error while creating indexdef
   //grid::thisNode@
-  pJob_CreateIndex job.hasError if
+  job[] job.hasError if
     //pJob_CreateIndex
     DdlLock[].testDrop
     !!logError
@@ -139,7 +138,7 @@
   // validate the unqiue index columns are a subset of the partition keys
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex
-    not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex ERROR_JOB
+    not if EC_INVALID_COLUMNS_UNIQUE_INDEX job[] ERROR_JOB
       path[].discardIndexesFolder
       path[].discardTableFolder
       folder[].isTables assert
@@ -150,7 +149,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
-  not if pJob_CreateIndex
+  not if job[]
     ERROR_JOB
     path[].discardIndexesFolder
     path[].discardTableFolder
@@ -182,7 +181,7 @@
   then
 
   // check ok to make index
-  job[] createIndex::checkCreate not if
+  createIndex::checkCreate not if
     job[] ERROR_JOB !!logError
     exit
   then

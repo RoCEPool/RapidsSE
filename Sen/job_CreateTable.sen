@@ -14,12 +14,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a makeable table                                          */
+/* check if <tableNm> is a creatable table                                    */
 /*----------------------------------------------------------------------------*/
-: checkMakeTable ( "<tableNm>" -- true | errorCode false )
+: createTable::checkCreate ( -- true | errorCode false )
 
-  folder[].checkInTables   not if false exit then
-  checkIsNotTable not if false exit then
+  folder[].checkInTables not if
+    false
+    exit
+  then
+  
+  <tableNm> checkIsNotTable not if
+    false
+    exit
+  then
 
   true
 ;
@@ -39,7 +46,7 @@
   then
 
   // check if we can make the table
-  <tableNm> checkMakeTable not if
+  createTable::checkCreate not if
     job[] ERROR_JOB !!logError
     exit
   then
