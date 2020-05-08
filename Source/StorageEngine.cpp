@@ -54,7 +54,6 @@ void StorageEngine::vCheckAllAssumptions(void)
    Reflection::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
-  Services::vCheckAssumptions();
   Sessions::vCheckAssumptions();
   SharedMemory::vCheckAssumptions();
   SortBuffers::vCheckAssumptions();

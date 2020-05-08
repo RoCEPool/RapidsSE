@@ -80,7 +80,6 @@ namespace Reflection    { class ConstDef; class ConstSet;
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Rows          {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
-namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace SharedMemory  {                                                     }
 namespace SortBuffers   {                                                     }
@@ -148,7 +147,6 @@ using namespace Reflection;
 using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
-using namespace Services;
 using namespace Sessions;
 using namespace SharedMemory;
 using namespace SortBuffers;
