@@ -37,6 +37,7 @@
 
   //"Signalling waiting thread" .
   job[] job.signalCompletion
+  task::delete
 
   HAZARD
 ;
@@ -84,6 +85,7 @@
 
   //"Signalling waiting thread" .
   job[] job.signalCompletion
+  task::delete
 
   HAZARD
 ;

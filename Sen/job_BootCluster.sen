@@ -124,6 +124,7 @@
 
   //"Signalling waiting thread" .
   job[] job.signalCompletion
+  task::delete
 
   HAZARD
 ;

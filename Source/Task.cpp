@@ -170,10 +170,19 @@ void Task::vTaskLoop(void)
 
   //RASSERT(! bIsLocked());
 
+#ifdef WITH_SIG_DEL
   ASSERT(! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
+#else
+  ASSERT(! m_pJob || ! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
+#endif
   
   // TODO: shouldn't have to refind it everytime!!!
+#ifdef WITH_SIG_DEL
   vRefindJobClass();
+#else
+  if (m_pJob)
+    vRefindJobClass();
+#endif
   
   if (! m_pForth)
     vInitExeContext();
@@ -225,16 +234,16 @@ void Task::vAssertStructure(void)
   
   // must have these
   RASSERT(m_pForth);
-  RASSERT(m_pJob);
-  
   RASSERT(m_pRegSet);
   
+#ifdef WITH_SIG_DEL
+  RASSERT(m_pJob);
   RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
-  // RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || false);
-  // RASSERT(m_pThread && m_pThread->bStructurallyCorrect());
-
-  // might have these
-  // RASSERT(m_pOp      || (m_pOp && m_pOp->bStructurallyCorrect()));
+#else
+  
+#endif
+  
+  
 }
 
 /*----------------------------------------------------------------------------*/
