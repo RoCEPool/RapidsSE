@@ -165,18 +165,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create index request (on originating node)                                 */
 /*----------------------------------------------------------------------------*/
-: createIndex::request _eeh ( -- <R> )
 
-  job[] locals| pJob_CreateIndex |
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateIndex job check resources                                */
+/*----------------------------------------------------------------------------*/
+: createIndex::checkResources _eeh
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check create index syntax
-  <cmd> IndexDef::syntax dup EC_NONE != if
-    pJob_CreateIndex ERROR_JOB !!logError
-  else
-    discard
+  // grab the ddl lock
+  DdlLock[].grabRead
+
+  // check if we have enough buffers
+  node::checkEnoughBuffers not if
+    job[] ERROR_JOB !!logError
+    exit
+  then
+
+  // check ok to make index
+  job[] createIndex::checkCreate not if
+    job[] ERROR_JOB !!logError
+    exit
   then
 ;
 
@@ -197,31 +205,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateIndex job check resources                                */
+/* create index request (on originating node)                                 */
 /*----------------------------------------------------------------------------*/
-: createIndex::checkResources _eeh ( -- )
+: createIndex::request _eeh ( -- <R> )
 
   job[] locals| pJob_CreateIndex |
-  0 0 locals| sTableNm sIndexNm |
 
-  //"checkResources received" .
-
-  //----------------------------------------------------------------------------
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  //----------------------------------------------------------------------------
-  // check if we have enough buffers
-  node::checkEnoughBuffers not if
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check create index syntax
+  <cmd> IndexDef::syntax dup EC_NONE != if
     pJob_CreateIndex ERROR_JOB !!logError
-    exit
-  then
-
-  //----------------------------------------------------------------------------
-  // check ok to make index
-  pJob_CreateIndex createIndex::checkCreate not if
-    pJob_CreateIndex ERROR_JOB !!logError
-    exit
+  else
+    discard
   then
 ;
 

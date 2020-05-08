@@ -8,6 +8,7 @@
 /* check word is not a table                                                  */
 /*----------------------------------------------------------------------------*/
 : checkIsNotTable ( "<wordNm>" -- t|f )
+
   folder[].findSymbol not if true exit then
   EC_TABLE_EXISTS false
 ;
@@ -24,18 +25,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create table request (on originating node)                                 */
+/* execute Job_CreateTable job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createTable::request _eeh ( -- <R> )
+: createTable::checkResources _eeh
 
-  job[] locals| pJob_CreateTable |
+   // grab the ddl lock
+  DdlLock[].grabRead
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check create index syntax
-  <cmd> TableDef::syntax dup EC_NONE != if
-    pJob_CreateTable ERROR_JOB !!logError
-  else
-    discard
+  // check if we have enough buffers
+  node::checkEnoughBuffers not if
+    job[] ERROR_JOB !!logError
+    exit
+  then
+
+  // check if we can make the table
+  <tableNm> checkMakeTable not if
+    job[] ERROR_JOB !!logError
+    exit
   then
 ;
 
@@ -48,9 +54,9 @@
 
   0 locals| pTable |
 
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pJob_CreateTable tableDef::parse locals| pTableDef |
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   //----------------------------------------------------------------------------
   // check for error while creating tabledef
@@ -79,26 +85,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job check resources                                */
+/* create table request (on originating node)                                 */
 /*----------------------------------------------------------------------------*/
-: createTable::checkResources _eeh ( -- )
-
-  //"checkResources received" .
+: createTable::request _eeh ( -- <R> )
 
   job[] locals| pJob_CreateTable |
 
-  //----------------------------------------------------------------------------
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  //----------------------------------------------------------------------------
-  // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateTable ERROR_JOB !!logError exit then
-
-  //----------------------------------------------------------------------------
-  // check if we can make the table
-  //pJob_CreateTable job.objectName@
-  <tableNm> checkMakeTable not if pJob_CreateTable ERROR_JOB !!logError exit then
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check create index syntax
+  <cmd> TableDef::syntax dup EC_NONE != if
+    pJob_CreateTable ERROR_JOB !!logError
+  else
+    discard
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
