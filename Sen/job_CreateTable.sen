@@ -35,36 +35,6 @@
 /* make an table (run by all participants)                                    */
 /*----------------------------------------------------------------------------*/
 : createTable::createATable
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job check resources                                */
-/*----------------------------------------------------------------------------*/
-: createTable::checkResources _eeh
-
-   // grab the ddl lock
-  DdlLock[].grabRead
-
-  // check if we have enough buffers
-  node::checkEnoughBuffers not if
-    job[] ERROR_JOB !!logError
-    exit
-  then
-
-  // check if we can make the table
-  createTable::checkCreate not if
-    job[] ERROR_JOB !!logError
-    exit
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job on each node                                   */
-/*----------------------------------------------------------------------------*/
-: createTable::execute _eeh ( -- )
 
   job[] locals| pJob_CreateTable |
 
@@ -101,23 +71,59 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job check resources                                */
+/*----------------------------------------------------------------------------*/
+: createTable::checkResources _eeh
+
+   // grab the ddl lock
+  DdlLock[].grabRead
+
+  // check if we have enough buffers
+  node::checkEnoughBuffers not if
+    job[] ERROR_JOB !!logError
+    exit
+  then
+
+  // check if we can make the table
+  createTable::checkCreate not if
+    job[] ERROR_JOB !!logError
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job on each node                                   */
+/*----------------------------------------------------------------------------*/
+: createTable::execute _eeh ( -- )
+
+  // should be in tables
+  folder[].isTables assert
+
+  // create the table
+  createTable::createATable
+
+  // should be in tables
+  folder[].isTables assert
+;
+
+/*----------------------------------------------------------------------------*/
 /* create table request (on originating node)                                 */
 /*----------------------------------------------------------------------------*/
 : createTable::request _eeh ( -- <R> )
 
-  job[] locals| pJob_CreateTable |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check create index syntax
+  // check create table syntax
   <cmd> TableDef::syntax dup EC_NONE != if
-    pJob_CreateTable ERROR_JOB !!logError
+    job[] ERROR_JOB !!logError
   else
     discard
   then
 ;
 
 /*----------------------------------------------------------------------------*/
-/***                            - Definition -                              ***/
+/*                              - Definition -                                */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createTable :: create table <tableNm> etc ;
 cmdSyntax: createTable :: create table definition <tableNm> etc ;

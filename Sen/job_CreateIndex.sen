@@ -183,13 +183,12 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::execute _eeh ( -- )
 
-  job[] locals| pJob_CreateIndex |
+  // should be in tables
+  folder[].isTables assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make the index
-  pJob_CreateIndex createIndex::createAnIndex
+  // create the index
+  createIndex::createAnIndex
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
   folder[].isTables assert
 ;
@@ -199,19 +198,16 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::request _eeh ( -- <R> )
 
-  job[] locals| pJob_CreateIndex |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check create index syntax
   <cmd> IndexDef::syntax dup EC_NONE != if
-    pJob_CreateIndex ERROR_JOB !!logError
+    job[] ERROR_JOB !!logError
   else
     discard
   then
 ;
 
 /*----------------------------------------------------------------------------*/
-/***                            - Definition -                              ***/
+/*                             - Definition -                                 */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: createIndex :: create index <indexNm> on <tableNm> etc ;
 cmdSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
