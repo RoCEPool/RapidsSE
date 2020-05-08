@@ -43,7 +43,7 @@
   JP_BEGUN job[] job.phase!
 
   Done_Finally
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -88,7 +88,7 @@
   JP_EXECUTED job[] job.phase!
 
   Done_Finally
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -101,7 +101,7 @@
   DdlLock[].testDrop
 
   Done_Finally
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -114,7 +114,7 @@
   DdlLock[].testDrop
 
   Done_Finally
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -131,7 +131,7 @@
 
   job[] job.signalCompletion
   // task has no job 
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -144,7 +144,7 @@
   DdlLock[].testDrop
 
   Done_Finally
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -157,7 +157,7 @@
   DdlLock[].testDrop
 
   Done_Finally
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -347,7 +347,7 @@
   //"Signalling the thread waiting on job completion" .
   pJob job.signalCompletion
   // task has no job
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;

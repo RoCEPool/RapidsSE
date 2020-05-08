@@ -11,7 +11,7 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task::acks!"_Stz,         &Step::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
-  vAddStep("task::delete"_Stz,        &Step::vTaskDelete);
+  vAddStep("task::scheduledelete"_Stz,&Step::vTaskDelete);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,          &Step::vTaskDump);
   vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
@@ -130,7 +130,7 @@ void Step::vTaskDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::delete -- remove task from scheduler and delete                      */
+/* task::scheduledelete -- remove task from scheduler and delete                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDelete(void)
 {

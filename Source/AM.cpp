@@ -1532,9 +1532,6 @@ void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 Task* AM::pTaskNew(Job* pJob) {
   return new Task(pJob);
 }
-void AM::vTaskDelete(Task* pTask) {
-  delete pTask;
-}
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;

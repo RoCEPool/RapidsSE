@@ -149,7 +149,7 @@
 
   DdlLock[].testDrop
 
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;
@@ -165,7 +165,7 @@
 
   DdlLock[].testDrop
 
-  task::delete
+  task::scheduledelete
 
   HAZARD
 ;

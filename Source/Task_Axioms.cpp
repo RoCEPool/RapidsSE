@@ -279,7 +279,7 @@ void Task::vAddAxioms(void)
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task::delete"
+  "  task::scheduledelete"
   "  ;"_Stz;
 #else
   sDefinition =
@@ -287,7 +287,7 @@ void Task::vAddAxioms(void)
   "  \"boot_run\" .verbose"
   "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task::delete"
+  "  task::scheduledelete"
   "  ;"_Stz;
 #endif
   

@@ -138,7 +138,6 @@ namespace Oblique
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);
-    static void vTaskDelete(Task* pTask);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
