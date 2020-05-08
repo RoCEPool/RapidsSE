@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 /* make an index (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: makeIndex params| pJob_CreateIndex |
+: createIndex::createAnIndex params| pJob_CreateIndex |
 
   0 0 0 0 locals| pTable sTableNm sIndexNm |
 
@@ -189,7 +189,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
-  pJob_CreateIndex makeIndex
+  pJob_CreateIndex createIndex::createAnIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
