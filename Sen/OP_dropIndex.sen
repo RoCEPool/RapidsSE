@@ -11,7 +11,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the index
-  <indexNm> <tableNm> checkRemoveIndex not if
+  <indexNm> <tableNm> index::checkDeletableFolder not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
-  <indexNm> <tableNm> removeIndex
+  <indexNm> <tableNm> index::deleteIndex
 
   Pipein[].pipeout
 

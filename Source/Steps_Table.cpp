@@ -27,7 +27,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
-  vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
+  vAddStep("table::deleteIndexTrees"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
@@ -441,7 +441,7 @@ void Step::vTablePurge(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.removeIndex -- remove an index from the table                        */
+/* table::deleteIndexTrees -- remove an index from the table                        */
 /*----------------------------------------------------------------------------*/
 void Step::vTableRemoveIndex(void)
 {
