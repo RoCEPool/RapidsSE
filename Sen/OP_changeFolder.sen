@@ -64,7 +64,7 @@
 
   // clear dic path and push tenants
   sFolderNm "tenants" str.equal if
-    path[].discardFolderAll
+    path[].discardAllFolders
     attachmap::tenants@ execute path[].pushFolder
     setPath
     true
@@ -77,7 +77,7 @@
 
   sFolderNm folder[].findSymbol to pCurrentFolder
 
-  pCurrentFolder word.isFolder not if
+  pCurrentFolder word.checkIsAFolder not if
     op.pipelineJob@ ERROR_JOB
     Operand[].newErrorMarker
     Operand[].pipeout

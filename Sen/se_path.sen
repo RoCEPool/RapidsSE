@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* discard all folders from path stack                                        */
 /*----------------------------------------------------------------------------*/
-: path[].discardFolderAll ( -- )
+: path[].discardAllFolders ( -- )
 
   path[].depth 0 ?do
     path[].discardFolder
@@ -23,7 +23,7 @@
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 
-  path[].discardFolderAll
+  path[].discardAllFolders
 
   dup not if discard exit_rt then
 
@@ -45,9 +45,7 @@
           discard attachmap::tenants@ execute path[].pushFolder
         else
 
-          find
-          execute
-          path[].pushFolder
+          find execute path[].pushFolder
         then
 
       then
@@ -86,7 +84,7 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: word.isFolder params| pWord |
+: word.checkIsAFolder params| pWord |
 
   pWord not if EC_NO_SUCH_FOLDER false exit_rt then
 
