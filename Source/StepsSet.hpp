@@ -1435,7 +1435,7 @@ public:
   void vTableCreatePtnDef(void);
   void vTablePublish(void);
   void vTablePurge(void);
-  void vTableRemoveIndex(void);
+  void vTableDeleteIndex(void);
   void vTableScan(void);
   void vTableSet(void);
   void vTableSize(void);

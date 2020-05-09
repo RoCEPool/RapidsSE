@@ -98,7 +98,7 @@
   params| sTableNm |
 
   // check in tables folder
-  folder[].checkInTables not if
+  folder[].checkIsTables not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -136,7 +136,7 @@
   params| sIndexNm sTableNm |
 
   // check in tables folder
-  folder[].checkInTables not if
+  folder[].checkIsTables not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -184,7 +184,7 @@
   params| sIndexNm sTableNm |
 
   // check in tables folder
-  folder[].checkInTables not if
+  folder[].checkIsTables not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

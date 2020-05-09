@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../tables                                          */
 /*----------------------------------------------------------------------------*/
-: folder[].checkInTables ( -- t|f )
+: folder[].checkIsTables ( -- t|f )
 
   folder[].isTables if true exit then
 
@@ -115,7 +115,7 @@
   params| sTableNm |
 
   // check in tables folder
-  folder[].checkInTables not if false exit then
+  folder[].checkIsTables not if false exit then
 
   // check if tableNm is a word in tables folder
   sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
@@ -143,7 +143,7 @@
   params| sTableNm |
 
   // check in tables folder
-  folder[].checkInTables not if "X1" . false exit then
+  folder[].checkIsTables not if "X1" . false exit then
 
   // check if tableNm is a word in tables folder
   sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then
@@ -226,7 +226,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the indexes dictionary
   sTableNm path[].pushNamedTableFolder assert
-  sTableNm "index::newIndexIndexesSubFolder" find execute
+  sTableNm "index::makeIndexesSubFolder" find execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table

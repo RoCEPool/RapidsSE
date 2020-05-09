@@ -19,7 +19,7 @@
 : createIndex::checkCreate ( --  true | errorCode false )
 
   // check in tables folder: ../schemas/public/tables
-  folder[].checkInTables not if false exit then
+  folder[].checkIsTables not if false exit then
 
   // check there is a sub-folder by the name of the table
   //   ../schemas/public/tables/t

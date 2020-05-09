@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in catalogs
-  folder[].checkInCatalogs not if
+  folder[].checkIsCatalogs not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

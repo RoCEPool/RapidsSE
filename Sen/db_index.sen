@@ -5,12 +5,12 @@
 " db_index.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* index is used as a kind of word to identify indexes                        */
+/* \index is used as a kind of word to identify indexes                       */
 /*----------------------------------------------------------------------------*/
-: \index ;
+: \index \\category ;
 
 /*----------------------------------------------------------------------------*/
-/* test if word is a table                                                    */
+/* test if word is an index                                                   */
 /*----------------------------------------------------------------------------*/
 : word.isIndex
 
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* check in indexes folder                                                    */
 /*----------------------------------------------------------------------------*/
-: folder[].checkInIndexes
+: folder[].checkIsIndexes
 
   folder[].isIndexes if true exit then
 
@@ -86,10 +86,10 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable index folder                                  */
 /*----------------------------------------------------------------------------*/
-: index::checkDeletableFolder params| sTableNm sIndexNm | ( true | errorCode false )
+: index::checkRemovableFolder params| sTableNm sIndexNm | ( true | errorCode false )
 
   // should be in the tables folder
-  folder[].checkInTables not if false exit then
+  folder[].checkIsTables not if false exit then
 
   // there should be a table folder
   sTableNm folder[].checkIsTablesFolder not if false exit then
@@ -123,24 +123,24 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* make an indexes folder under given named table                             */
+/* make an indexes folder under given named table foler                       */
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: index::newIndexIndexesSubFolder params| sTableNm |
+: index::makeIndexesSubFolder params| sTableNm |
 
   args.tracepoint if
     "MAKING INDEXES FOR TABLE " sTableNm str.cat
       " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  sTableNm find execute locals| pFolder |
-  "indexes" pFolder :makeSubFolder
+  sTableNm find execute locals| pTableFolder |
+  "indexes" pTableFolder :makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create an index using name on the stack (leaves index on stack)            */
 /*----------------------------------------------------------------------------*/
-: :createIndexEmbObj params| sIndexNm |
+: index::newIndexEmbObj params| sIndexNm |
 
   find: \index CN_INDEX sizeof_index sIndexNm :createObject
 
@@ -151,7 +151,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the c++ index object given its name (returns pIndex)                */
 /*----------------------------------------------------------------------------*/
-: :createIndexObject params| sIndexNm |
+: index::newIndexObject params| sIndexNm |
 
   find: \index
   index::new
@@ -171,13 +171,13 @@
   folder[].isIndexes assert
 
   // create a c++ Index object with given name
-  sIndexNm :createIndexEmbObj locals| pwIndexTest |
+  sIndexNm index::newIndexEmbObj locals| pwIndexTest |
 
   pwIndexTest // return:
 ;
 
 /*----------------------------------------------------------------------------*/
-/* remove a table folder                                                      */
+/* delete an index                                                            */
 /*----------------------------------------------------------------------------*/
 : index::deleteIndex params| sTableNm sIndexNm |
 
@@ -206,7 +206,7 @@ sIndexNm .
   // remove the index from the table
   sIndexNm find execute to pIndex
 "D" .
-  pIndex pIndex index.table@ table::deleteIndexTrees
+  pIndex pIndex index.table@ table.deleteIndex
 "E" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

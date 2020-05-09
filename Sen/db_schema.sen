@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../schemas                                         */
 /*----------------------------------------------------------------------------*/
-: folder[].checkInSchemas
+: folder[].checkIsSchemas
 
   folder[].isSchemas if true exit then
   
@@ -61,7 +61,7 @@
 
   params| sSchemaNm |
 
-  folder[].checkInSchemas not if false exit then
+  folder[].checkIsSchemas not if false exit then
   //sSchemaNm word::isKnown not if EC_NO_SUCH_SCHEMA false exit then
   sSchemaNm checkIsSchema  not if false exit then
   //folder.isEmpty   not if false exit then

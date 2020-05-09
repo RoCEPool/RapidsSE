@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../catalogs                                        */
 /*----------------------------------------------------------------------------*/
-: folder[].checkInCatalogs
+: folder[].checkIsCatalogs
 
   folder[].isCatalogs if true exit then
   EC_NOT_IN_CATALOGS false
@@ -69,7 +69,7 @@
 
   params| sCatalogNm |
 
-  folder[].checkInCatalogs not if false exit then
+  folder[].checkIsCatalogs not if false exit then
   //sCatalogNm word::isKnown not if EC_NO_SUCH_CATALOG false exit then
   sCatalogNm checkIsCatalog  not if false exit then
   //folder.isEmpty   not if false exit then

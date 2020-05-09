@@ -19,7 +19,7 @@
 : createTable::checkCreate ( -- true | errorCode false )
 
   // check in tables folder: ../schemas/public/tables
-  folder[].checkInTables not if false exit then
+  folder[].checkIsTables not if false exit then
   
   // error if given name already exists
   <tableNm> checkIsNotTable not if false exit then

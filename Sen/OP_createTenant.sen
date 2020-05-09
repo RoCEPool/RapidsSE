@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in tenant
-  folder[].checkInTenants not if
+  folder[].checkIsTenants not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

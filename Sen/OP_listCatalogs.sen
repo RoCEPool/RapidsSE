@@ -11,7 +11,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
-  folder[].checkInCatalogs not if
+  folder[].checkIsCatalogs not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

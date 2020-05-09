@@ -16,6 +16,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
+  vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
   vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
@@ -27,7 +28,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
-  vAddStep("table::deleteIndexTrees"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
@@ -148,6 +148,22 @@ void Step::vTableColumnCountFetch(void)
   i8 nColumns = pStreamDef->nColumns(C_ALL);
   
   m_pDataStack->vPushInt(nColumns);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.deleteIndex -- remove an index from the table                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDeleteIndex(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+  pTable->vRemoveIndex(pIndex);
   
   EXIT();
 }
@@ -436,22 +452,6 @@ void Step::vTablePurge(void)
   i8 iOlderThanSeconds = m_pDataStack->iPopAsInt(__func__);
   
   bool bPurged = pTable->bPurge(iSlot,iOlderThanSeconds);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table::deleteIndexTrees -- remove an index from the table                        */
-/*----------------------------------------------------------------------------*/
-void Step::vTableRemoveIndex(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-
-  pTable->vRemoveIndex(pIndex);
   
   EXIT();
 }
