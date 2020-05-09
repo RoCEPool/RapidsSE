@@ -5,6 +5,101 @@
 " OP_fetch.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* position and begin fetch                                                   */
+/*----------------------------------------------------------------------------*/
+: positionBeginFetch ( "iPhrase" "lowerKey" "upperKey" )
+
+  params| upperKey lowerKey iPhrase |
+  0 locals| sIndexNm |
+
+  // find the index
+  iPhrase planner[].indexNm@ to sIndexNm
+  <tableNm> sIndexNm op__index assert
+
+  // grab the table ptn read lock
+  tablePtn[].get tablePtnGrabRead2
+
+  // position in the index
+  iPhrase  // phrase
+  lowerKey // lower
+  upperKey // upper
+  planner[] tablePtn[].get index[].position
+
+  // fetch next buffer
+  tablePtn[].get index[].fetchNext
+;
+
+/*----------------------------------------------------------------------------*/
+/* fetch first buffer for phrase                                              */
+/*----------------------------------------------------------------------------*/
+: fetchFirstBuffer ( iPhrase -- )
+
+  params| iPhrase |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the fetch technique
+  iPhrase planner[].fetchTechnique@
+
+  case
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an exact select using index
+    AT_EXACT of
+      "*exact*" .verbose
+
+      iPhrase                  // phrase
+      iPhrase planner[].key@   // lower key
+      iPhrase planner[].key@   // upper key
+      positionBeginFetch to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound select using index
+    AT_LOWER of
+      "*lower*" .verbose
+
+      iPhrase                     // phrase
+      iPhrase planner[].lowKey@   // lower key
+      ""                          // upper key
+      positionBeginFetch to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an upper bound select using index
+    AT_UPPER of
+      "*upper*" .verbose
+
+      iPhrase                     // phrase
+      ""                          // lower key
+      iPhrase planner[].upperKey@ // upper key
+      positionBeginFetch to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // a range select using index
+    AT_RANGE of
+      "*range" .verbose
+
+      iPhrase                     // phrase
+      iPhrase planner[].lowKey@   // lower key
+      iPhrase planner[].upperKey@ // upper key
+      positionBeginFetch to Operand[]
+    endof
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // full scan (no index)
+    AT_SCAN of
+      "*scan*" .verbose
+      // now get excat key rows from index
+      tablePtn[].get tablePtnGrabRead2
+      tablePtn[].root to Subset[]
+      Subset[] to Operand[]
+    endof
+
+  endcase
+;
+
+/*----------------------------------------------------------------------------*/
 /* generate plan for the fetch                                                */
 /*----------------------------------------------------------------------------*/
 : generatePlan ( -- )
@@ -26,29 +121,6 @@
   //( cdt_6 ) Planner[].showPaths
 
   ( cdt_7 ) Planner[].choosePaths        //"choosePaths" .
-;
-
-/*----------------------------------------------------------------------------*/
-/* position and begin fetch                                                   */
-/*----------------------------------------------------------------------------*/
-: positionBeginFetch ( "lowerKey" "upperKey" )
-
-  params| upperKey lowerKey |
-  0 locals| sIndexNm |
-
-  // find the index
-  0 planner[].indexNm@ to sIndexNm
-  <tableNm> sIndexNm op__index assert
-
-  // grab the table ptn read lock
-  tablePtn[].get tablePtnGrabRead2
-
-  // position in the index
-  lowerKey upperKey
-  planner[] tablePtn[].get index[].position
-
-  // fetch next buffer
-  tablePtn[].get index[].fetchNext
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,12 +158,21 @@
 
   endcase
 
-  // no more data ?
+  // no more data for counter1[] phrase ?
   Operand[].isNull if
-    tablePtn[].get tablePtnDropRead2
-    planner[].delete
-    Operand[].newEosMarker
-    Operand[].pipeOut
+
+    // any more phrases ?
+    Counter1[] 1 + to Counter1[]
+    Counter1[] Counter0[] >= if
+      // all done
+      tablePtn[].get tablePtnDropRead2
+      planner[].delete
+      Operand[].newEosMarker
+      Operand[].pipeOut
+    else
+      // position and fetch first buffer for next phrase
+      Counter1[] fetchFirstBuffer
+    then
   then
 
   true
@@ -112,62 +193,19 @@
   Operand[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be one phrase
-  planner[].phrases@ to iPhrases
-  iPhrases 1 == assert
+  // get no of phrases
+  planner[].phrases@ to Counter0[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the fetch technique
-  0 planner[].fetchTechnique@
-  case
+  // assert we have at least one phrase
+  Counter0[] 1 >= assert
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // an exact select using index
-    AT_EXACT of
-     "*exact*" .verbose
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set counter1[] to 0
+  0 to Counter1[]
 
-      0 planner[].key@ 0 planner[].key@
-      positionBeginFetch to Operand[]
-    endof
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // lower bound select using index
-    AT_LOWER of
-      "*lower*" .verbose
-
-      0 planner[].lowKey@ ""
-      positionBeginFetch to Operand[]
-    endof
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // an upper bound select using index
-    AT_UPPER of
-      "*upper*" .verbose
-
-      "" 0 planner[].upperKey@
-      positionBeginFetch to Operand[]
-    endof
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // a range select using index
-    AT_RANGE of
-      "*range" .verbose
-
-      0 planner[].lowKey@ 0 planner[].upperKey@
-      positionBeginFetch to Operand[]
-    endof
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // full scan (no index)
-    AT_SCAN of
-      "*scan*" .verbose
-      // now get excat key rows from index
-      tablePtn[].get tablePtnGrabRead2
-      tablePtn[].root to Subset[]
-      Subset[] to Operand[]
-    endof
-
-  endcase
+  // position and fetch the first buffer for the first phrase
+  Counter1[] fetchFirstBuffer
 
   // any data ?
   Operand[].isNull if

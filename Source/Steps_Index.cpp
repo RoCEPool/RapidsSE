@@ -656,11 +656,13 @@ void Step::vIndexPositionN(void)
   m_pDataStack->vPopVal(xLowerVariable,__func__);
   Stz* szLowerKey = xLowerVariable.szStz();
   
-  i8 iPhrase = 0;
-  
   EntBuffer* aLowerEntBuffer = nullptr;
   Ent* aLowerEntry = nullptr;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the phrase
+  i8 iPhrase = m_pDataStack->iPopInt(__func__);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get IndexTree
   i8 iIndexNo = pIndex->iIndexNo();
