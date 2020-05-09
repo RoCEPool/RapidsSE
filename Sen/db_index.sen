@@ -171,7 +171,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* new a c++ Index object                                                     */
+/* new a C++ Index object                                                     */
 /*----------------------------------------------------------------------------*/
 : index::newIndex params| sTableNm sIndexNm |
 
@@ -179,9 +179,11 @@
   folder[].isIndexes assert
 
   // create a c++ Index object with given name
-  sIndexNm index::newIndexEmbObj locals| pwIndexTest |
+  sIndexNm index::newIndexEmbObj locals| pwIndex |
 
-  pwIndexTest // return:
+  pwIndex execute locals| pIndex |
+
+  pIndex // return:
 ;
 
 /*----------------------------------------------------------------------------*/

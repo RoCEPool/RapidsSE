@@ -96,8 +96,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // new the Index C++ object
 
-  <indexNm> <tableNm> index::newIndex locals| pwIndexTest |
-  pwIndexTest execute locals| pIndex |
+  <indexNm> <tableNm> index::newIndex locals| pIndex |
 
   pIndexDef pIndex index.indexDef!
   pTable pIndex index.table!
