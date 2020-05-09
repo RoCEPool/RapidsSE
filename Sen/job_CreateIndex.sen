@@ -70,21 +70,11 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::createNamedIndex
 
-  // assert working folder is: ../schemas/public/tables
-  folder[].isTables assert
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new the C++ object
-
-  <indexNm> <tableNm> index::newIndex locals| pwIndexTest |
-
-  pwIndexTest execute locals| pIndex |
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // change working folder to : ./t/indexes
 
+  // assert initial working folder is: ../schemas/public/tables
+  folder[].isTables assert
 
   // cf to: ./t
   <tableNm> path[].pushNamedTableFolder assert
@@ -92,17 +82,22 @@
   // cf to: ./indexes
   path[].pushIndexesFolder assert
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // new the C++ object
+
+  <indexNm> <tableNm> index::newIndex_revB locals| pwIndexTest |
+
+  pwIndexTest execute locals| pIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // find the table upwards in the path
+  // get pointer to named table (will search up to ../t)
   <tableNm> find execute locals| pTable |
 
   <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
 
   // check for error while creating indexdef
   job[] job.hasError if
-    //pJob_CreateIndex
     DdlLock[].testDrop
     !!logError
     <indexNm> :forget
@@ -153,6 +148,92 @@
   path[].discardTableFolder
   folder[].isTables assert
 ;
+/*----------------------------------------------------------------------------*/
+//: createIndex::createNamedIndex
+//
+//  // assert working folder is: ../schemas/public/tables
+//  folder[].isTables assert
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // new the C++ object
+//
+//  <indexNm> <tableNm> index::newIndex locals| pwIndexTest |
+//
+//  pwIndexTest execute locals| pIndex |
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // change working folder to : ./t/indexes
+//
+//
+//  // cf to: ./t
+//  <tableNm> path[].pushNamedTableFolder assert
+//
+//  // cf to: ./indexes
+//  path[].pushIndexesFolder assert
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // find the table upwards in the path
+//  <tableNm> find execute locals| pTable |
+//
+//  <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
+//
+//  // check for error while creating indexdef
+//  job[] job.hasError if
+//    //pJob_CreateIndex
+//    DdlLock[].testDrop
+//    !!logError
+//    <indexNm> :forget
+//    path[].discardIndexesFolder
+//    path[].discardTableFolder
+//    folder[].isTables assert
+//    exit
+//  then
+//
+////dbg>
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set the table in the index
+//  pTable pIndex index.table!
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // add the index in the table
+//  pIndex pTable table.addIndex
+//
+//  pIndexDef pIndex index.indexDef!
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // validate the unqiue index columns are a subset of the partition keys
+//  pIndex index.isUnique@ if
+//    pIndex index.isValidUniqueIndex
+//    not if EC_INVALID_COLUMNS_UNIQUE_INDEX job[] ERROR_JOB
+//      path[].discardIndexesFolder
+//      path[].discardTableFolder
+//      folder[].isTables assert
+//      exit
+//    then
+//  then
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // now populate the index
+//  pIndex index.populate
+//  not if job[]
+//    ERROR_JOB
+//    path[].discardIndexesFolder
+//    path[].discardTableFolder
+//    folder[].isTables assert
+//    exit
+//  then
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  path[].discardIndexesFolder
+//  path[].discardTableFolder
+//  folder[].isTables assert
+//;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
