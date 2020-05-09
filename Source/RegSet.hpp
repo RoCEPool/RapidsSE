@@ -35,6 +35,7 @@ namespace Tasks
     REG<Loader>      m_xpLoader;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Row>         m_xpRow;
+    REG<RowOnce>     m_xpRowOnce;
     REG<StreamDef>   m_xpStreamDef;
     REG<Operand>     m_xpStreamSet;
     REG<Table>       m_xpStreamSetTable;

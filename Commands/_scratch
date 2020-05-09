@@ -1,20 +1,44 @@
 bc;
 
-create table vch (
-vch_testno  INTEGER     NOT NULL,
-vch_field   VARCHAR(32),
-vch_comment VARCHAR(64) NOT NULL
+
+create table jCdt (
+jA  INTEGER,
+jB  INTEGER,
+jC  INTEGER,
+jD  INTEGER,
+jE  VARCHAR(32)
 );
 
-// create an index
-create index idx on vch (vch_testno);
+create index jCdt_idx1 on jCdt (jA);
+//create index jCdt_idx2 on jCdt (jA,jB);
 
-//ld vch "../DATA/Load/vch_enclosedBy.csv" enclosed_by_leading "'" ;
+load jCdt "../DATA/Select/range.csv";
 
-// load data into the table with default formatter settings
-//tag <enclosedby_leading> = "'";
-//load vch "../DATA/Load/vch_enclosedBy.csv"  ;
-//tag delete <enclosedby_leading>;
+trackMemory;
 
+predicateFetch jCdt "JA 1 >=";
+predicateFetch jCdt "JA 22 <=";
+predicateFetch jCdt "JA 1 >= jA 22 <= OR";
 
-load vch "../DATA/Load/vch_enclosedBy.csv" <enclosedby_leading> = "'" ;
+//drop table jCdt;
+memoryLeaks;
+
+/*
+(null,27,37,47,'hh')
+(-9223372036854775806,27,37,47,'hh')
+(14,24,34,44,'ee')
+(15,25,35,45,'ff')
+(11,21,31,41,'bb1')
+(11,21,31,41,'bb2')
+(11,21,31,41,'bb3')
+(12,22,32,42,'cc')
+(13,23,33,43,'dd')
+(16,26,36,46,'gg')
+(17,27,37,47,'hh')
+(19,29,39,49,'jj')
+(10,20,30,40,'aa')
+(18,28,38,48,'ii')
+(18,18,38,38,'ii')
+(9223372036854775806,27,37,47,'hh')
+
+*/
