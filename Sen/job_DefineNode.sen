@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a Node                                                   */
 /*----------------------------------------------------------------------------*/
-: checkIsNotNode ( "<NodeNm>" -- t|f )
+: check::isNotNode ( "<NodeNm>" -- t|f )
 
   grid::findNode not if true exit then
 
@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : checkMakeNode ( "<NodeNm>" -- true | errorCode false )
 
-  checkIsNotNode not if false exit then
+  check::isNotNode not if false exit then
 
   true
 ;

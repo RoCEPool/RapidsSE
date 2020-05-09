@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is not a tenant                                              */
 /*----------------------------------------------------------------------------*/
-: checkIsNotTenant ( word )
+: check::isNotTenant ( word )
   folder[].findSymbol not if true exit then
   EC_TENANT_EXISTS false
 ;

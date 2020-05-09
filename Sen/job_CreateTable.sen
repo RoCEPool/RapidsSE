@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a known table/symbol                                     */
 /*----------------------------------------------------------------------------*/
-: checkIsNotTable ( "<wordNm>" -- t|f )
+: check::isNotTable ( "<wordNm>" -- t|f )
 
   folder[].findSymbol not if true exit then
   EC_TABLE_EXISTS false
@@ -22,7 +22,7 @@
   folder[].checkIsTables not if false exit then
   
   // error if given name already exists
-  <tableNm> checkIsNotTable not if false exit then
+  <tableNm> check::isNotTable not if false exit then
 
   true
 ;
@@ -49,9 +49,9 @@
   // make table
   <tableNm> table::makeTable_NEEDS_WORK to pTable
 
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   pTableDef pTable table.tableDef!
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   //----------------------------------------------------------------------------
   // add partition columns

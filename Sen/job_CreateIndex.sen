@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a known index/symbol                                     */
 /*----------------------------------------------------------------------------*/
-: checkIsNotIndex ( "<word>" )
+: check::isNotIndex ( "<word>" )
 
   folder[].findSymbol not if true exit then
   EC_INDEX_EXISTS false
@@ -48,7 +48,7 @@
   folder[].isIndexes assert
 
   // error if given name already exists
-  <indexNm> checkIsNotIndex not if
+  <indexNm> check::isNotIndex not if
     path[].popIndexesFolder
     path[].popNamedTableFolder
     folder[].isTables assert

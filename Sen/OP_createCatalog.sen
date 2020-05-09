@@ -33,7 +33,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if catalog already exits
-  <catalogNm> checkIsNotCatalog not if
+  <catalogNm> check::isNotCatalog not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
