@@ -83,15 +83,8 @@
   path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new the C++ object
+  // parse the index definition
 
-  <indexNm> <tableNm> index::newIndex locals| pwIndexTest |
-
-  pwIndexTest execute locals| pIndex |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // get pointer to named table (will search up to ../t)
   <tableNm> find execute locals| pTable |
 
   <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
@@ -100,7 +93,6 @@
   job[] job.hasError if
     DdlLock[].testDrop
     !!logError
-    <indexNm> :forget
     path[].discardIndexesFolder
     path[].discardTableFolder
     folder[].isTables assert
@@ -110,21 +102,23 @@
 //dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the table in the index
-  pTable pIndex index.table!
+  // new the Index C++ object
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the index in the table
-  pIndex pTable table.addIndex
+  <indexNm> <tableNm> index::newIndex locals| pwIndexTest |
+  pwIndexTest execute locals| pIndex |
 
   pIndexDef pIndex index.indexDef!
+  pTable pIndex index.table!
+
+  // add pIndex into pTable
+  pIndex pTable table.addIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // validate the unqiue index columns are a subset of the partition keys
+
   pIndex index.isUnique@ if
-    pIndex index.isValidUniqueIndex
-    not if EC_INVALID_COLUMNS_UNIQUE_INDEX job[] ERROR_JOB
+    pIndex index.isValidUniqueIndex not if
+      EC_INVALID_COLUMNS_UNIQUE_INDEX job[] ERROR_JOB
       path[].discardIndexesFolder
       path[].discardTableFolder
       folder[].isTables assert
@@ -134,9 +128,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
-  pIndex index.populate
-  not if job[]
-    ERROR_JOB
+
+  pIndex index.populate not if
+    job[] ERROR_JOB
     path[].discardIndexesFolder
     path[].discardTableFolder
     folder[].isTables assert
