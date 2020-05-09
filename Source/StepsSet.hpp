@@ -1261,6 +1261,12 @@ public:
   void vRowIsNull(void);
   void vRowSet(void);
 
+  // rowOnce
+  void vRowOnceDelete(void);
+  void vRowOnceGet(void);
+  void vRowOnceIsNull(void);
+  void vRowOnceNew(void);
+
   // rstack
   void vRstackCsPick(void);
   void vRstackCsRoll(void);

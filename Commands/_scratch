@@ -1,5 +1,6 @@
 bc;
 
+
 create table jCdt (
 jA  INTEGER,
 jB  INTEGER,
@@ -12,9 +13,16 @@ create index jCdt_idx1 on jCdt (jA);
 //create index jCdt_idx2 on jCdt (jA,jB);
 
 load jCdt "../DATA/Select/range.csv";
+
+trackMemory;
+
 predicateFetch jCdt "JA 1 >=";
 predicateFetch jCdt "JA 22 <=";
 predicateFetch jCdt "JA 1 >= jA 22 <= OR";
+
+//drop table jCdt;
+memoryLeaks;
+
 /*
 (null,27,37,47,'hh')
 (-9223372036854775806,27,37,47,'hh')

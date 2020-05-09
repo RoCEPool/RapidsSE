@@ -514,6 +514,10 @@ void Step::vIndexFetchNextN(void)
   TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the rowOnce skipList
+  RowOnce* pRowOnce = _pRowOnce(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table
   Table* pTable = pIndex->pTable();
   
@@ -562,14 +566,21 @@ void Step::vIndexFetchNextN(void)
     if (bBefore) {
       
       // get the crw entry from the lowerEntry
-      Crw* aCrw = CrwBuffer::pRefdCrw(aLowerEntry->xRef());
-      RowInflator::vInflateRow(hRow,aCrw);
+      Ref xRef = aLowerEntry->xRef();
       
-      // insert row from entry in crwBuffer
-      if ( ! pCrwBuffer->bAppendRow(hRow)) {
+      // has this row already been seen ?
+      if ( ! pRowOnce || ! pRowOnce->bRowSeen(xRef) ) {
+          
+        Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
+       
+        RowInflator::vInflateRow(hRow,aCrw);
         
-        // Buffer is full ?
-        goto L_Exit;
+        // insert row from entry in crwBuffer
+        if ( ! pCrwBuffer->bAppendRow(hRow)) {
+          
+          // Buffer is full ?
+          goto L_Exit;
+        }
       }
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
