@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].discardTenantFolder
+: path[].popTenantFolder
 
-  path[].discardFolder
+  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +109,7 @@
 
   "catalogs" folder::remove
 
-  path[].discardTenantFolder
+  path[].popTenantFolder
 
   sTenantNm folder::remove
 ;

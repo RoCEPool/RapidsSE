@@ -35,7 +35,7 @@
   <tableNm> find execute locals| pTable |
   pTable table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
-    path[].discardTableFolder
+    path[].popTableFolder
     folder[].isTables assert
     false exit
   then
@@ -49,8 +49,8 @@
 
   // error if given name already exists
   <indexNm> checkIsNotIndex not if
-    path[].discardIndexesFolder
-    path[].discardTableFolder
+    path[].popIndexesFolder
+    path[].popTableFolder
     folder[].isTables assert
     false exit
   then
@@ -58,8 +58,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop upto tables: ../schemas/public/tables
 
-  path[].discardIndexesFolder
-  path[].discardTableFolder
+  path[].popIndexesFolder
+  path[].popTableFolder
   folder[].isTables assert
 
   true
@@ -93,8 +93,8 @@
   job[] job.hasError if
     DdlLock[].testDrop
     !!logError
-    path[].discardIndexesFolder
-    path[].discardTableFolder
+    path[].popIndexesFolder
+    path[].popTableFolder
     folder[].isTables assert
     exit
   then
@@ -119,8 +119,8 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
       EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
-      path[].discardIndexesFolder
-      path[].discardTableFolder
+      path[].popIndexesFolder
+      path[].popTableFolder
       folder[].isTables assert
       exit
     then
@@ -131,15 +131,15 @@
 
   pIndex index.populate not if ( errorCode )
     job::error!
-    path[].discardIndexesFolder
-    path[].discardTableFolder
+    path[].popIndexesFolder
+    path[].popTableFolder
     folder[].isTables assert
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  path[].discardIndexesFolder
-  path[].discardTableFolder
+  path[].popIndexesFolder
+  path[].popTableFolder
   folder[].isTables assert
 ;
 /*----------------------------------------------------------------------------*/

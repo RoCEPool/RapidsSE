@@ -86,17 +86,17 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm name::checkIsTable not if path[].discardTableFolder false exit then
+  sTableNm name::checkIsTable not if path[].popTableFolder false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if retrieving column, check it is a valid column
   "" sColumnNm str.equal not if
-    sColumnNm sTableNm name::checkIsColumn not if path[].discardTableFolder false exit then
+    sColumnNm sTableNm name::checkIsColumn not if path[].popTableFolder false exit then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  path[].discardTableFolder
+  path[].popTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -194,7 +194,7 @@
     I pPlanner pJob_FetchRows spawnSub
   loop
 
-  path[].discardTableFolder
+  path[].popTableFolder
 
   pJob_FetchRows job.notice
 

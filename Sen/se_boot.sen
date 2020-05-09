@@ -282,10 +282,10 @@ assert::stack_0
             //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
             "public" :makeSchemaFolder
 
-          path[].discardFolder
-      path[].discardFolder
-    path[].discardFolder
-  path[].discardFolder
+          path[].popFolder
+      path[].popFolder
+    path[].popFolder
+  path[].popFolder
 
   assert::stack_0
 ;

@@ -19,7 +19,7 @@
 
     dup dic.lastWord not until
 
-  path[].discardFolder
+  path[].popFolder
 
   discard
 ;
@@ -142,7 +142,7 @@
       "')\n" str.cat
     then
 
-    "path[].discardTableFolder" find execute
+    "path[].popTableFolder" find execute
 
     object@ word.prev object!      // step backwards thru words
   next
@@ -221,7 +221,7 @@ diclock.dropwrite
     find: \folder
     sSubFolderNm :makeFolder execute dic.kind!
 
-  path[].discardFolder
+  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -5,7 +5,7 @@
 " db_index.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* \index is used as a kind of word to identify indexes                       */
+/* \index is the category to identify indexes                                 */
 /*----------------------------------------------------------------------------*/
 : \index \\category ;
 
@@ -29,9 +29,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the indexes folder                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].discardIndexesFolder
+: path[].popIndexesFolder
 
-  path[].discardFolder
+  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a removable index folder                                  */
+/* check if sTableNm . sIndexNm is a removable index folder                   */
 /*----------------------------------------------------------------------------*/
 : index::checkRemovableFolder params| sTableNm sIndexNm | ( true | errorCode false )
 
@@ -105,15 +105,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm name::checkIsIndex not if
-    path[].discardIndexesFolder
-    path[].discardTableFolder
+    path[].popIndexesFolder
+    path[].popTableFolder
     folder[].isTables assert
     false
     exit
   then
 
-  path[].discardIndexesFolder
-  path[].discardTableFolder
+  path[].popIndexesFolder
+  path[].popTableFolder
 
   true
 ;
@@ -218,12 +218,12 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes folder
-  path[].discardIndexesFolder
+  path[].popIndexesFolder
 "H" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].discardTableFolder
+  path[].popTableFolder
 "I" .
 ;
 

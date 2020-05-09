@@ -50,7 +50,7 @@
   // cross-check
   infoSetTable[] assert
 
-  path[].discardTableFolder
+  path[].popTableFolder
 
   // restore path
   path[].restore
@@ -82,7 +82,7 @@
   // cross-check
   streamSetTable[] assert
 
-  path[].discardTableFolder
+  path[].popTableFolder
 
   // restore path
   path[].restore
@@ -120,7 +120,7 @@
   // move to table folder and find the table
   sTableNm path[].pushNamedTableFolder assert
   sTableNm find execute to table[]
-  path[].discardTableFolder
+  path[].popTableFolder
 
   // cross-check
   table[] assert
@@ -158,8 +158,8 @@
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    path[].discardTableFolder
-    path[].discardIndexesFolder
+    path[].popTableFolder
+    path[].popIndexesFolder
     false
     exit
   then
@@ -169,8 +169,8 @@
   // cross-check
   index[] assert
 
-  path[].discardTableFolder
-  path[].discardIndexesFolder
+  path[].popTableFolder
+  path[].popIndexesFolder
 
   //pathStr .
   true
@@ -220,8 +220,8 @@
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    path[].discardTableFolder
-    path[].discardIndexesFolder
+    path[].popTableFolder
+    path[].popIndexesFolder
     false
     exit
   then
@@ -231,8 +231,8 @@
   // cross-check
   index[] assert
 
-  path[].discardTableFolder
-  path[].discardIndexesFolder
+  path[].popTableFolder
+  path[].popIndexesFolder
 
   //pathStr .
   true

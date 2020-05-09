@@ -29,9 +29,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the table folder                                                       */
 /*----------------------------------------------------------------------------*/
-: path[].discardTableFolder
+: path[].popTableFolder
 
-  path[].discardFolder
+  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,11 +123,11 @@
   // push table folder
   sTableNm path[].pushNamedTableFolder assert
 
-  sTableNm name::checkIsTable not if path[].discardTableFolder false exit then
-  //sTableNm tableInUse if path[].discardTableFolder EC_TABLE_IN_USE false exit then
+  sTableNm name::checkIsTable not if path[].popTableFolder false exit then
+  //sTableNm tableInUse if path[].popTableFolder EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  path[].discardTableFolder
+  path[].popTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -151,11 +151,11 @@
   // push table folder
   sTableNm path[].pushNamedTableFolder assert
 
-  sTableNm name::checkIsTable not if "X3" . path[].discardTableFolder false exit then
-  //sTableNm tableInUse if path[].discardTableFolder EC_TABLE_IN_USE false exit then
+  sTableNm name::checkIsTable not if "X3" . path[].popTableFolder false exit then
+  //sTableNm tableInUse if path[].popTableFolder EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  path[].discardTableFolder
+  path[].popTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -275,7 +275,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].discardTableFolder
+  path[].popTableFolder
 
 //"D" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables

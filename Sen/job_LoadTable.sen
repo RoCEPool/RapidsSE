@@ -180,10 +180,10 @@
   //path[].dump
 
   // check it is a table
-  sTableNm name::checkIsTable not if path[].discardTableFolder pJob_LoadTable ERROR_JOB !!logError exit then
+  sTableNm name::checkIsTable not if path[].popTableFolder pJob_LoadTable ERROR_JOB !!logError exit then
 
   // pop table dictionary
-  path[].discardTableFolder
+  path[].popTableFolder
   //path[].dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

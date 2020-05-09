@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the schema folder                                                      */
 /*----------------------------------------------------------------------------*/
-: path[].discardSchemaFolder
+: path[].popSchemaFolder
 
-  path[].discardFolder
+  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@
 
   "tables" folder::remove
 
-  path[].discardSchemaFolder
+  path[].popSchemaFolder
 
   sSchemaNm folder::remove
 ;

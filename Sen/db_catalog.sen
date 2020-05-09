@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the catalog folder                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].discardCatalogFolder
+: path[].popCatalogFolder
 
-  path[].discardFolder
+  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@
 
   "schemas" folder::remove
 
-  path[].discardCatalogFolder
+  path[].popCatalogFolder
 
   sCatalogNm folder::remove
 ;

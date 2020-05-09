@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* discard all folders from path stack                                        */
 /*----------------------------------------------------------------------------*/
-: path[].discardAllFolders ( -- )
+: path[].popAllFolders ( -- )
 
   path[].depth 0 ?do
-    path[].discardFolder
+    path[].popFolder
   loop
 ;
 
@@ -23,7 +23,7 @@
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 
-  path[].discardAllFolders
+  path[].popAllFolders
 
   dup not if discard exit_rt then
 
