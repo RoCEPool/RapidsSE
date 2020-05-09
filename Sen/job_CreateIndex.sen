@@ -70,32 +70,37 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::createNamedIndex
 
+  // assert working folder is: ../schemas/public/tables
+  folder[].isTables assert
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // new the C++ object
+
   <indexNm> <tableNm> index::newIndex locals| pwIndexTest |
 
   pwIndexTest execute locals| pIndex |
 
-  //----------------------------------------------------------------------------
 
-  // assert starting folder is:
-  // ../schemas/public/tables
-  folder[].isTables assert
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // change working folder to : ./t/indexes
 
-  // ../schemas/public/tables/t
+
+  // cf to: ./t
   <tableNm> path[].pushNamedTableFolder assert
 
-  // ../schemas/public/tables/t/indexes
+  // cf to: ./indexes
   path[].pushIndexesFolder assert
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // find the table upwards in the path
   <tableNm> find execute locals| pTable |
 
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error while creating indexdef
-  //grid::thisNode@
   job[] job.hasError if
     //pJob_CreateIndex
     DdlLock[].testDrop

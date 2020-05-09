@@ -35,7 +35,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check within indexes folder                                                */
+/* test if within a table indexes folder                                      */
 /*----------------------------------------------------------------------------*/
 : folder[].isIndexes
 
@@ -165,37 +165,34 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make an index (run by all participants)                                     */
+/* new a c++ Index object                                                     */
+/*----------------------------------------------------------------------------*/
+: index::newIndex_new params| sTableNm sIndexNm |
+
+  // assert within a table indexes folder
+  folder[].isIndexes assert
+
+  // create a c++ Index object with given name
+  sIndexNm :createIndexEmbObj locals| pwIndexTest |
+
+  pwIndexTest // return:
+;
 /*----------------------------------------------------------------------------*/
 : index::newIndex params| sTableNm sIndexNm |
 
-  // push folders to ../t/indexes
+  // cwf to: ./t/indexes
   sTableNm path[].pushNamedTableFolder assert
   path[].pushIndexesFolder assert
 
   // create the name index (word & object)
   sIndexNm :createIndexEmbObj locals| pwIndexTest |
 
+  // cwf back to starting point
   path[].discardIndexesFolder
   path[].discardTableFolder
 
   pwIndexTest // return:
 ;
-/*----------------------------------------------------------------------------*/
-//: index::newIndex params| sTableNm sIndexNm |
-//
-//  // push folders to ../t/indexes
-//  sTableNm path[].pushNamedTableFolder assert
-//  path[].pushIndexesFolder assert
-//
-//  // create the name index (word & object)
-//  sIndexNm :createIndexObject locals| pwIndexTest |
-//
-//  path[].discardIndexesFolder
-//  path[].discardTableFolder
-//
-//  pwIndexTest // return:
-//;
 
 /*----------------------------------------------------------------------------*/
 /* delete all index objects                                                   */
