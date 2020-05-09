@@ -133,7 +133,7 @@
   then
 
   sTableNm find execute locals| pTableFolder |
-  "indexes" pTableFolder :makeSubFolder
+  "indexes" pTableFolder folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/

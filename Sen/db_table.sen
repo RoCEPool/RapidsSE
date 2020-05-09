@@ -177,7 +177,7 @@
   find execute ( dic )
   "tables"     ( dic "tables" )
   swap         ( "tables" dic )
-  :makeSubFolder   ( )
+  folder::makeSubFolder   ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -191,13 +191,13 @@
   then
 
   // make: ../schemas/public/tables/t \folder
-  folder[] :makeSubFolder
+  folder[] folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
-: :createTable params| sTableNm |
+: table::newTableEmbObj params| sTableNm |
 
   find: \table CN_TABLE sizeof_table sTableNm :createObject
 
@@ -228,7 +228,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
-  sTableNm :createTable ( ^table ) discard
+  sTableNm table::newTableEmbObj ( ^table ) discard
   sTableNm find execute to pTable
 
   // return table pointer

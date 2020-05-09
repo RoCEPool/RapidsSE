@@ -214,7 +214,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* make a sub-folder under given folder                                       */
 /*----------------------------------------------------------------------------*/
-: :makeSubFolder params| pFolder sSubFolderNm |
+: folder::makeSubFolder params| pFolder sSubFolderNm |
 
   pFolder path[].pushFolder
 
