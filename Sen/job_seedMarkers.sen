@@ -317,12 +317,22 @@
 
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/* job has encountered an error                                               */
+/*----------------------------------------------------------------------------*/
+: job::error! params| errorCode |
+
+  DdlLock[].testDrop
+
+  errorCode job[] job.error!
+;
+
+
 /*----------------------------------------------------------------------------*/
 /* return an error response                                                   */
 /*----------------------------------------------------------------------------*/
-: ERROR_JOB ( errorCode pJob -- )
-
-  params| pJob errorCode |
+: ERROR_JOB params| pJob errorCode |
 
   DdlLock[].testDrop
 
@@ -333,9 +343,7 @@
 /*----------------------------------------------------------------------------*/
 /* return an error response                                                   */
 /*----------------------------------------------------------------------------*/
-: ERROR_REQUEST ( errorCode pJob -- )
-
-  params| pJob errorCode |
+: ERROR_REQUEST params| pJob errorCode |
 
   DdlLock[].testDrop
  
