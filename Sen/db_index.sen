@@ -128,7 +128,7 @@
 /* make an indexes folder under given named table                             */
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: index::makeIndexesSubFolder params| sTableNm |
+: index::newIndexIndexesSubFolder params| sTableNm |
 
   args.tracepoint if
     "MAKING INDEXES FOR TABLE " sTableNm str.cat
@@ -167,7 +167,7 @@
 /*----------------------------------------------------------------------------*/
 /* make an index (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: index::make params| sTableNm sIndexNm |
+: index::newIndex params| sTableNm sIndexNm |
 
   // push folders to ../t/indexes
   sTableNm path[].pushNamedTableFolder assert
@@ -182,7 +182,7 @@
   pwIndexTest // return:
 ;
 /*----------------------------------------------------------------------------*/
-//: index::make params| sTableNm sIndexNm |
+//: index::newIndex params| sTableNm sIndexNm |
 //
 //  // push folders to ../t/indexes
 //  sTableNm path[].pushNamedTableFolder assert

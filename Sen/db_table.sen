@@ -226,7 +226,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the indexes dictionary
   sTableNm path[].pushNamedTableFolder assert
-  sTableNm "index::makeIndexesSubFolder" find execute
+  sTableNm "index::newIndexIndexesSubFolder" find execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
