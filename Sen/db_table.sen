@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if word is a table                                                    */
 /*----------------------------------------------------------------------------*/
-: word.isATable
+: word.isaTable
 
   word.category@ find: \table eql
 ;
@@ -27,9 +27,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop the table folder                                                       */
+/* pop the folder (which was pushed by path[].pushNamedTableFolder)           */
 /*----------------------------------------------------------------------------*/
-: path[].popTableFolder
+: path[].popNamedTableFolder
 
   path[].popFolder
 ;
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* check there is a table folder                                              */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsTablesFolder  ( "<tableName>" -- )
+: folder[].checkNamedTableFolder  ( "<tableName>" -- )
 
   folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
   true
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 /* check given name is a table                                                */
 /*----------------------------------------------------------------------------*/
-: name::checkIsTable ( "<tableNm>" -- true | errorCode false )
+: name::checkIsaTable ( "<tableNm>" -- true | errorCode false )
 
   find ( "<tableNm>" ^w:table )
 
@@ -123,11 +123,11 @@
   // push table folder
   sTableNm path[].pushNamedTableFolder assert
 
-  sTableNm name::checkIsTable not if path[].popTableFolder false exit then
-  //sTableNm tableInUse if path[].popTableFolder EC_TABLE_IN_USE false exit then
+  sTableNm name::checkIsaTable not if path[].popNamedTableFolder false exit then
+  //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -136,11 +136,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a removable table folder                                  */
+/* check if sTableNm is a removable table folder                              */
 /*----------------------------------------------------------------------------*/
-: checkRemoveTable ( "<tableNm>" -- true | errorCode false )
-
-  params| sTableNm |
+: table::checkRemovableFolder params| sTableNm | ( true | errorCode false )
 
   // check in tables folder
   folder[].checkIsTables not if "X1" . false exit then
@@ -151,11 +149,11 @@
   // push table folder
   sTableNm path[].pushNamedTableFolder assert
 
-  sTableNm name::checkIsTable not if "X3" . path[].popTableFolder false exit then
-  //sTableNm tableInUse if path[].popTableFolder EC_TABLE_IN_USE false exit then
+  sTableNm name::checkIsaTable not if "X3" . path[].popNamedTableFolder false exit then
+  //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
 
   // pop table folder
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -185,15 +183,15 @@
 /*----------------------------------------------------------------------------*/
 /* make a tableNm folder under tables                                         */
 /*----------------------------------------------------------------------------*/
-: :makeTableDic ( "<tableNm>" -- )
+: table::makeNamedFolder ( "<tableNm>" -- )
 
   args.tracepoint if
     dup "MAKING TABLE DIC " swap str.cat
      " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  folder[]
-  :makeSubFolder    ( )
+  // make: ../schemas/public/tables/t \folder
+  folder[] :makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -221,12 +219,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the table dictionary
-  sTableNm :makeTableDic
+  sTableNm table::makeNamedFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the indexes dictionary
   sTableNm path[].pushNamedTableFolder assert
-  sTableNm "index::makeIndexesSubFolder" find execute
+  sTableNm "index::makeIndexesFolder" find execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
@@ -275,7 +273,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
 //"D" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables

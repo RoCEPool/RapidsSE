@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if word is an index                                                   */
 /*----------------------------------------------------------------------------*/
-: word.isAnIndex
+: word.isaIndex
 
   word.category@ find: \index eql
 ;
@@ -27,7 +27,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop the indexes folder                                                     */
+/* pop the indexes folder (which was pushed by path[].pushIndexesFolder)      */
 /*----------------------------------------------------------------------------*/
 : path[].popIndexesFolder
 
@@ -35,7 +35,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if within a table indexes folder                                      */
+/* test if in an indexes folder                                               */
 /*----------------------------------------------------------------------------*/
 : folder[].isIndexes
 
@@ -43,7 +43,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check in indexes folder                                                    */
+/* check if in an indexes folder                                              */
 /*----------------------------------------------------------------------------*/
 : folder[].checkIsIndexes
 
@@ -53,9 +53,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is an index                                                     */
+/* check word is of \index category                                           */
 /*----------------------------------------------------------------------------*/
-: name::checkIsIndex ( "<indexNm>" -- true | errorCode false )
+: name::checkIsaIndex ( "<indexNm>" -- true | errorCode false )
 
   0 locals| indexPtr indexNm |
 
@@ -92,7 +92,7 @@
   folder[].checkIsTables not if false exit then
 
   // there should be a table folder
-  sTableNm folder[].checkIsTablesFolder not if false exit then
+  sTableNm folder[].checkNamedTableFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -104,16 +104,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
-  sIndexNm name::checkIsIndex not if
+  sIndexNm name::checkIsaIndex not if
     path[].popIndexesFolder
-    path[].popTableFolder
+    path[].popNamedTableFolder
     folder[].isTables assert
     false
     exit
   then
 
   path[].popIndexesFolder
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   true
 ;
@@ -125,8 +125,7 @@
 /*----------------------------------------------------------------------------*/
 /* make an indexes folder under given named table foler                       */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-: index::makeIndexesSubFolder params| sTableNm |
+: index::makeIndexesFolder params| sTableNm |
 
   args.tracepoint if
     "MAKING INDEXES FOR TABLE " sTableNm str.cat
@@ -177,8 +176,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete an index                                                            */
+/* delete an index (delete index tress in table, and forget word)             */
 /*----------------------------------------------------------------------------*/
+
+/*
+ * this is a compound action. prefer splitting it apart
+ */
+
 : index::deleteIndex params| sTableNm sIndexNm |
 
 "in index::deleteIndex" .
@@ -223,7 +227,7 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
-  path[].popTableFolder
+  path[].popNamedTableFolder
 "I" .
 ;
 

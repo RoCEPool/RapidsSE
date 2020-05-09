@@ -56,7 +56,7 @@
 
     then
 
-    "path[].popTableFolder" find execute
+    "path[].popNamedTableFolder" find execute
 
     object@ word.prev object!      // step backwards thru words
   next

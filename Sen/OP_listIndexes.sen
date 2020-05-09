@@ -24,8 +24,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm name::checkIsTable not if
-    path[].popTableFolder
+  sTableNm name::checkIsaTable not if
+    path[].popNamedTableFolder
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  path[].popTableFolder
+  path[].popNamedTableFolder
   folder[].isTables assert
 
   // pipeout the infoset

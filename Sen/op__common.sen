@@ -50,7 +50,7 @@
   // cross-check
   infoSetTable[] assert
 
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   // restore path
   path[].restore
@@ -82,7 +82,7 @@
   // cross-check
   streamSetTable[] assert
 
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   // restore path
   path[].restore
@@ -120,7 +120,7 @@
   // move to table folder and find the table
   sTableNm path[].pushNamedTableFolder assert
   sTableNm find execute to table[]
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   // cross-check
   table[] assert
@@ -153,12 +153,12 @@
   // move to indexes folder
   path[].pushIndexesFolder assert
 
-  sIndexNm name::checkIsIndex not if
+  sIndexNm name::checkIsaIndex not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    path[].popTableFolder
+    path[].popNamedTableFolder
     path[].popIndexesFolder
     false
     exit
@@ -169,7 +169,7 @@
   // cross-check
   index[] assert
 
-  path[].popTableFolder
+  path[].popNamedTableFolder
   path[].popIndexesFolder
 
   //pathStr .
@@ -215,12 +215,12 @@
   // move to indexes folder
   path[].pushIndexesFolder assert
 
-  sIndexNm name::checkIsIndex not if
+  sIndexNm name::checkIsaIndex not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeout
-    path[].popTableFolder
+    path[].popNamedTableFolder
     path[].popIndexesFolder
     false
     exit
@@ -231,7 +231,7 @@
   // cross-check
   index[] assert
 
-  path[].popTableFolder
+  path[].popNamedTableFolder
   path[].popIndexesFolder
 
   //pathStr .

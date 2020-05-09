@@ -172,7 +172,7 @@
   DdlLock[].grabRead
 
   // there should be a table folder
-  sTableNm folder[].checkIsTablesFolder not if pJob_LoadTable ERROR_JOB !!logError exit then
+  sTableNm folder[].checkNamedTableFolder not if pJob_LoadTable ERROR_JOB !!logError exit then
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
@@ -180,10 +180,10 @@
   //path[].dump
 
   // check it is a table
-  sTableNm name::checkIsTable not if path[].popTableFolder pJob_LoadTable ERROR_JOB !!logError exit then
+  sTableNm name::checkIsaTable not if path[].popNamedTableFolder pJob_LoadTable ERROR_JOB !!logError exit then
 
   // pop table dictionary
-  path[].popTableFolder
+  path[].popNamedTableFolder
   //path[].dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

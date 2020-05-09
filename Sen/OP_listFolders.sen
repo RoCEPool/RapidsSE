@@ -27,11 +27,11 @@
   folder[] dic.lastWord dup
   iterate                          // setup iteration of words
 
-    object@ word.isATable if
+    object@ word.isaTable if
     "table"
     then
 
-    object@ word.isAnIndex if
+    object@ word.isaIndex if
     "index"
     then
 

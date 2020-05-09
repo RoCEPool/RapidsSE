@@ -11,7 +11,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
-  <tableNm> checkRemoveTable not if
+  <tableNm> table::checkRemovableFolder not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

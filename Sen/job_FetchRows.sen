@@ -78,7 +78,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check table folder exists
-  sTableNm folder[].checkIsTablesFolder not if false exit then
+  sTableNm folder[].checkNamedTableFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -86,17 +86,17 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm name::checkIsTable not if path[].popTableFolder false exit then
+  sTableNm name::checkIsaTable not if path[].popNamedTableFolder false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if retrieving column, check it is a valid column
   "" sColumnNm str.equal not if
-    sColumnNm sTableNm name::checkIsColumn not if path[].popTableFolder false exit then
+    sColumnNm sTableNm name::checkIsColumn not if path[].popNamedTableFolder false exit then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   // assert in tables
   folder[].isTables assert
@@ -194,7 +194,7 @@
     I pPlanner pJob_FetchRows spawnSub
   loop
 
-  path[].popTableFolder
+  path[].popNamedTableFolder
 
   pJob_FetchRows job.notice
 

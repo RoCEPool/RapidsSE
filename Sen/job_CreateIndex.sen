@@ -23,19 +23,19 @@
 
   // check there is a sub-folder by the name of the table
   //   ../schemas/public/tables/t
-  <tableNm> folder[].checkIsTablesFolder not if false exit then
+  <tableNm> folder[].checkNamedTableFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
 
-  // push into t: ../schemas/public/tables/t
+  // push into t: ../schemas/public/tables/t \folder
   <tableNm> path[].pushNamedTableFolder assert
 
   // check max indexes
   <tableNm> find execute locals| pTable |
   pTable table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
-    path[].popTableFolder
+    path[].popNamedTableFolder
     folder[].isTables assert
     false exit
   then
@@ -50,7 +50,7 @@
   // error if given name already exists
   <indexNm> checkIsNotIndex not if
     path[].popIndexesFolder
-    path[].popTableFolder
+    path[].popNamedTableFolder
     folder[].isTables assert
     false exit
   then
@@ -59,7 +59,7 @@
   // pop upto tables: ../schemas/public/tables
 
   path[].popIndexesFolder
-  path[].popTableFolder
+  path[].popNamedTableFolder
   folder[].isTables assert
 
   true
@@ -94,7 +94,7 @@
     DdlLock[].testDrop
     !!logError
     path[].popIndexesFolder
-    path[].popTableFolder
+    path[].popNamedTableFolder
     folder[].isTables assert
     exit
   then
@@ -120,7 +120,7 @@
     pIndex index.isValidUniqueIndex not if
       EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
       path[].popIndexesFolder
-      path[].popTableFolder
+      path[].popNamedTableFolder
       folder[].isTables assert
       exit
     then
@@ -132,14 +132,14 @@
   pIndex index.populate not if ( errorCode )
     job::error!
     path[].popIndexesFolder
-    path[].popTableFolder
+    path[].popNamedTableFolder
     folder[].isTables assert
     exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   path[].popIndexesFolder
-  path[].popTableFolder
+  path[].popNamedTableFolder
   folder[].isTables assert
 ;
 /*----------------------------------------------------------------------------*/
