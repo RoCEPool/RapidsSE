@@ -47,7 +47,7 @@
 
   //----------------------------------------------------------------------------
   // make table
-  <tableNm> makeTable to pTable
+  <tableNm> table::makeTable_NEEDS_WORK to pTable
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   pTableDef pTable table.tableDef!

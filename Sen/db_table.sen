@@ -208,7 +208,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a table (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: makeTable params| sTableNm |
+: table::makeTable_NEEDS_WORK params| sTableNm |
 
   0 0 locals| pTable pIndex |
 
@@ -238,7 +238,7 @@
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeTable params| sTableNm |
+: table::removeTable_NEEDS_WORK params| sTableNm |
 
   0 locals| pTable |
 

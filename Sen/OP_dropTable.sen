@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
-  <tableNm> removeTable
+  <tableNm> table::removeTable_NEEDS_WORK
 
   Pipein[].pipeout
 
