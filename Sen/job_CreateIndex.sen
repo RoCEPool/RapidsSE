@@ -5,15 +5,6 @@
 " job_CreateIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check word is not a known index/symbol                                     */
-/*----------------------------------------------------------------------------*/
-: check::isNotIndex ( "<word>" )
-
-  folder[].findSymbol not if true exit then
-  EC_INDEX_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if <tableNm> . <indexNm> is a creatable index                        */
 /*----------------------------------------------------------------------------*/
 : createIndex::checkCreate ( --  true | errorCode false )
@@ -48,7 +39,7 @@
   folder[].isIndexes assert
 
   // error if given name already exists
-  <indexNm> check::isNotIndex not if
+  <indexNm> name::isNotKnownIndex not if
     path[].popIndexesFolder
     path[].popNamedTableFolder
     folder[].isTables assert
@@ -70,11 +61,12 @@
 /*----------------------------------------------------------------------------*/
 : createIndex::createNamedIndex
 
+  // assert initial folder is ./tables
+  //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  folder[].isTables assert
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // change working folder to : ./t/indexes
-
-  // assert initial working folder is: ../schemas/public/tables
-  folder[].isTables assert
 
   // cf to: ./t
   <tableNm> path[].pushNamedTableFolder assert
@@ -83,13 +75,13 @@
   path[].pushIndexesFolder assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse the index definition
+  // parse cmd and create index definition
 
   <tableNm> find execute locals| pTable |
 
   <cmd> pTable job[] IndexDef::parse locals| pIndexDef |
 
-  // check for error while creating indexdef
+  // check for error while parsing indexdef
   job[] job.hasError if
     DdlLock[].testDrop
     !!logError
@@ -127,7 +119,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now populate the index
+  // populate the index
 
   pIndex index.populate not if ( errorCode )
     job::error!
@@ -138,6 +130,8 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move back to ./tables
+
   path[].popIndexesFolder
   path[].popNamedTableFolder
   folder[].isTables assert
@@ -153,14 +147,14 @@
   // grab the ddl lock
   DdlLock[].grabRead
 
-  // check if we have enough buffers
+  // check there are enough buffers
   node::checkEnoughBuffers not if ( errorCode )
     job::error!
     !!logError
     exit
   then
 
-  // check ok to make index
+  // check ok to create index
   createIndex::checkCreate not if ( errorCode )
     job::error!
     !!logError

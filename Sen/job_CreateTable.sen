@@ -5,15 +5,6 @@
 " job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check word is not a known table/symbol                                     */
-/*----------------------------------------------------------------------------*/
-: check::isNotTable ( "<wordNm>" -- t|f )
-
-  folder[].findSymbol not if true exit then
-  EC_TABLE_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if <tableNm> is a creatable table                                    */
 /*----------------------------------------------------------------------------*/
 : createTable::checkCreate ( -- true | errorCode false )
@@ -22,7 +13,7 @@
   folder[].checkIsTables not if false exit then
   
   // error if given name already exists
-  <tableNm> check::isNotTable not if false exit then
+  <tableNm> name::isNotKnownTable not if false exit then
 
   true
 ;
@@ -32,12 +23,16 @@
 /*----------------------------------------------------------------------------*/
 : createTable::createNamedTable
 
+  // assert initial folder is ./tables
+  //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  folder[].isTables assert
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse the index definition
+  // parse cmd and create table definition
 
   <cmd> job[] tableDef::parse locals| pTableDef |
 
-  // check for error while creating tabledef
+  // check for error while parsing tabledef
   job[] job.hasError if
     DdlLock[].testDrop
     !!logError
@@ -45,7 +40,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // make table
+  // new the Table C++ object
 
   <tableNm> table::makeTable_NEEDS_WORK locals| pTable |
 
@@ -55,7 +50,7 @@
   pTable table.createPtnDef
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move back to tables
+  // move back to ./tables
 
   path[].popNamedTableFolder
   folder[].isTables assert
@@ -72,14 +67,14 @@
    // grab the ddl lock
   DdlLock[].grabRead
 
-  // check if we have enough buffers
+  // check there are enough buffers
   node::checkEnoughBuffers not if ( errorCode )
     job::error!
     !!logError
     exit
   then
 
-  // check if we can make the table
+  // check ok to create table
   createTable::checkCreate not if ( errorCode )
     job::error!
     !!logError

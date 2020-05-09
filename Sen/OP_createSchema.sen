@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is not a schema                                              */
 /*----------------------------------------------------------------------------*/
-: check::isNotSchema ( word )
+: name::isNotKnownSchema ( word )
   folder[].findSymbol not if true exit then
   EC_SCHEMA_EXISTS false
 ;
@@ -41,7 +41,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if schema already exits
-  <schemaNm> check::isNotSchema not if
+  <schemaNm> name::isNotKnownSchema not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

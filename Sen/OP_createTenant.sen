@@ -33,7 +33,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if catalog already exits
-  <tenantNm> check::isNotTenant not if
+  <tenantNm> name::isNotKnownTenant not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

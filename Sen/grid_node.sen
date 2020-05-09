@@ -5,6 +5,26 @@
 " grid_node.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check word is not a Node                                                   */
+/*----------------------------------------------------------------------------*/
+: name::isNotKnownNode ( "<NodeNm>" -- t|f )
+
+  grid::findNode not if true exit then
+
+  EC_NODE_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable Node                                           */
+/*----------------------------------------------------------------------------*/
+: checkMakeNode ( "<NodeNm>" -- true | errorCode false )
+
+  name::isNotKnownNode not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* test if this node is given originating node                                */
 /*----------------------------------------------------------------------------*/
 : node::isOrigin ( iOriginNode -- true|false )
