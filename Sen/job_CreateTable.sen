@@ -32,37 +32,32 @@
 /*----------------------------------------------------------------------------*/
 : createTable::createNamedTable
 
-  job[] locals| pJob_CreateTable |
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse the index definition
 
-  0 locals| pTable |
+  <cmd> job[] tableDef::parse locals| pTableDef |
 
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  <cmd> pJob_CreateTable tableDef::parse locals| pTableDef |
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  //----------------------------------------------------------------------------
   // check for error while creating tabledef
-  grid::thisNode@ pJob_CreateTable job.hasError if
-    pJob_CreateTable DdlLock[].testDrop !!logError exit then
+  job[] job.hasError if
+    DdlLock[].testDrop
+    !!logError
+    exit
+  then
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make table
-  <tableNm> table::makeTable_NEEDS_WORK to pTable
 
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  pTableDef pTable table.tableDef!
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  <tableNm> table::makeTable_NEEDS_WORK locals| pTable |
 
-  //----------------------------------------------------------------------------
+   pTableDef pTable table.tableDef!
+ 
   // add partition columns
   pTable table.createPtnDef
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to tables
-  path[].popNamedTableFolder
 
-  //----------------------------------------------------------------------------
-  // should be in tables
+  path[].popNamedTableFolder
   folder[].isTables assert
 ;
 
