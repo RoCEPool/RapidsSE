@@ -22,15 +22,16 @@
   folder[].checkInTables not if false exit then
 
   // check there is a sub-folder by the name of the table
-  // ../schemas/public/tables/t
+  //   ../schemas/public/tables/t
   <tableNm> folder[].checkIsTablesFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if max indexes already on table
 
   // push into t: ../schemas/public/tables/t
   <tableNm> path[].pushNamedTableFolder assert
 
-  // check if max indexes already on table
+  // check max indexes
   <tableNm> find execute locals| pTable |
   pTable table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
@@ -40,6 +41,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check name doesn't already exist
 
   // push into indexes: ../schemas/public/tables/t/indexes
   path[].pushIndexesFolder assert
@@ -54,11 +56,9 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // pop upto t: ../schemas/public/tables/t
-  path[].discardIndexesFolder
-
   // pop upto tables: ../schemas/public/tables
+
+  path[].discardIndexesFolder
   path[].discardTableFolder
   folder[].isTables assert
 
@@ -118,7 +118,7 @@
 
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
-      EC_INVALID_COLUMNS_UNIQUE_INDEX job[] ERROR_JOB
+      EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
       path[].discardIndexesFolder
       path[].discardTableFolder
       folder[].isTables assert
@@ -129,8 +129,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
 
-  pIndex index.populate not if
-    job[] ERROR_JOB
+  pIndex index.populate not if ( errorCode )
+    job::error!
     path[].discardIndexesFolder
     path[].discardTableFolder
     folder[].isTables assert
@@ -154,15 +154,15 @@
   DdlLock[].grabRead
 
   // check if we have enough buffers
-  node::checkEnoughBuffers not if
-    job[] ERROR_JOB
+  node::checkEnoughBuffers not if ( errorCode )
+    job::error!
     !!logError
     exit
   then
 
   // check ok to make index
-  createIndex::checkCreate not if
-    job[] ERROR_JOB
+  createIndex::checkCreate not if ( errorCode )
+    job::error!
     !!logError
     exit
   then
@@ -189,8 +189,8 @@
 : createIndex::request _eeh ( -- <R> )
 
   // check create index syntax
-  <cmd> IndexDef::syntax dup EC_NONE != if
-    job[] ERROR_JOB
+  <cmd> IndexDef::syntax dup EC_NONE != if ( errorCode )
+    job::error!
     !!logError
   else
     discard

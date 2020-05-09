@@ -78,15 +78,15 @@
   DdlLock[].grabRead
 
   // check if we have enough buffers
-  node::checkEnoughBuffers not if
-    job[] ERROR_JOB
+  node::checkEnoughBuffers not if ( errorCode )
+    job::error!
     !!logError
     exit
   then
 
   // check if we can make the table
-  createTable::checkCreate not if
-    job[] ERROR_JOB
+  createTable::checkCreate not if ( errorCode )
+    job::error!
     !!logError
     exit
   then
@@ -113,8 +113,8 @@
 : createTable::request _eeh ( -- <R> )
 
   // check create table syntax
-  <cmd> TableDef::syntax dup EC_NONE != if
-    job[] ERROR_JOB
+  <cmd> TableDef::syntax dup EC_NONE != if  ( errorCode )
+    job::error!
     !!logError
   else
     discard
