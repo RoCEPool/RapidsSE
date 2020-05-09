@@ -167,29 +167,13 @@
 /*----------------------------------------------------------------------------*/
 /* new a c++ Index object                                                     */
 /*----------------------------------------------------------------------------*/
-: index::newIndex_revB params| sTableNm sIndexNm |
+: index::newIndex params| sTableNm sIndexNm |
 
   // assert within a table indexes folder
   folder[].isIndexes assert
 
   // create a c++ Index object with given name
   sIndexNm :createIndexEmbObj locals| pwIndexTest |
-
-  pwIndexTest // return:
-;
-/*----------------------------------------------------------------------------*/
-: index::newIndex params| sTableNm sIndexNm |
-
-  // cwf to: ./t/indexes
-  sTableNm path[].pushNamedTableFolder assert
-  path[].pushIndexesFolder assert
-
-  // create the name index (word & object)
-  sIndexNm :createIndexEmbObj locals| pwIndexTest |
-
-  // cwf back to starting point
-  path[].discardIndexesFolder
-  path[].discardTableFolder
 
   pwIndexTest // return:
 ;
