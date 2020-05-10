@@ -96,14 +96,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // new the Index C++ object
 
-  <indexNm> index::newIndex locals| pIndex |
-
-  pIndexDef pIndex index.indexDef!
-  pTable pIndex index.table!
-
-  // add pIndex into pTable
-  pIndex pTable table.addIndex
-
+  pIndexDef <indexNm> pTable index::createIndex locals| pIndex |
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // validate the unqiue index columns are a subset of the partition keys
 
