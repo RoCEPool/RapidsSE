@@ -208,10 +208,12 @@
 /*----------------------------------------------------------------------------*/
 : table::newTableEmbObj params| sTableNm |
 
-  find: \table CN_TABLE sizeof_table sTableNm :createObject
+  find: \table CN_TABLE sizeof_table sTableNm :createObject locals| pwTable |
 
   compiler::current@ word.embObject table.init
   true compiler::current@ word.embObject object.wordbody!
+
+  pwTable
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +225,9 @@
 
   table::new locals| pTable |
 
-  pTableCatg pTable sTableNm :createCppObject locals| pwTable |
+  sTableNm word::new locals| pwTable |
+
+  pTableCatg pTable pwTable word.cppObject!
 
   pwTable // returns:
 ;
@@ -233,7 +237,9 @@
 /*----------------------------------------------------------------------------*/
 : table::newTable params| sTableNm |
 
-  sTableNm table::newTableEmbObj
+  sTableNm table::newTableEmbObj locals| pwTable |
+
+  pwTable
 ;
 
 /*----------------------------------------------------------------------------*/

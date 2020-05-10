@@ -59,26 +59,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set word as a c++ object                                                   */
+/* set word as a c++ object and encode push of the c++ object as the routine  */
 /*----------------------------------------------------------------------------*/
-: word.cppObject! params| pWord pObject pCatg |
+: word.cppObject! params| pwObject pObject pCatg |
 
-  WK_CPPOBJECT pWord word.kind!
+  WK_CPPOBJECT pwObject word.kind!
 
-  pObject pWord word.object!
+  pObject pwObject word.object!
 
-  pCatg pWord word.category!
+  pCatg pwObject word.category!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  1 pWord
+  compiler::current!
 
-//  compiler::current!
-//
-//  pWord encode::push
-//
-//  POSTPONE word.object@
-//
-//  POSTPONE exit_rt
+  pwObject encode::push
+
+  POSTPONE word.object@
+
+  POSTPONE exit_rt
 
   [ compiler::current@ word.see ]
 ;

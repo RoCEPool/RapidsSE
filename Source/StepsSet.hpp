@@ -253,6 +253,9 @@ public:
   void vEncodeCurrentCall(void);
   void vEncodeCurrentPush(void);
 
+  void vEncodeCall(void);
+  void vEncodePush(void);
+
   void vEncodeAgain(void);
   void vEncodeAhead(void);
   void vEncodeContinue(void);

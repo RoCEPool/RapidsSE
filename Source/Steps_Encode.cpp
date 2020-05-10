@@ -9,28 +9,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Encode(void)
 {
-  vAddStep("again"_Stz,               &Step::vEncodeAgain,         true );
-  vAddStep("ahead"_Stz,               &Step::vEncodeAhead,         true );
-  vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true );
-  vAddStep("here"_Stz,                &Step::vEncodeHere);
-  vAddStep("if"_Stz,                  &Step::vEncodeIf,            true );
-  vAddStep("ifAgain"_Stz,             &Step::vEncodeIfAgain,       true );
-  vAddStep("loop"_Stz,                &Step::vEncodeLoop,          true );
-  vAddStep("+loop"_Stz,               &Step::vEncodeLoopPlus,      true );
-  vAddStep("next"_Stz,                &Step::vEncodeNext,          true );
-  vAddStep("next+"_Stz,               &Step::vEncodeNextPlus,      true );
-  vAddStep("then"_Stz,                &Step::vEncodeThen,          true );
-  vAddStep("until"_Stz,               &Step::vEncodeUntil,         true );
+  vAddStep("again"_Stz,         &Step::vEncodeAgain,         true );
+  vAddStep("ahead"_Stz,         &Step::vEncodeAhead,         true );
+  vAddStep("continue"_Stz,      &Step::vEncodeContinue,      true );
+  vAddStep("here"_Stz,          &Step::vEncodeHere);
+  vAddStep("if"_Stz,            &Step::vEncodeIf,            true );
+  vAddStep("ifAgain"_Stz,       &Step::vEncodeIfAgain,       true );
+  vAddStep("loop"_Stz,          &Step::vEncodeLoop,          true );
+  vAddStep("+loop"_Stz,         &Step::vEncodeLoopPlus,      true );
+  vAddStep("next"_Stz,          &Step::vEncodeNext,          true );
+  vAddStep("next+"_Stz,         &Step::vEncodeNextPlus,      true );
+  vAddStep("then"_Stz,          &Step::vEncodeThen,          true );
+  vAddStep("until"_Stz,         &Step::vEncodeUntil,         true );
   
-  vAddStep("encode::call"_Stz,        &Step::vEncodeCurrentCall);
-  vAddStep("encode::push"_Stz,        &Step::vEncodeCurrentPush);
+  vAddStep("encode::call"_Stz,  &Step::vEncodeCurrentCall);
+  vAddStep("encode::push"_Stz,  &Step::vEncodeCurrentPush);
   
-//  vAddStep("encode.call"_Stz,        &Step::vEncodeCall);
-//  vAddStep("encode.push"_Stz,        &Step::vEncodePush);
+  vAddStep("encode.call"_Stz,   &Step::vEncodeCall);
+  vAddStep("encode.push"_Stz,   &Step::vEncodePush);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode::call -- encode call                                                */
+/* encode::call -- encode call into current word                              */
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeCurrentCall(void)
 {
@@ -48,7 +48,7 @@ void Step::vEncodeCurrentCall(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode::push -- encode push of value                                       */
+/* encode::push -- encode push of value into current word                     */
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeCurrentPush(void)
 {
@@ -60,6 +60,41 @@ void Step::vEncodeCurrentPush(void)
   m_pDataStack->vPopVal(xVal,__func__);
 
   pCurrentWord->vEncodePush(xVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode.call -- encode call into given word                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeCall(void)
+{
+  ENTRY();
+  
+  Word* pTargetWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+  
+  pTargetWord->vEncodeCall(afpCalledEntryStep);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode.push -- encode push of value into given word                        */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodePush(void)
+{
+  ENTRY();
+  
+  Word* pTargetWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  Datum xVal;
+  m_pDataStack->vPopVal(xVal,__func__);
+
+  pTargetWord->vEncodePush(xVal);
   
   EXIT();
 }
