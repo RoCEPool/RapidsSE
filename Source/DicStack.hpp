@@ -38,7 +38,6 @@ namespace SenVM
     void  vPop(void);
     void  vPush(Dic* pDic);
     void  vReset(void);
-    void  vSetStack(DicPath* pDicPath);
     Dic*  pTop(void);
     void  vToPathStr(Stz* szPath);
 

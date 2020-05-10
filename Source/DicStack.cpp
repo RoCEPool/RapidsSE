@@ -348,36 +348,6 @@ void DicStack::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set dictionary stack from dictionary path                                  */
-/*----------------------------------------------------------------------------*/
-void DicStack::vSetStack(DicPath* pDicPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  s32 sFolderNm;
-  
-  Dic* pDic = _pDic(AM::pTenants()->aWspArea());
-  
-  i8 nFolders = pDicPath->nDicNames();
-  for (i8 i_Folder = 0; i_Folder < nFolders; i_Folder++) {
-    
-    sFolderNm = pDicPath->sDicName(i_Folder);
-    
-    if (sFolderNm.bSame("tenants"_Stz))
-      continue;
-    
-    //pDic->vListWords();
-    Word* pWord = pDic->pFindWord(sFolderNm);
-    
-    Dic* pSubDic = _pDic(pWord->aWspArea());
-    
-    vPush(pSubDic);
-    
-    pDic = pSubDic;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get topmost dictionary                                                     */
 /*----------------------------------------------------------------------------*/
 Dic* DicStack::pTop(void)
