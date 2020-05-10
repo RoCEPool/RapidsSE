@@ -161,11 +161,11 @@
 /*----------------------------------------------------------------------------*/
 : index::newIndexPrpObj params| sIndexNm |
 
-  find: \index
-  index::new
-  sIndexNm
-    :createCppObject
-      locals| pwIndex |
+  find: \index locals| pIndexCatg |
+
+  index::new locals| pIndex |
+
+  pIndexCatg pIndex sIndexNm :createCppObject locals| pwIndex |
 
   pwIndex // returns:
 ;
