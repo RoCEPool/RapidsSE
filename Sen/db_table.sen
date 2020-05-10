@@ -239,7 +239,9 @@
 
   sTableNm table::newTableEmbObj locals| pwTable |
 
-  pwTable
+  pwTable execute locals| pTable |
+
+  pTable
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -263,9 +265,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
-  sTableNm table::newTable locals| pwTable |
-
-  pwTable execute locals| pTable |
+  sTableNm table::newTable locals| pTable |
 
   // return table pointer
   pTable

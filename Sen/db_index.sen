@@ -167,7 +167,9 @@
 
   index::new locals| pIndex |
 
-  pIndexCatg pIndex sIndexNm :createCppObject locals| pwIndex |
+  sIndexNm word::new locals| pwIndex |
+
+  pIndexCatg pIndex pwIndex word.cppObject!
 
   pwIndex // returns:
 ;
