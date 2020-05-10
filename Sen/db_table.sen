@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
 /*----------------------------------------------------------------------------*/
-: :makeTablesSubFolder ( "<tableNm>" -- )
+: table::makeTablesFolder ( "<tableNm>" -- )
 
   args.tracepoint if
     dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -215,11 +215,32 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create a table using name on the stack (leaves table on stack)             */
+/*----------------------------------------------------------------------------*/
+//: table::newTablePrpObj params| sTableNm |
+//
+//  find: \table locals| pTableCatg |
+//
+//  table::new locals| pTable |
+//
+//  pTableCatg pTable sTableNm :createCppObject locals| pwTable |
+//
+//  pwTable // returns:
+//
+//;
+
+/*----------------------------------------------------------------------------*/
+/* create a table using name on the stack (leaves table on stack)             */
+/*----------------------------------------------------------------------------*/
+: table::newTable params| sTableNm |
+
+  sTableNm table::newTableEmbObj
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a table (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
 : table::makeTable_NEEDS_WORK params| sTableNm |
-
-  0 0 locals| pTable pIndex |
 
   args.tracepoint if
     sTableNm "MAKING TABLE " swap str.cat
@@ -237,8 +258,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
-  sTableNm table::newTableEmbObj ( ^table ) discard
-  sTableNm find execute to pTable
+  sTableNm table::newTable locals| pwTable |
+
+  pwTable execute locals| pTable |
 
   // return table pointer
   pTable

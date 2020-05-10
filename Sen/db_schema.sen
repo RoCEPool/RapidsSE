@@ -90,7 +90,7 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make tables folder
- sSchemaNm :makeTablesSubFolder
+ sSchemaNm table::makeTablesFolder
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -159,7 +159,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the c++ index object given its name (returns pIndex)                */
 /*----------------------------------------------------------------------------*/
-: index::newIndexObject params| sIndexNm |
+: index::newIndexPrpObj params| sIndexNm |
 
   find: \index
   index::new
