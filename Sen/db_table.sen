@@ -217,17 +217,16 @@
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
-//: table::newTablePrpObj params| sTableNm |
-//
-//  find: \table locals| pTableCatg |
-//
-//  table::new locals| pTable |
-//
-//  pTableCatg pTable sTableNm :createCppObject locals| pwTable |
-//
-//  pwTable // returns:
-//
-//;
+: table::newTablePrpObj params| sTableNm |
+
+  find: \table locals| pTableCatg |
+
+  table::new locals| pTable |
+
+  pTableCatg pTable sTableNm :createCppObject locals| pwTable |
+
+  pwTable // returns:
+;
 
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
