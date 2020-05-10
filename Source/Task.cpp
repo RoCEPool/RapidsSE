@@ -972,7 +972,7 @@ void Task::vTracePoint(Stz* aMark)
   
   Cell* aHasCell = m_pForth->m_aInxPtr;
   
-  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateRoutineWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->szWordNm();
   else
@@ -1015,7 +1015,7 @@ void Task::vTraceStep(Stz* aStepNm)
   s256 sRoutine;
   
   Cell* aHasCell = m_pForth->m_aInxPtr;
-  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateRoutineWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->szWordNm();
   else

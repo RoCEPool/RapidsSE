@@ -194,7 +194,7 @@ Word* DicStack::pFindInCurrent(Stz* szWordNm)
 /*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateWord(Cell* aHasCell)
+Word* DicStack::pLocateRoutineWord(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -205,13 +205,13 @@ Word* DicStack::pLocateWord(Cell* aHasCell)
     Dic* pDic = m_pDic[i_Dic];
     
     for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (pWord->bHasCell(aHasCell))
+      if (pWord->bHasCell(aCell))
         return pWord;
   }
   
   Dic* pRootDic = AM::pRootDic();
   for (pWord = pRootDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
-    if (pWord->bHasCell(aHasCell))
+    if (pWord->bHasCell(aCell))
       return pWord;
   
   return nullptr;
@@ -220,7 +220,7 @@ Word* DicStack::pLocateWord(Cell* aHasCell)
 /*----------------------------------------------------------------------------*/
 /* locate word that has given step                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateWord(StepFp fpHasStep)
+Word* DicStack::pLocateStepWord(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -232,7 +232,7 @@ Word* DicStack::pLocateWord(StepFp fpHasStep)
     
     for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (WK_INTRINSIC == pWord->eWord() &&
-          fpHasStep == pWord->fpEntryStep())
+          fpStep == pWord->fpEntryStep())
         return pWord;
   }
   
@@ -241,7 +241,7 @@ Word* DicStack::pLocateWord(StepFp fpHasStep)
        pWord;
        pWord = pWord->pPrevWord())
     if (WK_INTRINSIC == pWord->eWord() &&
-        fpHasStep == pWord->fpEntryStep())
+        fpStep == pWord->fpEntryStep())
       return pWord;
   
   return nullptr;

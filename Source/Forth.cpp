@@ -149,7 +149,7 @@ void Forth::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  Word* pWord = m_oDicStack.pLocateWord(m_aInxPtr);
+  Word* pWord = m_oDicStack.pLocateRoutineWord(m_aInxPtr);
 
   vTrace("\n"_Stz);
   vTrace("Execution Context\n"_Stz);

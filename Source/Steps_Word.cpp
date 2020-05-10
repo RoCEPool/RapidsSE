@@ -421,7 +421,7 @@ void Step::vWordLocate(void)
   
   Cell* aHasCell = m_pDataStack->aPopFip(__func__);
   
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
   
   if (pLocatedWord) {
     s32 sName;

@@ -124,7 +124,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
       case CN_FIPVAL: {
         Cell* aFip  = aAnyVal->aFip();
         if (pDicStack) {
-          Word* pWord = pDicStack->pLocateWord(aFip);
+          Word* pWord = pDicStack->pLocateRoutineWord(aFip);
           
           vTrace("=%p word %s \n"_Stz,aFip,
                  pWord ? pWord->szWordNm() : C_NO_WORD);

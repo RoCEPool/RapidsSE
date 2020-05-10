@@ -1601,56 +1601,54 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
   vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
 
   Cell* aLastCell = pDoesWord->aLastCell();
-  while (aDoes < aLastCell) {
+  for (Cell* aCell = aDoes; aCell < aLastCell; ) {
     
-    StepFp fpStep = *aDoes->m_afpStep;
-    
-    Word* pStepWord = pDicStack->pLocateWord(fpStep);
+    StepFp fpStep = *aCell->m_afpStep;
+    Word* pStepWord = pDicStack->pLocateStepWord(fpStep);
+    Stz* szStepNm = pStepWord->szWordNm();
     
     // -- -- -- -- -- -- -- -- -- --
-    // jump / jump false / jump true
+    // step is: jump / jump false / jump true
     
-    if (*aDoes->m_afpStep == &Step::vFlowJump ||
-        *aDoes->m_afpStep == &Step::vFlowJumpFalse ||
-        *aDoes->m_afpStep == &Step::vFlowJumpTrue ) {
+    if (fpStep == &Step::vFlowJump ||
+        fpStep == &Step::vFlowJumpFalse ||
+        fpStep == &Step::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
-      aDoes++;
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
       
-      vTrace(" %p\n"_Stz,aDoes->m_aJumpTo);
-      aDoes++;
+      vTrace(" %p\n"_Stz,aCell->m_aJumpTo);
+      aCell++;
       
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
-    // push intval
+    // step is: push intval
     
-    if (*aDoes->m_afpStep == &Step::vPushIntVal) {
+    if (fpStep == &Step::vPushIntVal) {
       
-      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
-      aDoes++;
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
       
-      IntVal* aIntVal = _aIntVal(aDoes);
-      
+      IntVal* aIntVal = _aIntVal(aCell);
       vTrace(" %lld\n"_Stz,aIntVal->iInt());
       
       i8 iBytes = aIntVal->nStackUsage();
-      aDoes = aAdd<Cell*>(aDoes,iBytes);
+      aCell = aAdd<Cell*>(aCell,iBytes);
       
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
-    // push ptrval
+    // step is: push ptrval
     
-    if (*aDoes->m_afpStep == &Step::vPushPtrVal) {
+    if (fpStep == &Step::vPushPtrVal) {
       
-      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
-      aDoes++;
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
       
-      PtrVal* aPtrVal = _aPtrVal(aDoes);
-      
+      PtrVal* aPtrVal = _aPtrVal(aCell);
       eCN eClassNo_obj = aPtrVal->pObj()->eClass();
       
       if (CN_WORD == eClassNo_obj) {
@@ -1662,51 +1660,50 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
       }
       
       i8 iBytes = aPtrVal->nStackUsage();
-      aDoes = aAdd<Cell*>(aDoes,iBytes);
+      aCell = aAdd<Cell*>(aCell,iBytes);
       
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
-    // push stzval
+    // step is: push stzval
     
-    if ( *aDoes->m_afpStep == &Step::vPushStzVal ) {
+    if (fpStep == &Step::vPushStzVal) {
       
-      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
-      aDoes++;
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
       
-      StzVal* aStzVal = _aStzVal(aDoes);
-      
+      StzVal* aStzVal = _aStzVal(aCell);
       vTrace(" \"%s\"\n"_Stz,aStzVal->szStz());
       
       i8 iBytes = aStzVal->nStackUsage();
-      aDoes = aAdd<Cell*>(aDoes,iBytes);
+      aCell = aAdd<Cell*>(aCell,iBytes);
       
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
-    // enter routine
-    if (*aDoes->m_afpStep == &Step::vEnterRoutine) {
+    // step is: enter routine
+    
+    if (fpStep == &Step::vEnterRoutine) {
       
-      Cell* aEntryCell = *(Cell**)(aDoes->m_afpStep + 1);
-      Word* pEntryWord = Routine::pToWord(aEntryCell);
+      Cell* aEnterCell = *(Cell**)(aCell->m_afpStep + 1);
+      Word* pEnterWord = Routine::pToWord(aEnterCell);
 
       vTrace("%p: %s %s\n"_Stz,
-             aDoes,
-             pStepWord->szWordNm(),
-             pEntryWord->szWordNm());
-      aDoes++;
-      
+             aCell,
+             szStepNm,
+             pEnterWord->szWordNm());
+      aCell++;
       
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
-    // call step
+    // step is: call step
   
-    vTrace("%p: %s\n"_Stz,aDoes,pStepWord->szWordNm());
-    aDoes++;
+    vTrace("%p: %s\n"_Stz,aCell,szStepNm);
+    aCell++;
   }
   
 }
