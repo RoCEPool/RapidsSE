@@ -40,7 +40,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the table proper
+  // create the table 
 
   pTableDef <tableNm> table::createTable locals| pTable |
 

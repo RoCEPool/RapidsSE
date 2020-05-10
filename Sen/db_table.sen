@@ -195,7 +195,7 @@
 : table::makeNamedFolder ( "<tableNm>" -- )
 
   args.tracepoint if
-    dup "MAKING TABLE DIC " swap str.cat
+    dup "MAKING TABLE " swap str.cat
      " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
@@ -249,14 +249,6 @@
 /*----------------------------------------------------------------------------*/
 : table::makeTable_NEEDS_WORK params| sTableNm |
 
-  args.tracepoint if
-    sTableNm "MAKING TABLE " swap str.cat
-    " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  // make the table dictionary
-  sTableNm table::makeNamedFolder
-
   // make the indexes dictionary
   sTableNm path[].pushNamedTableFolder assert
   sTableNm "index::makeIndexesFolder" find execute
@@ -269,16 +261,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the table proper                                                    */
+/* create the table                                                           */
 /*----------------------------------------------------------------------------*/
 : table::createTable params| sTableNm pTableDef |
+
+ folder[].isTables assert
+
+ sTableNm table::makeNamedFolder
 
  sTableNm table::makeTable_NEEDS_WORK locals| pTable |
 
  pTableDef pTable table.tableDef!
 
- // add partition columns
  pTable table.createPtnDef
+
+ pTable
 ;
 
 /*----------------------------------------------------------------------------*/
