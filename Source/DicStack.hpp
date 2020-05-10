@@ -5,6 +5,8 @@
 
 namespace SenVM
 {
+  static const i8 C_DIC_PATHDEPTH = 16;
+
   class DicStack : public Object
   {
   private:

@@ -15,7 +15,6 @@ namespace SenVM
 //------------------------------------------------------------------------------
 
 #include "Dic.hpp"
-#include "DicPath.hpp"
 #include "DicStack.hpp"
 #include "Local.hpp"
 #include "LocalChain.hpp"

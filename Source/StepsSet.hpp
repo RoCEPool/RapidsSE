@@ -197,11 +197,6 @@ public:
   void vDicLockDropWrite(void);
   void vDicLockGrabWrite(void);
 
-  // dicPath
-  void vDicPathDepth(void);
-  void vDicPathDump(void);
-  void vDicPathPick(void);
-
 
   // dir
   void vDirChangeCurrent(void);

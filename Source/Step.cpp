@@ -63,7 +63,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Debug();
   Step::vAddSteps_Dic();
   Step::vAddSteps_DicLock();
-  Step::vAddSteps_DicPath();
   Step::vAddSteps_Dir();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();

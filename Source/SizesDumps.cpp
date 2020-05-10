@@ -406,7 +406,7 @@ i8 gnClassSize[]
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
   /* */ sizeof(Dic),                // CN_DIC
-  /* */ sizeof(DicPath),            // CN_DICPATH
+  /* */ 0,//sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
   /* */ sizeof(DteVal),             // CN_DTEVAL
