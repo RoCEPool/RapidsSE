@@ -245,22 +245,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a table (run by all participants)                                     */
-/*----------------------------------------------------------------------------*/
-: table::makeTable_NEEDS_WORK params| sTableNm |
-
-  // make the indexes dictionary
-  sTableNm path[].pushNamedTableFolder assert
-  sTableNm "index::makeIndexesFolder" find execute
-
-  // create the table
-  sTableNm table::newTable locals| pTable |
-
-  // return table pointer
-  pTable
-;
-
-/*----------------------------------------------------------------------------*/
 /* create the table                                                           */
 /*----------------------------------------------------------------------------*/
 : table::createTable params| sTableNm pTableDef |
@@ -269,7 +253,11 @@
 
  sTableNm table::makeNamedFolder
 
- sTableNm table::makeTable_NEEDS_WORK locals| pTable |
+ sTableNm path[].pushNamedTableFolder assert
+
+ sTableNm "index::makeIndexesFolder" find execute
+
+ sTableNm table::newTable locals| pTable |
 
  pTableDef pTable table.tableDef!
 

@@ -179,15 +179,13 @@
 /*----------------------------------------------------------------------------*/
 : index::newIndex params| sIndexNm |
 
-  // assert within a table indexes folder
   folder[].isIndexes assert
 
-  // create a c++ Index object with given name
   sIndexNm index::newIndexEmbObj locals| pwIndex |
 
   pwIndex execute locals| pIndex |
 
-  pIndex // return:
+  pIndex
 ;
 
 /*----------------------------------------------------------------------------*/
