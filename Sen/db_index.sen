@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 /* new a C++ Index object                                                     */
 /*----------------------------------------------------------------------------*/
-: index::newIndex params| sTableNm sIndexNm |
+: index::newIndex params| sIndexNm |
 
   // assert within a table indexes folder
   folder[].isIndexes assert
@@ -188,6 +188,23 @@
   pwIndex execute locals| pIndex |
 
   pIndex // return:
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the index proper                                                    */
+/*----------------------------------------------------------------------------*/
+: index::createIndex params| pTable sIndexNm pIndexDef |
+
+  folder[].isIndexes assert
+
+  sIndexNm index::newIndex locals| pIndex |
+
+  pIndexDef pIndex index.indexDef!
+  pTable pIndex index.table!
+
+  pIndex pTable table.addIndex
+
+  pIndex
 ;
 
 /*----------------------------------------------------------------------------*/
