@@ -11,6 +11,7 @@ void Step::vAddSteps_Index(void)
 {
   vAddStep("index::delete"_Stz,         &Step::vIndexDelete);
   vAddStep("index::new"_Stz,            &Step::vIndexNew);
+  
   vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
   vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);

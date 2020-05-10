@@ -1420,6 +1420,8 @@ public:
   void vTableAddIndex(void);
   void vTableColumnCountFetch(void);
   void vTableColumnFetch(void);
+  void vTableCreatePtnDef(void);
+  void vTableDelete(void);
   void vTableDump(void);
   void vTableFindColumn(void);
   void vTableGenCsvBuffer(void);
@@ -1432,7 +1434,7 @@ public:
   void vTableIsDefinitionOnly(void);
   void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);
-  void vTableCreatePtnDef(void);
+  void vTableNew(void);
   void vTablePublish(void);
   void vTablePurge(void);
   void vTableDeleteIndex(void);

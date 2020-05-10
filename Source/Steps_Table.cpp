@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Table(void)
 {
+  vAddStep("table::delete"_Stz,            &Step::vTableDelete);
+  vAddStep("table::new"_Stz,               &Step::vTableNew);
+  
   vAddStep("table[]"_Stz,                  &Step::vTableGet);
   vAddStep("table[].set"_Stz,              &Step::vTableSet);
   
@@ -40,6 +43,20 @@ void Step::vAddSteps_Table(void)
   // to go
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table::new -- delete an instance of table                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDelete(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  delete pTable;
+    
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,6 +420,20 @@ void Step::vTableIsDefinitionOnly(void)
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table::new -- create a new instance of table                               */
+/*----------------------------------------------------------------------------*/
+void Step::vTableNew(void)
+{
+  ENTRY();
+  
+  Table* pTable = new Table;
+  
+  m_pDataStack->vPushPtr(pTable);
   
   EXIT();
 }
