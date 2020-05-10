@@ -254,21 +254,31 @@
     " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the table dictionary
   sTableNm table::makeNamedFolder
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the indexes dictionary
   sTableNm path[].pushNamedTableFolder assert
   sTableNm "index::makeIndexesFolder" find execute
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
   sTableNm table::newTable locals| pTable |
 
   // return table pointer
   pTable
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the table proper                                                    */
+/*----------------------------------------------------------------------------*/
+: table::createTable params| sTableNm pTableDef |
+
+ sTableNm table::makeTable_NEEDS_WORK locals| pTable |
+
+ pTableDef pTable table.tableDef!
+
+ // add partition columns
+ pTable table.createPtnDef
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -40,14 +40,9 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new the Table C++ object
+  // create the table proper
 
-  <tableNm> table::makeTable_NEEDS_WORK locals| pTable |
-
-   pTableDef pTable table.tableDef!
- 
-  // add partition columns
-  pTable table.createPtnDef
+  pTableDef <tableNm> table::createTable locals| pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables

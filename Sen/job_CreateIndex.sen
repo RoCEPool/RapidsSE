@@ -94,7 +94,7 @@
 //dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new the Index C++ object
+  // create the index proper
 
   pIndexDef <indexNm> pTable index::createIndex locals| pIndex |
   
