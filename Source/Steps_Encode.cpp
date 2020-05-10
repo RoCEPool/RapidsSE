@@ -22,9 +22,50 @@ void Step::vAddSteps_Encode(void)
   vAddStep("then"_Stz,                &Step::vEncodeThen,          true );
   vAddStep("until"_Stz,               &Step::vEncodeUntil,         true );
   
-  vAddStep("encode::call"_Stz,        &Step::vEncodeCall);
-  vAddStep("encode::push"_Stz,        &Step::vEncodePush);
+  vAddStep("encode::call"_Stz,        &Step::vEncodeCurrentCall);
+  vAddStep("encode::push"_Stz,        &Step::vEncodeCurrentPush);
+  
+//  vAddStep("encode.call"_Stz,        &Step::vEncodeCall);
+//  vAddStep("encode.push"_Stz,        &Step::vEncodePush);
 }
+
+/*----------------------------------------------------------------------------*/
+/* encode::call -- encode call                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeCurrentCall(void)
+{
+  ENTRY();
+  
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  
+  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+  
+  pCurrentWord->vEncodeCall(afpCalledEntryStep);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode::push -- encode push of value                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeCurrentPush(void)
+{
+  ENTRY();
+  
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  
+  Datum xVal;
+  m_pDataStack->vPopVal(xVal,__func__);
+
+  pCurrentWord->vEncodePush(xVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* again -- encode jump to known backward address                   immediate */
@@ -60,24 +101,6 @@ void Step::vEncodeAhead(void)
   // cstack: push unknown forward address
   m_pDataStack->vPushFip(aUnknownOrigin);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode::call -- encode call                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vEncodeCall(void)
-{
-  ENTRY();
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
-
-  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
-  
-  pCurrentWord->vEncodeCall(afpCalledEntryStep);
-
   EXIT();
 }
 
@@ -293,23 +316,6 @@ void Step::vEncodeNextPlus(void)
   
   pCurrentWord->vEncodeCall("rdiscard"_Stz);
   pCurrentWord->vEncodeCall("rdiscard"_Stz);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode::push -- encode push of value                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vEncodePush(void)
-{
-  ENTRY();
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  Datum xVal;
-  m_pDataStack->vPopVal(xVal,__func__);
-
-  pCurrentWord->vEncodePush(xVal);
   
   EXIT();
 }

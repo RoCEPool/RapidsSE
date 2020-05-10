@@ -1603,9 +1603,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
   Cell* aLastCell = pDoesWord->aLastCell();
   while (aDoes < aLastCell) {
     
-    StepFp fpHasStep = *aDoes->m_afpStep;
+    StepFp fpStep = *aDoes->m_afpStep;
     
-    Word* pCallsWord = pDicStack->pLocateWord(fpHasStep);
+    Word* pStepWord = pDicStack->pLocateWord(fpStep);
     
     // -- -- -- -- -- -- -- -- -- --
     // jump / jump false / jump true
@@ -1614,12 +1614,10 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
         *aDoes->m_afpStep == &Step::vFlowJumpFalse ||
         *aDoes->m_afpStep == &Step::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
-      
+      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
       aDoes++;
       
       vTrace(" %p\n"_Stz,aDoes->m_aJumpTo);
-      
       aDoes++;
       
       continue;
@@ -1628,10 +1626,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // push intval
     
-    if ( *aDoes->m_afpStep == &Step::vPushIntVal ) {
+    if (*aDoes->m_afpStep == &Step::vPushIntVal) {
       
-      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
-      
+      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
       aDoes++;
       
       IntVal* aIntVal = _aIntVal(aDoes);
@@ -1647,10 +1644,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // push ptrval
     
-    if ( *aDoes->m_afpStep == &Step::vPushPtrVal ) {
+    if (*aDoes->m_afpStep == &Step::vPushPtrVal) {
       
-      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
-      
+      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
       aDoes++;
       
       PtrVal* aPtrVal = _aPtrVal(aDoes);
@@ -1676,8 +1672,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
     
     if ( *aDoes->m_afpStep == &Step::vPushStzVal ) {
       
-      vTrace("%p: %s"_Stz,aDoes,pCallsWord->szWordNm());
-      
+      vTrace("%p: %s"_Stz,aDoes,pStepWord->szWordNm());
       aDoes++;
       
       StzVal* aStzVal = _aStzVal(aDoes);
@@ -1692,20 +1687,25 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
     
     // -- -- -- -- -- -- -- -- -- --
     // enter routine
-    if ( *aDoes->m_afpStep == &Step::vEnterRoutine ) {
+    if (*aDoes->m_afpStep == &Step::vEnterRoutine) {
       
-      Word* pCallsWord = Routine::pToWord(aDoes);
-      
-      vTrace("%p: %s\n"_Stz,aDoes,pCallsWord->szWordNm());
+      Cell* aEntryCell = *(Cell**)(aDoes->m_afpStep + 1);
+      Word* pEntryWord = Routine::pToWord(aEntryCell);
+
+      vTrace("%p: %s %s\n"_Stz,
+             aDoes,
+             pStepWord->szWordNm(),
+             pEntryWord->szWordNm());
       aDoes++;
+      
+      
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- --
     // call step
-    
-    vTrace("%p: %s\n"_Stz,aDoes,pCallsWord->szWordNm());
-    
+  
+    vTrace("%p: %s\n"_Stz,aDoes,pStepWord->szWordNm());
     aDoes++;
   }
   

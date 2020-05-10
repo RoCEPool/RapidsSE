@@ -250,9 +250,11 @@ public:
   void vDstackTuck(void);
 
   // encode
+  void vEncodeCurrentCall(void);
+  void vEncodeCurrentPush(void);
+
   void vEncodeAgain(void);
   void vEncodeAhead(void);
-  void vEncodeCall(void);
   void vEncodeContinue(void);
   void vEncodeHere(void);
   void vEncodeIf(void);
@@ -261,9 +263,9 @@ public:
   void vEncodeLoopPlus(void);
   void vEncodeNext(void);
   void vEncodeNextPlus(void);
-  void vEncodePush(void);
   void vEncodeThen(void);
   void vEncodeUntil(void);
+
 
   // ename-set
   void vTagSetAppendInt(void);

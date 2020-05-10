@@ -69,7 +69,18 @@
 
   pCatg pWord word.category!
 
- // more
+
+  1 pWord
+
+//  compiler::current!
+//
+//  pWord encode::push
+//
+//  POSTPONE word.object@
+//
+//  POSTPONE exit_rt
+
+  [ compiler::current@ word.see ]
 ;
 
 
