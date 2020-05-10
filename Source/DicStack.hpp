@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  static const i8 C_DIC_PATHDEPTH = 16;
+  static const i8 C_DIC_STACKDEPTH = 16;
 
   class DicStack : public Object
   {
@@ -13,7 +13,7 @@ namespace SenVM
     
   private:
     i8    m_iTop;
-    Dic*  m_pDic[C_DIC_PATHDEPTH];
+    Dic*  m_pDic[C_DIC_STACKDEPTH];
     
     // must be last
     Footer m_xFooter;

@@ -64,7 +64,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_DECACNT
   /* */ &Dump::vDummy,           // CN_DECIDER
   /* */ &Dic::vDump,             // CN_DIC
-  /* */ &Dump::vDummy,           // CN_DICPATH
   /* */ &DicStack::vDump,        // CN_DICSTACK
   /* */ &Dump::vInvalid,         // CN_DIR
   /* */ &Dump::vInvalid,         // CN_DTEVAL
@@ -406,7 +405,6 @@ i8 gnClassSize[]
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
   /* */ sizeof(Dic),                // CN_DIC
-  /* */ 0,//sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
   /* */ sizeof(DteVal),             // CN_DTEVAL
@@ -748,7 +746,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /* */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_DIC
-  /* */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* */ HT_TRANSIENT_SMALL,   // CN_DIR
   /* */ HT_INVALID,           // CN_DTEVAL
