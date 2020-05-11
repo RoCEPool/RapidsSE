@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : GridSanity_NodeInfo \handler
 
-  //"Operand:- ZK_STREAMSET" .verbose
+  //"Operand:- ZK_NODEINFO" .verbose
 
   Pipein[] to infoSet[]
   nullptr to Pipein[]
@@ -18,13 +18,13 @@
   infoSet[].firstRow to row[]
 
   // find the __nodeInfo table
-  C_TDEF_GRIDSANITY op__tableDef_streamSet assert
+  //C_TDEF_GRIDSANITY op__tableDef_streamSet assert
 
   // create a new stream defnition as per the nodeinfo being sent
-  streamSetTable[] streamDef[].new
+  //streamSetTable[] streamDef[].new
 
   // pipeout the streamDef
-  streamDef[].pipeout
+  //streamDef[].pipeout
 
   // create an infoSet operand
   streamSetTable[] streamSet[].new
@@ -43,6 +43,28 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER...                                                       */
+/*----------------------------------------------------------------------------*/
+: GridSanity_StartMarker \handler
+
+  //"Operand:- ZK_STARTMARKER" .verbose
+
+  Pipein[].pipeout
+
+  // find the __gridSanity table
+  C_TDEF_GRIDSANITY op__tableDef_streamSet assert
+
+  // create a new stream defnition as per the nodeinfo being sent
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeout
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* execute for gridSanity req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : GridSanity_req \operator
@@ -51,7 +73,8 @@
 
   op__topology
 
-  find: GridSanity_NodeInfo     ZK_NODEINFO op[].handler!
+  find: GridSanity_StartMarker ZK_STARTMARKER op[].handler!
+  find: GridSanity_NodeInfo    ZK_NODEINFO    op[].handler!
 
   op__loop
 
