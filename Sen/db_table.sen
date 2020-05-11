@@ -10,6 +10,18 @@
 : \table \\category ;
 
 /*----------------------------------------------------------------------------*/
+/* test name is a known table                                                 */
+/*----------------------------------------------------------------------------*/
+: name::isKnownTable params| sTableNm | ( t | f )
+
+  sTableNm folder[].findSymbol locals| pwWord |
+
+  pwWord not if false exit then
+
+  pwWord word.category@ find: \folder eql
+;
+
+/*----------------------------------------------------------------------------*/
 /* check word is not known (specifically not a known table)                EC */
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownTable params| sTableNm | ( t | ec f )
@@ -148,42 +160,43 @@
 //  true
 //;
 
+
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Create Table Support ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* make a tables folder under given named schema                              */
+/* make the "tables" folder under given named schema folder                   */
 /*----------------------------------------------------------------------------*/
-: table::makeTablesFolder params| sSchemaNm |
+: table::makeTablesFolder params| sSchFolderNm |
 
   args.tracepoint if
-    "MAKING TABLES FOR SCHEMA " sSchemaNm str.cat
+    "MAKING TABLES FOLDER FOR SCHEMA " sSchFolderNm str.cat
       " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  sSchemaNm find execute locals| pSchemaFolder |
-  "tables" pSchemaFolder folder::makeSubFolder
+  sSchFolderNm find execute locals| pwSchemaFolder |
+  "tables" pwSchemaFolder folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a tableNm folder under tables                                         */
+/* make a table folder under a tables folder                                  */
 /*----------------------------------------------------------------------------*/
-: table::makeTableFolder params| sTableNm |
+: table::makeTableFolder params| sTblFolderNm |
 
   args.tracepoint if
-    dup "MAKING TABLE " sTableNm str.cat
+    "MAKING TABLE " sTblFolderNm str.cat
      " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   // make: ../schemas/public/tables/t \folder
-  sTableNm folder[] folder::makeSubFolder
+  sTblFolderNm folder[] folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table using name on the stack (leaves table on stack)             */
+/* new an embedded c++ Table instance using given table name         EMBEDDED */
 /*----------------------------------------------------------------------------*/
-: table::newTableEmbObj params| sTableNm |
+: table::newTableEmbObj params| sTableNm | ( pwTable )
 
   find: \table CN_TABLE sizeof_table sTableNm :createObject locals| pwTable |
 
@@ -194,9 +207,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table using name on the stack (leaves table on stack)             */
+/* new a proper c++ Table instance using given table name              PROPER */
 /*----------------------------------------------------------------------------*/
-: table::newTablePrpObj params| sTableNm |
+: table::newTablePrpObj params| sTableNm | ( pwTable )
 
   find: \table locals| pTableCatg |
 
@@ -210,9 +223,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table using name on the stack (leaves table on stack)             */
+/* new a c++ Table instance using given table name                   EMBEDDED */
 /*----------------------------------------------------------------------------*/
-: table::newTable params| sTableNm |
+: table::newTable params| sTableNm | ( pTable )
 
   sTableNm table::newTableEmbObj locals| pwTable |
 
@@ -222,9 +235,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the table                                                           */
+/* create a table using given table definition                                */
 /*----------------------------------------------------------------------------*/
-: table::createTable params| sTableNm pTableDef |
+: table::createTable params| sTableNm pTableDef | ( pTable )
 
  folder[].isTables assert
 
@@ -243,6 +256,11 @@
  pTable
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Drop Table Support ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* delete C++ Table object & its forget word                         EMBEDDED */
 /*----------------------------------------------------------------------------*/
@@ -260,39 +278,65 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Table object & its forget word                                  */
+/* delete C++ Table object & its forget word                         EMBEDDED */
 /*----------------------------------------------------------------------------*/
-: table::deletetable params| sTableNm |
+: table::deleteTable params| sTableNm |
 
   sTableNm table::deleteTableEmbObj
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop a table                                                               */
+/* remove the table assembly (along with indexes sub-assembly)                */
+/*----------------------------------------------------------------------------*/
+: table::removeTableAssembly params| sTableNm |
+
+  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+
+  // push to named table folder
+  sTableNm path[].pushNamedTableFolder
+
+  // ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++
+
+    // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
+
+    // remove the index sub-assembly for this table
+    "index::removeIndexesFolder" find execute
+
+    // delete c++ Table object and forget the table word
+    sTableNm table::deleteTable
+
+    // pop back to table
+    path[].popNamedTableFolder
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+
+  // forget the named table folder
+  sTableNm folder::remove
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* drop named table (remove the table assembly and indexes sub-assembly)      */
 /*----------------------------------------------------------------------------*/
 : table::dropTable params| sTableNm |
 
-  0 locals| pTable |
+  /*
+   * This is called from : dropTable_PulseMarker in procedure drop table
+   *
+   * At this stage the table (and its indexes) will have been truncated
+   * All that remains to be done is remove the table and indexes assemblies
+   *
+   */
 
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 
-  // push to table folder
-  sTableNm path[].pushNamedTableFolder
+  sTableNm name::isKnownTable assert
 
-  "index::removeIndexesFolder" find execute
+  sTableNm table::removeTableAssembly
 
-  // delete Table object and forget the table word
-  sTableNm table::deletetable
-
-  // pop table
-  path[].popNamedTableFolder
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
-
-  // forget the table folder itself
-  sTableNm folder::remove
+  sTableNm name::isKnownTable not assert
 ;
 
 /*============================================================================*/
