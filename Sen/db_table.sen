@@ -273,23 +273,18 @@
 
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 
-  // move to table folder
+  // push to table folder
   sTableNm path[].pushNamedTableFolder
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // forget the words in the indexes folder
-  "indexes" find execute folder.forgetAllWords
-
-  // forget the indexes folder itself
-  "indexes" folder::remove
+  "index::removeIndexesFolder" find execute
 
   // forget the table itself
   sTableNm :forget
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   path[].popNamedTableFolder
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 

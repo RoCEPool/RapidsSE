@@ -209,21 +209,36 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+//: folder.forgetAllWords ( dic -- )
+//
+//  dup dic.lastWord not if discard exit_rt then
+//
+//  dup path[].pushFolder
+//
+//  begin
+//
+//    dup dic.lastWord word.name@ :forget
+//
+//    dup dic.lastWord not until
+//
+//  path[].popFolder
+//
+//  discard
+//;
+
+
+/*----------------------------------------------------------------------------*/
 /* remove the indexes folder (and contents) for named table                   */
 /*----------------------------------------------------------------------------*/
-: index::removeIndexesFolder params| sTableNm |
-
-  // move to table folder
-  sTableNm path[].pushNamedTableFolder
+: index::removeIndexesFolder
 
   // forget the words in the indexes folder
   "indexes" find execute folder.forgetAllWords
 
   // forget the indexes folder itself
   "indexes" folder::remove
-
-  // pop table
-  path[].popNamedTableFolder
 ;
 
 /*----------------------------------------------------------------------------*/
