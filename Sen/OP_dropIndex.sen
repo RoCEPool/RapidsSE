@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
-  <indexNm> <tableNm> index::deleteIndex
+  <indexNm> <tableNm> index::dropIndex
 
   Pipein[].pipeout
 

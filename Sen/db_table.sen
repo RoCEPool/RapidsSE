@@ -268,7 +268,7 @@
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: table::removeTable_NEEDS_WORK params| sTableNm |
+: table::dropTable params| sTableNm |
 
   0 locals| pTable |
 

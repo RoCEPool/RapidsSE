@@ -213,9 +213,9 @@
  * this is a compound action. prefer splitting it apart
  */
 
-: index::deleteIndex params| sTableNm sIndexNm |
+: index::dropIndex params| sTableNm sIndexNm |
 
-"in index::deleteIndex" .
+"in index::dropIndex" .
 
 symbols
 
