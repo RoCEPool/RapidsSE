@@ -61,7 +61,7 @@
 
   pInfoWrd word.TagSet@ locals| pInfTagSet |
 
-  "<cmdKind>" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then
+  "<cmdKind>" pInfTagSet tagSet.getInt CK_SERVICE == if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/

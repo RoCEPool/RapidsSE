@@ -1440,7 +1440,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<cmdKind>\\\" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then\n"
+    "  \\\"<cmdKind>\\\" pInfTagSet tagSet.getInt CK_SERVICE == if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
