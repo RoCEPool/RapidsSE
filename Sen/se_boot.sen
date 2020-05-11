@@ -61,8 +61,6 @@ assert::stack_0
         "job_Connector.sen"       include
         "job_Answer.sen"          include
 
-        "job_Alarm.sen"           include
-
         "job_BootCluster.sen"     include
 
         "job_ConnectCluster.sen"  include

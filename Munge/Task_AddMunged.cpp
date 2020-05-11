@@ -16447,8 +16447,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_Connector.sen\\\"       include\n"
     "        \\\"job_Answer.sen\\\"          include\n"
     "\n"
-    "        \\\"job_Alarm.sen\\\"           include\n"
-    "\n"
     "        \\\"job_BootCluster.sen\\\"     include\n"
     "\n"
     "        \\\"job_ConnectCluster.sen\\\"  include\n"
@@ -19138,71 +19136,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT se_word.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_Alarm.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_Alarm.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_Alarm.sen -- alarm job                                                 */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" job_Alarm.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* alarm loop:                                                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": alarm_req ( -- )\n"
-    "\n"
-    "  std_entryHook\n"
-    "\n"
-    "  \\\"Alarm Job Started\\\" .\n"
-    "\n"
-    "  begin\n"
-    "\n"
-    "    \\\"Alarm Job\\\" .\n"
-    "\n"
-    "    handler::serviceSleepQueue\n"
-    "\n"
-    "  again\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  // should never exit\n"
-    "  hazard\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/***                            - Definition -                              ***/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "cmdSyntax: alarm :: alarm ;\n"
-    "\n"
-    ": alarm _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
-    "  \n"
-    "  <jobKind>  = JK_LOCAL\n"
-    "  <rspKind>  = RS_NONE\n"
-    "  <ddlLock>  = DL_NONE\n"
-    "  \n"
-    "  //<preCheck> = bClusterStarted\n"
-    "  \n"
-    "  <cmdKind>  = CK_SERVICE\n"
-    "}\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Alarm.sen"_Stz
   ;
 
   vCompileMungedColon(sFileContents);
