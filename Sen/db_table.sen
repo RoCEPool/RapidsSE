@@ -192,15 +192,15 @@
 /*----------------------------------------------------------------------------*/
 /* make a tableNm folder under tables                                         */
 /*----------------------------------------------------------------------------*/
-: table::makeNamedFolder ( "<tableNm>" -- )
+: table::makeTableFolder params| sTableNm |
 
   args.tracepoint if
-    dup "MAKING TABLE " swap str.cat
+    dup "MAKING TABLE " sTableNm str.cat
      " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   // make: ../schemas/public/tables/t \folder
-  folder[] folder::makeSubFolder
+  sTableNm folder[] folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@
 
   pTableCatg pTable pwTable word.cppObject!
 
-  pwTable // returns:
+  pwTable
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -251,7 +251,7 @@
 
  folder[].isTables assert
 
- sTableNm table::makeNamedFolder
+ sTableNm table::makeTableFolder
 
  sTableNm path[].pushNamedTableFolder assert
 
