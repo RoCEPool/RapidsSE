@@ -20,7 +20,7 @@
   // check if max indexes already on table
 
   // push into t: ../schemas/public/tables/t \folder
-  <tableNm> path[].pushNamedTableFolder assert
+  <tableNm> path[].pushNamedTableFolder
 
   // check max indexes
   <tableNm> find execute locals| pTable |
@@ -69,7 +69,7 @@
   // change working folder to : ./t/indexes
 
   // cf to: ./t
-  <tableNm> path[].pushNamedTableFolder assert
+  <tableNm> path[].pushNamedTableFolder
 
   // cf to: ./indexes
   path[].pushIndexesFolder assert

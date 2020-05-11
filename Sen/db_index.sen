@@ -105,7 +105,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
@@ -206,6 +206,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* remove the indexes folder (and contents) for named table                   */
+/*----------------------------------------------------------------------------*/
+: index::removeIndexesFolder params| sTableNm |
+
+  // move to table folder
+  sTableNm path[].pushNamedTableFolder
+
+  // forget the words in the indexes folder
+  "indexes" find execute folder.forgetAllWords
+
+  // forget the indexes folder itself
+  "indexes" folder::remove
+
+  // pop table
+  path[].popNamedTableFolder
+;
+
+/*----------------------------------------------------------------------------*/
 /* delete an index (delete index tress in table, and forget word)             */
 /*----------------------------------------------------------------------------*/
 
@@ -228,7 +249,7 @@ sIndexNm .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
 "B" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

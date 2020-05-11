@@ -44,7 +44,7 @@
   sTableNm name::checkIsValidTable assert
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
   sTableNm find execute to infoSetTable[]
 
   // cross-check
@@ -76,7 +76,7 @@
   sTableNm name::checkIsValidTable assert
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
   sTableNm find execute to streamSetTable[]
 
   // cross-check
@@ -118,7 +118,7 @@
   then
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
   sTableNm find execute to table[]
   path[].popNamedTableFolder
 
@@ -146,7 +146,7 @@
   then
 
   // move to table folder
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -204,7 +204,7 @@
   then
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
   sTableNm find execute to table[]
 
   // cross-check
