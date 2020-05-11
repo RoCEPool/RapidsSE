@@ -228,6 +228,7 @@
 
     pFolder dic.lastWord word.name@ to sIndexNm
 
+    // delete Index object and forget index word
     sIndexNm index::deleteIndex
  
     pFolder dic.lastWord not until

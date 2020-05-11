@@ -265,6 +265,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* delete C++ Table object & its forget word                                  */
+/*----------------------------------------------------------------------------*/
+: table::deletetable params| sTableNm |
+
+  sTableNm :forget
+;
+
+/*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : table::dropTable params| sTableNm |
@@ -278,8 +286,8 @@
 
   "index::removeIndexesFolder" find execute
 
-  // forget the table itself
-  sTableNm :forget
+  // delete Table object and forget the table word
+  sTableNm table::deletetable
 
   // pop table
   path[].popNamedTableFolder
