@@ -10,7 +10,7 @@
 : \table \\category ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is not a known table/symbol                                     */
+/* check word is not known (specifically not a known table)                EC */
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownTable params| sTableNm | ( t | ec f )
 
@@ -19,9 +19,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if word is a table                                                    */
+/* test if word is a table (is of \table category)                            */
 /*----------------------------------------------------------------------------*/
-: word.isaTable params| pwTable |
+: word.isaTable params| pwTable | ( t | f )
 
   pwTable word.category@ find: \table eql
 ;
@@ -29,13 +29,13 @@
 /*----------------------------------------------------------------------------*/
 /* find the named table folder and push it onto task dictionary               */
 /*----------------------------------------------------------------------------*/
-: path[].pushNamedTableFolder params| sTableNm |
+: path[].pushNamedTableFolder params| sTblFolderNm |
 
-  sTableNm find execute path[].pushFolder
+  sTblFolderNm find execute path[].pushFolder
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop the folder (which was pushed by path[].pushNamedTableFolder)           */
+/* pop current folder (which was pushed by path[].pushNamedTableFolder)       */
 /*----------------------------------------------------------------------------*/
 : path[].popNamedTableFolder ( -- )
 
@@ -43,7 +43,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if current folder is ../tables                                        */
+/* test if current folder has the name "tables" (i.e. is ../tables)           */
 /*----------------------------------------------------------------------------*/
 : folder[].isTables ( t | f )
 
@@ -51,7 +51,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check current folder is ../tables                                          */
+/* check current folder has the name "tables" (i.e. is ../tables)          EC */
 /*----------------------------------------------------------------------------*/
 : folder[].checkIsTables ( t | ec f )
 
@@ -61,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check there is a table folder with given name                              */
+/* check there is a table folder with given name                           EC */
 /*----------------------------------------------------------------------------*/
 : folder[].checkNamedTableFolder params| sTblFolderNm | ( t | ec f )
 
@@ -70,7 +70,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if column is a valid column of the table                             */
+/* check if column is a valid column of the table                          EC */
 /*----------------------------------------------------------------------------*/
 : name::checkIsColumn params| sTableNm sColumnNm | ( t | ec f )
 
@@ -83,7 +83,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check given name is the name of a word of \table category                  */
+/* check given name is the name of a word of \table category               EC */
 /*----------------------------------------------------------------------------*/
 : name::checkIsaTable params| sTableNm | ( t | ec f )
 
@@ -95,42 +95,13 @@
 
   EC_NOT_A_TABLE false
 ;
-/*----------------------------------------------------------------------------*/
-//: name::checkIsaTable ( "<tableNm>" -- t | ec f )
-//
-//  find ( "<tableNm>" ^w:table )
-//
-//  dup ( "<tableNm>" ^w:table ^w:table )
-//  not ( "<tableNm>" ^w:table bool )
-//  if
-//    discard ( "<tableNm>" )
-//    discard ( )
-//    EC_NO_SUCH_TABLE false ( errorCode false )
-//    exit
-//  then
-//
-//  dup ( "<tableNm>" ^w:table ^w:table )
-//
-//  word.category@ ( "<tableNm>" ^w:table ^word )
-//  find: \table ( "<tableNm>" ^w:table ^word ^word )
-//  eql ( "<tableNm>" ^w:table bool )
-//  if
-//    discard ( "<tableNm>" )
-//    true ( "<tableNm>" true )
-//    exit
-//  then
-//
-//  discard ( "<tableNm>" )
-//  discard ( )
-//  EC_NOT_A_TABLE false ( errorCode false )
-//;
 
 /*----------------------------------------------------------------------------*/
-/* check if given name is a table                                             */
+/* check if given name is a valid table assembly                           EC */
 /*----------------------------------------------------------------------------*/
-: name::checkIsValidTable params| sTableNm | ( t | ec f )
+: table::checkValidTableAssembly params| sTableNm | ( t | ec f )
 
-  // check in tables folder
+  // check we are in tables folder
   folder[].checkIsTables not if false exit then
 
   // check if tableNm is a word in tables folder
@@ -139,20 +110,20 @@
   // push table folder
   sTableNm path[].pushNamedTableFolder
 
+  // check if sTableNm translates to a word of \table category
   sTableNm name::checkIsaTable not if path[].popNamedTableFolder false exit then
-  //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
-
+ 
   // pop table folder
   path[].popNamedTableFolder
 
-  // assert in tables
+  // assert we are back in tables
   folder[].isTables assert
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if sTableNm is a removable table folder                              */
+/* check if sTableNm is a removable table folder                           EC */
 /*----------------------------------------------------------------------------*/
 : table::checkRemovableFolder params| sTableNm | ( t | ec f )
 
