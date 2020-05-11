@@ -27,12 +27,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* find the table folder and push it onto task dictionary                     */
+/* find the named table folder and push it onto task dictionary               */
 /*----------------------------------------------------------------------------*/
-: path[].pushNamedTableFolder ( "<tableName>" -- )
+: path[].pushNamedTableFolder params| sTableNm |
 
-  find execute path[].pushFolder
-  true
+  sTableNm find execute path[].pushFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +129,7 @@
   sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
 
   sTableNm name::checkIsaTable not if path[].popNamedTableFolder false exit then
   //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
@@ -156,7 +155,7 @@
   sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
 
   sTableNm name::checkIsaTable not if "X3" . path[].popNamedTableFolder false exit then
   //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
@@ -252,7 +251,7 @@
 
  sTableNm table::makeTableFolder
 
- sTableNm path[].pushNamedTableFolder assert
+ sTableNm path[].pushNamedTableFolder
 
  sTableNm "index::makeIndexesFolder" find execute
 
@@ -277,7 +276,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to table folder
-  sTableNm path[].pushNamedTableFolder assert
+  sTableNm path[].pushNamedTableFolder
 
 //"B" . //symbols
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
