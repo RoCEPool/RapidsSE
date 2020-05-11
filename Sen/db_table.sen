@@ -83,36 +83,47 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check given name is a table                                                */
+/* check given name is the name of a word of \table category                  */
 /*----------------------------------------------------------------------------*/
-: name::checkIsaTable ( "<tableNm>" -- t | ec f )
+: name::checkIsaTable params| sTableNm | ( t | ec f )
 
-  find ( "<tableNm>" ^w:table )
+  sTableNm find locals| pwTable |
 
-  dup ( "<tableNm>" ^w:table ^w:table )
-  not ( "<tableNm>" ^w:table bool )
-  if
-    discard ( "<tableNm>" )
-    discard ( )
-    EC_NO_SUCH_TABLE false ( errorCode false )
-    exit
-  then
+  pwTable not if EC_NO_SUCH_TABLE false exit then
 
-  dup ( "<tableNm>" ^w:table ^w:table )
+  pwTable word.category@ find: \table eql if true exit then
 
-  word.category@ ( "<tableNm>" ^w:table ^word )
-  find: \table ( "<tableNm>" ^w:table ^word ^word )
-  eql ( "<tableNm>" ^w:table bool )
-  if
-    discard ( "<tableNm>" )
-    true ( "<tableNm>" true )
-    exit
-  then
-
-  discard ( "<tableNm>" )
-  discard ( )
-  EC_NOT_A_TABLE false ( errorCode false )
+  EC_NOT_A_TABLE false
 ;
+/*----------------------------------------------------------------------------*/
+//: name::checkIsaTable ( "<tableNm>" -- t | ec f )
+//
+//  find ( "<tableNm>" ^w:table )
+//
+//  dup ( "<tableNm>" ^w:table ^w:table )
+//  not ( "<tableNm>" ^w:table bool )
+//  if
+//    discard ( "<tableNm>" )
+//    discard ( )
+//    EC_NO_SUCH_TABLE false ( errorCode false )
+//    exit
+//  then
+//
+//  dup ( "<tableNm>" ^w:table ^w:table )
+//
+//  word.category@ ( "<tableNm>" ^w:table ^word )
+//  find: \table ( "<tableNm>" ^w:table ^word ^word )
+//  eql ( "<tableNm>" ^w:table bool )
+//  if
+//    discard ( "<tableNm>" )
+//    true ( "<tableNm>" true )
+//    exit
+//  then
+//
+//  discard ( "<tableNm>" )
+//  discard ( )
+//  EC_NOT_A_TABLE false ( errorCode false )
+//;
 
 /*----------------------------------------------------------------------------*/
 /* check if given name is a table                                             */

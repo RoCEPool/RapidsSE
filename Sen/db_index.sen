@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if sTableNm . sIndexNm is a removable index folder                   */
 /*----------------------------------------------------------------------------*/
-: index::checkRemovableFolder params| sTableNm sIndexNm | ( true | errorCode false )
+: index::checkRemovableFolder params| sTableNm sIndexNm |  ( t | ec f )
 
   // should be in the tables folder
   folder[].checkIsTables not if false exit then
