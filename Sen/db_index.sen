@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a known index/symbol                                     */
 /*----------------------------------------------------------------------------*/
-: name::isNotKnownIndex ( "<word>" )
+: name::isNotKnownIndex params| sIndexNm | ( -- t | ec f )
 
-  folder[].findSymbol not if true exit then
+  sIndexNm folder[].findSymbol not if true exit then
   EC_INDEX_EXISTS false
 ;
 

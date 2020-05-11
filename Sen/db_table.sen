@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a known table/symbol                                     */
 /*----------------------------------------------------------------------------*/
-: name::isNotKnownTable ( "<wordNm>" -- t|f )
+: name::isNotKnownTable params| sTableNm | ( -- t | ec f )
 
-  folder[].findSymbol not if true exit then
+  sTableNm folder[].findSymbol not if true exit then
   EC_TABLE_EXISTS false
 ;
 
