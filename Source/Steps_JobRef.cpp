@@ -12,6 +12,21 @@ void Step::vAddSteps_JobRef(void)
   vAddStep("JobRef[]"_Stz,         &Step::vJobRefPointer);
   vAddStep("JobRef[].none"_Stz,    &Step::vJobRefNone);
   vAddStep("JobRef[].return"_Stz,  &Step::vJobRefReturn);
+  vAddStep("JobRef[].hasTask"_Stz, &Step::vJobRefHasTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobRef[].hasTask -- does the jobRef have a task ?                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRefHasTask(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pRegSet->m_xpJobRef.pReferencedObject();
+  
+  m_pDataStack->vPushInt(pJob->pTask() ? true : false);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

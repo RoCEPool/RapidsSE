@@ -152,7 +152,7 @@
   Operand[].pipeOut
 
   // get the fetchTechnique
-  0 planner[].fetchTechnique@
+  Counter1[] planner[].fetchTechnique@
   case
     AT_SCAN of
       Subset[].nextBuffer to Operand[]
