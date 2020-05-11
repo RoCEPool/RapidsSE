@@ -227,7 +227,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete an index (delete index tress in table, and forget word)             */
+/* drop an index (delete index tress in table, and forget word)               */
 /*----------------------------------------------------------------------------*/
 
 /*
@@ -236,50 +236,32 @@
 
 : index::dropIndex params| sTableNm sIndexNm |
 
-"in index::dropIndex" .
-
-symbols
-
-sTableNm .
-sIndexNm .
-
-"A" .
-
   0 locals| pIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
   sTableNm path[].pushNamedTableFolder
-"B" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
   path[].pushIndexesFolder assert
-"C" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
   sIndexNm find execute to pIndex
-"D" .
   pIndex pIndex index.table@ table.deleteIndex
-"E" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
-  //pIndex index.tidyUp
-"F" .
   sIndexNm :forget
-"G" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes folder
   path[].popIndexesFolder
-"H" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
   path[].popNamedTableFolder
-"I" .
 ;
 
 /*============================================================================*/
