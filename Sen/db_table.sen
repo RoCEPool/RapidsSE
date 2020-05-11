@@ -182,7 +182,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a table folder under a tables folder                                  */
 /*----------------------------------------------------------------------------*/
-: table::makeTableFolder params| sTblFolderNm |
+: table::makeNamedTableFolder params| sTblFolderNm |
 
   args.tracepoint if
     "MAKING TABLE " sTblFolderNm str.cat
@@ -235,13 +235,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table using given table definition                                */
+/* make a table assembly (along with indexes sub-assembly)                    */
 /*----------------------------------------------------------------------------*/
-: table::createTable params| sTableNm pTableDef | ( pTable )
+: table::makeTableAssembly params| sTableNm pTableDef | ( pTable )
 
  folder[].isTables assert
 
- sTableNm table::makeTableFolder
+ sTableNm table::makeNamedTableFolder
 
  sTableNm path[].pushNamedTableFolder
 
@@ -254,6 +254,20 @@
  pTable table.createPtnDef
 
  path[].popNamedTableFolder
+
+ pTable
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a table using given table definition                                */
+/*----------------------------------------------------------------------------*/
+: table::createTable params| sTableNm pTableDef | ( pTable )
+
+ sTableNm name::isKnownTable not assert
+
+ pTableDef sTableNm table::makeTableAssembly locals| pTable |
+
+ sTableNm name::isKnownTable assert
 
  pTable
 ;
@@ -288,7 +302,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* remove the table assembly (along with indexes sub-assembly)                */
+/* remove a table assembly (along with indexes sub-assembly)                  */
 /*----------------------------------------------------------------------------*/
 : table::removeTableAssembly params| sTableNm |
 
