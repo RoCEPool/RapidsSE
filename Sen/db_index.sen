@@ -206,12 +206,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* delete C++ Index object & its forget word                                  */
 /*----------------------------------------------------------------------------*/
+: index::deleteIndex params| sIndexNm |
+
+  sIndexNm :forget
+;
 
 /*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/
 : folder.forgetAllWords params| pFolder |
+
+  0 locals| sIndexNm |
 
   pFolder dic.lastWord not if  exit_rt then
 
@@ -219,13 +226,14 @@
 
   begin
 
-    pFolder dic.lastWord word.name@ :forget
+    pFolder dic.lastWord word.name@ to sIndexNm
 
+    sIndexNm index::deleteIndex
+ 
     pFolder dic.lastWord not until
 
   path[].popFolder
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* remove the indexes folder (and contents) for named table                   */
