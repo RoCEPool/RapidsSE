@@ -94,7 +94,7 @@
 //dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the index proper
+  // create the index 
 
   pIndexDef <indexNm> pTable index::createIndex locals| pIndex |
   

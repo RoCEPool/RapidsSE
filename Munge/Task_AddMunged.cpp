@@ -2097,7 +2097,7 @@ void Task::vAddMunged(Forth* pForth)
     "//dbg>\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // create the index proper\n"
+    "  // create the index \n"
     "\n"
     "  pIndexDef <indexNm> pTable index::createIndex locals| pIndex |\n"
     "  \n"
