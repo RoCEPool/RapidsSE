@@ -125,28 +125,28 @@
 /*----------------------------------------------------------------------------*/
 /* check if sTableNm is a removable table folder                           EC */
 /*----------------------------------------------------------------------------*/
-: table::checkRemovableFolder params| sTableNm | ( t | ec f )
-
-  // check in tables folder
-  folder[].checkIsTables not if "X1" . false exit then
-
-  // check if tableNm is a word in tables folder
-  sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then
-
-  // push table folder
-  sTableNm path[].pushNamedTableFolder
-
-  sTableNm name::checkIsaTable not if "X3" . path[].popNamedTableFolder false exit then
-  //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
-
-  // pop table folder
-  path[].popNamedTableFolder
-
-  // assert in tables
-  folder[].isTables assert
-
-  true
-;
+//: table::checkRemovableFolder params| sTableNm | ( t | ec f )
+//
+//  // check in tables folder
+//  folder[].checkIsTables not if "X1" . false exit then
+//
+//  // check if tableNm is a word in tables folder
+//  sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then
+//
+//  // push table folder
+//  sTableNm path[].pushNamedTableFolder
+//
+//  sTableNm name::checkIsaTable not if "X3" . path[].popNamedTableFolder false exit then
+//  //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
+//
+//  // pop table folder
+//  path[].popNamedTableFolder
+//
+//  // assert in tables
+//  folder[].isTables assert
+//
+//  true
+//;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
