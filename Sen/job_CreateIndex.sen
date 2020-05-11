@@ -35,7 +35,7 @@
   // check name doesn't already exist
 
   // push into indexes: ../schemas/public/tables/t/indexes
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
   folder[].isIndexes assert
 
   // error if given name already exists
@@ -72,7 +72,7 @@
   <tableNm> path[].pushNamedTableFolder
 
   // cf to: ./indexes
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse cmd and create index definition

@@ -32,7 +32,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push into indexes folder
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   iPhrase pPlanner Planner.fetchTechnique@
   case

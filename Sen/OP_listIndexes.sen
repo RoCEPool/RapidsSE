@@ -35,7 +35,7 @@
   then
 
   // push indexes folder
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert

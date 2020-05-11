@@ -151,7 +151,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // move to indexes folder
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   sIndexNm name::checkIsaIndex not if
     op.pipelineJob@ ERROR_JOB
@@ -213,7 +213,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // move to indexes folder
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   sIndexNm name::checkIsaIndex not if
     op.pipelineJob@ ERROR_JOB

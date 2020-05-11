@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a known table/symbol                                     */
 /*----------------------------------------------------------------------------*/
-: name::isNotKnownTable params| sTableNm | ( -- t | ec f )
+: name::isNotKnownTable params| sTableNm | ( t | ec f )
 
   sTableNm folder[].findSymbol not if true exit then
   EC_TABLE_EXISTS false
@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* pop the folder (which was pushed by path[].pushNamedTableFolder)           */
 /*----------------------------------------------------------------------------*/
-: path[].popNamedTableFolder
+: path[].popNamedTableFolder ( -- )
 
   path[].popFolder
 ;
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if current folder is ../tables                                        */
 /*----------------------------------------------------------------------------*/
-: folder[].isTables ( -- t|f )
+: folder[].isTables ( t | f )
 
   folder[] dic.name@ "tables" str.equal
 ;
@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /* check current folder is ../tables                                          */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsTables ( -- t|f )
+: folder[].checkIsTables ( t | ec f )
 
   folder[].isTables if true exit then
 
@@ -61,20 +61,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check there is a table folder                                              */
+/* check there is a table folder with given name                              */
 /*----------------------------------------------------------------------------*/
-: folder[].checkNamedTableFolder  ( "<tableName>" -- )
+: folder[].checkNamedTableFolder params| sTblFolderNm | ( t | ec f )
 
-  folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
+  sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
   true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* check if column is a valid column of the table                             */
 /*----------------------------------------------------------------------------*/
-: name::checkIsColumn ( "<columnNm>" "<tableNm>" -- t|f )
+: name::checkIsColumn params| sTableNm sColumnNm | ( t | ec f )
 
-  params| sTableNm sColumnNm |
   0 locals| pTable |
 
   sTableNm find execute to pTable
@@ -86,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* check given name is a table                                                */
 /*----------------------------------------------------------------------------*/
-: name::checkIsaTable ( "<tableNm>" -- true | errorCode false )
+: name::checkIsaTable ( "<tableNm>" -- t | ec f )
 
   find ( "<tableNm>" ^w:table )
 
@@ -116,11 +115,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a table                                                   */
+/* check if given name is a table                                             */
 /*----------------------------------------------------------------------------*/
-: name::checkIsValidTable ( "<tableNm>" -- true | errorCode false )
-
-  params| sTableNm |
+: name::checkIsValidTable params| sTableNm | ( t | ec f )
 
   // check in tables folder
   folder[].checkIsTables not if false exit then
@@ -146,7 +143,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if sTableNm is a removable table folder                              */
 /*----------------------------------------------------------------------------*/
-: table::checkRemovableFolder params| sTableNm | ( true | errorCode false )
+: table::checkRemovableFolder params| sTableNm | ( t | ec f )
 
   // check in tables folder
   folder[].checkIsTables not if "X1" . false exit then

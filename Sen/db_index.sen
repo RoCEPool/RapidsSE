@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a known index/symbol                                     */
 /*----------------------------------------------------------------------------*/
-: name::isNotKnownIndex params| sIndexNm | ( -- t | ec f )
+: name::isNotKnownIndex params| sIndexNm | ( t | ec f )
 
   sIndexNm folder[].findSymbol not if true exit then
   EC_INDEX_EXISTS false
@@ -32,13 +32,12 @@
 : path[].pushIndexesFolder ( -- )
 
   "indexes" find execute path[].pushFolder
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* pop the indexes folder (which was pushed by path[].pushIndexesFolder)      */
 /*----------------------------------------------------------------------------*/
-: path[].popIndexesFolder
+: path[].popIndexesFolder ( -- )
 
   path[].popFolder
 ;
@@ -46,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if in an indexes folder                                               */
 /*----------------------------------------------------------------------------*/
-: folder[].isIndexes
+: folder[].isIndexes ( t | f )
 
   folder[] dic.name@ "indexes" str.equal
 ;
@@ -54,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if in an indexes folder                                              */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsIndexes
+: folder[].checkIsIndexes ( t | ec f )
 
   folder[].isIndexes if true exit then
 
@@ -109,7 +108,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
@@ -282,7 +281,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  path[].pushIndexesFolder assert
+  path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
