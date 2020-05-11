@@ -14,6 +14,7 @@ EXE="${EXE_PATH}/rapidsse"
 START_PARAMS="--name NODE0 --node NODE0 127.0.0.1 5541 --size 4GB --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"
 START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands ${ROOT_DIR}/Commands --command _connectCluster --appendTrace"
 
+START_CLUSTER_OUTPUT_FILE="${ROOT_DIR}/startCluster.log"
 
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH
@@ -56,7 +57,7 @@ rm "${NOHUP_FILE}" &>/dev/null
 
 
 echo "Starting SE."  | tee -a "${NOHUP_FILE}"
-nohup ${EXE} ${START_PARAMS} $@ >> "${NOHUP_FILE}" 2>&1 &
+nohup "${EXE}" ${START_PARAMS} $@ >> "${NOHUP_FILE}" 2>&1 &
 
 # get the last pid and save it to a file
 PID=$!
@@ -84,9 +85,24 @@ fi
 # Run the start cluster command
 
 echo "Starting the SE cluster"
-OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS} 2>&1)
 
-if [ $? -ne 0 ]
+rm "${START_CLUSTER_OUTPUT_FILE}" 2>/dev/null
+timeout -k 15s 15s "${EXE}" ${START_CLUSTER_PARAMS} 1>${START_CLUSTER_OUTPUT_FILE} 2>&1 &
+wait $!
+START_CLUSTER_EXIT_STATUS="$?"
+OUTPUT=$(cat "${START_CLUSTER_OUTPUT_FILE}" 2>/dev/null)
+
+if [ "${START_CLUSTER_EXIT_STATUS}" -eq 124 ]
+then
+    >&2 echo "ERROR: The _bootCluster command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the _bootCluster command:" 1>&2
+  cat "${OUTPUT}"
+
+  >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2
+  cat "${NOHUP_FILE}"
+
+  exit 1
+
+elif [ "${START_CLUSTER_EXIT_STATUS}" -ne 0 ]
 then
   >&2 echo "ERROR: Could not run the _bootCluster command on RapidsSE. Here is the output of the _bootCluster command:" 1>&2
   cat "${OUTPUT}"
