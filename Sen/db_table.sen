@@ -177,16 +177,17 @@
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
 /*----------------------------------------------------------------------------*/
-: table::makeTablesFolder ( "<tableNm>" -- )
+: table::makeTablesFolder params| sSchemaNm |
 
   args.tracepoint if
-    dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    "MAKING TABLES FOR SCHEMA " sSchemaNm str.cat
+      " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  find execute ( dic )
-  "tables"     ( dic "tables" )
-  swap         ( "tables" dic )
-  folder::makeSubFolder   ( )
+  sSchemaNm find execute ( dic )
+  "tables"               ( dic "tables" )
+  swap                   ( "tables" dic )
+  folder::makeSubFolder  ( )
 ;
 
 /*----------------------------------------------------------------------------*/
