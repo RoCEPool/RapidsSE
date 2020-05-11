@@ -133,7 +133,7 @@
 /*----------------------------------------------------------------------------*/
 /* make an indexes folder under given named table foler                       */
 /*----------------------------------------------------------------------------*/
-: index::makeIndexesFolder params| sTableNm |
+: index::makeIndexesAssembly params| sTableNm |
 
   args.tracepoint if
     "MAKING INDEXES FOR TABLE " sTableNm str.cat

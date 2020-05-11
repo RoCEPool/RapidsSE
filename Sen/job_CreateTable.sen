@@ -40,14 +40,12 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the table 
+  // create the table
 
   pTableDef <tableNm> table::createTable locals| pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move back to ./tables
 
-  path[].popNamedTableFolder
   folder[].isTables assert
 ;
 
