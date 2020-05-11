@@ -10,6 +10,8 @@ ROOT_DIR="${DIR}/../.."
 EXE_PATH="${ROOT_DIR}/Linux/bin"
 EXE="${EXE_PATH}/rapidsse"
 
+START_CLUSTER_OUTPUT_FILE="${ROOT_DIR}/startCluster.log"
+
 # Declare some arrays to hold custom values for each node.
 # We can't use an associative array because it won't work on MacOS due to the old
 # version of bash (v3).
@@ -122,9 +124,24 @@ done
 # Run the start cluster command
 
 echo "Starting the SE cluster"
-OUTPUT=$(${EXE} ${START_CLUSTER_PARAMS_ARR[0]} 2>&1)
 
-if [ $? -ne 0 ]
+rm "${START_CLUSTER_OUTPUT_FILE}" 2>/dev/null
+timeout -k 15s 15s "${EXE}" ${START_CLUSTER_PARAMS_ARR[0]} 1>${START_CLUSTER_OUTPUT_FILE} 2>&1 &
+wait $!
+START_CLUSTER_EXIT_STATUS="$?"
+OUTPUT=$(cat "${START_CLUSTER_OUTPUT_FILE}" 2>/dev/null)
+
+if [ "${START_CLUSTER_EXIT_STATUS}" -eq 124 ]
+then
+    >&2 echo "ERROR: The _bootCluster command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the _bootCluster command:" 1>&2
+  cat "${OUTPUT}"
+
+  >&2 echo "And here is the output of RapidsSE's nohup file (${NODES[0]}):" 1>&2
+  cat "${NOHUP_FILE_ARR[${NODES[0]}]}"
+
+  exit 1
+
+elif [ "${START_CLUSTER_EXIT_STATUS}" -ne 0 ]
 then
   >&2 echo "ERROR: Could not run the startcluster command on RapidsSE. Here is the output of the startcluster command:" 1>&2
   cat "${OUTPUT}"
