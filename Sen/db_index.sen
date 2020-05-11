@@ -211,22 +211,22 @@
 /*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/
-//: folder.forgetAllWords ( dic -- )
-//
-//  dup dic.lastWord not if discard exit_rt then
-//
-//  dup path[].pushFolder
-//
-//  begin
-//
-//    dup dic.lastWord word.name@ :forget
-//
-//    dup dic.lastWord not until
-//
-//  path[].popFolder
-//
-//  discard
-//;
+: folder.forgetAllWords ( dic -- )
+
+  dup dic.lastWord not if discard exit_rt then
+
+  dup path[].pushFolder
+
+  begin
+
+    dup dic.lastWord word.name@ :forget
+
+    dup dic.lastWord not until
+
+  path[].popFolder
+
+  discard
+;
 
 
 /*----------------------------------------------------------------------------*/
