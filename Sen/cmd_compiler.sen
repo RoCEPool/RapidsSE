@@ -34,8 +34,11 @@
 /*----------------------------------------------------------------------------*/
 : .generateService params| pInfoWd |
 
+  // pInfoWd word.name@ "Gen service using _info : %v" .printf
+
   // calc the name of the service
   "_" pInfoWd word.name@ str.removeSuffix locals| sServiceNm |
+
 
   sServiceNm "Service name: %v\n" .printf
 
@@ -142,7 +145,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSeeds_info params| pInfoWd |
 
-  pInfoWd word.name@ "Add seeds using _info : %v" .printf
+  // pInfoWd word.name@ "Add seeds using _info : %v" .printf
 
   pInfoWd _info.aboutGenericJob if
     pInfoWd cmd::addSeedsFor_genericJob
@@ -159,7 +162,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::addSettings_info params| pInfoWd |
 
-  pInfoWd word.name@ "Adding default tags for : %v" .printf
+  // pInfoWd word.name@ "Adding default tags for : %v" .printf
 
   pInfoWd word.tagSet@ locals| pInfTags |
 
@@ -202,8 +205,6 @@
 /*----------------------------------------------------------------------------*/
 : cmd::genService_info params| pInfoWd |
 
-  pInfoWd word.name@ "Gen service using _info : %v" .printf
-
   pInfoWd _info.aboutServiceCmd if
     pInfoWd .generateService
   then
@@ -222,7 +223,7 @@
 
   0 locals| sText |
 
-  sCmdNm "LiteOP: %v" .printf
+  // sCmdNm "LiteOP: %v" .printf
 
   // synthesize : cmdNm_PulseMarker
   "/liteOp/" sCmdNm tpl_liteOp_PulseMarker str.replace to sText
@@ -243,7 +244,7 @@
 
   0 0 locals| sText iParams |
 
-  sCmdNm "LiteOP: %v" .printf
+  // sCmdNm "LiteOP: %v" .printf
 
   // synthesize procedure depending on no of parameters
   "<params>" pInfTags tagSet.hasName assert
@@ -273,7 +274,7 @@
 
   0 locals| sText |
 
-  sCmdNm "LocalLiteOP: %v" .printf
+  // sCmdNm "LocalLiteOP: %v" .printf
 
   // synthesize : cmdNm_PulseMarker
   "/localLiteOp/" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText
@@ -294,7 +295,7 @@
 
   0 0 locals| sText iParams |
 
-  sCmdNm "LocalLiteOP: %v" .printf
+  // sCmdNm "LocalLiteOP: %v" .printf
 
   // synthesize procedure depending on no of parameters
   "<params>" pInfTags tagSet.hasName assert
@@ -319,7 +320,7 @@
 /*----------------------------------------------------------------------------*/
 : cmd::synthWords_info params| pInfoWd |
 
-  pInfoWd word.name@ "Synth proc using _info : %v" .printf
+  // pInfoWd word.name@ "Synth proc using _info : %v" .printf
 
   pInfoWd _info.aboutLiteOp if
     pInfoWd cmd::synthWordsFor_liteOp
