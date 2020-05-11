@@ -184,10 +184,8 @@
       " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  sSchemaNm find execute ( dic )
-  "tables"               ( dic "tables" )
-  swap                   ( "tables" dic )
-  folder::makeSubFolder  ( )
+  sSchemaNm find execute locals| pSchemaFolder |
+  "tables" pSchemaFolder folder::makeSubFolder
 ;
 
 /*----------------------------------------------------------------------------*/
