@@ -41,7 +41,7 @@
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm
-    sTableNm "path[].pushNamedTableFolder" find execute  assert
+    sTableNm path[].pushNamedTableFolder assert
     sTableNm find execute to table[]
 
     // skip definition only tables
