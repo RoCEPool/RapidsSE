@@ -10,6 +10,28 @@
 : \table \\category ;
 
 /*----------------------------------------------------------------------------*/
+/* test if word is a table (is of \table category)                            */
+/*----------------------------------------------------------------------------*/
+: word.isaTable params| pwTable | ( t | f )
+
+  pwTable word.category@ find: \table eql
+;
+
+/*----------------------------------------------------------------------------*/
+/* check given name is the name of a word of \table category               EC */
+/*----------------------------------------------------------------------------*/
+: name::checkIsaTable params| sTableNm | ( t | ec f )
+
+  sTableNm find locals| pwTable |
+
+  pwTable not if EC_NO_SUCH_TABLE false exit then
+
+  pwTable word.category@ find: \table eql if true exit then
+
+  EC_NOT_A_TABLE false
+;
+
+/*----------------------------------------------------------------------------*/
 /* test name is a known table                                                 */
 /*----------------------------------------------------------------------------*/
 : name::isKnownTable params| sTableNm | ( t | f )
@@ -28,30 +50,6 @@
 
   sTableNm folder[].findSymbol not if true exit then
   EC_TABLE_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if word is a table (is of \table category)                            */
-/*----------------------------------------------------------------------------*/
-: word.isaTable params| pwTable | ( t | f )
-
-  pwTable word.category@ find: \table eql
-;
-
-/*----------------------------------------------------------------------------*/
-/* find the named table folder and push it onto task dictionary               */
-/*----------------------------------------------------------------------------*/
-: path[].pushNamedTableFolder params| sTblFolderNm |
-
-  sTblFolderNm find execute path[].pushFolder
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop current folder (which was pushed by path[].pushNamedTableFolder)       */
-/*----------------------------------------------------------------------------*/
-: path[].popNamedTableFolder ( -- )
-
-  path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +80,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* find the named table folder and push it onto task dictionary               */
+/*----------------------------------------------------------------------------*/
+: path[].pushNamedTableFolder params| sTblFolderNm |
+
+  sTblFolderNm find execute path[].pushFolder
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop current folder (which was pushed by path[].pushNamedTableFolder)       */
+/*----------------------------------------------------------------------------*/
+: path[].popNamedTableFolder ( -- )
+
+  path[].popFolder
+;
+
+/*----------------------------------------------------------------------------*/
 /* check if column is a valid column of the table                          EC */
 /*----------------------------------------------------------------------------*/
 : name::checkIsColumn params| sTableNm sColumnNm | ( t | ec f )
@@ -92,20 +106,6 @@
   sColumnNm pTable table.isColumn if true exit then
 
   EC_INVALID_COLUMN false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check given name is the name of a word of \table category               EC */
-/*----------------------------------------------------------------------------*/
-: name::checkIsaTable params| sTableNm | ( t | ec f )
-
-  sTableNm find locals| pwTable |
-
-  pwTable not if EC_NO_SUCH_TABLE false exit then
-
-  pwTable word.category@ find: \table eql if true exit then
-
-  EC_NOT_A_TABLE false
 ;
 
 /*----------------------------------------------------------------------------*/
