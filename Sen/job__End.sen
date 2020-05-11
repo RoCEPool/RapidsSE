@@ -59,6 +59,13 @@
   pJob__End job.id@ locals| iJobId |
   iJobId plist::findJob discard
 
+  // stall till job's previous phase (task) has completed
+  begin
+    jobRef[].hasTask
+  while
+    task::yield
+  repeat
+
   // execute the end seed of the job on this participating node
   JM_SEED_END JobRef[] job.seed!
   JobRef[] job.scheduleNextPhase

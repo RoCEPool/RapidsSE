@@ -615,11 +615,10 @@ public:
   void vJobWaitParticipant(void);
 
   // job ref
+  void vJobRefHasTask(void);
   void vJobRefPointer(void);
   void vJobRefNone(void);
   void vJobRefReturn(void);
-
-
 
   // job generic
   void vJob__BegunNew(void);
