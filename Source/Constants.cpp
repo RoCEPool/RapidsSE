@@ -744,10 +744,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)false);
   #endif
       
-  #ifdef WITH_CPP_DIC
-  vAddConstant("WITH_CPP_DIC"_Stz,(i8)true);
+  #ifdef WITH_OBJ_PROPER
+  vAddConstant("WITH_OBJ_PROPER"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_CPP_DIC"_Stz,(i8)false);
+  vAddConstant("WITH_OBJ_PROPER"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_DEBUG_VERSION
