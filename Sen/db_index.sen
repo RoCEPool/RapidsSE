@@ -60,40 +60,25 @@
   EC_INDEX_EXISTS false
 ;
 
-
-
-
-
 /*----------------------------------------------------------------------------*/
-/* check word is of \index category                                           */
+/* check given name is the name of a word of \index category               EC */
 /*----------------------------------------------------------------------------*/
-: name::checkIsaIndex ( "<indexNm>" -- true | errorCode false )
+: check::nameIsaIndex params| sIndexNm | ( t | ec f )
 
-  0 locals| indexPtr indexNm |
+  sIndexNm find locals| pwIndex |
 
-  indexNm find ( indexPtr )
-  to indexPtr
+  pwIndex not if EC_NO_SUCH_INDEX false exit then
 
-  indexPtr
-  not ( indexPtr bool )
+  pwIndex word.category@ find: \index eql if true exit then
 
-  if
-    EC_NO_SUCH_INDEX false ( errorCode false )
-  exit
-  then
-
-  indexPtr ( indexPtr )
-  word.category@ ( ^word )
-  find: \index ( ^word ^word )
-  eql ( bool )
-  if
-    true ( true )
-    exit
-  then
-
-
-  EC_NOT_AN_INDEX false ( errorCode false )
+  EC_NOT_AN_INDEX false
 ;
+
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* check if sTableNm . sIndexNm is a removable index folder                   */
@@ -110,13 +95,12 @@
   // push table dictionary
   sTableNm path[].pushNamedTableFolder
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push indexes folder
+// push indexes folder
   path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
-  sIndexNm name::checkIsaIndex not if
+  sIndexNm check::nameIsaIndex not if
     path[].popIndexesFolder
     path[].popNamedTableFolder
     folder[].isTables assert
@@ -126,7 +110,7 @@
 
   path[].popIndexesFolder
   path[].popNamedTableFolder
-
+  folder[].isTables assert
   true
 ;
 

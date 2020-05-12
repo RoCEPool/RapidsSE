@@ -61,6 +61,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check word is not known (specifically not a known table)                EC */
+/*----------------------------------------------------------------------------*/
+: check::nameIsUnknownTable params| sTableNm | ( t | ec f )
+
+  sTableNm folder[].findSymbol not if true exit then
+  EC_TABLE_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check given name is the name of a word of \table category               EC */
 /*----------------------------------------------------------------------------*/
 : check::nameIsaTable params| sTableNm | ( t | ec f )
@@ -85,15 +94,6 @@
   sColumnNm pTable table.isColumn if true exit then
 
   EC_INVALID_COLUMN false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check word is not known (specifically not a known table)                EC */
-/*----------------------------------------------------------------------------*/
-: check::nameIsUnknownTable params| sTableNm | ( t | ec f )
-
-  sTableNm folder[].findSymbol not if true exit then
-  EC_TABLE_EXISTS false
 ;
 
 /*----------------------------------------------------------------------------*/
