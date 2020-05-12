@@ -213,7 +213,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Index object & its forget word                                  */
+/* delete C++ Index object & its forget word                         EMBEDDED */
 /*----------------------------------------------------------------------------*/
 : index::deleteIndexEmbObj params| sIndexNm |
 
@@ -221,7 +221,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Index object & its forget word                                  */
+/* delete C++ Index object & its forget word                           PROPER */
 /*----------------------------------------------------------------------------*/
 : index::deleteIndexPrpObj params| sIndexNm |
 
@@ -229,7 +229,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Index object & its forget word                                  */
+/* delete C++ Index object & its forget word                         EMBEDDED */
 /*----------------------------------------------------------------------------*/
 : index::deleteIndex params| sIndexNm |
 
@@ -239,11 +239,6 @@
 /*----------------------------------------------------------------------------*/
 /* drop an index (delete index tress in table, and forget word)               */
 /*----------------------------------------------------------------------------*/
-
-/*
- * this is a compound action. prefer splitting it apart
- */
-
 : index::dropIndex params| sTableNm sIndexNm |
 
   0 locals| pIndex |
@@ -279,9 +274,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* forget all words in given dictionary                                       */
+/* delete all the indexes of a table                                          */
 /*----------------------------------------------------------------------------*/
-: folder.forgetAllWords params| pFolder |
+: index::deleteAllIndexes params| pFolder |
 
   0 locals| sIndexNm |
 
@@ -302,18 +297,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* remove the indexes folder (and contents) for named table                   */
+/* remove the indexes folder (and contents) for assumed table                 */
 /*----------------------------------------------------------------------------*/
 : index::removeIndexesAssembly
 
-  // forget the words in the indexes folder
-  "indexes" find execute folder.forgetAllWords
+ /*
+  * This wil be called from : table::removeTableAssembly
+  *
+  * At this stage the table (and its indexes) will have been truncated
+  */
+
+  // delete and forget all indexes
+  "indexes" find execute index::deleteAllIndexes
 
   // forget the indexes folder itself
   "indexes" folder::remove
 ;
-
-
 
 /*============================================================================*/
 /* end                                                                        */
