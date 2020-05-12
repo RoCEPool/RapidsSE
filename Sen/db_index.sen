@@ -111,13 +111,17 @@
 
 
 /*----------------------------------------------------------------------------*/
-/*                          -- Create Index Support --                        */
+/*                   -- Supplemental Create Table Support --                  */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* make an indexes folder under given named table foler                       */
 /*----------------------------------------------------------------------------*/
 : index::makeIndexesAssembly params| sTableNm |
+
+/*
+ * called from : table::makeTableAssembly
+ */
 
   args.tracepoint if
     "MAKING INDEXES FOR TABLE " sTableNm str.cat
@@ -128,8 +132,13 @@
   "indexes" pTableFolder folder::makeSubFolder
 ;
 
+
 /*----------------------------------------------------------------------------*/
-/* create an index using name on the stack (leaves index on stack)            */
+/*                          -- Create Index Support --                        */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* new an embedded c++ Index instance using given index name         EMBEDDED */
 /*----------------------------------------------------------------------------*/
 : index::newIndexEmbObj params| sIndexNm |
 
@@ -142,7 +151,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the c++ index object given its name (returns pIndex)                */
+/* new a proper c++ Index instance using given index name              PROPER */
 /*----------------------------------------------------------------------------*/
 : index::newIndexPrpObj params| sIndexNm |
 
@@ -158,7 +167,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* new a C++ Index object                                                     */
+/* new a C++ Index instance using given table name                   EMBEDDED */
 /*----------------------------------------------------------------------------*/
 : index::newIndex params| sIndexNm |
 
@@ -172,7 +181,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the index proper                                                    */
+/* create an index using given index definition                               */
 /*----------------------------------------------------------------------------*/
 : index::createIndex params| pTable sIndexNm pIndexDef |
 
