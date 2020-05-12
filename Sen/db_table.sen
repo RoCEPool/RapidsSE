@@ -278,7 +278,7 @@
     // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
 
     // remove the index sub-assembly for this table
-    "index::removeIndexesFolder" find execute
+    "index::removeIndexesAssembly" find execute
 
     // delete c++ Table object and forget the table word
     sTableNm table::deleteTable

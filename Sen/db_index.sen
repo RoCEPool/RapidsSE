@@ -208,7 +208,6 @@
 ;
 
 
-
 /*----------------------------------------------------------------------------*/
 /*                           -- Drop Index Support --                         */
 /*----------------------------------------------------------------------------*/
@@ -235,41 +234,6 @@
 : index::deleteIndex params| sIndexNm |
 
   sIndexNm index::deleteIndexEmbObj
-;
-
-/*----------------------------------------------------------------------------*/
-/* forget all words in given dictionary                                       */
-/*----------------------------------------------------------------------------*/
-: folder.forgetAllWords params| pFolder |
-
-  0 locals| sIndexNm |
-
-  pFolder dic.lastWord not if  exit_rt then
-
-  pFolder path[].pushFolder
-
-  begin
-
-    pFolder dic.lastWord word.name@ to sIndexNm
-
-    // delete Index object and forget index word
-    sIndexNm index::deleteIndex
- 
-    pFolder dic.lastWord not until
-
-  path[].popFolder
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove the indexes folder (and contents) for named table                   */
-/*----------------------------------------------------------------------------*/
-: index::removeIndexesFolder
-
-  // forget the words in the indexes folder
-  "indexes" find execute folder.forgetAllWords
-
-  // forget the indexes folder itself
-  "indexes" folder::remove
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -309,6 +273,47 @@
   // pop table folder
   path[].popNamedTableFolder
 ;
+
+/*----------------------------------------------------------------------------*/
+/*                    -- Supplemental Drop Table Support --                   */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+: folder.forgetAllWords params| pFolder |
+
+  0 locals| sIndexNm |
+
+  pFolder dic.lastWord not if  exit_rt then
+
+  pFolder path[].pushFolder
+
+  begin
+
+    pFolder dic.lastWord word.name@ to sIndexNm
+
+    // delete Index object and forget index word
+    sIndexNm index::deleteIndex
+ 
+    pFolder dic.lastWord not until
+
+  path[].popFolder
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove the indexes folder (and contents) for named table                   */
+/*----------------------------------------------------------------------------*/
+: index::removeIndexesAssembly
+
+  // forget the words in the indexes folder
+  "indexes" find execute folder.forgetAllWords
+
+  // forget the indexes folder itself
+  "indexes" folder::remove
+;
+
+
 
 /*============================================================================*/
 /* end                                                                        */
