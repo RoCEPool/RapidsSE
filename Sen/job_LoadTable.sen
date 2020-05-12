@@ -172,7 +172,7 @@
   DdlLock[].grabRead
 
   // there should be a table folder
-  sTableNm folder[].checkNamedTableFolder not if pJob_LoadTable ERROR_JOB !!logError exit then
+  sTableNm check::folderIsNamedTable not if pJob_LoadTable ERROR_JOB !!logError exit then
   //sTableNm "In table folder: %v" .printf
 
   // push table dictionary

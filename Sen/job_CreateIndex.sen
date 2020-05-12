@@ -14,7 +14,7 @@
 
   // check there is a sub-folder by the name of the table
   //   ../schemas/public/tables/t
-  <tableNm> folder[].checkNamedTableFolder not if false exit then
+  <tableNm> check::folderIsNamedTable not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table

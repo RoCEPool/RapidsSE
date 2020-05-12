@@ -42,6 +42,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check current folder has the name "tables" (i.e. is ../tables)          EC */
+/*----------------------------------------------------------------------------*/
+: check::folderIsTables ( t | ec f )
+
+  folder[].isTables if true exit then
+
+  EC_NOT_IN_TABLES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check there is a table folder with given name                           EC */
+/*----------------------------------------------------------------------------*/
+: check::folderIsNamedTable params| sTblFolderNm | ( t | ec f )
+
+  sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* check given name is the name of a word of \table category               EC */
 /*----------------------------------------------------------------------------*/
 : check::nameIsaTable params| sTableNm | ( t | ec f )
@@ -56,34 +75,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is not known (specifically not a known table)                EC */
-/*----------------------------------------------------------------------------*/
-: check::nameIsUnknownTable params| sTableNm | ( t | ec f )
-
-  sTableNm folder[].findSymbol not if true exit then
-  EC_TABLE_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check current folder has the name "tables" (i.e. is ../tables)          EC */
-/*----------------------------------------------------------------------------*/
-: check::folderIsTables ( t | ec f )
-
-  folder[].isTables if true exit then
-
-  EC_NOT_IN_TABLES false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check there is a table folder with given name                           EC */
-/*----------------------------------------------------------------------------*/
-: folder[].checkNamedTableFolder params| sTblFolderNm | ( t | ec f )
-
-  sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if column is a valid column of the table                          EC */
 /*----------------------------------------------------------------------------*/
 : check::nameIsColumn params| sTableNm sColumnNm | ( t | ec f )
@@ -94,6 +85,15 @@
   sColumnNm pTable table.isColumn if true exit then
 
   EC_INVALID_COLUMN false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check word is not known (specifically not a known table)                EC */
+/*----------------------------------------------------------------------------*/
+: check::nameIsUnknownTable params| sTableNm | ( t | ec f )
+
+  sTableNm folder[].findSymbol not if true exit then
+  EC_TABLE_EXISTS false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -121,32 +121,6 @@
 
   true
 ;
-
-/*----------------------------------------------------------------------------*/
-/* check if sTableNm is a removable table folder                           EC */
-/*----------------------------------------------------------------------------*/
-//: table::checkRemovableFolder params| sTableNm | ( t | ec f )
-//
-//  // check in tables folder
-//  check::folderIsTables not if "X1" . false exit then
-//
-//  // check if tableNm is a word in tables folder
-//  sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then
-//
-//  // push table folder
-//  sTableNm path[].pushNamedTableFolder
-//
-//  sTableNm name::checkIsaTable not if "X3" . path[].popNamedTableFolder false exit then
-//  //sTableNm tableInUse if path[].popNamedTableFolder EC_TABLE_IN_USE false exit then
-//
-//  // pop table folder
-//  path[].popNamedTableFolder
-//
-//  // assert in tables
-//  folder[].isTables assert
-//
-//  true
-//;
 
 
 /*----------------------------------------------------------------------------*/
