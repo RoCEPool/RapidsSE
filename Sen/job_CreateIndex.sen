@@ -39,7 +39,7 @@
   folder[].isIndexes assert
 
   // error if given name already exists
-  <indexNm> name::isNotKnownIndex not if
+  <indexNm> check::nameIsUnknownIndex not if
     path[].popIndexesFolder
     path[].popNamedTableFolder
     folder[].isTables assert

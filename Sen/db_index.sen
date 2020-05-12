@@ -51,18 +51,18 @@
   EC_NOT_IN_INDEXES false
 ;
 
-
-
-
-
 /*----------------------------------------------------------------------------*/
-/* check word is not a known index/symbol                                     */
+/* check word is not known (specifically not a known index)                   */
 /*----------------------------------------------------------------------------*/
-: name::isNotKnownIndex params| sIndexNm | ( t | ec f )
+: check::nameIsUnknownIndex params| sIndexNm | ( t | ec f )
 
   sIndexNm folder[].findSymbol not if true exit then
   EC_INDEX_EXISTS false
 ;
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* check word is of \index category                                           */
