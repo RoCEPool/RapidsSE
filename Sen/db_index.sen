@@ -10,20 +10,19 @@
 : \index \\category ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is not a known index/symbol                                     */
-/*----------------------------------------------------------------------------*/
-: name::isNotKnownIndex params| sIndexNm | ( t | ec f )
-
-  sIndexNm folder[].findSymbol not if true exit then
-  EC_INDEX_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if word is an index                                                   */
+/* test if word is an index (is of \index category)                           */
 /*----------------------------------------------------------------------------*/
 : word.isaIndex params| pwIndex |
 
   pwIndex word.category@ find: \index eql
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if current folder has the name "indexes" (i.e. is ../indexes)          */
+/*----------------------------------------------------------------------------*/
+: folder[].isIndexes ( t | f )
+
+  folder[] dic.name@ "indexes" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,21 +42,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if in an indexes folder                                               */
-/*----------------------------------------------------------------------------*/
-: folder[].isIndexes ( t | f )
-
-  folder[] dic.name@ "indexes" str.equal
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if in an indexes folder                                              */
 /*----------------------------------------------------------------------------*/
-: folder[].checkIsIndexes ( t | ec f )
+: check::folderIsIndexes ( t | ec f )
 
   folder[].isIndexes if true exit then
 
   EC_NOT_IN_INDEXES false
+;
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* check word is not a known index/symbol                                     */
+/*----------------------------------------------------------------------------*/
+: name::isNotKnownIndex params| sIndexNm | ( t | ec f )
+
+  sIndexNm folder[].findSymbol not if true exit then
+  EC_INDEX_EXISTS false
 ;
 
 /*----------------------------------------------------------------------------*/
