@@ -74,16 +74,10 @@
   EC_NOT_AN_INDEX false
 ;
 
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
-/* check if sTableNm . sIndexNm is a removable index folder                   */
+/* check if sTableNm . sIndexNm is a valid index assembly                     */
 /*----------------------------------------------------------------------------*/
-: index::checkRemovableFolder params| sTableNm sIndexNm |  ( t | ec f )
+: check::validIndexAssembly params| sTableNm sIndexNm |  ( t | ec f )
 
   // should be in the tables folder
   check::folderIsTables not if false exit then
@@ -111,11 +105,13 @@
   path[].popIndexesFolder
   path[].popNamedTableFolder
   folder[].isTables assert
+
   true
 ;
 
+
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*                          -- Create Index Support --                        */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -191,6 +187,12 @@
 
   pIndex
 ;
+
+
+
+/*----------------------------------------------------------------------------*/
+/*                           -- Drop Index Support --                         */
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* delete C++ Index object & its forget word                                  */
