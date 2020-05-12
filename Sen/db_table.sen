@@ -18,53 +18,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check given name is the name of a word of \table category               EC */
-/*----------------------------------------------------------------------------*/
-: name::checkIsaTable params| sTableNm | ( t | ec f )
-
-  sTableNm find locals| pwTable |
-
-  pwTable not if EC_NO_SUCH_TABLE false exit then
-
-  pwTable word.category@ find: \table eql if true exit then
-
-  EC_NOT_A_TABLE false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check word is not known (specifically not a known table)                EC */
-/*----------------------------------------------------------------------------*/
-: name::isNotKnownTable params| sTableNm | ( t | ec f )
-
-  sTableNm folder[].findSymbol not if true exit then
-  EC_TABLE_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
 /* test if current folder has the name "tables" (i.e. is ../tables)           */
 /*----------------------------------------------------------------------------*/
 : folder[].isTables ( t | f )
 
   folder[] dic.name@ "tables" str.equal
-;
-
-/*----------------------------------------------------------------------------*/
-/* check current folder has the name "tables" (i.e. is ../tables)          EC */
-/*----------------------------------------------------------------------------*/
-: folder[].checkIsTables ( t | ec f )
-
-  folder[].isTables if true exit then
-
-  EC_NOT_IN_TABLES false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check there is a table folder with given name                           EC */
-/*----------------------------------------------------------------------------*/
-: folder[].checkNamedTableFolder params| sTblFolderNm | ( t | ec f )
-
-  sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -84,9 +42,51 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check given name is the name of a word of \table category               EC */
+/*----------------------------------------------------------------------------*/
+: check::nameIsaTable params| sTableNm | ( t | ec f )
+
+  sTableNm find locals| pwTable |
+
+  pwTable not if EC_NO_SUCH_TABLE false exit then
+
+  pwTable word.category@ find: \table eql if true exit then
+
+  EC_NOT_A_TABLE false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check word is not known (specifically not a known table)                EC */
+/*----------------------------------------------------------------------------*/
+: check::nameIsUnknownTable params| sTableNm | ( t | ec f )
+
+  sTableNm folder[].findSymbol not if true exit then
+  EC_TABLE_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check current folder has the name "tables" (i.e. is ../tables)          EC */
+/*----------------------------------------------------------------------------*/
+: check::folderIsTables ( t | ec f )
+
+  folder[].isTables if true exit then
+
+  EC_NOT_IN_TABLES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check there is a table folder with given name                           EC */
+/*----------------------------------------------------------------------------*/
+: folder[].checkNamedTableFolder params| sTblFolderNm | ( t | ec f )
+
+  sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* check if column is a valid column of the table                          EC */
 /*----------------------------------------------------------------------------*/
-: name::checkIsColumn params| sTableNm sColumnNm | ( t | ec f )
+: check::nameIsColumn params| sTableNm sColumnNm | ( t | ec f )
 
   0 locals| pTable |
 
@@ -102,7 +102,7 @@
 : table::checkValidTableAssembly params| sTableNm | ( t | ec f )
 
   // check we are in tables folder
-  folder[].checkIsTables not if false exit then
+  check::folderIsTables not if false exit then
 
   // check if tableNm is a word in tables folder
   sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
@@ -111,7 +111,7 @@
   sTableNm path[].pushNamedTableFolder
 
   // check if sTableNm translates to a word of \table category
-  sTableNm name::checkIsaTable not if path[].popNamedTableFolder false exit then
+  sTableNm check::nameIsaTable not if path[].popNamedTableFolder false exit then
  
   // pop table folder
   path[].popNamedTableFolder
@@ -128,7 +128,7 @@
 //: table::checkRemovableFolder params| sTableNm | ( t | ec f )
 //
 //  // check in tables folder
-//  folder[].checkIsTables not if "X1" . false exit then
+//  check::folderIsTables not if "X1" . false exit then
 //
 //  // check if tableNm is a word in tables folder
 //  sTableNm word::isKnown not if "X2" . discard EC_NO_SUCH_TABLE false exit then

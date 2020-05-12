@@ -97,7 +97,7 @@
 : index::checkRemovableFolder params| sTableNm sIndexNm |  ( t | ec f )
 
   // should be in the tables folder
-  folder[].checkIsTables not if false exit then
+  check::folderIsTables not if false exit then
 
   // there should be a table folder
   sTableNm folder[].checkNamedTableFolder not if false exit then

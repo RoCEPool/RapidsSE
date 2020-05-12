@@ -10,10 +10,10 @@
 : createTable::checkCreate ( -- true | errorCode false )
 
   // check in tables folder: ../schemas/public/tables
-  folder[].checkIsTables not if false exit then
+  check::folderIsTables not if false exit then
   
   // error if given name already exists
-  <tableNm> name::isNotKnownTable not if false exit then
+  <tableNm> check::nameIsUnknownTable not if false exit then
 
   true
 ;

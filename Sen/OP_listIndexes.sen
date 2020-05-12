@@ -24,7 +24,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm name::checkIsaTable not if
+  sTableNm check::nameIsaTable not if
     path[].popNamedTableFolder
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete

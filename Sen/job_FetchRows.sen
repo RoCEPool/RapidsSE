@@ -74,7 +74,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  folder[].checkIsTables not if false exit then
+  check::folderIsTables not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check table folder exists
@@ -86,12 +86,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm name::checkIsaTable not if path[].popNamedTableFolder false exit then
+  sTableNm check::nameIsaTable not if path[].popNamedTableFolder false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if retrieving column, check it is a valid column
   "" sColumnNm str.equal not if
-    sColumnNm sTableNm name::checkIsColumn not if path[].popNamedTableFolder false exit then
+    sColumnNm sTableNm check::nameIsColumn not if path[].popNamedTableFolder false exit then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
