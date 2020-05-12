@@ -100,7 +100,7 @@
   check::folderIsTables not if false exit then
 
   // there should be a table folder
-  sTableNm check::folderIsNamedTable not if false exit then
+  sTableNm check::folderHasNamedTable not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary

@@ -41,7 +41,7 @@
   str.toStrVec path[].set
 
   // table
-  sTableNm table::checkValidTableAssembly assert
+  sTableNm check::validTableAssembly assert
 
   // move to table folder and find the table
   sTableNm path[].pushNamedTableFolder
@@ -73,7 +73,7 @@
   str.toStrVec path[].set
 
   // table
-  sTableNm table::checkValidTableAssembly assert
+  sTableNm check::validTableAssembly assert
 
   // move to table folder and find the table
   sTableNm path[].pushNamedTableFolder
@@ -108,7 +108,7 @@
   then
 
   // table
-  sTableNm table::checkValidTableAssembly not if
+  sTableNm check::validTableAssembly not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -194,7 +194,7 @@
   then
 
   // table
-  sTableNm table::checkValidTableAssembly not if
+  sTableNm check::validTableAssembly not if
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker

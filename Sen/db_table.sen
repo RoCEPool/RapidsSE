@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* check there is a table folder with given name                           EC */
 /*----------------------------------------------------------------------------*/
-: check::folderIsNamedTable params| sTblFolderNm | ( t | ec f )
+: check::folderHasNamedTable params| sTblFolderNm | ( t | ec f )
 
   sTblFolderNm folder[].findSymbol not if EC_NO_SUCH_TABLE false exit then
   true
@@ -99,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if given name is a valid table assembly                           EC */
 /*----------------------------------------------------------------------------*/
-: table::checkValidTableAssembly params| sTableNm | ( t | ec f )
+: check::validTableAssembly params| sTableNm | ( t | ec f )
 
   // check we are in tables folder
   check::folderIsTables not if false exit then

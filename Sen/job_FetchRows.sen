@@ -78,7 +78,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check table folder exists
-  sTableNm check::folderIsNamedTable not if false exit then
+  sTableNm check::folderHasNamedTable not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
