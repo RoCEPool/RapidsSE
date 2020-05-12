@@ -239,17 +239,9 @@
 /*----------------------------------------------------------------------------*/
 /* drop an index (delete index tress in table, and forget word)               */
 /*----------------------------------------------------------------------------*/
-: index::dropIndex params| sTableNm sIndexNm |
+: index::removeIndexAssembly params| sTableNm sIndexNm |
 
   0 locals| pIndex |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table dictionary
-  sTableNm path[].pushNamedTableFolder
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push indexes folder
-  path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
@@ -259,12 +251,28 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
   sIndexNm :forget
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop an index (delete index tress in table, and forget word)               */
+/*----------------------------------------------------------------------------*/
+: index::dropIndex params| sTableNm sIndexNm |
+
+  // push table dictionary
+  sTableNm path[].pushNamedTableFolder
+
+  // push indexes folder
+  path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sIndexNm sTableNm index::removeIndexAssembly
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // pop indexes folder
   path[].popIndexesFolder
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
   path[].popNamedTableFolder
 ;
