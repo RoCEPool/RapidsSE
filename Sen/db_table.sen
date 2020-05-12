@@ -32,18 +32,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test name is a known table                                                 */
-/*----------------------------------------------------------------------------*/
-: name::isKnownTable params| sTableNm | ( t | f )
-
-  sTableNm folder[].findSymbol locals| pwWord |
-
-  pwWord not if false exit then
-
-  pwWord word.category@ find: \folder eql
-;
-
-/*----------------------------------------------------------------------------*/
 /* check word is not known (specifically not a known table)                EC */
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownTable params| sTableNm | ( t | ec f )
@@ -263,11 +251,11 @@
 /*----------------------------------------------------------------------------*/
 : table::createTable params| sTableNm pTableDef | ( pTable )
 
- sTableNm name::isKnownTable not assert
+ sTableNm name::isSubFolder not assert
 
  pTableDef sTableNm table::makeTableAssembly locals| pTable |
 
- sTableNm name::isKnownTable assert
+ sTableNm name::isSubFolder assert
 
  pTable
 ;
@@ -348,11 +336,11 @@
 
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 
-  sTableNm name::isKnownTable assert
+  sTableNm name::isSubFolder assert
 
   sTableNm table::removeTableAssembly
 
-  sTableNm name::isKnownTable not assert
+  sTableNm name::isSubFolder not assert
 ;
 
 /*============================================================================*/
