@@ -181,11 +181,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create an index using given index definition                               */
+/* make an index assembly for given table                                     */
 /*----------------------------------------------------------------------------*/
-: index::createIndex params| pTable sIndexNm pIndexDef |
-
-  folder[].isIndexes assert
+: index::makeIndexAssembly params| pTable sIndexNm pIndexDef |
 
   sIndexNm index::newIndex locals| pIndex |
 
@@ -193,6 +191,18 @@
   pTable pIndex index.table!
 
   pIndex pTable table.addIndex
+
+  pIndex
+;
+
+/*----------------------------------------------------------------------------*/
+/* create an index using given index definition                               */
+/*----------------------------------------------------------------------------*/
+: index::createIndex params| pTable sIndexNm pIndexDef |
+
+  folder[].isIndexes assert
+
+  pIndexDef sIndexNm pTable index::makeIndexAssembly locals| pIndex |
 
   pIndex
 ;

@@ -201,8 +201,6 @@
 /*----------------------------------------------------------------------------*/
 : table::makeTableAssembly params| sTableNm pTableDef | ( pTable )
 
- folder[].isTables assert
-
  sTableNm table::makeNamedTableFolder
 
  sTableNm path[].pushNamedTableFolder
@@ -225,10 +223,12 @@
 /*----------------------------------------------------------------------------*/
 : table::createTable params| sTableNm pTableDef | ( pTable )
 
+ folder[].isTables assert
  sTableNm name::isSubFolder not assert
 
  pTableDef sTableNm table::makeTableAssembly locals| pTable |
 
+ folder[].isTables assert
  sTableNm name::isSubFolder assert
 
  pTable
