@@ -74,7 +74,7 @@ bool Correctness::bTraceWith(Stz* szWith)
     return true;
 #endif
     
-#ifdef WITH_CPP_DIC
+#if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   if (szWith->bSame("WITH_CPP_DIC"_Stz))
     return true;
 #endif
@@ -226,7 +226,7 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
 #endif
     
-#ifdef WITH_CPP_DIC
+#if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   vTrace("  WITH_CPP_DIC\n"_Stz);
 #endif
   
