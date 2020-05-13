@@ -76,7 +76,6 @@ assert::stack_0
 
         "Job_LoadTable.sen"       include
 
-        "Job_Periodic.sen"        include
         "Job_Pipeline.sen"        include
 
         "Job_Service.sen"             include
