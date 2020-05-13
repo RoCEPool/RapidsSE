@@ -288,6 +288,7 @@ void Constants::vAddConstantsCpp(void)
 
   /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
   /*    */ vAddConstant("CN_JOB_COPYBUFFER"_Stz,     CN_JOB_COPYBUFFER);
+  /*    */ vAddConstant("CN_JOB_DISTRIBUTED"_Stz,    CN_JOB_DISTRIBUTED);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_LOCAL"_Stz,          CN_JOB_LOCAL);

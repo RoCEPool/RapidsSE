@@ -139,6 +139,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_JOB__FIND
   /* */ &Dump::vDummy,           // CN_JOB_BOOT
   /* */ &Dump::vDummy,           // CN_JOB_COPYBUFFER
+  /* */ &Dump::vDummy,           // CN_JOB_DISTRIBUTED
   /* */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /* */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /* */ &Dump::vDummy,           // CN_JOB_LOCAL
@@ -481,6 +482,7 @@ i8 gnClassSize[]
   /* */ sizeof(Job__Find),          // CN_JOB__FIND
   /* */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /* */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
+  /* */ sizeof(Job_Universal),      // CN_JOB_DISTRIBUTED
   /* */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /* */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /* */ sizeof(Job_Universal),      // CN_JOB_LOCAL
@@ -823,6 +825,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB__FIND
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER
+  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_DISTRIBUTED
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_LOCAL
