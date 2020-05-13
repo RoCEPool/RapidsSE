@@ -28,11 +28,11 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("]"_Stz,                      &Step::vCompilerCompiling);
   
   vAddStep("[["_Stz,                     &Step::vCompilerPostponing,      true);
-  vAddStep("]]"_Stz,                     &Step::vCompilerCompiling,       true);
+  vAddStep("]]"_Stz,                     &Step::vCompilerCompiling);
   
   vAddStep("[?"_Stz,                     &Step::vCompilerCondBegin,       true);
-  vAddStep("?if"_Stz,                    &Step::vCompilerCondTest,        true);
-  vAddStep("?else"_Stz,                  &Step::vCompilerCondElse);
+  vAddStep("?if"_Stz,                    &Step::vCompilerCondTest);
+  vAddStep("?else"_Stz,                  &Step::vCompilerCondElse,        true);
   vAddStep("?]"_Stz,                     &Step::vCompilerCondEnd,         true);
 }
 
@@ -50,7 +50,7 @@ void Step::vCompilerIsCompiling(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsCompiling = CM_COMPILING == eMode;
+  i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILING == eMode);
   
   m_pDataStack->vPushInt(iIsCompiling);
   
@@ -257,7 +257,7 @@ void Step::vCompilerCondTest(void)
   i8 iCondTest = m_pDataStack->iPopInt(__func__);
   
   if (iCondTest)
-    m_pCompiler->vMode(CM_COMPILING);
+    m_pCompiler->vMode(CM_CONDCOMPILING);
   else
     m_pCompiler->vMode(CM_DISCARDING);
 
@@ -273,10 +273,11 @@ void Step::vCompilerCondElse(void)
    
   eCM eMode = m_pCompiler->eMode();
 
-  if (CM_COMPILING == eMode)
+  if (CM_CONDCOMPILING == eMode)
     m_pCompiler->vMode(CM_DISCARDING);
   else
-    m_pCompiler->vMode(CM_COMPILING);
+  if (CM_DISCARDING == eMode)
+    m_pCompiler->vMode(CM_CONDCOMPILING);
 
   EXIT();
 }
@@ -288,8 +289,10 @@ void Step::vCompilerCondEnd(void)
 {
   ENTRY();
     
+  eCM eMode = m_pCompiler->eMode();
+
   m_pCompiler->vMode(CM_COMPILING);
-  
+
   EXIT();
 }
 
