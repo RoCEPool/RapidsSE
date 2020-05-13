@@ -154,6 +154,7 @@ public:
   void vCompilerCurrentStore(void);
   void vCompilerInterpreting(void);
   void vCompilerIsCompiling(void);
+  void vCompilerIsDiscarding(void);
   void vCompilerIsInterpreting(void);
   void vCompilerIsPostponing(void);
   void vCompilerNestedFetch(void);
