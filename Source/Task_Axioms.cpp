@@ -41,6 +41,7 @@ void Task::vAddAxioms(void)
   
   ": interpret"
     
+  
   //" \"((a))\" . "
   // -- -- -- -- -- -- --
   // read next input token
@@ -55,14 +56,17 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  
-  
+  //" \"((b))\" .put input::chars . "
   // -- -- -- -- -- -- --
   // test for discarding
+  "  compiler::isDiscarding if"
+  "    input::chars \"?]\" str.equal if"
+  "      compiler::compiling"
+  "    then"
+  "    reenter"
+  "  then"
   
   
-  
-
   //" \"((c))\" . "
   // -- -- -- -- -- -- --
   // is token an integer?
