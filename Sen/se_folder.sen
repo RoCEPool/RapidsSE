@@ -144,31 +144,7 @@
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-//: :makeFolder params| sFolderNm |
-//
-//diclock.grabwrite
-//
-//  find: \folder
-//  CN_DIC
-//  sizeof_dic
-//  sFolderNm
-//    :createObject
-//      locals| pFolder |
-//
-//  pFolder word.embObject dic.init
-//
-//diclock.dropwrite
-//
-//  args.verbose if
-//    pFolder word.name@
-//    path[].toStr
-//      "Created folder %v/%v" .printf
-//  then
-//
-//  pFolder // returns:
-//;
-/*----------------------------------------------------------------------------*/
-: :makeFolder params| sFolderNm |
+: :makeFolder_v1 params| sFolderNm |
 
 diclock.grabwrite
 
@@ -189,6 +165,51 @@ diclock.dropwrite
   then
 
   pFolder // returns:
+;
+
+/*----------------------------------------------------------------------------*/
+/* make new folder given name (create does> rtn and leave pFolder on stack)   */
+/*----------------------------------------------------------------------------*/
+: :makeFolder_v2 params| sFolderNm |
+
+diclock.grabwrite
+
+  find: \folder
+  dic::new
+  sFolderNm
+    :createCppObject
+      locals| pFolder |
+
+  sFolderNm pFolder word.object@ dic.name!
+
+diclock.dropwrite
+
+  args.verbose if
+    pFolder word.name@
+    path[].toStr
+      "Created folder %v/%v" .printf
+  then
+
+  pFolder // returns:
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* make new folder given name (create does> rtn and leave pFolder on stack)   */
+/*----------------------------------------------------------------------------*/
+: :makeFolder params| sFolderNm |
+
+  [? WITH_OBJ_PROPER ?if
+
+    sFolderNm :makeFolder_v2 locals| pFolder |
+
+  ?else
+
+   sFolderNm :makeFolder_v1 locals| pFolder |
+
+  ?]
+
+  pFolder
 ;
 
 /*----------------------------------------------------------------------------*/
