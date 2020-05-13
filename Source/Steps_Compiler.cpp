@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Compiler(void)
 {
-  vAddStep("compiler::isCompiling"_Stz,  &Step::vCompilerIsCompiling);
-  vAddStep("compiler::isDiscarding"_Stz, &Step::vCompilerIsDiscarding);
-  vAddStep("compiler::isPostponing"_Stz, &Step::vCompilerIsPostponing);
+  vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
+  vAddStep("compiler::isDiscarding"_Stz,   &Step::vCompilerIsDiscarding);
+  vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
+  vAddStep("compiler::isPostponing"_Stz,   &Step::vCompilerIsPostponing);
   
   vAddStep("compiler::compiling"_Stz,    &Step::vCompilerCompiling);
   vAddStep("compiler::interpreting"_Stz, &Step::vCompilerInterpreting);
@@ -49,7 +50,7 @@ void Step::vCompilerIsCompiling(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILE == eMode);
+  i8 iIsCompiling = CM_COMPILING == eMode;
   
   m_pDataStack->vPushInt(iIsCompiling);
   
@@ -65,7 +66,7 @@ void Step::vCompilerIsDiscarding(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsDiscarding = CM_CONDDISCARD == eMode;
+  i8 iIsDiscarding = CM_DISCARDING == eMode;
   
   m_pDataStack->vPushInt(iIsDiscarding);
 
@@ -81,7 +82,7 @@ void Step::vCompilerIsInterpreting(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsInterpreting = (CM_INTERPRETING == eMode) || (CM_CONDBEGIN == eMode);
+  i8 iIsInterpreting = CM_INTERPRETING == eMode;
   
   m_pDataStack->vPushInt(iIsInterpreting);
 
@@ -117,6 +118,18 @@ void Step::vCompilerCompiling(void)
   ENTRY();
   
   m_pCompiler->vMode(CM_COMPILING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compiler::discarding -- change to discarding mode                          */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerDiscarding(void)
+{
+  ENTRY();
+  
+  m_pCompiler->vMode(CM_DISCARDING);
   
   EXIT();
 }
@@ -229,7 +242,7 @@ void Step::vCompilerCondBegin(void)
 {
   ENTRY();
     
-  m_pCompiler->vMode(CM_CONDBEGIN);
+  m_pCompiler->vMode(CM_INTERPRETING);
 
   EXIT();
 }
@@ -244,9 +257,9 @@ void Step::vCompilerCondTest(void)
   i8 iCondTest = m_pDataStack->iPopInt(__func__);
   
   if (iCondTest)
-    m_pCompiler->vMode(CM_CONDCOMPILE);
+    m_pCompiler->vMode(CM_COMPILING);
   else
-    m_pCompiler->vMode(CM_CONDDISCARD);
+    m_pCompiler->vMode(CM_DISCARDING);
 
   EXIT();
 }
@@ -260,10 +273,10 @@ void Step::vCompilerCondElse(void)
    
   eCM eMode = m_pCompiler->eMode();
 
-  if (CM_CONDCOMPILE == eMode)
-    m_pCompiler->vMode(CM_CONDDISCARD);
+  if (CM_COMPILING == eMode)
+    m_pCompiler->vMode(CM_DISCARDING);
   else
-    m_pCompiler->vMode(CM_CONDCOMPILE);
+    m_pCompiler->vMode(CM_COMPILING);
 
   EXIT();
 }

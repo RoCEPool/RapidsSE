@@ -152,6 +152,7 @@ public:
   void vCompilerCondTest(void);
   void vCompilerCurrentFetch(void);
   void vCompilerCurrentStore(void);
+  void vCompilerDiscarding(void);
   void vCompilerInterpreting(void);
   void vCompilerIsCompiling(void);
   void vCompilerIsDiscarding(void);
