@@ -11726,6 +11726,44 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_schemaTest.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_schemaTest.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_schemaTest.sen -- schema test                                           */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_schemaTest.sen\\\" .verbose\n"
+    "\n"
+    ": schemaTest \\\"\\\" utility::schemaTest ;\n"
+    "\n"
+    ": schemaTestAll\n"
+    "\n"
+    "  \\\"A\\\" utility::schemaTest\n"
+    "  \\\"B\\\" utility::schemaTest\n"
+    "  \\\"C\\\" utility::schemaTest\n"
+    "  \\\"D\\\" utility::schemaTest\n"
+    "  \\\"E\\\" utility::schemaTest\n"
+    "  \\\"F\\\" utility::schemaTest\n"
+    "  \\\"G\\\" utility::schemaTest\n"
+    "  \\\"H\\\" utility::schemaTest\n"
+    "  \\\"I\\\" utility::schemaTest\n"
+    "  \\\"J\\\" utility::schemaTest\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_schemaTest.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dropIndex.sen
 
   sFileContents =
@@ -16712,6 +16750,7 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"se_demons.sen\\\"               include\n"
     "        \\\"se_misc.sen\\\"                 include\n"
     "        \\\"se_munge.sen\\\"                include\n"
+    "        \\\"se_schemaTest.sen\\\"           include\n"
     "        \\\"se_stepTests.sen\\\"            include\n"
     "        \\\"se_vortex.sen\\\"               include\n"
     "\n"
@@ -20111,22 +20150,6 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "\n"
     "\\\" se_misc.sen\\\" .verbose\n"
-    "\n"
-    ": schemaTest \\\"\\\" utility::schemaTest ;\n"
-    "\n"
-    ": schemaTestAll\n"
-    "\n"
-    "  \\\"A\\\" utility::schemaTest\n"
-    "  \\\"B\\\" utility::schemaTest\n"
-    "  \\\"C\\\" utility::schemaTest\n"
-    "  \\\"D\\\" utility::schemaTest\n"
-    "  \\\"E\\\" utility::schemaTest\n"
-    "  \\\"F\\\" utility::schemaTest\n"
-    "  \\\"G\\\" utility::schemaTest\n"
-    "  \\\"H\\\" utility::schemaTest\n"
-    "  \\\"I\\\" utility::schemaTest\n"
-    "  \\\"J\\\" utility::schemaTest\n"
-    " ;\n"
     "\n"
     ": llc test::test0 ;\n"
     "\n"

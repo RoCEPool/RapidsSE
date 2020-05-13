@@ -4,22 +4,6 @@
 
 " se_misc.sen" .verbose
 
-: schemaTest "" utility::schemaTest ;
-
-: schemaTestAll
-
-  "A" utility::schemaTest
-  "B" utility::schemaTest
-  "C" utility::schemaTest
-  "D" utility::schemaTest
-  "E" utility::schemaTest
-  "F" utility::schemaTest
-  "G" utility::schemaTest
-  "H" utility::schemaTest
-  "I" utility::schemaTest
-  "J" utility::schemaTest
-;
-
 : llc test::test0 ;
 
 : stepTimingReset StepTiming::reset ;
