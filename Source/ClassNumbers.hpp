@@ -140,6 +140,7 @@ enum eCN : u2 // Class Number
   /* 106 0x06A   145384B Heap:L */ CN_JOB_COPYBUFFER,
   /* 107 0x06B    14888B Heap:L */ CN_JOB_FETCHROWS,
   /* 110 0x06E    14576B Heap:L */ CN_JOB_LOADTABLE,
+  /* 110 0x06E    14576B Heap:L */ CN_JOB_LOCAL,
   /* 111 0x06F    14280B Heap:L */ CN_JOB_NODEINFO,
   /* 112 0x070    14264B Heap:L */ CN_JOB_OPERAND,
   /* 113 0x071    14240B Heap:L */ CN_JOB_RECEIVER,
@@ -481,6 +482,7 @@ static Stz* aCN[]
   /* 106 0x06A */ "JOB_COPYBUFFER"_Stz,      // CN_JOB_COPYBUFFER
   /* 107 0x06B */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /* 110 0x06E */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
+  /* 110 0x06E */ "JOB_LOCAL"_Stz,           // CN_JOB_LOCAL
   /* 111 0x06F */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 112 0x070 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* 113 0x071 */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
