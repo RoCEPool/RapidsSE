@@ -77,7 +77,7 @@ void Step::vCompilerCondBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ?? -- conditional compilation else                                         */
+/* ?else -- conditional compilation else                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCondElse(void)
 {
@@ -97,7 +97,7 @@ void Step::vCompilerCondEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ?? -- conditional compilation test                                         */
+/* ?if -- conditional compilation test                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCondTest(void)
 {
