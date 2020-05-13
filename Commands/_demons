@@ -9,12 +9,37 @@
 
   tag "<pre_execute>" = "demon::install" endTag
 
-  begin
+begin
 
     stage stageA on origin:
       start | recurring | eatAll | stageA
 
 end;
+
+/*----------------------------------------------------------------------------*/
+/* statistics service demon                                                   */
+/*----------------------------------------------------------------------------*/
+/nowait pipeline statD
+
+  tag "<pre_execute>" = "demon::install" endTag
+
+begin
+
+  stage stageA on origin:
+    start | statWrite | eatAll | stageA
+
+end;
+
+
+//pipeline endless
+//begin
+//
+//  stage stageA on origin:
+//    start | periodicOp once | stageB
+//
+//  stage stageB on origin:
+//    output | sink | stageA
+//end;
 
 /*============================================================================*/
 /* end                                                                        */
