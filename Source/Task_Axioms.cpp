@@ -38,8 +38,10 @@ void Task::vAddAxioms(void)
   // : interpret -- Sen Interpret & Compile Loop
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
+  
   ": interpret"
     
+  
   //" \"((a))\" . "
   // -- -- -- -- -- -- --
   // read next input token
@@ -54,7 +56,23 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  //" \"((c))\" . "
+  //" \"((c))\" .put input::chars . "
+  // -- -- -- -- -- -- --
+  // test for discarding
+  "  compiler::isDiscarding if"
+  "    input::chars \"?else\" str.equal if"
+  "      input::chars word::find execute"
+  "      reenter"
+  "    then"
+  "    input::chars \"?]\" str.equal if"
+  "      input::chars word::find execute"
+  "      reenter"
+  "    then"
+  "    reenter"
+  "  then"
+  
+  
+  //" \"((d))\" . "
   // -- -- -- -- -- -- --
   // is token an integer?
   "  input::kind@ TN_INTEGER == if"
@@ -77,7 +95,7 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  //" \"((d))\" . "
+  //" \"((e))\" . "
   // -- -- -- -- -- -- --
   // is token a string?
   "  input::kind@ TN_STRING == if"
@@ -99,7 +117,7 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  //" \"((e))\" . "
+  //" \"((f))\" . "
   // -- -- -- -- -- -- --
   // is token a tag?
   "  input::kind@ TN_TAG == if"
@@ -126,7 +144,7 @@ void Task::vAddAxioms(void)
   "  then"
 
   
-  //" \"((f))\" . "
+  //" \"((g))\" . "
   //
   // -- token should be a name --
   //
@@ -149,7 +167,7 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
 
   
-  //" \"((g))\" . "
+  //" \"((h))\" . "
   // -- -- -- -- -- -- --
   // is token a known word?
   "  dup not if"
@@ -161,7 +179,7 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
 
   
-  //" \"((h))\" . "
+  //" \"((i))\" . "
   // -- -- -- -- -- -- --
   // is it an immediate word?
   "  dup word.isImmediate if"
@@ -172,7 +190,7 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
   
   
-  //" \"((i))\" . "
+  //" \"((j))\" . "
   // -- -- -- -- -- -- --
   // postponing mode?
   "  compiler::isPostponing if"
@@ -185,7 +203,7 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
   
   
-  //" \"((j))\" . "
+  //" \"((k))\" . "
   // -- -- -- -- -- -- --
   // compiling mode?
   "  compiler::isCompiling if "
@@ -196,13 +214,13 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
   
   
-  //" \"((k))\" . "
+  //" \"((l))\" . "
   // -- -- -- -- -- -- --
   // we are interpreting
   "  execute"                    // interpret: execute word on stack
 
   
-  //" \"((l))\" . "
+  //" \"((m))\" . "
   // -- -- -- -- -- -- --
   // loop over
   "  reenter"
