@@ -47,7 +47,7 @@ JobClass xJobClass_SubLoader =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubLoader_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Universal_class;
+  *pNextFun = (pFUN*)pJob_WriteBuffer_class;
   
   return &xJobClass_SubLoader;
 }

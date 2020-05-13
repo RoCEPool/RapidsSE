@@ -677,7 +677,7 @@ bool SePrompt::bFindMatch_job(void)
     return true;
   
   // give command to the universal job
-  m_aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
+  m_aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
   return true;
 }

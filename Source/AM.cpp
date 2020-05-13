@@ -302,7 +302,7 @@ void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
 eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
 {
-  eEC eError = _pJob_Universal(pJob)->ePopulateJob(pTknVec);
+  eEC eError = _pJob_Distributed(pJob)->ePopulateJob(pTknVec);
   return eError;
 }
 
@@ -1191,17 +1191,17 @@ void AM::vSetOperand(Job_Operand* pJob_Operand, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 {
-  JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
+  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
 
   Job* pParentJob = pOp->pPipeline()->pJob();
   
-  Job_Universal* pJobUniversal =
-    new Job_Universal(pJobClass_Universal,pReqTuple);
+  Job_Distributed* pJobDistributed =
+    new Job_Distributed(pJobClass_Distributed,pReqTuple);
   
-  pJobUniversal->m_pOp = pOp;
-  pJobUniversal->vSeed(SS_SEED_REQ);
+  pJobDistributed->m_pOp = pOp;
+  pJobDistributed->vSeed(SS_SEED_REQ);
 
-  return pJobUniversal;
+  return pJobDistributed;
 }
 
 /*----------------------------------------------------------------------------*/

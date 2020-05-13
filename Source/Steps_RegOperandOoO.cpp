@@ -83,7 +83,7 @@ void Step::vRegOperandOoOPipeOut(void)
   
   ASSERT(*m_pRegSet->m_xpOperandOoO);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
   pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandOoO,m_pTask);
   
@@ -101,7 +101,7 @@ void Step::vRegOperandOoOPipeToJob(void)
   
   ASSERT(*m_pRegSet->m_xpOperandOoO);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
   pOp->vPipeToJob(*m_pRegSet->m_xpOperandOoO);
   

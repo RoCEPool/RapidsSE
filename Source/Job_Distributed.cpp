@@ -1,38 +1,38 @@
 /*============================================================================*/
-/* Job_Universal.cpp -- Universal Job                                         */
+/* Job_Distributed.cpp -- Distributed Job                                     */
 /*============================================================================*/
 
 #include "Jobs.h"
 
-JobClass xJobClass_Universal =
+JobClass xJobClass_Distributed =
 {
-  CN_JOB_UNIVERSAL,       // class number
-  JK_DIST2PC,             // job kind
-  RS_PARTICIPANT_RESPONSE, // response kind
-  "universal"_Stz,        // comment about the job
-  nullptr,                // the prompt command
-  nullptr,                // the second word
-  "universal_run"_Stz,    // the _run task seed
-  "universal_req"_Stz,    // the _req task seed
-  "universal_beg"_Stz,    // the _rcv task seed
-  "universal_exe"_Stz,    // the _exe task seed
-  "universal_end"_Stz,    // the _end task seed
-  "universal_can"_Stz,    // the _can task seed
-  true,                   // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  DL_GRAB_WRITE,          // ddl lock model
-  PY_NORMAL,              // priority
-  JF_LOWMEM,              // flags
+  CN_JOB_DISTRIBUTED,       // class number
+  JK_DIST2PC,               // job kind
+  RS_PARTICIPANT_RESPONSE,  // response kind
+  "distributed"_Stz,        // comment about the job
+  nullptr,                  // the prompt command
+  nullptr,                  // the second word
+  "distributed_run"_Stz,    // the _run task seed
+  "distributed_req"_Stz,    // the _req task seed
+  "distributed_beg"_Stz,    // the _rcv task seed
+  "distributed_exe"_Stz,    // the _exe task seed
+  "distributed_end"_Stz,    // the _end task seed
+  "distributed_can"_Stz,    // the _can task seed
+  true,                     // check resources?
+  false,                    // detached job?
+  false,                    // buffer attached?
+  DL_GRAB_WRITE,            // ddl lock model
+  PY_NORMAL,                // priority
+  JF_LOWMEM,                // flags
 
-  nullptr,                // prompt check function
-  pJob_Universal_pre,     // prompt pre-process function
-  vJob_post,              // prompt post-process function
-  pJob_Universal_new,     // job new function
-  vJob_Universal_delete,  // job delete function
-  vJob_send,              // job pre-send function
-  vJob_recv,              // job post-receive function
-  vJob_Universal_show,    // job show function
+  nullptr,                  // prompt check function
+  pJob_Distributed_pre,     // prompt pre-process function
+  vJob_post,                // prompt post-process function
+  pJob_Distributed_new,     // job new function
+  vJob_Distributed_delete,  // job delete function
+  vJob_send,                // job pre-send function
+  vJob_recv,                // job post-receive function
+  vJob_Distributed_show,    // job show function
   
   // help
   false,
@@ -45,11 +45,11 @@ JobClass xJobClass_Universal =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_Universal_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Distributed_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WriteBuffer_class;
+  *pNextFun = (pFUN*)pJob_FetchRows_class;
   
-  return &xJobClass_Universal;
+  return &xJobClass_Distributed;
 }
 
 
@@ -60,30 +60,30 @@ JobClass* Jobs::pJob_Universal_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Universal* Jobs::_pJob_Universal(void* aAddress)
+Job_Distributed* Jobs::_pJob_Distributed(void* aAddress)
 {
-  Job_Universal* pJob_Universal = reinterpret_cast<Job_Universal*>(aAddress);
+  Job_Distributed* pJob_Distributed = reinterpret_cast<Job_Distributed*>(aAddress);
   
-  RASSERT_TYPE(pJob_Universal,CN_JOB_UNIVERSAL);
+  RASSERT_TYPE(pJob_Distributed,CN_JOB_DISTRIBUTED);
   
-  return pJob_Universal;
+  return pJob_Distributed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_Universal::operator new(size_t)
+void* Job_Distributed::operator new(size_t)
 {
-  Job_Universal* pJob_Universal =
-    static_cast<Job_Universal*>(HeapMem::pAllocate(CN_JOB_UNIVERSAL));
+  Job_Distributed* pJob_Distributed =
+    static_cast<Job_Distributed*>(HeapMem::pAllocate(CN_JOB_DISTRIBUTED));
   
-  return pJob_Universal;
+  return pJob_Distributed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_Universal::operator new(size_t, void* aAddress)
+void* Job_Distributed::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -91,32 +91,32 @@ void* Job_Universal::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_Universal::operator delete(void* aAddress)
+void Job_Distributed::operator delete(void* aAddress)
 {
-  Job_Universal* pJob_Universal = static_cast<Job_Universal*>(aAddress);
+  Job_Distributed* pJob_Distributed = static_cast<Job_Distributed*>(aAddress);
   
-  HeapMem::vFree(pJob_Universal);
+  HeapMem::vFree(pJob_Distributed);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple)
+Job_Distributed::Job_Distributed(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_UNIVERSAL);
+  _checkInitialised_(CN_JOB_DISTRIBUTED);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Universal::~Job_Universal(void) noexcept(false)
+Job_Distributed::~Job_Distributed(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
 }
 
 
@@ -127,11 +127,11 @@ Job_Universal::~Job_Universal(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Universal::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_Distributed::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_Universal* pJob_Universal = _pJob_Universal(pObject);
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(pObject);
 
-  pJob_Universal->vShow();
+  pJob_Distributed->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,9 +141,9 @@ void Job_Universal::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
+eEC Job_Distributed::ePopulateJob(TokenVec* pTknVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
   
   bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
   if (! b) {
@@ -172,9 +172,9 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Universal::vShow(void)
+void Job_Distributed::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
   
 }
 
@@ -185,9 +185,9 @@ void Job_Universal::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_Universal::aFooter(void)
+Footer* Job_Distributed::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED);
   
   return &m_xFooter;
 }
@@ -199,47 +199,47 @@ Footer* Job_Universal::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
+Job* Jobs::pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
 {
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
+  Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,aReqTuple);
 
-  eEC eError = pJob_Universal->ePopulateJob(pTknVec);
+  eEC eError = pJob_Distributed->ePopulateJob(pTknVec);
   
   if ( eError != EC_NONE ) {
-    pJob_Universal->vJobError(eError);
+    pJob_Distributed->vJobError(eError);
   }
   
-  return pJob_Universal;
+  return pJob_Distributed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Distributed_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
+  Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,aReqTuple);
   
-  return pJob_Universal;
+  return pJob_Distributed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Universal_delete(Job* pJob)
+void Jobs::vJob_Distributed_delete(Job* pJob)
 {
-  Job_Universal* pJob_Universal = _pJob_Universal(pJob);
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
     
-  delete pJob_Universal;
+  delete pJob_Distributed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Universal_show(Job* pJob)
+void Jobs::vJob_Distributed_show(Job* pJob)
 {
-  Job_Universal* pJob_Universal = _pJob_Universal(pJob);
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(pJob);
 
-  pJob_Universal->vShow();
+  pJob_Distributed->vShow();
 }
 
 /*============================================================================*/

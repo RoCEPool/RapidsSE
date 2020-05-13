@@ -300,7 +300,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_JOB_SUBINFLATE"_Stz,     CN_JOB_SUBINFLATE);
   /*    */ vAddConstant("CN_JOB_SUBINGESTER"_Stz,    CN_JOB_SUBINGESTER);
   /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);
-  /*    */ vAddConstant("CN_JOB_UNIVERSAL"_Stz,      CN_JOB_UNIVERSAL);
 
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);

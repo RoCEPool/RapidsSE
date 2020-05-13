@@ -158,7 +158,7 @@ void Step::vRegPipeinPipeOut(void)
   
   ASSERT(*m_pRegSet->m_xpPipein);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
   pOp->vPipeOut_nextOp(*m_pRegSet->m_xpPipein,m_pTask);
   
@@ -176,7 +176,7 @@ void Step::vRegPipeinPipeToJob(void)
   
   ASSERT(*m_pRegSet->m_xpPipein);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
   pOp->vPipeToJob(*m_pRegSet->m_xpPipein);
   

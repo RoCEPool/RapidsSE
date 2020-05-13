@@ -47,7 +47,7 @@ JobClass xJobClass_CopyBuffer =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_CopyBuffer_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_FetchRows_class;
+  *pNextFun = (pFUN*)pJob_Distributed_class;
   
   return &xJobClass_CopyBuffer;
 }

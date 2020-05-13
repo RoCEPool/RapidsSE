@@ -69,6 +69,7 @@ assert::stack_0
         "job_CreateTable.sen"     include
 
         "job_DefineNode.sen"      include
+        "job_Distributed.sen"     include
         "job_Docol.sen"           include
 
         "job_FetchRows.sen"       include
@@ -82,8 +83,6 @@ assert::stack_0
         "job_SubFetch.sen"            include
         "job_SubLoader.sen"           include
         "job_Supervisor.sen"          include
-
-        "job_Universal.sen"           include
 
         "job_Waker.sen"               include
         "job_WriteBuffer.sen"         include

@@ -388,9 +388,9 @@ void Step::vJobBideOperand(void)
 {
   ENTRY();
   
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
   
-  m_pRegSet->m_xpOperandA = pJob_Universal->m_pOp->pPopQueue();
+  m_pRegSet->m_xpOperandA = pJob_Distributed->m_pOp->pPopQueue();
   
   if (m_pRegSet->m_xpOperandA.bIsNull()) {
     m_pTask->vScheduleBide();
@@ -456,7 +456,7 @@ void Step::vJobPrintMember(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  if (pJob->eClass() == CN_JOB_UNIVERSAL) {
+  if (pJob->eClass() == CN_JOB_DISTRIBUTED) {
     vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
   }
   
@@ -776,11 +776,11 @@ void Step::vJobNextOperand(void)
 {
   ENTRY();
   
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
+  Job_Distributed* pJob_Distributed = _pJob_Distributed(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Op* pOp = pJob_Universal->m_pOp;
+  Op* pOp = pJob_Distributed->m_pOp;
   
   if (m_pRegSet->m_xpOperandA.bIsNull())
     m_pRegSet->m_xpOperandA = pOp->pPopQueue();
@@ -1062,7 +1062,7 @@ void Step::vJobPostRecv(void)
   JobClass* aJobClass = nullptr;
   eCN eClass = pJob->eClass();
   
-  if (CN_JOB_UNIVERSAL == eClass) {
+  if (CN_JOB_DISTRIBUTED == eClass) {
     eClass = (eCN)pJob->pJobTags()->iValue(C_TAG_JOBCLASS);
     aJobClass = JobClass::pFind(eClass);
   }
@@ -1657,37 +1657,37 @@ void Step::vJobSpawnUniversal(void)
   TagSet* pJobInfoTagSet = Job::pJobInfo_tagSet(sJobNm);
   
   // find the job class
-  JobClass* aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
+  JobClass* aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
 
   // new the universal job
-  ReqTuple xReqTuple("!!vJobSpawnUniversal"_Stz,false);
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,&xReqTuple);
+  ReqTuple xReqTuple("!!vJobSpawnDistributed"_Stz,false);
+  Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,&xReqTuple);
 
   // translate job kind
-  pJob_Universal->vJobKind((eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND));
+  pJob_Distributed->vJobKind((eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND));
 
   // add the necessary ename tags
-  TagSet* pJobTags = pJob_Universal->pJobTags();
+  TagSet* pJobTags = pJob_Distributed->pJobTags();
   
   //pTagSet_jobInfo->vContentDump();
   //pTagSet_job->vContentDump();
   
   pJobTags->vCopy(pJobInfoTagSet);
   
-  pJobTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
+  pJobTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   //pTagSet_job->vAdd(C_TAG_JOBNM,sJobNm);
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
 
   // seed the job for request
-  pJob_Universal->vSeed(SS_SEED_REQ);
+  pJob_Distributed->vSeed(SS_SEED_REQ);
 
   // spawn the job
-  Task* pTask = pJob_Universal->pTask();
+  Task* pTask = pJob_Distributed->pTask();
   if ( pTask) {
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
-  Api::vSpawnJob_service(pJob_Universal);
+  Api::vSpawnJob_service(pJob_Distributed);
 
   EXIT();
 }

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_Universal.sen -- Universal Job                                         */
+/* job_Distributed.sen -- Distributed Job                                     */
 /*============================================================================*/
 
-" job_Universal.sen" .verbose
+" job_Distributed.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* translate seed ename, find word matching translated value and execute it   */
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute the job's request seed-word on originating node                    */
 /*----------------------------------------------------------------------------*/
-: universal_req ( -- <R> )
+: distributed_req ( -- <R> )
 
   job::</seeFlow/>
 
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute the job's begin seed-word on each participating node               */
 /*----------------------------------------------------------------------------*/
-: universal_beg ( -- )
+: distributed_beg ( -- )
 
   job::</seeFlow/>
 
@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute the job's execute seed-word on each participating node             */
 /*----------------------------------------------------------------------------*/
-: universal_exe ( pJob_Universal -- )
+: distributed_exe ( pJob_Distributed -- )
 
   job::</seeFlow/>
 
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute the job's end seed-word on each participating node                 */
 /*----------------------------------------------------------------------------*/
-: universal_end ( -- )
+: distributed_end ( -- )
 
   job::</seeFlow/>
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute the job's cancel seed-word on each participating node              */
 /*----------------------------------------------------------------------------*/
-: universal_can ( -- )
+: distributed_can ( -- )
 
   job::</seeFlow/>
 
@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute the job's run seed-word on each participating node                 */
 /*----------------------------------------------------------------------------*/
-: universal_run ( -- )
+: distributed_run ( -- )
 
   job::</seeFlow/>
 

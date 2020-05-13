@@ -60,14 +60,12 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);  
   nJobs++; JobClass::vJobCat(CN_JOB_WRITEBUFFER);
 
-  //other
-  nJobs++; JobClass::vJobCat(CN_JOB_UNIVERSAL);
 
   vTrace("\n"_Stz);
   
-  if (nJobs != CN_JOB_UNIVERSAL - CN_JOB_BOOT + 1)
+  if (nJobs != CN_JOB_WRITEBUFFER - CN_JOB_BOOT + 1)
     vTrace("\nWarning: Missing Jobs (%lld v. %lld)\n\n"_Stz,
-           nJobs, CN_JOB_UNIVERSAL - CN_JOB_BOOT + 1);
+           nJobs, CN_JOB_WRITEBUFFER - CN_JOB_BOOT + 1);
   
   return true;
 }

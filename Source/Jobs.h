@@ -38,9 +38,12 @@ namespace Jobs
 
 #include "Job_CopyBuffer.hpp"
 
+#include "Job_Distributed.hpp"
+
 #include "Job_FetchRows.hpp"
 
 #include "Job_LoadTable.hpp"
+#include "Job_Local.hpp"
 
 #include "Job_NodeInfo.hpp"
 
@@ -52,8 +55,6 @@ namespace Jobs
 
 #include "Job_SubFetch.hpp"
 #include "Job_SubLoader.hpp"
-
-#include "Job_Universal.hpp"
 
 #include "Job_WriteBuffer.hpp"
 

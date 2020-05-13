@@ -34,7 +34,7 @@ bool JobHelper::bParseCmd(TagSet* pArgTags, TokenVec* pTknVec)
       
       //vTrace("    matches\n"_Stz);
       
-      pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_UNIVERSAL);
+      pArgTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
       s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
       pArgTags->vInsert(C_TAG_JOBNM,sJobName);

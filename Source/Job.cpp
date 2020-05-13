@@ -1315,7 +1315,7 @@ void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
   
   eRS eResponse = RS_NONE;
   
-  if (CN_JOB_UNIVERSAL == eClass) {
+  if (CN_JOB_DISTRIBUTED == eClass) {
     
     TagSet* pJobInfoTagSet = pJob->pJobInfoTagSet();
     

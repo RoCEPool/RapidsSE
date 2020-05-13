@@ -171,7 +171,7 @@ void Step::vRegOperandHandleAggEnd(void)
 //  
 //  i8 nCount = m_pDataStack->iPopInt(__func__);
 //  
-//  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+//  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 //  
 //  if (pOp->nDecLeftEosMarkers() == 0) {
 //    if (pOp->bIsCancelling()) {
@@ -611,7 +611,7 @@ void Step::vRegOperandPipeOut(void)
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
   pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandA,m_pTask);
   
@@ -629,7 +629,7 @@ void Step::vRegOperandPipeOutSet(void)
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
   pOp->vPipeOut_nextOp(*m_pRegSet->m_xpOperandA,m_pTask, true);
   
@@ -647,7 +647,7 @@ void Step::vRegOperandPipeToJob(void)
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
   pOp->vPipeToJob(*m_pRegSet->m_xpOperandA);
   
@@ -829,7 +829,7 @@ void Step::vRegOperandWorkDone(void)
   
   ASSERT(*m_pRegSet->m_xpOperandA);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
   eCN eClass_op = m_pRegSet->m_xpOperandA->eClass();
   

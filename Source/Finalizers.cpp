@@ -147,7 +147,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINFLATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINGESTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_UNIVERSAL
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Job_Universal.hpp -- Universal Job                                         */
+/* Job_Distributed.hpp -- Universal Job                                         */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
-  class Job_Universal : public Job
+  class Job_Distributed : public Job
   {
   public:
       
@@ -17,8 +17,8 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple);
-    ~Job_Universal(void) noexcept(false);
+    Job_Distributed(JobClass* aJobClass, ReqTuple* aReqTuple);
+    ~Job_Distributed(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -32,14 +32,14 @@ namespace Jobs
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_Universal* _pJob_Universal(void* aAddr);
+  Job_Distributed* _pJob_Distributed(void* aAddr);
   
-  Job* pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec);
-  Job* pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple);
-  void vJob_Universal_delete(Job* pJob);
-  void vJob_Universal_show(Job* pJob);
+  Job* pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec);
+  Job* pJob_Distributed_new(JobClass* aJobClass, ReqTuple* aReqTuple);
+  void vJob_Distributed_delete(Job* pJob);
+  void vJob_Distributed_show(Job* pJob);
   
-  JobClass* pJob_Universal_class(pFUN** aaFun);
+  JobClass* pJob_Distributed_class(pFUN** aaFun);
 }
 
 /*============================================================================*/
