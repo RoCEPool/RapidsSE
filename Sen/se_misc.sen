@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* se_docols.sen -- docol shorthands                                          */
+/* se_misc.sen -- docol shorthands                                            */
 /*============================================================================*/
 
-" se_docols.sen" .verbose
+" se_misc.sen" .verbose
 
 : schemaTest "" utility::schemaTest ;
 
@@ -19,33 +19,6 @@
   "I" utility::schemaTest
   "J" utility::schemaTest
 ;
-
-: test0 prompt test::test0 ;
-: test1 prompt test::test1 ;
-: test2 prompt test::test2 ;
-: test3 prompt test::test3 ;
-: test4 prompt test::test4 ;
-: test5 prompt test::test5 ;
-: test6 prompt test::test6 ;
-: test7 prompt test::test7 ;
-: test8 prompt test::test8 ;
-: test9 prompt test::test9 ;
-: test10 prompt test::test10 ;
-: test11 prompt test::test11 ;
-: test12 prompt test::test12 ;
-: test13 prompt test::test13 ;
-: test14 prompt test::test14 ;
-: test15 prompt test::test15 ;
-: test16 prompt test::test16 ;
-: test17 prompt test::test17 ;
-: test18 prompt test::test18 ;
-: test19 prompt test::test19 ;
-: test20 prompt test::test20 ;
-: test21 prompt test::test21 ;
-: test22 prompt test::test22 ;
-: test23 prompt test::test23 ;
-: test24 prompt test::test24 ;
-: test25 prompt test::test25 ;
 
 : llc test::test0 ;
 

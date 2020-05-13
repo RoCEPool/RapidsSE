@@ -217,6 +217,7 @@ assert::stack_0
         "se_demons.sen"               include
         "se_misc.sen"                 include
         "se_munge.sen"                include
+        "se_stepTests.sen"            include
         "se_vortex.sen"               include
 
 cmd::fillOut_allCmds_usingInfo
