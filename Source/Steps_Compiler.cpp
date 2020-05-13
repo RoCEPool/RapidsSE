@@ -27,9 +27,8 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("compiler::current!"_Stz,       &Step::vCompilerCurrentStore);
   
   vAddStep("compiler::interpreting"_Stz,   &Step::vCompilerInterpreting);
-  
   vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
-  vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
+  vAddStep("compiler::isDiscarding"_Stz,   &Step::vCompilerIsDiscarding);
   vAddStep("compiler::isPostponing"_Stz,   &Step::vCompilerIsPostponing);
 
   vAddStep("compiler::nested@"_Stz,        &Step::vCompilerNestedFetch);
@@ -62,6 +61,17 @@ void Step::vCompilerCompiling(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/*  compiler::postponing -- change to postponing mode                         */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerPostponing(void)
+{
+  ENTRY();
+  
+  m_pCompiler->vMode(CM_POSTPONING);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -73,6 +83,8 @@ void Step::vCompilerCondBegin(void)
 {
   ENTRY();
     
+  m_pCompiler->vMode(CM_CONDBEGIN);
+
   EXIT();
 }
 
@@ -82,7 +94,14 @@ void Step::vCompilerCondBegin(void)
 void Step::vCompilerCondElse(void)
 {
   ENTRY();
-    
+   
+  eCM eMode = m_pCompiler->eMode();
+
+  if (CM_CONDCOMPILE == eMode)
+    m_pCompiler->vMode(CM_CONDDISCARD);
+  else
+    m_pCompiler->vMode(CM_CONDCOMPILE);
+
   EXIT();
 }
 
@@ -93,6 +112,8 @@ void Step::vCompilerCondEnd(void)
 {
   ENTRY();
     
+  m_pCompiler->vMode(CM_COMPILING);
+  
   EXIT();
 }
 
@@ -102,9 +123,19 @@ void Step::vCompilerCondEnd(void)
 void Step::vCompilerCondTest(void)
 {
   ENTRY();
-    
+  
+  i8 iCondTest = m_pDataStack->iPopInt(__func__);
+  
+  if (iCondTest)
+    m_pCompiler->vMode(CM_CONDCOMPILE);
+  else
+    m_pCompiler->vMode(CM_CONDDISCARD);
+
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compiler::current@ -- get current word                                     */
@@ -112,10 +143,7 @@ void Step::vCompilerCondTest(void)
 void Step::vCompilerCurrentFetch(void)
 {
   ENTRY();
-  
-//  if (! m_pCompiler)
-//    m_pCompiler = new Compiler;
-  
+    
   Word* pCurrWord = m_pCompiler->pCurrentWord();
     
 //  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
@@ -134,10 +162,7 @@ void Step::vCompilerCurrentStore(void)
   ENTRY();
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-//  if (! m_pCompiler)
-//    m_pCompiler = new Compiler;
-  
+    
   m_pCompiler->vCurrentWord(pCurrWord);
   
   EXIT();
@@ -150,10 +175,28 @@ void Step::vCompilerIsCompiling(void)
 {
   ENTRY();
   
-  i8 iIsCompiling = m_pCompiler->bCompiling();
+  eCM eMode = m_pCompiler->eMode();
+  
+  i8 iIsCompiling = CM_COMPILING ==eMode;
   
   m_pDataStack->vPushInt(iIsCompiling);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compiler::isCompiling -- currently in compiling mode?                      */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerIsDiscarding(void)
+{
+  ENTRY();
+  
+  eCM eMode = m_pCompiler->eMode();
+  
+  i8 iIsDiscarding = CM_CONDDISCARD == eMode;
+  
+  m_pDataStack->vPushInt(iIsDiscarding);
+
   EXIT();
 }
 
@@ -164,10 +207,12 @@ void Step::vCompilerIsInterpreting(void)
 {
   ENTRY();
   
-  i8 iIsInterpreting = m_pCompiler->bInterpreting();
+  eCM eMode = m_pCompiler->eMode();
+  
+  i8 iIsInterpreting = CM_INTERPRETING == eMode;
   
   m_pDataStack->vPushInt(iIsInterpreting);
-  
+
   EXIT();
 }
 
@@ -178,10 +223,12 @@ void Step::vCompilerIsPostponing(void)
 {
   ENTRY();
   
-  i8 bIsPostponing = m_pCompiler->bPostponing();
+  eCM eMode = m_pCompiler->eMode();
   
-  m_pDataStack->vPushInt(bIsPostponing);
+  i8 iIsPostponing = CM_POSTPONING == eMode;
   
+  m_pDataStack->vPushInt(iIsPostponing);
+
   EXIT();
 }
 
@@ -191,10 +238,7 @@ void Step::vCompilerIsPostponing(void)
 void Step::vCompilerNestedFetch(void)
 {
   ENTRY();
-  
-//  if (! m_pCompiler)
-//    m_pCompiler = new Compiler;
-  
+    
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
   Word* pNested = m_pCompiler->pNestedWord(i_Nested);
@@ -214,23 +258,8 @@ void Step::vCompilerNestedStore(void)
   Word* pNested = _pWord(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
-  
-//  if (! m_pCompiler)
-//    m_pCompiler = new Compiler;
-  
+    
   m_pCompiler->vNestedWord(i_Nested,pNested);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*  compiler::postponing -- change to postponing mode                         */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerPostponing(void)
-{
-  ENTRY();
-  
-  m_pCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }
