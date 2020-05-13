@@ -38,6 +38,7 @@ void Task::vAddAxioms(void)
   // : interpret -- Sen Interpret & Compile Loop
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
+  
   ": interpret"
     
   //" \"((a))\" . "
@@ -54,6 +55,14 @@ void Task::vAddAxioms(void)
   "  then"
   
   
+  
+  
+  // -- -- -- -- -- -- --
+  // test for discarding
+  
+  
+  
+
   //" \"((c))\" . "
   // -- -- -- -- -- -- --
   // is token an integer?

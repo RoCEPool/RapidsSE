@@ -49,7 +49,7 @@ void Step::vCompilerIsCompiling(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDBEGIN == eMode);
+  i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILE == eMode);
   
   m_pDataStack->vPushInt(iIsCompiling);
   
@@ -81,7 +81,7 @@ void Step::vCompilerIsInterpreting(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsInterpreting = CM_INTERPRETING == eMode;
+  i8 iIsInterpreting = (CM_INTERPRETING == eMode) || (CM_CONDBEGIN == eMode);
   
   m_pDataStack->vPushInt(iIsInterpreting);
 
