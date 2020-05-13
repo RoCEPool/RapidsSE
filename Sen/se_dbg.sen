@@ -1,8 +1,9 @@
 /*============================================================================*/
-/* se_prompt.sen -- prompt related words                                      */
+/* se_dbg.sen -- dbg> related words                                           */
 /*============================================================================*/
 
-" se_prompt.sen" .verbose
+" se_dbg.sen" .verbose
+
 
 : article_dump prompt article::dump ;
 

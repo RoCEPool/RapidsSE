@@ -19,7 +19,7 @@ assert::stack_0
         "se_folder.sen"           include
         "se_object.sen"           include
         "se_socket.sen"           include
-        "se_prompt.sen"           include
+        "se_dbg.sen"              include
 
 8 .put
         "tpl_liteOp.sen"          include
@@ -79,15 +79,15 @@ assert::stack_0
         "Job_Periodic.sen"        include
         "Job_Pipeline.sen"        include
 
-        "Job_Service.sen"         include
-        "job_SubFetch.sen"        include
-        "job_SubLoader.sen"       include
-        "job_Supervisor.sen"      include
+        "Job_Service.sen"             include
+        "job_SubFetch.sen"            include
+        "job_SubLoader.sen"           include
+        "job_Supervisor.sen"          include
 
-        "job_Universal.sen"       include
+        "job_Universal.sen"           include
 
-        "job_Waker.sen"           include
-        "job_WriteBuffer.sen"     include
+        "job_Waker.sen"               include
+        "job_WriteBuffer.sen"         include
 
       //"otherJobs"               include-subdir
 
@@ -215,11 +215,13 @@ assert::stack_0
 
 1 .put
         "se_demons.sen"               include
+        "se_experiments.sen"          include
+        "se_llc.sen"                  include
         "se_memoryStats.sen"          include
-        "se_misc.sen"                 include
         "se_munge.sen"                include
         "se_schemaTest.sen"           include
         "se_stepTests.sen"            include
+        "se_stepTiming.sen"           include
         "se_vortex.sen"               include
 
 cmd::fillOut_allCmds_usingInfo

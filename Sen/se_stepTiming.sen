@@ -1,10 +1,8 @@
 /*============================================================================*/
-/* se_misc.sen -- docol shorthands                                            */
+/* se_stepTiming.sen -- step timing                                           */
 /*============================================================================*/
 
-" se_misc.sen" .verbose
-
-: llc test::test0 ;
+" se_stepTiming.sen" .verbose
 
 : stepTimingReset StepTiming::reset ;
 : stepTimingStart StepTiming::start ;
