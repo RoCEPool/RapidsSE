@@ -146,6 +146,10 @@ public:
 
   // comment
   void vCompilerCompiling(void);
+  void vCompilerCondBegin(void);
+  void vCompilerCondEnd(void);
+  void vCompilerCondElse(void);
+  void vCompilerCondTest(void);
   void vCompilerCurrentFetch(void);
   void vCompilerCurrentStore(void);
   void vCompilerInterpreting(void);

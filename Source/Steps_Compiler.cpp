@@ -12,8 +12,14 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("["_Stz,                        &Step::vCompilerInterpreting,  true);
   vAddStep("]"_Stz,                        &Step::vCompilerCompiling);
   
+  vAddStep("[?"_Stz,                       &Step::vCompilerCondBegin,     true);
+  vAddStep("?else"_Stz,                    &Step::vCompilerCondElse,      true);
+  vAddStep("?]"_Stz,                       &Step::vCompilerCondEnd,       true);
+  vAddStep("?if"_Stz,                      &Step::vCompilerCondTest);
+
   vAddStep("[["_Stz,                       &Step::vCompilerPostponing,    true);
   vAddStep("]]"_Stz,                       &Step::vCompilerCompiling,     true);
+  
   
   vAddStep("compiler::compiling"_Stz,      &Step::vCompilerCompiling);
   
@@ -53,6 +59,50 @@ void Step::vCompilerCompiling(void)
   
   m_pCompiler->vMode(CM_COMPILING);
   
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* [? -- conditional compilation begin                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondBegin(void)
+{
+  ENTRY();
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?else -- conditional compilation else                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondElse(void)
+{
+  ENTRY();
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?] -- conditional compilation end                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondEnd(void)
+{
+  ENTRY();
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?if -- conditional compilation test                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondTest(void)
+{
+  ENTRY();
+    
   EXIT();
 }
 
