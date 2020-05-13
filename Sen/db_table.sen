@@ -189,7 +189,15 @@
 /*----------------------------------------------------------------------------*/
 : table::newTable params| sTableNm | ( pTable )
 
-  sTableNm table::newTableEmbObj locals| pwTable |
+  [? WITH_OBJ_PROPER ?if
+ 
+    sTableNm table::newTablePrpObj locals| pwTable |
+
+  ?else
+   
+    sTableNm table::newTableEmbObj locals| pwTable |
+   
+  ?]
 
   pwTable execute locals| pTable |
 
