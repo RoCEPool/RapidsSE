@@ -9,164 +9,36 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Compiler(void)
 {
-  vAddStep("["_Stz,                        &Step::vCompilerInterpreting,  true);
-  vAddStep("]"_Stz,                        &Step::vCompilerCompiling);
+  vAddStep("compiler::isCompiling"_Stz,  &Step::vCompilerIsCompiling);
+  vAddStep("compiler::isDiscarding"_Stz, &Step::vCompilerIsDiscarding);
+  vAddStep("compiler::isPostponing"_Stz, &Step::vCompilerIsPostponing);
   
-  vAddStep("[?"_Stz,                       &Step::vCompilerCondBegin,     true);
-  vAddStep("?else"_Stz,                    &Step::vCompilerCondElse,      true);
-  vAddStep("?]"_Stz,                       &Step::vCompilerCondEnd,       true);
-  vAddStep("?if"_Stz,                      &Step::vCompilerCondTest);
+  vAddStep("compiler::compiling"_Stz,    &Step::vCompilerCompiling);
+  vAddStep("compiler::interpreting"_Stz, &Step::vCompilerInterpreting);
+  vAddStep("compiler::postponing"_Stz,   &Step::vCompilerPostponing);
 
-  vAddStep("[["_Stz,                       &Step::vCompilerPostponing,    true);
-  vAddStep("]]"_Stz,                       &Step::vCompilerCompiling,     true);
+  vAddStep("compiler::current@"_Stz,     &Step::vCompilerCurrentFetch);
+  vAddStep("compiler::current!"_Stz,     &Step::vCompilerCurrentStore);
   
-  
-  vAddStep("compiler::compiling"_Stz,      &Step::vCompilerCompiling);
-  
-  vAddStep("compiler::current@"_Stz,       &Step::vCompilerCurrentFetch);
-  vAddStep("compiler::current!"_Stz,       &Step::vCompilerCurrentStore);
-  
-  vAddStep("compiler::interpreting"_Stz,   &Step::vCompilerInterpreting);
-  vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
-  vAddStep("compiler::isDiscarding"_Stz,   &Step::vCompilerIsDiscarding);
-  vAddStep("compiler::isPostponing"_Stz,   &Step::vCompilerIsPostponing);
+  vAddStep("compiler::nested@"_Stz,      &Step::vCompilerNestedFetch);
+  vAddStep("compiler::nested!"_Stz,      &Step::vCompilerNestedStore);
 
-  vAddStep("compiler::nested@"_Stz,        &Step::vCompilerNestedFetch);
-  vAddStep("compiler::nested!"_Stz,        &Step::vCompilerNestedStore);
+  vAddStep("["_Stz,                      &Step::vCompilerInterpreting,    true);
+  vAddStep("]"_Stz,                      &Step::vCompilerCompiling);
   
-  vAddStep("compiler::postponing"_Stz,     &Step::vCompilerPostponing);
+  vAddStep("[["_Stz,                     &Step::vCompilerPostponing,      true);
+  vAddStep("]]"_Stz,                     &Step::vCompilerCompiling,       true);
+  
+  vAddStep("[?"_Stz,                     &Step::vCompilerCondBegin,       true);
+  vAddStep("?if"_Stz,                    &Step::vCompilerCondTest,        true);
+  vAddStep("?else"_Stz,                  &Step::vCompilerCondElse);
+  vAddStep("?]"_Stz,                     &Step::vCompilerCondEnd,         true);
 }
 
-/*----------------------------------------------------------------------------*/
-/* [ -- change to interpreting mode                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerInterpreting(void)
-{
-  ENTRY();
-  
-  m_pCompiler->vMode(CM_INTERPRETING);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
-/* ] -- change to compiling mode                                              */
+/*                           - TEST WHICH MODE -                              */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCompiling(void)
-{
-  ENTRY();
-  
-  m_pCompiler->vMode(CM_COMPILING);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*  compiler::postponing -- change to postponing mode                         */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerPostponing(void)
-{
-  ENTRY();
-  
-  m_pCompiler->vMode(CM_POSTPONING);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* [? -- conditional compilation begin                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCondBegin(void)
-{
-  ENTRY();
-    
-  m_pCompiler->vMode(CM_CONDBEGIN);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ?else -- conditional compilation else                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCondElse(void)
-{
-  ENTRY();
-   
-  eCM eMode = m_pCompiler->eMode();
-
-  if (CM_CONDCOMPILE == eMode)
-    m_pCompiler->vMode(CM_CONDDISCARD);
-  else
-    m_pCompiler->vMode(CM_CONDCOMPILE);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ?] -- conditional compilation end                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCondEnd(void)
-{
-  ENTRY();
-    
-  m_pCompiler->vMode(CM_COMPILING);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ?if -- conditional compilation test                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCondTest(void)
-{
-  ENTRY();
-  
-  i8 iCondTest = m_pDataStack->iPopInt(__func__);
-  
-  if (iCondTest)
-    m_pCompiler->vMode(CM_CONDCOMPILE);
-  else
-    m_pCompiler->vMode(CM_CONDDISCARD);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* compiler::current@ -- get current word                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentFetch(void)
-{
-  ENTRY();
-    
-  Word* pCurrWord = m_pCompiler->pCurrentWord();
-    
-//  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
-//    Correctness::vDebugPoint();
-
-  m_pDataStack->vPushPtr(pCurrWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* compiler::current! -- put current word                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentStore(void)
-{
-  ENTRY();
-  
-  Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
-    
-  m_pCompiler->vCurrentWord(pCurrWord);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* compiler::isCompiling -- currently in compiling mode?                      */
@@ -177,7 +49,7 @@ void Step::vCompilerIsCompiling(void)
   
   eCM eMode = m_pCompiler->eMode();
   
-  i8 iIsCompiling = CM_COMPILING ==eMode;
+  i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDBEGIN == eMode);
   
   m_pDataStack->vPushInt(iIsCompiling);
   
@@ -232,6 +104,88 @@ void Step::vCompilerIsPostponing(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                           - SET WHICH MODE -                               */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler::compiling-- change to compiling mode                             */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCompiling(void)
+{
+  ENTRY();
+  
+  m_pCompiler->vMode(CM_COMPILING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compiler::interpreting -- change to interpreting mode                      */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerInterpreting(void)
+{
+  ENTRY();
+  
+  m_pCompiler->vMode(CM_INTERPRETING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compiler::postponing -- change to postponing mode                          */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerPostponing(void)
+{
+  ENTRY();
+  
+  m_pCompiler->vMode(CM_POSTPONING);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                        - FETCH / STORE CURRENT WORD -                      */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler::current@ -- fetch current word                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCurrentFetch(void)
+{
+  ENTRY();
+    
+  Word* pCurrWord = m_pCompiler->pCurrentWord();
+    
+//  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
+//    Correctness::vDebugPoint();
+
+  m_pDataStack->vPushPtr(pCurrWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compiler::current! -- put current word                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCurrentStore(void)
+{
+  ENTRY();
+  
+  Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
+    
+  m_pCompiler->vCurrentWord(pCurrWord);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                        - FETCH / STORE NESTED WORD -                       */
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* compiler::nested@ -- get nested word                                       */
 /*----------------------------------------------------------------------------*/
@@ -260,6 +214,68 @@ void Step::vCompilerNestedStore(void)
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
     
   m_pCompiler->vNestedWord(i_Nested,pNested);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                        - CONDITIONAL COMPILATION -                         */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* [? -- conditional compilation begin                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondBegin(void)
+{
+  ENTRY();
+    
+  m_pCompiler->vMode(CM_CONDBEGIN);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?if -- conditional compilation test                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondTest(void)
+{
+  ENTRY();
+  
+  i8 iCondTest = m_pDataStack->iPopInt(__func__);
+  
+  if (iCondTest)
+    m_pCompiler->vMode(CM_CONDCOMPILE);
+  else
+    m_pCompiler->vMode(CM_CONDDISCARD);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?else -- conditional compilation else                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondElse(void)
+{
+  ENTRY();
+   
+  eCM eMode = m_pCompiler->eMode();
+
+  if (CM_CONDCOMPILE == eMode)
+    m_pCompiler->vMode(CM_CONDDISCARD);
+  else
+    m_pCompiler->vMode(CM_CONDCOMPILE);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?] -- conditional compilation end                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerCondEnd(void)
+{
+  ENTRY();
+    
+  m_pCompiler->vMode(CM_COMPILING);
   
   EXIT();
 }
