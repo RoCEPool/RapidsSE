@@ -58,8 +58,6 @@
   then
 
   true
-
-  stk
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -68,8 +66,6 @@
  : statWrite_req \operator
  
   LogReqEntry SEED_REQ
-
-  C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
   op__topology
 

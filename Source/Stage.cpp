@@ -62,13 +62,9 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
     
     // get first operator of this first stage
     Op* pOp = pStrand->pGet(0);
-    if (! AM::szJobName(pOp->pOpJob())->bSame("eatAll"_Stz) &&
-        ! AM::szJobName(pOp->pOpJob())->bSame("statWrite"_Stz)) {
-      
-      RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
-      // append a CANCELMARKER onto first operator
-      pOp->vAppendLeft(new Marker(OM_CANCELMARKER),pTriggeringTask);
-    }
+    RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
+    // append a CANCELMARKER onto first operator
+    pOp->vAppendLeft(new Marker(OM_CANCELMARKER),pTriggeringTask);
   }
 }
 
