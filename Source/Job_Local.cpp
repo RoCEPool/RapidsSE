@@ -1,0 +1,247 @@
+/*============================================================================*/
+/* Job_Local.cpp -- Local Job                                                 */
+/*============================================================================*/
+
+#include "Jobs.h"
+
+JobClass xJobClass_Local =
+{
+  CN_JOB_LOCAL,             // class number
+  JK_DIST2PC,               // job kind
+  RS_PARTICIPANT_RESPONSE,  // response kind
+  "distributed"_Stz,        // comment about the job
+  nullptr,                  // the prompt command
+  nullptr,                  // the second word
+  "distributed_run"_Stz,    // the _run task seed
+  "distributed_req"_Stz,    // the _req task seed
+  "distributed_beg"_Stz,    // the _rcv task seed
+  "distributed_exe"_Stz,    // the _exe task seed
+  "distributed_end"_Stz,    // the _end task seed
+  "distributed_can"_Stz,    // the _can task seed
+  true,                     // check resources?
+  false,                    // detached job?
+  false,                    // buffer attached?
+  DL_GRAB_WRITE,            // ddl lock model
+  PY_NORMAL,                // priority
+  JF_LOWMEM,                // flags
+
+  nullptr,                  // prompt check function
+  pJob_Local_pre,     // prompt pre-process function
+  vJob_post,                // prompt post-process function
+  pJob_Local_new,     // job new function
+  vJob_Local_delete,  // job delete function
+  vJob_send,                // job pre-send function
+  vJob_recv,                // job post-receive function
+  vJob_Local_show,    // job show function
+  
+  // help
+  false,
+  C_NO_NAME,
+  C_NO_NAME,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_Local_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_NodeInfo_class;
+  
+  return &xJobClass_Local;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_Local* Jobs::_pJob_Local(void* aAddress)
+{
+  Job_Local* pJob_Local = reinterpret_cast<Job_Local*>(aAddress);
+  
+  RASSERT_TYPE(pJob_Local,CN_JOB_LOCAL);
+  
+  return pJob_Local;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_Local::operator new(size_t)
+{
+  Job_Local* pJob_Local =
+    static_cast<Job_Local*>(HeapMem::pAllocate(CN_JOB_LOCAL));
+  
+  return pJob_Local;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_Local::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_Local::operator delete(void* aAddress)
+{
+  Job_Local* pJob_Local = static_cast<Job_Local*>(aAddress);
+  
+  HeapMem::vFree(pJob_Local);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_Local::Job_Local(JobClass* aJobClass, ReqTuple* aReqTuple)
+: Job(aJobClass, aReqTuple)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
+  
+  _checkInitialised_(CN_JOB_LOCAL);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_Local::~Job_Local(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_Local::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_Local* pJob_Local = _pJob_Local(pObject);
+
+  pJob_Local->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate node                                                              */
+/*----------------------------------------------------------------------------*/
+eEC Job_Local::ePopulateJob(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
+  
+  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
+  if (! b) {
+    //vTrace("Unable to match job syntax\n"_Stz);
+    vParticipantHasError(true);
+    return EC_INVALID_COMMAND;
+  }
+  
+  TagSet* pJobInfoTagSet = this->pJobInfoTagSet();
+  //pTagSet_ji->vPrint();
+  
+  if (pJobInfoTagSet) {
+    eJK eJobKind = (eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND);
+    vJobKind(eJobKind);
+    
+    Stz* szJobNm = pJobInfoTagSet->szValue(C_TAG_JOBNM);
+    vJobNm(szJobNm);
+    
+    pJobTags()->vCopy(pJobInfoTagSet);
+    
+}
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_Local::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_Local::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_Local_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
+{
+  Job_Local* pJob_Local = new Job_Local(aJobClass,aReqTuple);
+
+  eEC eError = pJob_Local->ePopulateJob(pTknVec);
+  
+  if ( eError != EC_NONE ) {
+    pJob_Local->vJobError(eError);
+  }
+  
+  return pJob_Local;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_Local_new(JobClass* aJobClass, ReqTuple* aReqTuple)
+{
+  Job_Local* pJob_Local = new Job_Local(aJobClass,aReqTuple);
+  
+  return pJob_Local;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_Local_delete(Job* pJob)
+{
+  Job_Local* pJob_Local = _pJob_Local(pJob);
+    
+  delete pJob_Local;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_Local_show(Job* pJob)
+{
+  Job_Local* pJob_Local = _pJob_Local(pJob);
+
+  pJob_Local->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
