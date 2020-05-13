@@ -173,7 +173,15 @@
 
   folder[].isIndexes assert
 
-  sIndexNm index::newIndexEmbObj locals| pwIndex |
+  [? WITH_OBJ_PROPER ?if
+
+    sIndexNm index::newIndexPrpObj locals| pwIndex |
+ 
+  ?else
+
+    sIndexNm index::newIndexEmbObj locals| pwIndex |
+   
+  ?]
 
   pwIndex execute locals| pIndex |
 
