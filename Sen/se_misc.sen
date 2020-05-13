@@ -10,10 +10,6 @@
 : stepTimingStart StepTiming::start ;
 : stepTimingWrite StepTiming::write ;
 
-: memoryReset memory::reset ;
-: memoryStats memory::statistics ;
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -2613,6 +2613,32 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of se_memoryStats.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged se_memoryStats.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_memoryStats.sen -- memory statistics                                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" se_memoryStats.sen\\\" .verbose\n"
+    "\n"
+    ": memoryReset memory::reset ;\n"
+    "\n"
+    ": memoryStats memory::statistics ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT se_memoryStats.sen"_Stz
+  ;
+
+  vCompileMungedColon(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listColumns.sen
 
   sFileContents =
@@ -16748,6 +16774,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "1 .put\n"
     "        \\\"se_demons.sen\\\"               include\n"
+    "        \\\"se_memoryStats.sen\\\"          include\n"
     "        \\\"se_misc.sen\\\"                 include\n"
     "        \\\"se_munge.sen\\\"                include\n"
     "        \\\"se_schemaTest.sen\\\"           include\n"
@@ -20156,10 +20183,6 @@ void Task::vAddMunged(Forth* pForth)
     ": stepTimingReset StepTiming::reset ;\n"
     ": stepTimingStart StepTiming::start ;\n"
     ": stepTimingWrite StepTiming::write ;\n"
-    "\n"
-    ": memoryReset memory::reset ;\n"
-    ": memoryStats memory::statistics ;\n"
-    "\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"

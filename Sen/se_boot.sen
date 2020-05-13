@@ -215,6 +215,7 @@ assert::stack_0
 
 1 .put
         "se_demons.sen"               include
+        "se_memoryStats.sen"          include
         "se_misc.sen"                 include
         "se_munge.sen"                include
         "se_schemaTest.sen"           include
