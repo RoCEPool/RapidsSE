@@ -53,9 +53,9 @@ print "loading lineitem.csv..." ;
 
 space;
 timerStart;
-time ld lineitem "/tpch/SF1/lineitem.csv" ;
-//time ld lineitem "/DATA/tpch/lineitem10.csv" max_errors 100;
-//ld lineitem "/tpch/SF10/lineitem.csv" ;
+time load lineitem "/tpch/SF1/lineitem.csv" ;
+//time load lineitem "/DATA/tpch/lineitem10.csv" <max_errors> =  100;
+//load lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 space;
 

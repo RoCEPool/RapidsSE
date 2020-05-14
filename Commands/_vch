@@ -14,7 +14,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_defaults.csv" ;
+load vch "../JTEST/vch_defaults.csv" ;
 
 predicateFetch vch;
 
@@ -30,14 +30,14 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_no_enclosed.csv"
-  enclosed_by_leading "\0" ;
+load vch "../JTEST/vch_no_enclosed.csv"
+  <enclosed_by_leading> =  "\0" ;
 
 predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "300 Format with: no enclosed_by no escape_char\n" ;
+print "300 Format with: no enclosed_by no <escape_char> = \n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -46,14 +46,14 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_no_enclosed_no_escape.csv"
-  enclosed_by_leading "\0" escape_char "\0" ;
+load vch "../JTEST/vch_no_enclosed_no_escape.csv"
+  <enclosed_by_leading> =  "\0" <escape_char> =  "\0" ;
 
 predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "400 Format with: no escape_char\n" ;
+print "400 Format with: no <escape_char> = \n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -62,8 +62,8 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_no_escape.csv"
-  escape_char "\0" ;
+load vch "../JTEST/vch_no_escape.csv"
+  <escape_char> =  "\0" ;
 
 predicateFetch vch;
 drop table vch;
@@ -79,7 +79,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_term_defaults.csv"
+load vch "../JTEST/vch_term_defaults.csv"
   record_terminator ";" ;
 
 predicateFetch vch;
@@ -95,14 +95,14 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_term_no_enclosed.csv"
-  record_terminator ";" enclosed_by_leading "\0" ;
+load vch "../JTEST/vch_term_no_enclosed.csv"
+  record_terminator ";" <enclosed_by_leading> =  "\0" ;
 
 predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "700 Format with: terminated + no enclosed_by no escape_char\n" ;
+print "700 Format with: terminated + no enclosed_by no <escape_char> = \n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -111,14 +111,14 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
-  record_terminator ";" enclosed_by_leading "\0" escape_char "\0" ;
+load vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
+  record_terminator ";" <enclosed_by_leading> =  "\0" <escape_char> =  "\0" ;
 
 predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "800 Format with: terminated + no escape_char\n" ;
+print "800 Format with: terminated + no <escape_char> = \n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -127,14 +127,14 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_term_no_escape.csv"
-  record_terminator ";" escape_char "\0" ;
+load vch "../JTEST/vch_term_no_escape.csv"
+  record_terminator ";" <escape_char> =  "\0" ;
 
 predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "900 Format with: delimiter\n" ;
+print "900 Format with: <delimiter> = \n" ;
 
 create table vch (
 vch_testno  INTEGER     NOT NULL,
@@ -143,14 +143,14 @@ vch_comment VARCHAR(64) NOT NULL
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_delimiter.csv"
-  field_delimiter "|";
+load vch "../JTEST/vch_delimiter.csv"
+  <field_delimiter> =  "|";
 
 predicateFetch vch;
 drop table vch;
 
 // enclosed_by
-// escape_char
+// <escape_char> = 
 // record_terminator
 // separator
 

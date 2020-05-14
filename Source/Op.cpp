@@ -977,6 +977,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
   
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
+  //RASSERT(EC_NONE != eError);
   
   // now append the hidden topology ename pairs to the job ename set
   AM::vAppendJobTags(m_pOpJob, &m_oTopologyTags);

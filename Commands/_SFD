@@ -30,7 +30,7 @@ CREATE INDEX idx ON lineitem(l_orderkey);
 print "loading lineitem.csv..." ;
 
 timerStart;
-dpld lineitem "/home/rapids/sf10000_current/lineitem.csv" field_delimiter "|";
+dpld lineitem "/home/rapids/sf10000_current/lineitem.csv" <field_delimiter> =  "|";
 timerEnd;
 
 space;

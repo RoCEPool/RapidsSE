@@ -16,8 +16,8 @@ create table EachType (
   vch varchar
 );
 
-//ld EachType "/DATA/Datums/eachType.csv";
-ld EachType "/DATA/Datums/eachTypeLong.csv";
+//load EachType "/DATA/Datums/eachType.csv";
+load EachType "/DATA/Datums/eachTypeLong.csv";
 
 predicateFetch EachType;
 

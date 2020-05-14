@@ -30,8 +30,8 @@ print "creating index on l_partkey...";
 print "loading lineitem.csv..." ;
 
 timerStart;
-//ld lineitem "/tpch/SF10/lineitem.csv" field_delimiter "|" record_ends "|" ;
-ld lineitem "/tpch/SF10/lineitem.csv" ;
+//load lineitem "/tpch/SF10/lineitem.csv" <field_delimiter> =  "|" record_ends "|" ;
+load lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 
 //antbl lineitem;

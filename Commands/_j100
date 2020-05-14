@@ -11,7 +11,7 @@ create table j100 (
 );
 
 print "loading j100.csv..." ;
-ld j100 "../JTEST/j100.csv" ;
+load j100 "../JTEST/j100.csv" ;
 
 pwf ;
 lf ;

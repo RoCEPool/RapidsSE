@@ -9,7 +9,7 @@ create table j1 (
 
 print "loading j1.csv..." ;
 create index idx on j1 (j1_key);
-ld j1 "../JTEST/j1.csv" ;
+load j1 "../JTEST/j1.csv" ;
 
 cf indexes ;
 pwf ;

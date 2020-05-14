@@ -98,23 +98,23 @@ print "loading partsupp.csv..." ;
 
 print "loading customer.csv..." ;
 
-//time ld partsupp "/TPCH/SF1/temp.tbl" field_delimiter "|";
+//time load partsupp "/TPCH/SF1/temp.tbl" <field_delimiter> =  "|";
 
-time ld partsupp "/TPCH/SF1/partsupp.tbl" field_delimiter "|";
+time load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> =  "|";
 
-time ld customer "/TPCH/SF1/customer.tbl" field_delimiter "|";
+time load customer "/TPCH/SF1/customer.tbl" <field_delimiter> =  "|";
 print "loading lineitem.csv..." ;
-time ld lineitem "/TPCH/SF1/lineitem.csv" ;
+time load lineitem "/TPCH/SF1/lineitem.csv" ;
 print "loading nation.csv..." ;
-time ld nation "/TPCH/SF1/nation.tbl" field_delimiter "|";
+time load nation "/TPCH/SF1/nation.tbl" <field_delimiter> =  "|";
 print "loading orders.csv..." ;
-time ld orders "/TPCH/SF1/orders.tbl" field_delimiter "|";
+time load orders "/TPCH/SF1/orders.tbl" <field_delimiter> =  "|";
 print "loading part.csv..." ;
-time ld part "/TPCH/SF1/part.tbl" field_delimiter "|";
+time load part "/TPCH/SF1/part.tbl" <field_delimiter> =  "|";
 print "loading region.csv..." ;
-time ld region "/TPCH/SF1/region.tbl" field_delimiter "|";
+time load region "/TPCH/SF1/region.tbl" <field_delimiter> =  "|";
 print "loading supplier.csv..." ;
-time ld supplier "/TPCH/SF1/supplier.tbl" field_delimiter "|";
+time load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
 print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -12,7 +12,7 @@ create table d (
 indexEntries 10;
 create index d_idx1 on d (d_int);
 
-ld d "/rapids/d/d.csv";
+load d "/rapids/d/d.csv";
 
 //dumpidx d d_idx1 ;
 

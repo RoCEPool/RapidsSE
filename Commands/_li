@@ -6,7 +6,7 @@ bc;
 
 _lineitem
 
-time ld lineitem "/tpch/SF1/lineitem.csv" ;
+time load lineitem "/tpch/SF1/lineitem.csv" ;
 
 time predicateFetch lineitem displayOff;
 

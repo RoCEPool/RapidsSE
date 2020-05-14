@@ -28,7 +28,7 @@ print "creating index on l_partkey...";
 print "loading lineitem.csv..." ;
 
 timerStart;
-ld lineitem "/tpch/SF1/lineitem.csv" ;
+load lineitem "/tpch/SF1/lineitem.csv" ;
 timerEnd;
 
 antbl lineitem;

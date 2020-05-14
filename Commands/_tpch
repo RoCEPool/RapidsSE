@@ -15,14 +15,14 @@ _supplier
 
 lf ;
 
-ld customer "/tpch/SF1/customer.csv" ;
-//ld lineitem "/tpch/SF1/lineitem.csv" ;
-//ld nation   "/tpch/SF1/nation.csv"   ;
-//ld orders   "/tpch/SF1/orders.csv"  ;
-//ld part     "/tpch/SF1/part.csv"     ;
-//ld partsupp "/tpch/SF1/partsupp.csv" ;
-//ld region   "/tpch/SF1/region.csv"       ;
-//ld supplier "/tpch/SF1/supplier.csv" ;
+load customer "/tpch/SF1/customer.csv" ;
+//load lineitem "/tpch/SF1/lineitem.csv" ;
+//load nation   "/tpch/SF1/nation.csv"   ;
+//load orders   "/tpch/SF1/orders.csv"  ;
+//load part     "/tpch/SF1/part.csv"     ;
+//load partsupp "/tpch/SF1/partsupp.csv" ;
+//load region   "/tpch/SF1/region.csv"       ;
+//load supplier "/tpch/SF1/supplier.csv" ;
 
 tableSizes ;
 

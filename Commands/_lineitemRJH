@@ -84,13 +84,13 @@ print section "Load Table";
 
 space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
-//time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
-time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
-//time ld lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+//time load lineitem "/tpch/SF0/lineitem_1.csv" <max_errors> =  100;
+time load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <max_errors> =  100;
+//time load lineitem "/tpch/SF0/lineitem_100.csv" <max_errors> =  100;
+//time load lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv" <max_errors> =  100;
+//time load lineitem "/tpch/SF0/lineitem_10k.csv" <max_errors> =  100;
+//time load lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
+//time load lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
 space;
 sztbl lineitem;
 sizeIndex lineitem LineItem_Idx1;
@@ -120,7 +120,7 @@ end;
 logSection dumpTable;
 print section "Dump Table";
 
-dumptable lineitem;
+dumpTbl lineitem;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
@@ -134,7 +134,7 @@ time predicateFetch lineitem "l_orderKey 20 <" ;
 logSection dumpIndex;
 print section "Dump Index";
 
-dumpindex LineItem LineItem_Idx1;
+dmpidx LineItem LineItem_Idx1;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
@@ -207,7 +207,7 @@ O_COMMENT         VARCHAR(79) NOT NULL
 CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 
 print "loading orders.csv..." ;
-ld orders "/tpch/SF1/orders.csv" ;
+load orders "/tpch/SF1/orders.csv" ;
 
 
 

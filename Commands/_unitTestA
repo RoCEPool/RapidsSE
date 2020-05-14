@@ -210,13 +210,13 @@ lsidxcol lineitem Lineitem_idx1;
 logSection tag;
 print section "tag";
 
-tag <enclosed_by_leading> = "{";
+tag <<enclosed_by_leading> = > = "{";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection tag;
 print section "tag delete";
 
-tag delete <enclosed_by_leading>;
+tag delete <<enclosed_by_leading> = >;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection load;

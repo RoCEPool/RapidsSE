@@ -40,8 +40,8 @@ space;
 
 //takeMem 100;
 
-//time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
-time ld lineitem "/tpch/SF1/lineitem.csv" ; //max_errors 10;
+//time load lineitem "/tpch/SF0/lineitem100k.csv" <max_errors> =  100;
+time load lineitem "/tpch/SF1/lineitem.csv" ; //<max_errors> =  10;
 
 space;
 

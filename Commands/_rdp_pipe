@@ -29,7 +29,7 @@ create table RDP (
 
 create index rdp_idx_0 on rdp(rdp_testno);
 
-ld rdp "../JTEST/rdp_pipe.csv" delimiter "|" ;
+load rdp "../JTEST/rdp_pipe.csv" <delimiter> =  "|" ;
 
 predicateFetch rdp;
 
@@ -60,7 +60,7 @@ create table RDP2 (
 
 );
 
-ld rdp2 "/tmp/rdp_exported.csv" ;
+load rdp2 "/tmp/rdp_exported.csv" ;
 
 create index rdp2_idx_0 on rdp2(rdp_testno);
 

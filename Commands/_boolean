@@ -25,7 +25,7 @@ bc;
 
 // generate via:
 // docol booleanData;
- ld bolTbl "/DATA/Encoding/boolean.csv" ;
+ load bolTbl "/DATA/Encoding/boolean.csv" ;
 
  time predicateFetch bolTbl noPrint;
 

@@ -16,7 +16,7 @@ create table jInt (
 );
 
 print "loading jInt.csv..." ;
-ld jInt "../JTEST/jInt.csv" ;
+load jInt "../JTEST/jInt.csv" ;
 
 dumptbl jInt;
 

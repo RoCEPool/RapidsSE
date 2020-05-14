@@ -18,7 +18,7 @@ create table orders (
 CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 
 print "loading orders.csv..." ;
-ld orders "/tpch/SF1/orders.csv" ;
+load orders "/tpch/SF1/orders.csv" ;
 
 pwf ;
 lf ;
