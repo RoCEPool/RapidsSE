@@ -144,32 +144,6 @@
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-: :makeFolder_v1 params| sFolderNm |
-
-diclock.grabwrite
-
-  find: \folder
-  dic::new
-  sFolderNm
-    :createCppObject
-      locals| pwFolder |
-
-  sFolderNm pwFolder word.object@ dic.name!
-
-diclock.dropwrite
-
-  args.verbose if
-    pwFolder word.name@
-    path[].toStr
-      "Created folder %v/%v" .printf
-  then
-
-  pwFolder // returns:
-;
-
-/*----------------------------------------------------------------------------*/
-/* make new folder given name (create does> rtn and leave pFolder on stack)   */
-/*----------------------------------------------------------------------------*/
 : :makeFolder params| sFolderNm |
 
 dicLock.grabwrite
