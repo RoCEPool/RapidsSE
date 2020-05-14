@@ -6,9 +6,11 @@ bc;
 
 _lineItem
 
-ld lineitem "/tpch/SF1/lineitem.csv" ;
+dumpTokens on;
 
-publish lineitem "/tmp/lineitem.rowAgg" ;
+load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <x> = "1";
+
+//publish lineitem "/tmp/lineitem.rowAgg" ;
 
 /*============================================================================*/
 /* end                                                                        */

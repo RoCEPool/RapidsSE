@@ -165,7 +165,9 @@ void SePrompt::vPromptLoop(void)
       vReportOther();
       vPromptUser();
     }
-
+    
+    m_oCmdTags.vReset();
+    
     L_Read_Next_Command:
     
     if (! bReadNextCommand())
@@ -348,7 +350,7 @@ void SePrompt::vCheckJobCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_oCmdTags.vReset();
+  //m_oCmdTags.vReset();
   
   Token* pTkn0 = pTkn(0);
   
