@@ -1,44 +1,17 @@
 bc;
 
 
-create table jCdt (
-jA  INTEGER,
-jB  INTEGER,
-jC  INTEGER,
-jD  INTEGER,
-jE  VARCHAR(32)
+create table VchTbl (
+int_col1  INTEGER NOT NULL,
+vch_col2  VARCHAR(10)  NOT NULL,
+vch_col3  VARCHAR(32)  NOT NULL,
+int_col4  INTEGER NOT NULL,
+vch_col5  VARCHAR
 );
+//ld VchTbl "../DATA/Datums/varchar.csv" enclosed_by_leading "'";
 
-create index jCdt_idx1 on jCdt (jA);
-//create index jCdt_idx2 on jCdt (jA,jB);
+//tableScan VchTbl;
 
-load jCdt "../DATA/Select/range.csv";
+load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 
-trackMemory;
-
-predicateFetch jCdt "JA 1 >=";
-predicateFetch jCdt "JA 22 <=";
-predicateFetch jCdt "JA 1 >= jA 22 <= OR";
-
-//drop table jCdt;
-memoryLeaks;
-
-/*
-(null,27,37,47,'hh')
-(-9223372036854775806,27,37,47,'hh')
-(14,24,34,44,'ee')
-(15,25,35,45,'ff')
-(11,21,31,41,'bb1')
-(11,21,31,41,'bb2')
-(11,21,31,41,'bb3')
-(12,22,32,42,'cc')
-(13,23,33,43,'dd')
-(16,26,36,46,'gg')
-(17,27,37,47,'hh')
-(19,29,39,49,'jj')
-(10,20,30,40,'aa')
-(18,28,38,48,'ii')
-(18,18,38,38,'ii')
-(9223372036854775806,27,37,47,'hh')
-
-*/
+//tableScan VchTbl;

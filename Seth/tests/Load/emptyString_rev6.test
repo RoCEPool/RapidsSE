@@ -44,16 +44,10 @@ success
 create index idx on T1 (col_id);
 success
 
-// load table T1 with enclosed_by_leading '
-//ld T1 "../DATA/Load/emptyString1.csv" enclosed_by_leading "'";
-tag <enclosedby_leading> = "'";
-success
+// load table T1 with <enclosed_by_leading> =  '
+//load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'" ;
 
-load T1 "../DATA/Load/emptyString1.csv";
-success
-
-// delete the tag
-tag delete <enclosedby_leading>;
+load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'";
 success
 
 // predicateFetch rows
@@ -84,21 +78,8 @@ success
 create index idx on T1 (col_id) ;
 success
 
-// load table T1 with enclosed_by_leading '
-tag <enclosedby_leading> = "{";
-success
-
-tag <enclosedby_trailing> = "}";
-success
-
-load T1 "../DATA/Load/emptyString2.csv";
-success
-
-// delete the tags
-tag delete <enclosedby_leading>;
-success
-
-tag delete <enclosedby_trailing>;
+// load table T1
+load T1 "../DATA/Load/emptyString2.csv" <enclosed_by_leading> = "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows

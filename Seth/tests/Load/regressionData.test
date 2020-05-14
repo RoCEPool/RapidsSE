@@ -299,7 +299,7 @@ success
 load CUSTOMERH "../DATA/Load/customer.csv" ;
 success
 
-ld PARTSUPP "../DATA/Load/partsupp.csv" record_ends "\r\n";
+load PARTSUPP "../DATA/Load/partsupp.csv" <record_ends> = "\r\n";
 success
 
 load PART "../DATA/Load/part.csv" ;
@@ -317,7 +317,7 @@ success
 load MANUFACTURER "../DATA/Load/manufacturer.csv";
 success
 
-ld NATION "../DATA/Load/nation.csv" record_ends "\r\n";;
+load NATION "../DATA/Load/nation.csv" <record_ends> = "\r\n";;
 success
 
 load REGION "../DATA/Load/region.csv" ;

@@ -30,8 +30,8 @@ static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
 static Stz* C_TAG_TOPOLOGY     = "<topology>"_Stz;
 static Stz* C_TAG_XMITKIND     = "<xmitKind>"_Stz;
 
-static Stz* C_TAG_ENCLOSED_BY_LEADING  = "<enclosedby_leading>"_Stz;
-static Stz* C_TAG_ENCLOSED_BY_TRAILING = "<enclosedby_trailing>"_Stz;
+static Stz* C_TAG_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;
+static Stz* C_TAG_ENCLOSED_BY_TRAILING = "<enclosed_by_trailing>"_Stz;
 static Stz* C_TAG_ESCAPE_CHAR          = "<escape_char>"_Stz;
 static Stz* C_TAG_FIELD_DELIMITER      = "<field_delimiter>"_Stz;
 static Stz* C_TAG_RECORD_TERMINATOR    = "<record_terminator>"_Stz;

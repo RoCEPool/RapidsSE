@@ -4,21 +4,14 @@
 
 bc;
 
-create table G1 (
-id      integer,
-vch     varchar,
-dte     date,
-tsp     timestamp,
-dec     decimal(17,2),
-decL    decimal(19,2),
-flt     float,
-status  boolean
+create table T1 (
+col_id       INTEGER,
+col_vch      VARCHAR(15),
+col_int      INTEGER
 );
 
-tag <enclosedby_leading> = "'";
-load G1 "/DATA/Load/dataTypes.csv";
-//ld G1 "/DATA/Load/dataTypes.csv" enclosed_by_leading "'";
-
+load T1 "../DATA/Load/emptyString2.csv" <enclosed_by_leading> = "{" <enclosed_by_trailing> = "}";
+tableScan T1;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -23,7 +23,7 @@ create index idx on terminator(pcol1);
 success
 
 // load data into the table with default formatter settings
-ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|" record_terminator "|";
+load terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|" record_terminator "|";
 success
 
 tableScan terminator;
@@ -57,7 +57,7 @@ create index idx on terminator(pcol1);
 success
 
 // load data into the table with default formatter settings
-ld terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
+load terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
 success
 
 tableScan terminator;
