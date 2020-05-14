@@ -56,7 +56,7 @@ Dic::Dic(void)
 
   m_pArticle = new Article(C_NO_NAME,this,nullptr);
   
-  m_sName    = C_NO_NAME;
+  m_sDicNm   = C_NO_NAME;
   m_pDicKind = nullptr;
   
   // this is because of GlobalDictionary (ugh)
@@ -77,7 +77,7 @@ Dic::Dic(Stz* szDicNm)
 
   m_pArticle = new Article(C_NO_NAME,this,nullptr);
   
-  m_sName    = szDicNm;
+  m_sDicNm   = szDicNm;
   m_pDicKind = nullptr;
   
   // this is because of GlobalDictionary (ugh)
@@ -154,7 +154,7 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
   Dic* pDic = _pDic(pObject);
   
   vTrace("name %s count %lld\n"_Stz,
-         pDic->m_sName.azChar(),
+         pDic->m_sDicNm.azChar(),
          pDic->m_pArticle->nItems());
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
@@ -214,7 +214,7 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   ASSERT(pDic->bWordBody());
   
-  //vTrace("%s %s finalize\n"_Stz, aCN[eClass], pDic->m_sName.s());
+  //vTrace("%s %s finalize\n"_Stz, aCN[eClass], pDic->m_sDicNm.s());
   
   delete pDic->m_pArticle;
 }
@@ -236,7 +236,7 @@ Word* Dic::pFindWord(Stz* szWordNm)
       m_pArticle->vDropRead();
 
       if (szWordNm->bSame("whereAmI"_Stz))
-        vTrace(": %s is in dictionary %s ---\n"_Stz,szWordNm,m_sName.szStz());
+        vTrace(": %s is in dictionary %s ---\n"_Stz,szWordNm,m_sDicNm.szStz());
 
       return pWord;
     }
@@ -290,11 +290,11 @@ void Dic::vInit(void)
   
   Word* pWord = Word::pToWord(this);
   
-  //m_sName.vInit();
-  m_sName = pWord->szWordNm();
+  //m_sDicNm.vInit();
+  m_sDicNm = pWord->szWordNm();
   
   delete m_pArticle;
-  m_pArticle = new Article(m_sName,this,nullptr);
+  m_pArticle = new Article(m_sDicNm,this,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,7 +304,7 @@ bool Dic::bIsName(Stz* szDicNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  bool b = m_sName.bSame(szDicNm);
+  bool b = m_sDicNm.bSame(szDicNm);
   
   return b;
 }
@@ -336,7 +336,7 @@ void Dic::vListWords(void)
     
     vTrace(": %s (dictionary %s)"_Stz,
            pWord->szWordNm(),
-           m_sName.szStz());
+           m_sDicNm.szStz());
   }
   
   m_pArticle->vDropRead();
@@ -345,23 +345,23 @@ void Dic::vListWords(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Dic::szName(void)
+Stz* Dic::szDicNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  return m_sName;
+  return m_sDicNm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dic::vName(Stz* szDicNm)
+void Dic::vDicNm(Stz* szDicNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName = szDicNm;
+  m_sDicNm = szDicNm;
   
-  m_pArticle->vName(m_sName);
+  m_pArticle->vName(m_sDicNm);
 }
 
 /*----------------------------------------------------------------------------*/

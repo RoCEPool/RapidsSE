@@ -10,7 +10,7 @@ namespace SenVM
   private:
     Article*  m_pArticle;  // the dictionary article
   
-    s32       m_sName;     // name of this dictionary
+    s32       m_sDicNm;    // name of this dictionary
     Word*     m_pDicKind;  // kind of dictionary
   
     // must be last
@@ -41,8 +41,8 @@ namespace SenVM
     bool  bIsName(Stz* szDicNm);
     Word* pLastWord(void);
     void  vListWords(void);
-    Stz*  szName(void);
-    void  vName(Stz* szDicNm);
+    Stz*  szDicNm(void);
+    void  vDicNm(Stz* szDicNm);
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);

@@ -78,7 +78,7 @@ AttachMap::AttachMap(void)
   m_pLexiconArticle = pLexicon->pArticle();
   
   m_pRootDic = new Dic;
-  m_pRootDic->vName("__dicRoot"_Stz);
+  m_pRootDic->vDicNm("__dicRoot"_Stz);
   
   m_pRootArcticle = m_pRootDic->pArticle();
   

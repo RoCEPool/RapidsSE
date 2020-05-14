@@ -112,7 +112,7 @@ void Step::vDicNameFetch(void)
  
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
-  s32 sName(pDic->szName());
+  s32 sName(pDic->szDicNm());
   
   m_pDataStack->vPushStr(sName);
   
@@ -131,7 +131,7 @@ void Step::vDicNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  pDic->vName(sName);
+  pDic->vDicNm(sName);
   
   EXIT();
 }

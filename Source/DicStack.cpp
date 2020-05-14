@@ -89,7 +89,7 @@ void DicStack::vContentDump(void)
   vTrace("%p:\n"_Stz,this);
 
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    vTrace("[%02lld] %s\n"_Stz,i_Dic,m_pDic[i_Dic]->szName());
+    vTrace("[%02lld] %s\n"_Stz,i_Dic,m_pDic[i_Dic]->szDicNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* szTab)
   
   for (i8 i_Dic = pDicStack->m_iTop; i_Dic >= 0; i_Dic--) {
     vTrace(" dic %p %lld %s"_Stz,szTab, pDicStack->m_pDic[i_Dic],i_Dic,
-           pDicStack->m_pDic[i_Dic]->szName());
+           pDicStack->m_pDic[i_Dic]->szDicNm());
     //Dic::vDump(CN_DIC, pDicStack->m_pDic[i], aTab);
   }
 
@@ -380,7 +380,7 @@ void DicStack::vToPathStr(Stz* szPath)
     //if (i_Dic != m_iTop)
     szPath->vConcat("/"_Stz);
 
-    szPath->vConcat(pDic->szName());
+    szPath->vConcat(pDic->szDicNm());
   }
   
 }
