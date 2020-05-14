@@ -176,17 +176,9 @@
 /*----------------------------------------------------------------------------*/
 : table::newTable params| sTableNm | ( pTable )
 
-  [? WITH_OBJ_PROPER ?if
- 
-    sTableNm table::newTablePrpObj locals| pwTable |
+  sTableNm table::newTablePrpObj locals| pwTable |
    
-    pwTable word.see
-
-  ?else
-   
-    sTableNm table::newTableEmbObj locals| pwTable |
-   
-  ?]
+  pwTable word.see
 
   pwTable execute locals| pTable |
 
@@ -259,15 +251,7 @@
 /*----------------------------------------------------------------------------*/
 : table::deleteTable params| sTableNm |
 
-  [? WITH_OBJ_PROPER ?if
-   
-    sTableNm table::deleteTablePrpObj
-
-  ?else
-   
-    sTableNm table::deleteTableEmbObj
-
-  ?]
+  sTableNm table::deleteTablePrpObj
 ;
 
 /*----------------------------------------------------------------------------*/

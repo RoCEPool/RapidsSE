@@ -160,17 +160,9 @@
 
   folder[].isIndexes assert
 
-  [? WITH_OBJ_PROPER ?if
-
-    sIndexNm index::newIndexPrpObj locals| pwIndex |
+  sIndexNm index::newIndexPrpObj locals| pwIndex |
    
-    pwIndex word.see
-
-  ?else
-
-    sIndexNm index::newIndexEmbObj locals| pwIndex |
-   
-  ?]
+  pwIndex word.see
 
   pwIndex execute locals| pIndex |
 
@@ -232,15 +224,7 @@
 /*----------------------------------------------------------------------------*/
 : index::deleteIndex params| sIndexNm |
 
-  [? WITH_OBJ_PROPER ?if
-   
-    sIndexNm index::deleteIndexPrpObj
-   
-  ?else
-
-    sIndexNm index::deleteIndexEmbObj
-
-  ?]
+  sIndexNm index::deleteIndexPrpObj
 ;
 
 /*----------------------------------------------------------------------------*/

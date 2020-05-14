@@ -201,15 +201,7 @@ dicLock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :makeFolder params| sFolderNm |
 
-  [? WITH_OBJ_PROPER ?if
-
-    sFolderNm :makeFolder_v2 locals| pwFolder |
-
-  ?else
-
-   sFolderNm :makeFolder_v1 locals| pwFolder |
-
-  ?]
+  sFolderNm :makeFolder_v2 locals| pwFolder |
 
   pwFolder
 ;
