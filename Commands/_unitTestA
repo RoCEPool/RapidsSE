@@ -257,10 +257,10 @@ print section "table Scan";
 tableScan lineitem;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection filteredFetch;
-print section "Filtered Fetch";
+logSection predicateFetch;
+print section "Predicate Fetch";
 
-time fetch lineitem "l_orderKey 20 <" ;
+time predicateFetch lineitem "l_orderKey 20 <" ;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection dumpTable;
