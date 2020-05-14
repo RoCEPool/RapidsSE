@@ -96,13 +96,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobClass();
   Step::vAddSteps_JobGeneric();
-  Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobOperand();
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRef();
-  Step::vAddSteps_JobSubLoader();
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRecord();
   Step::vAddSteps_JobWriteRow();

@@ -77,14 +77,13 @@ namespace Steps
     static void vAddSteps_JobAnalyzeIndex(void);
     static void vAddSteps_JobClass(void);
     static void vAddSteps_JobGeneric(void);
-    static void vAddSteps_JobLoadTable(void);
+
     static void vAddSteps_JobNodeInfo(void);
     static void vAddSteps_JobOperand(void);
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobReceiver(void);
     static void vAddSteps_JobRef(void);
 
-    static void vAddSteps_JobSubLoader(void);
     static void vAddSteps_JobWriteBuffer(void);
     static void vAddSteps_JobWriteRecord(void);
     static void vAddSteps_JobWriteRow(void);

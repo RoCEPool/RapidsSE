@@ -135,7 +135,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__FIND
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
   /*    */ &Finalize::vUndefined,         // CN_JOB_DISTRIBUTED
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOCAL
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
@@ -143,7 +142,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_START
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINFLATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINGESTER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT

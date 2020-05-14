@@ -355,7 +355,7 @@ bool Loader::bTerminate(void)
 /*----------------------------------------------------------------------------*/
 bool Loader::bExtractDateFormat(Stz* dateFormat)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   i8 iIndex = 0;
   

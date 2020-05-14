@@ -47,7 +47,7 @@ JobClass xJobClass_Start =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Start_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubLoader_class;
+  *pNextFun = (pFUN*)pJob_WriteBuffer_class;
   
   return &xJobClass_Start;
 }
@@ -143,7 +143,7 @@ void Job_Start::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Job_Start::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_START,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -26,8 +26,7 @@ extern PromptCatalog gxPromptCatalog;
 bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
 {
   
-  // dist2pc
-  JobClass::vCmds(CN_JOB_LOADTABLE);
+  RASSERT(0);
   
   return true;
 }

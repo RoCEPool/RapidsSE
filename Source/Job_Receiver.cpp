@@ -185,7 +185,7 @@ void Job_Receiver::vNode(Grids::Node* pNode)
 /*----------------------------------------------------------------------------*/
 void Job_Receiver::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

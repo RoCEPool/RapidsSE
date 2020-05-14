@@ -143,7 +143,7 @@ void Job_Boot::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Job_Boot::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_BOOT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
