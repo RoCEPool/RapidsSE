@@ -77,6 +77,16 @@ rows: 17
 partitionScan IntTbl 7;
 rows: 11
 
+// fetch
+predicateFetch intTbl "int_col1 13 =";
+rows:
+  (13,'one three',113,null)
+
+// fetch
+predicateFetch intTbl "int_col1 14 =";
+rows:
+  (14,'one four',114,null)
+
 export IntTbl "/tmp/integer.csv";
 success
 
@@ -108,6 +118,14 @@ partitionScan IntTbl 6;
 rows: 0
 
 partitionScan IntTbl 7;
+rows: 0
+
+// fetch
+predicateFetch intTbl "int_col1 13 =";
+rows: 0
+
+// fetch
+predicateFetch intTbl "int_col1 14 =";
 rows: 0
 
 // load from exported file
@@ -149,6 +167,16 @@ rows: 17
 
 partitionScan IntTbl 7;
 rows: 11
+
+// fetch
+//predicateFetch intTbl "int_col1 13 =";
+//rows:
+//  (13,'one three',113,null)
+
+// fetch
+//predicateFetch intTbl "int_col1 14 =";
+//rows:
+//  (14,'one four',114,null)
 
 // drop the table
 drop table IntTbl;
