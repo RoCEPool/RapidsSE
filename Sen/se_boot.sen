@@ -76,6 +76,7 @@ assert::stack_0
         "job_ForgetNode.sen"      include
 
         "Job_LoadTable.sen"       include
+        "Job_Local.sen"           include
 
         "Job_Pipeline.sen"        include
 
