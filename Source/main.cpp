@@ -21,6 +21,9 @@ int main(int argc, const char* argv[])
 {
   //ASSERT(1 == 0);
 
+  printf("sizeof(Table)       %lld\n", (i8)sizeof(Table));
+  printf("sizeof(Index)       %lld\n", (i8)sizeof(Index));
+  printf("sizeof(Dic)         %lld\n", (i8)sizeof(Dic));
   printf("sizeof(Token)       %lld\n", (i8)sizeof(Token));
   printf("sizeof(TokenVec)    %lld\n", (i8)sizeof(TokenVec));
   printf("sizeof(Session)     %lld\n", (i8)sizeof(Session));

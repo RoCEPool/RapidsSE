@@ -34,7 +34,11 @@ Table* MetaData::_pTable(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t)
 {
+#ifdef WITH_OBJ_PROPER
+  Table* pTable = (Table*)HeapMem::pAllocate(CN_TABLE);
+#else
   Table* pTable = nullptr;
+#endif
   
   return pTable;
 }
@@ -70,6 +74,61 @@ Table::Table(void)
   
   m_pTableDef  = nullptr;
   m_sTableNm = pWord->szWordNm();
+  m_pIdxVec    = new IdxVec;
+  m_ixIndexNo.vCheckInit();
+  m_pBucketMap = new BucketMap(AM::nPartitions());
+  m_bIsLoading = false;
+  m_pTablePtnVec = new TablePtnVec;
+  m_pPtnStreamDef = new StreamDef;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the table partitions
+  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+    
+    TablePtn* pPartition = new TablePtn(this);
+    m_pTablePtnVec->vAdd(pPartition);
+    
+    i8 iPartition = TablePtn::iSlotToPartition(i_Slot);
+    m_pTablePtnVec->pGet(i_Slot)->vPartitionId(iPartition);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the subLoaders
+  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
+    m_ixSubLoaders[i_Slot] = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  _checkInitialised_(CN_TABLE);
+  
+  ++ gixTable;
+  
+  Job* pJob = AM::pThisTLSJob();
+  
+  AM::vLogDdl(SL_INF,pJob,DA_DDL_CREATE_TABLE,
+              "%s |gixTable=%lld|"_Stz, //!format-LogOpr
+              m_sTableNm.szStz(),* gixTable);
+
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Table::Table(Stz* szTableNm)
+: Object(CN_TABLE)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.Table.m_nCreates++;
+#endif
+  
+  Word* pWord = Word::pToWord(this);
+  
+  m_pTableDef  = nullptr;
+  m_sTableNm   = szTableNm;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPartitions());

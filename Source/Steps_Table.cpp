@@ -430,8 +430,15 @@ void Step::vTableIsDefinitionOnly(void)
 void Step::vTableNew(void)
 {
   ENTRY();
-  
+
+#ifdef WITH_OBJ_PROPER
+  s32 sTableNm;
+  m_pDataStack->vPopStr(sTableNm,__func__);
+
+  Table* pTable = new Table(sTableNm);
+#else
   Table* pTable = new Table;
+#endif
   
   m_pDataStack->vPushPtr(pTable);
   
