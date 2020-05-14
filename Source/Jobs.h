@@ -36,8 +36,6 @@ namespace Jobs
 
 #include "Job_Boot.hpp"
 
-#include "Job_CopyBuffer.hpp"
-
 #include "Job_Distributed.hpp"
 
 #include "Job_LoadTable.hpp"

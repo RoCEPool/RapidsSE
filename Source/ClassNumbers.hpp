@@ -137,7 +137,6 @@ enum eCN : u2 // Class Number
   /* 103 0x067       10B Heap:I */ CN__J__,
   /* 104 0x068    14224B Heap:L */ CN_JOB__FIND,
   /* 105 0x069    14224B Heap:L */ CN_JOB_BOOT,
-  /* 106 0x06A   145384B Heap:L */ CN_JOB_COPYBUFFER,
   /* 106 0x06A   145384B Heap:L */ CN_JOB_DISTRIBUTED,
   /* 110 0x06E    14576B Heap:L */ CN_JOB_LOADTABLE,
   /* 110 0x06E    14576B Heap:L */ CN_JOB_LOCAL,
@@ -477,7 +476,6 @@ static Stz* aCN[]
   /* 103 0x067 */ "_J__"_Stz,                // CN__J__
   /* 104 0x068 */ "JOB__FIND"_Stz,           // CN_JOB__FIND
   /* 105 0x069 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
-  /* 106 0x06A */ "JOB_COPYBUFFER"_Stz,      // CN_JOB_COPYBUFFER
   /* 106 0x06A */ "JOB_DISTRIBUTED"_Stz,     // CN_JOB_DISTRIBUTED
   /* 110 0x06E */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /* 110 0x06E */ "JOB_LOCAL"_Stz,           // CN_JOB_LOCAL

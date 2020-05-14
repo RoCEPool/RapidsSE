@@ -64,7 +64,6 @@ assert::stack_0
         "job_BootCluster.sen"     include
 
         "job_ConnectCluster.sen"  include
-        "Job_CopyBuffer.sen"      include
         "job_CreateIndex.sen"     include
         "job_CreateTable.sen"     include
 

@@ -4402,56 +4402,6 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of job_CopyBuffer.sen
-
-  sFileContents =
-    "\""
-    "\\\"munged job_CopyBuffer.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* Job_CopyBuffer.sen -- Job Copy buffer                                      */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" Job_CopyBuffer.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* Job_CopyBuffer request (on originating node)                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": Job_CopyBuffer_req (  -- <R> )\n"
-    "\n"
-    "  LogEntry SEED_REQ\n"
-    "\n"
-    "  0 locals| pThisTask |\n"
-    "  job[] locals| pJob_CopyBuffer |\n"
-    "\n"
-    "\n"
-    "  // get the task\n"
-    "  task[] to pThisTask\n"
-    "\n"
-    "  // get the job from the task\n"
-    "  pThisTask task.job@ to pJob_CopyBuffer\n"
-    "\n"
-    "  //pJob_CopyBuffer Job_CopyBuffer.copy\n"
-    "\n"
-    "  // null the job in the task\n"
-    "  nullptr pThisTask task.job!\n"
-    "\n"
-    "  // delete the job\n"
-    "  pJob_CopyBuffer job.delete\n"
-    "\n"
-    "  DONE_RUN\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_CopyBuffer.sen"_Stz
-  ;
-
-  vCompileMungedColon(sFileContents);
-
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateIndex.sen
 
   sFileContents =
@@ -16027,7 +15977,6 @@ void Task::vAddMunged(Forth* pForth)
     "        \\\"job_BootCluster.sen\\\"     include\n"
     "\n"
     "        \\\"job_ConnectCluster.sen\\\"  include\n"
-    "        \\\"Job_CopyBuffer.sen\\\"      include\n"
     "        \\\"job_CreateIndex.sen\\\"     include\n"
     "        \\\"job_CreateTable.sen\\\"     include\n"
     "\n"

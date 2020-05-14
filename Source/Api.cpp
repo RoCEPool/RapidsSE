@@ -50,7 +50,6 @@ void Api::vIncStatistics(eAC eApiCall)
     case AC_BeginInsert:         pStats->Api.m_nBeginInsert++;          break;
     case AC_BeginSubInserter:    pStats->Api.m_nBeginSubInserter++;     break;
     case AC_CheckVersion:        pStats->Api.m_nCheckVersion++;         break;
-    case AC_CopyBuffer:          pStats->Api.m_nCopyBuffer++;           break;
     case AC_DeleteSession:       pStats->Api.m_nDeleteSession++;        break;
     case AC_EndInsert:           pStats->Api.m_nEndInsert++;            break;
     case AC_EndJobs:             pStats->Api.m_nEndJobs++;              break;
@@ -104,10 +103,6 @@ void Api::vMonitorPortrait(s48K& sPortrait)
   if (pStats->Api.m_nCheckVersion) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("checkVersion %lld "_Stz,pStats->Api.m_nCheckVersion);
-  }
-  if (pStats->Api.m_nCopyBuffer) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("copyBuffer %lld "_Stz,pStats->Api.m_nCopyBuffer);
   }
   if (pStats->Api.m_nDeleteSession) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
