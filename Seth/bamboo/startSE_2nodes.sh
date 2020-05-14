@@ -157,3 +157,8 @@ do
   NODE="${NODES[${i}]}"
   echo "SE (${NODE}) started successfully (pid ${PIDS_ARR[${i}]})."
 done
+
+# Wait for 10 seconds for cluster to start (ALKA added)
+echo "Waiting ${SLEEP_SEC} seconds for SE CLUSTER to connect up."
+sleep ${SLEEP_SEC}
+
