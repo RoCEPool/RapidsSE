@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  compiler::current!
+  pwObject compiler::current!
 
   pwObject encode::push
 

@@ -152,19 +152,19 @@ diclock.grabwrite
   dic::new
   sFolderNm
     :createCppObject
-      locals| pFolder |
+      locals| pwFolder |
 
-  sFolderNm pFolder word.object@ dic.name!
+  sFolderNm pwFolder word.object@ dic.name!
 
 diclock.dropwrite
 
   args.verbose if
-    pFolder word.name@
+    pwFolder word.name@
     path[].toStr
       "Created folder %v/%v" .printf
   then
 
-  pFolder // returns:
+  pwFolder // returns:
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,14 +185,14 @@ dicLock.grabwrite
 dicLock.dropwrite
 
   args.verbose if
-    pFolder word.name@
+    pwFolder word.name@
     path[].toStr
       "Created folder %v/%v" .printf
   then
 
   pwFolder word.see
 
-  pFolder // returns:
+  pwFolder // returns:
 ;
 
 
@@ -203,15 +203,15 @@ dicLock.dropwrite
 
   [? WITH_OBJ_PROPER ?if
 
-    sFolderNm :makeFolder_v2 locals| pFolder |
+    sFolderNm :makeFolder_v2 locals| pwFolder |
 
   ?else
 
-   sFolderNm :makeFolder_v1 locals| pFolder |
+   sFolderNm :makeFolder_v1 locals| pwFolder |
 
   ?]
 
-  pFolder
+  pwFolder
 ;
 
 /*----------------------------------------------------------------------------*/
