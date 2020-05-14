@@ -170,7 +170,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-: :makeFolder_v2 params| sFolderNm |
+: :makeFolder params| sFolderNm |
 
 dicLock.grabwrite
 
@@ -193,17 +193,6 @@ dicLock.dropwrite
   pwFolder word.see
 
   pwFolder // returns:
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* make new folder given name (create does> rtn and leave pFolder on stack)   */
-/*----------------------------------------------------------------------------*/
-: :makeFolder params| sFolderNm |
-
-  sFolderNm :makeFolder_v2 locals| pwFolder |
-
-  pwFolder
 ;
 
 /*----------------------------------------------------------------------------*/
