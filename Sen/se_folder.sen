@@ -176,7 +176,7 @@ dicLock.grabwrite
 
   find: \folder locals| pwFolderCatg |
 
-  dic::new locals| pFolder |
+  sFolderNm dic::new locals| pFolder |
 
   sFolderNm word::new locals| pwFolder |
 

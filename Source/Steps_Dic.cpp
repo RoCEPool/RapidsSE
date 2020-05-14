@@ -144,9 +144,15 @@ void Step::vDicNew(void)
 {
   ENTRY();
   
-  Dic* pRootDic = new Dic;
+  Dic* pDic = new Dic;
   
-  m_pDataStack->vPushPtr(pRootDic);
+#ifdef WITH_OBJ_PROPER
+  s32 sName;
+  m_pDataStack->vPopStr(sName,__func__);
+  pDic->vName(sName);
+#endif
+  
+  m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }
