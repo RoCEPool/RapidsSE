@@ -185,7 +185,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* new a c++ Table instance using given table name                   EMBEDDED */
+/* new a c++ Table instance using given table name                            */
 /*----------------------------------------------------------------------------*/
 : table::newTable params| sTableNm | ( pTable )
 
@@ -262,15 +262,25 @@
 /*----------------------------------------------------------------------------*/
 : table::deleteTablePrpObj params| sTableNm |
  
-  0 assert
+  sTableNm find execute table::delete
+
+  sTableNm :forget
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Table object & its forget word                         EMBEDDED */
+/* delete C++ Table object & its forget word                                  */
 /*----------------------------------------------------------------------------*/
 : table::deleteTable params| sTableNm |
 
-  sTableNm table::deleteTableEmbObj
+  [? WITH_OBJ_PROPER ?if
+   
+    sTableNm table::deleteTablePrpObj
+
+  ?else
+   
+    sTableNm table::deleteTableEmbObj
+
+  ?]
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -54,8 +54,11 @@ void* Table::operator new(size_t, Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Table::operator delete(void*)
+void Table::operator delete(void* pAddress)
 {
+  Table* pTable = reinterpret_cast<Table*>(pAddress);
+
+  HeapMem::vFree(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,9 +176,7 @@ Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  // Table is a word
-  // destructor should never be invoked
-  ASSERT(0);
+  vTidyUp();
 }
 
 

@@ -235,15 +235,23 @@
 /*----------------------------------------------------------------------------*/
 : index::deleteIndexPrpObj params| sIndexNm |
 
-  0 assert
+  sIndexNm :forget
 ;
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Index object & its forget word                         EMBEDDED */
+/* delete C++ Index object & its forget word                                  */
 /*----------------------------------------------------------------------------*/
 : index::deleteIndex params| sIndexNm |
 
-  sIndexNm index::deleteIndexEmbObj
+  [? WITH_OBJ_PROPER ?if
+   
+    sIndexNm index::deleteIndexPrpObj
+   
+  ?else
+
+    sIndexNm index::deleteIndexEmbObj
+
+  ?]
 ;
 
 /*----------------------------------------------------------------------------*/
