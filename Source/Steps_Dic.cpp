@@ -143,13 +143,14 @@ void Step::vDicNameStore(void)
 void Step::vDicNew(void)
 {
   ENTRY();
-  
-  Dic* pDic = new Dic;
-  
+    
 #ifdef WITH_OBJ_PROPER
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  pDic->vName(sName);
+  s32 szDicNm;
+  m_pDataStack->vPopStr(szDicNm,__func__);
+  
+  Dic* pDic = new Dic(szDicNm);
+#else
+  Dic* pDic = new Dic;
 #endif
   
   m_pDataStack->vPushPtr(pDic);

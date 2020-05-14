@@ -68,6 +68,27 @@ Dic::Dic(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Dic::Dic(Stz* szDicNm)
+: Object(CN_DIC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+
+  m_pArticle = new Article(C_NO_NAME,this,nullptr);
+  
+  m_sName    = szDicNm;
+  m_pDicKind = nullptr;
+  
+  // this is because of GlobalDictionary (ugh)
+  //vInit();
+  
+  _checkInitialised_(CN_DIC);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Dic::~Dic(void) noexcept(false)
