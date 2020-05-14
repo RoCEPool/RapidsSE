@@ -1175,7 +1175,7 @@ L_Exit:
 void Step::vIndexLowerBound(void)
 {
   ENTRY();
-  
+ /*
   FetchBuffer* pFetchBuffer;
   
   Datum xVariable;
@@ -1303,7 +1303,7 @@ LastBuffer:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
+ */
   EXIT();
 }
 
@@ -1363,7 +1363,7 @@ void Step::vIndexPopulate(void)
 void Step::vIndexRange(void)
 {
   ENTRY();
-  
+ /*
   Datum xValWrkLwr;
   Datum xValWrkUpr;
 
@@ -1573,7 +1573,7 @@ LastBuffer:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
+*/
   EXIT();
 }
 
@@ -1636,7 +1636,7 @@ void Step::vIndexTableStore(void)
 void Step::vIndexUpperBound(void)
 {
   ENTRY();
-  
+  /*
 
   Datum xVariable;
   
@@ -1788,7 +1788,7 @@ LastBuffer:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
+  */
   EXIT();
 }
 

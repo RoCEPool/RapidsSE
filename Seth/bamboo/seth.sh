@@ -12,7 +12,7 @@ TESTLIST_FILE="${DIR}/allTestsBamboo"
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 15 minutes.
-SETH_TIMEOUT="900"
+SETH_TIMEOUT="1800"
 
 #SE_PATH="../OS X/Build/Products/Debug/SE"
 NODE="NODE0"

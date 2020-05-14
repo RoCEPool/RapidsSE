@@ -20,7 +20,7 @@ create index idx on terminator_cr(c1);
 success
 
 // fetch
-fetch terminator_cr "c1 1 =";
+predicateFetch terminator_cr "c1 1 =";
 rows:
   (1, 'This is terminatoed by <CR>');
 

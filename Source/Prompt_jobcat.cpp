@@ -40,7 +40,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_RECEIVER);
 
   // local
-  nJobs++; JobClass::vJobCat(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vJobCat(CN_JOB_LOCAL);
   
   // generic
@@ -51,7 +50,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_DISTRIBUTED);
   
   // child
-  nJobs++; JobClass::vJobCat(CN_JOB_SUBFETCH);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINFLATE);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);

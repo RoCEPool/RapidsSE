@@ -333,7 +333,7 @@ success
 //load limitRow "../Seth/tests/Load/largeRow1.csv";
 //success
 
-//fetch limitRow;
+//predicateFetch limitRow;
 //rows: 0
 
 load limitRow "../DATA/Load/largeRow2.csv";
@@ -350,12 +350,12 @@ rows: 0
 /*
 load limitRow "../DATA/Load/15KRow.csv";
 
-fetch limitRow;
+predicateFetch limitRow;
 rows: 1
 
 load limitRow "../DATA/Load/16KRow.csv";
 
-fetch limitRow;
+predicateFetch limitRow;
 rows: 2
 */
 drop table limitRow;

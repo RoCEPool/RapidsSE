@@ -54,12 +54,12 @@ dumpidx IntTbl int_idx2;
 success
 
 // fetch
-fetch intTbl "int_col1 13 =";
+predicateFetch intTbl "int_col1 13 =";
 rows:
  (13,'one three',113,null)
 
 // fetch
-fetch intTbl "int_col1 14 =";
+predicateFetch intTbl "int_col1 14 =";
 rows:
   (14,'one four',114,null)
 

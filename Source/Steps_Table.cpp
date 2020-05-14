@@ -493,7 +493,7 @@ void Step::vTablePurge(void)
 void Step::vTableScan(void)
 {
   ENTRY();
-  
+ /*
   FetchBuffer* pFetchBuffer;
   Datum xVariable;
   
@@ -574,7 +574,7 @@ void Step::vTableScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
+ */
   EXIT();
 }
 

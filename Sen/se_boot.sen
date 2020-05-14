@@ -72,7 +72,6 @@ assert::stack_0
         "job_Distributed.sen"     include
         "job_Docol.sen"           include
 
-        "job_FetchRows.sen"       include
         "job_ForgetNode.sen"      include
 
         "Job_LoadTable.sen"       include
@@ -81,7 +80,6 @@ assert::stack_0
         "Job_Pipeline.sen"        include
 
         "Job_Service.sen"             include
-        "job_SubFetch.sen"            include
         "job_SubLoader.sen"           include
         "job_Supervisor.sen"          include
 

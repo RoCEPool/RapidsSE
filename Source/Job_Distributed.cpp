@@ -47,7 +47,7 @@ JobClass xJobClass_Distributed =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Distributed_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_FetchRows_class;
+  *pNextFun = (pFUN*)pJob_LoadTable_class;
   
   return &xJobClass_Distributed;
 }

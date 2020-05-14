@@ -47,7 +47,7 @@ JobClass xJobClass_Start =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Start_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubFetch_class;
+  *pNextFun = (pFUN*)pJob_SubLoader_class;
   
   return &xJobClass_Start;
 }

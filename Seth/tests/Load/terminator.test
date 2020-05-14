@@ -30,7 +30,7 @@ tableScan terminator;
 rows: 11
 
 // fetch
-fetch terminator "pcol1 0 =";
+predicateFetch terminator "pcol1 0 =";
 rows:
  (0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
 
@@ -64,7 +64,7 @@ tableScan terminator;
 rows: 11
 
 // fetch
-fetch terminator "pcol1 0 =";
+predicateFetch terminator "pcol1 0 =";
 rows:
 (0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
 
