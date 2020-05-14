@@ -85,7 +85,7 @@
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // make the schema
- sSchemaNm :makeFolder
+ sSchemaNm folder::makeFolder
    find: \schema swap execute dic.kind!
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

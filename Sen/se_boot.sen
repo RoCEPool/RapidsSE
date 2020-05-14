@@ -250,7 +250,7 @@ assert::stack_0
 
   // make the tenants root folder"
   //  /tenants
-  "tenants" :makeFolder attachMap::tenants!
+  "tenants" folder::makeFolder attachMap::tenants!
   //attachmap::tenants@ execute
   attachmap::tenants@ dup word.see execute
   path[].pushFolder

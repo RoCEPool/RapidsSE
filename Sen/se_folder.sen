@@ -144,7 +144,7 @@
 /*----------------------------------------------------------------------------*/
 /* make new folder given name (create does> rtn and leave pFolder on stack)   */
 /*----------------------------------------------------------------------------*/
-: :makeFolder params| sFolderNm |
+: folder::makeFolder params| sFolderNm |
 
 dicLock.grabwrite
 
@@ -177,7 +177,7 @@ dicLock.dropwrite
   pFolder path[].pushFolder
 
     find: \folder
-    sSubFolderNm :makeFolder execute dic.kind!
+    sSubFolderNm folder::makeFolder execute dic.kind!
 
   path[].popFolder
 ;

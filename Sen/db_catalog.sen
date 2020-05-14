@@ -108,7 +108,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
-  sCatalogNm :makeFolder
+  sCatalogNm folder::makeFolder
     find: \catalog swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

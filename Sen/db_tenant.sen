@@ -75,7 +75,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the tenant
-  sTenantNm :makeFolder
+  sTenantNm folder::makeFolder
     find: \tenant swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
