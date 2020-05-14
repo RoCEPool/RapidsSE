@@ -176,6 +176,8 @@ Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
+  RASSERT(! bWordBody());
+
   vTidyUp();
 }
 

@@ -73,7 +73,9 @@ Dic::Dic(void)
 Dic::~Dic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
+
+  RASSERT(! bWordBody());
+//
   delete m_pArticle;
 }
 

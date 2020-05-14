@@ -116,6 +116,8 @@ Index::~Index(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 
+  RASSERT(! bWordBody());
+  
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Index.m_nDrops++;
 #endif

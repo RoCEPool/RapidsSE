@@ -23,6 +23,7 @@ void Object::vWordBody(bool bWordBody)
   _precondition_(_MAGIC_);
   
   //vTrace("vWordBody %p : %lld\n"_Stz,this,(i8)bWordBody);
+  NEVER_REACH;
   
   m_bWordBody = bWordBody;
 }
