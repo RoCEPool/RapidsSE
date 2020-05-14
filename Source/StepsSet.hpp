@@ -682,9 +682,6 @@ public:
   void vJob_IngestEnd(void);
   void vJob_IngestTableStore(void);
 
-  // job InsertRows
-  void vJob_CopyBufferCopy(void);
-
   // insert row
   void vJob_InsertRowPartitionFetch(void);
   void vJob_InsertRowRecordStore(void);

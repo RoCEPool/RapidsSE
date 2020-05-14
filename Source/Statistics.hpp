@@ -16,7 +16,6 @@ namespace Correctness
     i8 m_nBeginInsert;
     i8 m_nBeginSubInserter;
     i8 m_nCheckVersion;
-    i8 m_nCopyBuffer;
     i8 m_nDeleteSession;
     i8 m_nEndInsert;
     i8 m_nEndJobs;
