@@ -32,7 +32,7 @@ rows:
   ("O_ORDERDATE", "TIMESTAMP", 0, 0, false, false)
 
 // load the table
-ld orders "/TPCH/SF1/orders.tbl" field_delimiter "|";
+load orders "/TPCH/SF1/orders.tbl" <field_delimiter> = "|";
 success
 
 tableScan orders;

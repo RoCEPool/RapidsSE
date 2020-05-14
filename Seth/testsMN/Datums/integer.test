@@ -168,6 +168,7 @@ rows: 17
 partitionScan IntTbl 7;
 rows: 11
 
+//! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed
 // fetch
 //predicateFetch intTbl "int_col1 13 =";
 //rows:
