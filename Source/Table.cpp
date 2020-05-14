@@ -201,7 +201,8 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Table::vFinalize(eCN eClass, Object* pObject)
 {
-  
+  NEVER_REACH;
+
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Table.m_nDrops++;
 #endif

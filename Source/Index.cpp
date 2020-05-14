@@ -139,6 +139,8 @@ void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Index::vFinalize(eCN eClass, Object* pObject)
 {
+  NEVER_REACH;
+  
   ASSERT(eClass == CN_INDEX);
   ASSERT(pObject->eClass() == CN_INDEX);
   

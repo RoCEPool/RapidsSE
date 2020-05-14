@@ -183,6 +183,8 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
 /*----------------------------------------------------------------------------*/
 void Dic::vFinalize(eCN eClass, Object* pObject)
 {
+  NEVER_REACH;
+  
   ASSERT(eClass == CN_DIC);
   ASSERT(pObject->eClass() == CN_DIC);
   
