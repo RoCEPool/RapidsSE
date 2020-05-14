@@ -556,7 +556,7 @@ static Stz* aCN[]
   /* 183 0x0B7 */ "QUEUES"_Stz,              // CN_QUEUES
   
   /* 184 0x0B8 */ "_R__"_Stz,                // CN__R__
-  /* 185 0x0B9 */ "READAI"_Stz,              // CN_READAPI
+  /* 185 0x0B9 */ "READAPI"_Stz,             // CN_READAPI
   /* 185 0x0B9 */ "RECORD"_Stz,              // CN_RECORD
   /* 186 0x0BA */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* 186 0x0BA */ "RECORDDATA"_Stz,          // CN_RECORDDATA

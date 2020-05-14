@@ -36,7 +36,7 @@ Index* MetaData::_pIndex(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Index::operator new(size_t)
 {
-  Index* pIndex = (Index*)(HeapMem::pAllocate(CN_INDEX));
+  Index* pIndex = (Index*)HeapMem::pAllocate(CN_INDEX);
   
   return pIndex;
 }
@@ -78,6 +78,30 @@ Index::Index(void)
   
   m_iIndexNo  = -1;
   m_sIndexNm  = pWord->szWordNm();
+  
+  m_pTable    = nullptr;
+  
+  _checkInitialised_(CN_INDEX);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Index::Index(Stz* szIndexNm)
+: Object(CN_INDEX)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.Index.m_nCreates++;
+#endif
+    
+  m_pIndexDef = nullptr;
+  
+  m_iIndexNo  = -1;
+  m_sIndexNm  = szIndexNm;
   
   m_pTable    = nullptr;
   

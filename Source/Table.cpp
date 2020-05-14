@@ -124,9 +124,7 @@ Table::Table(Stz* szTableNm)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
 #endif
-  
-  Word* pWord = Word::pToWord(this);
-  
+    
   m_pTableDef  = nullptr;
   m_sTableNm   = szTableNm;
   m_pIdxVec    = new IdxVec;

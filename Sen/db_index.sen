@@ -155,13 +155,13 @@
 /*----------------------------------------------------------------------------*/
 : index::newIndexPrpObj params| sIndexNm |
 
-  find: \index locals| pIndexCatg |
+  find: \index locals| pwIndexCatg |
 
-  index::new locals| pIndex |
+  sIndexNm index::new locals| pIndex |
 
   sIndexNm word::new locals| pwIndex |
 
-  pIndexCatg pIndex pwIndex word.cppObject!
+  pwIndexCatg pIndex pwIndex word.cppObject!
 
   pwIndex
 ;

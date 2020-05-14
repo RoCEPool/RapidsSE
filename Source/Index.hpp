@@ -30,6 +30,7 @@ namespace MetaData
     static void vMonitorPortrait(s48K& sPortrait);
 
     Index(void);
+    Index(Stz* szIndexNm);
    ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
