@@ -127,7 +127,7 @@ dumptable lineitem;
 logSection filteredFetch;
 print section "Filtered Fetch";
 
-time fetch lineitem "l_orderKey 20 <" ;
+time predicateFetch lineitem "l_orderKey 20 <" ;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
