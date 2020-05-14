@@ -11,10 +11,7 @@ namespace Correctness
   
   public:
     Object(eCN eClass);
-  
-    bool bWordBody(void);
-    void vWordBody(bool bIsWordBody);
-    
+      
     Footer* aFooter(void);
   };
 }

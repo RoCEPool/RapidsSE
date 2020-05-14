@@ -95,8 +95,6 @@ Dic::~Dic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
-  RASSERT(! bWordBody());
-//
   delete m_pArticle;
 }
 
@@ -212,7 +210,6 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
   ASSERT(pObject->eClass() == CN_DIC);
   
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
-  ASSERT(pDic->bWordBody());
   
   //vTrace("%s %s finalize\n"_Stz, aCN[eClass], pDic->m_sDicNm.s());
   

@@ -23,8 +23,6 @@ Header::Header(eCN eClassNo)
 {
   vMagic();
   vClass(eClassNo);
-  
-  m_bWordBody = false;
 }
 
 /*----------------------------------------------------------------------------*/

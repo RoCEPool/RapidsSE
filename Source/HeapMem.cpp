@@ -165,10 +165,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 /* free an object back to heap                                                */
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree(Object* pObject, bool bPersistent)
-{
-  // should not be freeing objects that are part of a word body
-  ASSERT(!pObject->bWordBody());
-  
+{  
   HeapMem* pHeapMem = AM::pHeapMem();
   
   eCN eFreeingClass = pObject->eClass();

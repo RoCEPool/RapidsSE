@@ -119,7 +119,6 @@ Task::~Task(void) noexcept(false)
   RASSERT(TS_DELETING == m_eState);
   //RASSERT(! bIsLocked());
   RASSERT(! m_pThread);
-  RASSERT(! bWordBody());
 
   //RASSERT(! m_pJob);
 

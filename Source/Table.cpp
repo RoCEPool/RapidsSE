@@ -176,8 +176,6 @@ Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  RASSERT(! bWordBody());
-
   vTidyUp();
 }
 
@@ -205,14 +203,6 @@ void Table::vFinalize(eCN eClass, Object* pObject)
 {
   NEVER_REACH;
 
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Table.m_nDrops++;
-#endif
-  
-  Table* pTable = _pTable(pObject);
-  ASSERT(pTable->bWordBody());
-  
-  pTable->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/

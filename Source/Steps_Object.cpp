@@ -127,9 +127,7 @@ void Step::vObjectWordBodySet(void)
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   i8 iIsBody = m_pDataStack->iPopInt(__func__);
-  
-  pObject->vWordBody(iIsBody);
-  
+    
   EXIT();
 }
 

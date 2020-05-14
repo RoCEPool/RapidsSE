@@ -10,32 +10,8 @@
 Object::Object(eCN eClassNo)
 : Header(eClassNo)
 {
-  m_bWordBody = false;
   
   _precondition_(_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set is word body                                                           */
-/*----------------------------------------------------------------------------*/
-void Object::vWordBody(bool bWordBody)
-{
-  _precondition_(_MAGIC_);
-  
-  //vTrace("vWordBody %p : %lld\n"_Stz,this,(i8)bWordBody);
-  NEVER_REACH;
-  
-  m_bWordBody = bWordBody;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get is word body                                                           */
-/*----------------------------------------------------------------------------*/
-bool Object::bWordBody(void)
-{
-  _precondition_(_MAGIC_);
-  
-  return m_bWordBody;
 }
 
 /*----------------------------------------------------------------------------*/
