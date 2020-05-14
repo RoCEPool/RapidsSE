@@ -16,4 +16,4 @@
 ../tests/Select/testList
 ../tests/Table/testList
 ../tests/Index/testList
-//../tests/Tpch/testList
+../tests/Tpch/testList
