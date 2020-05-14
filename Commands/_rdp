@@ -31,7 +31,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 
 ld rdp "../JTEST/rdp.csv" ;
 
-fetch rdp;
+predicateFetch rdp;
 
 dex rdp "/tmp/rdp_exported.csv" ;
 
@@ -64,7 +64,7 @@ ld rdp2 "/tmp/rdp_exported.csv" ;
 
 create index rdp2_idx_0 on rdp2(rdp_testno);
 
-fetch rdp2;
+predicateFetch rdp2;
 
 dex rdp2 "/tmp/rdp2_exported.csv" ;
 

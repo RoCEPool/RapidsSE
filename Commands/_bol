@@ -19,7 +19,7 @@ ld bolTbl "/DATA/Datums/boolean.csv" ;
 
 dumptbl bolTbl;
 
-fetch bolTbl;
+predicateFetch bolTbl;
 
 /*============================================================================*/
 /* end                                                                        */

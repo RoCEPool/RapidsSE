@@ -13,16 +13,16 @@ print "loading j1000.csv..." ;
 create index idx on j1000 (j1000_key);
 ld j1000 "../JTEST/j1000.csv" ;
 
-fetch j1000 "j1000_key 0 =";
+predicateFetch j1000 "j1000_key 0 =";
 print "\n";
 
-fetch j1000 "j1000_key 111 =";
+predicateFetch j1000 "j1000_key 111 =";
 print "\n";
 
-fetch j1000 "j1000_key 256 =";
+predicateFetch j1000 "j1000_key 256 =";
 print "\n";
 
-fetch j1000 "j1000_key 789 =";
+predicateFetch j1000 "j1000_key 789 =";
 print "\n";
 
 print "visualising index idx..." ;
@@ -37,23 +37,23 @@ vfyidx j1000 idx;
 print "verifying table..." ;
 vfytbl j1000;
 
-fetch j1000 "j1000_key 989 =";
+predicateFetch j1000 "j1000_key 989 =";
 print "\n";
-fetch j1000 "j1000_key 125 =";
+predicateFetch j1000 "j1000_key 125 =";
 print "\n";
-fetch j1000 "j1000_key 678 =";
+predicateFetch j1000 "j1000_key 678 =";
 print "\n";
-fetch j1000 "j1000_key 345 =";
+predicateFetch j1000 "j1000_key 345 =";
 print "\n";
-fetch j1000 "j1000_key 999 =";
+predicateFetch j1000 "j1000_key 999 =";
 print "\n";
-fetch j1000 "j1000_key 999 =";
+predicateFetch j1000 "j1000_key 999 =";
 print "\n";
-fetch j1000 "j1000_key 990 >= j1000_key 995 <= and";
+predicateFetch j1000 "j1000_key 990 >= j1000_key 995 <= and";
 print "\n";
-fetch j1000 "j1000_key 990 >=";
+predicateFetch j1000 "j1000_key 990 >=";
 print "\n";
-fetch j1000 "j1000_key 995 <= ";
+predicateFetch j1000 "j1000_key 995 <= ";
 print "\n";
 /*============================================================================*/
 /* end                                                                        */

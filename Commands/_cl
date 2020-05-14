@@ -19,7 +19,7 @@ create table EachType (
 //ld EachType "/DATA/Datums/eachType.csv";
 ld EachType "/DATA/Datums/eachTypeLong.csv";
 
-fetch EachType;
+predicateFetch EachType;
 
 //*============================================================================*/
 /* end                                                                        */

@@ -20,7 +20,7 @@ ld jidxIvl "../JTEST/jidxIvl.csv" ;
 //anidx jidxIvl idx_ivl ;
 dumpidx jidxIvl idx_ivl ;
 
-fetch jidxIvl "jidx_ivl 80.0 >=";
+predicateFetch jidxIvl "jidx_ivl 80.0 >=";
 
 
 /*

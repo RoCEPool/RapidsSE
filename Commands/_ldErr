@@ -45,7 +45,7 @@ time ld lineitem "/tpch/SF1/lineitem.csv" ; //max_errors 10;
 
 space;
 
-fetch lineItem displayOff;
+predicateFetch lineItem displayOff;
 
 /*============================================================================*/
 /* end                                                                        */

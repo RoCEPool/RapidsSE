@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _fetchLineitemRJH - fetch TPC-H LineItem table                             */
+/* _fetchLineitemRJH - predicateFetch TPC-H LineItem table                             */
 /*============================================================================*/
 
 /api /tags pipeline lineitem_fetch

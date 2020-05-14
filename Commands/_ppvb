@@ -24,7 +24,7 @@ create index idx on supplier (S_NATIONKEY);
 
 vfyidx supplier idx;
 
-fetch supplier "s_nationkey 10 ==";
+predicateFetch supplier "s_nationkey 10 ==";
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

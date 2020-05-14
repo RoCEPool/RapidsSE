@@ -30,7 +30,7 @@ vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 1 =";
+predicateFetch lineitem "L_ORDERKEY 1 =";
 
 print "compacting lineitem.tbl idx1..." ;
 compactidx lineitem idx1;
@@ -39,7 +39,7 @@ vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 1 =";
+predicateFetch lineitem "L_ORDERKEY 1 =";
 
 /*
  
@@ -74,7 +74,7 @@ vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 1 =";
+predicateFetch lineitem "L_ORDERKEY 1 =";
 
 print "compacting lineitem.tbl idx1..." ;
 compactidx lineitem idx1;
@@ -83,88 +83,88 @@ vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 1 =";
+predicateFetch lineitem "L_ORDERKEY 1 =";
  
 
 print "-----------------------------------------------------------------------";
-print "fetch lineitem";
+print "predicateFetch lineitem";
 timerStart;
-fetch lineitem;
+predicateFetch lineitem;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-12 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-12 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-12 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-16 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-16 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-16 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-18 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-18 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-18 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-20 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-20 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-20 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-22 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-22 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-22 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-26 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-26 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-01-26 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-02-02 00:00:00' <=";
 timerEnd;
 print "------------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-10 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-10 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-02-10 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-20 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-20 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-02-20 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-03-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-03-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-03-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-04-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-04-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-04-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-05-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-05-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-05-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-06-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-06-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '1992-06-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '2000-06-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '2000-06-02 00:00:00' <=";
+predicateFetch lineitem "l_shipdate '2000-06-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
 
@@ -198,7 +198,7 @@ visidx supplier idx1;
 space;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 500 and S_SUPPKEY <= 1000 ...\n" ;
-fetch supplier "S_SUPPKEY 500 >= S_SUPPKEY 1000 <= and";
+predicateFetch supplier "S_SUPPKEY 500 >= S_SUPPKEY 1000 <= and";
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -242,11 +242,11 @@ vfyidx j100 idx1;
 visidx j100 idx1;
 space;
 
-fetch j100 "j100_key 2 =";
+predicateFetch j100 "j100_key 2 =";
 
 compactidx j100 idx1;
 
-fetch j100 "j100_key 2 =";
+predicateFetch j100 "j100_key 2 =";
 
 vfyidx j100 idx1;
 visidx j100 idx1;
@@ -269,7 +269,7 @@ vfyidx j10 idx1;
 visidx j10 idx1;
 space;
 
-fetch j10 "j10_key 2 =";
+predicateFetch j10 "j10_key 2 =";
 
 compactidx j10 idx1;
 
@@ -277,7 +277,7 @@ vfyidx j10 idx1;
 visidx j10 idx1;
 space;
 
-fetch j10 "j10_key 2 =";
+predicateFetch j10 "j10_key 2 =";
  
 */
 

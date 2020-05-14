@@ -24,8 +24,8 @@ int_col15  INTEGER
 
 ld intTbl "/home/rapids/SE_SCALE/integer100M.csv" ;
 
-print "\n fetch noPrint";
-time fetch intTbl noPrint;
+print "\n predicateFetch noPrint";
+time predicateFetch intTbl noPrint;
 
 print "\nInflate 1 thread";
 time inflate intTbl;

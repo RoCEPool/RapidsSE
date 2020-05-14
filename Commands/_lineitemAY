@@ -68,10 +68,10 @@ load lineitem "/DATA/TPCH/lineitem10.csv";
 
 //partitionScan lineitem 1;
 
-//fetch lineitem "l_orderkey 1 >";
-//fetch lineitem "l_orderkey 3 <";
-//fetch lineitem "l_orderkey 3 ==";
-//fetch lineitem "l_orderkey 1 > l_orderkey 3 < and";
+//predicateFetch lineitem "l_orderkey 1 >";
+//predicateFetch lineitem "l_orderkey 3 <";
+//predicateFetch lineitem "l_orderkey 3 ==";
+//predicateFetch lineitem "l_orderkey 1 > l_orderkey 3 < and";
 trackMemory;
 predicateFetch lineitem "l_orderkey 1 >";
 memoryLeaks;
@@ -82,7 +82,7 @@ memoryLeaks;
 //predicateFetch lineitem "l_orderkey 3 > l_orderkey 1 < and";
 
 
-//fetch lineitem limit 10;
+//predicateFetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
 
 //create table x ( i integer, j integer) partition by (j);
@@ -119,7 +119,7 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-fetch lineitem;
+predicateFetch lineitem;
 
 tableScan Lineitem;
 //truncate lineitem;
@@ -375,66 +375,66 @@ end
 ;
 
 print "**************************************************************************";
-print "fetch lineitem lineitem_idx1 | output;";
+print "predicateFetch lineitem lineitem_idx1 | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem lineitem_idx1 | output
+  predicateFetch lineitem lineitem_idx1 | output
 
 end
 ;
 
 print "**************************************************************************";
-print "fetch lineitem lineitem_idx1  1 | limit 1 | output;";
+print "predicateFetch lineitem lineitem_idx1  1 | limit 1 | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem lineitem_idx1 1 | limit 1 | output
+  predicateFetch lineitem lineitem_idx1 1 | limit 1 | output
 
 end
 ;
 
 print "**************************************************************************";
-print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output;";
+print "predicateFetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output
+  predicateFetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output
 
 end
 ;
 
 print "**************************************************************************";
-print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output;";
+print "predicateFetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output
+  predicateFetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output
 
 end
 ;
 
 print "**************************************************************************";
-print "fetch lineitem lineitem_idx1 | project L_PARTKEY, L_SHIPDATE | output;";
+print "predicateFetch lineitem lineitem_idx1 | project L_PARTKEY, L_SHIPDATE | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem lineitem_idx1 | project L_PARTKEY L_SHIPDATE | output
+  predicateFetch lineitem lineitem_idx1 | project L_PARTKEY L_SHIPDATE | output
 
 end
 ;
@@ -455,74 +455,74 @@ end
 
  
 print "**************************************************************************";
-print "fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;";
+print "predicateFetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output
+  predicateFetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output
 
 end
  ;
  
 print "**************************************************************************";
-print "fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output;";
+print "predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | output;";
 print "**************************************************************************";
 
   pipeline lineItem_dyn
   begin
 
   stage stageA:
-  fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output
+  predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | output
 
 end
 ;
 
 
-//time dynamic fetch lineitem LineItem_Idx1 | output;
+//time dynamic predicateFetch lineitem LineItem_Idx1 | output;
 //time dynamic scan lineitem | toCsv | toFile "/tmp/x.csv" | output;
-//time dynamic fetch lineitem LineItem_Idx1 | getkey L_PARTKEY | sort | merge | limit 1 | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 | getkey L_PARTKEY | sort | merge | limit 1 | output | zed;
 
-//time dynamic fetch orders orders_idx1 | output | zed;
-
-
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | limit 1 | output | zed;
+//time dynamic predicateFetch orders orders_idx1 | output | zed;
 
 
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | limit 1 | output | zed;
 
 
 
 
 
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | output | zed;
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | output | zed;
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
-//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | limit 1 | output | zed;
+
+
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | getKey O_CUSTKEY | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
+//time dynamic predicateFetch orders orders_idx1 || predicateFetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | limit 1 | output | zed;
 
 
 
-//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
+//time dynamic predicateFetch orders orders_idx1 || predicateFetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
 
 //time dynamic scan orders | xmit 0 | output;
 
 
-//time dynamic fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;
-//time dynamic fetch orders orders_idx1 1 || fetch lineitem LineItem_Idx1 1 | join | limit 1 | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;
+//time dynamic predicateFetch orders orders_idx1 1 || predicateFetch lineitem LineItem_Idx1 1 | join | limit 1 | output | zed;
 
-//time dynamic fetch orders orders_idx1 | getKey O_CUSTKEY | sort | merge | superMerge 1 | limit 1 | output | zed;
+//time dynamic predicateFetch orders orders_idx1 | getKey O_CUSTKEY | sort | merge | superMerge 1 | limit 1 | output | zed;
 
 
-//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join  | output | zed;
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join  | output | zed;
+//time dynamic predicateFetch orders orders_idx1 || predicateFetch lineitem LineItem_Idx1 | join  | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join  | output | zed;
 
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
 
-//time dynamic fetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 1 | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 1 | output | zed;
 //logWrite;
 
-//time dynamic fetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 2 | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 2 | output | zed;
 
 /*
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
@@ -541,18 +541,18 @@ end
 //dynamic scan lineitem | limit 2 | output | zed;
 
 //dynamic scan lineitem | inflate | output | zed;
-//fetch lineitem;
-//time dynamic fetch lineitem lineitem_idx1 | output | zed;
-//time dynamic fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort  | merge | output | zed;
+//predicateFetch lineitem;
+//time dynamic predicateFetch lineitem lineitem_idx1 | output | zed;
+//time dynamic predicateFetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort  | merge | output | zed;
 
-//dynamic fetch lineitem lineitem_idx1 | getKey L_ORDERKEY | sort | merge | output | zed;
+//dynamic predicateFetch lineitem lineitem_idx1 | getKey L_ORDERKEY | sort | merge | output | zed;
 
-//dynamic fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | output | zed;
-//dynamic fetch lineitem lineitem_idx1 | getKey L_SUPPKEY | sort | output | zed;
-//dynamic fetch lineitem lineitem_idx1 | getKey L_SHIPDATE | sort | output | zed;
+//dynamic predicateFetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | output | zed;
+//dynamic predicateFetch lineitem lineitem_idx1 | getKey L_SUPPKEY | sort | output | zed;
+//dynamic predicateFetch lineitem lineitem_idx1 | getKey L_SHIPDATE | sort | output | zed;
 
-//dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output | zed;
-//dynamic fetch lineitem LineItem_Idx1 | output | zed;
+//dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | output | zed;
+//dynamic predicateFetch lineitem LineItem_Idx1 | output | zed;
 
 //logWrite;
 
@@ -560,11 +560,11 @@ end
 //drop table orders;
 //docol epochDump;
 
-time fetch lineitem
+time predicateFetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
   displayoff;
 
-time fetch lineitem
+time predicateFetch lineitem
   "l_shipdate '1998-09-01 00:00:00' >= l_shipdate '1998-12-01 00:00:00' <= and"
   displayOff;
 */

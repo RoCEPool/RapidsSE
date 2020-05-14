@@ -81,9 +81,9 @@ end;
 logSection t_fetch;
 print "** 4/9) t_fetch";
 
-fetch T "colE 100 <";
+predicateFetch T "colE 100 <";
 
-fetch T;
+predicateFetch T;
 
 dumpindex T T_Idx_1;
 

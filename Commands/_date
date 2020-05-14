@@ -24,24 +24,24 @@ dte_col15  DATE
 
 ld dteTbl "/DATA/Encoding/date.csv" ;
 print "Fetching dteTbl noPrint";
-time fetch dteTbl noPrint;
+time predicateFetch dteTbl noPrint;
 
-time fetch retrieve dteTbl dte_col0;
-time fetch retrieve dteTbl dte_col1;
-time fetch retrieve dteTbl dte_col2;
-time fetch retrieve dteTbl dte_col3;
-time fetch retrieve dteTbl dte_col4;
-time fetch retrieve dteTbl dte_col5;
-time fetch retrieve dteTbl dte_col6;
-time fetch retrieve dteTbl dte_col7;
-time fetch retrieve dteTbl dte_col8;
-time fetch retrieve dteTbl dte_col9;
-time fetch retrieve dteTbl dte_col10;
-time fetch retrieve dteTbl dte_col11;
-time fetch retrieve dteTbl dte_col12;
-time fetch retrieve dteTbl dte_col13;
-time fetch retrieve dteTbl dte_col14;
-time fetch retrieve dteTbl dte_col15;
+time predicateFetch retrieve dteTbl dte_col0;
+time predicateFetch retrieve dteTbl dte_col1;
+time predicateFetch retrieve dteTbl dte_col2;
+time predicateFetch retrieve dteTbl dte_col3;
+time predicateFetch retrieve dteTbl dte_col4;
+time predicateFetch retrieve dteTbl dte_col5;
+time predicateFetch retrieve dteTbl dte_col6;
+time predicateFetch retrieve dteTbl dte_col7;
+time predicateFetch retrieve dteTbl dte_col8;
+time predicateFetch retrieve dteTbl dte_col9;
+time predicateFetch retrieve dteTbl dte_col10;
+time predicateFetch retrieve dteTbl dte_col11;
+time predicateFetch retrieve dteTbl dte_col12;
+time predicateFetch retrieve dteTbl dte_col13;
+time predicateFetch retrieve dteTbl dte_col14;
+time predicateFetch retrieve dteTbl dte_col15;
 
 /* added check for NULL in eGetEncoding:
  last column that has nulls went down to:

@@ -16,7 +16,7 @@ create table vch (
 print "loading table vch..." ;
 ld vch "../JTEST/vch_defaults.csv" ;
 
-fetch vch;
+predicateFetch vch;
 
 drop table vch;
 
@@ -33,7 +33,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_no_enclosed.csv"
   enclosed_by_leading "\0" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -49,7 +49,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_no_enclosed_no_escape.csv"
   enclosed_by_leading "\0" escape_char "\0" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -65,7 +65,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_no_escape.csv"
   escape_char "\0" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 
@@ -82,7 +82,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_term_defaults.csv"
   record_terminator ";" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -98,7 +98,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed.csv"
   record_terminator ";" enclosed_by_leading "\0" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -114,7 +114,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
   record_terminator ";" enclosed_by_leading "\0" escape_char "\0" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -130,7 +130,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_escape.csv"
   record_terminator ";" escape_char "\0" ;
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -146,7 +146,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_delimiter.csv"
   field_delimiter "|";
 
-fetch vch;
+predicateFetch vch;
 drop table vch;
 
 // enclosed_by

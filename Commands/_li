@@ -8,7 +8,7 @@ _lineitem
 
 time ld lineitem "/tpch/SF1/lineitem.csv" ;
 
-time fetch lineitem displayOff;
+time predicateFetch lineitem displayOff;
 
 /*============================================================================*/
 /* end                                                                        */

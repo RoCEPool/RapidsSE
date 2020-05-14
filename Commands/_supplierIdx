@@ -35,7 +35,7 @@ ld supplier "/tpch/SF1/supplier.csv" ;
 print "loaded supplier.csv..." ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 22 ...\n" ;
-fetch supplier "S_SUPPKEY 22 ==";
+predicateFetch supplier "S_SUPPKEY 22 ==";
 
 docol epochDump;
 
@@ -49,25 +49,25 @@ create index idx3 on supplier (S_ADDRESS);
 displayOff;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n" ;
-fetch supplier "S_SUPPKEY 9972 >=";
+predicateFetch supplier "S_SUPPKEY 9972 >=";
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 & <= 9982...\n" ;
 rgeselidx supplier idx1 9972 9982 ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9985 ...\n" ;
-fetch supplier "S_SUPPKEY 9985 >=";
+predicateFetch supplier "S_SUPPKEY 9985 >=";
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9985 & <= 9987...\n" ;
 rgeselidx supplier idx1 9985 9987 ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9995 ...\n" ;
-fetch supplier "S_SUPPKEY 9995 >=";
+predicateFetch supplier "S_SUPPKEY 9995 >=";
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9995 & <= 1995 ...\n" ;
 rgeselidx supplier idx1 9995 1995 ;
 
 print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n" ;
-fetch supplier "S_NAME Supplier#000009900 >=" ;
+predicateFetch supplier "S_NAME Supplier#000009900 >=" ;
 
 print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= Supplier#000009990 ...\n" ;
 rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000009990" ;
@@ -78,13 +78,13 @@ rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000001900" ;
 //dumpidx supplier idx3 ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n" ;
-fetch supplier "S_ADDRESS m >=" ;
+predicateFetch supplier "S_ADDRESS m >=" ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'xo' ...\n" ;
-fetch supplier "S_ADDRESS xo >=" ;
+predicateFetch supplier "S_ADDRESS xo >=" ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'a' ...\n" ;
-fetch supplier "S_ADDRESS a >=" ;
+predicateFetch supplier "S_ADDRESS a >=" ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n" ;
 rgeselidx supplier idx3 "m" "q" ;
@@ -114,13 +114,13 @@ print "\nSelecting rows from supplier (idx1) where S_SUPPKEY = 5 ...\n" ;
 //keyselidx supplier idx1 5 ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 22 ...\n" ;
-fetch supplier "S_SUPPKEY 22 ==";
+predicateFetch supplier "S_SUPPKEY 22 ==";
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 2 ...\n" ;
-fetch supplier "S_SUPPKEY 2 >=";
+predicateFetch supplier "S_SUPPKEY 2 >=";
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY <= 10 ...\n" ;
-fetch supplier "S_SUPPKEY 10 <=";
+predicateFetch supplier "S_SUPPKEY 10 <=";
 
 /*============================================================================*/
 /* end                                                                        */

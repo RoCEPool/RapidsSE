@@ -19,7 +19,7 @@ insert row "8,1908-09-10";
 insert row "9,1909-10-11";
 end insert;
 
-fetch dteTest;
+predicateFetch dteTest;
 
 /*============================================================================*/
 /* end                                                                        */

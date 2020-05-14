@@ -33,7 +33,7 @@ partitionScan T1, 2;
 partitionScan T1, 3;
 
 /*
-fetch T1 "jidx_key 1 >= jidx_10 2 <= and";
+predicateFetch T1 "jidx_key 1 >= jidx_10 2 <= and";
 
 pipeline _fetch
 begin
@@ -51,7 +51,7 @@ end
 ;
 
 
-fetch T1 "jidx_key 1 >= jidx_10 2 <= or";
+predicateFetch T1 "jidx_key 1 >= jidx_10 2 <= or";
  
 pipeline _fetch
 begin
@@ -68,7 +68,7 @@ begin
 end
 ;
  
-fetch retrieve jidx_name;
+predicateFetch retrieve jidx_name;
  
 pipeline _fetch
 begin
@@ -85,7 +85,7 @@ begin
 end
 ;
 
-fetch T1 limit 10;
+predicateFetch T1 limit 10;
 
 pipeline _fetch
 begin

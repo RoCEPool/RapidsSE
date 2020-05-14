@@ -94,7 +94,7 @@ time ld lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" max_errors 100;
 space;
 sztbl lineitem;
 sizeIndex lineitem LineItem_Idx1;
-//fetch lineitem limit 10;
+//predicateFetch lineitem limit 10;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
@@ -213,7 +213,7 @@ ld orders "/tpch/SF1/orders.csv" ;
 
 
 
-//time fetch lineitem noPrint;
+//time predicateFetch lineitem noPrint;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100.csv" 10;
@@ -237,21 +237,21 @@ ld orders "/tpch/SF1/orders.csv" ;
 //time dynamic scan lineitem | getKey L_PARTKEY | sort | merge | agg L_PARTKEY | output | zed;
 
 
-//dynamic fetch lineitem idx || fetch orders idx | output | zed;
+//dynamic predicateFetch lineitem idx || predicateFetch orders idx | output | zed;
 
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | count | output | zed;
-//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | project L_PARTKEY | count | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | count | output | zed;
+//time dynamic predicateFetch lineitem LineItem_Idx1 || predicateFetch orders orders_idx1 | join | project L_PARTKEY | count | output | zed;
 
 //time dynamic scan lineitem | getkey L_PARTKEY | sort | merge | count | output;
 status;
 */
 
 /*
-time fetch lineitem
+time predicateFetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
   displayoff;
 
-time fetch lineitem
+time predicateFetch lineitem
   "l_shipdate '1998-09-01 00:00:00' >= l_shipdate '1998-12-01 00:00:00' <= and"
   displayOff;
 */

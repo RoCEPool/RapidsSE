@@ -21,16 +21,16 @@ create index jCdt_idx5 on jCdt (jE);
 //docol stepsReset;
 ld jCdt "../JTEST/jCdt.csv";
 
-fetch jCdt ;
+predicateFetch jCdt ;
 
 // range bound
-fetch jCdt "jA 10 >= jA 18 <= and" ;
+predicateFetch jCdt "jA 10 >= jA 18 <= and" ;
 
-fetch jCdt "jA 10 >= jA 18 < and" ;
+predicateFetch jCdt "jA 10 >= jA 18 < and" ;
 
-fetch jCdt "jA 10 >= jA 100 <= and" ;
+predicateFetch jCdt "jA 10 >= jA 100 <= and" ;
 
-fetch jCdt "jA 10 >= jA 100 < and" ;
+predicateFetch jCdt "jA 10 >= jA 100 < and" ;
 
 //docol stepsList;
 //create index jCdt_idx6 on jCdt (jE,jA);
@@ -54,52 +54,52 @@ fetch jCdt "jA 10 >= jA 100 < and" ;
 //dumpidx jCdt jCdt_idx6;
 
 /*
-fetch jCdt "jA 15 >=";
+predicateFetch jCdt "jA 15 >=";
 
- fetch jCdt "JA 1 >= jA 22 <= OR";
+ predicateFetch jCdt "JA 1 >= jA 22 <= OR";
  
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-fetch jCdt "jA 7 <=";
+predicateFetch jCdt "jA 7 <=";
 
-fetch jCdt "jA 1 >=" ;
+predicateFetch jCdt "jA 1 >=" ;
 
 // upper bound
-fetch jCdt "jA 5 <=" ;
+predicateFetch jCdt "jA 5 <=" ;
 
 // full table
-fetch jCdt "jB 1 >=" ;
+predicateFetch jCdt "jB 1 >=" ;
 
 // exact bound
-fetch jCdt "jA 5 ==" ;
+predicateFetch jCdt "jA 5 ==" ;
 
 // lower bound
-fetch jCdt "jA 5 >=" ;
+predicateFetch jCdt "jA 5 >=" ;
 
 // range bound
-fetch jCdt "jA 1 >= jA 8 <= and" ;
-fetch jCdt "jA 8 <= jA 1 >= and" ;
+predicateFetch jCdt "jA 1 >= jA 8 <= and" ;
+predicateFetch jCdt "jA 8 <= jA 1 >= and" ;
 
 print "\nSelecting rows with jA 1 >= jA 8 <= or ...\n" ;
 
-fetch jCdt "jA 1 >= jA 8 <= or" ;
-fetch jCdt "jA 8 <=" ;
+predicateFetch jCdt "jA 1 >= jA 8 <= or" ;
+predicateFetch jCdt "jA 8 <=" ;
 
-fetch jCdt ;
+predicateFetch jCdt ;
 
-fetch jCdt "jA 1 >= jB 2 >= and" ;
+predicateFetch jCdt "jA 1 >= jB 2 >= and" ;
 
 print "fetched\n" ;
 
 //drop table jCdt;
-//fetch jCdt "JA 1 >= JB 22 < JA 22 <= AND OR";
+//predicateFetch jCdt "JA 1 >= JB 22 < JA 22 <= AND OR";
 
 //print "dumping jCdt_idx2 index\n" ;
 dumpidx jCdt jCdt_idx2;
 
-fetch jCdt "JA 1 >=";
-fetch jCdt "JA 22 <=";
+predicateFetch jCdt "JA 1 >=";
+predicateFetch jCdt "JA 22 <=";
  
-fetch jCdt "JA 1 >= jA 22 <= OR";
+predicateFetch jCdt "JA 1 >= jA 22 <= OR";
 */
 
 

@@ -143,41 +143,41 @@ print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
 print "fetching customer.csv..." ;
-time fetch customer displayOff ;
+time predicateFetch customer displayOff ;
 print "fetching lineitem.csv..." ;
-time fetch lineitem displayOff ;
+time predicateFetch lineitem displayOff ;
 print "fetching nation.csv..." ;
-time fetch nation displayOff ;
+time predicateFetch nation displayOff ;
 print "fetching orders.csv..." ;
-time fetch orders displayOff ;
+time predicateFetch orders displayOff ;
 print "fetching part.csv..." ;
-time fetch part displayOff ;
+time predicateFetch part displayOff ;
 print "fetching partsupp.csv..." ;
-time fetch partsupp displayOff ;
+time predicateFetch partsupp displayOff ;
 print "fetching region.csv..." ;
-time fetch region displayOff ;
+time predicateFetch region displayOff ;
 print "fetching supplier.csv..." ;
-time fetch supplier displayOff ;
+time predicateFetch supplier displayOff ;
 print "-----------------------------------------------------------------------";
 
 
 print "-----------------------------------------------------------------------";
 print "fetching customer.csv (noPrint)..." ;
-time fetch customer noPrint;
+time predicateFetch customer noPrint;
 print "fetching lineitem.csv (noPrint)..." ;
-time fetch lineitem noPrint;
+time predicateFetch lineitem noPrint;
 print "fetching nation.csv (noPrint)..." ;
-time fetch nation noPrint;
+time predicateFetch nation noPrint;
 print "fetching orders.csv (noPrint)..." ;
-time fetch orders noPrint;
+time predicateFetch orders noPrint;
 print "fetching part.csv (noPrint)..." ;
-time fetch part noPrint;
+time predicateFetch part noPrint;
 print "fetching partsupp.csv (noPrint)..." ;
-time fetch partsupp noPrint;
+time predicateFetch partsupp noPrint;
 print "fetching region.csv (noPrint)..." ;
-time fetch region noPrint;
+time predicateFetch region noPrint;
 print "fetching supplier.csv (noPrint)..." ;
-time fetch supplier noPrint;
+time predicateFetch supplier noPrint;
 print "-----------------------------------------------------------------------";
 
 

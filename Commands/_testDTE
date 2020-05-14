@@ -29,14 +29,14 @@ ld jidxDte "../JTEST/jidxDte.csv" ;
 //anidx jidxDte idx_dte ;
 //dumpidx jidxDte idx_dte ;
 
-//time dynamic fetch jidxDte idx_dte | getKey jidx_100 | sort | merge | superMerge | limit 4 | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte | getKey jidx_100 | sort | merge | superMerge | limit 4 | output | zed;
 
-//time dynamic fetch jidxDte idx_dte | getKey jidx_100 | sort | merge | superMerge 4 | limit 4 | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte | getKey jidx_100 | sort | merge | superMerge 4 | limit 4 | output | zed;
 
-//time dynamic fetch jidxDte idx_dte 1 | limit 1 | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte 1 | limit 1 | output | zed;
 
- //time dynamic fetch jidxDte idx_dte | project jidx_tsp | output | zed;
- //time dynamic fetch jidxDte idx_dte | project jidx_tsp, jidx_100 | output | zed;
+ //time dynamic predicateFetch jidxDte idx_dte | project jidx_tsp | output | zed;
+ //time dynamic predicateFetch jidxDte idx_dte | project jidx_tsp, jidx_100 | output | zed;
 
 
 //time dynamic scan jidxDte | count | superCount | output ;
@@ -56,11 +56,11 @@ ld jidxDte "../JTEST/jidxDte.csv" ;
 time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 5 > and | output;
 //time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 2 5 + > and | output | zed;
 
-//time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
 
-//time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
-//time dynamic fetch jidxDte idx_dte | project jidx_name | output | zed;
-//time dynamic fetch jidxDte idx_dte | getKey jidx_100 | sort | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte | project jidx_name | output | zed;
+//time dynamic predicateFetch jidxDte idx_dte | getKey jidx_100 | sort | output | zed;
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
 lwrselidx jidx idx1 3 ;

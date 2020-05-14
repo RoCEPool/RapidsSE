@@ -27,22 +27,22 @@ bc;
 // docol booleanData;
  ld bolTbl "/DATA/Encoding/boolean.csv" ;
 
- time fetch bolTbl noPrint;
+ time predicateFetch bolTbl noPrint;
 
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
- time fetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
+ time predicateFetch retrieve bolTbl bol_col1;
 
 /*
 
 MARKIII : 22 May
-time fetch bolTbl noPrint;
+time predicateFetch bolTbl noPrint;
 success: 1000000 rows fetched
 time 600ms
 

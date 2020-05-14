@@ -240,7 +240,7 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows from a a table matching given predicate                         */
+/* predicateFetch rows from a a table matching given predicate                         */
 /*----------------------------------------------------------------------------*/
 procedure predicateFetch
   parameters $table $predicate
@@ -250,7 +250,7 @@ begin
     start | periodicOp once | stageB
 
   stage stageB on all partitions :
-    fetch $table $predicate | stageC
+    predicateFetch $table $predicate | stageC
 
   stage stageC on origin:
     output | sink | stageA

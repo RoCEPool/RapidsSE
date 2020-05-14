@@ -29,20 +29,20 @@ create index idx_100values on k100 (j100_100values);
 print "loading k100.csv..." ;
 ld k100 "../JTEST/k100.csv" ;
 
-fetch k100 ;
+predicateFetch k100 ;
 
 print "\nIndex: idx_4values";
 dumpidx k100 idx_4values;
 
 //print "=======================================================================";
 
-//print "fetch k100 j100_4values 0 <=";
-//fetch k100 "j100_4values 0 <=";
+//print "predicateFetch k100 j100_4values 0 <=";
+//predicateFetch k100 "j100_4values 0 <=";
 
 //print "=======================================================================";
 
-print "fetch k100 j100_4values 1 =";
-fetch k100 "j100_4values 1 =";
+print "predicateFetch k100 j100_4values 1 =";
+predicateFetch k100 "j100_4values 1 =";
 
 //print "=======================================================================";
 
@@ -81,82 +81,82 @@ displayOff;
 
 print "";
 print "=======================================================================";
-print "fetch k100";
-fetch k100;
+print "predicateFetch k100";
+predicateFetch k100;
 
 print "=======================================================================";
 
-print "fetch k100 k100_key 9 <=";
-fetch k100 "k100_key 9 <=";
+print "predicateFetch k100 k100_key 9 <=";
+predicateFetch k100 "k100_key 9 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 19 <=";
-fetch k100 "k100_key 19 <=";
+print "predicateFetch k100 k100_key 19 <=";
+predicateFetch k100 "k100_key 19 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 29 <=";
-fetch k100 "k100_key 29 <=";
+print "predicateFetch k100 k100_key 29 <=";
+predicateFetch k100 "k100_key 29 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 39 <=";
-fetch k100 "k100_key 39 <=";
+print "predicateFetch k100 k100_key 39 <=";
+predicateFetch k100 "k100_key 39 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 49 <=";
-fetch k100 "k100_key 49 <=";
+print "predicateFetch k100 k100_key 49 <=";
+predicateFetch k100 "k100_key 49 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 59 <=";
-fetch k100 "k100_key 59 <=";
+print "predicateFetch k100 k100_key 59 <=";
+predicateFetch k100 "k100_key 59 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 69 <=";
-fetch k100 "k100_key 69 <=";
+print "predicateFetch k100 k100_key 69 <=";
+predicateFetch k100 "k100_key 69 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 79 <=";
-fetch k100 "k100_key 79 <=";
+print "predicateFetch k100 k100_key 79 <=";
+predicateFetch k100 "k100_key 79 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 89 <=";
-fetch k100 "k100_key 89 <=";
+print "predicateFetch k100 k100_key 89 <=";
+predicateFetch k100 "k100_key 89 <=";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 k100_key 99 <=";
-fetch k100 "k100_key 99 <=";
+print "predicateFetch k100 k100_key 99 <=";
+predicateFetch k100 "k100_key 99 <=";
 
 print "=======================================================================";
 
-print "fetch k100 j100_1value 0 =";
-fetch k100 "j100_1value 0 =";
+print "predicateFetch k100 j100_1value 0 =";
+predicateFetch k100 "j100_1value 0 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_2values 1 =";
-fetch k100 "j100_2values 1 =";
+print "predicateFetch k100 j100_2values 1 =";
+predicateFetch k100 "j100_2values 1 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_4values 3 =";
-fetch k100 "j100_4values 3 =";
+print "predicateFetch k100 j100_4values 3 =";
+predicateFetch k100 "j100_4values 3 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_5values 4 =";
-fetch k100 "j100_5values 4 =";
+print "predicateFetch k100 j100_5values 4 =";
+predicateFetch k100 "j100_5values 4 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_10values 9 =";
-fetch k100 "j100_10values 9 =";
+print "predicateFetch k100 j100_10values 9 =";
+predicateFetch k100 "j100_10values 9 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_20values 19 =";
-fetch k100 "j100_20values 19 =";
+print "predicateFetch k100 j100_20values 19 =";
+predicateFetch k100 "j100_20values 19 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_50values 49 =";
-fetch k100 "j100_50values 49 =";
+print "predicateFetch k100 j100_50values 49 =";
+predicateFetch k100 "j100_50values 49 =";
 
 print "-----------------------------------------------------------------------";
-print "fetch k100 j100_100values 99 =";
-fetch k100 "j100_100values 99 =";
+print "predicateFetch k100 j100_100values 99 =";
+predicateFetch k100 "j100_100values 99 =";
 
 print "=======================================================================";
 

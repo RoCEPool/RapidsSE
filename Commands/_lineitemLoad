@@ -61,8 +61,8 @@ space;
 
 szTbl lineitem;
 
-//print "\n fetch noPrint";
-//time fetch lineitem noPrint;
+//print "\n predicateFetch noPrint";
+//time predicateFetch lineitem noPrint;
 
 print "\nInflate 1 thread";
 time inflate lineitem;
@@ -97,7 +97,7 @@ sleep 3;
 print "\nInflate 12 thread";
 time inflate lineitem 12;
 
-//fetch lineitem;
+//predicateFetch lineitem;
 /*
  
  1 PARTITION (NO WITH_STATISTICS_COUNTER)
@@ -289,29 +289,29 @@ time inflate lineitem 12;
  [N0/1 NODE1 2975] se 4.0.6r has> Program ended with exit code: 9
  
  
-fetch retrieve lineitem x;
-time fetch retrieve lineitem L_ORDERKEY;
-time fetch retrieve lineitem L_PARTKEY;
-time fetch retrieve lineitem L_SUPPKEY;
-time fetch retrieve lineitem L_LINENUMBER;
-time fetch retrieve lineitem L_QUANTITY;
-time fetch retrieve lineitem L_EXTENDEDPRICE;
-time fetch retrieve lineitem L_DISCOUNT;
-time fetch retrieve lineitem L_TAX;
-time fetch retrieve lineitem L_RETURNFLAG;
-time fetch retrieve lineitem L_LINESTATUS;
-time fetch retrieve lineitem L_SHIPDATE;
-time fetch retrieve lineitem L_COMMITDATE;
-time fetch retrieve lineitem L_RECEIPTDATE;
-time fetch retrieve lineitem L_SHIPINSTRUCT;
-time fetch retrieve lineitem L_SHIPMODE;
-time fetch retrieve lineitem L_COMMENT;
+predicateFetch retrieve lineitem x;
+time predicateFetch retrieve lineitem L_ORDERKEY;
+time predicateFetch retrieve lineitem L_PARTKEY;
+time predicateFetch retrieve lineitem L_SUPPKEY;
+time predicateFetch retrieve lineitem L_LINENUMBER;
+time predicateFetch retrieve lineitem L_QUANTITY;
+time predicateFetch retrieve lineitem L_EXTENDEDPRICE;
+time predicateFetch retrieve lineitem L_DISCOUNT;
+time predicateFetch retrieve lineitem L_TAX;
+time predicateFetch retrieve lineitem L_RETURNFLAG;
+time predicateFetch retrieve lineitem L_LINESTATUS;
+time predicateFetch retrieve lineitem L_SHIPDATE;
+time predicateFetch retrieve lineitem L_COMMITDATE;
+time predicateFetch retrieve lineitem L_RECEIPTDATE;
+time predicateFetch retrieve lineitem L_SHIPINSTRUCT;
+time predicateFetch retrieve lineitem L_SHIPMODE;
+time predicateFetch retrieve lineitem L_COMMENT;
 */
-//fetch retrieve lineitem l_orderkey;
+//predicateFetch retrieve lineitem l_orderkey;
 
-//time fetch lineitem noPrint;
-//time fetch lineitem displayOff;
-//fetch lineitem first 10;
+//time predicateFetch lineitem noPrint;
+//time predicateFetch lineitem displayOff;
+//predicateFetch lineitem first 10;
 /*
  
  // After the date and VCH optimizations we got
@@ -461,7 +461,7 @@ time fetch retrieve lineitem L_COMMENT;
  metadata: (nodeName VARCHAR, poolSize VARCHAR, inUse VARCHAR, free VARCHAR)
  row: ('NODE1', '10.00GB', '1005.63MB', '9.02GB')
  success: 1 rows affected
- [N0/1 NODE1 16745 AS AM EE+ TA+] se 4.0.5r has> time fetch lineitem displayOff;
+ [N0/1 NODE1 16745 AS AM EE+ TA+] se 4.0.5r has> time predicateFetch lineitem displayOff;
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  time 51ms
@@ -503,16 +503,16 @@ time fetch retrieve lineitem L_COMMENT;
  
 //print "fetching l_orderkey 32...";
 //st start;
-//time fetch lineitem "l_orderkey 32 ==" displayoff;
+//time predicateFetch lineitem "l_orderkey 32 ==" displayoff;
 //st write;
 
 //print "fetching l_orderkey 5999...";
 //st start;
-//time fetch lineitem "l_orderkey 5999 ==" displayoff;
+//time predicateFetch lineitem "l_orderkey 5999 ==" displayoff;
 //st write;
 //print "fetching l_orderkey 59999974...";
 //st start;
-//time fetch lineitem "l_orderkey 5999974 ==" displayoff;
+//time predicateFetch lineitem "l_orderkey 5999974 ==" displayoff;
 //st write;
 
 
@@ -536,98 +536,98 @@ space;
 //space;
 /*
 print "-----------------------------------------------------------------------";
-print "fetch lineitem";
+print "predicateFetch lineitem";
 timerStart;
-fetch lineitem displayOff;
+predicateFetch lineitem displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-12 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-12 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-12 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-16 00:00:00' <=" displayOff;
+print "predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=" displayOff;
 timerStart;
-fetch lineitem "l_shipdate '1992-01-16 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-16 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-18 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-18 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-18 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-20 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-20 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-20 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-22 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-22 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-22 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-26 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-26 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-26 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-02-02 00:00:00' <=" displayOff;
 timerEnd;
 print "------------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-10 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-10 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-02-10 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-20 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-20 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-02-20 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-03-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-03-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-03-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-04-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-04-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-04-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-05-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-05-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-05-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-06-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-06-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-06-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '2000-06-02 00:00:00' <=" ;
+print "predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=" ;
 timerStart;
-fetch lineitem "l_shipdate '2000-06-02 00:00:00' <=" displayOff;
-timerEnd;
-print "-----------------------------------------------------------------------";
-
-print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1995-08-14 00:00:00' ==" ;
-timerStart;
-fetch lineitem "l_shipdate '1995-08-14 00:00:00' ==" displayOff;
+predicateFetch lineitem "l_shipdate '2000-06-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1993-08-15 00:00:00' ==" ;
+print "predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==" ;
 timerStart;
-fetch lineitem "l_shipdate '1993-08-15 00:00:00' ==" displayOff;
+predicateFetch lineitem "l_shipdate '1995-08-14 00:00:00' ==" displayOff;
+timerEnd;
+print "-----------------------------------------------------------------------";
+
+print "-----------------------------------------------------------------------";
+print "predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==" ;
+timerStart;
+predicateFetch lineitem "l_shipdate '1993-08-15 00:00:00' ==" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
 
@@ -638,97 +638,97 @@ timerEnd;
 print "REPEATING QUERIES";
 
 print "-----------------------------------------------------------------------";
-print "fetch lineitem";
+print "predicateFetch lineitem";
 timerStart;
-fetch lineitem displayOff;
+predicateFetch lineitem displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-12 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-12 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-12 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-16 00:00:00' <=" displayOff;
+print "predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=" displayOff;
 timerStart;
-fetch lineitem "l_shipdate '1992-01-16 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-16 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-18 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-18 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-18 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-20 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-20 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-20 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-22 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-22 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-22 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-01-26 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-01-26 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-01-26 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-02-02 00:00:00' <=" displayOff;
 timerEnd;
 print "------------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-10 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-10 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-02-10 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-02-20 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-02-20 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-02-20 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-03-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-03-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-03-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-04-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-04-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-04-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-05-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-05-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-05-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1992-06-02 00:00:00' <=";
+print "predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=";
 timerStart;
-fetch lineitem "l_shipdate '1992-06-02 00:00:00' <=" displayOff;
+predicateFetch lineitem "l_shipdate '1992-06-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '2000-06-02 00:00:00' <=" ;
+print "predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=" ;
 timerStart;
-fetch lineitem "l_shipdate '2000-06-02 00:00:00' <=" displayOff;
-timerEnd;
-print "-----------------------------------------------------------------------";
-
-print "fetch lineitem l_shipdate '1995-08-14 00:00:00' ==" ;
-timerStart;
-fetch lineitem "l_shipdate '1995-08-14 00:00:00' ==" displayOff;
+predicateFetch lineitem "l_shipdate '2000-06-02 00:00:00' <=" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
 
-print "-----------------------------------------------------------------------";
-print "fetch lineitem l_shipdate '1993-08-15 00:00:00' ==" ;
+print "predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==" ;
 timerStart;
-fetch lineitem "l_shipdate '1993-08-15 00:00:00' ==" displayOff;
+predicateFetch lineitem "l_shipdate '1995-08-14 00:00:00' ==" displayOff;
+timerEnd;
+print "-----------------------------------------------------------------------";
+
+print "-----------------------------------------------------------------------";
+print "predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==" ;
+timerStart;
+predicateFetch lineitem "l_shipdate '1993-08-15 00:00:00' ==" displayOff;
 timerEnd;
 print "-----------------------------------------------------------------------";
  */
@@ -738,9 +738,9 @@ print "-----------------------------------------------------------------------";
 //docol locksList;
 //docol stepsList;
 
-//fetch lineitem "l_shipdate '1998-09-01 00:00:00' =";
+//predicateFetch lineitem "l_shipdate '1998-09-01 00:00:00' =";
 
-//fetch lineitem "l_shipdate '1998-11-13  00:00:00' =";
+//predicateFetch lineitem "l_shipdate '1998-11-13  00:00:00' =";
 
 //pwf ;
 //lf ;
@@ -752,7 +752,7 @@ print "-----------------------------------------------------------------------";
 //docol schedulerReset;
 
 //timerStart;
-//fetch lineitem;
+//predicateFetch lineitem;
 //timerEnd;
 
 //docol schedulerList;
@@ -819,94 +819,94 @@ CACHE_LINE : 22nd March 2019
  
  success: 1 rows affected
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 184ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 5ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 8ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 12ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 18ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 25ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 531ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2512 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 4ms
@@ -916,93 +916,93 @@ CACHE_LINE : 22nd March 2019
  duration 1612ms
  REPEATING QUERIES
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 177ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 4ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 12ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 17ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 24ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 509ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2512 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 4ms
@@ -1070,94 +1070,94 @@ CACHE_LINE : 22nd March 2019
  
  success: 4 rows affected
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 188ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 4ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 8ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 13ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 19ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 26ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 533ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2512 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 5ms
@@ -1167,93 +1167,93 @@ CACHE_LINE : 22nd March 2019
  duration 1605ms
  REPEATING QUERIES
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 180ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 6ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 12ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 18ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 25ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 506ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2512 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE DATE,L_COMMITDATE DATE,L_RECEIPTDATE DATE,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 5ms
@@ -1302,94 +1302,94 @@ KEY_CMP: Feb 12 2019
  
  success: 1 rows affected
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 238ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 8ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 6ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 9ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 11ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 16ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 32ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 58ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 85ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 2078ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1204 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2378 rows fetched
  duration 4ms
@@ -1399,93 +1399,93 @@ KEY_CMP: Feb 12 2019
  duration 1277ms
  REPEATING QUERIES
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 233ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 7ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 9ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 10ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 15ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 31ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 58ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 81ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 2012ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1415 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 4ms
@@ -1536,94 +1536,94 @@ KEY_CMP: Feb 12 2019
  
  success: 4 rows affected
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 87ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 8ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 23ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 5ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 11ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 17ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 24ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 495ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2512 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2194 rows fetched
  duration 4ms
@@ -1636,93 +1636,93 @@ KEY_CMP: Feb 12 2019
  duration 1302ms
  REPEATING QUERIES
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 83ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 16ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 5ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 29ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 13ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 16ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 22ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 474ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2164 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 5ms
@@ -1800,95 +1800,95 @@ KEY_CMP: Feb 12 2019
  Command 0 tokens: ;
  Command 0 tokens: ;
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 248ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 8ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 6ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 7ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 11ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 15ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 35ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 63ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 85ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 2077ms
  -----------------------------------------------------------------------
  Command 0 tokens: ;
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 198 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
  Command 0 tokens: ;
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 4ms
@@ -1902,95 +1902,95 @@ KEY_CMP: Feb 12 2019
  REPEATING QUERIES
  Command 0 tokens: ;
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 236ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 17 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1334 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2494 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3195 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 3921 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 4723 rows fetched
  duration 5ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6663 rows fetched
  duration 7ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 10841 rows fetched
  duration 7ms
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 16846 rows fetched
  duration 10ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 26249 rows fetched
  duration 13ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 38718 rows fetched
  duration 17ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 88331 rows fetched
  duration 33ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 154592 rows fetched
  duration 56ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 231001 rows fetched
  duration 86ms
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 6001215 rows fetched
  duration 2025ms
  -----------------------------------------------------------------------
  Command 0 tokens: ;
- fetch lineitem l_shipdate '1995-08-14 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1995-08-14 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 1415 rows fetched
  duration 4ms
  -----------------------------------------------------------------------
  Command 0 tokens: ;
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1993-08-15 00:00:00' ==
+ predicateFetch lineitem l_shipdate '1993-08-15 00:00:00' ==
  metadata: (L_ORDERKEY INTEGER,L_PARTKEY INTEGER,L_SUPPKEY INTEGER,L_LINENUMBER INTEGER,L_QUANTITY DECIMAL,L_EXTENDEDPRICE DECIMAL,L_DISCOUNT DECIMAL,L_TAX DECIMAL,L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,L_SHIPDATE TIMESTAMP,L_COMMITDATE TIMESTAMP,L_RECEIPTDATE TIMESTAMP,L_SHIPINSTRUCT VARCHAR,L_SHIPMODE VARCHAR,L_COMMENT VARCHAR)
  success: 2429 rows fetched
  duration 4ms
@@ -2023,97 +2023,97 @@ total: 1585 buffers; 6001215 entries
 
 
 -----------------------------------------------------------------------
-fetch lineitem
+predicateFetch lineitem
 
 rows selected 6001215
 duration 976ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
 
 rows selected 17
 duration 4ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
 
 rows selected 1334
 duration 3ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
 
 rows selected 2494
 duration 4ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
 
 rows selected 3195
 duration 5ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
 
 rows selected 3921
 duration 4ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
 
 rows selected 4723
 duration 4ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
 
 rows selected 6663
 duration 6ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
 
 rows selected 10841
 duration 9ms
 
 ------------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
 
 rows selected 16846
 duration 12ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
 
 rows selected 26249
 duration 19ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
 
 rows selected 38718
 duration 27ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
 
 rows selected 88331
 duration 70ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
 
 rows selected 154592
 duration 119ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
 
 rows selected 231001
 duration 185ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
 
 rows selected 6001215
 duration 4188ms
@@ -2149,97 +2149,97 @@ total: 1606 buffers; 6001215 entries
 
 
 -----------------------------------------------------------------------
-fetch lineitem
+predicateFetch lineitem
 
 rows selected 6001215
 duration 747ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
 
 rows selected 17
 duration 4ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
 
 rows selected 1334
 duration 3ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
 
 rows selected 2494
 duration 4ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
 
 rows selected 3195
 duration 3ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
 
 rows selected 3921
 duration 3ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
 
 rows selected 4723
 duration 3ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
 
 rows selected 6663
 duration 3ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
 
 rows selected 10841
 duration 5ms
 
 ------------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
 
 rows selected 16846
 duration 6ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
 
 rows selected 26249
 duration 7ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
 
 rows selected 38718
 duration 11ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
 
 rows selected 88331
 duration 23ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
 
 rows selected 154592
 duration 41ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
 
 rows selected 231001
 duration 59ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
 
 rows selected 6001215
 duration 1398ms
@@ -2271,97 +2271,97 @@ total: 1273 buffers; 6002488 entries
 
 
 -----------------------------------------------------------------------
-fetch lineitem
+predicateFetch lineitem
 
 rows selected 6001215
 duration 971ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
 
 rows selected 17
 duration 8ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
 
 rows selected 1334
 duration 383ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
 
 rows selected 2494
 duration 715ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
 
 rows selected 3195
 duration 834ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
 
 rows selected 3921
 duration 1084ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
 
 rows selected 4723
 duration 1363ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
 
 rows selected 6663
 duration 1798ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
 
 rows selected 10841
 duration 2914ms
 
 ------------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
 
 rows selected 16846
 duration 4595ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
 
 rows selected 26249
 duration 7323ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
 
 rows selected 38718
 duration 10355ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
 
 rows selected 88331
 duration 23349ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
 
 rows selected 154592
 duration 40878ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
 
 rows selected 231001
 duration 60539ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
 
 
 Engine v0.3.1 (Feb 16 2018 07:42:38 -- release) pid 11884
@@ -2391,97 +2391,97 @@ total: 1287 buffers; 6002502 entries
 
 
 -----------------------------------------------------------------------
-fetch lineitem
+predicateFetch lineitem
 
 rows selected 6001215
 duration 686ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
 
 rows selected 17
 duration 6ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
 
 rows selected 1334
 duration 105ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
 
 rows selected 2494
 duration 188ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
 
 rows selected 3195
 duration 236ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
 
 rows selected 3921
 duration 286ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
 
 rows selected 4723
 duration 351ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
 
 rows selected 6663
 duration 480ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
 
 rows selected 10841
 duration 764ms
 
 ------------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
 
 rows selected 16846
 duration 1227ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
 
 rows selected 26249
 duration 1907ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
 
 rows selected 38718
 duration 2743ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
 
 rows selected 88331
 duration 6168ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
 
 rows selected 154592
 duration 10789ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
 
 rows selected 231001
 duration 16144ms
 
 -----------------------------------------------------------------------
-fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
 
 rows selected 6001215
 duration 412960ms
@@ -2524,97 +2524,97 @@ duration 412960ms
  
  
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  
  rows selected 6001215
  duration 645ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  
  rows selected 17
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  
  rows selected 1334
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  
  rows selected 2494
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  
  rows selected 3195
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  
  rows selected 3921
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  
  rows selected 4723
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  
  rows selected 6663
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  
  rows selected 10841
  duration 5ms
  
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  
  rows selected 16846
  duration 6ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  
  rows selected 26249
  duration 8ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  
  rows selected 38718
  duration 11ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  
  rows selected 88331
  duration 23ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  
  rows selected 154592
  duration 39ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  
  rows selected 231001
  duration 58ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  
  rows selected 6001215
  duration 1389ms
@@ -2656,97 +2656,97 @@ duration 412960ms
  
  
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  
  rows selected 6001215
  duration 612ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  
  rows selected 17
  duration 26ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  
  rows selected 1334
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  
  rows selected 2494
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  
  rows selected 3195
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  
  rows selected 3921
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  
  rows selected 4723
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  
  rows selected 6663
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  
  rows selected 10841
  duration 5ms
  
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  
  rows selected 16846
  duration 6ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  
  rows selected 26249
  duration 9ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  
  rows selected 38718
  duration 10ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  
  rows selected 88331
  duration 45ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  
  rows selected 154592
  duration 80ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  
  rows selected 231001
  duration 100ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  
  rows selected 6001215
  duration 3348ms
@@ -2754,97 +2754,97 @@ duration 412960ms
  -----------------------------------------------------------------------
  REPEATING QUERIES
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  
  rows selected 6001215
  duration 1426ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  
  rows selected 17
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  
  rows selected 1334
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  
  rows selected 2494
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  
  rows selected 3195
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  
  rows selected 3921
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  
  rows selected 4723
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  
  rows selected 6663
  duration 5ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  
  rows selected 10841
  duration 5ms
  
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  
  rows selected 16846
  duration 6ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  
  rows selected 26249
  duration 8ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  
  rows selected 38718
  duration 11ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  
  rows selected 88331
  duration 25ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  
  rows selected 154592
  duration 40ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  
  rows selected 231001
  duration 58ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  
  rows selected 6001215
  duration 1359ms
@@ -2878,97 +2878,97 @@ duration 412960ms
  
  
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  
  rows selected 6001215
  duration 770ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  
  rows selected 17
  duration 27ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  
  rows selected 1334
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  
  rows selected 2494
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  
  rows selected 3195
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  
  rows selected 3921
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  
  rows selected 4723
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  
  rows selected 6663
  duration 5ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  
  rows selected 10841
  duration 8ms
  
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  
  rows selected 16846
  duration 34ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  
  rows selected 26249
  duration 43ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  
  rows selected 38718
  duration 51ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  
  rows selected 88331
  duration 149ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  
  rows selected 154592
  duration 203ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  
  rows selected 231001
  duration 269ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  
  rows selected 6001215
  duration 9474ms
@@ -2976,97 +2976,97 @@ duration 412960ms
  -----------------------------------------------------------------------
  REPEATING QUERIES
  -----------------------------------------------------------------------
- fetch lineitem
+ predicateFetch lineitem
  
  rows selected 6001215
  duration 964ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-02 00:00:00' <=
  
  rows selected 17
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-12 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-12 00:00:00' <=
  
  rows selected 1334
  duration 3ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-16 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-16 00:00:00' <=
  
  rows selected 2494
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-18 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-18 00:00:00' <=
  
  rows selected 3195
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-20 00:00:00' <=
  
  rows selected 3921
  duration 4ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-22 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-22 00:00:00' <=
  
  rows selected 4723
  duration 5ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-01-26 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-01-26 00:00:00' <=
  
  rows selected 6663
  duration 5ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-02 00:00:00' <=
  
  rows selected 10841
  duration 8ms
  
  ------------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-10 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-10 00:00:00' <=
  
  rows selected 16846
  duration 11ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-02-20 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-02-20 00:00:00' <=
  
  rows selected 26249
  duration 18ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-03-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-03-02 00:00:00' <=
  
  rows selected 38718
  duration 27ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-04-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-04-02 00:00:00' <=
  
  rows selected 88331
  duration 66ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-05-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-05-02 00:00:00' <=
  
  rows selected 154592
  duration 113ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '1992-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '1992-06-02 00:00:00' <=
  
  rows selected 231001
  duration 164ms
  
  -----------------------------------------------------------------------
- fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
+ predicateFetch lineitem l_shipdate '2000-06-02 00:00:00' <=
  
  rows selected 6001215
  duration 4586ms

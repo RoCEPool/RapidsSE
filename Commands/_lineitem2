@@ -61,7 +61,7 @@ time ld LineItem2 "/tpch/SF0/lineitem2_10.csv" max_errors 100;
 //time ld LineItem2 "/tpch/SF1/LineItem2.csv" max_errors 100;
 space;
 sztbl LineItem2;
-fetch LineItem2 limit 10;
+predicateFetch LineItem2 limit 10;
 //fileCat "/tpch/SF0/lineitem2_1.csv" 10;
 fileCat "/tpch/SF0/lineitem2_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem2_100.csv" 10;
