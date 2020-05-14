@@ -138,9 +138,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new a proper c++ Index instance using given index name              PROPER */
+/* new a C++ Index instance using given table name                   EMBEDDED */
 /*----------------------------------------------------------------------------*/
-: index::newIndexPrpObj params| sIndexNm |
+: index::newIndex params| sIndexNm |
+
+  folder[].isIndexes assert
 
   find: \index locals| pwIndexCatg |
 
@@ -150,18 +152,6 @@
 
   pwIndexCatg pIndex pwIndex word.cppObject!
 
-  pwIndex
-;
-
-/*----------------------------------------------------------------------------*/
-/* new a C++ Index instance using given table name                   EMBEDDED */
-/*----------------------------------------------------------------------------*/
-: index::newIndex params| sIndexNm |
-
-  folder[].isIndexes assert
-
-  sIndexNm index::newIndexPrpObj locals| pwIndex |
-   
   pwIndex word.see
 
   pwIndex execute locals| pIndex |
@@ -202,29 +192,13 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Index object & its forget word                         EMBEDDED */
-/*----------------------------------------------------------------------------*/
-: index::deleteIndexEmbObj params| sIndexNm |
-
-  sIndexNm :forget
-;
-
-/*----------------------------------------------------------------------------*/
-/* delete C++ Index object & its forget word                           PROPER */
-/*----------------------------------------------------------------------------*/
-: index::deleteIndexPrpObj params| sIndexNm |
-
-  sIndexNm find execute index::delete
-
-  sIndexNm :forget
-;
-
-/*----------------------------------------------------------------------------*/
 /* delete C++ Index object & its forget word                                  */
 /*----------------------------------------------------------------------------*/
 : index::deleteIndex params| sIndexNm |
 
-  sIndexNm index::deleteIndexPrpObj
+  sIndexNm find execute index::delete
+
+  sIndexNm :forget
 ;
 
 /*----------------------------------------------------------------------------*/
