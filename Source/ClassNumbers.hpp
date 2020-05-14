@@ -138,7 +138,6 @@ enum eCN : u2 // Class Number
   /* 104 0x068    14224B Heap:L */ CN_JOB__FIND,
   /* 105 0x069    14224B Heap:L */ CN_JOB_BOOT,
   /* 106 0x06A   145384B Heap:L */ CN_JOB_DISTRIBUTED,
-  /* 110 0x06E    14576B Heap:L */ CN_JOB_LOADTABLE,
   /* 110 0x06E    14576B Heap:L */ CN_JOB_LOCAL,
   /* 111 0x06F    14280B Heap:L */ CN_JOB_NODEINFO,
   /* 112 0x070    14264B Heap:L */ CN_JOB_OPERAND,
@@ -146,7 +145,6 @@ enum eCN : u2 // Class Number
   /* 116 0x074    14224B Heap:L */ CN_JOB_START,
   /* 118 0x076    14256B Heap:L */ CN_JOB_SUBINFLATE,
   /* 119 0x077    14256B Heap:L */ CN_JOB_SUBINGESTER,
-  /* 121 0x079   407544B Heap:L */ CN_JOB_SUBLOADER,
   /* 124 0x07C    14280B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 126 0x07E      224B Heap:S */ CN_JOBLIST,
   /* 127 0x07F      296B Heap:I */ CN_JUMBOPERSISTENT,
@@ -477,7 +475,6 @@ static Stz* aCN[]
   /* 104 0x068 */ "JOB__FIND"_Stz,           // CN_JOB__FIND
   /* 105 0x069 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
   /* 106 0x06A */ "JOB_DISTRIBUTED"_Stz,     // CN_JOB_DISTRIBUTED
-  /* 110 0x06E */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /* 110 0x06E */ "JOB_LOCAL"_Stz,           // CN_JOB_LOCAL
   /* 111 0x06F */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 112 0x070 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
@@ -485,7 +482,6 @@ static Stz* aCN[]
   /* 116 0x074 */ "JOB_START"_Stz,           // CN_JOB_START
   /* 118 0x076 */ "JOB_SUBINFLATE"_Stz,      // CN_JOB_SUBINFLATE
   /* 119 0x077 */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER
-  /* 121 0x079 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /* 124 0x07C */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 126 0x07E */ "JOBLIST"_Stz,             // CN_JOBLIST
   /* 127 0x07F */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT

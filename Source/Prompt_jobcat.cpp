@@ -46,13 +46,11 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB__FIND);
 
   // dist2pc
-  nJobs++; JobClass::vJobCat(CN_JOB_LOADTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_DISTRIBUTED);
   
   // child
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINFLATE);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINGESTER);
-  nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);
 
   // grankid  
   nJobs++; JobClass::vJobCat(CN_JOB_WRITEBUFFER);

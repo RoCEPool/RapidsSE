@@ -262,7 +262,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 bool Job_WriteBuffer::bInsertRows_LowMem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
-  
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose())
@@ -327,6 +327,8 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   //  vTrace("DataBuffers loaded\n"_Stz);
   
   return bAllBuffersWritten;
+ */
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
