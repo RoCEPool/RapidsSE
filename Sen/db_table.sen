@@ -156,9 +156,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* new a proper c++ Table instance using given table name              PROPER */
+/* new a c++ Table instance using given table name                            */
 /*----------------------------------------------------------------------------*/
-: table::newTablePrpObj params| sTableNm | ( pwTable )
+: table::newTable params| sTableNm | ( pTable )
 
   find: \table locals| pwTableCatg |
 
@@ -168,16 +168,6 @@
 
   pwTableCatg pTable pwTable word.cppObject!
 
-  pwTable
-;
-
-/*----------------------------------------------------------------------------*/
-/* new a c++ Table instance using given table name                            */
-/*----------------------------------------------------------------------------*/
-: table::newTable params| sTableNm | ( pTable )
-
-  sTableNm table::newTablePrpObj locals| pwTable |
-   
   pwTable word.see
 
   pwTable execute locals| pTable |
@@ -229,29 +219,13 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete C++ Table object & its forget word                         EMBEDDED */
-/*----------------------------------------------------------------------------*/
-: table::deleteTableEmbObj params| sTableNm |
-
-  sTableNm :forget
-;
-
-/*----------------------------------------------------------------------------*/
-/* delete C++ Table object & its forget word                           PROPER */
-/*----------------------------------------------------------------------------*/
-: table::deleteTablePrpObj params| sTableNm |
- 
-  sTableNm find execute table::delete
-
-  sTableNm :forget
-;
-
-/*----------------------------------------------------------------------------*/
 /* delete C++ Table object & its forget word                                  */
 /*----------------------------------------------------------------------------*/
 : table::deleteTable params| sTableNm |
 
-  sTableNm table::deleteTablePrpObj
+  sTableNm find execute table::delete
+
+  sTableNm :forget
 ;
 
 /*----------------------------------------------------------------------------*/
