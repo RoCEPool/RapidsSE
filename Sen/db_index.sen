@@ -176,7 +176,9 @@
   [? WITH_OBJ_PROPER ?if
 
     sIndexNm index::newIndexPrpObj locals| pwIndex |
- 
+   
+    pwIndex word.see
+
   ?else
 
     sIndexNm index::newIndexEmbObj locals| pwIndex |

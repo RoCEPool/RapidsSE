@@ -336,7 +336,7 @@ void Step::vSemicolon(void)
   
   m_pCompiler->vMode(CM_INTERPRETING);
     
-  m_pCompiler->vCurrentWord(nullptr);
+  //m_pCompiler->vCurrentWord(nullptr);
     
 //  if (pCurrentWord->szWordNm()->bSame("tpl_liteOp_PulseMarker"_Stz))
 //    AM::vWordSee(pCurrentWord,&m_oDicStack);

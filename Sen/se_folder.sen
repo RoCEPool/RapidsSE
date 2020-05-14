@@ -172,23 +172,25 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : :makeFolder_v2 params| sFolderNm |
 
-diclock.grabwrite
+dicLock.grabwrite
 
-  find: \folder
-  dic::new
-  sFolderNm
-    :createCppObject
-      locals| pFolder |
+  find: \folder locals| pwFolderCatg |
 
-  sFolderNm pFolder word.object@ dic.name!
+  dic::new locals| pFolder |
 
-diclock.dropwrite
+  sFolderNm word::new locals| pwFolder |
+
+  pwFolderCatg pFolder pwFolder word.cppObject!
+
+dicLock.dropwrite
 
   args.verbose if
     pFolder word.name@
     path[].toStr
       "Created folder %v/%v" .printf
   then
+
+  pwFolder word.see
 
   pFolder // returns:
 ;

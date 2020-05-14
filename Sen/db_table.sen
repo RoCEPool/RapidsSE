@@ -192,6 +192,8 @@
   [? WITH_OBJ_PROPER ?if
  
     sTableNm table::newTablePrpObj locals| pwTable |
+   
+    pwTable word.see
 
   ?else
    
