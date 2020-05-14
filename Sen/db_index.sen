@@ -138,19 +138,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new an embedded c++ Index instance using given index name         EMBEDDED */
-/*----------------------------------------------------------------------------*/
-: index::newIndexEmbObj params| sIndexNm |
-
-  find: \index CN_INDEX sizeof_index sIndexNm :createObject locals| pwIndex |
-
-  compiler::current@ word.embObject index.init
-  true compiler::current@ word.embObject object.wordbody!
-
-  pwIndex
-;
-
-/*----------------------------------------------------------------------------*/
 /* new a proper c++ Index instance using given index name              PROPER */
 /*----------------------------------------------------------------------------*/
 : index::newIndexPrpObj params| sIndexNm |

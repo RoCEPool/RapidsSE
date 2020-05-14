@@ -156,19 +156,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* new an embedded c++ Table instance using given table name         EMBEDDED */
-/*----------------------------------------------------------------------------*/
-: table::newTableEmbObj params| sTableNm | ( pwTable )
-
-  find: \table CN_TABLE sizeof_table sTableNm :createObject locals| pwTable |
-
-  compiler::current@ word.embObject table.init
-  true compiler::current@ word.embObject object.wordbody!
-
-  pwTable
-;
-
-/*----------------------------------------------------------------------------*/
 /* new a proper c++ Table instance using given table name              PROPER */
 /*----------------------------------------------------------------------------*/
 : table::newTablePrpObj params| sTableNm | ( pwTable )

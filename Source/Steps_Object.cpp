@@ -14,7 +14,6 @@ void Step::vAddSteps_Object(void)
   vAddStep("object@"_Stz,           &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,     &Step::vObjectMagicMark);
   vAddStep("object!"_Stz,           &Step::vObjectStore);
-  vAddStep("object.wordbody!"_Stz,  &Step::vObjectWordBodySet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,20 +113,6 @@ void Step::vObjectStore(void)
   
   m_pReturnStack->vPokeVal(iPeek,xObjectVar);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.wordbody! -- mark object as a part of a wordbody                    */
-/*----------------------------------------------------------------------------*/
-void Step::vObjectWordBodySet(void)
-{
-  ENTRY();
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  i8 iIsBody = m_pDataStack->iPopInt(__func__);
-    
   EXIT();
 }
 

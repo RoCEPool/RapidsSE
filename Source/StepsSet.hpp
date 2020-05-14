@@ -946,7 +946,6 @@ public:
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectStore(void);
-  void vObjectWordBodySet(void);
 
   // olist (originator list)
   void vOlistFindJob(void);
