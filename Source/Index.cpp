@@ -57,7 +57,6 @@ void Index::operator delete(void* aAddrIndex)
   Index* pIndex = reinterpret_cast<Index*>(aAddrIndex);
 
   HeapMem::vFree(pIndex);
-
 }
 
 /*----------------------------------------------------------------------------*/

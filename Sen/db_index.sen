@@ -235,6 +235,8 @@
 /*----------------------------------------------------------------------------*/
 : index::deleteIndexPrpObj params| sIndexNm |
 
+  sIndexNm find execute index::delete
+
   sIndexNm :forget
 ;
 
@@ -268,7 +270,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index and forget it
-  sIndexNm :forget
+  sIndexNm index::deleteIndex
 ;
 
 /*----------------------------------------------------------------------------*/
