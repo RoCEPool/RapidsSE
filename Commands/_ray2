@@ -2,38 +2,12 @@
 /* _ray2                                                                      */
 /*============================================================================*/
 
-markjob _subpurger on;
-markjob;
-
 bc;
 
-_sensorEvents
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Create LineItem";
 
-nowait purge sensorEvents 3;
-
-sleeping;
-
-sleep 1;
-
-sleeping;
-
-sleep 1;
-
-sleeping;
-
-sleep 1;
-
-sleeping;
-
-sleep 1;
-
-sleeping;
-
-sleep 1;
-
-sleeping;
-
-//logWrite;
+_lineitem
 
 /*============================================================================*/
 /* end                                                                        */

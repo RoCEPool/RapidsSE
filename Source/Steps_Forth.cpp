@@ -127,9 +127,10 @@ void Step::vFlowExecute(void)
     case WK_CPPOBJECT:
       m_pReturnStack->vPushFip(m_aInxPtr);
       m_aInxPtr = pWord->aEntryCell();
-      
+#ifndef WITH_OBJ_PROPER
       pObject = pWord->pObject();
       m_pDataStack->vPushPtr(pObject);
+#endif
       break;
           
     case WK_EMBOBJECT:
@@ -336,7 +337,7 @@ void Step::vSemicolon(void)
   
   m_pCompiler->vMode(CM_INTERPRETING);
     
-  m_pCompiler->vCurrentWord(nullptr);
+  //m_pCompiler->vCurrentWord(nullptr);
     
 //  if (pCurrentWord->szWordNm()->bSame("tpl_liteOp_PulseMarker"_Stz))
 //    AM::vWordSee(pCurrentWord,&m_oDicStack);

@@ -980,7 +980,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_SYSCALL
   
   /* */ HT_INVALID,           // CN__T__
-  /* */ HT_INVALID,           // CN_TABLE
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLEDEF
   /* */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC

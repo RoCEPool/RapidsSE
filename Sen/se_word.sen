@@ -61,17 +61,17 @@
 /*----------------------------------------------------------------------------*/
 /* set word as a c++ object and encode push of the c++ object as the routine  */
 /*----------------------------------------------------------------------------*/
-: word.cppObject! params| pwObject pObject pCatg |
+: word.cppObject! params| pwObject pObject pwCatg |
 
   WK_CPPOBJECT pwObject word.kind!
 
   pObject pwObject word.object!
 
-  pCatg pwObject word.category!
+  pwCatg pwObject word.category!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  compiler::current!
+  pwObject compiler::current!
 
   pwObject encode::push
 

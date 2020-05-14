@@ -36,6 +36,7 @@ namespace MetaData
     void  operator delete(void*);
     
     Table(void);
+    Table(Stz* szTableNm);
    ~Table(void) noexcept(false);
     
     static void   vDump(eCN eClass, Object* pObject, Stz* aTab);

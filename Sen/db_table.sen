@@ -173,13 +173,13 @@
 /*----------------------------------------------------------------------------*/
 : table::newTablePrpObj params| sTableNm | ( pwTable )
 
-  find: \table locals| pTableCatg |
+  find: \table locals| pwTableCatg |
 
-  table::new locals| pTable |
+  sTableNm table::new locals| pTable |
 
   sTableNm word::new locals| pwTable |
 
-  pTableCatg pTable pwTable word.cppObject!
+  pwTableCatg pTable pwTable word.cppObject!
 
   pwTable
 ;
@@ -192,6 +192,8 @@
   [? WITH_OBJ_PROPER ?if
  
     sTableNm table::newTablePrpObj locals| pwTable |
+   
+    pwTable word.see
 
   ?else
    
