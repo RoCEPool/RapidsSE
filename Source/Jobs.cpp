@@ -4,7 +4,8 @@
 
 #include "Jobs.h"
 
-extern eHT geWhichHeap[];
+extern eHT       geWhichHeap[];
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */

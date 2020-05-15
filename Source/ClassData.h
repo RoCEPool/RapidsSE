@@ -21,6 +21,14 @@ namespace ClassData
 #include "LimitsFormats.h"
 
 #include "AM.hpp"
+#include "eHT.h"
+
+struct SizeHeap {
+  
+  i8  m_nClassSize;
+  eHT m_eWhichHeap;
+
+};
 
 /*============================================================================*/
 /* end                                                                        */

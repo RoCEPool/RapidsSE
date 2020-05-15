@@ -18,8 +18,9 @@ PromptFun __Prompt_classes (
   ""_Stz                // description
 );
 
-extern eHT geWhichHeap[];
-extern i8  gnClassSize[];
+extern eHT       geWhichHeap[];
+extern i8        gnClassSize[];
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

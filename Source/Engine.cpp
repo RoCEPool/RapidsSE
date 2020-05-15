@@ -9,6 +9,7 @@ extern Args         gxArgs;
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 extern i8           gnClassSize[];
+extern SizeHeap     gxaSizeHeap[];
 extern Header*      gaSeShmRegion;
 extern File*        gpTraceFile;
 

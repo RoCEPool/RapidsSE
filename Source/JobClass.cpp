@@ -4,7 +4,8 @@
 
 #include "Jobs.h"
 
-extern i8 gnClassSize[];
+extern i8        gnClassSize[];
+extern SizeHeap  gxaSizeHeap[];
 
 extern JobCatalog gxJobCatalog;
 

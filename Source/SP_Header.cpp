@@ -4,7 +4,8 @@
 
 #include "Gadgets.h"
 
-extern i8  gnClassSize[];
+extern i8        gnClassSize[];
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

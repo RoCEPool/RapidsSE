@@ -4,8 +4,8 @@
 
 #include "Correctness.h"
 
-
-extern i8 gnClassSize[];
+extern i8        gnClassSize[];
+extern SizeHeap  SizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add number of bytes to given address                                       */

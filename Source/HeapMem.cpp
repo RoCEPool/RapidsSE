@@ -5,8 +5,9 @@
 #include "Pool.h"
 
 
-extern i8  gnClassSize[];
-extern eHT geWhichHeap[];
+extern i8        gnClassSize[];
+extern eHT       geWhichHeap[];
+extern SizeHeap  gxaSizeHeap[];
 
 bool gbAddrAllocated = false;
 

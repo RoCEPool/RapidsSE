@@ -4,7 +4,8 @@
 
 #include "Steps.h"
 
-extern i8  gnClassSize[];
+extern i8        gnClassSize[];
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

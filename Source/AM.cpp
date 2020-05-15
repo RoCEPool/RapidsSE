@@ -16,6 +16,7 @@ extern Log*          gpLog;
 
 extern eHT           geWhichHeap[];
 extern i8            gnClassSize[];
+extern SizeHeap      gxaSizeHeap[];
 
 // Arg
 Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }

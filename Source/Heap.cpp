@@ -6,8 +6,9 @@
 
 extern BufferPool* gpBufferPool;
 
-extern i8  gnClassSize[];
-extern eHT geWhichHeap[];
+extern i8        gnClassSize[];
+extern eHT       geWhichHeap[];
+extern SizeHeap  gxaSizeHeap[];
 
 
 /*----------------------------------------------------------------------------*/
