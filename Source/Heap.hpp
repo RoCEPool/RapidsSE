@@ -48,7 +48,7 @@ namespace Pool
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
     void    vReport(String* pReportString);
-    i8      iSum(void);
+    i8      nTotalHeapSize(void);
         
   private:
     bool bExtendHeap(void);

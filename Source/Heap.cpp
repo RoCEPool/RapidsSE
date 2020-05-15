@@ -355,7 +355,7 @@ void Heap::vReport(String* pReportString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  s32 sMagSum;   MagLib::vByteMag(iSum(),sMagSum);
+  s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
   s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
 
   pReportString->szStz()->vSprint(
@@ -376,7 +376,7 @@ void Heap::vReport(String* pReportString)
 /*----------------------------------------------------------------------------*/
 /* get computed size of heap                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iSum(void)
+i8 Heap::nTotalHeapSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
