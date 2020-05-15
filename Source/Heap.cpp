@@ -45,7 +45,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   
   m_nObjectSize    = iObjectSize;
   m_nCurrAllocated = 0;
-  m_iBufferCount   = 0;
+  m_nBufferCount   = 0;
   m_pFirstBuffer   = nullptr;
   m_pLastBuffer    = nullptr;
   m_nFreeChunks    = 0;
@@ -105,7 +105,7 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   
   vTrace("BufferCount %lld FreeCount %lld\n"_Stz,
-         pHeap->m_iBufferCount,
+         pHeap->m_nBufferCount,
          pHeap->m_nFreeChunks);
   
   i8 iCountObjects[CN_ENUMS];
@@ -141,7 +141,7 @@ void Heap::vAddFree(FreeChunk* aFreeChunk)
 
   ASSERT(m_bFixedHeap);
   
-  m_iBufferCount++;
+  m_nBufferCount++;
   
   vPushFree(aFreeChunk,CN_NONE);
 }
@@ -214,11 +214,11 @@ void Heap::vAnalyse(i8 iCounts[])
 /*----------------------------------------------------------------------------*/
 /* get number of buffers in the heap                                          */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iBufferCount(void)
+i8 Heap::nBufferCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_iBufferCount;
+  return m_nBufferCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,7 +323,7 @@ void Heap::vGrabLock()
 void Heap::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Heap: size %lld buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_nObjectSize,m_iBufferCount,m_nCurrAllocated,m_nFreeChunks);
+                    m_nObjectSize,m_nBufferCount,m_nCurrAllocated,m_nFreeChunks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,7 +366,7 @@ void Heap::vReport(String* pReportString)
     aCN[eClass()],
     sMagSize.azChar(),
                                   
-    iBufferCount(),
+    nBufferCount(),
     nCurrAllocated(),
     nFreeChunks(),
     sMagSum.szStz()
@@ -422,7 +422,7 @@ bool Heap::bExtendHeap(void)
   }
 
   // we have one more buffer
-  m_iBufferCount++;
+  m_nBufferCount++;
   
   // now add all new free chunks into free chain
   FreeChunk* aFreeChunk;
@@ -513,7 +513,7 @@ void Heap::vRemoveBuffer(HeapBuffer* pHeapBuffer)
     pHeapBuffer->pNextBuffer()->vPrevBuffer(pHeapBuffer->pPrevBuffer());
 
   // we have one less buffer
-  m_iBufferCount--;
+  m_nBufferCount--;
 
   vDropLock();
 }

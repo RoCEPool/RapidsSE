@@ -17,7 +17,7 @@ namespace Pool
     i8          m_nCurrAllocated; // number of currently allocated objects
     i8          m_nFreeChunks;    // number of free chunks
     FreeChunk*  m_pFreeHead;      // head of free chunk chain
-    i8          m_iBufferCount;   // number of buffers in the heap
+    i8          m_nBufferCount;   // number of buffers in the heap
     HeapBuffer* m_pFirstBuffer;   // first buffer in the heap
     HeapBuffer* m_pLastBuffer;    // last buffer in the heap
     
@@ -36,7 +36,7 @@ namespace Pool
     void    vAddFree(FreeChunk* aFreeChunk);
     Object* pAllocObject(eCN eClass);
     void    vAnalyse(i8 xCounts[]);
-    i8      iBufferCount(void);
+    i8      nBufferCount(void);
     i8      nCurrAllocated(void);
     void    vDropLock(void);
     HeapBuffer* pFirstBuffer(void);
