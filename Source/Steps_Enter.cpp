@@ -9,36 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Enter(void)
 {
-  vAddStep("enterObject"_Stz,     &Step::vEnterObject);
   vAddStep("enterRoutine"_Stz,    &Step::vEnterRoutine);
-}
-
-/*----------------------------------------------------------------------------*/
-/* enterObject -- enter object routine   (this is the does step for a object) */
-/*----------------------------------------------------------------------------*/
-void Step::vEnterObject(void)
-{
-  ENTRY();
-  
-  StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpStep + 1;
-
-  m_pReturnStack->vPushFip(m_aInxPtr);
-  m_aInxPtr = *(Cell**)afpEntryCell;
-  
-  Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
-                            -( sizeof(Word)
-                               - sizeof(Cell*)
-                               - sizeof(Wsp_t<C_WSP_WORD>)
-                               - sizeof(Footer)
-                             )
-                            );
-
-  ASSERT(WK_EMBOBJECT == pWord->eWord());
-  
-  Object* pObject = (Object*)pWord->aFirstCell();
-  m_pDataStack->vPushPtr(pObject);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

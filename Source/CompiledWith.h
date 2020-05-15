@@ -97,12 +97,6 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
-#define WITH_SEN_TAGS EndDefine              // code for sen tags
-
-#define WITH_CPP_DIC EndDefine               // code for dic being a c++ obj
-
-#define WITH_OBJ_PROPER EndDefine            // code for proper c++ objects
-
 // temporary
 
 //#define __WITH_INDEP_ROUTINE EndDefine

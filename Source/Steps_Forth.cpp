@@ -12,7 +12,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep("("_Stz,                 &Step::vComment,          true );
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
-  vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("execute"_Stz,           &Step::vFlowExecute);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("find:"_Stz,             &Step::vFind,             true);
@@ -95,21 +94,6 @@ void Step::vCreateFromInRoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does_rt -- runtime for does>                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vDoes_RT(void)
-{
-  ENTRY();
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(m_aInxPtr + 1);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vFlowExecute(void)
@@ -127,14 +111,6 @@ void Step::vFlowExecute(void)
     case WK_CPPOBJECT:
       m_pReturnStack->vPushFip(m_aInxPtr);
       m_aInxPtr = pWord->aEntryCell();
-      break;
-          
-    case WK_EMBOBJECT:
-      m_pReturnStack->vPushFip(m_aInxPtr);
-      m_aInxPtr = pWord->aEntryCell();
-      
-      pObject = (Object*)pWord->aFirstCell();
-      m_pDataStack->vPushPtr(pObject);
       break;
           
     case WK_INTRINSIC:

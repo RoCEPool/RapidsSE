@@ -287,7 +287,6 @@ public:
   void vTagSetNew(void);
 
   // enter
-  void vEnterObject(void);
   void vEnterRoutine(void);
 
   // entry
@@ -349,7 +348,6 @@ public:
   // forth
   void vColon(void);
   void vCreateFromInRoot(void);
-  void vDoes_RT(void);
   void vExit_RT(void);
   void vFind(void);
   void vImmediate(void);

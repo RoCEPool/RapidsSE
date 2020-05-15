@@ -136,15 +136,7 @@ Word::Word(Stz* szWordNm)
 Word::~Word(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  // invoke the finalize function for embedded objects
-  if (m_eWord == WK_EMBOBJECT) {
-    Object* pEmbObject = reinterpret_cast<Object*>(m_pRoutine->ayWspArea());
-    eCN eClass = pEmbObject->eClass();
-    pFINALIZE* pFinalizeFun = gpFinalize[eClass];
-    (pFinalizeFun)(eClass, pEmbObject);
-  }
-  
+    
   delete m_pArticle;
   delete m_pWordTags;
   
@@ -175,10 +167,6 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
   _static_
   
   Word* pWord = _pWord(pObject);
-  
-  // dump only the objects
-  if (WK_EMBOBJECT == pWord->m_eWord)
-    pWord->vObjectDump(aTab);
 }
 
 /*----------------------------------------------------------------------------*/
