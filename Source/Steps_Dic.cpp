@@ -149,8 +149,6 @@ void Step::vDicNew(void)
   m_pDataStack->vPopStr(szDicNm,__func__);
   
   Dic* pDic = new Dic(szDicNm);
-#else
-  Dic* pDic = new Dic;
 #endif
   
   m_pDataStack->vPushPtr(pDic);

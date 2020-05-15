@@ -36,8 +36,6 @@ void* Table::operator new(size_t)
 {
 #ifdef WITH_OBJ_PROPER
   Table* pTable = (Table*)HeapMem::pAllocate(CN_TABLE);
-#else
-  Table* pTable = nullptr;
 #endif
   
   return pTable;

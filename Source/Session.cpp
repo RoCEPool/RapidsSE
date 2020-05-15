@@ -262,9 +262,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   pDic = _pDic(pTenants->pObject());
   m_oDicStack.vPush(pDic);
-#else
-  aCell = pTenants->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
 #endif
   
   //fprintf(stderr,"eInit D\n");
@@ -275,9 +272,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   pDic = _pDic(pTenant->pObject());
   m_oDicStack.vPush(pDic);
-  #else
-  aCell = pTenant->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   #endif
 
   //fprintf(stderr,"eInit E\n");
@@ -288,9 +282,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   pDic = _pDic(pCatalogs->pObject());
   m_oDicStack.vPush(pDic);
-  #else
-  aCell = pCatalogs->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   #endif
 
   //fprintf(stderr,"eInit F\n");
@@ -306,9 +297,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   pDic = _pDic(pCatalog->pObject());
   m_oDicStack.vPush(pDic);
-  #else
-  aCell = pCatalog->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   #endif
 
   //fprintf(stderr,"eInit G\n");
@@ -323,9 +311,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   //fprintf(stderr,"eInit I\n");
   
   m_oDicStack.vPush(pDic);
-  #else
-  aCell = pSchemas->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   #endif
 
   if ( ! pSchemaName )
@@ -341,9 +326,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   pDic = _pDic(pSchema->pObject());
   m_oDicStack.vPush(pDic);
-  #else
-  aCell = pSchema->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   #endif
 
   //fprintf(stderr,"eInit K\n");
@@ -357,9 +339,6 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
   pDic = _pDic(pTables->pObject());
   m_oDicStack.vPush(pDic);
-  #else
-  aCell = pTables->aFirstCell();
-  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   #endif
 
   //fprintf(stderr,"eInit M\n");

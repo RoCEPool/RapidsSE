@@ -436,8 +436,7 @@ void Step::vTableNew(void)
   m_pDataStack->vPopStr(sTableNm,__func__);
 
   Table* pTable = new Table(sTableNm);
-#else
-  Table* pTable = new Table;
+
 #endif
   
   m_pDataStack->vPushPtr(pTable);

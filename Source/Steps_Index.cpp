@@ -1336,8 +1336,6 @@ void Step::vIndexNew(void)
   m_pDataStack->vPopStr(sIndexNm,__func__);
 
   Index* pIndex = new Index(sIndexNm);
-#else
-  Index* pIndex = new Index;
 #endif
   
   m_pDataStack->vPushPtr(pIndex);
