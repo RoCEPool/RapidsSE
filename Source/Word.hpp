@@ -48,20 +48,14 @@ namespace SenVM
                               //   - normal words: this will be the
                               //       first cell in the routine
                               //   - future words: this will be
-                              //      the cell after the 
+                              //      the cell after the
                               //      in the defining word
                               //   - steps: this will be null
                               //   IMPORTANT:
                               //   m_aInxPtr must be immediately after
                               //     m_fpIntrinsic
 
-#ifdef __WITH_INDEP_ROUTINE
     Routine*  m_pRoutine;    // the encoded routine
-
-#else
-    Routine*  m_pRoutine;    // the encoded routine
-    Routine   m__xRoutine;
-#endif
   
     // must be last
     Footer m_xFooter;

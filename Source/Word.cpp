@@ -63,16 +63,8 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef __WITH_INDEP_ROUTINE
-
 Word::Word(Stz* szWordNm)
 : Object(CN_WORD)
-#else
-Word::Word(Stz* szWordNm)
-: Object(CN_WORD)
-, m__xRoutine(this)
-#endif
-
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
@@ -105,15 +97,7 @@ Word::Word(Stz* szWordNm)
   m_iTrace     = 0;
   m_pWordTags  = nullptr;
 
-  
-  
-#ifdef __WITH_INDEP_ROUTINE
   m_pRoutine    = new Routine(this);
-#else
-  m__xRoutine.vReset();
-  m_pRoutine    = & m__xRoutine;
-  m_pRoutine->vReset();
-#endif
   
   m_fpIntrinsic = gfpEntryStep;
   m_aInxPtr     = aFirstCell();
@@ -176,11 +160,7 @@ Word* Word::pToWord(void* aEmbeddedObject)
 {
   _static_
     
-#ifdef __WITH_INDEP_ROUTINE
   Word* pWord = Routine::pToWord((Cell*)aEmbeddedObject);
-#else
-  Word* pWord = _pMaskDownToObject<Word*>(aEmbeddedObject,C_MASK_MEDIUM_OBJECT);
-#endif
   
   return pWord;
 }

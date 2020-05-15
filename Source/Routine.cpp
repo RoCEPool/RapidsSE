@@ -47,20 +47,10 @@ Routine* Routine::pToRoutine(Cell* aInxPtr)
 {
   _static_
     
-#ifdef __WITH_INDEP_ROUTINE
-
   Routine* aRoutine = _pMaskDownToObject<Routine*>(aInxPtr,C_MASK_SMALL_OBJECT);
 
   Routine* pRoutine = _pRoutine(aRoutine);
-  
-#else
-
-  Word* pWord = pToWord(aInxPtr);
-  
-  Routine* pRoutine = pWord->pRoutine();
-
-#endif
-  
+    
   return pRoutine;
 }
 
@@ -71,19 +61,11 @@ Word* Routine::pToWord(Cell* aInxPtr)
 {
   _static_
     
-#ifdef __WITH_INDEP_ROUTINE
-  
   Routine* aRoutine = _pMaskDownToObject<Routine*>(aInxPtr,C_MASK_MEDIUM_OBJECT);
 
   Routine* pRoutine = _pRoutine(aRoutine);
 
   Word* pWord = pRoutine->m_p_ExoWord;
-
-#else
-  Word* aWord = _pMaskDownToObject<Word*>(aInxPtr,C_MASK_MEDIUM_OBJECT);
-    
-  Word* pWord = _pWord(aWord);
-#endif
   
   return pWord;
 }
