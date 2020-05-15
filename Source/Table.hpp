@@ -35,12 +35,10 @@ namespace MetaData
     void* operator new(size_t, Table* pTable);
     void  operator delete(void*);
     
-    Table(void);
     Table(Stz* szTableNm);
    ~Table(void) noexcept(false);
     
     static void   vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void   vFinalize(eCN eClass, Object* pObject);
     static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static void   vMonitorPortrait(s48K& sPortrait);
     

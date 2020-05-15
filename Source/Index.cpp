@@ -62,32 +62,6 @@ void Index::operator delete(void* aAddrIndex)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Index::Index(void)
-: Object(CN_INDEX)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Index.m_nCreates++;
-#endif
-  
-  Word* pWord  = Word::pToWord(this);
-  
-  m_pIndexDef = nullptr;
-  
-  m_iIndexNo  = -1;
-  m_sIndexNm  = pWord->szWordNm();
-  
-  m_pTable    = nullptr;
-  
-  _checkInitialised_(CN_INDEX);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Index::Index(Stz* szIndexNm)
 : Object(CN_INDEX)
 {
@@ -132,21 +106,6 @@ Index::~Index(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-}
-
-/*----------------------------------------------------------------------------*/
-/* finalize                                                                   */
-/*----------------------------------------------------------------------------*/
-void Index::vFinalize(eCN eClass, Object* pObject)
-{
-  NEVER_REACH;
-  
-  ASSERT(eClass == CN_INDEX);
-  ASSERT(pObject->eClass() == CN_INDEX);
-  
-  Index* pIndex = reinterpret_cast<Index*>(pObject);
-  
-  pIndex->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/

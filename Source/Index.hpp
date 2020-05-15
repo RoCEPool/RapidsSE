@@ -26,10 +26,8 @@ namespace MetaData
     void  operator delete(void*);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vFinalize(eCN eClass, Object* pObject);
     static void vMonitorPortrait(s48K& sPortrait);
 
-    Index(void);
     Index(Stz* szIndexNm);
    ~Index(void) noexcept(false);
   

@@ -21,12 +21,10 @@ namespace SenVM
     void* operator new(size_t, Dic* pDic);
     void  operator delete(void*);
     
-    Dic(void);
     Dic(Stz* szDicNm);
    ~Dic(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vFinalize(eCN eClass, Object* pObject);
     
     void  vAddWord(Word* pWord);
     Article* pArticle(void);

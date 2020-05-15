@@ -188,7 +188,6 @@ public:
 
   // dic
   void vDicDelete(void);
-  void vDicInit(void);
   void vDicKindGet(void);
   void vDicKindSet(void);
   void vDicLastWord(void);
@@ -411,7 +410,6 @@ public:
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexIndexTree(void);
-  void vIndexInit(void);
   void vIndexIsPrimaryKeyFetch(void);
   void vIndexIsPrimaryKeyStore(void);
   void vIndexIsUniqueFetch(void);
@@ -1413,7 +1411,6 @@ public:
   void vTableGetColumnsAsString(void);
   void vTableGetPtn(void);
   void vTableIndexCount(void);
-  void vTableInit(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnly(void);
   void vTablePtnStreamDefFetch(void);
