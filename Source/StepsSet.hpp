@@ -101,7 +101,6 @@ public:
 
   // bp
   void vBpAnalyze(void);
-  void vBpDump(void);
   void vBpEpochDump(void);
   void vBpEpochTake(void);
   void vBpReadBufferPool(void);
