@@ -7,21 +7,22 @@
 /*----------------------------------------------------------------------------*/
 /* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
-: munge_WriteCppVariable params| pSenFile pCppFile |
+: munge_WriteCppVariable params| pSenFile pCppFile i_File |
 
   "\n" pCppFile file.write
   "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    pCppFile file.write
-  pSenFile file.path@ "  // munge of %v\n" str.format pCppFile file.write
-  "\n" pCppFile file.write
+  pCppFile file.write
 
+  pSenFile file.path@ i_File "  // munge of [%v] %v\n" str.format pCppFile file.write
+
+  "\n" pCppFile file.write
   "  sFileContents =\n" pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
 /* put the variable initialise into c++ file                                  */
 /*----------------------------------------------------------------------------*/
-: munge_WriteSenText params| pSenFile pCppFile |
+: munge_WriteSenText params| pSenFile pCppFile i_File |
 
   "" locals| senLine |
 
@@ -52,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
-: munge_WriteSenConstant params| pSenFile pCppFile |
+: munge_WriteSenConstant params| pSenFile pCppFile i_File |
 
   pSenFile file.path@ "  \" CONSTANT %v \"_Stz\n" str.format pCppFile file.write
 ;
@@ -60,15 +61,72 @@
 /*----------------------------------------------------------------------------*/
 /* put a ; terminator for statement into c++ file                             */
 /*----------------------------------------------------------------------------*/
-: munge_WriteCppTerm ( pCppFile pSenFile -- )
-
-  params| pSenFile pCppFile |
+: munge_WriteCppTerm params| pSenFile pCppFile i_File |
 
   "  ;\n" pCppFile file.write
 
   "\n" pCppFile file.write
 
   "  vCompileMungedColon(sFileContents);\n" pCppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* produce a c++ statement for the sen file                                   */
+/*----------------------------------------------------------------------------*/
+: munge_ProduceCppStatement params| pSenFile pCppFile i_File |
+
+  i_File pCppFile pSenFile munge_WriteCppVariable
+
+  i_File pCppFile pSenFile munge_WriteSenText
+
+  i_File pCppFile pSenFile munge_WriteSenConstant
+
+  i_File pCppFile pSenFile munge_WriteCppTerm
+;
+
+/*----------------------------------------------------------------------------*/
+/* munge one .sen file                                                        */
+/*----------------------------------------------------------------------------*/
+: munge_ProcessSenFile params| sSenFileNm pCppFile i_File |
+
+  sSenFileNm i_File "[%v] %v" .printf
+
+  file::new locals| pSenFile |
+
+  sSenFileNm OPEN_READ pSenFile file.open assert
+
+  i_File pCppFile pSenFile munge_ProduceCppStatement
+
+  pSenFile file.close
+  pSenFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* munge all .sen files in the sen dir                                        */
+/*----------------------------------------------------------------------------*/
+: munge_ProcessDir params| pSenDir pCppFile |
+
+ 0 locals| i_File |
+
+  // read thru directory
+  begin pSenDir dir.read while
+
+    // ignore entries which aren't regular files
+    pSenDir dir.entryType DE_REG == not continue
+
+    // ignore entries which aren't .sen files
+    4 pSenDir dir.entryName str.right ".sen" str.equal not continue
+
+    // convert to C++
+    i_File pCppFile pSenDir dir.entryName munge_ProcessSenFile
+
+    i_File 1 + to i_File
+  repeat
+
+  i_File
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -111,62 +169,6 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* produce a c++ statement for the sen file                                   */
-/*----------------------------------------------------------------------------*/
-: munge_ProduceCppStatement params| pSenFile pCppFile |
-
-  pCppFile pSenFile munge_WriteCppVariable
-
-  pCppFile pSenFile munge_WriteSenText
-
-  pCppFile pSenFile munge_WriteSenConstant
-
-  pCppFile pSenFile munge_WriteCppTerm
-;
-
-/*----------------------------------------------------------------------------*/
-/* munge one .sen file                                                        */
-/*----------------------------------------------------------------------------*/
-: munge_ProcessSenFile params| sSenFileNm pCppFile |
-
-  sSenFileNm .
-
-  file::new locals| pSenFile |
-
-  sSenFileNm OPEN_READ pSenFile file.open assert
-
-  pCppFile pSenFile munge_ProduceCppStatement
-
-  pSenFile file.close
-  pSenFile file.delete
-;
-
-/*----------------------------------------------------------------------------*/
-/* munge all .sen files in the sen dir                                        */
-/*----------------------------------------------------------------------------*/
-: munge_ProcessDir params| pSenDir pCppFile |
-
- 0 locals| nSenProcessed |
-
-  // read thru directory
-  begin pSenDir dir.read while
-
-    // ignore entries which aren't regular files
-    pSenDir dir.entryType DE_REG == not continue
-
-    // ignore entries which aren't .sen files
-    4 pSenDir dir.entryName str.right ".sen" str.equal not continue
-
-    // convert to C++
-    pCppFile pSenDir dir.entryName munge_ProcessSenFile
-
-    nSenProcessed 1 + to nSenProcessed
-  repeat
-
-  nSenProcessed
-;
 
 /*----------------------------------------------------------------------------*/
 /* munge all .sen files                                                       */
