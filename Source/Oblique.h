@@ -13,7 +13,7 @@ namespace Oblique
 
 //------------------------------------------------------------------------------
 
-#include "SizesDumps.hpp"
+#include "SizesHeaps.hpp"
 
 #include "Exemplar.hpp"
 #include "My.hpp"
