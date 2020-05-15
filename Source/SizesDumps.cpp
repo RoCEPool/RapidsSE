@@ -675,51 +675,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_ENUMS
 };
 
-/*----------------------------------------------------------------------------*/
-/* dummy dump                                                                 */
-/*----------------------------------------------------------------------------*/
-void Dump::vDummy(eCN eClass, Object* pObject, Stz* aTab)
-{
-  ASSERT(eClass != CN_NONE);
-  ASSERT(pObject != nullptr);
-  ASSERT(aTab != nullptr);
-  // do nothing
-  
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump enums                                                                 */
-/*----------------------------------------------------------------------------*/
-void Dump::vEnums(eCN eClass, Object* pObject, Stz* aTab)
-{
-  ASSERT(eClass == CN_ENUMS);
-  ASSERT(pObject != nullptr);
-  ASSERT(aTab != nullptr);
-  // do nothing
-}
-
-/*----------------------------------------------------------------------------*/
-/* invalid dump                                                               */
-/*----------------------------------------------------------------------------*/
-void Dump::vInvalid(eCN eClass, Object* pObject, Stz* aTab)
-{
-  ASSERT(eClass != CN_ENUMS);
-  ASSERT(pObject != nullptr);
-  ASSERT(aTab != nullptr);
-  vTrace("%sInvalid Class %s in Buffer Pool\n"_Stz, aTab, aCN[eClass]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump not defined                                                           */
-/*----------------------------------------------------------------------------*/
-void Dump::vUndefined(eCN eClass, Object* pObject, Stz* aTab)
-{
-  ASSERT(eClass != CN_NONE);
-  ASSERT(pObject != nullptr);
-  ASSERT(aTab != nullptr);
-  vTrace("%s%s: **dump function not defined for class**\n"_Stz, aTab, aCN[eClass]);
-}
 
 /*============================================================================*/
 /* end                                                                        */
