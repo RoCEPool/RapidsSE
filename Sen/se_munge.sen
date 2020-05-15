@@ -196,14 +196,17 @@
 
   "munging" .
 
+  dir::getCurrent "Original working directory: %v" str.format .
+
   // create a directory accessor
-  file::new dir::new "" locals| origDir pSenDir pCppFile |
+  dir::new  locals| pSenDir |
+  file::new locals| pCppFile |
 
   // save original dir and change to ../Sen
-  dir::getCurrent to OrigDir
+  dir::getCurrent locals| sOrigDir |
 
   "../Sen" dir::changeCurrent
-  dir::getCurrent "Current working directory now: %v" str.format .
+  dir::getCurrent "Working directory now: %v" str.format .
 
   // open sen directory
   "." pSenDir dir.open assert
@@ -227,8 +230,8 @@
   pSenDir dir.delete
 
   // change back to original dir
-  origDir dir::changeCurrent
-  dir::getCurrent "Current working directory now: %v" str.format .
+  sOrigDir dir::changeCurrent
+  dir::getCurrent "Working directory back to: %v" str.format .
 
   "munged" .
 ;
