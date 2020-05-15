@@ -60,61 +60,6 @@ void Table::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Table::Table(void)
-: Object(CN_TABLE)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Table.m_nCreates++;
-#endif
-  
-  Word* pWord = Word::pToWord(this);
-  
-  m_pTableDef  = nullptr;
-  m_sTableNm = pWord->szWordNm();
-  m_pIdxVec    = new IdxVec;
-  m_ixIndexNo.vCheckInit();
-  m_pBucketMap = new BucketMap(AM::nPartitions());
-  m_bIsLoading = false;
-  m_pTablePtnVec = new TablePtnVec;
-  m_pPtnStreamDef = new StreamDef;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the table partitions
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
-    
-    TablePtn* pPartition = new TablePtn(this);
-    m_pTablePtnVec->vAdd(pPartition);
-    
-    i8 iPartition = TablePtn::iSlotToPartition(i_Slot);
-    m_pTablePtnVec->pGet(i_Slot)->vPartitionId(iPartition);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the subLoaders
-  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
-    m_ixSubLoaders[i_Slot] = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  _checkInitialised_(CN_TABLE);
-  
-  ++ gixTable;
-  
-  Job* pJob = AM::pThisTLSJob();
-  
-  AM::vLogDdl(SL_INF,pJob,DA_DDL_CREATE_TABLE,
-              "%s |gixTable=%lld|"_Stz, //!format-LogOpr
-              m_sTableNm.szStz(),* gixTable);
-
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Table::Table(Stz* szTableNm)
 : Object(CN_TABLE)
 {
@@ -190,15 +135,6 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("name %s type %s\n"_Stz,
          pTable->m_sTableNm.azChar(),
          aTT[pTable->m_pTableDef->m_eTableType]->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* finalize                                                                   */
-/*----------------------------------------------------------------------------*/
-void Table::vFinalize(eCN eClass, Object* pObject)
-{
-  NEVER_REACH;
-
 }
 
 /*----------------------------------------------------------------------------*/

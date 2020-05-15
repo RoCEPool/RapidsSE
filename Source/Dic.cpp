@@ -49,27 +49,6 @@ void Dic::operator delete(void* pDicAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dic::Dic(void)
-: Object(CN_DIC)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-
-  m_pArticle = new Article(C_NO_NAME,this,nullptr);
-  
-  m_sDicNm   = C_NO_NAME;
-  m_pDicKind = nullptr;
-  
-  // this is because of GlobalDictionary (ugh)
-  //vInit();
-  
-  _checkInitialised_(CN_DIC);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Dic::Dic(Stz* szDicNm)
 : Object(CN_DIC)
 {
@@ -197,23 +176,6 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
   m_pArticle->vDropRead();
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* finalize                                                                   */
-/*----------------------------------------------------------------------------*/
-void Dic::vFinalize(eCN eClass, Object* pObject)
-{
-  NEVER_REACH;
-  
-  ASSERT(eClass == CN_DIC);
-  ASSERT(pObject->eClass() == CN_DIC);
-  
-  Dic* pDic = reinterpret_cast<Dic*>(pObject);
-  
-  //vTrace("%s %s finalize\n"_Stz, aCN[eClass], pDic->m_sDicNm.s());
-  
-  delete pDic->m_pArticle;
 }
 
 /*----------------------------------------------------------------------------*/

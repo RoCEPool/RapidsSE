@@ -13,7 +13,6 @@ void Step::vAddSteps_Dic(void)
   vAddStep("dic::root"_Stz,       &Step::vDicRoot);
   
   vAddStep("dic.delete"_Stz,      &Step::vDicDelete);
-  vAddStep("dic.init"_Stz,        &Step::vDicInit);
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
   vAddStep("dic.lastWord"_Stz,    &Step::vDicLastWord);
@@ -33,23 +32,6 @@ void Step::vDicDelete(void)
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
   delete pDic;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.init -- initialise a dictionary                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vDicInit(void)
-{
-  ENTRY();
-  
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
-
-  new (pDic) Dic;
-  
-  // this is because of GlobalDictionary (ugh)
-  pDic->vInit();
   
   EXIT();
 }

@@ -24,7 +24,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("index.IndexTree"_Stz,       &Step::vIndexIndexTree);
-  vAddStep("index.init"_Stz,            &Step::vIndexInit);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -385,20 +384,6 @@ void Step::vIndexIndexTree(void)
   
   m_pDataStack->vPushPtr(pIndexTree);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.init -- initialize the index                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexInit(void)
-{
-  ENTRY();
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  new(pIndex) Index;
-  
   EXIT();
 }
 

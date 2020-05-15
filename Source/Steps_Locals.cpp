@@ -82,8 +82,7 @@ void Step::vLocalsBar(void)
     if ( ! nLcl ) {
       
       // create a locals dictionary
-      pDic = new Dic;
-      pDic->vDicNm("<localsDic>"_Stz);
+      pDic = new Dic("<localsDic>"_Stz);
       m_oDicStack.vPush(pDic);
       
       // enocde locals frame push

@@ -24,7 +24,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);  
   vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
-  vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table[].isDefinitionOnly"_Stz, &Step::vTableIsDefinitionOnly);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
@@ -325,20 +324,6 @@ void Step::vTableIndexCount(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pTable->pIdxVec()->nItems());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.init -- init of table on data stack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableInit(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  new(pTable) Table;
   
   EXIT();
 }

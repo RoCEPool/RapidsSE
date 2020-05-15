@@ -63,6 +63,7 @@ void Plan::operator delete(void* pPlanAddress)
 /*----------------------------------------------------------------------------*/
 Plan::Plan(void)
 : Object(CN_PLAN)
+, m_xDic(C_NO_NAME)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
