@@ -124,7 +124,7 @@ Word::~Word(void) noexcept(false)
   delete m_pArticle;
   delete m_pWordTags;
   
-  //delete m_pRoutine;
+  delete m_pRoutine;
 }
 
 /*----------------------------------------------------------------------------*/
