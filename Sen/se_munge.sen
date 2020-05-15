@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 : munge_WriteSenText params| pSenFile pCppFile i_File |
 
-  "" locals| senLine |
+  "" locals| sSenText |
 
   "    \"\\\"\"\n"   pCppFile file.write
 
@@ -34,20 +34,20 @@
 
   begin pSenFile file.read while
 
-    str.escape str.escape to senLine
+    str.escape str.escape to sSenText
 
-    senLine ";" str.equal if
-      " ;" to senLine
+    sSenText ";" str.equal if
+      " ;" to sSenText
     then
 
     "    \""  pCppFile file.write
-    senLine   pCppFile file.write
+    sSenText  pCppFile file.write
     "\\n\""   pCppFile file.write
     "\n"      pCppFile file.write
 
   repeat
 
-  "    \"\\\"\"\n"   pCppFile file.write
+  "    \"\\\"\"\n" pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
