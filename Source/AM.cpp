@@ -14,7 +14,6 @@ extern Header*       gaSeShmRegion;
 extern Index*        gpReadApiIndex;
 extern Log*          gpLog;
 
-extern i8            gnClassSize[];
 extern SizeHeap      gxaSizeHeap[];
 
 // Arg
@@ -444,12 +443,12 @@ void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = gnClassSize[pJob_Operand->eClass()];
+  i8 nObjectSize = gxaSizeHeap[pJob_Operand->eClass()].m_nClassSize;
   bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
   
   Operand* pOperand = pJob_Operand->m_pOperand;
   
-  nObjectSize = gnClassSize[pOperand->eClass()];
+  nObjectSize = gxaSizeHeap[pOperand->eClass()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
   // drop the socket write lock
@@ -1256,9 +1255,9 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bFoundEnum = false;
-  // find number of entries in gnClassSize
+  // find number of entries in gxaSizeHeap
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
-    if (gnClassSize[i_Class] == -1) {
+    if (gxaSizeHeap[i_Class].m_nClassSize == -1) {
       bFoundEnum = true;
       break;
     }
@@ -1267,11 +1266,11 @@ void AM::vBootCheck(void)
   
   if (!bFoundEnum)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Enum for CN_ENUM not found in gnClassSize\n"_Stz);
+           "Enum for CN_ENUM not found in gxaSizeHeap\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "\n!!!ALERT!!! No of entries in gnClassSize (%lld) "
+           "\n!!!ALERT!!! No of entries in gxaSizeHeap (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
   }
@@ -1282,7 +1281,7 @@ void AM::vBootCheck(void)
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {
     
     eCN eClass = (eCN)iClass;
-    i8  iClassSize = gnClassSize[eClass];
+    i8  iClassSize = gxaSizeHeap[eClass].m_nClassSize;
     
     switch (gxaSizeHeap[eClass].m_eWhichHeap) {
         
