@@ -113,6 +113,13 @@
 
   sFileNm "  \" CONSTANT %v \"_Stz\n" str.format
   pCppFile file.write
+
+  "  \" \"_Stz\n" 
+  pCppFile file.write
+
+  i_File sFileNm i_File "  \" %v CONSTANT %v__%v \"_Stz\n" str.format
+  pCppFile file.write
+
   "  ;\n"
   pCppFile file.write
 
