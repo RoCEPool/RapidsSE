@@ -12,7 +12,7 @@ namespace Pool
   private:
     i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)
     Lock        m_okLock;        // lock over all segments and free chain
-    i8          m_iAllocCount;   // number of allocated objects
+    i8          m_nAllocCount;   // number of currently allocated objects
     i8          m_iBufferCount;  // number of buffers in the heap
     HeapBuffer* m_pFirstBuffer;  // first buffer in the heap
     HeapBuffer* m_pLastBuffer;   // last buffer in the heap
@@ -33,7 +33,7 @@ namespace Pool
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void    vAddFree(FreeChunk* aFreeChunk);
-    i8      iAllocCount(void);
+    i8      nAllocCount(void);
     Object* pAllocObject(eCN eClass);
     void    vAnalyse(i8 xCounts[]);
     i8      iBufferCount(void);

@@ -44,7 +44,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iObjectSize  = iObjectSize;
-  m_iAllocCount  = 0;
+  m_nAllocCount  = 0;
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
@@ -149,11 +149,11 @@ void Heap::vAddFree(FreeChunk* aFreeChunk)
 /*----------------------------------------------------------------------------*/
 /* get number of allocated objects                                            */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iAllocCount(void)
+i8 Heap::nAllocCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_iAllocCount;
+  return m_nAllocCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   Object* pObject = reinterpret_cast<Object*>(pPopFree());
   
-  m_iAllocCount++;
+  m_nAllocCount++;
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vScribble(pObject,m_iObjectSize,eAllocClass);
@@ -298,7 +298,7 @@ void Heap::vFreeObject(Object* pObject)
   
   vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
   
-  m_iAllocCount--;
+  m_nAllocCount--;
 
   m_okLock.vDropWrite();
   
@@ -323,7 +323,7 @@ void Heap::vGrabLock()
 void Heap::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Heap: size %lld buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_iObjectSize,m_iBufferCount,m_iAllocCount,m_iFreeCount);
+                    m_iObjectSize,m_iBufferCount,m_nAllocCount,m_iFreeCount);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +367,7 @@ void Heap::vReport(String* pReportString)
     sMagSize.azChar(),
                                   
     iBufferCount(),
-    iAllocCount(),
+    nAllocCount(),
     iFreeCount(),
     sMagSum.szStz()
     );
@@ -380,7 +380,7 @@ i8 Heap::iSum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  i8 iSum =   iAllocCount() * iObjectSize()
+  i8 iSum =   nAllocCount() * iObjectSize()
             +
               iFreeCount()  * iObjectSize();
   
