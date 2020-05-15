@@ -129,14 +129,6 @@ void Step::vFlowExecute(void)
       m_aInxPtr = pWord->aEntryCell();
       break;
           
-    case WK_EMBOBJECT:
-      m_pReturnStack->vPushFip(m_aInxPtr);
-      m_aInxPtr = pWord->aEntryCell();
-      
-      pObject = (Object*)pWord->aFirstCell();
-      m_pDataStack->vPushPtr(pObject);
-      break;
-          
     case WK_INTRINSIC:
       fpStep = pWord->fpEntryStep();
       ((Step*)this->*fpStep)();

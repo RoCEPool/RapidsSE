@@ -33,7 +33,7 @@ void Step::vEnterObject(void)
                              )
                             );
 
-  ASSERT(WK_EMBOBJECT == pWord->eWord());
+  //ASSERT(WK_EMBOBJECT == pWord->eWord());
   
   Object* pObject = (Object*)pWord->aFirstCell();
   m_pDataStack->vPushPtr(pObject);

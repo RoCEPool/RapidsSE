@@ -584,7 +584,6 @@ void Constants::vAddConstantsCpp(void)
   // WK_ : word type
   /*  0 */ vAddConstant("WK_NONE"_Stz,       WK_NONE);
   /*  0 */ vAddConstant("WK_CPPOBJECT"_Stz,  WK_CPPOBJECT);
-  /*  0 */ vAddConstant("WK_EMBOBJECT"_Stz,  WK_EMBOBJECT);
   /*  0 */ vAddConstant("WK_INTRINSIC"_Stz,  WK_INTRINSIC);
   /*  0 */ vAddConstant("WK_LOCAL"_Stz,      WK_LOCAL);
   /*  0 */ vAddConstant("WK_ROUTINE"_Stz,    WK_ROUTINE);
