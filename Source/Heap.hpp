@@ -10,7 +10,7 @@ namespace Pool
   friend class HeapMem;
   
   private:
-    i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)
+    i8          m_nObjectSize;   // size of each object (e.g. 1KB or 16KB)
     Lock        m_okLock;        // lock over all heap buffers and free chain
     i8          m_nAllocCount;   // number of currently allocated objects
     i8          m_iBufferCount;  // number of buffers in the heap
@@ -45,7 +45,7 @@ namespace Pool
     void    vGrabLock(void);
     void    vMonitorPortrait(s48K& sPortrait);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
-    i8      iObjectSize(void);
+    i8      nObjectSize(void);
     void    vReport(String* pReportString);
     i8      iSum(void);
         

@@ -58,7 +58,7 @@ void PoolHelper::vHeapDump(Heap* pHeap)
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
     for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
          aChunk;
-         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->iObjectSize())) {
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
       
       eCN eClass = aChunk->eClass();
       
@@ -92,7 +92,7 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
   vTrace("\n"_Stz);
   vTrace("%sWords in %s Heap:\n"_Stz,
          Stz::szTab(2),
-         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Stz : "Medium"_Stz);
+         pHeap->nObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Stz : "Medium"_Stz);
   
   pHeap->vGrabLock();
   
@@ -101,7 +101,7 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
     for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
          aChunk;
-         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->iObjectSize())) {
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
       
       eCN eClass = aChunk->eClass();
       
