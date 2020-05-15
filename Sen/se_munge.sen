@@ -151,9 +151,9 @@
 /*----------------------------------------------------------------------------*/
 /* munge one .sen file                                                        */
 /*----------------------------------------------------------------------------*/
-: munge_ProcessSenFile ( pCppFile sSenFileNm -- )
+: munge_ProcessSenFile params| sSenFileNm pCppFile |
 
-  params| sSenFileNm pCppFile |
+  sSenFileNm .
 
   file::new locals| pSenFile |
 
@@ -169,9 +169,9 @@
 /*----------------------------------------------------------------------------*/
 /* munge all .sen files in the sen dir                                        */
 /*----------------------------------------------------------------------------*/
-: munge_ProcessDir ( pCppFile pSenDir -- )
+: munge_ProcessDir params| pSenDir pCppFile |
 
-  params| pSenDir pCppFile |
+ 0 locals| nSenProcessed |
 
   // read thru directory
   begin pSenDir dir.read while
@@ -181,12 +181,14 @@
 
     // ignore entries which aren't .sen files
     4 pSenDir dir.entryName str.right ".sen" str.equal not continue
-    pSenDir dir.entryName .
 
     // convert to C++
     pCppFile pSenDir dir.entryName munge_ProcessSenFile
 
+    nSenProcessed 1 + to nSenProcessed
   repeat
+
+  nSenProcessed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -217,7 +219,7 @@
   pCppFile munge_WriteCppHeader
 
   // munge the command dir
-  pCppFile pSenDir munge_ProcessDir
+  pCppFile pSenDir munge_ProcessDir locals| nSenProcessed |
 
   pCppFile munge_WriteCppFooter
 
@@ -233,7 +235,7 @@
   sOrigDir dir::changeCurrent
   dir::getCurrent "Working directory back to: %v" str.format .
 
-  "munged" .
+  nSenProcessed "munged %v files" .printf
 ;
 
 /*============================================================================*/
