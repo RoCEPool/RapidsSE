@@ -42,13 +42,13 @@ namespace SenVM
                               //    (and *not* the value of the member)
                               //    gets encoded into calling words routine
                               //  this allows the address of m_aInxPtr
-                              //  to be computed, so as to support does>
+                              //  to be computed
       
     Cell*     m_aInxPtr;      // the cell to start executing from for
                               //   - normal words: this will be the
                               //       first cell in the routine
                               //   - future words: this will be
-                              //      the cell after the does>
+                              //      the cell after the 
                               //      in the defining word
                               //   - steps: this will be null
                               //   IMPORTANT:

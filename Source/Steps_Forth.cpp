@@ -12,7 +12,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep("("_Stz,                 &Step::vComment,          true );
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
-  vAddStep("does_rt"_Stz,           &Step::vDoes_RT);
   vAddStep("execute"_Stz,           &Step::vFlowExecute);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("find:"_Stz,             &Step::vFind,             true);
@@ -91,21 +90,6 @@ void Step::vCreateFromInRoot(void)
   
   m_pDataStack->vPushPtr(pNewWord);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* does_rt -- runtime for does>                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vDoes_RT(void)
-{
-  ENTRY();
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(m_aInxPtr + 1);
-  
   EXIT();
 }
 

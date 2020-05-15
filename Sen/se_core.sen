@@ -31,24 +31,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* start of code for some future word                                         */
-/*----------------------------------------------------------------------------*/
-: DOES> immediate
- 
-  // we are in the compilation of a defining word
-
-  // encode call in current defining word so when this current word is
-  //   executed its sets the routine entry point for some future word
-  FIND: does_rt ENCODE::CALL
-
-  // encode an exit in current defining word
-  FIND: exit_rt ENCODE::CALL
-
-  // what gets coded in the current defining after does>
-  //   is the code for some future word, embedded in this current word here
-;
-
-/*----------------------------------------------------------------------------*/
 /* create a new word using string on stack as name                            */
 /*----------------------------------------------------------------------------*/
 : :CREATE ( sWordNM -- )
