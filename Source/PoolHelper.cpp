@@ -17,11 +17,11 @@ void PoolHelper::vBufferDump(PoolBuffer* pBuffer)
   if (CN_FREEBUFFER == eClass)
     return;
   
-  pDUMPFUN* pDumpFun = gpDump[eClass];
+  //pDUMPFUN* pDumpFun = gpDump[eClass];
   
   vTrace("%s%p %-12s: "_Stz,Stz::szTab(2),pBuffer,aCN[eClass]);
 
-  (pDumpFun)(pBuffer->eClass(), pBuffer, Stz::szTab(1));
+  //(pDumpFun)(pBuffer->eClass(), pBuffer, Stz::szTab(1));
   
 //  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
 //      pBuffer->eClass() == SN_SMALLTRANSIENT ) {
@@ -71,11 +71,11 @@ void PoolHelper::vHeapDump(Heap* pHeap)
         continue;
       }
       
-      pDUMPFUN* pDumpFun = gpDump[eClass];
+      //pDUMPFUN* pDumpFun = gpDump[eClass];
       
       vTrace("%s%p %-12s: "_Stz,Stz::szTab(2),pHeap,aCN[eClass]);
 
-      (pDumpFun)(eClass, (Object*)aChunk, Stz::szTab(2));
+      //(pDumpFun)(eClass, (Object*)aChunk, Stz::szTab(2));
     }
   }
   
@@ -120,11 +120,11 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
       if (pWord->iEpoch() != iEpoch)
         continue;
       
-      pDUMPFUN* pDumpFun = gpDump[eClass];
+      //pDUMPFUN* pDumpFun = gpDump[eClass];
       
       vTrace("%s%p %-12s: "_Stz,Stz::szTab(2),pHeap,aCN[eClass]);
       
-      (pDumpFun)(eClass, (Object*)aChunk, Stz::szTab(2));
+      //(pDumpFun)(eClass, (Object*)aChunk, Stz::szTab(2));
     }
   }
   
