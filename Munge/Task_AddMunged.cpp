@@ -12,7 +12,7 @@ void Task::vAddMunged(Forth* pForth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [0] OP_stats.sen
 
-  sFileContents =
+  gszaMungeText[0] =
     "\""
     "\\\"munged OP_stats.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -133,12 +133,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_stats.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[0]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [1] se_folder.sen
 
-  sFileContents =
+  gszaMungeText[1] =
     "\""
     "\\\"munged se_folder.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -381,12 +381,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_folder.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[1]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [2] test_jData.sen
 
-  sFileContents =
+  gszaMungeText[2] =
     "\""
     "\\\"munged test_jData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -517,12 +517,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_jData.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[2]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [3] se_object.sen
 
-  sFileContents =
+  gszaMungeText[3] =
     "\""
     "\\\"munged se_object.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -555,12 +555,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_object.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[3]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [4] OP_print.sen
 
-  sFileContents =
+  gszaMungeText[4] =
     "\""
     "\\\"munged OP_print.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -615,12 +615,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_print.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[4]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [5] job_seedDefaults.sen
 
-  sFileContents =
+  gszaMungeText[5] =
     "\""
     "\\\"munged job_seedDefaults.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -842,12 +842,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_seedDefaults.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[5]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [6] tpl_localLiteOp.sen
 
-  sFileContents =
+  gszaMungeText[6] =
     "\""
     "\\\"munged tpl_localLiteOp.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -959,12 +959,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT tpl_localLiteOp.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[6]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [7] test_encodingData.sen
 
-  sFileContents =
+  gszaMungeText[7] =
     "\""
     "\\\"munged test_encodingData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1333,12 +1333,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_encodingData.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[7]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [8] cmd_info.sen
 
-  sFileContents =
+  gszaMungeText[8] =
     "\""
     "\\\"munged cmd_info.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1491,12 +1491,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT cmd_info.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[8]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [9] test_sleep.sen
 
-  sFileContents =
+  gszaMungeText[9] =
     "\""
     "\\\"munged test_sleep.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1519,12 +1519,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_sleep.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[9]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [10] db_index.sen
 
-  sFileContents =
+  gszaMungeText[10] =
     "\""
     "\\\"munged db_index.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1823,12 +1823,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_index.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[10]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [11] OP_statWrite.sen
 
-  sFileContents =
+  gszaMungeText[11] =
     "\""
     "\\\"munged OP_statWrite.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1927,12 +1927,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_statWrite.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[11]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [12] se_socket.sen
 
-  sFileContents =
+  gszaMungeText[12] =
     "\""
     "\\\"munged se_socket.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1972,12 +1972,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_socket.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[12]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [13] job_CreateIndex.sen
 
-  sFileContents =
+  gszaMungeText[13] =
     "\""
     "\\\"munged job_CreateIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2190,12 +2190,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[13]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [14] OP_createSchema.sen
 
-  sFileContents =
+  gszaMungeText[14] =
     "\""
     "\\\"munged OP_createSchema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2294,12 +2294,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_createSchema.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[14]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [15] OP_python.sen
 
-  sFileContents =
+  gszaMungeText[15] =
     "\""
     "\\\"munged OP_python.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2370,12 +2370,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_python.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[15]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [16] OP_dropTenant.sen
 
-  sFileContents =
+  gszaMungeText[16] =
     "\""
     "\\\"munged OP_dropTenant.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2455,12 +2455,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dropTenant.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[16]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [17] se_memoryStats.sen
 
-  sFileContents =
+  gszaMungeText[17] =
     "\""
     "\\\"munged se_memoryStats.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2480,12 +2480,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_memoryStats.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[17]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [18] OP_listColumns.sen
 
-  sFileContents =
+  gszaMungeText[18] =
     "\""
     "\\\"munged OP_listColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2561,12 +2561,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listColumns.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[18]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [19] OP_chunk.sen
 
-  sFileContents =
+  gszaMungeText[19] =
     "\""
     "\\\"munged OP_chunk.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2696,12 +2696,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_chunk.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[19]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [20] OP_sizeIndex.sen
 
-  sFileContents =
+  gszaMungeText[20] =
     "\""
     "\\\"munged OP_sizeIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2764,12 +2764,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_sizeIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[20]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [21] OP_fetch.sen
 
-  sFileContents =
+  gszaMungeText[21] =
     "\""
     "\\\"munged OP_fetch.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3089,12 +3089,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_fetch.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[21]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [22] se_stepTests.sen
 
-  sFileContents =
+  gszaMungeText[22] =
     "\""
     "\\\"munged se_stepTests.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3137,12 +3137,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_stepTests.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[22]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [23] se_experiments.sen
 
-  sFileContents =
+  gszaMungeText[23] =
     "\""
     "\\\"munged se_experiments.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3197,12 +3197,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_experiments.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[23]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [24] OP_ping.sen
 
-  sFileContents =
+  gszaMungeText[24] =
     "\""
     "\\\"munged OP_ping.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3262,12 +3262,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_ping.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[24]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [25] OP_xmit.sen
 
-  sFileContents =
+  gszaMungeText[25] =
     "\""
     "\\\"munged OP_xmit.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3311,12 +3311,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_xmit.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[25]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [26] job_Supervisor.sen
 
-  sFileContents =
+  gszaMungeText[26] =
     "\""
     "\\\"munged job_Supervisor.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3382,12 +3382,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Supervisor.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[26]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [27] OP_tableSizes.sen
 
-  sFileContents =
+  gszaMungeText[27] =
     "\""
     "\\\"munged OP_tableSizes.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3485,12 +3485,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_tableSizes.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[27]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [28] se_start.sen
 
-  sFileContents =
+  gszaMungeText[28] =
     "\""
     "\\\"munged se_start.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3537,12 +3537,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_start.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[28]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [29] job_Docol.sen
 
-  sFileContents =
+  gszaMungeText[29] =
     "\""
     "\\\"munged job_Docol.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3601,12 +3601,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Docol.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[29]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [30] job_BootCluster.sen
 
-  sFileContents =
+  gszaMungeText[30] =
     "\""
     "\\\"munged job_BootCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3774,12 +3774,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_BootCluster.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[30]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [31] job_Connector.sen
 
-  sFileContents =
+  gszaMungeText[31] =
     "\""
     "\\\"munged job_Connector.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3952,12 +3952,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Connector.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[31]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [32] OP_listPartitionColumns.sen
 
-  sFileContents =
+  gszaMungeText[32] =
     "\""
     "\\\"munged OP_listPartitionColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4034,12 +4034,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listPartitionColumns.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[32]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [33] OP_insert.sen
 
-  sFileContents =
+  gszaMungeText[33] =
     "\""
     "\\\"munged OP_insert.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4196,12 +4196,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_insert.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[33]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [34] BM_genCrw.sen
 
-  sFileContents =
+  gszaMungeText[34] =
     "\""
     "\\\"munged BM_genCrw.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4286,12 +4286,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_genCrw.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[34]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [35] OP_gridSanity.sen
 
-  sFileContents =
+  gszaMungeText[35] =
     "\""
     "\\\"munged OP_gridSanity.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4395,12 +4395,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_gridSanity.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[35]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [36] OP_toDemon.sen
 
-  sFileContents =
+  gszaMungeText[36] =
     "\""
     "\\\"munged OP_toDemon.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4458,12 +4458,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toDemon.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[36]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [37] OP_listTenants.sen
 
-  sFileContents =
+  gszaMungeText[37] =
     "\""
     "\\\"munged OP_listTenants.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4543,12 +4543,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listTenants.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[37]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [38] se_munge.sen
 
-  sFileContents =
+  gszaMungeText[38] =
     "\""
     "\\\"munged se_munge.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4560,19 +4560,16 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* put the variable for the sen file into c++ file                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteCppVariable params| pSenFile pCppFile i_File |\n"
+    ": munge_WriteDivider params| pSenFile pCppFile i_File |\n"
+    "\n"
+    "  pSenFile file.path@ locals| sFileNm |\n"
     "\n"
     "  \\\"\\\\n\\\"\n"
     "  pCppFile file.write\n"
     "  \\\"  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\\\n\\\"\n"
     "  pCppFile file.write\n"
     "\n"
-    "  pSenFile file.path@ i_File \\\"  // munge of [%v] %v\\\\n\\\" str.format\n"
-    "  pCppFile file.write\n"
-    "\n"
-    "  \\\"\\\\n\\\"\n"
-    "  pCppFile file.write\n"
-    "  \\\"  sFileContents =\\\\n\\\"\n"
+    "  sFileNm i_File \\\"  // munge of [%v] %v\\\\n\\\" str.format\n"
     "  pCppFile file.write\n"
     " ;\n"
     "\n"
@@ -4582,6 +4579,13 @@ void Task::vAddMunged(Forth* pForth)
     ": munge_WriteSenText params| pSenFile pCppFile i_File |\n"
     "\n"
     "  pSenFile file.path@ locals| sFileNm |\n"
+    "\n"
+    "  \\\"\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "  \\\"  sFileContents =\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
     "\n"
@@ -4607,30 +4611,69 @@ void Task::vAddMunged(Forth* pForth)
     "  repeat\n"
     "\n"
     "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
-    " ;\n"
     "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* put the variable for the sen file into c++ file                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteSenConstant params| pSenFile pCppFile i_File |\n"
-    "\n"
-    "  pSenFile file.path@ locals| sFileNm |\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  sFileNm \\\"  \\\\\\\" CONSTANT %v \\\\\\\"_Stz\\\\n\\\" str.format pCppFile file.write\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* put a ; terminator for statement into c++ file                             */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteCppTerm params| pSenFile pCppFile i_File |\n"
-    "\n"
     "  \\\"  ;\\\\n\\\"\n"
     "  pCppFile file.write\n"
     "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
     "  \\\"\\\\n\\\"\n"
     "  pCppFile file.write\n"
-    "\n"
     "  \\\"  vCompileMungedColon(sFileContents);\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    " ;\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": munge_WriteSenText_v2 params| pSenFile pCppFile i_File |\n"
+    "\n"
+    "  pSenFile file.path@ locals| sFileNm |\n"
+    "\n"
+    "  \\\"\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "  i_File \\\"  gszaMungeText[%v] =\\\\n\\\" str.format\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "\n"
+    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"munged \\\" pCppFile file.write\n"
+    "  sFileNm pCppFile file.write\n"
+    "\n"
+    "  \\\" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" .verbose \\\\\\\\n\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "\n"
+    "  \\\"\\\" locals| sSenLine |\n"
+    "  begin pSenFile file.read while\n"
+    "\n"
+    "    str.escape str.escape to sSenLine\n"
+    "\n"
+    "    sSenLine \\\";\\\" str.equal if\n"
+    "      \\\" ;\\\" to sSenLine\n"
+    "    then\n"
+    "\n"
+    "    \\\"    \\\\\\\"\\\"  pCppFile file.write\n"
+    "    sSenLine  pCppFile file.write\n"
+    "    \\\"\\\\\\\\n\\\\\\\"\\\"   pCppFile file.write\n"
+    "    \\\"\\\\n\\\"      pCppFile file.write\n"
+    "\n"
+    "  repeat\n"
+    "\n"
+    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  sFileNm \\\"  \\\\\\\" CONSTANT %v \\\\\\\"_Stz\\\\n\\\" str.format\n"
+    "  pCppFile file.write\n"
+    "  \\\"  ;\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  \\\"\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "  i_File \\\"  vCompileMungedColon(gszaMungeText[%v]);\\\\n\\\" str.format\n"
     "  pCppFile file.write\n"
     " ;\n"
     "\n"
@@ -4642,13 +4685,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": munge_ProduceCppStatement params| pSenFile pCppFile i_File |\n"
     "\n"
-    "  i_File pCppFile pSenFile munge_WriteCppVariable\n"
+    "  i_File pCppFile pSenFile munge_WriteDivider\n"
     "\n"
-    "  i_File pCppFile pSenFile munge_WriteSenText\n"
-    "\n"
-    "  i_File pCppFile pSenFile munge_WriteSenConstant\n"
-    "\n"
-    "  i_File pCppFile pSenFile munge_WriteCppTerm\n"
+    "  i_File pCppFile pSenFile munge_WriteSenText_v2\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -4797,12 +4836,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_munge.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[38]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [39] test_unit.sen
 
-  sFileContents =
+  gszaMungeText[39] =
     "\""
     "\\\"munged test_unit.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4837,12 +4876,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_unit.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[39]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [40] OP_bufferGen.sen
 
-  sFileContents =
+  gszaMungeText[40] =
     "\""
     "\\\"munged OP_bufferGen.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4908,12 +4947,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_bufferGen.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[40]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [41] job__Cancel.sen
 
-  sFileContents =
+  gszaMungeText[41] =
     "\""
     "\\\"munged job__Cancel.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5010,12 +5049,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Cancel.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[41]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [42] job_Service.sen
 
-  sFileContents =
+  gszaMungeText[42] =
     "\""
     "\\\"munged job_Service.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5123,12 +5162,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Service.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[42]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [43] OP_verifyTable.sen
 
-  sFileContents =
+  gszaMungeText[43] =
     "\""
     "\\\"munged OP_verifyTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5191,12 +5230,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_verifyTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[43]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [44] OP_listCatalogs.sen
 
-  sFileContents =
+  gszaMungeText[44] =
     "\""
     "\\\"munged OP_listCatalogs.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5275,12 +5314,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listCatalogs.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[44]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [45] OP_toCrw.sen
 
-  sFileContents =
+  gszaMungeText[45] =
     "\""
     "\\\"munged OP_toCrw.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5408,12 +5447,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toCrw.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[45]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [46] OP_listIndexColumns.sen
 
-  sFileContents =
+  gszaMungeText[46] =
     "\""
     "\\\"munged OP_listIndexColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5489,12 +5528,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listIndexColumns.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[46]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [47] test_iData.sen
 
-  sFileContents =
+  gszaMungeText[47] =
     "\""
     "\\\"munged test_iData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5556,12 +5595,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_iData.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[47]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [48] job_Pipeline.sen
 
-  sFileContents =
+  gszaMungeText[48] =
     "\""
     "\\\"munged job_Pipeline.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5687,12 +5726,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Pipeline.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[48]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [49] OP_dropTable.sen
 
-  sFileContents =
+  gszaMungeText[49] =
     "\""
     "\\\"munged OP_dropTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5761,12 +5800,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dropTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[49]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [50] op_tagSets.sen
 
-  sFileContents =
+  gszaMungeText[50] =
     "\""
     "\\\"munged op_tagSets.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5808,12 +5847,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT op_tagSets.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[50]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [51] OP_createTenant.sen
 
-  sFileContents =
+  gszaMungeText[51] =
     "\""
     "\\\"munged OP_createTenant.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5904,12 +5943,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_createTenant.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[51]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [52] OP_changeFolder.sen
 
-  sFileContents =
+  gszaMungeText[52] =
     "\""
     "\\\"munged OP_changeFolder.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6025,12 +6064,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_changeFolder.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[52]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [53] test_1m.sen
 
-  sFileContents =
+  gszaMungeText[53] =
     "\""
     "\\\"munged test_1m.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6052,12 +6091,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_1m.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[53]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [54] OP_periodic.sen
 
-  sFileContents =
+  gszaMungeText[54] =
     "\""
     "\\\"munged OP_periodic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6175,12 +6214,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_periodic.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[54]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [55] OP_purge.sen
 
-  sFileContents =
+  gszaMungeText[55] =
     "\""
     "\\\"munged OP_purge.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6262,12 +6301,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_purge.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[55]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [56] OP_dropSchema.sen
 
-  sFileContents =
+  gszaMungeText[56] =
     "\""
     "\\\"munged OP_dropSchema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6336,12 +6375,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dropSchema.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[56]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [57] OP_toStatD.sen
 
-  sFileContents =
+  gszaMungeText[57] =
     "\""
     "\\\"munged OP_toStatD.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6412,12 +6451,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toStatD.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[57]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [58] OP_pythonShell.sen
 
-  sFileContents =
+  gszaMungeText[58] =
     "\""
     "\\\"munged OP_pythonShell.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6489,12 +6528,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_pythonShell.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[58]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [59] job_DefineNode.sen
 
-  sFileContents =
+  gszaMungeText[59] =
     "\""
     "\\\"munged job_DefineNode.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6572,12 +6611,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_DefineNode.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[59]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [60] OP_toCrwH.sen
 
-  sFileContents =
+  gszaMungeText[60] =
     "\""
     "\\\"munged OP_toCrwH.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6726,12 +6765,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toCrwH.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[60]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [61] test_gGen.sen
 
-  sFileContents =
+  gszaMungeText[61] =
     "\""
     "\\\"munged test_gGen.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6799,12 +6838,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_gGen.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[61]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [62] OP_truncateTable.sen
 
-  sFileContents =
+  gszaMungeText[62] =
     "\""
     "\\\"munged OP_truncateTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6884,12 +6923,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_truncateTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[62]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [63] test_rjh.sen
 
-  sFileContents =
+  gszaMungeText[63] =
     "\""
     "\\\"munged test_rjh.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6922,12 +6961,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_rjh.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[63]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [64] job_seedHooks.sen
 
-  sFileContents =
+  gszaMungeText[64] =
     "\""
     "\\\"munged job_seedHooks.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7188,12 +7227,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_seedHooks.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[64]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [65] OP_dumpIndex.sen
 
-  sFileContents =
+  gszaMungeText[65] =
     "\""
     "\\\"munged OP_dumpIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7236,12 +7275,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dumpIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[65]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [66] test_tData.sen
 
-  sFileContents =
+  gszaMungeText[66] =
     "\""
     "\\\"munged test_tData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7303,12 +7342,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_tData.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[66]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [67] OP_visualizeIndex.sen
 
-  sFileContents =
+  gszaMungeText[67] =
     "\""
     "\\\"munged OP_visualizeIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7351,12 +7390,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_visualizeIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[67]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [68] se_path.sen
 
-  sFileContents =
+  gszaMungeText[68] =
     "\""
     "\\\"munged se_path.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7462,12 +7501,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_path.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[68]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [69] OP_genCsv.sen
 
-  sFileContents =
+  gszaMungeText[69] =
     "\""
     "\\\"munged OP_genCsv.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7552,12 +7591,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_genCsv.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[69]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [70] OP_sink.sen
 
-  sFileContents =
+  gszaMungeText[70] =
     "\""
     "\\\"munged OP_sink.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7691,12 +7730,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_sink.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[70]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [71] se_categories.sen
 
-  sFileContents =
+  gszaMungeText[71] =
     "\""
     "\\\"munged se_categories.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7770,12 +7809,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_categories.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[71]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [72] OP_scan.sen
 
-  sFileContents =
+  gszaMungeText[72] =
     "\""
     "\\\"munged OP_scan.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7918,12 +7957,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_scan.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[72]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [73] OP_compactIndex.sen
 
-  sFileContents =
+  gszaMungeText[73] =
     "\""
     "\\\"munged OP_compactIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7965,12 +8004,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_compactIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[73]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [74] OP_readChunk.sen
 
-  sFileContents =
+  gszaMungeText[74] =
     "\""
     "\\\"munged OP_readChunk.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8069,12 +8108,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_readChunk.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[74]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [75] job__Cancelled.sen
 
-  sFileContents =
+  gszaMungeText[75] =
     "\""
     "\\\"munged job__Cancelled.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8216,12 +8255,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Cancelled.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[75]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [76] grid_node.sen
 
-  sFileContents =
+  gszaMungeText[76] =
     "\""
     "\\\"munged grid_node.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8319,12 +8358,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT grid_node.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[76]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [77] OP_recurring.sen
 
-  sFileContents =
+  gszaMungeText[77] =
     "\""
     "\\\"munged OP_recurring.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8396,12 +8435,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_recurring.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[77]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [78] se_log.sen
 
-  sFileContents =
+  gszaMungeText[78] =
     "\""
     "\\\"munged se_log.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8639,12 +8678,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_log.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[78]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [79] OP_listFolders.sen
 
-  sFileContents =
+  gszaMungeText[79] =
     "\""
     "\\\"munged OP_listFolders.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8726,12 +8765,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listFolders.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[79]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [80] job_WriteBuffer.sen
 
-  sFileContents =
+  gszaMungeText[80] =
     "\""
     "\\\"munged job_WriteBuffer.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8929,12 +8968,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_WriteBuffer.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[80]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [81] OP_analyzeTable.sen
 
-  sFileContents =
+  gszaMungeText[81] =
     "\""
     "\\\"munged OP_analyzeTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9004,12 +9043,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_analyzeTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[81]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [82] OP_start.sen
 
-  sFileContents =
+  gszaMungeText[82] =
     "\""
     "\\\"munged OP_start.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9144,12 +9183,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_start.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[82]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [83] OP_toCsv.sen
 
-  sFileContents =
+  gszaMungeText[83] =
     "\""
     "\\\"munged OP_toCsv.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9241,12 +9280,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toCsv.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[83]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [84] job__Executed.sen
 
-  sFileContents =
+  gszaMungeText[84] =
     "\""
     "\\\"munged job__Executed.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9388,12 +9427,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Executed.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[84]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [85] OP_verifyIndex.sen
 
-  sFileContents =
+  gszaMungeText[85] =
     "\""
     "\\\"munged OP_verifyIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9456,12 +9495,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_verifyIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[85]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [86] op_defHandlers.sen
 
-  sFileContents =
+  gszaMungeText[86] =
     "\""
     "\\\"munged op_defHandlers.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9710,12 +9749,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT op_defHandlers.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[86]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [87] job_ForgetNode.sen
 
-  sFileContents =
+  gszaMungeText[87] =
     "\""
     "\\\"munged job_ForgetNode.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9777,12 +9816,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_ForgetNode.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[87]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [88] test_dData.sen
 
-  sFileContents =
+  gszaMungeText[88] =
     "\""
     "\\\"munged test_dData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9837,12 +9876,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_dData.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[88]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [89] grid_grid.sen
 
-  sFileContents =
+  gszaMungeText[89] =
     "\""
     "\\\"munged grid_grid.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10023,12 +10062,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT grid_grid.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[89]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [90] se_stepTiming.sen
 
-  sFileContents =
+  gszaMungeText[90] =
     "\""
     "\\\"munged se_stepTiming.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10048,12 +10087,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_stepTiming.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[90]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [91] se_str.sen
 
-  sFileContents =
+  gszaMungeText[91] =
     "\""
     "\\\"munged se_str.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10148,12 +10187,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_str.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[91]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [92] job__Execute.sen
 
-  sFileContents =
+  gszaMungeText[92] =
     "\""
     "\\\"munged job__Execute.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10247,12 +10286,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Execute.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[92]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [93] se_dbg.sen
 
-  sFileContents =
+  gszaMungeText[93] =
     "\""
     "\\\"munged se_dbg.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10440,12 +10479,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_dbg.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[93]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [94] OP_exemplar.sen
 
-  sFileContents =
+  gszaMungeText[94] =
     "\""
     "\\\"munged OP_exemplar.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10500,12 +10539,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_exemplar.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[94]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [95] db_schema.sen
 
-  sFileContents =
+  gszaMungeText[95] =
     "\""
     "\\\"munged db_schema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10655,12 +10694,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_schema.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[95]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [96] se_demons.sen
 
-  sFileContents =
+  gszaMungeText[96] =
     "\""
     "\\\"munged se_demons.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10694,12 +10733,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_demons.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[96]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [97] OP_output.sen
 
-  sFileContents =
+  gszaMungeText[97] =
     "\""
     "\\\"munged OP_output.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10881,12 +10920,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_output.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[97]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [98] OP_listPartitions.sen
 
-  sFileContents =
+  gszaMungeText[98] =
     "\""
     "\\\"munged OP_listPartitions.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10953,12 +10992,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listPartitions.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[98]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [99] job_2pcReply.sen
 
-  sFileContents =
+  gszaMungeText[99] =
     "\""
     "\\\"munged job_2pcReply.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11042,12 +11081,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_2pcReply.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[99]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [100] se_schemaTest.sen
 
-  sFileContents =
+  gszaMungeText[100] =
     "\""
     "\\\"munged se_schemaTest.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11079,12 +11118,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_schemaTest.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[100]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [101] OP_dropIndex.sen
 
-  sFileContents =
+  gszaMungeText[101] =
     "\""
     "\\\"munged OP_dropIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11153,12 +11192,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dropIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[101]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [102] OP_consume.sen
 
-  sFileContents =
+  gszaMungeText[102] =
     "\""
     "\\\"munged OP_consume.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11329,12 +11368,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_consume.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[102]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [103] OP_eatAll.sen
 
-  sFileContents =
+  gszaMungeText[103] =
     "\""
     "\\\"munged OP_eatAll.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11392,12 +11431,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_eatAll.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[103]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [104] OP_createCatalog.sen
 
-  sFileContents =
+  gszaMungeText[104] =
     "\""
     "\\\"munged OP_createCatalog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11488,12 +11527,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_createCatalog.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[104]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [105] OP_space.sen
 
-  sFileContents =
+  gszaMungeText[105] =
     "\""
     "\\\"munged OP_space.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11549,12 +11588,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_space.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[105]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [106] OP_dumpTable.sen
 
-  sFileContents =
+  gszaMungeText[106] =
     "\""
     "\\\"munged OP_dumpTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11596,12 +11635,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dumpTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[106]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [107] OP_showCluster.sen
 
-  sFileContents =
+  gszaMungeText[107] =
     "\""
     "\\\"munged OP_showCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11669,12 +11708,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_showCluster.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[107]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [108] job__Begun.sen
 
-  sFileContents =
+  gszaMungeText[108] =
     "\""
     "\\\"munged job__Begun.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11823,12 +11862,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Begun.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[108]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [109] OP_truncateIndex.sen
 
-  sFileContents =
+  gszaMungeText[109] =
     "\""
     "\\\"munged OP_truncateIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11908,12 +11947,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_truncateIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[109]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [110] OP_status.sen
 
-  sFileContents =
+  gszaMungeText[110] =
     "\""
     "\\\"munged OP_status.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11969,12 +12008,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_status.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[110]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [111] OP_pwf.sen
 
-  sFileContents =
+  gszaMungeText[111] =
     "\""
     "\\\"munged OP_pwf.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12046,12 +12085,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_pwf.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[111]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [112] BM_inflateCrw.sen
 
-  sFileContents =
+  gszaMungeText[112] =
     "\""
     "\\\"munged BM_inflateCrw.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12180,12 +12219,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_inflateCrw.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[112]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [113] op__common.sen
 
-  sFileContents =
+  gszaMungeText[113] =
     "\""
     "\\\"munged op__common.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12529,12 +12568,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT op__common.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[113]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [114] OP_analyzeIndex.sen
 
-  sFileContents =
+  gszaMungeText[114] =
     "\""
     "\\\"munged OP_analyzeIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12612,12 +12651,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_analyzeIndex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[114]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [115] se_tags.sen
 
-  sFileContents =
+  gszaMungeText[115] =
     "\""
     "\\\"munged se_tags.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12791,12 +12830,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_tags.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[115]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [116] se_llc.sen
 
-  sFileContents =
+  gszaMungeText[116] =
     "\""
     "\\\"munged se_llc.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12814,12 +12853,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_llc.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[116]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [117] BM_insIdx.sen
 
-  sFileContents =
+  gszaMungeText[117] =
     "\""
     "\\\"munged BM_insIdx.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12966,12 +13005,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_insIdx.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[117]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [118] job_Receiver.sen
 
-  sFileContents =
+  gszaMungeText[118] =
     "\""
     "\\\"munged job_Receiver.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13123,12 +13162,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Receiver.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[118]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [119] OP_progress.sen
 
-  sFileContents =
+  gszaMungeText[119] =
     "\""
     "\\\"munged OP_progress.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13238,12 +13277,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_progress.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[119]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [120] test_str.sen
 
-  sFileContents =
+  gszaMungeText[120] =
     "\""
     "\\\"munged test_str.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13266,12 +13305,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_str.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[120]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [121] BM_genEnt.sen
 
-  sFileContents =
+  gszaMungeText[121] =
     "\""
     "\\\"munged BM_genEnt.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13385,12 +13424,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT BM_genEnt.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[121]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [122] db_catalog.sen
 
-  sFileContents =
+  gszaMungeText[122] =
     "\""
     "\\\"munged db_catalog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13549,12 +13588,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_catalog.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[122]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [123] OP_listTableDefs.sen
 
-  sFileContents =
+  gszaMungeText[123] =
     "\""
     "\\\"munged OP_listTableDefs.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13647,12 +13686,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listTableDefs.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[123]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [124] test_arithmetic.sen
 
-  sFileContents =
+  gszaMungeText[124] =
     "\""
     "\\\"munged test_arithmetic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13680,12 +13719,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_arithmetic.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[124]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [125] OP_visualizeTable.sen
 
-  sFileContents =
+  gszaMungeText[125] =
     "\""
     "\\\"munged OP_visualizeTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13727,12 +13766,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_visualizeTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[125]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [126] OP_listIndexes.sen
 
-  sFileContents =
+  gszaMungeText[126] =
     "\""
     "\\\"munged OP_listIndexes.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13838,12 +13877,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listIndexes.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[126]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [127] OP_toFile.sen
 
-  sFileContents =
+  gszaMungeText[127] =
     "\""
     "\\\"munged OP_toFile.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13935,12 +13974,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_toFile.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[127]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [128] db_table.sen
 
-  sFileContents =
+  gszaMungeText[128] =
     "\""
     "\\\"munged db_table.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14234,12 +14273,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_table.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[128]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [129] OP_upsert.sen
 
-  sFileContents =
+  gszaMungeText[129] =
     "\""
     "\\\"munged OP_upsert.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14331,12 +14370,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_upsert.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[129]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [130] OP_passThru.sen
 
-  sFileContents =
+  gszaMungeText[130] =
     "\""
     "\\\"munged OP_passThru.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14447,12 +14486,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_passThru.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[130]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [131] OP_listSchemas.sen
 
-  sFileContents =
+  gszaMungeText[131] =
     "\""
     "\\\"munged OP_listSchemas.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14532,12 +14571,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listSchemas.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[131]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [132] job_Local.sen
 
-  sFileContents =
+  gszaMungeText[132] =
     "\""
     "\\\"munged job_Local.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14574,12 +14613,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Local.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[132]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [133] OP_nodeInfo.sen
 
-  sFileContents =
+  gszaMungeText[133] =
     "\""
     "\\\"munged OP_nodeInfo.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14629,12 +14668,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_nodeInfo.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[133]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [134] job_ConnectCluster.sen
 
-  sFileContents =
+  gszaMungeText[134] =
     "\""
     "\\\"munged job_ConnectCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14802,12 +14841,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_ConnectCluster.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[134]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [135] cmd_compiler.sen
 
-  sFileContents =
+  gszaMungeText[135] =
     "\""
     "\\\"munged cmd_compiler.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15274,12 +15313,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT cmd_compiler.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[135]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [136] job__Ended.sen
 
-  sFileContents =
+  gszaMungeText[136] =
     "\""
     "\\\"munged job__Ended.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15393,12 +15432,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__Ended.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[136]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [137] db_partition.sen
 
-  sFileContents =
+  gszaMungeText[137] =
     "\""
     "\\\"munged db_partition.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15575,12 +15614,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_partition.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[137]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [138] se_boot.sen
 
-  sFileContents =
+  gszaMungeText[138] =
     "\""
     "\\\"munged se_boot.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15892,12 +15931,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_boot.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[138]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [139] OP_burst.sen
 
-  sFileContents =
+  gszaMungeText[139] =
     "\""
     "\\\"munged OP_burst.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15968,12 +16007,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_burst.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[139]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [140] OP_listTables.sen
 
-  sFileContents =
+  gszaMungeText[140] =
     "\""
     "\\\"munged OP_listTables.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16066,12 +16105,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_listTables.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[140]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [141] tpl_liteOp.sen
 
-  sFileContents =
+  gszaMungeText[141] =
     "\""
     "\\\"munged tpl_liteOp.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16198,12 +16237,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT tpl_liteOp.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[141]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [142] db_tenant.sen
 
-  sFileContents =
+  gszaMungeText[142] =
     "\""
     "\\\"munged db_tenant.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16329,12 +16368,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT db_tenant.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[142]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [143] OP_report.sen
 
-  sFileContents =
+  gszaMungeText[143] =
     "\""
     "\\\"munged OP_report.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16501,12 +16540,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_report.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[143]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [144] test_logic.sen
 
-  sFileContents =
+  gszaMungeText[144] =
     "\""
     "\\\"munged test_logic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16564,12 +16603,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_logic.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[144]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [145] test_misc.sen
 
-  sFileContents =
+  gszaMungeText[145] =
     "\""
     "\\\"munged test_misc.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16774,12 +16813,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_misc.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[145]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [146] job_CreateTable.sen
 
-  sFileContents =
+  gszaMungeText[146] =
     "\""
     "\\\"munged job_CreateTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16912,12 +16951,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_CreateTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[146]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [147] test_flow.sen
 
-  sFileContents =
+  gszaMungeText[147] =
     "\""
     "\\\"munged test_flow.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16959,12 +16998,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT test_flow.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[147]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [148] OP_snapshot.sen
 
-  sFileContents =
+  gszaMungeText[148] =
     "\""
     "\\\"munged OP_snapshot.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17066,12 +17105,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_snapshot.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[148]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [149] job_seedSuffixs.sen
 
-  sFileContents =
+  gszaMungeText[149] =
     "\""
     "\\\"munged job_seedSuffixs.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17234,12 +17273,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_seedSuffixs.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[149]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [150] OP_sizeTable.sen
 
-  sFileContents =
+  gszaMungeText[150] =
     "\""
     "\\\"munged OP_sizeTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17302,12 +17341,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_sizeTable.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[150]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [151] OP_dropCatalog.sen
 
-  sFileContents =
+  gszaMungeText[151] =
     "\""
     "\\\"munged OP_dropCatalog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17376,12 +17415,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT OP_dropCatalog.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[151]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [152] job_Waker.sen
 
-  sFileContents =
+  gszaMungeText[152] =
     "\""
     "\\\"munged job_Waker.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17439,12 +17478,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Waker.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[152]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [153] job_seedMarkers.sen
 
-  sFileContents =
+  gszaMungeText[153] =
     "\""
     "\\\"munged job_seedMarkers.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17816,12 +17855,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_seedMarkers.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[153]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [154] job_words.sen
 
-  sFileContents =
+  gszaMungeText[154] =
     "\""
     "\\\"munged job_words.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18165,12 +18204,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_words.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[154]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [155] se_word.sen
 
-  sFileContents =
+  gszaMungeText[155] =
     "\""
     "\\\"munged se_word.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18318,12 +18357,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_word.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[155]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [156] job_Distributed.sen
 
-  sFileContents =
+  gszaMungeText[156] =
     "\""
     "\\\"munged job_Distributed.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18434,12 +18473,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Distributed.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[156]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [157] se_core.sen
 
-  sFileContents =
+  gszaMungeText[157] =
     "\""
     "\\\"munged se_core.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19020,12 +19059,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_core.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[157]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [158] se_vortex.sen
 
-  sFileContents =
+  gszaMungeText[158] =
     "\""
     "\\\"munged se_vortex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19116,12 +19155,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT se_vortex.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[158]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [159] job__End.sen
 
-  sFileContents =
+  gszaMungeText[159] =
     "\""
     "\\\"munged job__End.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19219,12 +19258,12 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job__End.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[159]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [160] job_Answer.sen
 
-  sFileContents =
+  gszaMungeText[160] =
     "\""
     "\\\"munged job_Answer.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19361,7 +19400,7 @@ void Task::vAddMunged(Forth* pForth)
   " CONSTANT job_Answer.sen "_Stz
   ;
 
-  vCompileMungedColon(sFileContents);
+  vCompileMungedColon(gszaMungeText[160]);
 }
 
 /*============================================================================*/

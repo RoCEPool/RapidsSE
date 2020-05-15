@@ -7,19 +7,16 @@
 /*----------------------------------------------------------------------------*/
 /* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
-: munge_WriteCppVariable params| pSenFile pCppFile i_File |
+: munge_WriteDivider params| pSenFile pCppFile i_File |
+
+  pSenFile file.path@ locals| sFileNm |
 
   "\n"
   pCppFile file.write
   "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
   pCppFile file.write
 
-  pSenFile file.path@ i_File "  // munge of [%v] %v\n" str.format
-  pCppFile file.write
-
-  "\n"
-  pCppFile file.write
-  "  sFileContents =\n"
+  sFileNm i_File "  // munge of [%v] %v\n" str.format
   pCppFile file.write
 ;
 
@@ -29,6 +26,13 @@
 : munge_WriteSenText params| pSenFile pCppFile i_File |
 
   pSenFile file.path@ locals| sFileNm |
+
+  "\n"
+  pCppFile file.write
+  "  sFileContents =\n"
+  pCppFile file.write
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "    \"\\\"\"\n" pCppFile file.write
 
@@ -54,30 +58,69 @@
   repeat
 
   "    \"\\\"\"\n" pCppFile file.write
-;
 
-/*----------------------------------------------------------------------------*/
-/* put the variable for the sen file into c++ file                            */
-/*----------------------------------------------------------------------------*/
-: munge_WriteSenConstant params| pSenFile pCppFile i_File |
-
-  pSenFile file.path@ locals| sFileNm |
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   sFileNm "  \" CONSTANT %v \"_Stz\n" str.format pCppFile file.write
-;
-
-/*----------------------------------------------------------------------------*/
-/* put a ; terminator for statement into c++ file                             */
-/*----------------------------------------------------------------------------*/
-: munge_WriteCppTerm params| pSenFile pCppFile i_File |
-
   "  ;\n"
   pCppFile file.write
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   "\n"
   pCppFile file.write
-
   "  vCompileMungedColon(sFileContents);\n"
+  pCppFile file.write
+;
+/*----------------------------------------------------------------------------*/
+: munge_WriteSenText_v2 params| pSenFile pCppFile i_File |
+
+  pSenFile file.path@ locals| sFileNm |
+
+  "\n"
+  pCppFile file.write
+  i_File "  gszaMungeText[%v] =\n" str.format
+  pCppFile file.write
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "    \"\\\"\"\n" pCppFile file.write
+
+  "    \"\\\\\\\"munged " pCppFile file.write
+  sFileNm pCppFile file.write
+
+  " \\\\\\\" .verbose \\n\"\n" pCppFile file.write
+
+  "" locals| sSenLine |
+  begin pSenFile file.read while
+
+    str.escape str.escape to sSenLine
+
+    sSenLine ";" str.equal if
+      " ;" to sSenLine
+    then
+
+    "    \""  pCppFile file.write
+    sSenLine  pCppFile file.write
+    "\\n\""   pCppFile file.write
+    "\n"      pCppFile file.write
+
+  repeat
+
+  "    \"\\\"\"\n" pCppFile file.write
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sFileNm "  \" CONSTANT %v \"_Stz\n" str.format
+  pCppFile file.write
+  "  ;\n"
+  pCppFile file.write
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "\n"
+  pCppFile file.write
+  i_File "  vCompileMungedColon(gszaMungeText[%v]);\n" str.format
   pCppFile file.write
 ;
 
@@ -89,13 +132,9 @@
 /*----------------------------------------------------------------------------*/
 : munge_ProduceCppStatement params| pSenFile pCppFile i_File |
 
-  i_File pCppFile pSenFile munge_WriteCppVariable
+  i_File pCppFile pSenFile munge_WriteDivider
 
-  i_File pCppFile pSenFile munge_WriteSenText
-
-  i_File pCppFile pSenFile munge_WriteSenConstant
-
-  i_File pCppFile pSenFile munge_WriteCppTerm
+  i_File pCppFile pSenFile munge_WriteSenText_v2
 ;
 
 /*----------------------------------------------------------------------------*/

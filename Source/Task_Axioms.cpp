@@ -483,6 +483,51 @@ void Task::vCompileMungedColon(s48K& sDefinition)
   pInput->vUseEnd();
 }
 
+/*----------------------------------------------------------------------------*/
+/* compile a munged definition                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vCompileMungedColon(Stz* szDefinition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  //vTrace("vCompileMungedColon :\n%s\n"_Stz,sDefinition.szStz());
+  
+  s48K sValue;
+  
+  Compiler* pCompiler = m_pForth->pCompiler();
+  Input* pInput = m_pForth->pInput();
+
+  pInput->vUseString(szDefinition);
+  pInput->vUseBegin();
+  
+  // get string
+  pInput->vReadToken();
+
+  //if (AM::bVerbose())
+  //  vTrace("CompileConstant: %s\n"_Stz,
+  //         pInput->szChars());
+  
+  sValue = (Stz*)pInput->szChars()->azChar();
+  
+  // get CONSTANT
+  pInput->vReadToken();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
+  
+  // get name of word
+  pInput->vReadToken();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
+
+  Stz* szName = (Stz*)pInput->szChars();
+
+  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
+  
+  AM::vAddConstant(szName,sValue.szStz());
+  
+  pInput->vReadToken();
+  
+  pInput->vUseEnd();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
