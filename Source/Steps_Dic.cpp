@@ -144,12 +144,10 @@ void Step::vDicNew(void)
 {
   ENTRY();
     
-#ifdef WITH_OBJ_PROPER
   s32 szDicNm;
   m_pDataStack->vPopStr(szDicNm,__func__);
   
   Dic* pDic = new Dic(szDicNm);
-#endif
   
   m_pDataStack->vPushPtr(pDic);
   

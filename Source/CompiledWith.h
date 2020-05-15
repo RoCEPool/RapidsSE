@@ -99,8 +99,6 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 #define WITH_SEN_TAGS EndDefine              // code for sen tags
 
-#define WITH_OBJ_PROPER EndDefine            // code for proper c++ objects
-
 // temporary
 
 //#define __WITH_INDEP_ROUTINE EndDefine

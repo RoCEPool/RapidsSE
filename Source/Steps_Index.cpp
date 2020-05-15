@@ -1331,12 +1331,10 @@ void Step::vIndexNew(void)
 {
   ENTRY();
   
-#ifdef WITH_OBJ_PROPER
   s32 sIndexNm;
   m_pDataStack->vPopStr(sIndexNm,__func__);
 
   Index* pIndex = new Index(sIndexNm);
-#endif
   
   m_pDataStack->vPushPtr(pIndex);
   
