@@ -697,14 +697,6 @@ public:
   void vJob_KidExportExportJobId(void);
   void vJob_KidExportWriteExportBuffer(void);
 
-  // job LoadTable
-  void vJob_LoadTableBegin(void);
-  void vJob_LoadTableChunk(void);
-  void vJob_LoadTableDumpMap(void);
-  void vJob_LoadTableEnd(void);
-  void vJob_LoadTableFilePathFetch(void);
-  void vJob_LoadTableTableStore(void);
-
   // job Monitor
   void vJob_MonitorBegin(void);
   void vJob_MonitorTake(void);
@@ -792,13 +784,6 @@ public:
   void vJob_SubFetchPhraseFetch(void);
   void vJob_SubFetchPlannerFetch(void);
   void vJob_SubFetchSlotFetch(void);
-
-  // job SubLoader
-  void vJob_SubLoaderBegin(void);
-  void vJob_SubLoaderChunk(void);
-  void vJob_SubLoaderEnd(void);
-  void vJob_SubLoaderSpawn(void);
-  void vJob_SubLoaderTerminate(void);
 
   // job SubPublish
   void vJob_SubPublishBegin(void);

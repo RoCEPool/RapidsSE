@@ -43,7 +43,8 @@ enum eLK // lock kind
   /* 35 */ LK_TRACE,
   /* 36 */ LK_TX_SET,
   /* 37 */ LK_UNKNOWN,
-  /* 38 */ LK_ENUMS
+  /* 38 */ LK_VECTOR,
+  /* 39 */ LK_ENUMS
 };
 
 static Stz* aLK[]
@@ -87,8 +88,9 @@ static Stz* aLK[]
   /* 35 */ "LK_TRACE"_Stz,
   /* 36 */ "LK_TX_SET"_Stz,
   /* 37 */ "LK_UNKNOWN"_Stz,
+  /* 38 */ "LK_VECTOR"_Stz,
   
-  /* 38 */ "ENUMS"_Stz
+  /* 39 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
