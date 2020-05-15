@@ -49,24 +49,6 @@ void Step::vObjectClassStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.dump -- dump the given object                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vObjectDump(void)
-{
-  ENTRY();
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  eCN eClass = pObject->eClass();
-  
-  pDUMPFUN* pDumpFun =gpDump[eClass];
-  
-  (pDumpFun)(pObject->eClass(), pObject, Stz::szTab(1));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* object@ -- fetch object from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
 void Step::vObjectFetch(void)

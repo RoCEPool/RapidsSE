@@ -922,7 +922,6 @@ public:
   // object
   void vObjectClassFetch(void);
   void vObjectClassStore(void);
-  void vObjectDump(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectStore(void);
