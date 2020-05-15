@@ -7,7 +7,7 @@ namespace SenVM
 {
 
 #ifdef __WITH_INDEP_ROUTINE
-  static const i8 C_WSP_ROUTINE = C_SIZE_SMALL_OBJECT - 128;
+  static const i8 C_WSP_ROUTINE = C_SIZE_MEDIUM_OBJECT - 128;
 #else
   static const i8 C_WSP_ROUTINE = C_SIZE_MEDIUM_OBJECT - C_1KB;
 #endif

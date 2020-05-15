@@ -73,7 +73,7 @@ Word* Routine::pToWord(Cell* aInxPtr)
     
 #ifdef __WITH_INDEP_ROUTINE
   
-  Routine* aRoutine = _pMaskDownToObject<Routine*>(aInxPtr,C_MASK_SMALL_OBJECT);
+  Routine* aRoutine = _pMaskDownToObject<Routine*>(aInxPtr,C_MASK_MEDIUM_OBJECT);
 
   Routine* pRoutine = _pRoutine(aRoutine);
 
