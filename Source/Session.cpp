@@ -259,7 +259,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   //fprintf(stderr,"eInit C\n");
   
   RASSERT(pTenants);
-#if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+#if defined(WITH_OBJ_PROPER)
   pDic = _pDic(pTenants->pObject());
   m_oDicStack.vPush(pDic);
 #endif
@@ -269,7 +269,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   // /tenants/boray
   Word* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
   RASSERT(pTenant);
-  #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+  #if defined(WITH_OBJ_PROPER)
   pDic = _pDic(pTenant->pObject());
   m_oDicStack.vPush(pDic);
   #endif
@@ -279,7 +279,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   // /tenants/boray/catalogs
   Word* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
   RASSERT(pCatalogs);
-  #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+  #if defined(WITH_OBJ_PROPER)
   pDic = _pDic(pCatalogs->pObject());
   m_oDicStack.vPush(pDic);
   #endif
@@ -294,7 +294,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
-  #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+  #if defined(WITH_OBJ_PROPER)
   pDic = _pDic(pCatalog->pObject());
   m_oDicStack.vPush(pDic);
   #endif
@@ -304,7 +304,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   // /tenants/boray/catalogs/rapidsse/schemas
   Word* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
   RASSERT(pSchemas);
-  #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+  #if defined(WITH_OBJ_PROPER)
   
   //fprintf(stderr,"eInit H\n");
   pDic = _pDic(pSchemas->pObject());
@@ -323,7 +323,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
-  #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+  #if defined(WITH_OBJ_PROPER)
   pDic = _pDic(pSchema->pObject());
   m_oDicStack.vPush(pDic);
   #endif
@@ -336,7 +336,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   
   //fprintf(stderr,"eInit L\n");
   
-  #if defined(WITH_CPP_DIC) || defined(WITH_OBJ_PROPER)
+  #if defined(WITH_OBJ_PROPER)
   pDic = _pDic(pTables->pObject());
   m_oDicStack.vPush(pDic);
   #endif
