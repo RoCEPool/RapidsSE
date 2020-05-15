@@ -129,7 +129,7 @@
   "  szSubScriptDef ="
   pCppFile file.write
 
-  i_File sFileNm i_File " \" %v CONSTANT %v__%v \"_Stz;\n" str.format
+  sFileNm i_File " \" %v CONSTANT %v__sub \"_Stz;\n" str.format
   pCppFile file.write
 
   "  vCompileMungedColon(szSubScriptDef);\n" str.format
