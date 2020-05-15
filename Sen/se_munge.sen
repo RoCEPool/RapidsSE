@@ -114,20 +114,25 @@
   sFileNm "  \" CONSTANT %v \"_Stz\n" str.format
   pCppFile file.write
 
-  "  \" \"_Stz\n" 
-  pCppFile file.write
-
-  i_File sFileNm i_File "  \" %v CONSTANT %v__%v \"_Stz\n" str.format
-  pCppFile file.write
-
   "  ;\n"
+  pCppFile file.write
+
+  "\n"
+  pCppFile file.write
+  i_File "  vCompileMungedColon(gszaMungeText[%v]);\n" str.format
   pCppFile file.write
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "\n"
   pCppFile file.write
-  i_File "  vCompileMungedColon(gszaMungeText[%v]);\n" str.format
+  "  szSubScriptDef ="
+  pCppFile file.write
+
+  i_File sFileNm i_File " \" %v CONSTANT %v__%v \"_Stz;\n" str.format
+  pCppFile file.write
+
+  "  vCompileMungedColon(szSubScriptDef);\n" str.format
   pCppFile file.write
 ;
 
@@ -214,7 +219,7 @@
   pCppFile file.write
   "{\n"
   pCppFile file.write
-  "  s48K sFileContents;\n"
+  "  Stz* szSubScriptDef;\n"
   pCppFile file.write
 ;
 
