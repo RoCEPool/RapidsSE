@@ -7,7 +7,6 @@
 extern Args       gxArgs;
 extern eHT        geWhichHeap[];
 extern i8         gnClassSize[];
-extern pFINALIZE *gpFinalize[];
 
 /*----------------------------------------------------------------------------*/
 /* check assumptions                                                          */

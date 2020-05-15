@@ -16,7 +16,6 @@ extern Log*          gpLog;
 
 extern eHT           geWhichHeap[];
 extern i8            gnClassSize[];
-extern pFINALIZE*    gpFinalize[];
 
 // Arg
 Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }
@@ -1231,7 +1230,6 @@ void AM::vBootCheck(void)
   i8 iEntriesPCN = 0;
   i8 iEntriesGPDUMP = 0;
   i8 iEntriesGCLASSSIZE = 0;
-  i8 iEntriesGPFINALIZE = 0;
   
   bool bFoundEnum = false;
   
@@ -1296,28 +1294,7 @@ void AM::vBootCheck(void)
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
   }
-  
-  bFoundEnum = false;
-  // find number of entries in gpDump
-  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
-    if (gpFinalize[i_Class] == &Finalize::vEnums) {
-      bFoundEnum = true;
-      break;
-    }
-    iEntriesGPFINALIZE++;
-  }
-  
-  if (!bFoundEnum)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Enum for CN_ENUM not found in gpDump\n"_Stz);
-  
-  if (iEntriesECN != iEntriesGPDUMP) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "\n!!!ALERT!!! No of entries in gpDump (%lld) "
-           "do not match the no in eCN (%lld)\n\n"_Stz,
-           iEntriesECN, iEntriesGPDUMP);
-  }
-  
+    
   
   // check sizes are less than pool block size
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {

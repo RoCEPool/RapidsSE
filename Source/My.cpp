@@ -15,7 +15,6 @@ extern File*         gpTraceFile;
 
 extern eHT           geWhichHeap[];
 extern i8            gnClassSize[];
-extern pFINALIZE*    gpFinalize[];
 
 
 /*----------------------------------------------------------------------------*/
