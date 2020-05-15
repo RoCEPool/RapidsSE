@@ -43,14 +43,14 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_nObjectSize  = iObjectSize;
-  m_nAllocCount  = 0;
-  m_iBufferCount = 0;
-  m_pFirstBuffer = nullptr;
-  m_pLastBuffer  = nullptr;
-  m_nFreeChunks   = 0;
-  m_pFreeHead    = nullptr;
-  m_bFixedHeap   = false;
+  m_nObjectSize    = iObjectSize;
+  m_nCurrAllocated = 0;
+  m_iBufferCount   = 0;
+  m_pFirstBuffer   = nullptr;
+  m_pLastBuffer    = nullptr;
+  m_nFreeChunks    = 0;
+  m_pFreeHead      = nullptr;
+  m_bFixedHeap     = false;
   
   _checkInitialisedSize_(sizeof(Heap));
 
@@ -147,16 +147,6 @@ void Heap::vAddFree(FreeChunk* aFreeChunk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of allocated objects                                            */
-/*----------------------------------------------------------------------------*/
-i8 Heap::nAllocCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_nAllocCount;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allocate an object from the heap                                           */
 /*----------------------------------------------------------------------------*/
 Object* Heap::pAllocObject(eCN eAllocClass)
@@ -184,7 +174,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   Object* pObject = reinterpret_cast<Object*>(pPopFree());
   
-  m_nAllocCount++;
+  m_nCurrAllocated++;
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vScribble(pObject,m_nObjectSize,eAllocClass);
@@ -229,6 +219,16 @@ i8 Heap::iBufferCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_iBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of allocated objects                                            */
+/*----------------------------------------------------------------------------*/
+i8 Heap::nCurrAllocated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_nCurrAllocated;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +298,7 @@ void Heap::vFreeObject(Object* pObject)
   
   vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
   
-  m_nAllocCount--;
+  m_nCurrAllocated--;
 
   m_okLock.vDropWrite();
   
@@ -323,7 +323,7 @@ void Heap::vGrabLock()
 void Heap::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Heap: size %lld buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_nObjectSize,m_iBufferCount,m_nAllocCount,m_nFreeChunks);
+                    m_nObjectSize,m_iBufferCount,m_nCurrAllocated,m_nFreeChunks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +367,7 @@ void Heap::vReport(String* pReportString)
     sMagSize.azChar(),
                                   
     iBufferCount(),
-    nAllocCount(),
+    nCurrAllocated(),
     nFreeChunks(),
     sMagSum.szStz()
     );
@@ -380,7 +380,7 @@ i8 Heap::iSum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  i8 iSum =   nAllocCount() * nObjectSize()
+  i8 iSum =   nCurrAllocated() * nObjectSize()
             +
               nFreeChunks() * nObjectSize();
   
