@@ -35,7 +35,6 @@ namespace Pool
     void    vAddFree(FreeChunk* aFreeChunk);
     i8      iAllocCount(void);
     Object* pAllocObject(eCN eClass);
-    Object* pAllocObject(eCN eClass, i8 iMaxSize);
     void    vAnalyse(i8 xCounts[]);
     i8      iBufferCount(void);
     void    vDropLock(void);
