@@ -7,8 +7,7 @@ void Task::vAddMunged(Forth* pForth)
 {
   s48K sFileContents;
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_stats.sen
 
   sFileContents =
@@ -134,8 +133,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_folder.sen
 
   sFileContents =
@@ -383,8 +381,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_jData.sen
 
   sFileContents =
@@ -520,8 +517,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_object.sen
 
   sFileContents =
@@ -559,8 +555,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_print.sen
 
   sFileContents =
@@ -620,8 +615,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_seedDefaults.sen
 
   sFileContents =
@@ -848,8 +842,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of tpl_localLiteOp.sen
 
   sFileContents =
@@ -966,8 +959,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_encodingData.sen
 
   sFileContents =
@@ -1341,8 +1333,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of cmd_info.sen
 
   sFileContents =
@@ -1500,8 +1491,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_sleep.sen
 
   sFileContents =
@@ -1529,8 +1519,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_index.sen
 
   sFileContents =
@@ -1834,8 +1823,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_statWrite.sen
 
   sFileContents =
@@ -1939,8 +1927,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_socket.sen
 
   sFileContents =
@@ -1985,8 +1972,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateIndex.sen
 
   sFileContents =
@@ -2204,8 +2190,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_createSchema.sen
 
   sFileContents =
@@ -2309,8 +2294,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_python.sen
 
   sFileContents =
@@ -2386,8 +2370,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dropTenant.sen
 
   sFileContents =
@@ -2472,8 +2455,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_memoryStats.sen
 
   sFileContents =
@@ -2498,8 +2480,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listColumns.sen
 
   sFileContents =
@@ -2580,8 +2561,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_chunk.sen
 
   sFileContents =
@@ -2716,8 +2696,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_sizeIndex.sen
 
   sFileContents =
@@ -2785,8 +2764,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_fetch.sen
 
   sFileContents =
@@ -3111,8 +3089,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_stepTests.sen
 
   sFileContents =
@@ -3160,8 +3137,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_experiments.sen
 
   sFileContents =
@@ -3221,8 +3197,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_ping.sen
 
   sFileContents =
@@ -3287,8 +3262,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_xmit.sen
 
   sFileContents =
@@ -3337,8 +3311,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Supervisor.sen
 
   sFileContents =
@@ -3409,8 +3382,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_tableSizes.sen
 
   sFileContents =
@@ -3513,8 +3485,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_start.sen
 
   sFileContents =
@@ -3566,8 +3537,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Docol.sen
 
   sFileContents =
@@ -3631,8 +3601,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_BootCluster.sen
 
   sFileContents =
@@ -3805,8 +3774,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Connector.sen
 
   sFileContents =
@@ -3984,8 +3952,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listPartitionColumns.sen
 
   sFileContents =
@@ -4067,8 +4034,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_insert.sen
 
   sFileContents =
@@ -4230,8 +4196,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of BM_genCrw.sen
 
   sFileContents =
@@ -4321,8 +4286,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_gridSanity.sen
 
   sFileContents =
@@ -4431,8 +4395,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_toDemon.sen
 
   sFileContents =
@@ -4495,8 +4458,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listTenants.sen
 
   sFileContents =
@@ -4581,8 +4543,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_munge.sen
 
   sFileContents =
@@ -4595,39 +4556,12 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"-se_munge.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* write the .cpp header portion of the file                                  */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteCppHeader ( pCppFile -- )\n"
-    "\n"
-    "  params| pCppFile |\n"
-    "\n"
-    "  \\\"/*============================================================================*/\\\"\n"
-    "  pCppFile file.write \\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"/* MungedSen.cpp - munged sen files                                           */\\\"\n"
-    "  pCppFile file.write \\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"/*============================================================================*/\\\"\n"
-    "  pCppFile file.write \\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"#include \\\\\\\"StorageEngine.h\\\\\\\"\\\\n\\\" pCppFile file.write\n"
-    "  \\\"\\\\n\\\" pCppFile file.write\n"
-    "  \\\"void Task::vAddMunged(Forth* pForth)\\\\n\\\" pCppFile file.write\n"
-    "  \\\"{\\\\n\\\" pCppFile file.write\n"
-    "  \\\"  s48K sFileContents;\\\\n\\\" pCppFile file.write\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
     "/* put the variable for the sen file into c++ file                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteCppVariable ( pCppFile pSenFile -- )\n"
-    "\n"
-    "  params| pSenFile pCppFile |\n"
+    ": munge_WriteCppVariable params| pSenFile pCppFile |\n"
     "\n"
     "  \\\"\\\\n\\\" pCppFile file.write\n"
-    "  \\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\\\n\\\"\n"
+    "  \\\"  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\\\n\\\"\n"
     "    pCppFile file.write\n"
     "\n"
     "  \\\"  // munge of \\\" pCppFile file.write\n"
@@ -4641,9 +4575,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* put the variable initialise into c++ file                                  */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteSenText ( pCppFile pSenFile -- )\n"
-    "\n"
-    "  params| pSenFile pCppFile |\n"
+    ": munge_WriteSenText params| pSenFile pCppFile |\n"
     "\n"
     "  \\\"\\\" locals| senLine |\n"
     "\n"
@@ -4674,9 +4606,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* put the variable for the sen file into c++ file                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteSenConstant ( pCppFile pSenFile -- )\n"
-    "\n"
-    "  params| pSenFile pCppFile |\n"
+    ": munge_WriteSenConstant params| pSenFile pCppFile |\n"
     "\n"
     "  \\\"  \\\\\\\" CONSTANT \\\" pCppFile file.write\n"
     "  pSenFile file.path@ pCppFile file.write\n"
@@ -4698,36 +4628,50 @@ void Task::vAddMunged(Forth* pForth)
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* write the .cpp header portion of the file                                  */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": munge_WriteCppHeader params| pCppFile |\n"
+    "\n"
+    "  \\\"/*============================================================================*/\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "  \\\"/* MungedSen.cpp - munged sen files                                           */\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "  \\\"/*============================================================================*/\\\\n\\\"\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "  \\\"#include \\\\\\\"StorageEngine.h\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "  \\\"\\\\n\\\" pCppFile file.write\n"
+    "  \\\"void Task::vAddMunged(Forth* pForth)\\\\n\\\" pCppFile file.write\n"
+    "  \\\"{\\\\n\\\" pCppFile file.write\n"
+    "  \\\"  s48K sFileContents;\\\\n\\\" pCppFile file.write\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
     "/* write the .cpp footer portion of the file                                  */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": munge_WriteCppFooter ( pCppFile -- )\n"
-    "\n"
-    "  params| pCppFile |\n"
+    ": munge_WriteCppFooter params| pCppFile |\n"
     "\n"
     "  \\\"}\\\\n\\\" pCppFile file.write\n"
     "  \\\"\\\\n\\\" pCppFile file.write\n"
     "\n"
-    "  \\\"/*============================================================================*/\\\"\n"
+    "  \\\"/*============================================================================*/\\\\n\\\"\n"
     "  pCppFile file.write\n"
-    "  \\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"/* end                                                                        */\\\"\n"
+    "  \\\"/* end                                                                        */\\\\n\\\"\n"
     "  pCppFile file.write\n"
-    "  \\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"/*============================================================================*/\\\"\n"
+    "  \\\"/*============================================================================*/\\\\n\\\"\n"
     "  pCppFile file.write\n"
-    "  \\\"\\\\n\\\" pCppFile file.write\n"
     " ;\n"
     "\n"
-    "////////////////////////////////////////////////////////////////////////////////\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*----------------------------------------------------------------------------*/\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* produce a c++ statement for the sen file                                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": munge_ProduceCppStatement ( pCppFile pSenFile -- )\n"
-    "\n"
-    "  params| pSenFile pCppFile |\n"
+    ": munge_ProduceCppStatement params| pSenFile pCppFile |\n"
     "\n"
     "  pCppFile pSenFile munge_WriteCppVariable\n"
     "\n"
@@ -4821,7 +4765,7 @@ void Task::vAddMunged(Forth* pForth)
     "  sOrigDir dir::changeCurrent\n"
     "  dir::getCurrent \\\"Working directory back to: %v\\\" .printf\n"
     "\n"
-    "  nSenProcessed \\\"munged %v files\\\" .printf\n"
+    "  nSenProcessed \\\"munged %v .sen files\\\" .printf\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
@@ -4833,8 +4777,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_unit.sen
 
   sFileContents =
@@ -4874,8 +4817,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_bufferGen.sen
 
   sFileContents =
@@ -4946,8 +4888,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Cancel.sen
 
   sFileContents =
@@ -5049,8 +4990,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Service.sen
 
   sFileContents =
@@ -5163,8 +5103,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_verifyTable.sen
 
   sFileContents =
@@ -5232,8 +5171,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listCatalogs.sen
 
   sFileContents =
@@ -5317,8 +5255,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_toCrw.sen
 
   sFileContents =
@@ -5451,8 +5388,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listIndexColumns.sen
 
   sFileContents =
@@ -5533,8 +5469,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_iData.sen
 
   sFileContents =
@@ -5601,8 +5536,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Pipeline.sen
 
   sFileContents =
@@ -5733,8 +5667,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dropTable.sen
 
   sFileContents =
@@ -5808,8 +5741,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of op_tagSets.sen
 
   sFileContents =
@@ -5856,8 +5788,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_createTenant.sen
 
   sFileContents =
@@ -5953,8 +5884,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_changeFolder.sen
 
   sFileContents =
@@ -6075,8 +6005,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_1m.sen
 
   sFileContents =
@@ -6103,8 +6032,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_periodic.sen
 
   sFileContents =
@@ -6227,8 +6155,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_purge.sen
 
   sFileContents =
@@ -6315,8 +6242,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dropSchema.sen
 
   sFileContents =
@@ -6390,8 +6316,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_toStatD.sen
 
   sFileContents =
@@ -6467,8 +6392,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_pythonShell.sen
 
   sFileContents =
@@ -6545,8 +6469,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DefineNode.sen
 
   sFileContents =
@@ -6629,8 +6552,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_toCrwH.sen
 
   sFileContents =
@@ -6784,8 +6706,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_gGen.sen
 
   sFileContents =
@@ -6858,8 +6779,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_truncateTable.sen
 
   sFileContents =
@@ -6944,8 +6864,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_rjh.sen
 
   sFileContents =
@@ -6983,8 +6902,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_seedHooks.sen
 
   sFileContents =
@@ -7250,8 +7168,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dumpIndex.sen
 
   sFileContents =
@@ -7299,8 +7216,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_tData.sen
 
   sFileContents =
@@ -7367,8 +7283,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_visualizeIndex.sen
 
   sFileContents =
@@ -7416,8 +7331,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_path.sen
 
   sFileContents =
@@ -7528,8 +7442,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_genCsv.sen
 
   sFileContents =
@@ -7619,8 +7532,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_sink.sen
 
   sFileContents =
@@ -7759,8 +7671,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_categories.sen
 
   sFileContents =
@@ -7839,8 +7750,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_scan.sen
 
   sFileContents =
@@ -7988,8 +7898,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_compactIndex.sen
 
   sFileContents =
@@ -8036,8 +7945,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_readChunk.sen
 
   sFileContents =
@@ -8141,8 +8049,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Cancelled.sen
 
   sFileContents =
@@ -8289,8 +8196,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of grid_node.sen
 
   sFileContents =
@@ -8393,8 +8299,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_recurring.sen
 
   sFileContents =
@@ -8471,8 +8376,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_log.sen
 
   sFileContents =
@@ -8715,8 +8619,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listFolders.sen
 
   sFileContents =
@@ -8803,8 +8706,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_WriteBuffer.sen
 
   sFileContents =
@@ -9007,8 +8909,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_analyzeTable.sen
 
   sFileContents =
@@ -9083,8 +8984,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_start.sen
 
   sFileContents =
@@ -9224,8 +9124,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_toCsv.sen
 
   sFileContents =
@@ -9322,8 +9221,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Executed.sen
 
   sFileContents =
@@ -9470,8 +9368,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_verifyIndex.sen
 
   sFileContents =
@@ -9539,8 +9436,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of op_defHandlers.sen
 
   sFileContents =
@@ -9794,8 +9690,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ForgetNode.sen
 
   sFileContents =
@@ -9862,8 +9757,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_dData.sen
 
   sFileContents =
@@ -9923,8 +9817,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of grid_grid.sen
 
   sFileContents =
@@ -10110,8 +10003,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_stepTiming.sen
 
   sFileContents =
@@ -10136,8 +10028,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_str.sen
 
   sFileContents =
@@ -10237,8 +10128,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Execute.sen
 
   sFileContents =
@@ -10337,8 +10227,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_dbg.sen
 
   sFileContents =
@@ -10531,8 +10420,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_exemplar.sen
 
   sFileContents =
@@ -10592,8 +10480,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_schema.sen
 
   sFileContents =
@@ -10748,8 +10635,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_demons.sen
 
   sFileContents =
@@ -10788,8 +10674,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_output.sen
 
   sFileContents =
@@ -10976,8 +10861,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listPartitions.sen
 
   sFileContents =
@@ -11049,8 +10933,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_2pcReply.sen
 
   sFileContents =
@@ -11139,8 +11022,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_schemaTest.sen
 
   sFileContents =
@@ -11177,8 +11059,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dropIndex.sen
 
   sFileContents =
@@ -11252,8 +11133,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_consume.sen
 
   sFileContents =
@@ -11429,8 +11309,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_eatAll.sen
 
   sFileContents =
@@ -11493,8 +11372,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_createCatalog.sen
 
   sFileContents =
@@ -11590,8 +11468,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_space.sen
 
   sFileContents =
@@ -11652,8 +11529,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dumpTable.sen
 
   sFileContents =
@@ -11700,8 +11576,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_showCluster.sen
 
   sFileContents =
@@ -11774,8 +11649,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Begun.sen
 
   sFileContents =
@@ -11929,8 +11803,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_truncateIndex.sen
 
   sFileContents =
@@ -12015,8 +11888,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_status.sen
 
   sFileContents =
@@ -12077,8 +11949,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_pwf.sen
 
   sFileContents =
@@ -12155,8 +12026,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of BM_inflateCrw.sen
 
   sFileContents =
@@ -12290,8 +12160,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of op__common.sen
 
   sFileContents =
@@ -12640,8 +12509,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_analyzeIndex.sen
 
   sFileContents =
@@ -12724,8 +12592,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_tags.sen
 
   sFileContents =
@@ -12904,8 +12771,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_llc.sen
 
   sFileContents =
@@ -12928,8 +12794,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of BM_insIdx.sen
 
   sFileContents =
@@ -13081,8 +12946,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Receiver.sen
 
   sFileContents =
@@ -13239,8 +13103,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_progress.sen
 
   sFileContents =
@@ -13355,8 +13218,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_str.sen
 
   sFileContents =
@@ -13384,8 +13246,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of BM_genEnt.sen
 
   sFileContents =
@@ -13504,8 +13365,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_catalog.sen
 
   sFileContents =
@@ -13669,8 +13529,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listTableDefs.sen
 
   sFileContents =
@@ -13768,8 +13627,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_arithmetic.sen
 
   sFileContents =
@@ -13802,8 +13660,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_visualizeTable.sen
 
   sFileContents =
@@ -13850,8 +13707,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listIndexes.sen
 
   sFileContents =
@@ -13962,8 +13818,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_toFile.sen
 
   sFileContents =
@@ -14060,8 +13915,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_table.sen
 
   sFileContents =
@@ -14360,8 +14214,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_upsert.sen
 
   sFileContents =
@@ -14458,8 +14311,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_passThru.sen
 
   sFileContents =
@@ -14575,8 +14427,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listSchemas.sen
 
   sFileContents =
@@ -14661,8 +14512,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Local.sen
 
   sFileContents =
@@ -14704,8 +14554,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_nodeInfo.sen
 
   sFileContents =
@@ -14760,8 +14609,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ConnectCluster.sen
 
   sFileContents =
@@ -14934,8 +14782,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of cmd_compiler.sen
 
   sFileContents =
@@ -15407,8 +15254,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Ended.sen
 
   sFileContents =
@@ -15527,8 +15373,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_partition.sen
 
   sFileContents =
@@ -15710,8 +15555,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_boot.sen
 
   sFileContents =
@@ -16028,8 +15872,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_burst.sen
 
   sFileContents =
@@ -16105,8 +15948,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_listTables.sen
 
   sFileContents =
@@ -16204,8 +16046,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of tpl_liteOp.sen
 
   sFileContents =
@@ -16337,8 +16178,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_tenant.sen
 
   sFileContents =
@@ -16469,8 +16309,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_report.sen
 
   sFileContents =
@@ -16642,8 +16481,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_logic.sen
 
   sFileContents =
@@ -16706,8 +16544,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_misc.sen
 
   sFileContents =
@@ -16917,8 +16754,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateTable.sen
 
   sFileContents =
@@ -17056,8 +16892,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_flow.sen
 
   sFileContents =
@@ -17104,8 +16939,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_snapshot.sen
 
   sFileContents =
@@ -17212,8 +17046,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_seedSuffixs.sen
 
   sFileContents =
@@ -17381,8 +17214,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_sizeTable.sen
 
   sFileContents =
@@ -17450,8 +17282,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of OP_dropCatalog.sen
 
   sFileContents =
@@ -17525,8 +17356,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Waker.sen
 
   sFileContents =
@@ -17589,8 +17419,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_seedMarkers.sen
 
   sFileContents =
@@ -17967,8 +17796,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_words.sen
 
   sFileContents =
@@ -18317,8 +18145,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_word.sen
 
   sFileContents =
@@ -18471,8 +18298,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Distributed.sen
 
   sFileContents =
@@ -18588,8 +18414,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_core.sen
 
   sFileContents =
@@ -19175,8 +19000,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_vortex.sen
 
   sFileContents =
@@ -19272,8 +19096,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__End.sen
 
   sFileContents =
@@ -19376,8 +19199,7 @@ void Task::vAddMunged(Forth* pForth)
 
   vCompileMungedColon(sFileContents);
 
-
-  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Answer.sen
 
   sFileContents =

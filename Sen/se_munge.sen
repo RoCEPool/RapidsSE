@@ -5,39 +5,12 @@
 "-se_munge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* write the .cpp header portion of the file                                  */
-/*----------------------------------------------------------------------------*/
-: munge_WriteCppHeader ( pCppFile -- )
-
-  params| pCppFile |
-
-  "/*============================================================================*/"
-  pCppFile file.write "\n" pCppFile file.write
-
-  "/* MungedSen.cpp - munged sen files                                           */"
-  pCppFile file.write "\n" pCppFile file.write
-
-  "/*============================================================================*/"
-  pCppFile file.write "\n" pCppFile file.write
-
-  "#include \"StorageEngine.h\"\n" pCppFile file.write
-  "\n" pCppFile file.write
-  "void Task::vAddMunged(Forth* pForth)\n" pCppFile file.write
-  "{\n" pCppFile file.write
-  "  s48K sFileContents;\n" pCppFile file.write
-;
-
-/*----------------------------------------------------------------------------*/
 /* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
-: munge_WriteCppVariable ( pCppFile pSenFile -- )
-
-  params| pSenFile pCppFile |
+: munge_WriteCppVariable params| pSenFile pCppFile |
 
   "\n" pCppFile file.write
-  "\n" pCppFile file.write
-
-  "  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+  "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     pCppFile file.write
 
   "  // munge of " pCppFile file.write
@@ -51,9 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* put the variable initialise into c++ file                                  */
 /*----------------------------------------------------------------------------*/
-: munge_WriteSenText ( pCppFile pSenFile -- )
-
-  params| pSenFile pCppFile |
+: munge_WriteSenText params| pSenFile pCppFile |
 
   "" locals| senLine |
 
@@ -84,9 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
-: munge_WriteSenConstant ( pCppFile pSenFile -- )
-
-  params| pSenFile pCppFile |
+: munge_WriteSenConstant params| pSenFile pCppFile |
 
   "  \" CONSTANT " pCppFile file.write
   pSenFile file.path@ pCppFile file.write
@@ -108,36 +77,50 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* write the .cpp header portion of the file                                  */
+/*----------------------------------------------------------------------------*/
+: munge_WriteCppHeader params| pCppFile |
+
+  "/*============================================================================*/\n"
+  pCppFile file.write
+  "/* MungedSen.cpp - munged sen files                                           */\n"
+  pCppFile file.write
+  "/*============================================================================*/\n"
+  pCppFile file.write
+
+  "#include \"StorageEngine.h\"\n" pCppFile file.write
+  "\n" pCppFile file.write
+  "void Task::vAddMunged(Forth* pForth)\n" pCppFile file.write
+  "{\n" pCppFile file.write
+  "  s48K sFileContents;\n" pCppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
 /* write the .cpp footer portion of the file                                  */
 /*----------------------------------------------------------------------------*/
-: munge_WriteCppFooter ( pCppFile -- )
-
-  params| pCppFile |
+: munge_WriteCppFooter params| pCppFile |
 
   "}\n" pCppFile file.write
   "\n" pCppFile file.write
 
-  "/*============================================================================*/"
+  "/*============================================================================*/\n"
   pCppFile file.write
-  "\n" pCppFile file.write
-
-  "/* end                                                                        */"
+  "/* end                                                                        */\n"
   pCppFile file.write
-  "\n" pCppFile file.write
-
-  "/*============================================================================*/"
+  "/*============================================================================*/\n"
   pCppFile file.write
-  "\n" pCppFile file.write
 ;
 
-////////////////////////////////////////////////////////////////////////////////
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* produce a c++ statement for the sen file                                   */
 /*----------------------------------------------------------------------------*/
-: munge_ProduceCppStatement ( pCppFile pSenFile -- )
-
-  params| pSenFile pCppFile |
+: munge_ProduceCppStatement params| pSenFile pCppFile |
 
   pCppFile pSenFile munge_WriteCppVariable
 
