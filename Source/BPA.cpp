@@ -68,7 +68,7 @@ void BPA::vDeltaReport(s48K& rsPortrait)
                           
       m_naObjectsAtDump[eClass] - m_naObjectsAtTake[eClass],
       eClass,
-      aHT_short[ geWhichHeap[eClass] ],
+      aHT_short[ gxaSizeHeap[eClass].m_eWhichHeap ],
       aCN[eClass]
                           
       );

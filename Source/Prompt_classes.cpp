@@ -18,7 +18,6 @@ PromptFun __Prompt_classes (
   ""_Stz                // description
 );
 
-extern eHT       geWhichHeap[];
 extern i8        gnClassSize[];
 extern SizeHeap  gxaSizeHeap[];
 
@@ -51,7 +50,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
     if (StrLib::bEnds(aCN[i_Class]->azChar(),(char*)"__"))
       vTrace("\n"_Stz);
     
-    eHT eHeap = geWhichHeap[i_Class];
+    eHT eHeap = gxaSizeHeap[i_Class].m_eWhichHeap;
     
     char cHeap = '?';
          if (HT_INVALID          == eHeap) cHeap = 'I';

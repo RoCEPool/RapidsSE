@@ -4,7 +4,6 @@
 
 #include "Jobs.h"
 
-extern eHT       geWhichHeap[];
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +11,7 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Jobs::vCheckAssumptions(void)
 {
-  RASSERT(HT_TRANSIENT_JUMBO == geWhichHeap[CN_LOADMAP]);
+  RASSERT(HT_TRANSIENT_JUMBO == gxaSizeHeap[CN_LOADMAP].m_eWhichHeap);
 }
 
 /*============================================================================*/

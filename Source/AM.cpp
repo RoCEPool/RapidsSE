@@ -14,7 +14,6 @@ extern Header*       gaSeShmRegion;
 extern Index*        gpReadApiIndex;
 extern Log*          gpLog;
 
-extern eHT           geWhichHeap[];
 extern i8            gnClassSize[];
 extern SizeHeap      gxaSizeHeap[];
 
@@ -1285,7 +1284,7 @@ void AM::vBootCheck(void)
     eCN eClass = (eCN)iClass;
     i8  iClassSize = gnClassSize[eClass];
     
-    switch (geWhichHeap[eClass]) {
+    switch (gxaSizeHeap[eClass].m_eWhichHeap) {
         
       case HT_INVALID:
         continue;
