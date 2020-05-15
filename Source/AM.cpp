@@ -1228,11 +1228,11 @@ void AM::vBootCheck(void)
   // No of entries in eCN , aCN and gpDump should match
   i8 iEntriesECN = CN_ENUMS;
   i8 iEntriesPCN = 0;
-  i8 iEntriesGPDUMP = 0;
   i8 iEntriesGCLASSSIZE = 0;
   
-  bool bFoundEnum = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  bool bFoundEnum = false;
   // find number of entries in aCN
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
     if (aCN[i_Class]->bEqual("ENUMS"_Stz)) {
@@ -1253,26 +1253,7 @@ void AM::vBootCheck(void)
            iEntriesPCN, iEntriesECN);
   }
   
-  bFoundEnum = false;
-  // find number of entries in gpDump
-  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
-    if (gpDump[i_Class] == &Dump::vEnums) {
-      bFoundEnum = true;
-      break;
-    }
-    iEntriesGPDUMP++;
-  }
-  
-  if (!bFoundEnum)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Enum for CN_ENUM not found in gpDump\n"_Stz);
-  
-  if (iEntriesECN != iEntriesGPDUMP) {
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "\n!!!ALERT!!! No of entries in gpDump (%lld) "
-           "do not match the no in eCN (%lld)\n\n"_Stz,
-           iEntriesECN, iEntriesGPDUMP);
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bFoundEnum = false;
   // find number of entries in gnClassSize
@@ -1295,6 +1276,7 @@ void AM::vBootCheck(void)
            iEntriesGCLASSSIZE, iEntriesECN);
   }
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // check sizes are less than pool block size
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {

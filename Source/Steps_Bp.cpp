@@ -12,7 +12,6 @@ static BPA* gpBPA = nullptr;
 void Step::vAddSteps_Bp(void)
 {
   vAddStep("bp::analyze"_Stz,        &Step::vBpAnalyze);
-  vAddStep("bp::dump"_Stz,           &Step::vBpDump);
   vAddStep("bp::freeBuffers"_Stz,    &Step::vBpFreeBuffers);
   vAddStep("bp::freePercent"_Stz,    &Step::vBpFreePercent);
   vAddStep("bp::freeSpace"_Stz,      &Step::vBpFreeSpace);
@@ -22,7 +21,6 @@ void Step::vAddSteps_Bp(void)
   vAddStep("bp::writeBufferPool"_Stz,&Step::vBpWriteBufferPool);
 
   vAddStep("bpa"_Stz,                &Step::vBpAnalyze);
-  vAddStep("bpd"_Stz,                &Step::vBpDump);
   vAddStep("bpr"_Stz,                &Step::vBpReadBufferPool);
   vAddStep("bpw"_Stz,                &Step::vBpWriteBufferPool);
  
@@ -42,18 +40,6 @@ void Step::vBpAnalyze(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* bp.dump -- dump of objects in the buffer pool                              */
-/*----------------------------------------------------------------------------*/
-void Step::vBpDump(void)
-{
-  ENTRY();
-  
-  PoolHelper::vPoolDump();
-  
-  
-  EXIT();
-}
 /*----------------------------------------------------------------------------*/
 /* epochDump -- dump an epoch                                                 */
 /*----------------------------------------------------------------------------*/

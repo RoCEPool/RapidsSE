@@ -101,7 +101,6 @@ public:
 
   // bp
   void vBpAnalyze(void);
-  void vBpDump(void);
   void vBpEpochDump(void);
   void vBpEpochTake(void);
   void vBpReadBufferPool(void);
@@ -923,7 +922,6 @@ public:
   // object
   void vObjectClassFetch(void);
   void vObjectClassStore(void);
-  void vObjectDump(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectStore(void);

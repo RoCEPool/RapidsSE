@@ -1,17 +1,15 @@
 /*============================================================================*/
-/* Dump.hpp -- Class Dumps                                                    */
+/* SizesHeaps.hpp -- Class Sizes and Heaps                                    */
 /*============================================================================*/
 #pragma once
 
 namespace Oblique
 {
-  class Dump
-  {
-  public:
-    static void vDummy(eCN eClass, Object* pObject, Stz* aTab);
-    static void vEnums(eCN eClass, Object* pObject, Stz* aTab);
-    static void vInvalid(eCN eClass, Object* pObject, Stz* aTab);
-    static void vUndefined(eCN eClass, Object* pObject, Stz* aTab);
+  struct SizeHeap {
+    
+    eHT m_eWhichHeap;
+    
+    i8  m_nClassSize;
   };
 }
 

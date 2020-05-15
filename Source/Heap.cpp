@@ -43,14 +43,14 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_iObjectSize  = iObjectSize;
-  m_iAllocCount  = 0;
-  m_iBufferCount = 0;
-  m_pFirstBuffer = nullptr;
-  m_pLastBuffer  = nullptr;
-  m_iFreeCount   = 0;
-  m_pFreeHead    = nullptr;
-  m_bFixedHeap   = false;
+  m_nObjectSize    = iObjectSize;
+  m_nCurrAllocated = 0;
+  m_nBufferCount   = 0;
+  m_pFirstBuffer   = nullptr;
+  m_pLastBuffer    = nullptr;
+  m_nFreeChunks    = 0;
+  m_pFreeHead      = nullptr;
+  m_bFixedHeap     = false;
   
   _checkInitialisedSize_(sizeof(Heap));
 
@@ -105,8 +105,8 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   
   vTrace("BufferCount %lld FreeCount %lld\n"_Stz,
-         pHeap->m_iBufferCount,
-         pHeap->m_iFreeCount);
+         pHeap->m_nBufferCount,
+         pHeap->m_nFreeChunks);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
@@ -141,19 +141,9 @@ void Heap::vAddFree(FreeChunk* aFreeChunk)
 
   ASSERT(m_bFixedHeap);
   
-  m_iBufferCount++;
+  m_nBufferCount++;
   
   vPushFree(aFreeChunk,CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of allocated objects                                            */
-/*----------------------------------------------------------------------------*/
-i8 Heap::iAllocCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_iAllocCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +153,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(gnClassSize[eAllocClass] < m_iObjectSize);
+  ASSERT(gnClassSize[eAllocClass] < m_nObjectSize);
   
   //static eCN eLastClass = CN_ENUMS;
   
@@ -184,10 +174,10 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   Object* pObject = reinterpret_cast<Object*>(pPopFree());
   
-  m_iAllocCount++;
+  m_nCurrAllocated++;
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vScribble(pObject,m_iObjectSize,eAllocClass);
+  MemLib::vScribble(pObject,m_nObjectSize,eAllocClass);
 #endif
   
   m_okLock.vDropWrite();
@@ -214,7 +204,7 @@ void Heap::vAnalyse(i8 iCounts[])
   
   HeapBuffer* pHeapBuffer = m_pFirstBuffer;
   while (pHeapBuffer) {
-    pHeapBuffer->vAnalyse(m_iObjectSize,iCounts);
+    pHeapBuffer->vAnalyse(m_nObjectSize,iCounts);
     pHeapBuffer = pHeapBuffer->pNextBuffer();
   }
   
@@ -224,11 +214,21 @@ void Heap::vAnalyse(i8 iCounts[])
 /*----------------------------------------------------------------------------*/
 /* get number of buffers in the heap                                          */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iBufferCount(void)
+i8 Heap::nBufferCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_iBufferCount;
+  return m_nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of allocated objects                                            */
+/*----------------------------------------------------------------------------*/
+i8 Heap::nCurrAllocated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_nCurrAllocated;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,11 +267,11 @@ void Heap::vFixedHeap(bool bFixedHeap)
 /*----------------------------------------------------------------------------*/
 /* get number of free chunks                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iFreeCount(void)
+i8 Heap::nFreeChunks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_iFreeCount;
+  return m_nFreeChunks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,7 +283,7 @@ void Heap::vFreeObject(Object* pObject)
 
   if (CN_LARGETRANSIENT == eClass()) {
     
-    if (m_iFreeCount > 10) {
+    if (m_nFreeChunks > 10) {
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
       
       HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
@@ -298,7 +298,7 @@ void Heap::vFreeObject(Object* pObject)
   
   vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
   
-  m_iAllocCount--;
+  m_nCurrAllocated--;
 
   m_okLock.vDropWrite();
   
@@ -323,7 +323,7 @@ void Heap::vGrabLock()
 void Heap::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Heap: size %lld buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_iObjectSize,m_iBufferCount,m_iAllocCount,m_iFreeCount);
+                    m_nObjectSize,m_nBufferCount,m_nCurrAllocated,m_nFreeChunks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,11 +341,11 @@ HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* get size of objects                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iObjectSize(void)
+i8 Heap::nObjectSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_iObjectSize;
+  return m_nObjectSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,8 +355,8 @@ void Heap::vReport(String* pReportString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  s32 sMagSum;   MagLib::vByteMag(iSum(),sMagSum);
-  s32 sMagSize;  MagLib::vByteMag(iObjectSize(),sMagSize);
+  s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
+  s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
 
   pReportString->szStz()->vSprint(
                                   
@@ -366,9 +366,9 @@ void Heap::vReport(String* pReportString)
     aCN[eClass()],
     sMagSize.azChar(),
                                   
-    iBufferCount(),
-    iAllocCount(),
-    iFreeCount(),
+    nBufferCount(),
+    nCurrAllocated(),
+    nFreeChunks(),
     sMagSum.szStz()
     );
 }
@@ -376,13 +376,13 @@ void Heap::vReport(String* pReportString)
 /*----------------------------------------------------------------------------*/
 /* get computed size of heap                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iSum(void)
+i8 Heap::nTotalHeapSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  i8 iSum =   iAllocCount() * iObjectSize()
+  i8 iSum =   nCurrAllocated() * nObjectSize()
             +
-              iFreeCount()  * iObjectSize();
+              nFreeChunks() * nObjectSize();
   
   return iSum;
 }
@@ -422,13 +422,13 @@ bool Heap::bExtendHeap(void)
   }
 
   // we have one more buffer
-  m_iBufferCount++;
+  m_nBufferCount++;
   
   // now add all new free chunks into free chain
   FreeChunk* aFreeChunk;
   for (aFreeChunk = pHeapBuffer->aFirstChunk();
        aFreeChunk;
-       aFreeChunk = pHeapBuffer->aNextChunk(aFreeChunk,m_iObjectSize)) {
+       aFreeChunk = pHeapBuffer->aNextChunk(aFreeChunk,m_nObjectSize)) {
     //aFreeChunk->vMagic();
     new(aFreeChunk) FreeChunk;
     vPushFree(aFreeChunk,CN_NONE);
@@ -453,9 +453,9 @@ FreeChunk* Heap::pPopFree(void)
   
   ASSERT(CN_FREECHUNK == aFreeChunk->eClass());
   
-  m_iFreeCount--;
+  m_nFreeChunks--;
   
-  if (m_iObjectSize <= C_1MB) {
+  if (m_nObjectSize <= C_1MB) {
     vValidFree(aFreeChunk);
     if (m_pFreeHead)
       vValidFree(m_pFreeHead);
@@ -471,24 +471,24 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  if (m_iObjectSize <= C_1MB)
+  if (m_nObjectSize <= C_1MB)
     vValidFree(aFreeChunk);
   
-  if (m_iObjectSize <= C_1MB && m_pFreeHead)
+  if (m_nObjectSize <= C_1MB && m_pFreeHead)
     vValidFree(m_pFreeHead);
   
   aFreeChunk->vClass(CN_FREECHUNK);
   aFreeChunk->vNextFree(m_pFreeHead);
   
 #ifdef WITH_CHECK_INITIALISED
-  i8 nBytes = m_iObjectSize - sizeof(FreeChunk);
+  i8 nBytes = m_nObjectSize - sizeof(FreeChunk);
   void* aAddress = aAdd<void*>(aFreeChunk,sizeof(FreeChunk));
   MemLib::vScribble(aAddress,nBytes,CN_FREECHUNK);
 #endif
   
   m_pFreeHead = aFreeChunk;
   
-  m_iFreeCount++;
+  m_nFreeChunks++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -513,7 +513,7 @@ void Heap::vRemoveBuffer(HeapBuffer* pHeapBuffer)
     pHeapBuffer->pNextBuffer()->vPrevBuffer(pHeapBuffer->pPrevBuffer());
 
   // we have one less buffer
-  m_iBufferCount--;
+  m_nBufferCount--;
 
   vDropLock();
 }
@@ -547,7 +547,7 @@ void Heap::vVerify(void)
   
   HeapBuffer* pHeapBuffer = m_pFirstBuffer;
   while (pHeapBuffer) {
-    pHeapBuffer->vVerify(m_iObjectSize);
+    pHeapBuffer->vVerify(m_nObjectSize);
     pHeapBuffer = pHeapBuffer->pNextBuffer();
   }
   
