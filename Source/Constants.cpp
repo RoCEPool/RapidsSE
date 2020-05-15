@@ -739,13 +739,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_CORECTNESS_ALGEBRA"_Stz,(i8)false);
   #endif
-      
-  #ifdef WITH_OBJ_PROPER
-  vAddConstant("WITH_OBJ_PROPER"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_OBJ_PROPER"_Stz,(i8)false);
-  #endif
-    
+          
   #ifdef WITH_DEBUG_VERSION
   vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)true);
   #else
