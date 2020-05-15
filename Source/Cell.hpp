@@ -16,7 +16,6 @@ namespace Correctness
       //
       // that step will be:
       //   - Step::vEnterRoutine for normal words
-      //   - Step::vEnterObject for objects
       //   - Step::vXyz for primitives
       //
       

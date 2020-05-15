@@ -287,7 +287,6 @@ public:
   void vTagSetNew(void);
 
   // enter
-  void vEnterObject(void);
   void vEnterRoutine(void);
 
   // entry
