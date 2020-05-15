@@ -817,13 +817,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_SEN_TAGS
-  vAddConstant("WITH_SEN_TAGS"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_SEN_TAGS"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_SETH_SUPPORT
   vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)true);
   #else

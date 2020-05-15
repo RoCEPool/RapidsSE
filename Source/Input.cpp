@@ -1356,13 +1356,11 @@ void Input::vCollectSen(void)
     vCollectSenString();
   }
 
-#ifdef WITH_SEN_TAGS
   // collect sen tag?
   else
   if (bStartSenTag()) {
     vCollectSenTag();
   }
-#endif
   
   // collect name token
   else {
