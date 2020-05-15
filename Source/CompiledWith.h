@@ -99,7 +99,7 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 // temporary
 
-//#define __WITH_INDEP_ROUTINE EndDefine
+#define __WITH_INDEP_ROUTINE EndDefine
 
 /*============================================================================*/
 /* end                                                                        */

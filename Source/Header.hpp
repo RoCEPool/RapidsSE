@@ -20,8 +20,7 @@ namespace Correctness
       char m_caMagic[4];
     };
     eCN  m_eClass;        // 2 byte class enum
-    u1   m_bWordBody;     // 1 byte boolean flag indicating embedded in routine
-    u1   m__spareByte;    // 1 byte spare
+    u2   m__spareBytes;   // 2 spare bytes
 
     //! observe there are no constructors
   
