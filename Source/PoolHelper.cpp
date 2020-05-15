@@ -4,7 +4,6 @@
 
 #include "Utilities.h"
 
-extern i8        gnClassSize[];
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -280,7 +279,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = gnClassSize[eClass];
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     
@@ -314,7 +313,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = gnClassSize[eClass];
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     
@@ -348,7 +347,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = gnClassSize[eClass];
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     
@@ -382,7 +381,7 @@ void PoolHelper::vObjectSummary(void)
       continue;
     
     nObjInHeap    += nCntObj;
-    i8 nObjSize    = gnClassSize[eClass];
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
     i8 nSumObjSize = nCntObj * nObjSize;
     i8 iPctUse     = (nObjSize * 100) / nBlockSize;
     
