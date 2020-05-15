@@ -10,19 +10,6 @@
 
 : exp1 prompt
 
- // this doesn't work
-
-//  [
-//    WITH_OBJ_PROPER if
-//
-//      "with WITH_OBJ_PROPER" .
-//
-//    else
-//
-//      "not-with WITH_OBJ_PROPER" .
-//
-//    then
-//  ]
 ;
 
 /*----------------------------------------------------------------------------*/

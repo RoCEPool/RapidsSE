@@ -127,10 +127,6 @@ void Step::vFlowExecute(void)
     case WK_CPPOBJECT:
       m_pReturnStack->vPushFip(m_aInxPtr);
       m_aInxPtr = pWord->aEntryCell();
-#ifndef WITH_OBJ_PROPER
-      pObject = pWord->pObject();
-      m_pDataStack->vPushPtr(pObject);
-#endif
       break;
           
     case WK_EMBOBJECT:
