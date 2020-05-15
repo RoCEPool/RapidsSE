@@ -6,7 +6,6 @@
 
 
 extern i8        gnClassSize[];
-extern eHT       geWhichHeap[];
 extern SizeHeap  gxaSizeHeap[];
 
 bool gbAddrAllocated = false;
@@ -79,7 +78,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eHT eHeap = geWhichHeap[eAllocClass];
+  eHT eHeap = gxaSizeHeap[eAllocClass].m_eWhichHeap;
   
   if (bPersistent) {
     switch(eHeap) {
@@ -197,7 +196,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actually free the object and return its space for reuse
   
-  eHT eHeap = geWhichHeap[eFreeingClass];
+  eHT eHeap = gxaSizeHeap[eFreeingClass].m_eWhichHeap;
   
   if (bPersistent) {
     switch(eHeap) {
@@ -361,7 +360,7 @@ void HeapMem::vValidateEnums(void)
     
     eCN eClass = (eCN)i_Class;
     
-    eHT eHeap = geWhichHeap[eClass];
+    eHT eHeap = gxaSizeHeap[eClass].m_eWhichHeap;
     i8  iSize = gnClassSize[eClass];
     
     switch(eHeap) {

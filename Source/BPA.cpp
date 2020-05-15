@@ -4,7 +4,6 @@
 
 #include "Utilities.h"
 
-extern eHT      geWhichHeap[];
 extern SizeHeap gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
