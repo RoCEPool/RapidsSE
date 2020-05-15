@@ -25,7 +25,7 @@ ObjectsInPool* Pool::_pObjectsInPool(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ObjectsInPool::operator new(size_t)
 {
-  ObjectsInPool* pObjectsInPool = (ObjectsInPool*)HeapMem::pAllocate(CN_SEPROMPT);
+  ObjectsInPool* pObjectsInPool = (ObjectsInPool*)HeapMem::pAllocate(CN_OBJECTSINPOOL);
   
   return pPoolCheck<void*>(pObjectsInPool);
 }
