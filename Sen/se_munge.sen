@@ -161,7 +161,6 @@
 
   pCppFile pSenFile munge_ProduceCppStatement
 
-  // close and delete the file accessor
   pSenFile file.close
   pSenFile file.delete
 ;
@@ -196,19 +195,17 @@
 /*----------------------------------------------------------------------------*/
 : munge prompt
 
-  "munging" .
-
-  dir::getCurrent "Original working directory: %v" str.format .
-
-  // create a directory accessor
   dir::new  locals| pSenDir |
   file::new locals| pCppFile |
 
+  "munging" .
+
   // save original dir and change to ../Sen
   dir::getCurrent locals| sOrigDir |
+  sOrigDir "Original working directory: %v" .printf
 
   "../Sen" dir::changeCurrent
-  dir::getCurrent "Working directory now: %v" str.format .
+  dir::getCurrent "Working directory now: %v" .printf
 
   // open sen directory
   "." pSenDir dir.open assert
@@ -227,15 +224,14 @@
   pCppFile file.close
   pCppFile file.delete
 
-  // close and delete directory accessor
   pSenDir dir.close
   pSenDir dir.delete
 
   // change back to original dir
   sOrigDir dir::changeCurrent
-  dir::getCurrent "Working directory back to: %v" str.format .
+  dir::getCurrent "Working directory back to: %v" .printf
 
-  nSenProcessed "munged %v files" .printf
+  nSenProcessed "munged %v .sen files" .printf
 ;
 
 /*============================================================================*/
