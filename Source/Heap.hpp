@@ -11,12 +11,12 @@ namespace Pool
   
   private:
     i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)
-    Lock        m_okLock;        // lock over all segments and free chain
+    Lock        m_okLock;        // lock over all heap buffers and free chain
     i8          m_nAllocCount;   // number of currently allocated objects
     i8          m_iBufferCount;  // number of buffers in the heap
     HeapBuffer* m_pFirstBuffer;  // first buffer in the heap
     HeapBuffer* m_pLastBuffer;   // last buffer in the heap
-    i8          m_iFreeCount;    // number of free chunks
+    i8          m_nFreeChunks;   // number of free chunks
     FreeChunk*  m_pFreeHead;     // head of free chunk chain
     bool        m_bFixedHeap;    // fixed size heap or able to extend?
     
@@ -40,7 +40,7 @@ namespace Pool
     void    vDropLock(void);
     HeapBuffer* pFirstBuffer(void);
     void    vFixedHeap(bool bFixed);
-    i8      iFreeCount(void);
+    i8      nFreeChunks(void);
     void    vFreeObject(Object* pObject);
     void    vGrabLock(void);
     void    vMonitorPortrait(s48K& sPortrait);

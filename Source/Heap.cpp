@@ -48,7 +48,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
-  m_iFreeCount   = 0;
+  m_nFreeChunks   = 0;
   m_pFreeHead    = nullptr;
   m_bFixedHeap   = false;
   
@@ -106,7 +106,7 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("BufferCount %lld FreeCount %lld\n"_Stz,
          pHeap->m_iBufferCount,
-         pHeap->m_iFreeCount);
+         pHeap->m_nFreeChunks);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
@@ -267,11 +267,11 @@ void Heap::vFixedHeap(bool bFixedHeap)
 /*----------------------------------------------------------------------------*/
 /* get number of free chunks                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Heap::iFreeCount(void)
+i8 Heap::nFreeChunks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_iFreeCount;
+  return m_nFreeChunks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,7 +283,7 @@ void Heap::vFreeObject(Object* pObject)
 
   if (CN_LARGETRANSIENT == eClass()) {
     
-    if (m_iFreeCount > 10) {
+    if (m_nFreeChunks > 10) {
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
       
       HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
@@ -323,7 +323,7 @@ void Heap::vGrabLock()
 void Heap::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Heap: size %lld buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_iObjectSize,m_iBufferCount,m_nAllocCount,m_iFreeCount);
+                    m_iObjectSize,m_iBufferCount,m_nAllocCount,m_nFreeChunks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,7 +368,7 @@ void Heap::vReport(String* pReportString)
                                   
     iBufferCount(),
     nAllocCount(),
-    iFreeCount(),
+    nFreeChunks(),
     sMagSum.szStz()
     );
 }
@@ -382,7 +382,7 @@ i8 Heap::iSum(void)
   
   i8 iSum =   nAllocCount() * iObjectSize()
             +
-              iFreeCount()  * iObjectSize();
+              nFreeChunks() * iObjectSize();
   
   return iSum;
 }
@@ -453,7 +453,7 @@ FreeChunk* Heap::pPopFree(void)
   
   ASSERT(CN_FREECHUNK == aFreeChunk->eClass());
   
-  m_iFreeCount--;
+  m_nFreeChunks--;
   
   if (m_iObjectSize <= C_1MB) {
     vValidFree(aFreeChunk);
@@ -488,7 +488,7 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
   
   m_pFreeHead = aFreeChunk;
   
-  m_iFreeCount++;
+  m_nFreeChunks++;
 }
 
 /*----------------------------------------------------------------------------*/
