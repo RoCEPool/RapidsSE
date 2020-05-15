@@ -41,6 +41,7 @@ namespace Structures
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
 
+#include "Vector_t.hpp"
 #include "VectorNL_t.hpp"
 
 #include "Wilderness.hpp"
