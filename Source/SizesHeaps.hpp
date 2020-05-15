@@ -5,6 +5,12 @@
 
 namespace Oblique
 {
+  struct SizeHeap {
+    
+    eHT m_eWhichHeap;
+    
+    i8  m_nClassSize;
+  };
 }
 
 /*============================================================================*/

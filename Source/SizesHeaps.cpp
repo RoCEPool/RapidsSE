@@ -348,10 +348,10 @@ eHT geWhichHeap[]
   
   /* */ HT_INVALID,           // CN__A__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
-  /* */ HT_TRANSIENT_TINY,   // CN_AGGTIMER
-  /* */ HT_TRANSIENT_TINY,   // CN_ARG
+  /* */ HT_TRANSIENT_TINY,    // CN_AGGTIMER
+  /* */ HT_TRANSIENT_TINY,    // CN_ARG
   /* */ HT_INVALID,           // CN_ARGUMENTS
-  /* */ HT_TRANSIENT_TINY,   // CN_ARTICLE
+  /* */ HT_TRANSIENT_TINY,    // CN_ARTICLE
   /* */ HT_INVALID,           // CN_ATOMIC
   /* */ HT_INVALID,           // CN_ATTACHMAP
 
@@ -405,14 +405,14 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_ENT
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
-  /* */ HT_TRANSIENT_TINY,   // CN_ENUMFLAGS
-  /* */ HT_TRANSIENT_TINY,   // CN_EXEMPLAR
-  /* */ HT_TRANSIENT_TINY,   // CN_EXTRACTROW
+  /* */ HT_TRANSIENT_TINY,    // CN_ENUMFLAGS
+  /* */ HT_TRANSIENT_TINY,    // CN_EXEMPLAR
+  /* */ HT_TRANSIENT_TINY,    // CN_EXTRACTROW
 
   /* */ HT_INVALID,           // CN__F__
   /* */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
-  /* */ HT_TRANSIENT_TINY,   // CN_FIFO
-  /* */ HT_TRANSIENT_TINY,   // CN_FILE
+  /* */ HT_TRANSIENT_TINY,    // CN_FIFO
+  /* */ HT_TRANSIENT_TINY,    // CN_FILE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FETCH
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FROM
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_GROUPBY
@@ -430,8 +430,8 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_FIPVAL
   /* */ HT_INVALID,           // CN_FLTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_FOCALOBJECTS
-  /* */ HT_TRANSIENT_TINY,   // CN_FORTH
-  /* */ HT_TRANSIENT_TINY,   // CN_FORMAT
+  /* */ HT_TRANSIENT_TINY,    // CN_FORTH
+  /* */ HT_TRANSIENT_TINY,    // CN_FORMAT
   /* */ HT_INVALID,           // CN_FREEBUFFER
   /* */ HT_INVALID,           // CN_FREECHUNK
   /* */ HT_INVALID,           // CN_FREEDNOT
@@ -485,7 +485,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__L__
   /* */ HT_INVALID,           // CN_LARGEPERSISTENT
   /* */ HT_INVALID,           // CN_LARGETRANSIENT
-  /* */ HT_TRANSIENT_TINY,   // CN_LEXICON
+  /* */ HT_TRANSIENT_TINY,    // CN_LEXICON
   /* */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* */ HT_TRANSIENT_LARGE,   // CN_LOADER
   /* */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
@@ -496,26 +496,26 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_LOGENTRY
 
   /* */ HT_INVALID,           // CN__M__
-  /* */ HT_TRANSIENT_TINY,   // CN_MARKER
+  /* */ HT_TRANSIENT_TINY,    // CN_MARKER
   /* */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
-  /* */ HT_TRANSIENT_TINY,   // CN_MEMTEST
+  /* */ HT_TRANSIENT_TINY,    // CN_MEMTEST
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METABLOCK
-  /* */ HT_TRANSIENT_TINY,   // CN_METACELL
+  /* */ HT_TRANSIENT_TINY,    // CN_METACELL
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METAGRAPH
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METAINHERIT
-  /* */ HT_TRANSIENT_TINY,   // CN_METAINHERITS
-  /* */ HT_TRANSIENT_TINY,   // CN_METAMEMBER
+  /* */ HT_TRANSIENT_TINY,    // CN_METAINHERITS
+  /* */ HT_TRANSIENT_TINY,    // CN_METAMEMBER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METATYPE
-  /* */ HT_TRANSIENT_TINY,   // CN_MUTEX
+  /* */ HT_TRANSIENT_TINY,    // CN_MUTEX
 
   /* */ HT_INVALID,           // CN__N__
   /* */ HT_INVALID,           // CN_NEXTGID
   /* */ HT_TRANSIENT_MEDIUM,  // CN_NMSTR
-  /* */ HT_TRANSIENT_TINY,   // CN_NMLIST
-  /* */ HT_TRANSIENT_TINY,   // CN_NMVAL
-  /* */ HT_TRANSIENT_TINY,   // CN_NODE
-  /* */ HT_TRANSIENT_TINY,   // CN_NOW
+  /* */ HT_TRANSIENT_TINY,    // CN_NMLIST
+  /* */ HT_TRANSIENT_TINY,    // CN_NMVAL
+  /* */ HT_TRANSIENT_TINY,    // CN_NODE
+  /* */ HT_TRANSIENT_TINY,    // CN_NOW
   /* */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
   /* */ HT_INVALID,           // CN__O__
@@ -531,17 +531,17 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_PIPELINESPEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
-  /* */ HT_TRANSIENT_TINY,   // CN_PREDICATE
+  /* */ HT_TRANSIENT_TINY,    // CN_PREDICATE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PROFILE
-  /* */ HT_TRANSIENT_TINY,   // CN_PSXTHD
+  /* */ HT_TRANSIENT_TINY,    // CN_PSXTHD
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
   /* */ HT_INVALID,           // CN_PTRVAL
 
   /* */ HT_INVALID,           // CN__Q__
-  /* */ HT_TRANSIENT_TINY,   // CN_QUEUE
+  /* */ HT_TRANSIENT_TINY,    // CN_QUEUE
   /* */ HT_INVALID,           // CN_QUEUEBUFFER
-  /* */ HT_TRANSIENT_TINY,   // CN_QUEUES
+  /* */ HT_TRANSIENT_TINY,    // CN_QUEUES
   
   /* */ HT_INVALID,           // CN__R__
   /* */ HT_TRANSIENT_TINY,    // CN_READAPI
@@ -560,7 +560,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_ROW
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWCOMPACTOR
-  /* */ HT_TRANSIENT_TINY,   // CN_ROWONCE
+  /* */ HT_TRANSIENT_TINY,    // CN_ROWONCE
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWSINGLE
   /* */ HT_TRANSIENT_LARGE,   // CN_ROWTRAY
   /* */ HT_INVALID,           // CN_RUCPU
@@ -574,19 +574,19 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_RUWORK
 
   /* */ HT_INVALID,           // CN__S__
-  /* */ HT_TRANSIENT_TINY,   // CN_SCHEMA
+  /* */ HT_TRANSIENT_TINY,    // CN_SCHEMA
   /* */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
   /* */ HT_INVALID,           // CN_SEEME
-  /* */ HT_TRANSIENT_MEDIUM,   // CN_SEPROMPT
-  /* */ HT_TRANSIENT_MEDIUM,   // CN_SESSION
-  /* */ HT_TRANSIENT_TINY,     // CN_SESSIONARRAY
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_SEPROMPT
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
+  /* */ HT_TRANSIENT_TINY,    // CN_SESSIONARRAY
   /* */ HT_TRANSIENT_MEDIUM,  // CN_SHORTCUT
   /* */ HT_TRANSIENT_MEDIUM,  // CN_SHORTCUTVEC
   /* */ HT_INVALID,           // CN_SINCE
-  /* */ HT_TRANSIENT_TINY,   // CN_SKIPLIST
-  /* */ HT_TRANSIENT_TINY,   // CN_SKIPNODE
+  /* */ HT_TRANSIENT_TINY,    // CN_SKIPLIST
+  /* */ HT_TRANSIENT_TINY,    // CN_SKIPNODE
   /* */ HT_TRANSIENT_LARGE,   // CN_SLAB
-  /* */ HT_TRANSIENT_TINY,   // CN_SLABALLOCATOR
+  /* */ HT_TRANSIENT_TINY,    // CN_SLABALLOCATOR
   /* */ HT_INVALID,           // CN_SLEEP
   /* */ HT_INVALID,           // SN_SMALLPERSISTENT
   /* */ HT_INVALID,           // SN_SMALLTRANSIENT
@@ -599,7 +599,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_SNTME
   /* */ HT_INVALID,           // CN_SNTSP
   /* */ HT_INVALID,           // CN_SNVCH
-  /* */ HT_TRANSIENT_TINY,   // CN_SOCKET
+  /* */ HT_TRANSIENT_TINY,    // CN_SOCKET
   /* */ HT_INVALID,           // CN_SPBCD
   /* */ HT_INVALID,           // CN_SPBOL
   /* */ HT_INVALID,           // CN_SPDTE
@@ -636,23 +636,23 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_TABLEPTNVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TAGSET
   /* */ HT_TRANSIENT_TINY,    // CN_TASK
-  /* */ HT_TRANSIENT_TINY,   // CN_TASKLIST
-  /* */ HT_TRANSIENT_TINY,   // CN_TEMPNAME
-  /* */ HT_TRANSIENT_TINY,   // CN_TENANT
-  /* */ HT_TRANSIENT_TINY,   // CN_TENANTS
-  /* */ HT_TRANSIENT_TINY,   // CN_TASKQUEUE
-  /* */ HT_TRANSIENT_TINY,   // CN_THREAD
-  /* */ HT_TRANSIENT_TINY,   // CN_THREADQUEUE
-  /* */ HT_TRANSIENT_SMALL,  // CN_THREADVEC
-  /* */ HT_TRANSIENT_TINY,   // CN_TIMER
+  /* */ HT_TRANSIENT_TINY,    // CN_TASKLIST
+  /* */ HT_TRANSIENT_TINY,    // CN_TEMPNAME
+  /* */ HT_TRANSIENT_TINY,    // CN_TENANT
+  /* */ HT_TRANSIENT_TINY,    // CN_TENANTS
+  /* */ HT_TRANSIENT_TINY,    // CN_TASKQUEUE
+  /* */ HT_TRANSIENT_TINY,    // CN_THREAD
+  /* */ HT_TRANSIENT_TINY,    // CN_THREADQUEUE
+  /* */ HT_TRANSIENT_SMALL,   // CN_THREADVEC
+  /* */ HT_TRANSIENT_TINY,    // CN_TIMER
   /* */ HT_INVALID,           // CN_TINYPERSISTENT
   /* */ HT_INVALID,           // CN_TINYTRANSIENT
   /* */ HT_INVALID,           // CN_TMEVAL
-  /* */ HT_TRANSIENT_TINY,   // CN_TOKEN
+  /* */ HT_TRANSIENT_TINY,    // CN_TOKEN
   /* */ HT_TRANSIENT_LARGE,   // CN_TOKENVEC
   /* */ HT_INVALID,           // CN_TSPVAL
-  /* */ HT_TRANSIENT_TINY,   // CN_TX
-  /* */ HT_TRANSIENT_TINY,   // CN_TXSET
+  /* */ HT_TRANSIENT_TINY,    // CN_TX
+  /* */ HT_TRANSIENT_TINY,    // CN_TXSET
   
   /* */ HT_INVALID,           // CN__U__
   
@@ -661,12 +661,12 @@ eHT geWhichHeap[]
 
   /* */ HT_INVALID,           // CN__W__
   /* */ HT_INVALID,           // CN_WILDERNESS
-  /* */ HT_TRANSIENT_TINY,   // CN_WORD
+  /* */ HT_TRANSIENT_TINY,    // CN_WORD
   
   /* */ HT_TRANSIENT_LARGE,   // CN_WRITEBEHIND
 
   /* */ HT_INVALID,           // CN__X__
-  /* */ HT_TRANSIENT_TINY,   // CN_XMITS
+  /* */ HT_TRANSIENT_TINY,    // CN_XMITS
   
   /* */ HT_INVALID,           // CN__Y__
   
@@ -675,6 +675,16 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_ENUMS
 };
 
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* sizes & heaps                                                              */
+/*----------------------------------------------------------------------------*/
+SizeHeap gxaSizeHeap[]
+{
+};
 
 /*============================================================================*/
 /* end                                                                        */
