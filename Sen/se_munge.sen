@@ -12,12 +12,9 @@
   "\n" pCppFile file.write
   "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     pCppFile file.write
-
-  "  // munge of " pCppFile file.write
-    pSenFile file.path@ pCppFile file.write
-    "\n" pCppFile file.write
-
+  pSenFile file.path@ "  // munge of %v\n" str.format pCppFile file.write
   "\n" pCppFile file.write
+
   "  sFileContents =\n" pCppFile file.write
 ;
 
@@ -57,9 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : munge_WriteSenConstant params| pSenFile pCppFile |
 
-  "  \" CONSTANT " pCppFile file.write
-  pSenFile file.path@ pCppFile file.write
-  "\"_Stz\n" pCppFile file.write
+  pSenFile file.path@ "  \" CONSTANT %v \"_Stz\n" str.format pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
