@@ -18,7 +18,6 @@ PromptFun __Prompt_classes (
   ""_Stz                // description
 );
 
-extern i8        gnClassSize[];
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +63,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
            
            i_Class,
            i_Class,
-           gnClassSize[i_Class],
+           gxaSizeHeap[i_Class].m_nClassSize,
            cHeap,
            aCN[i_Class],
            

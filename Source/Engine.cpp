@@ -8,7 +8,6 @@ extern Args         gxArgs;
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
-extern i8           gnClassSize[];
 extern SizeHeap     gxaSizeHeap[];
 extern Header*      gaSeShmRegion;
 extern File*        gpTraceFile;
@@ -271,32 +270,32 @@ void Engine::vAttachRegion(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vBootCheck(void)
 {
-  ASSERT( 1 == gnClassSize[CN__A__]);
-  ASSERT( 2 == gnClassSize[CN__B__]);
-  ASSERT( 3 == gnClassSize[CN__C__]);
-  ASSERT( 4 == gnClassSize[CN__D__]);
-  ASSERT( 5 == gnClassSize[CN__E__]);
-  ASSERT( 6 == gnClassSize[CN__F__]);
-  ASSERT( 7 == gnClassSize[CN__G__]);
-  ASSERT( 8 == gnClassSize[CN__H__]);
-  ASSERT( 9 == gnClassSize[CN__I__]);
-  ASSERT(10 == gnClassSize[CN__J__]);
-  ASSERT(11 == gnClassSize[CN__K__]);
-  ASSERT(12 == gnClassSize[CN__L__]);
-  ASSERT(13 == gnClassSize[CN__M__]);
-  ASSERT(14 == gnClassSize[CN__N__]);
-  ASSERT(15 == gnClassSize[CN__O__]);
-  ASSERT(16 == gnClassSize[CN__P__]);
-  ASSERT(17 == gnClassSize[CN__Q__]);
-  ASSERT(18 == gnClassSize[CN__R__]);
-  ASSERT(19 == gnClassSize[CN__S__]);
-  ASSERT(20 == gnClassSize[CN__T__]);
-  ASSERT(21 == gnClassSize[CN__U__]);
-  ASSERT(22 == gnClassSize[CN__V__]);
-  ASSERT(23 == gnClassSize[CN__W__]);
-  ASSERT(24 == gnClassSize[CN__X__]);
-  ASSERT(25 == gnClassSize[CN__Y__]);
-  ASSERT(26 == gnClassSize[CN__Z__]);
+  ASSERT( 1 == gxaSizeHeap[CN__A__].m_nClassSize);
+  ASSERT( 2 == gxaSizeHeap[CN__B__].m_nClassSize);
+  ASSERT( 3 == gxaSizeHeap[CN__C__].m_nClassSize);
+  ASSERT( 4 == gxaSizeHeap[CN__D__].m_nClassSize);
+  ASSERT( 5 == gxaSizeHeap[CN__E__].m_nClassSize);
+  ASSERT( 6 == gxaSizeHeap[CN__F__].m_nClassSize);
+  ASSERT( 7 == gxaSizeHeap[CN__G__].m_nClassSize);
+  ASSERT( 8 == gxaSizeHeap[CN__H__].m_nClassSize);
+  ASSERT( 9 == gxaSizeHeap[CN__I__].m_nClassSize);
+  ASSERT(10 == gxaSizeHeap[CN__J__].m_nClassSize);
+  ASSERT(11 == gxaSizeHeap[CN__K__].m_nClassSize);
+  ASSERT(12 == gxaSizeHeap[CN__L__].m_nClassSize);
+  ASSERT(13 == gxaSizeHeap[CN__M__].m_nClassSize);
+  ASSERT(14 == gxaSizeHeap[CN__N__].m_nClassSize);
+  ASSERT(15 == gxaSizeHeap[CN__O__].m_nClassSize);
+  ASSERT(16 == gxaSizeHeap[CN__P__].m_nClassSize);
+  ASSERT(17 == gxaSizeHeap[CN__Q__].m_nClassSize);
+  ASSERT(18 == gxaSizeHeap[CN__R__].m_nClassSize);
+  ASSERT(19 == gxaSizeHeap[CN__S__].m_nClassSize);
+  ASSERT(20 == gxaSizeHeap[CN__T__].m_nClassSize);
+  ASSERT(21 == gxaSizeHeap[CN__U__].m_nClassSize);
+  ASSERT(22 == gxaSizeHeap[CN__V__].m_nClassSize);
+  ASSERT(23 == gxaSizeHeap[CN__W__].m_nClassSize);
+  ASSERT(24 == gxaSizeHeap[CN__X__].m_nClassSize);
+  ASSERT(25 == gxaSizeHeap[CN__Y__].m_nClassSize);
+  ASSERT(26 == gxaSizeHeap[CN__Z__].m_nClassSize);
 }
 
 /*----------------------------------------------------------------------------*/

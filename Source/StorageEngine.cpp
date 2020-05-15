@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 
 extern Args       gxArgs;
-extern i8         gnClassSize[];
 extern SizeHeap   gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
