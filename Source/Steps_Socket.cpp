@@ -4,7 +4,6 @@
 
 #include "Steps.h"
 
-extern i8        gnClassSize[];
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +289,7 @@ void Step::vSocketRecvObject(void)
   
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   eCN eClass = pObject->eClass();
-  i8 nObjectSize = gnClassSize[eClass];
+  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
 
   RASSERT(_bIsValidJob(eClass) ||
           _bIsValidOperand(eClass));
@@ -359,7 +358,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
       
       aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_CRWBUFFER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_CRWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -388,7 +387,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pIrwBuffer,pObject,sizeof(Object),CN_IRWBUFFER);
       
       aBody = aAdd<void*>(pIrwBuffer,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_IRWBUFFER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_IRWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -416,7 +415,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
       
       aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_CSVBUFFER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_CSVBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -443,7 +442,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
       
       aBody = aAdd<void*>(pInfoSet,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_INFOSET] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_INFOSET].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -464,7 +463,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
       
       aBody = aAdd<void*>(pStreamSet,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_STREAMSET] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_STREAMSET].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -485,7 +484,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
       
       aBody = aAdd<void*>(pMarker,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_MARKER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -506,7 +505,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
       
       aBody = aAdd<void*>(pStreamDef,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_STREAMDEF] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_STREAMDEF].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -575,7 +574,7 @@ void Step::vSocketRecvObject_LowMem(void)
   
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   eCN eClass = pObject->eClass();
-  i8 nObjectSize = gnClassSize[eClass];
+  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
   RASSERT(_bIsValidJob(eClass) || _bIsValidOperand(eClass));
 
@@ -647,7 +646,7 @@ void Step::vSocketRecvObject_LowMem(void)
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
     void* aBody = aAdd<void*>(pJob,sizeof(Object));
-    i8 nRemainingBytes = gnClassSize[eClass] - sizeof(Object);
+    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
@@ -689,7 +688,7 @@ void Step::vSocketRecvObject_LowMem(void)
       MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
       
       aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_CRWBUFFER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_CRWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -717,7 +716,7 @@ void Step::vSocketRecvObject_LowMem(void)
       MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
       
       aBody = aAdd<void*>(pMarker,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_MARKER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -741,7 +740,7 @@ void Step::vSocketRecvObject_LowMem(void)
       MemLib::vCopy(pIrwBuffer,pObject,sizeof(Object),CN_IRWBUFFER);
       
       aBody = aAdd<void*>(pIrwBuffer,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_IRWBUFFER] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_IRWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -768,7 +767,7 @@ void Step::vSocketRecvObject_LowMem(void)
       MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
       
       aBody = aAdd<void*>(pStreamDef,sizeof(Object));
-      nRemainingBytes = gnClassSize[CN_STREAMDEF] - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_STREAMDEF].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -812,7 +811,7 @@ void Step::vSocketSendObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   eCN eClass = pObject->eClass();
-  i8 nObjectSize = gnClassSize[eClass];
+  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
   //vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
   //       pObject,eClass,aCN[eClass],nObjectSize);
