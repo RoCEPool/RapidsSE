@@ -186,10 +186,20 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     
     eCN eClass = pBuffer->eClass();
     
-    if (CN_QUEUES == eClass)
-      int iDebug = 1;
-    
     pCountObjects[eClass]++;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  AM::pHeapMem()->Transient.m_pTiny->vAnalyse(iCountObjects);
+  
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    pCountObjects[eClass] += iCountObjects[eClass];
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -201,9 +211,6 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     
     if (iCountObjects[eClass] == 0)
       continue;
-    
-    if (CN_QUEUES == eClass)
-      int iDebug = 1;
     
     pCountObjects[eClass] += iCountObjects[eClass];
   }
@@ -217,9 +224,6 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     
     if (iCountObjects[eClass] == 0)
       continue;
-    
-    if (CN_QUEUES == eClass)
-      int iDebug = 1;
 
     pCountObjects[eClass] += iCountObjects[eClass];
   }
@@ -233,9 +237,6 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     
     if (iCountObjects[eClass] == 0)
       continue;
-    
-    if (CN_QUEUES == eClass)
-      int iDebug = 1;
 
     pCountObjects[eClass] += iCountObjects[eClass];
   }

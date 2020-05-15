@@ -77,11 +77,11 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
     eCN eClass = aChunk->eClass();
     //vTrace("Analyse %p : %p %lld\n"_Stz,this,pChunk,eClass);
     
-    if (CN_FREECHUNK == eClass)
+    if (eClass >= CN_ENUMS)
       continue;
     
-    if (CN_QUEUES == eClass)
-      int iDebug = 1;
+    if (CN_FREECHUNK == eClass)
+      continue;
 
     xCounts[eClass]++;
   }
