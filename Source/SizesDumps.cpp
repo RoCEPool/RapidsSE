@@ -144,8 +144,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_JOB_OPERAND
   /* */ &Dump::vDummy,           // CN_JOB_RECEIVER
   /* */ &Dump::vDummy,           // CN_JOB_START
-  /* */ &Dump::vDummy,           // CN_JOB_SUBINFLATE
-  /* */ &Dump::vDummy,           // CN_JOB_SUBINGESTER
   /* */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
   /* */ &JobList::vDump,         // CN_JOBLIST
   /* */ &Heap::vDump,            // CN_JUMBOPERSISTENT
@@ -481,8 +479,6 @@ i8 gnClassSize[]
   /* */ sizeof(Job_Operand),        // CN_JOB_OPERAND
   /* */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /* */ sizeof(Job_Start),          // CN_JOB_START
-  /* */ sizeof(Job_Start),          // CN_JOB_SUBINFLATE - togo
-  /* */ sizeof(Job_Start),          // CN_JOB_SUBINGESTER - togo
   /* */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /* */ sizeof(JobList),            // CN_JOBLIST
   /* */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -818,8 +814,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
   /* */ HT_TRANSIENT_MEDIUM,  // CN_JOB_RECEIVER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_JOB_START
-  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINFLATE
-  /* */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINGESTER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
   /* */ HT_TRANSIENT_TINY,    // CN_JOBLIST
   /* */ HT_INVALID,           // CN_JUMBOPERSISTENT
