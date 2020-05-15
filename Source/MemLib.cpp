@@ -4,8 +4,7 @@
 
 #include "Correctness.h"
 
-extern i8        gnClassSize[];
-extern SizeHeap  SizeHeap[];
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add number of bytes to given address                                       */
@@ -38,7 +37,7 @@ void MemLib::vAsciiDump(Stz* aText, i8 nBytes)
 void MemLib::vCheckInitialised(void* aAddress, eCN eClass)
 {
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
-  i8  nBytes = gnClassSize[eClass];
+  i8  nBytes = gxaSizeHeap[eClass].m_nClassSize;
   i8  nWords = nBytes / 8;
   
   // if this fails check the size of the object in SizeHeap[]

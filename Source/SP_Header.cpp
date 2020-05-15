@@ -4,7 +4,6 @@
 
 #include "Gadgets.h"
 
-extern i8        gnClassSize[];
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +39,7 @@ Stz* SP_Header::sz(Header* aHeader)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   eCN eClassNo  = aHeader->eClass();
-  i8 nClassSize = gnClassSize[eClassNo];
+  i8 nClassSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
   StrLib::vSprint(m_caResult,
                   "<cn%03d %s %lldB %s>"_Stz,
