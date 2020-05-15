@@ -19,7 +19,6 @@ namespace Jobs
 #include "Response.hpp"
 #include "Result.hpp"
 
-#include "JobExtractRow.hpp"
 #include "JobFilePath.hpp"
 
 #include "Job.hpp"
