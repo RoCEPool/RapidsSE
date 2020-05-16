@@ -175,6 +175,7 @@ public:
   // csv buffer
   void vCsvBufferDelete(void);
   void vCsvBufferNew(void);
+  void vCsvBufferPrint(void);
 
   // cursor
   void vCursorFetch(void);
