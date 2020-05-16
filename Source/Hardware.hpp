@@ -13,7 +13,9 @@ namespace Host
     static i8 iCpuCount(void);
     static i8 iCpuFrequency(void);
     static i8 iPhysicalMemory(void);
-    
+    static i8 iReadClock(void);
+    static i8 iReadTscp(void);
+
     static void vHostName(s32& sName);
     static void vLoginName(s32& sName);
   };

@@ -154,6 +154,74 @@ i8 Hardware::iPhysicalMemory(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* read ticks from clock                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iReadClock(void)
+{
+  _static_
+
+#ifdef WITH_APPLE
+  struct timespec tp;
+  int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
+  //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
+
+  i8 iTicks = tp.tv_sec * C_1G;
+  iTicks += tp.tv_nsec;
+  
+#elif defined(WITH_LINUX)
+  struct timeval iTimeval;
+  
+  if (gettimeofday(&iTimeval, NULL) < 0) {
+    return 0;
+  }
+  i8 iTicks = iTimeval.tv_sec;
+  iTicks *= C_1M;  // convert to micros
+  iTicks += iTimeval.tv_usec;
+  iTicks *= C_1K;  // convert to nanos
+#endif
+  
+  return iTicks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read ticks from hardware timestamp counter                                 */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iReadTscp(void)
+{
+  _static_
+  
+  /*
+   Intel SDM says:
+   The processor monotonically increments the time-stamp counter MSR
+   every clock cycle and resets it to 0 whenever the processor is reset.
+   -----------------
+   
+   The time stamp counter in newer processors may support an enhancement,
+   referred to as invariant TSC. Processor’s support for invariant TSC is
+   indicated by CPUID.80000007H:EDX[8].
+   
+   The invariant TSC will run at a constant rate in all ACPI P-, C-. and
+   T-states. This is the architectural behavior moving forward.
+   On processors with invariant TSC support, the OS may use the TSC for
+   wall clock timer services (instead of ACPI or HPET timers). TSC reads
+   are much more efficient and do not incur the overhead associated with
+   a ring transition or access to a platform resource.
+   */
+  
+#ifdef WITH_APPLE
+  
+  i8 iTscp = Assembler::iRdtscp();
+  return iTscp;
+  
+#else
+  
+  return 0;
+  
+#endif
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get get host name of this machine                                          */
 /*----------------------------------------------------------------------------*/
 void Hardware::vHostName(s32& sName)

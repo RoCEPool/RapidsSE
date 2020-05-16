@@ -1205,9 +1205,10 @@ void Engine::vPrintMachine(void)
   
   vInfo("  Host Name : %s\n"_Stz,sHostName.szStz());
   vInfo("  Core Count: %lld\n"_Stz,iCoreCount);
+  vInfo("  Memory    : %s\n"_Stz,sMemory_magn.szStz());
   vInfo("  Cpu Freq  : %s\n"_Stz,sFreq_magn.szStz());
   vInfo("  Clock Res : %s\n"_Stz,sClock_magn.szStz());
-  vInfo("  Memory    : %s\n"_Stz,sMemory_magn.szStz());
+  vInfo("  Tick      : %lld\n"_Stz,TickingDevice::iGetTick());
 }
 
 /*----------------------------------------------------------------------------*/
