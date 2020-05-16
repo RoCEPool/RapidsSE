@@ -96,8 +96,6 @@ AttachMap::AttachMap(void)
     new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
   m_xHeapMem.Persistent.m_pLarge  =
     new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  m_xHeapMem.Persistent.m_pJumbo  =
-    new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
   
@@ -197,11 +195,11 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vInfo("TransientJumboHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pJumbo);
   vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pMedium);
   vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pLarge);
   vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
-  
+  vInfo("TransientTinyHeap  : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pTiny);
+
   /*
   vInfo("\n"_Stz);
   vInfo("Total Nodes      : %lld \n"_Stz, AM::pGrid()->nDefinedNodes());
@@ -313,12 +311,10 @@ void AttachMap::vRecordArguments(
   
   m_oFormatters.m_nMaxErrors = Arg.m_nMaxLoadErrors;
   
-  ASSERT(m_xHeapMem.Transient.m_pJumbo);
   ASSERT(m_xHeapMem.Transient.m_pMedium);
   ASSERT(m_xHeapMem.Transient.m_pLarge);
   ASSERT(m_xHeapMem.Transient.m_pSmall);
   
-  ASSERT(m_xHeapMem.Persistent.m_pJumbo);
   ASSERT(m_xHeapMem.Persistent.m_pMedium);
   ASSERT(m_xHeapMem.Persistent.m_pLarge);
   ASSERT(m_xHeapMem.Persistent.m_pSmall);

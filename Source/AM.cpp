@@ -1307,12 +1307,7 @@ void AM::vBootCheck(void)
       case HT_TRANSIENT_LARGE:
         assert(iClassSize < C_SIZE_LARGE_OBJECT);
         continue;
-        
-      case HT_PERSISTENT_JUMBO:
-      case HT_TRANSIENT_JUMBO:
-        assert(iClassSize < C_SIZE_JUMBO_OBJECT);
-        continue;
-        
+                
       default:
         assert(0);
     }

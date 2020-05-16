@@ -687,12 +687,6 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
   
-  vTrace("   Transient JumboHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Transient.m_pJumbo->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pJumbo->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pJumbo->nFreeChunks());
-  
   vTrace("  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagTiny.azChar(),
          AM::pHeapMem()->Persistent.m_pTiny->nBufferCount(),
@@ -716,12 +710,6 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
          AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
-  
-  vTrace("  Persistent JumboHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nFreeChunks());
 }
 
 /*----------------------------------------------------------------------------*/
