@@ -173,6 +173,7 @@ public:
   void vCrwBufferSnapshot(void);
 
   // csv buffer
+  void vCsvBufferDelete(void);
   void vCsvBufferNew(void);
 
   // cursor
