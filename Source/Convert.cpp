@@ -16,12 +16,17 @@ __aFooterFunction(Convert)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Convert::Convert(Format* pFmt)
+Convert::Convert(void* aOut, char* azSrc, Format* pFmt)
 : Object(CN_CONVERT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
   
-   _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
+  m_azSrc = azSrc;
+  m_acChr = m_azSrc;
+
+  m_pFmt  = pFmt;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
 }
 
 /*----------------------------------------------------------------------------*/
