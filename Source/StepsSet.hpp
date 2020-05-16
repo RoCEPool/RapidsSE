@@ -337,6 +337,8 @@ public:
   void vFilePathGet(void);
   void vFileRead(void);
   void vFileReadChunk(void);
+  void vFileSeek(void);
+  void vFileSize(void);
   void vFileWrite(void);
 
   // flow

@@ -16,12 +16,15 @@ void Step::vAddSteps_File(void)
   vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
   vAddStep("file::new"_Stz,       &Step::vFileNew);
+  vAddStep("file::size"_Stz,      &Step::vFileSize);
+
   vAddStep("file.close"_Stz,      &Step::vFileClose);
   vAddStep("file.delete"_Stz,     &Step::vFileDelete);
   vAddStep("file.open"_Stz,       &Step::vFileOpen);
   vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
   vAddStep("file.read"_Stz,       &Step::vFileRead);
   vAddStep("file.readChunk"_Stz,  &Step::vFileReadChunk);
+  vAddStep("file.seek"_Stz,       &Step::vFileSeek);
   vAddStep("file.write"_Stz,      &Step::vFileWrite);
 }
 
@@ -90,7 +93,7 @@ void Step::vFile0Size(void)
   
   File* pFile = _pFile(*m_pRegSet->m_xpFile0);
   
-  m_pDataStack->vPushInt(File::iSize(pFile->sFilePath()));
+  m_pDataStack->vPushInt(File::nSize(pFile->sFilePath()));
                          
   EXIT();
 }
@@ -221,6 +224,40 @@ void Step::vFileReadChunk(void)
 
   m_pDataStack->vPushInt(nReadBytes);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file.seek -- seek file                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vFileSeek(void)
+{
+  ENTRY();
+  
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pFile);
+
+  i8 iOffset = m_pDataStack->iPopInt(__func__);
+  
+  pFile->vSeek(iOffset);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].size -- gett size of file0                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vFileSize(void)
+{
+  ENTRY();
+  
+  s256 sPath;
+  m_pDataStack->vPopStr(sPath,__func__);
+
+  i8 nSize = File::nSize(sPath);
+  
+  m_pDataStack->vPushInt(nSize);
+                         
   EXIT();
 }
 

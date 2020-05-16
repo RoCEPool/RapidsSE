@@ -1245,7 +1245,7 @@ void SePrompt::vReportTrace(void)
   if (! m_oSettings.bHasName(C_PMT_TRCFILE))
     return;
 
-  i8 iSizeTrace = File::iSize(gpAttachMap->m_sTraceFile);
+  i8 iSizeTrace = File::nSize(gpAttachMap->m_sTraceFile);
   
   s32 sTrace_magn;
   MagLib::vByteMag(iSizeTrace,sTrace_magn);

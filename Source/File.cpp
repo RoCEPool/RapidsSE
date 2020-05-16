@@ -234,7 +234,7 @@ bool File::bRemove(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 /* get size of named file                                                     */
 /*----------------------------------------------------------------------------*/
-i8 File::iSize(Stz* szFilePath)
+i8 File::nSize(Stz* szFilePath)
 {
   struct stat xStat;
   

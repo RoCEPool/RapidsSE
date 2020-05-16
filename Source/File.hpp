@@ -60,7 +60,7 @@ namespace Resources
     static bool bModTime(Stz* szFilePath, time_t& tTime);
     static void vMonitorPortrait(s48K& sPortrait);
     static bool bRemove(Stz* szFilePath);
-    static i8   iSize(Stz* szFilePath);
+    static i8   nSize(Stz* szFilePath);
     static void vStatistics(void);
   
     void vClose(void);
