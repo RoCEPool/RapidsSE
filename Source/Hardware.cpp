@@ -5,6 +5,20 @@
 #include "Host.h"
 
 /*----------------------------------------------------------------------------*/
+/* get clock resolution (in nanoseconds)                                      */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iClockResNsec(void)
+{
+  _static_
+  
+  struct timespec tp;
+  
+  int iResult = clock_getres(CLOCK_REALTIME,&tp);
+  
+  return tp.tv_nsec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of logical cores                                                */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iCoreCount(void)

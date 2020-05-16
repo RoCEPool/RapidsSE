@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TickingDevice.hpp -- TickingDevice reader (Hardward Clock or Time Stamp Counter              */
+/* TickingDevice.hpp -- TickingDevice reader (Clock or Timestamp Counter)     */
 /*============================================================================*/
 #pragma once
 
@@ -16,8 +16,7 @@ namespace Gadgets
     static i8 iToNsec(i8 iTickDelta);
     static i8 iToUsec(i8 iTickDelta);
   
-  //private:
-    static i8 iClockResNsec(void);
+  private:
     static i8 iReadClock(void);
     static i8 iReadTscp(void);
   };

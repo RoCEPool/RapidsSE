@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TickingDevice.cpp -- TickingDevice reader (Hardward Clock or Time Stamp Counter              */
+/* TickingDevice.cpp -- TickingDevice reader (Clock or Timestamp Counter)     */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -20,13 +20,9 @@ i8 TickingDevice::iGetTick(void)
   i8 iTicks;
   
 #ifdef WITH_APPLE
-  
   iTicks = iReadTscp();
-  
 #elif defined(WITH_LINUX)
-
   iTicks = iReadClock();
-
 #else
   NEVER_REACH;
 #endif
@@ -40,13 +36,16 @@ i8 TickingDevice::iGetTick(void)
 i8 TickingDevice::iTicksPerSecond(void)
 {
   _static_
-
-#if defined(WITH_APPLE) || defined(WITH_LINUX)
-  i8 iFrequency = C_1G;
-#else
-  i8 iFrequency = Hardware::iClockFrequency();
-#endif
   
+  
+#ifdef WITH_APPLE
+  i8 iFrequency = Hardware::iCpuFrequency();
+#elif defined(WITH_LINUX)
+  i8 iFrequency = Hardware::iClockFrequency();
+#else
+  NEVER_REACH;
+#endif
+
   return iFrequency;
 }
 
@@ -96,20 +95,6 @@ i8 TickingDevice::iToUsec(i8 iTickDelta)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get clock resolution                                                       */
-/*----------------------------------------------------------------------------*/
-i8 TickingDevice::iClockResNsec(void)
-{
-  _static_
-  
-  struct timespec tp;
-  
-  int iResult = clock_getres(CLOCK_REALTIME,&tp);
-  
-  return tp.tv_nsec;
-}
 
 /*----------------------------------------------------------------------------*/
 /* read ticks from clock                                                      */
