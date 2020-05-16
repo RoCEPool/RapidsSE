@@ -17,7 +17,6 @@ namespace Pool
   private:
     i8      m_nBuffers;   // number of buffers in pool
     PoolBuffer* m_pBase;  // starting address of pool (large section)
-    PoolBuffer* m_pJumbo; // starting address of jumbo section
     PoolBuffer* m_pLimit; // address after pool
     bool    m_bDontFree;  // dont actually free objects back to heap
     bool    m_bFreeCB;    // but actually free CrwBuffers back to heap
@@ -41,7 +40,7 @@ namespace Pool
     void* operator new(size_t, void* pRegion);
     void  operator delete(void* pRegion);
     
-    BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
+    BufferPool(Stz* aRegionName, i8 iRegionSize,
                bool bTouch, bool bProgress,
                bool bDontFree, bool bFreeCB);
    ~BufferPool(void) noexcept(false);
@@ -74,7 +73,6 @@ namespace Pool
     PoolBuffer* pLimit(void);
     bool bLowMemory(void);
     void vMonitorPortrait(s48K& sPortrait);
-    PoolBuffer* pNextJumbo(PoolBuffer* pPrev);
     void vPoolDump(void);
     i8   iTotalSpace(void);
     PoolBuffer* pToPoolBuffer(i8 i_Buffer);

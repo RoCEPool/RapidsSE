@@ -250,7 +250,6 @@ void AttachMap::vRecordArguments(
                                  i8   nDummySleep,
                                  i8   nDummyThreads,
                                  i8   nIndexEntries,
-                                 i8   iJumboSize,
                                  bool bLog,
                                  i8   nMaxLoadErrors,
                                  i8   nMaxReadyLP,
@@ -282,7 +281,6 @@ void AttachMap::vRecordArguments(
   Arg.m_nDummyLoop       = nDummyLoop;
   Arg.m_nDummySleep      = nDummySleep;
   Arg.m_nDummyThreads    = nDummyThreads;
-  Arg.m_iJumboSize       = iJumboSize;
   Arg.m_bLog             = bLog;
   Arg.m_nMaxLoadErrors   = nMaxLoadErrors;
   Arg.m_nMaxReadyLP      = nMaxReadyLP;

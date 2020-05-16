@@ -55,9 +55,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.freeCB"_Stz,            gxArgs.m_bFreeCB);
   Constants::vAddConstant("args.help"_Stz,              gxArgs.m_bHelp);
   Constants::vAddConstant("args.hugePages"_Stz,         gxArgs.m_bHugePages);
-  Constants::vAddConstant("args.jumboBuffers"_Stz,      gxArgs.m_nJumboBuffers);
-  Constants::vAddConstant("args.jumboSize"_Stz,         gxArgs.m_iJumboSize);
-  Constants::vAddConstant("args.jumboTook"_Stz,         gxArgs.m_nJumboTook);
   Constants::vAddConstant("args.killPrev"_Stz,          gxArgs.m_bKillPrev);
   Constants::vAddConstant("args.lock"_Stz,              gxArgs.m_bLock);
   Constants::vAddConstant("args.log"_Stz,               gxArgs.m_bLog);
@@ -73,8 +70,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.prompt"_Stz,            gxArgs.m_bPrompt);
   Constants::vAddConstant("args.regionPrefix"_Stz,      gxArgs.m_sRegionPrefix);
   Constants::vAddConstant("args.regionName"_Stz,        gxArgs.m_sRegionName);
-  Constants::vAddConstant("args.regionSize"_Stz,        gxArgs.m_iRegionSize
-                                                        - gxArgs.m_iJumboSize);
+  Constants::vAddConstant("args.regionSize"_Stz,        gxArgs.m_iRegionSize);
   Constants::vAddConstant("args.reload"_Stz,            gxArgs.m_bReload);
   Constants::vAddConstant("args.restart"_Stz,           gxArgs.m_bRestart);
   Constants::vAddConstant("args.senDir"_Stz,            gxArgs.m_sSenDir);

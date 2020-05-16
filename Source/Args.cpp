@@ -21,10 +21,6 @@ Args::Args(void)
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   
-  // calc the number of pool buffers taken by jumbo buffers
-  m_nJumboBuffers = C_JUMBO_COEFFICIENT * Hardware::iCoreCount();
-  m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
-  m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
   
   // configuration
 #ifdef WITH_APPLE
@@ -36,7 +32,7 @@ Args::Args(void)
   m_aRegionAddr   = (void*)C_ADR_REGION;
   m_sRegionName   = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
-  m_iRegionSize   = (4 * 1_GB) + m_iJumboSize;
+  m_iRegionSize   = (4 * 1_GB);
 #ifdef WITH_APPLE
   m_sSenDir       = "../Sen/"_Stz;
 #else
@@ -549,9 +545,7 @@ bool Args::bParse(int argc, Stz* argv[])
               sMinSize.szStz());
         return false;
       }
-      
-      m_iRegionSize += m_iJumboSize;
-      
+            
       continue;
     }
     

@@ -12,7 +12,7 @@ namespace Pool
                         void *aRegionAddr);
     static void vCreate(s32& sRegionName, bool bVerbose,
                         void *aRegionAddr, i8 iRegionSize,
-                        i8 iJumboTook, bool bTouch, bool bProgress,
+                        bool bTouch, bool bProgress,
                         bool bLock, bool bRestart,
                         bool bDontFree, bool bFreeCB);
     static bool bTest(s32& sRegionName);

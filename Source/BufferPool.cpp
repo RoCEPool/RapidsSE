@@ -30,7 +30,7 @@ void BufferPool::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
+BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
                        bool bTouch, bool bProgress,
                        bool bDontFree, bool bFreeCB)
 : Object(CN_BUFFERPOOL)
@@ -38,12 +38,10 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
 {
   gpBufferPool = this;
   
-  m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER)
-                 - iJumboTook;
+  m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER);
   
   m_pBase  = reinterpret_cast<PoolBuffer*>(this);
   m_pLimit = (PoolBuffer*)aAdd<void*>(m_pBase,iRegionSize);
-  m_pJumbo = (PoolBuffer*)aAdd<void*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
   m_bDontFree = bDontFree;
   m_bFreeCB = bFreeCB;
   
@@ -519,28 +517,6 @@ void BufferPool::vMonitorPortrait(s48K& sPortrait)
                     m_nFreeCount,
                     AM::nTakenBytes()
                     );
-}
-
-/*----------------------------------------------------------------------------*/
-/* next jumbo pointer                                                         */
-/*----------------------------------------------------------------------------*/
-PoolBuffer* BufferPool::pNextJumbo(PoolBuffer* pPrev)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  PoolBuffer* pJumbo;
-  
-  if ( ! pPrev ) {
-    pJumbo = m_pJumbo;
-  }
-  else {
-    pJumbo = (PoolBuffer*)aAdd<void*>(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO);
-    if (pJumbo >= m_pLimit)
-      pJumbo = nullptr;
-  }
-  
-  //vTrace("Jumbo %p %lld\n"_Stz,pJumbo,iSub(pJumbo,pPrev));
-  return pJumbo;
 }
 
 /*----------------------------------------------------------------------------*/

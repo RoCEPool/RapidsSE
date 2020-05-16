@@ -18,7 +18,6 @@ namespace Arguments
   
     // configuration of this node
     s256  m_sCommandsDir;  // commands dir
-    i8    m_nJumboBuffers; // number of jumbo buffers
     s32   m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
     s32   m_sRegionName;   // name of shared memory region
@@ -88,10 +87,6 @@ namespace Arguments
     bool m_bTracing;         // tracing
     bool m_bVerbose;         // print extra stuff
     bool m_bWelcome;         // print banner
-
-    // working
-    i8   m_nJumboTook;  // number of pool buffers taken by jumbo buffers
-    i8   m_iJumboSize;  // size of the jumbo heap
     
     // must be last
     Footer m_xFooter;
