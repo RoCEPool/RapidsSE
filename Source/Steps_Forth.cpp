@@ -219,6 +219,8 @@ void Step::vMungedText(void)
   
   Stz* szText = gszaMungedText[i_Text];
   
+  //vTrace("MungedText[%lld]:\n%s\n"_Stz,i_Text,szText);
+  
   m_pDataStack->vPushStz(szText);
   
   EXIT();

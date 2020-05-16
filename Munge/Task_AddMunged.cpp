@@ -13,22 +13,21 @@ void Task::vAddMunged(Forth* pForth)
   // munge of [0] OP_stats.sen
 
   gszaMungedText[0] =
-    "\""
-    "\\\"munged OP_stats.sen \\\" .verbose \n"
+    "\" munged OP_stats.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_stats.sen -- Operator stats                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_stats.sen\\\" .verbose\n"
+    "\" OP_stats.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": stats_StartMarker \\\\handler\n"
+    ": stats_StartMarker \\handler\n"
     "\n"
     "  Pipein[].pipeOut\n"
     "\n"
-    "  \\\"+++ +++ +++\\\" .\n"
+    "  \"+++ +++ +++\" .\n"
     "\n"
     "//  C_TDEF_LOCKSTATS word::find if\n"
     "//    C_TDEF_LOCKSTATS path[].pushNamedTableFolder\n"
@@ -69,7 +68,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITMARKER ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": stats_ExitMarker \\\\handler\n"
+    ": stats_ExitMarker \\handler\n"
     "/*\n"
     "  metrics::lockSample // to operandC[]\n"
     "  //OperandC[].pipeOut\n"
@@ -100,7 +99,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* stats request                                      (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": stats_req \\\\operator\n"
+    ": stats_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -111,7 +110,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** stats EXITS\\\" .\n"
+    "  \"*** stats EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -123,32 +122,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: stats :: stats ;\n"
     "\n"
     ": stats _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_stats.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)0);
-
-  szSubScriptDef = " 0 CONSTANT OP_stats.sen__sub "_Stz;
+  szSubScriptDef = " 0 CONSTANT OP_stats.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [1] se_folder.sen
 
   gszaMungedText[1] =
-    "\""
-    "\\\"munged se_folder.sen \\\" .verbose \n"
+    "\" munged se_folder.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_folder.sen -- folder related words                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_folder.sen\\\" .verbose\n"
+    "\" se_folder.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -190,12 +186,12 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].contentStr ( -- s )\n"
     "\n"
-    "  \\\"\\\"\n"
+    "  \"\"\n"
     "  folder[] dic.lastWord dup iterate\n"
     "\n"
     "    object@ word.name@ str.cat\n"
     "\n"
-    "    \\\" \\\" str.cat\n"
+    "    \" \" str.cat\n"
     "\n"
     "    object@ word.prev object!\n"
     "\n"
@@ -212,18 +208,18 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  args.metadata if\n"
-    "    \\\"(name VARCHAR)\\\" pJob job.metadata!\n"
+    "    \"(name VARCHAR)\" pJob job.metadata!\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // form the row for each word\n"
-    "  \\\"\\\"                               // initial contents string\n"
+    "  \"\"                               // initial contents string\n"
     "  folder[] dic.lastWord dup\n"
     "  iterate                          // setup iteration of words\n"
     "    1 iCount + to iCount\n"
-    "    \\\"row: ('\\\" str.cat\n"
+    "    \"row: ('\" str.cat\n"
     "    object@ word.name@ str.cat      // add name of the word to contents string\n"
-    "    \\\"')\\\\n\\\" str.cat\n"
+    "    \"')\\n\" str.cat\n"
     "    object@ word.prev object!      // step backwards thru words\n"
     "  next\n"
     "\n"
@@ -247,12 +243,12 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  args.metadata if\n"
-    "  \\\"(name VARCHAR)\\\" pJob job.metadata!\n"
+    "  \"(name VARCHAR)\" pJob job.metadata!\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // form the row for each word\n"
-    "  \\\"\\\"                               // initial contents string\n"
+    "  \"\"                               // initial contents string\n"
     "  folder[] dic.lastWord dup\n"
     "  iterate                          // setup iteration of words\n"
     "\n"
@@ -263,12 +259,12 @@ void Task::vAddMunged(Forth* pForth)
     "    // skip definition only tables\n"
     "    pTable table.isDefinitionOnly not if\n"
     "      1 iCount + to iCount\n"
-    "      \\\"row: ('\\\" str.cat\n"
+    "      \"row: ('\" str.cat\n"
     "      sTableNm str.cat      // add name of the word to contents string\n"
-    "      \\\"')\\\\n\\\" str.cat\n"
+    "      \"')\\n\" str.cat\n"
     "    then\n"
     "\n"
-    "    \\\"path[].popNamedTableFolder\\\" find execute\n"
+    "    \"path[].popNamedTableFolder\" find execute\n"
     "\n"
     "    object@ word.prev object!      // step backwards thru words\n"
     "  next\n"
@@ -294,7 +290,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "dicLock.grabwrite\n"
     "\n"
-    "  find: \\\\folder locals| pwFolderCatg |\n"
+    "  find: \\folder locals| pwFolderCatg |\n"
     "\n"
     "  sFolderNm dic::new locals| pFolder |\n"
     "\n"
@@ -307,7 +303,7 @@ void Task::vAddMunged(Forth* pForth)
     "  args.verbose if\n"
     "    pwFolder word.name@\n"
     "    path[].toStr\n"
-    "      \\\"Created folder %v/%v\\\" .printf\n"
+    "      \"Created folder %v/%v\" .printf\n"
     "  then\n"
     "\n"
     "  pwFolder word.see\n"
@@ -322,7 +318,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pFolder path[].pushFolder\n"
     "\n"
-    "    find: \\\\folder\n"
+    "    find: \\folder\n"
     "    sSubFolderNm folder::makeFolder execute dic.kind!\n"
     "\n"
     "  path[].popFolder\n"
@@ -354,7 +350,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pwWord not if false exit then\n"
     "\n"
-    "  pwWord word.category@ find: \\\\folder eql\n"
+    "  pwWord word.category@ find: \\folder eql\n"
     " ;\n"
     "\n"
     "\n"
@@ -367,11 +363,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": symbols prompt\n"
     "\n"
-    "  path[].toStr .put \\\"::\\\" .put .\\\\n\n"
+    "  path[].toStr .put \"::\" .put .\\n\n"
     "\n"
     "  folder[] dic.lastWord\n"
     "  begin dup while\n"
-    "    dup word.name@ .put \\\" \\\" .put dup word.category@ word.name@ .put .\\\\n\n"
+    "    dup word.name@ .put \" \" .put dup word.category@ word.name@ .put .\\n\n"
     "    word.prev\n"
     "  repeat\n"
     "  discard\n"
@@ -380,26 +376,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_folder.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)1);
-
-  szSubScriptDef = " 1 CONSTANT se_folder.sen__sub "_Stz;
+  szSubScriptDef = " 1 CONSTANT se_folder.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [2] test_jData.sen
 
   gszaMungedText[2] =
-    "\""
-    "\\\"munged test_jData.sen \\\" .verbose \n"
+    "\" munged test_jData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_jData.sen -- generate jTest data                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_jData.sen\\\" .verbose\n"
+    "\" test_jData.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate ../jtest/j1000.csv                                                */\n"
@@ -408,22 +401,22 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
-    "  \\\"../JTEST/j1000.csv\\\" OPEN_WRITE pFile file.open\n"
+    "  \"../JTEST/j1000.csv\" OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  1000 0\n"
     "  do\n"
     "    I >str          pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I >DigitWords   pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I 100 % >str    pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I 10 % >str     pFile file.write\n"
-    "    \\\"\\\\n\\\"            pFile file.write\n"
+    "    \"\\n\"            pFile file.write\n"
     "  loop\n"
     "\n"
     "  pFile file.close\n"
@@ -436,20 +429,20 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
-    "  \\\"../JTEST/j100.csv\\\" OPEN_WRITE pFile file.open\n"
+    "  \"../JTEST/j100.csv\" OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  100 0\n"
     "  do\n"
     "    I >str          pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I >DigitWords   pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I 10 % >str     pFile file.write\n"
-    "    \\\"\\\\n\\\"            pFile file.write\n"
+    "    \"\\n\"            pFile file.write\n"
     "  loop\n"
     "\n"
     "  pFile file.close\n"
@@ -462,18 +455,18 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
-    "  \\\"../JTEST/j10.csv\\\" OPEN_WRITE pFile file.open\n"
+    "  \"../JTEST/j10.csv\" OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  10 0\n"
     "  do\n"
     "    I >str          pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I >DigitWords   pFile file.write\n"
-    "    \\\"\\\\n\\\"            pFile file.write\n"
+    "    \"\\n\"            pFile file.write\n"
     "  loop\n"
     "\n"
     "  pFile file.close\n"
@@ -486,19 +479,19 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
-    "  \\\"../JTEST/jDupe27.csv\\\" OPEN_WRITE pFile file.open\n"
+    "  \"../JTEST/jDupe27.csv\" OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  27 0\n"
     "  do\n"
     "    I >str          pFile file.write\n"
-    "    \\\"|\\\"             pFile file.write\n"
+    "    \"|\"             pFile file.write\n"
     "    I >DigitWords   pFile file.write\n"
-    "    \\\"|0\\\"            pFile file.write\n"
-    "    \\\"\\\\n\\\"            pFile file.write\n"
+    "    \"|0\"            pFile file.write\n"
+    "    \"\\n\"            pFile file.write\n"
     "  loop\n"
     "\n"
     "  pFile file.close\n"
@@ -519,26 +512,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_jData.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)2);
-
-  szSubScriptDef = " 2 CONSTANT test_jData.sen__sub "_Stz;
+  szSubScriptDef = " 2 CONSTANT test_jData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [3] se_object.sen
 
   gszaMungedText[3] =
-    "\""
-    "\\\"munged se_object.sen \\\" .verbose \n"
+    "\" munged se_object.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_object.sen -- object words                                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_object.sen\\\" .verbose\n"
+    "\" se_object.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* assert that the object is of a particular class                            */\n"
@@ -552,7 +542,7 @@ void Task::vAddMunged(Forth* pForth)
     "  if\n"
     "      pObject object.class@\n"
     "      eClassNo\n"
-    "    \\\"Expecting class %v; actual class %v\\\\n\\\" str.format .\n"
+    "    \"Expecting class %v; actual class %v\\n\" str.format .\n"
     "    assert\n"
     "  then\n"
     " ;\n"
@@ -560,33 +550,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_object.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)3);
-
-  szSubScriptDef = " 3 CONSTANT se_object.sen__sub "_Stz;
+  szSubScriptDef = " 3 CONSTANT se_object.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [4] OP_print.sen
 
   gszaMungedText[4] =
-    "\""
-    "\\\"munged OP_print.sen \\\" .verbose \n"
+    "\" munged OP_print.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_print.sen -- Operator print                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_print.sen\\\" .verbose\n"
+    "\" OP_print.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": print_PulseMarker \\\\handler\n"
+    ": print_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  <string> .\n"
     "\n"
@@ -596,7 +583,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* printn request                                     (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": print_req \\\\operator\n"
+    ": print_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -617,32 +604,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: print :: print <string> ;\n"
     "\n"
     ": print _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_print.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)4);
-
-  szSubScriptDef = " 4 CONSTANT OP_print.sen__sub "_Stz;
+  szSubScriptDef = " 4 CONSTANT OP_print.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [5] job_seedDefaults.sen
 
   gszaMungedText[5] =
-    "\""
-    "\\\"munged job_seedDefaults.sen \\\" .verbose \n"
+    "\" munged job_seedDefaults.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedDefaults.sen -- Default Job Seeds                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_seedDefaults.sen\\\" .verbose\n"
+    "\" job_seedDefaults.sen\" .verbose\n"
     "\n"
     "\n"
     "/******************************************************************************/\n"
@@ -665,7 +649,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::acquireDdlLock\n"
     "\n"
-    "  <jobNm> \\\"::request\\\" str.cat find dup if\n"
+    "  <jobNm> \"::request\" str.cat find dup if\n"
     "    execute\n"
     "  else\n"
     "    discard\n"
@@ -675,7 +659,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  task::doneFinally\n"
     "\n"
-    "  //\\\"Signalling waiting thread\\\" .\n"
+    "  //\"Signalling waiting thread\" .\n"
     "  job[] job.signalCompletion\n"
     "  // task has no job\n"
     "  task::scheduledelete\n"
@@ -704,7 +688,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::becomeOriginator\n"
     "\n"
-    "  <jobNm> \\\"::request\\\" str.cat find dup if\n"
+    "  <jobNm> \"::request\" str.cat find dup if\n"
     "    execute\n"
     "  else\n"
     "    discard\n"
@@ -724,7 +708,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  task::doneFinally\n"
     "\n"
-    "  //\\\"Signalling waiting thread\\\" .\n"
+    "  //\"Signalling waiting thread\" .\n"
     "  job[] job.signalCompletion\n"
     "  // task has no job\n"
     "  task::scheduledelete\n"
@@ -751,7 +735,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::becomeParticipant\n"
     "\n"
-    "  <jobNm> \\\"::checkResources\\\" str.cat find dup if\n"
+    "  <jobNm> \"::checkResources\" str.cat find dup if\n"
     "    execute\n"
     "  else\n"
     "    discard\n"
@@ -783,7 +767,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::acquireDdlLock\n"
     "\n"
-    "  <jobNm> \\\"::execute\\\" str.cat find dup if\n"
+    "  <jobNm> \"::execute\" str.cat find dup if\n"
     "    execute\n"
     "  else\n"
     "    discard\n"
@@ -805,11 +789,11 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // [ compiler::current@ word.name@ encode::push ] .\n"
     "\n"
-    "  //grid::thisNodeName@ \\\"(%v) defaultSeedDist _end\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) defaultSeedDist _end\" .printf\n"
     "\n"
     "  JP_ENDING job[] job.phase!\n"
     "\n"
-    "  <jobNm> \\\"::releaseResources\\\" str.cat find dup if\n"
+    "  <jobNm> \"::releaseResources\" str.cat find dup if\n"
     "    execute\n"
     "  else\n"
     "    discard\n"
@@ -835,7 +819,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  JP_CANCELING job[] job.phase!\n"
     "\n"
-    "  <jobNm> \\\"::releaseResources\\\" str.cat find dup if\n"
+    "  <jobNm> \"::releaseResources\" str.cat find dup if\n"
     "    execute\n"
     "  else\n"
     "    discard\n"
@@ -853,34 +837,31 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_seedDefaults.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)5);
-
-  szSubScriptDef = " 5 CONSTANT job_seedDefaults.sen__sub "_Stz;
+  szSubScriptDef = " 5 CONSTANT job_seedDefaults.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [6] tpl_localLiteOp.sen
 
   gszaMungedText[6] =
-    "\""
-    "\\\"munged tpl_localLiteOp.sen \\\" .verbose \n"
+    "\" munged tpl_localLiteOp.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* tpl_localLiteOp.sen -- templates for local lite op                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" tpl_localLiteOp.sen\\\" .verbose\n"
+    "\" tpl_localLiteOp.sen\" .verbose\n"
     "    \n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_localLiteOp_PulseMarker\n"
     "\n"
-    "\\\"\n"
-    "  : /localLiteOp/_PulseMarker \\\\\\\\handler\n"
+    "\"\n"
+    "  : /localLiteOp/_PulseMarker \\\\handler\n"
     "\n"
     "    /localLiteOp/_action if\n"
     "      Pipein[].pipeout\n"
@@ -890,7 +871,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    true\n"
     "  ;\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -898,8 +879,8 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_localLiteOp_req\n"
     "\n"
-    "\\\"\n"
-    "  : /localLiteOp/_req \\\\\\\\operator\n"
+    "\"\n"
+    "  : /localLiteOp/_req \\\\operator\n"
     "\n"
     "    LogReqEntry SEED_REQ\n"
     "\n"
@@ -913,7 +894,7 @@ void Task::vAddMunged(Forth* pForth)
     "    job::deleteThis\n"
     "    DONE_REQ_OP\n"
     "  ;\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "\n"
@@ -922,7 +903,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_localLiteOp_procedure0\n"
     "\n"
-    "\\\"\n"
+    "\"\n"
     "  procedure /localLiteOp/\n"
     "  begin\n"
     "\n"
@@ -931,7 +912,7 @@ void Task::vAddMunged(Forth* pForth)
     "      output | sink | stageA\n"
     "\n"
     "  end\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -939,7 +920,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_localLiteOp_procedure1\n"
     "\n"
-    "\\\"\n"
+    "\"\n"
     "  procedure /localLiteOp/\n"
     "    parameters $param\n"
     "  begin\n"
@@ -949,7 +930,7 @@ void Task::vAddMunged(Forth* pForth)
     "      output | sink | stageA\n"
     "\n"
     "  end\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -957,7 +938,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_localLiteOp_procedure2\n"
     "\n"
-    "  \\\"\n"
+    "  \"\n"
     "    procedure /localLiteOp/\n"
     "      parameters $param0 $param1\n"
     "    begin\n"
@@ -967,32 +948,29 @@ void Task::vAddMunged(Forth* pForth)
     "        output | sink | stageA\n"
     "\n"
     "    end\n"
-    "  \\\"\n"
+    "  \"\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT tpl_localLiteOp.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)6);
-
-  szSubScriptDef = " 6 CONSTANT tpl_localLiteOp.sen__sub "_Stz;
+  szSubScriptDef = " 6 CONSTANT tpl_localLiteOp.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [7] test_encodingData.sen
 
   gszaMungedText[7] =
-    "\""
-    "\\\"munged test_encodingData.sen \\\" .verbose \n"
+    "\" munged test_encodingData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_encodingData.sen -- generate encoding tests data                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_encodingData.sen\\\" .verbose\n"
+    "\" test_encodingData.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate integer data file                                                 */\n"
@@ -1002,24 +980,24 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "  exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
+    "      //I I \"%v,String%v\" str.format .\n"
     "      I 7 % 0 == if\n"
     "        0 1 uint.random\n"
     "      else\n"
-    "        \\\"null\\\"\n"
+    "        \"null\"\n"
     "      then\n"
     "      0 1 uint.random\n"
     "      0 1 uint.random\n"
@@ -1036,7 +1014,7 @@ void Task::vAddMunged(Forth* pForth)
     "      0 1 uint.random\n"
     "      0 1 uint.random\n"
     "      I\n"
-    "      \\\"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\\\n\\\" str.format pFile file.write\n"
+    "      \"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -1056,7 +1034,7 @@ void Task::vAddMunged(Forth* pForth)
     "  1 28 int.random\n"
     "  1 12 int.random\n"
     "  low high int.random\n"
-    "  \\\"%v-%v-%v\\\" str.format\n"
+    "  \"%v-%v-%v\" str.format\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1067,24 +1045,24 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
+    "      //I I \"%v,String%v\" str.format .\n"
     "      I 7 % 0 == if\n"
     "        1900 2000 generateDate\n"
     "      else\n"
-    "        \\\"null\\\"\n"
+    "        \"null\"\n"
     "      then\n"
     "\n"
     "      1900 2000 generateDate\n"
@@ -1102,7 +1080,7 @@ void Task::vAddMunged(Forth* pForth)
     "      1920 1960 generateDate\n"
     "      1900 1920 generateDate\n"
     "      I\n"
-    "      \\\"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\\\n\\\" str.format pFile file.write\n"
+    "      \"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -1124,7 +1102,7 @@ void Task::vAddMunged(Forth* pForth)
     "  lowWhole highWhole int.random\n"
     "  lowDecimal highDecimal int.random\n"
     "\n"
-    "  \\\"%v.%v\\\" str.format\n"
+    "  \"%v.%v\" str.format\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1138,7 +1116,7 @@ void Task::vAddMunged(Forth* pForth)
     "  0 10 int.random >str\n"
     "  lowWhole highWhole int.random\n"
     "\n"
-    "  \\\"%v.0%v\\\" str.format\n"
+    "  \"%v.0%v\" str.format\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1149,24 +1127,24 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
+    "      //I I \"%v,String%v\" str.format .\n"
     "      I 7 % 0 == if\n"
     "        -1000 1000 0 1000 generateDecimal\n"
     "      else\n"
-    "        \\\"null\\\"\n"
+    "        \"null\"\n"
     "      then\n"
     "\n"
     "      -9223372 9223372 0 99999999 generateDecimal\n"
@@ -1184,7 +1162,7 @@ void Task::vAddMunged(Forth* pForth)
     "      I 10 %\n"
     "      I 7 %\n"
     "      I\n"
-    "      \\\"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\\\n\\\" str.format pFile file.write\n"
+    "      \"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -1201,24 +1179,24 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
+    "      //I I \"%v,String%v\" str.format .\n"
     "      I 7 % 0 == if\n"
     "        -1000000 1000000 int.random\n"
     "      else\n"
-    "        \\\"null\\\"\n"
+    "        \"null\"\n"
     "      then\n"
     "\n"
     "      -92233720368 92233720368 int.random\n"
@@ -1236,7 +1214,7 @@ void Task::vAddMunged(Forth* pForth)
     "      I 10 %\n"
     "      I 7 %\n"
     "      I\n"
-    "      \\\"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\\\n\\\" str.format pFile file.write\n"
+    "      \"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -1253,24 +1231,24 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
+    "      //I I \"%v,String%v\" str.format .\n"
     "      I 7 % 0 == if\n"
     "        10 str.random\n"
     "      else\n"
-    "        \\\"null\\\"\n"
+    "        \"null\"\n"
     "      then\n"
     "\n"
     "      1 7 int.random >str\n"
@@ -1288,7 +1266,7 @@ void Task::vAddMunged(Forth* pForth)
     "      I 10 % str.random\n"
     "      I 7 % str.random\n"
     "      I\n"
-    "      \\\"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\\\n\\\" str.format pFile file.write\n"
+    "      \"%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -1301,75 +1279,72 @@ void Task::vAddMunged(Forth* pForth)
     "/* generate the boolean data files                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": booleanData\n"
-    "  \\\"/DATA/Encoding/boolean.csv\\\"    1000000      booleanDataFile\n"
+    "  \"/DATA/Encoding/boolean.csv\"    1000000      booleanDataFile\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate the date data files                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": dateData\n"
-    "  \\\"/DATA/Encoding/date.csv\\\"    1000000      dateDataFile\n"
+    "  \"/DATA/Encoding/date.csv\"    1000000      dateDataFile\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate the decimal data files                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": decimalData\n"
-    "  \\\"/DATA/Encoding/decimal.csv\\\"    1000000      decimalDataFile\n"
+    "  \"/DATA/Encoding/decimal.csv\"    1000000      decimalDataFile\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate the integer data files                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": integerData\n"
-    "  \\\"/home/rapids/SE_SCALE/integer.csv\\\"    1000000      integerDataFile\n"
+    "  \"/home/rapids/SE_SCALE/integer.csv\"    1000000      integerDataFile\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate the integer data files                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": integerData10M\n"
-    "  \\\"/home/rapids/SE_SCALE/integer10M.csv\\\"    10000000      integerDataFile\n"
+    "  \"/home/rapids/SE_SCALE/integer10M.csv\"    10000000      integerDataFile\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate the integer data files                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": integerData100M\n"
-    "  \\\"/home/rapids/SE_SCALE/integer100M.csv\\\"    100000000      integerDataFile\n"
+    "  \"/home/rapids/SE_SCALE/integer100M.csv\"    100000000      integerDataFile\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate the varchar data files                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": varcharData\n"
-    "  \\\"/DATA/Encoding/varchar.csv\\\"    1000000     varcharDataFile\n"
+    "  \"/DATA/Encoding/varchar.csv\"    1000000     varcharDataFile\n"
     " ;\n"
     "\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_encodingData.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)7);
-
-  szSubScriptDef = " 7 CONSTANT test_encodingData.sen__sub "_Stz;
+  szSubScriptDef = " 7 CONSTANT test_encodingData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [8] cmd_info.sen
 
   gszaMungedText[8] =
-    "\""
-    "\\\"munged cmd_info.sen \\\" .verbose \n"
+    "\" munged cmd_info.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* cmd_Info.sen -- the _info words                                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" cmd_info.sen\\\" .verbose\n"
+    "\" cmd_info.sen\" .verbose\n"
     "    \n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* test if info word is about a distributed job                               */\n"
@@ -1378,7 +1353,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<jobKind>\\\" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then\n"
+    "  \"<jobKind>\" pInfTagSet tagSet.getInt JK_DIST2PC == if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1388,7 +1363,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<jobKind>\\\" pInfTagSet tagSet.getInt JK_GENERIC == if true else false then\n"
+    "  \"<jobKind>\" pInfTagSet tagSet.getInt JK_GENERIC == if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1398,7 +1373,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<jobKind>\\\" pInfTagSet tagSet.getInt JK_LOCAL == if true else false then\n"
+    "  \"<jobKind>\" pInfTagSet tagSet.getInt JK_LOCAL == if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1408,7 +1383,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<liteOp>\\\" pInfTagSet tagSet.hasName if true else false then\n"
+    "  \"<liteOp>\" pInfTagSet tagSet.hasName if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1418,7 +1393,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<localLiteOp>\\\" pInfTagSet tagSet.hasName if true else false then\n"
+    "  \"<localLiteOp>\" pInfTagSet tagSet.hasName if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1428,7 +1403,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pInfoWrd word.TagSet@ locals| pInfTagSet |\n"
     "\n"
-    "  \\\"<cmdKind>\\\" pInfTagSet tagSet.getInt CK_SERVICE == if true else false then\n"
+    "  \"<cmdKind>\" pInfTagSet tagSet.getInt CK_SERVICE == if true else false then\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1475,7 +1450,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // set the name of the word to be _info\n"
     "  pWord word.name@\n"
-    "    \\\"_info\\\" str.cat\n"
+    "    \"_info\" str.cat\n"
     "    pWord word.name!\n"
     "\n"
     "  // set the word category to be _info\n"
@@ -1486,7 +1461,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pWordTagSet pWord word.TagSet!\n"
     "\n"
     "  // add <jobNm> tag\n"
-    "  \\\"<jobNm>\\\" pWord word.name_trunc pWordTagSet tagSet.insertStr\n"
+    "  \"<jobNm>\" pWord word.name_trunc pWordTagSet tagSet.insertStr\n"
     "\n"
     "  pWord encode::call\n"
     "    POSTPONE word.tagSet@\n"
@@ -1497,7 +1472,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": _info::findTagSet params| sWordNm |\n"
     "\n"
-    "  sWordNm \\\"_info\\\" str.cat find word.TagSet@\n"
+    "  sWordNm \"_info\" str.cat find word.TagSet@\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1511,77 +1486,71 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT cmd_info.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)8);
-
-  szSubScriptDef = " 8 CONSTANT cmd_info.sen__sub "_Stz;
+  szSubScriptDef = " 8 CONSTANT cmd_info.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [9] test_sleep.sen
 
   gszaMungedText[9] =
-    "\""
-    "\\\"munged test_sleep.sen \\\" .verbose \n"
+    "\" munged test_sleep.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_sleep.sen -- sleep test                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_sleep.sen\\\" .verbose\n"
+    "\" test_sleep.sen\" .verbose\n"
     "\n"
     ": sleep\n"
     "\n"
-    "  \\\"sleeping\\\" .\n"
+    "  \"sleeping\" .\n"
     "  20 task::sleepSsec\n"
-    "  \\\"awake\\\" .\n"
+    "  \"awake\" .\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_sleep.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)9);
-
-  szSubScriptDef = " 9 CONSTANT test_sleep.sen__sub "_Stz;
+  szSubScriptDef = " 9 CONSTANT test_sleep.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [10] db_index.sen
 
   gszaMungedText[10] =
-    "\""
-    "\\\"munged db_index.sen \\\" .verbose \n"
+    "\" munged db_index.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_index.sen -- index related words                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" db_index.sen\\\" .verbose\n"
+    "\" db_index.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* \\\\index is the category to identify indexes                                 */\n"
+    "/* \\index is the category to identify indexes                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\index \\\\\\\\category ;\n"
+    ": \\index \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* test if word is an index (is of \\\\index category)                           */\n"
+    "/* test if word is an index (is of \\index category)                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": word.isaIndex params| pwIndex |\n"
     "\n"
-    "  pwIndex word.category@ find: \\\\index eql\n"
+    "  pwIndex word.category@ find: \\index eql\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* test if current folder has the name \\\"indexes\\\" (i.e. is ../indexes)          */\n"
+    "/* test if current folder has the name \"indexes\" (i.e. is ../indexes)          */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].isIndexes ( t | f )\n"
     "\n"
-    "  folder[] dic.name@ \\\"indexes\\\" str.equal\n"
+    "  folder[] dic.name@ \"indexes\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1589,7 +1558,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": path[].pushIndexesFolder ( -- )\n"
     "\n"
-    "  \\\"indexes\\\" find execute path[].pushFolder\n"
+    "  \"indexes\" find execute path[].pushFolder\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -1620,7 +1589,7 @@ void Task::vAddMunged(Forth* pForth)
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* check given name is the name of a word of \\\\index category               EC */\n"
+    "/* check given name is the name of a word of \\index category               EC */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": check::nameIsaIndex params| sIndexNm | ( t | ec f )\n"
     "\n"
@@ -1628,7 +1597,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pwIndex not if EC_NO_SUCH_INDEX false exit then\n"
     "\n"
-    "  pwIndex word.category@ find: \\\\index eql if true exit then\n"
+    "  pwIndex word.category@ find: \\index eql if true exit then\n"
     "\n"
     "  EC_NOT_AN_INDEX false\n"
     " ;\n"
@@ -1683,12 +1652,12 @@ void Task::vAddMunged(Forth* pForth)
     " */\n"
     "\n"
     "  args.tracepoint if\n"
-    "    \\\"MAKING INDEXES FOR TABLE \\\" sTableNm str.cat\n"
-    "      \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    \"MAKING INDEXES FOR TABLE \" sTableNm str.cat\n"
+    "      \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  sTableNm find execute locals| pTableFolder |\n"
-    "  \\\"indexes\\\" pTableFolder folder::makeSubFolder\n"
+    "  \"indexes\" pTableFolder folder::makeSubFolder\n"
     " ;\n"
     "\n"
     "\n"
@@ -1703,7 +1672,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  folder[].isIndexes assert\n"
     "\n"
-    "  find: \\\\index locals| pwIndexCatg |\n"
+    "  find: \\index locals| pwIndexCatg |\n"
     "\n"
     "  sIndexNm index::new locals| pIndex |\n"
     "\n"
@@ -1840,51 +1809,48 @@ void Task::vAddMunged(Forth* pForth)
     "  */\n"
     "\n"
     "  // delete and forget all indexes\n"
-    "  \\\"indexes\\\" find execute index::deleteAllIndexes\n"
+    "  \"indexes\" find execute index::deleteAllIndexes\n"
     "\n"
     "  // forget the indexes folder itself\n"
-    "  \\\"indexes\\\" folder::remove\n"
+    "  \"indexes\" folder::remove\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_index.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)10);
-
-  szSubScriptDef = " 10 CONSTANT db_index.sen__sub "_Stz;
+  szSubScriptDef = " 10 CONSTANT db_index.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [11] OP_statWrite.sen
 
   gszaMungedText[11] =
-    "\""
-    "\\\"munged OP_statWrite.sen \\\" .verbose \n"
+    "\" munged OP_statWrite.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_statWrite.sen -- Operator statWrite                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_statWrite.sen\\\" .verbose\n"
+    "\" OP_statWrite.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_LOCKSTATS ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_statWrite_LockStats \\\\handler\n"
+    ": OP_statWrite_LockStats \\handler\n"
     "\n"
-    "  \\\"statWrite_InfoSet --- --- ---\\\" .\n"
+    "  \"statWrite_InfoSet --- --- ---\" .\n"
     "\n"
     "//! ALKA TO CHECK WITH RAY\n"
     "//  File0[].isNull not if\n"
-    "//    \\\"File not null\\\" .\n"
+    "//    \"File not null\" .\n"
     "//    process::quit\n"
     "//  then\n"
     "/*\n"
     "  file::new to File0[]\n"
-    "  \\\"/tmp/SE_Stats.csv\\\" OPEN_APPEND File0[].get file.open\n"
+    "  \"/tmp/SE_Stats.csv\" OPEN_APPEND File0[].get file.open\n"
     "  not if\n"
     "    File0[].get file.delete assert::stack_0 EC_INVALID_FILE\n"
     "    op.pipelineJob@ ERROR_JOB !!logError\n"
@@ -1908,7 +1874,7 @@ void Task::vAddMunged(Forth* pForth)
     " */\n"
     "\n"
     "  // open the file for writing\n"
-    "  \\\"/tmp/SE_Stats.csv\\\" OPEN_APPEND op__file if\n"
+    "  \"/tmp/SE_Stats.csv\" OPEN_APPEND op__file if\n"
     "\n"
     "    Pipein[] to infoset[]\n"
     "    nullptr to Pipein[]\n"
@@ -1929,7 +1895,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for statWrite req                          (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : statWrite_req \\\\operator\n"
+    " : statWrite_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -1950,32 +1916,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: statWrite :: statWrite ;\n"
     "\n"
     ": statWrite _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_statWrite.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)11);
-
-  szSubScriptDef = " 11 CONSTANT OP_statWrite.sen__sub "_Stz;
+  szSubScriptDef = " 11 CONSTANT OP_statWrite.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [12] se_socket.sen
 
   gszaMungedText[12] =
-    "\""
-    "\\\"munged se_socket.sen \\\" .verbose \n"
+    "\" munged se_socket.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_socket.sen -- socket primitives                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_socket.sen\\\" .verbose\n"
+    "\" se_socket.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* get this tasks send socket                                                 */\n"
@@ -2004,26 +1967,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_socket.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)12);
-
-  szSubScriptDef = " 12 CONSTANT se_socket.sen__sub "_Stz;
+  szSubScriptDef = " 12 CONSTANT se_socket.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [13] job_CreateIndex.sen
 
   gszaMungedText[13] =
-    "\""
-    "\\\"munged job_CreateIndex.sen \\\" .verbose \n"
+    "\" munged job_CreateIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_CreateIndex.sen -- Job Create Index                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_CreateIndex.sen\\\" .verbose\n"
+    "\" job_CreateIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* check if <tableNm> . <indexNm> is a creatable index                        */\n"
@@ -2040,7 +2000,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check if max indexes already on table\n"
     "\n"
-    "  // push into t: ../schemas/public/tables/t \\\\folder\n"
+    "  // push into t: ../schemas/public/tables/t \\folder\n"
     "  <tableNm> path[].pushNamedTableFolder\n"
     "\n"
     "  // check max indexes\n"
@@ -2212,7 +2172,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;\n"
     "\n"
     ": createIndex _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_DIST2PC\n"
     "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
@@ -2225,26 +2185,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_CreateIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)13);
-
-  szSubScriptDef = " 13 CONSTANT job_CreateIndex.sen__sub "_Stz;
+  szSubScriptDef = " 13 CONSTANT job_CreateIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [14] OP_createSchema.sen
 
   gszaMungedText[14] =
-    "\""
-    "\\\"munged OP_createSchema.sen \\\" .verbose \n"
+    "\" munged OP_createSchema.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createSchema.sen -- Operator create schema                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_createSchema.sen\\\" .verbose\n"
+    "\" OP_createSchema.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* check if word is not a schema                                              */\n"
@@ -2304,7 +2261,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for createSchema req                       (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": createSchema_req \\\\operator\n"
+    ": createSchema_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -2326,39 +2283,36 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": createSchema _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_createSchema.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)14);
-
-  szSubScriptDef = " 14 CONSTANT OP_createSchema.sen__sub "_Stz;
+  szSubScriptDef = " 14 CONSTANT OP_createSchema.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [15] OP_python.sen
 
   gszaMungedText[15] =
-    "\""
-    "\\\"munged OP_python.sen \\\" .verbose \n"
+    "\" munged OP_python.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_python.sen -- Operator python                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_python.sen\\\" .verbose\n"
+    "\" OP_python.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": python_CsvBuffer \\\\handler\n"
+    ": python_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
     "  Operand[].csvData\n"
@@ -2371,9 +2325,9 @@ void Task::vAddMunged(Forth* pForth)
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*\n"
-    ": python_ErrorMarker \\\\handler\n"
+    ": python_ErrorMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERRORMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERRORMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  true\n"
@@ -2383,7 +2337,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for python request                         (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": python_req \\\\operator\n"
+    ": python_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -2405,32 +2359,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: python :: python <pythonFile> <pythonFunction> ;\n"
     "\n"
     ": python _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_python.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)15);
-
-  szSubScriptDef = " 15 CONSTANT OP_python.sen__sub "_Stz;
+  szSubScriptDef = " 15 CONSTANT OP_python.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [16] OP_dropTenant.sen
 
   gszaMungedText[16] =
-    "\""
-    "\\\"munged OP_dropTenant.sen \\\" .verbose \n"
+    "\" munged OP_dropTenant.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropTenant.sen -- Operator drop tenant                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dropTenant.sen\\\" .verbose\n"
+    "\" OP_dropTenant.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -2471,7 +2422,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for createTenant req                       (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dropTenant_req \\\\operator\n"
+    ": dropTenant_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -2493,32 +2444,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dropTenant _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_dropTenant.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)16);
-
-  szSubScriptDef = " 16 CONSTANT OP_dropTenant.sen__sub "_Stz;
+  szSubScriptDef = " 16 CONSTANT OP_dropTenant.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [17] se_memoryStats.sen
 
   gszaMungedText[17] =
-    "\""
-    "\\\"munged se_memoryStats.sen \\\" .verbose \n"
+    "\" munged se_memoryStats.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_memoryStats.sen -- memory statistics                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_memoryStats.sen\\\" .verbose\n"
+    "\" se_memoryStats.sen\" .verbose\n"
     "\n"
     ": memoryReset memory::reset ;\n"
     "\n"
@@ -2527,26 +2475,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_memoryStats.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)17);
-
-  szSubScriptDef = " 17 CONSTANT se_memoryStats.sen__sub "_Stz;
+  szSubScriptDef = " 17 CONSTANT se_memoryStats.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [18] OP_listColumns.sen
 
   gszaMungedText[18] =
-    "\""
-    "\\\"munged OP_listColumns.sen \\\" .verbose \n"
+    "\" munged OP_listColumns.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listColumns.sen -- Operator list columns                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listColumns.sen\\\" .verbose\n"
+    "\" OP_listColumns.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -2600,7 +2545,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lscol _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listColumns\n"
     "    <params>      = 1\n"
@@ -2611,33 +2556,30 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\""
-  " CONSTANT OP_listColumns.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)18);
-
-  szSubScriptDef = " 18 CONSTANT OP_listColumns.sen__sub "_Stz;
+  szSubScriptDef = " 18 CONSTANT OP_listColumns.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [19] OP_chunk.sen
 
   gszaMungedText[19] =
-    "\""
-    "\\\"munged OP_chunk.sen \\\" .verbose \n"
+    "\" munged OP_chunk.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_chunk.sen -- Operator chunk                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_chunk.sen\\\" .verbose\n"
+    "\" OP_chunk.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": chunk_PulseMarker \\\\handler\n"
+    ": chunk_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // find the __seekOffsets table\n"
@@ -2668,9 +2610,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": chunk_StartMarker \\\\handler\n"
+    ": chunk_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  0 locals| iFileSizeMb |\n"
     "\n"
@@ -2702,9 +2644,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EXITMARKER ...                                                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": chunk_ExitMarker \\\\handler\n"
+    ": chunk_ExitMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITMARKER\" .verbose\n"
     "  File0[].isNull not if\n"
     "    File0[].get file.close\n"
     "    File0[].get file.delete\n"
@@ -2720,7 +2662,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for chunk req                              (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : Chunk_req \\\\operator\n"
+    " : Chunk_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -2743,32 +2685,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: Chunk :: Chunk <fileNm> ;\n"
     "\n"
     ": Chunk _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_chunk.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)19);
-
-  szSubScriptDef = " 19 CONSTANT OP_chunk.sen__sub "_Stz;
+  szSubScriptDef = " 19 CONSTANT OP_chunk.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [20] OP_sizeIndex.sen
 
   gszaMungedText[20] =
-    "\""
-    "\\\"munged OP_sizeIndex.sen \\\" .verbose \n"
+    "\" munged OP_sizeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeIndex.sen -- Operator size index                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_sizeIndex.sen\\\" .verbose\n"
+    "\" OP_sizeIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -2810,7 +2749,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": szidx _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __sizeIndex\n"
     "    <params>    = 2\n"
@@ -2820,31 +2759,28 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_sizeIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)20);
-
-  szSubScriptDef = " 20 CONSTANT OP_sizeIndex.sen__sub "_Stz;
+  szSubScriptDef = " 20 CONSTANT OP_sizeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [21] OP_fetch.sen
 
   gszaMungedText[21] =
-    "\""
-    "\\\"munged OP_fetch.sen \\\" .verbose \n"
+    "\" munged OP_fetch.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_fetch.sen -- Operator fetch                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_fetch.sen\\\" .verbose\n"
+    "\" OP_fetch.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* position and begin fetch                                                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": positionBeginFetch ( \\\"iPhrase\\\" \\\"lowerKey\\\" \\\"upperKey\\\" )\n"
+    ": positionBeginFetch ( \"iPhrase\" \"lowerKey\" \"upperKey\" )\n"
     "\n"
     "  params| upperKey lowerKey iPhrase |\n"
     "  0 locals| sIndexNm |\n"
@@ -2887,7 +2823,7 @@ void Task::vAddMunged(Forth* pForth)
     "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "    // an exact select using index\n"
     "    AT_EXACT of\n"
-    "      \\\"*exact*\\\" .verbose\n"
+    "      \"*exact*\" .verbose\n"
     "\n"
     "      iPhrase                  // phrase\n"
     "      iPhrase planner[].key@   // lower key\n"
@@ -2898,21 +2834,21 @@ void Task::vAddMunged(Forth* pForth)
     "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "    // lower bound select using index\n"
     "    AT_LOWER of\n"
-    "      \\\"*lower*\\\" .verbose\n"
+    "      \"*lower*\" .verbose\n"
     "\n"
     "      iPhrase                     // phrase\n"
     "      iPhrase planner[].lowKey@   // lower key\n"
-    "      \\\"\\\"                          // upper key\n"
+    "      \"\"                          // upper key\n"
     "      positionBeginFetch to Operand[]\n"
     "    endof\n"
     "\n"
     "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "    // an upper bound select using index\n"
     "    AT_UPPER of\n"
-    "      \\\"*upper*\\\" .verbose\n"
+    "      \"*upper*\" .verbose\n"
     "\n"
     "      iPhrase                     // phrase\n"
-    "      \\\"\\\"                          // lower key\n"
+    "      \"\"                          // lower key\n"
     "      iPhrase planner[].upperKey@ // upper key\n"
     "      positionBeginFetch to Operand[]\n"
     "    endof\n"
@@ -2920,7 +2856,7 @@ void Task::vAddMunged(Forth* pForth)
     "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "    // a range select using index\n"
     "    AT_RANGE of\n"
-    "      \\\"*range\\\" .verbose\n"
+    "      \"*range\" .verbose\n"
     "\n"
     "      iPhrase                     // phrase\n"
     "      iPhrase planner[].lowKey@   // lower key\n"
@@ -2931,7 +2867,7 @@ void Task::vAddMunged(Forth* pForth)
     "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "    // full scan (no index)\n"
     "    AT_SCAN of\n"
-    "      \\\"*scan*\\\" .verbose\n"
+    "      \"*scan*\" .verbose\n"
     "      // now get excat key rows from index\n"
     "      tablePtn[].get tablePtnGrabRead2\n"
     "      tablePtn[].root to Subset[]\n"
@@ -2948,29 +2884,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| sPredicate |\n"
     "\n"
-    "  //sWhere \\\"generatePlan\\\" \\\"%v %v\\\" str.format .\n"
+    "  //sWhere \"generatePlan\" \"%v %v\" str.format .\n"
     "\n"
     "  ( cdt_0 ) planner[].new\n"
     "  ( cdt_1 ) table[] Planner[].table!\n"
     "\n"
-    "  ( cdt_2 ) <predicate> Planner[].parseWhere  //\\\"parseWheres\\\" .\n"
+    "  ( cdt_2 ) <predicate> Planner[].parseWhere  //\"parseWheres\" .\n"
     "\n"
-    "  ( cdt_3 ) Planner[].genPaths           //\\\"genPaths\\\" .\n"
-    "  ( cdt_4 ) Planner[].scorePaths         //\\\"scorePaths\\\" .\n"
+    "  ( cdt_3 ) Planner[].genPaths           //\"genPaths\" .\n"
+    "  ( cdt_4 ) Planner[].scorePaths         //\"scorePaths\" .\n"
     "  //( cdt_5 ) Planner[].showPaths\n"
     "\n"
-    "  ( cdt_6 ) Planner[].matchPaths         //\\\"matchPaths\\\" .\n"
+    "  ( cdt_6 ) Planner[].matchPaths         //\"matchPaths\" .\n"
     "  //( cdt_6 ) Planner[].showPaths\n"
     "\n"
-    "  ( cdt_7 ) Planner[].choosePaths        //\\\"choosePaths\\\" .\n"
+    "  ( cdt_7 ) Planner[].choosePaths        //\"choosePaths\" .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": fetch_CancelMarker \\\\handler\n"
+    ": fetch_CancelMarker \\handler\n"
     "\n"
-    "  //\\\"ZK_CANCELMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_CANCELMARKER_handler\" .verbose\n"
     "  nullptr to Operand[]\n"
     "  Pipein[].pipeOut\n"
     "  Op.ackPipelineJob\n"
@@ -2981,9 +2917,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": fetch_CrwBuffer \\\\handler\n"
+    ": fetch_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "\n"
     "  // pipeout the Operand\n"
     "  Operand[].pipeOut\n"
@@ -3037,11 +2973,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": fetch_PulseMarker \\\\handler\n"
+    ": fetch_PulseMarker \\handler\n"
     "\n"
     "  0 locals| iPhrases |\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // new a stream def\n"
@@ -3091,9 +3027,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": fetch_StartMarker \\\\handler\n"
+    ": fetch_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  0 locals| iPhrases |\n"
     "\n"
@@ -3117,10 +3053,10 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* fetch request                                      (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": fetch_req \\\\operator\n"
+    ": fetch_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
-    "  <tableNm> <predicate> \\\"PARAMETERS %v %v\\\" str.format .\n"
+    "  <tableNm> <predicate> \"PARAMETERS %v %v\" str.format .\n"
     "\n"
     "  op__topology\n"
     "\n"
@@ -3142,32 +3078,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: fetch :: fetch <tableNm> <predicate> ;\n"
     "\n"
     ": fetch _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_fetch.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)21);
-
-  szSubScriptDef = " 21 CONSTANT OP_fetch.sen__sub "_Stz;
+  szSubScriptDef = " 21 CONSTANT OP_fetch.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [22] se_stepTests.sen
 
   gszaMungedText[22] =
-    "\""
-    "\\\"munged se_stepTests.sen \\\" .verbose \n"
+    "\" munged se_stepTests.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_stepTests.sen -- step tests                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_stepTests.sen\\\" .verbose\n"
+    "\" se_stepTests.sen\" .verbose\n"
     "\n"
     ": test0 prompt test::test0 ;\n"
     ": test1 prompt test::test1 ;\n"
@@ -3199,26 +3132,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_stepTests.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)22);
-
-  szSubScriptDef = " 22 CONSTANT se_stepTests.sen__sub "_Stz;
+  szSubScriptDef = " 22 CONSTANT se_stepTests.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [23] se_experiments.sen
 
   gszaMungedText[23] =
-    "\""
-    "\\\"munged se_experiments.sen \\\" .verbose \n"
+    "\" munged se_experiments.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_experiments.sen -- forth experiments                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_experiments.sen\\\" .verbose\n"
+    "\" se_experiments.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* experiment 1                                                               */\n"
@@ -3235,62 +3165,59 @@ void Task::vAddMunged(Forth* pForth)
     ": exp2 prompt\n"
     "\n"
     "  [? 0 ?if\n"
-    "    \\\"0 compiled in\\\" .\n"
+    "    \"0 compiled in\" .\n"
     "  ?else\n"
-    "    \\\"0 not compiled in\\\" .\n"
+    "    \"0 not compiled in\" .\n"
     "  ?]\n"
     "\n"
     "  [? 1 ?if\n"
-    "    \\\"1 compiled in\\\" .\n"
+    "    \"1 compiled in\" .\n"
     "  ?else\n"
-    "    \\\"1 not compiled in\\\" .\n"
+    "    \"1 not compiled in\" .\n"
     "  ?]\n"
     "\n"
     "  [? 6 3 / 1 == ?if\n"
-    "    \\\"6 3 / 1 == compiled in\\\" .\n"
+    "    \"6 3 / 1 == compiled in\" .\n"
     "  ?else\n"
-    "    \\\"6 3 / 1 == not compiled in\\\" .\n"
+    "    \"6 3 / 1 == not compiled in\" .\n"
     "  ?]\n"
     "\n"
     "  [? 6 3 / 2 == ?if\n"
-    "    \\\"6 3 / 2 == compiled in\\\" .\n"
+    "    \"6 3 / 2 == compiled in\" .\n"
     "  ?else\n"
-    "    \\\"6 3 / 2 == not compiled in\\\" .\n"
+    "    \"6 3 / 2 == not compiled in\" .\n"
     "  ?]\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_experiments.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)23);
-
-  szSubScriptDef = " 23 CONSTANT se_experiments.sen__sub "_Stz;
+  szSubScriptDef = " 23 CONSTANT se_experiments.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [24] OP_ping.sen
 
   gszaMungedText[24] =
-    "\""
-    "\\\"munged OP_ping.sen \\\" .verbose \n"
+    "\" munged OP_ping.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_ping.sen -- Operator space                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_ping.sen\\\" .verbose\n"
+    "\" OP_ping.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": ping_action\n"
     "\n"
-    "  \\\"ping sleeps\\\" .\n"
+    "  \"ping sleeps\" .\n"
     "  1 thread::sleepSsec\n"
-    "  \\\"ping wakes\\\" .\n"
+    "  \"ping wakes\" .\n"
     "\n"
     "  // find the __ table\n"
     "  <streamDef> op__tableDef_streamSet assert\n"
@@ -3320,7 +3247,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": ping _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <params>      = 0\n"
     "    <streamDef>   = __pingInfo\n"
@@ -3330,31 +3257,28 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_ping.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)24);
-
-  szSubScriptDef = " 24 CONSTANT OP_ping.sen__sub "_Stz;
+  szSubScriptDef = " 24 CONSTANT OP_ping.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [25] OP_xmit.sen
 
   gszaMungedText[25] =
-    "\""
-    "\\\"munged OP_xmit.sen \\\" .verbose \n"
+    "\" munged OP_xmit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_xmit.sen -- Operator xmit                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_xmit.sen\\\" .verbose\n"
+    "\" OP_xmit.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for xmit request                           (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : Xmit_req \\\\operator\n"
+    " : Xmit_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -3376,39 +3300,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: Xmit :: Xmit <xmitKind> ;\n"
     "\n"
     ": Xmit _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_xmit.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)25);
-
-  szSubScriptDef = " 25 CONSTANT OP_xmit.sen__sub "_Stz;
+  szSubScriptDef = " 25 CONSTANT OP_xmit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [26] job_Supervisor.sen
 
   gszaMungedText[26] =
-    "\""
-    "\\\"munged job_Supervisor.sen \\\" .verbose \n"
+    "\" munged job_Supervisor.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Supervisor.sen -- supervisor job                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Supervisor.sen\\\" .verbose\n"
+    "\" job_Supervisor.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* add peridiodic activity here                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": supervisor::activity ( -- )\n"
     "\n"
-    "  \\\"Supervisor Activity\\\" .\n"
+    "  \"Supervisor Activity\" .\n"
     "\n"
     " ;\n"
     "\n"
@@ -3419,7 +3340,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  std_entryHook\n"
     "\n"
-    "   \\\"Supervisor Job Started\\\" .\n"
+    "   \"Supervisor Job Started\" .\n"
     "\n"
     "  begin\n"
     "\n"
@@ -3441,7 +3362,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: supervisor :: supervisor ;\n"
     "\n"
     ": supervisor _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_NONE\n"
@@ -3456,26 +3377,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Supervisor.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)26);
-
-  szSubScriptDef = " 26 CONSTANT job_Supervisor.sen__sub "_Stz;
+  szSubScriptDef = " 26 CONSTANT job_Supervisor.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [27] OP_tableSizes.sen
 
   gszaMungedText[27] =
-    "\""
-    "\\\"munged OP_tableSizes.sen \\\" .verbose \n"
+    "\" munged OP_tableSizes.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_tableSizes.sen -- Operator table sizes                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_tableSizes.sen\\\" .verbose\n"
+    "\" OP_tableSizes.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -3552,7 +3470,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": tableSizes _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __tableSizes\n"
     "    <params>    = 0\n"
@@ -3562,26 +3480,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_tableSizes.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)27);
-
-  szSubScriptDef = " 27 CONSTANT OP_tableSizes.sen__sub "_Stz;
+  szSubScriptDef = " 27 CONSTANT OP_tableSizes.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [28] se_start.sen
 
   gszaMungedText[28] =
-    "\""
-    "\\\"munged se_start.sen \\\" .verbose \n"
+    "\" munged se_start.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_start.sen -- Start System                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Start.sen\\\" .verbose\n"
+    "\" job_Start.sen\" .verbose\n"
     "\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -3593,7 +3508,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  nullptr locals| pParentJob |\n"
     "\n"
-    "  \\\"start_run\\\" .verbose\n"
+    "  \"start_run\" .verbose\n"
     "\n"
     "  //supervisor ;&\n"
     "  //periodic ;&\n"
@@ -3606,7 +3521,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  //service egArgA egArgB egArgC ;&\n"
     "\n"
-    "  \\\"end start_run\\\" .verbose\n"
+    "  \"end start_run\" .verbose\n"
     "\n"
     "  DONE_RUN\n"
     "  job::completed\n"
@@ -3617,26 +3532,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_start.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)28);
-
-  szSubScriptDef = " 28 CONSTANT se_start.sen__sub "_Stz;
+  szSubScriptDef = " 28 CONSTANT se_start.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [29] job_Docol.sen
 
   gszaMungedText[29] =
-    "\""
-    "\\\"munged job_Docol.sen \\\" .verbose \n"
+    "\" munged job_Docol.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Docol.sen -- Job Docol                                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Docol.sen\\\" .verbose\n"
+    "\" job_Docol.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* docol command request                                                      */\n"
@@ -3673,7 +3585,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: docol :: docol <routineNm> ;\n"
     "\n"
     ": docol _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_JOB_RESPONSE\n"
@@ -3684,26 +3596,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Docol.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)29);
-
-  szSubScriptDef = " 29 CONSTANT job_Docol.sen__sub "_Stz;
+  szSubScriptDef = " 29 CONSTANT job_Docol.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [30] job_BootCluster.sen
 
   gszaMungedText[30] =
-    "\""
-    "\\\"munged job_BootCluster.sen \\\" .verbose \n"
+    "\" munged job_BootCluster.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_StartCluster.sen -- Job Start Cluster                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_StartCluster.sen\\\" .verbose\n"
+    "\" job_StartCluster.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
@@ -3728,7 +3637,7 @@ void Task::vAddMunged(Forth* pForth)
     "  do\n"
     "    I grid::node node.isConnected not if\n"
     "      args.verbose if\n"
-    "        I \\\"Node no %v not connected\\\" .printf\n"
+    "        I \"Node no %v not connected\" .printf\n"
     "      then\n"
     "      unloop\n"
     "      false\n"
@@ -3736,7 +3645,7 @@ void Task::vAddMunged(Forth* pForth)
     "    then\n"
     "  loop\n"
     "\n"
-    "  \\\"All nodes connected\\\" .verbose\n"
+    "  \"All nodes connected\" .verbose\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -3761,7 +3670,7 @@ void Task::vAddMunged(Forth* pForth)
     "  grid::definedNodes 0\n"
     "  do\n"
     "    I grid::node node.isConnected\n"
-    "    I \\\"gridTest: node no %v connected %v \\\" .printf\n"
+    "    I \"gridTest: node no %v connected %v \" .printf\n"
     "  loop\n"
     " ;\n"
     "\n"
@@ -3819,11 +3728,11 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // set grid as started\n"
     "  true grid::started!\n"
-    "  \\\"Cluster started\\\" .\n"
+    "  \"Cluster started\" .\n"
     "\n"
     "  task::doneFinally\n"
     "\n"
-    "  //\\\"Signalling waiting thread\\\" .\n"
+    "  //\"Signalling waiting thread\" .\n"
     "  job[] job.signalCompletion\n"
     "  // task has no job\n"
     "  task::scheduledelete\n"
@@ -3860,26 +3769,23 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\""
-  " CONSTANT job_BootCluster.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)30);
-
-  szSubScriptDef = " 30 CONSTANT job_BootCluster.sen__sub "_Stz;
+  szSubScriptDef = " 30 CONSTANT job_BootCluster.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [31] job_Connector.sen
 
   gszaMungedText[31] =
-    "\""
-    "\\\"munged job_Connector.sen \\\" .verbose \n"
+    "\" munged job_Connector.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Connector.sen -- connector job                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Connector.sen\\\" .verbose\n"
+    "\" job_Connector.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* send node info to node we just connected to                                */\n"
@@ -3917,7 +3823,7 @@ void Task::vAddMunged(Forth* pForth)
     "  0 locals| pSocket |\n"
     "\n"
     "  args.verbose if\n"
-    "    pNode node.no grid::thisNode@ \\\"Node %v connecting to node %v\\\" .printf\n"
+    "    pNode node.no grid::thisNode@ \"Node %v connecting to node %v\" .printf\n"
     "  then\n"
     "\n"
     "  // get the nodes port and IP address\n"
@@ -3928,7 +3834,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pNode socket::open socket.connect to pSocket\n"
     "\n"
     "  pSocket not if\n"
-    "    pNode node.no grid::thisNode@ \\\"Node %v unable to connect to node %v\\\" .printf\n"
+    "    pNode node.no grid::thisNode@ \"Node %v unable to connect to node %v\" .printf\n"
     "    exit\n"
     "  then\n"
     "\n"
@@ -3939,7 +3845,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // print connection message\n"
     "  args.verbose if\n"
-    "    pNode node.no grid::thisNode@ \\\"Node %v connected to node %v\\\" .printf\n"
+    "    pNode node.no grid::thisNode@ \"Node %v connected to node %v\" .printf\n"
     "  then\n"
     "\n"
     "  // send this node's info to the node we just connected to\n"
@@ -3953,7 +3859,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| pNode |\n"
     "\n"
-    "  // \\\"_connectorTake\\\" .\n"
+    "  // \"_connectorTake\" .\n"
     "\n"
     "  grid::definedNodes 0\n"
     "  do\n"
@@ -3986,10 +3892,10 @@ void Task::vAddMunged(Forth* pForth)
     "  0 locals| pThisTask |\n"
     "  0 locals| pJob_Connector |\n"
     "\n"
-    "  //\\\"connector_run\\\" .\n"
+    "  //\"connector_run\" .\n"
     "\n"
     "  args.verbose if\n"
-    "    grid::thisNode@ job[] \\\"Connector %v on node %v running\\\" .printf\n"
+    "    grid::thisNode@ job[] \"Connector %v on node %v running\" .printf\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -4010,7 +3916,7 @@ void Task::vAddMunged(Forth* pForth)
     "  again\n"
     "\n"
     "  // print started message\n"
-    "  //grid::thisNodeName@ \\\"Node %v : SE cluster started\\\" .printf\n"
+    "  //grid::thisNodeName@ \"Node %v : SE cluster started\" .printf\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
@@ -4026,7 +3932,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: connector :: connector ;\n"
     "\n"
     ": connector _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_NONE\n"
@@ -4041,26 +3947,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Connector.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)31);
-
-  szSubScriptDef = " 31 CONSTANT job_Connector.sen__sub "_Stz;
+  szSubScriptDef = " 31 CONSTANT job_Connector.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [32] OP_listPartitionColumns.sen
 
   gszaMungedText[32] =
-    "\""
-    "\\\"munged OP_listPartitionColumns.sen \\\" .verbose \n"
+    "\" munged OP_listPartitionColumns.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listPartitionColumns.sen -- Operator list partition columns             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listPartitionColumns.sen\\\" .verbose\n"
+    "\" OP_listPartitionColumns.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -4115,7 +4018,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lspartcol _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listColumns\n"
     "    <params>      = 1\n"
@@ -4126,33 +4029,30 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\""
-  " CONSTANT OP_listPartitionColumns.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)32);
-
-  szSubScriptDef = " 32 CONSTANT OP_listPartitionColumns.sen__sub "_Stz;
+  szSubScriptDef = " 32 CONSTANT OP_listPartitionColumns.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [33] OP_insert.sen
 
   gszaMungedText[33] =
-    "\""
-    "\\\"munged OP_insert.sen \\\" .verbose \n"
+    "\" munged OP_insert.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_insert.sen -- Operator insert                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_insert.sen\\\" .verbose\n"
+    "\" OP_insert.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Insert_CrwBuffer \\\\handler\n"
+    ": Insert_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "\n"
     "  // insert the buffer into the table ptn\n"
     "  tablePtn[].get tablePtnGrabWrite2\n"
@@ -4188,9 +4088,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Insert_EosMarker \\\\handler\n"
+    ": Insert_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "  Pipein[].pipeout\n"
     "\n"
     "  // send out final progress units\n"
@@ -4210,9 +4110,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITMARKER ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Insert_ExitMarker \\\\handler\n"
+    ": Insert_ExitMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITMARKER\" .verbose\n"
     "  path[].popNamedTableFolder\n"
     "  Pipein[].pipeOut\n"
     "  Op.ackPipelineJob\n"
@@ -4223,9 +4123,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Insert_StartMarker \\\\handler\n"
+    ": Insert_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // create the infoSetTable for C_TDEF_PROGRESSUNITS\n"
     "  C_TDEF_PROGRESSUNITS op__tableDef_infoSet assert\n"
@@ -4243,9 +4143,9 @@ void Task::vAddMunged(Forth* pForth)
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*\n"
-    ": Insert_StreamDef \\\\handler\n"
+    ": Insert_StreamDef \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STREAMDEF\\\" .verbose\n"
+    "  //\"Operand:- ZK_STREAMDEF\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newStreamDef\n"
     "  Operand[].pipeOut\n"
@@ -4257,7 +4157,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for insert                                 (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : Insert_req \\\\operator\n"
+    " : Insert_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -4285,37 +4185,34 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: Insert :: Insert <tableNm> ;\n"
     "\n"
     ": Insert _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_insert.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)33);
-
-  szSubScriptDef = " 33 CONSTANT OP_insert.sen__sub "_Stz;
+  szSubScriptDef = " 33 CONSTANT OP_insert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [34] BM_genCrw.sen
 
   gszaMungedText[34] =
-    "\""
-    "\\\"munged BM_genCrw.sen \\\" .verbose \n"
+    "\" munged BM_genCrw.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* BM_genCrw.sen -- Benchmark Operator genCrw                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" BM_genCrw.sen\\\" .verbose\n"
+    "\" BM_genCrw.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenCrw_PulseMarker \\\\handler\n"
+    ": BM_GenCrw_PulseMarker \\handler\n"
     "\n"
     "  // pipe out the pulse marker to the next operator\n"
     "  Pipein[].pipeOut\n"
@@ -4338,15 +4235,15 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenCrw_StartMarker \\\\handler\n"
+    ": BM_GenCrw_StartMarker \\handler\n"
     "\n"
-    "  \\\"BM_GenEnt_StartMarker\\\" .\n"
+    "  \"BM_GenEnt_StartMarker\" .\n"
     "\n"
     "  <tableNm> op__table if\n"
     "    table[].tablePtn@ to tablePtn[]\n"
     "\n"
-    "    path[].toStr     \\\"Folder path: %v\\\" .printf\n"
-    "    folder[].contentStr \\\"contains: %v\\\" .printf\n"
+    "    path[].toStr     \"Folder path: %v\" .printf\n"
+    "    folder[].contentStr \"contains: %v\" .printf\n"
     "\n"
     "    Pipein[].pipeOut\n"
     "  then\n"
@@ -4355,7 +4252,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* BM_GenCrwOp request                                (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenCrwOp_req \\\\operator\n"
+    ": BM_GenCrwOp_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -4366,7 +4263,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** BM_GenCrwOp EXITS\\\" .\n"
+    "  \"*** BM_GenCrwOp EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -4378,39 +4275,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: BM_GenCrwOp :: BM_GenCrwOp <tableNm> <nBuffers> ;\n"
     "\n"
     ": BM_GenCrwOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT BM_genCrw.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)34);
-
-  szSubScriptDef = " 34 CONSTANT BM_genCrw.sen__sub "_Stz;
+  szSubScriptDef = " 34 CONSTANT BM_genCrw.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [35] OP_gridSanity.sen
 
   gszaMungedText[35] =
-    "\""
-    "\\\"munged OP_gridSanity.sen \\\" .verbose \n"
+    "\" munged OP_gridSanity.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sanity.sen -- Operator sanity                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_sanity.sen\\\" .verbose\n"
+    "\" OP_sanity.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_NODEINFO...                                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": GridSanity_NodeInfo \\\\handler\n"
+    ": GridSanity_NodeInfo \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_NODEINFO\\\" .verbose\n"
+    "  //\"Operand:- ZK_NODEINFO\" .verbose\n"
     "\n"
     "  Pipein[] to infoSet[]\n"
     "  nullptr to Pipein[]\n"
@@ -4446,9 +4340,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER...                                                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": GridSanity_StartMarker \\\\handler\n"
+    ": GridSanity_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  Pipein[].pipeout\n"
     "\n"
@@ -4468,7 +4362,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for gridSanity req                         (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : GridSanity_req \\\\operator\n"
+    " : GridSanity_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -4490,51 +4384,48 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: GridSanity :: GridSanity ;\n"
     "\n"
     ": GridSanity _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_gridSanity.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)35);
-
-  szSubScriptDef = " 35 CONSTANT OP_gridSanity.sen__sub "_Stz;
+  szSubScriptDef = " 35 CONSTANT OP_gridSanity.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [36] OP_toDemon.sen
 
   gszaMungedText[36] =
-    "\""
-    "\\\"munged OP_toDemon.sen \\\" .verbose \n"
+    "\" munged OP_toDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toDemon.sen -- To Demon Operator                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_toDemon.sen\\\" .verbose\n"
+    "\" OP_toDemon.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_toDemon_PulseMarker \\\\handler\n"
+    ": OP_toDemon_PulseMarker \\handler\n"
     "\n"
-    "  \\\"OP_toDemon_PulseMarker\\\" .\n"
+    "  \"OP_toDemon_PulseMarker\" .\n"
     "\n"
     "  ZK_PULSEMARKER_handler\n"
     "\n"
     "  Operand[].newPulseMarker operand[] \n"
-    "    \\\"__anyDemon\\\" find word.object@\n"
+    "    \"__anyDemon\" find word.object@\n"
     "    pipeline.pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* toDemon request                                    (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": toDemonOp_req \\\\operator\n"
+    ": toDemonOp_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -4544,7 +4435,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** toDemonOp_req EXITS\\\" .\n"
+    "  \"*** toDemonOp_req EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -4556,32 +4447,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: toDemonOp :: toDemonOp ;\n"
     "\n"
     ": toDemonOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <?jobDesc?>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <?jobDesc?>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_toDemon.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)36);
-
-  szSubScriptDef = " 36 CONSTANT OP_toDemon.sen__sub "_Stz;
+  szSubScriptDef = " 36 CONSTANT OP_toDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [37] OP_listTenants.sen
 
   gszaMungedText[37] =
-    "\""
-    "\\\"munged OP_listTenants.sen \\\" .verbose \n"
+    "\" munged OP_listTenants.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listTenants.sen -- Operator list tenants                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listTenants.sen\\\" .verbose\n"
+    "\" OP_listTenants.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -4640,7 +4528,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lsten _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listContents\n"
     "    <params>      = 0\n"
@@ -4650,26 +4538,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listTenants.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)37);
-
-  szSubScriptDef = " 37 CONSTANT OP_listTenants.sen__sub "_Stz;
+  szSubScriptDef = " 37 CONSTANT OP_listTenants.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [38] se_munge.sen
 
   gszaMungedText[38] =
-    "\""
-    "\\\"munged se_munge.sen \\\" .verbose \n"
+    "\" munged se_munge.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_munge.sen -- create the .cpp file from all .sen files                   */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\"-se_munge.sen\\\" .verbose\n"
+    "\"-se_munge.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* put the variable for the sen file into c++ file                            */\n"
@@ -4678,12 +4563,12 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pSenFile file.path@ locals| sFileNm |\n"
     "\n"
-    "  \\\"\\\\n\\\"\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\\\n\\\"\n"
+    "  \"  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\n\"\n"
     "  pCppFile file.write\n"
     "\n"
-    "  sFileNm i_File \\\"  // munge of [%v] %v\\\\n\\\" str.format\n"
+    "  sFileNm i_File \"  // munge of [%v] %v\\n\" str.format\n"
     "  pCppFile file.write\n"
     " ;\n"
     "\n"
@@ -4694,49 +4579,49 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pSenFile file.path@ locals| sFileNm |\n"
     "\n"
-    "  \\\"\\\\n\\\"\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"  sFileContents =\\\\n\\\"\n"
+    "  \"  sFileContents =\\n\"\n"
     "  pCppFile file.write\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "  \"    \\\"\\\\\\\"\\\"\\n\" pCppFile file.write\n"
     "\n"
-    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"munged \\\" pCppFile file.write\n"
+    "  \"    \\\"\\\\\\\\\\\\\\\"munged \" pCppFile file.write\n"
     "  sFileNm pCppFile file.write\n"
     "\n"
-    "  \\\" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" .verbose \\\\\\\\n\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "  \" \\\\\\\\\\\\\\\" .verbose \\\\n\\\"\\n\" pCppFile file.write\n"
     "\n"
-    "  \\\"\\\" locals| sSenLine |\n"
+    "  \"\" locals| sSenLine |\n"
     "  begin pSenFile file.read while\n"
     "\n"
     "    str.escape str.escape to sSenLine\n"
     "\n"
-    "    sSenLine \\\";\\\" str.equal if\n"
-    "      \\\" ;\\\" to sSenLine\n"
+    "    sSenLine \";\" str.equal if\n"
+    "      \" ;\" to sSenLine\n"
     "    then\n"
     "\n"
-    "    \\\"    \\\\\\\"\\\"  pCppFile file.write\n"
+    "    \"    \\\"\"  pCppFile file.write\n"
     "    sSenLine  pCppFile file.write\n"
-    "    \\\"\\\\\\\\n\\\\\\\"\\\"   pCppFile file.write\n"
-    "    \\\"\\\\n\\\"      pCppFile file.write\n"
+    "    \"\\\\n\\\"\"   pCppFile file.write\n"
+    "    \"\\n\"      pCppFile file.write\n"
     "\n"
     "  repeat\n"
     "\n"
-    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "  \"    \\\"\\\\\\\"\\\"\\n\" pCppFile file.write\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  sFileNm \\\"  \\\\\\\" CONSTANT %v \\\\\\\"_Stz\\\\n\\\" str.format pCppFile file.write\n"
-    "  \\\"  ;\\\\n\\\"\n"
+    "  sFileNm \"  \\\" CONSTANT %v \\\"_Stz\\n\" str.format pCppFile file.write\n"
+    "  \"  ;\\n\"\n"
     "  pCppFile file.write\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  \\\"\\\\n\\\"\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"  vCompileMungedColon(sFileContents);\\\\n\\\"\n"
+    "  \"  vCompileMungedColon(sFileContents);\\n\"\n"
     "  pCppFile file.write\n"
     " ;\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -4744,62 +4629,64 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pSenFile file.path@ locals| sFileNm |\n"
     "\n"
-    "  \\\"\\\\n\\\"\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
-    "  i_File \\\"  gszaMungedText[%v] =\\\\n\\\" str.format\n"
+    "  i_File \"  gszaMungedText[%v] =\\n\" str.format\n"
     "  pCppFile file.write\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
+    "  //\"    \\\"\\\\\\\"\\\"\\n\" pCppFile file.write\n"
     "\n"
-    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"munged \\\" pCppFile file.write\n"
-    "  sFileNm pCppFile file.write\n"
+    "  sFileNm \"    \\\"\\\\\\\" munged %v \\\\\\\" .verbose \\\\n\\\"\\n\" str.format\n"
+    "  pCppFile file.write\n"
     "\n"
-    "  \\\" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" .verbose \\\\\\\\n\\\\\\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  \\\"\\\" locals| sSenLine |\n"
+    "  \"\" locals| sSenLine |\n"
     "  begin pSenFile file.read while\n"
     "\n"
-    "    str.escape str.escape to sSenLine\n"
+    "    //str.escape\n"
+    "    str.escape to sSenLine\n"
     "\n"
-    "    sSenLine \\\";\\\" str.equal if\n"
-    "      \\\" ;\\\" to sSenLine\n"
+    "    sSenLine \";\" str.equal if\n"
+    "      \" ;\" to sSenLine\n"
     "    then\n"
     "\n"
-    "    \\\"    \\\\\\\"\\\"  pCppFile file.write\n"
+    "    \"    \\\"\"  pCppFile file.write\n"
     "    sSenLine  pCppFile file.write\n"
-    "    \\\"\\\\\\\\n\\\\\\\"\\\"   pCppFile file.write\n"
-    "    \\\"\\\\n\\\"      pCppFile file.write\n"
+    "    \"\\\\n\\\"\"   pCppFile file.write\n"
+    "    \"\\n\"      pCppFile file.write\n"
     "\n"
     "  repeat\n"
     "\n"
-    "  \\\"    \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\\n\\\" pCppFile file.write\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  sFileNm \\\"  \\\\\\\" CONSTANT %v \\\\\\\"_Stz\\\\n\\\" str.format\n"
-    "  pCppFile file.write\n"
-    "\n"
-    "  \\\"  ;\\\\n\\\"\n"
-    "  pCppFile file.write\n"
-    "\n"
-    "  \\\"\\\\n\\\"\n"
-    "  pCppFile file.write\n"
-    "  i_File \\\"  vCompileMungedColon((i8)%v);\\\\n\\\" str.format\n"
+    "  \"    \\\"\\\\n\\\"\\n\"\n"
     "  pCppFile file.write\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  \\\"\\\\n\\\"\n"
-    "  pCppFile file.write\n"
-    "  \\\"  szSubScriptDef =\\\"\n"
-    "  pCppFile file.write\n"
-    "\n"
-    "  sFileNm i_File \\\" \\\\\\\" %v CONSTANT %v__sub \\\\\\\"_Stz;\\\\n\\\" str.format\n"
+    "//  sFileNm \"  \\\" CONSTANT %v \\\"_Stz\\n\" str.format\n"
+    "//  pCppFile file.write\n"
+    "  \"    \\\"\\\"_Stz\\n\" str.format\n"
     "  pCppFile file.write\n"
     "\n"
-    "  \\\"  vCompileMungedColon(szSubScriptDef);\\\\n\\\" str.format\n"
+    "  \"  ;\\n\"\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "//  \"\\n\"\n"
+    "//  pCppFile file.write\n"
+    "//  i_File \"  vCompileMungedColon((i8)%v);\\n\" str.format\n"
+    "//  pCppFile file.write\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  \"\\n\"\n"
+    "  pCppFile file.write\n"
+    "  \"  szSubScriptDef =\"\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "  sFileNm i_File \" \\\" %v CONSTANT %v \\\"_Stz;\\n\" str.format\n"
+    "  pCppFile file.write\n"
+    "\n"
+    "  \"  vCompileMungedColon(szSubScriptDef);\\n\" str.format\n"
     "  pCppFile file.write\n"
     " ;\n"
     "\n"
@@ -4821,7 +4708,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": munge_ProcessSenFile params| sSenFileNm pCppFile i_File |\n"
     "\n"
-    "  sSenFileNm i_File \\\"[%v] %v\\\" .printf\n"
+    "  sSenFileNm i_File \"[%v] %v\" .printf\n"
     "\n"
     "  file::new locals| pSenFile |\n"
     "\n"
@@ -4847,7 +4734,7 @@ void Task::vAddMunged(Forth* pForth)
     "    pSenDir dir.entryType DE_REG == not continue\n"
     "\n"
     "    // ignore entries which aren't .sen files\n"
-    "    4 pSenDir dir.entryName str.right \\\".sen\\\" str.equal not continue\n"
+    "    4 pSenDir dir.entryName str.right \".sen\" str.equal not continue\n"
     "\n"
     "    // convert to C++\n"
     "    i_File pCppFile pSenDir dir.entryName munge_ProcessSenFile\n"
@@ -4866,27 +4753,27 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": munge_WriteCppHeader params| pCppFile |\n"
     "\n"
-    "  \\\"/*============================================================================*/\\\\n\\\"\n"
+    "  \"/*============================================================================*/\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"/* MungedSen.cpp - munged sen files                                           */\\\\n\\\"\n"
+    "  \"/* MungedSen.cpp - munged sen files                                           */\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"/*============================================================================*/\\\\n\\\"\n"
+    "  \"/*============================================================================*/\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"#include \\\\\\\"StorageEngine.h\\\\\\\"\\\\n\\\"\n"
-    "  pCppFile file.write\n"
-    "\n"
-    "  \\\"\\\\n\\\"\n"
-    "  pCppFile file.write\n"
-    "  \\\"Stz* gszaMungedText[1024];\\\\n\\\"\n"
+    "  \"#include \\\"StorageEngine.h\\\"\\n\"\n"
     "  pCppFile file.write\n"
     "\n"
-    "  \\\"\\\\n\\\"\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"void Task::vAddMunged(Forth* pForth)\\\\n\\\"\n"
+    "  \"Stz* gszaMungedText[1024];\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"{\\\\n\\\"\n"
+    "\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"  Stz* szSubScriptDef;\\\\n\\\"\n"
+    "  \"void Task::vAddMunged(Forth* pForth)\\n\"\n"
+    "  pCppFile file.write\n"
+    "  \"{\\n\"\n"
+    "  pCppFile file.write\n"
+    "  \"  Stz* szSubScriptDef;\\n\"\n"
     "  pCppFile file.write\n"
     " ;\n"
     "\n"
@@ -4895,16 +4782,16 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": munge_WriteCppFooter params| pCppFile |\n"
     "\n"
-    "  \\\"}\\\\n\\\"\n"
+    "  \"}\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"\\\\n\\\"\n"
+    "  \"\\n\"\n"
     "  pCppFile file.write\n"
     "\n"
-    "  \\\"/*============================================================================*/\\\\n\\\"\n"
+    "  \"/*============================================================================*/\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"/* end                                                                        */\\\\n\\\"\n"
+    "  \"/* end                                                                        */\\n\"\n"
     "  pCppFile file.write\n"
-    "  \\\"/*============================================================================*/\\\\n\\\"\n"
+    "  \"/*============================================================================*/\\n\"\n"
     "  pCppFile file.write\n"
     " ;\n"
     "\n"
@@ -4919,20 +4806,20 @@ void Task::vAddMunged(Forth* pForth)
     "  dir::new  locals| pSenDir |\n"
     "  file::new locals| pCppFile |\n"
     "\n"
-    "  \\\"munging\\\" .\n"
+    "  \"munging\" .\n"
     "\n"
     "  // save original dir and change to ../Sen\n"
     "  dir::getCurrent locals| sOrigDir |\n"
-    "  sOrigDir \\\"Original working directory: %v\\\" .printf\n"
+    "  sOrigDir \"Original working directory: %v\" .printf\n"
     "\n"
-    "  \\\"../Sen\\\" dir::changeCurrent\n"
-    "  dir::getCurrent \\\"Working directory now: %v\\\" .printf\n"
+    "  \"../Sen\" dir::changeCurrent\n"
+    "  dir::getCurrent \"Working directory now: %v\" .printf\n"
     "\n"
     "  // open sen directory\n"
-    "  \\\".\\\" pSenDir dir.open assert\n"
+    "  \".\" pSenDir dir.open assert\n"
     "\n"
     "  // open cpp file\n"
-    "  \\\"../Munge/Task_AddMunged.cpp\\\" OPEN_WRITE pCppFile file.open assert\n"
+    "  \"../Munge/Task_AddMunged.cpp\" OPEN_WRITE pCppFile file.open assert\n"
     "\n"
     "  pCppFile munge_WriteCppHeader\n"
     "\n"
@@ -4950,44 +4837,41 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // change back to original dir\n"
     "  sOrigDir dir::changeCurrent\n"
-    "  dir::getCurrent \\\"Working directory back to: %v\\\" .printf\n"
+    "  dir::getCurrent \"Working directory back to: %v\" .printf\n"
     "\n"
-    "  nSenProcessed \\\"munged %v .sen files\\\" .printf\n"
+    "  nSenProcessed \"munged %v .sen files\" .printf\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_munge.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)38);
-
-  szSubScriptDef = " 38 CONSTANT se_munge.sen__sub "_Stz;
+  szSubScriptDef = " 38 CONSTANT se_munge.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [39] test_unit.sen
 
   gszaMungedText[39] =
-    "\""
-    "\\\"munged test_unit.sen \\\" .verbose \n"
+    "\" munged test_unit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_unit.sen -- unit testing                                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_unit.sen\\\" .verbose\n"
+    "\" test_unit.sen\" .verbose\n"
     "\n"
-    "\\\"test_arithmetic.sen\\\" include\n"
+    "\"test_arithmetic.sen\" include\n"
     "\n"
-    "\\\"test_flow.sen\\\" include\n"
+    "\"test_flow.sen\" include\n"
     "\n"
-    "\\\"test_logic.sen\\\" include\n"
+    "\"test_logic.sen\" include\n"
     "\n"
     ": ut\n"
     "\n"
-    "  \\\"unit testing...\\\" .put .\\\\n\n"
+    "  \"unit testing...\" .put .\\n\n"
     "\n"
     "  logicTests\n"
     "\n"
@@ -4995,43 +4879,40 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  flowTests\n"
     "\n"
-    "  \\\"unit tests passed\\\" .put .\\\\n\n"
+    "  \"unit tests passed\" .put .\\n\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_unit.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)39);
-
-  szSubScriptDef = " 39 CONSTANT test_unit.sen__sub "_Stz;
+  szSubScriptDef = " 39 CONSTANT test_unit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [40] OP_bufferGen.sen
 
   gszaMungedText[40] =
-    "\""
-    "\\\"munged OP_bufferGen.sen \\\" .verbose \n"
+    "\" munged OP_bufferGen.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bufferGen.sen -- Operator bufferGen                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_bufferGen.sen\\\" .verbose\n"
+    "\" OP_bufferGen.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BufferGen_PulseMarker \\\\handler\n"
+    ": BufferGen_PulseMarker \\handler\n"
     "\n"
-    "  \\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  \"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  <nBuffers> 0 do\n"
-    "    I \\\"buffer# %v\\\" .printf\n"
+    "    I \"buffer# %v\" .printf\n"
     "\n"
     "    csvBuffer::new to Operand[]\n"
     "    Operand[].pipeOut\n"
@@ -5045,11 +4926,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* BufferGen request                                   (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BufferGen_req \\\\operator\n"
+    ": BufferGen_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
-    "  <nBuffers> \\\"Number of buffers: %v\\\" .printf\n"
+    "  <nBuffers> \"Number of buffers: %v\" .printf\n"
     "\n"
     "  op__topology\n"
     "\n"
@@ -5057,7 +4938,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** BufferGen EXITS\\\" .\n"
+    "  \"*** BufferGen EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -5069,32 +4950,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: bufferGen :: bufferGen <nBuffers> ;\n"
     "\n"
     ": bufferGen _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_bufferGen.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)40);
-
-  szSubScriptDef = " 40 CONSTANT OP_bufferGen.sen__sub "_Stz;
+  szSubScriptDef = " 40 CONSTANT OP_bufferGen.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [41] job__Cancel.sen
 
   gszaMungedText[41] =
-    "\""
-    "\\\"munged job__Cancel.sen \\\" .verbose \n"
+    "\" munged job__Cancel.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__Cancel.sen -- generic job related words                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__Cancel.sen\\\" .verbose\n"
+    "\" job__Cancel.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on originating node                             //\n"
@@ -5169,7 +5047,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _Cancel :: _Cancel ;\n"
     "\n"
     ": _Cancel _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -5180,26 +5058,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__Cancel.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)41);
-
-  szSubScriptDef = " 41 CONSTANT job__Cancel.sen__sub "_Stz;
+  szSubScriptDef = " 41 CONSTANT job__Cancel.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [42] job_Service.sen
 
   gszaMungedText[42] =
-    "\""
-    "\\\"munged job_Service.sen \\\" .verbose \n"
+    "\" munged job_Service.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Service.sen -- Example Service Job                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Service.sen\\\" .verbose\n"
+    "\" job_Service.sen\" .verbose\n"
     "\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5207,7 +5082,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": service::activity ( -- )\n"
     "\n"
-    "  \\\"Service Activity\\\" .\n"
+    "  \"Service Activity\" .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5244,7 +5119,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: service :: service ;\n"
     "\n"
     ": service _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_NONE\n"
@@ -5268,23 +5143,23 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  begin\n"
     "    input::next\n"
-    "  dup \\\";&\\\" str.equal not\n"
+    "  dup \";&\" str.equal not\n"
     "  while\n"
     "    nArgs ++ to nArgs\n"
     "  repeat\n"
     "\n"
-    "  // discard the \\\";&\\\" from dstack\n"
+    "  // discard the \";&\" from dstack\n"
     "  discard\n"
     "\n"
     "  nArgs\n"
     "\n"
-    "  // \\\"would spawn service\\\" .\n"
+    "  // \"would spawn service\" .\n"
     "\n"
     "  dropN\n"
     "\n"
     "  //compiler::current@ word.name@ ,\n"
     "\n"
-    "  \\\"service\\\" encode::push\n"
+    "  \"service\" encode::push\n"
     "\n"
     "  find: job::spawnUniversal encode::call\n"
     "\n"
@@ -5296,26 +5171,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Service.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)42);
-
-  szSubScriptDef = " 42 CONSTANT job_Service.sen__sub "_Stz;
+  szSubScriptDef = " 42 CONSTANT job_Service.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [43] OP_verifyTable.sen
 
   gszaMungedText[43] =
-    "\""
-    "\\\"munged OP_verifyTable.sen \\\" .verbose \n"
+    "\" munged OP_verifyTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_verifyTable.sen -- Operator verify table                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_verifyTable.sen\\\" .verbose\n"
+    "\" OP_verifyTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -5357,7 +5229,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": vfytbl _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __verifyTable\n"
     "    <params>    = 1\n"
@@ -5367,26 +5239,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_verifyTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)43);
-
-  szSubScriptDef = " 43 CONSTANT OP_verifyTable.sen__sub "_Stz;
+  szSubScriptDef = " 43 CONSTANT OP_verifyTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [44] OP_listCatalogs.sen
 
   gszaMungedText[44] =
-    "\""
-    "\\\"munged OP_listCatalogs.sen \\\" .verbose \n"
+    "\" munged OP_listCatalogs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listCatalogs.sen -- Operator list catalogs                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listCatalogs.sen\\\" .verbose\n"
+    "\" OP_listCatalogs.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -5444,7 +5313,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lscat _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listContents\n"
     "    <params>      = 0\n"
@@ -5454,33 +5323,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listCatalogs.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)44);
-
-  szSubScriptDef = " 44 CONSTANT OP_listCatalogs.sen__sub "_Stz;
+  szSubScriptDef = " 44 CONSTANT OP_listCatalogs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [45] OP_toCrw.sen
 
   gszaMungedText[45] =
-    "\""
-    "\\\"munged OP_toCrw.sen \\\" .verbose \n"
+    "\" munged OP_toCrw.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toCrw.sen -- Operator toCrw                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_toCrw.sen\\\" .verbose\n"
+    "\" OP_toCrw.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCrw_CsvBuffer \\\\handler\n"
+    ": ToCrw_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  // use extractRow from register0 and convert csvtoCrw\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
@@ -5494,9 +5360,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCrw_EosMarker \\\\handler\n"
+    ": ToCrw_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "  writeBehind[].handleDangling\n"
     "\n"
     "  // delete writeBehind\n"
@@ -5513,9 +5379,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCrw_PulseMarker \\\\handler\n"
+    ": ToCrw_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  // create a write behind\n"
     "  writeBehind[].create\n"
     "\n"
@@ -5530,9 +5396,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCrw_StartMarker \\\\handler\n"
+    ": ToCrw_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "  // check if we can scan the table\n"
     "  <tableNm> op__table if\n"
     "    // move to table folder and find the table and tablePtn\n"
@@ -5545,9 +5411,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCrw_StreamDef \\\\handler\n"
+    ": ToCrw_StreamDef \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STREAMDEF\\\" .verbose\n"
+    "  //\"Operand:- ZK_STREAMDEF\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newStreamDef\n"
     "  Operand[].pipeOut\n"
@@ -5558,7 +5424,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for ToCrw req                              (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : ToCrw_req \\\\operator\n"
+    " : ToCrw_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -5584,32 +5450,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: ToCrw :: ToCrw <tableNm> ;\n"
     "\n"
     ": ToCrw _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_toCrw.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)45);
-
-  szSubScriptDef = " 45 CONSTANT OP_toCrw.sen__sub "_Stz;
+  szSubScriptDef = " 45 CONSTANT OP_toCrw.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [46] OP_listIndexColumns.sen
 
   gszaMungedText[46] =
-    "\""
-    "\\\"munged OP_listIndexColumns.sen \\\" .verbose \n"
+    "\" munged OP_listIndexColumns.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listIndexColumns.sen -- Operator list index columns                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listIndexColumns.sen\\\" .verbose\n"
+    "\" OP_listIndexColumns.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -5664,7 +5527,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lsidxcol _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listColumns\n"
     "    <params>      = 2\n"
@@ -5674,26 +5537,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listIndexColumns.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)46);
-
-  szSubScriptDef = " 46 CONSTANT OP_listIndexColumns.sen__sub "_Stz;
+  szSubScriptDef = " 46 CONSTANT OP_listIndexColumns.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [47] test_iData.sen
 
   gszaMungedText[47] =
-    "\""
-    "\\\"munged test_iData.sen \\\" .verbose \n"
+    "\" munged test_iData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_iData.sen -- generate iTest data                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_iData.sen\\\" .verbose\n"
+    "\" test_iData.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate a i (integer) data file                                           */\n"
@@ -5703,21 +5563,21 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
-    "      I I 10 +  I 20 + I 30 + \\\"%v,%v,%v,%v\\\\n\\\" str.format pFile file.write\n"
+    "      //I I \"%v,String%v\" str.format .\n"
+    "      I I 10 +  I 20 + I 30 + \"%v,%v,%v,%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -5731,39 +5591,36 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": iData\n"
     "\n"
-    "  \\\"/rapids/i/t0.csv\\\"    0      iDataFile\n"
-    "  \\\"/rapids/i/t1.csv\\\"    1      iDataFile\n"
-    "  \\\"/rapids/i/t10.csv\\\"   10     iDataFile\n"
-    "  \\\"/rapids/i/t100.csv\\\"  100    iDataFile\n"
-    "  \\\"/rapids/i/t1K.csv\\\"   C_1K   iDataFile\n"
-    "  \\\"/rapids/i/t10K.csv\\\"  C_10K  iDataFile\n"
-    "  \\\"/rapids/i/t100K.csv\\\" C_100K iDataFile\n"
-    "  \\\"/rapids/i/t1M.csv\\\"   C_1M   iDataFile\n"
+    "  \"/rapids/i/t0.csv\"    0      iDataFile\n"
+    "  \"/rapids/i/t1.csv\"    1      iDataFile\n"
+    "  \"/rapids/i/t10.csv\"   10     iDataFile\n"
+    "  \"/rapids/i/t100.csv\"  100    iDataFile\n"
+    "  \"/rapids/i/t1K.csv\"   C_1K   iDataFile\n"
+    "  \"/rapids/i/t10K.csv\"  C_10K  iDataFile\n"
+    "  \"/rapids/i/t100K.csv\" C_100K iDataFile\n"
+    "  \"/rapids/i/t1M.csv\"   C_1M   iDataFile\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_iData.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)47);
-
-  szSubScriptDef = " 47 CONSTANT test_iData.sen__sub "_Stz;
+  szSubScriptDef = " 47 CONSTANT test_iData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [48] job_Pipeline.sen
 
   gszaMungedText[48] =
-    "\""
-    "\\\"munged job_Pipeline.sen \\\" .verbose \n"
+    "\" munged job_Pipeline.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Pipeline.sen -- Job Pipeline                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Pipeline.sen\\\" .verbose\n"
+    "\" job_Pipeline.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* pipeline request (on originating node)                                     */\n"
@@ -5794,18 +5651,18 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // run <pre_execute>\n"
     "\n"
-    "  \\\"<pre_execute>\\\"\n"
+    "  \"<pre_execute>\"\n"
     "  job[] job.tagSet@ tagSet.hasName if\n"
-    "    \\\"<pre_execute>\\\"\n"
+    "    \"<pre_execute>\"\n"
     "    job[] job.tagSet@ tagSet.getStr locals| sPreExe |\n"
     "    sPreExe find\n"
     "    dup not if\n"
-    "      sPreExe \\\"Unable to find pre execute word: %v\\\" .printf\n"
+    "      sPreExe \"Unable to find pre execute word: %v\" .printf\n"
     "      process::quit\n"
     "    then\n"
     "      execute\n"
     "  else\n"
-    "    <pipelineNm> \\\"No pre execute word for pipeline: %v\\\" .printf\n"
+    "    <pipelineNm> \"No pre execute word for pipeline: %v\" .printf\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -5814,20 +5671,20 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // execute the pipeline job (send startmarker to start)\n"
-    "  //<pipelineNm> \\\"%v execute\\\" .printf\n"
+    "  //<pipelineNm> \"%v execute\" .printf\n"
     "  pJob_pipeline job_Pipeline.execute if\n"
     "\n"
     "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "    // wait for operators to finish\n"
-    "    //<pipelineNm> grid::thisNodeName@ \\\"(%v) %v waiting on task::wait\\\" .printf\n"
+    "    //<pipelineNm> grid::thisNodeName@ \"(%v) %v waiting on task::wait\" .printf\n"
     "    task::wait\n"
-    "    //<pipelineNm> grid::thisNodeName@ \\\"(%v) %v running\\\" .printf\n"
+    "    //<pipelineNm> grid::thisNodeName@ \"(%v) %v running\" .printf\n"
     "  else\n"
-    "    //<pipelineNm> grid::thisNodeName@ \\\"(%v) nothing to do\\\" .printf\n"
+    "    //<pipelineNm> grid::thisNodeName@ \"(%v) nothing to do\" .printf\n"
     "    pTask task.dropLock\n"
     "  then\n"
     "\n"
-    "  //<pipelineNm> grid::thisNodeName@ \\\"(%v) ALL DONE!!!\\\" .printf\n"
+    "  //<pipelineNm> grid::thisNodeName@ \"(%v) ALL DONE!!!\" .printf\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5852,7 +5709,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;\n"
     "\n"
     ": pipeline _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "\n"
     "  <jobKind>  = JK_DIST2PC\n"
     "  <rspKind>  = RS_PARTICIPANT_ERROR\n"
@@ -5864,7 +5721,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "/*\n"
     ": pipeline _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_DIST2PC\n"
     "  <rspKind>  = RS_PARTICIPANT_ERROR\n"
@@ -5878,26 +5735,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Pipeline.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)48);
-
-  szSubScriptDef = " 48 CONSTANT job_Pipeline.sen__sub "_Stz;
+  szSubScriptDef = " 48 CONSTANT job_Pipeline.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [49] OP_dropTable.sen
 
   gszaMungedText[49] =
-    "\""
-    "\\\"munged OP_dropTable.sen \\\" .verbose \n"
+    "\" munged OP_dropTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropTable.sen -- Operator drop table                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dropTable.sen\\\" .verbose\n"
+    "\" OP_dropTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -5927,7 +5781,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for dropTable req                          (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dropTable_req \\\\operator\n"
+    ": dropTable_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -5949,32 +5803,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dropTable _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_dropTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)49);
-
-  szSubScriptDef = " 49 CONSTANT OP_dropTable.sen__sub "_Stz;
+  szSubScriptDef = " 49 CONSTANT OP_dropTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [50] op_tagSets.sen
 
   gszaMungedText[50] =
-    "\""
-    "\\\"munged op_tagSets.sen \\\" .verbose \n"
+    "\" munged op_tagSets.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op_tagSets.sen -- tag sets                                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" op_tagSets.sen\\\" .verbose\n"
+    "\" op_tagSets.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
@@ -6005,26 +5856,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT op_tagSets.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)50);
-
-  szSubScriptDef = " 50 CONSTANT op_tagSets.sen__sub "_Stz;
+  szSubScriptDef = " 50 CONSTANT op_tagSets.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [51] OP_createTenant.sen
 
   gszaMungedText[51] =
-    "\""
-    "\\\"munged OP_createTenant.sen \\\" .verbose \n"
+    "\" munged OP_createTenant.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createTenant.sen -- Operator create tenant                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_createTenant.sen\\\" .verbose\n"
+    "\" OP_createTenant.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -6076,7 +5924,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for createTenant req                       (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": createTenant_req \\\\operator\n"
+    ": createTenant_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -6098,32 +5946,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": createTenant _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_createTenant.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)51);
-
-  szSubScriptDef = " 51 CONSTANT OP_createTenant.sen__sub "_Stz;
+  szSubScriptDef = " 51 CONSTANT OP_createTenant.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [52] OP_changeFolder.sen
 
   gszaMungedText[52] =
-    "\""
-    "\\\"munged OP_changeFolder.sen \\\" .verbose \n"
+    "\" munged OP_changeFolder.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_changeFolder.sen -- Operator change flolder                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_changeFolder.sen\\\" .verbose\n"
+    "\" OP_changeFolder.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -6138,53 +5983,53 @@ void Task::vAddMunged(Forth* pForth)
     "  <folderNm> to sFolderNm\n"
     "\n"
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
-    "  // test for a \\\"..\\\" which will go up one folder\n"
+    "  // test for a \"..\" which will go up one folder\n"
     "\n"
     "  // pop up one folder, but not into tenants\n"
-    "  sFolderNm \\\"..\\\" str.equal if\n"
-    "    folder[] dic.name@ \\\"tenants\\\" str.equal not if path[].popFolder then\n"
+    "  sFolderNm \"..\" str.equal if\n"
+    "    folder[] dic.name@ \"tenants\" str.equal not if path[].popFolder then\n"
     "    setPath\n"
     "    true\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
-    "  // test for a \\\"~\\\" will pop folder path till it reaches /tenants\n"
+    "  // test for a \"~\" will pop folder path till it reaches /tenants\n"
     "\n"
     "  // pop up to tenants\n"
-    "  sFolderNm \\\"~\\\" str.equal if\n"
-    "    begin folder[] dic.name@ \\\"tenants\\\" str.equal not while path[].popFolder repeat\n"
+    "  sFolderNm \"~\" str.equal if\n"
+    "    begin folder[] dic.name@ \"tenants\" str.equal not while path[].popFolder repeat\n"
     "    setPath\n"
     "    true\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
     "  // set default catalogs\n"
-    "  sFolderNm \\\"~catalogs\\\" str.equal if\n"
+    "  sFolderNm \"~catalogs\" str.equal if\n"
     "    setCatalogs\n"
     "    true\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
     "  // set default schemas\n"
-    "  sFolderNm \\\"~schemas\\\" str.equal if\n"
+    "  sFolderNm \"~schemas\" str.equal if\n"
     "    setSchemas\n"
     "    true\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
     "  // set default tables\n"
-    "  sFolderNm \\\"~tables\\\" str.equal if\n"
+    "  sFolderNm \"~tables\" str.equal if\n"
     "    setTables\n"
     "    true\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
-    "  // test for a \\\"tenants\\\" will clear folder path and set to /tenants\n"
+    "  // test for a \"tenants\" will clear folder path and set to /tenants\n"
     "\n"
     "  // clear dic path and push tenants\n"
-    "  sFolderNm \\\"tenants\\\" str.equal if\n"
+    "  sFolderNm \"tenants\" str.equal if\n"
     "    path[].popAllFolders\n"
     "    attachmap::tenants@ execute path[].pushFolder\n"
     "    setPath\n"
@@ -6219,7 +6064,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": cf _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <params>      = 1\n"
     "  }\n"
@@ -6228,26 +6073,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_changeFolder.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)52);
-
-  szSubScriptDef = " 52 CONSTANT OP_changeFolder.sen__sub "_Stz;
+  szSubScriptDef = " 52 CONSTANT OP_changeFolder.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [53] test_1m.sen
 
   gszaMungedText[53] =
-    "\""
-    "\\\"munged test_1m.sen \\\" .verbose \n"
+    "\" munged test_1m.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_1m.sen -- a million loop test                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_1m.sen\\\" .verbose\n"
+    "\" test_1m.sen\" .verbose\n"
     "\n"
     ": m1\n"
     "\n"
@@ -6258,34 +6100,31 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_1m.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)53);
-
-  szSubScriptDef = " 53 CONSTANT test_1m.sen__sub "_Stz;
+  szSubScriptDef = " 53 CONSTANT test_1m.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [54] OP_periodic.sen
 
   gszaMungedText[54] =
-    "\""
-    "\\\"munged OP_periodic.sen \\\" .verbose \n"
+    "\" munged OP_periodic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_periodic.sen -- Operator periodic                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_periodic.sen\\\" .verbose\n"
+    "\" OP_periodic.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*\n"
-    ": periodicOp_ErrorMarker \\\\handler\n"
+    ": periodicOp_ErrorMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERRORMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERRORMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newExitMarker\n"
     "  Operand[].pipeOut\n"
@@ -6297,9 +6136,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": periodicOp_PulseMarker \\\\handler\n"
+    ": periodicOp_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "   Counter1[] if\n"
@@ -6309,12 +6148,12 @@ void Task::vAddMunged(Forth* pForth)
     "      while\n"
     "        task::yield\n"
     "        assert::stack_0\n"
-    "        \\\"sleeping for 1 min\\\" .\n"
+    "        \"sleeping for 1 min\" .\n"
     "        60 task::sleepSsec\n"
     "        Counter0[] 1 + to Counter0[]\n"
     "      repeat\n"
     "      0 to  Counter0[]\n"
-    "       Counter1[] \\\"Sending PULSEMARKER after %v mins\\\" str.format .\n"
+    "       Counter1[] \"Sending PULSEMARKER after %v mins\" str.format .\n"
     "      Operand[].newPulseMarker\n"
     "      Operand[].pipeOut\n"
     "      true\n"
@@ -6331,18 +6170,18 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for periodicOp request                     (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : periodicOp_req \\\\operator\n"
+    " : periodicOp_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
     "  0 locals| hours   |\n"
     "  0 locals| minutes |\n"
     "\n"
-    "  \\\"<minutes>\\\" job[] job.tagSet@ tagSet.hasName if\n"
+    "  \"<minutes>\" job[] job.tagSet@ tagSet.hasName if\n"
     "    <minutes> >int to minutes\n"
     "  then\n"
     "\n"
-    "  \\\"<hours>\\\" job[] job.tagSet@ tagSet.hasName if\n"
+    "  \"<hours>\" job[] job.tagSet@ tagSet.hasName if\n"
     "    <hours> >int to hours\n"
     "  then\n"
     "\n"
@@ -6378,39 +6217,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: periodicOp :: periodicOp hour <hours> ;\n"
     "\n"
     ": periodicOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_periodic.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)54);
-
-  szSubScriptDef = " 54 CONSTANT OP_periodic.sen__sub "_Stz;
+  szSubScriptDef = " 54 CONSTANT OP_periodic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [55] OP_purge.sen
 
   gszaMungedText[55] =
-    "\""
-    "\\\"munged OP_purge.sen \\\" .verbose \n"
+    "\" munged OP_purge.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_purge.sen -- Operator purge                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_purge.sen\\\" .verbose\n"
+    "\" OP_purge.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Purge_PulseMarker \\\\handler\n"
+    ": Purge_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // new a stream def\n"
@@ -6430,9 +6266,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Purge_StartMarker \\\\handler\n"
+    ": Purge_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // check if we can scan the table\n"
     "  <tableNm> op__table if\n"
@@ -6446,7 +6282,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* Purge request                                      (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Purge_req \\\\operator\n"
+    ": Purge_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -6468,32 +6304,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: Purge :: Purge <tableNm> ;\n"
     "\n"
     ": Purge _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_purge.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)55);
-
-  szSubScriptDef = " 55 CONSTANT OP_purge.sen__sub "_Stz;
+  szSubScriptDef = " 55 CONSTANT OP_purge.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [56] OP_dropSchema.sen
 
   gszaMungedText[56] =
-    "\""
-    "\\\"munged OP_dropSchema.sen \\\" .verbose \n"
+    "\" munged OP_dropSchema.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropSchema.sen -- Operator drop schema                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dropSchema.sen\\\" .verbose\n"
+    "\" OP_dropSchema.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -6523,7 +6356,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for dropSchema req                         (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dropSchema_req \\\\operator\n"
+    ": dropSchema_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -6545,39 +6378,36 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dropSchema _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_dropSchema.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)56);
-
-  szSubScriptDef = " 56 CONSTANT OP_dropSchema.sen__sub "_Stz;
+  szSubScriptDef = " 56 CONSTANT OP_dropSchema.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [57] OP_toStatD.sen
 
   gszaMungedText[57] =
-    "\""
-    "\\\"munged OP_toStatD.sen \\\" .verbose \n"
+    "\" munged OP_toStatD.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toStatD.sen -- To StatD Operator                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_toStatD.sen\\\" .verbose\n"
+    "\" OP_toStatD.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_LOCKSTATS ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_toStatD_LockStats \\\\handler\n"
+    ": OP_toStatD_LockStats \\handler\n"
     "\n"
-    "  \\\"OP_toStatD_LockStats +++ +++ +++\\\" .\n"
+    "  \"OP_toStatD_LockStats +++ +++ +++\" .\n"
     "\n"
     "  Pipein[] to infoset[]\n"
     "  nullptr to Pipein[]\n"
@@ -6587,7 +6417,7 @@ void Task::vAddMunged(Forth* pForth)
     "  //infoset[].delete\n"
     "\n"
     "  infoset[]\n"
-    "    \\\"__statD\\\" find dup if\n"
+    "    \"__statD\" find dup if\n"
     "      word.object@\n"
     "      pipeline.pipeout\n"
     "      nullptr to infoSet[]\n"
@@ -6602,7 +6432,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* toStatD request                                    (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": toStatDOp_req \\\\operator\n"
+    ": toStatDOp_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -6612,7 +6442,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** toStatDOp_req EXITS\\\" .\n"
+    "  \"*** toStatDOp_req EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -6624,39 +6454,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: toStatDOp :: toStatDOp ;\n"
     "\n"
     ": toStatDOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <?jobDesc?>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <?jobDesc?>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_toStatD.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)57);
-
-  szSubScriptDef = " 57 CONSTANT OP_toStatD.sen__sub "_Stz;
+  szSubScriptDef = " 57 CONSTANT OP_toStatD.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [58] OP_pythonShell.sen
 
   gszaMungedText[58] =
-    "\""
-    "\\\"munged OP_pythonShell.sen \\\" .verbose \n"
+    "\" munged OP_pythonShell.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_pythonShell.sen -- Operator pythonShell                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_pythonShell.sen\\\" .verbose\n"
+    "\" OP_pythonShell.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pythonShell_CsvBuffer \\\\handler\n"
+    ": pythonShell_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
     "\n"
@@ -6670,9 +6497,9 @@ void Task::vAddMunged(Forth* pForth)
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*\n"
-    ": pythonShell_ErrorMarker \\\\handler\n"
+    ": pythonShell_ErrorMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERRORMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERRORMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  true\n"
@@ -6682,7 +6509,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for pythonShell request                    (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pythonShell_req \\\\operator\n"
+    ": pythonShell_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -6704,39 +6531,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: pythonShell :: pythonShell <pythonFile> ;\n"
     "\n"
     ": pythonShell _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_pythonShell.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)58);
-
-  szSubScriptDef = " 58 CONSTANT OP_pythonShell.sen__sub "_Stz;
+  szSubScriptDef = " 58 CONSTANT OP_pythonShell.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [59] job_DefineNode.sen
 
   gszaMungedText[59] =
-    "\""
-    "\\\"munged job_DefineNode.sen \\\" .verbose \n"
+    "\" munged job_DefineNode.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_DefineNode.sen -- Job Define Node                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_DefineNode.sen\\\" .verbose\n"
+    "\" job_DefineNode.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* Job_DefineNode request (on originating node)                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": defineNode::request _eeh (  -- <R> )\n"
     "\n"
-    "  <nodeNm> \\\"<nodeNm> : %v\\\" .printf\n"
+    "  <nodeNm> \"<nodeNm> : %v\" .printf\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -6757,7 +6581,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": defineNode::checkResources _eeh ( -- )\n"
     "\n"
-    "  //\\\"checkResources received\\\" .\n"
+    "  //\"checkResources received\" .\n"
     "\n"
     "  job[] locals| pJob_DefineNode |\n"
     "\n"
@@ -6782,7 +6606,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: defineNode :: define node <nodeNm> {name:value} ;\n"
     "\n"
     ": defineNode _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_DIST2PC\n"
     "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
@@ -6796,33 +6620,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_DefineNode.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)59);
-
-  szSubScriptDef = " 59 CONSTANT job_DefineNode.sen__sub "_Stz;
+  szSubScriptDef = " 59 CONSTANT job_DefineNode.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [60] OP_toCrwH.sen
 
   gszaMungedText[60] =
-    "\""
-    "\\\"munged OP_toCrwH.sen \\\" .verbose \n"
+    "\" munged OP_toCrwH.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toCrwH.sen -- Operator toCrwH                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_toCrwH.sen\\\" .verbose\n"
+    "\" OP_toCrwH.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": toCrwH_PulseMarker \\\\handler\n"
+    ": toCrwH_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "\n"
     "  // pipe out the pulsemarker\n"
     "  Pipein[].pipeOut\n"
@@ -6837,9 +6658,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_CSVBUFFER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": toCrwH_CsvBuffer \\\\handler\n"
+    ": toCrwH_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
@@ -6869,9 +6690,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EOSMARKER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": toCrwH_EosMarker \\\\handler\n"
+    ": toCrwH_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // pipe out any dangling buffers\n"
@@ -6897,9 +6718,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": toCrwH_StartMarker \\\\handler\n"
+    ": toCrwH_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  <tableNm> locals| sTableNm |\n"
     "\n"
@@ -6923,7 +6744,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for toCrw req                              (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : toCrwH_req \\\\operator\n"
+    " : toCrwH_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -6947,32 +6768,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: toCrwH :: toCrwH <tableNm> ;\n"
     "\n"
     ": toCrwH _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_toCrwH.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)60);
-
-  szSubScriptDef = " 60 CONSTANT OP_toCrwH.sen__sub "_Stz;
+  szSubScriptDef = " 60 CONSTANT OP_toCrwH.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [61] test_gGen.sen
 
   gszaMungedText[61] =
-    "\""
-    "\\\"munged test_gGen.sen \\\" .verbose \n"
+    "\" munged test_gGen.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_gGen.sen -- generate gGen files                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_gGen.sen\\\" .verbose\n"
+    "\" test_gGen.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate g definitions                                                     */\n"
@@ -6983,16 +6801,16 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  eColumn case\n"
     "\n"
-    "    CT_BOOLEAN   of \\\"boolean\\\"   endof\n"
-    "    CT_CHAR      of \\\"char\\\"      endof\n"
-    "    CT_DATE      of \\\"date\\\"      endof\n"
-    "    CT_DECIMAL   of \\\"decimal\\\"   endof\n"
-    "    CT_FLOAT     of \\\"float\\\"     endof\n"
-    "    CT_INTEGER   of \\\"integer\\\"   endof\n"
-    "    CT_INTERVAL  of \\\"interval\\\"  endof\n"
-    "    CT_TIME      of \\\"time\\\"      endof\n"
-    "    CT_TIMESTAMP of \\\"timestamp\\\" endof\n"
-    "    CT_VARCHAR   of \\\"varchar\\\"   endof\n"
+    "    CT_BOOLEAN   of \"boolean\"   endof\n"
+    "    CT_CHAR      of \"char\"      endof\n"
+    "    CT_DATE      of \"date\"      endof\n"
+    "    CT_DECIMAL   of \"decimal\"   endof\n"
+    "    CT_FLOAT     of \"float\"     endof\n"
+    "    CT_INTEGER   of \"integer\"   endof\n"
+    "    CT_INTERVAL  of \"interval\"  endof\n"
+    "    CT_TIME      of \"time\"      endof\n"
+    "    CT_TIMESTAMP of \"timestamp\" endof\n"
+    "    CT_VARCHAR   of \"varchar\"   endof\n"
     "\n"
     "  endcase\n"
     " ;\n"
@@ -7029,34 +6847,31 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_gGen.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)61);
-
-  szSubScriptDef = " 61 CONSTANT test_gGen.sen__sub "_Stz;
+  szSubScriptDef = " 61 CONSTANT test_gGen.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [62] OP_truncateTable.sen
 
   gszaMungedText[62] =
-    "\""
-    "\\\"munged OP_truncateTable.sen \\\" .verbose \n"
+    "\" munged OP_truncateTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_truncateTable.sen -- Operator truncate table                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_truncateTable.sen\\\" .verbose\n"
+    "\" OP_truncateTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": truncateTable_PulseMarker \\\\handler\n"
+    ": truncateTable_PulseMarker \\handler\n"
     "\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // truncate the buffers of the tablePtn\n"
@@ -7071,9 +6886,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": truncateTable_StartMarker \\\\handler\n"
+    ": truncateTable_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // check if we can scan the table\n"
     "  <tableNm> op__table if\n"
@@ -7088,7 +6903,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for TruncateOp req                         (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : truncateTable_req \\\\operator\n"
+    " : truncateTable_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -7111,44 +6926,41 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: truncateTable :: truncateTable <tableNm> ;\n"
     "\n"
     ": truncateTable _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_truncateTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)62);
-
-  szSubScriptDef = " 62 CONSTANT OP_truncateTable.sen__sub "_Stz;
+  szSubScriptDef = " 62 CONSTANT OP_truncateTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [63] test_rjh.sen
 
   gszaMungedText[63] =
-    "\""
-    "\\\"munged test_rjh.sen \\\" .verbose \n"
+    "\" munged test_rjh.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_rjh.sen -- rays test set                                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_rjh.sen\\\" .verbose\n"
+    "\" test_rjh.sen\" .verbose\n"
     "\n"
     ": test_rjh prompt\n"
     "\n"
-    "  \\\"Rays Test Suite\\\" .\n"
+    "  \"Rays Test Suite\" .\n"
     "\n"
     "  0 locals| pTable |\n"
     "\n"
-    "  \\\"/tenants/boray/catalogs/rapidsse/schemas/public/tables/T\\\"\n"
+    "  \"/tenants/boray/catalogs/rapidsse/schemas/public/tables/T\"\n"
     "\n"
     "  str.toStrVec path[].set\n"
     "\n"
-    "  \\\"T\\\" find execute to table[]\n"
+    "  \"T\" find execute to table[]\n"
     "\n"
     "  3 0 do\n"
     "    table[].genCsvBuffer discard\n"
@@ -7158,26 +6970,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_rjh.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)63);
-
-  szSubScriptDef = " 63 CONSTANT test_rjh.sen__sub "_Stz;
+  szSubScriptDef = " 63 CONSTANT test_rjh.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [64] job_seedHooks.sen
 
   gszaMungedText[64] =
-    "\""
-    "\\\"munged job_seedHooks.sen \\\" .verbose \n"
+    "\" munged job_seedHooks.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedHooks.sen -- Job Seed Hooks                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_seedHooks.sen\\\" .verbose\n"
+    "\" job_seedHooks.sen\" .verbose\n"
     "\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -7189,7 +6998,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": req_entryHook\n"
     "\n"
-    "  // \\\"req_entryHook\\\" .\n"
+    "  // \"req_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7205,7 +7014,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": beg_entryHook\n"
     "\n"
-    "  // \\\"beg_entryHook\\\" .\n"
+    "  // \"beg_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7221,7 +7030,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": exe_entryHook\n"
     "\n"
-    "  // \\\"exe_entryHook\\\" .\n"
+    "  // \"exe_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7237,7 +7046,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": end_entryHook\n"
     "\n"
-    "  // \\\"end_entryHook\\\" .\n"
+    "  // \"end_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7253,7 +7062,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": can_entryHook\n"
     "\n"
-    "  // \\\"can_entryHook\\\" .\n"
+    "  // \"can_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7269,7 +7078,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": run_entryHook\n"
     "\n"
-    "  //\\\"run_entryHook\\\" .\n"
+    "  //\"run_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7285,7 +7094,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": std_entryHook\n"
     "\n"
-    "  // \\\"std_entryHook\\\" .\n"
+    "  // \"std_entryHook\" .\n"
     "\n"
     "  r@ locate log::markEntry\n"
     "\n"
@@ -7304,7 +7113,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": req_exitHook\n"
     "\n"
-    "  // \\\"req_exitHook\\\" .\n"
+    "  // \"req_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     "\n"
@@ -7318,7 +7127,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": beg_exitHook\n"
     "\n"
-    "  // \\\"beg_exitHook\\\" .\n"
+    "  // \"beg_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     "\n"
@@ -7334,7 +7143,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": exe_exitHook\n"
     "\n"
-    "  // \\\"exe_exitHook\\\" .\n"
+    "  // \"exe_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     "\n"
@@ -7350,7 +7159,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": end_exitHook\n"
     "\n"
-    "  // \\\"end_exitHook\\\" .\n"
+    "  // \"end_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     "\n"
@@ -7368,7 +7177,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": can_exitHook\n"
     "\n"
-    "  // \\\"can_exitHook\\\" .\n"
+    "  // \"can_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     "\n"
@@ -7384,7 +7193,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": run_exitHook\n"
     "\n"
-    "  //\\\"run_exitHook\\\" .\n"
+    "  //\"run_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     "\n"
@@ -7403,7 +7212,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": std_exitHook\n"
     "\n"
-    "  //\\\"std_exitHook\\\" .\n"
+    "  //\"std_exitHook\" .\n"
     "\n"
     "  r@ locate log::markExit\n"
     " ;\n"
@@ -7417,7 +7226,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": std_exceptionHook\n"
     "\n"
-    "  // \\\"std_exceptionHook\\\" .\n"
+    "  // \"std_exceptionHook\" .\n"
     "\n"
     "  process::quit\n"
     "\n"
@@ -7427,26 +7236,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_seedHooks.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)64);
-
-  szSubScriptDef = " 64 CONSTANT job_seedHooks.sen__sub "_Stz;
+  szSubScriptDef = " 64 CONSTANT job_seedHooks.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [65] OP_dumpIndex.sen
 
   gszaMungedText[65] =
-    "\""
-    "\\\"munged OP_dumpIndex.sen \\\" .verbose \n"
+    "\" munged OP_dumpIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dumpIndex.sen -- Operator dump index                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dumpIndex.sen\\\" .verbose\n"
+    "\" OP_dumpIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -7468,7 +7274,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dumpIdx _info tagCopy: localLiteOp_tags\n"
     "tags{\n"
-    "  <jobDesc>     = \\\"--op desc--\\\"\n"
+    "  <jobDesc>     = \"--op desc--\"\n"
     "  <localLiteOp> = true\n"
     "  <params>      = 2\n"
     "  }\n"
@@ -7478,26 +7284,23 @@ void Task::vAddMunged(Forth* pForth)
     "  /* end                                                                        */\n"
     "  /*============================================================================*/\n"
     "\n"
-    "\""
-  " CONSTANT OP_dumpIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)65);
-
-  szSubScriptDef = " 65 CONSTANT OP_dumpIndex.sen__sub "_Stz;
+  szSubScriptDef = " 65 CONSTANT OP_dumpIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [66] test_tData.sen
 
   gszaMungedText[66] =
-    "\""
-    "\\\"munged test_tData.sen \\\" .verbose \n"
+    "\" munged test_tData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_tData.sen -- generate tTest data                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_tData.sen\\\" .verbose\n"
+    "\" test_tData.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate a t data file                                                     */\n"
@@ -7507,21 +7310,21 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I I \\\"%v,String%v\\\" str.format .\n"
-    "      I I \\\"%v,String%v\\\\n\\\" str.format pFile file.write\n"
+    "      //I I \"%v,String%v\" str.format .\n"
+    "      I I \"%v,String%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -7535,39 +7338,36 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tData\n"
     "\n"
-    "  \\\"/rapids/t/t0.csv\\\"    0      tDataFile\n"
-    "  \\\"/rapids/t/t1.csv\\\"    1      tDataFile\n"
-    "  \\\"/rapids/t/t10.csv\\\"   10     tDataFile\n"
-    "  \\\"/rapids/t/t100.csv\\\"  100    tDataFile\n"
-    "  \\\"/rapids/t/t1K.csv\\\"   C_1K   tDataFile\n"
-    "  \\\"/rapids/t/t10K.csv\\\"  C_10K  tDataFile\n"
-    "  \\\"/rapids/t/t100K.csv\\\" C_100K tDataFile\n"
-    "  \\\"/rapids/t/t1M.csv\\\"   C_1M   tDataFile\n"
+    "  \"/rapids/t/t0.csv\"    0      tDataFile\n"
+    "  \"/rapids/t/t1.csv\"    1      tDataFile\n"
+    "  \"/rapids/t/t10.csv\"   10     tDataFile\n"
+    "  \"/rapids/t/t100.csv\"  100    tDataFile\n"
+    "  \"/rapids/t/t1K.csv\"   C_1K   tDataFile\n"
+    "  \"/rapids/t/t10K.csv\"  C_10K  tDataFile\n"
+    "  \"/rapids/t/t100K.csv\" C_100K tDataFile\n"
+    "  \"/rapids/t/t1M.csv\"   C_1M   tDataFile\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_tData.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)66);
-
-  szSubScriptDef = " 66 CONSTANT test_tData.sen__sub "_Stz;
+  szSubScriptDef = " 66 CONSTANT test_tData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [67] OP_visualizeIndex.sen
 
   gszaMungedText[67] =
-    "\""
-    "\\\"munged OP_visualizeIndex.sen \\\" .verbose \n"
+    "\" munged OP_visualizeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_visualizeIndex.sen -- Operator visualize index                          */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_visualizeIndex.sen\\\" .verbose\n"
+    "\" OP_visualizeIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -7589,7 +7389,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": visidx _info tagCopy: localLiteOp_tags\n"
     "tags{\n"
-    "  <jobDesc>     = \\\"--op desc--\\\"\n"
+    "  <jobDesc>     = \"--op desc--\"\n"
     "  <localLiteOp> = true\n"
     "  <params>      = 2\n"
     "  }\n"
@@ -7599,26 +7399,23 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\""
-  " CONSTANT OP_visualizeIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)67);
-
-  szSubScriptDef = " 67 CONSTANT OP_visualizeIndex.sen__sub "_Stz;
+  szSubScriptDef = " 67 CONSTANT OP_visualizeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [68] se_path.sen
 
   gszaMungedText[68] =
-    "\""
-    "\\\"munged se_path.sen \\\" .verbose \n"
+    "\" munged se_path.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_path.sen -- dictionary related words                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_path.sen\\\" .verbose\n"
+    "\" se_path.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* discard all folders from path stack                                        */\n"
@@ -7636,7 +7433,7 @@ void Task::vAddMunged(Forth* pForth)
     ": path[].set ( ... #dics -- )\n"
     "\n"
     "  // this word puts the folder path on the stack into task dictionary stack\n"
-    "  // ( ... \\\"<subFolderC>\\\"  \\\"<subFolderB>\\\"  \\\"<subFolderA>\\\" \\\"main\\\" 4 )\n"
+    "  // ( ... \"<subFolderC>\"  \"<subFolderB>\"  \"<subFolderA>\" \"main\" 4 )\n"
     "\n"
     "\n"
     "  path[].popAllFolders\n"
@@ -7645,19 +7442,19 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 do\n"
     "\n"
-    "    // dup \\\"path[].set %v\\\" .printf\n"
+    "    // dup \"path[].set %v\" .printf\n"
     "\n"
-    "    dup \\\"__dicRoot\\\" str.equal if\n"
+    "    dup \"__dicRoot\" str.equal if\n"
     "      discard\n"
     "      dic::root\n"
     "      path[].pushFolder\n"
     "    else\n"
     "\n"
-    "      dup \\\"session\\\" str.equal if\n"
+    "      dup \"session\" str.equal if\n"
     "        discard\n"
     "      else\n"
     "\n"
-    "        dup \\\"tenants\\\" str.equal if\n"
+    "        dup \"tenants\" str.equal if\n"
     "          discard attachmap::tenants@ execute path[].pushFolder\n"
     "        else\n"
     "\n"
@@ -7676,12 +7473,12 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": path[].toStr ( -- s )\n"
     "\n"
-    "  \\\"/\\\"\n"
+    "  \"/\"\n"
     "\n"
     "  // iterate thru each folder in path and concat to end\n"
     "  path[].depth 0 ?do\n"
     "\n"
-    "    I if \\\"/\\\" str.cat then\n"
+    "    I if \"/\" str.cat then\n"
     "\n"
     "    // compute the path subscript\n"
     "    //path[].depth 1 - I -\n"
@@ -7704,7 +7501,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pWord not if EC_NO_SUCH_FOLDER false exit_rt then\n"
     "\n"
-    "  pWord word.category@ find: \\\\folder eql if true exit_rt then\n"
+    "  pWord word.category@ find: \\folder eql if true exit_rt then\n"
     "\n"
     "  EC_NOT_A_FOLDER false\n"
     " ;\n"
@@ -7713,33 +7510,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_path.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)68);
-
-  szSubScriptDef = " 68 CONSTANT se_path.sen__sub "_Stz;
+  szSubScriptDef = " 68 CONSTANT se_path.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [69] OP_genCsv.sen
 
   gszaMungedText[69] =
-    "\""
-    "\\\"munged OP_genCsv.sen \\\" .verbose \n"
+    "\" munged OP_genCsv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_genCsv.sen -- Operator genCsv                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_genCsv.sen\\\" .verbose\n"
+    "\" OP_genCsv.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": genCsv_PulseMarker \\\\handler\n"
+    ": genCsv_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // new a stream def\n"
@@ -7762,9 +7556,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": genCsv_StartMarker \\\\handler\n"
+    ": genCsv_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "  // check if table exits\n"
     "  <tableNm> op__table if\n"
     "    Pipein[].pipeOut\n"
@@ -7777,7 +7571,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* genCsv request                                     (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": genCsv_req \\\\operator\n"
+    ": genCsv_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -7788,7 +7582,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** GENCSV EXITS\\\" .\n"
+    "  \"*** GENCSV EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -7800,39 +7594,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: genCsv :: genCsv <tableNm> ;\n"
     "\n"
     ": genCsv _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_genCsv.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)69);
-
-  szSubScriptDef = " 69 CONSTANT OP_genCsv.sen__sub "_Stz;
+  szSubScriptDef = " 69 CONSTANT OP_genCsv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [70] OP_sink.sen
 
   gszaMungedText[70] =
-    "\""
-    "\\\"munged OP_sink.sen \\\" .verbose \n"
+    "\" munged OP_sink.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sink.sen -- Operator sink                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_sink.sen\\\" .verbose\n"
+    "\" OP_sink.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_CancelMarker \\\\handler\n"
+    ": sink_CancelMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CANCELMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CANCELMARKER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "  Operand[].newExitedMarker\n"
     "  Operand[].pipeOut\n"
@@ -7844,9 +7635,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_ErrorMarker \\\\handler\n"
+    ": sink_ErrorMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERRORMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERRORMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "\n"
     "  // check if start has already been errored\n"
@@ -7867,9 +7658,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITMARKER ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_ExitMarker \\\\handler\n"
+    ": sink_ExitMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITMARKER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "  Operand[].newExitedMarker\n"
     "  Operand[].pipeOut\n"
@@ -7881,9 +7672,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEDMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_PulsedMarker \\\\handler\n"
+    ": sink_PulsedMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEDMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEDMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -7891,9 +7682,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_StartMarker \\\\handler\n"
+    ": sink_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newStartedMarker\n"
     "  Operand[].pipeOut\n"
@@ -7904,7 +7695,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_Xyz ...                                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_Xyz \\\\handler\n"
+    ": sink_Xyz \\handler\n"
     "\n"
     "  // delete all operands\n"
     "  Pipein[].delete\n"
@@ -7915,7 +7706,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for sink request                           (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": sink_req \\\\operator\n"
+    ": sink_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -7942,37 +7733,34 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: sink :: sink ;\n"
     "\n"
     ": sink _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_sink.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)70);
-
-  szSubScriptDef = " 70 CONSTANT OP_sink.sen__sub "_Stz;
+  szSubScriptDef = " 70 CONSTANT OP_sink.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [71] se_categories.sen
 
   gszaMungedText[71] =
-    "\""
-    "\\\"munged se_categories.sen \\\" .verbose \n"
+    "\" munged se_categories.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_categories.sen -- categories                                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_categories.sen\\\" .verbose\n"
+    "\" se_categories.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* categorising word                                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\\\\\category immediate\n"
+    ": \\\\category immediate\n"
     "\n"
     "  //\n"
     "  // this word is used while compiling another word.\n"
@@ -7998,65 +7786,62 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* demon category                                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\demon \\\\\\\\category ;\n"
+    ": \\demon \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* folder is used as a kind of word to identify folders                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\folder \\\\\\\\category ;\n"
+    ": \\folder \\\\category ;\n"
     "\n"
-    ": isFolder word.category@ find: \\\\folder eql ;\n"
+    ": isFolder word.category@ find: \\folder eql ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler category                                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\handler \\\\\\\\category ;\n"
+    ": \\handler \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* include category                                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\include \\\\\\\\category ;\n"
+    ": \\include \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* operator category                                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\operator \\\\\\\\category ;\n"
+    ": \\operator \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* procedure category                                                         */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\procedure \\\\\\\\category ;\n"
+    ": \\procedure \\\\category ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_categories.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)71);
-
-  szSubScriptDef = " 71 CONSTANT se_categories.sen__sub "_Stz;
+  szSubScriptDef = " 71 CONSTANT se_categories.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [72] OP_scan.sen
 
   gszaMungedText[72] =
-    "\""
-    "\\\"munged OP_scan.sen \\\" .verbose \n"
+    "\" munged OP_scan.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_scan.sen -- Operator scan                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_scan.sen\\\" .verbose\n"
+    "\" OP_scan.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Scan_CancelMarker \\\\handler\n"
+    ": Scan_CancelMarker \\handler\n"
     "\n"
-    "  //\\\"ZK_CANCELMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_CANCELMARKER_handler\" .verbose\n"
     "  nullptr to Operand[]\n"
     "  Pipein[].pipeOut\n"
     "  Op.ackPipelineJob\n"
@@ -8067,15 +7852,15 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": scan_CrwBuffer \\\\handler\n"
+    ": scan_CrwBuffer \\handler\n"
     "\n"
     "  0 locals| rateSecs |\n"
     "\n"
-    "  \\\"<rateSecs>\\\" job[] job.tagSet@ tagSet.hasName if\n"
+    "  \"<rateSecs>\" job[] job.tagSet@ tagSet.hasName if\n"
     "    <rateSecs> >int to rateSecs\n"
     "  then\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "\n"
     "  // get next buffer\n"
     "  Subset[].nextBuffer to Subset[]\n"
@@ -8085,9 +7870,9 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // check for rate\n"
     "  rateSecs if\n"
-    "    rateSecs \\\"Scan Pausing for %v secs\\\" str.format .\n"
+    "    rateSecs \"Scan Pausing for %v secs\" str.format .\n"
     "    rateSecs task::sleepSsec\n"
-    "    \\\"Scan awake\\\" .\n"
+    "    \"Scan awake\" .\n"
     "  then\n"
     "\n"
     "  // move next buffer to Operand\n"
@@ -8105,11 +7890,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": scan_PulseMarker \\\\handler\n"
+    ": scan_PulseMarker \\handler\n"
     "\n"
     "  0 locals| rateSecs |\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // new a stream def\n"
@@ -8135,9 +7920,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": scan_StartMarker \\\\handler\n"
+    ": scan_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  <tableNm> op__table if\n"
     "    table[].tablePtn@ to tablePtn[]\n"
@@ -8150,7 +7935,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* scan request                                       (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": scan_req \\\\operator\n"
+    ": scan_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -8175,32 +7960,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: scan :: scan <tableNm> <rateSecs> ;\n"
     "\n"
     ": scan _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "  \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_scan.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)72);
-
-  szSubScriptDef = " 72 CONSTANT OP_scan.sen__sub "_Stz;
+  szSubScriptDef = " 72 CONSTANT OP_scan.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [73] OP_compactIndex.sen
 
   gszaMungedText[73] =
-    "\""
-    "\\\"munged OP_compactIndex.sen \\\" .verbose \n"
+    "\" munged OP_compactIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_compactIndex.sen -- Operator compact index                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_compactIndex.sen\\\" .verbose\n"
+    "\" OP_compactIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -8222,7 +8004,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": compactIdx _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <params>    = 2\n"
     "  }\n"
@@ -8231,31 +8013,28 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_compactIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)73);
-
-  szSubScriptDef = " 73 CONSTANT OP_compactIndex.sen__sub "_Stz;
+  szSubScriptDef = " 73 CONSTANT OP_compactIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [74] OP_readChunk.sen
 
   gszaMungedText[74] =
-    "\""
-    "\\\"munged OP_readChunk.sen \\\" .verbose \n"
+    "\" munged OP_readChunk.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_readChunk.sen -- Operator readChunk                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_readChunk.sen\\\" .verbose\n"
+    "\" OP_readChunk.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_SEEKOFFSETS ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": readChunk_SeekOffsets \\\\handler\n"
+    ": readChunk_SeekOffsets \\handler\n"
     "\n"
     "  Pipein[] to InfoSet[]\n"
     "  nullptr to Pipein[]\n"
@@ -8277,9 +8056,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": readChunk_StartMarker \\\\handler\n"
+    ": readChunk_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // open the file for reading\n"
     "  <fileNm> OPEN_READ op__file if\n"
@@ -8292,9 +8071,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EXITMARKER ...                                                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": readChunk_ExitMarker \\\\handler\n"
+    ": readChunk_ExitMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITMARKER\" .verbose\n"
     "  File0[].isNull not if\n"
     "    File0[].get file.close\n"
     "    File0[].get file.delete\n"
@@ -8308,7 +8087,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for reachChunk req                        (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : readChunk_req \\\\operator\n"
+    " : readChunk_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -8332,32 +8111,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: readChunk :: readChunk <fileNm> ;\n"
     "\n"
     ": readChunk _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_readChunk.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)74);
-
-  szSubScriptDef = " 74 CONSTANT OP_readChunk.sen__sub "_Stz;
+  szSubScriptDef = " 74 CONSTANT OP_readChunk.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [75] job__Cancelled.sen
 
   gszaMungedText[75] =
-    "\""
-    "\\\"munged job__Cancelled.sen \\\" .verbose \n"
+    "\" munged job__Cancelled.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__Cancelled.sen -- generic job related words                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__Cancelled.sen\\\" .verbose\n"
+    "\" job__Cancelled.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on participating node                           //\n"
@@ -8478,7 +8254,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _Cancelled :: _Cancelled ;\n"
     "\n"
     ": _Cancelled _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -8488,31 +8264,28 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__Cancelled.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)75);
-
-  szSubScriptDef = " 75 CONSTANT job__Cancelled.sen__sub "_Stz;
+  szSubScriptDef = " 75 CONSTANT job__Cancelled.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [76] grid_node.sen
 
   gszaMungedText[76] =
-    "\""
-    "\\\"munged grid_node.sen \\\" .verbose \n"
+    "\" munged grid_node.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* grid_node.sen -- node routines                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" grid_node.sen\\\" .verbose\n"
+    "\" grid_node.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* check word is not a Node                                                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": name::isNotKnownNode ( \\\"<NodeNm>\\\" -- t|f )\n"
+    ": name::isNotKnownNode ( \"<NodeNm>\" -- t|f )\n"
     "\n"
     "  grid::findNode not if true exit then\n"
     "\n"
@@ -8522,7 +8295,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* check if word is a makeable Node                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": checkMakeNode ( \\\"<NodeNm>\\\" -- true | errorCode false )\n"
+    ": checkMakeNode ( \"<NodeNm>\" -- true | errorCode false )\n"
     "\n"
     "  name::isNotKnownNode not if false exit then\n"
     "\n"
@@ -8594,45 +8367,42 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT grid_node.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)76);
-
-  szSubScriptDef = " 76 CONSTANT grid_node.sen__sub "_Stz;
+  szSubScriptDef = " 76 CONSTANT grid_node.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [77] OP_recurring.sen
 
   gszaMungedText[77] =
-    "\""
-    "\\\"munged OP_recurring.sen \\\" .verbose \n"
+    "\" munged OP_recurring.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recurring.sen -- Operator recurring                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_recurring.sen\\\" .verbose\n"
+    "\" OP_recurring.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* add recurring activity here                                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": recurring_activity ( -- )\n"
     "\n"
-    "  \\\"Recurring Activity\\\" .\n"
+    "  \"Recurring Activity\" .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": recurring_StartMarker \\\\handler\n"
+    ": recurring_StartMarker \\handler\n"
     "\n"
     "  begin\n"
     "\n"
     "    task::yield\n"
     "\n"
-    "    // \\\"periodic sleeping...\\\" .\n"
+    "    // \"periodic sleeping...\" .\n"
     "    60 task::sleepSsec\n"
     "\n"
     "    recurring_activity\n"
@@ -8643,7 +8413,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for recurring req                          (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : recurring_req \\\\operator\n"
+    " : recurring_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -8674,26 +8444,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_recurring.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)77);
-
-  szSubScriptDef = " 77 CONSTANT OP_recurring.sen__sub "_Stz;
+  szSubScriptDef = " 77 CONSTANT OP_recurring.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [78] se_log.sen
 
   gszaMungedText[78] =
-    "\""
-    "\\\"munged se_log.sen \\\" .verbose \n"
+    "\" munged se_log.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_log.sen -- log related words                                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_log.sen\\\" .verbose\n"
+    "\" se_log.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* log cancel seed action                                                     */\n"
@@ -8799,7 +8566,7 @@ void Task::vAddMunged(Forth* pForth)
     ": LogEntry immediate\n"
     "\n"
     "  // format the string to be printed\n"
-    "  compiler::current@ word.name@ \\\">>%v\\\" str.format\n"
+    "  compiler::current@ word.name@ \">>%v\" str.format\n"
     "\n"
     "  // encode push of that string\n"
     "  encode::push\n"
@@ -8813,7 +8580,7 @@ void Task::vAddMunged(Forth* pForth)
     "//  POSTPONE job[]\n"
     "//  POSTPONE job.class\n"
     "//  POSTPONE class::name\n"
-    "//  \\\">>%v %v\\\" encode::push\n"
+    "//  \">>%v %v\" encode::push\n"
     "//\n"
     "//  POSTPONE str.format\n"
     "//\n"
@@ -8827,7 +8594,7 @@ void Task::vAddMunged(Forth* pForth)
     ": LogExit immediate\n"
     "\n"
     "  // format the string to be printed\n"
-    "  compiler::current@ word.name@ \\\"<<%v\\\" str.format\n"
+    "  compiler::current@ word.name@ \"<<%v\" str.format\n"
     "\n"
     "  // encode push of that string\n"
     "  encode::push\n"
@@ -8842,7 +8609,7 @@ void Task::vAddMunged(Forth* pForth)
     ": !!logError immediate\n"
     "\n"
     "  // format the string to be printed\n"
-    "  compiler::current@ word.name@ \\\"!!%v\\\" str.format\n"
+    "  compiler::current@ word.name@ \"!!%v\" str.format\n"
     "\n"
     "  // encode push of that string\n"
     "  encode::push\n"
@@ -8868,7 +8635,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tp immediate\n"
     "\n"
-    "  \\\"tp\\\"\n"
+    "  \"tp\"\n"
     "\n"
     "  encode::push\n"
     "\n"
@@ -8893,7 +8660,7 @@ void Task::vAddMunged(Forth* pForth)
     ": LogReqEntry immediate\n"
     "\n"
     "  // format the string to be printed\n"
-    "  compiler::current@ word.name@ \\\">>%v\\\" str.format\n"
+    "  compiler::current@ word.name@ \">>%v\" str.format\n"
     "\n"
     "  // encode push of that string\n"
     "  encode::push\n"
@@ -8908,7 +8675,7 @@ void Task::vAddMunged(Forth* pForth)
     ": LogReqExit immediate\n"
     "\n"
     "  // format the string to be printed\n"
-    "  compiler::current@ word.name@ \\\"<<%v\\\" str.format\n"
+    "  compiler::current@ word.name@ \"<<%v\" str.format\n"
     "\n"
     "  // encode push of that string\n"
     "  encode::push\n"
@@ -8920,26 +8687,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_log.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)78);
-
-  szSubScriptDef = " 78 CONSTANT se_log.sen__sub "_Stz;
+  szSubScriptDef = " 78 CONSTANT se_log.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [79] OP_listFolders.sen
 
   gszaMungedText[79] =
-    "\""
-    "\\\"munged OP_listFolders.sen \\\" .verbose \n"
+    "\" munged OP_listFolders.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listFolders.sen -- Operator list folder                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listFolders.sen\\\" .verbose\n"
+    "\" OP_listFolders.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -8965,11 +8729,11 @@ void Task::vAddMunged(Forth* pForth)
     "  iterate                          // setup iteration of words\n"
     "\n"
     "    object@ word.isaTable if\n"
-    "    \\\"table\\\"\n"
+    "    \"table\"\n"
     "    then\n"
     "\n"
     "    object@ word.isaIndex if\n"
-    "    \\\"index\\\"\n"
+    "    \"index\"\n"
     "    then\n"
     "\n"
     "    object@ isFolder if\n"
@@ -9000,7 +8764,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lf _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listFolder\n"
     "    <params>      = 0\n"
@@ -9010,26 +8774,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listFolders.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)79);
-
-  szSubScriptDef = " 79 CONSTANT OP_listFolders.sen__sub "_Stz;
+  szSubScriptDef = " 79 CONSTANT OP_listFolders.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [80] job_WriteBuffer.sen
 
   gszaMungedText[80] =
-    "\""
-    "\\\"munged job_WriteBuffer.sen \\\" .verbose \n"
+    "\" munged job_WriteBuffer.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_WriteBuffer.sen -- Write Buffer Job                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_WriteBuffer.sen\\\" .verbose\n"
+    "\" job_WriteBuffer.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                               on kid node                                  //\n"
@@ -9053,7 +8814,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  //\\\"WriteBuffer.insert :\\\" .verbose\n"
+    "  //\"WriteBuffer.insert :\" .verbose\n"
     "  //pJob_WriteBuffer job.show\n"
     "\n"
     "  // get table name\n"
@@ -9122,7 +8883,7 @@ void Task::vAddMunged(Forth* pForth)
     "       1 thread::sleepMsec\n"
     "    repeat\n"
     "\n"
-    "    //\\\"WriteBuffer.insert acking parentJob(endInsert/loadTable):\\\" .verbose\n"
+    "    //\"WriteBuffer.insert acking parentJob(endInsert/loadTable):\" .verbose\n"
     "    pTask_Parent task.grabLock\n"
     "    pTask_Parent task.dropLock\n"
     "    pTask_Parent task.ack\n"
@@ -9171,19 +8932,19 @@ void Task::vAddMunged(Forth* pForth)
     "  // convert i_Partition to i_ForwardNode\n"
     "  i_Partition grid::toNode locals| i_ForwardNode |\n"
     "\n"
-    "  //i_Partition i_ForwardNode \\\"WriteBuffer.forward : Node %v Partition %v\\\" .printf\n"
+    "  //i_Partition i_ForwardNode \"WriteBuffer.forward : Node %v Partition %v\" .printf\n"
     "\n"
     "  // send this job to the forward node\n"
     "  //i_ForwardNode pJob_WriteBuffer job.forward\n"
     "\n"
     "  i_ForwardNode grid::thisNode@ == if\n"
-    "    //\\\"not forwarding\\\" .\n"
+    "    //\"not forwarding\" .\n"
     "    // on same node, just spawn/reseed job on same node\n"
     "    pJob_WriteBuffer JM_SEED_RCV job.reseed\n"
     "    false\n"
     "  else\n"
     "    // send this job to the forward node\n"
-    "    //\\\"forwarding\\\" .\n"
+    "    //\"forwarding\" .\n"
     "    i_ForwardNode pJob_WriteBuffer job.forward\n"
     "    true\n"
     "  then\n"
@@ -9199,7 +8960,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job[] locals| pJob_WriteBuffer  |\n"
     "\n"
-    "  //\\\"pJob_WriteBuffer :\\\" .verbose\n"
+    "  //\"pJob_WriteBuffer :\" .verbose\n"
     "\n"
     "  // simply forward this job to kid node\n"
     "  pJob_WriteBuffer writeBuffer.forward\n"
@@ -9216,26 +8977,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_WriteBuffer.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)80);
-
-  szSubScriptDef = " 80 CONSTANT job_WriteBuffer.sen__sub "_Stz;
+  szSubScriptDef = " 80 CONSTANT job_WriteBuffer.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [81] OP_analyzeTable.sen
 
   gszaMungedText[81] =
-    "\""
-    "\\\"munged OP_analyzeTable.sen \\\" .verbose \n"
+    "\" munged OP_analyzeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_analyzeTable.sen -- Operator analyze table                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_analyzeTable.sen\\\" .verbose\n"
+    "\" OP_analyzeTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -9284,7 +9042,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": antbl _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __analyzeTable\n"
     "    <params>    = 1\n"
@@ -9294,33 +9052,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_analyzeTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)81);
-
-  szSubScriptDef = " 81 CONSTANT OP_analyzeTable.sen__sub "_Stz;
+  szSubScriptDef = " 81 CONSTANT OP_analyzeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [82] OP_start.sen
 
   gszaMungedText[82] =
-    "\""
-    "\\\"munged OP_start.sen \\\" .verbose \n"
+    "\" munged OP_start.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_start.sen -- Operator start                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_start.sen\\\" .verbose\n"
+    "\" OP_start.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": start_CancelMarker \\\\handler\n"
+    ": start_CancelMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CANCELMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CANCELMARKER\" .verbose\n"
     "\n"
     "  // check if start has already been pulsed\n"
     "  Job_Pipeline::isPulsed if\n"
@@ -9338,9 +9093,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ERROREDMARKER ...                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": start_ErroredMarker \\\\handler\n"
+    ": start_ErroredMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERROREDMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERROREDMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "\n"
     "  // now pipeout an exit marker\n"
@@ -9353,9 +9108,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITEDMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": start_ExitedMarker \\\\handler\n"
+    ": start_ExitedMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITEDMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITEDMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "  Op.ackPipelineJob\n"
     "\n"
@@ -9365,9 +9120,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEDMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": start_PulsedMarker \\\\handler\n"
+    ": start_PulsedMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEDMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEDMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "\n"
     "  // check if start has already been cancelled\n"
@@ -9393,9 +9148,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTEDMARKER ...                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": start_StartedMarker \\\\handler\n"
+    ": start_StartedMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTEDMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTEDMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newPulseMarker\n"
     "  Operand[].pipeout\n"
@@ -9406,7 +9161,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for start request                          (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : start_req \\\\operator\n"
+    " : start_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -9431,39 +9186,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: start :: start ;\n"
     "\n"
     ": start _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_start.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)82);
-
-  szSubScriptDef = " 82 CONSTANT OP_start.sen__sub "_Stz;
+  szSubScriptDef = " 82 CONSTANT OP_start.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [83] OP_toCsv.sen
 
   gszaMungedText[83] =
-    "\""
-    "\\\"munged OP_toCsv.sen \\\" .verbose \n"
+    "\" munged OP_toCsv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toCsv.sen -- Operator toCsv                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_toCsv.sen\\\" .verbose\n"
+    "\" OP_toCsv.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCsv_CrwBuffer \\\\handler\n"
+    ": ToCsv_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
     "\n"
@@ -9495,9 +9247,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToCsv_StreamDef \\\\handler\n"
+    ": ToCsv_StreamDef \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STREAMDEF\\\" .verbose\n"
+    "  //\"Operand:- ZK_STREAMDEF\" .verbose\n"
     "  Pipein[].delete\n"
     "  streamDef[].newToCsvStream\n"
     "  streamDef[].pipeout\n"
@@ -9508,7 +9260,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for ToCsv req                              (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : ToCsv_req \\\\operator\n"
+    " : ToCsv_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -9531,32 +9283,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: ToCsv :: ToCsv ;\n"
     "\n"
     ": ToCsv _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_toCsv.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)83);
-
-  szSubScriptDef = " 83 CONSTANT OP_toCsv.sen__sub "_Stz;
+  szSubScriptDef = " 83 CONSTANT OP_toCsv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [84] job__Executed.sen
 
   gszaMungedText[84] =
-    "\""
-    "\\\"munged job__Executed.sen \\\" .verbose \n"
+    "\" munged job__Executed.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__Executed.sen -- generic job related words                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__Executed.sen\\\" .verbose\n"
+    "\" job__Executed.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on participating node                           //\n"
@@ -9651,14 +9400,14 @@ void Task::vAddMunged(Forth* pForth)
     "  // decrement the acks remaining\n"
     "  JobRef[] job.dec2pcAcksRmg to bAmDecider\n"
     "\n"
-    "  //grid::thisNodeName@ \\\"(%v) EXECUTED GOT ACK\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) EXECUTED GOT ACK\" .printf\n"
     "\n"
     "  // if there are acks remaining just exit\n"
     "  bAmDecider not if\n"
     "    JobRef[].return\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
-    "  //grid::thisNodeName@ \\\"(%v) EXECUTED AM DECIDER\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) EXECUTED AM DECIDER\" .printf\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // all __executed jobs have been received, so this job is the decider\n"
@@ -9677,7 +9426,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _Executed :: _Executed ;\n"
     "\n"
     ": _Executed _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -9687,26 +9436,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__Executed.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)84);
-
-  szSubScriptDef = " 84 CONSTANT job__Executed.sen__sub "_Stz;
+  szSubScriptDef = " 84 CONSTANT job__Executed.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [85] OP_verifyIndex.sen
 
   gszaMungedText[85] =
-    "\""
-    "\\\"munged OP_verifyIndex.sen \\\" .verbose \n"
+    "\" munged OP_verifyIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_verifyIndex.sen -- Operator verify index                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_verifyIndex.sen\\\" .verbose\n"
+    "\" OP_verifyIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -9748,7 +9494,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": vfyidx _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __verifyIndex\n"
     "    <params>    = 2\n"
@@ -9758,33 +9504,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_verifyIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)85);
-
-  szSubScriptDef = " 85 CONSTANT OP_verifyIndex.sen__sub "_Stz;
+  szSubScriptDef = " 85 CONSTANT OP_verifyIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [86] op_defHandlers.sen
 
   gszaMungedText[86] =
-    "\""
-    "\\\"munged op_defHandlers.sen \\\" .verbose \n"
+    "\" munged op_defHandlers.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op_defHandlers.sen -- Default Operand Handlers                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OPERAND__handlers.sen\\\" .verbose\n"
+    "\" OPERAND__handlers.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_CANCELMARKER_handler \\\\handler\n"
+    ": ZK_CANCELMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_CANCELMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_CANCELMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  Op.ackPipelineJob\n"
     "  false\n"
@@ -9793,9 +9536,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELLEDMARKER ...                                         */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_CANCELLEDMARKER_handler \\\\handler\n"
+    ": ZK_CANCELLEDMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_CANCELLEDMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_CANCELLEDMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  Op.ackPipelineJob\n"
     "  false\n"
@@ -9804,9 +9547,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_CRWBUFFER_handler \\\\handler\n"
+    ": ZK_CRWBUFFER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_CRWBUFFER_handler\\\" .verbose\n"
+    "  //\"ZK_CRWBUFFER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9814,9 +9557,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_CSVBUFFER_handler \\\\handler\n"
+    ": ZK_CSVBUFFER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_CSVBUFFER_handler\\\" .verbose\n"
+    "  //\"ZK_CSVBUFFER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9824,9 +9567,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ENTBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_ENTBUFFER_handler \\\\handler\n"
+    ": ZK_ENTBUFFER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_ENTBUFFER_handler\\\" .verbose\n"
+    "  //\"ZK_ENTBUFFER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9834,9 +9577,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_EOSMARKER_handler \\\\handler\n"
+    ": ZK_EOSMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_EOSMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_EOSMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9844,9 +9587,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_ERRORMARKER_handler \\\\handler\n"
+    ": ZK_ERRORMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_ERRORMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_ERRORMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9854,9 +9597,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ERROREDMARKER ...                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_ERROREDMARKER_handler \\\\handler\n"
+    ": ZK_ERROREDMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_ERROREDMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_ERROREDMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9864,9 +9607,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITMARKER ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_EXITMARKER_handler \\\\handler\n"
+    ": ZK_EXITMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_EXITMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_EXITMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  Op.ackPipelineJob\n"
     "  false\n"
@@ -9875,9 +9618,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITEDMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_EXITEDMARKER_handler \\\\handler\n"
+    ": ZK_EXITEDMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_EXITEDMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_EXITEDMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9885,9 +9628,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_IRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_IRWBUFFER_handler \\\\handler\n"
+    ": ZK_IRWBUFFER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_IRWBUFFER_handler\\\" .verbose\n"
+    "  //\"ZK_IRWBUFFER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9895,9 +9638,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_LOCKSTATS ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_LOCKSTATS_handler \\\\handler\n"
+    ": ZK_LOCKSTATS_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_LOCKSTATS\\\" .verbose\n"
+    "  //\"ZK_LOCKSTATS\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9905,9 +9648,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_NODEINFO ...                                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_NODEINFO_handler \\\\handler\n"
+    ": ZK_NODEINFO_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_NODEINFO\\\" .verbose\n"
+    "  //\"ZK_NODEINFO\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9915,9 +9658,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PROGRESSUNITS ...                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_PROGRESSUNITS_handler \\\\handler\n"
+    ": ZK_PROGRESSUNITS_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_PROGRESSUNITS\\\" .verbose\n"
+    "  //\"ZK_PROGRESSUNITS\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9925,9 +9668,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_PULSEMARKER_handler \\\\handler\n"
+    ": ZK_PULSEMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_PULSEMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_PULSEMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9935,9 +9678,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEDMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_PULSEDMARKER_handler \\\\handler\n"
+    ": ZK_PULSEDMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_PULSEDMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_PULSEDMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9945,9 +9688,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_SEEKOFFSETS ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_SEEKOFFSETS_handler \\\\handler\n"
+    ": ZK_SEEKOFFSETS_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_SEEKOFFSETS\\\" .verbose\n"
+    "  //\"ZK_SEEKOFFSETS\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9955,9 +9698,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_SRTBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_SRTBUFFER_handler \\\\handler\n"
+    ": ZK_SRTBUFFER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_SRTBUFFER_handler\\\" .verbose\n"
+    "  //\"ZK_SRTBUFFER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9965,9 +9708,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_STARTMARKER_handler \\\\handler\n"
+    ": ZK_STARTMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_STARTMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_STARTMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9975,9 +9718,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTEDMARKER ...                                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_STARTEDMARKER_handler \\\\handler\n"
+    ": ZK_STARTEDMARKER_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_STARTEDMARKER_handler\\\" .verbose\n"
+    "  //\"ZK_STARTEDMARKER_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9985,9 +9728,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_STREAMDEF_handler \\\\handler\n"
+    ": ZK_STREAMDEF_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_STREAMDEF_handler\\\" .verbose\n"
+    "  //\"ZK_STREAMDEF_handler\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -9995,9 +9738,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMSET ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_STREAMSET_handler \\\\handler\n"
+    ": ZK_STREAMSET_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_STREAMSET\\\" .verbose\n"
+    "  //\"ZK_STREAMSET\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -10005,9 +9748,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_TOTALUNITS ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ZK_TOTALUNITS_handler \\\\handler\n"
+    ": ZK_TOTALUNITS_handler \\handler\n"
     "\n"
-    "  //\\\"ZK_TOTALUNITS\\\" .verbose\n"
+    "  //\"ZK_TOTALUNITS\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  true\n"
     " ;\n"
@@ -10015,26 +9758,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT op_defHandlers.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)86);
-
-  szSubScriptDef = " 86 CONSTANT op_defHandlers.sen__sub "_Stz;
+  szSubScriptDef = " 86 CONSTANT op_defHandlers.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [87] job_ForgetNode.sen
 
   gszaMungedText[87] =
-    "\""
-    "\\\"munged job_ForgetNode.sen \\\" .verbose \n"
+    "\" munged job_ForgetNode.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_ForgetNode.sen -- Job Forget Node                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_ForgetNode.sen\\\" .verbose\n"
+    "\" job_ForgetNode.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/***                              - Words -                                 ***/\n"
@@ -10045,7 +9785,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": forgetNode::checkResources _eeh ( -- )\n"
     "\n"
-    "  \\\"forgetNode::checkResources\\\" .\n"
+    "  \"forgetNode::checkResources\" .\n"
     "\n"
     "  DdlLock[].grabRead\n"
     "\n"
@@ -10059,7 +9799,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": forgetNode::execute _eeh ( -- )\n"
     "\n"
-    "  \\\"forgetNode::execute\\\" .\n"
+    "  \"forgetNode::execute\" .\n"
     "\n"
     "  <nodeNm> grid::forgetNode\n"
     " ;\n"
@@ -10072,7 +9812,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: forgetNode :: fgnde <nodeNm> ;\n"
     "\n"
     ": forgetNode _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_DIST2PC\n"
     "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
@@ -10085,26 +9825,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_ForgetNode.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)87);
-
-  szSubScriptDef = " 87 CONSTANT job_ForgetNode.sen__sub "_Stz;
+  szSubScriptDef = " 87 CONSTANT job_ForgetNode.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [88] test_dData.sen
 
   gszaMungedText[88] =
-    "\""
-    "\\\"munged test_dData.sen \\\" .verbose \n"
+    "\" munged test_dData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_dData.sen -- generate d test data                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_dData.sen\\\" .verbose\n"
+    "\" test_dData.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* generate a d data file                                                     */\n"
@@ -10114,21 +9851,21 @@ void Task::vAddMunged(Forth* pForth)
     "  params| nRecs |\n"
     "  params| sFileNm |\n"
     "\n"
-    "  nRecs sFileNm \\\"File: %v nRecs %v\\\" .printf\n"
+    "  nRecs sFileNm \"File: %v nRecs %v\" .printf\n"
     "\n"
     "  file::new locals| pFile |\n"
     "\n"
     "  sFileNm OPEN_WRITE pFile file.open\n"
     "  not if\n"
-    "    \\\"file not opened\\\" .\n"
+    "    \"file not opened\" .\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  nRecs 0 > if\n"
     "    nRecs 0\n"
     "    do\n"
-    "      //I 0 \\\"%v,String%v\\\" str.format .\n"
-    "      I 0 \\\"%v,String%v\\\\n\\\" str.format pFile file.write\n"
+    "      //I 0 \"%v,String%v\" str.format .\n"
+    "      I 0 \"%v,String%v\\n\" str.format pFile file.write\n"
     "    loop\n"
     "  then\n"
     "\n"
@@ -10142,75 +9879,72 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": dData\n"
     "\n"
-    "  \\\"/rapids/d/d.csv\\\" 100000 dDataFile\n"
+    "  \"/rapids/d/d.csv\" 100000 dDataFile\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_dData.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)88);
-
-  szSubScriptDef = " 88 CONSTANT test_dData.sen__sub "_Stz;
+  szSubScriptDef = " 88 CONSTANT test_dData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [89] grid_grid.sen
 
   gszaMungedText[89] =
-    "\""
-    "\\\"munged grid_grid.sen \\\" .verbose \n"
+    "\" munged grid_grid.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* grid.sen -- grid routines                                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" grid_grid.sen\\\" .verbose\n"
+    "\" grid_grid.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* form the shell command for spawning and starting a node etc                */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": .formShellCommand params| sNodeList sNodeName bAdd |\n"
     "\n"
-    "  //  \\\"nohup \\\"\n"
-    "  \\\"\\\"\n"
+    "  //  \"nohup \"\n"
+    "  \"\"\n"
     "\n"
     "  executable::isDebug if\n"
-    "    \\\"../OS\\\\\\\\ X/Build/Products/Debug/SE\\\" str.cat\n"
+    "    \"../OS\\\\ X/Build/Products/Debug/SE\" str.cat\n"
     "  else\n"
-    "    \\\"../OS\\\\\\\\ X/Build/Products/Release/SE\\\" str.cat\n"
+    "    \"../OS\\\\ X/Build/Products/Release/SE\" str.cat\n"
     "  then\n"
     "\n"
-    "  \\\" --start\\\" str.cat\n"
+    "  \" --start\" str.cat\n"
     "  bAdd if\n"
-    "    \\\" --addNode\\\" str.cat\n"
+    "    \" --addNode\" str.cat\n"
     "  then\n"
     "\n"
-    "  \\\" --name \\\"  str.cat sNodeName str.cat sNodeList str.cat\n"
+    "  \" --name \"  str.cat sNodeName str.cat sNodeList str.cat\n"
     "\n"
-    "  \\\" --size \\\"              str.cat args.regionSize        >str   str.cat\n"
-    "  \\\" --regionPrefix \\\"      str.cat args.regionPrefix             str.cat\n"
-    "  \\\" --partitionsPerNode \\\" str.cat args.partitionsPerNode >str   str.cat\n"
-    "  \\\" --subLoaders \\\"        str.cat args.subLoaders        >str   str.cat\n"
-    "  \\\" --maxReadyLP \\\"        str.cat args.maxReadyLP        >str   str.cat\n"
+    "  \" --size \"              str.cat args.regionSize        >str   str.cat\n"
+    "  \" --regionPrefix \"      str.cat args.regionPrefix             str.cat\n"
+    "  \" --partitionsPerNode \" str.cat args.partitionsPerNode >str   str.cat\n"
+    "  \" --subLoaders \"        str.cat args.subLoaders        >str   str.cat\n"
+    "  \" --maxReadyLP \"        str.cat args.maxReadyLP        >str   str.cat\n"
     "\n"
-    "  user::name \\\"ray\\\" str.equal if\n"
-    "    \\\" --commands /Users/ray/rapidsse/Commands\\\"  str.cat\n"
+    "  user::name \"ray\" str.equal if\n"
+    "    \" --commands /Users/ray/rapidsse/Commands\"  str.cat\n"
     "  else\n"
-    "    \\\" --commands /Users/alka/rapidsse/Commands\\\" str.cat\n"
+    "    \" --commands /Users/alka/rapidsse/Commands\" str.cat\n"
     "  then\n"
     "\n"
-    "  args.tracepoint  if \\\" --tracepoint\\\"  str.cat then\n"
-    "  args.verbose     if \\\" --verbose\\\"     str.cat then\n"
-    "  args.dontFree    if \\\" --dontFree\\\"    str.cat then\n"
-    "  args.freeCB      if \\\" --freeCB\\\"      str.cat then\n"
-    "  args.metadata    if \\\" --metadata\\\"    str.cat then\n"
-    "  args.log         if \\\" --log\\\"         str.cat then\n"
-    "  args.munged      if \\\" --munged\\\"      str.cat then\n"
+    "  args.tracepoint  if \" --tracepoint\"  str.cat then\n"
+    "  args.verbose     if \" --verbose\"     str.cat then\n"
+    "  args.dontFree    if \" --dontFree\"    str.cat then\n"
+    "  args.freeCB      if \" --freeCB\"      str.cat then\n"
+    "  args.metadata    if \" --metadata\"    str.cat then\n"
+    "  args.log         if \" --log\"         str.cat then\n"
+    "  args.munged      if \" --munged\"      str.cat then\n"
     "\n"
-    "  \\\" &\\\" str.cat locals| sShellCmd |\n"
+    "  \" &\" str.cat locals| sShellCmd |\n"
     " \n"
     "  sShellCmd\n"
     " ;\n"
@@ -10222,7 +9956,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| pNode |\n"
     "\n"
-    "  \\\"\\\"\n"
+    "  \"\"\n"
     "\n"
     "  grid::definedNodes 0 do\n"
     "\n"
@@ -10230,7 +9964,7 @@ void Task::vAddMunged(Forth* pForth)
     "    pNode node.port\n"
     "    pNode node.IP\n"
     "    pNode node.name\n"
-    "    \\\" --node %v %v %v\\\" str.format\n"
+    "    \" --node %v %v %v\" str.format\n"
     "    str.cat\n"
     "\n"
     "  loop\n"
@@ -10295,7 +10029,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  grid::StartNode@ \\\"Cluster Start node: %v\\\" str.format .\n"
+    "  grid::StartNode@ \"Cluster Start node: %v\" str.format .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -10326,7 +10060,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* forget named node (run by all participants)                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": grid::forgetNode ( \\\"<NodeNm>\\\" )\n"
+    ": grid::forgetNode ( \"<NodeNm>\" )\n"
     "\n"
     "  params| sNodeNm |\n"
     "\n"
@@ -10337,26 +10071,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT grid_grid.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)89);
-
-  szSubScriptDef = " 89 CONSTANT grid_grid.sen__sub "_Stz;
+  szSubScriptDef = " 89 CONSTANT grid_grid.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [90] se_stepTiming.sen
 
   gszaMungedText[90] =
-    "\""
-    "\\\"munged se_stepTiming.sen \\\" .verbose \n"
+    "\" munged se_stepTiming.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_stepTiming.sen -- step timing                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_stepTiming.sen\\\" .verbose\n"
+    "\" se_stepTiming.sen\" .verbose\n"
     "\n"
     ": stepTimingReset StepTiming::reset ;\n"
     ": stepTimingStart StepTiming::start ;\n"
@@ -10365,35 +10096,32 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_stepTiming.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)90);
-
-  szSubScriptDef = " 90 CONSTANT se_stepTiming.sen__sub "_Stz;
+  szSubScriptDef = " 90 CONSTANT se_stepTiming.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [91] se_str.sen
 
   gszaMungedText[91] =
-    "\""
-    "\\\"munged se_str.sen \\\" .verbose \n"
+    "\" munged se_str.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_str.sen -- additional str words                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_str.sen\\\" .verbose\n"
+    "\" se_str.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": str.isMetaToken ( s -- t|f )\n"
     "\n"
-    "  dup 1 swap str.left  \\\"<\\\" str.equal not if discard false exit_rt then\n"
+    "  dup 1 swap str.left  \"<\" str.equal not if discard false exit_rt then\n"
     "\n"
-    "  1 swap str.right \\\">\\\" str.equal not if false exit_rt then\n"
+    "  1 swap str.right \">\" str.equal not if false exit_rt then\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -10403,7 +10131,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": str.isJsonToken ( s -- t|f )\n"
     "\n"
-    "  \\\"{name:value}\\\" str.equal\n"
+    "  \"{name:value}\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -10412,11 +10140,11 @@ void Task::vAddMunged(Forth* pForth)
     ": strVec::toPath ( s s s... n -- s )\n"
     "\n"
     "  // push initial result string\n"
-    "  \\\"\\\" swap\n"
+    "  \"\" swap\n"
     "\n"
     "  ( n ) 0 ?do\n"
     "\n"
-    "    \\\"/\\\" str.cat\n"
+    "    \"/\" str.cat\n"
     "\n"
     "    swap str.cat\n"
     "\n"
@@ -10430,13 +10158,13 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  >str locals| sDecodeMe |\n"
     "\n"
-    "  \\\"\\\" \\\"\\\" 0 locals| iDigit sDigitName sDecodedTo |\n"
+    "  \"\" \"\" 0 locals| iDigit sDigitName sDecodedTo |\n"
     "\n"
     "  // loop for 0 to length of sDecodeMe - 1\n"
     "  sDecodeMe str.length 0\n"
     "  do\n"
-    "    // concat \\\" \\\" to end of decoded string\n"
-    "    I if sDecodedTo \\\" \\\" str.cat to sDecodedTo then\n"
+    "    // concat \" \" to end of decoded string\n"
+    "    I if sDecodedTo \" \" str.cat to sDecodedTo then\n"
     "\n"
     "    // clip out digit I, convert it to a str\n"
     "    1 I sDecodeMe str.sub >int >digitName to sDigitName\n"
@@ -10468,26 +10196,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_str.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)91);
-
-  szSubScriptDef = " 91 CONSTANT se_str.sen__sub "_Stz;
+  szSubScriptDef = " 91 CONSTANT se_str.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [92] job__Execute.sen
 
   gszaMungedText[92] =
-    "\""
-    "\\\"munged job__Execute.sen \\\" .verbose \n"
+    "\" munged job__Execute.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__Execute.sen -- generic job related words                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__Execute.sen\\\" .verbose\n"
+    "\" job__Execute.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on originating node                             //\n"
@@ -10560,7 +10285,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _Execute :: _Execute ;\n"
     "\n"
     ": _Execute _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -10570,26 +10295,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__Execute.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)92);
-
-  szSubScriptDef = " 92 CONSTANT job__Execute.sen__sub "_Stz;
+  szSubScriptDef = " 92 CONSTANT job__Execute.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [93] se_dbg.sen
 
   gszaMungedText[93] =
-    "\""
-    "\\\"munged se_dbg.sen \\\" .verbose \n"
+    "\" munged se_dbg.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_dbg.sen -- dbg> related words                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_dbg.sen\\\" .verbose\n"
+    "\" se_dbg.sen\" .verbose\n"
     "\n"
     "\n"
     ": article_dump prompt article::dump ;\n"
@@ -10607,7 +10329,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // -- -- -- -- -- -- --\n"
     "  // test for end of input?\n"
     "  input::kind@ TN_NULL == if\n"
-    "    //\\\"!!NONE!!\\\" .put\n"
+    "    //\"!!NONE!!\" .put\n"
     "    true exit_rt\n"
     "  then\n"
     "\n"
@@ -10618,7 +10340,7 @@ void Task::vAddMunged(Forth* pForth)
     "    input::chars >int        // convert str to int, leave on stack\n"
     "\n"
     "    compiler::isPostponing if\n"
-    "      \\\"SHOULD NOT BE POSTPONING AN INT\\\" .put\n"
+    "      \"SHOULD NOT BE POSTPONING AN INT\" .put\n"
     "      process::quit\n"
     "      reenter\n"
     "    then\n"
@@ -10639,7 +10361,7 @@ void Task::vAddMunged(Forth* pForth)
     "    input::chars             // put str on stack\n"
     "\n"
     "    compiler::isPostponing if\n"
-    "      \\\"SHOULD NOT BE POSTPONING A STR\\\" .put\n"
+    "      \"SHOULD NOT BE POSTPONING A STR\" .put\n"
     "      process::quit\n"
     "      reenter\n"
     "    then\n"
@@ -10656,13 +10378,13 @@ void Task::vAddMunged(Forth* pForth)
     "  // -- -- -- -- -- -- --\n"
     "  // token should be a name\n"
     "  input::kind@ TN_NAME != if\n"
-    "    \\\"strange token\\\" .put input::kind@ .put\n"
+    "    \"strange token\" .put input::kind@ .put\n"
     "    reenter\n"
     "  then\n"
     "\n"
     "  // -- -- -- -- -- -- --\n"
     "  // test for bye\n"
-    "  input::chars \\\"bye\\\" str.equal if\n"
+    "  input::chars \"bye\" str.equal if\n"
     "    false exit_rt\n"
     "  then\n"
     "\n"
@@ -10688,9 +10410,9 @@ void Task::vAddMunged(Forth* pForth)
     "  // -- -- -- -- -- -- --\n"
     "  // postponing mode?\n"
     "  compiler::isPostponing if\n"
-    "    \\\"POSTPONING\\\" .put\n"
+    "    \"POSTPONING\" .put\n"
     "    encode::push\n"
-    "    \\\"encode::call\\\" word::find encode::call\n"
+    "    \"encode::call\" word::find encode::call\n"
     "    reenter\n"
     "  then\n"
     "\n"
@@ -10720,7 +10442,7 @@ void Task::vAddMunged(Forth* pForth)
     "  input::useBegin\n"
     "\n"
     "  begin\n"
-    "    \\\"SE Task> \\\" .put\n"
+    "    \"SE Task> \" .put\n"
     "\n"
     "  Task_Interpret_line while repeat\n"
     "\n"
@@ -10735,9 +10457,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": dbg>\n"
     "\n"
-    "  \\\"path::\\\" .put .\\\\n\n"
+    "  \"path::\" .put .\\n\n"
     "\n"
-    "  \\\"symbols\\\" find execute\n"
+    "  \"symbols\" find execute\n"
     "\n"
     "  stk\n"
     "  rstk\n"
@@ -10748,7 +10470,7 @@ void Task::vAddMunged(Forth* pForth)
     "  input::useBegin\n"
     "\n"
     "  begin\n"
-    "    \\\"dbg> \\\" .put\n"
+    "    \"dbg> \" .put\n"
     "\n"
     "  Task_Interpret_line while repeat\n"
     "\n"
@@ -10766,33 +10488,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_dbg.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)93);
-
-  szSubScriptDef = " 93 CONSTANT se_dbg.sen__sub "_Stz;
+  szSubScriptDef = " 93 CONSTANT se_dbg.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [94] OP_exemplar.sen
 
   gszaMungedText[94] =
-    "\""
-    "\\\"munged OP_exemplar.sen \\\" .verbose \n"
+    "\" munged OP_exemplar.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_exemplar.sen -- exemplar Operator                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_exemplar.sen\\\" .verbose\n"
+    "\" OP_exemplar.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EOSMARKER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_exemplar_EosMarker \\\\handler\n"
+    ": OP_exemplar_EosMarker \\handler\n"
     "\n"
-    "  \\\"OP_exemplar_EosMarker\\\" .\n"
+    "  \"OP_exemplar_EosMarker\" .\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -10800,7 +10519,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* exemplar request                                   (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": exemplar_req \\\\operator\n"
+    ": exemplar_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -10811,7 +10530,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** OP_exemplar_req EXITS\\\" .\n"
+    "  \"*** OP_exemplar_req EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -10823,37 +10542,34 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: exemplar :: exemplar ;\n"
     "\n"
     ": exemplar _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_exemplar.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)94);
-
-  szSubScriptDef = " 94 CONSTANT OP_exemplar.sen__sub "_Stz;
+  szSubScriptDef = " 94 CONSTANT OP_exemplar.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [95] db_schema.sen
 
   gszaMungedText[95] =
-    "\""
-    "\\\"munged db_schema.sen \\\" .verbose \n"
+    "\" munged db_schema.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_schema.sen -- schema related words                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" db_schema.sen\\\" .verbose\n"
+    "\" db_schema.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* the schema category                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\schema \\\\\\\\category ;\n"
+    ": \\schema \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* pop the schema folder                                                      */\n"
@@ -10868,7 +10584,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].isSchemas\n"
     "\n"
-    "  folder[] dic.name@ \\\"schemas\\\" str.equal\n"
+    "  folder[] dic.name@ \"schemas\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -10895,15 +10611,15 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": path[].checkIsSchema ( word )\n"
     "\n"
-    "  dup word.category@ find: \\\\folder eql not if EC_NOT_A_FOLDER false exit then\n"
-    "  dup execute dic.kind@ find: \\\\schema eql if true exit then\n"
+    "  dup word.category@ find: \\folder eql not if EC_NOT_A_FOLDER false exit then\n"
+    "  dup execute dic.kind@ find: \\schema eql if true exit then\n"
     "  EC_NOT_A_SCHEMA false\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* check if word is a removable schema folder                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": checkRemoveSchema ( \\\"<schemaNm>\\\" --  true | errorCode false )\n"
+    ": checkRemoveSchema ( \"<schemaNm>\" --  true | errorCode false )\n"
     "\n"
     "  params| sSchemaNm |\n"
     "\n"
@@ -10926,13 +10642,13 @@ void Task::vAddMunged(Forth* pForth)
     ": :makeSchemaFolder params| sSchemaNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "    sSchemaNm \\\"MAKING SCHEMA \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    sSchemaNm \"MAKING SCHEMA \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     " // make the schema\n"
     " sSchemaNm folder::makeFolder\n"
-    "   find: \\\\schema swap execute dic.kind!\n"
+    "   find: \\schema swap execute dic.kind!\n"
     "\n"
     " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     " // make tables folder\n"
@@ -10942,22 +10658,22 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* make a schemas folder under given named catalog                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": :makeSchemasFolder ( \\\"<catalogNm>\\\" -- )\n"
+    ": :makeSchemasFolder ( \"<catalogNm>\" -- )\n"
     "\n"
     "  args.tracepoint if\n"
-    "    dup \\\"MAKING SCHEMAS FOR CATALOG \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    dup \"MAKING SCHEMAS FOR CATALOG \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  find execute ( dic )\n"
-    "  \\\"schemas\\\"    ( dic \\\"schemas\\\" )\n"
-    "  swap         ( \\\"schemas\\\" dic )\n"
+    "  \"schemas\"    ( dic \"schemas\" )\n"
+    "  swap         ( \"schemas\" dic )\n"
     "  folder::makeSubFolder   ( )\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* find the schema folder and push it onto task dictionary                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": path[].pushSchemaFolder ( \\\"<schemaName>\\\" -- )\n"
+    ": path[].pushSchemaFolder ( \"<schemaName>\" -- )\n"
     "\n"
     "  find execute path[].pushFolder\n"
     "  true\n"
@@ -10966,19 +10682,19 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* remove a schema folder                                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": removeSchema ( \\\"<schemaNm>\\\" --  )\n"
+    ": removeSchema ( \"<schemaNm>\" --  )\n"
     "\n"
     "  params| sSchemaNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "  dup \\\"REMOVING SCHEMA \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "  dup \"REMOVING SCHEMA \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // move to schema folder\n"
     "  sSchemaNm path[].pushSchemaFolder assert\n"
     "\n"
-    "  \\\"tables\\\" folder::remove\n"
+    "  \"tables\" folder::remove\n"
     "\n"
     "  path[].popSchemaFolder\n"
     "\n"
@@ -10987,26 +10703,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_schema.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)95);
-
-  szSubScriptDef = " 95 CONSTANT db_schema.sen__sub "_Stz;
+  szSubScriptDef = " 95 CONSTANT db_schema.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [96] se_demons.sen
 
   gszaMungedText[96] =
-    "\""
-    "\\\"munged se_demons.sen \\\" .verbose \n"
+    "\" munged se_demons.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_demon.sen -- demons                                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_demon.sen\\\" .verbose\n"
+    "\" se_demon.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* install demon pipeline job                                                 */\n"
@@ -11017,9 +10730,9 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  \\\"__\\\" <pipelineNm> str.cat locals| sDemonNm |\n"
+    "  \"__\" <pipelineNm> str.cat locals| sDemonNm |\n"
     "\n"
-    "  sDemonNm \\\"installing demon pipeline job: %v\\\" .printf\n"
+    "  sDemonNm \"installing demon pipeline job: %v\" .printf\n"
     "\n"
     "  sDemonNm >createInRoot locals| pDemonWd |\n"
     "\n"
@@ -11029,33 +10742,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_demons.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)96);
-
-  szSubScriptDef = " 96 CONSTANT se_demons.sen__sub "_Stz;
+  szSubScriptDef = " 96 CONSTANT se_demons.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [97] OP_output.sen
 
   gszaMungedText[97] =
-    "\""
-    "\\\"munged OP_output.sen \\\" .verbose \n"
+    "\" munged OP_output.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_output.sen -- Operator output                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_output.sen\\\" .verbose\n"
+    "\" OP_output.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_CrwBuffer \\\\handler\n"
+    ": output_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "\n"
     "  true\n"
@@ -11064,9 +10774,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_CsvBuffer \\\\handler\n"
+    ": output_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "\n"
     "  true\n"
@@ -11075,9 +10785,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ENTBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_EntBuffer \\\\handler\n"
+    ": output_EntBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ENTBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ENTBUFFER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "\n"
     "  true\n"
@@ -11086,9 +10796,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_EosMarker \\\\handler\n"
+    ": output_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "  Operand[].newEosMarker\n"
     "  Operand[].pipeOut\n"
@@ -11099,9 +10809,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_ErrorMarker \\\\handler\n"
+    ": output_ErrorMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERRORMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERRORMARKER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "  Operand[].newErrorMarker\n"
     "  Operand[].pipeOut\n"
@@ -11112,9 +10822,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_IRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_IrwBuffer \\\\handler\n"
+    ": output_IrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_IRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_IRWBUFFER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "\n"
     "  true\n"
@@ -11123,9 +10833,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_PulseMarker \\\\handler\n"
+    ": output_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "  Operand[].newPulseMarker\n"
     "  Operand[].pipeToJob\n"
@@ -11136,9 +10846,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_SRTBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_SrtBuffer \\\\handler\n"
+    ": output_SrtBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_SRTBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_SRTBUFFER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "\n"
     "  true\n"
@@ -11147,9 +10857,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_StartMarker \\\\handler\n"
+    ": output_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "  Operand[].newStartMarker\n"
     "  Operand[].pipeOut\n"
@@ -11160,9 +10870,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_StreamDef \\\\handler\n"
+    ": output_StreamDef \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STREAMDEF\\\" .verbose\n"
+    "  //\"Operand:- ZK_STREAMDEF\" .verbose\n"
     "  Pipein[].pipeToJob\n"
     "\n"
     "  true\n"
@@ -11171,9 +10881,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMSET ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_StreamSet \\\\handler\n"
+    ": output_StreamSet \\handler\n"
     "\n"
-    "//\\\"Operand:- ZK_STREAMSET\\\" .verbose\n"
+    "//\"Operand:- ZK_STREAMSET\" .verbose\n"
     "Pipein[].pipeToJob\n"
     "\n"
     "true\n"
@@ -11182,7 +10892,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for output request                         (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_req \\\\operator\n"
+    ": output_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -11213,32 +10923,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: output :: output ;\n"
     "\n"
     ": output _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_output.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)97);
-
-  szSubScriptDef = " 97 CONSTANT OP_output.sen__sub "_Stz;
+  szSubScriptDef = " 97 CONSTANT OP_output.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [98] OP_listPartitions.sen
 
   gszaMungedText[98] =
-    "\""
-    "\\\"munged OP_listPartitions.sen \\\" .verbose \n"
+    "\" munged OP_listPartitions.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listPartitions.sen -- Operator list partitions                          */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listPartitions.sen\\\" .verbose\n"
+    "\" OP_listPartitions.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -11284,7 +10991,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lsparts _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __listPartitions\n"
     "    <params>    = 0\n"
@@ -11294,26 +11001,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listPartitions.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)98);
-
-  szSubScriptDef = " 98 CONSTANT OP_listPartitions.sen__sub "_Stz;
+  szSubScriptDef = " 98 CONSTANT OP_listPartitions.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [99] job_2pcReply.sen
 
   gszaMungedText[99] =
-    "\""
-    "\\\"munged job_2pcReply.sen \\\" .verbose \n"
+    "\" munged job_2pcReply.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_2pcReply.sen -- Distributed 2PC Job related words                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_2pcReply.sen\\\" .verbose\n"
+    "\" job_2pcReply.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* distribute current originating job to all participating nodes              */\n"
@@ -11355,7 +11059,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": 2pcReply::job__begun ( -- )\n"
     "\n"
-    "  job[] \\\"Job__Begun::send\\\" find execute\n"
+    "  job[] \"Job__Begun::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -11363,7 +11067,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": 2pcReply::job__executed ( -- )\n"
     "\n"
-    "  job[] \\\"Job__Executed::send\\\" find execute\n"
+    "  job[] \"Job__Executed::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -11371,7 +11075,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": 2pcReply::job__ended ( -- )\n"
     "\n"
-    "  job[] \\\"Job__Ended::send\\\" find execute\n"
+    "  job[] \"Job__Ended::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -11379,73 +11083,67 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": 2pcReply::job__cancelled ( -- )\n"
     "\n"
-    "  job[] \\\"Job__Cancelled::send\\\" find execute\n"
+    "  job[] \"Job__Cancelled::send\" find execute\n"
     " ;\n"
     "\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_2pcReply.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)99);
-
-  szSubScriptDef = " 99 CONSTANT job_2pcReply.sen__sub "_Stz;
+  szSubScriptDef = " 99 CONSTANT job_2pcReply.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [100] se_schemaTest.sen
 
   gszaMungedText[100] =
-    "\""
-    "\\\"munged se_schemaTest.sen \\\" .verbose \n"
+    "\" munged se_schemaTest.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_schemaTest.sen -- schema test                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_schemaTest.sen\\\" .verbose\n"
+    "\" se_schemaTest.sen\" .verbose\n"
     "\n"
-    ": schemaTest \\\"\\\" utility::schemaTest ;\n"
+    ": schemaTest \"\" utility::schemaTest ;\n"
     "\n"
     ": schemaTestAll\n"
     "\n"
-    "  \\\"A\\\" utility::schemaTest\n"
-    "  \\\"B\\\" utility::schemaTest\n"
-    "  \\\"C\\\" utility::schemaTest\n"
-    "  \\\"D\\\" utility::schemaTest\n"
-    "  \\\"E\\\" utility::schemaTest\n"
-    "  \\\"F\\\" utility::schemaTest\n"
-    "  \\\"G\\\" utility::schemaTest\n"
-    "  \\\"H\\\" utility::schemaTest\n"
-    "  \\\"I\\\" utility::schemaTest\n"
-    "  \\\"J\\\" utility::schemaTest\n"
+    "  \"A\" utility::schemaTest\n"
+    "  \"B\" utility::schemaTest\n"
+    "  \"C\" utility::schemaTest\n"
+    "  \"D\" utility::schemaTest\n"
+    "  \"E\" utility::schemaTest\n"
+    "  \"F\" utility::schemaTest\n"
+    "  \"G\" utility::schemaTest\n"
+    "  \"H\" utility::schemaTest\n"
+    "  \"I\" utility::schemaTest\n"
+    "  \"J\" utility::schemaTest\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_schemaTest.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)100);
-
-  szSubScriptDef = " 100 CONSTANT se_schemaTest.sen__sub "_Stz;
+  szSubScriptDef = " 100 CONSTANT se_schemaTest.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [101] OP_dropIndex.sen
 
   gszaMungedText[101] =
-    "\""
-    "\\\"munged OP_dropIndex.sen \\\" .verbose \n"
+    "\" munged OP_dropIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropIndex.sen -- Operator drop index                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dropIndex.sen\\\" .verbose\n"
+    "\" OP_dropIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -11475,7 +11173,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for dropIndex req                          (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dropIndex_req \\\\operator\n"
+    ": dropIndex_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -11497,39 +11195,36 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dropIndex _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_dropIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)101);
-
-  szSubScriptDef = " 101 CONSTANT OP_dropIndex.sen__sub "_Stz;
+  szSubScriptDef = " 101 CONSTANT OP_dropIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [102] OP_consume.sen
 
   gszaMungedText[102] =
-    "\""
-    "\\\"munged OP_consume.sen \\\" .verbose \n"
+    "\" munged OP_consume.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_consume.sen -- Operator consume                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_consume.sen\\\" .verbose\n"
+    "\" OP_consume.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CANCELMARKER ...                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_CancelMarker \\\\handler\n"
+    ": consumeOp_CancelMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CANCELMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CANCELMARKER\" .verbose\n"
     "  xmits[].handleCancel if\n"
     "    Pipein[].pipeOut\n"
     "    Op.ackPipelineJob\n"
@@ -11543,9 +11238,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_EosMarker \\\\handler\n"
+    ": consumeOp_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "  xmits[].handleEos if\n"
     "    Pipein[].pipeOut\n"
     "  else\n"
@@ -11557,9 +11252,9 @@ void Task::vAddMunged(Forth* pForth)
     "/* handler for ZK_ERRORMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*\n"
-    ": consumeOp_ErrorMarker \\\\handler\n"
+    ": consumeOp_ErrorMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ERRORMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ERRORMARKER\" .verbose\n"
     "  xmits[].handleError if\n"
     "    Pipein[].pipeOut\n"
     "  else\n"
@@ -11572,9 +11267,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITMARKER ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_ExitMarker \\\\handler\n"
+    ": consumeOp_ExitMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITMARKER\" .verbose\n"
     "  xmits[].handleExit if\n"
     "    Pipein[].pipeOut\n"
     "    Op.ackPipelineJob\n"
@@ -11588,9 +11283,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_PulseMarker \\\\handler\n"
+    ": consumeOp_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  xmits[].handlePulse if\n"
     "    Pipein[].pipeOut\n"
     "  else\n"
@@ -11601,9 +11296,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEDMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_PulsedMarker \\\\handler\n"
+    ": consumeOp_PulsedMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEDMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEDMARKER\" .verbose\n"
     "  xmits[].handlePulsed if\n"
     "    Pipein[].pipeOut\n"
     "  else\n"
@@ -11615,9 +11310,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_StartMarker \\\\handler\n"
+    ": consumeOp_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "  xmits[].handleStart if\n"
     "    Pipein[].pipeOut\n"
     "  else\n"
@@ -11629,9 +11324,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_StreamDef \\\\handler\n"
+    ": consumeOp_StreamDef \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STREAMDEF\\\" .verbose\n"
+    "  //\"Operand:- ZK_STREAMDEF\" .verbose\n"
     "  xmits[].handleStreamDef if\n"
     "    Pipein[].pipeOut\n"
     "  else\n"
@@ -11643,7 +11338,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for consumeOp req                          (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": consumeOp_req \\\\operator\n"
+    ": consumeOp_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -11676,39 +11371,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: ConsumeOp :: ConsumeOp <Xmits> ;\n"
     "\n"
     ": ConsumeOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_consume.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)102);
-
-  szSubScriptDef = " 102 CONSTANT OP_consume.sen__sub "_Stz;
+  szSubScriptDef = " 102 CONSTANT OP_consume.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [103] OP_eatAll.sen
 
   gszaMungedText[103] =
-    "\""
-    "\\\"munged OP_eatAll.sen \\\" .verbose \n"
+    "\" munged OP_eatAll.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_eatAll.sen -- Eat All Operators                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_EatAll.sen\\\" .verbose\n"
+    "\" OP_EatAll.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_Xyz ...                                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_EatAll_Xyz \\\\handler\n"
+    ": OP_EatAll_Xyz \\handler\n"
     "\n"
-    "  Pipein[].kind \\\"OP_EatAll_Xyz +++ +++ +++ : Operand %v\\\" .printf\n"
+    "  Pipein[].kind \"OP_EatAll_Xyz +++ +++ +++ : Operand %v\" .printf\n"
     "\n"
     "  // delete all operands\n"
     "  Pipein[].delete\n"
@@ -11719,7 +11411,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* eatAll request                                     (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": eatAll_req \\\\operator\n"
+    ": eatAll_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -11730,7 +11422,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** eatAll_req EXITS\\\" .\n"
+    "  \"*** eatAll_req EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -11742,32 +11434,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: eatAll :: eatAll ;\n"
     "\n"
     ": eatAll _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_eatAll.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)103);
-
-  szSubScriptDef = " 103 CONSTANT OP_eatAll.sen__sub "_Stz;
+  szSubScriptDef = " 103 CONSTANT OP_eatAll.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [104] OP_createCatalog.sen
 
   gszaMungedText[104] =
-    "\""
-    "\\\"munged OP_createCatalog.sen \\\" .verbose \n"
+    "\" munged OP_createCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createCatalog.sen -- Operator create catalog                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_createCatalog.sen\\\" .verbose\n"
+    "\" OP_createCatalog.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -11819,7 +11508,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for createCatalog req                      (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": createCatalog_req \\\\operator\n"
+    ": createCatalog_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -11841,32 +11530,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": createCatalog _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_createCatalog.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)104);
-
-  szSubScriptDef = " 104 CONSTANT OP_createCatalog.sen__sub "_Stz;
+  szSubScriptDef = " 104 CONSTANT OP_createCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [105] OP_space.sen
 
   gszaMungedText[105] =
-    "\""
-    "\\\"munged OP_space.sen \\\" .verbose \n"
+    "\" munged OP_space.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_space.sen -- Operator space                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_space.sen\\\" .verbose\n"
+    "\" OP_space.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -11901,7 +11587,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": space _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __space\n"
     "    <params>    = 0\n"
@@ -11911,26 +11597,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_space.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)105);
-
-  szSubScriptDef = " 105 CONSTANT OP_space.sen__sub "_Stz;
+  szSubScriptDef = " 105 CONSTANT OP_space.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [106] OP_dumpTable.sen
 
   gszaMungedText[106] =
-    "\""
-    "\\\"munged OP_dumpTable.sen \\\" .verbose \n"
+    "\" munged OP_dumpTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dumpTable.sen -- Operator dump table                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dumpTable.sen\\\" .verbose\n"
+    "\" OP_dumpTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -11952,7 +11635,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dumpTbl _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <params>      = 1\n"
     "  }\n"
@@ -11961,26 +11644,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_dumpTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)106);
-
-  szSubScriptDef = " 106 CONSTANT OP_dumpTable.sen__sub "_Stz;
+  szSubScriptDef = " 106 CONSTANT OP_dumpTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [107] OP_showCluster.sen
 
   gszaMungedText[107] =
-    "\""
-    "\\\"munged OP_showCluster.sen \\\" .verbose \n"
+    "\" munged OP_showCluster.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_showCuster.sen -- Operator show cluster                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_showCluster.sen\\\" .verbose\n"
+    "\" OP_showCluster.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -12027,7 +11707,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": showCluster _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __showCluster\n"
     "    <params>      = 0\n"
@@ -12037,26 +11717,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_showCluster.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)107);
-
-  szSubScriptDef = " 107 CONSTANT OP_showCluster.sen__sub "_Stz;
+  szSubScriptDef = " 107 CONSTANT OP_showCluster.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [108] job__Begun.sen
 
   gszaMungedText[108] =
-    "\""
-    "\\\"munged job__Begun.sen \\\" .verbose \n"
+    "\" munged job__Begun.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__Begun.sen -- generic job related words                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__Begun.sen\\\" .verbose\n"
+    "\" job__Begun.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on participating node                           //\n"
@@ -12185,7 +11862,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _Begun :: _Begun ;\n"
     "\n"
     ": _Begun _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -12194,34 +11871,31 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__Begun.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)108);
-
-  szSubScriptDef = " 108 CONSTANT job__Begun.sen__sub "_Stz;
+  szSubScriptDef = " 108 CONSTANT job__Begun.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [109] OP_truncateIndex.sen
 
   gszaMungedText[109] =
-    "\""
-    "\\\"munged OP_truncateIndex.sen \\\" .verbose \n"
+    "\" munged OP_truncateIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_truncateIndex.sen -- Operator truncate index                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_truncateIndex.sen\\\" .verbose\n"
+    "\" OP_truncateIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": TruncateIndex_PulseMarker \\\\handler\n"
+    ": TruncateIndex_PulseMarker \\handler\n"
     "\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // truncate the buffers of the tablePtn\n"
@@ -12236,9 +11910,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": TruncateIndex_StartMarker \\\\handler\n"
+    ": TruncateIndex_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // check if we can scan the table\n"
     "  <tableNm> <indexNm> op__table_index if\n"
@@ -12253,7 +11927,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for Truncate req                           (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : TruncateIndex_req \\\\operator\n"
+    " : TruncateIndex_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -12276,32 +11950,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: truncateIndex :: truncateIndex <tableNm> <indexNm> ;\n"
     "\n"
     ": truncateIndex _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_truncateIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)109);
-
-  szSubScriptDef = " 109 CONSTANT OP_truncateIndex.sen__sub "_Stz;
+  szSubScriptDef = " 109 CONSTANT OP_truncateIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [110] OP_status.sen
 
   gszaMungedText[110] =
-    "\""
-    "\\\"munged OP_status.sen \\\" .verbose \n"
+    "\" munged OP_status.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_status.sen -- Operator status                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_status.sen\\\" .verbose\n"
+    "\" OP_status.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -12336,7 +12007,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": status _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __status\n"
     "    <params>    = 0\n"
@@ -12346,26 +12017,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_status.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)110);
-
-  szSubScriptDef = " 110 CONSTANT OP_status.sen__sub "_Stz;
+  szSubScriptDef = " 110 CONSTANT OP_status.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [111] OP_pwf.sen
 
   gszaMungedText[111] =
-    "\""
-    "\\\"munged OP_pwf.sen \\\" .verbose \n"
+    "\" munged OP_pwf.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_pwf.sen -- Operator present working flolder                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_pwf.sen\\\" .verbose\n"
+    "\" OP_pwf.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -12374,15 +12042,15 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| folder |\n"
     "\n"
-    "  \\\"/\\\"\n"
+    "  \"/\"\n"
     "  // iterate thru each folder in path and concat to end\n"
     "  path[].depth 0 do\n"
     "    // compute the path subscript\n"
     "    path[].depth 1 - I -\n"
     "    // pick the path, get its name and concat name to working string\n"
     "    path[].pick dic.name@ str.cat\n"
-    "    // concat \\\"/\\\" to end of working string\n"
-    "    \\\"/\\\" str.cat\n"
+    "    // concat \"/\" to end of working string\n"
+    "    \"/\" str.cat\n"
     "  loop\n"
     "\n"
     "  // save folder\n"
@@ -12416,7 +12084,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": pwf _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __pwf\n"
     "    <params>      = 0\n"
@@ -12426,26 +12094,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_pwf.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)111);
-
-  szSubScriptDef = " 111 CONSTANT OP_pwf.sen__sub "_Stz;
+  szSubScriptDef = " 111 CONSTANT OP_pwf.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [112] BM_inflateCrw.sen
 
   gszaMungedText[112] =
-    "\""
-    "\\\"munged BM_inflateCrw.sen \\\" .verbose \n"
+    "\" munged BM_inflateCrw.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* BM_inflateCrw.sen -- Benchmark Operator inflateCrw                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" BM_inflateCrw.sen\\\" .verbose\n"
+    "\" BM_inflateCrw.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
@@ -12457,16 +12122,16 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // csv report for bm_insidx\n"
     "  aggTimer[] aggTimer.reportStr\n"
-    "    \\\"BM_InflateCrw,Elapsed Time,%v\\\\n\\\" str.format Operand[].csvAppend\n"
+    "    \"BM_InflateCrw,Elapsed Time,%v\\n\" str.format Operand[].csvAppend\n"
     "\n"
     "  counter0[].get\n"
-    "    \\\"BM_InflateCrw,Number of CrwBuffers,%v\\\\n\\\" str.format Operand[].csvAppend\n"
+    "    \"BM_InflateCrw,Number of CrwBuffers,%v\\n\" str.format Operand[].csvAppend\n"
     "\n"
     "  counter1[].get\n"
-    "    \\\"BM_InflateCrw,Total Number of Compact Rows,%v\\\\n\\\" str.format Operand[].csvAppend\n"
+    "    \"BM_InflateCrw,Total Number of Compact Rows,%v\\n\" str.format Operand[].csvAppend\n"
     "\n"
     "  aggTimer[] aggTimer.nanosecs counter1[].get /\n"
-    "    \\\"BM_InflateCrw,Average Time per Compact Row,%vns\\\\n\\\" str.format Operand[].csvAppend\n"
+    "    \"BM_InflateCrw,Average Time per Compact Row,%vns\\n\" str.format Operand[].csvAppend\n"
     "  \n"
     "  Operand[].pipeout\n"
     " ;\n"
@@ -12474,9 +12139,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_CRWBUFFER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InflateCrwOp_CrwBuffer \\\\handler\n"
+    ": BM_InflateCrwOp_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"BM_InflateCrw_CrwBuffer\\\" .\n"
+    "  //\"BM_InflateCrw_CrwBuffer\" .\n"
     "\n"
     "  // get table partition for current partition\n"
     "  table[].tablePtn@ to tablePtn[]\n"
@@ -12500,7 +12165,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EOSMARKER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InflateCrwOp_EosMarker \\\\handler\n"
+    ": BM_InflateCrwOp_EosMarker \\handler\n"
     "\n"
     "  Pipein[].delete\n"
     "\n"
@@ -12515,12 +12180,12 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InflateCrwOp_StartMarker \\\\handler\n"
+    ": BM_InflateCrwOp_StartMarker \\handler\n"
     "\n"
     "  // table folder push\n"
     "  <tableNm> op__table if\n"
     "\n"
-    "    path[].toStr \\\"Folder path: %v\\\" .printf\n"
+    "    path[].toStr \"Folder path: %v\" .printf\n"
     "\n"
     "    BM_TimerNew\n"
     "\n"
@@ -12533,7 +12198,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for BM_InflateCrwOp                        (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InflateCrwOp_req\\\\operator\n"
+    ": BM_InflateCrwOp_req\\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -12545,7 +12210,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** BM_InflateRowOp EXITS\\\" .\n"
+    "  \"*** BM_InflateRowOp EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -12557,32 +12222,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: BM_InflateCrwOp :: BM_InflateCrwOp <tableNm> ;\n"
     "\n"
     ": BM_InflateCrwOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT BM_inflateCrw.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)112);
-
-  szSubScriptDef = " 112 CONSTANT BM_inflateCrw.sen__sub "_Stz;
+  szSubScriptDef = " 112 CONSTANT BM_inflateCrw.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [113] op__common.sen
 
   gszaMungedText[113] =
-    "\""
-    "\\\"munged op__common.sen \\\" .verbose \n"
+    "\" munged op__common.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__common.sen -- operator common words                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" op__common.sen\\\" .verbose\n"
+    "\" op__common.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* verify and set folder to <tableNm> of tabledef                             */\n"
@@ -12617,7 +12279,7 @@ void Task::vAddMunged(Forth* pForth)
     "  path[].save\n"
     "\n"
     "  // move to default tables folder\n"
-    "  \\\"/tenants/boray/catalogs/rapidsse/schemas/public/tables\\\"\n"
+    "  \"/tenants/boray/catalogs/rapidsse/schemas/public/tables\"\n"
     "  str.toStrVec path[].set\n"
     "\n"
     "  // table\n"
@@ -12649,7 +12311,7 @@ void Task::vAddMunged(Forth* pForth)
     "  path[].save\n"
     "\n"
     "  // move to default tables folder\n"
-    "  \\\"/tenants/boray/catalogs/rapidsse/schemas/public/tables\\\"\n"
+    "  \"/tenants/boray/catalogs/rapidsse/schemas/public/tables\"\n"
     "  str.toStrVec path[].set\n"
     "\n"
     "  // table\n"
@@ -12915,26 +12577,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT op__common.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)113);
-
-  szSubScriptDef = " 113 CONSTANT op__common.sen__sub "_Stz;
+  szSubScriptDef = " 113 CONSTANT op__common.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [114] OP_analyzeIndex.sen
 
   gszaMungedText[114] =
-    "\""
-    "\\\"munged OP_analyzeIndex.sen \\\" .verbose \n"
+    "\" munged OP_analyzeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_analyzeIndex.sen -- Operator analyze index                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_analyzeIndex.sen\\\" .verbose\n"
+    "\" OP_analyzeIndex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -12989,7 +12648,7 @@ void Task::vAddMunged(Forth* pForth)
     "//  |\n"
     ": anidx _info tagCopy: liteOp_tags  // +-> procedure andix [currently]\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __analyzeIndex\n"
     "    <params>    = 2\n"
@@ -13001,26 +12660,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_analyzeIndex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)114);
-
-  szSubScriptDef = " 114 CONSTANT OP_analyzeIndex.sen__sub "_Stz;
+  szSubScriptDef = " 114 CONSTANT OP_analyzeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [115] se_tags.sen
 
   gszaMungedText[115] =
-    "\""
-    "\\\"munged se_tags.sen \\\" .verbose \n"
+    "\" munged se_tags.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_tags.sen -- tags                                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_tags.sen\\\" .verbose\n"
+    "\" se_tags.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* add given tag to word's tag set  (with support for constant translation)   */\n"
@@ -13033,7 +12689,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pConstantWord if\n"
     "    pConstantWord word.category@ find: rootConstant eql if\n"
     "\n"
-    "      // sEvalue \\\"  %v is a constant\\\" .printf\n"
+    "      // sEvalue \"  %v is a constant\" .printf\n"
     "      // add <name> = <constant>\n"
     "      sTagName pConstantWord execute pWordTagSet tagSet.insertInt\n"
     "      exit\n"
@@ -13056,7 +12712,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pConstantWord if\n"
     "    pConstantWord word.category@ find: rootConstant eql if\n"
     "\n"
-    "      // sEvalue \\\"  %v is a constant\\\" .printf\n"
+    "      // sEvalue \"  %v is a constant\" .printf\n"
     "      // add/replace <name> = <constant>\n"
     "      sTagName pConstantWord execute pWordTagSet tagSet.replaceInt\n"
     "      exit\n"
@@ -13083,10 +12739,10 @@ void Task::vAddMunged(Forth* pForth)
     "  \n"
     "  // add tag set name\n"
     "  \n"
-    "  \\\"<TagSetNm>\\\" compiler::current@ word.name@ compiler::current@ word.TagSet@ tagSet.addTag\n"
+    "  \"<TagSetNm>\" compiler::current@ word.name@ compiler::current@ word.TagSet@ tagSet.addTag\n"
     "  \n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // parse each input token till \\\"}\\\", build ename set representing the syntax\n"
+    "  // parse each input token till \"}\", build ename set representing the syntax\n"
     "\n"
     "  0 0 locals| sTagName sTagValue |\n"
     "\n"
@@ -13094,7 +12750,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \n"
     "    input::next\n"
     "    \n"
-    "    dup \\\"}\\\" str.equal not\n"
+    "    dup \"}\" str.equal not\n"
     "    \n"
     "  while\n"
     "  \n"
@@ -13114,7 +12770,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  // discard the \\\"}\\\" from dstack\n"
+    "  // discard the \"}\" from dstack\n"
     "  discard\n"
     "  \n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -13160,7 +12816,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": input::isEtc\n"
     "\n"
-    "  input::chars \\\"etc\\\" str.equal\n"
+    "  input::chars \"etc\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -13183,52 +12839,46 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_tags.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)115);
-
-  szSubScriptDef = " 115 CONSTANT se_tags.sen__sub "_Stz;
+  szSubScriptDef = " 115 CONSTANT se_tags.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [116] se_llc.sen
 
   gszaMungedText[116] =
-    "\""
-    "\\\"munged se_llc.sen \\\" .verbose \n"
+    "\" munged se_llc.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_llc.sen -- last level cache                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_llc.sen\\\" .verbose\n"
+    "\" se_llc.sen\" .verbose\n"
     "\n"
     ": llc test::test0 ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_llc.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)116);
-
-  szSubScriptDef = " 116 CONSTANT se_llc.sen__sub "_Stz;
+  szSubScriptDef = " 116 CONSTANT se_llc.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [117] BM_insIdx.sen
 
   gszaMungedText[117] =
-    "\""
-    "\\\"munged BM_insIdx.sen \\\" .verbose \n"
+    "\" munged BM_insIdx.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* BM_insIdx.sen -- Benchmark Operator insIdx                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" BM_insIdx.sen\\\" .verbose\n"
+    "\" BM_insIdx.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
@@ -13247,25 +12897,25 @@ void Task::vAddMunged(Forth* pForth)
     "  aggTimer[] aggTimer.reportStr\n"
     "    iNow\n"
     "    sTsp\n"
-    "    \\\"BM_InsIdx,%v,%v,Elapsed Time,%v\\\\n\\\"\n"
+    "    \"BM_InsIdx,%v,%v,Elapsed Time,%v\\n\"\n"
     "    str.format Operand[].csvAppend\n"
     "\n"
     "  counter0[].get\n"
     "    iNow\n"
     "    sTsp\n"
-    "    \\\"BM_InsIdx,%v,%v,Number of EntBuffers,%v\\\\n\\\"\n"
+    "    \"BM_InsIdx,%v,%v,Number of EntBuffers,%v\\n\"\n"
     "    str.format Operand[].csvAppend\n"
     "\n"
     "  counter1[].get\n"
     "    iNow\n"
     "    sTsp\n"
-    "    \\\"BM_InsIdx,%v,%v,Total Number of Entries,%v\\\\n\\\"\n"
+    "    \"BM_InsIdx,%v,%v,Total Number of Entries,%v\\n\"\n"
     "    str.format Operand[].csvAppend\n"
     "\n"
     "  aggTimer[] aggTimer.nanosecs counter1[].get /\n"
     "    iNow\n"
     "    sTsp\n"
-    "    \\\"BM_InsIdx,%v,%v,Average Time per Entry,%vns\\\\n\\\"\n"
+    "    \"BM_InsIdx,%v,%v,Average Time per Entry,%vns\\n\"\n"
     "    str.format Operand[].csvAppend\n"
     "  \n"
     "  Operand[].pipeout\n"
@@ -13274,9 +12924,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_ENTBUFFER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InsIdx_EntBuffer \\\\handler\n"
+    ": BM_InsIdx_EntBuffer \\handler\n"
     "\n"
-    "  \\\"BM_InsIdx_EntBuffer\\\" .\n"
+    "  \"BM_InsIdx_EntBuffer\" .\n"
     "\n"
     "  // get index partition for current partition\n"
     "  index[] index.IndexTree to IndexTree[] // IndexTree\n"
@@ -13298,7 +12948,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EOSMARKER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InsIdx_EosMarker \\\\handler\n"
+    ": BM_InsIdx_EosMarker \\handler\n"
     "\n"
     "  Pipein[].delete\n"
     "\n"
@@ -13311,15 +12961,15 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InsIdx_StartMarker \\\\handler\n"
+    ": BM_InsIdx_StartMarker \\handler\n"
     "\n"
     "  now[] now.asOf now[] now.timestampStr .\n"
-    "  now[] now.sinceEpoch \\\"SinceEpoch: %vs\\\" .printf\n"
+    "  now[] now.sinceEpoch \"SinceEpoch: %vs\" .printf\n"
     "\n"
     "  // table index folder push\n"
     "  <tableNm> <indexNm> op__table_index if\n"
     "\n"
-    "    path[].toStr \\\"Folder path: %v\\\" .printf\n"
+    "    path[].toStr \"Folder path: %v\" .printf\n"
     "\n"
     "    BM_TimerNew\n"
     "\n"
@@ -13332,11 +12982,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for insIdx                                 (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_InsIdxOp_req \\\\operator\n"
+    ": BM_InsIdxOp_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
-    "  true \\\"BM_InsIdx_StartMarker\\\" find word.breakPt!\n"
+    "  true \"BM_InsIdx_StartMarker\" find word.breakPt!\n"
     "\n"
     "  op__topology\n"
     "\n"
@@ -13346,7 +12996,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** BM_InsIdxOp EXITS\\\" .\n"
+    "  \"*** BM_InsIdxOp EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -13358,32 +13008,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: BM_InsIdxOp :: BM_InsIdxOp <tableNm> <indexNm> ;\n"
     "\n"
     ": BM_InsIdxOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT BM_insIdx.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)117);
-
-  szSubScriptDef = " 117 CONSTANT BM_insIdx.sen__sub "_Stz;
+  szSubScriptDef = " 117 CONSTANT BM_insIdx.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [118] job_Receiver.sen
 
   gszaMungedText[118] =
-    "\""
-    "\\\"munged job_Receiver.sen \\\" .verbose \n"
+    "\" munged job_Receiver.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Receiver.sen -- receiver job                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Receiver.sen\\\" .verbose\n"
+    "\" job_Receiver.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* spawn the receiver job (as a dedicated job)                                */\n"
@@ -13416,7 +13063,7 @@ void Task::vAddMunged(Forth* pForth)
     "  NS_ACTIVE grid::thisNode@ grid::node node.state!\n"
     "\n"
     "  args.verbose if\n"
-    "    grid::thisNode@ \\\"receiver running on node %v\\\" .printf\n"
+    "    grid::thisNode@ \"receiver running on node %v\" .printf\n"
     "  then\n"
     " ;\n"
     "\n"
@@ -13450,7 +13097,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    not if\n"
     "      //ifAgain\n"
-    "      \\\"receiver exiting\\\" .\n"
+    "      \"receiver exiting\" .\n"
     "      exit\n"
     "    then\n"
     "\n"
@@ -13477,7 +13124,7 @@ void Task::vAddMunged(Forth* pForth)
     "    // -- -- -- -- -- -- -- --\n"
     "    // examine job\n"
     "    //pReceivedJob job.kind@ JK_GENERIC == if\n"
-    "      //\\\"received a generic job\\\" .\n"
+    "      //\"received a generic job\" .\n"
     "    //  pReceivedJob job.tagSet@ tagSet.asStr .\n"
     "    //then\n"
     "\n"
@@ -13488,7 +13135,7 @@ void Task::vAddMunged(Forth* pForth)
     "    //pReceivedJob job.hasOperand if\n"
     "      pReceivedJob Job_operand.pipeOut\n"
     "    else\n"
-    "      //pReceivedJob job.name@ grid::thisNodeName@ \\\"(%v) receiver_loop %v\\\" .printf\n"
+    "      //pReceivedJob job.name@ grid::thisNodeName@ \"(%v) receiver_loop %v\" .printf\n"
     "      pReceivedJob job.seedDecode\n"
     "      pReceivedJob job.seed!\n"
     "      pReceivedJob job.spawn_received\n"
@@ -13524,35 +13171,32 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Receiver.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)118);
-
-  szSubScriptDef = " 118 CONSTANT job_Receiver.sen__sub "_Stz;
+  szSubScriptDef = " 118 CONSTANT job_Receiver.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [119] OP_progress.sen
 
   gszaMungedText[119] =
-    "\""
-    "\\\"munged OP_progress.sen \\\" .verbose \n"
+    "\" munged OP_progress.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_progress.sen -- Operator progress                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_progress.sen\\\" .verbose\n"
+    "\" OP_progress.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PROGRESSUNITS...                                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": progress_ProgressUnits \\\\handler\n"
+    ": progress_ProgressUnits \\handler\n"
     "\n"
     "  0 locals| iPercent |\n"
     "\n"
-    "  //\\\"Operand:- ZK_PROGRESSUNITS\\\" .verbose\n"
+    "  //\"Operand:- ZK_PROGRESSUNITS\" .verbose\n"
     "\n"
     "  // get operand into InfoSet[]\n"
     "  Pipein[] to InfoSet[]\n"
@@ -13571,11 +13215,11 @@ void Task::vAddMunged(Forth* pForth)
     "  // print the Load %\n"
     "  iPercent 0 > if\n"
     "    iPercent 100 > if\n"
-    "      <string> \\\"%v Progress: 100\\\" str.format\n"
-    "      \\\"%\\\" str.cat .\n"
+    "      <string> \"%v Progress: 100\" str.format\n"
+    "      \"%\" str.cat .\n"
     "    else\n"
-    "      iPercent <string> \\\"%v Progress: %v\\\" str.format\n"
-    "      \\\"%\\\" str.cat .\n"
+    "      iPercent <string> \"%v Progress: %v\" str.format\n"
+    "      \"%\" str.cat .\n"
     "    then\n"
     "  then\n"
     "\n"
@@ -13589,11 +13233,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_TOTALUNITS...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": progress_TotalUnits \\\\handler\n"
+    ": progress_TotalUnits \\handler\n"
     "\n"
     "  0 locals| iPercent |\n"
     "\n"
-    "  //\\\"Operand:- ZK_TOTALUNITS\\\" .verbose\n"
+    "  //\"Operand:- ZK_TOTALUNITS\" .verbose\n"
     "\n"
     "  // get operand into InfoSet[]\n"
     "  Pipein[] to InfoSet[]\n"
@@ -13614,7 +13258,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for progress req                           (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : progress_req \\\\operator\n"
+    " : progress_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -13636,68 +13280,62 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: progress :: progress <string> ;\n"
     "\n"
     ": progress _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_progress.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)119);
-
-  szSubScriptDef = " 119 CONSTANT OP_progress.sen__sub "_Stz;
+  szSubScriptDef = " 119 CONSTANT OP_progress.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [120] test_str.sen
 
   gszaMungedText[120] =
-    "\""
-    "\\\"munged test_str.sen \\\" .verbose \n"
+    "\" munged test_str.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_str.sen -- string unit testing                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_str.sen\\\" .verbose\n"
+    "\" test_str.sen\" .verbose\n"
     "\n"
     ": test_str_remove prompt\n"
     "\n"
-    "  \\\"_\\\" \\\"abc_def\\\" str.removePrefix .\n"
-    "  \\\"_\\\" \\\"abc_def\\\" str.removeSuffix .\n"
+    "  \"_\" \"abc_def\" str.removePrefix .\n"
+    "  \"_\" \"abc_def\" str.removeSuffix .\n"
     "\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_str.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)120);
-
-  szSubScriptDef = " 120 CONSTANT test_str.sen__sub "_Stz;
+  szSubScriptDef = " 120 CONSTANT test_str.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [121] BM_genEnt.sen
 
   gszaMungedText[121] =
-    "\""
-    "\\\"munged BM_genEnt.sen \\\" .verbose \n"
+    "\" munged BM_genEnt.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* BM_genEnt.sen -- Benchmark Operator genEnt                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" BM_genEnt.sen\\\" .verbose\n"
+    "\" BM_genEnt.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "//: BM_GenEnt_PulseMarker \\\\handler\n"
+    "//: BM_GenEnt_PulseMarker \\handler\n"
     "//\n"
     "//  // pipe out the pulse marker to the next operator\n"
     "//  Operand[].pipeOut\n"
@@ -13719,7 +13357,7 @@ void Task::vAddMunged(Forth* pForth)
     "//  true\n"
     "//;\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenEnt_PulseMarker \\\\handler\n"
+    ": BM_GenEnt_PulseMarker \\handler\n"
     "\n"
     "  // pipe out the pulse marker to the next operator\n"
     "  Pipein[].pipeOut\n"
@@ -13748,14 +13386,14 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_STARTMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenEnt_StartMarker \\\\handler\n"
+    ": BM_GenEnt_StartMarker \\handler\n"
     "\n"
-    "  \\\"BM_GenEnt_StartMarker\\\" .\n"
+    "  \"BM_GenEnt_StartMarker\" .\n"
     "\n"
     "  <tableNm> <indexNm> op__table_index if\n"
     "\n"
-    "    path[].toStr     \\\"Folder path: %v\\\" .printf\n"
-    "    folder[].contentStr \\\"contains: %v\\\" .printf\n"
+    "    path[].toStr     \"Folder path: %v\" .printf\n"
+    "    folder[].contentStr \"contains: %v\" .printf\n"
     "\n"
     "    Pipein[].pipeOut\n"
     "  then\n"
@@ -13766,7 +13404,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* BM_GenEntOp request                                (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": BM_GenEntOp_req \\\\operator\n"
+    ": BM_GenEntOp_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -13777,7 +13415,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** BM_GenEntOp EXITS\\\" .\n"
+    "  \"*** BM_GenEntOp EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -13789,37 +13427,34 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: BM_GenEntOp :: BM_GenEntOp <tableNm> <indexNm> <nBuffers> ;\n"
     "\n"
     ": BM_GenEntOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT BM_genEnt.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)121);
-
-  szSubScriptDef = " 121 CONSTANT BM_genEnt.sen__sub "_Stz;
+  szSubScriptDef = " 121 CONSTANT BM_genEnt.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [122] db_catalog.sen
 
   gszaMungedText[122] =
-    "\""
-    "\\\"munged db_catalog.sen \\\" .verbose \n"
+    "\" munged db_catalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_catalog.sen -- catalog related words                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" db_catalog.sen\\\" .verbose\n"
+    "\" db_catalog.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* the catalog category                                                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\catalog \\\\\\\\category ;\n"
+    ": \\catalog \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* pop the catalog folder                                                     */\n"
@@ -13834,7 +13469,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].isCatalogs\n"
     "\n"
-    "  folder[] dic.name@ \\\"catalogs\\\" str.equal\n"
+    "  folder[] dic.name@ \"catalogs\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -13851,8 +13486,8 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": path[].checkIsCatalog ( word )\n"
     "\n"
-    "  dup word.category@ find: \\\\folder eql not if EC_NOT_A_FOLDER false exit then\n"
-    "  dup execute dic.kind@ find: \\\\catalog eql if true exit then\n"
+    "  dup word.category@ find: \\folder eql not if EC_NOT_A_FOLDER false exit then\n"
+    "  dup execute dic.kind@ find: \\catalog eql if true exit then\n"
     "  EC_NOT_A_CATALOG false\n"
     " ;\n"
     "\n"
@@ -13877,7 +13512,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* check if word is a removable catalog folder                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": checkRemoveCatalog ( \\\"<catalogNm>\\\" --  true | errorCode false )\n"
+    ": checkRemoveCatalog ( \"<catalogNm>\" --  true | errorCode false )\n"
     "\n"
     "  params| sCatalogNm |\n"
     "\n"
@@ -13900,12 +13535,12 @@ void Task::vAddMunged(Forth* pForth)
     ": :makeCatalogsFolder ( <catalogNm> -- )\n"
     "\n"
     "  args.tracepoint if\n"
-    "  dup \\\"MAKING CATALOGS FOR TENANT \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "  dup \"MAKING CATALOGS FOR TENANT \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  find execute ( dic )\n"
-    "  \\\"catalogs\\\"   ( dic \\\"catalogs\\\" )\n"
-    "  swap         ( \\\"catalogs\\\" dic )\n"
+    "  \"catalogs\"   ( dic \"catalogs\" )\n"
+    "  swap         ( \"catalogs\" dic )\n"
     "  folder::makeSubFolder   ( )\n"
     " ;\n"
     "\n"
@@ -13915,13 +13550,13 @@ void Task::vAddMunged(Forth* pForth)
     ": :makeCatalogFolder params| sCatalogNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "   sCatalogNm \\\"MAKING CATALOG \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "   sCatalogNm \"MAKING CATALOG \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // make the catalog\n"
     "  sCatalogNm folder::makeFolder\n"
-    "    find: \\\\catalog swap execute dic.kind!\n"
+    "    find: \\catalog swap execute dic.kind!\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // make catalogs folder\n"
@@ -13931,7 +13566,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* find the catalog folder and push it onto task dictionary                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": path[].pushCatalogFolder ( \\\"<catalogName>\\\" -- )\n"
+    ": path[].pushCatalogFolder ( \"<catalogName>\" -- )\n"
     "\n"
     "  find execute path[].pushFolder\n"
     "  true\n"
@@ -13940,19 +13575,19 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* remove a catalog folder                                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": removeCatalog ( \\\"<catalogNm>\\\" --  )\n"
+    ": removeCatalog ( \"<catalogNm>\" --  )\n"
     "\n"
     "  params| sCatalogNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "    dup \\\"REMOVING CATALOG \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    dup \"REMOVING CATALOG \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // move to catalog folder\n"
     "  sCatalogNm path[].pushCatalogFolder assert\n"
     "\n"
-    "  \\\"schemas\\\" folder::remove\n"
+    "  \"schemas\" folder::remove\n"
     "\n"
     "  path[].popCatalogFolder\n"
     "\n"
@@ -13962,26 +13597,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_catalog.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)122);
-
-  szSubScriptDef = " 122 CONSTANT db_catalog.sen__sub "_Stz;
+  szSubScriptDef = " 122 CONSTANT db_catalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [123] OP_listTableDefs.sen
 
   gszaMungedText[123] =
-    "\""
-    "\\\"munged OP_listTableDefs.sen \\\" .verbose \n"
+    "\" munged OP_listTableDefs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listTableDefs.sen -- Operator list table definitions                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listTableDefs.sen\\\" .verbose\n"
+    "\" OP_listTableDefs.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -14035,7 +13667,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    then\n"
     "\n"
-    "    \\\"path[].popNamedTableFolder\\\" find execute\n"
+    "    \"path[].popNamedTableFolder\" find execute\n"
     "\n"
     "    object@ word.prev object!      // step backwards thru words\n"
     "  next\n"
@@ -14053,7 +13685,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lstbldef _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listContents\n"
     "    <params>      = 0\n"
@@ -14063,62 +13695,56 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listTableDefs.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)123);
-
-  szSubScriptDef = " 123 CONSTANT OP_listTableDefs.sen__sub "_Stz;
+  szSubScriptDef = " 123 CONSTANT OP_listTableDefs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [124] test_arithmetic.sen
 
   gszaMungedText[124] =
-    "\""
-    "\\\"munged test_arithmetic.sen \\\" .verbose \n"
+    "\" munged test_arithmetic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_arithemetic.sen -- arithmetic unit testing                            */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_arithmetic.sen\\\" .verbose\n"
+    "\" test_arithmetic.sen\" .verbose\n"
     "\n"
     ": arithmeticTests\n"
     "\n"
-    "  \\\"  arithmetic tests\\\" .put .\\\\n\n"
+    "  \"  arithmetic tests\" .put .\\n\n"
     "\n"
-    "  0 0 + 0 == if else \\\"+ failure\\\" . process::quit then\n"
+    "  0 0 + 0 == if else \"+ failure\" . process::quit then\n"
     "\n"
-    "  1 1 + 2 == if else \\\"+ failure\\\" . process::quit then\n"
+    "  1 1 + 2 == if else \"+ failure\" . process::quit then\n"
     "\n"
-    "  8 5 - 3 == if else \\\"- failure\\\" . process::quit then\n"
+    "  8 5 - 3 == if else \"- failure\" . process::quit then\n"
     "\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_arithmetic.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)124);
-
-  szSubScriptDef = " 124 CONSTANT test_arithmetic.sen__sub "_Stz;
+  szSubScriptDef = " 124 CONSTANT test_arithmetic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [125] OP_visualizeTable.sen
 
   gszaMungedText[125] =
-    "\""
-    "\\\"munged OP_visualizeTable.sen \\\" .verbose \n"
+    "\" munged OP_visualizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_visualizeTable.sen -- Operator visualize table                          */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_visualizeTable.sen\\\" .verbose\n"
+    "\" OP_visualizeTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -14140,7 +13766,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": vistbl _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <params>      = 1\n"
     "  }\n"
@@ -14149,26 +13775,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_visualizeTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)125);
-
-  szSubScriptDef = " 125 CONSTANT OP_visualizeTable.sen__sub "_Stz;
+  szSubScriptDef = " 125 CONSTANT OP_visualizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [126] OP_listIndexes.sen
 
   gszaMungedText[126] =
-    "\""
-    "\\\"munged OP_listIndexes.sen \\\" .verbose \n"
+    "\" munged OP_listIndexes.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listIndexes.sen -- Operator list indexes                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listIndexes.sen\\\" .verbose\n"
+    "\" OP_listIndexes.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -14253,7 +13876,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lsidx _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listIndex\n"
     "    <params>      = 1\n"
@@ -14263,33 +13886,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listIndexes.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)126);
-
-  szSubScriptDef = " 126 CONSTANT OP_listIndexes.sen__sub "_Stz;
+  szSubScriptDef = " 126 CONSTANT OP_listIndexes.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [127] OP_toFile.sen
 
   gszaMungedText[127] =
-    "\""
-    "\\\"munged OP_toFile.sen \\\" .verbose \n"
+    "\" munged OP_toFile.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toFile.sen -- Operator toFile                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_toFile.sen\\\" .verbose\n"
+    "\" OP_toFile.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToFileOp_CsvBuffer \\\\handler\n"
+    ": ToFileOp_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
     "  Operand[].writeToFile0\n"
@@ -14301,9 +13921,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToFileOp_StartMarker \\\\handler\n"
+    ": ToFileOp_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // open the file for writing\n"
     "  <fileNm> OPEN_WRITE op__file if\n"
@@ -14316,9 +13936,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EXITMARKER ...                                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ToFileOp_ExitMarker \\\\handler\n"
+    ": ToFileOp_ExitMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EXITMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EXITMARKER\" .verbose\n"
     "  File0[].isNull not if\n"
     "    File0[].get file.close\n"
     "    File0[].get file.delete\n"
@@ -14334,7 +13954,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for toFileOp req                           (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : ToFileOp_req \\\\operator\n"
+    " : ToFileOp_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -14357,52 +13977,49 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: ToFileOp :: ToFileOp <fileNm> ;\n"
     "\n"
     ": ToFileOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc>  = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc>  = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_toFile.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)127);
-
-  szSubScriptDef = " 127 CONSTANT OP_toFile.sen__sub "_Stz;
+  szSubScriptDef = " 127 CONSTANT OP_toFile.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [128] db_table.sen
 
   gszaMungedText[128] =
-    "\""
-    "\\\"munged db_table.sen \\\" .verbose \n"
+    "\" munged db_table.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_table.sen -- table related words                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" db_table.sen\\\" .verbose\n"
+    "\" db_table.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* the table category                                                         */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\table \\\\\\\\category ;\n"
+    ": \\table \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* test if word is a table (is of \\\\table category)                            */\n"
+    "/* test if word is a table (is of \\table category)                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": word.isaTable params| pwTable | ( t | f )\n"
     "\n"
-    "  pwTable word.category@ find: \\\\table eql\n"
+    "  pwTable word.category@ find: \\table eql\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* test if current folder has the name \\\"tables\\\" (i.e. is ../tables)           */\n"
+    "/* test if current folder has the name \"tables\" (i.e. is ../tables)           */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].isTables ( t | f )\n"
     "\n"
-    "  folder[] dic.name@ \\\"tables\\\" str.equal\n"
+    "  folder[] dic.name@ \"tables\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -14422,7 +14039,7 @@ void Task::vAddMunged(Forth* pForth)
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* check current folder has the name \\\"tables\\\" (i.e. is ../tables)          EC */\n"
+    "/* check current folder has the name \"tables\" (i.e. is ../tables)          EC */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": check::folderIsTables ( t | ec f )\n"
     "\n"
@@ -14450,7 +14067,7 @@ void Task::vAddMunged(Forth* pForth)
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* check given name is the name of a word of \\\\table category               EC */\n"
+    "/* check given name is the name of a word of \\table category               EC */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": check::nameIsaTable params| sTableNm | ( t | ec f )\n"
     "\n"
@@ -14458,7 +14075,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pwTable not if EC_NO_SUCH_TABLE false exit then\n"
     "\n"
-    "  pwTable word.category@ find: \\\\table eql if true exit then\n"
+    "  pwTable word.category@ find: \\table eql if true exit then\n"
     "\n"
     "  EC_NOT_A_TABLE false\n"
     " ;\n"
@@ -14490,7 +14107,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // push table folder\n"
     "  sTableNm path[].pushNamedTableFolder\n"
     "\n"
-    "  // check if sTableNm translates to a word of \\\\table category\n"
+    "  // check if sTableNm translates to a word of \\table category\n"
     "  sTableNm check::nameIsaTable not if path[].popNamedTableFolder false exit then\n"
     " \n"
     "  // pop table folder\n"
@@ -14508,17 +14125,17 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* make the \\\"tables\\\" folder under given named schema folder                   */\n"
+    "/* make the \"tables\" folder under given named schema folder                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": table::makeTablesFolder params| sSchFolderNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "    \\\"MAKING TABLES FOLDER FOR SCHEMA \\\" sSchFolderNm str.cat\n"
-    "      \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    \"MAKING TABLES FOLDER FOR SCHEMA \" sSchFolderNm str.cat\n"
+    "      \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  sSchFolderNm find execute locals| pwSchemaFolder |\n"
-    "  \\\"tables\\\" pwSchemaFolder folder::makeSubFolder\n"
+    "  \"tables\" pwSchemaFolder folder::makeSubFolder\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -14527,11 +14144,11 @@ void Task::vAddMunged(Forth* pForth)
     ": table::makeNamedTableFolder params| sTblFolderNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "    \\\"MAKING TABLE \\\" sTblFolderNm str.cat\n"
-    "     \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    \"MAKING TABLE \" sTblFolderNm str.cat\n"
+    "     \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
-    "  // make: ../schemas/public/tables/t \\\\folder\n"
+    "  // make: ../schemas/public/tables/t \\folder\n"
     "  sTblFolderNm folder[] folder::makeSubFolder\n"
     " ;\n"
     "\n"
@@ -14540,7 +14157,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": table::newTable params| sTableNm | ( pTable )\n"
     "\n"
-    "  find: \\\\table locals| pwTableCatg |\n"
+    "  find: \\table locals| pwTableCatg |\n"
     "\n"
     "  sTableNm table::new locals| pTable |\n"
     "\n"
@@ -14564,7 +14181,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     " sTableNm path[].pushNamedTableFolder\n"
     "\n"
-    " sTableNm \\\"index::makeIndexesAssembly\\\" find execute\n"
+    " sTableNm \"index::makeIndexesAssembly\" find execute\n"
     "\n"
     " sTableNm table::newTable locals| pTable |\n"
     "\n"
@@ -14623,7 +14240,7 @@ void Task::vAddMunged(Forth* pForth)
     "    // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t\n"
     "\n"
     "    // remove the index sub-assembly for this table\n"
-    "    \\\"index::removeIndexesAssembly\\\" find execute\n"
+    "    \"index::removeIndexesAssembly\" find execute\n"
     "\n"
     "    // delete c++ Table object and forget the table word\n"
     "    sTableNm table::deleteTable\n"
@@ -14665,33 +14282,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_table.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)128);
-
-  szSubScriptDef = " 128 CONSTANT db_table.sen__sub "_Stz;
+  szSubScriptDef = " 128 CONSTANT db_table.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [129] OP_upsert.sen
 
   gszaMungedText[129] =
-    "\""
-    "\\\"munged OP_upsert.sen \\\" .verbose \n"
+    "\" munged OP_upsert.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_upsert.sen -- Operator upsert                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_upsert.sen\\\" .verbose\n"
+    "\" OP_upsert.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": UpsertOp_CrwBuffer \\\\handler\n"
+    ": UpsertOp_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Pipein[]\n"
     "\n"
@@ -14708,9 +14322,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": UpsertOp_StartMarker \\\\handler\n"
+    ": UpsertOp_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "  // check if we can insert into the table\n"
     "  <tableNm> op__table if\n"
     "    table[].tablePtn@ to tablePtn[]\n"
@@ -14723,9 +14337,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STREAMDEF ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": UpsertOp_StreamDef \\\\handler\n"
+    ": UpsertOp_StreamDef \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STREAMDEF\\\" .verbose\n"
+    "  //\"Operand:- ZK_STREAMDEF\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newStreamDef\n"
     "  Operand[].pipeOut\n"
@@ -14736,7 +14350,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for upsert                                 (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : UpsertOp_req \\\\operator\n"
+    " : UpsertOp_req \\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -14759,39 +14373,36 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: UpsertOp :: UpsertOp <tableNm> ;\n"
     "\n"
     ": UpsertOp _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_upsert.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)129);
-
-  szSubScriptDef = " 129 CONSTANT OP_upsert.sen__sub "_Stz;
+  szSubScriptDef = " 129 CONSTANT OP_upsert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [130] OP_passThru.sen
 
   gszaMungedText[130] =
-    "\""
-    "\\\"munged OP_passThru.sen \\\" .verbose \n"
+    "\" munged OP_passThru.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_passThru.sen -- Operator passThru                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_passThru.sen\\\" .verbose\n"
+    "\" OP_passThru.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": PassThru_CsvBuffer \\\\handler\n"
+    ": PassThru_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  Counter0[] 1 + to  Counter0[]\n"
     "  Operand[].delete\n"
     "\n"
@@ -14801,13 +14412,13 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": PassThru_EosMarker \\\\handler\n"
+    ": PassThru_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "  Pipein[].delete\n"
     "  Operand[].newCsvBuffer\n"
     "  Operand[].report\n"
-    "  Counter0[] \\\"passThru\\\" \\\"passThru,%v,%v\\\\nn\\\" str.format Operand[].csvAppend\n"
+    "  Counter0[] \"passThru\" \"passThru,%v,%v\\nn\" str.format Operand[].csvAppend\n"
     "  Operand[].pipeout\n"
     "\n"
     "  Operand[].newEosMarker\n"
@@ -14819,9 +14430,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": PassThru_PulseMarker \\\\handler\n"
+    ": PassThru_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // new a stream def\n"
@@ -14834,11 +14445,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": PassThru_StartMarker \\\\handler\n"
+    ": PassThru_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
-    "  \\\"__REPORT\\\" locals| sReportTable |\n"
+    "  \"__REPORT\" locals| sReportTable |\n"
     "\n"
     "  sReportTable op__table if\n"
     "    sReportTable path[].pushNamedTableFolder\n"
@@ -14852,7 +14463,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for passThru req                           (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    " : PassThru_req \\\\operator\n"
+    " : PassThru_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -14878,32 +14489,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: PassThru :: PassThru ;\n"
     "\n"
     ": PassThru _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_passThru.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)130);
-
-  szSubScriptDef = " 130 CONSTANT OP_passThru.sen__sub "_Stz;
+  szSubScriptDef = " 130 CONSTANT OP_passThru.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [131] OP_listSchemas.sen
 
   gszaMungedText[131] =
-    "\""
-    "\\\"munged OP_listSchemas.sen \\\" .verbose \n"
+    "\" munged OP_listSchemas.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listSchemas.sen -- Operator list schemas                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listSchemas.sen\\\" .verbose\n"
+    "\" OP_listSchemas.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -14962,7 +14570,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lssch _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listContents\n"
     "    <params>      = 0\n"
@@ -14972,26 +14580,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listSchemas.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)131);
-
-  szSubScriptDef = " 131 CONSTANT OP_listSchemas.sen__sub "_Stz;
+  szSubScriptDef = " 131 CONSTANT OP_listSchemas.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [132] job_Local.sen
 
   gszaMungedText[132] =
-    "\""
-    "\\\"munged job_Local.sen \\\" .verbose \n"
+    "\" munged job_Local.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Local.sen -- Local Job                                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Local.sen\\\" .verbose\n"
+    "\" job_Local.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute the job's request seed-word on originating node                    */\n"
@@ -15002,7 +14607,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::</seeFlow/>\n"
     "\n"
-    "  \\\"<preCheck>\\\" job[] job.tagSet@ tagSet.hasName if\n"
+    "  \"<preCheck>\" job[] job.tagSet@ tagSet.hasName if\n"
     "    <preCheck> find execute not if \n"
     "      task::seedInitially task::doneFinally\n"
     "      job::error!\n"
@@ -15017,26 +14622,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Local.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)132);
-
-  szSubScriptDef = " 132 CONSTANT job_Local.sen__sub "_Stz;
+  szSubScriptDef = " 132 CONSTANT job_Local.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [133] OP_nodeInfo.sen
 
   gszaMungedText[133] =
-    "\""
-    "\\\"munged OP_nodeInfo.sen \\\" .verbose \n"
+    "\" munged OP_nodeInfo.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeInfo.sen -- Operator node info                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_nodeInfo.sen\\\" .verbose\n"
+    "\" OP_nodeInfo.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -15065,7 +14667,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": nodeInfo _info tagCopy: liteOp_tags\n"
     "tags{\n"
-    "  <jobDesc>   = \\\"--op desc--\\\"\n"
+    "  <jobDesc>   = \"--op desc--\"\n"
     "  <liteOp>    = true\n"
     "  <streamDef> = __nodeInfo\n"
     "  <params>    = 0\n"
@@ -15075,26 +14677,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_nodeInfo.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)133);
-
-  szSubScriptDef = " 133 CONSTANT OP_nodeInfo.sen__sub "_Stz;
+  szSubScriptDef = " 133 CONSTANT OP_nodeInfo.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [134] job_ConnectCluster.sen
 
   gszaMungedText[134] =
-    "\""
-    "\\\"munged job_ConnectCluster.sen \\\" .verbose \n"
+    "\" munged job_ConnectCluster.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_ConnectCluster.sen -- Job Connect Cluster                              */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_ConnectCluster.sen\\\" .verbose\n"
+    "\" job_ConnectCluster.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*                                                                            */\n"
@@ -15119,7 +14718,7 @@ void Task::vAddMunged(Forth* pForth)
     "  do\n"
     "    I grid::node node.isConnected not if\n"
     "      args.verbose if\n"
-    "        I \\\"Node no %v not connected\\\" .printf\n"
+    "        I \"Node no %v not connected\" .printf\n"
     "      then\n"
     "      unloop\n"
     "      false\n"
@@ -15127,7 +14726,7 @@ void Task::vAddMunged(Forth* pForth)
     "    then\n"
     "  loop\n"
     "\n"
-    "  \\\"All nodes connected\\\" .verbose\n"
+    "  \"All nodes connected\" .verbose\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -15152,7 +14751,7 @@ void Task::vAddMunged(Forth* pForth)
     "  grid::definedNodes 0\n"
     "  do\n"
     "    I grid::node node.isConnected\n"
-    "    I \\\"gridTest: node no %v connected %v \\\" .printf\n"
+    "    I \"gridTest: node no %v connected %v \" .printf\n"
     "  loop\n"
     " ;\n"
     "\n"
@@ -15210,11 +14809,11 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // set grid as started\n"
     "  true grid::started!\n"
-    "  \\\"Cluster started\\\" .\n"
+    "  \"Cluster started\" .\n"
     "\n"
     "  task::doneFinally\n"
     "\n"
-    "  //\\\"Signalling waiting thread\\\" .\n"
+    "  //\"Signalling waiting thread\" .\n"
     "  job[] job.signalCompletion\n"
     "  // task has no job\n"
     "  task::scheduledelete\n"
@@ -15251,26 +14850,23 @@ void Task::vAddMunged(Forth* pForth)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\""
-  " CONSTANT job_ConnectCluster.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)134);
-
-  szSubScriptDef = " 134 CONSTANT job_ConnectCluster.sen__sub "_Stz;
+  szSubScriptDef = " 134 CONSTANT job_ConnectCluster.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [135] cmd_compiler.sen
 
   gszaMungedText[135] =
-    "\""
-    "\\\"munged cmd_compiler.sen \\\" .verbose \n"
+    "\" munged cmd_compiler.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* cmd_Compiler.sen -- Command Compiler                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" cmd_compiler.sen\\\" .verbose\n"
+    "\" cmd_compiler.sen\" .verbose\n"
     "    \n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* consume service arguments                                                  */\n"
@@ -15279,16 +14875,16 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| nArgs |\n"
     "\n"
-    "  //\\\".consumeArgs\\\" .\n"
+    "  //\".consumeArgs\" .\n"
     "\n"
     "  begin\n"
     "    input::next\n"
-    "    dup \\\";&\\\" str.equal not\n"
+    "    dup \";&\" str.equal not\n"
     "  while\n"
     "    nArgs 1 + to nArgs\n"
     "  repeat\n"
     "\n"
-    "  // discard the \\\";&\\\" from dstack\n"
+    "  // discard the \";&\" from dstack\n"
     "  discard\n"
     "\n"
     "  nArgs\n"
@@ -15302,16 +14898,16 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": .generateService params| pInfoWd |\n"
     "\n"
-    "  // pInfoWd word.name@ \\\"Gen service using _info : %v\\\" .printf\n"
+    "  // pInfoWd word.name@ \"Gen service using _info : %v\" .printf\n"
     "\n"
     "  // calc the name of the service\n"
-    "  \\\"_\\\" pInfoWd word.name@ str.removeSuffix locals| sServiceNm |\n"
+    "  \"_\" pInfoWd word.name@ str.removeSuffix locals| sServiceNm |\n"
     "\n"
     "\n"
-    "  sServiceNm \\\"Service name: %v\\\\n\\\" .printf\n"
+    "  sServiceNm \"Service name: %v\\n\" .printf\n"
     "\n"
     "  // calc the name of the spawner\n"
-    "  sServiceNm \\\"_spawner\\\" str.cat locals| sSpawnerNm |\n"
+    "  sServiceNm \"_spawner\" str.cat locals| sSpawnerNm |\n"
     "\n"
     "\n"
     "  //----------------------------------------------------------------------------\n"
@@ -15327,7 +14923,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // -- encode the service spawning word -- -- -- -- -- --\n"
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
     "\n"
-    "  // sServiceNm encode::push \\\"++ this is service spawner for: %v\\\" encode::push POSTPONE .printf\n"
+    "  // sServiceNm encode::push \"++ this is service spawner for: %v\" encode::push POSTPONE .printf\n"
     "\n"
     "  sServiceNm encode::push POSTPONE job::spawnUniversal\n"
     "\n"
@@ -15356,7 +14952,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
     "\n"
     "  // in : <serviceNm> add call(.printf)\n"
-    "  // sServiceNm encode::push \\\"++ this is the service parser for: %v\\\" encode::push POSTPONE .printf\n"
+    "  // sServiceNm encode::push \"++ this is the service parser for: %v\" encode::push POSTPONE .printf\n"
     "\n"
     "  // in : <serviceNm> add call(.consumeArgs)\n"
     "  POSTPONE .consumeArgs\n"
@@ -15381,15 +14977,15 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": cmd::addSeedsFor_distJob params| pInfoWd |\n"
     "\n"
-    "  \\\"<SeedReq>\\\" \\\"defaultSeedDist\\\" \\\"_req\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedReq>\" \"defaultSeedDist\" \"_req\" pInfoWd _info.addSeedToTagSet\n"
     "\n"
-    "  \\\"<SeedRcv>\\\" \\\"defaultSeedDist\\\" \\\"_beg\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedRcv>\" \"defaultSeedDist\" \"_beg\" pInfoWd _info.addSeedToTagSet\n"
     "\n"
-    "  \\\"<SeedExe>\\\" \\\"defaultSeedDist\\\" \\\"_exe\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedExe>\" \"defaultSeedDist\" \"_exe\" pInfoWd _info.addSeedToTagSet\n"
     "\n"
-    "  \\\"<SeedEnd>\\\" \\\"defaultSeedDist\\\" \\\"_end\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedEnd>\" \"defaultSeedDist\" \"_end\" pInfoWd _info.addSeedToTagSet\n"
     "\n"
-    "  \\\"<SeedCan>\\\" \\\"defaultSeedDist\\\" \\\"_can\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedCan>\" \"defaultSeedDist\" \"_can\" pInfoWd _info.addSeedToTagSet\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -15397,7 +14993,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": cmd::addSeedsFor_genericJob params| pInfoWd |\n"
     "\n"
-    "  \\\"<SeedReq>\\\" \\\"defaultSeedLocal\\\" \\\"_run\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedReq>\" \"defaultSeedLocal\" \"_run\" pInfoWd _info.addSeedToTagSet\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -15405,7 +15001,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": cmd::addSeedsFor_localOp params| pInfoWd |\n"
     "\n"
-    "  \\\"<SeedReq>\\\" \\\"defaultSeedLocal\\\" \\\"_req\\\" pInfoWd _info.addSeedToTagSet\n"
+    "  \"<SeedReq>\" \"defaultSeedLocal\" \"_req\" pInfoWd _info.addSeedToTagSet\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -15413,7 +15009,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": cmd::addSeeds_info params| pInfoWd |\n"
     "\n"
-    "  // pInfoWd word.name@ \\\"Add seeds using _info : %v\\\" .printf\n"
+    "  // pInfoWd word.name@ \"Add seeds using _info : %v\" .printf\n"
     "\n"
     "  pInfoWd _info.aboutGenericJob if\n"
     "    pInfoWd cmd::addSeedsFor_genericJob\n"
@@ -15430,38 +15026,38 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": cmd::addSettings_info params| pInfoWd |\n"
     "\n"
-    "  // pInfoWd word.name@ \\\"Adding default tags for : %v\\\" .printf\n"
+    "  // pInfoWd word.name@ \"Adding default tags for : %v\" .printf\n"
     "\n"
     "  pInfoWd word.tagSet@ locals| pInfTags |\n"
     "\n"
     "  // test and add default for: command kind\n"
-    "  \\\"<cmdKind>\\\" pInfTags tagSet.hasName not if\n"
-    "    \\\"<cmdKind>\\\" \\\"CK_COMMAND\\\" pInfTags tagSet.addTag\n"
+    "  \"<cmdKind>\" pInfTags tagSet.hasName not if\n"
+    "    \"<cmdKind>\" \"CK_COMMAND\" pInfTags tagSet.addTag\n"
     "  then\n"
     "\n"
     "  // test and add default for: ddl lock\n"
-    "  \\\"<ddlLock>\\\" pInfTags tagSet.hasName not if\n"
-    "    \\\"<ddlLock>\\\" \\\"DL_NONE\\\" pInfTags tagSet.addTag\n"
+    "  \"<ddlLock>\" pInfTags tagSet.hasName not if\n"
+    "    \"<ddlLock>\" \"DL_NONE\" pInfTags tagSet.addTag\n"
     "  then\n"
     "\n"
     "  // test and add default for: job desc\n"
-    "  \\\"<jobDesc>\\\" pInfTags tagSet.hasName not if\n"
-    "    \\\"<jobDesc>\\\" \\\"--description  --\\\" pInfTags tagSet.addTag\n"
+    "  \"<jobDesc>\" pInfTags tagSet.hasName not if\n"
+    "    \"<jobDesc>\" \"--description  --\" pInfTags tagSet.addTag\n"
     "  then\n"
     "\n"
     "  // test and add default for: job kind\n"
-    "  \\\"<jobKind>\\\" pInfTags tagSet.hasName not if\n"
-    "    \\\"<jobKind>\\\" \\\"JK_LOCAL\\\" pInfTags tagSet.addTag\n"
+    "  \"<jobKind>\" pInfTags tagSet.hasName not if\n"
+    "    \"<jobKind>\" \"JK_LOCAL\" pInfTags tagSet.addTag\n"
     "  then\n"
     "\n"
     "  // test and add default for:  priority\n"
-    "  \\\"<priority>\\\" pInfTags tagSet.hasName not if\n"
-    "    \\\"<priority>\\\" \\\"PY_NORMAL\\\" pInfTags tagSet.addTag\n"
+    "  \"<priority>\" pInfTags tagSet.hasName not if\n"
+    "    \"<priority>\" \"PY_NORMAL\" pInfTags tagSet.addTag\n"
     "  then\n"
     "\n"
     "  // test and add default for:  response kind\n"
-    "  \\\"<rspKind>\\\" pInfTags tagSet.hasName not if\n"
-    "    \\\"<rspKind>\\\" \\\"RS_NONE\\\" pInfTags tagSet.addTag\n"
+    "  \"<rspKind>\" pInfTags tagSet.hasName not if\n"
+    "    \"<rspKind>\" \"RS_NONE\" pInfTags tagSet.addTag\n"
     "  then\n"
     " ;\n"
     "\n"
@@ -15491,14 +15087,14 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| sText |\n"
     "\n"
-    "  // sCmdNm \\\"LiteOP: %v\\\" .printf\n"
+    "  // sCmdNm \"LiteOP: %v\" .printf\n"
     "\n"
     "  // synthesize : cmdNm_PulseMarker\n"
-    "  \\\"/liteOp/\\\" sCmdNm tpl_liteOp_PulseMarker str.replace to sText\n"
+    "  \"/liteOp/\" sCmdNm tpl_liteOp_PulseMarker str.replace to sText\n"
     "  sText >interpret\n"
     "\n"
     "  // synthesize : cmdNm_req\n"
-    "  \\\"/liteOp/\\\" sCmdNm tpl_liteOp_req str.replace to sText\n"
+    "  \"/liteOp/\" sCmdNm tpl_liteOp_req str.replace to sText\n"
     "  sText >interpret\n"
     " ;\n"
     "\n"
@@ -15512,22 +15108,22 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 0 locals| sText iParams |\n"
     "\n"
-    "  // sCmdNm \\\"LiteOP: %v\\\" .printf\n"
+    "  // sCmdNm \"LiteOP: %v\" .printf\n"
     "\n"
     "  // synthesize procedure depending on no of parameters\n"
-    "  \\\"<params>\\\" pInfTags tagSet.hasName assert\n"
-    "  \\\"<params>\\\" pInfTags tagSet.getStr >int to iParams\n"
+    "  \"<params>\" pInfTags tagSet.hasName assert\n"
+    "  \"<params>\" pInfTags tagSet.getStr >int to iParams\n"
     "\n"
     "  iParams 2 == if\n"
-    "    \\\"/liteOp/\\\" sCmdNm tpl_liteOp_procedure2 str.replace to sText\n"
+    "    \"/liteOp/\" sCmdNm tpl_liteOp_procedure2 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 1 == if\n"
-    "    \\\"/liteOp/\\\" sCmdNm tpl_liteOp_procedure1 str.replace to sText\n"
+    "    \"/liteOp/\" sCmdNm tpl_liteOp_procedure1 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 0 == assert\n"
-    "    \\\"/liteOp/\\\" sCmdNm tpl_liteOp_procedure0 str.replace to sText\n"
+    "    \"/liteOp/\" sCmdNm tpl_liteOp_procedure0 str.replace to sText\n"
     "    sText procedure::add\n"
     "  then then\n"
     " ;\n"
@@ -15542,14 +15138,14 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| sText |\n"
     "\n"
-    "  // sCmdNm \\\"LocalLiteOP: %v\\\" .printf\n"
+    "  // sCmdNm \"LocalLiteOP: %v\" .printf\n"
     "\n"
     "  // synthesize : cmdNm_PulseMarker\n"
-    "  \\\"/localLiteOp/\\\" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText\n"
+    "  \"/localLiteOp/\" sCmdNm tpl_localLiteOp_PulseMarker str.replace to sText\n"
     "  sText >interpret\n"
     "\n"
     "  // synthesize : cmdNm_req\n"
-    "  \\\"/localLiteOp/\\\" sCmdNm tpl_localLiteOp_req str.replace to sText\n"
+    "  \"/localLiteOp/\" sCmdNm tpl_localLiteOp_req str.replace to sText\n"
     "  sText >interpret\n"
     " ;\n"
     "\n"
@@ -15563,22 +15159,22 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 0 locals| sText iParams |\n"
     "\n"
-    "  // sCmdNm \\\"LocalLiteOP: %v\\\" .printf\n"
+    "  // sCmdNm \"LocalLiteOP: %v\" .printf\n"
     "\n"
     "  // synthesize procedure depending on no of parameters\n"
-    "  \\\"<params>\\\" pInfTags tagSet.hasName assert\n"
-    "  \\\"<params>\\\" pInfTags tagSet.getStr >int to iParams\n"
+    "  \"<params>\" pInfTags tagSet.hasName assert\n"
+    "  \"<params>\" pInfTags tagSet.getStr >int to iParams\n"
     "\n"
     "  iParams 2 == if\n"
-    "    \\\"/localLiteOp/\\\" sCmdNm tpl_localLiteOp_procedure2 str.replace to sText\n"
+    "    \"/localLiteOp/\" sCmdNm tpl_localLiteOp_procedure2 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 1 == if\n"
-    "    \\\"/localLiteOp/\\\" sCmdNm tpl_localLiteOp_procedure1 str.replace to sText\n"
+    "    \"/localLiteOp/\" sCmdNm tpl_localLiteOp_procedure1 str.replace to sText\n"
     "    sText procedure::add\n"
     "  else\n"
     "  iParams 0 == assert\n"
-    "    \\\"/localLiteOp/\\\" sCmdNm tpl_localLiteOp_procedure0 str.replace to sText\n"
+    "    \"/localLiteOp/\" sCmdNm tpl_localLiteOp_procedure0 str.replace to sText\n"
     "    sText procedure::add\n"
     "  then then\n"
     " ;\n"
@@ -15588,7 +15184,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": cmd::synthWords_info params| pInfoWd |\n"
     "\n"
-    "  // pInfoWd word.name@ \\\"Synth proc using _info : %v\\\" .printf\n"
+    "  // pInfoWd word.name@ \"Synth proc using _info : %v\" .printf\n"
     "\n"
     "  pInfoWd _info.aboutLiteOp if\n"
     "    pInfoWd cmd::synthWordsFor_liteOp\n"
@@ -15619,7 +15215,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // create a word using next token from input source as the word name\n"
     "  input::next locals| sCmdNm |\n"
-    "  sCmdNm series-name \\\"_syntax\\\" str.cat :create\n"
+    "  sCmdNm series-name \"_syntax\" str.cat :create\n"
     "\n"
     "  // set the word category to be cmdSyntax:\n"
     "  [ compiler::current@ encode::push ] compiler::current@ word.category!\n"
@@ -15634,23 +15230,23 @@ void Task::vAddMunged(Forth* pForth)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // add a syntax-tag for the command name\n"
-    "  \\\"__cmdNm__\\\" sCmdNm pSynTags tagSet.appendStr\n"
+    "  \"__cmdNm__\" sCmdNm pSynTags tagSet.appendStr\n"
     "\n"
     "  // add a syntax-tag indicating the job is a distributed job\n"
-    "  \\\"__job__\\\" \\\"CN_JOB_DISTRIBUTED\\\" pSynTags tagSet.appendStr\n"
+    "  \"__job__\" \"CN_JOB_DISTRIBUTED\" pSynTags tagSet.appendStr\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // parse each input token till ';', building tag set representing the syntax\n"
     "\n"
     "  begin\n"
     "\n"
-    "    input::next \\\";\\\" str.equal not\n"
+    "    input::next \";\" str.equal not\n"
     "\n"
     "    while\n"
-    "           input::isTag  if \\\"__arg__\\\"  input::chars pSynTags tagSet.appendStr\n"
-    "      else input::isJson if \\\"__json__\\\" input::chars pSynTags tagSet.appendStr\n"
-    "      else input::isEtc  if \\\"__etc__\\\"  input::chars pSynTags tagSet.appendStr\n"
-    "      else                  \\\"__cmd__\\\"  input::chars pSynTags tagSet.appendStr\n"
+    "           input::isTag  if \"__arg__\"  input::chars pSynTags tagSet.appendStr\n"
+    "      else input::isJson if \"__json__\" input::chars pSynTags tagSet.appendStr\n"
+    "      else input::isEtc  if \"__etc__\"  input::chars pSynTags tagSet.appendStr\n"
+    "      else                  \"__cmd__\"  input::chars pSynTags tagSet.appendStr\n"
     "      then then then\n"
     "\n"
     "  repeat\n"
@@ -15726,26 +15322,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT cmd_compiler.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)135);
-
-  szSubScriptDef = " 135 CONSTANT cmd_compiler.sen__sub "_Stz;
+  szSubScriptDef = " 135 CONSTANT cmd_compiler.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [136] job__Ended.sen
 
   gszaMungedText[136] =
-    "\""
-    "\\\"munged job__Ended.sen \\\" .verbose \n"
+    "\" munged job__Ended.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__Ended.sen -- generic job related words                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__Ended.sen\\\" .verbose\n"
+    "\" job__Ended.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on participating node                           //\n"
@@ -15762,7 +15355,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  0 locals| pJob__Ended |\n"
     "\n"
-    "  //grid::thisNodeName@ \\\"(%v) ENDED::send\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) ENDED::send\" .printf\n"
     "\n"
     "  // new a temporary Job__Ended\n"
     "  pJobParticipant job__Ended::new to pJob__Ended\n"
@@ -15810,13 +15403,13 @@ void Task::vAddMunged(Forth* pForth)
     "  // decrement the acks remaining\n"
     "  JobRef[] job.dec2pcAcksRmg to bAmDecider\n"
     "\n"
-    "  //grid::thisNodeName@ \\\"(%v) ENDED GOT ACK\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) ENDED GOT ACK\" .printf\n"
     "  // if there are acks remaining just exit\n"
     "  bAmDecider not if\n"
     "    JobRef[].return\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
-    "  //grid::thisNodeName@ \\\"(%v) ENDED AM DECIDER\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) ENDED AM DECIDER\" .printf\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // all __ended jobs have been received, so this job is the decider\n"
@@ -15839,7 +15432,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _Ended :: _Ended ;\n"
     "\n"
     ": _Ended _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -15848,41 +15441,38 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__Ended.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)136);
-
-  szSubScriptDef = " 136 CONSTANT job__Ended.sen__sub "_Stz;
+  szSubScriptDef = " 136 CONSTANT job__Ended.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [137] db_partition.sen
 
   gszaMungedText[137] =
-    "\""
-    "\\\"munged db_partition.sen \\\" .verbose \n"
+    "\" munged db_partition.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_partition.sen -- partition related words                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" db_partition.sen\\\" .verbose\n"
+    "\" db_partition.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* make a partitions folder under given named table                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": makePartitions ( \\\"<tableNm>\\\" -- )\n"
+    ": makePartitions ( \"<tableNm>\" -- )\n"
     "\n"
     "  params| tableNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "    tableNm \\\"MAKING PARTITIONS FOR TABLE \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    tableNm \"MAKING PARTITIONS FOR TABLE \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  tableNm find execute ( dic )\n"
-    "  \\\"partitions\\\" ( dic \\\"partitions\\\" )\n"
-    "  swap         ( \\\"partitions\\\" dic )\n"
+    "  \"partitions\" ( dic \"partitions\" )\n"
+    "  swap         ( \"partitions\" dic )\n"
     "  folder::makeSubFolder   ( )\n"
     " ;\n"
     "\n"
@@ -15890,7 +15480,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* check within partitions folder                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].isPartitions\n"
-    "  folder[] dic.name@ \\\"partitions\\\" str.equal\n"
+    "  folder[] dic.name@ \"partitions\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -15905,7 +15495,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* find the partitions folder and push it onto task dictionary                */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": pushPartitions ( -- )\n"
-    "  \\\"partitions\\\" find execute path[].pushFolder\n"
+    "  \"partitions\" find execute path[].pushFolder\n"
     "  true\n"
     " ;\n"
     "\n"
@@ -16033,250 +15623,247 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_partition.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)137);
-
-  szSubScriptDef = " 137 CONSTANT db_partition.sen__sub "_Stz;
+  szSubScriptDef = " 137 CONSTANT db_partition.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [138] se_boot.sen
 
   gszaMungedText[138] =
-    "\""
-    "\\\"munged se_boot.sen \\\" .verbose \n"
+    "\" munged se_boot.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_boot.sen -- compile the dictionary                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\"se_boot.sen\\\" .verbose\n"
+    "\"se_boot.sen\" .verbose\n"
     "\n"
     "assert::stack_0\n"
     "\n"
-    "\\\"Compilation progress: \\\" .put\n"
+    "\"Compilation progress: \" .put\n"
     "\n"
     "9 .put\n"
-    "        \\\"se_categories.sen\\\"       include\n"
-    "        \\\"se_core.sen\\\"             include\n"
-    "        \\\"se_word.sen\\\"             include\n"
-    "        \\\"se_str.sen\\\"              include\n"
-    "        \\\"se_tags.sen\\\"             include\n"
-    "        \\\"se_log.sen\\\"              include\n"
-    "        \\\"se_path.sen\\\"             include\n"
-    "        \\\"se_folder.sen\\\"           include\n"
-    "        \\\"se_object.sen\\\"           include\n"
-    "        \\\"se_socket.sen\\\"           include\n"
-    "        \\\"se_dbg.sen\\\"              include\n"
+    "        \"se_categories.sen\"       include\n"
+    "        \"se_core.sen\"             include\n"
+    "        \"se_word.sen\"             include\n"
+    "        \"se_str.sen\"              include\n"
+    "        \"se_tags.sen\"             include\n"
+    "        \"se_log.sen\"              include\n"
+    "        \"se_path.sen\"             include\n"
+    "        \"se_folder.sen\"           include\n"
+    "        \"se_object.sen\"           include\n"
+    "        \"se_socket.sen\"           include\n"
+    "        \"se_dbg.sen\"              include\n"
     "\n"
     "8 .put\n"
-    "        \\\"tpl_liteOp.sen\\\"          include\n"
-    "        \\\"tpl_localLiteOp.sen\\\"     include\n"
-    "        \\\"cmd_info.sen\\\"            include\n"
-    "        \\\"cmd_compiler.sen\\\"        include\n"
+    "        \"tpl_liteOp.sen\"          include\n"
+    "        \"tpl_localLiteOp.sen\"     include\n"
+    "        \"cmd_info.sen\"            include\n"
+    "        \"cmd_compiler.sen\"        include\n"
     "\n"
     "7 .put\n"
-    "        \\\"grid_grid.sen\\\"           include\n"
-    "        \\\"grid_node.sen\\\"           include\n"
+    "        \"grid_grid.sen\"           include\n"
+    "        \"grid_node.sen\"           include\n"
     "\n"
     "6 .put\n"
-    "        \\\"db_table.sen\\\"            include\n"
-    "        \\\"db_partition.sen\\\"        include\n"
-    "        \\\"db_index.sen\\\"            include\n"
-    "        \\\"db_schema.sen\\\"           include\n"
-    "        \\\"db_catalog.sen\\\"          include\n"
-    "        \\\"db_tenant.sen\\\"           include\n"
+    "        \"db_table.sen\"            include\n"
+    "        \"db_partition.sen\"        include\n"
+    "        \"db_index.sen\"            include\n"
+    "        \"db_schema.sen\"           include\n"
+    "        \"db_catalog.sen\"          include\n"
+    "        \"db_tenant.sen\"           include\n"
     "\n"
     "5 .put\n"
-    "        \\\"job_words.sen\\\"           include\n"
-    "        \\\"job_2pcReply.sen\\\"        include\n"
-    "        \\\"job_seedMarkers.sen\\\"     include\n"
-    "        \\\"job_seedHooks.sen\\\"       include\n"
-    "        \\\"job_seedSuffixs.sen\\\"     include\n"
-    "        \\\"job_seedDefaults.sen\\\"    include\n"
+    "        \"job_words.sen\"           include\n"
+    "        \"job_2pcReply.sen\"        include\n"
+    "        \"job_seedMarkers.sen\"     include\n"
+    "        \"job_seedHooks.sen\"       include\n"
+    "        \"job_seedSuffixs.sen\"     include\n"
+    "        \"job_seedDefaults.sen\"    include\n"
     "\n"
     "        // -- -- -- -- -- -- -- -- -- --\n"
     "\n"
-    "        \\\"job__Ended.sen\\\"          include\n"
-    "        \\\"job__End.sen\\\"            include\n"
-    "        \\\"job__Cancelled.sen\\\"      include\n"
-    "        \\\"job__Cancel.sen\\\"         include\n"
-    "        \\\"job__Executed.sen\\\"       include\n"
-    "        \\\"job__Execute.sen\\\"        include\n"
-    "        \\\"job__Begun.sen\\\"          include\n"
+    "        \"job__Ended.sen\"          include\n"
+    "        \"job__End.sen\"            include\n"
+    "        \"job__Cancelled.sen\"      include\n"
+    "        \"job__Cancel.sen\"         include\n"
+    "        \"job__Executed.sen\"       include\n"
+    "        \"job__Execute.sen\"        include\n"
+    "        \"job__Begun.sen\"          include\n"
     "\n"
-    "        \\\"job_Receiver.sen\\\"        include\n"
-    "        \\\"job_Connector.sen\\\"       include\n"
-    "        \\\"job_Answer.sen\\\"          include\n"
+    "        \"job_Receiver.sen\"        include\n"
+    "        \"job_Connector.sen\"       include\n"
+    "        \"job_Answer.sen\"          include\n"
     "\n"
-    "        \\\"job_BootCluster.sen\\\"     include\n"
+    "        \"job_BootCluster.sen\"     include\n"
     "\n"
-    "        \\\"job_ConnectCluster.sen\\\"  include\n"
-    "        \\\"job_CreateIndex.sen\\\"     include\n"
-    "        \\\"job_CreateTable.sen\\\"     include\n"
+    "        \"job_ConnectCluster.sen\"  include\n"
+    "        \"job_CreateIndex.sen\"     include\n"
+    "        \"job_CreateTable.sen\"     include\n"
     "\n"
-    "        \\\"job_DefineNode.sen\\\"      include\n"
-    "        \\\"job_Distributed.sen\\\"     include\n"
-    "        \\\"job_Docol.sen\\\"           include\n"
+    "        \"job_DefineNode.sen\"      include\n"
+    "        \"job_Distributed.sen\"     include\n"
+    "        \"job_Docol.sen\"           include\n"
     "\n"
-    "        \\\"job_ForgetNode.sen\\\"      include\n"
+    "        \"job_ForgetNode.sen\"      include\n"
     "\n"
-    "        \\\"Job_Local.sen\\\"           include\n"
+    "        \"Job_Local.sen\"           include\n"
     "\n"
-    "        \\\"Job_Pipeline.sen\\\"        include\n"
+    "        \"Job_Pipeline.sen\"        include\n"
     "\n"
-    "        \\\"Job_Service.sen\\\"             include\n"
-    "        \\\"job_Supervisor.sen\\\"          include\n"
+    "        \"Job_Service.sen\"             include\n"
+    "        \"job_Supervisor.sen\"          include\n"
     "\n"
-    "        \\\"job_Waker.sen\\\"               include\n"
-    "        \\\"job_WriteBuffer.sen\\\"         include\n"
+    "        \"job_Waker.sen\"               include\n"
+    "        \"job_WriteBuffer.sen\"         include\n"
     "\n"
-    "      //\\\"otherJobs\\\"               include-subdir\n"
+    "      //\"otherJobs\"               include-subdir\n"
     "\n"
     "\n"
     "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "4 .put\n"
-    "        \\\"op_defHandlers.sen\\\"          include\n"
-    "        \\\"op__common.sen\\\"              include\n"
-    "        \\\"op_tagSets.sen\\\"              include\n"
+    "        \"op_defHandlers.sen\"          include\n"
+    "        \"op__common.sen\"              include\n"
+    "        \"op_tagSets.sen\"              include\n"
     "\n"
     "        // -- -- -- -- -- -- -- -- -- --\n"
     "\n"
-    "        \\\"OP_analyzeIndex.sen\\\"         include\n"
-    "        \\\"OP_analyzeTable.sen\\\"         include\n"
+    "        \"OP_analyzeIndex.sen\"         include\n"
+    "        \"OP_analyzeTable.sen\"         include\n"
     "\n"
-    "        \\\"OP_bufferGen.sen\\\"            include\n"
-    "        \\\"OP_burst.sen\\\"                include\n"
+    "        \"OP_bufferGen.sen\"            include\n"
+    "        \"OP_burst.sen\"                include\n"
     "\n"
-    "        \\\"OP_changeFolder.sen\\\"         include\n"
-    "        \\\"OP_chunk.sen\\\"                include\n"
-    "        \\\"OP_compactIndex.sen\\\"         include\n"
-    "        \\\"OP_consume.sen\\\"              include\n"
-    "        \\\"OP_createCatalog.sen\\\"        include\n"
-    "        \\\"OP_createSchema.sen\\\"         include\n"
-    "        \\\"OP_createTenant.sen\\\"         include\n"
+    "        \"OP_changeFolder.sen\"         include\n"
+    "        \"OP_chunk.sen\"                include\n"
+    "        \"OP_compactIndex.sen\"         include\n"
+    "        \"OP_consume.sen\"              include\n"
+    "        \"OP_createCatalog.sen\"        include\n"
+    "        \"OP_createSchema.sen\"         include\n"
+    "        \"OP_createTenant.sen\"         include\n"
     "\n"
-    "        \\\"OP_dropCatalog.sen\\\"          include\n"
-    "        \\\"OP_dropIndex.sen\\\"            include\n"
-    "        \\\"OP_dropSchema.sen\\\"           include\n"
-    "        \\\"OP_dropTable.sen\\\"            include\n"
-    "        \\\"OP_dropTenant.sen\\\"           include\n"
-    "        \\\"OP_dumpIndex.sen\\\"            include\n"
-    "        \\\"OP_dumpTable.sen\\\"            include\n"
+    "        \"OP_dropCatalog.sen\"          include\n"
+    "        \"OP_dropIndex.sen\"            include\n"
+    "        \"OP_dropSchema.sen\"           include\n"
+    "        \"OP_dropTable.sen\"            include\n"
+    "        \"OP_dropTenant.sen\"           include\n"
+    "        \"OP_dumpIndex.sen\"            include\n"
+    "        \"OP_dumpTable.sen\"            include\n"
     "\n"
-    "        \\\"OP_eatAll.sen\\\"               include\n"
-    "        \\\"OP_exemplar.sen\\\"             include\n"
+    "        \"OP_eatAll.sen\"               include\n"
+    "        \"OP_exemplar.sen\"             include\n"
     "\n"
-    "        \\\"OP_fetch.sen\\\"                include\n"
+    "        \"OP_fetch.sen\"                include\n"
     "\n"
-    "        \\\"OP_genCsv.sen\\\"               include\n"
-    "        \\\"OP_gridSanity.sen\\\"           include\n"
+    "        \"OP_genCsv.sen\"               include\n"
+    "        \"OP_gridSanity.sen\"           include\n"
     "\n"
-    "        \\\"OP_insert.sen\\\"               include\n"
+    "        \"OP_insert.sen\"               include\n"
     "\n"
-    "        \\\"OP_listFolders.sen\\\"          include\n"
-    "        \\\"OP_listCatalogs.sen\\\"         include\n"
-    "        \\\"OP_listColumns.sen\\\"          include\n"
-    "        \\\"OP_listIndexes.sen\\\"          include\n"
-    "        \\\"OP_listIndexColumns.sen\\\"     include\n"
-    "        \\\"OP_listPartitions.sen\\\"       include\n"
-    "        \\\"OP_listPartitionColumns.sen\\\" include\n"
-    "        \\\"OP_listSchemas.sen\\\"          include\n"
-    "        \\\"OP_listTables.sen\\\"           include\n"
-    "        \\\"OP_listTableDefs.sen\\\"        include\n"
-    "        \\\"OP_listTenants.sen\\\"          include\n"
+    "        \"OP_listFolders.sen\"          include\n"
+    "        \"OP_listCatalogs.sen\"         include\n"
+    "        \"OP_listColumns.sen\"          include\n"
+    "        \"OP_listIndexes.sen\"          include\n"
+    "        \"OP_listIndexColumns.sen\"     include\n"
+    "        \"OP_listPartitions.sen\"       include\n"
+    "        \"OP_listPartitionColumns.sen\" include\n"
+    "        \"OP_listSchemas.sen\"          include\n"
+    "        \"OP_listTables.sen\"           include\n"
+    "        \"OP_listTableDefs.sen\"        include\n"
+    "        \"OP_listTenants.sen\"          include\n"
     "\n"
-    "        \\\"OP_nodeinfo.sen\\\"             include\n"
+    "        \"OP_nodeinfo.sen\"             include\n"
     "\n"
-    "        \\\"OP_output.sen\\\"               include\n"
+    "        \"OP_output.sen\"               include\n"
     "\n"
-    "        \\\"OP_passThru.sen\\\"             include\n"
-    "        \\\"OP_periodic.sen\\\"             include\n"
-    "        \\\"OP_ping.sen\\\"                 include\n"
-    "        \\\"OP_print.sen\\\"                include\n"
-    "        \\\"OP_progress.sen\\\"             include\n"
-    "        \\\"OP_purge.sen\\\"                include\n"
-    "        \\\"OP_pwf.sen\\\"                  include\n"
-    "        \\\"OP_python.sen\\\"               include\n"
-    "        \\\"OP_pythonShell.sen\\\"          include\n"
+    "        \"OP_passThru.sen\"             include\n"
+    "        \"OP_periodic.sen\"             include\n"
+    "        \"OP_ping.sen\"                 include\n"
+    "        \"OP_print.sen\"                include\n"
+    "        \"OP_progress.sen\"             include\n"
+    "        \"OP_purge.sen\"                include\n"
+    "        \"OP_pwf.sen\"                  include\n"
+    "        \"OP_python.sen\"               include\n"
+    "        \"OP_pythonShell.sen\"          include\n"
     "\n"
-    "        \\\"OP_readChunk.sen\\\"            include\n"
-    "        \\\"OP_recurring.sen\\\"            include\n"
-    "        \\\"OP_report.sen\\\"               include\n"
+    "        \"OP_readChunk.sen\"            include\n"
+    "        \"OP_recurring.sen\"            include\n"
+    "        \"OP_report.sen\"               include\n"
     "\n"
-    "        \\\"OP_scan.sen\\\"                 include\n"
-    "        \\\"OP_showcluster.sen\\\"          include\n"
-    "        \\\"OP_sink.sen\\\"                 include\n"
-    "        \\\"OP_snapshot.sen\\\"             include\n"
-    "        \\\"OP_space.sen\\\"                include\n"
-    "        \\\"OP_start.sen\\\"                include\n"
-    "        \\\"OP_stats.sen\\\"                include\n"
-    "        \\\"OP_status.sen\\\"               include\n"
-    "        \\\"OP_statWrite.sen\\\"            include\n"
-    "        \\\"OP_sizeIndex.sen\\\"            include\n"
-    "        \\\"OP_sizeTable.sen\\\"            include\n"
+    "        \"OP_scan.sen\"                 include\n"
+    "        \"OP_showcluster.sen\"          include\n"
+    "        \"OP_sink.sen\"                 include\n"
+    "        \"OP_snapshot.sen\"             include\n"
+    "        \"OP_space.sen\"                include\n"
+    "        \"OP_start.sen\"                include\n"
+    "        \"OP_stats.sen\"                include\n"
+    "        \"OP_status.sen\"               include\n"
+    "        \"OP_statWrite.sen\"            include\n"
+    "        \"OP_sizeIndex.sen\"            include\n"
+    "        \"OP_sizeTable.sen\"            include\n"
     "\n"
-    "        \\\"OP_tableSizes.sen\\\"           include\n"
-    "        \\\"OP_toDemon.sen\\\"              include\n"
-    "        \\\"OP_toCrw.sen\\\"                include\n"
-    "        \\\"OP_toCrwH.sen\\\"               include\n"
-    "        \\\"OP_toCsv.sen\\\"                include\n"
-    "        \\\"OP_toFile.sen\\\"               include\n"
-    "        \\\"OP_toStatD.sen\\\"              include\n"
-    "        \\\"OP_truncateIndex.sen\\\"        include\n"
-    "        \\\"OP_truncateTable.sen\\\"        include\n"
+    "        \"OP_tableSizes.sen\"           include\n"
+    "        \"OP_toDemon.sen\"              include\n"
+    "        \"OP_toCrw.sen\"                include\n"
+    "        \"OP_toCrwH.sen\"               include\n"
+    "        \"OP_toCsv.sen\"                include\n"
+    "        \"OP_toFile.sen\"               include\n"
+    "        \"OP_toStatD.sen\"              include\n"
+    "        \"OP_truncateIndex.sen\"        include\n"
+    "        \"OP_truncateTable.sen\"        include\n"
     "\n"
-    "        \\\"OP_upsert.sen\\\"               include\n"
+    "        \"OP_upsert.sen\"               include\n"
     "\n"
-    "        \\\"OP_verifyIndex.sen\\\"          include\n"
-    "        \\\"OP_verifyTable.sen\\\"          include\n"
-    "        \\\"OP_visualizeIndex.sen\\\"       include\n"
-    "        \\\"OP_visualizeTable.sen\\\"       include\n"
+    "        \"OP_verifyIndex.sen\"          include\n"
+    "        \"OP_verifyTable.sen\"          include\n"
+    "        \"OP_visualizeIndex.sen\"       include\n"
+    "        \"OP_visualizeTable.sen\"       include\n"
     "\n"
-    "        \\\"OP_xmit.sen\\\"                 include\n"
+    "        \"OP_xmit.sen\"                 include\n"
     "\n"
     "3 .put\n"
-    "        \\\"BM_genEnt.sen\\\"               include\n"
-    "        \\\"BM_genCrw.sen\\\"               include\n"
-    "        \\\"BM_inflateCrw.sen\\\"           include\n"
-    "        \\\"BM_insIdx.sen\\\"               include\n"
+    "        \"BM_genEnt.sen\"               include\n"
+    "        \"BM_genCrw.sen\"               include\n"
+    "        \"BM_inflateCrw.sen\"           include\n"
+    "        \"BM_insIdx.sen\"               include\n"
     "\n"
     "2 .put\n"
-    "        \\\"test_dData.sen\\\"              include\n"
-    "        \\\"test_encodingData.sen\\\"       include\n"
-    "        \\\"test_gGen.sen\\\"               include\n"
-    "        \\\"test_iData.sen\\\"              include\n"
-    "        \\\"test_jData.sen\\\"              include\n"
-    "        \\\"test_misc.sen\\\"               include\n"
-    "        \\\"test_rjh.sen\\\"                include\n"
-    "        \\\"test_sleep.sen\\\"              include\n"
-    "        \\\"test_str.sen\\\"                include\n"
-    "        \\\"test_tData.sen\\\"              include\n"
-    "        \\\"test_unit.sen\\\"               include\n"
-    "        \\\"test_1m.sen\\\"                 include\n"
+    "        \"test_dData.sen\"              include\n"
+    "        \"test_encodingData.sen\"       include\n"
+    "        \"test_gGen.sen\"               include\n"
+    "        \"test_iData.sen\"              include\n"
+    "        \"test_jData.sen\"              include\n"
+    "        \"test_misc.sen\"               include\n"
+    "        \"test_rjh.sen\"                include\n"
+    "        \"test_sleep.sen\"              include\n"
+    "        \"test_str.sen\"                include\n"
+    "        \"test_tData.sen\"              include\n"
+    "        \"test_unit.sen\"               include\n"
+    "        \"test_1m.sen\"                 include\n"
     "\n"
     "1 .put\n"
-    "        \\\"se_demons.sen\\\"               include\n"
-    "        \\\"se_experiments.sen\\\"          include\n"
-    "        \\\"se_llc.sen\\\"                  include\n"
-    "        \\\"se_memoryStats.sen\\\"          include\n"
-    "        \\\"se_munge.sen\\\"                include\n"
-    "        \\\"se_schemaTest.sen\\\"           include\n"
-    "        \\\"se_stepTests.sen\\\"            include\n"
-    "        \\\"se_stepTiming.sen\\\"           include\n"
-    "        \\\"se_vortex.sen\\\"               include\n"
+    "        \"se_demons.sen\"               include\n"
+    "        \"se_experiments.sen\"          include\n"
+    "        \"se_llc.sen\"                  include\n"
+    "        \"se_memoryStats.sen\"          include\n"
+    "        \"se_munge.sen\"                include\n"
+    "        \"se_schemaTest.sen\"           include\n"
+    "        \"se_stepTests.sen\"            include\n"
+    "        \"se_stepTiming.sen\"           include\n"
+    "        \"se_vortex.sen\"               include\n"
     "\n"
     "cmd::fillOut_allCmds_usingInfo\n"
     "cmd::fillOut_allCmds_usingCmdSyntax\n"
     "\n"
-    "        \\\"se_start.sen\\\"                include // last\n"
+    "        \"se_start.sen\"                include // last\n"
     "\n"
     "0 .put\n"
     "\n"
-    ".\\\\n\n"
+    ".\\n\n"
     "\n"
     "assert::stack_0\n"
     "\n"
@@ -16298,9 +15885,9 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  // make the tenants root folder\\\"\n"
+    "  // make the tenants root folder\"\n"
     "  //  /tenants\n"
-    "  \\\"tenants\\\" folder::makeFolder attachMap::tenants!\n"
+    "  \"tenants\" folder::makeFolder attachMap::tenants!\n"
     "  //attachmap::tenants@ execute\n"
     "  attachmap::tenants@ dup word.see execute\n"
     "  path[].pushFolder\n"
@@ -16308,27 +15895,27 @@ void Task::vAddMunged(Forth* pForth)
     "    // make 'boray' tenant folder:\n"
     "    //  /tenants/boray\n"
     "    //  /tenants/boray/catalogs\n"
-    "    \\\"boray\\\" :makeTenantFolder\n"
-    "    \\\"boray\\\" folder[].findSymbol execute\n"
+    "    \"boray\" :makeTenantFolder\n"
+    "    \"boray\" folder[].findSymbol execute\n"
     "    path[].pushFolder\n"
     "\n"
-    "      \\\"catalogs\\\" folder[].findSymbol execute\n"
+    "      \"catalogs\" folder[].findSymbol execute\n"
     "      path[].pushFolder\n"
     "\n"
     "        // make 'rapidsse' catalog folder:\n"
     "        //  /tenants/boray/catalogs/rapidsse\n"
     "        //  /tenants/boray/catalogs/rapidsse/schemas\n"
-    "        \\\"rapidsse\\\" :makeCatalogFolder\n"
-    "        \\\"rapidsse\\\" folder[].findSymbol execute\n"
+    "        \"rapidsse\" :makeCatalogFolder\n"
+    "        \"rapidsse\" folder[].findSymbol execute\n"
     "        path[].pushFolder\n"
     "\n"
-    "          \\\"schemas\\\" folder[].findSymbol execute\n"
+    "          \"schemas\" folder[].findSymbol execute\n"
     "          path[].pushFolder\n"
     "\n"
     "            // make 'public' schema folder:\n"
     "            //  /tenants/boray/catalogs/rapidsse/schemas/public\n"
     "            //  /tenants/boray/catalogs/rapidsse/schemas/public/tables\n"
-    "            \\\"public\\\" :makeSchemaFolder\n"
+    "            \"public\" :makeSchemaFolder\n"
     "\n"
     "          path[].popFolder\n"
     "      path[].popFolder\n"
@@ -16342,44 +15929,41 @@ void Task::vAddMunged(Forth* pForth)
     "//............................................................................//\n"
     "//............................................................................//\n"
     "\n"
-    "\\\"Creating default folders\\\" .verbose\n"
+    "\"Creating default folders\" .verbose\n"
     "\n"
     "makeDefaultFolders\n"
     "\n"
     "assert::stack_0\n"
     "\n"
-    "\\\"end of se_boot.sen\\\" .verbose\n"
+    "\"end of se_boot.sen\" .verbose\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_boot.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)138);
-
-  szSubScriptDef = " 138 CONSTANT se_boot.sen__sub "_Stz;
+  szSubScriptDef = " 138 CONSTANT se_boot.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [139] OP_burst.sen
 
   gszaMungedText[139] =
-    "\""
-    "\\\"munged OP_burst.sen \\\" .verbose \n"
+    "\" munged OP_burst.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_burst.sen -- Burst Operator                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_burst.sen\\\" .verbose\n"
+    "\" OP_burst.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_ENTBUFFER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_burst_EntBuffer \\\\handler\n"
+    ": OP_burst_EntBuffer \\handler\n"
     "\n"
-    "  \\\"OP_burst_EntBuffer\\\" .\n"
+    "  \"OP_burst_EntBuffer\" .\n"
     "\n"
     "  operand[] OperandC[].collect\n"
     "\n"
@@ -16390,9 +15974,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_EOSMARKER ...                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": OP_burst_EosMarker \\\\handler\n"
+    ": OP_burst_EosMarker \\handler\n"
     "\n"
-    "  \\\"OP_burst_EosMarker\\\" .\n"
+    "  \"OP_burst_EosMarker\" .\n"
     "\n"
     "  operandC[].setFirst\n"
     "  operandC[].pipeoutSet\n"
@@ -16403,7 +15987,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* burst request                                      (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": burst_req \\\\operator\n"
+    ": burst_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -16414,7 +15998,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  op__loop\n"
     "\n"
-    "  \\\"*** OP_burst_req EXITS\\\" .\n"
+    "  \"*** OP_burst_req EXITS\" .\n"
     "  LogReqExit\n"
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
@@ -16426,32 +16010,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: burst :: burst ;\n"
     "\n"
     ": burst _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_burst.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)139);
-
-  szSubScriptDef = " 139 CONSTANT OP_burst.sen__sub "_Stz;
+  szSubScriptDef = " 139 CONSTANT OP_burst.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [140] OP_listTables.sen
 
   gszaMungedText[140] =
-    "\""
-    "\\\"munged OP_listTables.sen \\\" .verbose \n"
+    "\" munged OP_listTables.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listTables.sen -- Operator list tables                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_listTables.sen\\\" .verbose\n"
+    "\" OP_listTables.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -16505,7 +16086,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    then\n"
     "\n"
-    "    \\\"path[].popNamedTableFolder\\\" find execute\n"
+    "    \"path[].popNamedTableFolder\" find execute\n"
     "\n"
     "    object@ word.prev object!      // step backwards thru words\n"
     "  next\n"
@@ -16523,7 +16104,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": lstbl _info tagCopy: localLiteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>     = \\\"--op desc--\\\"\n"
+    "    <jobDesc>     = \"--op desc--\"\n"
     "    <localLiteOp> = true\n"
     "    <streamDef>   = __listContents\n"
     "    <params>      = 0\n"
@@ -16533,34 +16114,31 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_listTables.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)140);
-
-  szSubScriptDef = " 140 CONSTANT OP_listTables.sen__sub "_Stz;
+  szSubScriptDef = " 140 CONSTANT OP_listTables.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [141] tpl_liteOp.sen
 
   gszaMungedText[141] =
-    "\""
-    "\\\"munged tpl_liteOp.sen \\\" .verbose \n"
+    "\" munged tpl_liteOp.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* tpl_liteOp.sen -- templates for lite op                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" tpl_liteOp.sen\\\" .verbose\n"
+    "\" tpl_liteOp.sen\" .verbose\n"
     "    \n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* on ZK_PULSEMARKER ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_liteOp_PulseMarker\n"
     "\n"
-    "\\\"\n"
-    ": /liteOp/_PulseMarker \\\\\\\\handler\n"
+    "\"\n"
+    ": /liteOp/_PulseMarker \\\\handler\n"
     "\n"
     "  /liteOp/_action if\n"
     "    Pipein[].pipeout\n"
@@ -16570,7 +16148,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  true\n"
     " ;\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -16578,8 +16156,8 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_liteOp_req\n"
     "\n"
-    "\\\"\n"
-    ": /liteOp/_req \\\\\\\\operator\n"
+    "\"\n"
+    ": /liteOp/_req \\\\operator\n"
     " \n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -16593,7 +16171,7 @@ void Task::vAddMunged(Forth* pForth)
     "  job::deleteThis\n"
     "  DONE_REQ_OP\n"
     " ;\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "\n"
@@ -16602,7 +16180,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_liteOp_procedure0\n"
     "\n"
-    "\\\"\n"
+    "\"\n"
     "procedure /liteOp/\n"
     "begin\n"
     "\n"
@@ -16616,7 +16194,7 @@ void Task::vAddMunged(Forth* pForth)
     "    output | sink | stageA\n"
     "\n"
     "end\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "    \n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -16624,7 +16202,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_liteOp_procedure1\n"
     "\n"
-    "\\\"\n"
+    "\"\n"
     "  procedure /liteOp/\n"
     "    parameters $param\n"
     "  begin\n"
@@ -16639,7 +16217,7 @@ void Task::vAddMunged(Forth* pForth)
     "    output | sink | stageA\n"
     "\n"
     "  end\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -16647,7 +16225,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": tpl_liteOp_procedure2\n"
     "\n"
-    "\\\"\n"
+    "\"\n"
     "  procedure /liteOp/\n"
     "    parameters $param0 $param1\n"
     "  begin\n"
@@ -16662,37 +16240,34 @@ void Task::vAddMunged(Forth* pForth)
     "    output | sink | stageA\n"
     "\n"
     "  end\n"
-    "\\\"\n"
+    "\"\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT tpl_liteOp.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)141);
-
-  szSubScriptDef = " 141 CONSTANT tpl_liteOp.sen__sub "_Stz;
+  szSubScriptDef = " 141 CONSTANT tpl_liteOp.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [142] db_tenant.sen
 
   gszaMungedText[142] =
-    "\""
-    "\\\"munged db_tenant.sen \\\" .verbose \n"
+    "\" munged db_tenant.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_tenant.sen -- tenant related words                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" db_tenant.sen\\\" .verbose\n"
+    "\" db_tenant.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* the tenant category                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": \\\\tenant \\\\\\\\category ;\n"
+    ": \\tenant \\\\category ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* pop the tenant folder                                                     */\n"
@@ -16707,7 +16282,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": folder[].isTenants\n"
     "\n"
-    "  folder[] dic.name@ \\\"tenants\\\" str.equal\n"
+    "  folder[] dic.name@ \"tenants\" str.equal\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -16724,8 +16299,8 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": path[].checkIsTenant ( word )\n"
     "\n"
-    "  dup word.category@ find: \\\\folder eql not if EC_NOT_A_FOLDER false exit then\n"
-    "  dup execute dic.kind@ find: \\\\tenant eql if true exit then\n"
+    "  dup word.category@ find: \\folder eql not if EC_NOT_A_FOLDER false exit then\n"
+    "  dup execute dic.kind@ find: \\tenant eql if true exit then\n"
     "  EC_NOT_A_TENANT false\n"
     " ;\n"
     "\n"
@@ -16755,13 +16330,13 @@ void Task::vAddMunged(Forth* pForth)
     ": :makeTenantFolder params| sTenantNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "    sTenantNm \\\"MAKING TENANT \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "    sTenantNm \"MAKING TENANT \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // make the tenant\n"
     "  sTenantNm folder::makeFolder\n"
-    "    find: \\\\tenant swap execute dic.kind!\n"
+    "    find: \\tenant swap execute dic.kind!\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // make catalogs folder\n"
@@ -16771,7 +16346,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* find the tenant folder and push it onto task dictionary                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": path[].pushTenantFolder ( \\\"<tenantName>\\\" -- )\n"
+    ": path[].pushTenantFolder ( \"<tenantName>\" -- )\n"
     "\n"
     "  find execute path[].pushFolder\n"
     "  true\n"
@@ -16780,19 +16355,19 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* remove a tenant folder                                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": removeTenant ( \\\"<tenantNm>\\\" --  )\n"
+    ": removeTenant ( \"<tenantNm>\" --  )\n"
     "\n"
     "  params| sTenantNm |\n"
     "\n"
     "  args.tracepoint if\n"
-    "  dup \\\"REMOVING TENANT \\\" swap str.cat \\\" on NODE \\\" str.cat grid::thisNode@ >str str.cat .\n"
+    "  dup \"REMOVING TENANT \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // move to tenant folder\n"
     "  sTenantNm path[].pushTenantFolder assert\n"
     "\n"
-    "  \\\"catalogs\\\" folder::remove\n"
+    "  \"catalogs\" folder::remove\n"
     "\n"
     "  path[].popTenantFolder\n"
     "\n"
@@ -16802,33 +16377,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT db_tenant.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)142);
-
-  szSubScriptDef = " 142 CONSTANT db_tenant.sen__sub "_Stz;
+  szSubScriptDef = " 142 CONSTANT db_tenant.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [143] OP_report.sen
 
   gszaMungedText[143] =
-    "\""
-    "\\\"munged OP_report.sen \\\" .verbose \n"
+    "\" munged OP_report.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_report.sen -- Operator report                                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_report.sen\\\" .verbose\n"
+    "\" OP_report.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_CrwBuffer \\\\handler\n"
+    ": report_CrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CRWBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Operand[]\n"
     "\n"
@@ -16844,9 +16416,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_CSVBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_CsvBuffer \\\\handler\n"
+    ": report_CsvBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_CSVBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_CSVBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Operand[]\n"
     "\n"
@@ -16862,9 +16434,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_ENTBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_EntBuffer \\\\handler\n"
+    ": report_EntBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_ENTBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_ENTBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Operand[]\n"
     "\n"
@@ -16880,9 +16452,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_EOSMARKER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_EosMarker \\\\handler\n"
+    ": report_EosMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_EOSMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_EOSMARKER\" .verbose\n"
     "  File0[].get file.close\n"
     "  File0[].get file.delete\n"
     "  Pipein[].pipeOut\n"
@@ -16893,9 +16465,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_IRWBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_IrwBuffer \\\\handler\n"
+    ": report_IrwBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_IRWBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_IRWBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Operand[]\n"
     "\n"
@@ -16911,9 +16483,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_SRTBUFFER ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_SrtBuffer \\\\handler\n"
+    ": report_SrtBuffer \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_SRTBUFFER\\\" .verbose\n"
+    "  //\"Operand:- ZK_SRTBUFFER\" .verbose\n"
     "  Pipein[] to Operand[]\n"
     "  nullptr to Operand[]\n"
     "\n"
@@ -16929,9 +16501,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_StartMarker \\\\handler\n"
+    ": report_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // open the file for writing\n"
     "  <fileNm> OPEN_WRITE op__file if\n"
@@ -16944,7 +16516,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for report request                         (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": report_req \\\\operator\n"
+    ": report_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -16971,48 +16543,45 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: report :: report <fileNm> ;\n"
     "\n"
     ": report _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_report.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)143);
-
-  szSubScriptDef = " 143 CONSTANT OP_report.sen__sub "_Stz;
+  szSubScriptDef = " 143 CONSTANT OP_report.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [144] test_logic.sen
 
   gszaMungedText[144] =
-    "\""
-    "\\\"munged test_logic.sen \\\" .verbose \n"
+    "\" munged test_logic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_logic.sen -- logic unit testing                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_logic.sen\\\" .verbose\n"
+    "\" test_logic.sen\" .verbose\n"
     "\n"
     ": logicTests\n"
     "\n"
-    "  \\\"  logic tests\\\" .put .\\\\n\n"
+    "  \"  logic tests\" .put .\\n\n"
     "\n"
-    "  0 if \\\"if failure\\\" . process::quit then\n"
+    "  0 if \"if failure\" . process::quit then\n"
     "\n"
-    "  1 if else \\\"else failure\\\" . process::quit then\n"
+    "  1 if else \"else failure\" . process::quit then\n"
     "\n"
-    "  0 not if else \\\"not failure\\\" . process::quit then\n"
+    "  0 not if else \"not failure\" . process::quit then\n"
     "\n"
-    "  0 0 == if else \\\"== failure\\\" . process::quit then\n"
+    "  0 0 == if else \"== failure\" . process::quit then\n"
     "\n"
-    "  1 1 == if else \\\"== failure\\\" . process::quit then\n"
+    "  1 1 == if else \"== failure\" . process::quit then\n"
     "\n"
-    "  0 1 not == if else \\\"not failure\\\" . process::quit then\n"
+    "  0 1 not == if else \"not failure\" . process::quit then\n"
     "\n"
     " ;\n"
     "\n"
@@ -17023,18 +16592,18 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  13 0 do\n"
     "    I case\n"
-    "      0 of \\\"zero\\\"  . endof\n"
-    "      1 of \\\"one\\\"   . endof\n"
-    "      2 of \\\"two\\\"   . endof\n"
-    "      3 of \\\"three\\\" . endof\n"
-    "      4 of \\\"four\\\"  . endof\n"
-    "      5 of \\\"five\\\"  . endof\n"
-    "      6 of \\\"six\\\"   . endof\n"
-    "      7 of \\\"seven\\\" . endof\n"
-    "      8 of \\\"eight\\\" . endof\n"
-    "      9 of \\\"nine\\\"  . endof\n"
+    "      0 of \"zero\"  . endof\n"
+    "      1 of \"one\"   . endof\n"
+    "      2 of \"two\"   . endof\n"
+    "      3 of \"three\" . endof\n"
+    "      4 of \"four\"  . endof\n"
+    "      5 of \"five\"  . endof\n"
+    "      6 of \"six\"   . endof\n"
+    "      7 of \"seven\" . endof\n"
+    "      8 of \"eight\" . endof\n"
+    "      9 of \"nine\"  . endof\n"
     "\n"
-    "      \\\"default case\\\" .\n"
+    "      \"default case\" .\n"
     "\n"
     "    endcase\n"
     "  loop\n"
@@ -17043,26 +16612,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_logic.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)144);
-
-  szSubScriptDef = " 144 CONSTANT test_logic.sen__sub "_Stz;
+  szSubScriptDef = " 144 CONSTANT test_logic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [145] test_misc.sen
 
   gszaMungedText[145] =
-    "\""
-    "\\\"munged test_misc.sen \\\" .verbose \n"
+    "\" munged test_misc.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_misc.sen -- miscellaneous testing                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_misc.sen\\\" .verbose\n"
+    "\" test_misc.sen\" .verbose\n"
     "\n"
     "\n"
     ": chuck prompt throw ;\n"
@@ -17073,9 +16639,9 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    ": iftest if \\\"yes\\\" . then ;\n"
+    ": iftest if \"yes\" . then ;\n"
     "\n"
-    ": ifelsetest if \\\"yes\\\" . else \\\"no\\\" . then ;\n"
+    ": ifelsetest if \"yes\" . else \"no\" . then ;\n"
     "\n"
     ": untiltest 0 begin 1 + dup . dup 10 == until ;\n"
     "\n"
@@ -17096,9 +16662,9 @@ void Task::vAddMunged(Forth* pForth)
     ": string_blowup\n"
     "\n"
     "traceon\n"
-    "    \\\"abcdefghijklmnopqrstuvwxyz\\\"\n"
+    "    \"abcdefghijklmnopqrstuvwxyz\"\n"
     "    1000000 0 do\n"
-    "      \\\"abcdefghijklmnopqrstuvwxyz\\\"\n"
+    "      \"abcdefghijklmnopqrstuvwxyz\"\n"
     "      str.cat\n"
     "    loop\n"
     " ;\n"
@@ -17118,12 +16684,12 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": strFormatTest\n"
     "\n"
-    "  1 \\\"abc%v\\\" str.format .\n"
+    "  1 \"abc%v\" str.format .\n"
     "\n"
-    "  \\\"def\\\" \\\"abc%v\\\" str.format .\n"
+    "  \"def\" \"abc%v\" str.format .\n"
     "\n"
-    "  \\\"gh\\\" 456 \\\"def\\\" 23 \\\"abc\\\" 1\n"
-    "  \\\"%v %v %v %v %v %v\\\" str.format .\n"
+    "  \"gh\" 456 \"def\" 23 \"abc\" 1\n"
+    "  \"%v %v %v %v %v %v\" str.format .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -17160,20 +16726,20 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": srepl\n"
     "\n"
-    "  \\\"this\\\" \\\"that\\\" \\\"abcthisdef\\\" str.replace .\n"
+    "  \"this\" \"that\" \"abcthisdef\" str.replace .\n"
     "\n"
-    "  \\\"this\\\" \\\"that\\\" \\\"abcthidef\\\" str.replace .\n"
+    "  \"this\" \"that\" \"abcthidef\" str.replace .\n"
     "\n"
-    "  \\\"this\\\" \\\"that\\\" \\\"abcthisdefthis\\\" str.replace .\n"
-    "  \\\"this\\\" \\\"that\\\" \\\"abcthisthisdefthis\\\" str.replace .\n"
-    "  \\\"this\\\" \\\"that\\\" \\\"thisthiabcthisthisdefthis\\\" str.replace .\n"
+    "  \"this\" \"that\" \"abcthisdefthis\" str.replace .\n"
+    "  \"this\" \"that\" \"abcthisthisdefthis\" str.replace .\n"
+    "  \"this\" \"that\" \"thisthiabcthisthisdefthis\" str.replace .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": whereAmI\n"
     "\n"
-    "  \\\"whereAmI?\\\" .\n"
+    "  \"whereAmI?\" .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -17216,10 +16782,10 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  10 0 do\n"
     "    I to sleepTime\n"
-    "    time.current \\\"start time %v\\\" str.format .\n"
-    "    sleepTime \\\"task sleeping for %v secs\\\" str.format .\n"
+    "    time.current \"start time %v\" str.format .\n"
+    "    sleepTime \"task sleeping for %v secs\" str.format .\n"
     "    1000000 sleepTime * task::sleepUsec\n"
-    "    time.current \\\"end time %v\\\\n\\\" str.format .\n"
+    "    time.current \"end time %v\\n\" str.format .\n"
     "  loop\n"
     " ;\n"
     "\n"
@@ -17238,11 +16804,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": ssnDo\n"
     "\n"
-    "  \\\"storedCmd\\\" :create\n"
+    "  \"storedCmd\" :create\n"
     "\n"
     "  true compiler::current@ word.prompt!\n"
     "\n"
-    "  \\\"print \\\\\\\"hello world!\\\\\\\"\\\" encode::push\n"
+    "  \"print \\\"hello world!\\\"\" encode::push\n"
     "\n"
     "  POSTPONE session::this\n"
     "\n"
@@ -17256,26 +16822,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_misc.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)145);
-
-  szSubScriptDef = " 145 CONSTANT test_misc.sen__sub "_Stz;
+  szSubScriptDef = " 145 CONSTANT test_misc.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [146] job_CreateTable.sen
 
   gszaMungedText[146] =
-    "\""
-    "\\\"munged job_CreateTable.sen \\\" .verbose \n"
+    "\" munged job_CreateTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_CreateTable.sen -- Job Create Table                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_CreateTable.sen\\\" .verbose\n"
+    "\" job_CreateTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* check if <tableNm> is a creatable table                                    */\n"
@@ -17384,7 +16947,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: createTable :: create table definition <tableNm> etc ;\n"
     "\n"
     ": createTable _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_DIST2PC\n"
     "  <rspKind>  = RS_PARTICIPANT_RESPONSE\n"
@@ -17397,30 +16960,27 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_CreateTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)146);
-
-  szSubScriptDef = " 146 CONSTANT job_CreateTable.sen__sub "_Stz;
+  szSubScriptDef = " 146 CONSTANT job_CreateTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [147] test_flow.sen
 
   gszaMungedText[147] =
-    "\""
-    "\\\"munged test_flow.sen \\\" .verbose \n"
+    "\" munged test_flow.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_flow.sen -- flow control unit testing                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" test_flow.sen\\\" .verbose\n"
+    "\" test_flow.sen\" .verbose\n"
     "\n"
     ": flowTests\n"
     "\n"
-    "  \\\"  flow control tests\\\" .put .\\\\n\n"
+    "  \"  flow control tests\" .put .\\n\n"
     "\n"
     "  assert::stack_0\n"
     "  0\n"
@@ -17447,33 +17007,30 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT test_flow.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)147);
-
-  szSubScriptDef = " 147 CONSTANT test_flow.sen__sub "_Stz;
+  szSubScriptDef = " 147 CONSTANT test_flow.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [148] OP_snapshot.sen
 
   gszaMungedText[148] =
-    "\""
-    "\\\"munged OP_snapshot.sen \\\" .verbose \n"
+    "\" munged OP_snapshot.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_snapshot.sen -- Operator snapshot                                       */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_snapshot.sen\\\" .verbose\n"
+    "\" OP_snapshot.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Snapshot_PulseMarker \\\\handler\n"
+    ": Snapshot_PulseMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_PULSEMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_PULSEMARKER\" .verbose\n"
     "  Pipein[].pipeOut\n"
     "\n"
     "  // new a stream def\n"
@@ -17512,9 +17069,9 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_STARTMARKER ...                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Snapshot_StartMarker \\\\handler\n"
+    ": Snapshot_StartMarker \\handler\n"
     "\n"
-    "  //\\\"Operand:- ZK_STARTMARKER\\\" .verbose\n"
+    "  //\"Operand:- ZK_STARTMARKER\" .verbose\n"
     "\n"
     "  // check if we can scan the table\n"
     "  <tableNm> op__table if\n"
@@ -17529,7 +17086,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* Snapshot request                                   (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": Snapshot_req \\\\operator\n"
+    ": Snapshot_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -17551,32 +17108,29 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: Snapshot :: Snapshot <tableNm> ;\n"
     "\n"
     ": Snapshot _info tagCopy: stageOp_tags\n"
-    "  tags{ <jobDesc> = \\\"--op desc--\\\" }\n"
+    "  tags{ <jobDesc> = \"--op desc--\" }\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_snapshot.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)148);
-
-  szSubScriptDef = " 148 CONSTANT OP_snapshot.sen__sub "_Stz;
+  szSubScriptDef = " 148 CONSTANT OP_snapshot.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [149] job_seedSuffixs.sen
 
   gszaMungedText[149] =
-    "\""
-    "\\\"munged job_seedSuffixs.sen \\\" .verbose \n"
+    "\" munged job_seedSuffixs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedSuffixs.sen -- Job Seed Suffixes                                   */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_seedSuffixs.sen\\\" .verbose\n"
+    "\" job_seedSuffixs.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* append a suffix to name of word being compiled                             */\n"
@@ -17615,12 +17169,12 @@ void Task::vAddMunged(Forth* pForth)
     ": _req immediate _suffix\n"
     "\n"
     "  // append _req to name of word being compiled\n"
-    "  \\\"_req\\\" word::addSuffix\n"
+    "  \"_req\" word::addSuffix\n"
     "\n"
     "  word::seed#\n"
     "\n"
     "  // set exit hook of word being compiled\n"
-    "  \\\"req_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"req_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to req_entryHook into word being compiled\n"
     "  POSTPONE req_entryHook\n"
@@ -17632,7 +17186,7 @@ void Task::vAddMunged(Forth* pForth)
     ": _beg immediate _suffix\n"
     "\n"
     "  // append _beg to name of word being compiled\n"
-    "  \\\"_beg\\\" word::addSuffix\n"
+    "  \"_beg\" word::addSuffix\n"
     "\n"
     "  // the compiled word is a seed\n"
     "  find: seed compiler::current@ word.category!\n"
@@ -17640,7 +17194,7 @@ void Task::vAddMunged(Forth* pForth)
     "  word::seed#\n"
     "\n"
     "  // set exit hook of word being compiled\n"
-    "  \\\"beg_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"beg_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to beg_entryHook into word being compiled\n"
     "  POSTPONE beg_entryHook\n"
@@ -17652,12 +17206,12 @@ void Task::vAddMunged(Forth* pForth)
     ": _exe immediate _suffix\n"
     "\n"
     "  // append _exe to name of word being compiled\n"
-    "  \\\"_exe\\\" word::addSuffix\n"
+    "  \"_exe\" word::addSuffix\n"
     "\n"
     "  word::seed#\n"
     "\n"
     "  // set exit hook of word being compiled\n"
-    "  \\\"exe_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"exe_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to exe_entryHook into word being compiled\n"
     "  POSTPONE exe_entryHook\n"
@@ -17669,12 +17223,12 @@ void Task::vAddMunged(Forth* pForth)
     ": _end immediate _suffix\n"
     "\n"
     "  // append _end to name of word being compiled\n"
-    "  \\\"_end\\\" word::addSuffix\n"
+    "  \"_end\" word::addSuffix\n"
     "\n"
     "  word::seed#\n"
     "\n"
     "  // set exit hook of word being compiled\n"
-    "  \\\"end_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"end_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to end_entryHook into word being compiled\n"
     "  POSTPONE end_entryHook\n"
@@ -17686,12 +17240,12 @@ void Task::vAddMunged(Forth* pForth)
     ": _can immediate _suffix\n"
     "\n"
     "  // append _can to name of word being compiled\n"
-    "  \\\"_can\\\" word::addSuffix\n"
+    "  \"_can\" word::addSuffix\n"
     "\n"
     "  word::seed#\n"
     "\n"
     "  // set exit hook of word being compiled\n"
-    "  \\\"can_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"can_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to can_entryHook into word being compiled\n"
     "  POSTPONE can_entryHook\n"
@@ -17703,12 +17257,12 @@ void Task::vAddMunged(Forth* pForth)
     ": _run immediate _suffix\n"
     "\n"
     "  // append _beg to name of word being compiled\n"
-    "  \\\"_run\\\" word::addSuffix\n"
+    "  \"_run\" word::addSuffix\n"
     "\n"
     "  word::seed#\n"
     "\n"
     "  // set exit hook of word being compiled\n"
-    "  \\\"run_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"run_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to beg_entryHook into word being compiled\n"
     "  POSTPONE run_entryHook\n"
@@ -17719,7 +17273,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": _eeh immediate _suffix\n"
     "\n"
-    "  \\\"std_exitHook\\\" compiler::current@ word.exitHook!\n"
+    "  \"std_exitHook\" compiler::current@ word.exitHook!\n"
     "\n"
     "  // add call to std_entryHook into word being compiled\n"
     "  POSTPONE std_entryHook\n"
@@ -17728,26 +17282,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_seedSuffixs.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)149);
-
-  szSubScriptDef = " 149 CONSTANT job_seedSuffixs.sen__sub "_Stz;
+  szSubScriptDef = " 149 CONSTANT job_seedSuffixs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [150] OP_sizeTable.sen
 
   gszaMungedText[150] =
-    "\""
-    "\\\"munged OP_sizeTable.sen \\\" .verbose \n"
+    "\" munged OP_sizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeTable.sen -- Operator size table                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_sizeTable.sen\\\" .verbose\n"
+    "\" OP_sizeTable.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* action                                                                     */\n"
@@ -17789,7 +17340,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": sztbl _info tagCopy: liteOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\"\n"
+    "    <jobDesc>   = \"--op desc--\"\n"
     "    <liteOp>    = true\n"
     "    <streamDef> = __sizeTable\n"
     "    <params>    = 1\n"
@@ -17799,26 +17350,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_sizeTable.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)150);
-
-  szSubScriptDef = " 150 CONSTANT OP_sizeTable.sen__sub "_Stz;
+  szSubScriptDef = " 150 CONSTANT OP_sizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [151] OP_dropCatalog.sen
 
   gszaMungedText[151] =
-    "\""
-    "\\\"munged OP_dropCatalog.sen \\\" .verbose \n"
+    "\" munged OP_dropCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropCatalog.sen -- Operator drop catalog                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" OP_dropCatalog.sen\\\" .verbose\n"
+    "\" OP_dropCatalog.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_PULSEMARKER ...                                             */\n"
@@ -17848,7 +17396,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* execute for createCatalog req                      (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dropCatalog_req \\\\operator\n"
+    ": dropCatalog_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
@@ -17870,32 +17418,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     ": dropCatalog _info tagCopy: stageOp_tags\n"
     "  tags{\n"
-    "    <jobDesc>   = \\\"--op desc--\\\" }\n"
+    "    <jobDesc>   = \"--op desc--\" }\n"
     " ;\n"
     "    \n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT OP_dropCatalog.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)151);
-
-  szSubScriptDef = " 151 CONSTANT OP_dropCatalog.sen__sub "_Stz;
+  szSubScriptDef = " 151 CONSTANT OP_dropCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [152] job_Waker.sen
 
   gszaMungedText[152] =
-    "\""
-    "\\\"munged job_Waker.sen \\\" .verbose \n"
+    "\" munged job_Waker.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Waker.sen -- Waker Job                                                 */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Waker.sen\\\" .verbose\n"
+    "\" job_Waker.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* waker loop:                                                                */\n"
@@ -17908,7 +17453,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    1 thread::sleepSsec\n"
     "\n"
-    "    // \\\"checking...\\\" .\n"
+    "    // \"checking...\" .\n"
     "\n"
     "    queues::checkSleeping\n"
     "\n"
@@ -17927,7 +17472,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: waker :: waker ;\n"
     "\n"
     ": waker _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_NONE\n"
@@ -17942,26 +17487,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Waker.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)152);
-
-  szSubScriptDef = " 152 CONSTANT job_Waker.sen__sub "_Stz;
+  szSubScriptDef = " 152 CONSTANT job_Waker.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [153] job_seedMarkers.sen
 
   gszaMungedText[153] =
-    "\""
-    "\\\"munged job_seedMarkers.sen \\\" .verbose \n"
+    "\" munged job_seedMarkers.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedMarkers.sen -- Job Seed Marker words                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_seedMarkers.sen\\\" .verbose\n"
+    "\" job_seedMarkers.sen\" .verbose\n"
     "\n"
     "0 constant JM_SEED_RUN\n"
     "1 constant JM_SEED_REQ\n"
@@ -18085,7 +17627,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  DdlLock[].testDrop\n"
     "\n"
-    "  //\\\"Signalling the thread waiting on job completion\\\" .\n"
+    "  //\"Signalling the thread waiting on job completion\" .\n"
     "  Done_Finally\n"
     "\n"
     "  job[] job.signalCompletion\n"
@@ -18295,7 +17837,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  DdlLock[].testDrop\n"
     "\n"
-    "  //errorCode error.msg \\\"Setting error '%v' in job\\\" str.format .\n"
+    "  //errorCode error.msg \"Setting error '%v' in job\" str.format .\n"
     "  errorCode pJob job.error!\n"
     " ;\n"
     "\n"
@@ -18306,12 +17848,12 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  DdlLock[].testDrop\n"
     " \n"
-    "  //errorCode error.msg \\\"Setting error '%v' in job\\\" str.format .\n"
+    "  //errorCode error.msg \"Setting error '%v' in job\" str.format .\n"
     "  errorCode pJob job.error!\n"
     "\n"
     "  Done_Finally\n"
     "\n"
-    "  //\\\"Signalling the thread waiting on job completion\\\" .\n"
+    "  //\"Signalling the thread waiting on job completion\" .\n"
     "  pJob job.signalCompletion\n"
     "  // task has no job\n"
     "  task::scheduledelete\n"
@@ -18322,26 +17864,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_seedMarkers.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)153);
-
-  szSubScriptDef = " 153 CONSTANT job_seedMarkers.sen__sub "_Stz;
+  szSubScriptDef = " 153 CONSTANT job_seedMarkers.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [154] job_words.sen
 
   gszaMungedText[154] =
-    "\""
-    "\\\"munged job_words.sen \\\" .verbose \n"
+    "\" munged job_words.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_words.sen -- Job related words                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_words.sen\\\" .verbose\n"
+    "\" job_words.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* set dictionary path of this task back into session                         */\n"
@@ -18362,7 +17901,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* set path to the default tenants catalogs folder                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": setCatalogs ( )\n"
-    "  \\\"/tenants/boray/catalogs/\\\"\n"
+    "  \"/tenants/boray/catalogs/\"\n"
     "  str.toStrVec path[].set\n"
     "  setPath\n"
     " ;\n"
@@ -18371,7 +17910,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* set path to the default tenants schemas folder                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": setSchemas ( )\n"
-    "  \\\"/tenants/boray/catalogs/rapidsse/schemas\\\"\n"
+    "  \"/tenants/boray/catalogs/rapidsse/schemas\"\n"
     "  str.toStrVec path[].set\n"
     "  setPath\n"
     " ;\n"
@@ -18380,7 +17919,7 @@ void Task::vAddMunged(Forth* pForth)
     "/* set path to the default tenants tables folder                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": setTables ( )\n"
-    "  \\\"/tenants/boray/catalogs/rapidsse/schemas/public/tables\\\"\n"
+    "  \"/tenants/boray/catalogs/rapidsse/schemas/public/tables\"\n"
     "  str.toStrVec path[].set\n"
     "  setPath\n"
     " ;\n"
@@ -18394,7 +17933,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     " //   grid::thisNode@\n"
     " //   pJob object.class@ class::name\n"
-    " //   \\\"Participant Job %v Received Node %v \\\"\n"
+    " //   \"Participant Job %v Received Node %v \"\n"
     " // .printf\n"
     "\n"
     "  // set participant node in job\n"
@@ -18426,7 +17965,7 @@ void Task::vAddMunged(Forth* pForth)
     "  job[] locals| pJob |\n"
     "\n"
     "  // send job__begun back to originating node\n"
-    "  pJob \\\"Job__Begun::send\\\" find execute\n"
+    "  pJob \"Job__Begun::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18438,7 +17977,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pJobParticipant job.removeParticipant\n"
     "\n"
-    "  pJobParticipant \\\"Job__Ended::send\\\" find execute\n"
+    "  pJobParticipant \"Job__Ended::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18450,7 +17989,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  pJobParticipant job.removeParticipant\n"
     "\n"
-    "  pJobParticipant \\\"Job__Cancelled::send\\\" find execute\n"
+    "  pJobParticipant \"Job__Cancelled::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18458,7 +17997,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": job::</seeXfer/>\n"
     "\n"
-    "  \\\"</xfer/>\\\"\n"
+    "  \"</xfer/>\"\n"
     "  job[] job.tagSet@ tagSet.hasName\n"
     "  if\n"
     "\n"
@@ -18488,7 +18027,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // now delete the ended job\n"
     "  nullptr pThisTask task.job!\n"
     "\n"
-    "  //pThisJob job.id@ pThisJob \\\"job::deleteThis %v %v\\\" .printf\n"
+    "  //pThisJob job.id@ pThisJob \"job::deleteThis %v %v\" .printf\n"
     "\n"
     "  pThisJob job.delete\n"
     " ;\n"
@@ -18500,7 +18039,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  params| pJobParticipant  |\n"
     "\n"
-    "  pJobParticipant \\\"Job__Executed::send\\\" find execute\n"
+    "  pJobParticipant \"Job__Executed::send\" find execute\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18513,7 +18052,7 @@ void Task::vAddMunged(Forth* pForth)
     " //   pJob job.participant@\n"
     " //   pJob job.Id@\n"
     " //   pJob object.class@ class::name\n"
-    " // \\\"NOTICE: %v jobId %v executed on node %v\\\" .printf\n"
+    " // \"NOTICE: %v jobId %v executed on node %v\" .printf\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18522,7 +18061,7 @@ void Task::vAddMunged(Forth* pForth)
     ": job.send params| pJob |\n"
     "\n"
     "\n"
-    "  //pJob job.name@ grid::thisNodeName@ \\\"(%v) job.send %v\\\" .printf\n"
+    "  //pJob job.name@ grid::thisNodeName@ \"(%v) job.send %v\" .printf\n"
     "\n"
     "  socket[] locals| pSocket |\n"
     "\n"
@@ -18535,7 +18074,7 @@ void Task::vAddMunged(Forth* pForth)
     "    pJob pSocket socket.sendObject discard\n"
     "\n"
     "    pJob job.hasOperand if\n"
-    "      //\\\"job.send: Job has crs buffer\\\" .\n"
+    "      //\"job.send: Job has crs buffer\" .\n"
     "       pJob job.operand@ pSocket socket.sendObject discard\n"
     "    then\n"
     "\n"
@@ -18631,14 +18170,14 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": job::acquireDdlLock\n"
     "\n"
-    "  \\\"<ddlLock>\\\" <jobNm> _info::findTagSet tagSet.getInt\n"
+    "  \"<ddlLock>\" <jobNm> _info::findTagSet tagSet.getInt\n"
     "\n"
     "  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --\n"
     "\n"
     "  dup DL_GRAB_WRITE\n"
     "  == if\n"
     "    discard\n"
-    "    // \\\"job::acquireDdlLock - grabbing ddl write lock\\\" .\n"
+    "    // \"job::acquireDdlLock - grabbing ddl write lock\" .\n"
     "    DdlLock[].grabWrite\n"
     "    exit\n"
     "  then\n"
@@ -18648,7 +18187,7 @@ void Task::vAddMunged(Forth* pForth)
     "  dup DL_GRAB_READ\n"
     "  == if\n"
     "    discard\n"
-    "    // \\\"job::acquireDdlLock - grabbing ddl read lock\\\" .\n"
+    "    // \"job::acquireDdlLock - grabbing ddl read lock\" .\n"
     "    DdlLock[].grabRead\n"
     "    exit\n"
     "  then\n"
@@ -18661,7 +18200,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": job::</seeFlow/>\n"
     "\n"
-    "  \\\"</flow/>\\\"\n"
+    "  \"</flow/>\"\n"
     "    job[] job.tagSet@ tagSet.hasName\n"
     "  if\n"
     "\n"
@@ -18674,26 +18213,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_words.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)154);
-
-  szSubScriptDef = " 154 CONSTANT job_words.sen__sub "_Stz;
+  szSubScriptDef = " 154 CONSTANT job_words.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [155] se_word.sen
 
   gszaMungedText[155] =
-    "\""
-    "\\\"munged se_word.sen \\\" .verbose \n"
+    "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_word.sen\\\" .verbose\n"
+    "\" se_word.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* ensure the word has an ename set                                           */\n"
@@ -18708,7 +18244,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* check for known word                                                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": word::isKnown ( <\\\"wordNm\\\"> )\n"
+    ": word::isKnown ( <\"wordNm\"> )\n"
     "  find\n"
     "  not if EC_NO_SUCH_WORD false exit_rt then\n"
     "  true\n"
@@ -18719,7 +18255,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": word.name_trunc params| pWord |\n"
     "\n"
-    "  \\\"_\\\" pWord word.name@ str.removeSuffix\n"
+    "  \"_\" pWord word.name@ str.removeSuffix\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18734,19 +18270,19 @@ void Task::vAddMunged(Forth* pForth)
     "  pWord word.include@  locals| pInclude |\n"
     "  pWord word.tagSet@   locals| pWordTags |\n"
     "\n"
-    "  sWordName sCatgName \\\"%12v : %24v\\\" .putf\n"
+    "  sWordName sCatgName \"%12v : %24v\" .putf\n"
     "\n"
     "  pInclude if\n"
-    "    pInclude word.name@ \\\" : %16v\\\" .putf\n"
+    "    pInclude word.name@ \" : %16v\" .putf\n"
     "  else\n"
-    "    \\\" \\\" \\\" : %16v\\\" .putf\n"
+    "    \" \" \" : %16v\" .putf\n"
     "  then\n"
     "\n"
     "  pWordTags if\n"
-    "    pWordTags tagSet.asStr \\\"  %v\\\" .putf\n"
+    "    pWordTags tagSet.asStr \"  %v\" .putf\n"
     "  then\n"
     "\n"
-    "  .\\\\n\n"
+    "  .\\n\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18830,26 +18366,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_word.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)155);
-
-  szSubScriptDef = " 155 CONSTANT se_word.sen__sub "_Stz;
+  szSubScriptDef = " 155 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [156] job_Distributed.sen
 
   gszaMungedText[156] =
-    "\""
-    "\\\"munged job_Distributed.sen \\\" .verbose \n"
+    "\" munged job_Distributed.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Distributed.sen -- Distributed Job                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Distributed.sen\\\" .verbose\n"
+    "\" job_Distributed.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* translate seed ename, find word matching translated value and execute it   */\n"
@@ -18860,7 +18393,7 @@ void Task::vAddMunged(Forth* pForth)
     "  sSeedWordNm find locals| pWord |\n"
     "\n"
     "  pWord not if\n"
-    "    sSeedWordNm \\\"Unable to find seed word: %v\\\" .printf\n"
+    "    sSeedWordNm \"Unable to find seed word: %v\" .printf\n"
     "    process::quit\n"
     "  then\n"
     "\n"
@@ -18886,7 +18419,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  job::</seeFlow/>\n"
     "\n"
-    "  \\\"<preCheck>\\\" job[] job.tagSet@ tagSet.hasName if\n"
+    "  \"<preCheck>\" job[] job.tagSet@ tagSet.hasName if\n"
     "    <preCheck> find execute not if \n"
     "      task::seedInitially task::doneFinally\n"
     "      job::error!\n"
@@ -18949,26 +18482,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Distributed.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)156);
-
-  szSubScriptDef = " 156 CONSTANT job_Distributed.sen__sub "_Stz;
+  szSubScriptDef = " 156 CONSTANT job_Distributed.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [157] se_core.sen
 
   gszaMungedText[157] =
-    "\""
-    "\\\"munged se_core.sen \\\" .verbose \n"
+    "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" se_core.sen\\\" .verbose\n"
+    "\" se_core.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* add 1 to integer on stack                                                  */\n"
@@ -19246,12 +18776,12 @@ void Task::vAddMunged(Forth* pForth)
     " ;\n"
     "\n"
     ": eg_hook\n"
-    "   \\\"eg_hook\\\" .\n"
+    "   \"eg_hook\" .\n"
     " ;\n"
     "\n"
     ": set_hook immediate\n"
     "\n"
-    "  \\\"eg_hook\\\"\n"
+    "  \"eg_hook\"\n"
     "  compiler::current@\n"
     "  word.exitHook!\n"
     " ;\n"
@@ -19259,12 +18789,12 @@ void Task::vAddMunged(Forth* pForth)
     ": exit_test prompt\n"
     "\n"
     "  set_hook\n"
-    "  //[ \\\"eg_hook\\\" compiler::current@ word.exitHook! ]\n"
+    "  //[ \"eg_hook\" compiler::current@ word.exitHook! ]\n"
     "\n"
     "  1 if\n"
-    "    \\\"exit with hook\\\" . exit\n"
+    "    \"exit with hook\" . exit\n"
     "  else\n"
-    "    \\\"normal exit\\\"    . exit_rt\n"
+    "    \"normal exit\"    . exit_rt\n"
     "  then\n"
     " ;\n"
     "\n"
@@ -19303,7 +18833,7 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     "/* forget named word                                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": :forget ( <\\\"wordNm\\\"> )\n"
+    ": :forget ( <\"wordNm\"> )\n"
     "\n"
     "  find dup not if discard exit_rt then\n"
     "\n"
@@ -19386,15 +18916,15 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": rstk_w\n"
     "\n"
-    "  \\\"return stack\\\" .\n"
+    "  \"return stack\" .\n"
     "  rdepth dup not if discard exit_rt then\n"
     "  0 do\n"
     "    I 2 + rpick\n"
     "    dup .put\n"
-    "    \\\" \\\".put\n"
+    "    \" \".put\n"
     "    locate\n"
     "    dup if .put else discard then\n"
-    "    .\\\\n\n"
+    "    .\\n\n"
     "  loop\n"
     " ;\n"
     "\n"
@@ -19456,7 +18986,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  args.senDir sSubDir str.cat dup\n"
     "\n"
-    "  \\\"Would include .sen files from sub-dir %v\\\" .printf\n"
+    "  \"Would include .sen files from sub-dir %v\" .printf\n"
     "\n"
     "  dir::new locals| pSubDir |\n"
     "\n"
@@ -19465,16 +18995,16 @@ void Task::vAddMunged(Forth* pForth)
     "    begin\n"
     "      pSubDir dir.read\n"
     "    while\n"
-    "      pSubDir dir.entryName \\\"Entry %v\\\" .printf\n"
+    "      pSubDir dir.entryName \"Entry %v\" .printf\n"
     "\n"
-    "      4 pSubDir dir.entryName str.right \\\".sen\\\" str.equal if\n"
-    "        pSubDir dir.entryName \\\"Would parse %v\\\" .printf\n"
+    "      4 pSubDir dir.entryName str.right \".sen\" str.equal if\n"
+    "        pSubDir dir.entryName \"Would parse %v\" .printf\n"
     "\n"
     "        args.senDir sSubDir str.cat\n"
-    "          \\\"/\\\" str.cat\n"
+    "          \"/\" str.cat\n"
     "          pSubDir dir.entryName str.cat\n"
     "          to sFilePath\n"
-    "        sFilePath \\\"Would open %v\\\" .printf\n"
+    "        sFilePath \"Would open %v\" .printf\n"
     "\n"
     "        sFilePath\n"
     "          input::open\n"
@@ -19504,7 +19034,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  depth 0 == if exit_rt then\n"
     "\n"
-    "  task[] task.name@ \\\"Stack of task %v has grown\\\" .printf\n"
+    "  task[] task.name@ \"Stack of task %v has grown\" .printf\n"
     "\n"
     "  debug::trap\n"
     " ;\n"
@@ -19523,7 +19053,7 @@ void Task::vAddMunged(Forth* pForth)
     ": snoozeLoop\n"
     "\n"
     "  begin\n"
-    "    \\\"snoozing...\\\" . snooze task::yield\n"
+    "    \"snoozing...\" . snooze task::yield\n"
     "  again\n"
     " ;\n"
     "\n"
@@ -19532,32 +19062,29 @@ void Task::vAddMunged(Forth* pForth)
     "/*----------------------------------------------------------------------------*/\n"
     ": helloWorld prompt\n"
     "\n"
-    "  \\\"Hello World!\\\" .\n"
+    "  \"Hello World!\" .\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_core.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)157);
-
-  szSubScriptDef = " 157 CONSTANT se_core.sen__sub "_Stz;
+  szSubScriptDef = " 157 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [158] se_vortex.sen
 
   gszaMungedText[158] =
-    "\""
-    "\\\"munged se_vortex.sen \\\" .verbose \n"
+    "\" munged se_vortex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_vortex.sen -- parse the .hpp files                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\"-se_vortex.sen\\\" .verbose\n"
+    "\"-se_vortex.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* process all files in the ../Source dir                                     */\n"
@@ -19568,7 +19095,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  vortex::new locals| pVortex |\n"
     "\n"
-    "  \\\"/tmp/vortex.txt\\\" locals| sVortexPath |\n"
+    "  \"/tmp/vortex.txt\" locals| sVortexPath |\n"
     "\n"
     "  sVortexPath pVortex vortex.open assert\n"
     "\n"
@@ -19579,14 +19106,14 @@ void Task::vAddMunged(Forth* pForth)
     "    pSeSourceDir dir.entryType DE_REG == not continue\n"
     "\n"
     "    // ignore entries which aren't .sen files\n"
-    "    4 pSeSourceDir dir.entryName str.right \\\".hpp\\\" str.equal if\n"
+    "    4 pSeSourceDir dir.entryName str.right \".hpp\" str.equal if\n"
     "\n"
     "      //pSeSourceDir dir.entryName .\n"
     "\n"
     "      pSeSourceDir dir.entryName pVortex vortex.processHpp\n"
     "\n"
     "    else\n"
-    "    2 pSeSourceDir dir.entryName str.right \\\".h\\\" str.equal if\n"
+    "    2 pSeSourceDir dir.entryName str.right \".h\" str.equal if\n"
     "\n"
     "      //pSeSourceDir dir.entryName .\n"
     "\n"
@@ -19598,7 +19125,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pVortex vortex.close\n"
     "  pVortex vortex.delete\n"
     "\n"
-    "  sVortexPath \\\"Vortexed to: %v\\\" fmt.print\n"
+    "  sVortexPath \"Vortexed to: %v\" fmt.print\n"
     "\n"
     " ;\n"
     "\n"
@@ -19614,13 +19141,13 @@ void Task::vAddMunged(Forth* pForth)
     "  dir::getCurrent locals| pOrigDir |\n"
     "\n"
     "  // change to source director\n"
-    "  \\\"../Source\\\" dir::changeCurrent\n"
-    "  //\\\"../Vortex\\\" dir::changeCurrent\n"
-    "  dir::getCurrent \\\"Current working directory now: %v\\\" fmt.print\n"
-    "  \\\"SMA.hpp\\\" vortex::new vortex.processHpp\n"
+    "  \"../Source\" dir::changeCurrent\n"
+    "  //\"../Vortex\" dir::changeCurrent\n"
+    "  dir::getCurrent \"Current working directory now: %v\" fmt.print\n"
+    "  \"SMA.hpp\" vortex::new vortex.processHpp\n"
     "\n"
     "  // open directory accessor\n"
-    "  \\\".\\\" pSeSourceDir dir.open assert\n"
+    "  \".\" pSeSourceDir dir.open assert\n"
     "\n"
     "  pSeSourceDir vortex_ProcessDir\n"
     "\n"
@@ -19631,32 +19158,29 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  // change back to original dir\n"
     "  pOrigDir dir::changeCurrent\n"
-    "  dir::getCurrent \\\"Current working directory now: %v\\\" fmt.print\n"
+    "  dir::getCurrent \"Current working directory now: %v\" fmt.print\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT se_vortex.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)158);
-
-  szSubScriptDef = " 158 CONSTANT se_vortex.sen__sub "_Stz;
+  szSubScriptDef = " 158 CONSTANT se_vortex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [159] job__End.sen
 
   gszaMungedText[159] =
-    "\""
-    "\\\"munged job__End.sen \\\" .verbose \n"
+    "\" munged job__End.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__End.sen -- generic job related words                                  */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job__End.sen\\\" .verbose\n"
+    "\" job__End.sen\" .verbose\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
     "//                            on originating node                             //\n"
@@ -19687,7 +19211,7 @@ void Task::vAddMunged(Forth* pForth)
     "  grid::definedNodes 0\n"
     "  do\n"
     "    I grid::node node.isConnected if\n"
-    "      //I grid::thisNodeName@ \\\"(%v) (%v) Job__End::distribute\\\" .printf\n"
+    "      //I grid::thisNodeName@ \"(%v) (%v) Job__End::distribute\" .printf\n"
     "      I pJob__End job.forward\n"
     "    then\n"
     "  loop\n"
@@ -19706,7 +19230,7 @@ void Task::vAddMunged(Forth* pForth)
     "  //\n"
     "  // where: on the participating node\n"
     "  //\n"
-    "  //grid::thisNodeName@ \\\"(%v) RECEIVED END\\\" .printf\n"
+    "  //grid::thisNodeName@ \"(%v) RECEIVED END\" .printf\n"
     "  job[] locals| pJob__End |\n"
     "\n"
     "  // find the job to be executed in the participating jobs\n"
@@ -19733,7 +19257,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: _End :: _End ;\n"
     "\n"
     ": _End _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_GENERIC\n"
     "}\n"
@@ -19743,26 +19267,23 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job__End.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)159);
-
-  szSubScriptDef = " 159 CONSTANT job__End.sen__sub "_Stz;
+  szSubScriptDef = " 159 CONSTANT job__End.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [160] job_Answer.sen
 
   gszaMungedText[160] =
-    "\""
-    "\\\"munged job_Answer.sen \\\" .verbose \n"
+    "\" munged job_Answer.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_Answer.sen -- answer job                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" job_Answer.sen\\\" .verbose\n"
+    "\" job_Answer.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* receive node info from node we just answered                               */\n"
@@ -19786,7 +19307,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // delete the node info job\n"
     "  pJob_NodeInfo job.delete\n"
     "\n"
-    "  //pAnsweredNode node.name \\\"Answered node %v\\\" str.format .logNote\n"
+    "  //pAnsweredNode node.name \"Answered node %v\" str.format .logNote\n"
     "\n"
     "  // return the answered node\n"
     "  pAnsweredNode\n"
@@ -19815,7 +19336,7 @@ void Task::vAddMunged(Forth* pForth)
     "  grid::thisNode@ grid::node node.port to iPort\n"
     "\n"
     "  //args.verbose if\n"
-    "  //  iPort \\\"Waiting for connections on port %v\\\" .printf\n"
+    "  //  iPort \"Waiting for connections on port %v\" .printf\n"
     "  //then\n"
     "\n"
     "  // now create a listening socket\n"
@@ -19833,7 +19354,7 @@ void Task::vAddMunged(Forth* pForth)
     "    pListeningSocket socket.accept to pAcceptedSocket\n"
     "\n"
     "    args.verbose if\n"
-    "      iPort \\\"Answered connection on port %v\\\" .printf\n"
+    "      iPort \"Answered connection on port %v\" .printf\n"
     "    then\n"
     "\n"
     "    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -\n"
@@ -19873,7 +19394,7 @@ void Task::vAddMunged(Forth* pForth)
     "cmdSyntax: answer :: answer ;\n"
     "\n"
     ": answer _info tags{\n"
-    "  <jobDesc>  = \\\"--description of job--\\\"\n"
+    "  <jobDesc>  = \"--description of job--\"\n"
     "  \n"
     "  <jobKind>  = JK_LOCAL\n"
     "  <rspKind>  = RS_NONE\n"
@@ -19888,13 +19409,11 @@ void Task::vAddMunged(Forth* pForth)
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_Answer.sen "_Stz
+    "\n"
+    ""_Stz
   ;
 
-  vCompileMungedColon((i8)160);
-
-  szSubScriptDef = " 160 CONSTANT job_Answer.sen__sub "_Stz;
+  szSubScriptDef = " 160 CONSTANT job_Answer.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 

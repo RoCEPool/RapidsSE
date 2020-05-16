@@ -84,17 +84,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "    \"\\\"\"\n" pCppFile file.write
+  //"    \"\\\"\"\n" pCppFile file.write
 
-  "    \"\\\\\\\"munged " pCppFile file.write
-  sFileNm pCppFile file.write
-
-  " \\\\\\\" .verbose \\n\"\n" pCppFile file.write
+  sFileNm "    \"\\\" munged %v \\\" .verbose \\n\"\n" str.format
+  pCppFile file.write
 
   "" locals| sSenLine |
   begin pSenFile file.read while
 
-    str.escape str.escape to sSenLine
+    //str.escape
+    str.escape to sSenLine
 
     sSenLine ";" str.equal if
       " ;" to sSenLine
@@ -107,20 +106,23 @@
 
   repeat
 
-  "    \"\\\"\"\n" pCppFile file.write
+  "    \"\\n\"\n"
+  pCppFile file.write
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sFileNm "  \" CONSTANT %v \"_Stz\n" str.format
+//  sFileNm "  \" CONSTANT %v \"_Stz\n" str.format
+//  pCppFile file.write
+  "    \"\"_Stz\n" str.format
   pCppFile file.write
 
   "  ;\n"
   pCppFile file.write
 
-  "\n"
-  pCppFile file.write
-  i_File "  vCompileMungedColon((i8)%v);\n" str.format
-  pCppFile file.write
+//  "\n"
+//  pCppFile file.write
+//  i_File "  vCompileMungedColon((i8)%v);\n" str.format
+//  pCppFile file.write
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -129,7 +131,7 @@
   "  szSubScriptDef ="
   pCppFile file.write
 
-  sFileNm i_File " \" %v CONSTANT %v__sub \"_Stz;\n" str.format
+  sFileNm i_File " \" %v CONSTANT %v \"_Stz;\n" str.format
   pCppFile file.write
 
   "  vCompileMungedColon(szSubScriptDef);\n" str.format

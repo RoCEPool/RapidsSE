@@ -58,6 +58,9 @@ void Task::vAddAxioms(void)
   "  then"
   
   
+  //"  input::chars ."
+
+  
   //" \"((c))\" .put input::chars . "
   // -- -- -- -- -- -- --
   // test for discarding
@@ -243,6 +246,7 @@ void Task::vAddAxioms(void)
   
   "  args.senDir str.prepend"
   "  input::open"
+  "  input::senTokens"
   "  input::useBegin"
   "  interpret"
   "  input::inspect"
@@ -261,6 +265,7 @@ void Task::vAddAxioms(void)
   "  input::push"
   //"  dup ."
   "  input::useString"
+  "  input::senTokens"
   "  input::useBegin"
   "  interpret"
   "  input::inspect"
@@ -278,10 +283,11 @@ void Task::vAddAxioms(void)
   //"  traceon"
   "  args.munged if"
   "    dup word::find if"
-  "      word::find execute include-munged"
+  "      word::find execute >int mungedText include-munged"
   "      exit_rt"
   "    then"
   "    . debug::trap"
+  "    process::quit "
   "  then"
   "  include-file"
   "  ;"_Stz;
