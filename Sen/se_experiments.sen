@@ -49,11 +49,44 @@
 
   "../DATA/Datums/timestamp.csv" locals| sFilePath |
 
-  sFilePath file::print
+  //sFilePath file::print
 
   sFilePath file::size locals| nFileSize |
 
   nFileSize sFilePath "File %v Size %v" .printf
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  convertor::new locals| pConvertor |
+
+  csvBuffer::new locals| pCsvBuffer |
+
+  file::new locals| pFile |
+
+  sFilePath OPEN_READ pFile file.open assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  1 0 do
+
+    0 pFile file.seek
+
+    pCsvBuffer pFile file.ReadChunk assert
+
+    //pCsvBuffer csvBuffer.print
+
+    pCsvBuffer pConvertor convertor.convert
+
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pFile file.close
+  pFile file.delete
+
+  pCsvBuffer csvBuffer.delete
+
+  pConvertor convertor.delete
 ;
 
 /*============================================================================*/

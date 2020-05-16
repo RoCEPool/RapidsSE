@@ -41,7 +41,11 @@ void Step::vConvertorConvert(void)
 
   Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
 
-  bool bResult = pConvertor->bConvert(nullptr);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+
+  char* azSrc  = (char*)pCsvBuffer->ayDataArea();
+  
+  bool bResult = pConvertor->bConvert(azSrc);
   
   EXIT();
 }
