@@ -65,7 +65,7 @@
   
   // add tag set name
   
-  "<TagSetNm>" compiler::current@ word.name@ compiler::current@ word.TagSet@ tagSet.addTag
+  "<aTagSetNm>" compiler::current@ word.name@ compiler::current@ word.TagSet@ tagSet.addTag
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
