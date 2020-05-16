@@ -174,6 +174,18 @@ Stz* CsvBuffer::szReportNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get optional report name                                                   */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+
+  m_nRecords = 0;
+  
+  m_xWsp.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set optional report name                                                   */
 /*----------------------------------------------------------------------------*/
 void CsvBuffer::vReportNm(Stz* szReportNm)

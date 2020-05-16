@@ -21,6 +21,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file.open"_Stz,       &Step::vFileOpen);
   vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
   vAddStep("file.read"_Stz,       &Step::vFileRead);
+  vAddStep("file.readChunk"_Stz,  &Step::vFileReadChunk);
   vAddStep("file.write"_Stz,      &Step::vFileWrite);
 }
 
@@ -195,6 +196,30 @@ void Step::vFileRead(void)
   else {
     m_pDataStack->vPushInt(false);
   }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file.read -- read line from a file ( pFile -- sLine 1 | 0 )                */
+/*----------------------------------------------------------------------------*/
+void Step::vFileReadChunk(void)
+{
+  ENTRY();
+  
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+
+  pCsvBuffer->vReset();
+  
+  i8 nFreeBytes = pCsvBuffer->nFreeBytes();
+  
+  i8 nReadBytes = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nFreeBytes);
+  
+  pCsvBuffer->vTake(nReadBytes);
+
+  m_pDataStack->vPushInt(nReadBytes);
 
   EXIT();
 }

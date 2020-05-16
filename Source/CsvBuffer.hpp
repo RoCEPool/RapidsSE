@@ -35,6 +35,7 @@ namespace DataBuffers
     void       vPrintRecords(void);
     i8         nRecords(void);
     Stz*       szReportNm(void);
+    void       vReset(void);
     void       vReportNm(Stz* szReportNm);
     void       vTake(i8 nBytes);
 
