@@ -4,6 +4,8 @@
 
 #include "Steps.h"
 
+extern Stz* gszaMungedText[];
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -16,6 +18,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("find:"_Stz,             &Step::vFind,             true);
   vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
+  vAddStep("mungedText"_Stz,        &Step::vMungedText);
   vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
   vAddStep("see"_Stz,               &Step::vSee,              true);
   vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
@@ -188,6 +191,7 @@ void Step::vFind(void)
   
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
@@ -200,6 +204,22 @@ void Step::vImmediate(void)
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
   pCurrentWord->vImmediate(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* mungedText -- push a particular munged text                                */
+/*----------------------------------------------------------------------------*/
+void Step::vMungedText(void)
+{
+  ENTRY();
+
+  i8 i_Text = m_pDataStack->iPopInt(__func__);
+  
+  Stz* szText = gszaMungedText[i_Text];
+  
+  m_pDataStack->vPushStz(szText);
   
   EXIT();
 }

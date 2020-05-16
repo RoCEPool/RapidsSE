@@ -349,6 +349,7 @@ public:
   void vExit_RT(void);
   void vFind(void);
   void vImmediate(void);
+  void vMungedText(void);
   void vPostpone(void);
   void vSee(void);
   void vSemicolon(void);
