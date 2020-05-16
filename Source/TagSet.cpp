@@ -291,7 +291,7 @@ void TagSet::vDumpSet(bool bCarriageReturns)
   if (bCarriageReturns)
     vTrace("\n}\n"_Stz);
   else
-    vTrace(" }\n"_Stz);
+    vTrace(" }\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
