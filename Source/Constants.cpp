@@ -110,7 +110,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_BUILD_USERNAME"_Stz, gsBuildUserName);
   vAddConstant("C_BUILD_BRANCH"_Stz,   gsBuildBranch);
 
-  vAddConstant("C_SIZE_JUMBO_OBJECT"_Stz,  C_SIZE_JUMBO_OBJECT);
+
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,   C_SIZE_POOL_BUFFER);
   vAddConstant("C_SIZE_MEDIUM_OBJECT"_Stz, C_SIZE_MEDIUM_OBJECT);
   vAddConstant("C_SIZE_SMALL_OBJECT"_Stz,  C_SIZE_SMALL_OBJECT);

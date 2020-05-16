@@ -47,7 +47,6 @@ bool Prompt::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_SIZE_SMALL_OBJECT  = %lld\n"_Stz,C_SIZE_SMALL_OBJECT);
   vTrace("  C_SIZE_MEDIUM_OBJECT = %lld\n"_Stz,C_SIZE_MEDIUM_OBJECT);
   vTrace("  C_SIZE_LARGE_OBJECT  = %lld\n"_Stz,C_SIZE_LARGE_OBJECT);
-  vTrace("  C_SIZE_JUMBO_OBJECT  = %lld\n"_Stz,C_SIZE_JUMBO_OBJECT);
   vTrace("  C_SIZE_POOL_BUFFER   = %lld\n"_Stz,C_SIZE_POOL_BUFFER);
   vTrace("\n"_Stz);
   return true;

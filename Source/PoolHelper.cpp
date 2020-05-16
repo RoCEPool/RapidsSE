@@ -634,7 +634,6 @@ void PoolHelper::vRegionSummary()
   s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
   s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
   s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
-  s32 sMagJumbo;  MagLib::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
   vTrace("\n"_Stz);
   vTrace("  Region %s %p size %lldB epoch %lld\n"_Stz,
@@ -695,7 +694,7 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks());
   
   vTrace("  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
+         sMagLarge.azChar(),
          AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
          AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());

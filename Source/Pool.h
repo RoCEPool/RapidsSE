@@ -26,11 +26,6 @@ static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;
 static const u8 C_MASK_MEDIUM_OBJECT = 0xFFFF;
 static const u8 C_MASK_LARGE_OBJECT  = 0xFFFFF;
 
-
-static const u8 C_JUMBO_COEFFICIENT  = 2;
-static const u8 C_JUMBO_RATIO        = 16;
-static const i8 C_SIZE_JUMBO_OBJECT  = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
-
 static const i8 C_LOW_BUFFERS        = 512;
 
 static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));

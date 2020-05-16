@@ -286,9 +286,6 @@ void HeapMem::vReport(void)
 //  AM::pHeapMem()->Persistent.m_pLarge->vReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
-//  // large jumbo heap
-//  AM::pHeapMem()->Persistent.m_pJumbo->vReport(sReport.pString());
-//  vTrace(" %s\n"_Stz,sReport.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
