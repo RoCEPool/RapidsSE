@@ -19,6 +19,7 @@ namespace Oblique
     Exemplar(void);
    ~Exemplar(void) noexcept(false);
   
+  private:
     Footer* aFooter(void);
   };
 

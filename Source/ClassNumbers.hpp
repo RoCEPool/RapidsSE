@@ -54,6 +54,7 @@ enum eCN : u2 // Class Number
   /*  33 0x021      176B Heap:M */ CN_COMPILER,
   /*  33 0x021      176B Heap:M */ CN_CONSTDEF,
   /*  33 0x021      176B Heap:M */ CN_CONSTSET,
+  /*  33 0x021      176B Heap:M */ CN_CONVERT,
   /*  34 0x022  1044008B Heap:L */ CN_CRVBUFFER,
   /*  34 0x022  1044008B Heap:L */ CN_CRWBUFFER,
   /*  35 0x023  1040784B Heap:L */ CN_CSVBUFFER,
@@ -386,6 +387,7 @@ static Stz* aCN[]
   /*  33 0x021 */ "COMPILER"_Stz,            // CN_COMPILER
   /*  33 0x021 */ "CONSTDEF"_Stz,            // CN_CONSTDEF
   /*  33 0x021 */ "CONSTSET"_Stz,            // CN_CONSTSET
+  /*  33 0x021 */ "COBVERT"_Stz,             // CN_CONVERT
   /*  34 0x022 */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /*  34 0x022 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER

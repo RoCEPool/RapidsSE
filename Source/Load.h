@@ -14,6 +14,8 @@ namespace Load
 
 //------------------------------------------------------------------------------
 
+#include "Convert.hpp"
+
 #include "RecordData.hpp"
 #include "WriteHash.hpp"
 #include "Loader.hpp"
