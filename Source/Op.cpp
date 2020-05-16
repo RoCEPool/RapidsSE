@@ -145,7 +145,7 @@ void Op::vDump(i8 i_Op)
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
   TagSet* pOpTags = this->pOpTags();
-  i8 iXmits =  pOpTags->iValue(C_TAG_Xmits);
+  i8 iXmits =  pOpTags->iValue(C_TAG_XMITS);
   i8 iLeftMarkers = iXmits ? iXmits : 1;
   
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
@@ -944,29 +944,32 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a new Job for the Op
   ReqTuple xReqTuple(m_sOpNm,iSessionId, false);
-
   m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
-
+  
+  // get the operator job tag set
   TagSet* pOpJobTags = AM::pJobTags(m_pOpJob);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy the pipeline job tag set into the operator job tags
   TagSet* pPipeLineJobTags = AM::pJobTags(m_pPipelineJob);
-
-  pOpJobTags->vInsert(C_TAG_PATH,
-                          pPipeLineJobTags->szValue(C_TAG_PATH));
-  pOpJobTags->vInsert(C_TAG_JOBNM,
-                          m_sOpNm);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Job* pJob_pipeline = AM::pThisTLSJob();
-  TagSet* pTagSet_pipeline = AM::pJobTags(pJob_pipeline);
- 
-  TagSet* pTagSet_op = AM::pJobTags(m_pOpJob);
-
-  pTagSet_op->vCopy(pTagSet_pipeline);
+  pOpJobTags->vCopy(pPipeLineJobTags);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now copy the hidden topology ename pairs to the job ename set
+  pOpJobTags->vCopy(&m_oTopologyTags);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the OpJob JobNM to be the same as the Opertor name
+  pOpJobTags->vReplace(C_TAG_JOBNM, m_sOpNm);
+  
+  //pOpJobTags->vDumpSet();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs
   s4K szCmdStr;
   vToCmdStr(szCmdStr);
@@ -974,21 +977,15 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTknVec->vTokenise(szCmdStr);
   
-  //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the job
   eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
   //RASSERT(EC_NONE != eError);
-  
-  // now append the hidden topology ename pairs to the job ename set
-  AM::vAppendJobTags(m_pOpJob, &m_oTopologyTags);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
-  //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_API);
-  //AM::pJobTags(m_pOpJob)->vAdd(C_TAG_TAGS);
-
   AM::vSpawnJob_op(m_pOpJob);
 }
 
