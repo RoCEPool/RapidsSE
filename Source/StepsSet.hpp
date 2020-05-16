@@ -161,6 +161,11 @@ public:
   void vCompilerNestedStore(void);
   void vCompilerPostponing(void);
 
+  // convertor
+  void vConvertorConvert(void);
+  void vConvertorDelete(void);
+  void vConvertorNew(void);
+
   // cpu
   void vCpuRdtscp(void);
 

@@ -53,6 +53,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
   Step::vAddSteps_Compiler();
+  Step::vAddSteps_Convertor();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_Cpu();
   Step::vAddSteps_CrwBuffer();

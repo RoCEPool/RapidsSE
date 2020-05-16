@@ -16,13 +16,13 @@ __aFooterFunction(Convert)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Convert::Convert(void* aOut, char* azSrc, Format* pFmt)
+Convert::Convert(Format* pFmt)
 : Object(CN_CONVERT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
   
-  m_azSrc = azSrc;
-  m_acChr = m_azSrc;
+  m_azSrc = nullptr;
+  m_acChr = nullptr;
 
   m_pFmt  = pFmt;
 
@@ -40,6 +40,13 @@ Convert::~Convert(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+bool Convert::bConvert(char* azSrc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
+  
+  return true;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

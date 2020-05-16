@@ -22,8 +22,10 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Convert(void* aOut, char* azSrc, Format* pFmt);
+    Convert(Format* pFmt);
    ~Convert(void) noexcept(false);
+  
+    bool bConvert(char* azSrc);
     
   private:
     Footer* aFooter(void);
