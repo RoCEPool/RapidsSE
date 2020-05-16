@@ -4,6 +4,8 @@
 
 #include "Tasks.h"
 
+extern Stz* gszaMungedText[];
+
 /*----------------------------------------------------------------------------*/
 /* add munged words into main dictionary                                      */
 /*----------------------------------------------------------------------------*/
@@ -526,6 +528,18 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   pInput->vReadToken();
   
   pInput->vUseEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile a munged definition                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vCompileMungedColon(i8 i_Def)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Stz* szText = gszaMungedText[i_Def];
+  
+  vCompileMungedColon(szText);
 }
 
 /*============================================================================*/

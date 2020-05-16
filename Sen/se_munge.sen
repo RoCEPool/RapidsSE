@@ -79,7 +79,7 @@
 
   "\n"
   pCppFile file.write
-  i_File "  gszaMungeText[%v] =\n" str.format
+  i_File "  gszaMungedText[%v] =\n" str.format
   pCppFile file.write
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -119,7 +119,7 @@
 
   "\n"
   pCppFile file.write
-  i_File "  vCompileMungedColon(gszaMungeText[%v]);\n" str.format
+  i_File "  vCompileMungedColon((i8)%v);\n" str.format
   pCppFile file.write
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -210,7 +210,7 @@
 
   "\n"
   pCppFile file.write
-  "Stz* gszaMungeText[1024];\n"
+  "Stz* gszaMungedText[1024];\n"
   pCppFile file.write
 
   "\n"
