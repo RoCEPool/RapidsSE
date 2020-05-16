@@ -15,8 +15,10 @@ namespace Gadgets
 //------------------------------------------------------------------------------
 
 // tags
+static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
+
 static Stz* C_TAG_CMD          = "<cmd>"_Stz;
-static Stz* C_TAG_Xmits        = "<Xmits>"_Stz;
+static Stz* C_TAG_XMITS        = "<Xmits>"_Stz;
 static Stz* C_TAG_DISTID       = "<distId>"_Stz;
 static Stz* C_TAG_JOBCLASS     = "<jobClass>"_Stz;
 static Stz* C_TAG_JOBKIND      = "<jobKind>"_Stz;

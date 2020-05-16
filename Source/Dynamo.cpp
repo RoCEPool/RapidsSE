@@ -928,7 +928,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
   }
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddEnamePair(C_TAG_Xmits,iXmits,TN_INTEGER);
+  pOpSpec->vAddEnamePair(C_TAG_XMITS,iXmits,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
