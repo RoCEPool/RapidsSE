@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Convert.cpp - csv record convertor                                   */
+/* Steps_Convertor.cpp - csv record convertor                                 */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -22,9 +22,9 @@ void Step::vConvertorNew(void)
 {
   ENTRY();
   
-  Convert* pConvert = new Convert(AM::pFmt());
+  Convertor* pConvertor = new Convertor(AM::pFmt());
   
-  m_pDataStack->vPushPtr(pConvert);
+  m_pDataStack->vPushPtr(pConvertor);
     
   EXIT();
 }
@@ -39,9 +39,9 @@ void Step::vConvertorConvert(void)
 {
   ENTRY();
 
-  Convert* pConvert = _pConvert(m_pDataStack->pPopPtr(__func__));
+  Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
 
-  bool bResult = pConvert->bConvert(nullptr);
+  bool bResult = pConvertor->bConvert(nullptr);
   
   EXIT();
 }
@@ -53,9 +53,9 @@ void Step::vConvertorDelete(void)
 {
   ENTRY();
   
-  Convert* pConvert = _pConvert(m_pDataStack->pPopPtr(__func__));
+  Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
 
-  delete pConvert;
+  delete pConvertor;
   
   EXIT();
 }

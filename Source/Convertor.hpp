@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Convert.hpp -- Fast Convert of Csv Record                                  */
+/* Convertor.hpp -- Csv Record Convertor                                      */
 /*============================================================================*/
 #pragma once
 
 namespace Load
 {
-  class Convert : public Object
+  class Convertor : public Object
   {
   private:
     Datum   m_oDatum;
@@ -22,8 +22,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Convert(Format* pFmt);
-   ~Convert(void) noexcept(false);
+    Convertor(Format* pFmt);
+   ~Convertor(void) noexcept(false);
   
     bool bConvert(char* azSrc);
     
@@ -111,7 +111,7 @@ namespace Load
   
   };
 
-  Convert* _pConvert(void* aAddr);
+  Convertor* _pConvertor(void* aAddr);
 
 }
 

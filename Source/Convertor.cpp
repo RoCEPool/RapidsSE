@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Convert.cpp -- Fast Convert of Csv Record                                  */
+/* Convertor.cpp -- Fast Convertor of Csv Record                                  */
 /*============================================================================*/
 
 #include "Load.h"
@@ -8,41 +8,45 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,Convert,CN_CONVERT)
-__aNewFunction(Convert,CN_CONVERT)
-__vDeleteFunction(Convert,CN_CONVERT)
-__aFooterFunction(Convert)
+__pCastFunction(Load,Convertor,CN_CONVERTOR)
+__aNewFunction(Convertor,CN_CONVERTOR)
+__vDeleteFunction(Convertor,CN_CONVERTOR)
+__aFooterFunction(Convertor)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Convert::Convert(Format* pFmt)
-: Object(CN_CONVERT)
+Convertor::Convertor(Format* pFmt)
+: Object(CN_CONVERTOR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
   
   m_azSrc = nullptr;
   m_acChr = nullptr;
 
   m_pFmt  = pFmt;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Convert::~Convert(void) noexcept(false)
+Convertor::~Convertor(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool Convert::bConvert(char* azSrc)
+
+/*----------------------------------------------------------------------------*/
+/* convert a chunck                                                           */
+/*----------------------------------------------------------------------------*/
+bool Convertor::bConvert(char* azSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
   
   return true;
 }
