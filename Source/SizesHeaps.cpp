@@ -153,7 +153,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lexicon),            HT_TRANSIENT_TINY    }, // CN_LEXICON
   { sizeof(LoadChunk),          HT_TRANSIENT_LARGE   }, // CN_LOADCHUNK
   { sizeof(Loader),             HT_TRANSIENT_LARGE   }, // CN_LOADER
-  { sizeof(LoadMap),            HT_TRANSIENT_JUMBO,   }, // CN_LOADMAP
   { sizeof(Local),              HT_INVALID           }, // CN_LOCAL
   { sizeof(LocalChain),         HT_TRANSIENT_LARGE   }, // CN_LOCALSCHAIN
   { sizeof(Lock),               HT_INVALID           }, // CN_LOCK

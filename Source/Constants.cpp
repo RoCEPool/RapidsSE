@@ -302,7 +302,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_LEXICON"_Stz,      CN_LEXICON);
   /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
   /*    */ vAddConstant("CN_LOADER"_Stz,       CN_LOADER);
-  /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
   /*    */ vAddConstant("CN_LOCAL"_Stz,        CN_LOCAL);
   /* 47 */ vAddConstant("CN_LOCALSCHAIN"_Stz,     CN_LOCALSCHAIN);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);

@@ -157,7 +157,6 @@ enum eCN : u2 // Class Number
   /* 134 0x086       80B Heap:S */ CN_LEXICON,
   /* 135 0x087  1000512B Heap:L */ CN_LOADCHUNK,
   /* 135 0x087  1000512B Heap:L */ CN_LOADER,
-  /* 136 0x088  9389360B Heap:J */ CN_LOADMAP,
   /* 137 0x089     8208B Heap:I */ CN_LOCAL,
   /* 138 0x08A   262688B Heap:L */ CN_LOCALSCHAIN,
   /* 139 0x08B      192B Heap:I */ CN_LOCK,
@@ -492,7 +491,6 @@ static Stz* aCN[]
   /* 134 0x086 */ "LEXICON"_Stz,             // CN_LEXICON
   /* 135 0x087 */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 135 0x087 */ "LOADER"_Stz,              // CN_LOADER
-  /* 136 0x088 */ "LOADMAP"_Stz,             // CN_LOADMAP
   /* 137 0x089 */ "LOCAL"_Stz,               // CN_LOCAL
   /* 138 0x08A */ "LOCALSCHAIN"_Stz,         // CN_LOCALSCHAIN
   /* 139 0x08B */ "LOCK"_Stz,                // CN_LOCK
