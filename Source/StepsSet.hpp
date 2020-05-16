@@ -335,6 +335,7 @@ public:
   void vFileNew(void);
   void vFileOpen(void);
   void vFilePathGet(void);
+  void vFilePrint(void);
   void vFileRead(void);
   void vFileReadChunk(void);
   void vFileSeek(void);

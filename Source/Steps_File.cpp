@@ -16,6 +16,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
   vAddStep("file::new"_Stz,       &Step::vFileNew);
+  vAddStep("file::print"_Stz,     &Step::vFilePrint);
   vAddStep("file::size"_Stz,      &Step::vFileSize);
 
   vAddStep("file.close"_Stz,      &Step::vFileClose);
@@ -174,6 +175,34 @@ void Step::vFilePathGet(void)
   s256 sPath = pFile->sFilePath();
   
   m_pDataStack->vPushStr(sPath);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file::print -- print contents of file                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vFilePrint(void)
+{
+  ENTRY();
+  
+  s256 sPath;
+  m_pDataStack->vPopStr(sPath,__func__);
+
+  File* pFile = new File(m_pTask);
+
+  bool bOpened = pFile->bOpenMode(sPath,C_OPEN_READ);
+  if (! bOpened)
+    return;
+
+  s48K sLine;
+  
+  while (pFile->bReadLine(sLine))
+    vTrace("%s\n"_Stz,sLine.azChar());
+  
+  pFile->vClose();
+  
+  delete pFile;
   
   EXIT();
 }

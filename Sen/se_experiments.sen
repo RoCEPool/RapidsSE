@@ -49,6 +49,8 @@
 
   "../DATA/Datums/timestamp.csv" locals| sFilePath |
 
+  sFilePath file::print
+
   sFilePath file::size locals| nFileSize |
 
   nFileSize sFilePath "File %v Size %v" .printf
