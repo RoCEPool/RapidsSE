@@ -280,7 +280,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SP_Vch),             HT_INVALID           }, // CN_SPVCH
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           }, // CN_SRTSET
-  { sizeof(Stack),              HT_TRANSIENT_LARGE   }, // CN_STACK
+  { sizeof(Stack),              HT_TRANSIENT_MEDIUM  }, // CN_STACK
   { sizeof(Stage),              HT_TRANSIENT_MEDIUM  }, // CN_STAGE
   { sizeof(StageSpec),          HT_TRANSIENT_SMALL   }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID           }, // CN_STEPACCUM
