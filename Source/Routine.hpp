@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  static const i8 C_WSP_ROUTINE = C_SIZE_MEDIUM_OBJECT - 128;
+  static const i8 C_WSP_ROUTINE = C_SIZE_SMALL_OBJECT - 128;
 
   class Routine : public Object
   {

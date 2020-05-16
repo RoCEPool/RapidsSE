@@ -221,7 +221,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ResponseVec),        HT_TRANSIENT_MEDIUM  }, // CN_RESPONSEVEC
   { sizeof(Result),             HT_TRANSIENT_MEDIUM  }, // CN_RESULT
   { sizeof(Rand),               HT_INVALID           }, // CN_RN_RAND
-  { sizeof(Routine),            HT_TRANSIENT_MEDIUM  }, // CN_ROUTINE
+  { sizeof(Routine),            HT_TRANSIENT_SMALL   }, // CN_ROUTINE
   { sizeof(Row),                HT_TRANSIENT_LARGE   }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_TRANSIENT_MEDIUM  }, // CN_ROWAGG
   { sizeof(RowCompactor),       HT_TRANSIENT_LARGE   }, // CN_ROWCOMPACTOR
