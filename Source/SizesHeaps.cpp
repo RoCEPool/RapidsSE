@@ -141,8 +141,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job_Start),          HT_TRANSIENT_MEDIUM  }, // CN_JOB_START
   { sizeof(Job_WriteBuffer),    HT_TRANSIENT_LARGE   }, // CN_JOB_WRITEBUFFER
   { sizeof(JobList),            HT_TRANSIENT_TINY    }, // CN_JOBLIST
-  { sizeof(Heap), /*correct*/   HT_INVALID           }, // CN_JUMBOPERSISTENT
-  { sizeof(Heap), /*correct*/   HT_INVALID           }, // CN_JUMBOTRANSIENT
 
   { 'K' - ('A' - 1),            HT_INVALID           }, // CN__K__
   { sizeof(Key),                HT_INVALID           }, // CN_KEY
@@ -153,7 +151,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lexicon),            HT_TRANSIENT_TINY    }, // CN_LEXICON
   { sizeof(LoadChunk),          HT_TRANSIENT_LARGE   }, // CN_LOADCHUNK
   { sizeof(Loader),             HT_TRANSIENT_LARGE   }, // CN_LOADER
-  { sizeof(LoadMap),            HT_TRANSIENT_JUMBO,   }, // CN_LOADMAP
   { sizeof(Local),              HT_INVALID           }, // CN_LOCAL
   { sizeof(LocalChain),         HT_TRANSIENT_LARGE   }, // CN_LOCALSCHAIN
   { sizeof(Lock),               HT_INVALID           }, // CN_LOCK

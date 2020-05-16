@@ -11,7 +11,6 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Jobs::vCheckAssumptions(void)
 {
-  RASSERT(HT_TRANSIENT_JUMBO == gxaSizeHeap[CN_LOADMAP].m_eWhichHeap);
 }
 
 /*============================================================================*/

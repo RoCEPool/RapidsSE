@@ -145,8 +145,6 @@ enum eCN : u2 // Class Number
   /* 116 0x074    14224B Heap:L */ CN_JOB_START,
   /* 124 0x07C    14280B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 126 0x07E      224B Heap:S */ CN_JOBLIST,
-  /* 127 0x07F      296B Heap:I */ CN_JUMBOPERSISTENT,
-  /* 128 0x080      296B Heap:I */ CN_JUMBOTRANSIENT,
   
   /* 129 0x081       11B Heap:I */ CN__K__,
   /* 130 0x082        8B Heap:I */ CN_KEY,
@@ -157,7 +155,6 @@ enum eCN : u2 // Class Number
   /* 134 0x086       80B Heap:S */ CN_LEXICON,
   /* 135 0x087  1000512B Heap:L */ CN_LOADCHUNK,
   /* 135 0x087  1000512B Heap:L */ CN_LOADER,
-  /* 136 0x088  9389360B Heap:J */ CN_LOADMAP,
   /* 137 0x089     8208B Heap:I */ CN_LOCAL,
   /* 138 0x08A   262688B Heap:L */ CN_LOCALSCHAIN,
   /* 139 0x08B      192B Heap:I */ CN_LOCK,
@@ -480,8 +477,6 @@ static Stz* aCN[]
   /* 116 0x074 */ "JOB_START"_Stz,           // CN_JOB_START
   /* 124 0x07C */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 126 0x07E */ "JOBLIST"_Stz,             // CN_JOBLIST
-  /* 127 0x07F */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT
-  /* 128 0x080 */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT
   
   /* 129 0x081 */ "_K__"_Stz,                // CN__K__
   /* 130 0x082 */ "KEY"_Stz,                 // CN_KEY
@@ -492,7 +487,6 @@ static Stz* aCN[]
   /* 134 0x086 */ "LEXICON"_Stz,             // CN_LEXICON
   /* 135 0x087 */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 135 0x087 */ "LOADER"_Stz,              // CN_LOADER
-  /* 136 0x088 */ "LOADMAP"_Stz,             // CN_LOADMAP
   /* 137 0x089 */ "LOCAL"_Stz,               // CN_LOCAL
   /* 138 0x08A */ "LOCALSCHAIN"_Stz,         // CN_LOCALSCHAIN
   /* 139 0x08B */ "LOCK"_Stz,                // CN_LOCK

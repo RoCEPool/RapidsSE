@@ -781,12 +781,6 @@ void BufferPool::vPrintProgress(void)
          AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
 
-  vTrace("   Transient JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Transient.m_pJumbo->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pJumbo->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pJumbo->nFreeChunks());
-
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
          AM::pHeapMem()->Persistent.m_pSmall->nBufferCount(),
@@ -805,11 +799,6 @@ void BufferPool::vPrintProgress(void)
          AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
 
-  vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nFreeChunks());
   //vVerifyPool();
   
   

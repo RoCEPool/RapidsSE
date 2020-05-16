@@ -40,16 +40,17 @@ void PoolHelper::vHeapDump(Heap* pHeap)
   vTrace("\n"_Stz);
   vTrace("%sObjects in %s Heap:\n"_Stz,
          Stz::szTab(1),
-         pHeap->eClass() == CN_TINYTRANSIENT    ? "Tiny Transient"_Stz :
-         pHeap->eClass() == CN_SMALLTRANSIENT   ? "Small Transient"_Stz :
-         pHeap->eClass() == CN_MEDIUMTRANSIENT  ? "Medium Transient"_Stz :
-         pHeap->eClass() == CN_LARGETRANSIENT   ? "Large Transient"_Stz :
-         pHeap->eClass() == CN_JUMBOTRANSIENT   ? "Jumbo Transient"_Stz :
-         pHeap->eClass() == CN_TINYPERSISTENT   ? "Tiny Persistent"_Stz :
-         pHeap->eClass() == CN_SMALLPERSISTENT  ? "Small Persistent"_Stz :
-         pHeap->eClass() == CN_MEDIUMPERSISTENT ? "Medium Persistent"_Stz :
-         pHeap->eClass() == CN_LARGEPERSISTENT  ? "Large Persistent"_Stz :
-         pHeap->eClass() == CN_JUMBOPERSISTENT  ? "Jumbo Persistent"_Stz : "unknown"_Stz);
+         
+           pHeap->eClass() == CN_TINYTRANSIENT    ? "Tiny Transient"_Stz
+         : pHeap->eClass() == CN_SMALLTRANSIENT   ? "Small Transient"_Stz
+         : pHeap->eClass() == CN_MEDIUMTRANSIENT  ? "Medium Transient"_Stz
+         : pHeap->eClass() == CN_LARGETRANSIENT   ? "Large Transient"_Stz
+         : pHeap->eClass() == CN_TINYPERSISTENT   ? "Tiny Persistent"_Stz
+         : pHeap->eClass() == CN_SMALLPERSISTENT  ? "Small Persistent"_Stz
+         : pHeap->eClass() == CN_MEDIUMPERSISTENT ? "Medium Persistent"_Stz
+         : pHeap->eClass() == CN_LARGEPERSISTENT  ? "Large Persistent"_Stz
+         : "unknown"_Stz
+         );
          
   pHeap->vGrabLock();
   
@@ -143,13 +144,11 @@ void PoolHelper::vObjectList(void)
   PoolBuffer* pSmallTransient  = nullptr;
   PoolBuffer* pMediumTransient = nullptr;
   PoolBuffer* pLargeTransient  = nullptr;
-  PoolBuffer* pJumboTransient  = nullptr;
   
   PoolBuffer* pTinyPersistent   = nullptr;
   PoolBuffer* pSmallPersistent  = nullptr;
   PoolBuffer* pMediumPersistent = nullptr;
   PoolBuffer* pLargePersistent  = nullptr;
-  PoolBuffer* pJumboPersistent  = nullptr;
   
   for (i8 i_Buffer = gpBufferPool->iBufferFirst();
        i_Buffer <= gpBufferPool->iBufferLast();
@@ -169,9 +168,6 @@ void PoolHelper::vObjectList(void)
     if (CN_LARGETRANSIENT == pBuffer->eClass())
       pLargeTransient = pBuffer;
     
-    if (CN_JUMBOTRANSIENT == pBuffer->eClass())
-      pJumboTransient = pBuffer;
-    
     
     if (CN_TINYPERSISTENT == pBuffer->eClass())
       pTinyPersistent = pBuffer;
@@ -184,10 +180,7 @@ void PoolHelper::vObjectList(void)
     
     if (CN_LARGEPERSISTENT  == pBuffer->eClass())
       pLargePersistent = pBuffer;
-    
-    if (CN_JUMBOPERSISTENT  == pBuffer->eClass())
-      pJumboPersistent = pBuffer;
-    
+        
     vBufferDump(pBuffer);
   }
   
@@ -203,8 +196,6 @@ void PoolHelper::vObjectList(void)
   if (pLargeTransient)
     vHeapDump(reinterpret_cast<Heap*>(pLargeTransient));
   
-  if (pJumboTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pJumboTransient));
   
   
   if (pTinyPersistent)
@@ -219,8 +210,6 @@ void PoolHelper::vObjectList(void)
   if (pLargePersistent)
     vHeapDump(reinterpret_cast<Heap*>(pLargePersistent));
   
-  if (pJumboPersistent)
-    vHeapDump(reinterpret_cast<Heap*>(pJumboPersistent));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -687,12 +676,6 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
   
-  vTrace("   Transient JumboHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Transient.m_pJumbo->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pJumbo->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pJumbo->nFreeChunks());
-  
   vTrace("  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagTiny.azChar(),
          AM::pHeapMem()->Persistent.m_pTiny->nBufferCount(),
@@ -716,12 +699,6 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
          AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
-  
-  vTrace("  Persistent JumboHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.azChar(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pJumbo->nFreeChunks());
 }
 
 /*----------------------------------------------------------------------------*/

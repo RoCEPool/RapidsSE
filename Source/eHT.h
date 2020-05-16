@@ -11,15 +11,13 @@ enum eHT // Heap type
   /*  2 */ HT_PERSISTENT_SMALL,
   /*  3 */ HT_PERSISTENT_MEDIUM,
   /*  4 */ HT_PERSISTENT_LARGE,
-  /*  5 */ HT_PERSISTENT_JUMBO,
   
-  /*  6 */ HT_TRANSIENT_TINY,
-  /*  7 */ HT_TRANSIENT_SMALL,
-  /*  8 */ HT_TRANSIENT_MEDIUM,
-  /*  9 */ HT_TRANSIENT_LARGE,
-  /* 10 */ HT_TRANSIENT_JUMBO,
+  /*  5 */ HT_TRANSIENT_TINY,
+  /*  6 */ HT_TRANSIENT_SMALL,
+  /*  7 */ HT_TRANSIENT_MEDIUM,
+  /*  8 */ HT_TRANSIENT_LARGE,
   
-  /* 11 */ HT_ENUMS
+  /*  9 */ HT_ENUMS
 };
 
 static Stz* aHT[]
@@ -30,15 +28,13 @@ static Stz* aHT[]
   /*  2 */ "PERSISTENT_SMALL"_Stz,
   /*  3 */ "PERSISTENT_MEDIUM"_Stz,
   /*  4 */ "PERSISTENT_LARGE"_Stz,
-  /*  5 */ "PERSISTENT_JUMBO"_Stz,
   
-  /*  6 */ "TRANSIENT_TINY"_Stz,
-  /*  7 */ "TRANSIENT_SMALL"_Stz,
-  /*  8 */ "TRANSIENT_MEDIUM"_Stz,
-  /*  9 */ "TRANSIENT_LARGE"_Stz,
-  /* 10 */ "TRANSIENT_JUMBO"_Stz,
+  /*  5 */ "TRANSIENT_TINY"_Stz,
+  /*  6 */ "TRANSIENT_SMALL"_Stz,
+  /*  7 */ "TRANSIENT_MEDIUM"_Stz,
+  /*  8 */ "TRANSIENT_LARGE"_Stz,
   
-  /* 11 */ "ENUMS"_Stz
+  /*  9 */ "ENUMS"_Stz
 };
 
 static Stz* aHT_short[]

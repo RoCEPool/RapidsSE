@@ -53,7 +53,6 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
     
     char cHeap = '?';
          if (HT_INVALID          == eHeap) cHeap = 'I';
-    else if (HT_TRANSIENT_JUMBO  == eHeap) cHeap = 'J';
     else if (HT_TRANSIENT_LARGE  == eHeap) cHeap = 'L';
     else if (HT_TRANSIENT_MEDIUM == eHeap) cHeap = 'M';
     else if (HT_TRANSIENT_SMALL  == eHeap) cHeap = 'S';
