@@ -34,7 +34,6 @@ namespace Steps
     static void vAddSteps_Compiler(void);
     static void vAddSteps_Convertor(void);
     static void vAddSteps_CoreWords(void);
-    static void vAddSteps_Cpu(void);
     static void vAddSteps_CrwBuffer(void);
     static void vAddSteps_CsvBuffer(void);
     static void vAddSteps_Cursor(void);
@@ -47,7 +46,6 @@ namespace Steps
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
   
-    static void vAddSteps_TagSet(void);
     static void vAddSteps_Encode(void);
     static void vAddSteps_EntBuffer(void);
     static void vAddSteps_Enter(void);
@@ -157,10 +155,12 @@ namespace Steps
     static void vAddSteps_TablePartition(void);
     static void vAddSteps_TablePartition2(void);
     static void vAddSteps_Tag(void);
+    static void vAddSteps_TagSet(void);
     static void vAddSteps_Task(void);
     static void vAddSteps_Tenants(void);
     static void vAddSteps_Test(void);
     static void vAddSteps_Thread(void);
+    static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
     static void vAddSteps_To(void);
     static void vAddSteps_Trace(void);

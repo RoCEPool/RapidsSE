@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Cpu.cpp - cpu steps group                                            */
+/* Steps_Ticking.cpp - ticking device steps group                             */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,15 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Cpu(void)
+void Step::vAddSteps_Ticking(void)
 {
-  vAddStep("cpu.rdtscp"_Stz,      &Step::vCpuRdtscp);
+  vAddStep("ticking::getTick"_Stz,      &Step::vTickingGetTick);
 }
 
 /*----------------------------------------------------------------------------*/
-/* cpu.rdtscp -- read cpu time stamp counter                                  */
+/* ticking::getTick -- get tick from ticking device                           */
 /*----------------------------------------------------------------------------*/
-void Step::vCpuRdtscp(void)
+void Step::vTickingGetTick(void)
 {
   ENTRY();
   

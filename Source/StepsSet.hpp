@@ -166,9 +166,6 @@ public:
   void vConvertorDelete(void);
   void vConvertorNew(void);
 
-  // cpu
-  void vCpuRdtscp(void);
-
   // crwBuffer
   void vCrwBufferSnapshot(void);
 
@@ -1537,6 +1534,9 @@ public:
   void vThreadSleepNsec(void);
   void vThreadSleepSsec(void);
   void vThreadSleepUsec(void);
+
+  // cpu
+  void vTickingGetTick(void);
 
   // timer
   void vTimerDelete(void);

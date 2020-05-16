@@ -55,7 +55,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Compiler();
   Step::vAddSteps_Convertor();
   Step::vAddSteps_CoreWords();
-  Step::vAddSteps_Cpu();
   Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_CsvBuffer();
   Step::vAddSteps_Cursor();
@@ -180,6 +179,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Tenants();
   Step::vAddSteps_Test();
   Step::vAddSteps_Thread();
+  Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();
   Step::vAddSteps_To();
   Step::vAddSteps_Trace();
