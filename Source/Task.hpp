@@ -131,7 +131,6 @@ namespace Tasks
     void vAddMunged(Forth* pForth);
     void vAddAxioms(void);
     Word* pCompileAxiomaticColon(s48K& sDefinition);
-    void  vCompileMungedColon(s48K& sDefinition);
     void  vCompileMungedColon(Stz* szDefinition);
     void  vCompileMungedColon(i8 i_Def);
 

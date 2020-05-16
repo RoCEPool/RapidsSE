@@ -41,7 +41,7 @@ void Task::vAddAxioms(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   
-  ": interpret"
+  "axiom: interpret"
     
   
   //" \"((a))\" . "
@@ -235,7 +235,7 @@ void Task::vAddAxioms(void)
   // : include file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
-  ": include-file"
+  "axiom: include-file"
   "  input::push"
   
   "  dup"
@@ -257,7 +257,7 @@ void Task::vAddAxioms(void)
   // : include munged file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
-  ": include-munged"
+  "axiom: include-munged"
   "  input::push"
   //"  dup ."
   "  input::useString"
@@ -274,7 +274,7 @@ void Task::vAddAxioms(void)
   // : include
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
-  ": include"
+  "axiom: include"
   //"  traceon"
   "  args.munged if"
   "    dup word::find if"
@@ -292,24 +292,24 @@ void Task::vAddAxioms(void)
   // Temporary ifdef till we get sen files embedded in the executable
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#ifdef WITH_APPLE
+//#ifdef WITH_APPLE
   sDefinition =
-  ": boot_run"
+  "axiom: boot_run"
   "  \"boot_run\" .verbose"
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"se_boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task::scheduledelete"
+  "  task::scheduleDelete"
   "  ;"_Stz;
-#else
-  sDefinition =
-  ": boot_run"
-  "  \"boot_run\" .verbose"
-  "  \"se_boot.sen\" include"
-  "  \"boot_run exit_rt\" .verbose"
-  "  task::scheduledelete"
-  "  ;"_Stz;
-#endif
+//#else
+//  sDefinition =
+//  "axiom: boot_run"
+//  "  \"boot_run\" .verbose"
+//  "  \"se_boot.sen\" include"
+//  "  \"boot_run exit_rt\" .verbose"
+//  "  task::scheduleDelete"
+//  "  ;"_Stz;
+//#endif
   
   pCompileAxiomaticColon(sDefinition);
 }
@@ -336,9 +336,10 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   pInput->vFormSenTokens();
   pInput->vUseBegin();
 
-  // get :
+  // get axiom:
   pInput->vReadToken();
   Stz* szChars = pInput->szChars();
+  ASSERT(szChars->bSame("axiom:"_Stz));
   //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // get name of word
@@ -438,51 +439,6 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   pInput->vUseEnd();
   
   return pNewWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile a munged definition                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vCompileMungedColon(s48K& sDefinition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  //vTrace("vCompileMungedColon :\n%s\n"_Stz,sDefinition.szStz());
-  
-  s48K sValue;
-  
-  Compiler* pCompiler = m_pForth->pCompiler();
-  Input* pInput = m_pForth->pInput();
-
-  pInput->vUseString(sDefinition);
-  pInput->vUseBegin();
-  
-  // get string
-  pInput->vReadToken();
-
-  //if (AM::bVerbose())
-  //  vTrace("CompileConstant: %s\n"_Stz,
-  //         pInput->szChars());
-  
-  sValue = (Stz*)pInput->szChars()->azChar();
-  
-  // get CONSTANT
-  pInput->vReadToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
-  
-  // get name of word
-  pInput->vReadToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
-
-  Stz* szName = (Stz*)pInput->szChars();
-
-  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
-  
-  AM::vAddConstant(szName,sValue.szStz());
-  
-  pInput->vReadToken();
-  
-  pInput->vUseEnd();
 }
 
 /*----------------------------------------------------------------------------*/
