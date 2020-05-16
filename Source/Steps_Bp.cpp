@@ -149,7 +149,6 @@ void Step::vBpInUseSpace(void)
   ENTRY();
   
   i8 iInUseSpace = AM::iRegionSize()
-                     - AM::iJumboSize()
                      - gpBufferPool->iFreeSpace()
                      - PoolHelper::iPoolFree();
   
@@ -165,8 +164,7 @@ void Step::vBpTotalSpace(void)
 {
   ENTRY();
   
-  i8 iTotalSpace = AM::iRegionSize()
-                     - AM::iJumboSize();
+  i8 iTotalSpace = AM::iRegionSize();
   
   m_pDataStack->vPushInt(iTotalSpace);
   

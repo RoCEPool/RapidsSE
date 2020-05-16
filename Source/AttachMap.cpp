@@ -178,7 +178,6 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.szStz());
   vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
-  vInfo("JumboSize    : %lld \n"_Stz,   gpAttachMap->Arg.m_iJumboSize);
   vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubIngesters);
   vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubLoaders);
 
@@ -195,8 +194,8 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pMedium);
   vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pLarge);
+  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pMedium);
   vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
   vInfo("TransientTinyHeap  : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pTiny);
 

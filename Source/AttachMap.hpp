@@ -30,7 +30,6 @@ namespace StorageEngine
       i8   m_nDummyLoop;    // loop count for dummy threads
       i8   m_nDummySleep;   // sleep period for dummy threads
       i8   m_nDummyThreads; // number of dummy threads
-      i8   m_iJumboSize;
       bool m_bLog;
       i8   m_nMaxLoadErrors;
       i8   m_nMaxReadyLP;

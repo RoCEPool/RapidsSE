@@ -563,11 +563,9 @@ void Step::vStreamSetAddSpaceInfo(void)
   
   Grid* pGrid = AM::pGrid();
   
-  i8 iTotalSpace = AM::iRegionSize()
-  - AM::iJumboSize();
+  i8 iTotalSpace = AM::iRegionSize();
   
   i8 iInUseSpace = AM::iRegionSize()
-    - AM::iJumboSize()
     - gpBufferPool->iFreeSpace()
     - PoolHelper::iPoolFree();
   

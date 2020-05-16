@@ -387,66 +387,6 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-
-  
-//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
-//    iCountObjects[i_Index] = 0;
-//
-//  AM::pHeapMem()->Transient.m_pJumbo->vAnalyse(iCountObjects);
-//
-//  vTrace("\n"_Stz);
-//  vTrace("  Transient JumboHeap Object s:\n"_Stz);
-//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
-//    eCN eClass = (eCN)i_Index;
-//
-//    if (iCountObjects[eClass] == 0)
-//      continue;
-//
-//    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
-//  }
-  
-  
-  /*
-  AM::pHeapMem()->Persistent.m_pSmall->vAnalyse(iCountObjects);
-  
-  vTrace("\n"_Stz);
-  vTrace("  Persistent SmallHeap Object Summary:\n"_Stz);
-  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
-    eCN eClass = (eCN)i_Index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
-  }
-  
-  AM::pHeapMem()->Persistent.m_pMedium->vAnalyse(iCountObjects);
-  
-  vTrace("\n"_Stz);
-  vTrace("  Persistent MediumHeap Object Summary:\n"_Stz);
-  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
-    eCN eClass = (eCN)i_Index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
-  }
-  
-  AM::pHeapMem()->Persistent.m_pLarge->vAnalyse(iCountObjects);
-  
-  vTrace("\n"_Stz);
-  vTrace("  Persistent LargeHeap Object Summary:\n"_Stz);
-  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
-    eCN eClass = (eCN)i_Index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
-  }
-   */
-  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,6 @@ i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }
 i8   AM::nDummyThreads(void)  { return gpAttachMap->Arg.m_nDummyThreads;      }
 Stz* AM::szInitial(void)      { return gxArgs.m_sInitial.szStz();             }
-i8   AM::iJumboSize(void)     { return gpAttachMap->Arg.m_iJumboSize;         }
 bool AM::bLog(void)           { return gpAttachMap->Arg.m_bLog;               }
 i8   AM::nMaxLoadErrors(void) { return gpAttachMap->Arg.m_nMaxLoadErrors;     }
 i8   AM::nMaxReadyLP(void)    { return gpAttachMap->Arg.m_nMaxReadyLP;        }
