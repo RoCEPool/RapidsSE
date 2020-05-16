@@ -73,7 +73,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID           }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_TRANSIENT_TINY    }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    }, // CN_EXEMPLAR
-    { sizeof(ExtractRow),         HT_TRANSIENT_TINY  }, // CN_EXTRACTROW
+  { sizeof(ExtractRow),         HT_TRANSIENT_TINY    }, // CN_EXTRACTROW
 
   { 'F' - ('A' - 1),            HT_INVALID           }, // CN__F__
   { sizeof(FetchBuffer),        HT_TRANSIENT_LARGE   }, // CN_FETCHBUFFER
@@ -112,7 +112,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(HashBuffer),         HT_TRANSIENT_LARGE   }, // CN_HASHBUFFER
   { sizeof(HashMap),            HT_TRANSIENT_TINY    }, // CN_HASHMAP
   { sizeof(HeapBuffer),         HT_INVALID           }, // CN_HEAPBUFFER
-    { sizeof(SP_Row),             HT_INVALID         }, // CN_HPROW
+  { sizeof(SP_Row),             HT_INVALID           }, // CN_HPROW
 
   { 'I' - ('A' - 1),            HT_INVALID           }, // CN__I__
   { sizeof(Index),              HT_TRANSIENT_TINY    }, // CN_INDEX
