@@ -356,7 +356,10 @@ i8 BufferPool::iFreePercent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iFreePercent = DIV(iFreeSpace() * 100,AM::iRegionSize());
+  i8 iFreeSize = iFreeSpace();
+  i8 iShmSize  = AM::iRegionSize();
+  
+  i8 iFreePercent = DIV(iFreeSize * 100,iShmSize);
   
   return iFreePercent;
 }
