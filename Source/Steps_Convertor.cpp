@@ -76,6 +76,13 @@ void Step::vConvertorInspect(void)
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  s48K sDef;
+  pStreamDef->vAsString(sDef);
+  vTrace("%s\n"_Stz,sDef.szStz());
+
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   
   bool bResult = pConvertor->bInspect(azSrc);

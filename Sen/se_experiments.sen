@@ -57,6 +57,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  "tspTbl" op__table not if
+    "Cant find table tspTbl" .
+    exit
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   convertor::new locals| pConvertor |
 
   csvBuffer::new locals| pCsvBuffer |
@@ -81,7 +88,7 @@
 
     //pCsvBuffer csvBuffer.print
 
-    pCsvBuffer pConvertor convertor.inspect
+    table[] pCsvBuffer pConvertor convertor.inspect
 
   loop
   

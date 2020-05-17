@@ -436,7 +436,9 @@ void Step::vTablePtnStreamDefFetch(void)
   Table* pTable = _pTable(*m_pRegSet->m_xpTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  m_pDataStack->vPushPtr(pTable->pPtnStreamDef());
+  StreamDef* pStreamDef = pTable->pPtnStreamDef();
+  
+  m_pDataStack->vPushPtr(pStreamDef);
   
   EXIT();
 }
