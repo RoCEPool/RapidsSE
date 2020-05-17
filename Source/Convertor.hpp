@@ -53,73 +53,136 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   /* extract boolean                                                          */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractBoolean(void)
+  inline void vConvertBoolean(void)
   {
-    m_dCalc = (CALC) - 0.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 0.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
 
   /*--------------------------------------------------------------------------*/
   /* extract date                                                             */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractDate(void)
+  inline void vConvertDate(void)
   {
-    m_dCalc = (CALC) - 1.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 1.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
 
   /*--------------------------------------------------------------------------*/
   /* extract date                                                             */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractDecimal(void)
+  inline void vConvertDecimal(void)
   {
-    m_dCalc = (CALC) - 2.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 2.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
 
   /*--------------------------------------------------------------------------*/
   /* extract float                                                            */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractFloat(void)
+  inline void vConvertFloat(void)
   {
-    m_dCalc = (CALC) - 3.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 3.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
 
   /*--------------------------------------------------------------------------*/
   /* extract integer                                                          */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractInteger(void)
+  inline void vConvertInteger(void)
   {
-    m_dCalc = (CALC) - 4.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 4.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
   
   /*--------------------------------------------------------------------------*/
   /* extract interval                                                         */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractInterval(void)
+  inline void vConvertInterval(void)
   {
-    m_dCalc = (CALC) - 5.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 5.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
   
   /*--------------------------------------------------------------------------*/
   /* extract time                                                             */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractTime(void)
+  inline void vConvertTime(void)
   {
-    m_dCalc = (CALC) - 6.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 6.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
   
   /*--------------------------------------------------------------------------*/
   /* extract timestamp                                                        */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractTimestamp(void)
+  inline void vConvertTimestamp(void)
   {
-    m_dCalc = (CALC) - 7.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 7.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
   
   /*--------------------------------------------------------------------------*/
   /* extract varchar                                                          */
   /*--------------------------------------------------------------------------*/
-  inline void vExtractVarchar(void)
+  inline void vConvertVarchar(void)
   {
-    m_dCalc = (CALC) - 8.0;
+    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+      
+     m_dCalc = (CALC) - 8.0;
+
+     if (m_bTrace)
+       vTrace("%c"_Stz,*m_acChr);
+     m_acChr++;
+    }
   }
 
   /*--------------------------------------------------------------------------*/

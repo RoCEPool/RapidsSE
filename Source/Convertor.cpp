@@ -94,30 +94,21 @@ bool Convertor::bInspect(char* azSrc)
       
       if (m_bTrace)
         vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-      
-      // each field
-      while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-        
-        switch (m_eCol) {
-          case CT_BOOLEAN  : vExtractBoolean();   break;
-          case CT_CHAR     : vExtractBoolean();   break;
-          case CT_DATE     : vExtractDate();      break;
-          case CT_DECIMAL  : vExtractDecimal();   break;
-          case CT_FLOAT    : vExtractFloat();     break;
-          case CT_INTEGER  : vExtractInteger();   break;
-          case CT_INTERVAL : vExtractInterval();  break;
-          case CT_TIME     : vExtractTime();      break;
-          case CT_TIMESTAMP: vExtractTimestamp(); break;
-          case CT_VARCHAR  : vExtractVarchar();   break;
-          default:
-            RASSERT(0);
-        }
-        
-        if (m_bTrace)
-          vTrace("%c"_Stz,*m_acChr);
-        m_acChr++;
-      
-      } // end-field
+              
+      switch (m_eCol) {
+        case CT_BOOLEAN  : vConvertBoolean();   break;
+        case CT_CHAR     : vConvertVarchar();   break;
+        case CT_DATE     : vConvertDate();      break;
+        case CT_DECIMAL  : vConvertDecimal();   break;
+        case CT_FLOAT    : vConvertFloat();     break;
+        case CT_INTEGER  : vConvertInteger();   break;
+        case CT_INTERVAL : vConvertInterval();  break;
+        case CT_TIME     : vConvertTime();      break;
+        case CT_TIMESTAMP: vConvertTimestamp(); break;
+        case CT_VARCHAR  : vConvertVarchar();   break;
+        default:
+          RASSERT(0);
+      }
       
       if (m_cFldSep == *m_acChr) {
         if (m_bTrace)
