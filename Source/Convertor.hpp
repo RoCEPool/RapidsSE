@@ -8,14 +8,25 @@ namespace Load
   class Convertor : public Object
   {
   private:
-    Datum   m_oDatum;
-  
-    char*   m_azSrc;
-    char*   m_acChr;
+    StreamDef* m_pStreamDef;
+    Format*    m_pFmt;
 
-    Format* m_pFmt;
+    char*      m_azSrc;
+    char*      m_acChr;
+
+    char       m_cRecEnd;
+    char       m_cFldSep;
   
-  StreamDef* m_pStreamDef;
+    i8         m_i_Fld;
+    i8         m_i_Rec;
+  
+    Column*    m_pCol;
+    eCT        m_eCol;
+  
+    Datum      m_oDatum;
+  
+    bool       m_bTrace;
+    d8         m_dCalc;
   
     // must be last
     Footer m_xFooter;
@@ -32,6 +43,8 @@ namespace Load
 
   private:
     Footer* aFooter(void);
+
+  #define CALC ((m_dCalc * 3.141 + (d8)*m_acChr) / 1.618)
 
   /*--------------------------------------------------------------------------*/
   /*                               - EXTRACT -                                */
