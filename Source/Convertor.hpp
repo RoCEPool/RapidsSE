@@ -52,6 +52,36 @@ namespace Load
   /*--------------------------------------------------------------------------*/
 
   /*--------------------------------------------------------------------------*/
+  /* test for more data                                                       */
+  /*--------------------------------------------------------------------------*/
+  inline bool bMoreData(void)
+  {
+    bool bMore = (*m_acChr);
+    
+    return bMore;
+  }
+  
+  /*--------------------------------------------------------------------------*/
+  /* test for more fields                                                     */
+  /*--------------------------------------------------------------------------*/
+  inline bool bMoreFields(void)
+  {
+    bool bMore = (*m_acChr && m_cRecEnd != *m_acChr);
+    
+    return bMore;
+  }
+  
+  /*--------------------------------------------------------------------------*/
+  /* test for more fields                                                     */
+  /*--------------------------------------------------------------------------*/
+  inline bool bInField(void)
+  {
+    bool bMore = (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr);
+    
+    return bMore;
+  }
+  
+  /*--------------------------------------------------------------------------*/
   /* skip whitespace                                                          */
   /*--------------------------------------------------------------------------*/
   inline void vSkipWhitespace(void)
@@ -86,7 +116,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 0.0;
 
@@ -105,7 +135,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 1.0;
 
@@ -124,7 +154,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 2.0;
 
@@ -143,7 +173,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 3.0;
 
@@ -162,7 +192,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 4.0;
 
@@ -181,7 +211,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 5.0;
 
@@ -200,7 +230,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 6.0;
 
@@ -219,7 +249,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 7.0;
 
@@ -238,7 +268,7 @@ namespace Load
     if (m_bTrace)
       vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
              
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
 
       m_dCalc = (CALC) - 8.0;
 
@@ -269,7 +299,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vPostField(void)
   {
-    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+    while (bInField()) {
       m_acChr++;
     }
   }

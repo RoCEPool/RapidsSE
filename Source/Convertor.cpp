@@ -87,10 +87,10 @@ bool Convertor::bInspect(char* azSrc)
   m_acChr = m_azSrc;
     
   // while more data
-  while (*m_acChr) {
+  while (bMoreData()) {
     
     // each record
-    while (*m_acChr && m_cRecEnd != *m_acChr) {
+    while (bMoreFields()) {
       
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
       m_eCol = m_pCol->eColumnType();
