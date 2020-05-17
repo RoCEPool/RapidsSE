@@ -12,6 +12,7 @@ namespace Host
     static i8 iCoreCount(void);
     static i8 iCpuCount(void);
     static i8 iCpuFrequency(void);
+    static i8 iL3Cache(void);
     static i8 iPhysicalMemory(void);
     static i8 iReadClock(void);
     static i8 iReadTscp(void);

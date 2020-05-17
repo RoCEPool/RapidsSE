@@ -1194,6 +1194,10 @@ void Engine::vPrintMachine(void)
   i8 iClockResNsec = Hardware::iClockResNsec();
   MagLib::vHzMag(iClockResNsec,sClock_magn);
 
+  s32 sCache_magn;
+  i8 iL3Cache= Hardware::iL3Cache();
+  MagLib::vByteMag(iL3Cache,sCache_magn);
+  
   s32 sMemory_magn;
   i8 iPhysicalMemory = Hardware::iPhysicalMemory();
   MagLib::vByteMag(iPhysicalMemory,sMemory_magn);
@@ -1205,6 +1209,7 @@ void Engine::vPrintMachine(void)
   
   vInfo("  Host Name : %s\n"_Stz,sHostName.szStz());
   vInfo("  Core Count: %lld\n"_Stz,iCoreCount);
+  vInfo("  L3 Cache  : %s\n"_Stz,sCache_magn.szStz());
   vInfo("  Memory    : %s\n"_Stz,sMemory_magn.szStz());
   vInfo("  Cpu Freq  : %s\n"_Stz,sFreq_magn.szStz());
   vInfo("  Clock Res : %s\n"_Stz,sClock_magn.szStz());

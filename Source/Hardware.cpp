@@ -131,6 +131,34 @@ i8 Hardware::iCpuFrequency(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of L3 cache on this machine                                       */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iL3Cache(void)
+{
+  _static_
+
+#ifdef WITH_APPLE
+  
+  i8     iSize = 0;
+  size_t len = sizeof(iSize);
+  
+  i8 iReturn = sysctlbyname("hw.l3cachesize", &iSize, &len, 0, 0);
+  if (iReturn) {
+    vWarn("Error while getting L3 cache size %lld\n"_Stz, iReturn);
+    return 0;
+  }
+  return iSize;
+  
+#else
+  
+  //vWarn("iL3Cache() not implemented on LINUX!\n");
+  return 0;
+
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get amount of physical memory                                              */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iPhysicalMemory(void)
