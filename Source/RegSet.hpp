@@ -29,11 +29,11 @@ namespace Tasks
   
     REG<Index>       m_xpIndex;
     REG<IndexTree>   m_xpIndexTree;
-    REG<Planner>     m_xpPlanner;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
     REG<Loader>      m_xpLoader;
     REG<Operand>     m_xpPipein;    // Pipein
+    REG<Planner>     m_xpPlanner;
     REG<Row>         m_xpRow;
     REG<RowOnce>     m_xpRowOnce;
     REG<StreamDef>   m_xpStreamDef;
