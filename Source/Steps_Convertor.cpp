@@ -13,6 +13,7 @@ void Step::vAddSteps_Convertor(void)
 
   vAddStep("convertor.convert"_Stz,   &Step::vConvertorConvert);
   vAddStep("convertor.delete"_Stz,    &Step::vConvertorDelete);
+  vAddStep("convertor.inspect"_Stz,   &Step::vConvertorInspect);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +61,24 @@ void Step::vConvertorDelete(void)
   Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
 
   delete pConvertor;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convertor.inspect -- inspect without actually converting                   */
+/*----------------------------------------------------------------------------*/
+void Step::vConvertorInspect(void)
+{
+  ENTRY();
+
+  Convertor* pConvertor = _pConvertor(m_pDataStack->pPopPtr(__func__));
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+
+  char* azSrc  = (char*)pCsvBuffer->ayDataArea();
+  
+  bool bResult = pConvertor->bInspect(azSrc);
   
   EXIT();
 }

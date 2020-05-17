@@ -26,7 +26,8 @@ namespace Load
    ~Convertor(void) noexcept(false);
   
     bool bConvert(char* azSrc);
-    
+    bool bInspect(char* azSrc);
+
   private:
     Footer* aFooter(void);
 

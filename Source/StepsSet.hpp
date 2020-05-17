@@ -164,6 +164,7 @@ public:
   // convertor
   void vConvertorConvert(void);
   void vConvertorDelete(void);
+  void vConvertorInspect(void);
   void vConvertorNew(void);
 
   // crwBuffer

@@ -25,6 +25,8 @@ Convertor::Convertor(Format* pFmt)
   m_acChr = nullptr;
 
   m_pFmt  = pFmt;
+  
+  m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
 }
@@ -51,6 +53,17 @@ bool Convertor::bConvert(char* azSrc)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* inspect a chunck                                                           */
+/*----------------------------------------------------------------------------*/
+bool Convertor::bInspect(char* azSrc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  
+  vTrace("[>%s<]"_Stz,azSrc);
+  
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */

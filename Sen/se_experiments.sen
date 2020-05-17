@@ -73,7 +73,7 @@
   BM_TimerNew
   BM_TimerBegin
 
-10000000 0 do
+  1 0 do
 
     0 pFile file.seek
 
@@ -81,7 +81,7 @@
 
     //pCsvBuffer csvBuffer.print
 
-    pCsvBuffer pConvertor convertor.convert
+    pCsvBuffer pConvertor convertor.inspect
 
   loop
   
