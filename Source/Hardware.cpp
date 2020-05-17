@@ -5,6 +5,34 @@
 #include "Host.h"
 
 /*----------------------------------------------------------------------------*/
+/* get size of cache line                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Hardware::iCacheLine(void)
+{
+  _static_
+
+#ifdef WITH_APPLE
+  
+  i8     iSize = 0;
+  size_t len = sizeof(iSize);
+  
+  i8 iReturn = sysctlbyname("hw.cachelinesize", &iSize, &len, 0, 0);
+  if (iReturn) {
+    vWarn("Error while getting cache line size %lld\n"_Stz, iReturn);
+    return 0;
+  }
+  return iSize;
+  
+#else
+  
+  //vWarn("iCacheLine() not implemented on LINUX!\n");
+  return 0;
+
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get clock resolution (in nanoseconds)                                      */
 /*----------------------------------------------------------------------------*/
 i8 Hardware::iClockResNsec(void)

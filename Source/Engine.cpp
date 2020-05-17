@@ -1185,7 +1185,9 @@ void Engine::vPrintMachine(void)
   Hardware::vHostName(sHostName);
 
   i8 iCoreCount = Hardware::iCoreCount();
-  
+ 
+  i8 iCacheLine = Hardware::iCacheLine();
+
   s32 sFreq_magn;
   i8 iCpuFrequency = Hardware::iCpuFrequency();
   MagLib::vHzMag(iCpuFrequency,sFreq_magn);
@@ -1213,13 +1215,14 @@ void Engine::vPrintMachine(void)
   
   vInfo("  Host Name : %s\n"_Stz,   sHostName.szStz());
   vInfo("  Core Count: %lld\n"_Stz, iCoreCount);
+  vInfo("  Cache Line: %lldB\n"_Stz,iCacheLine);
   vInfo("  L2 Cache  : %s (per core)\n"_Stz,   sL2Cache_magn.szStz());
   vInfo("  L3 Cache  : %s\n"_Stz,   sL3Cache_magn.szStz());
   vInfo("  Memory    : %s\n"_Stz,   sMemory_magn.szStz());
   vInfo("  Cpu Freq  : %s\n"_Stz,   sFreq_magn.szStz());
   vInfo("  Clock Res : %s\n"_Stz,   sClock_magn.szStz());
-  vInfo("  Tick Now  : %lld\n"_Stz, TickingDevice::iGetTick());
   vInfo("  Tick/sec  : %lld\n"_Stz, TickingDevice::iTicksPerSec());
+  vInfo("  Tick Now  : %lld\n"_Stz, TickingDevice::iGetTick());
 }
 
 /*----------------------------------------------------------------------------*/
