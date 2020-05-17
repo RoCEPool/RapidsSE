@@ -15,6 +15,8 @@ namespace Load
 
     Format* m_pFmt;
   
+  StreamDef* m_pStreamDef;
+  
     // must be last
     Footer m_xFooter;
 
@@ -22,7 +24,7 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Convertor(Format* pFmt);
+    Convertor(StreamDef* pStreamDef, Format* pFmt);
    ~Convertor(void) noexcept(false);
   
     bool bConvert(char* azSrc);

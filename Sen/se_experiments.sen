@@ -64,7 +64,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  convertor::new locals| pConvertor |
+  table[].streamDef@ convertor::new locals| pConvertor |
 
   csvBuffer::new locals| pCsvBuffer |
 
@@ -88,7 +88,7 @@
 
     //pCsvBuffer csvBuffer.print
 
-    table[].streamDef@ pCsvBuffer pConvertor convertor.inspect
+    pCsvBuffer pConvertor convertor.inspect
 
   loop
   

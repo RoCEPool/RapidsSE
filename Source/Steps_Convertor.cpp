@@ -23,7 +23,9 @@ void Step::vConvertorNew(void)
 {
   ENTRY();
   
-  Convertor* pConvertor = new Convertor(AM::pFmt());
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  
+  Convertor* pConvertor = new Convertor(pStreamDef,AM::pFmt());
   
   m_pDataStack->vPushPtr(pConvertor);
     
@@ -76,11 +78,6 @@ void Step::vConvertorInspect(void)
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  
-  s48K sDef;
-  pStreamDef->vAsString(sDef);
-  vTrace("%s\n"_Stz,sDef.szStz());
 
   char* azSrc  = (char*)pCsvBuffer->ayDataArea();
   

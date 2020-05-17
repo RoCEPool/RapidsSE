@@ -16,7 +16,7 @@ __aFooterFunction(Convertor)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Convertor::Convertor(Format* pFmt)
+Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
 : Object(CN_CONVERTOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
@@ -24,11 +24,17 @@ Convertor::Convertor(Format* pFmt)
   m_azSrc = nullptr;
   m_acChr = nullptr;
 
+  m_pStreamDef = pStreamDef;
+  
   m_pFmt  = pFmt;
   
   m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  
+  s48K sDef;
+   m_pStreamDef->vAsString(sDef);
+   vTrace("%s\n"_Stz,sDef.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,10 +66,62 @@ bool Convertor::bInspect(char* azSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
   
-  vTrace("[>%s<]"_Stz,azSrc);
+  //vTrace("[>%s<]"_Stz,azSrc);
+  
+  m_azSrc = azSrc;
+  
+  m_acChr = m_azSrc;
+  
+  char cRecEnd = '\n';
+  char cFldSep = ',';
+
+  while (*m_acChr) {
+    
+    while (*m_acChr && cRecEnd != *m_acChr) {
+      while (*m_acChr && cRecEnd != *m_acChr && cFldSep != *m_acChr) {
+        vTrace("%c"_Stz,*m_acChr++);
+      }
+      if (cFldSep == *m_acChr) {
+        vTrace("<fld>\n"_Stz);
+        m_acChr++;
+      }
+    }
+    vTrace("\n<rec>\n"_Stz);
+    if (*m_acChr)
+      m_acChr++;
+  }
   
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool Convertor::bInspect(char* azSrc)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+//
+//  //vTrace("[>%s<]"_Stz,azSrc);
+//
+//  m_azSrc = azSrc;
+//
+//  m_acChr = m_azSrc;
+//
+//  char cRecEnd = '\n';
+//  char cFldSep = ',';
+//
+//  while (*m_acChr) {
+//
+//    do {
+//
+//      do {
+//
+//        vTrace("%c"_Stz,*m_acChr++);
+//
+//      } while (*m_acChr && cRecEnd != *m_acChr && cFldSep != *m_acChr);
+//
+//    } while (*m_acChr && cRecEnd != *m_acChr);
+//  }
+//
+//  return true;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
