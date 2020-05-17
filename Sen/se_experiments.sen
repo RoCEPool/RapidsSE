@@ -67,10 +67,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  now[] now.asOf
+  now[] now.timestampStr .
+
   BM_TimerNew
   BM_TimerBegin
 
-  1000 0 do
+10000000 0 do
 
     0 pFile file.seek
 
@@ -85,6 +88,9 @@
   BM_TimerUpdate
   
   aggTimer[] aggTimer.reportStr .
+
+  now[] now.asOf
+  now[] now.timestampStr .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

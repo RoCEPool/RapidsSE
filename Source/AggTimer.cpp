@@ -94,12 +94,22 @@ void AggTimer::vSet(i8 iTicks)
 i8 AggTimer::iNanoseconds(void)
 {
   _precondition_(_MAGIC_,CN_AGGTIMER,_FOOTER_);
-    
+  
+  i8 iNano;
+  
   i8 iTicks = this->iTicks();
   
   i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iNano = (iTicks * C_1G) / iTicksPerSec;
+  if (iTicks > iTicksPerSec) {
+    i8 iSecs = iTicks / iTicksPerSec;
+    i8 iRemTicks  = iTicks % iTicksPerSec;
+    
+    iNano = iSecs * C_1G +
+            (iRemTicks * C_1G) / iTicksPerSec;
+  }
+  else
+    iNano = (iTicks * C_1G) / iTicksPerSec;
   
   return iNano;
 }
