@@ -32,6 +32,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
+  vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
@@ -294,7 +295,23 @@ void Step::vTableGetPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].tablePtn@ -- feth the table partition                              */
+/* table[].streamDef@ -- fetch the table stream def                           */
+/*----------------------------------------------------------------------------*/
+void Step::vTableStreamDefFetch(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pRegSet->m_xpTable);
+  
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  m_pDataStack->vPushPtr(pStreamDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].tablePtn@ -- fetch the table partition                              */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnFetch(void)
 {

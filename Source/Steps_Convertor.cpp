@@ -76,8 +76,7 @@ void Step::vConvertorInspect(void)
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDef = pTable->pStreamDef();
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
   s48K sDef;
   pStreamDef->vAsString(sDef);

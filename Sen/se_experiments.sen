@@ -88,7 +88,7 @@
 
     //pCsvBuffer csvBuffer.print
 
-    table[] pCsvBuffer pConvertor convertor.inspect
+    table[].streamDef@ pCsvBuffer pConvertor convertor.inspect
 
   loop
   
