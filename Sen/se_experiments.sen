@@ -67,7 +67,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  1 0 do
+  BM_TimerNew
+  BM_TimerBegin
+
+  1000 0 do
 
     0 pFile file.seek
 
@@ -78,6 +81,10 @@
     pCsvBuffer pConvertor convertor.convert
 
   loop
+  
+  BM_TimerUpdate
+  
+  aggTimer[] aggTimer.reportStr .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
