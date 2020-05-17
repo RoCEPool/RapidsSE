@@ -36,7 +36,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
-  m_bTrace  = false;
+  m_bTrace  = true;
   m_dCalc   = 0.0;
   m_nChars  = 0;
 
@@ -95,9 +95,8 @@ bool Convertor::bInspect(char* azSrc)
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
       m_eCol = m_pCol->eColumnType();
       
-      if (m_bTrace)
-        vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-              
+      vPreField();
+      
       switch (m_eCol) {
         case CT_BOOLEAN  : vConvertBoolean();   break;
         case CT_CHAR     : vConvertVarchar();   break;
@@ -112,6 +111,8 @@ bool Convertor::bInspect(char* azSrc)
         default:
           RASSERT(0);
       }
+      
+      vPostField();
       
       if (m_cFldSep == *m_acChr) {
         if (m_bTrace)

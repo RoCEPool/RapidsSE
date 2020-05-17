@@ -48,7 +48,34 @@ namespace Load
   #define CALC ((m_dCalc * 3.141 + (d8)*m_acChr) / 1.618)
 
   /*--------------------------------------------------------------------------*/
-  /*                               - EXTRACT -                                */
+  /*                               - SUPPORT -                                */
+  /*--------------------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------------------*/
+  /* skip whitespace                                                          */
+  /*--------------------------------------------------------------------------*/
+  inline void vSkipWhitespace(void)
+  {
+    if ( ! (*m_acChr && StrLib::bIsWhite(*m_acChr)) )
+      return;
+  
+    if (m_bTrace)
+      vTrace("Skipping: "_Stz);
+  
+    while (*m_acChr && StrLib::bIsWhite(*m_acChr)) {
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
+    }
+  
+    if (m_bTrace)
+      vTrace("\n"_Stz);
+  }
+
+  
+  /*--------------------------------------------------------------------------*/
+  /*                            - FIELD CONVERSION -                          */
   /*--------------------------------------------------------------------------*/
 
   /*--------------------------------------------------------------------------*/
@@ -56,7 +83,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertBoolean(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 0.0;
 
@@ -72,7 +102,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertDate(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 1.0;
 
@@ -88,7 +121,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertDecimal(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 2.0;
 
@@ -104,7 +140,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertFloat(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 3.0;
 
@@ -120,7 +159,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertInteger(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 4.0;
 
@@ -136,7 +178,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertInterval(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 5.0;
 
@@ -152,7 +197,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertTime(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 6.0;
 
@@ -168,7 +216,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertTimestamp(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 7.0;
 
@@ -184,7 +235,10 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertVarchar(void)
   {
-    while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
+    if (m_bTrace)
+      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+             
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
 
       m_dCalc = (CALC) - 8.0;
 
@@ -196,18 +250,31 @@ namespace Load
   }
 
   /*--------------------------------------------------------------------------*/
-  /*                               - SUPPORT -                                */
+  /*                            - FIELD SUPPORT -                             */
   /*--------------------------------------------------------------------------*/
 
   /*--------------------------------------------------------------------------*/
-  /* skip whitespace                                                          */
+  /* pre-field actions                                                        */
   /*--------------------------------------------------------------------------*/
-  inline void vSkipWhitespace(void)
+  inline void vPreField(void)
   {
-  }
-
+    if (CT_VARCHAR == m_eCol)
+      return;
   
-  };
+    vSkipWhitespace();
+  }
+  
+  /*--------------------------------------------------------------------------*/
+  /* post-field actions                                                       */
+  /*--------------------------------------------------------------------------*/
+  inline void vPostField(void)
+  {
+    while (*m_acChr && m_cFldSep != *m_acChr && m_cRecEnd != *m_acChr) {
+      m_acChr++;
+    }
+  }
+  
+  }; // end class --------------------------------------------------------------
 
   Convertor* _pConvertor(void* aAddr);
 
