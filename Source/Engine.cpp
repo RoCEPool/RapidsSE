@@ -1208,7 +1208,8 @@ void Engine::vPrintMachine(void)
   vInfo("  Memory    : %s\n"_Stz,sMemory_magn.szStz());
   vInfo("  Cpu Freq  : %s\n"_Stz,sFreq_magn.szStz());
   vInfo("  Clock Res : %s\n"_Stz,sClock_magn.szStz());
-  vInfo("  Tick      : %lld\n"_Stz,TickingDevice::iGetTick());
+  vInfo("  Tick Now  : %lld\n"_Stz,TickingDevice::iGetTick());
+  vInfo("  Tick/sec  : %lld\n"_Stz,TickingDevice::iTicksPerSec());
 }
 
 /*----------------------------------------------------------------------------*/

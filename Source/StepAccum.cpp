@@ -80,7 +80,7 @@ void StepAccum::vPrint(File* pFile)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSecond();
+  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSec();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,7 +135,7 @@ void StepAccum::vPrintAll(File* pFile)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSecond();
+  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSec();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -223,7 +223,7 @@ void StepAccum::vShow(void)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSecond();
+  i8 nCyclesPerGigaNanosecond = TickingDevice::iTicksPerSec();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

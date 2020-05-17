@@ -706,9 +706,9 @@ void PoolHelper::vWriteBuffers(Stz* sFilePath)
   i8 iUpdate = TickingDevice::iGetTick();
   
   i8 iTicks = (iUpdate - iStart);
-  i8 iTicksPerSecond = TickingDevice::iTicksPerSecond();
+  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iMilli = iTicks * C_1K / iTicksPerSecond;
+  i8 iMilli = iTicks * C_1K / iTicksPerSec;
   
   i8 nBuffers =gpBufferPool->iBufferLast() - 1;
   vTrace("Writing %lld buffers took %lld ms\n"_Stz, nBuffers, iMilli);

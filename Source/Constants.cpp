@@ -190,7 +190,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_VERIFYTABLE"_Stz,  C_TDEF_VERIFYTABLE);
 
   // hardware
-  vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSecond());
+  vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSec());
   vAddConstant("HW_CORE_COUNT"_Stz,      Hardware::iCoreCount());
   vAddConstant("HW_CPU_COUNT"_Stz,       Hardware::iCpuCount());
   vAddConstant("HW_PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());

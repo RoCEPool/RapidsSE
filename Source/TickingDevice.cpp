@@ -29,14 +29,14 @@ i8 TickingDevice::iGetTick(void)
 /*----------------------------------------------------------------------------*/
 /* get tick frequency                                                         */
 /*----------------------------------------------------------------------------*/
-i8 TickingDevice::iTicksPerSecond(void)
+i8 TickingDevice::iTicksPerSec(void)
 {
   _static_
   
 #ifdef WITH_APPLE
   i8 iFrequency = Hardware::iCpuFrequency();
 #elif defined(WITH_LINUX)
-  i8 iFrequency = Hardware::iClockFrequency();
+  i8 iFrequency = Hardware::iClockResNsec();
 #else
   NEVER_REACH;
 #endif
@@ -51,7 +51,7 @@ i8 TickingDevice::iToMsec(i8 iTickDelta)
 {
   _static_
   
-  i8 iTicksPerMillisecond = iTicksPerSecond() / C_1K;
+  i8 iTicksPerMillisecond = iTicksPerSec() / C_1K;
   
   i8 iMilliseconds = iTickDelta / iTicksPerMillisecond;
   
@@ -65,7 +65,7 @@ i8 TickingDevice::iToNsec(i8 iTickDelta)
 {
   _static_
   
-  i8 iTicksPerNanosecond = iTicksPerSecond() / C_1G;
+  i8 iTicksPerNanosecond = iTicksPerSec() / C_1G;
   
   i8 iNanoseconds = iTickDelta / iTicksPerNanosecond;
   
@@ -79,7 +79,7 @@ i8 TickingDevice::iToUsec(i8 iTickDelta)
 {
   _static_
   
-  i8 iTicksPerMicrosecond = iTicksPerSecond() / C_1M;
+  i8 iTicksPerMicrosecond = iTicksPerSec() / C_1M;
   
   i8 iMicroseconds = iTickDelta / iTicksPerMicrosecond;
   

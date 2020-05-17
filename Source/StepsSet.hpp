@@ -1537,6 +1537,7 @@ public:
 
   // cpu
   void vTickingGetTick(void);
+  void vTickingTicksPerSec(void);
 
   // timer
   void vTimerDelete(void);

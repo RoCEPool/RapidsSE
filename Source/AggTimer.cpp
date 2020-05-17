@@ -97,9 +97,9 @@ i8 AggTimer::iNanoseconds(void)
     
   i8 iTicks = this->iTicks();
   
-  i8 iTicksPerSecond = TickingDevice::iTicksPerSecond();
+  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iNano = (iTicks * C_1G) / iTicksPerSecond;
+  i8 iNano = (iTicks * C_1G) / iTicksPerSec;
   
   return iNano;
 }
@@ -113,9 +113,9 @@ i8 AggTimer::iMicroseconds(void)
   
   i8 iTicks = this->iTicks();
   
-  i8 iTicksPerSecond = TickingDevice::iTicksPerSecond();
+  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iMicro = (iTicks * C_1M) / iTicksPerSecond;
+  i8 iMicro = (iTicks * C_1M) / iTicksPerSec;
   
   return iMicro;
 }
@@ -129,9 +129,9 @@ i8 AggTimer::iMilliseconds(void)
   
   i8 iTicks = this->iTicks();
   
-  i8 iTicksPerSecond = TickingDevice::iTicksPerSecond();
+  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iMilli = (iTicks * C_1K) / iTicksPerSecond;
+  i8 iMilli = (iTicks * C_1K) / iTicksPerSec;
   
   return iMilli;
 }
@@ -145,9 +145,9 @@ i8 AggTimer::iSeconds(void)
   
   i8 iTicks = this->iTicks();
   
-  i8 iTicksPerSecond = TickingDevice::iTicksPerSecond();
+  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  i8 iSeconds = iTicks / iTicksPerSecond;
+  i8 iSeconds = iTicks / iTicksPerSec;
   
   return iSeconds;
 }
