@@ -31,6 +31,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_cFldSep = ',';
 
   m_iLine   = 1;
+  m_iCol    = 1;
   m_i_Fld   = 0;
   m_i_Rec   = 0;
    
@@ -96,6 +97,7 @@ bool Convertor::bInspect(char* azSrc)
       if (m_bTrace)
         vTrace("blank line...\n"_Stz);
       m_acChr++;
+      m_iCol++;
       m_iLine++;
       continue;
     }
@@ -129,6 +131,7 @@ bool Convertor::bInspect(char* azSrc)
         if (m_bTrace)
           vTrace("<fld>\n"_Stz);
         m_acChr++;
+        m_iCol++;
       }
   
       m_i_Fld++;
@@ -143,7 +146,8 @@ bool Convertor::bInspect(char* azSrc)
     if (*m_acChr)
       m_acChr++;
     m_iLine++;
-    
+    m_iCol = 1;
+
   } // end-data
   
   RASSERT(m_dCalc != 1.0);

@@ -18,6 +18,7 @@ namespace Load
     char       m_cFldSep;
   
     i8         m_iLine;
+    i8         m_iCol;
     i8         m_i_Fld;
     i8         m_i_Rec;
   
@@ -108,6 +109,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   
@@ -121,10 +123,12 @@ namespace Load
   inline void vFieldTrace(void)
   {
     if (m_bTrace)
-      vTrace("[%lld,%lld @%02lld %10s] "_Stz,
+      vTrace("[%lld,%lld @%02lld,%02lld %10s] "_Stz,
              m_i_Rec,
              m_i_Fld,
+             
              m_iLine,
+             m_iCol,
 
              aCT[m_eCol]);
   }
@@ -147,6 +151,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -165,6 +170,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -183,6 +189,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -201,6 +208,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -219,6 +227,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -237,6 +246,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -255,6 +265,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -273,6 +284,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
@@ -291,6 +303,7 @@ namespace Load
       if (m_bTrace)
         vTrace("%c"_Stz,*m_acChr);
       m_acChr++;
+      m_iCol++;
       m_nChars++;
     }
   }
