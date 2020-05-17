@@ -80,7 +80,7 @@
   BM_TimerNew
   BM_TimerBegin
 
-  1 0 do
+  1000000 0 do
 
     0 pFile file.seek
 

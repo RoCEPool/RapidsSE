@@ -37,7 +37,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_eCol    = CT_NONE;
 
   m_dCalc   = 0.0;
-  m_bTrace  = true;
+  m_bTrace  = false;
 
   m_pFmt->vShow();
 
@@ -99,16 +99,16 @@ bool Convertor::bInspect(char* azSrc)
       while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
         
         switch (m_eCol) {
-          case CT_BOOLEAN  : m_dCalc = (CALC) - 0.0; break;
-          case CT_CHAR     : m_dCalc = (CALC) - 1.0; break;
-          case CT_DATE     : m_dCalc = (CALC) - 2.0; break;
-          case CT_DECIMAL  : m_dCalc = (CALC) - 3.0; break;
-          case CT_FLOAT    : m_dCalc = (CALC) - 4.0; break;
-          case CT_INTERVAL : m_dCalc = (CALC) - 5.0; break;
-          case CT_INTEGER  : m_dCalc = (CALC) - 6.0; break;
-          case CT_TIME     : m_dCalc = (CALC) - 7.0; break;
-          case CT_TIMESTAMP: m_dCalc = (CALC) - 8.0; break;
-          case CT_VARCHAR  : m_dCalc = (CALC) - 9.0; break;
+          case CT_BOOLEAN  : vExtractBoolean();   break;
+          case CT_CHAR     : vExtractBoolean();   break;
+          case CT_DATE     : vExtractDate();      break;
+          case CT_DECIMAL  : vExtractDecimal();   break;
+          case CT_FLOAT    : vExtractFloat();     break;
+          case CT_INTEGER  : vExtractInteger();   break;
+          case CT_INTERVAL : vExtractInterval();  break;
+          case CT_TIME     : vExtractTime();      break;
+          case CT_TIMESTAMP: vExtractTimestamp(); break;
+          case CT_VARCHAR  : vExtractVarchar();   break;
           default:
             RASSERT(0);
         }
