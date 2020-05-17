@@ -27,6 +27,7 @@ namespace Load
   
     bool       m_bTrace;
     d8         m_dCalc;
+    i8         m_nChars;
   
     // must be last
     Footer m_xFooter;
@@ -56,12 +57,13 @@ namespace Load
   inline void vConvertBoolean(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 0.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 0.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
 
@@ -71,12 +73,13 @@ namespace Load
   inline void vConvertDate(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 1.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 1.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
 
@@ -86,12 +89,13 @@ namespace Load
   inline void vConvertDecimal(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 2.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 2.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
 
@@ -101,12 +105,13 @@ namespace Load
   inline void vConvertFloat(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 3.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 3.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
 
@@ -116,12 +121,13 @@ namespace Load
   inline void vConvertInteger(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 4.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 4.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
   
@@ -131,12 +137,13 @@ namespace Load
   inline void vConvertInterval(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 5.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 5.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
   
@@ -146,12 +153,13 @@ namespace Load
   inline void vConvertTime(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 6.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 6.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
   
@@ -161,12 +169,13 @@ namespace Load
   inline void vConvertTimestamp(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 7.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 7.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
   
@@ -176,12 +185,13 @@ namespace Load
   inline void vConvertVarchar(void)
   {
     while (*m_acChr && m_cRecEnd != *m_acChr && m_cFldSep != *m_acChr) {
-      
-     m_dCalc = (CALC) - 8.0;
 
-     if (m_bTrace)
-       vTrace("%c"_Stz,*m_acChr);
-     m_acChr++;
+      m_dCalc = (CALC) - 8.0;
+
+      if (m_bTrace)
+        vTrace("%c"_Stz,*m_acChr);
+      m_acChr++;
+      m_nChars++;
     }
   }
 

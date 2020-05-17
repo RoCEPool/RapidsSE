@@ -36,8 +36,9 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
-  m_dCalc   = 0.0;
   m_bTrace  = false;
+  m_dCalc   = 0.0;
+  m_nChars  = 0;
 
   m_pFmt->vShow();
 
@@ -54,6 +55,8 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
 Convertor::~Convertor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONVERTOR);
+  
+  vTrace("Converted %lld chars\n"_Stz,m_nChars);
 }
 
 /*----------------------------------------------------------------------------*/
