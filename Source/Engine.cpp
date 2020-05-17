@@ -1194,9 +1194,13 @@ void Engine::vPrintMachine(void)
   i8 iClockResNsec = Hardware::iClockResNsec();
   MagLib::vHzMag(iClockResNsec,sClock_magn);
 
-  s32 sCache_magn;
+  s32 sL2Cache_magn;
+  i8 iL2Cache= Hardware::iL2Cache();
+  MagLib::vByteMag(iL2Cache,sL2Cache_magn);
+  
+  s32 sL3Cache_magn;
   i8 iL3Cache= Hardware::iL3Cache();
-  MagLib::vByteMag(iL3Cache,sCache_magn);
+  MagLib::vByteMag(iL3Cache,sL3Cache_magn);
   
   s32 sMemory_magn;
   i8 iPhysicalMemory = Hardware::iPhysicalMemory();
@@ -1207,14 +1211,15 @@ void Engine::vPrintMachine(void)
   vInfo("\n"_Stz);
   vInfo("Machine:\n"_Stz);
   
-  vInfo("  Host Name : %s\n"_Stz,sHostName.szStz());
-  vInfo("  Core Count: %lld\n"_Stz,iCoreCount);
-  vInfo("  L3 Cache  : %s\n"_Stz,sCache_magn.szStz());
-  vInfo("  Memory    : %s\n"_Stz,sMemory_magn.szStz());
-  vInfo("  Cpu Freq  : %s\n"_Stz,sFreq_magn.szStz());
-  vInfo("  Clock Res : %s\n"_Stz,sClock_magn.szStz());
-  vInfo("  Tick Now  : %lld\n"_Stz,TickingDevice::iGetTick());
-  vInfo("  Tick/sec  : %lld\n"_Stz,TickingDevice::iTicksPerSec());
+  vInfo("  Host Name : %s\n"_Stz,   sHostName.szStz());
+  vInfo("  Core Count: %lld\n"_Stz, iCoreCount);
+  vInfo("  L2 Cache  : %s (per core)\n"_Stz,   sL2Cache_magn.szStz());
+  vInfo("  L3 Cache  : %s\n"_Stz,   sL3Cache_magn.szStz());
+  vInfo("  Memory    : %s\n"_Stz,   sMemory_magn.szStz());
+  vInfo("  Cpu Freq  : %s\n"_Stz,   sFreq_magn.szStz());
+  vInfo("  Clock Res : %s\n"_Stz,   sClock_magn.szStz());
+  vInfo("  Tick Now  : %lld\n"_Stz, TickingDevice::iGetTick());
+  vInfo("  Tick/sec  : %lld\n"_Stz, TickingDevice::iTicksPerSec());
 }
 
 /*----------------------------------------------------------------------------*/
