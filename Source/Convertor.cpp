@@ -30,6 +30,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_cRecEnd = '\n';
   m_cFldSep = ',';
 
+  m_iLine   = 1;
   m_i_Fld   = 0;
   m_i_Rec   = 0;
    
@@ -89,6 +90,16 @@ bool Convertor::bInspect(char* azSrc)
   // while more data
   while (bMoreData()) {
     
+    vSkipBlankspace();
+    
+    if (! bMoreFields()) {
+      if (m_bTrace)
+        vTrace("blank line...\n"_Stz);
+      m_acChr++;
+      m_iLine++;
+      continue;
+    }
+
     // each record
     while (bMoreFields()) {
       
@@ -131,6 +142,7 @@ bool Convertor::bInspect(char* azSrc)
     m_i_Fld = 0;
     if (*m_acChr)
       m_acChr++;
+    m_iLine++;
     
   } // end-data
   

@@ -17,6 +17,7 @@ namespace Load
     char       m_cRecEnd;
     char       m_cFldSep;
   
+    i8         m_iLine;
     i8         m_i_Fld;
     i8         m_i_Rec;
   
@@ -82,11 +83,22 @@ namespace Load
   }
   
   /*--------------------------------------------------------------------------*/
+  /* test blankspace                                                          */
+  /*--------------------------------------------------------------------------*/
+  inline bool bIsBlankspace(char cChr)
+  {
+    if (cChr == ' ')  return true;
+    if (cChr == '\t') return true;
+    
+    return false;
+  }
+  
+  /*--------------------------------------------------------------------------*/
   /* skip whitespace                                                          */
   /*--------------------------------------------------------------------------*/
-  inline void vSkipWhitespace(void)
+  inline void vSkipBlankspace(void)
   {
-    if ( ! (*m_acChr && StrLib::bIsWhite(*m_acChr)) )
+    if ( ! (*m_acChr && bIsBlankspace(*m_acChr)) )
       return;
   
     if (m_bTrace)
@@ -103,6 +115,19 @@ namespace Load
       vTrace("\n"_Stz);
   }
 
+  /*--------------------------------------------------------------------------*/
+  /* extract boolean                                                          */
+  /*--------------------------------------------------------------------------*/
+  inline void vFieldTrace(void)
+  {
+    if (m_bTrace)
+      vTrace("[%lld,%lld @%02lld %10s] "_Stz,
+             m_i_Rec,
+             m_i_Fld,
+             m_iLine,
+
+             aCT[m_eCol]);
+  }
   
   /*--------------------------------------------------------------------------*/
   /*                            - FIELD CONVERSION -                          */
@@ -113,8 +138,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertBoolean(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+    vFieldTrace();
              
     while (bInField()) {
 
@@ -132,9 +156,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertDate(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 1.0;
@@ -151,9 +174,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertDecimal(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 2.0;
@@ -170,9 +192,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertFloat(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 3.0;
@@ -189,9 +210,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertInteger(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 4.0;
@@ -208,9 +228,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertInterval(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 5.0;
@@ -227,9 +246,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertTime(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 6.0;
@@ -246,9 +264,8 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertTimestamp(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
-             
+    vFieldTrace();
+
     while (bInField()) {
 
       m_dCalc = (CALC) - 7.0;
@@ -265,8 +282,7 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vConvertVarchar(void)
   {
-    if (m_bTrace)
-      vTrace("[%lld,%lld %10s] "_Stz,m_i_Rec,m_i_Fld,aCT[m_eCol]);
+    vFieldTrace();
              
     while (bInField()) {
 
@@ -291,7 +307,7 @@ namespace Load
     if (CT_VARCHAR == m_eCol)
       return;
   
-    vSkipWhitespace();
+    vSkipBlankspace();
   }
   
   /*--------------------------------------------------------------------------*/
