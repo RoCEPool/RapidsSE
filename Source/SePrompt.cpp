@@ -1061,7 +1061,7 @@ void SePrompt::vPromptUser(void)
 
   vInfo("[%s %lld] "
         "%s%s%s"
-        "se %s%c %s%s> "_Stz,
+        "se %s%c %s> "_Stz,
         
         szNodeNm,
         iPid,
@@ -1076,12 +1076,7 @@ void SePrompt::vPromptUser(void)
 #else
         'r',
 #endif
-        bHasStarted           ? "booted" : "not-booted",
-#ifdef ___WITH_CHARS_BYTE_SPACE
-        " __WITH_CHARS_BYTE_SPACE"_Stz
-#else
-        ""_Stz
-#endif
+        bHasStarted           ? "booted" : "not-booted"
         );
 
   fflush(stdin);
