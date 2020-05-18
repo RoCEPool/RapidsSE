@@ -687,25 +687,6 @@ void TokenVec::vSetAllTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the number of tokens                                                   */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vSetTokens(void)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-#ifndef __WITH_CHARS_BYTE_SPACE
-   // get count of words in pWords
-  i8 i_Token;
-  for (i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    if ( ! pGet(i_Token,true)->bHasChars() )
-      break;
-  }
-  
-  vItems(i_Token);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* completely reset this token vector                                         */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vSoftReset(void)

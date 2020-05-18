@@ -56,7 +56,6 @@ namespace LexicalAnalysis
     void vRewindCurr(void);
     void vReplaceToken(Token* pDstToken, Token* pSrcToken);
     void vSetAllTokens(void);
-    void vSetTokens(void);
     void vSoftReset(void);
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);

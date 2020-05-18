@@ -432,7 +432,6 @@ void Input::vReadCommand(void)
   
   if (m_pTknVec->bHasSemicolon()) {
     m_pTknVec->vStripSemicolon();
-    m_pTknVec->vSetTokens();
     m_pTknVec->vIntegrityCheck();
     if (d_iDebugMode)
       vJot1('r',"detected ';'"_Stz);
@@ -469,7 +468,6 @@ void Input::vReadCommand(void)
   m_pTknVec->vIntegrityCheck();
 
   // set no of tokens in token vector
-  m_pTknVec->vSetTokens();
   m_pTknVec->vIntegrityCheck();
   
   

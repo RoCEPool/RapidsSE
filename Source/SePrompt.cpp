@@ -763,35 +763,6 @@ bool SePrompt::bIsPromptWord(void)
   else
     return false;
 }
-/*----------------------------------------------------------------------------*/
-//bool SePrompt::bIsPromptWord(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-//
-//  TokenVec* pTknVec = this->pTokenVec();
-//
-//  Token* pTkn0 = pTknVec->pGet(0);
-//
-//  s32 sWordNm;
-//  sWordNm = pTkn0->szChars();
-//
-//  Dic* pRootDic = AM::pRootDic();
-//
-//  Word* pWord = pRootDic->pFindWord(sWordNm);
-//
-//  if ( ! (pWord && pWord->bPrompt()) )
-//    return false;
-//
-//  pTknVec->vSoftReset();
-//  pTknVec->vAppendToken("docol"_Stz,TN_NAME);
-//  pTknVec->vAppendToken(sWordNm,TN_NAME);
-//  pTknVec->vSetTokens();
-//
-//  if (! bFindJobClass())
-//    return false;
-//
-//  return true;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* lock job's mutex                                                           */
@@ -1011,9 +982,7 @@ void SePrompt::vPrepareSpawn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RASSERT(JS_LOCKED != m_pJob->eJobState());
-    
-  m_pSession->pTokenVec()->vSetTokens();
-  
+      
   m_pJob->vSeed(SS_SEED_REQ);
   
 //  if (m_pJob->bHasTag(C_TAG_TAGS))
@@ -1102,7 +1071,6 @@ bool SePrompt::bReadNextCommand(void)
     s4K szInitial = AM::szInitial();
     pTknVec->vTokenise(szInitial);
     pTknVec->vStripSemicolon();
-    pTknVec->vSetTokens();
     pTknVec->vIntegrityCheck();
     return true;
   }
@@ -1116,7 +1084,6 @@ bool SePrompt::bReadNextCommand(void)
     s4K szCommand = AM::szCommand();
     pTknVec->vTokenise(szCommand);
     pTknVec->vStripSemicolon();
-    pTknVec->vSetTokens();
     pTknVec->vIntegrityCheck();
     return true;
   }
@@ -1127,7 +1094,6 @@ bool SePrompt::bReadNextCommand(void)
   if (* m_pSession->m_sToDo.azChar()) {
     pTknVec->vTokenise(m_pSession->m_sToDo);
     pTknVec->vStripSemicolon();
-    pTknVec->vSetTokens();
 
     m_pSession->m_sToDo = ""_Stz;
     pTknVec->vIntegrityCheck();

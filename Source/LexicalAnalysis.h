@@ -14,9 +14,6 @@ namespace LexicalAnalysis
 
 //------------------------------------------------------------------------------
 
-#define __WITH_CHARS_BYTE_SPACE EndDefine
-
-
 #include "AnnChar.hpp"
 #include "Token.hpp"
 #include "TokenVec.hpp"

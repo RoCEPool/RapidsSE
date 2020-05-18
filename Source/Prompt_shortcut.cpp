@@ -47,8 +47,6 @@ bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
   sNm = pTknVec->pGet(1)->szChars();
   
   pTknVec->vStripSemicolon();
-  pTknVec->vSetTokens();
-
   
   pTknVec->vVecToString(sCmd.szStz(),2,false);
   
