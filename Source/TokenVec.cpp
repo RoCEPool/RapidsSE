@@ -162,9 +162,6 @@ void TokenVec::vAdvanceCurr(bool bIncItems)
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_BYTE_SPACE
-#else
-/*----------------------------------------------------------------------------*/
 void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -182,7 +179,6 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 
   vIntegrityCheck();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* append a token                                                             */
@@ -630,9 +626,6 @@ void TokenVec::vRemoveSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* remove a token from token vector                                           */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_BYTE_SPACE
-#else
-/*----------------------------------------------------------------------------*/
 void TokenVec::vRemoveToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -650,7 +643,6 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
     
   vIntegrityCheck();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* copy token                                                                 */
@@ -764,9 +756,6 @@ void TokenVec::vStripSingleQuotes(void)
 /*----------------------------------------------------------------------------*/
 /* strip off ';'                                                              */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_BYTE_SPACE
-#else
-/*----------------------------------------------------------------------------*/
 void TokenVec::vStripSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -780,7 +769,6 @@ void TokenVec::vStripSemicolon(void)
     }
   }
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* trim / remove all tokens from given token                                  */
@@ -808,8 +796,6 @@ void TokenVec::vTrimTokens(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_BYTE_SPACE
-#else
 void TokenVec::vTokenise(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -834,7 +820,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   pInput->vUseEnd();
   delete pInput;
 }
-#endif
+
 
 /*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */
