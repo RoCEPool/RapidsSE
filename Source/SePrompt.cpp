@@ -161,6 +161,8 @@ void SePrompt::vPromptLoop(void)
   
   vVerifyJobSeeds();
   
+  TokenVec* pSsnTknVec = m_pSession->pTokenVec();
+  
   while (bContinue()) {
     
     if (bStdIn()) {
@@ -213,7 +215,19 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    if ( ! JobHelper::bParseCmd(&oTagSet, m_pSession->pTokenVec())) {
+    if (bIsPromptWord()) {
+
+      Token* pTkn0 = pSsnTknVec->pGet(0);
+
+      s32 sWordNm;
+      sWordNm = pTkn0->szChars();
+
+      pSsnTknVec->vSoftReset();
+      pSsnTknVec->vAppendToken("docol"_Stz,TN_NAME);
+      pSsnTknVec->vAppendToken(sWordNm,TN_NAME);
+    }
+    
+    if ( ! JobHelper::bParseCmd(&oTagSet, pSsnTknVec)) {
       vTrace("error: invalid command \n"_Stz);
       
       if (AM::bDeveloper())
@@ -690,8 +704,8 @@ bool SePrompt::bFindMatch_job(TagSet* pTagSet)
     return true;
   
   // is the command token a forth-word marked as prompt?
-  if (bIsPromptWord())
-    return true;
+  //if (bIsPromptWord())
+  //  return true;
   
   // give command to the universal job
   if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
@@ -744,19 +758,40 @@ bool SePrompt::bIsPromptWord(void)
 
   Word* pWord = pRootDic->pFindWord(sWordNm);
   
-  if ( ! (pWord && pWord->bPrompt()) )
+  if (pWord && pWord->bPrompt())
+    return true;
+  else
     return false;
-
-  pTknVec->vSoftReset();
-  pTknVec->vAppendToken("docol"_Stz,TN_NAME);
-  pTknVec->vAppendToken(sWordNm,TN_NAME);
-  pTknVec->vSetTokens();
-  
-  if (! bFindJobClass())
-    return false;
-
-  return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool SePrompt::bIsPromptWord(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+//
+//  TokenVec* pTknVec = this->pTokenVec();
+//
+//  Token* pTkn0 = pTknVec->pGet(0);
+//
+//  s32 sWordNm;
+//  sWordNm = pTkn0->szChars();
+//
+//  Dic* pRootDic = AM::pRootDic();
+//
+//  Word* pWord = pRootDic->pFindWord(sWordNm);
+//
+//  if ( ! (pWord && pWord->bPrompt()) )
+//    return false;
+//
+//  pTknVec->vSoftReset();
+//  pTknVec->vAppendToken("docol"_Stz,TN_NAME);
+//  pTknVec->vAppendToken(sWordNm,TN_NAME);
+//  pTknVec->vSetTokens();
+//
+//  if (! bFindJobClass())
+//    return false;
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* lock job's mutex                                                           */
