@@ -52,7 +52,7 @@
 cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ; // proc anidx      
 cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
 //           ^       ^^
-//           |       ||  [synth needs to be this]
+//           |       ||  [synth proc needs to be this]
 //  +========+-------++
 //  |
 : anidx _info tagCopy: liteOp_tags  // +==> synth: procedure andix [currently]

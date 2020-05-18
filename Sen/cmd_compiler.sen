@@ -387,23 +387,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize procedures for lite and local lite operators given info word    */
-/*----------------------------------------------------------------------------*/
-: cmd::synthWords_info params| pInfoWd |
-
-  // pInfoWd word.name@ "Synth proc using _info : %v" .printf
-
-  pInfoWd _info.aboutLiteOp if
-    pInfoWd cmd::synthWordsFor_liteOp
-    pInfoWd cmd::synthProcFor_liteOp
-  else
-  pInfoWd _info.aboutLocalLiteOp if
-    pInfoWd cmd::synthWordsFor_localLiteOp
-    pInfoWd cmd::synthProcFor_localLiteOp
-  then then
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -417,7 +400,14 @@
 
     word@ word.category@ pOpInfo eql if
 
-      word@ cmd::synthWords_info
+      word@ _info.aboutLiteOp if
+        word@ cmd::synthWordsFor_liteOp
+        word@ cmd::synthProcFor_liteOp
+      else
+      word@ _info.aboutLocalLiteOp if
+        word@ cmd::synthWordsFor_localLiteOp
+        word@ cmd::synthProcFor_localLiteOp
+      then then
 
     then
 
