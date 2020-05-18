@@ -4,15 +4,7 @@
 
 bootCluster;
 
-//_tableDefinitions
-
-// this is C_TDEF_ANALYZEINDEX
-create table definition __analyzeIndex (
-  nodeName       VARCHAR NOT NULL,
-  partition      INTEGER NOT NULL,
-  buffers        INTEGER NOT NULL,
-  entries        INTEGER NOT NULL
-);
+_tableDefinitions
 
 /*============================================================================*/
 /* end                                                                        */

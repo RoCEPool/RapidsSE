@@ -65,7 +65,6 @@
 
   // find the originating job
   iJobId olist::findJob discard
-JobRef[] "++++++++++++++++++++++++++++++++++++ JOB__CANCELLED _Cancelled %v" .printf
 
   // get the participant node from where this job__begun started
   pJob__Cancelled job.participant@ to iParticipantNode

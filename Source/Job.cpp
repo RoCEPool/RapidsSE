@@ -179,8 +179,6 @@ Job::~Job(void) noexcept(false)
 //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
 //    //m_oJobTags.vPrint();
 //  }
-
-  vTrace("*********************************************************** DELETING JOB %p\n"_Stz,this);
   
   vIncStepNo();
   if (m_bWasReceived) {
