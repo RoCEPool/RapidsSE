@@ -413,7 +413,6 @@ void Token::vLineNo(i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-#ifdef __WITH_CHARS_BYTE_SPACE
 void Token::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
@@ -425,8 +424,6 @@ void Token::vReset(void)
   m_iLineNo = C_UNKNOWN;
   m_iColNo  = C_UNKNOWN;
 }
-#else
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* are the chars of this token the same as given arg?                         */

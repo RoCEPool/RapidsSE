@@ -16,7 +16,6 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef __WITH_CHARS_BYTE_SPACE
 Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
 : Object(CN_DYNAMO)
 {
@@ -42,8 +41,6 @@ Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 }
-#else
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

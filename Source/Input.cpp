@@ -1802,9 +1802,7 @@ void Input::vUngetAnnCharStripped(void)
 void Input::vTokenCollectBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-#ifdef __WITH_CHARS_BYTE_SPACE
-  
+    
 //  Stz* szLatter = m_pTknVec->szLaterChars();
 //
 //  * szLatter->azChar() = '\0';
@@ -1812,9 +1810,7 @@ void Input::vTokenCollectBegin(void)
 //  m_pCurrTkn->vChars(szLatter);
   
   m_pTknVec->vCollectBegin(m_pCurrTkn);
-  
-#endif
-  
+    
   m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
   m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
 }
@@ -1825,8 +1821,6 @@ void Input::vTokenCollectBegin(void)
 void Input::vTokenCollectEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-
-#ifdef __WITH_CHARS_BYTE_SPACE
   
 //  i8 nChars = m_pCurrTkn->nChars();
 //
@@ -1838,8 +1832,6 @@ void Input::vTokenCollectEnd(void)
 //  vTrace("Chars: %s\n"_Stz,m_pCurrTkn->szChars());
   
   m_pTknVec->vCollectEnd(m_pCurrTkn);
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
