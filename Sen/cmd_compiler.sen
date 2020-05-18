@@ -5,6 +5,77 @@
 " cmd_compiler.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
+/* define the syntax for a command                                            */
+/*----------------------------------------------------------------------------*/
+: cmdSyntax:
+
+  //
+  //            cmdNm    cmd          arg       arg
+  // cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
+  // cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
+  //                     verb   noun
+  //
+
+  // create a word using next token from input source as the word name
+  input::next locals| sCmdNm |
+  sCmdNm series-name "_syntax" str.cat :create
+
+  // set the word category to be cmdSyntax:
+  [ compiler::current@ encode::push ] compiler::current@ word.category!
+
+  // attach a tag set to hold syntax to the word being created
+  tagSet::new locals| pSynTags |
+  pSynTags compiler::current@ word.TagSet!
+
+  // skip the :: token from input source
+  input::next discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // add a syntax-tag for the command name
+  "__cmdNm__" sCmdNm pSynTags tagSet.appendStr
+
+  // add a syntax-tag indicating the job is a distributed job
+  "__job__" "CN_JOB_DISTRIBUTED" pSynTags tagSet.appendStr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse each input token till ';', building tag set representing the syntax
+
+  begin
+
+    input::next ";" str.equal not
+
+    while
+           input::isTag  if "__arg__"  input::chars pSynTags tagSet.appendStr
+      else input::isJson if "__json__" input::chars pSynTags tagSet.appendStr
+      else input::isEtc  if "__etc__"  input::chars pSynTags tagSet.appendStr
+      else                  "__cmd__"  input::chars pSynTags tagSet.appendStr
+      then then then
+
+  repeat
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // pTagSet tagSet.asStr .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show all words that are of cmdSyntax:                                      */
+/*----------------------------------------------------------------------------*/
+: cmdSyntaxs prompt
+
+  find: cmdSyntax: word::ofCatg
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* consume service arguments                                                  */
 /*----------------------------------------------------------------------------*/
 : .consumeArgs
@@ -316,98 +387,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* synthesize procedures for lite and local lite operators given info word    */
 /*----------------------------------------------------------------------------*/
-: cmd::synthWords_info params| pInfoWd |
 
-  // pInfoWd word.name@ "Synth proc using _info : %v" .printf
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_synthProcs_usingInfo
 
-  pInfoWd _info.aboutLiteOp if
-    pInfoWd cmd::synthWordsFor_liteOp
-    pInfoWd cmd::synthProcFor_liteOp
-  else
-  pInfoWd _info.aboutLocalLiteOp if
-    pInfoWd cmd::synthWordsFor_localLiteOp
-    pInfoWd cmd::synthProcFor_localLiteOp
-  then then
+  find: _info locals| pOpInfo |
+
+  iterate-words
+
+    word@ word.category@ pOpInfo eql if
+
+      word@ _info.aboutLiteOp if
+         word@ cmd::synthProcFor_liteOp
+      else
+      word@ _info.aboutLocalLiteOp if
+        word@ cmd::synthProcFor_localLiteOp
+      then then
+
+    then
+
+  next-word
 ;
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* define the syntax for a command                                            */
-/*----------------------------------------------------------------------------*/
-: cmdSyntax:
-
-  //
-  //            cmdNm    cmd          arg       arg
-  // cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
-  // cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
-  //                     verb   noun
-  //
-
-  // create a word using next token from input source as the word name
-  input::next locals| sCmdNm |
-  sCmdNm series-name "_syntax" str.cat :create
-
-  // set the word category to be cmdSyntax:
-  [ compiler::current@ encode::push ] compiler::current@ word.category!
-
-  // attach a tag set to hold syntax to the word being created
-  tagSet::new locals| pSynTags |
-  pSynTags compiler::current@ word.TagSet!
-
-  // skip the :: token from input source
-  input::next discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // add a syntax-tag for the command name
-  "__cmdNm__" sCmdNm pSynTags tagSet.appendStr
-
-  // add a syntax-tag indicating the job is a distributed job
-  "__job__" "CN_JOB_DISTRIBUTED" pSynTags tagSet.appendStr
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse each input token till ';', building tag set representing the syntax
-
-  begin
-
-    input::next ";" str.equal not
-
-    while
-           input::isTag  if "__arg__"  input::chars pSynTags tagSet.appendStr
-      else input::isJson if "__json__" input::chars pSynTags tagSet.appendStr
-      else input::isEtc  if "__etc__"  input::chars pSynTags tagSet.appendStr
-      else                  "__cmd__"  input::chars pSynTags tagSet.appendStr
-      then then then
-
-  repeat
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // pTagSet tagSet.asStr .
-;
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* show all words that are of cmdSyntax:                                      */
-/*----------------------------------------------------------------------------*/
-: cmdSyntaxs prompt
-
-  find: cmdSyntax: word::ofCatg
-;
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
@@ -420,18 +423,16 @@
 
     word@ word.category@ pOpInfo eql if
 
-      word@ cmd::synthWords_info
-      //word@ cmd::addSeeds_info
-
-      //word@ cmd::addSettings_info
-
-      //word@ cmd::genService_info       // TO BE REMOVED
+      word@ _info.aboutLiteOp if
+        word@ cmd::synthWordsFor_liteOp
+      else
+      word@ _info.aboutLocalLiteOp if
+        word@ cmd::synthWordsFor_localLiteOp
+      then then
 
     then
 
   next-word
-
-  //[ compiler::current@ word.see ]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -450,8 +451,6 @@
     then
 
   next-word
-
-  //[ compiler::current@ word.see ]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -488,28 +487,6 @@
     then
 
   next-word
-
-  //[ compiler::current@ word.see ]
-;
-
-/*----------------------------------------------------------------------------*/
-/* complete the info and procedures for all commands                          */
-/*----------------------------------------------------------------------------*/
-: cmd::fillOut_allCmds_usingCmdSyntax
-
-  find: cmdSyntax: locals| pCmdSyntax |
-
-  // iterate thru all pOpInfo words
-
-  iterate-words
-
-    object@ word.category@ pCmdSyntax eql if
-
-    object@ word.see
-      
-    then
-
-  next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -523,13 +500,13 @@
     cmd::fillOut_synthWords_usingInfo
     cmd::fillOut_seedTagsInInfo
     cmd::fillOut_tagSettingsInInfo
+   
+    cmd::fillOut_synthProcs_usingInfo
+
     cmd::fillOut_services_usingInfo
-    //cmd::fillOut_allCmds_usingCmdSyntax
 
   ?else
    
-    // required technique
-    cmd::fillOut_allCmds_usingCmdSyntax
    
   ?]
 ;
