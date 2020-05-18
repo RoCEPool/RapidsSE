@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Convertor.cpp -- Fast Convertor of Csv Record                                  */
+/* Convertor.cpp -- Fast Convertor of Csv Record                              */
 /*============================================================================*/
 
 #include "Load.h"
@@ -38,7 +38,7 @@ Convertor::Convertor(StreamDef* pStreamDef, Format* pFmt)
   m_pCol    = nullptr;
   m_eCol    = CT_NONE;
 
-  m_bTrace  = true;
+  m_bTrace  = false;
   m_dCalc   = 0.0;
   m_nChars  = 0;
 
@@ -107,6 +107,9 @@ bool Convertor::bInspect(char* azSrc)
       
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
       m_eCol = m_pCol->eColumnType();
+      
+      if (26 == m_i_Rec && 6 == m_i_Fld)
+        vDebugPoint();
       
       vPreField();
       
