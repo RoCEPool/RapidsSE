@@ -164,7 +164,7 @@ dicLock.dropwrite
       "Created folder %v/%v" .printf
   then
 
-  pwFolder word.see
+  //pwFolder word.see
 
   pwFolder // returns:
 ;

@@ -253,7 +253,7 @@ assert::stack_0
   //  /tenants
   "tenants" folder::makeFolder attachMap::tenants!
   //attachmap::tenants@ execute
-  attachmap::tenants@ dup word.see execute
+  attachmap::tenants@ /*dup word.see*/ execute
   path[].pushFolder
 
     // make 'boray' tenant folder:

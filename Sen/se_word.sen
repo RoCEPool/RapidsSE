@@ -79,7 +79,7 @@
 
   POSTPONE exit_rt
 
-  [ compiler::current@ word.see ]
+  //[ compiler::current@ word.see ]
 ;
 
 

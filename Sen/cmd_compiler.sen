@@ -431,7 +431,7 @@
 
   next-word
 
-  [ compiler::current@ word.see ]
+  //[ compiler::current@ word.see ]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -446,6 +446,8 @@
   iterate-words
 
     object@ word.category@ pCmdSyntax eql if
+
+    object@ word.see
       
     then
 
@@ -461,6 +463,7 @@
   
     // current technique
     cmd::fillOut_allCmds_usingInfo
+    //cmd::fillOut_allCmds_usingCmdSyntax
 
   ?else
    

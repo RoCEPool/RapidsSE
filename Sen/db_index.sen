@@ -152,7 +152,7 @@
 
   pwIndexCatg pIndex pwIndex word.cppObject!
 
-  pwIndex word.see
+  //pwIndex word.see
 
   pwIndex execute locals| pIndex |
 

@@ -168,7 +168,7 @@
 
   pwTableCatg pTable pwTable word.cppObject!
 
-  pwTable word.see
+  //pwTable word.see
 
   pwTable execute locals| pTable |
 
