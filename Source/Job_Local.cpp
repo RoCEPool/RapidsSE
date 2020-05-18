@@ -141,16 +141,19 @@ void Job_Local::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Job_Local::ePopulateJob(TokenVec* pTknVec)
+eEC Job_Local::ePopulateJob(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOCAL,_FOOTER_);
   
-  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
-  if (! b) {
-    //vTrace("Unable to match job syntax\n"_Stz);
-    vParticipantHasError(true);
-    return EC_INVALID_COMMAND;
-  }
+//  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
+//  if (! b) {
+//    //vTrace("Unable to match job syntax\n"_Stz);
+//    vParticipantHasError(true);
+//    return EC_INVALID_COMMAND;
+//  }
+  
+  // copy the tagset into the job tag set
+  pJobTags()->vCopy(pTagSet);
   
   TagSet* pJobInfoTagSet = this->pJobInfoTagSet();
   //pTagSet_ji->vPrint();
@@ -199,15 +202,17 @@ Footer* Job_Local::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Local_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
+Job* Jobs::pJob_Local_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
 {
   Job_Local* pJob_Local = new Job_Local(aJobClass,aReqTuple);
 
-  eEC eError = pJob_Local->ePopulateJob(pTknVec);
+  eEC eError = pJob_Local->ePopulateJob(pTagSet);
   
-  if ( eError != EC_NONE ) {
-    pJob_Local->vJobError(eError);
-  }
+  RASSERT(EC_NONE == eError);
+  
+  //  if ( eError != EC_NONE ) {
+  //    pJob_Local->vJobError(eError);
+  //  }
   
   return pJob_Local;
 }

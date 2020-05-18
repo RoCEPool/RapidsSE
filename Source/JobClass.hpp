@@ -30,7 +30,7 @@ namespace Jobs
       eJF  m_eFlags;     // job flags
   
       eEC  (*m_fpCheck)(Session* pSession);
-      Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec);
+      Job* (*m_fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
       void (*m_fpPost)(JobClass* aJobClass, Job* pJob);
       Job* (*m_fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple);
       void (*m_fpDelete)(Job* pJob);
@@ -53,7 +53,7 @@ namespace Jobs
       void vGrabDdlLock(void);
       Job* pNewJob(ReqTuple* aReqTuple);
       void vPostJob(Job* pJob);
-      Job* pPreJob(ReqTuple* aReqTuple, Session* pSession);
+      Job* pPreJob(ReqTuple* aReqTuple, Session* pSession, TagSet* pTagSet);
       void vRecvJob(Job* pJob);
       Stz* sSeed(eSS eSeed);
       void vSendJob(Job* pJob);

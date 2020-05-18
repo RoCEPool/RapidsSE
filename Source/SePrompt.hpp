@@ -80,7 +80,7 @@ namespace Prompt
     bool bExecuteFunction(void);
     bool bExecutePipeline(void);
     bool bFindJobClass(void);
-    bool bFindMatch_job(void);
+    bool bFindMatch_job(TagSet* pTagSet);
     void vFocalOutline(s4K& sOutline);
     void vInitialSettings(void);
     bool bIsPromptWord(void);
@@ -95,7 +95,7 @@ namespace Prompt
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
     void vPostJob(void);
-    void vPreJob(void);
+    void vPreJob(TagSet* pTagSet);
     void vPrepareSpawn(void);
     i8   iPromptId(void);
     void vPromptUser(void);

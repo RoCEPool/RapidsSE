@@ -295,11 +295,21 @@ bool AM::bJobIsForeign(i8 iJobId) {
 void AM::vLogArguments(void) {
   gxArgs.vLog();
 }
+
+bool AM::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
+{
+  return JobHelper::bParseCmd(pTagSet,pTknVec);
+}
+
 void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
-eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
+eEC AM::ePopulateJob(Job* pJob, TagSet* pTagSet)
 {
-  eEC eError = _pJob_Distributed(pJob)->ePopulateJob(pTknVec);
+  eEC eError;
+  if (pJob->eClass() == CN_JOB_DISTRIBUTED )
+    eError = _pJob_Distributed(pJob)->ePopulateJob(pTagSet);
+  else
+    eError = _pJob_Local(pJob)->ePopulateJob(pTagSet);
   return eError;
 }
 
@@ -1188,17 +1198,32 @@ void AM::vSetOperand(Job_Operand* pJob_Operand, Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 {
-  JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
+  
 
   Job* pParentJob = pOp->pPipeline()->pJob();
+  Job* pNewJob;
   
-  Job_Distributed* pJobDistributed =
-    new Job_Distributed(pJobClass_Distributed,pReqTuple);
+  s32 sJobInfoNm(pOp->szOpNm());
   
-  pJobDistributed->m_pOp = pOp;
-  pJobDistributed->vSeed(SS_SEED_REQ);
+  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_info"_Stz);
+  
+  Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
+  
+  TagSet* pJobInfoTagSet = pJobInfo->pWordTags();
+  
+  if ((eJK)pJobInfoTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL) {
+    JobClass* pJobClass_Local = JobClass::pFind(CN_JOB_LOCAL);
+    pNewJob = new Job_Local(pJobClass_Local,pReqTuple);
+  }
+  else {
+    JobClass* pJobClass_Distributed = JobClass::pFind(CN_JOB_DISTRIBUTED);
+    pNewJob = new Job_Distributed(pJobClass_Distributed,pReqTuple);
+  }
+  
+  pNewJob->m_pOp = pOp;
+  pNewJob->vSeed(SS_SEED_REQ);
 
-  return pJobDistributed;
+  return pNewJob;
 }
 
 /*----------------------------------------------------------------------------*/

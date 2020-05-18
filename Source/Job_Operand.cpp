@@ -215,7 +215,7 @@ Footer* Job_Operand::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Operand_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
+Job* Jobs::pJob_Operand_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
 {
   Job_Operand* pJob_Operand = new Job_Operand(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

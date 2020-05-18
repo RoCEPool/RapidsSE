@@ -23,7 +23,7 @@ namespace Jobs
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    eEC ePopulateJob(TokenVec* pTokenVec);
+    eEC ePopulateJob(TagSet* pTagSet);
     void vShow(void);
     
   private:
@@ -34,7 +34,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Local* _pJob_Local(void* aAddr);
   
-  Job* pJob_Local_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec);
+  Job* pJob_Local_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet);
   Job* pJob_Local_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Local_delete(Job* pJob);
   void vJob_Local_show(Job* pJob);

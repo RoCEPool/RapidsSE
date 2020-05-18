@@ -141,21 +141,26 @@ void Job_Distributed::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Job_Distributed::ePopulateJob(TokenVec* pTknVec)
+eEC Job_Distributed::ePopulateJob(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DISTRIBUTED,_FOOTER_);
   
-  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
-  if (! b) {
-    //vTrace("Unable to match job syntax\n"_Stz);
-    vParticipantHasError(true);
-    return EC_INVALID_COMMAND;
-  }
+//  bool b = JobHelper::bParseCmd(pJobTags(),pTknVec);
+//  if (! b) {
+//    //vTrace("Unable to match job syntax\n"_Stz);
+//    vParticipantHasError(true);
+//    return EC_INVALID_COMMAND;
+//  }
+  pTagSet->vDumpSet();
+  
+  // copy the tagset into the job tag set
+  pJobTags()->vCopy(pTagSet);
   
   TagSet* pJobInfoTagSet = this->pJobInfoTagSet();
   //pTagSet_ji->vPrint();
   
   if (pJobInfoTagSet) {
+    pJobInfoTagSet->vDumpSet();
     eJK eJobKind = (eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND);
     vJobKind(eJobKind);
     
@@ -199,15 +204,17 @@ Footer* Job_Distributed::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TokenVec* pTknVec)
+Job* Jobs::pJob_Distributed_pre(JobClass* aJobClass, ReqTuple* aReqTuple, TagSet* pTagSet)
 {
   Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,aReqTuple);
-
-  eEC eError = pJob_Distributed->ePopulateJob(pTknVec);
   
-  if ( eError != EC_NONE ) {
-    pJob_Distributed->vJobError(eError);
-  }
+  eEC eError = pJob_Distributed->ePopulateJob(pTagSet);
+
+  RASSERT(EC_NONE == eError);
+  
+//  if ( eError != EC_NONE ) {
+//    pJob_Distributed->vJobError(eError);
+//  }
   
   return pJob_Distributed;
 }

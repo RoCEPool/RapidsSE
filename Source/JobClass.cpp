@@ -128,13 +128,11 @@ void JobClass::vPostJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
+Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession, TagSet* pTagSet)
 {
   // create the job
   
-  Job* pJob = (*m_fpPre)(this,aReqTuple,pSession->pTokenVec());
-  
-  
+  Job* pJob = (*m_fpPre)(this,aReqTuple,pTagSet);
   
   //ASSERT(this == pJob->aJobClass());
   pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;
@@ -148,14 +146,16 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
     pTknVec->vVecToString(sCmd,0,true);
     
     pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-    
+   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy the semantic ename-set into the job
     
     pJob->pJobTags()->vCopy(& pSession->m_oSsnTags);
     
+    
     //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
     //                       pJob->m_aJobClass->m_eKind,_EG_JK);
+    
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

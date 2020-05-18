@@ -141,6 +141,8 @@ void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  TagSet oTagSet;
+  
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
@@ -211,7 +213,16 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    if (! bFindMatch_job()) {
+    if ( ! JobHelper::bParseCmd(&oTagSet, m_pSession->pTokenVec())) {
+      vTrace("error: invalid command \n"_Stz);
+      
+      if (AM::bDeveloper())
+        vDumpTokenVec(true);
+      continue;
+    }
+    oTagSet.vDumpSet();
+    
+    if (! bFindMatch_job(&oTagSet)) {
       vUnknownCommand();
       if (AM::bDeveloper())
         vDumpTokenVec(true);
@@ -226,8 +237,10 @@ void SePrompt::vPromptLoop(void)
     
     vBeginRequest();
     
-    vPreJob();
+    vPreJob(&oTagSet);
+    oTagSet.vReset();
     ASSERT(! m_pJob->pTask());
+    m_pJob->pJobTags()->vDumpSet();
     
     // this should go
     if (m_pJob->bJobHasError()) {
@@ -666,10 +679,12 @@ bool SePrompt::bFindJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to find a job which matches the command tokens                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bFindMatch_job(void)
+bool SePrompt::bFindMatch_job(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  pTagSet->vDumpSet();
+  
   // attempt to find a job class which matches the command tokens
   if (bFindJobClass())
     return true;
@@ -679,7 +694,10 @@ bool SePrompt::bFindMatch_job(void)
     return true;
   
   // give command to the universal job
-  m_aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
+  if ((eJK)pTagSet->iValue(C_TAG_JOBKIND) == JK_LOCAL)
+    m_aJobClass = JobClass::pFind(CN_JOB_LOCAL);
+  else
+    m_aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
   
   return true;
 }
@@ -935,7 +953,7 @@ void SePrompt::vPostJob(void)
 /*----------------------------------------------------------------------------*/
 /* call pre-job function                                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPreJob(void)
+void SePrompt::vPreJob(TagSet* pTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
@@ -947,7 +965,7 @@ void SePrompt::vPreJob(void)
               spId.sz(EK_REQ,m_iRequestId),
               C_VARGS_END);
   
-  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
+  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession,pTagSet);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -967,19 +967,29 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // add the OpJob JobNM to be the same as the Opertor name
   pOpJobTags->vReplace(C_TAG_JOBNM, m_sOpNm);
   
-  //pOpJobTags->vDumpSet();
+  pOpJobTags->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the command string using the parameter ename pairs
   s4K szCmdStr;
   vToCmdStr(szCmdStr);
-  
+
   TokenVec* pTknVec = new TokenVec;
   pTknVec->vTokenise(szCmdStr);
+
+  bool b = AM::bParseCmd(pOpJobTags,pTknVec);
+  RASSERT(b);
+//  if (! b) {
+//    //vTrace("Unable to match job syntax\n"_Stz);
+//    vParticipantHasError(true);
+//    return EC_INVALID_COMMAND;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the job
-  eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
+  
+  eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTags);
+    
   //RASSERT(EC_NONE != eError);
   
   // delete the tokenVec

@@ -242,8 +242,9 @@ namespace Oblique
     static Stz* pOperandName(Operand* pOperand);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static bool bParseCmd(TagSet* pTagSet, TokenVec* pTknVec);
     static void vPoolAnalyze(void);
-    static eEC ePopulateJob(Job* pJob, TokenVec* pTknVec);
+    static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
     static void vPromptCall(void);
   
