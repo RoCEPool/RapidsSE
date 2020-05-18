@@ -392,6 +392,29 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
+: cmd::fillOut_synthProcs_usingInfo
+
+  find: _info locals| pOpInfo |
+
+  iterate-words
+
+    word@ word.category@ pOpInfo eql if
+
+      word@ _info.aboutLiteOp if
+         word@ cmd::synthProcFor_liteOp
+      else
+      word@ _info.aboutLocalLiteOp if
+        word@ cmd::synthProcFor_localLiteOp
+      then then
+
+    then
+
+  next-word
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
 : cmd::fillOut_synthWords_usingInfo
 
   find: _info locals| pOpInfo |
@@ -402,11 +425,9 @@
 
       word@ _info.aboutLiteOp if
         word@ cmd::synthWordsFor_liteOp
-        word@ cmd::synthProcFor_liteOp
       else
       word@ _info.aboutLocalLiteOp if
         word@ cmd::synthWordsFor_localLiteOp
-        word@ cmd::synthProcFor_localLiteOp
       then then
 
     then
@@ -479,6 +500,9 @@
     cmd::fillOut_synthWords_usingInfo
     cmd::fillOut_seedTagsInInfo
     cmd::fillOut_tagSettingsInInfo
+   
+    cmd::fillOut_synthProcs_usingInfo
+
     cmd::fillOut_services_usingInfo
 
   ?else
