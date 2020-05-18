@@ -83,8 +83,6 @@
   // [ compiler::current@ word.name@ encode::push ] .
   // <jobNm> .
 
-  job::becomeOriginator
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // has cluster already been started?
 
@@ -93,6 +91,8 @@
     DONE_REQ
     exit
   then
+
+  job::becomeOriginator
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
