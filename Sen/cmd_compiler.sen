@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 : .generateService params| pInfoWd |
 
-  // pInfoWd word.name@ "Gen service using _info : %v" .printf
+  pInfoWd word.name@ "Gen service using _info : %v" .printf
 
   // calc the name of the service
   "_" pInfoWd word.name@ str.removeSuffix locals| sServiceNm |
@@ -425,6 +425,26 @@
 
       word@ cmd::addSettings_info
 
+      //word@ cmd::genService_info       // TO BE REMOVED
+
+    then
+
+  next-word
+
+  //[ compiler::current@ word.see ]
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_services_usingInfo
+
+  find: _info locals| pOpInfo |
+
+  iterate-words
+
+    word@ word.category@ pOpInfo eql if
+
       word@ cmd::genService_info       // TO BE REMOVED
 
     then
@@ -463,6 +483,7 @@
   
     // current technique
     cmd::fillOut_allCmds_usingInfo
+    cmd::fillOut_services_usingInfo
     //cmd::fillOut_allCmds_usingCmdSyntax
 
   ?else
