@@ -409,7 +409,6 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
@@ -444,15 +443,31 @@
 
   // iterate thru all pOpInfo words
 
-  dic::root dic.lastWord dup
-  iterate                                // iterate word cursor
+  iterate-words
 
     object@ word.category@ pCmdSyntax eql if
       
     then
 
-    object@ word.prev object!            // advance cursor backwards thru words
-  next
+  next-word
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_allCmds
+
+  [? 1 ?if
+  
+    // current technique
+    cmd::fillOut_allCmds_usingInfo
+
+  ?else
+   
+    // required technique
+    cmd::fillOut_allCmds_usingCmdSyntax
+   
+  ?]
 ;
 
 /*============================================================================*/

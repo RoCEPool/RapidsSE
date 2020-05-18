@@ -55,7 +55,7 @@ cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ; // proc analizeIndex
 //           |        |  [needs to be]
 //  +--------+--------+
 //  |
-: anidx _info tagCopy: liteOp_tags  // +-> procedure andix [currently]
+: anidx _info tagCopy: liteOp_tags  // +==s> procedure andix [currently]
   tags{
     <jobDesc>   = "--op desc--"
     <liteOp>    = true
