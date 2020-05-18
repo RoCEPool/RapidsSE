@@ -101,13 +101,14 @@ bool Convertor::bInspect(char* azSrc)
       m_iLine++;
       continue;
     }
-
+    
     // each record
     while (bMoreFields()) {
       
       m_pCol = m_pStreamDef->pGetColumn(m_i_Fld);
       m_eCol = m_pCol->eColumnType();
-      
+      m_bSawFldSep = false;
+
       if (26 == m_i_Rec && 6 == m_i_Fld)
         vDebugPoint();
       
@@ -129,10 +130,8 @@ bool Convertor::bInspect(char* azSrc)
       }
       
       vPostField();
-      
+
       if (m_cFldSep == *m_acChr) {
-        if (m_bTrace)
-          vTrace("<fld>\n"_Stz);
         m_acChr++;
         m_iCol++;
       }
@@ -141,8 +140,11 @@ bool Convertor::bInspect(char* azSrc)
       
     } // end-record
     
-    if (m_bTrace)
-      vTrace("\n-- <rec> -- \n"_Stz);
+    if (m_bTrace) {
+      if (! m_bSawFldSep)
+        vTrace("\n"_Stz);
+      vTrace("-- recSep -- \n"_Stz);
+    }
     
     m_i_Rec++;
     m_i_Fld = 0;

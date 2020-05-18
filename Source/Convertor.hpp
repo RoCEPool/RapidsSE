@@ -30,6 +30,7 @@ namespace Load
     bool       m_bTrace;
     d8         m_dCalc;
     i8         m_nChars;
+    bool       m_bSawFldSep;
   
     // must be last
     Footer m_xFooter;
@@ -328,6 +329,13 @@ namespace Load
   /*--------------------------------------------------------------------------*/
   inline void vPostField(void)
   {
+    if (m_cFldSep == *m_acChr) {
+      m_bSawFldSep = true;
+  
+      if (m_bTrace)
+        vTrace(" + fldSep\n"_Stz);
+    }
+  
     while (bInField()) {
       m_acChr++;
     }
