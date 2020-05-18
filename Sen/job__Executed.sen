@@ -79,6 +79,7 @@
 
   // find the originating job
   iJobId olist::findJob discard
+JobRef[] "++++++++++++++++++++++++++++++++++++ JOB__EXECUTED _Executed %v" .printf
 
   // get the participant node from where this job__begun started
   pJob__Executed job.participant@ to iParticipantNode

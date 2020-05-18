@@ -120,6 +120,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
     
+  
   // m_xReqTuple
   
   m_aJobClass = aJobClass;
@@ -179,6 +180,8 @@ Job::~Job(void) noexcept(false)
 //    //m_oJobTags.vPrint();
 //  }
 
+  vTrace("*********************************************************** DELETING JOB %p\n"_Stz,this);
+  
   vIncStepNo();
   if (m_bWasReceived) {
     // do not decrement gixJob

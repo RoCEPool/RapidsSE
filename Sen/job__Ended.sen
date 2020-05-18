@@ -56,6 +56,7 @@
 
   // find the originating job
   iJobId olist::findJob discard
+  JobRef[] "++++++++++++++++++++++++++++++++++++ JOB__ENDED _Ended %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __ended job on this originating node

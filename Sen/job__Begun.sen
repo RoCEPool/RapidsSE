@@ -35,6 +35,8 @@
   // set the originator node as the send target node
   //iJobId job::originator@ grid::node task[] task.sendNode!
 
+"++++++++++++++++++++++++++++++++++++ JOB__BEGUN ::send" .printf
+
   // send the begun job
   iJobId job::originator@ pJob__Begun job.reply
 
@@ -51,6 +53,8 @@
 /* run this received Job__Begun on originating node  recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
 : _Begun _run
+
+
 
   //
   // where:  On the originator node.
@@ -74,6 +78,7 @@
 
   // find the originating job
   iJobId olist::findJob discard
+JobRef[] "++++++++++++++++++++++++++++++++++++ JOB__BEGUN _Begun %v" .printf
 
   // get the participant node from where this job__begun started
   pJob__Begun job.participant@ to iParticipantNode

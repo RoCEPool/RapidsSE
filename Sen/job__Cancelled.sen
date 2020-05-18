@@ -65,6 +65,7 @@
 
   // find the originating job
   iJobId olist::findJob discard
+JobRef[] "++++++++++++++++++++++++++++++++++++ JOB__CANCELLED _Cancelled %v" .printf
 
   // get the participant node from where this job__begun started
   pJob__Cancelled job.participant@ to iParticipantNode
@@ -85,6 +86,8 @@
   // increment the number of __cancelled jobs received in api state
   JobRef[] ssn::incCancelled
   JobRef[] ssn::traceSession
+
+
 
   // decrement the acks remaining in the originating job
   JobRef[] job.dec2pcAcksRmg to bAmDecider

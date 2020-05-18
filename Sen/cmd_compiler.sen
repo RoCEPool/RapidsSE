@@ -412,7 +412,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_allCmds_usingInfo
+: cmd::fillOut_synthWords_usingInfo
 
   find: _info locals| pOpInfo |
 
@@ -520,7 +520,7 @@
   [? 1 ?if
   
     // current technique
-    cmd::fillOut_allCmds_usingInfo
+    cmd::fillOut_synthWords_usingInfo
     cmd::fillOut_seedTagsInInfo
     cmd::fillOut_tagSettingsInInfo
     cmd::fillOut_services_usingInfo

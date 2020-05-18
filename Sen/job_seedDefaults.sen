@@ -112,7 +112,9 @@
   job::becomeParticipant
 
   <jobNm> "::checkResources" str.cat find dup if
+    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ::checkResources A" .printf
     execute
+    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ::checkResources B" .printf
   else
     discard
   then

@@ -140,6 +140,7 @@ void Step::vJobAddOriginator(void)
 //  AM::pOriginatingJobs()->vAddJob(pJob);
 //  AM::pOriginatingJobs()->vDropLock();
   
+  vTrace("*********************************************************** ADDING JOB %p\n"_Stz,pJob);
   Scheduler::vJob_AddOriginating(pJob);
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
@@ -1149,6 +1150,8 @@ void Step::vJobRemoveOriginator(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
+  vTrace("*********************************************************** REMOVING JOB %p\n"_Stz,pJob);
+
   bool bRemove = Scheduler::bJob_RemoveOriginating(pJob);
 
   if (! bRemove) {
