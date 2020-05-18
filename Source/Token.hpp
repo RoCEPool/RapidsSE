@@ -15,10 +15,6 @@ namespace LexicalAnalysis
     i8    m_iColNo;  // column number where term can be found in input
 
     TokenVec* m_p_ExoTknVec; // which token vector this 
-
-#ifndef __WITH_CHARS_BYTE_SPACE
-    s256  m__sCharsBuff; // temp buffer for charsed characters
-#endif
   
     // must be last
     Footer m_xFooter;    

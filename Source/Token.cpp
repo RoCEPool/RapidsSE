@@ -80,17 +80,6 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* copy given chars into this token                                           */
 /*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_BYTE_SPACE
-void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_szChars->vCopy(szArgChars);
-}
-#else
-/*----------------------------------------------------------------------------*/
 void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
@@ -99,22 +88,9 @@ void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 
   m_p_ExoTknVec->vUpdateToken(this,szArgChars);
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* copy given token into this token                                           */
-/*----------------------------------------------------------------------------*/
-#ifndef __WITH_CHARS_BYTE_SPACE
-void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_eToken = pSrcToken->m_eToken;
-  m_szChars->vCopy(pSrcToken->szChars());
-}
-#else
 /*----------------------------------------------------------------------------*/
 void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
 {
@@ -124,7 +100,7 @@ void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
   
   m_p_ExoTknVec->vReplaceToken(this,pSrcToken);
 }
-#endif
+
 /*----------------------------------------------------------------------------*/
 /* init this token                                                            */
 /*----------------------------------------------------------------------------*/
@@ -159,10 +135,6 @@ void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,
 /*----------------------------------------------------------------------------*/
 void Token::vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec)
 {
-#ifndef __WITH_CHARS_BYTE_SPACE
-  RASSERT(0);
-#endif
-  
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   ASSERT(pExoTknVec == m_p_ExoTknVec);
