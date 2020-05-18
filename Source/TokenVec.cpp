@@ -882,9 +882,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
     Token* pToken = pGet(i_Token);
     pToken->vToken(pInput->eToken());
     
-    #ifdef __WITH_CHARS_BYTE_SPACE
-      vIntegrityCheck();
-    #endif
+    vIntegrityCheck();
 
     pToken->vUpdateChars(pInput->szChars(),this);
     
@@ -900,9 +898,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   vSoftReset();
-  #ifdef __WITH_CHARS_BYTE_SPACE
-    vIntegrityCheck();
-  #endif
+  vIntegrityCheck();
 
   Input* pInput = new Input;
   pInput->vUseString(szTokenStr);
@@ -947,9 +943,7 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
   else
     _vCharsCopyInterior(pDstToken,szArgChars);
   
-#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1079,9 +1073,8 @@ void TokenVec::_vByteSpaceTrim(i8 nBytes)
 void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  #ifdef __WITH_CHARS_BYTE_SPACE
-    vIntegrityCheck();
-  #endif
+  
+  vIntegrityCheck();
 
   //vTrace("_vCharsCopyInterior\n"_Stz);
   //vDumpVec(16);
@@ -1111,9 +1104,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   //vTrace("--- --- --- --- --- ---\n"_Stz);
   //vDumpVec(16);
 
-#ifdef __WITH_CHARS_BYTE_SPACE
   vIntegrityCheck();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1123,10 +1114,8 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  #ifdef __WITH_CHARS_BYTE_SPACE
-    vListTokens();
-    vIntegrityCheck();
-  #endif
+  vListTokens();
+  vIntegrityCheck();
   i8 nSize = szArgChars->nSize();
   
   Stz* szExtension = _szByteSpaceExtend(nSize);
@@ -1134,10 +1123,8 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
   pDstToken->vChars(szExtension);
 
   szExtension->vCopy(szArgChars);
-#ifdef __WITH_CHARS_BYTE_SPACE
   vListTokens();
   vIntegrityCheck();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
