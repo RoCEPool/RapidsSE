@@ -423,7 +423,7 @@
       word@ cmd::synthWords_info
       word@ cmd::addSeeds_info
 
-      word@ cmd::addSettings_info
+      //word@ cmd::addSettings_info
 
       //word@ cmd::genService_info       // TO BE REMOVED
 
@@ -432,6 +432,24 @@
   next-word
 
   //[ compiler::current@ word.see ]
+;
+
+/*----------------------------------------------------------------------------*/
+/* complete the info and procedures for all commands                          */
+/*----------------------------------------------------------------------------*/
+: cmd::fillOut_tagSettingsInInfo
+
+  find: _info locals| pOpInfo |
+
+  iterate-words
+
+    word@ word.category@ pOpInfo eql if
+
+      word@ cmd::addSettings_info
+
+    then
+
+  next-word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -483,6 +501,7 @@
   
     // current technique
     cmd::fillOut_allCmds_usingInfo
+    cmd::fillOut_tagSettingsInInfo
     cmd::fillOut_services_usingInfo
     //cmd::fillOut_allCmds_usingCmdSyntax
 
