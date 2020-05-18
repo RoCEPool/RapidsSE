@@ -5,6 +5,77 @@
 " cmd_compiler.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
+/* define the syntax for a command                                            */
+/*----------------------------------------------------------------------------*/
+: cmdSyntax:
+
+  //
+  //            cmdNm    cmd          arg       arg
+  // cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
+  // cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
+  //                     verb   noun
+  //
+
+  // create a word using next token from input source as the word name
+  input::next locals| sCmdNm |
+  sCmdNm series-name "_syntax" str.cat :create
+
+  // set the word category to be cmdSyntax:
+  [ compiler::current@ encode::push ] compiler::current@ word.category!
+
+  // attach a tag set to hold syntax to the word being created
+  tagSet::new locals| pSynTags |
+  pSynTags compiler::current@ word.TagSet!
+
+  // skip the :: token from input source
+  input::next discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // add a syntax-tag for the command name
+  "__cmdNm__" sCmdNm pSynTags tagSet.appendStr
+
+  // add a syntax-tag indicating the job is a distributed job
+  "__job__" "CN_JOB_DISTRIBUTED" pSynTags tagSet.appendStr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse each input token till ';', building tag set representing the syntax
+
+  begin
+
+    input::next ";" str.equal not
+
+    while
+           input::isTag  if "__arg__"  input::chars pSynTags tagSet.appendStr
+      else input::isJson if "__json__" input::chars pSynTags tagSet.appendStr
+      else input::isEtc  if "__etc__"  input::chars pSynTags tagSet.appendStr
+      else                  "__cmd__"  input::chars pSynTags tagSet.appendStr
+      then then then
+
+  repeat
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // pTagSet tagSet.asStr .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show all words that are of cmdSyntax:                                      */
+/*----------------------------------------------------------------------------*/
+: cmdSyntaxs prompt
+
+  find: cmdSyntax: word::ofCatg
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* consume service arguments                                                  */
 /*----------------------------------------------------------------------------*/
 : .consumeArgs
@@ -332,80 +403,6 @@
   then then
 ;
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* define the syntax for a command                                            */
-/*----------------------------------------------------------------------------*/
-: cmdSyntax:
-
-  //
-  //            cmdNm    cmd          arg       arg
-  // cmdSyntax: anidx :: anidx        <tableNm> <indexNm> ;
-  // cmdSyntax: anidx :: analizeIndex <tableNm> <indexNm> ;
-  //                     verb   noun
-  //
-
-  // create a word using next token from input source as the word name
-  input::next locals| sCmdNm |
-  sCmdNm series-name "_syntax" str.cat :create
-
-  // set the word category to be cmdSyntax:
-  [ compiler::current@ encode::push ] compiler::current@ word.category!
-
-  // attach a tag set to hold syntax to the word being created
-  tagSet::new locals| pSynTags |
-  pSynTags compiler::current@ word.TagSet!
-
-  // skip the :: token from input source
-  input::next discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // add a syntax-tag for the command name
-  "__cmdNm__" sCmdNm pSynTags tagSet.appendStr
-
-  // add a syntax-tag indicating the job is a distributed job
-  "__job__" "CN_JOB_DISTRIBUTED" pSynTags tagSet.appendStr
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse each input token till ';', building tag set representing the syntax
-
-  begin
-
-    input::next ";" str.equal not
-
-    while
-           input::isTag  if "__arg__"  input::chars pSynTags tagSet.appendStr
-      else input::isJson if "__json__" input::chars pSynTags tagSet.appendStr
-      else input::isEtc  if "__etc__"  input::chars pSynTags tagSet.appendStr
-      else                  "__cmd__"  input::chars pSynTags tagSet.appendStr
-      then then then
-
-  repeat
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // pTagSet tagSet.asStr .
-;
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* show all words that are of cmdSyntax:                                      */
-/*----------------------------------------------------------------------------*/
-: cmdSyntaxs prompt
-
-  find: cmdSyntax: word::ofCatg
-;
-
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
