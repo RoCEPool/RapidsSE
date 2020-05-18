@@ -533,30 +533,6 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   vIntegrityCheck();
 }
 #else
-/*----------------------------------------------------------------------------*/
-void TokenVec::vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  // open up a token at _i_Tkn
-  for (i8 i_Token = nTokens() - 1; i_Token >= i_Tkn ; i_Token--) {
-    
-    Token* pTkn_dst = pGet(i_Token + 1,true);
-    Token* pTkn_src = pGet(i_Token);
-    
-    pTkn_dst->vCopyToken_restricted(pTkn_src,this);
-  }
-  
-  vIncItems();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now copy the inserting token into place
-  
-  Token* pTkn_ins = pGet(i_Tkn);
-  
-  pTkn_ins->vUpdateChars(szArgChars,this);
-  pTkn_ins->vToken(eToken);
-}
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -729,60 +705,6 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
   vIntegrityCheck();
 #endif
 }
-/*----------------------------------------------------------------------------*/
-//void TokenVec::vCutToken(i8 i_CutTkn)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
-//
-//  i8 nTkns = nTokens();
-//
-//  if (i_CutTkn >= nTkns - 1) {
-//    vDecItems();
-//    return;
-//  }
-//
-//  Token* pTknCut = pGet(i_CutTkn);
-//
-//// ----
-//  char* azChars = pTknCut->azChars();
-//  Stz* szWhereToCut = pTknCut->szChars();
-//  i8 nBytesToCut = pTknCut->nChars() + 1;
-//
-//  m_xyByteSpace.vListAll();
-//
-//  Correctness::vDebugPoint();
-//// ----
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
-//
-//    Token* pTknDst = pGet(i_Token);
-//    Token* pTknSrc = pGet(i_Token + 1,true);
-//
-//    pTknDst->vCopyToken_restricted(pTknSrc,this);
-//  }
-//
-//  vDecItems();
-//
-//// ----
-//
-//  m_xyByteSpace.vMoveLeft(szWhereToCut,nBytesToCut);
-//  m_xyByteSpace.vListAll();
-//
-//  nTkns = nTokens();
-//
-//  for (i8 i_Token = i_CutTkn; i_Token < nTkns ; i_Token++) {
-//    Token* pTknAdj = pGet(i_Token);
-//
-//    pTknAdj->vAdjustChars(- nBytesToCut); // observe minus sign
-//  }
-//
-//
-//  Correctness::vDebugPoint();
-//// ----
-//
-//}
 #endif
 
 /*----------------------------------------------------------------------------*/

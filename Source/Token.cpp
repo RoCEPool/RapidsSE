@@ -426,21 +426,6 @@ void Token::vReset(void)
   m_iColNo  = C_UNKNOWN;
 }
 #else
-/*----------------------------------------------------------------------------*/
-void Token::vReset(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  // tbd...
-  m_szChars = m__sCharsBuff.szStz();
-  
-
-  m_eToken   = TN_NONE;
-  *m_szChars->azChar() = '\0';
-  
-  m_iLineNo  = C_UNKNOWN;
-  m_iColNo   = C_UNKNOWN;
-}
 #endif
 
 /*----------------------------------------------------------------------------*/
