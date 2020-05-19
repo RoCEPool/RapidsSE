@@ -54,7 +54,7 @@ cmdSyntax: dropTable :: dropTable <tableNm> ;
 
 : dropTable _cmdTags tagCopy: stageOp_tags
   tags{
-    <cmdDesc>   = "--op desc--" }
+    <cmdDesc>   = "--cmd desc for op--" }
 ;
     
 /*============================================================================*/

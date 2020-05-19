@@ -79,7 +79,7 @@ cmdSyntax: tableSizes :: tableSizes ;
 
 : tableSizes _cmdTags tagCopy: liteOp_tags
   tags{
-    <cmdDesc>   = "--op desc--"
+    <cmdDesc>   = "--cmd desc for op--"
     <liteOp>    = true
     <streamDef> = __tableSizes
     <params>    = 0

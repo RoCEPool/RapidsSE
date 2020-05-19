@@ -84,7 +84,7 @@
 cmdSyntax: statWrite :: statWrite ;
 
 : statWrite _cmdTags tagCopy: stageOp_tags
-  tags{ <cmdDesc>  = "--op desc--" }
+  tags{ <cmdDesc>  = "--cmd desc for op--" }
 ;
 
 /*============================================================================*/

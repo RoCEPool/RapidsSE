@@ -24,7 +24,7 @@ cmdSyntax: dumpTbl :: dumpTbl <tableNm> ;
 
 : dumpTbl _cmdTags tagCopy: localLiteOp_tags
   tags{
-    <cmdDesc>     = "--op desc--"
+    <cmdDesc>     = "--cmd desc for op--"
     <localLiteOp> = true
     <params>      = 1
   }

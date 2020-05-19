@@ -96,7 +96,7 @@
 cmdSyntax: PassThru :: PassThru ;
 
 : PassThru _cmdTags tagCopy: stageOp_tags
-  tags{ <cmdDesc> = "--op desc--" }
+  tags{ <cmdDesc> = "--cmd desc for op--" }
 ;
 
 /*============================================================================*/
