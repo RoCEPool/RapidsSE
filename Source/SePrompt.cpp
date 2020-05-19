@@ -1321,9 +1321,9 @@ void SePrompt::vSetJob(void)
   
   if (m_oCmdTags.bHasName(C_TAG_INFO)) {
     
-    TagSet* pJobInfo_es = Job::pJobInfo_tagSet(sJobNm);
-    if (pJobInfo_es)
-      pJobInfo_es->vDumpSet();
+    TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobNm);
+    if (pCmdTagSet)
+      pCmdTagSet->vDumpSet();
   }
 
   m_pJob->pJobTags()->vCopy(&m_oCmdTags);

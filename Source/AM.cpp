@@ -1200,15 +1200,8 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
 {
   Job* pNewJob;
   
-  // form the cmdTag name
-  s32 sCmdTagNm(pOp->szOpNm());
-  StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
-  
-  // find the CmdTagNm word
-  Word* pCmdWord = AM::pRootDic()->pFindWord(sCmdTagNm);
-  
   // get the CmdTag words tagSet
-  TagSet* pCmdTagSet = pCmdWord->pWordTags();
+  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
   
   // get the jobKind from the cmdTagSet
   eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);

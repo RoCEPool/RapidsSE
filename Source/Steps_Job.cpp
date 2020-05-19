@@ -1370,9 +1370,9 @@ void Step::vJobSeedDecode(void)
   eSS eSeed = SS_SEED_RCV;
   
   if (JK_GENERIC == pJob->eJobKind()) {
-    TagSet* pJobInfoTagSet_ji = Job::pJobInfo_tagSet(pJob->szJobNm());
+    TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pJob->szJobNm());
     
-    s32 sSeed = pJobInfoTagSet_ji->szValue(C_TAG_SEEDRUN);
+    s32 sSeed = pCmdTagSet->szValue(C_TAG_SEEDRUN);
     
     eSeed = SS_SEED_RUN;
     
@@ -1655,8 +1655,8 @@ void Step::vJobSpawnUniversal(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // get the ename set from the job info
-  TagSet* pJobInfoTagSet = Job::pJobInfo_tagSet(sJobNm);
+  // get the cmd tag set
+  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobNm);
   
   // find the job class
   JobClass* aJobClass = JobClass::pFind(CN_JOB_DISTRIBUTED);
@@ -1666,7 +1666,7 @@ void Step::vJobSpawnUniversal(void)
   Job_Distributed* pJob_Distributed = new Job_Distributed(aJobClass,&xReqTuple);
 
   // translate job kind
-  pJob_Distributed->vJobKind((eJK) pJobInfoTagSet->iValue(C_TAG_JOBKIND));
+  pJob_Distributed->vJobKind((eJK) pCmdTagSet->iValue(C_TAG_JOBKIND));
 
   // add the necessary ename tags
   TagSet* pJobTags = pJob_Distributed->pJobTags();
@@ -1674,7 +1674,7 @@ void Step::vJobSpawnUniversal(void)
   //pTagSet_jobInfo->vContentDump();
   //pTagSet_job->vContentDump();
   
-  pJobTags->vCopy(pJobInfoTagSet);
+  pJobTags->vCopy(pCmdTagSet);
   
   pJobTags->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
   //pTagSet_job->vAdd(C_TAG_JOBNM,sJobNm);

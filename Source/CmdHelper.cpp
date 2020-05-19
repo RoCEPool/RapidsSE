@@ -10,6 +10,24 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* get the cmd tag set of the job                                             */
+/*----------------------------------------------------------------------------*/
+TagSet* CmdHelper::pCmdTagSet(Stz* szJobNm)
+{
+  // form the cmdTag name
+  s32 sCmdTagNm(szJobNm);
+  StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
+  
+  // find the CmdTagNm word
+  Word* pCmdWord = AM::pRootDic()->pFindWord(sCmdTagNm);
+  
+  // get the CmdTag words tagSet
+  TagSet* pCmdTagSet = pCmdWord->pWordTags();
+  
+  return pCmdTagSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
 bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
@@ -37,9 +55,8 @@ bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
       pTagSet->vInsert(C_TAG_JOBCLASS,CN_JOB_DISTRIBUTED);
       s32 sJobName(pSyntax->pWordTags()->szValue("__cmdNm__"_Stz));
       
-      // get the cmd tag set
-      TagSet* pCmdTagSet = Job::pJobInfo_tagSet(sJobName);
-      //pTagSet->vDumpSet();
+      // get the CmdTag words tagSet
+      TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobName);
       
       // copy the cmd tag set into the pTagSet
       pTagSet->vCopy(pCmdTagSet);

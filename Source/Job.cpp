@@ -297,27 +297,6 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
   return NodeNo_Bits;
 }
 
-
-
-/*----------------------------------------------------------------------------*/
-/* get the ename set of the named (universal) job                             */
-/*----------------------------------------------------------------------------*/
-TagSet* Job::pJobInfo_tagSet(Stz* szJobNm)
-{
-  s32 sJobNm_info = szJobNm;
-  sJobNm_info.vConcat("_cmdTags"_Stz);
-  
-  Word* pWord_jobInfo = AM::pRootDic()->pFindWord(sJobNm_info);
-  
-  if (!pWord_jobInfo)
-    return nullptr;
-  
-  TagSet* pTagSet = pWord_jobInfo->pWordTags();
-  
-  return pTagSet;
-}
-
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
