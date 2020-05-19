@@ -451,7 +451,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_seedTagsInInfo
+: cmd::addSeedTags_toCmdTagSet
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -469,7 +469,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_tagSettingsInInfo
+: cmd::addSettings_toCmdTagSet
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -487,7 +487,7 @@
 /*----------------------------------------------------------------------------*/
 /* complete the info and procedures for all commands                          */
 /*----------------------------------------------------------------------------*/
-: cmd::fillOut_services_usingInfo
+: cmd::genServices_usingCmdTags
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
@@ -512,11 +512,11 @@
     cmd::fillOut_synthWords_usingInfo
     cmd::fillOut_synthProcs_usingInfo
 
-    cmd::fillOut_seedTagsInInfo
-    cmd::fillOut_tagSettingsInInfo   
+    cmd::addSeedTags_toCmdTagSet
+    cmd::addSettings_toCmdTagSet
 
     // to be removed
-    cmd::fillOut_services_usingInfo
+    cmd::genServices_usingCmdTags
 
   ?else
    
