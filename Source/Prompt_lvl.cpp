@@ -25,11 +25,11 @@ bool Prompt::bPrompt_lvl(SePrompt* pPrompt)
 {
   i8 i_Next = 0;
   
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pTokenVec->nItems();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
   
   if (2 == iNumTokens) {
-    Token* pTkn0 = pTokenVec->pGet(1);
+    Token* pTkn0 = pInpTknVec->pGet(1);
     if (pTkn0->szChars()->bIsSomeTrue())
       i_Next = C_UNKNOWN;
   }

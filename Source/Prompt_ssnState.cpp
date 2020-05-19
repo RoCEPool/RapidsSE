@@ -27,11 +27,11 @@ bool Prompt::bPrompt_ssnState(SePrompt* pPrompt)
 {
   Token* pArg = nullptr;
   
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
-  i8 nTokens = pTokenVec->nItems();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 nTokens = pInpTknVec->nItems();
 
   if (nTokens == 2)
-    pArg = pTokenVec->pGet(1);
+    pArg = pInpTknVec->pGet(1);
   
   AM::pSessionArray()->vDump();
   

@@ -25,11 +25,11 @@ bool Prompt::bPrompt_rmfifo(SePrompt* pPrompt)
 {
   s256 sFifoPath;
   
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  ASSERT(pTokenVec->pGet(0)->bSame("rmfifo"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("rmfifo"_Stz));
   
-  sFifoPath = pTokenVec->pGet(1)->szChars();
+  sFifoPath = pInpTknVec->pGet(1)->szChars();
   
   if (! Fifo::bRemove(sFifoPath)) {
     vTrace("Failed to remove fifo: %s\n"_Stz,sFifoPath.azChar());

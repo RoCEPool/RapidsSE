@@ -25,12 +25,12 @@ PromptFun __Prompt_indexEntries (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  ASSERT(pTokenVec->pGet(0)->bSame("indexEntries"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("indexEntries"_Stz));
   
   // get number of items in token vector
-  i8 nTokens = pTokenVec->nItems();
+  i8 nTokens = pInpTknVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 1/2 tokens
@@ -43,11 +43,11 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
     return true;
   }
   
-  if (pTokenVec->pGet(1)->eToken() != TN_INTEGER)
+  if (pInpTknVec->pGet(1)->eToken() != TN_INTEGER)
     return false;
   
   // get the no of indexEntries to set
-  i8 iIndexEntries = pTokenVec->pGet(1)->iToI8();
+  i8 iIndexEntries = pInpTknVec->pGet(1)->iToI8();
   
   AM::vIndexEntries(iIndexEntries);
   

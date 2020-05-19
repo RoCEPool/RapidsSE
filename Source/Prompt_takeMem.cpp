@@ -27,15 +27,15 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
 {
   i8 nSpare = 0;
 
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  i8 iNumTokens = pTokenVec->nItems();
+  i8 iNumTokens = pInpTknVec->nItems();
   if (2 == iNumTokens) {
-    if (pTokenVec->pGet(1)->eToken() != TN_INTEGER)
+    if (pInpTknVec->pGet(1)->eToken() != TN_INTEGER)
       return false;
     
     // get the no of indexEntries to set
-    nSpare = pTokenVec->pGet(1)->iToI8();
+    nSpare = pInpTknVec->pGet(1)->iToI8();
   }
   
   while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {

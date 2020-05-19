@@ -23,17 +23,17 @@ PromptFun __Prompt_procedure (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  //pTokenVec->vListTokens();
+  //pInpTknVec->vListTokens();
   
-  pTokenVec->vIntegrityCheck();
+  pInpTknVec->vIntegrityCheck();
   
-  ASSERT(pTokenVec->pGet(0)->bSame("procedure"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("procedure"_Stz));
   
-  Stz* ssProcNm = pTokenVec->pGet(1)->szChars();
+  Stz* ssProcNm = pInpTknVec->pGet(1)->szChars();
   
-  Procedure::vAddProcedure(pTokenVec);
+  Procedure::vAddProcedure(pInpTknVec);
   
   return true;
 }

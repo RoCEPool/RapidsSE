@@ -23,11 +23,11 @@ PromptFun __Prompt_logWrite (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_logWrite(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pTokenVec->nItems();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
   
-  if (iNumTokens > 1 && pTokenVec->pGet(1)->eToken() == TN_NAME) {
-    if (pTokenVec->pGet(1)->bSame("short"_Stz))
+  if (iNumTokens > 1 && pInpTknVec->pGet(1)->eToken() == TN_NAME) {
+    if (pInpTknVec->pGet(1)->bSame("short"_Stz))
       AM::vLogWriteCsv(true);
     else
       AM::vLogWriteCsv(false);

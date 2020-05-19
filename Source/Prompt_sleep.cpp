@@ -23,11 +23,11 @@ PromptFun __Prompt_sleep (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  ASSERT(pTokenVec->pGet(0)->bSame("sleep"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("sleep"_Stz));
   
-  i8 nSeconds = pTokenVec->pGet(1)->iToI8();
+  i8 nSeconds = pInpTknVec->pGet(1)->iToI8();
   
   AM::vNapMsec(nSeconds * C_1K,CN_SEPROMPT);
 

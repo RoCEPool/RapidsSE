@@ -25,10 +25,10 @@ bool Prompt::bPrompt_memory(SePrompt* pPrompt)
 {
   bool bReset = false;
   
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pTokenVec->nItems();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
   if (3 == iNumTokens)
-    bReset = pTokenVec->pGet(2)->bSame("reset"_Stz);
+    bReset = pInpTknVec->pGet(2)->bSame("reset"_Stz);
 
   PromptHelper::vMemoryStatistics();
   

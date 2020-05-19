@@ -24,11 +24,11 @@ PromptFun __Prompt_st (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  i8 nTokens = pTokenVec->nTokens();
+  i8 nTokens = pInpTknVec->nTokens();
   
-  ASSERT(pTokenVec->pGet(0)->bSame("stepTiming"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("stepTiming"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -42,7 +42,7 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start step timing
-  if ( pTokenVec->pGet(1)->bSame("start"_Stz) ) {
+  if ( pInpTknVec->pGet(1)->bSame("start"_Stz) ) {
     if (AM::pStepTiming()) {
       vTrace("Step timing already started\n"_Stz);
       return true;
@@ -53,7 +53,7 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reset step timing
-  if ( pTokenVec->pGet(1)->bSame("reset"_Stz) ) {
+  if ( pInpTknVec->pGet(1)->bSame("reset"_Stz) ) {
     if (! AM::pStepTiming()) {
       vTrace("Step timing not started\n"_Stz);
       return true;
@@ -64,9 +64,9 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // show a step timing
-  if ( pTokenVec->pGet(1)->bSame("show"_Stz) && nTokens == 3) {
+  if ( pInpTknVec->pGet(1)->bSame("show"_Stz) && nTokens == 3) {
     
-    s32 sStepNm = pTokenVec->pGet(2)->szChars();
+    s32 sStepNm = pInpTknVec->pGet(2)->szChars();
 
     if (! AM::pStepTiming()) {
       vTrace("Step timing not started\n"_Stz);
@@ -78,9 +78,9 @@ bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write step timings to given file
-  if ( pTokenVec->pGet(1)->bSame("write"_Stz) && nTokens == 3) {
+  if ( pInpTknVec->pGet(1)->bSame("write"_Stz) && nTokens == 3) {
     
-    s256 sPath = pTokenVec->pGet(2)->szChars();
+    s256 sPath = pInpTknVec->pGet(2)->szChars();
 
     if (! AM::pStepTiming()) {
       vTrace("Step timing not started\n"_Stz);

@@ -25,12 +25,12 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
 {
   s256 sFile;
 
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  ASSERT(pTokenVec->pGet(0)->bSame("fileCat"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("fileCat"_Stz));
   
-  sFile = pTokenVec->pGet(1)->szChars();
-  i8 nLines = pTokenVec->pGet(2)->iToI8();
+  sFile = pInpTknVec->pGet(1)->szChars();
+  i8 nLines = pInpTknVec->pGet(2)->iToI8();
 
   File* pFile = new File(pPrompt);
   

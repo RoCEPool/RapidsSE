@@ -25,17 +25,17 @@ bool Prompt::bPrompt_cd(SePrompt* pPrompt)
 {
   s256 sDir;
   
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  ASSERT(pTokenVec->pGet(0)->bSame("cd"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("cd"_Stz));
   
-  sDir = pTokenVec->pGet(1)->szChars();
+  sDir = pInpTknVec->pGet(1)->szChars();
   
   i8 i_Token;
   for (i_Token = 2; i_Token < C_MAX_TOKENS; i_Token++) {
-    if (! pTokenVec->pGet(i_Token)->bHasChars())
+    if (! pInpTknVec->pGet(i_Token)->bHasChars())
       break;
-    sDir.vConcat(pTokenVec->pGet(i_Token)->szChars());
+    sDir.vConcat(pInpTknVec->pGet(i_Token)->szChars());
   }
   
   if ( ! Dir::bChangeCurrent(sDir) ) {

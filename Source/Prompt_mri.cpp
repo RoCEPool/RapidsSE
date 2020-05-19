@@ -23,9 +23,9 @@ PromptFun __Prompt_mri (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_mri(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  AM::vMri(pTokenVec);
+  AM::vMri(pInpTknVec);
   
   return true;
 }

@@ -24,16 +24,16 @@ PromptFun __Prompt_without (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_without(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  i8 nTokens = pTokenVec->nTokens();
+  i8 nTokens = pInpTknVec->nTokens();
   
   if (1 == nTokens) {
     Correctness::vTraceWithout();
     return true;
   }
   
-  Stz* szWith = pTokenVec->pGet(1)->szChars();
+  Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
   if (! Correctness::bTraceWithout(szWith))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

@@ -24,11 +24,11 @@ PromptFun __Prompt_cancel (
 bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
 {
 
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  ASSERT(pTokenVec->pGet(0)->bSame("cancel"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("cancel"_Stz));
   
-  i8 iJobId = pTokenVec->pGet(1)->iToI8();
+  i8 iJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
   Job* pJob_Pipeline = Scheduler::pJob_FindParticipating(iJobId);

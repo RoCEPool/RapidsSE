@@ -23,9 +23,9 @@ PromptFun __Prompt_ascii (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  i8 iNumTokens = pTokenVec->nItems();
+  i8 iNumTokens = pInpTknVec->nItems();
 
   if (1 == iNumTokens) {
     
@@ -53,7 +53,7 @@ bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
     return true;
   }
   
-  Token* pTkn1 = pTokenVec->pGet(1);
+  Token* pTkn1 = pInpTknVec->pGet(1);
 
   char* aChar = (char*)pTkn1->szChars();
   vTrace("Ascii: "_Stz);

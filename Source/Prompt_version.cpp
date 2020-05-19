@@ -24,7 +24,7 @@ PromptFun __Prompt_version (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_version(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   /*
   args.metadata if
     "(version VARCHAR)" metadata!
@@ -34,7 +34,7 @@ bool Prompt::bPrompt_version(SePrompt* pPrompt)
       version
       then
    */
-  ASSERT(pTokenVec->pGet(0)->bSame("version"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("version"_Stz));
   
   if (AM::bMetadata()) {
     vTrace("metadata: (version VARCHAR)\n"_Stz);

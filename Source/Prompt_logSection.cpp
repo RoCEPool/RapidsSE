@@ -25,12 +25,12 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  if (pTokenVec->nTokens() < 1)
+  if (pInpTknVec->nTokens() < 1)
     return true;
   
-  Stz* szSectionNm = pTokenVec->pGet(1)->szChars();
+  Stz* szSectionNm = pInpTknVec->pGet(1)->szChars();
   i8 iSectNmLen = szSectionNm->nLength();
 
   char caSection[256] = { '\0' };

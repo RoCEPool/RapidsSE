@@ -23,9 +23,9 @@ PromptFun __Prompt_pwd (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pInpTknVec();
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  ASSERT(pTokenVec->pGet(0)->bSame("pwd"_Stz));
+  ASSERT(pInpTknVec->pGet(0)->bSame("pwd"_Stz));
   
   s256 sDir;
   if (Dir::bGetCurrent(sDir))
