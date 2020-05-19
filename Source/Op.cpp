@@ -57,8 +57,8 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pStage    = pStage;
   m_pPipeline = pPipeline;
 
-  m_oOpTags.vCopy(pOpSpec->pOpSpecTags());
-  m_oTopologyTags.vCopy(pOpSpec->pTopologyTags());
+  m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
+  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
   
   m_pPipelineJob  = pPipeline->pJob();
   m_pOpJob        = nullptr;
@@ -126,7 +126,7 @@ void Op::vDump(i8 i_Op)
   
   s256 sArgs;
   
-  TagSet* pTopologyTagSet = this->pTopologyTags();
+  TagSet* pTopologyTagSet = this->pTopologyTagSet();
   //pTopologyTagSet->vDumpSet();
   pTopologyTagSet->vSprint(sArgs);
   
@@ -144,7 +144,7 @@ void Op::vDump(i8 i_Op)
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
-  TagSet* pOpTags = this->pOpTags();
+  TagSet* pOpTags = this->pOpTagSet();
   i8 iXmits =  pOpTags->iValue(C_TAG_XMITS);
   i8 iLeftMarkers = iXmits ? iXmits : 1;
   
@@ -472,11 +472,11 @@ Stz* Op::szOpNm(void)
 /*----------------------------------------------------------------------------*/
 /* get the TagSet                                                             */
 /*----------------------------------------------------------------------------*/
-TagSet* Op::pOpTags(void)
+TagSet* Op::pOpTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oOpTags;
+  return &m_oOpTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,20 +952,20 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   m_pOpJob = AM::pNewJobOp(this,&xReqTuple);
   
   // get the operator job tag set
-  TagSet* pOpJobTags = AM::pJobTags(m_pOpJob);
+  TagSet* pOpJobTagSet = AM::pJobTags(m_pOpJob);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the pipeline job tag set into the operator job tags
   TagSet* pPipeLineJobTags = AM::pJobTags(m_pPipelineJob);
-  pOpJobTags->vCopy(pPipeLineJobTags);
+  pOpJobTagSet->vCopy(pPipeLineJobTags);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now copy the hidden topology ename pairs to the job ename set
-  pOpJobTags->vCopy(&m_oTopologyTags);
+  pOpJobTagSet->vCopy(&m_oTopologyTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the OpJob JobNM to be the same as the Opertor name
-  pOpJobTags->vReplace(C_TAG_JOBNM, m_sOpNm);
+  pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
   
   //pOpJobTags->vDumpSet();
   
@@ -977,7 +977,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTknVec->vTokenise(szCmdStr);
 
-  bool b = AM::bParseCmd(pOpJobTags,pTknVec);
+  bool b = AM::bParseCmd(pOpJobTagSet,pTknVec);
   RASSERT(b);
 //  if (! b) {
 //    //vTrace("Unable to match job syntax\n"_Stz);
@@ -988,7 +988,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the job
   
-  eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTags);
+  eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
     
   //RASSERT(EC_NONE != eError);
   
@@ -1027,18 +1027,18 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sOpNm);
-  m_oOpTags.vConcat(szCmdStr);
+  m_oOpTagSet.vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the topology TagSet                                                    */
 /*----------------------------------------------------------------------------*/
-TagSet* Op::pTopologyTags(void)
+TagSet* Op::pTopologyTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oTopologyTags;
+  return &m_oTopologyTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
